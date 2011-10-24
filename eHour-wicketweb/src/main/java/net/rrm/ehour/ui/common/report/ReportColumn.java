@@ -24,89 +24,62 @@ import java.util.List;
 
 /**
  * Report column
- * 
+ * <p/>
  * The converterArgs may look iffy, cloning a model could as well be accomplished
  * with a clone() however that also means that for each model the constructor args should
  * be stored globally in the object. Now reflection is cpu wise more costly while storing
  * constructor args is more memory costly. May matter with large reports.
- **/
+ */
 
-public class ReportColumn implements Serializable
-{
-	public static enum ColumnType {STRING, DATE, RATE, HOUR, TURNOVER, COMMENT }
+public class ReportColumn implements Serializable {
+    public static enum ColumnType {STRING, DATE, RATE, HOUR, TURNOVER, COMMENT}
 
-    public static enum DisplayType {VISIBLE, HIDE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN }
+    public static enum DisplayType {VISIBLE, HIDE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN}
 
     private static final long serialVersionUID = -6736366461333244457L;
-	
-	private List<DisplayType> displayTypes;
-	private	String		columnHeaderResourceKey;
-	private IConverter	converter;
-	
-	private ColumnType	columnType = ColumnType.STRING;
-	
-	public ReportColumn(String columnHeaderResourceKey)
-	{
-		this(columnHeaderResourceKey, ColumnType.STRING, DisplayType.VISIBLE, DisplayType.ALLOW_DUPLICATES, DisplayType.CHART_SERIES_COLUMN);
-	}
 
-	public ReportColumn(String columnHeaderResourceKey, ColumnType columnType, DisplayType...displayTypes)
-	{
+    private List<DisplayType> displayTypes;
+    private String columnHeaderResourceKey;
+    private IConverter converter;
+
+    private ColumnType columnType = ColumnType.STRING;
+
+    public ReportColumn(String columnHeaderResourceKey) {
+        this(columnHeaderResourceKey, ColumnType.STRING, DisplayType.VISIBLE, DisplayType.ALLOW_DUPLICATES, DisplayType.CHART_SERIES_COLUMN);
+    }
+
+    public ReportColumn(String columnHeaderResourceKey, ColumnType columnType, DisplayType... displayTypes) {
         this.columnHeaderResourceKey = columnHeaderResourceKey;
         this.displayTypes = Arrays.asList(displayTypes);
         this.columnType = columnType;
-	}
+    }
 
-	public ReportColumn(String columnHeaderResourceKey, ColumnType columnType, IConverter converter, DisplayType...displayTypes) {
+    public ReportColumn(String columnHeaderResourceKey, ColumnType columnType, IConverter converter, DisplayType... displayTypes) {
         this(columnHeaderResourceKey, columnType, displayTypes);
         this.converter = converter;
     }
-	
-	/**
-	 * @return the visible
-	 */
-	public boolean isVisible()
-	{
-		return displayTypes.contains(DisplayType.VISIBLE);
-	}
 
-	/**
-	 * @return the columnHeaderResourceKey
-	 */
-	public String getColumnHeaderResourceKey()
-	{
-		return columnHeaderResourceKey;
-	}
+    public boolean isVisible() {
+        return displayTypes.contains(DisplayType.VISIBLE);
+    }
 
-	/**
-	 * @return the converter
-	 */
-	public IConverter getConverter()
-	{
-		return converter;
-	}
+    public String getColumnHeaderResourceKey() {
+        return columnHeaderResourceKey;
+    }
 
-	/**
-	 * @return the columnType
-	 */
-	public ColumnType getColumnType()
-	{
-		return columnType;
-	}
+    public IConverter getConverter() {
+        return converter;
+    }
 
-	/**
-	 * @return the allowDuplicates
-	 */
-	public boolean isAllowDuplicates()
-	{
-		return displayTypes.contains(DisplayType.ALLOW_DUPLICATES);
-	}
+    public ColumnType getColumnType() {
+        return columnType;
+    }
 
-	/**
-	 * @return the chartSeriesColumn
-	 */
-	public boolean isChartSeriesColumn()
-	{
-		return displayTypes.contains(DisplayType.CHART_SERIES_COLUMN);
-	}
+    public boolean isAllowDuplicates() {
+        return displayTypes.contains(DisplayType.ALLOW_DUPLICATES);
+    }
+
+    public boolean isChartSeriesColumn() {
+        return displayTypes.contains(DisplayType.CHART_SERIES_COLUMN);
+    }
 }

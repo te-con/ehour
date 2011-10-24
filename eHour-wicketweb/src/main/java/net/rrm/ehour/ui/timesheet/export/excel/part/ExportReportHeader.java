@@ -24,7 +24,7 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
-import net.rrm.ehour.ui.common.report.excel.CellStyle;
+import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
 import org.apache.poi.hssf.usermodel.*;
@@ -86,7 +86,7 @@ public class ExportReportHeader extends AbstractExportReportPart
     {
         HSSFRow row = getSheet().createRow(rowNumber++);
 
-        CellFactory.createCell(row, getCellMargin(), getExcelReportName(getReport().getReportRange()), getWorkbook(), CellStyle.NORMAL);
+        CellFactory.createCell(row, getCellMargin(), getExcelReportName(getReport().getReportRange()), getWorkbook(), StaticCellStyle.NORMAL);
         return rowNumber;
     }
 
@@ -94,8 +94,8 @@ public class ExportReportHeader extends AbstractExportReportPart
     {
         HSSFRow row = getSheet().createRow(rowNumber++);
 
-        CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.date"), getWorkbook(), CellStyle.NORMAL);
-        CellFactory.createCell(row, getCellMargin() + 2, CommonWebUtil.formatDate("MMMM yyyy", getReport().getReportRange().getDateStart()), getWorkbook(), CellStyle.NORMAL);
+        CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.date"), getWorkbook(), StaticCellStyle.NORMAL);
+        CellFactory.createCell(row, getCellMargin() + 2, CommonWebUtil.formatDate("MMMM yyyy", getReport().getReportRange().getDateStart()), getWorkbook(), StaticCellStyle.NORMAL);
 
         return rowNumber;
     }

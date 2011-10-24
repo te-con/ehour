@@ -23,8 +23,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.wicket.model.ResourceModel;
 
-import static net.rrm.ehour.ui.common.report.excel.CellStyle.BOLD;
-import static net.rrm.ehour.ui.common.report.excel.CellStyle.BORDER_SOUTH;
+import static net.rrm.ehour.ui.common.report.excel.StaticCellStyle.BOLD;
+import static net.rrm.ehour.ui.common.report.excel.StaticCellStyle.BORDER_SOUTH;
 
 /**
  * Created on Mar 25, 2009, 7:16:55 AM

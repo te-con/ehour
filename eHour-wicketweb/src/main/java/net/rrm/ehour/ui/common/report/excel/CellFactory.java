@@ -17,12 +17,7 @@
 package net.rrm.ehour.ui.common.report.excel;
 
 import net.rrm.ehour.ui.common.util.CommonWebUtil;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -35,12 +30,12 @@ public class CellFactory
 {
 	public static HSSFCell createCell(HSSFRow row, int column, String value, HSSFWorkbook workbook)
 	{
-		return CellFactory.createCell(row, column, value, workbook, CellStyle.NORMAL);
+		return CellFactory.createCell(row, column, value, workbook, StaticCellStyle.NORMAL);
 	}
 
 	public static HSSFCell createCell(HSSFRow row, int column, ResourceModel valueModel, HSSFWorkbook workbook)
 	{
-		return CellFactory.createCell(row, column, valueModel, workbook, CellStyle.NORMAL);
+		return CellFactory.createCell(row, column, valueModel, workbook, StaticCellStyle.NORMAL);
 	}
 
 	public static HSSFCell createCell(HSSFRow row, int column, HSSFWorkbook workbook, CellStyle... cellStyles)
@@ -81,12 +76,12 @@ public class CellFactory
 		
 		for (CellStyle cellStyle : cellStyles)
 		{
-			cellStyle.getCellStyleElement().populate(style, workbook);
+			cellStyle.getCellStylePopulator().populate(style, workbook);
 		}
 		
 		if (style.getFont(workbook) == null)
 		{
-			new CellStyleImpl.NormalFont().populate(style, workbook);
+			new CellStyleElement.NormalFont().populate(style, workbook);
 		}
 
 		return style;

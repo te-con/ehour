@@ -43,9 +43,6 @@ public class ExportReportExcel extends AbstractExcelResource
 		return "exportReportExcel";
 	}
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.component.AbstractExcelResource#getExcelData(java.lang.String)
-	 */
 	@Override
 	public byte[] getExcelData(Report report) throws IOException
 	{
@@ -54,10 +51,6 @@ public class ExportReportExcel extends AbstractExcelResource
 		return PoiUtil.getWorkbookAsBytes(workbook);
 	}
 
-	/**
-	 * @param report
-	 * @return
-	 */
 	private HSSFWorkbook createWorkbook(Report report)
 	{
 		HSSFWorkbook workbook = new HSSFWorkbook();
@@ -89,7 +82,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	{
 		String key = ExportCriteriaParameter.INCL_SIGN_OFF.name();
 		Object object = report.getReportCriteria().getUserCriteria().getCustomParameters().get(key);
-		return (object != null) && ((Boolean) object).booleanValue();
+		return (object != null) && (Boolean) object;
 	}
 
 

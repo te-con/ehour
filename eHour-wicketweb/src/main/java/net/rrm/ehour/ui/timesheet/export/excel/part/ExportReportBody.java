@@ -22,6 +22,7 @@ import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
+import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -89,7 +90,7 @@ public class ExportReportBody extends AbstractExportReportPart
 		{
 			addThinNorthBorder(dateCell);
 			
-			CellStyle border = CellStyle.BORDER_NORTH_THIN;
+			CellStyle border = StaticCellStyle.BORDER_NORTH_THIN;
 			
 			createEmptyCells(row, border);
 			
@@ -123,7 +124,7 @@ public class ExportReportBody extends AbstractExportReportPart
 					addThinNorthBorder(hoursCell);
 					addThinNorthBorder(customerCell);
 					
-					createEmptyCells(row, CellStyle.BORDER_NORTH_THIN);
+					createEmptyCells(row, StaticCellStyle.BORDER_NORTH_THIN);
 					
 					getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, getCellMargin() + 3, getCellMargin() + 5));
 				}
@@ -151,12 +152,12 @@ public class ExportReportBody extends AbstractExportReportPart
 	private void addThinNorthBorder(HSSFCell cell)
 	{
 		HSSFCellStyle cellStyle = cell.getCellStyle();
-		CellStyle.BORDER_NORTH_THIN.getCellStyleElement().populate(cellStyle, getWorkbook());
+		StaticCellStyle.BORDER_NORTH_THIN.getCellStylePopulator().populate(cellStyle, getWorkbook());
 	}
 	
 	private HSSFCell createHoursCell(Number hours, HSSFRow row)
 	{
-		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.HOURS.getColumn() ,hours,  getWorkbook(), CellStyle.DIGIT);
+		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.HOURS.getColumn() ,hours,  getWorkbook(), StaticCellStyle.DIGIT);
 	}
 	
 	private HSSFCell createProjectCell(String project, HSSFRow row)
@@ -172,13 +173,11 @@ public class ExportReportBody extends AbstractExportReportPart
 	
 	private HSSFCell createDateCell(Date date, HSSFRow row)
 	{
-		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.DATE.getColumn() , getFormatter().format(date), getWorkbook(), CellStyle.DATE);
+		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.DATE.getColumn() , getFormatter().format(date), getWorkbook(), StaticCellStyle.DATE);
 	}
 	
 	/**
 	 * Return a map with the key being the report's date and a list of a report elements for that date as the value
-	 * @param report
-	 * @return
 	 */
 	private Map<Date, List<FlatReportElement>> getElementsAsDateMap(Report report)
 	{

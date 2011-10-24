@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.common.report.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -24,14 +25,14 @@ import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * Created on Mar 25, 2009, 4:58:00 PM
- * @author Thies Edeling (thies@te-con.nl) 
+ * @author Thies Edeling (thies@te-con.nl)
  *
  */
-public class CellStyleImpl
+public class CellStyleElement
 {
 	private final static String FONT_TYPE = "Arial";
-	
-	public static class BoldFont implements CellStyleElement
+
+	public static class BoldFont implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
@@ -41,7 +42,7 @@ public class CellStyleImpl
 		}
 	}
 
-	public static class NormalFont implements CellStyleElement
+	public static class NormalFont implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
@@ -50,31 +51,37 @@ public class CellStyleImpl
 		}
 	}
 
-	public static class CurrencyValue implements CellStyleElement
+	public static class CurrencyValue implements CellStylePopulator
 	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			cellStyle.setDataFormat((short)0x8);
-		}
+        private String format;
+
+        public CurrencyValue(String currency) {
+            format = "$#,##0.00;[Red]($#,##0.00)".replace("$", currency);
+        }
+
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            HSSFDataFormat dataFormat = workbook.createDataFormat();
+            cellStyle.setDataFormat(dataFormat.getFormat(format));
+        }
 	}
 
-	public static class DateValue implements CellStyleElement
+	public static class DateValue implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
 			cellStyle.setDataFormat((short)0xf);
 		}
 	}
-	
-	public static class DigitValue implements CellStyleElement
+
+	public static class DigitValue implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
 			cellStyle.setDataFormat((short)2);
 		}
-	}	
+	}
 
-	public static class BorderSouth implements CellStyleElement
+	public static class BorderSouth implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
@@ -82,17 +89,17 @@ public class CellStyleImpl
 			cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 		}
 	}
-	
-	public static class BorderSouthThin implements CellStyleElement
+
+	public static class BorderSouthThin implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
 			cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 			cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 		}
-	}		
-	
-	public static class BorderThin implements CellStyleElement
+	}
+
+	public static class BorderThin implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
@@ -109,37 +116,37 @@ public class CellStyleImpl
 			cellStyle.setRightBorderColor(HSSFColor.BLACK.index);
 		}
 	}
-	
-	public static class BorderNorthThin implements CellStyleElement
+
+	public static class BorderNorthThin implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
 			cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
 			cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
 		}
-	}	
-	
-	public static class BorderNorth implements CellStyleElement
+	}
+
+	public static class BorderNorth implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
 			cellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
 			cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
 		}
-	}		
+	}
 
-	public static class Header implements CellStyleElement
+	public static class Header implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
 		{
 			new BoldFont().populate(cellStyle, workbook);
 			new BorderSouth().populate(cellStyle, workbook);
-			
+
 			cellStyle.setFillForegroundColor(HSSFColor.BLUE.index);
 			cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 		}
-	}	
-	
+	}
+
 	private static HSSFFont createFont(HSSFWorkbook workbook)
 	{
 		HSSFFont font = workbook.createFont();
@@ -147,8 +154,8 @@ public class CellStyleImpl
 
 		return font;
 	}
-	
-	public interface CellStyleElement
+
+	public interface CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook);
 	}

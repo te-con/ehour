@@ -17,15 +17,9 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.model.DateModel;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -38,6 +32,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
+
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created on Apr 21, 2009, 4:01:41 PM
@@ -157,7 +156,9 @@ public class LocaleConfigPanel extends AbstractConfigPanel
 	@SuppressWarnings("serial")
     private final class LocaleChoiceRenderer extends ChoiceRenderer<Locale>
     {
-		int type;
+        private static final int COUNTRY = 0;
+        private static final int LANGUAGE = 1;
+        int type;
 		
 		// type == 0 -> country, 1 => language, 2=> currency
 		public LocaleChoiceRenderer(int type)
@@ -172,7 +173,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel
         {
             String display;
             
-            if (type == 0)
+            if (type == COUNTRY)
             {
 	            display = locale.getDisplayCountry();
 	            
@@ -185,7 +186,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel
 	            
 	            display += ")";
             }
-            else if (type == 1)
+            else if (type == LANGUAGE)
             {
 	            display = locale.getDisplayLanguage();
             }
