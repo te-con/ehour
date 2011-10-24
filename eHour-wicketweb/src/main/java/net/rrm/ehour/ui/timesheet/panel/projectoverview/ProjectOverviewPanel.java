@@ -167,15 +167,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
     @SuppressWarnings("serial")
     private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
     {
-        List<UserProjectStatus> statusses;
-
-        if (projectStatusSet == null)
-        {
-            statusses = new ArrayList<UserProjectStatus>();
-        } else
-        {
-            statusses = new ArrayList<UserProjectStatus>(projectStatusSet);
-        }
+        List<UserProjectStatus> statusses = projectStatusSet == null ? new ArrayList<UserProjectStatus>() : new ArrayList<UserProjectStatus>(projectStatusSet);
 
         // table data should reflect the path to the listView
         this.tableDatePath += ":" + ID_TABLE_DATA;
@@ -206,22 +198,17 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
                     rateLabel = new Label("rate", "--");
                 }
 
-
                 rateLabel.setEscapeModelStrings(false);
-
                 setRateWidthOrHide(rateLabel);
-
                 item.add(rateLabel);
 
                 Number hours = projectStatus.getHours();
 
-                Label hoursLabel = new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f));
-                item.add(hoursLabel);
+                item.add(new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f)));
 
                 Label turnOverLabel;
 
                 if (projectStatus.getProjectAssignment().getProject().isBillable())
-
                 {
                     turnOverLabel = new CurrencyLabel("turnover", projectStatus.getTurnOver().floatValue());
                 } else
@@ -235,11 +222,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
                 item.add(turnOverLabel);
 
                 // SummaryRow
-                item.add(new
-
-                        PlaceholderPanel(ID_SUMMARY_ROW)
-
-                );
+                item.add(new PlaceholderPanel(ID_SUMMARY_ROW));
             }
         };
 
@@ -248,9 +231,6 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 
     /**
      * Create fold link (also contains the creation of the summary row)
-     *
-     * @param projectStatus
-     * @return
      */
     @SuppressWarnings("serial")
     private Component createFoldLink(final UserProjectStatus projectStatus, final String domId)
@@ -331,12 +311,6 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         return builder.toString();
     }
 
-    /**
-     * Create project summary row
-     *
-     * @param projectStatus
-     * @return
-     */
     private Component createProjectSummaryRow(UserProjectStatus projectStatus)
     {
         // SummaryRow placeholder
@@ -354,9 +328,12 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         // only shown for allotted types
         cont.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 
+        Number bookedHours = projectStatus.getTotalBookedHours();
+        float totalBookedHours = (bookedHours != null) ? projectStatus.getTotalBookedHours().floatValue() : 0;
+
         Label totalBookedLabel = new Label("overview.totalbooked", new StringResourceModel("overview.totalbooked",
                 this, null,
-                new Object[]{new Model<Float>(projectStatus.getTotalBookedHours().floatValue())}));
+                new Object[]{new Model<Float>(totalBookedHours)}));
         cont.add(totalBookedLabel);
 
         Label remainingLabel = new Label("overview.remainingfixed", new StringResourceModel("overview.remainingfixed",
