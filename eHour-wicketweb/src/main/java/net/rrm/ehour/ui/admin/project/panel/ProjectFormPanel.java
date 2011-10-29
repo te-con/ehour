@@ -30,10 +30,10 @@ import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.UserComparator;
 import net.rrm.ehour.user.service.UserService;
@@ -82,12 +82,13 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 		final Form<Void> form = new Form<Void>("projectForm");
 		addFormComponents(form);
 
-		FormUtil.setSubmitActions(form
-									,model.getObject().getProject().isDeletable()
-									,this
-									,ProjectAjaxEventType.PROJECT_UPDATED
-									,ProjectAjaxEventType.PROJECT_DELETED
-									,EhourWebSession.getSession().getEhourConfig());
+
+        boolean deletable = model.getObject().getProject().isDeletable();
+        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+                .withDeleteEventType(ProjectAjaxEventType.PROJECT_DELETED)
+                .withSubmitEventType(ProjectAjaxEventType.PROJECT_UPDATED);
+
+        FormUtil.setSubmitActions(formConfig);
 
 		border.add(form);
 

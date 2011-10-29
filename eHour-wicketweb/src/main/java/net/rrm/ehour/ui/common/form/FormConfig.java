@@ -1,0 +1,86 @@
+package net.rrm.ehour.ui.common.form;
+
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
+
+public class FormConfig {
+    private Form<?> form;
+    private boolean includeDelete = false;
+    private AjaxEventType submitEventType;
+    private AjaxEventType deleteEventType;
+    private AjaxEventType errorEventType;
+    private  EhourConfig config;
+    
+    private MarkupContainer submitTarget;
+
+    public MarkupContainer getSubmitTarget() {
+        return submitTarget;
+    }
+
+    public FormConfig withSubmitTarget(MarkupContainer submitTarget) {
+        this.submitTarget = submitTarget;
+        return this;
+    }
+
+    public FormConfig forForm(Form<?> form) {
+        this.form = form;
+        return this;
+    }
+
+    public FormConfig withDelete() {
+        return withDelete(true);
+    }
+
+    public FormConfig withDelete(boolean withDelete) {
+        includeDelete = withDelete;
+        return this;
+    }
+
+
+    public FormConfig withSubmitEventType(AjaxEventType submitEventType) {
+        this.submitEventType = submitEventType;
+        return this;
+    }
+
+    public FormConfig withDeleteEventType(AjaxEventType deleteEventType) {
+        this.deleteEventType = deleteEventType;
+        return this;
+    }
+
+    public FormConfig withErrorEventType(AjaxEventType errorEventType) {
+        this.errorEventType = errorEventType;
+        return this;
+    }
+
+    public Form<?> getForm() {
+        return form;
+    }
+
+    public boolean isIncludeDelete() {
+        return includeDelete;
+    }
+
+    public AjaxEventType getSubmitEventType() {
+        return submitEventType;
+    }
+
+    public AjaxEventType getDeleteEventType() {
+        return deleteEventType;
+    }
+
+    public AjaxEventType getErrorEventType() {
+        return errorEventType;
+    }
+
+    public FormConfig withConfig(EhourConfig config) {
+        this.config = config;
+        return this;
+    }
+
+    public EhourConfig getConfig() {
+        return config == null ? EhourWebSession.getSession().getEhourConfig() : config;
+    }
+}

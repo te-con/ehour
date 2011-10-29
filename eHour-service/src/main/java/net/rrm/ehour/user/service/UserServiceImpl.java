@@ -241,10 +241,27 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsersWithEmailSet()
-      */
+    @Override
+    @Transactional
+    public boolean changePassword(String username, String newUnencryptedPassword) {
+        User user = userDAO.findByUsername(username);
+
+        boolean positiveResult;
+
+        if (user == null) {
+            LOGGER.warn(String.format("Trying to change password of %s but failed to find user in the database", username));
+            positiveResult = false;
+        } else {
+            int salt = (int) (Math.random() * 10000);
+            user.setSalt(salt);
+            user.setPassword(encryptPassword(user.getUpdatedPassword(), salt));
+
+            userDAO.persist(user);
+            positiveResult = true;
+        }
+        return positiveResult;
+    }
+
     public List<User> getUsersWithEmailSet() {
         return userDAO.findAllActiveUsersWithEmailSet();
     }

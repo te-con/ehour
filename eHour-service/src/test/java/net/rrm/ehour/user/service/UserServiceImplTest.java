@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.user.service;
 
-import junit.framework.TestCase;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
@@ -24,28 +23,26 @@ import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
+import org.easymock.Capture;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import java.util.*;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-
-/**
- * @author Thies
- *
- */
-public class UserServiceTest extends TestCase 
+public class UserServiceImplTest
 {
 	private	UserService			userService;
 	private	UserDao				userDAO;
 	private	UserDepartmentDao	userDepartmentDAO;
 	private	UserRoleDao			userRoleDAO;
-	
-	/**
-	 * 
-	 */
-	protected void setUp()
+
+    @Before
+	public void setUp()
 	{
 		userService = new UserServiceImpl();
 		userDAO = createMock(UserDao.class);
@@ -58,24 +55,21 @@ public class UserServiceTest extends TestCase
 		
 		((UserServiceImpl)userService).setPasswordEncoder(new ShaPasswordEncoder(1));
 	}
-	
-	
-	/**
-	 * 
-	 *
-	 */
+
+    @Test
 	public void testGetUsersByNameMatch()
 	{
 		expect(userDAO.findUsersByNameMatch("test", true))
 				.andReturn(new ArrayList<User>());
-		
+
 		replay(userDAO);
-		
+
 		userService.getUsersByNameMatch("test", true);
-		
+
 		verify(userDAO);
 	}
 
+    @Test
 	public void testGetUser() throws ObjectNotFoundException
 	{
 		User				user;
@@ -83,8 +77,8 @@ public class UserServiceTest extends TestCase
 		Project				projectA, projectB;
 		Set<ProjectAssignment>	assignments = new HashSet<ProjectAssignment>();
 		Calendar			calA, calB;
-		
-		
+
+
 		user = new User("thies", "pwd");
 
 		projectA = new Project();
@@ -99,7 +93,7 @@ public class UserServiceTest extends TestCase
 		assignmentA.setDateEnd(calA.getTime());
 		assignmentA.setProject(projectA);
 		assignments.add(assignmentA);
-		
+
 		projectB = new Project();
 		projectB.setActive(true);
 
@@ -131,6 +125,7 @@ public class UserServiceTest extends TestCase
 		assertEquals(1, user.getInactiveProjectAssignments().size());
 	}
 	
+    @Test
 	public void testGetUserDepartment() throws ObjectNotFoundException
 	{
 		UserDepartment ud;
@@ -146,7 +141,8 @@ public class UserServiceTest extends TestCase
 		
 		assertEquals("bla", ud.getName());
 	}
-	
+
+    @Test
 	public void testGetUserRole()
 	{
 		expect(userRoleDAO.findById(UserRole.ROLE_CONSULTANT))
@@ -161,6 +157,7 @@ public class UserServiceTest extends TestCase
 		assertEquals(UserRole.ROLE_CONSULTANT, ur.getRole());
 	}
 	
+    @Test
 	public void testGetUserRoles()
 	{
 		expect(userRoleDAO.findAll())
@@ -173,6 +170,7 @@ public class UserServiceTest extends TestCase
 		verify(userRoleDAO);
 	}
 	
+    @Test
 	public void testAddAndcheckProjectManagementRoles()
 	{
 		User user = new User(1);
@@ -197,28 +195,25 @@ public class UserServiceTest extends TestCase
 		assertEquals("aa", user.getPassword());
 	}
 	
-	public void testUpdatePassword() throws PasswordEmptyException, ObjectNotUniqueException
-	{
-		User user = new User(1);
-		user.setPassword("aa");
-		user.setSalt(2);
-		user.setUsername("user");
-		user.setUpdatedPassword("fefe");
-		
-		expect(userDAO.findByUsername("user"))
-			.andReturn(user);
+    @Test
+	public void shouldUpdatePassword() throws PasswordEmptyException, ObjectNotUniqueException {
+        Capture<User> capturer = new Capture<User>();
 
-		expect(userDAO.merge(user))
-			.andReturn(user);
-		
-		replay(userDAO);
-		
-		userService.persistUser(user);
-		
-		verify(userDAO);
-		
-		assertFalse(user.getPassword().equals("aa") );
-	}	
+        User user = new User(1);
+        user.setPassword("aa");
+        user.setUsername("user");
+
+        expect(userDAO.findByUsername("user")).andReturn(user);
+        expect(userDAO.persist(and(isA(User.class), capture(capturer)))).andReturn(user);
+
+        replay(userDAO);
+
+        userService.changePassword("user", "pwd");
+
+        verify(userDAO);
+
+        assertFalse(user.getPassword().equals("pwd"));
+    }
 	
 //	public void testPersistUserDepartment() throws ObjectNotUniqueException
 //	{

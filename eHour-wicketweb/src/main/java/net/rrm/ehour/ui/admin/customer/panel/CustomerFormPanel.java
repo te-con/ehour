@@ -28,10 +28,10 @@ import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.*;
@@ -97,12 +97,14 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 	
 		//
-		FormUtil.setSubmitActions(form 
-									,model.getObject().getCustomer().isDeletable()
-									,this
-									,CustomerAjaxEventType.CUSTOMER_UPDATED
-									,CustomerAjaxEventType.CUSTOMER_DELETED
-									,((EhourWebSession)getSession()).getEhourConfig());
+
+        boolean deletable = model.getObject().getCustomer().isDeletable();
+        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+                .withDeleteEventType(CustomerAjaxEventType.CUSTOMER_DELETED)
+                .withSubmitEventType(CustomerAjaxEventType.CUSTOMER_UPDATED);
+
+
+        FormUtil.setSubmitActions(formConfig);
 		
 		greyBorder.add(form);
 	}

@@ -16,16 +16,6 @@
 
 package net.rrm.ehour.ui.pm.page;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -33,10 +23,15 @@ import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Thies

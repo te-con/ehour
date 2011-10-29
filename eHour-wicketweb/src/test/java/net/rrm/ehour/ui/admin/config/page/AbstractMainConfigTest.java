@@ -26,9 +26,7 @@ import org.junit.Before;
 
 import java.io.Serializable;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.verify;
+import static org.easymock.EasyMock.*;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester implements Serializable

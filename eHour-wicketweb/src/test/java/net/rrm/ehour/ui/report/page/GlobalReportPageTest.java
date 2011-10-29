@@ -16,18 +16,6 @@
 
 package net.rrm.ehour.ui.report.page;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -38,7 +26,6 @@ import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
 import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -48,6 +35,13 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("serial")
 public class GlobalReportPageTest extends BaseTestReport

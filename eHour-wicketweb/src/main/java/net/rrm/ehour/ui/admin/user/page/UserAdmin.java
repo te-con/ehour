@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.admin.user.page;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
@@ -25,17 +23,14 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
-import net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -48,6 +43,11 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
+
+import static net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType.*;
+import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType.FILTER_CHANGE;
 
 /**
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel 
@@ -156,26 +156,29 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	{
 		AjaxEventType type = ajaxEvent.getEventType();
 
-		if (type == EntrySelectorAjaxEventType.FILTER_CHANGE)
+
+
+		if (type == FILTER_CHANGE)
 		{
 			currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent).getPayload();
 
 			List<User> users = getUsers();
 			userListView.setList(users);
-			
+
 			return false;
 		}
-		else if (type == UserEditAjaxEventType.USER_UPDATED
-				|| type == UserEditAjaxEventType.USER_DELETED)
+		else if (type == USER_UPDATED
+				|| type == USER_DELETED
+                || type == PASSWORD_CHANGED)
 		{
 			// update user list
 			List<User> users = getUsers();
 			userListView.setList(users);
-			
+
 			selectorPanel.refreshList(ajaxEvent.getTarget());
-			
+
 			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
-			
+
 			return false;
 		}
 		

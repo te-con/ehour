@@ -16,15 +16,14 @@
 
 package net.rrm.ehour.user.service;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.exception.NoResultsException;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.PasswordEmptyException;
+
+import java.util.List;
 
 
 public interface UserService 
@@ -33,9 +32,8 @@ public interface UserService
 	 * Get user by userId
 	 * User.inactiveProjectAssignments is populated with project 
 	 * assignments ending before or starting after the current date
-	 * @param userID
+	 * @param userID to look for
 	 * @return
-	 * @throws NoResultsException
 	 */
     public User getUser(Integer userID) throws ObjectNotFoundException;
     
@@ -43,7 +41,6 @@ public interface UserService
      * Get user by userId and optional check if the user is deletable (as in, no hours booked on his/her
      * assignments)
      * @param userId
-     * @param checkIfDeletable
      * @return
      */
     public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException;
@@ -52,7 +49,6 @@ public interface UserService
 	 * Get user by username
 	 * @param userID
 	 * @return
-	 * @throws NoResultsException
 	 */
     public User getUser(String username);    
 
@@ -62,7 +58,14 @@ public interface UserService
      * @return
      */
     public User persistUser(User user)  throws PasswordEmptyException, ObjectNotUniqueException;
-    
+
+    /**
+     * Change password for user
+     * @param username of the user to change the password of
+     * @param newUnencryptedPassword the new unencrypted password
+     */
+    public boolean changePassword(String username, String newUnencryptedPassword);
+
     /**
      * Get users where first name or last name matches
      * @param match

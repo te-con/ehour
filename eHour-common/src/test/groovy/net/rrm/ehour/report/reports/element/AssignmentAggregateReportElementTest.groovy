@@ -65,7 +65,7 @@ class AssignmentAggregateReportElementTest
     def assignment = new ProjectAssignment(assignmentType: EhourConstants.ASSIGNMENT_TYPE_DATE, dateStart:  new Date() - 1, dateEnd: new Date() + 1)
     def element = new AssignmentAggregateReportElement(projectAssignment: assignment, hours: 10)
 
-    assertEquals 50, element.getProgressPercentage(), 0.01
+    assertEquals 50, element.getProgressPercentage(), 2
   }
 
     @Test

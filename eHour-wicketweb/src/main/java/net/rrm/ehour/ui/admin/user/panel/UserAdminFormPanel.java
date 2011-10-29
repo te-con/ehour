@@ -26,11 +26,11 @@ import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -126,12 +126,14 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 	
 		//
-		FormUtil.setSubmitActions(form
-									,((UserBackingBean)userModel.getObject()).getUser().isDeletable()
-									,this
-									,UserEditAjaxEventType.USER_UPDATED
-									,UserEditAjaxEventType.USER_DELETED
-									,((EhourWebSession)getSession()).getEhourConfig());
+        boolean deletable = userModel.getObject().getUser().isDeletable();
+
+        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+                .withDeleteEventType(UserEditAjaxEventType.USER_DELETED)
+                .withSubmitEventType(UserEditAjaxEventType.USER_UPDATED);
+
+
+        FormUtil.setSubmitActions(formConfig);
 		
 		greyBorder.add(form);
 	}
@@ -152,7 +154,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 		else if (type == UserEditAjaxEventType.USER_DELETED)
 		{
 			deleteUser(userBackingBean);
-		}		
+		}
 	}		
 	
 	private void persistUser(UserBackingBean userBackingBean) throws PasswordEmptyException, ObjectNotUniqueException

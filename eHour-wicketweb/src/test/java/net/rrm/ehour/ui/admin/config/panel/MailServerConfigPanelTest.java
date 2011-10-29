@@ -18,14 +18,14 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
-
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
+
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created on Apr 22, 2009, 4:19:23 PM

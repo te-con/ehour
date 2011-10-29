@@ -18,12 +18,9 @@ package net.rrm.ehour.ui.admin.user.panel;
 
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 
-/**
- * TODO 
- **/
-
 public enum UserEditAjaxEventType  implements AjaxEventType
 {
 	USER_UPDATED,
-	USER_DELETED
+	USER_DELETED,
+    PASSWORD_CHANGED
 }

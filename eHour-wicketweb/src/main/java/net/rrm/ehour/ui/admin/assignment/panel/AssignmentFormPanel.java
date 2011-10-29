@@ -11,12 +11,11 @@ import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentConta
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.Form;
@@ -49,12 +48,13 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 		
 
 		// add submit form
-		FormUtil.setSubmitActions(form 
-									,((AssignmentAdminBackingBean)getDefaultModelObject()).getProjectAssignment().isDeletable() 
-									,this
-									,AssignmentAjaxEventType.ASSIGNMENT_UPDATED
-									,AssignmentAjaxEventType.ASSIGNMENT_DELETED
-									,EhourWebSession.getSession().getEhourConfig());
+        boolean deletable = ((AssignmentAdminBackingBean) getDefaultModelObject()).getProjectAssignment().isDeletable();
+        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+                .withDeleteEventType(AssignmentAjaxEventType.ASSIGNMENT_DELETED)
+                .withSubmitEventType(AssignmentAjaxEventType.ASSIGNMENT_UPDATED);
+
+
+        FormUtil.setSubmitActions(formConfig);
 		
 		form.add(new AssignmentFormComponentContainerPanel("formComponents", form, model, DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON));
 		

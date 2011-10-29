@@ -24,12 +24,11 @@ import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -85,12 +84,12 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 	
 		//
-		FormUtil.setSubmitActions(form
-									,model.getObject().getDepartment().isDeletable()
-									,this
-									,DepartmentAjaxEventType.DEPARTMENT_UPDATED
-									,DepartmentAjaxEventType.DEPARTMENT_DELETED
-									,EhourWebSession.getSession().getEhourConfig());
+
+        boolean deletable = model.getObject().getDepartment().isDeletable();
+        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+                .withDeleteEventType(DepartmentAjaxEventType.DEPARTMENT_DELETED)
+                .withSubmitEventType(DepartmentAjaxEventType.DEPARTMENT_UPDATED);
+        FormUtil.setSubmitActions(formConfig);
 		
 		greyBorder.add(form);
 	}

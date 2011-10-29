@@ -16,18 +16,14 @@
 
 package net.rrm.ehour.ui.common;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.notNull;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+
+import java.util.*;
+
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.notNull;
 /**
  * Mock expectations
  **/
@@ -39,11 +35,6 @@ public class MockExpectations
 		
 	}
 	
-	/**
-	 * Setup expectancy for nav. calendar
-	 * @param timesheetService
-	 * @param webApp
-	 */
 	@SuppressWarnings("deprecation")
 	public static void navCalendar(TimesheetService timesheetService, TestEhourWebApplication webApp)
 	{

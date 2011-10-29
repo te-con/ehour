@@ -18,10 +18,6 @@ package net.rrm.ehour.ui.admin.project.common;
 
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 
-/**
- * TODO 
- **/
-
 public enum ProjectAjaxEventType implements AjaxEventType
 {
 	PROJECT_UPDATED,
