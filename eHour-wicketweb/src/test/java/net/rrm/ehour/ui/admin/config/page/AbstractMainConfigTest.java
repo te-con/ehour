@@ -35,7 +35,8 @@ public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester 
 	private MailService mailService;
 	private EhourConfigStub config;
 
-	@Before
+	@SuppressWarnings({"deprecation"})
+    @Before
 	public void before() throws Exception
 	{
 //		configService = createMock(ConfigurationService.class);

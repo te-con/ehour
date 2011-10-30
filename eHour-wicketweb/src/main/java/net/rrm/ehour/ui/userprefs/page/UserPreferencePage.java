@@ -24,7 +24,8 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
-import net.rrm.ehour.ui.userprefs.panel.UserPasswordChangePanel;
+import net.rrm.ehour.ui.userprefs.panel.ChangePasswordBackingBean;
+import net.rrm.ehour.ui.userprefs.panel.ChangePasswordPanel;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.ResourceModel;
 
@@ -42,13 +43,9 @@ public class UserPreferencePage extends AbstractBasePage<Void>
 		add(new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser()));
 
 		// add 
-		add(new UserPasswordChangePanel("preferenceForm", getEhourWebSession().getUser().getUser()));
+		add(new ChangePasswordPanel("preferenceForm", new ChangePasswordBackingBean()));
 	}
 	
-	/**
-	 * Handle Ajax request
-	 * @param target
-	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

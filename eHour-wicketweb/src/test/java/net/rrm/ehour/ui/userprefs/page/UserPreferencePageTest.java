@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.userprefs.page;
 
-import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
@@ -39,9 +38,6 @@ public class UserPreferencePageTest extends AbstractSpringWebAppTester
 		UserService userService = createMock(UserService.class);
 		getMockContext().putBean("userService", userService);
 
-		expect(userService.getUser(1))
-			.andReturn(new User(1));
-
 		replay(userService);
 		replay(timesheetService);
 
@@ -63,9 +59,6 @@ public class UserPreferencePageTest extends AbstractSpringWebAppTester
 
         UserService userService = createMock(UserService.class);
         getMockContext().putBean("userService", userService);
-
-        expect(userService.getUser(1))
-            .andReturn(new User(1));
 
         replay(userService);
         replay(timesheetService);

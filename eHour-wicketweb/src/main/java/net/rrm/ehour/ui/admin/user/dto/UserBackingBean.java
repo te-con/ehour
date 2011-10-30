@@ -17,87 +17,38 @@
 package net.rrm.ehour.ui.admin.user.dto;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
 
 /**
  * Backing bean for users
- **/
+ */
 
-public class UserBackingBean extends AdminBackingBeanImpl
-{
-	private static final long serialVersionUID = 2781902854421696575L;
-	private User	user;
-	private	String	confirmPassword;
-	private	String	originalUsername;
-	private	String	originalPassword;
-	private	boolean	isPm;
-	
-	public UserBackingBean(User user)
-	{
-		this.user = user;
-		
-		if (user != null)
-		{
-			this.originalUsername = user.getUsername();
-			this.originalPassword = user.getPassword();
-			
-			isPm = user.getUserRoles().contains(UserRole.PROJECTMANAGER);
-		}
-	}
+public class UserBackingBean extends AdminBackingBeanImpl {
+    private static final long serialVersionUID = 2781902854421696575L;
+    private User user;
+    private String originalUsername;
 
-	public User getUser()
-	{
-		return user;
-	}
+    public UserBackingBean(User user) {
+        this.user = user;
 
-	public void setUser(User user)
-	{
-		this.user = user;
-	}
+        if (user != null) {
+            this.originalUsername = user.getUsername();
+        }
+    }
 
-	public String getConfirmPassword()
-	{
-		return confirmPassword;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setConfirmPassword(String confirmPassword)
-	{
-		this.confirmPassword = confirmPassword;
-	}
+    public String getOriginalUsername() {
+        return originalUsername;
+    }
 
-	public String getOriginalUsername()
-	{
-		return originalUsername;
-	}
+    public void setOriginalUsername(String originalUsername) {
+        this.originalUsername = originalUsername;
+    }
 
-	public void setOriginalUsername(String originalUsername)
-	{
-		this.originalUsername = originalUsername;
-	}
-
-	public String getOriginalPassword()
-	{
-		return originalPassword;
-	}
-
-	public void setOriginalPassword(String originalPassword)
-	{
-		this.originalPassword = originalPassword;
-	}
-
-	public boolean isPm()
-	{
-		return isPm;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean#getDomainObject()
-	 */
-	
-	public User getDomainObject()
-	{
-		return getUser();
-	}
+    public User getDomainObject() {
+        return getUser();
+    }
 }

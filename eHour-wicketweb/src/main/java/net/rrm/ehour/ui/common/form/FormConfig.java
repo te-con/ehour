@@ -6,7 +6,10 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 
-public class FormConfig {
+import java.io.Serializable;
+
+public class FormConfig implements Serializable {
+
     private Form<?> form;
     private boolean includeDelete = false;
     private AjaxEventType submitEventType;

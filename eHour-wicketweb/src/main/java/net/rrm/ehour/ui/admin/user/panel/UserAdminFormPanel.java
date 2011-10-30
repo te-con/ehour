@@ -18,8 +18,6 @@ package net.rrm.ehour.ui.admin.user.panel;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
@@ -56,13 +54,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 	private UserService	userService;
 	private final static Logger logger = Logger.getLogger(UserAdminFormPanel.class);
 	
-	/**
-	 * 
-	 * @param id
-	 * @param userModel
-	 * @param roles
-	 * @param departments
-	 */
+
 	public UserAdminFormPanel(String id,
 							CompoundPropertyModel<UserBackingBean> userModel,
 							List<UserRole> roles,
@@ -77,9 +69,6 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 		
 		final Form<Void> form = new Form<Void>("userForm");
 
-		// password inputs
-		form.add(new PasswordInputSnippet("password", form));
-		
 		// username
 		RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
 		form.add(usernameField);
@@ -149,23 +138,14 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 		
 		if (type == UserEditAjaxEventType.USER_UPDATED)
 		{
-			persistUser(userBackingBean);
+            // TODO - PM
+            userService.persistUser(userBackingBean.getUser());
+//			persistUser(userBackingBean);
 		}
 		else if (type == UserEditAjaxEventType.USER_DELETED)
 		{
 			deleteUser(userBackingBean);
 		}
-	}		
-	
-	private void persistUser(UserBackingBean userBackingBean) throws PasswordEmptyException, ObjectNotUniqueException
-	{
-		if (userBackingBean.isPm())
-		{
-			logger.debug("Re-adding PM role after edit");
-			userBackingBean.getUser().addUserRole(UserRole.PROJECTMANAGER);
-		}
-		
-		userService.persistUser(userBackingBean.getUser());
 	}
 	
 	private void deleteUser(UserBackingBean userBackingBean)
@@ -190,8 +170,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 
 			if (orgUsername != null && orgUsername.length() > 0 && username.equalsIgnoreCase(orgUsername))
 			{
-				return;
-			}
+            }
 			else if (userService.getUser(username) != null)
 			{
 				error(validatable, "admin.user.errorUsernameExists");

@@ -254,7 +254,7 @@ public class UserServiceImpl implements UserService {
         } else {
             int salt = (int) (Math.random() * 10000);
             user.setSalt(salt);
-            user.setPassword(encryptPassword(user.getUpdatedPassword(), salt));
+            user.setPassword(encryptPassword(newUnencryptedPassword, salt));
 
             userDAO.persist(user);
             positiveResult = true;
