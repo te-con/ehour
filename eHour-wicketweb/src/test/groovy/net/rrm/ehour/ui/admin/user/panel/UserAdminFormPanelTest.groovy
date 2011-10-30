@@ -1,18 +1,24 @@
-package net.rrm.ehour.ui.userprefs.panel
+package net.rrm.ehour.ui.admin.user.panel
 
+import net.rrm.ehour.domain.UserDepartmentMother
+import net.rrm.ehour.domain.UserMother
+import net.rrm.ehour.domain.UserRole
+import net.rrm.ehour.ui.admin.user.dto.UserBackingBean
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.html.panel.Panel
+import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.util.tester.ITestPanelSource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
-class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
+public class UserAdminFormPanelTest extends AbstractSpringWebAppTester {
     @Mock
     private UserService userService
+    def formPath =  makePanelPath(UserAdminFormPanel.BORDER, UserAdminFormPanel.FORM)
 
     @Before
     void "set up"() {
@@ -25,24 +31,22 @@ class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
         startPanel()
 
         tester.assertNoErrorMessage()
-        def path = makePanelPath(ChangePasswordPanel.BORDER, ChangePasswordPanel.CHANGE_PASSWORD_FORM)
-        tester.assertComponent(path, Form.class)
+        tester.assertComponent(formPath, Form.class)
     }
 
     @Test
     void "should submit"() {
         startPanel()
-
-        def formPath = makePanelPath(ChangePasswordPanel.BORDER, ChangePasswordPanel.CHANGE_PASSWORD_FORM)
-        
         def formTester = tester.newFormTester(formPath)
-        
-        formTester.setValue("password", "a")
-        formTester.setValue("confirmPassword", "a")
-        
+
+        formTester.setValue("user.username", "john")
+        formTester.setValue("user.firstName", "john")
+        formTester.setValue("user.lastName", "john")
+        formTester.select("user.userDepartment", 0)
+        formTester.select("user.userRoles", 0)
+
         tester.executeAjaxEvent(formPath +":submitButton", "onclick")
-        
-        
+
         tester.assertNoErrorMessage()
         tester.assertComponent(formPath, Form.class)
     }
@@ -52,7 +56,8 @@ class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
         tester.startPanel(new ITestPanelSource() {
             @Override
             Panel getTestPanel(String panelId) {
-                return new ChangePasswordPanel(panelId, new ChangePasswordBackingBean())
+                return new UserAdminFormPanel(panelId, new CompoundPropertyModel<UserBackingBean>(new UserBackingBean(UserMother.createUser())), Arrays.asList(UserRole.ADMIN), Arrays.asList(UserDepartmentMother.createUserDepartment()))
+
 
 
             }

@@ -48,11 +48,13 @@ import java.util.List;
 
 public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingBean>
 {
-	private static final long serialVersionUID = -7427807216389657732L;
+    private static final long serialVersionUID = -7427807216389657732L;
+    protected static final String BORDER = "border";
+    protected static final String FORM = "userForm";
 
-	@SpringBean
+    @SpringBean
 	private UserService	userService;
-	private final static Logger logger = Logger.getLogger(UserAdminFormPanel.class);
+	private final static Logger LOGGER = Logger.getLogger(UserAdminFormPanel.class);
 	
 
 	public UserAdminFormPanel(String id,
@@ -62,12 +64,12 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 	{
 		super(id, userModel);
 		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder(BORDER);
 		add(greyBorder);
 		
 		setOutputMarkupId(true);
 		
-		final Form<Void> form = new Form<Void>("userForm");
+		final Form<UserBackingBean> form = new Form<UserBackingBean>(FORM, userModel);
 
 		// username
 		RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");

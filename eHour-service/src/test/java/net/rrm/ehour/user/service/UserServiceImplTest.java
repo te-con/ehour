@@ -23,6 +23,7 @@ import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,172 +32,167 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import java.util.*;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
-public class UserServiceImplTest
-{
-	private	UserService			userService;
-	private	UserDao				userDAO;
-	private	UserDepartmentDao	userDepartmentDAO;
-	private	UserRoleDao			userRoleDAO;
+public class UserServiceImplTest {
+    private UserServiceImpl userService;
+    private UserDao userDAO;
+    private UserDepartmentDao userDepartmentDAO;
+    private UserRoleDao userRoleDAO;
+    private ProjectAssignmentManagementService assignmentService;
 
     @Before
-	public void setUp()
-	{
-		userService = new UserServiceImpl();
-		userDAO = createMock(UserDao.class);
-		userDepartmentDAO = createMock(UserDepartmentDao.class);
-		userRoleDAO = createMock(UserRoleDao.class);
-		
-		((UserServiceImpl)userService).setUserDAO(userDAO);
-		((UserServiceImpl)userService).setUserDepartmentDAO(userDepartmentDAO);
-		((UserServiceImpl)userService).setUserRoleDAO(userRoleDAO);
-		
-		((UserServiceImpl)userService).setPasswordEncoder(new ShaPasswordEncoder(1));
-	}
+    public void setUp() {
+        userService = new UserServiceImpl();
+        userDAO = createMock(UserDao.class);
+        userDepartmentDAO = createMock(UserDepartmentDao.class);
+        userRoleDAO = createMock(UserRoleDao.class);
+        assignmentService = createMock(ProjectAssignmentManagementService.class);
+
+
+        userService.setUserDAO(userDAO);
+        userService.setUserDepartmentDAO(userDepartmentDAO);
+        userService.setUserRoleDAO(userRoleDAO);
+        userService.setProjectAssignmentManagementService(assignmentService);
+
+        userService.setPasswordEncoder(new ShaPasswordEncoder(1));
+    }
 
     @Test
-	public void testGetUsersByNameMatch()
-	{
-		expect(userDAO.findUsersByNameMatch("test", true))
-				.andReturn(new ArrayList<User>());
+    public void testGetUsersByNameMatch() {
+        expect(userDAO.findUsersByNameMatch("test", true))
+                .andReturn(new ArrayList<User>());
 
-		replay(userDAO);
+        replay(userDAO);
 
-		userService.getUsersByNameMatch("test", true);
+        userService.getUsersByNameMatch("test", true);
 
-		verify(userDAO);
-	}
-
-    @Test
-	public void testGetUser() throws ObjectNotFoundException
-	{
-		User				user;
-		ProjectAssignment	assignmentA, assignmentB;
-		Project				projectA, projectB;
-		Set<ProjectAssignment>	assignments = new HashSet<ProjectAssignment>();
-		Calendar			calA, calB;
-
-
-		user = new User("thies", "pwd");
-
-		projectA = new Project();
-		projectA.setActive(true);
-		assignmentA = new ProjectAssignment();
-		assignmentA.setAssignmentId(1);
-		assignmentA.setAssignmentType(new ProjectAssignmentType(0));
-		calA = new GregorianCalendar();
-		calA.add(Calendar.MONTH, -5);
-		assignmentA.setDateStart(calA.getTime());
-		calA.add(Calendar.MONTH, 1);
-		assignmentA.setDateEnd(calA.getTime());
-		assignmentA.setProject(projectA);
-		assignments.add(assignmentA);
-
-		projectB = new Project();
-		projectB.setActive(true);
-
-		assignmentB = new ProjectAssignment();
-		assignmentB.setAssignmentId(2);
-		assignmentB.setAssignmentType(new ProjectAssignmentType(0));
-		calB = new GregorianCalendar();
-		calB.add(Calendar.MONTH, -2);
-		assignmentB.setDateStart(calB.getTime());
-		calB = new GregorianCalendar();
-		calB.add(Calendar.MONTH, 1);
-		assignmentB.setDateEnd(calB.getTime());
-		assignmentB.setProject(projectB);
-		assignments.add(assignmentB);
-		
-		user.setProjectAssignments(assignments);
-		
-		expect(userDAO.findById(1))
-				.andReturn(user);
-		
-		replay(userDAO);
-		
-		user = userService.getUser(1);
-		
-		verify(userDAO);
-		
-		assertEquals("thies", user.getUsername());
-		assertEquals(1, user.getProjectAssignments().size());
-		assertEquals(1, user.getInactiveProjectAssignments().size());
-	}
-	
-    @Test
-	public void testGetUserDepartment() throws ObjectNotFoundException
-	{
-		UserDepartment ud;
-
-		expect(userDepartmentDAO.findById(1))
-				.andReturn(new UserDepartment(1, "bla", "ble"));
-		
-		replay(userDepartmentDAO);
-		
-		ud = userService.getUserDepartment(1);
-		
-		verify(userDepartmentDAO);
-		
-		assertEquals("bla", ud.getName());
-	}
+        verify(userDAO);
+    }
 
     @Test
-	public void testGetUserRole()
-	{
-		expect(userRoleDAO.findById(UserRole.ROLE_CONSULTANT))
-			.andReturn(UserRole.CONSULTANT);
-		
-		replay(userRoleDAO);
-		
-		UserRole ur = userService.getUserRole(UserRole.ROLE_CONSULTANT);
-		
-		verify(userRoleDAO);
-		
-		assertEquals(UserRole.ROLE_CONSULTANT, ur.getRole());
-	}
-	
-    @Test
-	public void testGetUserRoles()
-	{
-		expect(userRoleDAO.findAll())
-			.andReturn(new ArrayList<UserRole>());
-		
-		replay(userRoleDAO);
-		
-		userService.getUserRoles();
-		
-		verify(userRoleDAO);
-	}
-	
-    @Test
-	public void testAddAndcheckProjectManagementRoles()
-	{
-		User user = new User(1);
-		user.setPassword("aa");
-		user.setSalt(2);
-		user.setUsername("user");
-		
-		expect(userDAO.findById(1))
-			.andReturn(user);
-		
-		expect(userDAO.persist(user))
-			.andReturn(user);
+    public void testGetUser() throws ObjectNotFoundException {
+        User user;
+        ProjectAssignment assignmentA, assignmentB;
+        Project projectA, projectB;
+        Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
+        Calendar calA, calB;
 
-		userDAO.deletePmWithoutProject();
-		
-		replay(userDAO);
-		
-		userService.addAndcheckProjectManagementRoles(1);
-		
-		verify(userDAO);
-		
-		assertEquals("aa", user.getPassword());
-	}
-	
+
+        user = new User("thies", "pwd");
+
+        projectA = new Project();
+        projectA.setActive(true);
+        assignmentA = new ProjectAssignment();
+        assignmentA.setAssignmentId(1);
+        assignmentA.setAssignmentType(new ProjectAssignmentType(0));
+        calA = new GregorianCalendar();
+        calA.add(Calendar.MONTH, -5);
+        assignmentA.setDateStart(calA.getTime());
+        calA.add(Calendar.MONTH, 1);
+        assignmentA.setDateEnd(calA.getTime());
+        assignmentA.setProject(projectA);
+        assignments.add(assignmentA);
+
+        projectB = new Project();
+        projectB.setActive(true);
+
+        assignmentB = new ProjectAssignment();
+        assignmentB.setAssignmentId(2);
+        assignmentB.setAssignmentType(new ProjectAssignmentType(0));
+        calB = new GregorianCalendar();
+        calB.add(Calendar.MONTH, -2);
+        assignmentB.setDateStart(calB.getTime());
+        calB = new GregorianCalendar();
+        calB.add(Calendar.MONTH, 1);
+        assignmentB.setDateEnd(calB.getTime());
+        assignmentB.setProject(projectB);
+        assignments.add(assignmentB);
+
+        user.setProjectAssignments(assignments);
+
+        expect(userDAO.findById(1))
+                .andReturn(user);
+
+        replay(userDAO);
+
+        user = userService.getUser(1);
+
+        verify(userDAO);
+
+        assertEquals("thies", user.getUsername());
+        assertEquals(1, user.getProjectAssignments().size());
+        assertEquals(1, user.getInactiveProjectAssignments().size());
+    }
+
     @Test
-	public void shouldUpdatePassword() throws PasswordEmptyException, ObjectNotUniqueException {
+    public void testGetUserDepartment() throws ObjectNotFoundException {
+        UserDepartment ud;
+
+        expect(userDepartmentDAO.findById(1))
+                .andReturn(new UserDepartment(1, "bla", "ble"));
+
+        replay(userDepartmentDAO);
+
+        ud = userService.getUserDepartment(1);
+
+        verify(userDepartmentDAO);
+
+        assertEquals("bla", ud.getName());
+    }
+
+    @Test
+    public void testGetUserRole() {
+        expect(userRoleDAO.findById(UserRole.ROLE_CONSULTANT))
+                .andReturn(UserRole.CONSULTANT);
+
+        replay(userRoleDAO);
+
+        UserRole ur = userService.getUserRole(UserRole.ROLE_CONSULTANT);
+
+        verify(userRoleDAO);
+
+        assertEquals(UserRole.ROLE_CONSULTANT, ur.getRole());
+    }
+
+    @Test
+    public void testGetUserRoles() {
+        expect(userRoleDAO.findAll())
+                .andReturn(new ArrayList<UserRole>());
+
+        replay(userRoleDAO);
+
+        userService.getUserRoles();
+
+        verify(userRoleDAO);
+    }
+
+    @Test
+    public void testAddAndcheckProjectManagementRoles() {
+        User user = new User(1);
+        user.setPassword("aa");
+        user.setSalt(2);
+        user.setUsername("user");
+
+        expect(userDAO.findById(1))
+                .andReturn(user);
+
+        expect(userDAO.persist(user))
+                .andReturn(user);
+
+        userDAO.deletePmWithoutProject();
+
+        replay(userDAO);
+
+        userService.addAndcheckProjectManagementRoles(1);
+
+        verify(userDAO);
+
+        assertEquals("aa", user.getPassword());
+    }
+
+    @Test
+    public void shouldUpdatePassword() throws PasswordEmptyException, ObjectNotUniqueException {
         Capture<User> capturer = new Capture<User>();
 
         User user = new User(1);
@@ -214,48 +210,24 @@ public class UserServiceImplTest
 
         assertFalse(user.getPassword().equals("pwd"));
     }
-	
-//	public void testPersistUserDepartment() throws ObjectNotUniqueException
-//	{
-//		UserDepartment ud = new UserDepartment();
-//		ud.setDepartmentId(1);
-//		ud.setName("t1");
-//		ud.setCode("t2");
-//		
-//		UserDepartment ud2 = new UserDepartment();
-//		ud2.setDepartmentId(1);
-//		ud2.setName("t3");
-//		ud2.setCode("t4");
-//		
-//		expect(userDepartmentDAO.findOnNameAndCode("t3", "t4"))
-//			.andReturn(ud);
-//		
-//		userDepartmentDAO.merge(ud2);
-//		
-//		replay(userDepartmentDAO);
-//		
-//		userService.persistUserDepartment(ud2);
-//		
-//		verify(userDepartmentDAO);
-//		
-//		reset(userDepartmentDAO);
-//		
-//		ud2.setDepartmentId(2);
-//		
-//
-//		expect(userDepartmentDAO.findOnNameAndCode("t3", "t4"))
-//			.andReturn(ud);
-//		
-//		replay(userDepartmentDAO);
-//		
-//		try
-//		{
-//			userService.persistUserDepartment(ud2);
-//			fail();
-//		}
-//		catch (ObjectNotUniqueException onue)
-//		{
-//			verify(userDepartmentDAO);
-//		}
-//	}
+
+    @Test
+    public void shouldCreateNewUser() throws ObjectNotUniqueException, PasswordEmptyException {
+        User user = UserMother.createUser();
+
+        expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
+
+        expect(userDAO.persist(user)).andReturn(user);
+
+        expect(assignmentService.assignUserToDefaultProjects(user)).andReturn(user);
+
+        replay(userDAO, assignmentService);
+
+        userService.newUser(user, "password");
+
+        verify(userDAO, assignmentService);
+
+        assertNotSame("password", user.getPassword());
+
+    }
 }

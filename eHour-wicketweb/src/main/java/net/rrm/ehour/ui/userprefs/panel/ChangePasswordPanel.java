@@ -34,6 +34,7 @@ import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -57,6 +58,7 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
     private WebComponent serverMessage;
     private Form<ChangePasswordBackingBean> form;
 
+    @SuppressWarnings({"unchecked"})
     public ChangePasswordPanel(String id, ChangePasswordBackingBean changePasswordBackingBean) throws ObjectNotFoundException {
         super(id, new Model<ChangePasswordBackingBean>(changePasswordBackingBean));
 
@@ -65,7 +67,7 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
 
         setOutputMarkupId(true);
 
-        form = new Form<ChangePasswordBackingBean>(CHANGE_PASSWORD_FORM);
+        form = new Form<ChangePasswordBackingBean>(CHANGE_PASSWORD_FORM, (IModel<ChangePasswordBackingBean>) getDefaultModel());
         form.setOutputMarkupId(true);
 
         // password inputs

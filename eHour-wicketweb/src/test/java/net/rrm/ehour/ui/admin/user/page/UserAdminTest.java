@@ -16,26 +16,17 @@
 
 package net.rrm.ehour.ui.admin.user.page;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * TODO 
- **/
+import static org.easymock.EasyMock.*;
 
 public class UserAdminTest extends AbstractSpringWebAppTester
 {

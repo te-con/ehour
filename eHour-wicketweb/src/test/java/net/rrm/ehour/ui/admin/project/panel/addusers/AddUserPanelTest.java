@@ -21,57 +21,50 @@ import java.util.List;
 import static org.easymock.EasyMock.*;
 
 
-public class AddUserPanelTest extends AbstractSpringWebAppTester
-{
-	private UserService userService;
-	private Project project;
-	private ProjectAssignmentManagementService managementService;
-	private ProjectAssignmentService assignmentService;
+public class AddUserPanelTest extends AbstractSpringWebAppTester {
+    private UserService userService;
+    private Project project;
+    private ProjectAssignmentManagementService managementService;
+    private ProjectAssignmentService assignmentService;
 
-	@Before
-	public void before()
-	{
-		userService = createMock(UserService.class);
-		mockContext.putBean("userService", userService);
-		
-		managementService = createMock(ProjectAssignmentManagementService.class);
-		mockContext.putBean("projectAssignmentManagementService", managementService);
-		
-		assignmentService = createMock(ProjectAssignmentService.class);
-		mockContext.putBean("projectAssignmentService", assignmentService);
-		
-		project = new Project();
-	}
-	
-	@Test
-	public void shouldRender()
-	{
-		User user = DummyUIDataGenerator.getUser();
-		List<User> users = Collections.singletonList(user);
-		
-		expect(assignmentService.getProjectAssignmentTypes())
-			.andReturn(new ArrayList<ProjectAssignmentType>());
-		
-		expect(userService.getUsers(UserRole.CONSULTANT))
-			.andReturn(users);
-		
-		replay(userService, managementService, assignmentService);
-	
-		startPanel(project);
-		
-		verify(userService, managementService, assignmentService);
-		
-	}
-	
-	@SuppressWarnings("serial")
-	private void startPanel(final Project project)
-	{
-		tester.startPanel(new ITestPanelSource()
-		{
-			public Panel getTestPanel(String panelId)
-			{
-				return new AddUserPanel(panelId, project);
-			}
-		});
-	}
+    @Before
+    public void before() {
+        userService = createMock(UserService.class);
+        mockContext.putBean("userService", userService);
+
+        managementService = createMock(ProjectAssignmentManagementService.class);
+        mockContext.putBean("projectAssignmentManagementService", managementService);
+
+        assignmentService = createMock(ProjectAssignmentService.class);
+        mockContext.putBean("projectAssignmentService", assignmentService);
+
+        project = new Project();
+
+        User user = DummyUIDataGenerator.getUser();
+        List<User> users = Collections.singletonList(user);
+
+        expect(assignmentService.getProjectAssignmentTypes()).andReturn(new ArrayList<ProjectAssignmentType>());
+
+        expect(userService.getUsers(UserRole.CONSULTANT)).andReturn(users);
+
+    }
+
+    @Test
+    public void shouldRender() {
+        replay(userService, managementService, assignmentService);
+
+        startPanel(project);
+
+        verify(userService, managementService, assignmentService);
+    }
+
+
+    @SuppressWarnings("serial")
+    private void startPanel(final Project project) {
+        tester.startPanel(new ITestPanelSource() {
+            public Panel getTestPanel(String panelId) {
+                return new AddUserPanel(panelId, project);
+            }
+        });
+    }
 }

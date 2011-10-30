@@ -78,7 +78,7 @@ public class User extends DomainObject<Integer, User>
     @JoinTable(name = "USER_TO_USERROLE",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE"))
-    private Collection<UserRole> userRoles = new HashSet<UserRole>();
+    private Set<UserRole> userRoles = new HashSet<UserRole>();
 
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID")
@@ -236,7 +236,7 @@ public class User extends DomainObject<Integer, User>
         return this.userRoles;
     }
 
-    public void setUserRoles(Collection<UserRole> userRoles)
+    public void setUserRoles(Set<UserRole> userRoles)
     {
         this.userRoles = userRoles;
     }

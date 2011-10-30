@@ -47,8 +47,6 @@ public interface UserService
     
 	/**
 	 * Get user by username
-	 * @param userID
-	 * @return
 	 */
     public User getUser(String username);    
 
@@ -58,6 +56,15 @@ public interface UserService
      * @return
      */
     public User persistUser(User user)  throws PasswordEmptyException, ObjectNotUniqueException;
+
+    /**
+     * Create a new user
+     * @param user
+     * @return
+     * @throws PasswordEmptyException
+     * @throws ObjectNotUniqueException
+     */
+    public void newUser(User user, String password)   throws PasswordEmptyException, ObjectNotUniqueException;
 
     /**
      * Change password for user
@@ -142,7 +149,6 @@ public interface UserService
 
     /**
      * Cascading delete of user
-     * @param user
      */
     public void deleteUser(Integer userId);
     

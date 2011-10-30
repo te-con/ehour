@@ -1,6 +1,6 @@
 package net.rrm.ehour.domain;
 
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -28,7 +28,9 @@ public class UserMother
 		user.setPassword("abc");
 		
 		user.setUserDepartment(department);
-		user.setUserRoles(Arrays.asList(UserRole.ADMIN));
+        HashSet<UserRole> userRoles = new HashSet<UserRole>();
+        userRoles.add(UserRole.ADMIN);
+        user.setUserRoles(userRoles);
 		
 		return user;
 	}

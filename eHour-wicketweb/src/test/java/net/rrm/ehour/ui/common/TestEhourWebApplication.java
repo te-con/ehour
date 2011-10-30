@@ -34,152 +34,132 @@ import org.apache.wicket.session.ISessionStore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
+import java.util.HashSet;
 
-public class TestEhourWebApplication extends EhourWebApplication implements Serializable
-{
-	private static final long serialVersionUID = -7336200909844170964L;
-	private EhourWebSession session;
-	private Roles authorizedRoles;
-	private User authenticatedUser;
+public class TestEhourWebApplication extends EhourWebApplication implements Serializable {
+    private static final long serialVersionUID = -7336200909844170964L;
+    private EhourWebSession session;
+    private Roles authorizedRoles;
+    private User authenticatedUser;
 
-	/**
-	 * When not authorized, just let it pass
-	 */
-	@Override
-	protected void setupSecurity()
-	{
-		getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
+    /**
+     * When not authorized, just let it pass
+     */
+    @Override
+    protected void setupSecurity() {
+        getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 
-		getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
+        getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
 
-		getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
-		{
-			public void onUnauthorizedInstantiation(final Component component)
-			{
-			}
-		});
-	}
+        getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener() {
+            public void onUnauthorizedInstantiation(final Component component) {
+            }
+        });
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see net.rrm.ehour.persistence.persistence.ui.EhourWebApplication#newRequestCycleProcessor()
-	 */
-	@Override
-	protected IRequestCycleProcessor newRequestCycleProcessor()
-	{
-		return new WebRequestCycleProcessor();
-	}
+    /*
+      * (non-Javadoc)
+      *
+      * @see net.rrm.ehour.persistence.persistence.ui.EhourWebApplication#newRequestCycleProcessor()
+      */
+    @Override
+    protected IRequestCycleProcessor newRequestCycleProcessor() {
+        return new WebRequestCycleProcessor();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.apache.wicket.authentication.AuthenticatedWebApplication#newSession
-	 * (org.apache.wicket.Request, org.apache.wicket.Response)
-	 */
-	@SuppressWarnings("serial")
-	@Override
-	public Session newSession(final Request request, final Response response)
-	{
-		session = new EhourWebSession(request)
-		{
-			public AuthUser getUser()
-			{
-				User user = createAuthenticatedUser();
+    /*
+      * (non-Javadoc)
+      *
+      * @see
+      * org.apache.wicket.authentication.AuthenticatedWebApplication#newSession
+      * (org.apache.wicket.Request, org.apache.wicket.Response)
+      */
+    @SuppressWarnings("serial")
+    @Override
+    public Session newSession(final Request request, final Response response) {
+        session = new EhourWebSession(request) {
+            public AuthUser getUser() {
+                User user = createAuthenticatedUser();
 
-				return new AuthUser(user);
-			}
+                return new AuthUser(user);
+            }
 
 
+            public Roles getRoles() {
+                return createAuthorizedRoles();
+            }
 
-			public Roles getRoles()
-			{
-				return createAuthorizedRoles();
-			}
+            @Override
+            public boolean authenticate(String username, String password) {
+                return true;
+            }
+        };
 
-			@Override
-			public boolean authenticate(String username, String password)
-			{
-				return true;
-			}
-		};
+        return session;
+    }
 
-		return session;
-	}
+    protected Roles createAuthorizedRoles() {
+        if (authorizedRoles == null) {
+            authorizedRoles = new Roles();
+            authorizedRoles.add(UserRole.ROLE_PROJECTMANAGER);
+            authorizedRoles.add(UserRole.ROLE_CONSULTANT);
+            authorizedRoles.add(UserRole.ROLE_ADMIN);
+            authorizedRoles.add(UserRole.ROLE_REPORT);
+        }
 
-	protected Roles createAuthorizedRoles()
-	{
-		if (authorizedRoles == null)
-		{
-			authorizedRoles = new Roles();
-			authorizedRoles.add(UserRole.ROLE_PROJECTMANAGER);
-			authorizedRoles.add(UserRole.ROLE_CONSULTANT);
-			authorizedRoles.add(UserRole.ROLE_ADMIN);
-			authorizedRoles.add(UserRole.ROLE_REPORT);
-		}
+        return authorizedRoles;
+    }
 
-		return authorizedRoles;
-	}
+    protected User createAuthenticatedUser() {
+        if (authenticatedUser == null) {
+            User user = new User(1);
+            user.setUsername("thies");
+            user.setPassword("secret");
 
-	protected User createAuthenticatedUser()
-	{
-		if (authenticatedUser == null)
-		{
-			User user = new User(1);
-			user.setUsername("thies");
-			user.setPassword("secret");
+            HashSet<UserRole> userRoles = new HashSet<UserRole>();
+            userRoles.addAll(UserRole.ROLES.values());
 
-			user.setUserRoles(UserRole.ROLES.values());
+            user.setUserRoles(userRoles);
 
-			authenticatedUser = user;
-		}
+            authenticatedUser = user;
+        }
 
 
-		return authenticatedUser;
-	}
+        return authenticatedUser;
+    }
 
-	public void setAuthenticatedUser(User authenticatedUser)
-	{
-		this.authenticatedUser = authenticatedUser;
-	}
+    public void setAuthenticatedUser(User authenticatedUser) {
+        this.authenticatedUser = authenticatedUser;
+    }
 
-	public void setAuthorizedRoles(Roles authorizedRoles)
-	{
-		this.authorizedRoles = authorizedRoles;
-	}
+    public void setAuthorizedRoles(Roles authorizedRoles) {
+        this.authorizedRoles = authorizedRoles;
+    }
 
-	public EhourWebSession getSession()
-	{
-		return session;
-	}
+    public EhourWebSession getSession() {
+        return session;
+    }
 
-	protected ISessionStore newSessionStore()
-	{
-		return new HttpSessionStore(this)
-		{
-			@Override
-			public Session lookup(Request request)
-			{
-				return session;
-			}
-		};
-	}
+    protected ISessionStore newSessionStore() {
+        return new HttpSessionStore(this) {
+            @Override
+            public Session lookup(Request request) {
+                return session;
+            }
+        };
+    }
 
-	protected WebResponse newWebResponse(final HttpServletResponse servletResponse)
-	{
-		return new WebResponse(servletResponse);
-	}
+    protected WebResponse newWebResponse(final HttpServletResponse servletResponse) {
+        return new WebResponse(servletResponse);
+    }
 
-	@Override
-	protected void outputDevelopmentModeWarning()
-	{
-	}
+    @Override
+    protected void outputDevelopmentModeWarning() {
+    }
 
-	@Override
-	public String getConfigurationType()
-	{
-		return Application.DEPLOYMENT;
-	}
+    @Override
+    public String getConfigurationType() {
+        return Application.DEPLOYMENT;
+    }
 
 }

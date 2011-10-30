@@ -17,15 +17,16 @@ import java.util.List;
 
 public class AddUserPanel extends AbstractBasePanel<Void>
 {
-	private static final long serialVersionUID = 3355347499532412241L;
+    private static final long serialVersionUID = 3355347499532412241L;
+    protected static final String FORM = "form";
 
 
-	@SuppressWarnings("serial")
+    @SuppressWarnings("serial")
 	public AddUserPanel(String id, Project project)
 	{
 		super(id);
 
-		Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("form");
+		Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>(FORM);
 		add(form);
 
 		final List<User> users = new ArrayList<User>();

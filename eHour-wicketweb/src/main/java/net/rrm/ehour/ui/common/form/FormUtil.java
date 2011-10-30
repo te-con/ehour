@@ -79,7 +79,7 @@ public class FormUtil
 			{
                 if (!inDemoMode)
 				{
-					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel<?>)form.getModel()).getWrappedModel()).getObject();
+					AdminBackingBean backingBean = (AdminBackingBean) formConfig.getForm().getDefaultModelObject();
 					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(formConfig.getSubmitEventType(), backingBean);
 
 					EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), ajaxEvent);

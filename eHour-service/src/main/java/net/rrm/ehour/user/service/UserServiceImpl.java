@@ -240,6 +240,25 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    @Transactional
+    public void newUser(User user, String password) throws PasswordEmptyException, ObjectNotUniqueException {
+        // check username uniqueness
+        User dbUser = userDAO.findByUsername(user.getUsername());
+
+        if (dbUser != null && !dbUser.getUserId().equals(user.getUserId())) {
+            throw new ObjectNotUniqueException("Username already in use");
+        }
+
+        // encrypt password
+        user.setSalt((int) (Math.random() * 10000));
+        user.setPassword(encryptPassword(password, user.getSalt()));
+
+        // assign new users to default projects
+        projectAssignmentManagementService.assignUserToDefaultProjects(user);
+
+        userDAO.persist(user);
+    }
 
     @Override
     @Transactional
