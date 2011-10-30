@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.admin.user.panel;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
+import net.rrm.ehour.ui.common.AdminAction;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
@@ -29,11 +30,13 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
+import net.rrm.ehour.ui.userprefs.panel.PasswordFieldFactory;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
@@ -44,79 +47,80 @@ import java.util.List;
 
 /**
  * User Form Panel for admin
- **/
+ */
 
-public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingBean>
-{
+public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingBean> {
     private static final long serialVersionUID = -7427807216389657732L;
     protected static final String BORDER = "border";
     protected static final String FORM = "userForm";
 
     @SpringBean
-	private UserService	userService;
-	private final static Logger LOGGER = Logger.getLogger(UserAdminFormPanel.class);
-	
+    private UserService userService;
 
-	public UserAdminFormPanel(String id,
-							CompoundPropertyModel<UserBackingBean> userModel,
-							List<UserRole> roles,
-							List<UserDepartment> departments)
-	{
-		super(id, userModel);
-		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder(BORDER);
-		add(greyBorder);
-		
-		setOutputMarkupId(true);
-		
-		final Form<UserBackingBean> form = new Form<UserBackingBean>(FORM, userModel);
+    private final static Logger LOGGER = Logger.getLogger(UserAdminFormPanel.class);
 
-		// username
-		RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
-		form.add(usernameField);
-		usernameField.add(new StringValidator.MaximumLengthValidator(32));
-		usernameField.add(new DuplicateUsernameValidator());
-		usernameField.setLabel(new ResourceModel("admin.user.username"));
-		usernameField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
-		
-		// first & last name
-		TextField<String> firstNameField = new TextField<String>("user.firstName");
-		form.add(firstNameField);
 
-		TextField<String> lastNameField = new RequiredTextField<String>("user.lastName");
-		form.add(lastNameField);
-		lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
-		lastNameField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("lastNameValidationError", lastNameField));
-		
-		// email
-		form.add(new EmailInputSnippet("email"));
-		
-		// department
-		DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", departments, new ChoiceRenderer<UserDepartment>("name"));
-		userDepartment.setRequired(true);
-		userDepartment.setLabel(new ResourceModel("admin.user.department"));
-		userDepartment.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(userDepartment);
-		form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
-		
-		// user roles
-		ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", roles, new UserRoleRenderer());
-		userRoles.setMaxRows(4);
-		userRoles.setLabel(new ResourceModel("admin.user.roles"));
-		userRoles.setRequired(true);
-		userRoles.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(userRoles);
-		form.add(new AjaxFormComponentFeedbackIndicator("rolesValidationError", userRoles));
+    public UserAdminFormPanel(String id,
+                              CompoundPropertyModel<UserBackingBean> userModel,
+                              List<UserRole> roles,
+                              List<UserDepartment> departments) {
+        super(id, userModel);
 
-		// active
-		form.add(new CheckBox("user.active"));
-		
-		// data save label
-		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
-	
-		//
+        GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder(BORDER);
+        add(greyBorder);
+
+        setOutputMarkupId(true);
+
+        final Form<UserBackingBean> form = new Form<UserBackingBean>(FORM, userModel);
+
+        // username
+        RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
+        form.add(usernameField);
+        usernameField.add(new StringValidator.MaximumLengthValidator(32));
+        usernameField.add(new DuplicateUsernameValidator());
+        usernameField.setLabel(new ResourceModel("admin.user.username"));
+        usernameField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
+
+        // user info
+        TextField<String> firstNameField = new TextField<String>("user.firstName");
+        form.add(firstNameField);
+
+        TextField<String> lastNameField = new RequiredTextField<String>("user.lastName");
+        form.add(lastNameField);
+        lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
+        lastNameField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(new AjaxFormComponentFeedbackIndicator("lastNameValidationError", lastNameField));
+
+        form.add(new EmailInputSnippet("email"));
+
+        // password
+        PasswordFieldFactory.createPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
+
+        // department
+        DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", departments, new ChoiceRenderer<UserDepartment>("name"));
+        userDepartment.setRequired(true);
+        userDepartment.setLabel(new ResourceModel("admin.user.department"));
+        userDepartment.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(userDepartment);
+        form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
+
+        // user roles
+        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", roles, new UserRoleRenderer());
+        userRoles.setMaxRows(4);
+        userRoles.setLabel(new ResourceModel("admin.user.roles"));
+        userRoles.setRequired(true);
+        userRoles.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(userRoles);
+        form.add(new AjaxFormComponentFeedbackIndicator("rolesValidationError", userRoles));
+
+        // active
+        form.add(new CheckBox("user.active"));
+
+        // data save label
+        form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
+
+        //
         boolean deletable = userModel.getObject().getUser().isDeletable();
 
         FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
@@ -125,58 +129,41 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 
 
         FormUtil.setSubmitActions(formConfig);
-		
-		greyBorder.add(form);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
-	 */
-	@Override
-	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
-	{
-		UserBackingBean userBackingBean = (UserBackingBean) backingBean;
-		
-		if (type == UserEditAjaxEventType.USER_UPDATED)
-		{
-            // TODO - PM
-            userService.persistUser(userBackingBean.getUser());
-//			persistUser(userBackingBean);
-		}
-		else if (type == UserEditAjaxEventType.USER_DELETED)
-		{
-			deleteUser(userBackingBean);
-		}
-	}
-	
-	private void deleteUser(UserBackingBean userBackingBean)
-	{
-		userService.deleteUser(userBackingBean.getUser().getUserId());
-	}	
-	
-	/**
-	 * Duplicate username validator
-	 * @author Thies
-	 *
-	 */
-	private class DuplicateUsernameValidator extends AbstractValidator<String>
-	{
-		private static final long serialVersionUID = 542950054849279025L;
 
-		@Override
-		protected void onValidate(IValidatable<String> validatable)
-		{
-			String username = validatable.getValue();
-			String orgUsername = ((UserBackingBean)getDefaultModelObject()).getOriginalUsername();
+        greyBorder.add(form);
+    }
 
-			if (orgUsername != null && orgUsername.length() > 0 && username.equalsIgnoreCase(orgUsername))
-			{
+    @Override
+    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+        UserBackingBean userBackingBean = (UserBackingBean) backingBean;
+
+        if (type == UserEditAjaxEventType.USER_UPDATED) {
+            if (userBackingBean.getAdminAction() == AdminAction.NEW) {
+                userService.newUser(userBackingBean.getUser(), userBackingBean.getUser().getPassword());
+            } else {
+                userService.editUser(userBackingBean.getUser());
             }
-			else if (userService.getUser(username) != null)
-			{
-				error(validatable, "admin.user.errorUsernameExists");
-			}
-		}
-	}
+        } else if (type == UserEditAjaxEventType.USER_DELETED) {
+            deleteUser(userBackingBean);
+        }
+    }
+
+    private void deleteUser(UserBackingBean userBackingBean) {
+        userService.deleteUser(userBackingBean.getUser().getUserId());
+    }
+
+    private class DuplicateUsernameValidator extends AbstractValidator<String> {
+        private static final long serialVersionUID = 542950054849279025L;
+
+        @Override
+        protected void onValidate(IValidatable<String> validatable) {
+            String username = validatable.getValue();
+            String orgUsername = ((UserBackingBean) getDefaultModelObject()).getOriginalUsername();
+
+            if (orgUsername != null && orgUsername.length() > 0 && username.equalsIgnoreCase(orgUsername)) {
+            } else if (userService.getUser(username) != null) {
+                error(validatable, "admin.user.errorUsernameExists");
+            }
+        }
+    }
 }

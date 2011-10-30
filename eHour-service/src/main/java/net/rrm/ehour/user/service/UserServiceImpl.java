@@ -34,7 +34,6 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
@@ -204,7 +203,7 @@ public class UserServiceImpl implements UserService {
      * Persist user
      */
     @Transactional
-    public User persistUser(User user) throws PasswordEmptyException, ObjectNotUniqueException {
+    public User editUser(User user) throws PasswordEmptyException, ObjectNotUniqueException {
         User dbUser;
 
         LOGGER.info("Persisting user: " + user);
@@ -216,28 +215,17 @@ public class UserServiceImpl implements UserService {
             throw new ObjectNotUniqueException("Username already in use");
         }
 
-        // copy over password or encrypt new one
-        if (StringUtils.isEmpty(user.getUpdatedPassword())) {
-            // if password is empty and user is new we have a problem
-            if (user.getUserId() == null) {
-                throw new PasswordEmptyException("New users need a password");
-            }
+        dbUser.setActive(user.isActive());
+        dbUser.setEmail(user.getEmail());
+        dbUser.setFirstName(user.getFirstName());
+        dbUser.setLastName(user.getLastName());
+        dbUser.setUserDepartment(user.getUserDepartment());
+        dbUser.setUsername(user.getUsername());
+        dbUser.setUserRoles(user.getUserRoles());
 
-            user.setPassword(dbUser.getPassword());
-            user.setSalt(dbUser.getSalt());
-        } else {
-            user.setSalt((int) (Math.random() * 10000));
-            user.setPassword(encryptPassword(user.getUpdatedPassword(), user.getSalt()));
-        }
+        userDAO.persist(dbUser);
 
-        // assign new users to default projects
-        if (user.getUserId() == null) {
-            projectAssignmentManagementService.assignUserToDefaultProjects(user);
-        }
-
-        userDAO.merge(user);
-
-        return user;
+        return dbUser;
     }
 
     @Override

@@ -27,7 +27,6 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -231,7 +230,7 @@ public class User extends DomainObject<Integer, User>
         this.email = email;
     }
 
-    public Collection<UserRole> getUserRoles()
+    public Set<UserRole> getUserRoles()
     {
         return this.userRoles;
     }

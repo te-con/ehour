@@ -23,6 +23,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
+import net.rrm.ehour.ui.common.AdminAction;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
@@ -124,7 +125,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 					{
 						try
 						{
-							getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId)));
+							getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId), AdminAction.EDIT));
 							getTabbedPanel().switchTabOnAjaxTarget(target, 1);
 						} catch (ObjectNotFoundException e)
 						{
@@ -147,8 +148,6 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	
 	/**
 	 * Handle Ajax request
-	 * @param target
-	 * @param type of ajax req
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -233,7 +232,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	{
 		UserBackingBean	userBean;
 		
-		userBean = new UserBackingBean(new User());
+		userBean = new UserBackingBean(new User(), AdminAction.NEW);
 		userBean.getUser().setActive(true);
 
 		return userBean;
@@ -246,7 +245,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	@Override
 	protected UserBackingBean getNewEditBaseBackingBean()
 	{
-		return new UserBackingBean(new User());
+		return new UserBackingBean(new User(), AdminAction.EDIT);
 	}
 
 	/*

@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.admin.user.dto;
 
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.ui.common.AdminAction;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
 
 /**
@@ -27,13 +28,20 @@ public class UserBackingBean extends AdminBackingBeanImpl {
     private static final long serialVersionUID = 2781902854421696575L;
     private User user;
     private String originalUsername;
+    private final AdminAction adminAction;
 
-    public UserBackingBean(User user) {
+    public UserBackingBean(User user, AdminAction adminAction) {
         this.user = user;
+
+        this.adminAction = adminAction;
 
         if (user != null) {
             this.originalUsername = user.getUsername();
         }
+    }
+
+    public AdminAction getAdminAction() {
+        return adminAction;
     }
 
     public User getUser() {
@@ -51,4 +59,6 @@ public class UserBackingBean extends AdminBackingBeanImpl {
     public User getDomainObject() {
         return getUser();
     }
+
+
 }

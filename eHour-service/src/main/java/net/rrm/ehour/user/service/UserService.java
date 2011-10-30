@@ -52,10 +52,8 @@ public interface UserService
 
     /**
      * Persist a user
-     * @param user
-     * @return
      */
-    public User persistUser(User user)  throws PasswordEmptyException, ObjectNotUniqueException;
+    public User editUser(User user)  throws PasswordEmptyException, ObjectNotUniqueException;
 
     /**
      * Create a new user
