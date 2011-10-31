@@ -51,13 +51,8 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 
 	@SpringBean
 	private CustomerService		customerService;
-	
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 */
-	public CustomerFormPanel(String id, CompoundPropertyModel<CustomerAdminBackingBean> model)
+
+    public CustomerFormPanel(String id, CompoundPropertyModel<CustomerAdminBackingBean> model)
 	{
 		super(id, model);
 		
@@ -66,7 +61,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 		
 		setOutputMarkupId(true);
 		
-		final Form<CustomerAdminBackingBean> form = new Form<CustomerAdminBackingBean>("customerForm");
+		final Form<CustomerAdminBackingBean> form = new Form<CustomerAdminBackingBean>("customerForm", model);
 		
 		// name
 		RequiredTextField<String> nameField = new RequiredTextField<String>("customer.name");

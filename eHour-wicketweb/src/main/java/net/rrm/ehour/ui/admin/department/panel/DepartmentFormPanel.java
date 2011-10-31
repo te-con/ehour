@@ -48,11 +48,6 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 	@SpringBean
 	private UserService userService;
 	
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 */
 	public DepartmentFormPanel(String id, CompoundPropertyModel<DepartmentAdminBackingBean> model)
 	{
 		super(id, model);
@@ -62,7 +57,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
 		
 		setOutputMarkupId(true);
 		
-		final Form<Void> form = new Form<Void>("deptForm");
+		final Form<DepartmentAdminBackingBean> form = new Form<DepartmentAdminBackingBean>("deptForm", model);
 		
 		// name
 		RequiredTextField<String> nameField = new RequiredTextField<String>("department.name");

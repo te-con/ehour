@@ -267,8 +267,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean>
 	 */
 	private List<UserRole> getUserRoles()
 	{
-		if (roles == null)
-		{
+		if (roles == null) {
 			roles = userService.getUserRoles();
 		}
 		

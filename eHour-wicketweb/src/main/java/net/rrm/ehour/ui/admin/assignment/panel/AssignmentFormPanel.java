@@ -43,9 +43,8 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 		Border greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_SMALL);
 		add(greyBorder);
 		
-		final Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("assignmentForm");
+		final Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("assignmentForm", model);
 		greyBorder.add(form);
-		
 
 		// add submit form
         boolean deletable = ((AssignmentAdminBackingBean) getDefaultModelObject()).getProjectAssignment().isDeletable();

@@ -79,7 +79,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 		Border border = new GreySquaredRoundedBorder("border");
 		add(border);
 
-		final Form<Void> form = new Form<Void>("projectForm");
+		final Form<ProjectAdminBackingBean> form = new Form<ProjectAdminBackingBean>("projectForm", model);
 		addFormComponents(form);
 
 
@@ -94,11 +94,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 
 	}
 
-	/**
-	 * Add form components
-	 * @param form
-	 */
-	private void addFormComponents(Form<Void> form)
+	private void addFormComponents(Form<ProjectAdminBackingBean> form)
 	{
 		addCustomer(form);
 		addDescriptionAndContact(form);
@@ -109,12 +105,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 		form.add(new CheckBox("project.billable"));
 		
 	}
-	
-	
-	/**
-	 * Add form components to form
-	 * @param parent
-	 */
+
 	private void addGeneralInfo(WebMarkupContainer parent)
 	{
 		// name

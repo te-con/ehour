@@ -32,8 +32,10 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.userprefs.panel.PasswordFieldFactory;
 import net.rrm.ehour.user.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
@@ -95,7 +97,11 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
         form.add(new EmailInputSnippet("email"));
 
         // password
-        PasswordFieldFactory.createPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
+        Label label = new Label("passwordEditLabel", new ResourceModel("admin.user.editPassword"));
+        label.setVisible(userModel.getObject().getAdminAction() == AdminAction.EDIT);
+        form.add(label);
+
+        PasswordFieldFactory.createOptionalPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
 
         // department
         DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", departments, new ChoiceRenderer<UserDepartment>("name"));
@@ -120,7 +126,6 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
         // data save label
         form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 
-        //
         boolean deletable = userModel.getObject().getUser().isDeletable();
 
         FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
@@ -142,6 +147,11 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
                 userService.newUser(userBackingBean.getUser(), userBackingBean.getUser().getPassword());
             } else {
                 userService.editUser(userBackingBean.getUser());
+
+                String password = userBackingBean.getUser().getPassword();
+                if (StringUtils.isNotBlank(password)) {
+                    userService.changePassword(userBackingBean.getUser().getUsername(), password);
+                }
             }
         } else if (type == UserEditAjaxEventType.USER_DELETED) {
             deleteUser(userBackingBean);

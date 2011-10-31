@@ -3,7 +3,7 @@
 
 <html
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:wicket="http://wicket.sourceforge.net/">
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
 <body>
 <wicket:panel>
@@ -20,7 +20,6 @@
                         <span wicket:id="userValidationError"></span>
                     </td>
                 </tr>
-
 
                 <tr>
                     <td valign="top">
@@ -46,6 +45,17 @@
                     <td colspan="2"><br/></td>
                 </tr>
 
+
+                <wicket:enclosure child="passwordEditLabel">
+                    <tr>
+                        <td colspan="2" style="font-size: 0.75em">
+
+                            <wicket:container wicket:id="passwordEditLabel"/>
+                        </td>
+                    </tr>
+                </wicket:enclosure>
+
+
                 <tr>
                     <td valign="top">
                         <wicket:message key="user.password"/>
@@ -63,6 +73,7 @@
                         <span wicket:id="confirmPasswordValidationError"></span>
                     </td>
                 </tr>
+
 
                 <tr>
                     <td colspan="2"><br/></td>
@@ -86,7 +97,8 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.user.roles"/> :
+                        <wicket:message key="admin.user.roles"/>
+                        :
                     </td>
                     <td><select class="textInputSmall" style="width: 15em" wicket:id="user.userRoles"></select>
                         <span wicket:id="rolesValidationError"></span>
@@ -130,6 +142,8 @@
             </table>
         </form>
     </div>
+
+
 </wicket:panel>
 
 </body>
