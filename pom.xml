@@ -669,16 +669,6 @@
 
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                </configuration>
-            </plugin>
-
-
         </plugins>
 
         <pluginManagement>
@@ -713,6 +703,11 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+<plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>1.0-beta-2</version>
+      </plugin>
             </plugins>
         </pluginManagement>
 
