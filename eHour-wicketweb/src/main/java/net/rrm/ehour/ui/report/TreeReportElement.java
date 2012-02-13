@@ -49,12 +49,7 @@ public class TreeReportElement implements ReportElement
 
 	private Serializable[] row;
 
-	public TreeReportElement()
-	{
-		
-	}
-	
-	public TreeReportElement(Serializable[] row)
+    public TreeReportElement(Serializable[] row)
 	{
 		this.row = row;
 	}

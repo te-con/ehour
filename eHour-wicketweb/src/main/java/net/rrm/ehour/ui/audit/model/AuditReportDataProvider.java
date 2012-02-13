@@ -22,7 +22,7 @@ import java.util.List;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -57,7 +57,7 @@ public class AuditReportDataProvider extends SortableDataProvider<Audit>
 				auditCacheFirst != first &&
 				auditCacheCount != count)
 		{
-			CommonWebUtil.springInjection(this);
+			WebUtils.springInjection(this);
 			
 			request.setOffset(first);
 			request.setMax(count);
@@ -77,7 +77,7 @@ public class AuditReportDataProvider extends SortableDataProvider<Audit>
 	{
 		if (auditsCount == null)
 		{
-			CommonWebUtil.springInjection(this);
+			WebUtils.springInjection(this);
 			
 			auditsCount = auditService.getAuditCount(request).intValue();
 		}

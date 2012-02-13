@@ -1,102 +1,87 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    
-<html 
-	xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:wicket="http://wicket.sourceforge.net/">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
 <body>
 <wicket:extend>
-	<div class="Calendar" wicket:id="calendarFrame">
-	
-		<div class="CalendarHeader">
-			<div class="PreviousMonth">
-				<div style="position: relative; left: 5px;height: 1.1em;">
-					<a href="#" wicket:id="previousMonthLink"><img wicket:id="previousMonthImg" src="img/left.gif" border="0" /></a>
-				</div>
-			</div>
-				
-			<div class="CurrentMonth" wicket:id="currentMonth">
-			</div>
-			
-			<div class="NextMonth">
-				<div style="position: relative;	right: 5px;height: 1.1em;">
-					<a href="#" wicket:id="nextMonthLink"><img wicket:id="nextMonthImg" src="img/left.gif" border="0" /></a>
-				</div>
-			</div>
-		</div>
-		
-		<div class="CalendarBody">
-			<div class="CalendarWeek" wicket:id="weeks">
-				<div wicket:id="day1">
-					[s]
-				</div>
-				
-				<div wicket:id="day2">
-					[m]
-				</div>
-				
-				<div wicket:id="day3">
-					[t]
-				</div>
+    <div class="Calendar" wicket:id="calendarFrame">
 
-				<div  wicket:id="day4">
-					[w]
-				</div>
+        <div class="CalendarHeader">
+            <div class="PreviousMonth">
+                <a href="#" wicket:id="previousMonthLink"><img wicket:id="previousMonthImg" src="img/left.gif" border="0"/></a>
+            </div>
 
-				<div wicket:id="day5">
-					[t]
-				</div>
+            <div class="CurrentMonth" wicket:id="currentMonth"></div>
 
-				<div wicket:id="day6">
-					[f]
-				</div>				
-				
-				<div wicket:id="day7">
-					[s]
-				</div>
-				<br clear="all" />
-			</div>
-		</div>
-	</div>
-	
-<script>
-// when IE6 doesn't understand hovers properly..
-function backgroundOn(elm)
-{
-	for (i = 0; i < elm.childNodes.length; i++)
-	{	
-		if (elm.childNodes[i].nodeName == 'DIV')
-		{
-			elm.childNodes[i].style.backgroundColor = '#edf5fe';
-		}
-	}
-	
-	//elm.style.backgroundColor = '#edf5fe';
-}
+            <div class="NextMonth">
+                <a href="#" wicket:id="nextMonthLink"><img wicket:id="nextMonthImg" src="img/right.gif" border="0"/></a>
+            </div>
+        </div>
 
-function backgroundOff(elm)
-{
-	for (i = 0; i < elm.childNodes.length; i++)
-	{	
-		if (elm.childNodes[i].nodeName == 'DIV')
-		{
-			if (elm.childNodes[i].className == 'WeekendDay')
-			{
-				elm.childNodes[i].style.backgroundColor = '#edf5fe';
-			}
-			else
-			{
-				elm.childNodes[i].style.backgroundColor = '#fefeff';
-			}
-		}
-	}
-	
-	elm.style.backgroundColor = '';
-}
+        <div class="CalendarBody">
+            <div class="CalendarWeek" wicket:id="weeks">
+                <div wicket:id="day1">
+                    [s]
+                </div>
 
-</script>
-	
+                <div wicket:id="day2">
+                    [m]
+                </div>
+
+                <div wicket:id="day3">
+                    [t]
+                </div>
+
+                <div wicket:id="day4">
+                    [w]
+                </div>
+
+                <div wicket:id="day5">
+                    [t]
+                </div>
+
+                <div wicket:id="day6">
+                    [f]
+                </div>
+
+                <div wicket:id="day7">
+                    [s]
+                </div>
+                <br clear="all"/>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // when IE6 doesn't understand hovers properly..
+        function backgroundOn(elm) {
+            for (i = 0; i < elm.childNodes.length; i++) {
+                if (elm.childNodes[i].nodeName == 'DIV') {
+                    elm.childNodes[i].style.backgroundColor = '#edf5fe';
+                }
+            }
+
+            //elm.style.backgroundColor = '#edf5fe';
+        }
+
+        function backgroundOff(elm) {
+            for (i = 0; i < elm.childNodes.length; i++) {
+                if (elm.childNodes[i].nodeName == 'DIV') {
+                    if (elm.childNodes[i].className.indexOf('WeekendDay') != -1)
+                        elm.childNodes[i].style.backgroundColor = '#edf5fe';
+                    else
+                        elm.childNodes[i].style.backgroundColor = '#fefeff';
+                }
+            }
+
+            elm.style.backgroundColor = '';
+        }
+
+    </script>
+
 </wicket:extend>
 </body>
 </html>

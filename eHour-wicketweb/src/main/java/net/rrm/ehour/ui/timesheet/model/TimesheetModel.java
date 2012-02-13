@@ -28,7 +28,7 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.util.TimesheetAssembler;
 
@@ -54,7 +54,7 @@ public class TimesheetModel implements IModel<Timesheet>
 	 */
 	public TimesheetModel(User user, Calendar forWeek)
 	{
-		CommonWebUtil.springInjection(this);
+		WebUtils.springInjection(this);
 		
 		this.user = user;
 		this.forWeek = forWeek;
@@ -68,7 +68,7 @@ public class TimesheetModel implements IModel<Timesheet>
 	 */
 	public List<ProjectAssignmentStatus> persistTimesheet()
 	{
-		CommonWebUtil.springInjection(this);
+		WebUtils.springInjection(this);
 		
 		Timesheet timesheet = getObject();
 		

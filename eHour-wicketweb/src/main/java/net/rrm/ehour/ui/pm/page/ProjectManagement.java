@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.pm.PmReportPanel;
-import net.rrm.ehour.ui.report.panel.user.criteria.UserReportCriteriaPanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;

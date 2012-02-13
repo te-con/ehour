@@ -26,33 +26,20 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Day date node 
- **/
+ * Day date node
+ */
 
-public class FlatDateNode extends ReportNode
-{
-	private static final long serialVersionUID = 7854152602780377915L;
-	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-	
-	/**
-	 * 
-	 * @param element
-	 * @param hierarchyLevel
-	 */
-	public FlatDateNode(FlatReportElement element, int hierarchyLevel, Locale locale)
-    {
-		this.id = formatter.format(element.getDayDate());
-		this.columnValues = new Date[]{element.getDayDate()};
-		this.hierarchyLevel = hierarchyLevel;
+public class FlatDateNode extends ReportNode {
+    private static final long serialVersionUID = 7854152602780377915L;
+    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+
+    public FlatDateNode(FlatReportElement element) {
+        super(formatter.format(element.getDayDate()));
+        this.columnValues = new Date[]{element.getDayDate()};
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
-	 */
-	@Override
-	protected Serializable getElementId(ReportElement element)
-	{
-		return formatter.format(((FlatReportElement)element).getDayDate());
-	}
+    @Override
+    protected Serializable getElementId(ReportElement element) {
+        return formatter.format(((FlatReportElement) element).getDayDate());
+    }
 }

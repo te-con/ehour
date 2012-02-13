@@ -44,7 +44,7 @@ import org.apache.wicket.model.ResourceModel;
  * Reporting 
  **/
 
-@AuthorizeInstantiation("ROLE_REPORT")
+@AuthorizeInstantiation("ROLE_CONSULTANT")
 public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean>
 {
 	private static final long serialVersionUID = 6614404841734599622L;
@@ -52,12 +52,12 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 	private ReportTabbedPanel tabPanel;
 	private GlobalReportPageAggregateCommand aggregateCommand;
 	private GlobalReportPageDetailedCommand detailedCommand;
-	
+
 	public GlobalReportPage()
 	{
 		this(new DefaultGlobalReportPageAggregateCommand(), new DefaultGlobalReportPageDetailedCommand());
 	}
-	
+
 	public GlobalReportPage(GlobalReportPageAggregateCommand aggregateCommand, GlobalReportPageDetailedCommand detailedCommand)
 	{
 		super(new ResourceModel("report.global.title"));
@@ -65,9 +65,9 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 		this.aggregateCommand = aggregateCommand;
 		this.detailedCommand = detailedCommand;
 		
-		final ReportCriteria reportCriteria = getReportCriteria(false);
+		final ReportCriteria reportCriteria = getReportCriteria();
 		final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<ReportCriteriaBackingBean>(new ReportCriteriaBackingBean(reportCriteria));
-		setDefaultModel(model);		
+		setDefaultModel(model);
 		
 		List<ITab> tabList = new ArrayList<ITab>();
 		
@@ -79,7 +79,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 			@Override
 			public Panel getPanel(String panelId)
 			{
-				return new ReportCriteriaPanel(panelId, (IModel<ReportCriteriaBackingBean>)getDefaultModel());
+				return new ReportCriteriaPanel(panelId, model);
 			}
 		});
 		
@@ -87,10 +87,6 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 		add(tabPanel);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
-	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
@@ -128,10 +124,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 			tabs.remove(1);
 		}
 	}
-	
-	/**
-	 * Get the aggregate report panel
-	 */
+
 	private void addAggregateReportPanelTabs(ReportCriteriaBackingBean backingBean)
 	{
 		List<ITab> tabs = aggregateCommand.createAggregateReportTabs(backingBean);
@@ -148,10 +141,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 			tabPanel.addTab(iTab);
 		}
 	}
-	
-	/**
-	 * Get the report panel
-	 */
+
 	private void addDetailedReportPanelTabs(ReportCriteriaBackingBean backingBean)
 	{
 		List<ITab> tabs = detailedCommand.createDetailedReportTabs(backingBean);

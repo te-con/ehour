@@ -17,11 +17,12 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
+import net.rrm.ehour.ui.report.TreeReportModel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.util.tester.DummyPanelPage;
 import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,37 +43,35 @@ public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester
 	public void setup()
 	{
 		aggregateReportService = createMock(AggregateReportService.class);
-		getMockContext().putBean("aggregateReportService", aggregateReportService);
+		mockContext.putBean("aggregateReportService", aggregateReportService);
 	}
 
 	@Test
-	public void testDetailedReportPanel()
+	public void shouldRenderReportPanel()
 	{
 		setupExpectations();
 		
 		replay(aggregateReportService);
 		
 		startReportPanel();
-		
-		getTester().assertNoErrorMessage();
-		
+
+        tester.assertRenderedPage(DummyPanelPage.class);
+		tester.assertNoErrorMessage();
+
 		verify(aggregateReportService);
 	}
 
-	/**
-	 * 
-	 */
 	protected void setupExpectations()
 	{
 		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-			.andReturn(ReportTestUtil.getAssignmentReportData())
+			.andReturn(AggregateReportDataObjectMother.getAssignmentReportData())
 			.anyTimes();
 	}
 
 	@SuppressWarnings("serial")
 	protected Panel startReportPanel()
 	{
-		return getTester().startPanel(new ITestPanelSource(){
+		return tester.startPanel(new ITestPanelSource(){
 	
 			public Panel getTestPanel(String panelId)
 			{
@@ -81,16 +80,13 @@ public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester
 		});
 	}
 	
-	/**
-	 * @return the aggregateReportService
-	 */
 	public AggregateReportService getAggregateReportService()
 	{
 		return aggregateReportService;
 	}
 	
-	protected abstract TreeReport getAggregateReport();
+	protected abstract TreeReportModel getAggregateReport();
 	
-	protected abstract Panel createReportPanel(String panelId, TreeReport report);
+	protected abstract Panel createReportPanel(String panelId, TreeReportModel reportModel);
 
 }

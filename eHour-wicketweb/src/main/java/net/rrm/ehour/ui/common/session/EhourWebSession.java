@@ -25,7 +25,7 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.cache.ObjectCache;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Request;
@@ -78,7 +78,7 @@ public class EhourWebSession extends AuthenticatedWebSession
      */
     public void reloadConfig()
     {
-        CommonWebUtil.springInjection(this);
+        WebUtils.springInjection(this);
 
         if (!ehourConfig.isDontForceLanguage())
         {

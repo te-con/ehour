@@ -4,7 +4,7 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.export.service.ExportService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.DynamicWebResource;
@@ -37,7 +37,7 @@ public class ExportDatabase extends DynamicWebResource
 
         if (authorized)
         {
-            CommonWebUtil.springInjection(this);
+            WebUtils.springInjection(this);
 
             String xmlExport = exportService.exportDatabase();
 

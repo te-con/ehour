@@ -33,10 +33,6 @@ public class TreeReportData extends ReportData
 
 	private ReportData rawReportData;
 	
-	/**
-	 * @param reportElements
-	 * @param reportRange
-	 */
 	public TreeReportData(List<? extends ReportElement> reportElements, DateRange reportRange, ReportData rawReportData)
 	{
 		super(reportElements, reportRange);

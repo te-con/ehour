@@ -33,33 +33,27 @@ public abstract class ReportNode implements Serializable
 
     protected Serializable[]    columnValues;
     private List<ReportNode>    reportNodes = new ArrayList<ReportNode>();
-    protected Serializable      id;
-    protected int				hierarchyLevel;
-    
+    private Serializable      id;
+
+    protected ReportNode(Serializable id) {
+        this.id = id;
+    }
+
     /**
      * Create node matrix flattening the whole tree.
-     * 
-     * @return
      */
     public List<TreeReportElement> getNodeMatrix(int matrixWidth)
     {
     	List<TreeReportElement> matrix = new ArrayList<TreeReportElement>();
     	
-    	createNodeMatrix(0, new Serializable[matrixWidth], matrix, matrixWidth);
+    	createNodeMatrix(0, new Serializable[matrixWidth], matrix);
     	
     	return matrix;
     }
     
-    /**
-     * 
-     * @param currentColumn
-     * @param currentRow
-     * @param matrix
-     * @return
-     */
-    private Serializable[] createNodeMatrix(int currentColumn, Serializable[] columns, List<TreeReportElement> matrix, int matrixWidth)
+    private Serializable[] createNodeMatrix(int currentColumn, Serializable[] columns, List<TreeReportElement> matrix)
     {
-    	if (isLastNode())
+    	if (isLeaf())
     	{
     		Serializable[] returnCols = columns.clone();
     		
@@ -74,7 +68,7 @@ public abstract class ReportNode implements Serializable
     		
     		for (ReportNode reportNode : reportNodes)
 			{
-    			columns = reportNode.createNodeMatrix(currentColumn, columns, matrix, matrixWidth);
+    			columns = reportNode.createNodeMatrix(currentColumn, columns, matrix);
 			}
     	}
     	
@@ -109,7 +103,7 @@ public abstract class ReportNode implements Serializable
         boolean processed = false;
 
         // first check if we need to add the aggregate to his node
-        if (isProcessElement(reportElement))
+        if (shouldProcessElement(reportElement))
         {
         	// was it added to one of the child nodes ?
             if (!(processed = processChildNodes(reportElement, hierarchyLevel + 1, nodeFactory)))
@@ -119,7 +113,7 @@ public abstract class ReportNode implements Serializable
 
                 // if the new node is not the last child, check whether one
                 // of it's subschildren can process it
-                if (!node.isLastNode())
+                if (!node.isLeaf())
                 {
                     node.processElement(reportElement, hierarchyLevel, nodeFactory);
                 }
@@ -146,7 +140,7 @@ public abstract class ReportNode implements Serializable
         for (ReportNode node : reportNodes)
         {
         	// if the children are last nodes don't bother checking
-        	if (node.isLastNode())
+        	if (node.isLeaf())
         	{
         		break;
         	}
@@ -174,16 +168,16 @@ public abstract class ReportNode implements Serializable
      * @param forId
      * @return
      */
-    private boolean isProcessElement(ReportElement reportElement)
+    private boolean shouldProcessElement(ReportElement reportElement)
     {
         return getId().equals(getElementId(reportElement));
     }
 
     /**
-     * Is last node in the hierarchy ? Override for end node
+     * Is last node in the hierarchy ? Override for leaf
      * @return
      */
-    protected boolean isLastNode()
+    protected boolean isLeaf()
     {
         return false;
     }
@@ -239,24 +233,6 @@ public abstract class ReportNode implements Serializable
         return columnValues;
     }
 
-
-    /**
-     * @return
-     */
-    public List<ReportNode> getReportNodes()
-    {
-        return reportNodes;
-    }
-
-    /**
-     *
-     * @param reportNodes
-     */
-    public void setReportNodes(List<ReportNode> reportNodes)
-    {
-        this.reportNodes = reportNodes;
-    }
-
     /**
      *
      * @return
@@ -274,12 +250,4 @@ public abstract class ReportNode implements Serializable
     {
         this.id = id;
     }
-
-	/**
-	 * @return the hierarchyLevel
-	 */
-	public int getHierarchyLevel()
-	{
-		return hierarchyLevel;
-	}
 }

@@ -36,22 +36,13 @@ public class ReportTabbedPanel extends AbstractTabbedPanel
 {
 	private static final long serialVersionUID = 5957279200970383021L;
 
-	/**
-	 * Default constructor
-	 * @param id
-	 * @param tabs
-	 */
 	public ReportTabbedPanel(final String id, final List<ITab> tabs)
 	{
 		super(id, tabs);
 		
 		setOutputMarkupId(true);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel#newLink(java.lang.String, int)
-	 */
+
 	@SuppressWarnings("serial")
 	@Override
 	protected WebMarkupContainer newLink(final String linkId, final int index)

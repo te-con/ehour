@@ -32,18 +32,16 @@ public class UserEndNode extends ReportNode
 	private Number   hours;
     private Number   turnOver;
 
-    public UserEndNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
+    public UserEndNode(AssignmentAggregateReportElement aggregate)
     {
+        super(aggregate.getProjectAssignment().getUser().getPK());
         hours = aggregate.getHours();
         turnOver = aggregate.getTurnOver();
 
-        this.id = aggregate.getProjectAssignment().getUser().getPK();
         this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName(),
                                                 aggregate.getProjectAssignment().getHourlyRate(),
                                                 aggregate.getHours(),
                                                 aggregate.getTurnOver()};
-        
-        this.hierarchyLevel = hierarchyLevel;
     }
 
     @Override
@@ -67,7 +65,7 @@ public class UserEndNode extends ReportNode
     }
 
     @Override
-    protected boolean isLastNode()
+    protected boolean isLeaf()
     {
         return true;
     }

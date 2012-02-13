@@ -39,8 +39,6 @@ import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportExcel;
 import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportExcel;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportExcel;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportExcel;
-import net.rrm.ehour.ui.report.panel.user.UserReportExcel;
-import net.rrm.ehour.ui.report.user.page.UserReportPage;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
@@ -128,7 +126,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
     private void registerSharedResources()
     {
-        mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
         mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
         mountExcelReport(new EmployeeReportExcel(), EmployeeReportExcel.getId());
         mountExcelReport(new ProjectReportExcel(), ProjectReportExcel.getId());
@@ -171,7 +168,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
         mount(new HybridUrlCodingStrategy("/admin/assignment", AssignmentAdmin.class));
 
         mount(new HybridUrlCodingStrategy("/consultant/overview", MonthOverviewPage.class));
-        mount(new HybridUrlCodingStrategy("/consultant/report", UserReportPage.class));
 
         mount(new HybridUrlCodingStrategy("/consultant/exportmonth", ExportMonthSelectionPage.class));
         mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));

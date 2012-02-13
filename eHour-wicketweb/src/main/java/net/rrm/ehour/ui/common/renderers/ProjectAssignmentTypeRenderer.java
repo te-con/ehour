@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.renderers;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 
 /**
  * ProjectAssignment renderer
@@ -33,7 +33,7 @@ public class ProjectAssignmentTypeRenderer extends LocalizedResourceRenderer<Pro
 	@Override
 	protected String getResourceKey(ProjectAssignmentType pat)
 	{
-		return CommonWebUtil.getResourceKeyForProjectAssignmentType(pat);
+		return WebUtils.getResourceKeyForProjectAssignmentType(pat);
 	}
 
 }

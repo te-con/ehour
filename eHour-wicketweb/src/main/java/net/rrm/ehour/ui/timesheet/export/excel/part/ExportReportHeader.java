@@ -26,7 +26,7 @@ import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -95,7 +95,7 @@ public class ExportReportHeader extends AbstractExportReportPart
         HSSFRow row = getSheet().createRow(rowNumber++);
 
         CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.date"), getWorkbook(), StaticCellStyle.NORMAL);
-        CellFactory.createCell(row, getCellMargin() + 2, CommonWebUtil.formatDate("MMMM yyyy", getReport().getReportRange().getDateStart()), getWorkbook(), StaticCellStyle.NORMAL);
+        CellFactory.createCell(row, getCellMargin() + 2, WebUtils.formatDate("MMMM yyyy", getReport().getReportRange().getDateStart()), getWorkbook(), StaticCellStyle.NORMAL);
 
         return rowNumber;
     }
@@ -115,7 +115,7 @@ public class ExportReportHeader extends AbstractExportReportPart
     {
         if (configurationService == null)
         {
-            CommonWebUtil.springInjection(this);
+            WebUtils.springInjection(this);
         }
 
         return configurationService;

@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.common.report.excel;
 
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -45,7 +45,7 @@ public class CellFactory
 	
 	public static HSSFCell createCell(HSSFRow row, int column, IModel<String> valueModel, HSSFWorkbook workbook, CellStyle... cellStyles)
 	{
-		return createCell(row, column, CommonWebUtil.getResourceModelString(valueModel), workbook, cellStyles);
+		return createCell(row, column, WebUtils.getResourceModelString(valueModel), workbook, cellStyles);
 	}
 	
 	public static HSSFCell createCell(HSSFRow row, int column, Object value, HSSFWorkbook workbook, CellStyle... cellStyles)

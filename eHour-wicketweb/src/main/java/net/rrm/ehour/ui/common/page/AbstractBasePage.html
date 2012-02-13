@@ -1,16 +1,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
 <wicket:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title wicket:id="pageTitle">eHour</title>
 	<link rel="stylesheet" type="text/css" href="css/ehour.css" />
 
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <link type="text/css" href="css/ehour/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+
+
 	<script>
 		function showHideSpinner(show) {
-			document.getElementById('LoadingSpinner').style.visibility = (show) ? "visible" : "hidden";
-		    if (show) { document.body.style.cursor = 'progress'; } else { document.body.style.cursor = 'default';} 
+            var e = $("#LoadingSpinner");
+
+            if (show) {
+                e.show();
+                $("body").css("cursor", "progress");
+            } else {
+                e.hide();
+                $("body").css("cursor", "default");
+            }
 		}
 	</script>
 </wicket:head>
@@ -19,7 +31,7 @@
 		<span wicket:id='mainNav'/>
 		
 		<wicket:child />
-		
+
 		<div wicket:id="debug"></div>
 	</body>
 </html>

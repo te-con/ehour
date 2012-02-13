@@ -24,48 +24,40 @@ import java.io.Serializable;
 
 /**
  * Entry end node
- **/
+ */
 
-public class FlatEntryEndNode extends ReportNode
-{
-	private static final long serialVersionUID = 7854152602780377915L;
-	private Number hours;
-	private Number turnOver;
-	
-	/**
-	 * 
-	 * @param element
-	 * @param hierarchyLevel
-	 */
-	public FlatEntryEndNode(FlatReportElement element, int hierarchyLevel)
-    {
+public class FlatEntryEndNode extends ReportNode {
+    private static final long serialVersionUID = 7854152602780377915L;
+    private Number hours;
+    private Number turnOver;
+
+    /**
+     * @param element
+     */
+    public FlatEntryEndNode(FlatReportElement element) {
+        super(element.getDisplayOrder());
         hours = element.getTotalHours();
         turnOver = element.getTotalTurnOver();
-        
-		this.id = element.getDisplayOrder();
-		this.columnValues = new Serializable[]{element.getComment(), 
-												element.getTotalHours(), element.getTotalTurnOver()};
-		this.hierarchyLevel = hierarchyLevel;
+
+        this.columnValues = new Serializable[]{element.getComment(), element.getTotalHours(), element.getTotalTurnOver()};
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
-	 */
-	@Override
-	protected Serializable getElementId(ReportElement element)
-	{
-		return ((FlatReportElement)element).getDisplayOrder();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getHours()
-	 */
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
+      */
     @Override
-    public Number getHours()
-    {
-        return hours; 
+    protected Serializable getElementId(ReportElement element) {
+        return ((FlatReportElement) element).getDisplayOrder();
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getHours()
+      */
+    @Override
+    public Number getHours() {
+        return hours;
     }
 
     /*
@@ -73,18 +65,16 @@ public class FlatEntryEndNode extends ReportNode
      * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getTurnover()
      */
     @Override
-    public Number getTurnover()
-    {
+    public Number getTurnover() {
         return turnOver;
-    }	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#isLastNode()
-	 */
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#isLastNode()
+      */
     @Override
-    protected boolean isLastNode()
-    {
+    protected boolean isLeaf() {
         return true;
-    }	
+    }
 }

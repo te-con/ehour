@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.timesheet.export.excel;
 import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.part.*;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -55,7 +55,7 @@ public class ExportReportExcel extends AbstractExcelResource
 	{
 		HSSFWorkbook workbook = new HSSFWorkbook();
 
-		HSSFSheet 	sheet = workbook.createSheet(CommonWebUtil.formatDate("MMMM yyyy", report.getReportRange().getDateStart()));
+		HSSFSheet 	sheet = workbook.createSheet(WebUtils.formatDate("MMMM yyyy", report.getReportRange().getDateStart()));
 
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.DATE.getColumn()));
 		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.PROJECT.getColumn()));

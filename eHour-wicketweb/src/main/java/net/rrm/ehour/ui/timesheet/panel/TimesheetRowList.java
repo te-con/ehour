@@ -83,7 +83,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	@Override
 	protected void populateItem(ListItem<TimesheetRow> item)
 	{
-		final TimesheetRow row = (TimesheetRow) item.getModelObject();
+		final TimesheetRow row = item.getModelObject();
 
 		item.add(createBookWholeWeekLink(row));
 		item.add(createProjectLabel(row));
@@ -159,9 +159,16 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 
     private Label createStatusLabel(ListItem<TimesheetRow> item)
 	{
-		Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status"));
+		Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status")) {
+            @Override
+            public boolean isVisible() {
+                return StringUtils.isNotBlank(getDefaultModelObjectAsString());
+            }
+        };
+
 		label.setEscapeModelStrings(false);
 		label.setOutputMarkupId(true);
+        label.setOutputMarkupPlaceholderTag(true);
 		return label;
 	}
 	
@@ -300,7 +307,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		commentLink.add(CommonModifiers.tabIndexModifier(255));
 		
 		ContextImage img;
-		if (StringUtils.isBlank((String)commentModel.getObject()))
+		if (StringUtils.isBlank(commentModel.getObject()))
 		{
 			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
 			CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/comment/comment_blue_on.gif", getContextRoot() + "img/comment/comment_blue_off.gif", "comment");
@@ -310,8 +317,6 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
 		}
 		commentLink.add(img);
-		
-//		setCommentLinkClass(commentModel, commentLink);
 		
 		parent.add(commentLink);
 	}
@@ -324,7 +329,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink)
 	{
 		commentLink.add(new SimpleAttributeModifier("class"
-				, StringUtils.isBlank((String)commentModel.getObject()) ? "timesheetEntryComment"
+				, StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment"
 				: "timesheetEntryCommented"));
 	}	
 	

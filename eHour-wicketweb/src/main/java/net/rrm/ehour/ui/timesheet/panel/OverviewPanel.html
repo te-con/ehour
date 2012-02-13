@@ -2,16 +2,41 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
 
 <wicket:head>
 	<link wicket:id="overviewStyle" rel="stylesheet" type="text/css" href="css/overview.css" />
+
+    <script>
+        $(window).resize(function() {
+            replaceCodeWithName();
+        });
+
+        function replaceCodeWithName() {
+            $(".bookedHours").each(function(index) {
+                var w = $(this).width();
+                var hWidth = $(this).find(".bookedHourValue").width();
+                var remain = w - hWidth - 3;
+
+                var textE = $(this).children().first();
+                var prjId = textE.attr('id').substring(4);
+
+                var nameE = $("#prjN" + prjId);
+                var codeC = $("#prjC" + prjId);
+                textE.text((remain >= nameE.width()) ? nameE.text() : codeC.text());
+            });
+        }
+    </script>
 </wicket:head>
 
 <wicket:panel>
 	<span wicket:id="projectOverview" />
 	<br />
 	<span wicket:id="monthOverview" />
+
+    <script>
+        replaceCodeWithName();
+    </script>
 </wicket:panel>
 
 </html>

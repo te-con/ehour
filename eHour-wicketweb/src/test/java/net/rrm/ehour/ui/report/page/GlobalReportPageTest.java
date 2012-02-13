@@ -44,142 +44,127 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("serial")
-public class GlobalReportPageTest extends BaseTestReport
-{
-	private AggregateCommand aggregateCommand;
-	private DetailedCommand detailedCommand;
-	@Before
-	public void setup()
-	{
-		aggregateCommand = new AggregateCommand();
-		detailedCommand = new DetailedCommand();
-		
-	}
-	@Test
-	public void shouldRender()
-	{
-		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdateType.UPDATE_ALL)))
-			.andReturn(reportCriteria);
-		
-		replay(reportCriteriaService);
-		
-		startPage();
-		
-		verify(reportCriteriaService);
-	}
+public class GlobalReportPageTest extends BaseTestReport {
+    private AggregateCommand aggregateCommand;
+    private DetailedCommand detailedCommand;
 
-	@Test
-	public void shouldUpdateTabsForAggregate()
-	{
-		aggregateCommand.returnTabs = createTabs(3);
+    @Before
+    public void setup() {
+        aggregateCommand = new AggregateCommand();
+        detailedCommand = new DetailedCommand();
 
-		shouldUpdateTabs(ReportType.AGGREGATE);
-		
-		assertNotNull(aggregateCommand.argBean);
-		assertNull(detailedCommand.argBean);
-	}
-	
-	@Test
-	public void shouldUpdateTabsForDetailed()
-	{
-		detailedCommand.returnTabs = createTabs(1);
+    }
 
-		shouldUpdateTabs(ReportType.DETAILED);
+    @Test
+    public void shouldRender() {
+        expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdateType.UPDATE_ALL)))
+                .andReturn(reportCriteria);
 
-		assertNull(aggregateCommand.argBean);
-		assertNotNull(detailedCommand.argBean);
-	}	
-	
-	
-	private void shouldUpdateTabs(ReportType reportType)
-	{
-		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), 
-					eq(ReportCriteriaUpdateType.UPDATE_ALL)))
-				.andReturn(reportCriteria);	
-	
-		replay(reportCriteriaService);
-		
-		startPage();
-		
-		Component component = tester.getComponentFromLastRenderedPage("");
-		GlobalReportPage page = (GlobalReportPage)component;
-		
-		ReportCriteriaBackingBean bean= (ReportCriteriaBackingBean)page.getDefaultModelObject();
-		bean.setReportType(reportType);
-		
-		AjaxRequestTarget target = createMock(AjaxRequestTarget.class);
-		AjaxEvent event = new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED, target);
+        replay(reportCriteriaService);
 
-		target.addComponent(isA(ReportTabbedPanel.class));
-		replay(target);
-		
-		page.ajaxEventReceived(event);
-		
-		verify(target);
-		verify(reportCriteriaService);
-	}	
-	
-	private List<ITab> createTabs(int amount)
-	{
-		List<ITab> tabs = new ArrayList<ITab>();
-		
-		for (int i = 0; i < amount; i++)
-		{
-			AbstractTab tab = new AbstractTab(new KeyResourceModel(Integer.toString(i)))
-			{
-				
-				@Override
-				public Panel getPanel(String panelId)
-				{
-					return new Panel(panelId);
-				}
-			};
-			
-			tabs.add(tab);
-		}
-		
-		return tabs;
-		
-	}
-	
-	private void startPage()
-	{
-		getTester().startPage(new ITestPageSource()
-		{
-			
-			public Page getTestPage()
-			{
-				return new GlobalReportPage(aggregateCommand, detailedCommand);
-			}
-		});
-		
-		getTester().assertRenderedPage(GlobalReportPage.class);
-		getTester().assertNoErrorMessage();
-	}
-	
-	private class AggregateCommand implements GlobalReportPageAggregateCommand
-	{
-		ReportCriteriaBackingBean argBean;
-		List<ITab> returnTabs;
-		
-		public List<ITab> createAggregateReportTabs(ReportCriteriaBackingBean backingBean)
-		{
-			this.argBean = backingBean;
-			return returnTabs;
-		}
-		
-	}
-	
-	private class DetailedCommand implements GlobalReportPageDetailedCommand
-	{
-		ReportCriteriaBackingBean argBean;
-		List<ITab> returnTabs;
+        startPage();
 
-		public List<ITab> createDetailedReportTabs(ReportCriteriaBackingBean backingBean)
-		{
-			this.argBean = backingBean;
-			return returnTabs;
-		}
-		
-	}
+        verify(reportCriteriaService);
+    }
+
+    @Test
+    public void shouldUpdateTabsForAggregate() {
+        aggregateCommand.returnTabs = createTabs(3);
+
+        shouldUpdateTabs(ReportType.AGGREGATE);
+
+        assertNotNull(aggregateCommand.argBean);
+        assertNull(detailedCommand.argBean);
+    }
+
+    @Test
+    public void shouldUpdateTabsForDetailed() {
+        detailedCommand.returnTabs = createTabs(1);
+
+        shouldUpdateTabs(ReportType.DETAILED);
+
+        assertNull(aggregateCommand.argBean);
+        assertNotNull(detailedCommand.argBean);
+    }
+
+
+    private void shouldUpdateTabs(ReportType reportType) {
+        expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class),
+                eq(ReportCriteriaUpdateType.UPDATE_ALL)))
+                .andReturn(reportCriteria);
+
+        replay(reportCriteriaService);
+
+        startPage();
+
+        Component component = tester.getComponentFromLastRenderedPage("");
+        GlobalReportPage page = (GlobalReportPage) component;
+
+        ReportCriteriaBackingBean bean = (ReportCriteriaBackingBean) page.getDefaultModelObject();
+        bean.setReportType(reportType);
+
+        AjaxRequestTarget target = createMock(AjaxRequestTarget.class);
+        AjaxEvent event = new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED, target);
+
+        target.addComponent(isA(ReportTabbedPanel.class));
+        replay(target);
+
+        page.ajaxEventReceived(event);
+
+        verify(target);
+        verify(reportCriteriaService);
+    }
+
+    private List<ITab> createTabs(int amount) {
+        List<ITab> tabs = new ArrayList<ITab>();
+
+        for (int i = 0; i < amount; i++) {
+            AbstractTab tab = new AbstractTab(new KeyResourceModel(Integer.toString(i))) {
+
+                @Override
+                public Panel getPanel(String panelId) {
+                    return new Panel(panelId);
+                }
+            };
+
+            tabs.add(tab);
+        }
+
+        return tabs;
+
+    }
+
+    private void startPage() {
+        getTester().startPage(new ITestPageSource() {
+
+            public Page getTestPage() {
+                return new GlobalReportPage(aggregateCommand, detailedCommand);
+            }
+        });
+
+        getTester().assertRenderedPage(GlobalReportPage.class);
+        getTester().assertNoErrorMessage();
+    }
+
+    private class AggregateCommand implements GlobalReportPageAggregateCommand {
+        ReportCriteriaBackingBean argBean;
+        List<ITab> returnTabs;
+
+        public List<ITab> createAggregateReportTabs(ReportCriteriaBackingBean backingBean) {
+            this.argBean = backingBean;
+            return returnTabs;
+        }
+
+    }
+
+    private class DetailedCommand implements GlobalReportPageDetailedCommand {
+        ReportCriteriaBackingBean argBean;
+        List<ITab> returnTabs;
+
+        public List<ITab> createDetailedReportTabs(ReportCriteriaBackingBean backingBean) {
+            this.argBean = backingBean;
+            return returnTabs;
+        }
+
+    }
 }

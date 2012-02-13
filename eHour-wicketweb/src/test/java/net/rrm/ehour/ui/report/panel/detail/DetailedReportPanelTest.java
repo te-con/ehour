@@ -19,9 +19,10 @@ package net.rrm.ehour.ui.report.panel.detail;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
-import net.rrm.ehour.ui.report.trend.DetailedReport;
+import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
+import net.rrm.ehour.ui.report.trend.DetailedReportModel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.util.tester.DummyPanelPage;
 import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,45 +33,37 @@ import static org.easymock.EasyMock.*;
 
 /**
  * Detailed report panel test
- **/
+ */
 
-public class DetailedReportPanelTest extends AbstractSpringWebAppTester
-{
-	private DetailedReportService detailedReportService;
-	
-	@Before
-	public void setup()
-	{
-		detailedReportService = createMock(DetailedReportService.class);
-		getMockContext().putBean("detailedReportService", detailedReportService);
-	}
-	
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.report.panel.detail.DetailedReportPanel#DetailedReportPanel(java.lang.String, net.rrm.ehour.persistence.persistence.ui.report.TreeReport, net.rrm.ehour.persistence.persistence.report.reports.ReportData)}.
-	 */
-	@Test
-	@SuppressWarnings("serial")
-	public void testDetailedReportPanel()
-	{
-		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-			.andReturn(ReportTestUtil.getFlatReportData());
-		
-		replay(detailedReportService);
-		
-		final DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
-		
-		getTester().startPanel(new ITestPanelSource(){
+public class DetailedReportPanelTest extends AbstractSpringWebAppTester {
+    private DetailedReportService detailedReportService;
 
-			public Panel getTestPanel(String panelId)
-			{
-				return new DetailedReportPanel(panelId, 
-												detailedReport);
-			}
-		});
-		
-		getTester().assertNoErrorMessage();
-		
-		verify(detailedReportService);
-	}
+    @Before
+    public void setup() {
+        detailedReportService = createMock(DetailedReportService.class);
+        getMockContext().putBean("detailedReportService", detailedReportService);
+    }
 
+    @Test
+    @SuppressWarnings("serial")
+    public void shouldRenderPanel() {
+        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
+                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
+
+        replay(detailedReportService);
+
+        final DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
+
+        tester.startPanel(new ITestPanelSource() {
+
+            public Panel getTestPanel(String panelId) {
+                return new DetailedReportPanel(panelId, detailedReport);
+            }
+        });
+
+        tester.assertNoErrorMessage();
+        tester.assertRenderedPage(DummyPanelPage.class);
+
+        verify(detailedReportService);
+    }
 }

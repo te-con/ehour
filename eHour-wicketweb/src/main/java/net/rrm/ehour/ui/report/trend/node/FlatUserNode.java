@@ -30,22 +30,11 @@ public class FlatUserNode extends ReportNode
 {
 	private static final long serialVersionUID = 7854152602780377915L;
 	
-	/**
-	 * 
-	 * @param element
-	 * @param hierarchyLevel
-	 */
-	public FlatUserNode(FlatReportElement element, int hierarchyLevel)
-    {
-		this.id = element.getUserId();
-		this.columnValues = new String[]{element.getUserLastName()};
-		this.hierarchyLevel = hierarchyLevel;
+	public FlatUserNode(FlatReportElement element) {
+        super(element.getUserId());
+        this.columnValues = new String[]{element.getUserLastName()};
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
-	 */
 	@Override
 	protected Serializable getElementId(ReportElement element)
 	{

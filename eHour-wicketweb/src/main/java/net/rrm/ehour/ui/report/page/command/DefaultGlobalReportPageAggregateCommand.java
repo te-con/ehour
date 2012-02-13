@@ -2,9 +2,9 @@ package net.rrm.ehour.ui.report.page.command;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
-import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
-import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
-import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
+import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReportModel;
+import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReportModel;
+import net.rrm.ehour.ui.report.aggregate.UserAggregateReportModel;
 import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportPanel;
 import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportPanel;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanel;
@@ -66,42 +66,23 @@ public class DefaultGlobalReportPageAggregateCommand implements GlobalReportPage
 		return tabs;
 	}
 	
-	/**
-	 * Get customer report panel
-	 * @param id
-	 * @param reportData
-	 * @return
-	 */
 	private Panel getCustomerReportPanel(String id, ReportCriteria reportCriteria)
 	{
-		CustomerAggregateReport	customerAggregateReport = new CustomerAggregateReport(reportCriteria);
+		CustomerAggregateReportModel customerAggregateReport = new CustomerAggregateReportModel(reportCriteria);
 		ReportUtil.storeInCache(customerAggregateReport);
 		return new CustomerReportPanel(id, customerAggregateReport);
 	}
 	
-	/**
-	 * Get project report panel
-	 * @param id
-	 * @param reportData
-	 * @return
-	 */
 	private Panel getProjectReportPanel(String id, ReportCriteria reportCriteria)
 	{
-		ProjectAggregateReport	aggregateReport = new ProjectAggregateReport(reportCriteria);
+		ProjectAggregateReportModel aggregateReport = new ProjectAggregateReportModel(reportCriteria);
 		ReportUtil.storeInCache(aggregateReport);
 		return new ProjectReportPanel(id, aggregateReport);
 	}
-	
-	/**
-	 * Get user report panel
-	 * 
-	 * @param id
-	 * @param reportData
-	 * @return
-	 */
+
 	private Panel getUserReportPanel(String id, ReportCriteria reportCriteria)
 	{
-		UserAggregateReport	aggregateReport = new UserAggregateReport(reportCriteria);
+		UserAggregateReportModel aggregateReport = new UserAggregateReportModel(reportCriteria);
 		ReportUtil.storeInCache(aggregateReport);
 		return new EmployeeReportPanel(id, aggregateReport);
 	}

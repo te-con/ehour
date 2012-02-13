@@ -23,7 +23,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.TreeReportElement;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -56,7 +56,7 @@ public class AuditReport extends AbstractCachableReportModel
 	@Override
 	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
-		CommonWebUtil.springInjection(this);
+		WebUtils.springInjection(this);
 
 		UserCriteria userCriteria = reportCriteria.getUserCriteria();
 		

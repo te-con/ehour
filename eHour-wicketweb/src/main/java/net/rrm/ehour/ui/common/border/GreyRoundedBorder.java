@@ -109,26 +109,12 @@ public class GreyRoundedBorder extends Border
 		this(id, title, true, printLink, excelLink, null);
 	}
 	
-	/**
-	 * With title, links and width
-	 * @param id
-	 * @param title
-	 * @param showTitle
-	 * @param printLink
-	 * @param excelLink
-	 * @param width
-	 */
 	public GreyRoundedBorder(String id, IModel<String> title, boolean showTitle, Link<?> printLink, Link<?> excelLink, WebGeo width)
 	{
 		super(id);
 		
 		greyFrame = new WebMarkupContainer("greyFrame");
-		
-		if (width != null)
-		{
-			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.getValue().toString() + "px"));
-		}
-		
+
 		Label	label = new Label("greyTabTitle", title);
 		greyFrame.add(label);
 		label.setVisible(showTitle);

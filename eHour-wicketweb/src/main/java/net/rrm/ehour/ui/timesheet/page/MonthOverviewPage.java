@@ -33,10 +33,6 @@ import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInst
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
 
-/**
- * Overview page
- */
-
 @AuthorizeInstantiation("ROLE_CONSULTANT")
 public class MonthOverviewPage extends AbstractBasePage<Void>
 {
@@ -63,9 +59,6 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
         this(parameters.getAsEnum(PARAM_OPEN, OpenPanel.class));
     }
 
-    /**
-     * @param panelToOpen
-     */
     public MonthOverviewPage(OpenPanel panelToOpen)
     {
         super(new ResourceModel("overview.title"), null);

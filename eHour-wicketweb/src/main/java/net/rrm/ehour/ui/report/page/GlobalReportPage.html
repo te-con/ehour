@@ -3,7 +3,7 @@
     
 <html 
 	xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:wicket="http://wicket.sourceforge.net/">
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
    	<head>
 		<wicket:head>
@@ -13,8 +13,10 @@
 
     <body>
     	<wicket:extend>
-    		<div class="mainColumn" style="margin-left: 10px">
-    			<div wicket:id="reportContainer" class="tabpanel" style="padding-left: 13px"></div>
+    		<div class="mainColumn" style="width:100%;">
+                <div style="margin-left: 10px;">
+    			    <div wicket:id="reportContainer" class="tabpanel" style="padding-left: 13px"></div>
+                </div>
     		</div>    	
     	</wicket:extend>
     </body>

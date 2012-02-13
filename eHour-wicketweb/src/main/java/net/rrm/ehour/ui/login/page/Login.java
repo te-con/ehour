@@ -34,183 +34,139 @@ import java.io.Serializable;
 
 /**
  * Login page
- **/
+ */
 
-public class Login extends WebPage
-{
-	private static final long serialVersionUID = -134022212692477120L;
-	private	static Logger logger = Logger.getLogger(Login.class);
+public class Login extends WebPage {
+    private static final long serialVersionUID = -134022212692477120L;
+    private static Logger logger = Logger.getLogger(Login.class);
 
-	/**
-	 *
-	 */
-	public Login()
-	{
-		this(null);
-	}
+    public Login() {
+        EhourWebSession session = (EhourWebSession) getSession();
 
-	/**
-	 * Check if the session exists, kill the session and redirect to the homepage.
-	 * This will trigger the authentication but at least the redirect is properly setup
-	 * @param parameters page parameters (ignored)
-	 */
-	public Login(final PageParameters parameters)
-	{
-		EhourWebSession session = (EhourWebSession)getSession();
+        if (session.isSignedIn()) {
+            if (logger.isInfoEnabled()) {
+                logger.info("User already signed in, logging out and redirecting to " + getApplication().getHomePage());
+            }
 
-		if (session.isSignedIn())
-		{
-			if (logger.isInfoEnabled())
-			{
-				logger.info("User already signed in, logging out and redirecting to " + getApplication().getHomePage());
-			}
+            session.signOut();
+            setResponsePage(getApplication().getHomePage());
+        } else {
+            setupForm();
+        }
+    }
 
-			session.signOut();
-			setResponsePage(getApplication().getHomePage());
-		}
-		else
-		{
-			setupForm();
-		}
-	}
+    /**
+     * Check if the session exists, kill the session and redirect to the homepage.
+     * This will trigger the authentication but at least the redirect is properly setup
+     *
+     * @param parameters page parameters (ignored)
+     */
+    public Login(final PageParameters parameters) {
+        this();
+    }
 
-	/**
-	 * Set up login form
-	 */
-	private void setupForm()
-	{
-		add(new Label("pageTitle", new ResourceModel("login.login.header")));
-		add(new SignInForm("loginform", new SimpleUser()));
-	}
+    /**
+     * Set up login form
+     */
+    private void setupForm() {
+        add(new Label("pageTitle", new ResourceModel("login.login.header")));
+        add(new SignInForm("loginform", new SimpleUser()));
+    }
 
-	/**
-	 * The class <code>SignInForm</code> is a subclass of the Wicket
-	 * {@link Form} class that attempts to authenticate the login request using
-	 * Wicket auth (which again delegates to Acegi Security).
-	 */
-	public final class SignInForm extends Form<SimpleUser>
-	{
-		private static final long serialVersionUID = -4355842488508724254L;
+    public final class SignInForm extends Form<SimpleUser> {
+        private static final long serialVersionUID = -4355842488508724254L;
 
-		/**
-		 *
-		 * @param id
-		 * @param model
-		 */
-		public SignInForm(String id, SimpleUser model)
-		{
-			super(id, new CompoundPropertyModel<SimpleUser>(model));
+        public SignInForm(String id, SimpleUser model) {
+            super(id, new CompoundPropertyModel<SimpleUser>(model));
 
-			FeedbackPanel	feedback = new LoginFeedbackPanel("feedback");
-			feedback.setMaxMessages(1);
+            FeedbackPanel feedback = new LoginFeedbackPanel("feedback");
+            feedback.setMaxMessages(1);
 
-			add(feedback);
-			TextField<String> usernameInput = new RequiredTextField<String>("username");
-			usernameInput.setPersistent(true);
-			add(usernameInput);
-			add(new PasswordTextField("password").setResetPassword(true));
-			add(new Button("signin", new ResourceModel("login.login.submit")));
+            add(feedback);
+            TextField<String> usernameInput = new RequiredTextField<String>("username");
+            usernameInput.setPersistent(true);
+            add(usernameInput);
+            add(new PasswordTextField("password").setResetPassword(true));
 
-			// TODO layout is off when feedback panel uses its space
-			Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
-			add(demoMode);
-			demoMode.setVisible(EhourWebSession.getSession().getEhourConfig().isInDemoMode());
+            // layout is off when feedback panel uses its space
+            Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
+            add(demoMode);
+            demoMode.setVisible(EhourWebSession.getSession().getEhourConfig().isInDemoMode());
 
+            add(new Label("version", ((EhourWebApplication) this.getApplication()).getVersion()));
+        }
 
+        /**
+         * Called upon form submit. Attempts to authenticate the user.
+         */
+        protected void onSubmit() {
+            if (EhourWebSession.getSession().isSignedIn()) {
+                // now this really shouldn't happen as the session is killed in the constructor
+                error("already logged in");
 
-			add(new Label("version", ((EhourWebApplication) this.getApplication()).getVersion()));
-		}
+            } else {
+                SimpleUser user = getModelObject();
+                String username = user.getUsername();
+                String password = user.getPassword();
 
-		/**
-		 * Called upon form submit. Attempts to authenticate the user.
-		 */
-		protected void onSubmit()
-		{
-			if (EhourWebSession.getSession().isSignedIn())
-			{
-				// now this really shouldn't happen as the session is killed in the constructor
-				error("already logged in");
+                // Attempt to authenticate.
+                EhourWebSession session = (EhourWebSession) Session.get();
 
-			} else
-			{
-				SimpleUser user = ((SimpleUser) getModel().getObject());
-				String username = user.getUsername();
-				String password = user.getPassword();
+                // When authenticated decide the redirect
+                if (session.signIn(username, password)) {
+                    Class<? extends Page> homepage = AuthUtil.getHomepageForRole(session.getRoles());
 
-				// Attempt to authenticate.
-				EhourWebSession session = (EhourWebSession) Session.get();
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("User '" + username + "' redirected to " + homepage.getName());
+                    }
 
-				// When authenticated decide the redirect
-				if (session.signIn(username, password))
-				{
-					Class<? extends Page> homepage = AuthUtil.getHomepageForRole(session.getRoles());
+                    setResponsePage(homepage);
+                } else {
+                    error(getLocalizer().getString("login.login.failed", this));
+                }
+            }
 
-					if (logger.isDebugEnabled())
-					{
-						logger.debug("User '" + username + "' redirected to " + homepage.getName());
-					}
+            // ALWAYS do a redirect, no matter where we are going to. The point is that the
+            // submitting page should be gone from the browsers history.
+            setRedirect(true);
+        }
+    }
 
-					setResponsePage(homepage);
-				}
-				else
-				{
-					error(getLocalizer().getString("login.login.failed", this));
-				}
-			}
+    public final class LoginFeedbackPanel extends FeedbackPanel {
+        private static final long serialVersionUID = 1931344611905158185L;
 
-			// ALWAYS do a redirect, no matter where we are going to. The point is that the
-			// submitting page should be gone from the browsers history.
-			setRedirect(true);
-		}
-	}
+        /**
+         * @see org.apache.wicket.Component#Component(String)
+         */
+        public LoginFeedbackPanel(final String id) {
+            super(id);
+        }
+    }
 
-	/**
-	 *
-	 * @author Thies
-	 *
-	 */
-	public final class LoginFeedbackPanel extends FeedbackPanel
-	{
-		private static final long serialVersionUID = 1931344611905158185L;
+    /**
+     * Simple bean that represents the properties for a login attempt (username
+     * and clear text password).
+     */
+    public static class SimpleUser implements Serializable {
+        private static final long serialVersionUID = -5617176504597041829L;
 
-		/**
-		 * @see org.apache.wicket.Component#Component(String)
-		 */
-		public LoginFeedbackPanel(final String id)
-		{
-			super(id);
-		}
-	}
+        private String username;
+        private String password;
 
-	/**
-	 * Simple bean that represents the properties for a login attempt (username
-	 * and clear text password).
-	 */
-	public static class SimpleUser implements Serializable
-	{
-		private static final long serialVersionUID = -5617176504597041829L;
+        public String getUsername() {
+            return username;
+        }
 
-		private String username;
-		private String password;
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
-		public String getUsername()
-		{
-			return username;
-		}
+        public String getPassword() {
+            return password;
+        }
 
-		public void setUsername(String username)
-		{
-			this.username = username;
-		}
-
-		public String getPassword()
-		{
-			return password;
-		}
-
-		public void setPassword(String password)
-		{
-			this.password = password;
-		}
-	}
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
 }

@@ -17,9 +17,9 @@
 package net.rrm.ehour.ui.report.panel.aggregate;
 
 
-import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
+import net.rrm.ehour.ui.report.TreeReportModel;
+import net.rrm.ehour.ui.report.aggregate.UserAggregateReportModel;
+import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
@@ -31,17 +31,17 @@ import org.apache.wicket.markup.html.panel.Panel;
 public class EmployeeReportPanelTest extends AbstractReportPanelTest
 {
 	@Override
-	protected Panel createReportPanel(String panelId, TreeReport report)
+	protected Panel createReportPanel(String panelId, TreeReportModel reportModel)
 	{
-		return new EmployeeReportPanel(panelId, report);
+		return new EmployeeReportPanel(panelId, reportModel);
 	}
 
 	/* (non-Javadoc)
 	 * @see net.rrm.ehour.persistence.persistence.ui.report.panel.aggregate.AbstractReportPanelTest#getAggregateReport()
 	 */
 	@Override
-	protected TreeReport getAggregateReport()
+	protected TreeReportModel getAggregateReport()
 	{
-		return new UserAggregateReport(ReportTestUtil.getReportCriteria());
+		return new UserAggregateReportModel(DetailedReportDataObjectMother.getReportCriteria());
 	}
 }

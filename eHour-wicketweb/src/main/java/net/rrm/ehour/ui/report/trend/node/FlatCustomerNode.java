@@ -24,32 +24,21 @@ import java.io.Serializable;
 
 /**
  * Customer node for flat assignments
- **/
+ */
 
-public class FlatCustomerNode extends ReportNode
-{
-	private static final long serialVersionUID = 7854152602780377915L;
-	
-	/**
-	 * 
-	 * @param element
-	 * @param hierarchyLevel
-	 */
-	public FlatCustomerNode(FlatReportElement element, int hierarchyLevel)
-    {
-		this.id = element.getCustomerId();
-		this.columnValues = new String[]{element.getCustomerName()};
-		this.hierarchyLevel = hierarchyLevel;
+public class FlatCustomerNode extends ReportNode {
+    private static final long serialVersionUID = 7854152602780377915L;
+    private int hierarchyLevel;
+
+    public FlatCustomerNode(FlatReportElement element, int hierarchyLevel) {
+        super(element.getCustomerId());
+        this.hierarchyLevel = hierarchyLevel;
+        this.columnValues = new String[]{element.getCustomerName()};
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
-	 */
-	@Override
-	protected Serializable getElementId(ReportElement element)
-	{
-		return ((FlatReportElement)element).getCustomerId();
-	}
+    @Override
+    protected Serializable getElementId(ReportElement element) {
+        return ((FlatReportElement) element).getCustomerId();
+    }
 
 }

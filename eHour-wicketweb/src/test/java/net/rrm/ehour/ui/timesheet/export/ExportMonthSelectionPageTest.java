@@ -25,7 +25,7 @@ import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
+import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 	private ReportCriteriaService reportCriteriaService;
 	private DetailedReportService detailedReportService;
 	private ReportCriteria reportCriteria;
-	
+
 	@Before
 	public void before() throws Exception
 	{
@@ -59,7 +59,7 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 
 		reportCriteriaService = createMock(ReportCriteriaService.class);
 		getMockContext().putBean("reportCriteriaService", reportCriteriaService);
-	
+
 		detailedReportService = createMock(DetailedReportService.class);
 		getMockContext().putBean("detailedReportService", detailedReportService);
 		
@@ -72,7 +72,7 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 				.andReturn(reportCriteria);
 
 		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-				.andReturn(ReportTestUtil.getFlatReportData());
+				.andReturn(DetailedReportDataObjectMother.getFlatReportData());
 		replay(timesheetService, reportCriteriaService, detailedReportService);
 		
 		getTester().startPage(ExportMonthSelectionPage.class);		

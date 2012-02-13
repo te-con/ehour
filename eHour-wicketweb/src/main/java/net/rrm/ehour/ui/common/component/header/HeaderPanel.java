@@ -32,7 +32,6 @@ import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
-import net.rrm.ehour.ui.report.user.page.UserReportPage;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
@@ -85,9 +84,7 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 		}
 
 		{
-			MenuItem item = new MenuItem("nav.report");
-			item.addSubMenu(new MenuItem("nav.report.userreport", UserReportPage.class));
-			item.addSubMenu(new MenuItem("nav.report.report", GlobalReportPage.class));
+			MenuItem item = new MenuItem("nav.report", GlobalReportPage.class);
 			items.add(item);
 		}
 
@@ -106,7 +103,6 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 			item.addSubMenu(new MenuItem("nav.admin.assignments", AssignmentAdmin.class));
 			items.add(item);
 		}
-
 
 		{
 			MenuItem item = new MenuItem("nav.admin");

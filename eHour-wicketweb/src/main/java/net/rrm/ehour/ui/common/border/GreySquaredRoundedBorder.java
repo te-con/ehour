@@ -41,19 +41,13 @@ public class GreySquaredRoundedBorder extends Border
 		super(id);
 		
 		WebMarkupContainer greyFrame = new WebMarkupContainer("greyFrame");
-		
-		if (width != null)
-		{
-			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.getValue().toString() + "px"));
-		}
-		
 		add(greyFrame);
 		
 		WebMarkupContainer greySquaredFrame = new WebMarkupContainer("greySquaredFrame");
 		
 		if (width != null)
 		{
-			greySquaredFrame.add(new SimpleAttributeModifier("style", "width: " + width.getValue().toString() + "px"));
+			greySquaredFrame.add(new SimpleAttributeModifier("style", "width: " + width.toString()));
 		}
 		
 		greySquaredFrame.add(getBodyContainer());

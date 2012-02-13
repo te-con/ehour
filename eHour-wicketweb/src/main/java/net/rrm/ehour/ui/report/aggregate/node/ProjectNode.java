@@ -29,12 +29,10 @@ public class ProjectNode extends ReportNode
 {
 	private static final long serialVersionUID = -8068372785700592324L;
 
-	public ProjectNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
-    {
-        this.id = aggregate.getProjectAssignment().getProject().getPK();
+	public ProjectNode(AssignmentAggregateReportElement aggregate) {
+        super(aggregate.getProjectAssignment().getProject().getPK());
         this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getName(),
-                                         aggregate.getProjectAssignment().getProject().getProjectCode()};
-        this.hierarchyLevel = hierarchyLevel;
+                aggregate.getProjectAssignment().getProject().getProjectCode()};
     }
 
     @Override

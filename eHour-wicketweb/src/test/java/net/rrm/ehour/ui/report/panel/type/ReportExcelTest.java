@@ -23,13 +23,14 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.report.TreeReport;
-import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReport;
-import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReport;
-import net.rrm.ehour.ui.report.aggregate.UserAggregateReport;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
+import net.rrm.ehour.ui.report.TreeReportModel;
+import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReportModel;
+import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReportModel;
+import net.rrm.ehour.ui.report.aggregate.UserAggregateReportModel;
+import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportExcel;
 import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportExcel;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportExcel;
@@ -53,10 +54,10 @@ public class ReportExcelTest extends AbstractSpringWebAppTester
 		aggregateReportService = createMock(AggregateReportService.class);
 		getMockContext().putBean("aggregateReportService", aggregateReportService);
 		
-		criteria = ReportTestUtil.getReportCriteria();
+		criteria = DetailedReportDataObjectMother.getReportCriteria();
 		
 		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-			.andReturn(ReportTestUtil.getAssignmentReportData());
+			.andReturn(AggregateReportDataObjectMother.getAssignmentReportData());
 		
 		replay(aggregateReportService);
 	}
@@ -70,21 +71,21 @@ public class ReportExcelTest extends AbstractSpringWebAppTester
 	@Test
 	public void testCustomerReportExcel() throws Exception
 	{
-		TreeReport report = new CustomerAggregateReport(criteria);
-		new CustomerReportExcel().getExcelData(report);
+		TreeReportModel reportModel = new CustomerAggregateReportModel(criteria);
+		new CustomerReportExcel().getExcelData(reportModel);
 	}
 	
 	@Test
 	public void testEmployeeReportExcel() throws Exception
 	{
-		TreeReport report = new UserAggregateReport(criteria);
-		new EmployeeReportExcel().getExcelData(report);
+		TreeReportModel reportModel = new UserAggregateReportModel(criteria);
+		new EmployeeReportExcel().getExcelData(reportModel);
 	}
 	
 	@Test
 	public void testProjectReportExcel() throws Exception
 	{
-		TreeReport report = new ProjectAggregateReport(criteria);
-		new ProjectReportExcel().getExcelData(report);
+		TreeReportModel reportModel = new ProjectAggregateReportModel(criteria);
+		new ProjectReportExcel().getExcelData(reportModel);
 	}	
 }

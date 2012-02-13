@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
@@ -23,6 +24,7 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.apache.wicket.model.ResourceModel;
@@ -44,19 +46,16 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 		super(pageTitle, null);
 	}
 
-	protected ReportCriteria getReportCriteria(boolean singleUser)
+	protected ReportCriteria getReportCriteria()
 	{
 		UserCriteria userCriteria = EhourWebSession.getSession().getUserCriteria();
 		
 		if (userCriteria == null)
 		{
-			userCriteria = initUserCriteria(singleUser);
-			EhourWebSession.getSession().setUserCriteria(userCriteria);
+			userCriteria = initUserCriteria();
 		}
-		else
-		{
-			setSingleUserCriteria(singleUser, userCriteria);
-		}
+
+        setSingleUserCriteria(userCriteria);
 		
 		AvailableCriteria availableCriteria = newAvailableCriteria();
 
@@ -77,23 +76,23 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 	/**
 	 * Initialize user criteria 
 	 */
-	private UserCriteria initUserCriteria(boolean singleUser)
+	private UserCriteria initUserCriteria()
 	{
-		UserCriteria userCriteria = new UserCriteria();
-		
-		setSingleUserCriteria(singleUser, userCriteria);
-		
+        UserCriteria userCriteria = new UserCriteria();
+
 		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
-		
+        EhourWebSession.getSession().setUserCriteria(userCriteria);
+
 		return userCriteria;
 	}
 
-	private void setSingleUserCriteria(boolean singleUser, UserCriteria userCriteria)
+	private void setSingleUserCriteria(UserCriteria userCriteria)
 	{
-		userCriteria.setSingleUser(singleUser);
+        boolean hasReportRole = AuthUtil.hasRole(UserRole.ROLE_REPORT);
+
+		userCriteria.setSingleUser(!hasReportRole);
 		
-		if (singleUser)
-		{
+		if (!hasReportRole) {
 			userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
 		}
 	}	

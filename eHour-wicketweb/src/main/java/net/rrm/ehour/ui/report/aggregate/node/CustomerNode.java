@@ -24,38 +24,23 @@ import java.io.Serializable;
 
 /**
  * Customer node in report
- **/
+ */
 
-public class CustomerNode extends ReportNode
-{
-	private static final long serialVersionUID = -356525734449023397L;
+public class CustomerNode extends ReportNode {
+    private static final long serialVersionUID = -356525734449023397L;
 
-	public CustomerNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
-    {
-		if (aggregate.getProjectAssignment() != null)
-		{
-	        this.id = aggregate.getProjectAssignment().getProject().getCustomer().getPK();
-	        this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
-	        this.hierarchyLevel = hierarchyLevel;
-		}
+    public CustomerNode(AssignmentAggregateReportElement aggregate) {
+        super(aggregate.getProjectAssignment().getProject().getCustomer().getPK());
+
+        if (aggregate.getProjectAssignment() != null) {
+            this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
+        }
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.aggregate.value.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
-	 */
-	@Override
-    protected Serializable getElementId(ReportElement element)
-    {
-		AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
-		
-		if (aggregate.getProjectAssignment() != null)
-		{
-			return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
-		}
-		else
-		{
-			return Integer.valueOf(1);
-		}
+    @Override
+    protected Serializable getElementId(ReportElement element) {
+        AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement) element;
+
+        return aggregate.getProjectAssignment() != null ? aggregate.getProjectAssignment().getProject().getCustomer().getPK() : Integer.valueOf(1);
     }
 }

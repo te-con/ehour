@@ -25,7 +25,7 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
 
@@ -77,7 +77,7 @@ public class PmReportPanel extends AbstractReportPanel
 				
 				item.add(new Label("user", aggregate.getProjectAssignment().getUser().getFullName()));
 				item.add(new Label("role", aggregate.getProjectAssignment().getRole()));
-				item.add(new Label("type", new ResourceModel(CommonWebUtil.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType()))));
+				item.add(new Label("type", new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType()))));
 				item.add(new Label("booked", new Model<Float>(aggregate.getHours().floatValue())));
 				item.add(new Label("allotted", new Model<Float>(aggregate.getProjectAssignment().getAllottedHours())));
 				item.add(new Label("overrun", new Model<Float>(aggregate.getProjectAssignment().getAllowedOverrun())));

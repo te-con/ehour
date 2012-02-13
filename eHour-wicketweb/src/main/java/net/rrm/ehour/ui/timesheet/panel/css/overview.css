@@ -10,10 +10,8 @@ div.MonthAggregateTable div.AggregateHeader
 	font:  bold 1em/1em Geneva, Arial, Helvetica, sans-serif;		
 	color: #3b556d;
 	clear: both;
-	border-bottom-width: 1px;
-	border-bottom-color:  #e8e8e8;
-	border-bottom-style: solid;
-	padding-bottom: 1px;
+    border-bottom: 1px solid #e8e8e8;
+    padding-bottom: 1px;
 	margin-bottom: 3px;
 	height: 1em !important;
 	min-height: 1em;
@@ -35,14 +33,12 @@ div.MonthAggregateTable div.SummaryRow
 
 div.MonthAggregateTable div.TotalRow
 {
-	
-	border-top-width: 1px;
-	border-top-color:  #e8e8e8;
-	border-top-style: solid;
-	clear:both;
+
+    border-top: 1px solid #e8e8e8;
+    clear:both;
 	font:  bold 1em/1em Geneva, Arial, Helvetica, sans-serif;		
 	color: #3b556d;
-	padding-top: 2x;
+	padding-top: 2px;
 	padding-bottom: 5px;
 	
 }
@@ -77,22 +73,22 @@ div.MonthAggregateTable div.TotalRow
 
 .MonthOverviewIEWorkAround
 {
-	margin: -15px 0 0 0;
+	margin: -3px 0 0 0;
 	padding: 0;
 }
 
-.MonthOverviewMonthTable
+.MonthOverviewMonthTable, .MonthOverviewIEWorkAround
 {
+    padding-right: 5px;
+    width: 100%;
 }
 
 .MonthOverviewMonthTable td
 {
 	color:	#536e87;
 	height:	18px;
-	width: 90px;
-	border-right-style: solid;
-	border-right-color:#a1bcd7;
-	border-right-width: 1px;
+	min-width: 80px;
+    border-right: 1px solid #a1bcd7;
 }
 	
 .MonthOverviewMonthTable tr.weekColumnRow
@@ -114,7 +110,7 @@ div.MonthAggregateTable div.TotalRow
 
 .MonthOverviewMonthTable tr.weekColumnRow td.weekNumber
 {
-	width: 50px;
+	min-width: 50px;
 	border: 0;
 }
 
@@ -148,7 +144,7 @@ div.MonthAggregateTable div.TotalRow
 .MonthOverviewMonthTable tr.dateRow td.weekNumber
 {
 	border-width: 0;
-	width: 50px;
+	min-width: 50px;
 }
 
 
@@ -163,10 +159,8 @@ div.MonthAggregateTable div.TotalRow
 	text-align:	left;
 	vertical-align: top;
 	background-color: #fefeff;
-	border-bottom-style: solid;
-	border-bottom-color:#a1bcd7;
-	border-bottom-width: 1px;
-	width: inherit;
+    border-bottom: 1px solid #a1bcd7;
+    width: inherit;
 }
 
 .MonthOverviewMonthTable tr.hourRow td.weekNumber
@@ -175,7 +169,7 @@ div.MonthAggregateTable div.TotalRow
 	vertical-align: bottom;
 	font:  0.9em/1 Geneva, Arial, Helvetica, sans-serif;	
 	padding: 0 0 2px 5px;
-	width: 55px;
+	min-width: 55px;
 	border-right-width: 0;
 }
 
@@ -192,9 +186,7 @@ div.MonthAggregateTable div.TotalRow
 .MonthOverviewMonthTable tr.hourRow td.noMonthBefore
 {
 	background-color: transparent;
-	border-bottom-style: solid;
-	border-bottom-color:#a1bcd7;
-	border-bottom-width: 1px;
+    border-bottom: 1px solid #a1bcd7;
 }
 
 .MonthOverviewMonthTable tr.hourRow td.noMonthAfter

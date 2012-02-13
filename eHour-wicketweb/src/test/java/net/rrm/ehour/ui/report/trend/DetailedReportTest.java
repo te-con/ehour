@@ -29,7 +29,7 @@ import java.util.Locale;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringInjectorTester;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
+import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,12 +57,12 @@ public class DetailedReportTest extends AbstractSpringInjectorTester
 	public void testCreateDetailedReport()
 	{
 		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-			.andReturn(ReportTestUtil.getFlatReportData());
+			.andReturn(DetailedReportDataObjectMother.getFlatReportData());
 		
 		replay(detailedReportService);
 		
-		DetailedReport detailedReport = new DetailedReport(ReportTestUtil.getReportCriteria(), Locale.ENGLISH);
-		assertEquals(6, detailedReport.getReportData().getReportElements().size());
+		DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
+		assertEquals(4, detailedReport.getReportData().getReportElements().size());
 
 		verify(detailedReportService);
 	}

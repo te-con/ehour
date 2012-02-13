@@ -19,36 +19,49 @@ package net.rrm.ehour.ui.common.util;
 
 /**
  * Created on Apr 22, 2009, 12:50:29 AM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public enum WebGeo
-{
-	NOT_DEFINED(-1),
-	W_CONTENT_XXSMALL(300),
-	W_CONTENT_XSMALL(350),
-	W_CONTENT_SMALL(450),
-	W_CONTENT_MEDIUM(730),
-	W_CONTENT_WIDE(950),
-	W_CONTENT_ADMIN_TAB(500),
-	W_CONTENT_ADMIN_TAB_WIDE(550),
-	W_ENTRY_SELECTOR(250),
-	W_CHART_SMALL(350),
-	W_CHART_MEDIUM(460),
-	W_CHART_WIDE(700),
-	H_CHART(200);
-	
-	private Integer value;
-	
-	private WebGeo(Integer value)
-	{
-		this.value = value;
-	}
-	
-	public Integer getValue()
-	{
-		return value;
-	}
-	
-	
+public enum WebGeo {
+    NOT_DEFINED(-1),
+    W_CONTENT_XXSMALL(300),
+    W_CONTENT_XSMALL(350),
+    W_CONTENT_SMALL(450),
+    W_CONTENT_MEDIUM(730),
+    W_CONTENT_WIDE(950),
+    W_CONTENT_ADMIN_TAB(500),
+    W_CONTENT_ADMIN_TAB_WIDE(550),
+    W_ENTRY_SELECTOR(250),
+    W_CHART_SMALL(350),
+    W_CHART_MEDIUM(460),
+    W_CHART_WIDE(700),
+    H_CHART(200),
+    W_FULL(95, "%");
+
+    private Integer value;
+    private String unit;
+
+    private WebGeo(Integer value) {
+        this(value, "px");
+    }
+
+
+    private WebGeo(Integer value, String unit) {
+        this.value = value;
+        this.unit = unit;
+    }
+
+    public Integer getWidth() {
+//        if ("px".equalsIgnoreCase(unit)) {
+            return value;
+//        } else {
+//            throw new IllegalArgumentException("Unit is not in pixel");
+//        }
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("%d%s", value, unit);
+    }
 }

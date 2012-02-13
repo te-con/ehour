@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.renderers;
 
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 
 public class UserRoleRenderer  extends LocalizedResourceRenderer<UserRole>
 {
@@ -29,7 +29,7 @@ public class UserRoleRenderer  extends LocalizedResourceRenderer<UserRole>
 	@Override
 	protected String getResourceKey(UserRole role)
 	{
-		return CommonWebUtil.getResourceKeyForUserRole(role);
+		return WebUtils.getResourceKeyForUserRole(role);
 	}
 
 }

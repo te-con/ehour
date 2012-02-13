@@ -24,7 +24,6 @@ import org.apache.wicket.model.IModel;
 
 /**
  * Blue navigation side panel
- * TODO convert to border
  **/
 
 public abstract class SidePanel extends Panel
@@ -43,12 +42,6 @@ public abstract class SidePanel extends Panel
 		add(new StyleSheetReference("navSidePanelStyle", navSidePanelStyle()));
 	}
 
-	
-	/**
-	 * Create a style
-	 * 
-	 * @return a style
-	 */
 	protected ResourceReference navSidePanelStyle()
 	{
 		return new CompressedResourceReference(SidePanel.class, "style/sidePanel.css");

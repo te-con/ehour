@@ -25,7 +25,7 @@ import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 
 import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.util.tester.FormTester;
@@ -41,7 +41,7 @@ public class LoginTest extends AbstractSpringWebAppTester
 	public void shouldLoginPageRender()
 	{
 		Roles authorizedRoles = new Roles();
-		authorizedRoles.add(CommonWebUtil.ROLE_ADMIN);
+		authorizedRoles.add(WebUtils.ROLE_ADMIN);
 
 		webApp.setAuthorizedRoles(authorizedRoles);
 

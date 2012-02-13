@@ -1,28 +1,40 @@
-.reportTable
+.reportContent
 {
-	padding: 0;
-	width: 100%;
+    padding-left: 5px;
 }
 
+.reportContent div
+{
+    padding-right: 5px;
+}
+
+.reportTable
+{
+	width: 100%;
+}
 
 .reportTable tr.dataRow
 {
 	background-color: #eef6fe;
 	padding-bottom: 1px;
-	border-top-style: solid;
-	border-top-color:#a1bcd7;
-	border-top-width: 1px;
+    border-top: 1px solid #a1bcd7;
 }
 
 
 .reportTable tr.dataRow td
 {
 	color:	#536e87;
-	border-right-style: solid;
-	border-right-color:#a1bcd7;
-	border-right-width: 1px;
-	padding: 0 5px 0 5px;
+    border-right: 1px solid #a1bcd7;
+    padding: 0 5px 0 5px;
 	font:  0.9em Geneva, Arial, Helvetica, sans-serif;	
+}
+
+.firstRow {
+    border-top: 1px solid #a1bcd7;
+}
+
+.firstColumn {
+    border-left: 1px solid #a1bcd7;
 }
 
 .reportTable tr.dataRow td.lastChild
@@ -57,10 +69,8 @@
 .reportTable tr.totalRow td
 {
 	color:	#536e87;
-	border-top-style: solid;
-	border-top-color:#a1bcd7;
-	border-top-width: 1px;
-	padding: 0 5px 5px 5px;
+    border-top: 1px solid #a1bcd7;
+    padding: 0 5px 5px 5px;
 	font: bold 0.9em Geneva, Arial, Helvetica, sans-serif;
 }
 
@@ -69,14 +79,8 @@
 	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
 	color: #536e87;
 	margin: 0;
-	padding: 0 5px 0px 5px;
+	padding: 0 5px 0 5px;
 	text-align: left;
-}
-
-
-.reportTable
-{
-	padding: 0;
 }
 
 .reportTable tr.reportTotal td
@@ -90,19 +94,15 @@
 {
 	background-color: #eef6fe;
 	padding-bottom: 1px;
-	border-top-style: solid;
-	border-top-color:#a1bcd7;
-	border-top-width: 1px;
+    border-top: 1px solid #a1bcd7;
 }
 
 
 .reportTable tr.customerRow td
 {
 	color:	#536e87;
-	border-right-style: solid;
-	border-right-color:#a1bcd7;
-	border-right-width: 1px;
-	padding: 0 5px 0 5px;
+    border-right: 1px solid #a1bcd7;
+    padding: 0 5px 0 5px;
 }
 
 .reportTable tr.customerRow td.lastChild

@@ -23,90 +23,61 @@ import java.util.Map;
 
 /**
  * Representation of a week
- **/
+ */
 
-public class CalendarWeek implements Serializable
-{
-	private static final long serialVersionUID = -6927161077692797646L;
-	private	int		week;
-	private	int		year;
+public class CalendarWeek implements Serializable {
+    private static final long serialVersionUID = -6927161077692797646L;
 
-	private Map<Integer, CalendarDay>	weekDays;
+    private int week;
+    private int year;
 
-	private Calendar	weekStart;
+    private Map<Integer, CalendarDay> weekDays;
 
-	/**
-	 * 
-	 */
-	public CalendarWeek()
-	{
-		weekDays = new HashMap<Integer, CalendarDay>();
-	}
+    private Calendar weekStart;
+    private ElementLocation location;
 
-	/**
-	 * 
-	 * @param weekDay
-	 * @param monthDay
-	 * @param booked
-	 */
-	public void addDayInWeek(int weekDay, CalendarDay calendarDay)
-	{
-		weekDays.put(weekDay, calendarDay);
-	}
+    public CalendarWeek(ElementLocation location) {
+        this.location = location;
+        weekDays = new HashMap<Integer, CalendarDay>();
+    }
 
-	/**
-	 * Get day 
-	 * @param weekDay
-	 * @return
-	 */
-	public CalendarDay getDay(int weekDay)
-	{
-		return weekDays.get(weekDay);
-	}
+    public void addDayInWeek(int weekDay, CalendarDay calendarDay) {
+        weekDays.put(weekDay, calendarDay);
+    }
 
+    public CalendarDay getDay(int weekDay) {
+        return weekDays.get(weekDay);
+    }
 
-	/**
-	 * @return the week
-	 */
-	public int getWeek()
-	{
-		return week;
-	}
-	/**
-	 * @param week the week to set
-	 */
-	public void setWeek(int week)
-	{
-		this.week = week;
-	}
-	/**
-	 * @return the year
-	 */
-	public int getYear()
-	{
-		return year;
-	}
-	/**
-	 * @param year the year to set
-	 */
-	public void setYear(int year)
-	{
-		this.year = year;
-	}
+    public void setLocation(ElementLocation location) {
+        this.location = location;
+    }
 
-	/**
-	 * @return the weekStart
-	 */
-	public Calendar getWeekStart()
-	{
-		return weekStart;
-	}
+    public ElementLocation getLocation() {
+        return location;
+    }
 
-	/**
-	 * @param weekStart the weekStart to set
-	 */
-	public void setWeekStart(Calendar weekStart)
-	{
-		this.weekStart = weekStart;
-	}
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public Calendar getWeekStart() {
+        return weekStart;
+    }
+
+    public void setWeekStart(Calendar weekStart) {
+        this.weekStart = weekStart;
+    }
 }

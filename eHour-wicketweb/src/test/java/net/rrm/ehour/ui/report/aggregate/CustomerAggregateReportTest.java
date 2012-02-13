@@ -24,9 +24,9 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringInjectorTester;
-import net.rrm.ehour.ui.report.panel.ReportTestUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -56,13 +56,13 @@ public class CustomerAggregateReportTest extends AbstractSpringInjectorTester
     public void testCreateReport() throws Exception
     {
 		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-			.andReturn(ReportTestUtil.getAssignmentReportData());
+			.andReturn(AggregateReportDataObjectMother.getAssignmentReportData());
 		replay(aggregateReportService);
         UserCriteria userCriteria = new UserCriteria();
 
         ReportCriteria rc = new ReportCriteria(userCriteria);
         
-        CustomerAggregateReport aggReport = new CustomerAggregateReport(rc);
+        CustomerAggregateReportModel aggReport = new CustomerAggregateReportModel(rc);
 
         assertEquals(6, aggReport.getReportData().getReportElements().size());
         

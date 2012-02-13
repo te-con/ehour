@@ -1,25 +1,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    
-<html 
-	xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:wicket="http://wicket.sourceforge.net/">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-    <body>
-    	<wicket:extend>
-    	 	<div style="float: left">
-    	 		<br />
-	    		<div class="SidePanelLoc" wicket:id="sidePanel">
-		    	</div>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
-		    	<br clear="all" />
-		    	
-	    		<div class="ContextualHelp" wicket:id="contextHelp">
-		    	</div>
-		    </div>
-		    	    	
-    		<div class="ContentPanelLoc" wicket:id="contentContainer" />
-	    	
-    	</wicket:extend>
-    </body>
+<body>
+<wicket:extend>
+    <div class="colmask leftmenu">
+        <div class="colright">
+            <div class="col1wrap">
+                <div class="col1">
+                    <div class="ContentPanelLoc" wicket:id="contentContainer"></div>
+                </div>
+            </div>
+
+            <div class="col2">
+                <br/>
+
+                <div class="SidePanelLoc" wicket:id="sidePanel">
+                </div>
+
+                <br clear="all"/>
+
+                <div class="ContextualHelp" wicket:id="contextHelp">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</wicket:extend>
+</body>
 </html>

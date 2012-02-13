@@ -29,10 +29,6 @@ import org.apache.wicket.markup.html.border.Border;
 
 public class CustomTitledGreyRoundedBorder extends Border
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7069112450640627111L;
 
 	public CustomTitledGreyRoundedBorder(String id, Component title)
@@ -45,11 +41,6 @@ public class CustomTitledGreyRoundedBorder extends Border
 		super(id);
 		
 		WebMarkupContainer greyFrame = new WebMarkupContainer("greyFrame");
-		
-		if (width != null)
-		{
-			greyFrame.add(new SimpleAttributeModifier("style", "width: " + width.getValue().toString() + "px"));
-		}
 		
 		greyFrame.add(title);
 		add(greyFrame);

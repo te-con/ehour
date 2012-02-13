@@ -98,7 +98,7 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 
 	private void setCriteriaModel(Calendar forMonth)
 	{
-		ReportCriteria reportCriteria = getReportCriteria(true);
+		ReportCriteria reportCriteria = getReportCriteria();
 		
 		reportCriteria.getUserCriteria().setReportRange(DateUtil.getDateRangeForMonth(forMonth));
 		

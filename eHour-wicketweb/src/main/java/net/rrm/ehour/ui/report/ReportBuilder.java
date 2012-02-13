@@ -40,14 +40,9 @@ public class ReportBuilder
 
 	/**
 	 * Create report
-	 * @param reportData
-	 * @param nodeFactory
-	 * @return
 	 */
 	public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory)
 	{
-		Date profileStart = new Date();
-
         List<ReportNode> reportNodes = new ArrayList<ReportNode>();
         
         for (ReportElement reportElement : reportData.getReportElements() )
@@ -60,8 +55,6 @@ public class ReportBuilder
             }
         }
         
-		logger.debug("Report took " + (new Date().getTime() - profileStart.getTime()) + "ms to create");
-
         return reportNodes;
     }
 

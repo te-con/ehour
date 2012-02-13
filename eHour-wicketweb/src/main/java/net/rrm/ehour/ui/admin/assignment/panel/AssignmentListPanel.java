@@ -27,7 +27,7 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
-import net.rrm.ehour.ui.common.util.CommonWebUtil;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -164,7 +164,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void>
 				item.add(dateEnd);
 				
 				item.add(new Label("assignmentType", 
-							new ResourceModel(CommonWebUtil.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
+							new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
 				
 				item.add(new Label("role",
 									(StringUtils.isBlank(assignment.getRole()))
@@ -191,7 +191,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void>
 		
 		if (user.getUserId() != null)
 		{
-			assignments = projectAssignmentService.getProjectAssignmentsForUser(user, getEhourWebSession().getHideInactiveSelections().booleanValue());		
+			assignments = projectAssignmentService.getProjectAssignmentsForUser(user, getEhourWebSession().getHideInactiveSelections());
 		}
 		
 		if (assignments != null)

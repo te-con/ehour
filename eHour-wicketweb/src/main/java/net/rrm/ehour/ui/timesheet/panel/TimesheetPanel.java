@@ -310,8 +310,8 @@ public class TimesheetPanel extends Panel implements Serializable
         {
             public Object component(Label label)
             {
-                if (label.getId().equals("status"))
-                {
+                if (label.getId().equals("status")) {
+                    label.setVisible(true);
                     target.addComponent(label);
                 }
 

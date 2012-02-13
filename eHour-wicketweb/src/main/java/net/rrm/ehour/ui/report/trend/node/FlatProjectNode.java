@@ -23,33 +23,28 @@ import net.rrm.ehour.ui.report.node.ReportNode;
 import java.io.Serializable;
 
 /**
- * Flat project report node 
- **/
+ * Flat project report node
+ */
 
-public class FlatProjectNode extends ReportNode
-{
-	private static final long serialVersionUID = -9117864025503755613L;
+public class FlatProjectNode extends ReportNode {
+    private static final long serialVersionUID = -9117864025503755613L;
 
-	/**
-	 * 
-	 * @param element
-	 * @param hierarchyLevel
-	 */
-	public FlatProjectNode(FlatReportElement element, int hierarchyLevel)
-    {
-		this.id = element.getProjectId();
-		this.columnValues = new String[]{element.getProjectName()};
-		this.hierarchyLevel = hierarchyLevel;
+    /**
+     * @param element
+     */
+    public FlatProjectNode(FlatReportElement element) {
+
+        super(element.getProjectId());
+        this.columnValues = new String[]{element.getProjectName()};
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
-	 */
-	@Override
-	protected Serializable getElementId(ReportElement element)
-	{
-		return ((FlatReportElement)element).getProjectId();
-	}
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
+      */
+    @Override
+    protected Serializable getElementId(ReportElement element) {
+        return ((FlatReportElement) element).getProjectId();
+    }
 
 }

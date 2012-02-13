@@ -24,9 +24,6 @@ import org.apache.wicket.markup.html.border.Border;
 
 public class GreyBlueRoundedBorder extends Border
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -9055202623773090602L;
 
 	public GreyBlueRoundedBorder(String id)

@@ -118,15 +118,15 @@ public class AuthUtil
 	{
 		Class<? extends Page>	homepage;
 
-		if (roles.contains(CommonWebUtil.ROLE_CONSULTANT))
+		if (roles.contains(WebUtils.ROLE_CONSULTANT))
 		{
 			homepage = MonthOverviewPage.class;
 		}
-		else if (roles.contains(CommonWebUtil.ROLE_ADMIN))
+		else if (roles.contains(WebUtils.ROLE_ADMIN))
 		{
 			homepage = MainConfigPage.class;
 		}
-		else if (roles.contains(CommonWebUtil.ROLE_REPORT))
+		else if (roles.contains(WebUtils.ROLE_REPORT))
 		{
 			homepage = GlobalReportPage.class;
 		}

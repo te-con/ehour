@@ -23,83 +23,51 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
-/**
- *  
- **/
+public abstract class AbstractReportPanel extends Panel {
+    private static final long serialVersionUID = 1L;
 
-public abstract class AbstractReportPanel extends Panel
-{
-	private static final long serialVersionUID = 1L;
+    private WebGeo webWidth = WebGeo.W_CONTENT_WIDE;
 
-	private WebGeo webWidth= WebGeo.W_CONTENT_WIDE;
-	
-	private WebGeo	chartWidth;
-	private WebGeo	chartHeight;
-	
-	/**
-	 * 
-	 * @param id
-	 */
-	public AbstractReportPanel(String id)
-	{
-		this(id, WebGeo.NOT_DEFINED);
-	}
-	
-	/**
-	 * 
-	 * @param id
-	 */
-	public AbstractReportPanel(String id, WebGeo chartWidth)
-	{
-		this(id, null, chartWidth, WebGeo.W_CONTENT_WIDE);
-	}	
-	
-	/**
-	 * 
-	 * @param id
-	 */
-	public AbstractReportPanel(String id, WebGeo chartWidth, WebGeo reportWidth)
-	{
-		this(id, null, chartWidth, reportWidth);
-	}	
+    private WebGeo chartWidth;
+    private WebGeo chartHeight;
 
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 */
-	public AbstractReportPanel(String id, IModel<Void> model, WebGeo chartWidth, WebGeo webWidth)
-	{
-		super(id, model);
-		
-		EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-		
-		this.webWidth = webWidth; 
-		
-		if (chartWidth == WebGeo.NOT_DEFINED)
-		{
-			this.chartWidth = !config.isShowTurnover() ? WebGeo.W_CHART_WIDE : WebGeo.W_CHART_SMALL;
-		}
-		else
-		{
-			this.chartWidth = chartWidth;
-		}
-		
-		chartHeight = WebGeo.H_CHART;		
-	}
-	
-	public WebGeo getChartWidth()
-	{
-		return chartWidth;
-	}
-	
-	public WebGeo getChartHeight()
-	{
-		return chartHeight;
-	}
-	
-	protected WebGeo getReportWidth()
-	{
-		return webWidth;
-	}
+    public AbstractReportPanel(String id) {
+        this(id, WebGeo.NOT_DEFINED);
+    }
+
+    public AbstractReportPanel(String id, WebGeo chartWidth) {
+        this(id, null, chartWidth, WebGeo.W_CONTENT_WIDE);
+    }
+
+    public AbstractReportPanel(String id, WebGeo chartWidth, WebGeo reportWidth) {
+        this(id, null, chartWidth, reportWidth);
+    }
+
+    public AbstractReportPanel(String id, IModel<Void> model, WebGeo chartWidth, WebGeo webWidth) {
+        super(id, model);
+
+        EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+
+        this.webWidth = webWidth;
+
+        if (chartWidth == WebGeo.NOT_DEFINED) {
+            this.chartWidth = !config.isShowTurnover() ? WebGeo.W_CHART_WIDE : WebGeo.W_CHART_SMALL;
+        } else {
+            this.chartWidth = chartWidth;
+        }
+
+        chartHeight = WebGeo.H_CHART;
+    }
+
+    public WebGeo getChartWidth() {
+        return chartWidth;
+    }
+
+    public WebGeo getChartHeight() {
+        return chartHeight;
+    }
+
+    protected WebGeo getReportWidth() {
+        return webWidth;
+    }
 }
