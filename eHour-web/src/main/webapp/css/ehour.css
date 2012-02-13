@@ -1,649 +1,683 @@
+*:focus {
+    outline: none;
+}
+
 a {
-	outline: none;
+    outline: none;
 }
 
 a:link {
-	color: #233e55;
-	font-weight: normal;
-	text-decoration: none;
+    color: #233e55;
+    font-weight: normal;
+    text-decoration: none;
 }
 
 a:visited {
-	color: #233e55;
-	font-weight: normal;
-	text-decoration: none;
+    color: #233e55;
+    font-weight: normal;
+    text-decoration: none;
 }
 
 a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 body {
-	background: white;
-	font: 0.8em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
-	color: black;
-	margin: 0px;
+    background: white;
+    font: 0.9em/1em Geneva, Arial, Helvetica, sans-serif;
+    color: black;
+    margin: 0;
+    padding-bottom: 50px;
 }
 
 div.SidePanelLoc {
-	width: 243px;
-	margin: 0 0 0 5px;
-	padding: 0;
-	float: left;
+    width: 243px;
+    margin: 0 0 0 5px;
+    padding: 0;
+    float: left;
 }
 
 div.AdminSidePanelLocation {
-	width: 100px;
-	margin: 0 0 0 5px;
-	padding: 0;
-	float: left;
+    width: 100px;
+    margin: 0 0 0 5px;
+    padding: 0;
+    float: left;
 }
 
 div.ContentPanelLoc {
-	margin: 0;
-	padding: 0;
-	float: left;
-	WIDTH: 600px;
+    margin: 0;
+    padding: 0 15px 0 0;
+    float: left;
+    width: 100%;
+    min-width: 600px;
+
 }
 
 div.ContentPanelLocFixed {
-	width: 100%;
-	min-width: 500px;
-	max-width: 780px;
-	margin: 0;
-	padding: 0;
+    width: 100%;
+    min-width: 500px;
+    max-width: 780px;
+    margin: 0;
+    padding: 0;
 }
 
 div.GreyFrame {
-	text-align: left;
-	margin: 0 20px 0 0;
-	padding: 0;
-	background-color: white;
+    text-align: left;
+    margin: 0 20px 0 0;
+    padding: 0;
+    background-color: white;
 }
 
 div.GreyFrame h1 {
-	text-align: left;
-	font: bold 1.0em Arial, Geneva, Helvetica, sans-serif;
-	color: #536e87;
-	margin: 0 0 3px 16px;
-	padding: 0;
+    text-align: left;
+    font: bold 1.0em Arial, Geneva, Helvetica, sans-serif;
+    color: #536e87;
+    margin: 0 0 3px 16px;
+    padding: 0;
 }
 
 div.GreyFrame div.ExportIcons {
-	float: right;
-	padding-right: 16px;
+    float: right;
+    padding-right: 16px;
 }
 
 div.GreyFrameContainer {
-	background: url(../img/grey_frame/corner_left_top.gif) top left
-		no-repeat;
+    background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
 }
 
 div.GreyFrameContainerSquared {
-	background: url(../img/grey_frame/pixel_grey.gif);
-	width: 400px;
-	font: 1.0em Geneva, Arial, Helvetica, sans-serif;
-	color: #3b556d;
+    background: url(../img/grey_frame/pixel_grey.gif);
+    width: 400px;
+    font: 1.0em Geneva, Arial, Helvetica, sans-serif;
+    color: #3b556d;
 }
 
 div.GreyFrameContainerSquared h3 {
-	background: url(../img/grey_frame/corner_right_top.gif) top right
-		no-repeat;
-	line-height: 16px;
-	padding: 0;
-	margin: 0 0 0px 16px;
-	font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
-	color: #536e87;
+    background: url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
+    line-height: 16px;
+    padding: 0;
+    margin: 0 0 0 16px;
+    font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
+    color: #536e87;
 }
 
 div.GreyFrameContainer h3 {
-	background: url(../img/grey_frame/corner_right_top.gif) top right
-		no-repeat;
-	line-height: 16px;
-	padding: 0;
-	margin: 0 0 0px 16px;
-	font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
-	color: #536e87;
+    background: url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
+    line-height: 16px;
+    padding: 0;
+    margin: 0 0 0 16px;
+    font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
+    color: #536e87;
 }
 
 div.GreyFrameBody {
-	background: url(../img/grey_frame/pixel_grey.gif);
-	margin: 0px;
-	padding: 0;
-	clear: both;
+    background: url(../img/grey_frame/pixel_grey.gif);
+    margin: 0;
+    padding: 0;
+    clear: both;
 }
 
 div.GreyFrameBody p {
-	margin: 0 0 0 16px;
-	padding: 0;
-	font: 1em Verdana, Geneva, Arial, Helvetica, sans-serif;
-	color: #3b556d;
+    margin: 0 0 0 16px;
+    padding: 0;
+    font: 1em Verdana, Geneva, Arial, Helvetica, sans-serif;
+    color: #3b556d;
 }
 
 div.GreyFrameFooter {
-	background: url(../img/grey_frame/corner_left_bottom.gif) bottom left
-		no-repeat;
+    background: url(../img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
 }
 
 div.GreyFrameFooter p {
-	background: url(../img/grey_frame/corner_right_bottom.gif) bottom right
-		no-repeat;
-	padding: 0px;
-	display: block;
-	margin: 0;
-	height: 16px;
+    background: url(../img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
+    padding: 0;
+    display: block;
+    margin: 0;
+    height: 16px;
 }
 
 div.GreyBlueFrame {
-	background: url(../img/bg_blue_grey/gradient_blue.gif) top left repeat-x
-		;
-	margin-left: 15px;
-	margin-right: 15px;
+    background: #adc6e5 url(../img/bg_blue_grey/gradient_blue.gif) repeat top left;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 div.GreyBlueFrameHorizontal {
-	background: url(../img/bg_blue_grey/gradient_blue_hor.gif) top left
-		repeat-y;
-	margin-left: 20px;
-	margin-right: 20px;
+    background: #a3bed9 url(../img/bg_blue_grey/gradient_blue_hor.gif) repeat-y top left;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 div.GreyBlueLeftTop {
-	background: url(../img/bg_blue_grey/left_top.gif) top left no-repeat;
+    background: url(../img/bg_blue_grey/left_top.gif) top left no-repeat;
 }
 
 div.GreyBlueRightTop {
-	background: url(../img/bg_blue_grey/right_top.gif) top right no-repeat;
-	font: bold 1.0em/ 1.5em Geneva, Arial, Helvetica, sans-serif;
-	color: #536e87;
+    background: url(../img/bg_blue_grey/right_top.gif) top right no-repeat;
+    font: bold 1.0em/ 1.5em Geneva, Arial, Helvetica, sans-serif;
+    color: #536e87;
+    height: 8px;
 }
 
 div.GreyBlueRightBottom {
-	background: url(../img/bg_blue_grey/right_bottom.gif) bottom right
-		no-repeat;
+    background: url(../img/bg_blue_grey/right_bottom.gif) bottom right no-repeat;
+    height: 10px;
 }
 
 div.GreyBlueLeftBottom {
-	background: url(../img/bg_blue_grey/left_bottom.gif) bottom left
-		no-repeat;
+    background: url(../img/bg_blue_grey/left_bottom.gif) bottom left no-repeat;
+    height: 10px;
 }
 
 div.GreyNavFrame {
-	background: url(../img/grey_frame/corner_left_top.gif) top left
-		no-repeat;
-	max-height: 500px;
-	width: 230px;
+    background: url(../img/grey_frame/corner_left_top.gif) top left no-repeat;
+    max-height: 500px;
+    width: 230px;
 }
 
 div.GreyNavFrame h3 {
-	background: url(../img/grey_frame/corner_right_top.gif) top right
-		no-repeat;
-	line-height: 11px;
-	padding: 0;
-	margin: 0;
-	font: bold 1.1em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
-	color: #536e87;
-	text-align: left;
-	text-indent: 16px;
+    background: url(../img/grey_frame/corner_right_top.gif) top right no-repeat;
+    line-height: 11px;
+    padding: 0;
+    margin: 0;
+    font: bold 1.1em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
+    color: #536e87;
+    text-align: left;
+    text-indent: 16px;
 }
 
 div.GreyNavBody {
-	background: url(../img/grey_frame/pixel_grey.gif);
-	margin-top: 0em;
-	padding: 0;
-	max-height: 300px;
-	overflow: auto;
-	margin-left: 5px;
-	margin-right: 5px;
-	color: #536e87;
-	font: 0.75em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
+    background: url(../img/grey_frame/pixel_grey.gif);
+    margin-top: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow: auto;
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #536e87;
+    font: 0.75em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
 }
 
 div.GreyNavBody a:link {
-	color: #536e87;
-	font-weight: normal;
-	text-decoration: none;
+    color: #536e87;
+    font-weight: normal;
+    text-decoration: none;
 }
 
 div.GreyNavBody a:visited {
-	color: #536e87;
-	font-weight: normal;
-	text-decoration: none;
+    color: #536e87;
+    font-weight: normal;
+    text-decoration: none;
 }
 
 div.GreyNavBody a:hover {
-	color: #233e55;
-	text-decoration: underline;
+    color: #233e55;
+    text-decoration: underline;
 }
 
 div.GreyNavBody a:active {
-	text-decoration: none
+    text-decoration: none
 }
 
 div.GreyNavFrameFooter {
-	background: url(../img/grey_frame/corner_left_bottom.gif) bottom left
-		no-repeat;
+    background: url(../img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
 }
 
 div.GreyNavFrameFooter p {
-	background: url(../img/grey_frame/corner_right_bottom.gif) bottom right
-		no-repeat;
-	padding: 20px;
-	display: block;
-	margin: -2em 0 0 0;
+    background: url(../img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
+    padding: 20px;
+    display: block;
+    margin: -2em 0 0 0;
 }
 
 .submitButton {
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
-	color: white;
-	border: 0;
+    background-color: #a1bfdb;
+    margin: 0;
+    padding: 4px 6px;
+    font: bold 0.9em Geneva, Arial, Helvetica, sans-serif;
+    color: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
 }
 
 .submitButton:hover {
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
-	color: #576d83;
+    background-color: #afcae5;
+    border-color: #eeeeee;
 }
 
 .submitButtonBlue {
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
-	color: #283e52;
-	border: 0;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    font: normal 1em Geneva, Arial, Helvetica, sans-serif;
+    color: #283e52;
+    border: 0;
 }
 
 .submitButtonBlue img {
-	vertical-align: top;
-	margin-top: 2px;
+    vertical-align: top;
+    margin-top: 2px;
 }
 
 .submitButtonBlue:hover {
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
-	color: #8aa0b8;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    font: normal 1em Geneva, Arial, Helvetica, sans-serif;
+    color: #8aa0b8;
 }
 
 .submitButtonLightBackground {
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
-	color: #576d83;
-	bordeR: 0;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    font: normal 1em Geneva, Arial, Helvetica, sans-serif;
+    color: #576d83;
+    border: 0;
 }
 
 .submitButtonLightBackground:hover {
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-	font: normal 1em Geneva, Arial, Helvetica, sans-serif;
-	color: #a5bcd4;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    font: normal 1em Geneva, Arial, Helvetica, sans-serif;
+    color: #a5bcd4;
 }
 
 div.ContextualHelp {
-	padding: 20px 0 0 0;
+    padding: 20px 0 0 0;
 }
 
 div.Help {
-	padding: 0px 5px 0 5px;
-	margin: 0;
+    padding: 0 5px 0 5px;
+    margin: 0;
 }
 
 div.Help a:link {
-	font-weight: normal;
-	text-decoration: underline;
+    font-weight: normal;
+    text-decoration: underline;
 }
 
 div.Help a:visited {
-	font-weight: normal;
-	text-decoration: underline;
+    font-weight: normal;
+    text-decoration: underline;
 }
 
 div.Help a:hover {
-	color: red;
-	text-decoration: underline;
+    color: red;
+    text-decoration: underline;
 }
 
 div.Help a:active {
-	color: red;
-	text-decoration: underline;
+    color: red;
+    text-decoration: underline;
 }
 
 .textInputSmall {
-	border-style: solid;
-	border-width: 1px;
-	border-color: #cfdbe6;
-	margin: 0;
-	font: 0.9em Geneva, Arial, Helvetica, sans-serif;
-	color: #233e55;
-	background-color: white;
+    border: 1px solid #B3C0CB;
+    margin: 0;
+    font: 1em Geneva, Arial, Helvetica, sans-serif;
+    color: #233e55;
+    background-color: white !important;
+    border-radius: 4px;
 }
 
 li a:link {
-	text-decoration: none;
-	font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
+    text-decoration: none;
+    font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
 }
 
 li a:visited {
-	text-decoration: none;
-	font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
+    text-decoration: none;
+    font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
 }
 
 li a:hover {
-	text-decoration: underline;
-	font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
-	color: #233e55;
+    text-decoration: underline;
+    font: 0.9em/ 1em Verdana, Geneva, Arial, Helvetica;
+    color: #233e55;
 }
 
 li a:active {
-	text-decoration: underline;
-	font: 1em Verdana, Geneva, Arial, Helvetica;
+    text-decoration: underline;
+    font: 1em Verdana, Geneva, Arial, Helvetica;
 }
 
 div.listScroll {
-	height: 200px;
-	margin: 0 5px 0 5px;
-	overflow: auto;
-	padding: 0px;
-	width: 210px;
-	font: 1em Geneva, Arial, Helvetica, sans-serif;
+    height: 200px;
+    margin: 0 5px 0 5px;
+    overflow: auto;
+    padding: 0;
+    width: 210px;
+    font: 1em Geneva, Arial, Helvetica, sans-serif;
 }
 
 .contentTable {
-	padding: 0px;
-	margin: 0 0 0 10px;
-	spacing: 0px;
+    padding: 0;
+    margin: 0 0 0 10px;
+    spacing: 0px;
 }
 
-.contentTable TR {
-	border: 0px;
-	padding: 0px;
-	margin: 0px;
+.contentTable tr {
+    border: 0;
+    padding: 0;
+    margin: 0;
 }
 
-.contentTable TH {
-	padding: 0px;
-	margin: 0px;
-	font: bold 0.9em/ 1em Geneva, Arial, Helvetica, sans-serif;
-	text-align: left;
-	color: #233e55;
+.contentTable th {
+    padding: 0;
+    margin: 0;
+    font: bold 0.9em/ 1em Geneva, Arial, Helvetica, sans-serif;
+    text-align: left;
+    color: #233e55;
 }
 
-.contentTable TD {
-	padding: 0px;
-	margin: 0px;
-	font: 1em Verdana Geneva, Arial, Helvetica, sans-serif;
-	border: 0px;
-	text-align: left;
-	color: #3b556d;
+.contentTable td {
+    padding: 0;
+    margin: 0;
+    font: 1em Verdana Geneva, Arial, Helvetica, sans-serif;
+    border: 0;
+    text-align: left;
+    color: #3b556d;
 }
 
 .contentTable td.main {
-	color: #233e55;
+    color: #233e55;
 }
 
 .contentTable td.extra {
-	padding: 0 0 0 5px;
-	margin: 0px;
-	font: 1em Verdana Geneva, Arial, Helvetica, sans-serif;
-	border: 0px;
-	text-align: left;
-	color: #86a1bc;
-	border-bottom: 1px solid #6c87a1;
+    padding: 0 0 0 5px;
+    margin: 0;
+    font: 1em Verdana Geneva, Arial, Helvetica, sans-serif;
+    border: 0;
+    text-align: left;
+    color: #86a1bc;
+    border-bottom: 1px solid #6c87a1;
 }
 
 input {
-	border-style: solid;
-	border-width: 1px;
-	border-color: #b3c0cb;
-	margin: 0;
-	font: 1em Geneva, Arial, Helvetica, sans-serif;
-	color: #233e55;
+    border: 1px solid #b3c0cb;
+    margin: 0;
+    font: 1em Geneva, Arial, Helvetica, sans-serif;
+    color: #233e55;
+    background-color: white  !important;
+    border-radius: 4px;
+    padding: 0 0 0 5px;
 }
 
-input[type="checkbox"],input[type="radio"] {
-	background: transparent;
-	border: 0;
-	margin: 0;
-	padding: 0;
-	color: #233e55;
+
+input[type="checkbox"], input[type="radio"] {
+    background: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    color: #233e55;
 }
 
 .formValidationError {
-	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
-	color: red;
+    font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+    color: red;
 }
 
 .whiteText {
-	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
-	color: white;
+    font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+    color: white;
 }
 
 .smallText {
-	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+    font: 0.8em Geneva, Arial, Helvetica, sans-serif;
 }
 
 .smallTextRed {
-	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
-	color: red;
+    font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+    color: red;
 }
 
-
 div.UserReportCriteria {
-	margin: 0 10px 0 10px;
-	color: #536e87;
-	font: 1em Arial, Geneva, Helvetica, sans-serif;
+    margin: 0 10px 0 10px;
+    color: #536e87;
+    font: 1em Arial, Geneva, Helvetica, sans-serif;
 }
 
 .reportCriteriaTableTable {
-	margin: -0.5em 1em 0 0.5em;
-	width: 100%;
+    margin: -0.5em 1em 0 0.5em;
+    width: 100%;
 }
 
 .reportCriteriaTable th {
-	padding: 5px 0 5px 0;
-	font: bold 0.9em/ 1em Geneva, Arial, Helvetica, sans-serif;
-	color: #233e55;
-	border: 0;
-	width: 20%;
-	text-align: left;
+    padding: 5px 0 5px 0;
+    font: bold 0.9em/ 1em Geneva, Arial, Helvetica, sans-serif;
+    color: #233e55;
+    border: 0;
+    width: 20%;
+    text-align: left;
 }
 
 .reportCriteriaTable th.firstCell {
-	width: 40%;
+    width: 40%;
 }
 
 .reportCriteriaTable td {
-	font: 1.0em Geneva, Arial, Helvetica, sans-serif;
-	color: #233e55;
-	vertical-align: top;
+    font: 1.0em Geneva, Arial, Helvetica, sans-serif;
+    color: #233e55;
+    vertical-align: top;
 }
 
 .reportCriteriaTable td.result {
-	border-top-width: 1px;
-	border-top-color: #233e55;
-	border-top-style: solid;
-	font-weight: bold;
+    border-top: 1px solid #233e55;
+    font-weight: bold;
 }
 
 div.NavHeader {
-	position: relative;
-	background: url(../img/headerBackground.gif) top left repeat-x;
-	margin: 0;
-	padding: 0;
-	height: 52px;
+    position: relative;
+    background: url(../img/headerBackground.gif) top left repeat-x;
+    margin: 0;
+    padding: 0;
+    height: 52px;
 }
 
 div.NavHeader div.Logo {
-	float: left;
-	position: absolute;
-	left: 50px;
-	bottom: 3px;
-	padding: 0;
-	margin: 0;
+    float: left;
+    position: absolute;
+    left: 50px;
+    bottom: 3px;
+    padding: 0;
+    margin: 0;
 }
 
 div.NavHeader div.Navigation {
-	position: absolute;
-	bottom: 0px;
-	left: 250px;
-	font: 1.4em Geneva, Arial, Helvetica, sans-serif;
-	color: white;
+    position: absolute;
+    bottom: 0;
+    left: 250px;
+    font: 1.4em Geneva, Arial, Helvetica, sans-serif;
+    color: white;
 }
 
-
 div.NavHeader div.LoadingSpinner {
-	float: right;
-	position: absolute;
-	right: 5px;
-	bottom: 5px;
-	visibility: hidden;
+    float: right;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    display: none;
 }
 
 div.LoggedInAs {
-	text-align: right;
-	padding-right: 7px;
-	font: 0.8em Geneva, Arial, Helvetica, sans-serif;
-	color: #536e87;
+    text-align: right;
+    padding-right: 7px;
+    font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+    color: #536e87;
 }
 
-div.LoggedInAs a:link,div.LoggedInAs a:visited {
-	text-decoration: underline;
+div.LoggedInAs a:link, div.LoggedInAs a:visited {
+    text-decoration: underline;
 }
 
 .navColumn {
-	float: left;
-	width: 150px;
-	margin-left: 5px;
+    float: left;
+    width: 150px;
+    margin-left: 5px;
 }
 
 .mainColumn {
-	float: left;
+    float: left;
 }
 
 /* from http://www.oscaralexander.com/tutorials/how-to-make-sexy-buttons-with-css.html */
 .clear {
-	overflow: hidden;
-	width: 100%;
+    overflow: hidden;
+    width: 100%;
 }
 
 a.button {
-	background: transparent url('../img/grey_button_a.gif') no-repeat scroll
-		top right;
-	color: #536e87;
-	display: block;
-	float: left;
-	font: normal 11px geneva, sans-serif;
-	height: 20px;
-	margin-right: 6px;
-	padding-right: 10px; /* sliding doors padding */
-	text-decoration: none;
+    background: transparent url('../img/grey_button_a.gif') no-repeat scroll top right;
+    color: #536e87;
+    display: block;
+    float: left;
+    font: normal 11px geneva, sans-serif;
+    height: 20px;
+    margin-right: 6px;
+    padding-right: 10px; /* sliding doors padding */
+    text-decoration: none;
 }
 
 a.button span {
-	background: transparent url('../img/grey_button_span.gif') no-repeat;
-	display: block;
-	line-height: 10px;
-	padding: 4px 0 6px 10px;
-	cursor: pointer;
-	letter-spacing: +1.5px;
+    background: transparent url('../img/grey_button_span.gif') no-repeat;
+    display: block;
+    line-height: 10px;
+    padding: 4px 0 6px 10px;
+    cursor: pointer;
+    letter-spacing: 1.5px;
 }
 
 a.button:active {
-	background-position: bottom right;
-	color: #536e87;
-	outline: none; /* hide dotted outline in Firefox */
+    background-position: bottom right;
+    color: #536e87;
+    outline: none; /* hide dotted outline in Firefox */
 }
 
 a.button:active span {
-	background-position: bottom left;
-	padding: 5px 0 5px 10px; /* push text down 1px */
-	cursor: pointer;
-	letter-spacing: +1.5px;
+    background-position: bottom left;
+    padding: 5px 0 5px 10px; /* push text down 1px */
+    cursor: pointer;
+    letter-spacing: 1.5px;
 }
 
 a.bluebutton {
-	background: transparent url('../img/blue_button_a.gif') no-repeat scroll
-		top right;
-	color: #536e87;
-	display: block;
-	float: left;
-	font: normal 11px geneva, sans-serif;
-	height: 20px;
-	margin-right: 6px;
-	padding-right: 10px; /* sliding doors padding */
-	text-decoration: none;
+    background: transparent url('../img/blue_button_a.gif') no-repeat scroll top right;
+    color: #536e87;
+    display: block;
+    float: left;
+    font: normal 11px geneva, sans-serif;
+    height: 20px;
+    margin-right: 6px;
+    padding-right: 10px; /* sliding doors padding */
+    text-decoration: none;
 }
 
 a.bluebutton span {
-	background: transparent url('../img/blue_button_span.gif') no-repeat;
-	display: block;
-	line-height: 10px;
-	padding: 4px 0 6px 10px;
-	cursor: pointer;
-	letter-spacing: +1.5px;
+    background: transparent url('../img/blue_button_span.gif') no-repeat;
+    display: block;
+    line-height: 10px;
+    padding: 4px 0 6px 10px;
+    cursor: pointer;
+    letter-spacing: 1.5px;
 }
 
 a.bluebutton:active {
-	background-position: bottom right;
-	color: #536e87;
-	outline: none; /* hide dotted outline in Firefox */
+    background-position: bottom right;
+    color: #536e87;
+    outline: none; /* hide dotted outline in Firefox */
 }
 
 a.bluebutton:active span {
-	background-position: bottom left;
-	padding: 5px 0 5px 10px; /* push text down 1px */
-	cursor: pointer;
-	letter-spacing: +1.5px;
+    background-position: bottom left;
+    padding: 5px 0 5px 10px; /* push text down 1px */
+    cursor: pointer;
+    letter-spacing: 1.5px;
 }
-
 
 /* Fading Tooltips By Dustin Diaz*/
 body div#toolTip {
-	position: absolute;
-	-index: 1000;
-	width: 220px;
-	background: #acc9e6;
-	border: 2px double #edf5fc;
-	text-align: left;
-	padding: 5px;
-	min-height: 1em;
-	-moz-border-radius: 5px;
+    position: absolute;
+    -index: 1000;
+    width: 220px;
+    background: #acc9e6;
+    border: 2px double #edf5fc;
+    text-align: left;
+    padding: 5px;
+    min-height: 1em;
+    -moz-border-radius: 5px;
 }
 
 body div#toolTip p {
-	margin: 0;
-	padding: 0;
-	color: #2f3e4c;
-	font: 11px/ 12px verdana, arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2f3e4c;
+    font: 11px/ 12px verdana, arial, sans-serif;
 }
 
 body div#toolTip p em {
-	display: block;
-	margin-top: 3px;
-	color: white;
-	font-style: normal;
-	font-weight: bold;
+    display: block;
+    margin-top: 3px;
+    color: white;
+    font-style: normal;
+    font-weight: bold;
 }
 
 body div#toolTip p em span {
-	font-weight: bold;
-	color: #fff;
+    font-weight: bold;
+    color: #fff;
 }
 
-hr
-{
-	background-color: white;
-	color: white;
-	margin: 1px 0 0 0;
-	padding: 2px 0 0 0;
+hr {
+    background-color: white;
+    color: white;
+    margin: 1px 0 0 0;
+    padding: 2px 0 0 0;
+}
+
+.leftmenu .colright {
+    float: left;
+    width: 200%;
+    position: relative;
+    left: 12em;
+    background: #fff;
+}
+
+.leftmenu .col1wrap {
+    float: right;
+    width: 50%;
+    position: relative;
+    right: 12em;
+    padding-bottom: 1em;
+}
+
+.leftmenu .col1 {
+    margin: 0 1em 0 255px;
+    position: relative;
+    right: 100%;
+    overflow: hidden;
+}
+
+.leftmenu .col2 {
+    float: left;
+    width: 10em;
+    position: relative;
+    right: 11em;
+}
+
+.colmask {
+    clear: both;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+/* Footer styles */
+#footer {
+    clear: both;
+    float: left;
+    width: 100%;
+    border-top: 1px solid #000;
 }

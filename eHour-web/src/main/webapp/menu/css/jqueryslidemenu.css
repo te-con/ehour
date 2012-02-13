@@ -40,6 +40,22 @@
 	display: inline-block;
 }
 
+.jqueryslidemenu ul li  .x a {
+    /*font: 1.4em Geneva,Arial,Helvetica,sans-serif;*/
+    background: transparent;
+	display: block;
+	color: white;
+	padding: 0;
+    margin: 0;
+    border: 0;
+	text-decoration: none;
+}
+
+* html .jqueryslidemenu ul li a {
+	/*IE6 hack to get sub menu links to behave correctly*/
+	display: inline-block;
+}
+
 .jqueryslidemenu ul li a:link,.jqueryslidemenu ul li a:visited {
 	color: #233e55;
 }
