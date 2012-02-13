@@ -39,10 +39,6 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 	@Autowired
 	private	DetailedReportDao	detailedReportDAO;
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.DetailedReportService#getDetailedReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-	 */
 	public ReportData getDetailedReportData(ReportCriteria reportCriteria)
 	{
 		return getReportData(reportCriteria);

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.config;
 
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -25,124 +26,117 @@ import net.rrm.ehour.domain.AuditType;
 
 /**
  * Configuration based on .properties file
- **/
+ */
 
-public class EhourConfigProps implements EhourConfig
-{
-	private	Properties	props;
+public class EhourConfigProps implements EhourConfig {
+    private Properties props;
 
-	public TimeZone getTzAsTimeZone()
-	{
-		return EhourConfigUtil.getTzAsTimeZone(this);
-	}
-	
-	public void setPropertiesConfig(Properties props)
-	{
-		this.props = props;
-	}
-	
-	public float getCompleteDayHours()
-	{
-		return Float.parseFloat(props.getProperty("completeDayHours"));
-	}
+    public TimeZone getTzAsTimeZone() {
+        return EhourConfigUtil.getTzAsTimeZone(this);
+    }
 
-	public boolean isShowTurnover()
-	{
-		return Boolean.valueOf(props.getProperty("showTurnOver"));
-	}
+    public void setPropertiesConfig(Properties props) {
+        this.props = props;
+    }
 
-	public String getTimeZone()
-	{
-		return props.getProperty("timezone");
-	}
+    public float getCompleteDayHours() {
+        return Float.parseFloat(props.getProperty("completeDayHours"));
+    }
 
-	public Locale getCurrency()
-	{
-		String split = props.getProperty("currency");
-		
-		String[] splitted = split.split("_");
-		
-		return new Locale(splitted[0], splitted[1]);
+    public boolean isShowTurnover() {
+        return Boolean.valueOf(props.getProperty("showTurnOver"));
+    }
 
-	}
+    public String getTimeZone() {
+        return props.getProperty("timezone");
+    }
 
-	public String[] getAvailableTranslations()
-	{
-		return props.getProperty("localeLanguage").split(",");
-	}
+    public Locale getCurrency() {
+        String split = props.getProperty("currency");
 
-	public String getMailFrom()
-	{
-		return props.getProperty("mailFrom");
-	}
+        String[] splitted = split.split("_");
 
-	public String getMailSmtp()
-	{
-		return props.getProperty("mailSmtp");
-	}
-	
-	public Locale getLocale()
-	{
-		String country = props.getProperty("localeCountry");
-		String language = props.getProperty("localeLanguage");
-		
-		return new Locale(language, country);	
-	}
+        return new Locale(splitted[0], splitted[1]);
 
-	public boolean isInDemoMode()
-	{
-		return Boolean.valueOf(props.getProperty("demoMode"));
-	}
+    }
 
-	public boolean isDontForceLanguage()
-	{
-		return Boolean.valueOf(props.getProperty("dontForceLanguage"));
-	}
+    @Override
+    public String getCurrencySymbol() {
+        return Currency.getInstance(getCurrency()).getSymbol(getCurrency());
+    }
 
-	public boolean isInitialized()
-	{
-		Boolean init = Boolean.valueOf(props.getProperty("initialized"));
-		
-		return init == null ? true : init;
-	}
+    @Override
+    public String getCurrencyCode() {
+        return Currency.getInstance(getCurrency()).getCurrencyCode();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpPassword()
-	 */
-	public String getSmtpPassword() {
-		return props.getProperty("smtpPassword");
-	}
+    public String[] getAvailableTranslations() {
+        return props.getProperty("localeLanguage").split(",");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpUsername()
-	 */
-	public String getSmtpUsername() {
-		return props.getProperty("smtpUsername");
-	}
-	
-	public String getSmtpPort()
-	{
-		return props.getProperty("smtpPort");
-	}
+    public String getMailFrom() {
+        return props.getProperty("mailFrom");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getFirstDayOfWeek()
-	 */
-	public int getFirstDayOfWeek()
-	{
-		return Integer.valueOf(props.getProperty("firstDayOfWeek"));
-	}
+    public String getMailSmtp() {
+        return props.getProperty("mailSmtp");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getAuditType()
-	 */
-	public AuditType getAuditType()
-	{
-		return AuditType.fromString(props.getProperty("auditType"));
-	}
-	
+    public Locale getLocale() {
+        String country = props.getProperty("localeCountry");
+        String language = props.getProperty("localeLanguage");
+
+        return new Locale(language, country);
+    }
+
+    public boolean isInDemoMode() {
+        return Boolean.valueOf(props.getProperty("demoMode"));
+    }
+
+    public boolean isDontForceLanguage() {
+        return Boolean.valueOf(props.getProperty("dontForceLanguage"));
+    }
+
+    public boolean isInitialized() {
+        Boolean init = Boolean.valueOf(props.getProperty("initialized"));
+
+        return init == null ? true : init;
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpPassword()
+      */
+    public String getSmtpPassword() {
+        return props.getProperty("smtpPassword");
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getSmtpUsername()
+      */
+    public String getSmtpUsername() {
+        return props.getProperty("smtpUsername");
+    }
+
+    public String getSmtpPort() {
+        return props.getProperty("smtpPort");
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getFirstDayOfWeek()
+      */
+    public int getFirstDayOfWeek() {
+        return Integer.valueOf(props.getProperty("firstDayOfWeek"));
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.config.EhourConfig#getAuditType()
+      */
+    public AuditType getAuditType() {
+        return AuditType.fromString(props.getProperty("auditType"));
+    }
+
 }

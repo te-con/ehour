@@ -37,8 +37,6 @@ import java.util.List;
 
 public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 {
-	private	Logger	logger = Logger.getLogger(this.getClass());
-	
 	@Autowired
 	private	UserDao		userDAO;
 
@@ -60,34 +58,29 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 		DateRange		reportRange;
 		
 		userCriteria = reportCriteria.getUserCriteria();
-		logger.debug("Getting report data for " + userCriteria);
-		
+
 		reportRange = reportCriteria.getReportRange();
 		
 		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
 		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
-		
+
 		if (ignoreProjects && ignoreUsers)
 		{
-			logger.debug("creating full report");
 		}
 		else if (ignoreProjects && !ignoreUsers)
 		{
-			logger.debug("creating report for only selected users");
 			users = getUsers(userCriteria);
 		}
-		else if (!ignoreProjects && ignoreUsers)
+		else if (ignoreUsers)
 		{
-			logger.debug("creating report for only selected project");
 			projects = getProjects(userCriteria);
 		}
 		else
 		{
-			logger.debug("creating report for selected users & projects");
 			users = getUsers(userCriteria);
 			projects = getProjects(userCriteria);
-		}		
-		
+		}
+
 		return new ReportData(getReportElements(users, projects, reportRange), reportRange);
 	}
 
@@ -116,19 +109,16 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 		{
 			if (!userCriteria.isEmptyCustomers())
 			{
-				logger.debug("Using customers to determine projects");
 				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomers(),
 																userCriteria.isOnlyActiveProjects());
 			}
 			else
 			{
-				logger.debug("No customers or projects selected");
 				projects = null;
 			}
 		}
 		else
 		{
-			logger.debug("Using user provided projects");
 			projects = userCriteria.getProjects();
 		}
 		
@@ -148,20 +138,17 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 		{
 			if (!userCriteria.isEmptyDepartments())
 			{
-				logger.debug("Using departments to determine users");
 				users = userDAO.findUsersForDepartments(null,
 														userCriteria.getDepartments(),
 														userCriteria.isOnlyActiveUsers());
 			}
 			else
 			{
-				logger.debug("No departments or users selected");
 				users = null;
 			}
 		}
 		else
 		{
-			logger.debug("Using user provided users");
 			users = userCriteria.getUsers();
 		}
 		

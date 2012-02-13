@@ -113,14 +113,14 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		{
 			aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignment(reportRange);
 		}
-		else if (projects == null && users != null)
+		else if (projects == null)
 		{
 			if (!CollectionUtils.isEmpty(users))
 			{
 				aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, reportRange);
 			}
 		}
-		else if (projects != null && users == null)
+		else if (users == null)
 		{
 			if (!CollectionUtils.isEmpty(projects))
 			{
@@ -192,7 +192,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		// get mail sent for this project
 		if (assignmentIds.size() > 0)
 		{
-			sentMail = mailService.getSentMailForAssignment((Integer[])assignmentIds.toArray(new Integer[assignmentIds.size()]));
+			sentMail = mailService.getSentMailForAssignment(assignmentIds.toArray(new Integer[assignmentIds.size()]));
 			report.setSentMail(new TreeSet<MailLogAssignment>(sentMail));
 		}
 		

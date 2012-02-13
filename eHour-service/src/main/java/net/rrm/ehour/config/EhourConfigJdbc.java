@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -75,7 +76,17 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return new Locale(splitted[0], splitted[1]);
 	}
 
-	public String[] getAvailableTranslations()
+    @Override
+    public String getCurrencySymbol() {
+        return Currency.getInstance(getCurrency()).getSymbol(getCurrency());
+    }
+
+    @Override
+    public String getCurrencyCode() {
+        return Currency.getInstance(getCurrency()).getCurrencyCode();
+    }
+
+    public String[] getAvailableTranslations()
 	{
 		if (availableTranslations == null)
 		{
@@ -110,7 +121,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 			demoMode = this.getBoolean("demoMode", false);
 		}
 		
-		return demoMode.booleanValue();
+		return demoMode;
 	}
 
 	public boolean isDontForceLanguage()

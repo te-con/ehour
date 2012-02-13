@@ -65,16 +65,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	private	ReportAggregatedDao		reportAggregatedDAO;
 
 	private	static final Logger	LOGGER = Logger.getLogger(ReportCriteriaServiceImpl.class);
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.ReportCriteriaService#syncUserReportCriteria(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-	 */
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria)
-	{
-		return syncUserReportCriteria(reportCriteria, null);
-	}
-	
+
 	/**
 	 * Update available report criteria 
 	 */
@@ -118,12 +109,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		
 		return reportCriteria;
 	}
-	
-	/**
-	 * Get available users
-	 * @param userCriteria
-	 * @return
-	 */
+
 	private List<User> getAvailableUsers(UserCriteria userCriteria)
 	{
 		List<User> 	users;
@@ -328,11 +314,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	{
 		this.projectAssignmentDAO = projectAssignmentDAO;
 	}	
-	
-	/**
-	 *  
-	 *
-	 */
+
 	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;

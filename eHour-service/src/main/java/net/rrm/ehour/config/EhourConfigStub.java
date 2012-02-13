@@ -20,6 +20,7 @@ import net.rrm.ehour.domain.AuditType;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -96,6 +97,16 @@ public class EhourConfigStub  implements EhourConfig, Serializable
 	{
 		this.currency = currency;
 	}
+
+    @Override
+    public String getCurrencySymbol() {
+        return Currency.getInstance(getCurrency()).getSymbol(getCurrency());
+    }
+
+    @Override
+    public String getCurrencyCode() {
+        return Currency.getInstance(getCurrency()).getCurrencyCode();
+    }
 
 	/**
 	 * @return the showTurnover

@@ -19,22 +19,7 @@ package net.rrm.ehour.report.service;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 
-/** **/
-
 public interface ReportCriteriaService
 {
-	/**
-	 * 
-	 * @param reportCriteria
-	 * @return
-	 */
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria);
-	
-	/**
-	 * Sync the criteria 
-	 * @param bookedOnly to list only criteria which have entries booked
-	 * @param updateType  
-	 * @return
-	 */
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdateType updateType);
+	ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdateType updateType);
 }
