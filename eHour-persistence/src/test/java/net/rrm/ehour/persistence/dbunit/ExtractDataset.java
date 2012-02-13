@@ -25,7 +25,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
-public class ExtractDataset
+public abstract class ExtractDataset
 {
 	public static void main(String[] args) throws Exception
 	{

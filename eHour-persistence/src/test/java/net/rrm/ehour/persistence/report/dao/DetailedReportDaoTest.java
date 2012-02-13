@@ -28,6 +28,7 @@ import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DetailedReportDaoTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
-	private	DetailedReportDao	detailedReportDao;
+	private	DetailedReportDao detailedReportDao;
 	
 	public DetailedReportDaoTest()
 	{

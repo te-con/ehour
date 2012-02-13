@@ -16,21 +16,19 @@
 
 package net.rrm.ehour.persistence.report.dao;
 
-import static org.junit.Assert.assertEquals;
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
-import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings({ "deprecation" })
 public class ReportAggregatedDaoTest extends AbstractAnnotationDaoTest
