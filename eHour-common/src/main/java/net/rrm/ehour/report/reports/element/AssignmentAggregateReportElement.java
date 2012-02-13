@@ -68,9 +68,9 @@ public class AssignmentAggregateReportElement
             if (hours != null &&
                     projectAssignment.getAllottedHours() != null &&
                     hours.floatValue() > 0 &&
-                    projectAssignment.getAllottedHours().floatValue() > 0)
+                    projectAssignment.getAllottedHours() > 0)
             {
-                percentage = (hours.floatValue() / projectAssignment.getAllottedHours().floatValue()) * 100;
+                percentage = (hours.floatValue() / projectAssignment.getAllottedHours()) * 100;
             }
         } else if (projectAssignment.getAssignmentType().isDateType())
         {
@@ -115,20 +115,20 @@ public class AssignmentAggregateReportElement
             if (hours != null &&
                     projectAssignment.getAllottedHours() != null &&
                     hours.floatValue() > 0 &&
-                    projectAssignment.getAllottedHours().floatValue() > 0)
+                    projectAssignment.getAllottedHours() > 0)
             {
-                available = projectAssignment.getAllottedHours().floatValue() - hours.floatValue();
+                available = projectAssignment.getAllottedHours() - hours.floatValue();
             }
         } else if (projectAssignment.getAssignmentType().isFlexAllottedType())
         {
             if (hours != null &&
                     projectAssignment.getAllottedHours() != null &&
                     hours.floatValue() > 0 &&
-                    projectAssignment.getAllottedHours().floatValue() > 0)
+                    projectAssignment.getAllottedHours() > 0)
             {
 
-                available = (projectAssignment.getAllottedHours().floatValue() +
-                        ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun().floatValue() : 0))
+                available = (projectAssignment.getAllottedHours() +
+                        ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun() : 0))
                         - hours.floatValue();
             }
 
@@ -153,23 +153,17 @@ public class AssignmentAggregateReportElement
         this.projectAssignment = projectAssignment;
     }
 
-    /**
-     * @return the turnOver
-     */
     public Number getTurnOver()
     {
         if (projectAssignment != null && projectAssignment.getHourlyRate() != null && hours != null)
         {
-            return new Float(hours.floatValue() * projectAssignment.getHourlyRate().floatValue());
+            return hours.floatValue() * projectAssignment.getHourlyRate();
         } else
         {
             return 0;
         }
     }
 
-    /**
-     *
-     */
     public int compareTo(AssignmentAggregateReportElement pagO)
     {
         return this.getProjectAssignment().compareTo(pagO.getProjectAssignment());

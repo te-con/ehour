@@ -140,9 +140,10 @@ public class Customer extends DomainObject<Integer, Customer>
 		return this.name;
 	}
 
-	public void setName(String name)
+	public Customer setName(String name)
 	{
 		this.name = name;
+        return this;
 	}
 
 	public String getDescription()

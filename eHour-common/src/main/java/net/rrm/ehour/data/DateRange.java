@@ -32,9 +32,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 // TODO replace with jodatime
 public class DateRange implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4901436851703213753L;
 	private Date	dateStart;
 	private	Date	dateEnd;

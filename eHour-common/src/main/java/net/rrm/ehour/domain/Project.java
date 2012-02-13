@@ -108,6 +108,12 @@ public class Project extends DomainObject<Integer, Project>
         this.projectId = projectId;
     }
 
+    public Project(Integer projectId, Customer customer) {
+        this(projectId);
+        this.customer = customer;
+    }
+
+
     public String getFullName()
     {
         return (StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name;
@@ -168,9 +174,10 @@ public class Project extends DomainObject<Integer, Project>
         return this.name;
     }
 
-    public void setName(String name)
+    public Project setName(String name)
     {
         this.name = name;
+        return this;
     }
 
     public boolean isDefaultProject()
