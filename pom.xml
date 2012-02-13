@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.rrm.ehour</groupId>
     <version>1.0-SNAPSHOT</version>
@@ -58,23 +59,43 @@
         </developer>
     </developers>
     <properties>
-        <spring.version>3.0.5.RELEASE</spring.version>
+        <spring.version>3.0.7.RELEASE</spring.version>
         <wicket.version>1.4.19</wicket.version>
         <jetty.version>7.3.1.v20110307</jetty.version>
         <derbydb.version>10.6.2.1</derbydb.version>
-        <aspectj.version>1.6.6</aspectj.version>
+        <aspectj.version>1.6.12</aspectj.version>
         <clover.version>3.0.1</clover.version>
         <gmaven.version>1.3</gmaven.version>
         <groovy.version>1.7.2</groovy.version>
         <slf4j.version>1.5.11</slf4j.version>
         <hibernate.version>3.6.3.Final</hibernate.version>
         <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
+        <scala.version>2.9.1</scala.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.scalaj</groupId>
+                <artifactId>scalaj-collection_${scala.version}</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest_${scala.version}</artifactId>
+                <version>1.6.1</version>
+                <scope>test</scope>
+            </dependency>
+
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
@@ -87,51 +108,6 @@
                 <scope>test</scope>
             </dependency>
 
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket</artifactId>
-                <version>${wicket.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-extensions</artifactId>
-                <version>${wicket.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-devutils</artifactId>
-                <version>${wicket.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.thoughtworks.xstream</groupId>
-                <artifactId>xstream</artifactId>
-                <version>1.3.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-spring</artifactId>
-                <version>${wicket.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>asm</groupId>
-                        <artifactId>asm</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-auth-roles</artifactId>
-                <version>${wicket.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-datetime</artifactId>
-                <version>${wicket.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -470,37 +446,37 @@
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-persistence</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-persistence-derby</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-persistence-mysql</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-persistence-postgresql</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-common</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-common</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
@@ -508,25 +484,25 @@
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-service</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-wicketweb</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-audit</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-common</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
                 <scope>test</scope>
                 <classifier>tests</classifier>
             </dependency>
@@ -638,6 +614,26 @@
         </testResources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>(2.0, 3.0]</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -787,12 +783,12 @@
                 <updatePolicy>never</updatePolicy>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
     </repositories>
-    
+
     <distributionManagement>
         <repository>
             <id>releases</id>
