@@ -667,7 +667,7 @@
             </plugin>
         </plugins>
 
-        <pluginManagement>
+       <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.codehaus.gmaven</groupId>
@@ -699,11 +699,29 @@
                         </dependency>
                     </dependencies>
                 </plugin>
-<plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>sonar-maven-plugin</artifactId>
-        <version>1.0-beta-2</version>
-      </plugin>
+
+                <plugin>
+                    <groupId>org.scala-tools</groupId>
+                    <artifactId>maven-scala-plugin</artifactId>
+                    <version>2.15.2</version>
+                    <executions>
+                        <execution>
+                            <id>scala-compile-first</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>add-source</goal>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>scala-test-compile</id>
+                            <phase>process-test-resources</phase>
+                            <goals>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -740,31 +758,6 @@
                         <configuration>
                             <debug>false</debug>
                             <optimize>true</optimize>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>clover</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.atlassian.maven.plugins</groupId>
-                        <artifactId>maven-clover2-plugin</artifactId>
-                        <version>${clover.version}</version>
-
-                        <configuration>
-                            <!--
-                                       <outputDirectory>/tmp/cloverReport/${pom.artifactId}</outputDirectory>
-                                   -->
-                            <license><![CDATA[QnqONtanreIGMsCbqgOIemeErpmBPRBhIEOHsXpBhlWWuHM
-							mj2Km8foj4CJWVTM02SgcIpX2L04iXacI9g6cw9XRNGPhJ6
-							MrRouWPNooNOPmRpPoRStQPmMOOqMQoMQqUxvvsUuutmQMn
-							mqmUUnoqurpmqmmmmmUUnoqurpmqmmmmmUUb8lroUUnmm]]></license>
-                            <generateXml>true</generateXml>
-                            <generateHtml>true</generateHtml>
                         </configuration>
                     </plugin>
                 </plugins>
