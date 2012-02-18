@@ -6,8 +6,8 @@
 
 <body>
 	<wicket:panel>
-		<ul>
-			<li wicket:id="menuList">
+		<ul wicket:id="ul">
+			<li wicket:id="li">
 				<wicket:component wicket:id="content" />
 
 				<wicket:component wicket:id="submenuListContainer" /> 
@@ -15,11 +15,11 @@
 		</ul>
 		
 	<wicket:fragment wicket:id="link">
-		<span class="x"><a wicket:id="menuLink"><wicket:component wicket:id="menuLinkText" /></a></span>
+		<a wicket:id="menuLink"><wicket:component wicket:id="menuLinkText" /></a>
 	</wicket:fragment>
 
 	<wicket:fragment wicket:id="textOnly">
-		<span wicket:id="menuText"></span>
+		<a href="#"><wicket:container wicket:id="menuText"></wicket:container></a>
 	</wicket:fragment>
 		
 	</wicket:panel>

@@ -28,7 +28,7 @@ import static org.easymock.EasyMock.*;
 public class UserPreferencePageTest extends AbstractSpringWebAppTester
 {
 	@Test
-	public void shouldRenderReport() throws ObjectNotFoundException
+	public void shouldRenderPreferencePage() throws ObjectNotFoundException
 	{
 		TimesheetService timesheetService = createMock(TimesheetService.class);
 		getMockContext().putBean("timesheetService", timesheetService);

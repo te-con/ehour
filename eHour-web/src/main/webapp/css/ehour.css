@@ -491,6 +491,7 @@ div.NavHeader div.Navigation {
     left: 250px;
     font: 1.4em Geneva, Arial, Helvetica, sans-serif;
     color: white;
+    top: 12px;
 }
 
 div.NavHeader div.LoadingSpinner {

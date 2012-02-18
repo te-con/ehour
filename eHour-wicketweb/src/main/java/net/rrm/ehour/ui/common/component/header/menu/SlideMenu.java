@@ -1,8 +1,7 @@
 package net.rrm.ehour.ui.common.component.header.menu;
 
-import java.util.List;
-
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -13,13 +12,15 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
+import java.util.List;
+
 public class SlideMenu extends Panel {
     private static final long serialVersionUID = 6026029033263227314L;
 
     public SlideMenu(String id, List<MenuItem> menuItemList) {
         super(id);
 
-        Menu menu = new Menu("slideMenu", menuItemList);
+        Menu menu = new Menu("slideMenu", menuItemList, true);
         add(menu);
     }
 
@@ -28,15 +29,26 @@ public class SlideMenu extends Panel {
         private static final String ID_CONTENT = "content";
         private static final String ID_SUBMENU_LIST_CONTAINER = "submenuListContainer";
 
-        public Menu(String id, List<MenuItem> menuItemList) {
+        public Menu(String id, List<MenuItem> menuItemList, boolean isRoot) {
             super(id);
 
-            if (!CollectionUtils.isEmpty(menuItemList)) {
-                ListView<?> menu = buildMultiLevelMenu("menuList", menuItemList);
-                menu.setReuseItems(true);
-                add(menu);
+            WebMarkupContainer ul = new WebMarkupContainer("ul");
+            add(ul);
+            
+            if (isRoot) {
+                ul.add(new SimpleAttributeModifier("class", "mega-menu"));
+                ul.setOutputMarkupId(true);
+                ul.setMarkupId("mega-menu");
+            } else {
+                ul.setOutputMarkupId(false);
             }
-        }
+
+            if (!CollectionUtils.isEmpty(menuItemList)) {
+                ListView<?> menu = buildMultiLevelMenu("li", menuItemList);
+                menu.setReuseItems(true);
+                ul.add(menu);
+            }
+        }        
 
         private ListView<MenuItem> buildMultiLevelMenu(String id, List<MenuItem> menuItemList) {
             return new ListView<MenuItem>(id, menuItemList) {
@@ -57,7 +69,7 @@ public class SlideMenu extends Panel {
 
                     return CollectionUtils.isEmpty(submenuItemList)
                             ? new WebMarkupContainer(ID_SUBMENU_LIST_CONTAINER)
-                            : new Menu(ID_SUBMENU_LIST_CONTAINER, submenuItemList);
+                            : new Menu(ID_SUBMENU_LIST_CONTAINER, submenuItemList, false);
                 }
 
                 private Fragment createLinkFragment(MenuItem menuItem) {
