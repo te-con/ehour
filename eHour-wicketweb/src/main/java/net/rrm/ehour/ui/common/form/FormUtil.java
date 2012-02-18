@@ -30,7 +30,6 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.validation.IFormValidator;
-import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.ResourceModel;
 import org.springframework.util.Assert;
 
@@ -116,7 +115,7 @@ public class FormUtil
 			{
 				if (!inDemoMode)
 				{
-					AdminBackingBean backingBean = (AdminBackingBean) (((IWrapModel<?>)formConfig.getForm().getModel()).getWrappedModel()).getObject();
+                    AdminBackingBean backingBean = (AdminBackingBean) formConfig.getForm().getDefaultModelObject();
 					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(formConfig.getDeleteEventType(), backingBean);
 
 					EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), ajaxEvent);
