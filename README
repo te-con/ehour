@@ -1,0 +1,13 @@
+eHour is an open source webbased time tracking tool for companies and organizations who need accurate information on
+ how much time is spend on projects by their people. 
+
+eHour makes the amount of time your people spend on projects visible and available as simple and user friendly as possible. 
+
+Building eHour
+---------------------------------------
+
+To start eHour from your IDE, create an environment variable EHOUR_HOME and point it to
+eHour-standalone/src/test/resources
+Now run the EhourServerRunner (in the eHour-standalone module) to start your server.
+
+
