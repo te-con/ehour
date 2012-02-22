@@ -25,12 +25,8 @@
         and other project based businesses
     </description>
     <scm>
-        <connection>
-            scm:svn:http://svn.te-con.nl/repos/ehour/trunk/
-        </connection>
-        <developerConnection>
-            scm:svn:http://svn.te-con.nl/repos/ehour/trunk/
-        </developerConnection>
+        <connection>scm:git:git@github.com:tedeling/ehour.git</connection>
+        <developerConnection>git@github.com:tedeling/ehour.git</developerConnection>
     </scm>
     <issueManagement>
         <system>eHour bugtracker</system>
