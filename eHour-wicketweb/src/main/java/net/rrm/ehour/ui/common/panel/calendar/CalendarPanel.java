@@ -30,7 +30,6 @@ import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
-import org.apache.log4j.Logger;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -43,13 +42,13 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static java.util.Calendar.*;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.DAY_OF_WEEK;
 
 /**
  * Navigation Calendar
@@ -57,8 +56,6 @@ import static java.util.Calendar.*;
 
 public class CalendarPanel extends SidePanel {
     private static final long serialVersionUID = -7777893083323915299L;
-
-    private final static Logger LOGGER = Logger.getLogger(CalendarPanel.class);
 
     private WebMarkupContainer calendarFrame;
     private User user;
@@ -143,6 +140,8 @@ public class CalendarPanel extends SidePanel {
                 CalendarWeek week = item.getModelObject();
                 Calendar renderDate = (Calendar) week.getWeekStart().clone();
 
+                boolean isCurrentWeek = highlightWeekStartingAt != null && DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt);
+
                 for (int dayInWeek = 1; dayInWeek <= 7; dayInWeek++) {
                     boolean weekend = DateUtil.isWeekend(renderDate);
 
@@ -158,34 +157,29 @@ public class CalendarPanel extends SidePanel {
                 item.setOutputMarkupId(true);
 
                 if (fireWeekClicks) {
-                    fireWeekClicks(item, week);
+                    fireWeekClicks(item, week, isCurrentWeek);
                 } else {
                     item.add(new SimpleAttributeModifier("style", "cursor:default"));
                 }
             }
 
-            private void fireWeekClicks(final ListItem<CalendarWeek> item, CalendarWeek week) {
-                if (highlightWeekStartingAt == null ||
-                        !DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt)) {
+            private void fireWeekClicks(ListItem<CalendarWeek> item, CalendarWeek week, boolean isCurrentWeek) {
+                if (isCurrentWeek) {
+                    item.add(new SimpleAttributeModifier("class", "CalendarWeek selectedWeek"));
+                } else {
+                    item.add(new SimpleAttributeModifier("class", "CalendarWeek other"));
                     item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
-                    item.add(new SimpleAttributeModifier("onmouseover", "backgroundOn(this)"));
-                    item.add(new SimpleAttributeModifier("onmouseout", "backgroundOff(this)"));
-                }
+                } 
             }
 
             private Label createLabel(int dayOfWeek, CalendarWeek week, CalendarDay day, boolean weekend) {
-                Label label;
                 String id = "day" + dayOfWeek;
 
                 // when day is null the date is in the next/previous month
-                if (day == null) {
-                    label = HtmlUtil.getNbspLabel(id);
-                } else {
-                    label = new Label(id, new PropertyModel<Integer>(day, "monthDay"));
-                }
+                Label label = day == null ? HtmlUtil.getNbspLabel(id) : new Label(id, new PropertyModel<Integer>(day, "monthDay"));
 
                 // determine css class
-                StringBuilder cssClass = new StringBuilder(weekend ? "WeekendDay" : "WeekDay");
+                StringBuilder cssClass = new StringBuilder(weekend ? "WeekendDay" : "");
 
                 // booked days are bold
                 if (day != null && day.isBooked()) {
@@ -211,22 +205,7 @@ public class CalendarPanel extends SidePanel {
                     }
                 }
 
-
-
                 label.add(new SimpleAttributeModifier("class", cssClass.toString()));
-
-                // determine custom css properties
-                StringBuilder style = new StringBuilder();
-
-                // selected weeks have a more dark background
-                if (highlightWeekStartingAt != null &&
-                        DateUtil.isDateWithinRange(week.getWeekStart().getTime(), highlightWeekStartingAt)) {
-                    style.append("background-color: #edf5fe;");
-                }
-
-                if (style.length() > 0) {
-                    label.add(new SimpleAttributeModifier("style", style.toString()));
-                }
 
                 return label;
             }

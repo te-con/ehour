@@ -23,65 +23,17 @@
 
         <div class="CalendarBody">
             <div class="CalendarWeek" wicket:id="weeks">
-                <div wicket:id="day1">
-                    [s]
-                </div>
-
-                <div wicket:id="day2">
-                    [m]
-                </div>
-
-                <div wicket:id="day3">
-                    [t]
-                </div>
-
-                <div wicket:id="day4">
-                    [w]
-                </div>
-
-                <div wicket:id="day5">
-                    [t]
-                </div>
-
-                <div wicket:id="day6">
-                    [f]
-                </div>
-
-                <div wicket:id="day7">
-                    [s]
-                </div>
+                <div wicket:id="day1">[s]</div>
+                <div wicket:id="day2">[m]</div>
+                <div wicket:id="day3">[t]</div>
+                <div wicket:id="day4">[w]</div>
+                <div wicket:id="day5">[t]</div>
+                <div wicket:id="day6">[f]</div>
+                <div wicket:id="day7">[s]</div>
                 <br clear="all"/>
             </div>
         </div>
     </div>
-
-    <script>
-        // when IE6 doesn't understand hovers properly..
-        function backgroundOn(elm) {
-            for (i = 0; i < elm.childNodes.length; i++) {
-                if (elm.childNodes[i].nodeName == 'DIV') {
-                    elm.childNodes[i].style.backgroundColor = '#edf5fe';
-                }
-            }
-
-            //elm.style.backgroundColor = '#edf5fe';
-        }
-
-        function backgroundOff(elm) {
-            for (i = 0; i < elm.childNodes.length; i++) {
-                if (elm.childNodes[i].nodeName == 'DIV') {
-                    if (elm.childNodes[i].className.indexOf('WeekendDay') != -1)
-                        elm.childNodes[i].style.backgroundColor = '#edf5fe';
-                    else
-                        elm.childNodes[i].style.backgroundColor = '#fefeff';
-                }
-            }
-
-            elm.style.backgroundColor = '';
-        }
-
-    </script>
-
 </wicket:extend>
 </body>
 </html>

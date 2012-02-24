@@ -60,17 +60,12 @@ public class UserProjectStatus extends AssignmentAggregateReportElement
 		{
 			if (getProjectAssignment().getAssignmentType().isAllottedType())
 			{
-				remainder = new Float(getProjectAssignment().getAllottedHours().floatValue() -
-										totalBookedHours.floatValue());
+				remainder = getProjectAssignment().getAllottedHours() - totalBookedHours.floatValue();
 				// Flex assignment that are over their fixed number of hours should report
 				// zero fixed remaining.
-				if (getProjectAssignment().getAssignmentType().isFlexAllottedType())
-				{
-					if (remainder.floatValue() < 0) {
-						remainder = new Float(0f);
-					}
-				}
-				
+                if (getProjectAssignment().getAssignmentType().isFlexAllottedType() && remainder < 0) {
+                    remainder = 0f;
+                }
 			}
 		}
 		
@@ -89,14 +84,14 @@ public class UserProjectStatus extends AssignmentAggregateReportElement
 		{
 			if (getProjectAssignment().getAssignmentType().isFlexAllottedType())
 			{
-				if (totalBookedHours.floatValue()<= getProjectAssignment().getAllottedHours().floatValue()) {
-					remainder = new Float(getProjectAssignment().getAllowedOverrun().floatValue());
+				if (totalBookedHours.floatValue()<= getProjectAssignment().getAllottedHours()) {
+					remainder = getProjectAssignment().getAllowedOverrun();
 				}
 				else
 				{
-					remainder = new Float(getProjectAssignment().getAllottedHours().floatValue() 
-										+ getProjectAssignment().getAllowedOverrun().floatValue()
-										- totalBookedHours.floatValue());
+					remainder = getProjectAssignment().getAllottedHours()
+                            + getProjectAssignment().getAllowedOverrun()
+                            - totalBookedHours.floatValue();
 				}
 			}
 		}

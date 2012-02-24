@@ -38,14 +38,9 @@ public abstract class AbstractBasePanel<T> extends Panel
 	{
 		super(id, model);
 	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	protected EhourWebSession getEhourWebSession()
+	protected final EhourWebSession getEhourWebSession()
 	{
-		return ((EhourWebSession)this.getSession());
+		return EhourWebSession.getSession();
 	}
 
     @SuppressWarnings("unchecked")
@@ -53,14 +48,8 @@ public abstract class AbstractBasePanel<T> extends Panel
         return (IModel<T>)super.getDefaultModel();
     }
 
-
-	
-	/**
-	 * Get this user's config
-	 * @return
-	 */
-	protected EhourConfig getConfig()
+	protected final EhourConfig getConfig()
 	{
-		return EhourWebSession.getSession().getEhourConfig();
+		return getEhourWebSession().getEhourConfig();
 	}	
 }

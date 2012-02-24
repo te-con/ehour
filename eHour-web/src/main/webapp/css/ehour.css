@@ -682,3 +682,12 @@ hr {
     width: 100%;
     border-top: 1px solid #000;
 }
+
+
+.statusMsg {
+    clear: both;
+    padding: 1px 0 0 0;
+    color: red;
+    font-size: 0.8em;
+    text-align: left;
+}

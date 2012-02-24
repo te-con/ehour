@@ -79,21 +79,29 @@ div.Calendar div.CalendarHeader div.CurrentMonth {
     cursor: pointer;
 }
 
-.Calendar .WeekendDay, .Calendar .WeekDay {
+.Calendar .CalendarWeek div {
     float: left;
     width: 30px;
     text-align: center;
     height: 1.6em;
     line-height: 1.6em;
-    margin-left: 1px;
+    border-left: 1px solid #b8d1ed;
+}
+
+.Calendar .selectedWeek {
+    background-color: #edf5fe !important;
+}
+
+.Calendar .other  {
+    background-color: #fefeff;
+}
+
+.Calendar .other:hover  {
+   background-color: #edf5fe;
 }
 
 .Calendar .WeekendDay {
-    background-color: #edf5fe;
-}
-
-.WeekDay {
-    background-color: #fefeff;
+    background-color: #edf5fe  !important;
 }
 
 .Calendar .Booked {
@@ -101,25 +109,26 @@ div.Calendar div.CalendarHeader div.CurrentMonth {
 }
 
 .Calendar .FirstDay {
-    margin-left: 0;
+    border: 0 !important;
 }
 
 .Calendar .FirstDayOfFirstRow {
     border-top-left-radius: 3px;
-    border-color: transparent;
+    border-color: #b8d1ed;
 }
 
 .Calendar .LastDayOfFirstRow {
     border-top-right-radius: 3px;
-    border-color: transparent;
+    border-color: #b8d1ed;
 }
 
 .Calendar .FirstDayOfLastRow {
     border-bottom-left-radius: 3px;
-    border-color: transparent;
+    border-color: #b8d1ed;
 }
 
 .Calendar .LastDayOfLastRow {
     border-bottom-right-radius: 3px;
-    border-color: transparent;
+    border-color: #b8d1ed;
 }
+

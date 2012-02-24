@@ -24,6 +24,7 @@ import net.rrm.ehour.ui.common.component.CommonJavascript;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
@@ -39,7 +40,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,10 +68,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         this.setOutputMarkupId(true);
 
         // this should be easier..
-        Label label = new Label("title", new StringResourceModel("projectoverview.aggregatedPerMonth",
-                this, null,
-                new Object[]{new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY)}));
-
+        Label label = new Label("title", new MessageResourceModel("projectoverview.aggregatedPerMonth", this, new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY)));
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_GREY_BORDER, label, WebGeo.W_CONTENT_MEDIUM);
 
         addGrandTotals(greyBorder, projectStatusses, getConfig());
@@ -287,10 +284,8 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         Fragment summaryRow = new Fragment(ID_SUMMARY_ROW, "summaryRowFragment", ProjectOverviewPanel.this);
         summaryRow.setOutputMarkupId(true);
         // valid from until label
-        Label validityLabel = new Label("overview.validity", new StringResourceModel("overview.validity",
-                this, null,
-                new Object[]{new DateModel(projectStatus.getProjectAssignment().getDateStart(), getConfig()),
-                             new DateModel(projectStatus.getProjectAssignment().getDateEnd(), getConfig())}));
+        Label validityLabel = new Label("overview.validity", new MessageResourceModel("overview.validity", this, new DateModel(projectStatus.getProjectAssignment().getDateStart(), getConfig()),
+                             new DateModel(projectStatus.getProjectAssignment().getDateEnd(), getConfig())));
         validityLabel.setEscapeModelStrings(false);
         summaryRow.add(validityLabel);
 
@@ -301,21 +296,13 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         Number bookedHours = projectStatus.getTotalBookedHours();
         float totalBookedHours = (bookedHours != null) ? projectStatus.getTotalBookedHours().floatValue() : 0;
 
-        Label totalBookedLabel = new Label("overview.totalbooked", new StringResourceModel("overview.totalbooked",
-                this, null,
-                new Object[]{new Model<Float>(totalBookedHours)}));
-        cont.add(totalBookedLabel);
+        cont.add(new Label("overview.totalbooked", new MessageResourceModel("overview.totalbooked", this, totalBookedHours)));
 
-        Label remainingLabel = new Label("overview.remainingfixed", new StringResourceModel("overview.remainingfixed",
-                this, null,
-                new Object[]{new Model<Float>(projectStatus.getFixedHoursRemaining())}));
+        Label remainingLabel = new Label("overview.remainingfixed", new MessageResourceModel("overview.remainingfixed", this, projectStatus.getFixedHoursRemaining()));
         remainingLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
         cont.add(remainingLabel);
 
-        Label remainingFlexLabel = new Label("overview.remainingflex", new StringResourceModel("overview.remainingflex",
-                this, null,
-                new Object[]{new Model<Float>(projectStatus.getFlexHoursRemaining())}));
-
+        Label remainingFlexLabel = new Label("overview.remainingflex", new MessageResourceModel("overview.remainingflex", this, projectStatus.getFlexHoursRemaining()));
         // only shown for flex allotted types
         remainingFlexLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
         cont.add(remainingFlexLabel);
