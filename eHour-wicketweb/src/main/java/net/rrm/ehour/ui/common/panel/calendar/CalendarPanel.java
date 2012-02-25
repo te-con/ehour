@@ -159,6 +159,7 @@ public class CalendarPanel extends SidePanel {
                 if (fireWeekClicks) {
                     fireWeekClicks(item, week, isCurrentWeek);
                 } else {
+                    item.add(new SimpleAttributeModifier("class", "CalendarWeek other"));
                     item.add(new SimpleAttributeModifier("style", "cursor:default"));
                 }
             }

@@ -54,15 +54,12 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 	private static final String ID_BLUE_BORDER = "blueBorder";
 	
 	private Label			titleLabel;
-	
+
 	public ExportMonthSelectionPage()
-	{	
+	{
 		this(EhourWebSession.getSession().getNavCalendar());
 	}
-	
-	/**
-	 * 
-	 */
+
 	public ExportMonthSelectionPage(Calendar forMonth)
 	{
 		super(new ResourceModel("printMonth.title"));

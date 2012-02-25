@@ -7,20 +7,31 @@
 
     <body>
     	<wicket:extend>
-    	 	<div style="float: left">
-    	 		<br />
-    	 		
-	    		<div class="SidePanelLoc" wicket:id="sidePanel"></div>
-	    		<br clear="all" />
-	    		<div class="ContextualHelp" wicket:id="contextHelp"></div>
-	    		
-		    </div>
-		    	    	
-    		<div class="ContentPanelLoc" wicket:id="printSelectionFrame">
-   				<div wicket:id="blueBorder">
-                    <span wicket:id="selectionForm"></span>
-            	</div>
-    		</div>
+            <div class="colmask leftmenu">
+                <div class="colright">
+                    <div class="col1wrap">
+                        <div class="col1">
+                            <div class="ContentPanelLoc" wicket:id="printSelectionFrame">
+                                <div wicket:id="blueBorder">
+                                    <span wicket:id="selectionForm"></span>
+                                </div>
+                            </div>                        </div>
+                    </div>
+
+                    <div class="col2">
+                        <br/>
+
+                        <div class="SidePanelLoc" wicket:id="sidePanel">
+                        </div>
+
+                        <br clear="all"/>
+
+                        <div class="ContextualHelp" wicket:id="contextHelp">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 	    	
     	</wicket:extend>
     </body>
