@@ -134,7 +134,7 @@ public class ProjectServiceImpl implements ProjectService
 	{
 		projectDAO.persist(project);
 
-		userService.addAndcheckProjectManagementRoles( project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
+		userService.validateProjectManagementRoles(project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
 		
 		if (project.isDefaultProject() &&
 				project.isActive())

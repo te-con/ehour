@@ -118,7 +118,7 @@ public class ProjectServiceTest extends TestCase
 		expect(projectDAO.persist(prj))
 			.andReturn(prj);
 		
-		expect(userService.addAndcheckProjectManagementRoles(null))
+		expect(userService.validateProjectManagementRoles(null))
 			.andReturn(null);
 	
 		replay(userService);

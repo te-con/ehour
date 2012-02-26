@@ -210,6 +210,8 @@ public class UserServiceImpl implements UserService {
 
         if (dbUser != null && !dbUser.getUserId().equals(user.getUserId())) {
             throw new ObjectNotUniqueException("Username already in use");
+        } else if (dbUser == null) {
+            dbUser = new User();
         }
 
         dbUser.setActive(user.isActive());
@@ -270,12 +272,9 @@ public class UserServiceImpl implements UserService {
         return userDAO.findAllActiveUsersWithEmailSet();
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#addAndcheckProjectManagementRoles(java.lang.Integer)
-      */
+    @Override
     @Transactional
-    public User addAndcheckProjectManagementRoles(Integer userId) {
+    public User validateProjectManagementRoles(Integer userId) {
         User user = null;
         try {
             if (userId != null) {

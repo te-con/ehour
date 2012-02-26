@@ -140,6 +140,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 	{
 		// project manager
 		DropDownChoice<User> projectManager = new DropDownChoice<User>("project.projectManager", getEligablePms(), new ChoiceRenderer<User>("fullName"));
+        projectManager.setNullValid(true);
 		projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
 		
 		return projectManager;

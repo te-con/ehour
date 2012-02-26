@@ -133,7 +133,7 @@ public interface UserService
      * Add pm role to user and validate all other pm roles
      * @param userId to add pm role to
      */
-    public User addAndcheckProjectManagementRoles(Integer userId);
+    public User validateProjectManagementRoles(Integer userId);
 
     /**
      * Cascading delete of user

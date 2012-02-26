@@ -183,7 +183,7 @@ public class UserServiceImplTest {
 
         replay(userDAO);
 
-        userService.addAndcheckProjectManagementRoles(1);
+        userService.validateProjectManagementRoles(1);
 
         verify(userDAO);
 
