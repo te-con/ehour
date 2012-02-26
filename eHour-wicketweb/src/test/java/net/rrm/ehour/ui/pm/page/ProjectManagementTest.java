@@ -23,6 +23,7 @@ import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.pm.panel.PmReportPanel;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,14 +54,8 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester
 		getMockContext().putBean("aggregatedReportService", aggregateReportService);
 	}
 
-
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.pm.page.ProjectManagement#ProjectManagement()}.
-	 * @throws NoSuchMethodException 
-	 * @throws SecurityException 
-	 */
 	@Test
-	public void testProjectManagement() throws SecurityException, NoSuchMethodException
+	public void shouldRender() throws SecurityException, NoSuchMethodException
 	{
 		List<Project> projects = new ArrayList<Project>();
 		projects.add(new Project(1));
@@ -96,9 +91,7 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester
 		
 		verify(aggregateReportService);
         
-//        getTester().assertComponent("reportPanel", PmReportPanel.class);
-//        getTester().assertComponentOnAjaxResponse("reportPanel");
-        
-//        getTester().assertErrorMessages(new String[] { "A Login and Password are required to enable offsite access." });		
+        getTester().assertComponent("reportPanel", PmReportPanel.class);
+        getTester().assertComponentOnAjaxResponse("reportPanel");
 	}
 }

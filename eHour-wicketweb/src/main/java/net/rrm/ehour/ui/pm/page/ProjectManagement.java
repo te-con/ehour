@@ -26,11 +26,12 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
-import net.rrm.ehour.ui.report.panel.pm.PmReportPanel;
+import net.rrm.ehour.ui.pm.panel.PmReportPanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -46,18 +47,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 {
 	private static final long serialVersionUID = 898442184509251553L;
+    public static final String REPORT_PANEL = "reportPanel";
+
+    @SpringBean
+	private ProjectService	projectService;
 
 	@SpringBean
-	private ProjectService	projectService;
-	@SpringBean
 	private AggregateReportService	aggregateReportService;
-	private WebMarkupContainer	reportPanel;
-	
-	/**
-	 * Default constructor 
-	 * @param pageTitle
-	 * @param model
-	 */
+
 	public ProjectManagement()
 	{
 		super(new ResourceModel("pmReport.title"));
@@ -70,33 +67,22 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 		// add criteria
 		add(new UserReportCriteriaPanel("sidePanel", model, false));
 		
-		reportPanel = new WebMarkupContainer("reportPanel");
-		reportPanel.setOutputMarkupId(true);
-		add(reportPanel);
+		add(new PlaceholderPanel(REPORT_PANEL));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
-	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED && ajaxEvent.getTarget() != null)
 		{
-			WebMarkupContainer replacement = new PmReportPanel("reportPanel", getReportData());
-			reportPanel.replaceWith(replacement);
-			reportPanel = replacement;
-			ajaxEvent.getTarget().addComponent(replacement);
+            PmReportPanel reportPanel = new PmReportPanel(REPORT_PANEL, getReportData());
+            addOrReplace(reportPanel);
+			ajaxEvent.getTarget().addComponent(reportPanel);
 		}
 		
 		return true;
 	}
 
-	/**
-	 * Get report criteria
-	 * @return
-	 */
 	private ReportCriteria getReportCriteria()
 	{
 		ReportCriteria reportCriteria = new ReportCriteria();
@@ -111,10 +97,6 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 		return reportCriteria;
 	}
 	
-	/**
-	 * Get report data for  model
-	 * @return
-	 */
 	private ProjectManagerReport getReportData()
 	{
 		ReportCriteria 	criteria = (ReportCriteria)(getDefaultModelObject());
@@ -141,11 +123,4 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 		return reportData;
 	}
 
-	/**
-	 * @param reportPanel the reportPanel to set
-	 */
-	public void setReportPanel(WebMarkupContainer reportPanel)
-	{
-		this.reportPanel = reportPanel;
-	}	
 }

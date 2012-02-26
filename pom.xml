@@ -116,11 +116,6 @@
                 <version>${slf4j.version}</version>
             </dependency>
             <dependency>
-                <groupId>jfree</groupId>
-                <artifactId>jfreechart</artifactId>
-                <version>1.0.9</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
                 <version>3.7</version>
