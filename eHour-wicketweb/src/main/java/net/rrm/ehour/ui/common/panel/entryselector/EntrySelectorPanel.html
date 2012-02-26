@@ -12,9 +12,9 @@
 		<form onsubmit="return false;" wicket:id="filterForm" style="margin: 0; padding: 0">
 			<p>
                 <span wicket:id="filterInputContainer">
-					<input class="textInput" 
+					<input class="textInput"
+                           wicket:id="listFilter"
 							type="text" 
-							wicket:id="filterInput"
 							style="width: 220px; background-color: #fefefe;margin: 0 0 3px 0; padding: 0;color: #aaaaaa; "
 							size="25" 
 							/>
@@ -26,11 +26,35 @@
 		</form>	
 	
 		<div wicket:id="blueBorder" style="width: 250px; padding-top: 0; margin-top: 10px">
-			<div class="listScroll">
+			<div class="listScroll" id="listContents">
 				<span wicket:id="itemListHolder"></span>
 			</div>	
 		</div>
 	</span>
+
+
+    <script>
+        $("#listFilter").keyup(function () {
+            filterList()
+        });
+
+        filterList();
+
+        function filterList() {
+            var q = $.trim($("#listFilter").val()).toLowerCase();
+
+            $("#listContents").find("span").each(function (idx, element) {
+                var e = $(element);
+
+                if (e.text().toLowerCase().indexOf(q) >= 0) {
+                    e.show();
+                } else {
+                    e.hide();
+                }
+            });
+        }
+    </script>
+
 </wicket:panel>
 
 </body>

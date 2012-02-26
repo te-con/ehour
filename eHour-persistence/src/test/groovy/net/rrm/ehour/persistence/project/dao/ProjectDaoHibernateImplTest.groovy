@@ -39,14 +39,6 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   }
 
   @Test
-  void shouldFindAllFiltered()
-  {
-    def projects = projectDAO.findProjects("days", true)
-
-    assertEquals(2, projects.size())
-  }
-
-  @Test
   void shouldFindById()
   {
     def prj = projectDAO.findById(10)

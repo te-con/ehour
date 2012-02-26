@@ -20,20 +20,13 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
-
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.util.time.Duration;
 
 /**
  * Selector with autocompletion filter 
@@ -41,55 +34,20 @@ import org.apache.wicket.util.time.Duration;
 
 public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 {
-	private	StringResourceModel	defaultFilterText;
 	private	IModel<String> checkBoxPrefixText;
-	private	boolean	includeFilter = false;
 	private	boolean	includeCheckboxToggle = false;
 	private GreyBlueRoundedBorder blueBorder;
 	private static final long serialVersionUID = -7928428437664050056L;
 
-	/**
-	 * EntrySelectorPanel without filter or checkbox toggle
-	 * @param id
-	 * @param title
-	 * @param defaultFilterInputText
-	 * @param itemList
-	 */
 	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder)
 	{
 		this(id, itemListHolder, null);
 	}
 	
-	/**
-	 * EntrySelectorPanel with filter but without checkbox toggle
-	 * @param id
-	 * @param title
-	 * @param itemList
-	 * @param defaultFilterText
-	 */
-	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, StringResourceModel defaultFilterText)
-	{
-		this(id, itemListHolder, defaultFilterText, null);
-	}
-
-	/**
-	 * Fully featured EntrySelectorPanel
-	 * @param id
-	 * @param title
-	 * @param itemList
-	 * @param defaultFilterText
-	 * @param checkboxPrefix
-	 */
-	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, StringResourceModel defaultFilter, IModel<String> checkboxPrefix)
+	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, IModel<String> checkboxPrefix)
 	{
 		super(id);
 
-		if (defaultFilter != null)
-		{
-			this.defaultFilterText = defaultFilter;
-			includeFilter = true;
-		}
-		
 		if (checkboxPrefix != null)
 		{
 			this.checkBoxPrefixText = checkboxPrefix;
@@ -99,19 +57,13 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 		setUpPanel(itemListHolder);
 	}	
 
-	/**
-	 * 
-	 * @param target
-	 */
+
 	public void refreshList(AjaxRequestTarget target)
 	{
 		target.addComponent(blueBorder);
 	}
 
-	/**
-	 * Setup page
-	 */
-	protected void setUpPanel(WebMarkupContainer itemListHolder)
+	private void setUpPanel(WebMarkupContainer itemListHolder)
 	{
 		WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
 		
@@ -126,13 +78,9 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 		blueBorder.add(itemListHolder);
 	}
 	
-	/**
-	 * Setup the filter form
-	 * @param parent
-	 */
-	protected Form<Void> getFilterForm()
+	private Form<Void> getFilterForm()
 	{
-		final EntrySelectorFilter filter = new EntrySelectorFilter(defaultFilterText);
+		final EntrySelectorFilter filter = new EntrySelectorFilter();
 		filter.setOnId(this.getId());
 		filter.setActivateToggle(getEhourWebSession().getHideInactiveSelections());
 		
@@ -140,12 +88,13 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 		
 		WebMarkupContainer filterInputContainer = new WebMarkupContainer("filterInputContainer");
 		add(filterInputContainer);
-		filterInputContainer.setVisible(this.includeFilter);
 		filterForm.add(filterInputContainer);
-		
-		final TextField<String>	filterInputField = new TextField<String>("filterInput", new PropertyModel<String>(filter, "filterInput"));
-		filterInputField.setVisible(this.includeFilter);
-		filterInputContainer.add(filterInputField);
+
+        WebMarkupContainer listFilter = new WebMarkupContainer("listFilter");
+        listFilter.setMarkupId("listFilter");
+        listFilter.setOutputMarkupId(true);
+        filterInputContainer.add(listFilter);
+
 		
 		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(filter, "activateToggle"))
 		{
@@ -157,63 +106,24 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
             	getEhourWebSession().setHideInactiveSelections(filter.isActivateToggle());
 
             	callbackAfterFilter(target, filter);
+
+                target.appendJavascript("filterList();");
 			}
 		};
-		
-		deactivateBox.setVisible(includeCheckboxToggle);
-		filterForm.add(deactivateBox);
-		
-		Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
-		filterForm.add(filterToggleText);
 
-		// if filter included, attach onchange ajax behaviour otherwise hide it
-		if (includeFilter)
-		{
-			filterInputField.add(new AttributeModifier("onclick", true, new AbstractReadOnlyModel<String>()
-	        {
-				private static final long serialVersionUID = -1;
-	            public String getObject()
-	            {
-	                return "this.style.color='#233e55';if (this.value == '" + defaultFilterText.getString() + "') { this.value='';}";
-	            }
-	        }));
-			
-			OnChangeAjaxBehavior onChangeAjaxBehavior = new OnChangeAjaxBehavior()
-	        {
-				private static final long serialVersionUID = -1;
-				
-	            @Override
-	            protected void onUpdate(AjaxRequestTarget target)
-	            {
-	            	callbackAfterFilter(target, filter);
-	            }
-	        };
-	        
-	        onChangeAjaxBehavior.setThrottleDelay(Duration.milliseconds(500));
-	        
-	        filterInputField.add(onChangeAjaxBehavior);
-		}
-		else
-		{
-			// hide everything 
-			filterInputField.setVisible(false);
-		}
-		
-		filterForm.setVisible(includeFilter || includeCheckboxToggle);
-		
+        deactivateBox.setVisible(includeCheckboxToggle);
+        filterForm.add(deactivateBox);
+
+        Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
+        filterForm.add(filterToggleText);
+
 		return filterForm;
 	}
-	
-	/**
-	 * Call back
-	 * @param target
-	 * @param filter
-	 */
-	protected void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter)
+
+	private void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter)
 	{
-		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE,
-																										filter);
-		EventPublisher.publishAjaxEvent(this, payloadEvent);
+		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE, filter);
+        EventPublisher.publishAjaxEvent(this, payloadEvent);
 		
     	target.addComponent(blueBorder);
 	}

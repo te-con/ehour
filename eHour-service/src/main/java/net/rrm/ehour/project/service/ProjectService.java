@@ -29,19 +29,11 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 public interface ProjectService
 {
 	/**
-	 * Get all projects
-	 * @param hideInactive 
-	 * @return
-	 */
-	public List<Project> getAllProjects(boolean hideInactive);
-	
-	/**
-	 * Get all (filtered) projects
-	 * @param filter
+	 * Get all (active) projects
 	 * @param hideInactive
 	 * @return
 	 */
-	public List<Project> getProjects(String filter, boolean hideInactive);
+	public List<Project> getProjects(boolean hideInactive);
 	
 	/**
 	 * Get project

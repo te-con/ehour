@@ -70,7 +70,7 @@ public class ProjectServiceTest extends TestCase
 
 		replay(projectDAO);
 		
-		projectService.getAllProjects(true);
+		projectService.getProjects(true);
 		
 		verify(projectDAO);
 	}
@@ -83,7 +83,7 @@ public class ProjectServiceTest extends TestCase
 
 		replay(projectDAO);
 		
-		projectService.getAllProjects(false);
+		projectService.getProjects(false);
 		
 		verify(projectDAO);
 	}	

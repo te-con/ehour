@@ -10,29 +10,15 @@
 	<query name="Customer.findByNameAndCode">
 		FROM Customer customer
 	    WHERE lower(name) = :name AND lower(code) = :code
-	</query>	
-	
+	</query>
+
 	<query name="Project.findAllActive">
 		FROM Project project
 		WHERE project.active is true AND
 			  project.customer.active is true
 	    ORDER BY name
 	</query>	
-	
-	<query name="Project.findByNamePattern"> 
-		SELECT project
-		FROM Project as project
-	    WHERE lower(name) like  :pattern
-	    ORDER BY name
-	</query>
-	
-	<query name="Project.findActiveByNamePattern"> 
-		SELECT project
-		FROM Project as project
-	    WHERE lcase(name) like  :pattern AND active = true
-	    ORDER BY name    
-	</query>	
-	
+
 	<query name="Project.findAllActiveDefault">
 		FROM Project project
 	    WHERE project.active is true AND 

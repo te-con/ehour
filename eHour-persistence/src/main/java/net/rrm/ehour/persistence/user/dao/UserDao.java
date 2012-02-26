@@ -27,9 +27,10 @@ public interface UserDao extends GenericDao<User, Integer>
 	/**
 	 * Find a user by username and password
 	 * @param username
-	 * @return
+	 * @param password
+     * @return
 	 */
-	public User findByUsernameAndPassword(String username, String password);
+	User findByUsernameAndPassword(String username, String password);
 	
 	/**
 	 * Find user by username
@@ -37,27 +38,26 @@ public interface UserDao extends GenericDao<User, Integer>
 	 * @return
 	 */
 	
-	public User findByUsername(String username);
+	User findByUsername(String username);
 	
 	/**
-	 * Find users where pattern matches either first name or last name
-	 * @param pattern
+	 * Find users
 	 * @param onlyActive -> include only active users
 	 * @return
 	 */
-	public List<User> findUsersByNameMatch(String pattern, boolean onlyActive);
+	List<User> findUsers(boolean onlyActive);
 
 	/**
-	 * Find all users
+	 * Find active users
 	 * @return
 	 */
-	public List<User> findAllActiveUsers();
+	List<User> findActiveUsers();
 	
 	/**
 	 * Find all active users with email address set
 	 * @return
 	 */
-	public List<User> findAllActiveUsersWithEmailSet();
+	List<User> findAllActiveUsersWithEmailSet();
 	
 	/**
 	 * Find users for departments with filter pattern and active flag
@@ -66,11 +66,11 @@ public interface UserDao extends GenericDao<User, Integer>
 	 * @param onlyActive
 	 * @return
 	 */
-	public List<User> findUsersForDepartments(String pattern, List<UserDepartment> departments, boolean onlyActive);
+	List<User> findUsersForDepartments(String pattern, List<UserDepartment> departments, boolean onlyActive);
 	
 	/**
 	 * Delete users with PM role but are not PM anymore
 	 * @return
 	 */
-	public void deletePmWithoutProject();
+	void deletePmWithoutProject();
 }

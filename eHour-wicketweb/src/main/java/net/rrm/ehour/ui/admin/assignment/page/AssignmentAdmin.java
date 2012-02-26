@@ -29,7 +29,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
-import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -46,112 +45,82 @@ import java.util.List;
 
 /**
  * Project assignments page
- **/
+ */
 
 @SuppressWarnings("serial")
-public class AssignmentAdmin extends AbstractAdminPage<Void>
-{
-	private static final long serialVersionUID = 566527529422873370L;
-	private static final String			USER_SELECTOR_ID = "userSelector";
+public class AssignmentAdmin extends AbstractAdminPage<Void> {
+    private static final long serialVersionUID = 566527529422873370L;
+    private static final String USER_SELECTOR_ID = "userSelector";
 
-	@SpringBean
-	private	UserService					userService;
-	private EntrySelectorFilter			currentFilter;
-	private	final static Logger			LOGGER = Logger.getLogger(AssignmentAdmin.class);
-	private ListView<User>				userListView;
-	private	Panel						assignmentPanel;
+    @SpringBean
+    private UserService userService;
+    private ListView<User> userListView;
+    private Panel assignmentPanel;
 
-	public AssignmentAdmin()
-	{
-		super(new ResourceModel("admin.assignment.title"),
-				"admin.assignment.help.header",
-				"admin.assignment.help.body",
+    public AssignmentAdmin() {
+        super(new ResourceModel("admin.assignment.title"),
+                "admin.assignment.help.header",
+                "admin.assignment.help.body",
                 true);
 
-		List<User>	users;
-		users = getUsers();
+        List<User> users;
+        users = getUsers();
 
-		Fragment userListHolder = getUserListHolder(users);
+        Fragment userListHolder = getUserListHolder(users);
 
-		GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame",
-																new ResourceModel("admin.assignment.title"),
-																WebGeo.W_ENTRY_SELECTOR);
-		add(grey);
+        GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame",
+                new ResourceModel("admin.assignment.title"),
+                WebGeo.W_ENTRY_SELECTOR);
+        add(grey);
 
-		grey.add(new EntrySelectorPanel(USER_SELECTOR_ID,
-										userListHolder,
-										new StringResourceModel("admin.assignment.filter", this, null)));
+        grey.add(new EntrySelectorPanel(USER_SELECTOR_ID, userListHolder));
 
-		assignmentPanel = new NoUserSelectedPanel("assignmentPanel", "admin.assignment.noEditEntrySelected");
+        assignmentPanel = new NoUserSelectedPanel("assignmentPanel", "admin.assignment.noEditEntrySelected");
 
-		add(assignmentPanel);
-	}
+        add(assignmentPanel);
+    }
 
-	@SuppressWarnings("unchecked")
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		if (ajaxEvent.getEventType() == EntrySelectorAjaxEventType.FILTER_CHANGE)
-		{
-			PayloadAjaxEvent<EntrySelectorFilter> payload = (PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent;
-			currentFilter = payload.getPayload();
+    @SuppressWarnings("unchecked")
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        return true;
+    }
 
-            userListView.setList(getUsers());
+    private Fragment getUserListHolder(List<User> users) {
+        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
 
-		}
+        userListView = new ListView<User>("itemList", users) {
+            @Override
+            protected void populateItem(ListItem<User> item) {
+                final User user = item.getModelObject();
 
-		return false;
-	}
+                AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        replaceAssignmentPanel(target, user);
+                    }
+                };
 
-	private Fragment getUserListHolder(List<User> users)
-	{
-		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
+                item.add(link);
+                link.add(new Label("linkLabel", user.getFullName()));
+            }
+        };
 
-		userListView = new ListView<User>("itemList", users)
-		{
-			@Override
-			protected void populateItem(ListItem<User> item)
-			{
-				final User user = item.getModelObject();
+        fragment.add(userListView);
 
-				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
-				{
-					@Override
-					public void onClick(AjaxRequestTarget target)
-					{
-						replaceAssignmentPanel(target, user);
-					}
-				};
+        return fragment;
+    }
 
-				item.add(link);
-				link.add(new Label("linkLabel", user.getFullName()));
-			}
-		};
+    private void replaceAssignmentPanel(AjaxRequestTarget target, User user) {
+        AssignmentPanel newAssignmentPanel = new AssignmentPanel("assignmentPanel",
+                user);
 
-		fragment.add(userListView);
+        assignmentPanel.replaceWith(newAssignmentPanel);
+        target.addComponent(newAssignmentPanel);
 
-		return fragment;
-	}
+        assignmentPanel = newAssignmentPanel;
+    }
 
-	private void replaceAssignmentPanel(AjaxRequestTarget target, User user)
-	{
-		AssignmentPanel	newAssignmentPanel = new AssignmentPanel("assignmentPanel",
-																user);
-
-		assignmentPanel.replaceWith(newAssignmentPanel);
-		target.addComponent(newAssignmentPanel);
-
-		assignmentPanel = newAssignmentPanel;
-	}
-
-	private List<User> getUsers()
-	{
-		if (currentFilter == null)
-		{
-			return  userService.getUsers(UserRole.CONSULTANT);
-		}
-		else
-		{
-			return userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, UserRole.CONSULTANT);
-		}
-	}
+    private List<User> getUsers() {
+        return userService.getUsers(UserRole.CONSULTANT);
+    }
 }

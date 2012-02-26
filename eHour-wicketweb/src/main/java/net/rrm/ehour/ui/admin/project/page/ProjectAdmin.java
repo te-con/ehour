@@ -45,7 +45,6 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Collections;
@@ -64,7 +63,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 
 	@SpringBean
 	private ProjectService		projectService;
-	private	final static Logger	logger = Logger.getLogger(ProjectAdmin.class);
+	private	static final Logger LOGGER = Logger.getLogger(ProjectAdmin.class);
 	private EntrySelectorFilter	currentFilter;
 	private	ListView<Project> 	projectListView;
 
@@ -88,7 +87,6 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 
 		greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
 											projectListHolder,
-											new StringResourceModel("admin.project.filter", this, null),
 											new ResourceModel("admin.project.hideInactive")));
 	}
 
@@ -171,7 +169,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 
 	/**
 	 * Get a the projectListHolder fragment containing the listView
-	 * @param users
+	 * @param projects
 	 * @return
 	 */
 	@SuppressWarnings("serial")
@@ -198,7 +196,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 							getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
 						} catch (ObjectNotFoundException e)
 						{
-							logger.error(e);
+                            LOGGER.error(e);
 						}
 					}
 				};
@@ -220,21 +218,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 	 */
 	private List<Project> getProjects()
 	{
-		List<Project> projects;
-
-        if (currentFilter == null)
-		{
-			projects = projectService.getAllProjects(true);
-		}
-		else
-		{
-			if (logger.isDebugEnabled())
-			{
-				logger.debug("Filtering on " + currentFilter.getCleanFilterInput() + ", hide active: " + currentFilter.isActivateToggle());
-			}
-
-			projects = projectService.getProjects(currentFilter.getCleanFilterInput(), currentFilter.isActivateToggle());
-		}
+		List<Project> projects = projectService.getProjects(currentFilter == null || currentFilter.isActivateToggle());
 
 		Collections.sort(projects, new ProjectComparator());
 

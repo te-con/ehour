@@ -95,22 +95,4 @@ public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Pro
 												"user", user,
 												true, CACHEREGION);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.dao.ProjectDAO#findProjects(java.lang.String, boolean)
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Project> findProjects(String pattern, boolean onlyActive)
-	{
-		String	hql;
-		
-		pattern = patternToSqlPattern(pattern);
-		
-		hql = (onlyActive) ? "Project.findActiveByNamePattern" :
-							  "Project.findByNamePattern";
-		
-		return getHibernateTemplate().findByNamedQueryAndNamedParam(hql,
-																"pattern", pattern);		
-	}
 }

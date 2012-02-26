@@ -72,35 +72,10 @@ public class ProjectServiceImpl implements ProjectService
 		this.userService = userService;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getAllProjects(boolean)
-	 */
-	public List<Project> getAllProjects(boolean hideInactive)
+    @Override
+	public List<Project> getProjects(boolean hideInactive)
 	{
-		List<Project>	res;
-		
-		if (hideInactive)
-		{
-			LOGGER.debug("Finding all active projects");
-			res = projectDAO.findAllActive();
-		}
-		else
-		{
-			LOGGER.debug("Finding all projects");
-			res = projectDAO.findAll();
-		}
-
-		return res;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjects(java.lang.String, boolean)
-	 */
-	public List<Project> getProjects(String filter, boolean hideInactive)
-	{
-		return projectDAO.findProjects(filter, hideInactive);
+        return hideInactive ? projectDAO.findAllActive() : projectDAO.findAll();
 	}
 	
 	/*

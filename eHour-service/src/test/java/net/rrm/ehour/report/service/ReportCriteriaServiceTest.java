@@ -147,7 +147,7 @@ public class ReportCriteriaServiceTest
 		userCriteria.setOnlyActiveProjects(false);
 		reportCriteria = new ReportCriteria(userCriteria);
 		
-		expect(userDAO.findUsersByNameMatch(null, false) ).andReturn(new ArrayList<User>());
+		expect(userDAO.findUsers(false) ).andReturn(new ArrayList<User>());
 		replay(userDAO);
 		
 		expect(customerDAO.findAllActive()).andReturn(new ArrayList<Customer>());
@@ -194,7 +194,7 @@ public class ReportCriteriaServiceTest
 		userCriteria.setOnlyBillableProjects(true);
 		reportCriteria = new ReportCriteria(userCriteria);
 		
-		expect(userDAO.findUsersByNameMatch(null, false) ).andReturn(new ArrayList<User>());
+		expect(userDAO.findUsers(false) ).andReturn(new ArrayList<User>());
 		replay(userDAO);
 		
 		expect(customerDAO.findAllActive()).andReturn(new ArrayList<Customer>());

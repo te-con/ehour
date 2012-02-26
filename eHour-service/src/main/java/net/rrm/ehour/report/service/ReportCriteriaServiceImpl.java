@@ -116,7 +116,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
 		if (userCriteria.isEmptyDepartments()) 
 		{
-			users = userDAO.findUsersByNameMatch(userCriteria.getUserFilter(), userCriteria.isOnlyActiveUsers());
+			users = userDAO.findUsers(userCriteria.isOnlyActiveUsers());
 		}
 		else
 		{

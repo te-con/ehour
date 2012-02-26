@@ -41,17 +41,9 @@ public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, 
 	 */
 	public User findByUsername(String username)
 	{
-		User		user = null;
-		List<User>	l;
-		
-		l = findByNamedQueryAndNamedParam("User.findByUsername", "username", username, true, CACHEREGION);
-		
-		if (l.size() > 0)
-		{
-			user = (User)l.get(0);
-		}
-		
-		return user;	
+		List<User> l = findByNamedQueryAndNamedParam("User.findByUsername", "username", username, true, CACHEREGION);
+
+        return  l.size() > 0 ? l.get(0) : null;
 	}	
 	
 	/*
@@ -62,17 +54,10 @@ public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, 
 	{
 		String[] paramKeys = new String[]{"username", "password"};
 		Object[] paramValues = new String[]{username, password};
-		User		user = null;
-		List<User> users;
-		
-		users = findByNamedQueryAndNamedParam("User.findByUsernameAndPassword", paramKeys, paramValues, true, CACHEREGION);
-		
-		if (users.size() > 0)
-		{
-			user = (User)users.get(0);
-		}
-		
-		return user;	
+
+        List<User> users = findByNamedQueryAndNamedParam("User.findByUsernameAndPassword", paramKeys, paramValues, true, CACHEREGION);
+
+        return users.size() > 0 ? users.get(0) : null;
 	}
 
 	/*
@@ -80,44 +65,19 @@ public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, 
 	 * @see net.rrm.ehour.persistence.persistence.user.dao.UserDAO#findUsersByNameMatch(java.lang.String, boolean)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> findUsersByNameMatch(String pattern, boolean onlyActive)
+	public List<User> findUsers(boolean onlyActive)
 	{
-		String	hql;
-		
-		if (pattern != null && !pattern.trim().equals(""))
-		{
-			pattern = pattern.toLowerCase();
-			pattern = "%" + pattern + "%";
-		}
-		else
-		{
-			pattern = "%";
-		}
-		
-		hql = (onlyActive) ? "User.findActiveByUsernamePattern" :
-							  "User.findByUsernamePattern";
-		
-		return getHibernateTemplate().findByNamedQueryAndNamedParam(hql,
-																"pattern", pattern);
+        return onlyActive ? getHibernateTemplate().findByNamedQuery("User.findActiveUsers") : getHibernateTemplate().loadAll(User.class);
 	}
 
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> findAllActiveUsers()
-	{
-		return getHibernateTemplate().findByNamedQuery("User.findAllActiveUsers");
-	}
+	public List<User> findActiveUsers() {
+        return findUsers(true);
+    }
 
-	
-	/**
-	 * Find users for departments with filter pattern and active flag
-	 * @param pattern
-	 * @param departmentIds
-	 * @param onlyActive
-	 * @return
-	 */	
 	public List<User> findUsersForDepartments(String pattern, List<UserDepartment> departments, boolean onlyActive)
 	{
 		String		hql;
@@ -135,20 +95,12 @@ public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, 
 		return findByNamedQueryAndNamedParam(hql, paramKeys, paramValues, true, CACHEREGION);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.dao.UserDAO#findAllActiveUsersWithEmailSet()
-	 */
 	@SuppressWarnings("unchecked")
 	public List<User> findAllActiveUsersWithEmailSet()
 	{
 		return getHibernateTemplate().findByNamedQuery("User.findAllActiveUsersWithEmailSet");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.user.dao.UserDAO#deletePmWithoutProject()
-	 */
 	public void deletePmWithoutProject()
 	{
 		Query q = getSession().getNamedQuery("User.deletePMsWithoutProject");

@@ -43,7 +43,7 @@ public class AssignmentAdminTest extends AbstractSpringWebAppTester
 	 * Test render
 	 */
 	@Test
-	public void testAssignmentAdminRender()
+	public void shouldRender()
 	{
 		UserService userService = createMock(UserService.class);
 		getMockContext().putBean("userService", userService);
@@ -57,11 +57,6 @@ public class AssignmentAdminTest extends AbstractSpringWebAppTester
 		ProjectAssignmentService assignmentService = createMock(ProjectAssignmentService.class);
 		getMockContext().putBean("assignmentService", assignmentService);
 
-//		expect(projectService.getAllProjectsForUser(66))
-//				.andReturn(new ArrayList<ProjectAssignment>());
-
-//		replay(projectService);
-		
 		expect(assignmentService.getProjectAssignmentTypes())
 				.andReturn(new ArrayList<ProjectAssignmentType>());
 		
@@ -86,7 +81,5 @@ public class AssignmentAdminTest extends AbstractSpringWebAppTester
 		getTester().assertNoErrorMessage();
 		
 		verify(userService);
-//		verify(customerService);
-//		verify(assignmentService);
 	}
 }

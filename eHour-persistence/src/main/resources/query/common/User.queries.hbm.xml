@@ -14,26 +14,12 @@
 	    WHERE username = :username AND password = :password
 	</query>
 
-	<query name="User.findByUsernamePattern"> 
+	<query name="User.findActiveUsers">
 		SELECT DISTINCT user
 		FROM User as user
-	    WHERE lower(firstName) like  :pattern OR lower(lastName) like :pattern
+        WHERE active = true
 	    ORDER BY lastName, firstName
 	</query>
-	
-	<query name="User.findActiveByUsernamePattern"> 
-		SELECT DISTINCT user
-		FROM User as user
-	    WHERE (lower(firstName) like  :pattern OR lower(lastName) like :pattern) AND active = true
-	    ORDER BY lastName, firstName	    
-	</query>
-
-	<query name="User.findAllActiveUsers"> 
-		SELECT user
-		FROM User as user
-		WHERE active = true
-	    ORDER BY lastName, firstName	    
-	</query>	
 
 	<query name="User.findAllActiveUsersWithEmailSet">
 	<![CDATA[

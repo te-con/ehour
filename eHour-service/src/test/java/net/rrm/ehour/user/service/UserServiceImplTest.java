@@ -59,13 +59,12 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testGetUsersByNameMatch() {
-        expect(userDAO.findUsersByNameMatch("test", true))
-                .andReturn(new ArrayList<User>());
+    public void shouldGetActiveUsers() {
+        expect(userDAO.findUsers(true)).andReturn(new ArrayList<User>());
 
         replay(userDAO);
 
-        userService.getUsersByNameMatch("test", true);
+        userService.getUsers(true);
 
         verify(userDAO);
     }

@@ -67,7 +67,7 @@ public class ProjectAdminTest extends AbstractSpringWebAppTester
 		expect(userService.getUsersWithEmailSet())
 				.andReturn(new ArrayList<User>());
 
-		expect(projectService.getAllProjects(true))
+		expect(projectService.getProjects(true))
 				.andReturn(new ArrayList<Project>());
 		
 		replay(projectService, userService, customerService);
@@ -93,7 +93,7 @@ public class ProjectAdminTest extends AbstractSpringWebAppTester
 //		List<Project> projects = new ArrayList<Project>();
 //		projects.add(DummUIDataGenerator.createProject());
 //
-//		expect(projectService.getAllProjects(true))
+//		expect(projectService.getActiveProjects(true))
 //				.andReturn(projects)
 //				.times(2);
 //		

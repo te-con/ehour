@@ -46,7 +46,7 @@ public class UserAdminTest extends AbstractSpringWebAppTester
 		user.setLastName("Edeling");
 		users.add(user);
 		
-		expect(userService.getUsers())
+		expect(userService.getActiveUsers())
 			.andReturn(users);
 
 		expect(userService.getUserRoles())

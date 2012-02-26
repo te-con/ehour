@@ -72,27 +72,17 @@ public interface UserService
     public boolean changePassword(String username, String newUnencryptedPassword);
 
     /**
-     * Get users where first name or last name matches
-     * @param match
+     * Get users
      * @param inclInactive incl inactive users?
      * @return
      */
-    public List<User> getUsersByNameMatch(String match, boolean inclInactive);
-    
-    /**
-     * Get users where first name or last name matches with user role
-     * @param match
-     * @param inclInactive
-     * @param userRole
-     * @return
-     */
-    public List<User> getUsersByNameMatch(String match, boolean inclInactive, UserRole userRole);
+    public List<User> getUsers(boolean inclInactive);
     
     /**
      * Get all active users
      * @return
      */
-    public List<User> getUsers();
+    public List<User> getActiveUsers();
     
     /**
      * Get all active users with userRole

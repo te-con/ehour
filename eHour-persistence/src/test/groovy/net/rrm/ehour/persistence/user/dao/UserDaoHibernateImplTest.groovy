@@ -18,34 +18,9 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   private UserDao userDao;
 
   @Test
-  void shouldFindUsersByPattern()
-  {
-    def results;
-
-    results = userDao.findUsersByNameMatch("thies", true);
-    assertEquals(1, results.size());
-
-    results = userDao.findUsersByNameMatch("ede", true);
-    assertEquals(2, results.size());
-
-    results = userDao.findUsersByNameMatch("zed", false);
-    assertEquals(3, results.size());
-
-    results = userDao.findUsersByNameMatch("in", false);
-    assertEquals(2, results.size());
-
-    results = userDao.findUsersByNameMatch("zed", true);
-    assertEquals(2, results.size());
-
-    results = userDao.findUsersByNameMatch(null, true);
-    assertEquals(4, results.size());
-
-  }
-
-  @Test
   void shouldFindUsers()
   {
-    def results = userDao.findAllActiveUsers();
+    def results = userDao.findActiveUsers();
     assertEquals(4, results.size());
   }
 
@@ -97,7 +72,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldFindAllActiveUsers()
   {
-    def results = userDao.findAllActiveUsers();
+    def results = userDao.findActiveUsers();
 
     assertEquals(4, results.size());
   }

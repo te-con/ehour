@@ -171,18 +171,15 @@ public class UserServiceImpl implements UserService {
         return userDepartment;
     }
 
-    public List<User> getUsersByNameMatch(String match, boolean inclInactive) {
-        return userDAO.findUsersByNameMatch(match, inclInactive);
+    public List<User> getUsers(boolean inclInactive) {
+        return userDAO.findUsers(inclInactive);
     }
 
-    public List<User> getUsers() {
-        return userDAO.findAllActiveUsers();
+    public List<User> getActiveUsers() {
+        return userDAO.findActiveUsers();
     }
 
 
-    /**
-     *
-     */
     public UserRole getUserRole(String userRoleId) {
         return userRoleDAO.findById(userRoleId);
     }
@@ -329,22 +326,12 @@ public class UserServiceImpl implements UserService {
 
     /*
       * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsers(net.rrm.ehour.persistence.persistence.user.domain.UserRole)
+      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getActiveUsers(net.rrm.ehour.persistence.persistence.user.domain.UserRole)
       */
+    @Override
     public List<User> getUsers(UserRole userRole) {
-        LOGGER.debug("Finding users on role");
-        List<User> users = getUsersByNameMatch(null, true, userRole);
 
-//		userDAO.initializeObject(users);
-        return users;
-    }
-
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUsersByNameMatch(java.lang.String, boolean, net.rrm.ehour.persistence.persistence.user.domain.UserRole)
-      */
-    public List<User> getUsersByNameMatch(String match, boolean inclInactive, UserRole userRole) {
-        List<User> users = userDAO.findUsersByNameMatch(match, inclInactive);
+        List<User> users = userDAO.findActiveUsers();
         List<User> validUsers = new ArrayList<User>();
 
         // result of bad many-to-many mapping. should fix once..

@@ -63,12 +63,6 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	private	ListView<Customer> customerListView;
 	private EntrySelectorFilter	currentFilter;
 	
-	/**
-	 * 
-	 * @param pageTitle
-	 * @param addTabTitle
-	 * @param editTabTitle
-	 */
 	public CustomerAdmin()
 	{
 		super(new ResourceModel("admin.customer.title"),
@@ -91,7 +85,6 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 		
 		greyBorder.add(new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
 												customerListHolder,
-												null,
 												new ResourceModel("admin.customer.hideInactive")
 												));
 		
@@ -209,8 +202,8 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 				};
 				
 				item.add(link);
-				// TODO add project count
-				link.add(new Label("linkLabel", customer.getCode() + " - " + customer.getName() + (customer.isActive() ? "" : "*")));				
+
+				link.add(new Label("linkLabel", customer.getCode() + " - " + customer.getName() + (customer.isActive() ? "" : "*")));
 			}
 		};
 		
@@ -226,17 +219,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	 */
 	private List<Customer> getCustomers()
 	{
-		List<Customer>	customers;
-		
-		if (currentFilter != null && !currentFilter.isActivateToggle())
-		{
-			customers = customerService.getCustomers();
-		}
-		else
-		{
-			customers = customerService.getCustomers(true);
-		}
-		
+		List<Customer> customers = currentFilter != null && !currentFilter.isActivateToggle() ? customerService.getCustomers() : customerService.getCustomers(true);
 		Collections.sort(customers, new CustomerComparator());
 
 		return customers;
