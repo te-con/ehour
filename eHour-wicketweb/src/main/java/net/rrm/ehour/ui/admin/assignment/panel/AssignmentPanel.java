@@ -42,17 +42,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
 {
 	private static final long serialVersionUID = -3721224427697057895L;
-	private	final static Logger	logger = Logger.getLogger(AssignmentPanel.class);
+	private	final static Logger LOGGER = Logger.getLogger(AssignmentPanel.class);
+
 	@SpringBean
 	private	ProjectAssignmentService	assignmentService;
 	private AddEditTabbedPanel<AssignmentAdminBackingBean> tabbedPanel;
 	private	AssignmentListPanel			listPanel;
 
-	/**
-	 *
-	 * @param id
-	 * @param model
-	 */
+
 	public AssignmentPanel(String id,
 							final User user)
 	{
@@ -121,13 +118,12 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
 				tabbedPanel.switchTabOnAjaxTarget(ajaxEvent.getTarget(), 1);
 			} catch (ObjectNotFoundException e)
 			{
-				logger.error("While getting assignment", e);
+                LOGGER.error("While getting assignment", e);
 				return false;
 			}
 		}
 
-		if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED
-				|| type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
+		if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED || type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
 		{
 			AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((PayloadAjaxEvent<AdminBackingBean>)ajaxEvent).getPayload();
 			ProjectAssignment assignment = backingBean.getProjectAssignmentForSave();

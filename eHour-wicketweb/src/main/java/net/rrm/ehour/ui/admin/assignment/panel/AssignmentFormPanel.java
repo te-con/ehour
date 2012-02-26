@@ -75,12 +75,6 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 		}		
 	}		
 	
-	/**
-	 * Persist user
-	 * @param userBackingBean
-	 * @throws ObjectNotUniqueException 
-	 * @throws PasswordEmptyException 
-	 */
 	private void persistAssignment(AssignmentAdminBackingBean backingBean)
 	{
 		projectAssignmentManagementService.assignUserToProject(backingBean.getProjectAssignmentForSave());

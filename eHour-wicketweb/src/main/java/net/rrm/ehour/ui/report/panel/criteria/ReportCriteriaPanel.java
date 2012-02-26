@@ -202,11 +202,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         return deactivateBox;
     }
 
-    /**
-     * Add project selection
-     *
-     * @param parent
-     */
     private void addProjectSelection(WebMarkupContainer parent) {
         projects = new ListMultipleChoice<Project>("reportCriteria.userCriteria.projects",
                 new PropertyModel<List<Project>>(getDefaultModel(), "reportCriteria.availableCriteria.projects"),
@@ -232,11 +227,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
 
-    /**
-     * Add customer selection
-     *
-     * @param parent
-     */
+
     private void addUserSelection(WebMarkupContainer parent) {
         users = new ListMultipleChoice<User>("reportCriteria.userCriteria.users",
                 new PropertyModel<List<User>>(getDefaultModel(), "reportCriteria.availableCriteria.users"),
@@ -260,25 +251,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         Label filterToggleText = new Label("onlyActiveUsersLabel", new ResourceModel("report.hideInactive"));
         parent.add(filterToggleText);
-
-        // filter
-
-//		
-//		
-//		ReportCriteriaSelectorPanel entrySelectorPanel = new ReportCriteriaSelectorPanel("userList", 
-//																		fragment,
-//																		new StringResourceModel("report.filter", this, null),
-//																		new StringResourceModel("report.hideInactive", this, null),
-//																		this);
-//
-//		parent.add(entrySelectorPanel);
     }
 
-    /**
-     * Add customer selection
-     *
-     * @param parent
-     */
     private void addUserDepartmentSelection(WebMarkupContainer parent) {
         departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userCriteria.userDepartments",
                 new PropertyModel<List<UserDepartment>>(getDefaultModel(), "reportCriteria.availableCriteria.userDepartments"),
@@ -319,16 +293,10 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         backingBean.setReportCriteria(reportCriteria);
     }
 
-    /**
-     * Get backingbean from model
-     */
     private ReportCriteriaBackingBean getBackingBeanFromModel() {
         return (ReportCriteriaBackingBean) getDefaultModelObject();
     }
 
-    /**
-     * Add submit link
-     */
     @SuppressWarnings("serial")
     private void addSubmitButtons(Form<ReportCriteriaBackingBean> form) {
         // Submit

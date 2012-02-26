@@ -61,9 +61,6 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 	private ListView<User>				userListView;
 	private	Panel						assignmentPanel;
 
-	/**
-	 * Default constructor
-	 */
 	public AssignmentAdmin()
 	{
 		super(new ResourceModel("admin.assignment.title"),
@@ -90,10 +87,6 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 		add(assignmentPanel);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxAwareContainer#ajaxRequestReceived(org.apache.wicket.ajax.AjaxRequestTarget, int, java.lang.Object)
-	 */
 	@SuppressWarnings("unchecked")
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
@@ -102,19 +95,13 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 			PayloadAjaxEvent<EntrySelectorFilter> payload = (PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent;
 			currentFilter = payload.getPayload();
 
-			List<User> users = getUsers();
-			userListView.setList(users);
+            userListView.setList(getUsers());
 
 		}
 
 		return false;
 	}
 
-	/**
-	 * Get a the userListHolder fragment containing the listView
-	 * @param users
-	 * @return
-	 */
 	private Fragment getUserListHolder(List<User> users)
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
@@ -145,11 +132,6 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 		return fragment;
 	}
 
-	/**
-	 * Set assignment panel for particular user after selection in userList panel
-	 * @param target
-	 * @param user
-	 */
 	private void replaceAssignmentPanel(AjaxRequestTarget target, User user)
 	{
 		AssignmentPanel	newAssignmentPanel = new AssignmentPanel("assignmentPanel",
@@ -161,28 +143,15 @@ public class AssignmentAdmin extends AbstractAdminPage<Void>
 		assignmentPanel = newAssignmentPanel;
 	}
 
-	/**
-	 * Get the users from the backend
-	 * @return
-	 */
 	private List<User> getUsers()
 	{
-		List<User>	users;
-
 		if (currentFilter == null)
 		{
-			users = userService.getUsers(UserRole.CONSULTANT);
+			return  userService.getUsers(UserRole.CONSULTANT);
 		}
 		else
 		{
-			if (LOGGER.isDebugEnabled())
-			{
-				LOGGER.debug("Filtering on " + currentFilter.getCleanFilterInput());
-			}
-
-			users = userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, UserRole.CONSULTANT);
+			return userService.getUsersByNameMatch(currentFilter.getCleanFilterInput(), true, UserRole.CONSULTANT);
 		}
-
-		return users;
 	}
 }
