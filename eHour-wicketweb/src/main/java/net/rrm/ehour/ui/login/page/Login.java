@@ -85,8 +85,13 @@ public class Login extends WebPage {
             add(feedback);
             TextField<String> usernameInput = new RequiredTextField<String>("username");
             usernameInput.setPersistent(true);
+            usernameInput.setMarkupId("username");
+            usernameInput.setOutputMarkupId(true);
             add(usernameInput);
-            add(new PasswordTextField("password").setResetPassword(true));
+            PasswordTextField password = new PasswordTextField("password").setResetPassword(true);
+            password.setMarkupId("password");
+            password.setOutputMarkupId(true);
+            add(password);
 
             // layout is off when feedback panel uses its space
             Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
