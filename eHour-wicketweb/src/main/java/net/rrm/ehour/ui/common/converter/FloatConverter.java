@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import net.rrm.ehour.config.EhourConfig;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.util.convert.ConversionException;
 
 public class FloatConverter extends AbstractNumberConverter
 {
@@ -39,7 +40,7 @@ public class FloatConverter extends AbstractNumberConverter
 			}
 			catch (NumberFormatException nfe)
 			{
-				return value;
+                throw new ConversionException(nfe);
 			}
 		}
 		else
