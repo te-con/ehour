@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.report.panel;
 import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
+import net.rrm.ehour.ui.common.report.ColumnType;
 import net.rrm.ehour.ui.common.report.ReportColumn;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
@@ -48,9 +49,6 @@ import org.apache.wicket.util.value.ValueMap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static net.rrm.ehour.ui.common.report.ReportColumn.ColumnType;
-import static net.rrm.ehour.ui.common.report.ReportColumn.ColumnType.*;
 
 /**
  * Aggregate report data panel
@@ -155,6 +153,11 @@ public class TreeReportDataPanel extends Panel
 			Label columnHeader = new Label(columnHeaders.newChildId(), new ResourceModel(reportColumn.getColumnHeaderResourceKey()));
 			columnHeader.setVisible(reportColumn.isVisible());
 			columnHeaders.add(columnHeader);
+
+            if (reportColumn.getColumnType().isNumeric()) {
+                columnHeader.add(new SimpleAttributeModifier("style", "text-align: right;"));
+            }
+
 		}
 
 		parent.add(columnHeaders);
@@ -167,15 +170,17 @@ public class TreeReportDataPanel extends Panel
 	 */
 	private void addColumnTypeStyling(ColumnType columnType, Label label)
 	{
-		if (label != null)
-		{
-			if (columnType == HOUR || columnType == TURNOVER || columnType == RATE) {
+        if (label != null)
+        {
+            if (columnType.isNumeric()) {
                 label.add(new SimpleAttributeModifier("style", "text-align: right;"));
-			} else if (columnType == COMMENT)
-			{
+            }
+
+            if (columnType == ColumnType.COMMENT)
+            {
                 label.add(new SimpleAttributeModifier("style", "width: 300px;"));
-			}
-		}
+            }
+        }
 	}
 
 	private class TreeReportDataView extends DataView<TreeReportElement>

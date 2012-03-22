@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.common.report;
 
 import net.rrm.ehour.ui.common.converter.CurrencyConverter;
 import net.rrm.ehour.ui.common.converter.DateConverter;
-import net.rrm.ehour.ui.common.report.ReportColumn.ColumnType;
 
 import static net.rrm.ehour.ui.common.converter.DateConverter.DateStyle.FULL_SHORT;
 import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.ALLOW_DUPLICATES;

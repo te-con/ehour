@@ -180,18 +180,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		assertTrue(now.getTime().before(cal.getTime()));
 	}
 	
-//	@Test
-//	public void tooManyHoursFailure()
-//	{
-//		startAndReplay();
-//		
-//		FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH + "");
-//		setFormValue(timesheetFormTester, "blueFrame:customers:0:rows:0:day1:day", "36");
-//
-//		tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:submitButton", "onclick");
-//		tester.assertErrorMessages(new String[]{"day.DoubleRangeWithNullValidator"});
-//	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldSubmitSuccessful()

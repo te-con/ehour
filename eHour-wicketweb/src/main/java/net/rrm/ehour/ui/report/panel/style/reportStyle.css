@@ -74,15 +74,6 @@
 	font: bold 0.9em Geneva, Arial, Helvetica, sans-serif;
 }
 
-.reportTable th
-{
-	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
-	color: #536e87;
-	margin: 0;
-	padding: 0 5px 0 5px;
-	text-align: left;
-}
-
 .reportTable tr.reportTotal td
 {
 	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
@@ -116,5 +107,5 @@
 	color: #536e87;
 	margin: 0;
 	padding: 0;
-	text-align: center;
+	text-align: left;
 }

@@ -172,11 +172,6 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		return label;
 	}
 	
-	/**
-	 * Add &nbsp; timesheet entry
-	 * @param id
-	 * @param item
-	 */
 	private void createEmptyTimesheetEntry(String id, ListItem<TimesheetRow> item)
 	{
 		Fragment fragment = new Fragment(id, "dayInputHidden", this);

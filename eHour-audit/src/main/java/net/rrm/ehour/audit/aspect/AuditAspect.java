@@ -45,8 +45,6 @@ import java.util.Date;
 @Component
 public class AuditAspect
 {
-//	private final static Logger LOGGER = Logger.getLogger(AuditAspect.class);
-	
 	@Autowired
 	private AuditService	auditService;
 	
@@ -137,8 +135,6 @@ public class AuditAspect
 		boolean isAuditable = isAuditable(pjp) && isAuditEnabled(auditActionType);
 
 		User user = getUser();
-		
-//		LOGGER.debug("auditable: " + isAuditable);
 		
 		try
 		{
