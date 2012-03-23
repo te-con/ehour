@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.formguard.GuardDirtyFormBehavior;
 import net.rrm.ehour.ui.common.formguard.GuardedAjaxLink;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
@@ -58,6 +59,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -102,7 +104,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
         // grey & blue frame border
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame",
-                getWeekNavigation(forWeek, timesheet.getWeekStart(), timesheet.getWeekEnd()),
+                getWeekNavigation(timesheet.getWeekStart(), timesheet.getWeekEnd()),
                 WebGeo.W_CONTENT_MEDIUM);
         add(greyBorder);
 
@@ -142,18 +144,16 @@ public class TimesheetPanel extends Panel implements Serializable
     /**
      * Add week navigation to title
      *
-     * @param forWeek
      */
     @SuppressWarnings("serial")
-    private WebMarkupContainer getWeekNavigation(Calendar forWeek, final Date weekStart, final Date weekEnd)
+    private WebMarkupContainer getWeekNavigation(final Date weekStart, final Date weekEnd)
     {
         Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
 
-        Calendar cal = DateUtil.getCalendar(config);
-        cal.setTime(weekStart);
+        int weekOfYear = new DateTime(weekStart).getWeekOfWeekyear(); // at least jodatime's version is not buggy
 
-        IModel<String> weekLabelModel = new StringResourceModel("timesheet.weekTitle", this, null, new Object[]{cal.get(Calendar.WEEK_OF_YEAR), dateFormatter.format(weekStart), dateFormatter.format(weekEnd)});
+        IModel<String> weekLabelModel = new MessageResourceModel("timesheet.weekTitle", this, weekOfYear, dateFormatter.format(weekStart), dateFormatter.format(weekEnd));
 
         titleFragment.add(new Label("titleLabel", weekLabelModel));
 
