@@ -364,6 +364,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 					// simple hack to get around IE's prob with nested forms in a modalwindow
 				}
 			});
+            textArea.setOutputMarkupId(true);
 			
 			add(textArea);
 			
