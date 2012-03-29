@@ -191,6 +191,7 @@ public class DateUtilTest
 	public void testGetDateRangeForWeek()
 	{
 		Calendar cal = new GregorianCalendar(2007, 1 - 1, 1);
+        cal.setFirstDayOfWeek(Calendar.SUNDAY);
 		DateRange range = DateUtil.getDateRangeForWeek(cal);
 		
 		assertEquals(2006 - 1900, range.getDateStart().getYear());
