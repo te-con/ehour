@@ -10,6 +10,7 @@ import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.event.EventPublisher;
+import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -51,6 +52,7 @@ public class AssignmentProjectSelectionPanel extends Panel
 	private void addCustomerAndProjectChoices(final IModel<AssignmentAdminBackingBean> model)
 	{
 		List<Customer> customers = customerService.getCustomers(true);
+		Collections.sort(customers, new CustomerComparator());
 
 		// customer
 		DropDownChoice<Customer> customerChoice = createCustomerDropdown(customers);
