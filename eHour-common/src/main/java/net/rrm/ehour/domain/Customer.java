@@ -216,8 +216,8 @@ public class Customer extends DomainObject<Integer, Customer>
 	{
 		return new CompareToBuilder()
 			.append(this.getName(), object.getName())
-			.append(this.getCustomerId(), object.getCustomerId())
-			.append(this.getCode(), object.getCode()).toComparison();
+			.append(this.getCode(), object.getCode())
+			.append(this.getCustomerId(), object.getCustomerId()).toComparison();
 	}
 	
 	

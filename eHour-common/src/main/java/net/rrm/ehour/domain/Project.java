@@ -240,8 +240,8 @@ public class Project extends DomainObject<Integer, Project>
         return new CompareToBuilder()
                 .append(this.getName(), object.getName())
                 .append(this.getProjectCode(), object.getProjectCode())
-                .append(this.getProjectId(), object.getProjectId())
-                .append(this.getCustomer(), object.getCustomer()).toComparison();
+                .append(this.getCustomer(), object.getCustomer())
+                .append(this.getProjectId(), object.getProjectId()).toComparison();
     }
 
     /**
