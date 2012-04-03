@@ -40,6 +40,7 @@ public class QuickWeek extends QuickPeriod
 		setPeriodIndex(cal.get(Calendar.WEEK_OF_YEAR));
 		
 		cal.add(Calendar.WEEK_OF_YEAR, 1);
+		cal.add(Calendar.DAY_OF_YEAR, -1);
 		setPeriodEnd(cal.getTime());
 	}
 }
