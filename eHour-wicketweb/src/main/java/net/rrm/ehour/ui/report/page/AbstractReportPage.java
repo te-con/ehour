@@ -46,7 +46,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 		super(pageTitle, null);
 	}
 
-	protected ReportCriteria getReportCriteria()
+	protected final ReportCriteria getReportCriteria()
 	{
 		UserCriteria userCriteria = EhourWebSession.getSession().getUserCriteria();
 		
@@ -88,12 +88,16 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 
 	private void setSingleUserCriteria(UserCriteria userCriteria)
 	{
-        boolean hasReportRole = AuthUtil.hasRole(UserRole.ROLE_REPORT);
+        boolean singleReportUser = isReportForSingleUser();
 
-		userCriteria.setSingleUser(!hasReportRole);
+		userCriteria.setSingleUser(singleReportUser);
 		
-		if (!hasReportRole) {
+		if (singleReportUser) {
 			userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
 		}
-	}	
+	}
+
+    protected boolean isReportForSingleUser() {
+        return !AuthUtil.hasRole(UserRole.ROLE_REPORT);
+    }
 }

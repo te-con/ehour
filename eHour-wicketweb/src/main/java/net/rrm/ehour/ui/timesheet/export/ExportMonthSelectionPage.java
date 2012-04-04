@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.timesheet.export;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -63,10 +64,9 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 	public ExportMonthSelectionPage(Calendar forMonth)
 	{
 		super(new ResourceModel("printMonth.title"));
+
+        setDefaultModel(createModelForMonth(forMonth));
 		
-		setCriteriaModel(forMonth);
-		
-		// add calendar panel
 		add(createCalendarPanel("sidePanel"));
 		
 		titleLabel = getTitleLabel(forMonth);
@@ -82,10 +82,9 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 		blueBorder.add(createExportCriteriaPanel(ID_SELECTION_FORM));
 	}
 	
-	@SuppressWarnings("unchecked")
 	private ExportCriteriaPanel createExportCriteriaPanel(String id)
 	{
-		return new ExportCriteriaPanel(id, (IModel<ReportCriteria>)getDefaultModel());
+		return new ExportCriteriaPanel(id, getPageModel());
 	}
 	
 	private CalendarPanel createCalendarPanel(String id)
@@ -93,7 +92,7 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 		return new CalendarPanel(id, getEhourWebSession().getUser().getUser(), false);
 	}
 
-	private void setCriteriaModel(Calendar forMonth)
+	private CompoundPropertyModel<ReportCriteria> createModelForMonth(Calendar forMonth)
 	{
 		ReportCriteria reportCriteria = getReportCriteria();
 		
@@ -104,14 +103,18 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 			reportCriteria.getUserCriteria().setProjects(new ArrayList<Project>());
 		}
 		
-		IModel<ReportCriteria> model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
-		setDefaultModel(model);
+		return new CompoundPropertyModel<ReportCriteria>(reportCriteria);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
-	 */
+
+    @Override
+    protected final boolean isReportForSingleUser() {
+        return true;
+    }
+
+    /*
+    * (non-Javadoc)
+    * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
+    */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == CalendarAjaxEventType.MONTH_CHANGE)
@@ -124,7 +127,7 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 
 	private void changeMonth(AjaxEvent ajaxEvent)
 	{
-		setCriteriaModel(getEhourWebSession().getNavCalendar());
+		createModelForMonth(getEhourWebSession().getNavCalendar());
 		
 		Component originalForm = get(ID_FRAME + ":" + ID_BLUE_BORDER + ":" + ID_SELECTION_FORM);
 		

@@ -7,8 +7,10 @@ import net.rrm.ehour.ui.admin.export.panel.ImportPanel;
 import net.rrm.ehour.ui.admin.export.panel.ValidateImportPanel;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
@@ -21,6 +23,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
@@ -68,10 +71,7 @@ public class ExportPage extends AbstractAdminPage<Void>
 
         restoreBorder.add(form);
 
-        final WebMarkupContainer parseStatus = new WebMarkupContainer(ID_PARSE_STATUS);
-        parseStatus.setOutputMarkupId(true);
-        form.add(parseStatus);
-
+        form.add(new PlaceholderPanel(ID_PARSE_STATUS));
     }
 
     private Form<Void> addUploadForm(String id)
@@ -116,9 +116,7 @@ public class ExportPage extends AbstractAdminPage<Void>
                     };
                 } else
                 {
-                    StringResourceModel resourceModel = new StringResourceModel("admin.import.error.invalidFile", this, null, new Object[]{errorMessage});
-
-                    replacementPanel = new Label(ID_PARSE_STATUS, resourceModel);
+                    replacementPanel = new Label(ID_PARSE_STATUS, new MessageResourceModel("admin.import.error.invalidFile", this, errorMessage));
                 }
 
                 replaceStatusPanel(replacementPanel, target);

@@ -62,8 +62,6 @@ public class ExportCriteriaPanel extends Panel
 
 	/**
 	 * Create the criteria panel with the form, assignments and submit buttons
-	 * @param idz
-	 * @return
 	 */
 	private Form<ReportCriteria> createCriteriaPanel(String id, IModel<ReportCriteria> model)
 	{
