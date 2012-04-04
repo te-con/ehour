@@ -22,6 +22,7 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.component.sort.TimesheetEntryComparator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
@@ -41,6 +42,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -55,6 +57,7 @@ public class MonthOverviewPanel extends Panel {
     private final int thisMonth;
     private final int thisYear;
     private final Calendar overviewFor;
+    private final static TimesheetEntryComparator comparator = new TimesheetEntryComparator();
 
     public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, final Calendar overviewForMonth) {
         super(id);
@@ -153,6 +156,10 @@ public class MonthOverviewPanel extends Panel {
     private Fragment createDayContents(String dayId, List<TimesheetEntry> timesheetEntries) {
         Fragment fragment;
         fragment = new Fragment(dayId, "showProjects", this);
+
+        //sort by Project Code
+        if(timesheetEntries != null)
+            Collections.sort(timesheetEntries, comparator);
 
         ListView<TimesheetEntry> projects = new ListView<TimesheetEntry>("projects", timesheetEntries) {
             @Override
