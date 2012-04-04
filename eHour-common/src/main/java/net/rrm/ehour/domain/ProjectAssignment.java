@@ -257,6 +257,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     public int compareTo(ProjectAssignment object)
     {
         return new CompareToBuilder()
+                .append(this.getProject().getCustomer(), object.getProject().getCustomer())
                 .append(this.getProject(), object.getProject())
                 .append(this.getDateEnd(), object.getDateEnd())
                 .append(this.getDateStart(), object.getDateStart())
