@@ -66,7 +66,7 @@
         <slf4j.version>1.6.4</slf4j.version>
         <hibernate.version>3.6.3.Final</hibernate.version>
         <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
-        <scala.version>2.9.1.1</scala.version>
+        <scala.version>2.9.1-1</scala.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scalaj.artifactId>scalaj-collection_2.9.1</scalaj.artifactId>
