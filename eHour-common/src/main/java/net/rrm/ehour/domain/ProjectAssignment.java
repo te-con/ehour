@@ -257,6 +257,11 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     public int compareTo(ProjectAssignment object)
     {
         return new CompareToBuilder()
+                //sort by column order as displayed in ProjectOverviewPanel
+                .append(this.getProject().getCustomer().getName(), object.getProject().getCustomer().getName())
+                .append(this.getProject().getProjectCode(), object.getProject().getProjectCode())
+                .append(this.getProject().getName(), object.getProject().getName())
+                //here we should already have a sort. Anyway let's continue with some default comparison
                 .append(this.getProject(), object.getProject())
                 .append(this.getDateEnd(), object.getDateEnd())
                 .append(this.getDateStart(), object.getDateStart())
