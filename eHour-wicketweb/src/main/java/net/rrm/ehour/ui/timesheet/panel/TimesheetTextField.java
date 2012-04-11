@@ -87,11 +87,6 @@ public class TimesheetTextField extends TextField<Float>
 	public void setWasInvalid(boolean wasInvalid)
 	{
 		this.wasInvalid = wasInvalid;
-		
-		if (!wasInvalid)
-		{
-			previousValue = null;
-		}
 	}
 	
 	/*
