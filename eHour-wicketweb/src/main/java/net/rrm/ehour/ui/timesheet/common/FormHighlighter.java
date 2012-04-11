@@ -16,86 +16,71 @@
 
 package net.rrm.ehour.ui.timesheet.common;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.ui.timesheet.panel.TimesheetTextField;
-
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IFormVisitorParticipant;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 
+import java.io.Serializable;
+
 /**
  * Marks invalid form entries red
- * @author Thies
  *
+ * @author Thies
  */
-public class FormHighlighter implements FormComponent.IVisitor, Serializable 
-{
-	private static final long serialVersionUID = 6905807838333630105L;
-	
-	private transient AjaxRequestTarget	target;
+public class FormHighlighter implements FormComponent.IVisitor, Serializable {
+    private static final long serialVersionUID = 6905807838333630105L;
 
-	
-	public FormHighlighter(AjaxRequestTarget target)
-	{
-		this.target = target;
-	}
-	
-    public Object formComponent(IFormVisitorParticipant visitor)
-    {
-    	FormComponent<?> formComponent = (FormComponent<?>)visitor;
+    private transient AjaxRequestTarget target;
 
-    	if (target != null)
-    	{
-	    	// paint it red if invalid
-	        if (!formComponent.isValid())
-	        {
-	        	formComponent.add(getColorModifier("#ff0000"));
-	
-	        	if (formComponent instanceof TimesheetTextField)
-	        	{
-	        		((TimesheetTextField)formComponent).setWasInvalid(true);
-	        	}
-	        	
-	            target.addComponent(formComponent);
-	        } 
-	        // reset color if it was invalid
-	        else if (formComponent instanceof TimesheetTextField)
-	        {
-	        	TimesheetTextField ttField = (TimesheetTextField)formComponent;
-	        	
-                //ttField.isChanged() HAS SIDE EFFECTS!
-                if(ttField.isChanged()) {
-                    if (ttField.isWasInvalid())
-                    {
+
+    public FormHighlighter(AjaxRequestTarget target) {
+        this.target = target;
+    }
+
+    public Object formComponent(IFormVisitorParticipant visitor) {
+        FormComponent<?> formComponent = (FormComponent<?>) visitor;
+
+        if (target != null) {
+            // paint it red if invalid
+            if (!formComponent.isValid()) {
+                formComponent.add(getColorModifier("#ff0000"));
+
+                if (formComponent instanceof TimesheetTextField) {
+                    ((TimesheetTextField) formComponent).rememberCurrentValidity();
+                }
+
+                target.addComponent(formComponent);
+            }
+            // reset color if it was invalid and needs to be reset
+            else if (formComponent instanceof TimesheetTextField) {
+                TimesheetTextField ttField = (TimesheetTextField) formComponent;
+
+                if (ttField.isValueChanged()) {
+                    if (!ttField.isPreviousValid()) {
                         formComponent.add(getColorModifier("#536e87;"));
-                        ((TimesheetTextField)formComponent).setWasInvalid(false);
                     }
+
                     target.addComponent(formComponent);
                 }
-	        }
-    	}
-        
+
+                ttField.rememberCurrentValidity();
+                ttField.rememberCurrentValue();
+            }
+        }
+
         return formComponent;
     }
-    
-    /**
-     * Get color modifier
-     * @param color
-     * @return
-     */
+
     @SuppressWarnings("serial")
-	private AttributeModifier getColorModifier(final String color)
-    {
-    	return new AttributeModifier("style", true, new AbstractReadOnlyModel<String>()
-        {
-			public String getObject()
-            {
+    private AttributeModifier getColorModifier(final String color) {
+        return new AttributeModifier("style", true, new AbstractReadOnlyModel<String>() {
+            public String getObject() {
                 return "color: " + color;
             }
-        });                        	
+        });
     }
 
 }
