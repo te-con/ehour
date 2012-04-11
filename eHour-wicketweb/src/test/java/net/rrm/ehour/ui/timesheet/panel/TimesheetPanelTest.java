@@ -159,7 +159,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		formTester.setValue("blueFrame:customers:0:rows:0:day1:day", "12");
 		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
 		tester.assertNoErrorMessage();
-		tester.assertContains("536e87"); // FormHighlighter -> colormodifier
+		tester.assertContains("blueFrame:customers:0:rows:0:day1:day");
 
 		Label grandTotalLabel = (Label)tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:grandTotal");
 		assertEquals(12f, (Float)grandTotalLabel.getDefaultModelObject(), 0.01f);
@@ -179,6 +179,28 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		
 		assertTrue(now.getTime().before(cal.getTime()));
 	}
+
+    @Test
+    public void shouldNotResendUnmodifiedEntries()
+    {
+        startAndReplay();
+
+        FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
+
+        formTester.setValue("blueFrame:customers:0:rows:0:day1:day", "12");
+        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:day", "onblur");
+        tester.assertNoErrorMessage();
+        tester.assertContains("blueFrame:customers:0:rows:0:day1:day");
+
+        tester.setupRequestAndResponse();
+
+        //changing another field should not resend the unmodified day1
+        formTester.setValue("blueFrame:customers:0:rows:0:day2:day", "8");
+        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day2:day", "onblur");
+        tester.assertNoErrorMessage();
+        tester.assertContains("blueFrame:customers:0:rows:0:day2:day");
+        tester.assertContainsNot("blueFrame:customers:0:rows:0:day1:day");
+    }
 	
 
 	@SuppressWarnings("unchecked")
