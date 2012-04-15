@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"
+      xml:lang="en"
+      lang="en">
+
+<wicket:head>
+    <link rel="stylesheet" href="css/menu.css" type="text/css" media="screen"/>
+
+    <!--[if IE 6]>
+    <style>
+        body {
+            behavior: url("csshover3.htc");
+        }
+
+        #menu li .drop {
+            background: url("css/img/drop.gif") no-repeat right 8px;
+    </style>
+    <![endif]-->
+
+    <!--
+        <script type='text/javascript' src='js/jquery.hoverIntent.minified.js'></script>
+        <script type='text/javascript' src='js/jquery.dcmegamenu.1.3.3.min.js'></script>
+
+
+        <script>
+            jQuery(document).ready(function($) {
+                jQuery('#mega-menu').dcMegaMenu({speed: 'fast', effect: 'fade', event: 'hover'});
+            });
+        </script>
+    -->
+
+</wicket:head>
+
+<body>
+<wicket:panel>
+    <ul id="menu">
+        <li wicket:id="items">
+            <wicket:container wicket:id="item"/>
+        </li>
+    </ul>
+    <br style="clear: left"/>
+
+
+    <wicket:fragment wicket:id="linkItem">
+        <a wicket:id="menuLink"><wicket:component wicket:id="menuLinkText"/></a>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="linkItems">
+        <a href="#" class="drop" wicket:id="title"></a>
+
+        <div class="dropdown_1column">
+
+            <div class="col_1">
+
+                <ul class="sub_menu" wicket:id="subItems">
+                    <li wicket:id="subItem"></li>
+                </ul>
+            </div>
+        </div>
+    </wicket:fragment>
+
+
+</wicket:panel>
+</body>
+
+</html>

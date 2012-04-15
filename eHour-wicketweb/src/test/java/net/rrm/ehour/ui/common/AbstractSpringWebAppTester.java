@@ -35,8 +35,8 @@ import java.util.Locale;
  **/
 public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 {
-	protected StrictWicketTester tester;
-	protected TestEhourWebApplication webApp;
+    public StrictWicketTester tester;
+    public TestEhourWebApplication webApp;
 	
 	@SuppressWarnings("serial")
 	@Before
@@ -73,8 +73,8 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
 			
 		});
 	}
-	
-	protected StrictWicketTester getTester()
+
+    public StrictWicketTester getTester()
 	{
 		return tester;
 	}

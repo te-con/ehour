@@ -474,6 +474,7 @@ div.NavHeader {
     margin: 0;
     padding: 0;
     height: 52px;
+    border-bottom: 1px solid #8DB4FF;
 }
 
 div.NavHeader div.Logo {
@@ -489,9 +490,9 @@ div.NavHeader div.Navigation {
     position: absolute;
     bottom: 0;
     left: 250px;
-    font: 1.4em Geneva, Arial, Helvetica, sans-serif;
+    font: 1.1em Geneva, Arial, Helvetica, sans-serif;
     color: white;
-    top: 12px;
+    top: 7px;
 }
 
 div.NavHeader div.LoadingSpinner {
