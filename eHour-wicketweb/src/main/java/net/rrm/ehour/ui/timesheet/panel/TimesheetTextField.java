@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.timesheet.converter.TimesheetFloatConverter;
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
@@ -30,15 +29,17 @@ import org.apache.wicket.util.convert.IConverter;
 public class TimesheetTextField extends TextField<Float> {
     private static final long serialVersionUID = 7033801704569935582L;
     private boolean previousValidity = false;
-    private Float previousValue;
+    private String previousValue;
 
     public TimesheetTextField(final String id, IModel<Float> model, int tabIndex) {
         super(id, model, Float.class);
 
         setConvertEmptyInputStringToNull(true);
 
-        if (model != null) {
-            previousValue = model.getObject();
+        if (getModelObject() != null) {
+            previousValue = getModelObject().toString();
+        }else {
+            previousValue = "";
         }
 
         add(CommonModifiers.tabIndexModifier(tabIndex));
@@ -53,11 +54,11 @@ public class TimesheetTextField extends TextField<Float> {
      * @return Is changed since previous submit
      */
     public boolean isValueChanged() {
-        return ! new EqualsBuilder().append(getModelObject(), previousValue).isEquals();
+        return !getRealInput().equals(previousValue);
     }
 
     public void rememberCurrentValue() {
-        previousValue = getModelObject();
+        previousValue = getRealInput();
     }
 
     public void rememberCurrentValidity() {
@@ -71,5 +72,22 @@ public class TimesheetTextField extends TextField<Float> {
     @Override
     public boolean isInputNullable() {
         return true;
+    }
+
+    /***
+     * Extracts the real user input
+     * @return the string input or an empty string if no input provided
+     */
+    protected String getRealInput() {
+        //first try to get the float value
+        Float value = getConvertedInput();
+        if(value != null)
+            return value.toString();
+
+        //if there was a conversion error we can see the rawInput
+        String raw = getRawInput();
+        if(raw == null)
+            raw = "";
+        return raw;
     }
 }
