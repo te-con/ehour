@@ -1,4 +1,4 @@
-<Context path="/ehour" reloadable="false" cookies="true" docBase="${EHOUR_HOME}/app/ehour-@VERSION@.war">
+<Context path="/ehour" reloadable="false" cookies="true" docBase="${EHOUR_HOME}/app/ehour-${pom.version}.war">
     <Resource name="jdbc/eHourDS"
               auth="Container"
               type="javax.sql.DataSource"

@@ -19,6 +19,7 @@
         <module>eHour-web</module>
         <module>eHour-audit</module>
         <module>eHour-standalone</module>
+        <module>eHour-war</module>
     </modules>
     <description>
         eHour - web-based time registration for consultancy companies
