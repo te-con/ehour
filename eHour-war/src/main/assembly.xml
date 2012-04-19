@@ -12,6 +12,7 @@
             <useDefaultExcludes/>
             <outputDirectory>/conf</outputDirectory>
             <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
             <directory>../assembly/war/conf</directory>
             <filtered>false</filtered>
         </fileSet>
@@ -19,6 +20,7 @@
             <useDefaultExcludes/>
             <outputDirectory>/conf</outputDirectory>
             <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
             <directory>../assembly/common/conf</directory>
             <filtered>false</filtered>
         </fileSet>
@@ -28,6 +30,7 @@
             <useDefaultExcludes/>
             <outputDirectory>/resources/i18n</outputDirectory>
             <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
             <directory>../eHour-wicketweb/src/dist/i18n</directory>
             <filtered>false</filtered>
         </fileSet>
@@ -53,6 +56,7 @@
             <useDefaultExcludes/>
             <outputDirectory>/sql/mysql</outputDirectory>
             <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
             <directory>../eHour-persistence-mysql/src/sql</directory>
             <filtered>false</filtered>
         </fileSet>
@@ -60,6 +64,7 @@
             <useDefaultExcludes/>
             <outputDirectory>/sql/postgresql</outputDirectory>
             <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
             <directory>../eHour-persistence-postgresql/src/sql</directory>
             <filtered>false</filtered>
         </fileSet>
@@ -69,6 +74,7 @@
             <useDefaultExcludes/>
             <outputDirectory>/tomcat</outputDirectory>
             <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
             <directory>../assembly/war/tomcat</directory>
             <filtered>true</filtered>
         </fileSet>
@@ -91,6 +97,7 @@
                 <include>${pom.groupId}:eHour-web</include>
             </includes>
             <outputDirectory>/app</outputDirectory>
+            <directoryMode>0775</directoryMode>
             <unpack>false</unpack>
             <outputFileNameMapping>ehour-${pom.version}.war</outputFileNameMapping>
         </dependencySet>
