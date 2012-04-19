@@ -1,6 +1,6 @@
-Upgrade instructions from previous version to @VERSION@
+Upgrade instructions from previous version to ${pom.version}
 ---------------------------------------------------
-Unpack the @VERSION@ archive in a new directory. Copy the ehourDb directory from the root of your previous eHour installation to the db directory of eHour 0.9.1. This is a different location that the one in 0.8.4.
+Unpack the ${pom.version} archive in a new directory. Copy the ehourDb directory from the root of your previous eHour installation to the db directory of eHour 0.9.1. This is a different location that the one in 0.8.4.
 
 Directory layout in eHour 0.8.4:
 ehour-0.8.4/ehourDb
