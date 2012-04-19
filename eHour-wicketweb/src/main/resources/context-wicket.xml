@@ -7,7 +7,7 @@
 
 	<bean id="wicketApplication" class="net.rrm.ehour.ui.EhourWebApplication">
 		<property name="authenticationManager" ref="authenticationManager" />
-		<property name="version" value="1.0"/>
+		<property name="version" value="${pom.version}"/>
 		<property name="wikiBaseUrl" value="http://wiki.ehour.nl/confluence/display/DOCU" />
 	</bean>
 
