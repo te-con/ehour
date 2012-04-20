@@ -40,7 +40,7 @@
         <profile>
             <id>prod</id>
             <!--
-                Creates di bundle archive only in prod profile.
+                Creates the bundle archive only in prod profile.
                 The additional resources added in dev profile will fail the program bundle
              -->
             <build>

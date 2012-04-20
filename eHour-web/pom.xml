@@ -11,36 +11,6 @@
 	<packaging>war</packaging>
 	<name>eHour web UI</name>
 
-	<profiles>
-        <profile>
-            <id>war</id>
-            <!-- just to get rid of standalone profile -->
-        </profile>
-
-		<profile>
-			<id>standalone</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>			
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
-							<archive>
-								<manifest>
-									<addClasspath>true</addClasspath>
-									<classpathPrefix>lib/</classpathPrefix>
-								</manifest>
-							</archive>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
 	<dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
