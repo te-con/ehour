@@ -39,7 +39,32 @@
     <profiles>
         <profile>
             <id>prod</id>
-            <!-- placeholder profile to prevent the dev profile from always be activated -->
+            <!--
+                Creates the bundle archive only in prod profile.
+                The additional resources added in dev profile will fail the program bundle
+             -->
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly.xml</descriptor>
+                            </descriptors>
+                            <!-- the descriptor will append -war.zip -->
+                            <finalName>ehour-${project.version}</finalName>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
 
         <profile>

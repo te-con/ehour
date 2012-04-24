@@ -1,0 +1,105 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <id>war</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <!-- conf dir -->
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/conf</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
+            <directory>../assembly/war/conf</directory>
+            <filtered>false</filtered>
+        </fileSet>
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/conf</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
+            <directory>../assembly/common/conf</directory>
+            <filtered>false</filtered>
+        </fileSet>
+
+        <!-- Translations -->
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/resources/i18n</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
+            <directory>../eHour-wicketweb/src/dist/i18n</directory>
+            <filtered>false</filtered>
+        </fileSet>
+
+        <!-- License, readme, install instructions, etc -->
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directory>../assembly/war/txt</directory>
+            <filtered>false</filtered>
+        </fileSet>
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directory>../assembly/common/txt</directory>
+            <filtered>false</filtered>
+        </fileSet>
+
+        <!-- SQL DDL scripts -->
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/sql/mysql</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
+            <directory>../eHour-persistence-mysql/src/sql</directory>
+            <filtered>false</filtered>
+        </fileSet>
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/sql/postgresql</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
+            <directory>../eHour-persistence-postgresql/src/sql</directory>
+            <filtered>false</filtered>
+        </fileSet>
+
+        <!-- tomcat -->
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/tomcat</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
+            <directory>../assembly/war/tomcat</directory>
+            <filtered>true</filtered>
+        </fileSet>
+
+        <!-- create empty log dir -->
+        <!-- this is a trick for creating an empty dir -->
+        <fileSet>
+            <directory>src/main</directory>
+            <outputDirectory>/log</outputDirectory>
+            <directoryMode>0755</directoryMode>
+            <excludes>
+                <exclude>*</exclude>
+            </excludes>
+        </fileSet>
+
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>${pom.groupId}:eHour-web</include>
+            </includes>
+            <outputDirectory>/app</outputDirectory>
+            <directoryMode>0775</directoryMode>
+            <unpack>false</unpack>
+            <outputFileNameMapping>ehour-${pom.version}.war</outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+</assembly>
