@@ -1,5 +1,5 @@
 <project xmlns:artifact="antlib:org.apache.maven.artifact.ant"
-         name="eHourStandaloneDist" default="archive" basedir=".">
+         name="eHourWarDist" default="archive" basedir=".">
     <description>
         Builds eHour WAR dist file (don't mention Maven's assembly plugin..)
         Before running this script eHour must be compiled with mvn clean install -Pprod -Pwar
