@@ -30,6 +30,7 @@ import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -65,7 +66,9 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	private	EhourConfig config;
 	private final GrandTotal	grandTotals;
 	private	Form<?> form;
-	
+
+    private	static final Logger LOGGER = Logger.getLogger(TimesheetRowList.class);
+
 	public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
 	{
 		super(id, model);
@@ -227,6 +230,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
+                LOGGER.trace(target.getLastFocusedElementId() + " onblur");
 				// update the project total
 				target.addComponent(dayInput.getParent().getParent().get("total"));
 				
@@ -246,10 +250,11 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			@Override
 			protected void onError(final AjaxRequestTarget target, RuntimeException e)
 			{
+                LOGGER.debug(target.getLastFocusedElementId() + " onblur error!", e);
 				form.visitFormComponents(new FormHighlighter(target));
-			}			
+			}
 		};
-		
+
 		dayInput.add(behavior);
 
 		return dayInput;
