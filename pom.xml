@@ -19,6 +19,7 @@
         <module>eHour-web</module>
         <module>eHour-audit</module>
         <module>eHour-standalone</module>
+        <module>eHour-war</module>
     </modules>
     <description>
         eHour - web-based time registration for consultancy companies
@@ -722,23 +723,6 @@
         <!--
             activated by default to allow release plugin to run without profile
         -->
-        <profile>
-            <id>war</id>
-        </profile>
-
-        <profile>
-            <id>jetty</id>
-            <!-- placeholder profile to allow IntelliJ to use this profile, actual profile is in web prj -->
-        </profile>
-
-        <profile>
-            <id>standalone</id>
-
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-
         <profile>
             <id>prod</id>
             <build>
