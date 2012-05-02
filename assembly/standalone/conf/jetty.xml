@@ -44,7 +44,7 @@
 				<Call name="addAppProvider">
 					<Arg>
 						<New class="org.eclipse.jetty.deploy.providers.ContextProvider">
-							<Set name="monitoredDir">../../conf/contexts</Set>
+							<Set name="monitoredDir">conf/contexts</Set>
 							<Set name="scanInterval">5</Set>
 						</New>
 					</Arg>

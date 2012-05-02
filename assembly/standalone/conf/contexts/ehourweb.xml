@@ -3,5 +3,5 @@
 
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
 	<Set name="contextPath">/</Set>
-	<Set name="resourceBase">../../app/</Set>
+	<Set name="resourceBase">app/</Set>
 </Configure>

@@ -33,6 +33,10 @@ public final class EhourHomeUtil
         return eHourHome;
     }
 
+    public static boolean isEhourHomeDefined() {
+        return StringUtils.isNotBlank(System.getProperty(EHOUR_HOME)) || StringUtils.isNotBlank(System.getenv(EHOUR_HOME));
+    }
+
     /**
      * Get the conf dir, relative to ehour home dir
      * @param eHourHome
