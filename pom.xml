@@ -158,11 +158,6 @@
                 <version>${jetty.version}</version>
             </dependency>
             <dependency>
-                <groupId>tanukisoft</groupId>
-                <artifactId>wrapper</artifactId>
-                <version>3.5.7</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.ddlutils</groupId>
                 <artifactId>ddlutils</artifactId>
                 <version>1.0</version>
