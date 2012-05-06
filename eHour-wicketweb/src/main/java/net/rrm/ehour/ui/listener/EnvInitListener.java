@@ -30,7 +30,7 @@ public class EnvInitListener implements ServletContextListener
 
         configureLog4j(home);
 
-        LOG.warn("EHOUR_HOME set to " + home);
+        LOG.info("EHOUR_HOME set to " + home);
     }
 
     private String getEhourHomePath(ServletContextEvent sce)

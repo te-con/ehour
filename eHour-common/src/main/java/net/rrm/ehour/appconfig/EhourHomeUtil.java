@@ -46,12 +46,12 @@ public final class EhourHomeUtil
     {
         String separator = System.getProperty("file.separator");
 
-        StringBuffer buffer = new StringBuffer(eHourHome);
-        buffer.append(separator);
-        buffer.append("conf");
-        buffer.append(separator);
+        StringBuilder builder = new StringBuilder(eHourHome);
+        builder.append(separator);
+        builder.append("conf");
+        builder.append(separator);
 
-        return buffer.toString();
+        return builder.toString();
     }
 
     /**

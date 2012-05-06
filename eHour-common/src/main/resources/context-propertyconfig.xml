@@ -8,12 +8,7 @@
         <constructor-arg value="${EHOUR_HOME}/conf/ehour.properties" />
     </bean>
 
-
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" ref="confResource" />
     </bean>
-
-<!--
-	<context:property-placeholder location="file://${EHOUR_HOME}/conf/ehour.properties" />
--->
 </beans>

@@ -15,6 +15,7 @@ public class EhourServerRunner {
 
     public static void main(String[] args) {
         validateEhourHome();
+        fixForwardSlashesInEhourHome();
 
         String filename = args != null && args.length >= 1 ? args[0] : "${EHOUR_HOME}/conf/ehour.properties";
 
@@ -27,6 +28,16 @@ public class EhourServerRunner {
             LOGGER.error("Failed to start server", e);
         }
     }
+
+    private static void fixForwardSlashesInEhourHome() {
+        if (EhourHomeUtil.isEhourHomeDefined()) {
+            String home = EhourHomeUtil.getEhourHome();
+            String forwardSlashesOnly = home.replace('\\', '/');
+
+            System.getProperties().put(EhourHomeUtil.EHOUR_HOME, forwardSlashesOnly);
+        }
+    }
+
 
     private static void validateEhourHome() {
         if (!EhourHomeUtil.isEhourHomeDefined()) {
