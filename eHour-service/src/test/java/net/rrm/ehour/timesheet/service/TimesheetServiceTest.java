@@ -16,28 +16,10 @@
 
 package net.rrm.ehour.timesheet.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.TimesheetComment;
-import net.rrm.ehour.domain.TimesheetCommentId;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.TimesheetEntryId;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
@@ -45,9 +27,13 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.util.DateUtil;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.*;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings(
 { "deprecation" })
@@ -101,11 +87,11 @@ public class TimesheetServiceTest
 
 		bda = new BookedDay();
 		bda.setDate(new Date(2006 - 1900, 10, 1));
-		bda.setHours(new Float(6));
+		bda.setHours((float) 6);
 
 		bdb = new BookedDay();
 		bdb.setDate(new Date(2006 - 1900, 10, 2));
-		bdb.setHours(new Float(8));
+		bdb.setHours((float) 8);
 
 		daoResults.add(bdb); // test sort as well
 		daoResults.add(bda);
@@ -142,19 +128,17 @@ public class TimesheetServiceTest
 		idA = new TimesheetEntryId(new Date(2006 - 1900, 10 - 1, 2), null);
 		entryA = new TimesheetEntry();
 		entryA.setEntryId(idA);
-		entryA.setHours(new Float(5));
+		entryA.setHours((float) 5);
 		daoResults.add(entryA);
 
 		idB = new TimesheetEntryId(new Date(2006 - 1900, 10 - 1, 6), null);
 		entryB = new TimesheetEntry();
 		entryB.setEntryId(idB);
-		entryB.setHours(new Float(3));
+		entryB.setHours((float) 3);
 		daoResults.add(entryB);
 
 		AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
-		ProjectAssignmentType type = new ProjectAssignmentType(0);
-		ProjectAssignment pa = new ProjectAssignment();
-		pa.setAssignmentType(type);
+		ProjectAssignment pa = ProjectAssignmentMother.createProjectAssignment(0);
 		agg.setProjectAssignment(pa);
 		reportResults.add(agg);
 
