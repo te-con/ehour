@@ -14,8 +14,8 @@ public class EhourServerRunner {
     private final static Logger LOGGER = Logger.getLogger(EhourServerRunner.class);
 
     public static void main(String[] args) {
-        validateEhourHome();
-        fixForwardSlashesInEhourHome();
+        setDefaultEhourHome();
+        convertBackwardSlashesInEhourHome();
 
         String filename = args != null && args.length >= 1 ? args[0] : "${EHOUR_HOME}/conf/ehour.properties";
 
@@ -29,7 +29,8 @@ public class EhourServerRunner {
         }
     }
 
-    private static void fixForwardSlashesInEhourHome() {
+    // on Windows install4j provides the current path with backward slashes, convert to forward slashes
+    private static void convertBackwardSlashesInEhourHome() {
         if (EhourHomeUtil.isEhourHomeDefined()) {
             String home = EhourHomeUtil.getEhourHome();
             String forwardSlashesOnly = home.replace('\\', '/');
@@ -38,8 +39,8 @@ public class EhourServerRunner {
         }
     }
 
-
-    private static void validateEhourHome() {
+    // check whether an ehour home is defined, use the current path when not defined
+    private static void setDefaultEhourHome() {
         if (!EhourHomeUtil.isEhourHomeDefined()) {
             try {
                 String path = new File(".").getCanonicalPath();
