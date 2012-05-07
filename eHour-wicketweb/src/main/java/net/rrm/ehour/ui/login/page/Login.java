@@ -19,13 +19,14 @@ package net.rrm.ehour.ui.login.page;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
-import org.apache.log4j.Logger;
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.persistence.CookieValuePersister;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -38,42 +39,44 @@ import java.io.Serializable;
 
 public class Login extends WebPage {
     private static final long serialVersionUID = -134022212692477120L;
-    private static Logger logger = Logger.getLogger(Login.class);
+    private static final String EHOUR_USERNAME = "ehour.username";
 
-    public Login() {
-        EhourWebSession session = (EhourWebSession) getSession();
+    @Override
+    protected void onBeforeRender() {
+        EhourWebSession session = EhourWebSession.getSession();
 
         if (session.isSignedIn()) {
-            if (logger.isInfoEnabled()) {
-                logger.info("User already signed in, logging out and redirecting to " + getApplication().getHomePage());
-            }
-
-            session.signOut();
-            setResponsePage(getApplication().getHomePage());
-        } else {
-            setupForm();
+            redirectToHomepage(session);
         }
+
+        setupForm();
+
+        super.onBeforeRender();
     }
 
-    /**
-     * Check if the session exists, kill the session and redirect to the homepage.
-     * This will trigger the authentication but at least the redirect is properly setup
-     *
-     * @param parameters page parameters (ignored)
-     */
-    public Login(final PageParameters parameters) {
-        this();
-    }
-
-    /**
-     * Set up login form
-     */
     private void setupForm() {
-        add(new Label("pageTitle", new ResourceModel("login.login.header")));
-        add(new SignInForm("loginform", new SimpleUser()));
+        addOrReplace(new Label("pageTitle", new ResourceModel("login.login.header")));
+
+        SimpleUser user = preloadUsernameFromCookie();
+
+        addOrReplace(new SignInForm("loginform", user));
     }
 
-    public final class SignInForm extends Form<SimpleUser> {
+    private SimpleUser preloadUsernameFromCookie() {
+        CookieValuePersister persister = new CookieValuePersister();
+        String cookieUsername = persister.load(EHOUR_USERNAME);
+
+        SimpleUser user = new SimpleUser();
+        user.setUsername(cookieUsername);
+        return user;
+    }
+
+    private void redirectToHomepage(EhourWebSession session) {
+        Class<? extends Page> homepage = AuthUtil.getHomepageForRole(session.getRoles());
+        setResponsePage(homepage);
+    }
+
+    public class SignInForm extends Form<SimpleUser> {
         private static final long serialVersionUID = -4355842488508724254L;
 
         public SignInForm(String id, SimpleUser model) {
@@ -81,13 +84,13 @@ public class Login extends WebPage {
 
             FeedbackPanel feedback = new LoginFeedbackPanel("feedback");
             feedback.setMaxMessages(1);
-
             add(feedback);
+
             TextField<String> usernameInput = new RequiredTextField<String>("username");
-            usernameInput.setPersistent(true);
             usernameInput.setMarkupId("username");
             usernameInput.setOutputMarkupId(true);
             add(usernameInput);
+
             PasswordTextField password = new PasswordTextField("password").setResetPassword(true);
             password.setMarkupId("password");
             password.setOutputMarkupId(true);
@@ -101,38 +104,24 @@ public class Login extends WebPage {
             add(new Label("version", ((EhourWebApplication) this.getApplication()).getVersion()));
         }
 
-        /**
-         * Called upon form submit. Attempts to authenticate the user.
-         */
+        @Override
         protected void onSubmit() {
-            if (EhourWebSession.getSession().isSignedIn()) {
-                // now this really shouldn't happen as the session is killed in the constructor
-                error("already logged in");
 
+            SimpleUser user = getModelObject();
+            String username = user.getUsername();
+            String password = user.getPassword();
+
+            EhourWebSession session = EhourWebSession.getSession();
+
+            if (session.signIn(username, password)) {
+                CookieValuePersister persister = new CookieValuePersister();
+                persister.save(EHOUR_USERNAME, username);
+
+                redirectToHomepage(session);
             } else {
-                SimpleUser user = getModelObject();
-                String username = user.getUsername();
-                String password = user.getPassword();
-
-                // Attempt to authenticate.
-                EhourWebSession session = (EhourWebSession) Session.get();
-
-                // When authenticated decide the redirect
-                if (session.signIn(username, password)) {
-                    Class<? extends Page> homepage = AuthUtil.getHomepageForRole(session.getRoles());
-
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("User '" + username + "' redirected to " + homepage.getName());
-                    }
-
-                    setResponsePage(homepage);
-                } else {
-                    error(getLocalizer().getString("login.login.failed", this));
-                }
+                error(getLocalizer().getString("login.login.failed", this));
             }
 
-            // ALWAYS do a redirect, no matter where we are going to. The point is that the
-            // submitting page should be gone from the browsers history.
             setRedirect(true);
         }
     }
@@ -140,9 +129,6 @@ public class Login extends WebPage {
     public final class LoginFeedbackPanel extends FeedbackPanel {
         private static final long serialVersionUID = 1931344611905158185L;
 
-        /**
-         * @see org.apache.wicket.Component#Component(String)
-         */
         public LoginFeedbackPanel(final String id) {
             super(id);
         }

@@ -27,8 +27,6 @@ public class SessionExpiredPage extends Login
 
 	public SessionExpiredPage()
 	{
-		super(null);
-
 		super.error(getLocalizer().getString("login.sessionexpired", this));
 	}
 }

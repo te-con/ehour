@@ -22,6 +22,7 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.login.page.Login;
+import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -45,7 +46,7 @@ public class HeaderPanel extends AbstractBasePanel<Void>
 
 		add(createNav("nav"));
 
-		add(new BookmarkablePageLink<Login>("logoffLink", Login.class));
+		add(new BookmarkablePageLink<Login>("logoffLink", Logout.class));
 		add(addLoggedInUser("prefsLink"));
 	}
 

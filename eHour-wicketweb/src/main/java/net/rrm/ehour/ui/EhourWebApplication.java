@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
+import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
@@ -75,7 +76,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     private static final Logger LOGGER = Logger.getLogger(EhourWebApplication.class);
 
     private AuthenticationManager authenticationManager;
-    protected Class<? extends WebPage> login = Login.class;
     private String version;
     private String wikiBaseUrl;
     private boolean initialized;
@@ -158,7 +158,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
     private void mountPages()
     {
-        mount("/login", PackageName.forClass(login));
+        mount(new HybridUrlCodingStrategy("/login", Login.class));
+        mount(new HybridUrlCodingStrategy("/logout", Logout.class));
+
 
         mount(new HybridUrlCodingStrategy("/admin", MainConfigPage.class));
         mount(new HybridUrlCodingStrategy("/admin/employee", UserAdmin.class));
@@ -200,7 +202,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
             {
                 if (component instanceof Page)
                 {
-                    throw new RestartResponseAtInterceptPageException(login);
+                    throw new RestartResponseAtInterceptPageException(Login.class);
                 } else
                 {
                     throw new UnauthorizedInstantiationException(component.getClass());
@@ -231,12 +233,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication
      */
     protected Class<? extends WebPage> getSignInPageClass()
     {
-        return login;
+        return Login.class;
     }
 
-    /*
-      *
-      */
     public AuthenticationManager getAuthenticationManager()
     {
         return authenticationManager;
