@@ -8,26 +8,36 @@ import org.apache.wicket.markup.html.panel.{Fragment, Panel}
 import org.apache.wicket.markup.html.link.Link
 import org.apache.wicket.model.ResourceModel
 import java.util.{List => JList}
+import net.rrm.ehour.ui.common.util.AuthUtil
 
-sealed abstract class MenuItem
+sealed abstract class MenuItem {
+  def isVisibleForLoggedInUser: Boolean
+}
 
-case class DropdownMenu(menuTitle: String, items: JList[LinkItem]) extends MenuItem
+case class DropdownMenu(menuTitle: String, items: JList[LinkItem]) extends MenuItem {
+  import scalaj.collection.Imports._
 
-case class LinkItem(menuTitle: String, responsePageClass: Class[_ <: WebPage], pageParameters: Option[PageParameters] = None) extends MenuItem
+  def isVisibleForLoggedInUser = items.asScalaMutable.foldLeft(true)((total, item) => total || item.isVisibleForLoggedInUser)
+}
+
+case class LinkItem(menuTitle: String, responsePageClass: Class[_ <: WebPage], pageParameters: Option[PageParameters] = None) extends MenuItem {
+  override def isVisibleForLoggedInUser = AuthUtil.isUserAuthorizedForPage(responsePageClass)
+}
 
 class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
 
   val itemMenu = new ListView[MenuItem]("items", items) {
     def populateItem(item: ListItem[MenuItem]) {
       val menuItem = item.getModelObject
+      item.setVisible(menuItem.isVisibleForLoggedInUser)
 
       menuItem match {
-        case LinkItem(_,_,_) => {
+        case LinkItem(_, _, _) => {
           item.add(createLinkFragment("item", menuItem.asInstanceOf[LinkItem]))
         }
         case DropdownMenu(title, menuItems) => {
           val fragment = new Fragment("item", "linkItems", TreeBasedMenu.this)
-          item.add(fragment)
+         item.add(fragment)
 
           fragment.add(new Label("title", new ResourceModel(title)))
 
@@ -52,7 +62,7 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
     fragment
   }
 
-  private def createLink(id: String, linkItem: LinkItem) ={
+  private def createLink(id: String, linkItem: LinkItem) = {
     val link = new Link[Void]("menuLink") {
       def onClick() {
         if (linkItem.pageParameters.isDefined) {
