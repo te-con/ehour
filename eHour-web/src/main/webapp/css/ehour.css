@@ -340,7 +340,7 @@ li a:hover {
 
 li a:active {
     text-decoration: underline;
-    font: 1em Verdana, Geneva, Arial, Helvetica;
+    /*font: 1em Verdana, Geneva, Arial, Helvetica;*/
 }
 
 div.listScroll {
