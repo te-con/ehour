@@ -260,13 +260,7 @@ public class EhourWebSession extends AuthenticatedWebSession
     {
         AuthUser user = getUser();
 
-        if (user != null)
-        {
-            LOGGER.info("Logout by user '" + user.getUsername() + "'.");
-        }
-
         setAuthentication(null);
-        invalidate();
         super.signOut();
 
         auditService.doAudit(new Audit()
@@ -277,11 +271,6 @@ public class EhourWebSession extends AuthenticatedWebSession
                 .setSuccess(Boolean.TRUE));
     }
 
-    /**
-     * Sets the acegi authentication.
-     *
-     * @param authentication the authentication or null to clear
-     */
     private void setAuthentication(Authentication authentication)
     {
         SecurityContextHolder.getContext().setAuthentication(authentication);
