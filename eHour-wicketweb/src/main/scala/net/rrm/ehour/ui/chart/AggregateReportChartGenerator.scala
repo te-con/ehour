@@ -10,7 +10,7 @@ import net.rrm.ehour.config.EhourConfig
 import collection.Seq
 
 
-object AggregateReportChartGenerators {
+object AggregateReportChartGenerator {
 
   def generateEmployeeReportChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
     generateReportChart(renderToId, reportData, config, _.getProjectAssignment.getUser.getFullName, "Employees in hours and turnover")

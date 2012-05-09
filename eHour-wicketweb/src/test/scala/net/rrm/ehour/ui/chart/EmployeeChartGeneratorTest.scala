@@ -15,7 +15,7 @@ class EmployeeChartGeneratorTest extends FunSuite with ShouldMatchers with Befor
   before {
     val reportData = AggregateReportDataObjectMother.generateReportData
 
-    chart = AggregateReportChartGenerators.generateEmployeeReportChart("container", reportData, new EhourConfigStub())
+    chart = AggregateReportChartGenerator.generateEmployeeReportChart("container", reportData, new EhourConfigStub())
   }
 
   test("should have minimum height of 400px") {

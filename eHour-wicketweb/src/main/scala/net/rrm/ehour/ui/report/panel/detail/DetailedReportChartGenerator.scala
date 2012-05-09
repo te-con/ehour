@@ -12,15 +12,16 @@ import collection.Seq
 import java.lang.String
 import org.joda.time.DateTime
 import nl.tecon.highcharts.config.Conversions._
+import scala.math.round
 
 object DetailedReportChartGenerator {
   val axis = (title: String) => Seq(Axis(title = Title(text = title)))
   val title = (t: String) => Title(text = t)
   val tooltip = (t: String) => Tooltip(formatter = Some(JavascriptFunction("function() { return new Date(this.x).toLocaleDateString() + '<br />' + this.series.name + ': ' + this.y.toLocaleString() + ' " + t + "' } ")))
 
-  
+
   def generateHourBasedDetailedChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    val highChart = generateDetailedChart(reportData, config, _.getTotalHours)
+    val highChart = generateDetailedChart(reportData, config, h => round(h.getTotalHours.doubleValue()))
 
     highChart.copy(yAxis = axis("Hours"), title = title("Hours booked on customers per day"), tooltip = tooltip("hours")).build(renderToId)
   }
@@ -31,7 +32,7 @@ object DetailedReportChartGenerator {
     highChart.copy(yAxis = axis(config.getCurrencySymbol), title = title("Turnover booked on customers per day"), tooltip = tooltip(config.getCurrencySymbol)).build(renderToId)
   }
 
-  private def generateDetailedChart(reportData: ReportData, config: EhourConfig, f:FlatReportElement => Number): HighChart = {
+  private def generateDetailedChart(reportData: ReportData, config: EhourConfig, f: FlatReportElement => Number): HighChart = {
     val elements: Seq[FlatReportElement] = reportData.getReportElements.asScala.asInstanceOf[Seq[FlatReportElement]]
 
     val reportRange: DateRange = reportData.getReportRange
@@ -47,7 +48,7 @@ object DetailedReportChartGenerator {
     val chart = new Chart(defaultSeriesType = SeriesType.Column, zoomType = ZoomType.X)
 
     val seriesLength = if (series.length > 0) series.head.data.length else 1
-    
+
     // for performance reasons, disable shadows when there's a lot of data
     val isBigDataSet = (series.length * seriesLength) > 150
 
@@ -59,7 +60,7 @@ object DetailedReportChartGenerator {
     )
   }
 
-  private def buildCategoryMap(elements: Seq[FlatReportElement], f:FlatReportElement => Number) = {
+  private def buildCategoryMap(elements: Seq[FlatReportElement], f: FlatReportElement => Number) = {
     val categoryDataMap = MutableMap[Int, ListBuffer[DateNumericValue]]()
     val categoryNameMap = MutableMap[Int, String]()
 
