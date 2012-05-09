@@ -17,7 +17,7 @@ sealed abstract class MenuItem {
 case class DropdownMenu(menuTitle: String, items: JList[LinkItem]) extends MenuItem {
   import scalaj.collection.Imports._
 
-  def isVisibleForLoggedInUser = items.asScalaMutable.foldLeft(true)((total, item) => total || item.isVisibleForLoggedInUser)
+  def isVisibleForLoggedInUser = items.asScalaMutable.foldLeft(false)((total, item) => total || item.isVisibleForLoggedInUser)
 }
 
 case class LinkItem(menuTitle: String, responsePageClass: Class[_ <: WebPage], pageParameters: Option[PageParameters] = None) extends MenuItem {
