@@ -182,7 +182,7 @@ public class AssignmentAggregateReportElement
      */
     public Number getHours()
     {
-        return hours;
+        return hours == null ? 0 : hours;
     }
 
     /**
