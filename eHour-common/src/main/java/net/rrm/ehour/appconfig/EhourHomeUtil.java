@@ -92,8 +92,8 @@ public final class EhourHomeUtil
 
     private static Properties loadProperties(String filename) throws IOException
     {
-        ClassPathResource hibernatePropertiesResource = new ClassPathResource(filename);
+        ClassPathResource resource = new ClassPathResource(filename);
 
-        return PropertiesLoaderUtils.loadProperties(hibernatePropertiesResource);
+        return PropertiesLoaderUtils.loadProperties(resource);
     }
 }

@@ -52,6 +52,24 @@ public class EhourServerRunner {
                 LOGGER.error("Failed to get current path", e);
             }
         }
+
+        String home = EhourHomeUtil.getEhourHome();
+
+        File ehourPropertiesFile = EhourHomeUtil.getEhourPropertiesFile(home);
+
+        if (!ehourPropertiesFile.exists()) {
+            String newHome = String.format("%s%shome", home, System.getProperty("file.separator"));
+
+            System.out.println(newHome);
+            File newHomeFile = EhourHomeUtil.getEhourPropertiesFile(newHome);
+
+            if (newHomeFile.exists()) {
+                System.getProperties().put(EhourHomeUtil.EHOUR_HOME, newHome);
+            } else {
+                throw new IllegalArgumentException(String.format("EHOUR_HOME %s not properly defined, %s%shome", home, home, System.getProperty("file.separator")));
+            }
+
+        }
     }
 
 
