@@ -33,7 +33,6 @@ import net.rrm.ehour.persistence.value.ImageLogo;
 import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,12 +57,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Autowired
     private BinaryConfigurationDao binConfigDAO;
 
-    @Value("${EHOUR_HOME}")
-    private String eHourHome;
-
     @Autowired
     private TranslationDiscovery translationDiscovery;
-
 
 
     private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
@@ -153,7 +148,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         FileInputStream is = null;
 
         try {
-            File file = new File(EhourHomeUtil.getConfDir(eHourHome) + EXCEL_DEFAULT_LOGO);
+
+            File file = EhourHomeUtil.getFileInConfDir(EXCEL_DEFAULT_LOGO);
 
             if (!file.exists()) {
                 LOGGER.error("default logo not found");
@@ -184,16 +180,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     */
     @Transactional
     @NonAuditable
-    public EhourConfigStub getConfiguration()
-    {
+    public EhourConfigStub getConfiguration() {
         List<Configuration> configs = configDAO.findAll();
         EhourConfigStub config = new EhourConfigStub();
         String key, value;
 
         List<String> translations = translationDiscovery.getTranslations();
 
-        if (translations != null)
-        {
+        if (translations != null) {
             config.setAvailableTranslations(translations.toArray(new String[translations.size()]));
         }
 
@@ -249,9 +243,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         return config;
     }
 
-    /**
-     * @return
-     */
     @Override
     public List<Configuration> findAllConfiguration
     () {
@@ -323,10 +314,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      */
     public void setBinConfigDAO(BinaryConfigurationDao binConfigDAO) {
         this.binConfigDAO = binConfigDAO;
-    }
-
-    public void seteHourHome(String eHourHome) {
-        this.eHourHome = eHourHome;
     }
 
     public void setTranslationDiscovery(TranslationDiscovery translationDiscovery) {

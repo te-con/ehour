@@ -18,9 +18,9 @@ package net.rrm.ehour;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.persistence.datasource.DerbyDataSourceFactory;
+import net.rrm.ehour.util.IoUtil;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.eclipse.jetty.jndi.NamingUtil;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.xml.XmlConfiguration;
@@ -29,37 +29,27 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Start jetty
  */
 
 public class EhourServer {
-    private static final Logger LOGGER = Logger.getLogger(EhourServer.class);
-
     public void start(String configurationFilename) throws Exception {
         ServerPropertiesConfigurator configuration = new ServerPropertiesConfigurator();
 
-        try {
-            ServerConfig config = configuration.configureFromProperties(replaceSystemEnv(configurationFilename));
-            new EhourServer().startServer(config);
-        } catch (Exception e) {
-            LOGGER.error("Failed to start server", e);
-
-            throw e;
-        }
-
+        ServerConfig config = configuration.configureFromProperties(replaceSystemEnv(configurationFilename));
+        new EhourServer().startServer(config);
     }
 
     private String replaceSystemEnv(String filename) {
         String ehourHome = EhourHomeUtil.getEhourHome();
 
-        System.out.println("home: " + ehourHome);
-
         if (StringUtils.isBlank(ehourHome)) {
-            throw new IllegalArgumentException("EHOUR_HOME is not defined as a environment variable");
+            throw new IllegalArgumentException("EHOUR_HOME is not defined as a environment variable or system property.");
         }
 
         return filename.replace("${EHOUR_HOME}", ehourHome);
@@ -68,18 +58,24 @@ public class EhourServer {
     private void startServer(ServerConfig config) throws Exception {
         Server server = new Server(config.getPort());
 
-        String defaultConfigFileName = config.getDefaultConfigFileName();
-        System.out.println("x:" + defaultConfigFileName);
+        File jettyXmlFile = EhourHomeUtil.getFileInConfDir(config.getDefaultConfigFileName());
 
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(config.getDefaultConfigFileName());
+        FileInputStream stream = null;
 
-        XmlConfiguration configuration = new XmlConfiguration(inputStream);
-        configuration.configure(server);
+        try {
+            stream = new FileInputStream(jettyXmlFile);
 
-        registerJndiDS(config);
+            XmlConfiguration configuration = new XmlConfiguration(stream);
+            configuration.configure(server);
 
-        server.start();
-        server.join();
+            registerJndiDS(config);
+
+            server.start();
+            server.join();
+        } finally {
+            IoUtil.close(stream);
+        }
+
     }
 
     private void registerJndiDS(ServerConfig config) throws IOException, NamingException {

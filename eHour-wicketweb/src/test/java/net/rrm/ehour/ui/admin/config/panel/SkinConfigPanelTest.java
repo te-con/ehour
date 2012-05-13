@@ -37,8 +37,6 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 	@Test
 	public void shouldSubmit()
 	{
-//		getConfigService().persistConfiguration(getConfigStub());
-		
 		BinaryConfigurationDao binConfigDao = createMock(BinaryConfigurationDao.class);
 
 		getConfigService().setBinConfigDAO(binConfigDao);

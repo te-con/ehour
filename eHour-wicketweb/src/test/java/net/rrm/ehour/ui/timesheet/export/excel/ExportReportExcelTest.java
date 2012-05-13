@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel;
 
+import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -33,7 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,89 +46,77 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created on Apr 10, 2009, 2:05:13 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class ExportReportExcelTest extends AbstractSpringWebAppTester
-{
-	private ConfigurationServiceImpl configService;
-	private DetailedReportService detailedReportService;
+public class ExportReportExcelTest extends AbstractSpringWebAppTester {
+    private ConfigurationServiceImpl configService;
+    private DetailedReportService detailedReportService;
 
-	@Before
-	public void before() throws Exception
-	{
-		getConfig().setFirstDayOfWeek(Calendar.MONDAY);
-		
-		detailedReportService = createMock(DetailedReportService.class);
-		getMockContext().putBean("detailedReportService", detailedReportService);
-		
-		configService = new ConfigurationServiceImpl();
-        configService.seteHourHome("/");
-		getMockContext().putBean("configurationService", configService);
-		
-		BinaryConfigurationDao binConfigfDao = createMock(BinaryConfigurationDao.class);
-		configService.setBinConfigDAO(binConfigfDao);
-	}
-	
-	@Test
-	public void produceExcelReport() throws IOException
-	{
-		List<FlatReportElement> elements = ExportReportDummyCreater.createMonthData(getConfig());
-		
-		ReportData data = new ReportData(elements, ExportReportDummyCreater.getDateRangeForCurrentMonth());
+    @Before
+    public void before() throws Exception {
+        getConfig().setFirstDayOfWeek(Calendar.MONDAY);
 
-		UserCriteria userCriteria = new UserCriteria();
-		userCriteria.getCustomParameters().put(ExportCriteriaParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
-		userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
-		ReportCriteria criteria = new ReportCriteria(userCriteria);
-		Report report = new PrintReport(criteria);
-		
-		expect(detailedReportService.getDetailedReportData(criteria))
-			.andReturn(data);
-		
-		replay(detailedReportService);
-		byte[] excelData = new ExportReportExcel().getExcelData(report);
-		assertTrue(excelData.length > 0);
+        detailedReportService = createMock(DetailedReportService.class);
+        getMockContext().putBean("detailedReportService", detailedReportService);
+
+        EhourHomeUtil.setEhourHome(".");
+        configService = new ConfigurationServiceImpl();
+        getMockContext().putBean("configurationService", configService);
+
+        BinaryConfigurationDao binConfigfDao = createMock(BinaryConfigurationDao.class);
+        configService.setBinConfigDAO(binConfigfDao);
+    }
+
+    @Test
+    public void produceExcelReport() throws IOException {
+        List<FlatReportElement> elements = ExportReportDummyCreater.createMonthData(getConfig());
+
+        ReportData data = new ReportData(elements, ExportReportDummyCreater.getDateRangeForCurrentMonth());
+
+        UserCriteria userCriteria = new UserCriteria();
+        userCriteria.getCustomParameters().put(ExportCriteriaParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
+        userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
+        ReportCriteria criteria = new ReportCriteria(userCriteria);
+        Report report = new PrintReport(criteria);
+
+        expect(detailedReportService.getDetailedReportData(criteria))
+                .andReturn(data);
+
+        replay(detailedReportService);
+        byte[] excelData = new ExportReportExcel().getExcelData(report);
+        assertTrue(excelData.length > 0);
 //		writeByteData(excelData);
-		
-		verify(detailedReportService);
-	}
-	
-	
-	
-	@Test
-	public void produceForEmptyMonth() throws IOException
-	{
-		List<FlatReportElement>	elements = new ArrayList<FlatReportElement>();
-		
-		ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
-		UserCriteria userCriteria = new UserCriteria();
-		userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
-		ReportCriteria criteria = new ReportCriteria(userCriteria);
-		Report report = new PrintReport(criteria);
-		
-		expect(detailedReportService.getDetailedReportData(criteria))
-			.andReturn(data);
-		
-		replay(detailedReportService);
-		byte[] excelData = new ExportReportExcel().getExcelData(report);
-		assertTrue(excelData.length > 0);
-//		writeByteData(excelData);
-		
-		verify(detailedReportService);
-	} 
 
-	/**
-	 * @param excelData
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	@SuppressWarnings("unused")
-	private void writeByteData(byte[] excelData) throws FileNotFoundException, IOException
-	{
-		File outfile = new File("d:\\test.xls");
-		FileOutputStream fos = new FileOutputStream(outfile);
-		fos.write(excelData);
-		fos.close();
-	}
+        verify(detailedReportService);
+    }
+
+
+    @Test
+    public void produceForEmptyMonth() throws IOException {
+        List<FlatReportElement> elements = new ArrayList<FlatReportElement>();
+
+        ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
+        UserCriteria userCriteria = new UserCriteria();
+        userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
+        ReportCriteria criteria = new ReportCriteria(userCriteria);
+        Report report = new PrintReport(criteria);
+
+        expect(detailedReportService.getDetailedReportData(criteria))
+                .andReturn(data);
+
+        replay(detailedReportService);
+        byte[] excelData = new ExportReportExcel().getExcelData(report);
+        assertTrue(excelData.length > 0);
+
+        verify(detailedReportService);
+    }
+
+    @SuppressWarnings("unused")
+    private void writeByteData(byte[] excelData) throws IOException {
+        File outfile = new File("d:\\test.xls");
+        FileOutputStream fos = new FileOutputStream(outfile);
+        fos.write(excelData);
+        fos.close();
+    }
 }

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.admin.config.page;
 
+import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
@@ -39,12 +40,11 @@ public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester 
     @Before
 	public void before() throws Exception
 	{
-//		configService = createMock(ConfigurationService.class);
+        EhourHomeUtil.setEhourHome("src/test/resources");
 		configService = createMock(ConfigurationServiceImpl.class,
                 ConfigurationServiceImpl.class.getMethod("getConfiguration"),
                 ConfigurationServiceImpl.class.getMethod("persistConfiguration", EhourConfig.class));
 		getMockContext().putBean("configService", configService);
-        configService.seteHourHome("/");
 
 		mailService = createMock(MailService.class);
 		getMockContext().putBean("mailService", mailService);	

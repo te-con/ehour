@@ -13,21 +13,15 @@ import java.util.Properties;
 /**
  * @author thies
  */
-public class DerbyDataSourceFactory
-{
+public class DerbyDataSourceFactory {
     /**
      * Create datasource and validate database
-     *
-     * @param databaseName
-     * @return
      */
-    public DataSource createDataSource(String databaseName) throws IOException
-    {
+    public DataSource createDataSource(String databaseName) throws IOException {
         EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
         dataSource.setDatabaseName(databaseName);
 
-        String ehourHome = EhourHomeUtil.getEhourHome();
-        File ehourPropertiesFile = EhourHomeUtil.getEhourPropertiesFile(ehourHome);
+        File ehourPropertiesFile = EhourHomeUtil.getEhourPropertiesFile();
 
         Properties properties = new Properties();
         properties.load(new FileInputStream(ehourPropertiesFile));

@@ -27,26 +27,32 @@ class EhourHomeFinder {
 
     // check whether an ehour home is defined, use the current path when not defined
     private static void setDefaultEhourHome() throws IOException {
+        useCurrentDirectoryWhenNotDefined();
+
+        if (!EhourHomeUtil.getEhourPropertiesFile().exists()) {
+            whenHomeDefinedButPropertyNotFoundTryTheHomeSubdir();
+        }
+    }
+
+    private static void whenHomeDefinedButPropertyNotFoundTryTheHomeSubdir() {
+        String newHome = String.format("%s/home", EhourHomeUtil.getEhourHome());
+
+        String configurationDir = EhourHomeUtil.getConfDir(newHome);
+
+        File newHomeFile = new File(configurationDir, EhourHomeUtil.EHOUR_PROPERTIES_FILENAME);
+
+        if (newHomeFile.exists()) {
+            EhourHomeUtil.setEhourHome(newHome);
+        } else {
+            throw new IllegalArgumentException(String.format("EHOUR_HOME is not properly defined - ehour.properties not found in %s", newHome));
+        }
+    }
+
+    private static void useCurrentDirectoryWhenNotDefined() throws IOException {
         if (!EhourHomeUtil.isEhourHomeDefined()) {
             String path = new File(".").getCanonicalPath();
 
             EhourHomeUtil.setEhourHome(path);
-        }
-
-        String home = EhourHomeUtil.getEhourHome();
-
-        File ehourPropertiesFile = EhourHomeUtil.getEhourPropertiesFile(home);
-
-        if (!ehourPropertiesFile.exists()) {
-            String newHome = String.format("%s/home", home);
-
-            File newHomeFile = EhourHomeUtil.getEhourPropertiesFile(newHome);
-
-            if (newHomeFile.exists()) {
-                EhourHomeUtil.setEhourHome(newHome);
-            } else {
-                throw new IllegalArgumentException(String.format("EHOUR_HOME value of %s is not properly defined, %s/home not found", home, home));
-            }
         }
     }
 }

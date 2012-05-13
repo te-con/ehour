@@ -51,16 +51,19 @@ public final class EhourHomeUtil
         return builder.toString();
     }
 
+    public static File getFileInConfDir(String filename) {
+        String configurationDir = getConfDir(getEhourHome());
+
+        return new File(configurationDir, filename);
+    }
+
     /**
      * Get the ehour.properties location as a file
      */
-    public static File getEhourPropertiesFile(String eHourHome)
+    public static File getEhourPropertiesFile()
     {
-        String eHourPropsFilename = getConfDir(eHourHome) + EHOUR_PROPERTIES_FILENAME;
-        return new File(eHourPropsFilename);
+        return getFileInConfDir(EHOUR_PROPERTIES_FILENAME);
     }
-
-
 
     /**
      * Get the dir with translations, relative to to ehour home

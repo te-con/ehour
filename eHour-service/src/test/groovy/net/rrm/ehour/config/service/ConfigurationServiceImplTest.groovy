@@ -13,6 +13,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import static org.mockito.Matchers.anyObject
 import static org.mockito.Mockito.when
+import net.rrm.ehour.appconfig.EhourHomeUtil
 
 /**
  * @author thies (thies@te-con.nl)
@@ -31,7 +32,9 @@ class ConfigurationServiceImplTest
   @Before
   void setUp()
   {
-    configurationService = new ConfigurationServiceImpl(eHourHome: "src/test/resources");
+    EhourHomeUtil.setEhourHome("src/test/resources")
+
+    configurationService = new ConfigurationServiceImpl();
 
     MockitoAnnotations.initMocks this
 

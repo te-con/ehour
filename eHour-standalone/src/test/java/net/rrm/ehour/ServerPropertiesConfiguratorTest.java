@@ -13,7 +13,7 @@ public class ServerPropertiesConfiguratorTest
 	public void shouldLoadDefaultConfig() throws IOException
 	{
 		ServerPropertiesConfigurator configurator = new ServerPropertiesConfigurator();
-		ServerConfig config = configurator.configureFromProperties("home/conf/ehour.properties");
+		ServerConfig config = configurator.configureFromProperties("src/test/resources/home/conf/ehour.properties");
 		
 		assertEquals(8000, config.getPort());
 //		assertEquals("derby", config.getDataBase());
