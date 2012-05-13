@@ -19,7 +19,6 @@ public final class EhourHomeUtil
 
     /**
      * Get EHOUR_HOME property, either as a system property or an environment variable
-     * @return
      */
     public static String getEhourHome()
     {
@@ -39,8 +38,6 @@ public final class EhourHomeUtil
 
     /**
      * Get the conf dir, relative to ehour home dir
-     * @param eHourHome
-     * @return
      */
     public static String getConfDir(String eHourHome)
     {
@@ -56,8 +53,6 @@ public final class EhourHomeUtil
 
     /**
      * Get the ehour.properties location as a file
-     * @param eHourHome
-     * @return
      */
     public static File getEhourPropertiesFile(String eHourHome)
     {
@@ -88,6 +83,10 @@ public final class EhourHomeUtil
             throw new IllegalArgumentException("Failed to load database config from: " + filename +
                     ". Did you spell the database name in ehour.properties right?", e);
         }
+    }
+
+    public static void setEhourHome(String homeDir) {
+        System.getProperties().put(EhourHomeUtil.EHOUR_HOME, homeDir);
     }
 
     private static Properties loadProperties(String filename) throws IOException

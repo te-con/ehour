@@ -13,6 +13,7 @@ public class ServerPropertiesConfigurator
 
     public ServerConfig configureFromProperties(String filename) throws IOException
     {
+        System.out.println("file: "+ filename);
         Properties props = loadProperties(filename);
 
         return new ServerConfig()
@@ -50,6 +51,7 @@ public class ServerPropertiesConfigurator
 
         File file = new File(filename);
         InputStream inputStream = null;
+        System.out.println(filename +":" + file.exists());
 
         try
         {

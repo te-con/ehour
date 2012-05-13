@@ -20,7 +20,7 @@ public class EnvFileSystemResource extends FileSystemResource
         super(replaceEnvInPath(path));
     }
 
-    private static final String replaceEnvInPath(String path)
+    private static String replaceEnvInPath(String path)
     {
         Matcher m = ENV_PATTERN.matcher(path);
 
@@ -30,15 +30,7 @@ public class EnvFileSystemResource extends FileSystemResource
         {
             String sysPropKey = m.group(1);
 
-            String systemProp;
-
-            if (System.getProperties().containsKey(sysPropKey))
-            {
-                systemProp = (String) System.getProperties().get(sysPropKey);
-            } else
-            {
-                systemProp = System.getenv(sysPropKey);
-            }
+            String systemProp = System.getProperties().containsKey(sysPropKey) ? (String) System.getProperties().get(sysPropKey) : System.getenv(sysPropKey);
 
             if (systemProp != null)
             {
