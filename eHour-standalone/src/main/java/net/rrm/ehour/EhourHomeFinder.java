@@ -1,6 +1,7 @@
 package net.rrm.ehour;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,16 @@ class EhourHomeFinder {
     static void fixEhourHome() throws IOException {
         convertBackwardSlashesInEhourHome();
         setDefaultEhourHome();
+        defineDerbyHome();
+    }
+
+    private static void defineDerbyHome() {
+        String derbyHome = System.getProperty("derby.system.home");
+
+        if (StringUtils.isBlank(derbyHome)) {
+
+            System.getProperties().put("derby.system.home", String.format("%s/db", EhourHomeUtil.getEhourHome()));
+        }
     }
 
     // on Windows install4j provides the current path with backward slashes, convert to forward slashes
