@@ -41,14 +41,7 @@ public final class EhourHomeUtil
      */
     public static String getConfDir(String eHourHome)
     {
-        String separator = System.getProperty("file.separator");
-
-        StringBuilder builder = new StringBuilder(eHourHome);
-        builder.append(separator);
-        builder.append("conf");
-        builder.append(separator);
-
-        return builder.toString();
+        return String.format("%s/conf/", eHourHome);
     }
 
     public static File getFileInConfDir(String filename) {
@@ -71,7 +64,7 @@ public final class EhourHomeUtil
     public static String getTranslationsDir(String eHourHome, String translationsDir)
     {
         String absoluteTranslationsPath = translationsDir.replace("%ehour.home%", (eHourHome != null) ? eHourHome : "");
-        return absoluteTranslationsPath  + System.getProperty("file.separator");
+        return absoluteTranslationsPath  + "/";
     }
 
     public static Properties loadDatabaseProperties(String databaseName)
