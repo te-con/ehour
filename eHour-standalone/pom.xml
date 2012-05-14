@@ -66,20 +66,6 @@
                 </plugins>
             </build>
         </profile>
-
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/profiles/dev/</directory>
-                    </resource>
-                </resources>
-            </build>
-        </profile>
     </profiles>
 
     <dependencies>
