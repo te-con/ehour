@@ -20,16 +20,16 @@ import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 
 /**
- * Paging navigator with a bit of css 
- **/
+ * Paging navigator with a bit of css
+ */
 
-public class HoverPagingNavigator extends AjaxPagingNavigator
-{
-	private static final long serialVersionUID = 1095553728045877576L;
+public class HoverPagingNavigator extends AjaxPagingNavigator {
+    private static final long serialVersionUID = 1095553728045877576L;
 
-	public HoverPagingNavigator(String id, IPageable pageable)
-	{
-		super(id, pageable);
-	}
+    public HoverPagingNavigator(String id, IPageable pageable) {
+        super(id, pageable);
+
+        setVisible(pageable.getPageCount() > 1);
+    }
 
 }
