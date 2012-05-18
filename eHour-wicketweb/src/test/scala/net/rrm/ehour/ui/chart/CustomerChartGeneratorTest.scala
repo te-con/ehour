@@ -23,7 +23,7 @@ class CustomerChartGeneratorTest extends FunSuite with ShouldMatchers with Befor
   }
 
   test("should have x axis with customer categories") {
-    chart should include("""xAxis:[{"categories":["Customer"]}]""")
+    chart should include("""xAxis:[{"categories":["Customer","TECON","CECON","DECON"]}]""")
   }
 
   test("should have two y axises with hours and formatted turnover") {
@@ -33,10 +33,10 @@ class CustomerChartGeneratorTest extends FunSuite with ShouldMatchers with Befor
   }
 
   test("should have series with booked hours") {
-    chart should include("""series:[{"name":"Booked hours","data":[22],"yAxis":0}""")
+    chart should include("""series:[{"name":"Booked hours","data":[32,10,12,10],"yAxis":0}""")
   }
 
   test("should have series with turnover") {
-    chart should include("""{"name":"Turnover","data":[340],"yAxis":1}]""")
+    chart should include("""{"name":"Turnover","data":[690,350,60,350],"yAxis":1}]""")
   }
 }

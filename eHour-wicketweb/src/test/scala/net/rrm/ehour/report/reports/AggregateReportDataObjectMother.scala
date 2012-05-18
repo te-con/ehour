@@ -1,38 +1,36 @@
 package net.rrm.ehour.report.reports
 
 import element.{AssignmentAggregateReportElementMother, AssignmentAggregateReportElement}
-import net.rrm.ehour.report.criteria.{ReportCriteria, AvailableCriteria}
 import scalaj.collection.Imports._
 import net.rrm.ehour.domain._
 import net.rrm.ehour.data.DateRange
+import net.rrm.ehour.util.DateUtil
+import java.util.Calendar
 
 object AggregateReportDataObjectMother {
-  def generateReportData:ReportData = {
-    val availCriteria: AvailableCriteria = new AvailableCriteria
+  def generateReportData: ReportData = {
+    val customerA = new Customer(1).setName("Customer")
+    val customerB = new Customer(2).setName("TECON")
+    val customerC = new Customer(3).setName("CECON")
+    val customerD = new Customer(4).setName("DECON")
 
-    val customers = List(new Customer(1))
-    availCriteria.setCustomers(customers.asJava)
-    val projects = List(new Project(2))
-    availCriteria.setProjects(projects.asJava)
+    val projectA = new Project(1, customerA).setName("Project A")
+    val projectB = new Project(2, customerA).setName("Project B")
+    val projectC = new Project(3, customerB).setName("Project C")
+    val projectD = new Project(4, customerC).setName("Project D")
+    val projectE = new Project(5, customerD).setName("Project E")
 
-    val depts = List(new UserDepartment(2))
-    availCriteria.setUserDepartments(depts.asJava)
-    val users = List(new User(2, "Thies", "Edeling"))
-    availCriteria.setUsers(users.asJava)
+    val userR = new User(1, "Rosalie", "Edeling")
+    val userT = new User(2, "Thies", "Edeling")
 
-    val reportCriteria = new ReportCriteria(availCriteria)
+    val reportElementA = new AssignmentAggregateReportElement(new ProjectAssignment(userR, projectA, 10), 14)
+    val reportElementB = new AssignmentAggregateReportElement(new ProjectAssignment(userR, projectB, 25), 8)
+    val reportElementC = new AssignmentAggregateReportElement(new ProjectAssignment(userT, projectC, 35), 10)
+    val reportElementD = new AssignmentAggregateReportElement(new ProjectAssignment(userT, projectD, 5), 12)
+    val reportElementE = new AssignmentAggregateReportElement(new ProjectAssignment(userT, projectE, 35), 10)
+    val reportElementF = new AssignmentAggregateReportElement(new ProjectAssignment(userT, projectB, 35), 10)
 
-    val projectA: Project = new Project(1, new Customer(1).setName("Customer")).setName("Project A")
-    val assignmentA = new ProjectAssignment(new User(1, "Rosalie", "Edeling"), projectA)
-    assignmentA.setHourlyRate(10)
-    val reportElementA = new AssignmentAggregateReportElement(assignmentA, 14)
-
-    val projectB: Project = new Project(1, new Customer(1).setName("Customer")).setName("Project B")
-    val assignmentB = new ProjectAssignment(new User(1, "Rosalie", "Edeling"), projectB)
-    assignmentB.setHourlyRate(25)
-    val reportElementB = new AssignmentAggregateReportElement(assignmentB, 8)
-
-    new ReportData(List(reportElementA, reportElementB).asJava, reportCriteria.getReportRange)
+    new ReportData(List(reportElementA, reportElementB, reportElementC, reportElementD, reportElementE, reportElementF).asJava, DateUtil.getDateRangeForMonth(Calendar.getInstance()))
   }
 
   def getAssignmentAggregateReportElements = {

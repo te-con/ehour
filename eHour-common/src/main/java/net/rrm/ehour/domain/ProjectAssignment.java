@@ -108,6 +108,11 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
         this.project = project;
     }
 
+    public ProjectAssignment(User user, Project project, Float hourlyRate) {
+        this(user, project);
+        this.hourlyRate = hourlyRate;
+    }
+
 
     /**
      * minimal constructor
@@ -301,7 +306,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
      */
     public boolean isActive()
     {
-        return active != null && active.booleanValue();
+        return active != null && active;
     }
 
     /**

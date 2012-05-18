@@ -85,6 +85,12 @@ public class Customer extends DomainObject<Integer, Customer>
 		this.customerId = customerId;
 	}
 
+    public Customer(Integer customerId, String code, String name) {
+        this(customerId);
+        this.code = code;
+        this.name = name;
+    }
+
 	/** full constructor */
 	public Customer(String code, String name, String description, boolean active)
 	{
