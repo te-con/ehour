@@ -22,7 +22,7 @@ class ProjectChartGeneratorTest extends FunSuite with ShouldMatchers with Before
   }
 
   test("should have x axis with projects") {
-    chart should include("""xAxis:[{"categories":["Project A","Project B","Project C","Project D","Project E","Project B"]}]""")
+    chart should include("""xAxis:[{"categories":["Project A","Project B","Project C","Project D","Project E"]}]""")
   }
 
   test("should have two y axises with hours and formatted turnover") {
@@ -32,10 +32,10 @@ class ProjectChartGeneratorTest extends FunSuite with ShouldMatchers with Before
   }
 
   test("should have series with booked hours") {
-    chart should include("""series:[{"name":"Booked hours","data":[14,8,10,12,10,10],"yAxis":0}""")
+    chart should include("""series:[{"name":"Booked hours","data":[14,18,10,12,10],"yAxis":0}""")
   }
 
   test("should have series with turnover") {
-    chart should include("""{"name":"Turnover","data":[140.0,200.0,350.0,60.0,350.0,350.0],"yAxis":1}]""")
+    chart should include("""{"name":"Turnover","data":[140,550,350,60,350],"yAxis":1}]""")
   }
 }
