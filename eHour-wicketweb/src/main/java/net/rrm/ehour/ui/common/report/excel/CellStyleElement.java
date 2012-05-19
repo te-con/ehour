@@ -51,20 +51,6 @@ public class CellStyleElement
 		}
 	}
 
-	public static class CurrencyValue implements CellStylePopulator
-	{
-        private String format;
-
-        public CurrencyValue(String currency) {
-            format = "$#,##0.00;[Red]($#,##0.00)".replace("$", currency);
-        }
-
-        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
-            HSSFDataFormat dataFormat = workbook.createDataFormat();
-            cellStyle.setDataFormat(dataFormat.getFormat(format));
-        }
-	}
-
 	public static class DateValue implements CellStylePopulator
 	{
 		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
