@@ -23,6 +23,7 @@ import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.settings.Settings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.DummyPanelPage;
+import org.junit.After;
 import org.junit.Before;
 
 import java.util.ArrayList;
@@ -31,58 +32,54 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Base class for wicket unit tests 
- **/
-public abstract class AbstractSpringWebAppTester extends AbstractSpringTester
-{
+ * Base class for wicket unit tests
+ */
+public abstract class AbstractSpringWebAppTester extends AbstractSpringTester {
     public StrictWicketTester tester;
     public TestEhourWebApplication webApp;
-	
-	@SuppressWarnings("serial")
-	@Before
-	public final void setUp() throws Exception
-	{
-		webApp =  new TestEhourWebApplication()
-		{
-			@Override
-			protected void springInjection()
-			{
-				addComponentInstantiationListener(new SpringComponentInjector(this, getMockContext(), true));
-			}
-		};
-		
-		tester = new StrictWicketTester(webApp);
-		
-		bypassStringResourceLoading();
-	}
 
-	private void bypassStringResourceLoading()
-	{
-		((Settings)webApp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader()
-		{
+    @SuppressWarnings("serial")
+    @Before
+    public final void setUp() throws Exception {
+        webApp = new TestEhourWebApplication() {
+            @Override
+            protected void springInjection() {
+                addComponentInstantiationListener(new SpringComponentInjector(this, getMockContext(), true));
+            }
+        };
 
-			public String loadStringResource(Component component, String key)
-			{
-				return key;
-			}
+        tester = new StrictWicketTester(webApp);
 
-			public String loadStringResource(Class<?> clazz, String key, Locale locale, String style)
-			{
-				return key;
-			}
-			
-		});
-	}
+        bypassStringResourceLoading();
+    }
 
-    public StrictWicketTester getTester()
-	{
-		return tester;
-	}
-	
-	protected TestEhourWebApplication getWebApp()
-	{
-		return webApp;
-	}
+    @After
+    public final void resetSpringContext() {
+        clearMockContext();
+    }
+
+
+    private void bypassStringResourceLoading() {
+        ((Settings) webApp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader() {
+
+            public String loadStringResource(Component component, String key) {
+                return key;
+            }
+
+            public String loadStringResource(Class<?> clazz, String key, Locale locale, String style) {
+                return key;
+            }
+
+        });
+    }
+
+    public StrictWicketTester getTester() {
+        return tester;
+    }
+
+    protected TestEhourWebApplication getWebApp() {
+        return webApp;
+    }
 
     protected final String makePanelPath(String... paths) {
         List<String> pathList = new ArrayList<String>();

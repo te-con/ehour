@@ -34,11 +34,6 @@ import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 
-
-/**
- * Render testcase for project admin page
- **/
-
 public class ProjectAdminTest extends AbstractSpringWebAppTester
 {
 	private ProjectService projectService;

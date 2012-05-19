@@ -57,6 +57,10 @@ public abstract class AbstractSpringTester
 		
 		return mockContext;
 	}
+
+    public final void clearMockContext() {
+        mockContext = null;
+    }
 	
 	public final EhourConfigStub getConfig()
 	{

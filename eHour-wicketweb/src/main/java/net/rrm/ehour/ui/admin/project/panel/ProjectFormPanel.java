@@ -23,7 +23,6 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean;
-import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBeanImpl;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
@@ -37,7 +36,9 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.UserComparator;
 import net.rrm.ehour.user.service.UserService;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.*;
@@ -52,35 +53,32 @@ import java.util.List;
 
 /**
  * Project admin form
- **/
+ */
 
-public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBackingBean>
-{
-	@SpringBean
-	private ProjectService	projectService;
-	@SpringBean
-	private CustomerService	customerService;
-	@SpringBean
-	private	UserService		userService;
+public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBackingBean> {
+    @SpringBean
+    private ProjectService projectService;
+    @SpringBean
+    private CustomerService customerService;
+    @SpringBean
+    private UserService userService;
 
-	private static final long serialVersionUID = -8677950352090140144L;
-	
-	public ProjectFormPanel(String id, IModel<ProjectAdminBackingBean> model)
-	{
-		super(id, model);
-		
-		setOutputMarkupId(true);
-		
-		setUpPage(this, model);
-	}
+    private static final long serialVersionUID = -8677950352090140144L;
 
-	private void setUpPage(WebMarkupContainer parent, IModel<ProjectAdminBackingBean> model)
-	{
-		Border border = new GreySquaredRoundedBorder("border");
-		add(border);
+    public ProjectFormPanel(String id, IModel<ProjectAdminBackingBean> model) {
+        super(id, model);
 
-		final Form<ProjectAdminBackingBean> form = new Form<ProjectAdminBackingBean>("projectForm", model);
-		addFormComponents(form);
+        setOutputMarkupId(true);
+
+        setUpPage(model);
+    }
+
+    private void setUpPage(IModel<ProjectAdminBackingBean> model) {
+        Border border = new GreySquaredRoundedBorder("border");
+        add(border);
+
+        Form<ProjectAdminBackingBean> form = new Form<ProjectAdminBackingBean>("projectForm", model);
+        addFormComponents(form);
 
 
         boolean deletable = model.getObject().getProject().isDeletable();
@@ -90,162 +88,167 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 
         FormUtil.setSubmitActions(formConfig);
 
-		border.add(form);
+        border.add(form);
 
-	}
+    }
 
-	private void addFormComponents(Form<ProjectAdminBackingBean> form)
-	{
-		addCustomer(form);
-		addDescriptionAndContact(form);
-		addGeneralInfo(form);
-		addMisc(form);
-		form.add(getProjectManager());
-		
-		form.add(new CheckBox("project.billable"));
-		
-	}
+    private void addFormComponents(Form<ProjectAdminBackingBean> form) {
+        addCustomer(form);
+        addDescriptionAndContact(form);
+        addGeneralInfo(form);
+        addMisc(form);
+        form.add(getProjectManager());
 
-	private void addGeneralInfo(WebMarkupContainer parent)
-	{
-		// name
-		RequiredTextField<String> nameField = new RequiredTextField<String>("project.name");
-		parent.add(nameField);
-		nameField.add(new StringValidator.MaximumLengthValidator(64));
-		nameField.setLabel(new ResourceModel("admin.project.name"));
-		nameField.add(new ValidatingFormComponentAjaxBehavior());
-		parent.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
+        form.add(new CheckBox("project.billable"));
 
-		// project code
-		RequiredTextField<String> codeField = new RequiredTextField<String>("project.projectCode");
-		parent.add(codeField);
-		codeField.add(new StringValidator.MaximumLengthValidator(16));
-		codeField.setLabel(new ResourceModel("admin.project.code"));
-		codeField.add(new ValidatingFormComponentAjaxBehavior());
-		parent.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
-	}
-	
-	private void addCustomer(WebMarkupContainer parent)
-	{
-		// customers
-		DropDownChoice<Customer> customerDropdown = new DropDownChoice<Customer>("project.customer", getCustomers(), new ChoiceRenderer<Customer>("fullName"));
-		customerDropdown.setRequired(true);
-		customerDropdown.setLabel(new ResourceModel("admin.project.customer"));
-		customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
-		parent.add(customerDropdown);
-		parent.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
-	}
-	
-	private DropDownChoice<User> getProjectManager()
-	{
-		// project manager
-		DropDownChoice<User> projectManager = new DropDownChoice<User>("project.projectManager", getEligablePms(), new ChoiceRenderer<User>("fullName"));
+    }
+
+    private void addGeneralInfo(WebMarkupContainer parent) {
+        // name
+        RequiredTextField<String> nameField = new RequiredTextField<String>("project.name");
+        parent.add(nameField);
+        nameField.add(new StringValidator.MaximumLengthValidator(64));
+        nameField.setLabel(new ResourceModel("admin.project.name"));
+        nameField.add(new ValidatingFormComponentAjaxBehavior());
+        parent.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
+
+        // project code
+        RequiredTextField<String> codeField = new RequiredTextField<String>("project.projectCode");
+        parent.add(codeField);
+        codeField.add(new StringValidator.MaximumLengthValidator(16));
+        codeField.setLabel(new ResourceModel("admin.project.code"));
+        codeField.add(new ValidatingFormComponentAjaxBehavior());
+        parent.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
+    }
+
+    private void addCustomer(WebMarkupContainer parent) {
+        // customers
+        DropDownChoice<Customer> customerDropdown = new DropDownChoice<Customer>("project.customer", getCustomers(), new ChoiceRenderer<Customer>("fullName"));
+        customerDropdown.setRequired(true);
+        customerDropdown.setLabel(new ResourceModel("admin.project.customer"));
+        customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
+        parent.add(customerDropdown);
+        parent.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
+    }
+
+    private DropDownChoice<User> getProjectManager() {
+        // project manager
+        DropDownChoice<User> projectManager = new DropDownChoice<User>("project.projectManager", getEligablePms(), new ChoiceRenderer<User>("fullName"));
         projectManager.setNullValid(true);
-		projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
-		
-		return projectManager;
-	}
-	
-	private void addDescriptionAndContact(WebMarkupContainer parent)
-	{
-		// description
-		TextArea<String> textArea = new KeepAliveTextArea("project.description");
-		textArea.setLabel(new ResourceModel("admin.project.description"));
+        projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
+
+        return projectManager;
+    }
+
+    private void addDescriptionAndContact(WebMarkupContainer parent) {
+        // description
+        TextArea<String> textArea = new KeepAliveTextArea("project.description");
+        textArea.setLabel(new ResourceModel("admin.project.description"));
         parent.add(textArea);
 
-		// contact
-		TextField<String> contactField = new TextField<String>("project.contact");
-		parent.add(contactField);
-	}
+        // contact
+        TextField<String> contactField = new TextField<String>("project.contact");
+        parent.add(contactField);
+    }
 
-	private void addMisc(WebMarkupContainer parent)
-	{
-		// default project
-		parent.add(new CheckBox("project.defaultProject"));
-		
-		// active
-		parent.add(new CheckBox("project.active"));
+    private void addMisc(WebMarkupContainer parent) {
+        // default project
+        CheckBox checkBox = new CheckBox("project.defaultProject");
 
-		// data save label
-		parent.add(new ServerMessageLabel("serverMessage", "formValidationError"));		
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
-	 */
-	@Override
-	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
-	{
-		ProjectAdminBackingBeanImpl projectBackingBean = (ProjectAdminBackingBeanImpl) backingBean;
-		
-		if (type == ProjectAjaxEventType.PROJECT_UPDATED)
-		{
-			persistProject(projectBackingBean);
-		}
-		else if (type == ProjectAjaxEventType.PROJECT_DELETED)
-		{
-			deleteProject(projectBackingBean);
-		}		
-	}	
+        final AbstractDefaultAjaxBehavior allUsersBehavior = new AbstractDefaultAjaxBehavior() {
+            @Override
+            protected void respond(AjaxRequestTarget target) {
+                ProjectAdminBackingBean project = getPanelModelObject();
 
-	/**
-	 * Persist project
-	 */
-	private void persistProject(ProjectAdminBackingBean backingBean) 
-	{
-		projectService.persistProject(backingBean.getProject());
-	}
-	
-	/**
-	 * Delete project
-	 * @throws ParentChildConstraintException 
-	 */
-	private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException
-	{
-		projectService.deleteProject(backingBean.getProject().getProjectId());
-	} 
-	
-	/**
-	 * Get customers for customer dropdown
-	 */
-	private List<Customer> getCustomers()
-	{
-		List<Customer> customers;
-		
-		customers = customerService.getCustomers(true);
-		
-		if (customers != null)
-		{
-			Collections.sort(customers, new CustomerComparator());
-		}
-		else
-		{
-			customers = new ArrayList<Customer>();
-		}
-		
-		return customers;
-	}
-	
-	/**
-	 * Get users for PM selection
-	 * @return
-	 */
-	private List<User> getEligablePms()
-	{
-		List<User> users;
+                project.setAssignExistingUsersToDefaultProjects(true);
 
-		users = userService.getUsersWithEmailSet();
-		
-		if (users != null)
-		{
-			Collections.sort(users, new UserComparator(false));
-		}
-		else
-		{
-			users = new ArrayList<User>();
-		}
-		
-		return users;
-	}	
+            }
+        };
+        checkBox.add(allUsersBehavior);
+
+        AjaxFormComponentUpdatingBehavior showPopupBehavior = new AjaxFormComponentUpdatingBehavior("onclick") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                ProjectAdminBackingBean project = getPanelModelObject();
+                boolean isDefaultProject = project.getProject().isDefaultProject();
+
+                if (isDefaultProject) {
+                    String callbackUrl = allUsersBehavior.getCallbackUrl().toString();
+
+                    target.appendJavascript(String.format("defaultProjectAssignAll('%s');", callbackUrl));
+                }
+            }
+        };
+
+        checkBox.add(showPopupBehavior);
+        parent.add(checkBox);
+
+        // active
+        parent.add(new CheckBox("project.active"));
+
+        // data save label
+        parent.add(new ServerMessageLabel("serverMessage", "formValidationError"));
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
+      */
+    @Override
+    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+        ProjectAdminBackingBean projectBackingBean = (ProjectAdminBackingBean) backingBean;
+
+        if (type == ProjectAjaxEventType.PROJECT_UPDATED) {
+            persistProject(projectBackingBean);
+        } else if (type == ProjectAjaxEventType.PROJECT_DELETED) {
+            deleteProject(projectBackingBean);
+        }
+    }
+
+    /**
+     * Persist project
+     */
+    private void persistProject(ProjectAdminBackingBean backingBean) {
+        projectService.persistProject(backingBean.getProject());
+    }
+
+    /**
+     * Delete project
+     *
+     * @throws ParentChildConstraintException
+     */
+    private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException {
+        projectService.deleteProject(backingBean.getProject().getProjectId());
+    }
+
+    /**
+     * Get customers for customer dropdown
+     */
+    private List<Customer> getCustomers() {
+        List<Customer> customers;
+
+        customers = customerService.getCustomers(true);
+
+        if (customers != null) {
+            Collections.sort(customers, new CustomerComparator());
+        } else {
+            customers = new ArrayList<Customer>();
+        }
+
+        return customers;
+    }
+
+    private List<User> getEligablePms() {
+        List<User> users;
+
+        users = userService.getUsersWithEmailSet();
+
+        if (users != null) {
+            Collections.sort(users, new UserComparator(false));
+        } else {
+            users = new ArrayList<User>();
+        }
+
+        return users;
+    }
 }

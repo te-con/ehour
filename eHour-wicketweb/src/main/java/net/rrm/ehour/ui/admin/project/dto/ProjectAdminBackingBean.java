@@ -18,20 +18,38 @@ package net.rrm.ehour.ui.admin.project.dto;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
+import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
 
 /**
  * Project admin backing bean
  **/
 
-public interface ProjectAdminBackingBean extends AdminBackingBean
+public class ProjectAdminBackingBean extends AdminBackingBeanImpl
 {
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.project.panel.dto.ProjectAdminBackingBean#getProject()
-	 */
-	public Project getProject();
+    private	Project	project;
+    private boolean assignExistingUsersToDefaultProjects = false;
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.project.panel.dto.ProjectAdminBackingBean#setProject(net.rrm.ehour.persistence.persistence.domain.Project)
-	 */
-	public void setProject(Project project);
+
+    public ProjectAdminBackingBean(Project project)
+    {
+        this.project = project;
+    }
+
+    public Project getProject()
+    {
+        return project;
+    }
+
+    public Project getDomainObject()
+    {
+        return getProject();
+    }
+
+    public boolean isAssignExistingUsersToDefaultProjects() {
+        return assignExistingUsersToDefaultProjects;
+    }
+
+    public void setAssignExistingUsersToDefaultProjects(boolean assignExistingUsersToDefaultProjects) {
+        this.assignExistingUsersToDefaultProjects = assignExistingUsersToDefaultProjects;
+    }
 }
