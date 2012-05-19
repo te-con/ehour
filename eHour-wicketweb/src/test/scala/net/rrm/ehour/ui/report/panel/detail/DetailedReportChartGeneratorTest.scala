@@ -8,14 +8,12 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class DetailedReportChartGeneratorTest extends FunSuite  with ShouldMatchers with BeforeAndAfter {
+class DetailedReportChartGeneratorTest extends FunSuite with ShouldMatchers with BeforeAndAfter {
   var chart: String = _
   val reportData = DetailedReportDataObjectMother.getFlatReportData
 
   before {
     chart = DetailedReportChartGenerator.generateHourBasedDetailedChart("container", reportData, new EhourConfigStub())
-
-    println(chart)
   }
 
   test("should have series type of column with zoomtype") {

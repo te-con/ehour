@@ -1,8 +1,5 @@
 package net.rrm.ehour.ui.report.panel.aggregate
 
-
-import net.rrm.ehour.ui.chart.AggregateReportChartGenerator;
-
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.TreeReportModel;
 

@@ -7,6 +7,7 @@ import org.junit.runner.RunWith
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import net.rrm.ehour.config.EhourConfigStub
+import report.panel.aggregate.AggregateReportChartGenerator
 
 @RunWith(classOf[JUnitRunner])
 class EmployeeChartGeneratorTest extends FunSuite with ShouldMatchers with BeforeAndAfter {
