@@ -29,31 +29,24 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- *  
- **/
-
-public class ProjectServiceTest extends TestCase
+public class ProjectServiceTest
 {
 	private	ProjectService	projectService;
 	private	ProjectDao				projectDAO;
-	private ProjectAssignmentService	projectAssignmentService;
 	private UserService		userService;
 	private AggregateReportService aggregateReportService;
-	/**
-	 * 
-	 */
-	protected void setUp()
+
+    @Before
+	public void setUp()
 	{
 		projectService = new ProjectServiceImpl();
 
 		projectDAO = createMock(ProjectDao.class);
 		((ProjectServiceImpl)projectService).setProjectDAO(projectDAO);
 		
-		projectAssignmentService = createMock(ProjectAssignmentService.class);
-		((ProjectServiceImpl)projectService).setProjectAssignmentService(projectAssignmentService);
-
 		userService = createMock(UserService.class);
 		((ProjectServiceImpl)projectService).setUserService(userService);
 		
@@ -61,8 +54,7 @@ public class ProjectServiceTest extends TestCase
 		((ProjectServiceImpl)projectService).setAggregateReportService(aggregateReportService);		
 	}
 
-	
-	//
+    @Test
 	public void testGetAllProjects()
 	{
 		expect(projectDAO.findAllActive())
@@ -74,8 +66,8 @@ public class ProjectServiceTest extends TestCase
 		
 		verify(projectDAO);
 	}
-	
-	
+
+    @Test
 	public void testGetAllProjectsInactive()
 	{
 		expect(projectDAO.findAll())
@@ -86,17 +78,12 @@ public class ProjectServiceTest extends TestCase
 		projectService.getProjects(false);
 		
 		verify(projectDAO);
-	}	
-	
-	/**
-	 * Get project
-	 * @param projectId
-	 * @return
-	 * @throws ObjectNotFoundException 
-	 */
+	}
+
+    @Test
 	public void testGetProject() throws ObjectNotFoundException
 	{
-		expect(projectDAO.findById(new Integer(1)))
+		expect(projectDAO.findById(1))
 			.andReturn(new Project());
 		
 		replay(projectDAO);
@@ -105,12 +92,8 @@ public class ProjectServiceTest extends TestCase
 	
 		verify(projectDAO);
 	}
-	
-	/**
-	 * Persist the project
-	 * @param project
-	 * @return
-	 */
+
+    @Test
 	public void testPersistProject()
 	{
 		Project prj = new Project(1);
@@ -129,77 +112,4 @@ public class ProjectServiceTest extends TestCase
 		verify(userService);
 		verify(projectDAO);
 	}
-	
-	/**
-	 * 
-	 *
-	 */
-//	@SuppressWarnings("unchecked")
-//	public void testDeleteProjectConstraint()
-//	{
-//		Project prj = new Project();
-//		ProjectAssignment pa = new ProjectAssignment();
-//		Set<ProjectAssignment> pas = new HashSet();
-//		pas.add(pa);
-//		prj.setProjectAssignments(pas);
-//		
-//		expect(projectDAO.findById(new Integer(1)))
-//			.andReturn(prj);
-//
-//		replay(projectDAO);
-//		
-////		expect()
-//		
-//		try
-//		{
-//			projectService.deleteProject(1);
-//			fail("No constraint thrown");
-//		} catch (ParentChildConstraintException e)
-//		{
-//			verify(projectDAO);
-//			// ok
-//		}
-//	}
-	
-	// FIXME
-//	public void testGetProjectsForUser()
-//	{
-//		DateRange dr = new DateRange(new Date(2007 - 1900, 1, 1), new Date(2007 - 1900, 2, 1));
-//		ProjectAssignment pag1, pag2, pag3, pag4;
-//		List<ProjectAssignment> pags1 = new ArrayList<ProjectAssignment>();
-//		List<ProjectAssignment> pags2 = new ArrayList<ProjectAssignment>();
-//		pag1 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 1, 1);
-//		pags1.add(pag1);
-//		pag2 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 2, 2);
-//		pags1.add(pag2);
-//		pag3 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 3, 3);
-//		pags1.add(pag3);
-//		pag4 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 1, 4);
-//		pags1.add(pag4);
-//		Integer userId = 1;
-//		
-//		pag1 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 1, 1);
-//		pags2.add(pag1);
-//		pag2 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 2, 2);
-//		pags2.add(pag2);
-//		pag3 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 3, 3);
-//		pags2.add(pag3);
-//		pag4 = DummyDataGenerator.getProjectAssignment(1, 1, 1, 4, 5);
-//		pags2.add(pag4);
-//		
-////		expect(timesheetDAO.getBookedProjectAssignmentsInRange(userId, dr)).andReturn(pags2);
-//		
-//		expect(projectAssignmentService.getProjectAssignmentsForUser(userId, dr))
-//					.andReturn(new ArrayList<ProjectAssignment>());
-//		
-//		replay(projectAssignmentDAO);
-//		replay(timesheetDAO);
-//		replay(projectAssignmentService);
-//		
-//		Set<ProjectAssignment> res = projectService.getProjectsForUser(1, dr);
-//		
-//		verify(timesheetDAO);
-//		verify(projectAssignmentService);
-//		assertEquals(4, res.size());
-//	}
 }

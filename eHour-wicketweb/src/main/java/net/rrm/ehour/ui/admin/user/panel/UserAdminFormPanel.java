@@ -33,7 +33,6 @@ import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.userprefs.panel.PasswordFieldFactory;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
@@ -58,9 +57,6 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 
     @SpringBean
     private UserService userService;
-
-    private final static Logger LOGGER = Logger.getLogger(UserAdminFormPanel.class);
-
 
     public UserAdminFormPanel(String id,
                               CompoundPropertyModel<UserBackingBean> userModel,

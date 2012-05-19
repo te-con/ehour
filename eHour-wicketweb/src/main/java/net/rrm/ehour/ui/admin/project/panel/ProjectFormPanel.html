@@ -7,29 +7,6 @@
 
 <body>
 <wicket:panel>
-    <script>
-        function defaultProjectAssignAll(callBack) {
-            $( "#dialog-confirm" ).dialog({
-                resizable: false,
-                height:180,
-                modal: true,
-                buttons: {
-                    "Assign existing": function() {
-                        wicketAjaxGet(callBack, null,null,null)
-                        $( this ).dialog( "close" );
-                    },
-                    "Only new": function() {
-                        $( this ).dialog( "close" );
-                    }
-                }
-            });
-        }
-    </script>
-
-    <div id="dialog-confirm" title="Default project" style="display:none">
-        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><wicket:message key="admin.project.defaultProject.existing.body" /></p>
-    </div>
-
 	<div wicket:id="border">
 		<form style="margin: 0; padding: 0" wicket:id="projectForm">
 			<table class="contentTable" style="padding: 0 10px 0 0">

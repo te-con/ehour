@@ -5,41 +5,40 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 
-public interface ProjectAssignmentManagementService
-{
-	public ProjectAssignmentCollection getCombinedProjectAssignments(Integer projectId);
-	
-	/**
-	 * Assign user to project
-	 * @param projectAssignment
-	 */
-	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment);
-	
-	/**
-	 * 
-	 * @param project
-	 */
-	public void assignUsersToProjects(Project project);
-	
-	/**
-	 * Assign user to default projects
-	 * @param user
-	 * @return
-	 */
-	public User assignUserToDefaultProjects(User user);
-	
-	/**
-	 * Delete project assignment
-	 * @param assignmentId
-	 */
-	public void deleteProjectAssignment(Integer assignmentId) throws ObjectNotFoundException, ParentChildConstraintException;
-	
-	
-	/**
-	 * Update project assignment
-	 * @param assignment
-	 */
-	public void updateProjectAssignment(ProjectAssignment assignment);
+public interface ProjectAssignmentManagementService {
+    /**
+     * Assign user to project
+     *
+     * @param projectAssignment
+     */
+    ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment);
+
+    /**
+     * @param project
+     */
+    void assignUsersToProjects(Project project);
+
+    /**
+     * Assign user to default projects
+     *
+     * @param user
+     * @return
+     */
+    User assignUserToDefaultProjects(User user);
+
+    /**
+     * Delete project assignment
+     *
+     * @param assignmentId
+     */
+    void deleteProjectAssignment(Integer assignmentId) throws ObjectNotFoundException, ParentChildConstraintException;
+
+
+    /**
+     * Update project assignment
+     *
+     * @param assignment
+     */
+    void updateProjectAssignment(ProjectAssignment assignment);
 }

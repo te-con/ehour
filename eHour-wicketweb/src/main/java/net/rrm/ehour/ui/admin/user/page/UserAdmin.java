@@ -167,8 +167,6 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean> {
     private List<User> getUsers() {
         List<User> users = currentFilter == null ? userService.getActiveUsers() : userService.getUsers(currentFilter.isActivateToggle());
 
-        System.out.println("cf:" + currentFilter);
-
         Collections.sort(users, new UserComparator(false));
 
         return users;

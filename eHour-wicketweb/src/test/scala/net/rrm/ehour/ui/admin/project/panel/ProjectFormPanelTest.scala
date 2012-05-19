@@ -44,21 +44,6 @@ class ProjectFormPanelTest extends AbstractSpringWebAppTester with FunSuite with
     assertOkay()
   }
 
-  test("should popup confirm box when clicking default project") {
-    startPanel(createModel())
-
-    val formTester = tester.newFormTester("panel:border:projectForm")
-    formTester.setValue("project.defaultProject", true)
-
-    tester.executeAjaxEvent("panel:border:projectForm:project.defaultProject", "onclick")
-
-    val ajaxResponse = tester.getServletResponse.getDocument
-
-    ajaxResponse should include("defaultProjectAssignAll")
-
-    assertOkay()
-  }
-
   def assertOkay() {
     tester.assertRenderedPage(classOf[DummyPanelPage])
     tester.assertNoInfoMessage()

@@ -16,12 +16,7 @@
 
 package net.rrm.ehour.project.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.rrm.ehour.audit.annot.Auditable;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -34,227 +29,162 @@ import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.EhourUtil;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Project service
- **/
+ */
 @Service("projectService")
-public class ProjectServiceImpl implements ProjectService
-{
-	private	static final Logger	LOGGER = Logger.getLogger(ProjectServiceImpl.class);
+public class ProjectServiceImpl implements ProjectService {
+    private static final Logger LOGGER = Logger.getLogger(ProjectServiceImpl.class);
 
-	@Autowired
-	private	ProjectDao					projectDAO;   
+    @Autowired
+    private ProjectDao projectDAO;
 
-	@Autowired
-	private ProjectAssignmentManagementService	projectAssignmentManagementService;
+    @Autowired
+    private ProjectAssignmentManagementService projectAssignmentManagementService;
 
-	@Autowired
-	private ProjectAssignmentService	projectAssignmentService;
+    @Autowired
+    private AggregateReportService aggregateReportService;
 
-	
-	@Autowired
-	private	AggregateReportService		aggregateReportService;
-	
-	@Autowired
-	private UserService					userService;
-	
-	/**
-	 * @param userService the userService to set
-	 */
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}
+    @Autowired
+    private UserService userService;
+
+    /**
+     * @param userService the userService to set
+     */
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
-	public List<Project> getProjects(boolean hideInactive)
-	{
+    public List<Project> getProjects(boolean hideInactive) {
         return hideInactive ? projectDAO.findAllActive() : projectDAO.findAll();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProject(java.lang.Integer)
-	 */
-	public Project getProject(Integer projectId) throws ObjectNotFoundException
-	{
-		Project project = projectDAO.findById(projectId);
-		
-		if (project == null)
-		{
-			throw new ObjectNotFoundException("Project not found for id " + projectId);
-		}
-		
-		return project;
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
-	 */
-	public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException
-	{
-		Project project = getProject(projectId);
-		
-		setProjectDeletability(project);
-		
-		return project;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#setProjectDeletability(net.rrm.ehour.persistence.persistence.project.domain.Project)
-	 */
-	public void setProjectDeletability(Project project)
-	{
-		List<Integer> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
-		List<AssignmentAggregateReportElement> aggregates = null;
-		
-		if (ids != null && ids.size() > 0)
-		{
-			aggregates = aggregateReportService.getHoursPerAssignment(ids);
-		}
-		
-		project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
-	}
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProject(java.lang.Integer)
+      */
+    public Project getProject(Integer projectId) throws ObjectNotFoundException {
+        Project project = projectDAO.findById(projectId);
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#persistProject(net.rrm.ehour.persistence.persistence.project.domain.Project)
-	 */
-	@Transactional
-	@Auditable(actionType=AuditActionType.CREATE)
-	public Project persistProject(Project project)
-	{
-		projectDAO.persist(project);
+        if (project == null) {
+            throw new ObjectNotFoundException("Project not found for id " + projectId);
+        }
 
-		userService.validateProjectManagementRoles(project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
-		
-		if (project.isDefaultProject() &&
-				project.isActive())
-		{
-			projectAssignmentManagementService.assignUsersToProjects(project);
-		}
-		
-		return project;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#deleteProject(java.lang.Integer)
-	 */
-	@Transactional
-	@Auditable(actionType=AuditActionType.DELETE)
-	public void deleteProject(Integer projectId) throws ParentChildConstraintException
-	{
-		Project	project;
-		
-		project = projectDAO.findById(projectId);
-		
-		deleteEmptyAssignments(project);
-		LOGGER.debug("Deleting project " + project);
-		projectDAO.delete(project);
-	}
+        return project;
+    }
 
-	private void deleteEmptyAssignments(Project project) throws ParentChildConstraintException
-	{
-		checkProjectDeletability(project);
-		
-		if (project.getProjectAssignments() != null &&
-				project.getProjectAssignments().size() > 0)
-		{
-			deleteAnyAssignments(project);
-		}
-	}
-	
-	private void deleteAnyAssignments(Project project) throws ParentChildConstraintException
-	{
-		for (ProjectAssignment assignment : project.getProjectAssignments())
-		{
-			try
-			{
-				projectAssignmentManagementService.deleteProjectAssignment(assignment.getAssignmentId());
-			} catch (ObjectNotFoundException e)
-			{
-				// safely ignore
-			}
-		}
-		
-		project.getProjectAssignments().clear();
-	}
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
+      */
+    public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException {
+        Project project = getProject(projectId);
 
-	private void checkProjectDeletability(Project project) throws ParentChildConstraintException
-	{
-		setProjectDeletability(project);
-		
-		if (!project.isDeletable())
-		{
-			LOGGER.debug("Can't delete project, still has " + project.getProjectAssignments().size() + " assignments");
-			throw new ParentChildConstraintException("Project assignments still attached");
-		}
-	}
+        setProjectDeletability(project);
 
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectsForUser(java.lang.Integer, net.rrm.ehour.persistence.persistence.data.DateRange)
-	 */
-	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange)
-	{
-		List<ProjectAssignment>	activeProjectAssignments = projectAssignmentService.getProjectAssignmentsForUser(userId, dateRange);
-		// FIXME Derby breaks on it
-//		List<ProjectAssignment> bookedProjectAssignments = timesheetDAO.getBookedProjectAssignmentsInRange(userId, dateRange);
-		
-		Set<ProjectAssignment> mergedAssignments = new HashSet<ProjectAssignment>(activeProjectAssignments);
-//		mergedAssignments.addAll(bookedProjectAssignments);
-		
-		return mergedAssignments;
-	}	
+        return project;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectManagerProjects(net.rrm.ehour.persistence.persistence.user.domain.User)
-	 */
-	public List<Project> getProjectManagerProjects(User user)
-	{
-		return projectDAO.findActiveProjectsWhereUserIsPM(user);
-	}
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#setProjectDeletability(net.rrm.ehour.persistence.persistence.project.domain.Project)
+      */
+    public void setProjectDeletability(Project project) {
+        List<Integer> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
+        List<AssignmentAggregateReportElement> aggregates = null;
 
-	
-	/**
-	 * 
-	 * @param dao
-	 */
+        if (ids != null && ids.size() > 0) {
+            aggregates = aggregateReportService.getHoursPerAssignment(ids);
+        }
 
-	public void setProjectDAO(ProjectDao dao)
-	{
-		this.projectDAO = dao;
-	}
+        project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
+    }
 
-	/**
-	 * @param projectAssignmentService the projectAssignmentService to set
-	 */
-	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
-	{
-		this.projectAssignmentService = projectAssignmentService;
-	}
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#persistProject(net.rrm.ehour.persistence.persistence.project.domain.Project)
+      */
+    @Transactional
+    @Auditable(actionType = AuditActionType.CREATE)
+    public Project persistProject(Project project) {
+        projectDAO.persist(project);
 
-	public void setProjectAssignmentManagementService(ProjectAssignmentManagementService projectAssignmentManagementService)
-	{
-		this.projectAssignmentManagementService = projectAssignmentManagementService;
-	}
+        userService.validateProjectManagementRoles(project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
 
-	/**
-	 * @param aggregateReportService the aggregateReportService to set
-	 */
-	public void setAggregateReportService(AggregateReportService aggregateReportService)
-	{
-		this.aggregateReportService = aggregateReportService;
-	}
+        if (project.isDefaultProject() && project.isActive()) {
+            projectAssignmentManagementService.assignUsersToProjects(project);
+        }
+
+        return project;
+    }
+
+    /*
+    * (non-Javadoc)
+    * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#deleteProject(java.lang.Integer)
+    */
+    @Transactional
+    @Auditable(actionType = AuditActionType.DELETE)
+    public void deleteProject(Integer projectId) throws ParentChildConstraintException {
+        Project project;
+
+        project = projectDAO.findById(projectId);
+
+        deleteEmptyAssignments(project);
+        LOGGER.debug("Deleting project " + project);
+        projectDAO.delete(project);
+    }
+
+    private void deleteEmptyAssignments(Project project) throws ParentChildConstraintException {
+        checkProjectDeletability(project);
+
+        if (project.getProjectAssignments() != null &&
+                project.getProjectAssignments().size() > 0) {
+            deleteAnyAssignments(project);
+        }
+    }
+
+    private void deleteAnyAssignments(Project project) throws ParentChildConstraintException {
+        for (ProjectAssignment assignment : project.getProjectAssignments()) {
+            try {
+                projectAssignmentManagementService.deleteProjectAssignment(assignment.getAssignmentId());
+            } catch (ObjectNotFoundException e) {
+                // safely ignore
+            }
+        }
+
+        project.getProjectAssignments().clear();
+    }
+
+    private void checkProjectDeletability(Project project) throws ParentChildConstraintException {
+        setProjectDeletability(project);
+
+        if (!project.isDeletable()) {
+            LOGGER.debug("Can't delete project, still has " + project.getProjectAssignments().size() + " assignments");
+            throw new ParentChildConstraintException("Project assignments still attached");
+        }
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectManagerProjects(net.rrm.ehour.persistence.persistence.user.domain.User)
+      */
+    public List<Project> getProjectManagerProjects(User user) {
+        return projectDAO.findActiveProjectsWhereUserIsPM(user);
+    }
+
+    public void setProjectDAO(ProjectDao dao) {
+        this.projectDAO = dao;
+    }
+
+    public void setAggregateReportService(AggregateReportService aggregateReportService) {
+        this.aggregateReportService = aggregateReportService;
+    }
 }

@@ -33,56 +33,47 @@ public interface ProjectService
 	 * @param hideInactive
 	 * @return
 	 */
-	public List<Project> getProjects(boolean hideInactive);
+	List<Project> getProjects(boolean hideInactive);
 	
 	/**
 	 * Get project
 	 * @param projectId
 	 * @return
 	 */
-	public Project getProject(Integer projectId) throws ObjectNotFoundException;
+	Project getProject(Integer projectId) throws ObjectNotFoundException;
 	
 	/**
 	 * Get project and check deletability
 	 * @param projectId
 	 * @return
 	 */
-	public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException;
+	Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException;
 	
 	/**
 	 * Set the project deletability flag
 	 * @param project
 	 * @return
 	 */
-	public void setProjectDeletability(Project project);
+	void setProjectDeletability(Project project);
 	
 	/**
 	 * Persist the project and if a PM is assigned, give him a ROLE_PROJECTMANAGER role
 	 * @param project
 	 * @return
 	 */
-	public Project persistProject(Project project);
-	
+	Project persistProject(Project project);
+
 	/**
 	 * Delete the project
 	 * @param projectId
 	 * @return
 	 */
-	public void deleteProject(Integer projectId) throws ParentChildConstraintException;
-	
-	/**
-	 * Get active projects in daterange and any inactive if hours were booked on 'm in this period
-	 * @param userId
-	 * @param dateRange
-	 * @return
-	 */
-	
-	public Set<ProjectAssignment> getProjectsForUser(Integer userId, DateRange dateRange);
-	
+	void deleteProject(Integer projectId) throws ParentChildConstraintException;
+
 	/**
 	 * Get project's where user is project manager
 	 * @param user
 	 * @return
 	 */
-	public List<Project> getProjectManagerProjects(User user);
+	List<Project> getProjectManagerProjects(User user);
 }

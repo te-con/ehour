@@ -241,10 +241,10 @@ public class UserServiceImpl implements UserService {
         user.setSalt((int) (Math.random() * 10000));
         user.setPassword(encryptPassword(password, user.getSalt()));
 
+        userDAO.persist(user);
+
         // assign new users to default projects
         projectAssignmentManagementService.assignUserToDefaultProjects(user);
-
-        userDAO.persist(user);
     }
 
     @Override

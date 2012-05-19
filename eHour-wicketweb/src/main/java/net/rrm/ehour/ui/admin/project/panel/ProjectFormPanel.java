@@ -152,38 +152,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     }
 
     private void addMisc(WebMarkupContainer parent) {
-        // default project
-        CheckBox checkBox = new CheckBox("project.defaultProject");
-
-        final AbstractDefaultAjaxBehavior allUsersBehavior = new AbstractDefaultAjaxBehavior() {
-            @Override
-            protected void respond(AjaxRequestTarget target) {
-                ProjectAdminBackingBean project = getPanelModelObject();
-
-                project.setAssignExistingUsersToDefaultProjects(true);
-
-            }
-        };
-        checkBox.add(allUsersBehavior);
-
-        AjaxFormComponentUpdatingBehavior showPopupBehavior = new AjaxFormComponentUpdatingBehavior("onclick") {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                ProjectAdminBackingBean project = getPanelModelObject();
-                boolean isDefaultProject = project.getProject().isDefaultProject();
-
-                if (isDefaultProject) {
-                    String callbackUrl = allUsersBehavior.getCallbackUrl().toString();
-
-                    target.appendJavascript(String.format("defaultProjectAssignAll('%s');", callbackUrl));
-                }
-            }
-        };
-
-        checkBox.add(showPopupBehavior);
-        parent.add(checkBox);
-
-        // active
+        parent.add(new CheckBox("project.defaultProject"));
         parent.add(new CheckBox("project.active"));
 
         // data save label

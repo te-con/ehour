@@ -13,7 +13,6 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
-import net.rrm.ehour.project.dto.ProjectAssignmentCollection;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -25,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectAssignmentManagementServiceImpl implements ProjectAssignmentManagementService
 {
 	private	final static Logger		LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
-	
+
 	@Autowired
 	private UserService				userService;
 
@@ -34,7 +33,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 
 	@Autowired
 	private	ProjectAssignmentDao	projectAssignmentDAO;
-	
+
 	@Autowired
 	private ProjectAssignmentService projectAssignmentService;
 
@@ -43,7 +42,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 	public void assignUsersToProjects(Project project)
 	{
 		List<User> users = userService.getUsers(UserRole.CONSULTANT);
-		
+
 		for (User user : users)
 		{
 			ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(project, user);
@@ -51,24 +50,24 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 			if (!isAlreadyAssigned(assignment, user.getProjectAssignments()))
 			{
 				LOGGER.debug("Assigning user " + user + " to " + project);
-				assignUserToProject(assignment);	
+				assignUserToProject(assignment);
 			}
 		}
 	}
-	
+
 	/**
 	 * Assign user to project
 	 *
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.UPDATE)
-	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) 
+	public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment)
 	{
 		projectAssignmentDAO.persist(projectAssignment);
-		
+
 		return projectAssignment;
 	}
-	
+
 	/**
 	 * Assign user to default projects
 	 */
@@ -76,71 +75,62 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 	@Auditable(actionType=AuditActionType.UPDATE)
 	public User assignUserToDefaultProjects(User user)
 	{
-		List<Project>		defaultProjects;
-		ProjectAssignment	assignment;
-		
-		defaultProjects = projectDAO.findDefaultProjects();
-		
+        List<Project> defaultProjects = projectDAO.findDefaultProjects();
+
 		for (Project project : defaultProjects)
 		{
-			assignment = ProjectAssignment.createProjectAssignment(project, user);
-			
+            ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(project, user);
+
 			if (!isAlreadyAssigned(assignment, user.getProjectAssignments()))
 			{
 				LOGGER.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
 				user.addProjectAssignment(assignment);
+
+                projectAssignmentDAO.persist(assignment);
 			}
 		}
-		
+
 		return user;
 	}
-	
+
 	/**
 	 * Check if this default assignment is already assigned
-	 * 
-	 * @param projectAssignment
-	 * @param user
-	 * @return
 	 */
 	private boolean isAlreadyAssigned(ProjectAssignment projectAssignment, Collection<ProjectAssignment> assignments)
 	{
-		boolean		alreadyAssigned = false;
-		int			projectId;
-		
+		boolean	alreadyAssigned = false;
+
 		if (assignments == null)
 		{
 			return false;
 		}
-		
-		projectId = projectAssignment.getProject().getProjectId().intValue();
-		
+
+		int projectId = projectAssignment.getProject().getProjectId();
+
 		for (ProjectAssignment assignment : assignments)
 		{
-			if (assignment.getProject().getProjectId().intValue() == projectId)
+			if (assignment.getProject().getProjectId() == projectId)
 			{
-				if (LOGGER.isDebugEnabled())
-				{
-					LOGGER.debug("Default assignment is already assigned as assignmentId " + assignment.getAssignmentId());
-				}
-				
+			    LOGGER.debug("Default assignment is already assigned as assignmentId " + assignment.getAssignmentId());
+
 				alreadyAssigned = true;
 				break;
 			}
 		}
-			
+
 		return alreadyAssigned;
 	}
-	
+
 	/**
-	 * @throws ObjectNotFoundException 
-	 * 
+	 * @throws ObjectNotFoundException
+	 *
 	 */
 	@Transactional
 	@Auditable(actionType=AuditActionType.DELETE)
 	public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException, ObjectNotFoundException
 	{
 		ProjectAssignment pa = projectAssignmentService.getProjectAssignment(assignmentId);
-		
+
 		if (pa.isDeletable())
 		{
 			projectAssignmentDAO.delete(pa);
@@ -150,31 +140,13 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 			throw new ParentChildConstraintException("Timesheet entries booked on assignment.");
 		}
 	}
-	
+
 	@Transactional
 	public void updateProjectAssignment(ProjectAssignment assignment)
 	{
 		projectAssignmentDAO.persist(assignment);
 	}
-	
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectAssignmentManagementService#getCombinedProjectAssignments(net.rrm.ehour.persistence.persistence.domain.Project)
-	 */
-	@Override
-	public ProjectAssignmentCollection getCombinedProjectAssignments(Integer projectId)
-	{
-		Project project = projectDAO.findById(projectId);
-		
-		ProjectAssignmentCollection collection = new ProjectAssignmentCollection();
-		
-		for (ProjectAssignment assignment : project.getProjectAssignments())
-		{
-			collection.addProjectAssignment(assignment);
-		}
-		
-		return collection;
-	}	
 
 	public void setUserService(UserService userService)
 	{
