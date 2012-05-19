@@ -44,11 +44,10 @@ object AggregateReportChartGenerator {
       yAxis = Seq(Axis(title = Title(text = "Hours"), opposite = true), Axis(title = Title(text = config.getCurrencySymbol), labels = legend)),
       series = List(hourSeries, turnoverSeries),
       title = Title(text = chartTitle),
-      tooltip = Tooltip(formatter = Some(JavascriptFunction("function() { return this.series.name + ': ' + this.y.toLocaleString() } "))),
+      tooltip = Tooltip(shared = true, formatter = Some(JavascriptFunction("""function() { var s = '<b>'+ this.x +'</b>'; $.each(this.points, function(i, point) { s += '<br/>'+ point.series.name +': ' + point.y.toLocaleString(); }); return s; }"""))),
       plotOptions = PlotOptions(PlotOptionsSeries(shadow = false))
     ).build(renderToId)
   }
-
   private def extractCategoryData(elements: Seq[AssignmentAggregateReportElement], findCategory: (AssignmentAggregateReportElement) => String): List[(String, Int, Int)] = {
     val categories = (elements map (findCategory(_))).toSet
 
