@@ -124,7 +124,7 @@ div.MonthAggregateTable div.TotalRow
 	font:  0.8em/0.8 Geneva, Arial, Helvetica, sans-serif;	
 	text-align:	right;
 	margin: 0;
-	padding: 0 0 2px 0;
+	padding: 0 2px 2px 0;
 	vertical-align: bottom;
 }
 
@@ -134,12 +134,10 @@ div.MonthAggregateTable div.TotalRow
 	border-right-width: 0;
 }
 
-
 .MonthOverviewMonthTable tr.dateRow td.noMonth
 {
 	border: 0;
 }
-
 
 .MonthOverviewMonthTable tr.dateRow td.weekNumber
 {
