@@ -39,11 +39,6 @@ public class AssignmentRateRoleFormPartPanel extends Panel
 {
 	private static final long serialVersionUID = -3250880303705076821L;
 
-	/**
-	 * 
-	 * @param id
-	 * @param model
-	 */
 	public AssignmentRateRoleFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model)
 	{
 		super(id, model);

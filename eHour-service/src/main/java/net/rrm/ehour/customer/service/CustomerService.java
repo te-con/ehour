@@ -54,7 +54,7 @@ public interface CustomerService
 	 * @param customerId
 	 * @return
 	 */
-	public Customer getCustomer(Integer customerId) throws ObjectNotFoundException;
+	public Customer getCustomer(Integer customerId);
 	
 	/**
 	 * Get customer on name and code

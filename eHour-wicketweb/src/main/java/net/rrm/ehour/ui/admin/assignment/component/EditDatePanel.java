@@ -43,14 +43,6 @@ public class EditDatePanel extends Panel
 
 		// start date
         dateInputField = new DateTextField("date", dateModel, new StyleDateConverter("S-", false));
-        /*
-        {
-        	@Override
-        	public IConverter getConverter(Class<?> type)
-        	{
-        		return new PatternDateConverter("dd-MM-yyyy", false);
-        	}
-        };*/
 		updateTarget.add(dateInputField);
 
         dateInputField.add(new ConditionalRequiredValidator<Date>(infiniteModel));

@@ -90,16 +90,9 @@ public class CustomerServiceImpl implements CustomerService
 	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getCustomer(java.lang.Integer)
 	 */
 	@Transactional(readOnly=true)
-	public Customer getCustomer(Integer customerId) throws ObjectNotFoundException
+	public Customer getCustomer(Integer customerId)
 	{
-		Customer customer = customerDAO.findById(customerId);
-		
-		if (customer == null)
-		{
-			throw new ObjectNotFoundException("customer id not found" + customerId);
-		}
-		
-		return customer;
+		return customerDAO.findById(customerId);
 	}
 
 	/*

@@ -64,11 +64,6 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 		addDates(form, model);
 	}
 
-	/**
-	 * Add assignment types and options
-	 * @param form
-	 * @param assignmenTypes
-	 */
 	private void addAssignmentType(IModel<AssignmentAdminBackingBean> model)
 	{
 		List<ProjectAssignmentType> assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();
@@ -93,7 +88,7 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 		allottedHours.add(new MinimumValidator<Float>(0f));
 		allottedHours.setOutputMarkupId(true);
 		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
-		allottedHours.setEnabled(showAllottedHoursModel.getObject().booleanValue());
+		allottedHours.setEnabled(showAllottedHoursModel.getObject());
 
 		// allotted hours row
 		final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
@@ -110,7 +105,7 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 		overrunHours.add(new ValidatingFormComponentAjaxBehavior());
 		overrunHours.add(new MinimumValidator<Float>(0f));
 		overrunHours.setOutputMarkupId(true);
-		overrunHours.setEnabled(showOverrunHoursModel.getObject().booleanValue());
+		overrunHours.setEnabled(showOverrunHoursModel.getObject());
 		overrunHours.setLabel(new ResourceModel("admin.assignment.allowedOverrun"));
 
 		// overrun hours row
@@ -146,8 +141,8 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 			protected void onUpdate(AjaxRequestTarget target)
             {
 				// to disable the required validation
-				allottedHours.setEnabled(showAllottedHoursModel.getObject().booleanValue());
-				overrunHours.setEnabled(showOverrunHoursModel.getObject().booleanValue());
+				allottedHours.setEnabled(showAllottedHoursModel.getObject());
+				overrunHours.setEnabled(showOverrunHoursModel.getObject());
 				target.addComponent(allottedHours);
 				target.addComponent(overrunHours);
 
@@ -161,11 +156,6 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 		notifiableComponents = new Component[]{notifyPm, notifyDisabled};
 	}
 
-	/**
-	 * Add start & end dates
-	 * @param form
-	 * @param model
-	 */
 	private void addDates(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model)
 	{
 		EditDatePanel dateStart = new EditDatePanel("dateStart", new PropertyModel<Date>(model, "projectAssignment.dateStart"), new PropertyModel<Boolean>(model, "infiniteStartDate"));
