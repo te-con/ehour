@@ -7,15 +7,23 @@
 
     <body>
         <wicket:extend>
-            <div style="float: left">
-                <br />
-                <div class="SidePanelLoc" wicket:id="sidePanel"></div>
+            <div class="colmask leftmenu">
+                <div class="colright">
+                    <div class="col1wrap">
+                        <div class="col1">
+                            <div class="ContentPanelLoc" wicket:id="preferenceForm"></div>
+                        </div>
+                    </div>
 
-                <br clear="all" />
+                    <div class="col2">
+                        <br/>
+
+                        <div class="SidePanelLoc" wicket:id="sidePanel"></div>
+
+                    </div>
+                </div>
             </div>
-                        
-            <div class="ContentPanelLoc" wicket:id="preferenceForm" />
-            
+
         </wicket:extend>
     </body>
 </html>

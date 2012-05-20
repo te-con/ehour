@@ -60,15 +60,11 @@ public class AdminAccountValidator {
     private void updateAdminPassword() {
         LOGGER.info("Setting password of admin account to default value");
 
-        boolean changed = userService.changePassword("admin", "admin");
+        userService.changePassword("admin", "admin");
 
-        if (!changed) {
-            LOGGER.warn("Admin account not found, maybe the SQL scripts failed to run properly?");
-        } else {
-            LOGGER.info("Admin password set to default value");
+        LOGGER.info("Admin password set to default value");
 
-            setEhourInitialized();
-        }
+        setEhourInitialized();
     }
 
     /**
@@ -81,26 +77,5 @@ public class AdminAccountValidator {
 
         LOGGER.info("eHour's state to initialized");
 
-    }
-
-    /**
-     * @param ehourConfig the ehourConfig to set
-     */
-    public void setEhourConfig(EhourConfig ehourConfig) {
-        this.ehourConfig = ehourConfig;
-    }
-
-    /**
-     * @param userService the userService to set
-     */
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    /**
-     * @param configService the configService to set
-     */
-    public void setConfigService(ConfigurationService configService) {
-        this.configService = configService;
     }
 }

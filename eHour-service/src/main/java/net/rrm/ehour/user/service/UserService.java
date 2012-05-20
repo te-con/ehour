@@ -21,129 +21,60 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.PasswordEmptyException;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.List;
 
 
-public interface UserService 
-{
-	/**
-	 * Get user by userId
-	 * User.inactiveProjectAssignments is populated with project 
-	 * assignments ending before or starting after the current date
-	 * @param userID to look for
-	 * @return
-	 */
-    public User getUser(Integer userID) throws ObjectNotFoundException;
-    
+public interface UserService {
     /**
-     * Get user by userId and optional check if the user is deletable (as in, no hours booked on his/her
-     * assignments)
-     * @param userId
-     * @return
+     * Get user by userId
+     * User.inactiveProjectAssignments is populated with project assignments ending before or starting after the current date
      */
-    public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException;
-    
-	/**
-	 * Get user by username
-	 */
-    public User getUser(String username);    
+    User getUser(Integer userID) throws ObjectNotFoundException;
 
     /**
-     * Persist a user
+     * Get user by userId and optional check if the user is deletable (as in, no hours booked on his/her assignments)
      */
-    public User editUser(User user)  throws PasswordEmptyException, ObjectNotUniqueException;
+    User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException;
+
+    User getUser(String username);
+
+    User editUser(User user) throws ObjectNotUniqueException;
+
+    void newUser(User user, String password) throws ObjectNotUniqueException;
+
+    void changePassword(String username, String newUnencryptedPassword);
+
+    List<User> getUsers(boolean inclInactive);
+
+    List<User> getActiveUsers();
 
     /**
-     * Create a new user
-     * @param user
-     * @return
-     * @throws PasswordEmptyException
-     * @throws ObjectNotUniqueException
+     * Get all active users with @param userRole
      */
-    public void newUser(User user, String password)   throws PasswordEmptyException, ObjectNotUniqueException;
+    List<User> getUsers(UserRole userRole);
+
+    List<User> getUsersWithEmailSet();
+
+    List<UserDepartment> getUserDepartments();
+
+    UserDepartment persistUserDepartment(UserDepartment department) throws ObjectNotUniqueException;
+
+    UserDepartment getUserDepartment(Integer departmentId) throws ObjectNotFoundException;
+
+    UserRole getUserRole(String userRoleId);
+
+    List<UserRole> getUserRoles();
 
     /**
-     * Change password for user
-     * @param username of the user to change the password of
-     * @param newUnencryptedPassword the new unencrypted password
+     * Validate that all users with a PM role are still listed as PM in the project; delete accordingly
      */
-    public boolean changePassword(String username, String newUnencryptedPassword);
+    User validateProjectManagementRoles(Integer userId);
 
-    /**
-     * Get users
-     * @param inclInactive incl inactive users?
-     * @return
-     */
-    public List<User> getUsers(boolean inclInactive);
-    
-    /**
-     * Get all active users
-     * @return
-     */
-    public List<User> getActiveUsers();
-    
-    /**
-     * Get all active users with userRole
-     * @param userRole
-     * @return
-     */
-    public List<User> getUsers(UserRole userRole);
-    /**
-     * Get all active users with email set
-     * @return
-     */
-    public List<User> getUsersWithEmailSet();
-    
-    /**
-     * Get list of all user departments
-     * @return
-     */
-    public List<UserDepartment> getUserDepartments();
+    void deleteUser(Integer userId);
 
-    /**
-     * Persist user department to database
-     * @param department
-     * @return List with userdepartments
-     */
-    public UserDepartment persistUserDepartment(UserDepartment department) throws ObjectNotUniqueException;
-	
-    /**
-     * Get user department on id 
-     * @param departmentId
-     * @return
-     */
-    public UserDepartment getUserDepartment(Integer departmentId) throws ObjectNotFoundException;
-    
-    /**
-     * Get userrole on Id
-     * @param userRoleId
-     * @return
-     */
-    public UserRole getUserRole(String userRoleId);
-    
-    /**
-     * Get all user roles
-     * @return
-     */
-    public List<UserRole> getUserRoles();
-    
-    /**
-     * Add pm role to user and validate all other pm roles
-     * @param userId to add pm role to
-     */
-    public User validateProjectManagementRoles(Integer userId);
+    void deleteDepartment(Integer departmentId);
 
-    /**
-     * Cascading delete of user
-     */
-    public void deleteUser(Integer userId);
-    
-    
-    /**
-     * Cascading delete of department
-     * @param departmentId
-     */
-    public void deleteDepartment(Integer departmentId);
+    void changePassword(String username, String currentPassword, String newUnencryptedPassword) throws BadCredentialsException;
 }

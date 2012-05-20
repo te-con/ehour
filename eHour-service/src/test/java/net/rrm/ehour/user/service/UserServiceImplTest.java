@@ -19,7 +19,6 @@ package net.rrm.ehour.user.service;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
@@ -191,7 +190,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void shouldUpdatePassword() throws PasswordEmptyException, ObjectNotUniqueException {
+    public void shouldUpdatePassword() throws ObjectNotUniqueException {
         Capture<User> capturer = new Capture<User>();
 
         User user = new User(1);
@@ -211,7 +210,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void shouldCreateNewUser() throws ObjectNotUniqueException, PasswordEmptyException {
+    public void shouldCreateNewUser() throws ObjectNotUniqueException {
         User user = UserMother.createUser();
 
         expect(userDAO.findByUsername(user.getUsername())).andReturn(null);

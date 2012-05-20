@@ -166,8 +166,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
             String username = validatable.getValue();
             String orgUsername = ((UserBackingBean) getDefaultModelObject()).getOriginalUsername();
 
-            if (orgUsername != null && orgUsername.length() > 0 && username.equalsIgnoreCase(orgUsername)) {
-            } else if (userService.getUser(username) != null) {
+            if ((StringUtils.isNotBlank(orgUsername) && !username.equalsIgnoreCase(orgUsername) && userService.getUser(username) != null)) {
                 error(validatable, "admin.user.errorUsernameExists");
             }
         }

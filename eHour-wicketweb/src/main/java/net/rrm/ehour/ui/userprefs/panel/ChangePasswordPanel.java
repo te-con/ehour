@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.userprefs.panel;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
@@ -31,11 +32,14 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.ValidationError;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import static net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType.PASSWORD_CHANGED;
 import static net.rrm.ehour.ui.common.event.CommonAjaxEventType.SUBMIT_ERROR;
@@ -52,8 +56,8 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
     @SpringBean
     private UserService userService;
 
-    private WebComponent serverMessage;
     private Form<ChangePasswordBackingBean> form;
+    private final PasswordTextField currentPasswordField;
 
     @SuppressWarnings({"unchecked"})
     public ChangePasswordPanel(String id, ChangePasswordBackingBean changePasswordBackingBean) throws ObjectNotFoundException {
@@ -70,9 +74,17 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
         // password inputs
         PasswordFieldFactory.createPasswordFields(form, new PropertyModel<String>(getDefaultModel(), "password"));
 
-         // data save label
-        serverMessage = new WebComponent("serverMessage");
-        serverMessage.setOutputMarkupId(true);
+        // current password input
+        currentPasswordField = new PasswordTextField("currentPassword", new PropertyModel<String>(getDefaultModel(), "currentPassword"));
+
+        currentPasswordField.setRequired(true);
+
+        form.add(currentPasswordField);
+        form.add(new AjaxFormComponentFeedbackIndicator("currentPasswordValidationError", currentPasswordField));
+
+
+        // data save label
+        WebComponent serverMessage = createEmptyServerMessage();
         form.add(serverMessage);
 
 
@@ -90,30 +102,37 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
         ChangePasswordBackingBean bean = (ChangePasswordBackingBean) backingBean;
 
         if (type == PASSWORD_CHANGED) {
-            userService.changePassword(bean.getUsername(), bean.getPassword());
+            try {
+                userService.changePassword(bean.getUsername(), bean.getCurrentPassword(), bean.getPassword());
 
-            Label replacementLabel = new Label("serverMessage", new ResourceModel("userprefs.saved"));
-            replacementLabel.add(new SimpleAttributeModifier("class", "smallText"));
+                Label replacementLabel = new Label("serverMessage", new ResourceModel("userprefs.saved"));
+                replacementLabel.setOutputMarkupId(true);
+                replacementLabel.add(new SimpleAttributeModifier("class", "smallText"));
 
-            updateServerMessage(replacementLabel);
+                form.addOrReplace(replacementLabel);
+                target.addComponent(replacementLabel);
+                target.addComponent(form);
+            } catch (BadCredentialsException bce) {
+                processFormSubmitError(target);
 
-            target.addComponent(replacementLabel);
-            target.addComponent(form);
+                currentPasswordField.error(new ValidationError().addMessageKey("user.invalidCurrentPassword"));
+                target.addComponent(form);
+            }
         }
     }
 
     @Override
     protected boolean processFormSubmitError(AjaxRequestTarget target) {
-        WebComponent replacement = new WebComponent("serverMessage");
-        updateServerMessage(replacement);
-        target.addComponent(replacement);
+        WebComponent emptyServerMessage = createEmptyServerMessage();
+        form.addOrReplace(emptyServerMessage);
+        target.addComponent(emptyServerMessage);
 
         return false;
     }
 
-    private void updateServerMessage(WebComponent replacement) {
-        replacement.setOutputMarkupId(true);
-        serverMessage.replaceWith(replacement);
-        serverMessage = replacement;
+    private WebComponent createEmptyServerMessage() {
+        WebComponent serverMessage = new WebComponent("serverMessage");
+        serverMessage.setOutputMarkupId(true);
+        return serverMessage;
     }
 }

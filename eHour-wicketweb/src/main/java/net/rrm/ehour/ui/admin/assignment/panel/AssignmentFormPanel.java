@@ -1,9 +1,7 @@
 package net.rrm.ehour.ui.admin.assignment.panel;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel;

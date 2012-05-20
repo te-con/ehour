@@ -10,6 +10,12 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
+import static org.mockito.Mockito.when
+import org.springframework.security.authentication.BadCredentialsException
+
+import static org.mockito.Mockito.verify
+import static org.mockito.Mockito.doThrow
+
 class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
     @Mock
     private UserService userService
@@ -30,23 +36,44 @@ class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
     }
 
     @Test
-    void "should submit"() {
+    void "should halt with invalid credentials"() {
+        doThrow(new BadCredentialsException("Failed")).when(userService).changePassword("thies", "b", "a")
+
         startPanel()
 
         def formPath = makePanelPath(ChangePasswordPanel.BORDER, ChangePasswordPanel.CHANGE_PASSWORD_FORM)
-        
+
         def formTester = tester.newFormTester(formPath)
-        
+
         formTester.setValue("password", "a")
         formTester.setValue("confirmPassword", "a")
-        
-        tester.executeAjaxEvent(formPath +":submitButton", "onclick")
-        
-        
-        tester.assertNoErrorMessage()
+        formTester.setValue("currentPassword", "b")
+
+        tester.executeAjaxEvent(formPath + ":submitButton", "onclick")
+
+        tester.assertErrorMessages(["currentPassword.user.invalidCurrentPassword"] as String[])
         tester.assertComponent(formPath, Form.class)
     }
 
+    @Test
+    void "should change password"() {
+        startPanel()
+
+        def formPath = makePanelPath(ChangePasswordPanel.BORDER, ChangePasswordPanel.CHANGE_PASSWORD_FORM)
+
+        def formTester = tester.newFormTester(formPath)
+
+        formTester.setValue("password", "a")
+        formTester.setValue("confirmPassword", "a")
+        formTester.setValue("currentPassword", "b")
+
+        tester.executeAjaxEvent(formPath + ":submitButton", "onclick")
+
+        tester.assertNoErrorMessage()
+        tester.assertComponent(formPath, Form.class)
+
+        verify(userService).changePassword("thies", "b", "a")
+    }
 
     void startPanel() {
         tester.startPanel(new ITestPanelSource() {

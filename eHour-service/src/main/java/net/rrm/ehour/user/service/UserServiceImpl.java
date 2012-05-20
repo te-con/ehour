@@ -23,7 +23,6 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.PasswordEmptyException;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
@@ -34,8 +33,10 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -200,7 +201,7 @@ public class UserServiceImpl implements UserService {
      * Persist user
      */
     @Transactional
-    public User editUser(User user) throws PasswordEmptyException, ObjectNotUniqueException {
+    public User editUser(User user) throws ObjectNotUniqueException {
         User dbUser;
 
         LOGGER.info("Persisting user: " + user);
@@ -229,7 +230,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void newUser(User user, String password) throws PasswordEmptyException, ObjectNotUniqueException {
+    public void newUser(User user, String password) throws ObjectNotUniqueException {
         // check username uniqueness
         User dbUser = userDAO.findByUsername(user.getUsername());
 
@@ -249,23 +250,43 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean changePassword(String username, String newUnencryptedPassword) {
+    public void changePassword(String username, String currentPassword, String newUnencryptedPassword) throws BadCredentialsException {
         User user = userDAO.findByUsername(username);
 
-        boolean positiveResult;
+        Validate.notNull(user, String.format("Can't find user with username %s", username));
 
-        if (user == null) {
-            LOGGER.warn(String.format("Trying to change password of %s but failed to find user in the database", username));
-            positiveResult = false;
-        } else {
-            int salt = (int) (Math.random() * 10000);
-            user.setSalt(salt);
-            user.setPassword(encryptPassword(newUnencryptedPassword, salt));
+        String encryptedCurrentPassword = encryptPassword(currentPassword, user.getSalt());
 
-            userDAO.persist(user);
-            positiveResult = true;
+        if (!user.getPassword().equals(encryptedCurrentPassword)) {
+            throw new BadCredentialsException("Invalid current password");
         }
-        return positiveResult;
+
+        changePassword(user, newUnencryptedPassword);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(String username, String newUnencryptedPassword) {
+        User user = userDAO.findByUsername(username);
+        Validate.notNull(user, String.format("Can't find user with username %s", username));
+
+        changePassword(user, newUnencryptedPassword);
+    }
+
+    private void changePassword(User user, String newUnencryptedPassword) {
+        int salt = (int) (Math.random() * 10000);
+        user.setSalt(salt);
+        user.setPassword(encryptPassword(newUnencryptedPassword, salt));
+
+        userDAO.persist(user);
+    }
+
+
+    /**
+     * Encrypt password (sha1)
+     */
+    private String encryptPassword(String plainPassword, Object salt) {
+        return passwordEncoder.encodePassword(plainPassword, salt);
     }
 
     public List<User> getUsersWithEmailSet() {
@@ -282,9 +303,6 @@ public class UserServiceImpl implements UserService {
             }
 
             userDAO.deletePmWithoutProject();
-        } catch (PasswordEmptyException e) {
-            // won't happen
-            LOGGER.error("Password empty");
         } catch (ObjectNotUniqueException e) {
             // won't happen
             LOGGER.error("Account already exists", e);
@@ -294,14 +312,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
     /**
-     * Find user on id and add PM role
-     *
-     * @param userId
-     * @throws ObjectNotUniqueException
-     * @throws PasswordEmptyException
-     */
-    private User getAndAddPmRole(Integer userId) throws PasswordEmptyException, ObjectNotUniqueException {
+    * Find user on id and add PM role
+    */
+    private User getAndAddPmRole(Integer userId) throws ObjectNotUniqueException {
         User user = userDAO.findById(userId);
 
         UserRole userRole = userRoleDAO.findById(UserRole.ROLE_PROJECTMANAGER);
@@ -311,16 +326,6 @@ public class UserServiceImpl implements UserService {
         userDAO.persist(user);
 
         return user;
-    }
-
-    /**
-     * Encrypt password (sha1)
-     *
-     * @param plainPassword
-     * @return
-     */
-    private String encryptPassword(String plainPassword, Object salt) {
-        return passwordEncoder.encodePassword(plainPassword, salt);
     }
 
     /*
@@ -375,23 +380,14 @@ public class UserServiceImpl implements UserService {
         userDepartmentDAO.delete(department);
     }
 
-    /**
-     * @param timesheetService the timesheetService to set
-     */
     public void setTimesheetService(TimesheetService timesheetService) {
         this.timesheetService = timesheetService;
     }
 
-    /**
-     * @param aggregateReportService the aggregateReportService to set
-     */
     public void setAggregateReportService(AggregateReportService aggregateReportService) {
         this.aggregateReportService = aggregateReportService;
     }
 
-    /**
-     * @param passwordEncoder the passwordEncoder to set
-     */
     public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
