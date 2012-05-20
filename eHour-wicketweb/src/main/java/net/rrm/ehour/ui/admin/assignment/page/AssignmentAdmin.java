@@ -20,13 +20,10 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.assignment.panel.AssignmentPanel;
-import net.rrm.ehour.ui.admin.assignment.panel.NoUserSelectedPanel;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -37,7 +34,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -54,7 +50,6 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
 
     @SpringBean
     private UserService userService;
-    private ListView<User> userListView;
     private Panel assignmentPanel;
 
     public AssignmentAdmin() {
@@ -75,7 +70,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
 
         grey.add(new EntrySelectorPanel(USER_SELECTOR_ID, userListHolder));
 
-        assignmentPanel = new NoUserSelectedPanel("assignmentPanel", "admin.assignment.noEditEntrySelected");
+        assignmentPanel = new NoEntrySelectedPanel("assignmentPanel", true, new ResourceModel("admin.assignment.noEditEntrySelected"));
 
         add(assignmentPanel);
     }
@@ -88,7 +83,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
     private Fragment getUserListHolder(List<User> users) {
         Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
 
-        userListView = new ListView<User>("itemList", users) {
+        ListView<User> userListView = new ListView<User>("itemList", users) {
             @Override
             protected void populateItem(ListItem<User> item) {
                 final User user = item.getModelObject();

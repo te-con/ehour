@@ -31,11 +31,6 @@ public class DateOverlapValidator extends IdentifiableFormValidator
 	private static final long serialVersionUID = -7176398632862551019L;
 	private FormComponent<Date>[] components;
 
-	/**
-	 *
-	 * @param passwordField
-	 * @param confirmField
-	 */
 	@SuppressWarnings("unchecked")
 	public DateOverlapValidator(String id,
 								FormComponent<Date> startDate,

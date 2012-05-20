@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
- * No entry selected
+ * No entry selected placeholder panel
  **/
 
 public class NoEntrySelectedPanel extends Panel
@@ -36,6 +36,8 @@ public class NoEntrySelectedPanel extends Panel
 	public NoEntrySelectedPanel(String id, boolean useRoundBorder, ResourceModel noEntrySelectedModelText)
 	{
 		super(id);
+
+        setOutputMarkupId(true);
 		
 		Border greyBorder = (useRoundBorder) ? new GreyRoundedBorder("border", WebGeo.W_CONTENT_ADMIN_TAB) : new GreySquaredRoundedBorder("border");
 		add(greyBorder);

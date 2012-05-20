@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.admin.assignment.panel.form;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.ui.admin.assignment.component.EditDatePanel;
+import net.rrm.ehour.ui.common.panel.datepicker.DatePickerPanel;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
@@ -158,8 +158,8 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 
 	private void addDates(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model)
 	{
-		EditDatePanel dateStart = new EditDatePanel("dateStart", new PropertyModel<Date>(model, "projectAssignment.dateStart"), new PropertyModel<Boolean>(model, "infiniteStartDate"));
-		EditDatePanel dateEnd = new EditDatePanel("dateEnd", new PropertyModel<Date>(model, "projectAssignment.dateEnd"), new PropertyModel<Boolean>(model, "infiniteEndDate"));
+		DatePickerPanel dateStart = new DatePickerPanel("dateStart", new PropertyModel<Date>(model, "projectAssignment.dateStart"), new PropertyModel<Boolean>(model, "infiniteStartDate"));
+		DatePickerPanel dateEnd = new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "projectAssignment.dateEnd"), new PropertyModel<Boolean>(model, "infiniteEndDate"));
 
 		add(dateStart);
 		add(dateEnd);

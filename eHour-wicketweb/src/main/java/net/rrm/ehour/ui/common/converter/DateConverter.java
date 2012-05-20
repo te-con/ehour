@@ -102,11 +102,11 @@ public class DateConverter implements IConverter
 	
 	public Object convertToObject(String value, Locale locale)
 	{
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
+        DateFormat dateFormatter = initFormatter(dateStyle);
 		
 		try
 		{
-			return format.parseObject(value);
+			return dateFormatter.parseObject(value);
 		} catch (ParseException e)
 		{
 			return null;
@@ -116,7 +116,7 @@ public class DateConverter implements IConverter
 	public String convertToString(Object value, Locale locale)
 	{
 		DateFormat dateFormatter = initFormatter(dateStyle);
-		
+
 		Date date = null;
 		
 		if (value instanceof Calendar)

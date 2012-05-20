@@ -17,15 +17,7 @@
 
 		<tr>
 			<td valign="top" style="padding-top: 4px"><wicket:message key="admin.assignment.dateStart" />:</td>
-			<td><span wicket:id="startDateHider">
-					<span wicket:id="innerStartDateHider">
-						<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="dateStart" />
-						<br />
-					</span>
-					<input type="checkbox" wicket:id="infiniteStartDate" /> <wicket:message key="admin.assignment.infiniteStart" />
-					<span wicket:id="dateStartValidationError"></span>
-				</span>
-			</td>
+			<td wicket:id="dateStart"></td>
 			<td>&nbsp;&nbsp;</td>
 			<td valign="top" style="padding-top: 4px"><wicket:message key="audit.report.filter.name" />:</td>
 			<td valign="top" style="padding-top: 4px"><input type="text" wicket:id="name" class="textInputSmall"  /></td>
@@ -33,15 +25,7 @@
 		
 		<tr>
 			<td valign="top" style="padding-top: 4px"><wicket:message key="admin.assignment.dateEnd" />:</td>
-			<td><span wicket:id="endDateHider">
-					<span wicket:id="innerEndDateHider">
-						<input class="textInputSmall" style="width: 5em; clear: all"  type="text" wicket:id="dateEnd" />
-						<br />
-					</span>
-					<input type="checkbox" wicket:id="infiniteEndDate" /> <wicket:message key="admin.assignment.infiniteEnd" />
-					<span wicket:id="dateEndValidationError"></span>
-				</span>
-			</td>
+            <td wicket:id="dateEnd"></td>
 			<td>&nbsp;&nbsp;</td>
             <td valign="top" style="padding-top: 4px"><wicket:message key="audit.report.filter.action" />:</td>
             <td valign="top" style="padding-top: 4px"><input type="text" wicket:id="action" class="textInputSmall"  /></td>

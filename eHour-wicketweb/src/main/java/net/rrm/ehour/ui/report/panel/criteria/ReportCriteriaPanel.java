@@ -16,13 +16,6 @@
 
 package net.rrm.ehour.ui.report.panel.criteria;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -37,31 +30,21 @@ import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
+import net.rrm.ehour.ui.common.panel.datepicker.DateInputField;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
-import net.rrm.ehour.ui.report.panel.criteria.quick.QuickDateAjaxEventType;
-import net.rrm.ehour.ui.report.panel.criteria.quick.QuickDropDownChoice;
-import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonth;
-import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonthRenderer;
-import net.rrm.ehour.ui.report.panel.criteria.quick.QuickQuarter;
-import net.rrm.ehour.ui.report.panel.criteria.quick.QuickQuarterRenderer;
-import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeek;
-import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeekRenderer;
+import net.rrm.ehour.ui.report.panel.criteria.quick.*;
 import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
 import net.rrm.ehour.ui.report.panel.criteria.type.ReportTypeRenderer;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
-import org.apache.wicket.datetime.StyleDateConverter;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -72,6 +55,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.*;
 
 /**
  * Base report criteria panel which adds the quick date selections
@@ -87,8 +72,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
 
-    private DateTextField startDatePicker;
-    private DateTextField endDatePicker;
+    private DateInputField startDatePicker;
+    private DateInputField endDatePicker;
     private ListMultipleChoice<Project> projects;
     private ListMultipleChoice<Customer> customers;
     private ListMultipleChoice<User> users;
@@ -225,7 +210,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         parent.add(createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableProjects"));
     }
-
 
 
     private void addUserSelection(WebMarkupContainer parent) {
@@ -369,9 +353,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         }
     }
 
-    private DateTextField createDatePicker(String id, IModel<Date> model) {
-        DateTextField datePicker = new DateTextField(id, model, new StyleDateConverter("S-", false));
-        datePicker.add(new DatePicker());
+    private DateInputField createDatePicker(String id, IModel<Date> model) {
+        DateInputField datePicker = new DateInputField(id, model);
 
         datePicker.setOutputMarkupId(true);
         datePicker.add(new AjaxFormComponentUpdatingBehavior("onchange") {
