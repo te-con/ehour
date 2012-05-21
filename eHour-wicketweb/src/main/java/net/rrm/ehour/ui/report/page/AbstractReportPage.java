@@ -39,7 +39,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 	@SpringBean
 	private ReportCriteriaService	reportCriteriaService;
 
-	protected final static Logger logger = Logger.getLogger(AbstractReportPage.class);
+	protected static final Logger logger = Logger.getLogger(AbstractReportPage.class);
 
 	public AbstractReportPage(ResourceModel pageTitle)
 	{

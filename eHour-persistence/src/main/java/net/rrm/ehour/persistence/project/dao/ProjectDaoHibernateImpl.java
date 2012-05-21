@@ -28,28 +28,19 @@ import org.springframework.stereotype.Repository;
 @Repository("projectDao")
 public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Project, Integer> implements ProjectDao
 {
-	protected final static String CACHEREGION = "query.Project";
+	protected static final String CACHEREGION = "query.Project";
 	
-	/**
-	 * @todo fix this a bit better
-	 */
 	public ProjectDaoHibernateImpl()
 	{
 		super(Project.class);
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.dao.ProjectDAO#findAll(boolean)
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Project> findAllActive()
 	{
 		return getHibernateTemplate().findByNamedQuery("Project.findAllActive");
 	}
 	
-	/**
-	 * 
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Project> findDefaultProjects()
 	{
@@ -58,9 +49,6 @@ public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Pro
 
 	/**
 	 * Get projects for customer respecting the active flag
-	 * @param customerIds
-	 * @param active
-	 * @return
 	 */
 	public List<Project> findProjectForCustomers(List<Customer> customers, boolean onlyActive)
 	{
@@ -85,10 +73,7 @@ public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Pro
 		return results;			
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.dao.ProjectDAO#findProjectWhereUserIsPM(net.rrm.ehour.persistence.persistence.user.domain.User)
-	 */
+    @Override
 	public List<Project> findActiveProjectsWhereUserIsPM(User user)
 	{
 		return findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM",

@@ -32,7 +32,7 @@ import org.apache.wicket.util.value.ValueMap;
 public abstract class AbstractExcelResource extends DynamicWebResource
 {
 	private static final long serialVersionUID = -9078717513448771202L;
-	private final static Logger LOGGER = Logger.getLogger(AbstractExcelResource.class);
+	private static final Logger LOGGER = Logger.getLogger(AbstractExcelResource.class);
 	
 	/*
 	 * (non-Javadoc)

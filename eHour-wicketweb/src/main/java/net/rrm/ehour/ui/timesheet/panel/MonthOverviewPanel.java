@@ -57,7 +57,7 @@ public class MonthOverviewPanel extends Panel {
     private final int thisMonth;
     private final int thisYear;
     private final Calendar overviewFor;
-    private final static TimesheetEntryComparator comparator = new TimesheetEntryComparator();
+    private static final TimesheetEntryComparator comparator = new TimesheetEntryComparator();
 
     public MonthOverviewPanel(String id, TimesheetOverview timesheetOverview, final Calendar overviewForMonth) {
         super(id);

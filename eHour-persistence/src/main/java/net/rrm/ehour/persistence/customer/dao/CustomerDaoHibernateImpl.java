@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
 @Repository("customerDao")
 public class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Customer, Integer> implements CustomerDao
 {
-	private final static String	CACHEREGION = "query.Customer";
+	private static final String	CACHEREGION = "query.Customer";
 
 	public CustomerDaoHibernateImpl()
 	{

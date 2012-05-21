@@ -49,8 +49,6 @@ public class AssignmentAggregateReportElement
     /**
      * Get the progress (booked hours) in percentage of the allotted hours, leaving out the overrun
      * or for date ranges use the current date vs start & end date (if they're both null)
-     *
-     * @return
      */
     public float getProgressPercentage()
     {
@@ -72,24 +70,20 @@ public class AssignmentAggregateReportElement
             {
                 percentage = (hours.floatValue() / projectAssignment.getAllottedHours()) * 100;
             }
-        } else if (projectAssignment.getAssignmentType().isDateType())
-        {
-            if (projectAssignment.getDateStart() != null &&
-                    projectAssignment.getDateEnd() != null)
-            {
-                currentTime = new Date().getTime() - projectAssignment.getDateStart().getTime();
+        } else if (projectAssignment.getAssignmentType().isDateType() &&
+                    projectAssignment.getDateStart() != null &&
+                    projectAssignment.getDateEnd() != null) {
+            currentTime = new Date().getTime() - projectAssignment.getDateStart().getTime();
 
-                dateRangeLength = projectAssignment.getDateEnd().getTime() -
-                        projectAssignment.getDateStart().getTime();
+            dateRangeLength = projectAssignment.getDateEnd().getTime() -
+                    projectAssignment.getDateStart().getTime();
 
-                percentage = (currentTime / dateRangeLength) * 100;
+            percentage = (currentTime / dateRangeLength) * 100;
 
-                // if percentage is above 100 for daterange the user can't book anymore hours
-                // so don't display more than 100%
-                if (percentage > 100)
-                {
-                    percentage = 100;
-                }
+            // if percentage is above 100 for daterange the user can't book anymore hours
+            // so don't display more than 100%
+            if (percentage > 100) {
+                percentage = 100;
             }
         }
 
@@ -119,35 +113,24 @@ public class AssignmentAggregateReportElement
             {
                 available = projectAssignment.getAllottedHours() - hours.floatValue();
             }
-        } else if (projectAssignment.getAssignmentType().isFlexAllottedType())
-        {
-            if (hours != null &&
-                    projectAssignment.getAllottedHours() != null &&
-                    hours.floatValue() > 0 &&
-                    projectAssignment.getAllottedHours() > 0)
-            {
+        } else if (projectAssignment.getAssignmentType().isFlexAllottedType() && hours != null &&
+                projectAssignment.getAllottedHours() != null &&
+                hours.floatValue() > 0 &&
+                projectAssignment.getAllottedHours() > 0) {
 
-                available = (projectAssignment.getAllottedHours() +
-                        ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun() : 0))
-                        - hours.floatValue();
-            }
-
+            available = (projectAssignment.getAllottedHours() +
+                    ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun() : 0))
+                    - hours.floatValue();
         }
 
         return available;
     }
 
-    /**
-     * @return
-     */
     public ProjectAssignment getProjectAssignment()
     {
         return projectAssignment;
     }
 
-    /**
-     * @param projectAssignment
-     */
     public void setProjectAssignment(ProjectAssignment projectAssignment)
     {
         this.projectAssignment = projectAssignment;
@@ -177,26 +160,17 @@ public class AssignmentAggregateReportElement
                 .toString();
     }
 
-    /**
-     * @return the hours
-     */
     public Number getHours()
     {
         return hours == null ? 0 : hours;
     }
 
-    /**
-     * @param hours the hours to set
-     */
     public void setHours(Number hours)
     {
         this.hours = hours;
     }
 
 
-    /**
-     * @see java.lang.Object#equals(Object)
-     */
     public boolean equals(Object object)
     {
         if (!(object instanceof AssignmentAggregateReportElement))
@@ -207,13 +181,8 @@ public class AssignmentAggregateReportElement
         return new EqualsBuilder().appendSuper(super.equals(object)).append(this.projectAssignment, rhs.projectAssignment).isEquals();
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
     public int hashCode()
     {
         return new HashCodeBuilder(259442803, 2067843191).appendSuper(super.hashCode()).append(this.projectAssignment).toHashCode();
     }
-
-
 }

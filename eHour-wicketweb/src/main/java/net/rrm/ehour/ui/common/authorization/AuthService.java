@@ -35,7 +35,7 @@ public class AuthService implements UserDetailsService
 {
 	@Autowired
 	private	UserService	userService;
-	private	final static Logger LOGGER = Logger.getLogger(AuthService.class);	
+	private	static final Logger LOGGER = Logger.getLogger(AuthService.class);
 
 	/**
 	 * Get user by username (acegi)
@@ -64,12 +64,4 @@ public class AuthService implements UserDetailsService
 		
 		return authUser;
 	}
-
-	/**
-	 * @param userService the userService to set
-	 */
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}	
 }

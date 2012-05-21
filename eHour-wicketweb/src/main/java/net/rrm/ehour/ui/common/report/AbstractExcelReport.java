@@ -40,7 +40,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource
 {
 	private static final long serialVersionUID = 1L;
 
-	private final static Logger logger = Logger.getLogger(AbstractExcelReport.class);
+	private static final Logger logger = Logger.getLogger(AbstractExcelReport.class);
 
 	private ReportConfig	reportConfig;
 

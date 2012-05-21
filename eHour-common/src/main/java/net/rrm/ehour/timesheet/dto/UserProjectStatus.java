@@ -25,17 +25,10 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 public class UserProjectStatus extends AssignmentAggregateReportElement
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2321889010790629630L;
+
 	private Number	totalBookedHours;
 
-	public UserProjectStatus()
-	{
-		
-	}
-	
 	public UserProjectStatus(AssignmentAggregateReportElement aggregate)
 	{
 		this(aggregate, null);
@@ -79,22 +72,16 @@ public class UserProjectStatus extends AssignmentAggregateReportElement
 	public Float getFlexHoursRemaining()
 	{
 		Float	remainder = null;
-		
-		if (totalBookedHours != null)
-		{
-			if (getProjectAssignment().getAssignmentType().isFlexAllottedType())
-			{
-				if (totalBookedHours.floatValue()<= getProjectAssignment().getAllottedHours()) {
-					remainder = getProjectAssignment().getAllowedOverrun();
-				}
-				else
-				{
-					remainder = getProjectAssignment().getAllottedHours()
-                            + getProjectAssignment().getAllowedOverrun()
-                            - totalBookedHours.floatValue();
-				}
-			}
-		}
+
+        if (totalBookedHours != null && getProjectAssignment().getAssignmentType().isFlexAllottedType()) {
+            if (totalBookedHours.floatValue() <= getProjectAssignment().getAllottedHours()) {
+                remainder = getProjectAssignment().getAllowedOverrun();
+            } else {
+                remainder = getProjectAssignment().getAllottedHours()
+                        + getProjectAssignment().getAllowedOverrun()
+                        - totalBookedHours.floatValue();
+            }
+        }
 		
 		return remainder;
 	}

@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class EmptyPmRoleDeletor {
-    private final static Logger LOGGER = Logger.getLogger(EmptyPmRoleDeletor.class);
+    private static final Logger LOGGER = Logger.getLogger(EmptyPmRoleDeletor.class);
 
     @Autowired
     private UserDao userDao;

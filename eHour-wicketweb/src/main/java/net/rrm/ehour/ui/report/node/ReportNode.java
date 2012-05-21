@@ -33,7 +33,7 @@ public abstract class ReportNode implements Serializable
 
     protected Serializable[]    columnValues;
     private List<ReportNode>    reportNodes = new ArrayList<ReportNode>();
-    private Serializable      id;
+    private final Serializable      id;
 
     protected ReportNode(Serializable id) {
         this.id = id;
@@ -103,24 +103,18 @@ public abstract class ReportNode implements Serializable
         boolean processed = false;
 
         // first check if we need to add the aggregate to his node
-        if (shouldProcessElement(reportElement))
-        {
-        	// was it added to one of the child nodes ?
-            if (!(processed = processChildNodes(reportElement, hierarchyLevel + 1, nodeFactory)))
-            {
-            	// if not make a new child node for this aggregate
-                ReportNode node = nodeFactory.createReportNode(reportElement, ++hierarchyLevel);
+        if (shouldProcessElement(reportElement) && !(processed = processChildNodes(reportElement, hierarchyLevel + 1, nodeFactory))) {
+            // if not make a new child node for this aggregate
+            ReportNode node = nodeFactory.createReportNode(reportElement, ++hierarchyLevel);
 
-                // if the new node is not the last child, check whether one
-                // of it's subschildren can process it
-                if (!node.isLeaf())
-                {
-                    node.processElement(reportElement, hierarchyLevel, nodeFactory);
-                }
-                
-                reportNodes.add(node);
-                processed = true;
+            // if the new node is not the last child, check whether one
+            // of it's subschildren can process it
+            if (!node.isLeaf()) {
+                node.processElement(reportElement, hierarchyLevel, nodeFactory);
             }
+
+            reportNodes.add(node);
+            processed = true;
         }
 
         return processed;
@@ -225,15 +219,6 @@ public abstract class ReportNode implements Serializable
     }
 
     /**
-     * 
-     * @return
-     */
-    public Serializable[] getColumnValues()
-    {
-        return columnValues;
-    }
-
-    /**
      *
      * @return
      */
@@ -242,12 +227,4 @@ public abstract class ReportNode implements Serializable
         return id;
     }
 
-    /**
-     *
-     * @param id
-     */
-    public void setId(Serializable id)
-    {
-        this.id = id;
-    }
 }

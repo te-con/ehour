@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("projectAssignmentManagementService")
 public class ProjectAssignmentManagementServiceImpl implements ProjectAssignmentManagementService
 {
-	private	final static Logger		LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
+	private	static final Logger		LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 
 	@Autowired
 	private UserService				userService;
@@ -148,12 +148,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 	}
 
 
-	public void setUserService(UserService userService)
-	{
-		this.userService = userService;
-	}
-
-	public void setProjectDAO(ProjectDao projectDAO)
+    public void setProjectDAO(ProjectDao projectDAO)
 	{
 		this.projectDAO = projectDAO;
 	}
@@ -163,8 +158,4 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 		this.projectAssignmentDAO = projectAssignmentDAO;
 	}
 
-	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
-	{
-		this.projectAssignmentService = projectAssignmentService;
-	}
 }

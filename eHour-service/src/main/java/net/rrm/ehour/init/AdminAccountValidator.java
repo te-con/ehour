@@ -31,7 +31,7 @@ import javax.annotation.PostConstruct;
  */
 @Service
 public class AdminAccountValidator {
-    private final static Logger LOGGER = Logger.getLogger(AdminAccountValidator.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminAccountValidator.class);
 
     @Autowired
     private EhourConfig ehourConfig;

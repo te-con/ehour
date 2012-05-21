@@ -39,10 +39,10 @@ import org.apache.wicket.model.IModel;
 
 public class WebUtils
 {
-	public final static String ROLE_CONSULTANT = "ROLE_CONSULTANT";
-	public final static String ROLE_ADMIN = "ROLE_ADMIN";
-	public final static String ROLE_REPORT = "ROLE_REPORT";
-	public final static String ROLE_PM = "ROLE_PROJECTMANAGER";
+	public static final String ROLE_CONSULTANT = "ROLE_CONSULTANT";
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
+	public static final String ROLE_REPORT = "ROLE_REPORT";
+	public static final String ROLE_PM = "ROLE_PROJECTMANAGER";
 	
 	/**
 	 * 
@@ -112,7 +112,7 @@ public class WebUtils
 	public static String getResourceKeyForProjectAssignmentType(ProjectAssignmentType type)
 	{
 		String	key;
-		switch (type.getAssignmentTypeId().intValue())
+		switch (type.getAssignmentTypeId())
 		{
 			case EhourConstants.ASSIGNMENT_DATE:
 				key = "assignment.dateRange";

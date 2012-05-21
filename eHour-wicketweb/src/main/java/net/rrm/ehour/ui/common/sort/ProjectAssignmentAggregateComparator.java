@@ -28,8 +28,8 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 public class ProjectAssignmentAggregateComparator implements Comparator<AssignmentAggregateReportElement>, Serializable
 {
 	private static final long serialVersionUID = 8223481348525614968L;
-	public final static int SORT_ON_CUSTOMER = 1;
-	public final static int SORT_ON_PROJECT = 2;
+	public static final int SORT_ON_CUSTOMER = 1;
+	public static final int SORT_ON_PROJECT = 2;
 	
 	private int	sortType;
 	

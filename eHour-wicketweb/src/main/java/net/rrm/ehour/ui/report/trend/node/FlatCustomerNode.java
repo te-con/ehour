@@ -28,11 +28,9 @@ import java.io.Serializable;
 
 public class FlatCustomerNode extends ReportNode {
     private static final long serialVersionUID = 7854152602780377915L;
-    private int hierarchyLevel;
 
-    public FlatCustomerNode(FlatReportElement element, int hierarchyLevel) {
+    public FlatCustomerNode(FlatReportElement element) {
         super(element.getCustomerId());
-        this.hierarchyLevel = hierarchyLevel;
         this.columnValues = new String[]{element.getCustomerName()};
     }
 

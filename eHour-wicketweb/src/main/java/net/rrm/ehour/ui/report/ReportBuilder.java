@@ -23,56 +23,48 @@ import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * ReportBuilder
  * Converts a collection of report elements to a hierarchical reportNode tree.
  * The
- * 
- * @author Thies
  *
+ * @author Thies
  */
-public class ReportBuilder
-{
-	protected final static Logger logger = Logger.getLogger(ReportBuilder.class);
+public class ReportBuilder {
+    protected static final Logger logger = Logger.getLogger(ReportBuilder.class);
 
-	/**
-	 * Create report
-	 */
-	public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory)
-	{
+    /**
+     * Create report
+     */
+    public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory) {
         List<ReportNode> reportNodes = new ArrayList<ReportNode>();
-        
-        for (ReportElement reportElement : reportData.getReportElements() )
-        {
-            if (!processElement(reportElement, nodeFactory, reportNodes))
-            {
+
+        for (ReportElement reportElement : reportData.getReportElements()) {
+            if (!processElement(reportElement, nodeFactory, reportNodes)) {
                 ReportNode node = nodeFactory.createReportNode(reportElement, 0);
                 node.processElement(reportElement, 0, nodeFactory);
                 reportNodes.add(node);
             }
         }
-        
+
         return reportNodes;
     }
 
     /**
      * Process report importer
+     *
      * @param element
      * @param factory
      * @return
      */
-    private boolean processElement(ReportElement element, ReportNodeFactory factory, List<ReportNode> reportNodes)
-    {
+    private boolean processElement(ReportElement element, ReportNodeFactory factory, List<ReportNode> reportNodes) {
         boolean processed = false;
 
         // check for each reportNode whether 
-        for (ReportNode reportNode : reportNodes)
-        {
-            if (reportNode.processElement(element, 0, factory))
-            {
+        for (ReportNode reportNode : reportNodes) {
+            if (reportNode.processElement(element, 0, factory)) {
                 processed = true;
                 break;
             }
@@ -80,6 +72,6 @@ public class ReportBuilder
 
         return processed;
     }
-    
-    
+
+
 }

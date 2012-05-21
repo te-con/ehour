@@ -38,7 +38,7 @@ public class ProjectAssignmentDaoHibernateImpl
 	extends AbstractGenericDaoHibernateImpl<ProjectAssignment, Integer> 
 	implements ProjectAssignmentDao
 {
-	protected final static String	CACHEREGION = "query.ProjectAssignment";
+	protected static final String	CACHEREGION = "query.ProjectAssignment";
 	
 	/**
 	 * @todo fix this a bit better

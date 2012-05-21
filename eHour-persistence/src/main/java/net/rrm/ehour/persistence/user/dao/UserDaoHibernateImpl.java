@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
 @Repository("userDao")
 public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, Integer> implements UserDao
 {
-	private final static String	CACHEREGION = "query.User";
+	private static final String	CACHEREGION = "query.User";
 	
 	public UserDaoHibernateImpl()
 	{

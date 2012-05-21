@@ -37,10 +37,10 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
 {
 	private static final long serialVersionUID = 3806904191272349157L;
 
-	public final static String	ROLE_CONSULTANT = "ROLE_CONSULTANT";
-	public final static String	ROLE_REPORT = "ROLE_REPORT";
-	public final static String	ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
-	public final static String	ROLE_ADMIN = "ROLE_ADMIN";
+	public static final String	ROLE_CONSULTANT = "ROLE_CONSULTANT";
+	public static final String	ROLE_REPORT = "ROLE_REPORT";
+	public static final String	ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
+	public static final String	ROLE_ADMIN = "ROLE_ADMIN";
 
 	public static final UserRole CONSULTANT = new UserRole(ROLE_CONSULTANT, "Consultant");
 	public static final UserRole REPORT = new UserRole(ROLE_REPORT, "Report Role");

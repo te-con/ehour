@@ -42,7 +42,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
 {
 	private static final long serialVersionUID = -3721224427697057895L;
-	private	final static Logger LOGGER = Logger.getLogger(AssignmentPanel.class);
+	private	static final Logger LOGGER = Logger.getLogger(AssignmentPanel.class);
 
 	@SpringBean
 	private	ProjectAssignmentService	assignmentService;

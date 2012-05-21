@@ -42,7 +42,7 @@ import static org.junit.Assert.*;
 
 public class TimesheetPanelTest extends AbstractSpringWebAppTester
 {
-	private final static String TIMESHEET_PATH = "panel:timesheetFrame:timesheetForm";
+	private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetForm";
 	
 	private TimesheetService	timesheetService;
 	private UserService			userService;

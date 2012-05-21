@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
 public class UserDepartmentDaoHibernateImpl 
 	extends AbstractGenericDaoHibernateImpl<UserDepartment, Integer> implements UserDepartmentDao
 {
-	private final static String CACHEREGION = "query.Department";
+	private static final String CACHEREGION = "query.Department";
 	
 	public UserDepartmentDaoHibernateImpl()
 	{

@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.common.report.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -25,124 +24,101 @@ import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * Created on Mar 25, 2009, 4:58:00 PM
- * @author Thies Edeling (thies@te-con.nl)
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class CellStyleElement
-{
-	private final static String FONT_TYPE = "Arial";
+public class CellStyleElement {
+    private static final String FONT_TYPE = "Arial";
 
-	public static class BoldFont implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			HSSFFont font = createFont(workbook);
-			font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-			cellStyle.setFont(font);
-		}
-	}
+    public static class BoldFont implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            HSSFFont font = createFont(workbook);
+            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            cellStyle.setFont(font);
+        }
+    }
 
-	public static class NormalFont implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			HSSFFont font = createFont(workbook);
-			cellStyle.setFont(font);
-		}
-	}
+    public static class NormalFont implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            HSSFFont font = createFont(workbook);
+            cellStyle.setFont(font);
+        }
+    }
 
-	public static class DateValue implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			cellStyle.setDataFormat((short)0xf);
-		}
-	}
+    public static class DateValue implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            cellStyle.setDataFormat((short) 0xf);
+        }
+    }
 
-	public static class DigitValue implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			cellStyle.setDataFormat((short)2);
-		}
-	}
+    public static class DigitValue implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            cellStyle.setDataFormat((short) 2);
+        }
+    }
 
-	public static class BorderSouth implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			cellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
-			cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
-		}
-	}
+    public static class BorderSouth implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            cellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+            cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+        }
+    }
 
-	public static class BorderSouthThin implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
-		}
-	}
+    public static class BorderSouthThin implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+            cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+        }
+    }
 
-	public static class BorderThin implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-			cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
+    public static class BorderThin implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
 
-			cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-			cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
+            cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+            cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
 
-			cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-			cellStyle.setLeftBorderColor(HSSFColor.BLACK.index);
+            cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+            cellStyle.setLeftBorderColor(HSSFColor.BLACK.index);
 
-			cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-			cellStyle.setRightBorderColor(HSSFColor.BLACK.index);
-		}
-	}
+            cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+            cellStyle.setRightBorderColor(HSSFColor.BLACK.index);
+        }
+    }
 
-	public static class BorderNorthThin implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-			cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
-		}
-	}
+    public static class BorderNorthThin implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+            cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
+        }
+    }
 
-	public static class BorderNorth implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			cellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
-			cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
-		}
-	}
+    public static class BorderNorth implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            cellStyle.setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+            cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
+        }
+    }
 
-	public static class Header implements CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook)
-		{
-			new BoldFont().populate(cellStyle, workbook);
-			new BorderSouth().populate(cellStyle, workbook);
+    public static class Header implements CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook) {
+            new BoldFont().populate(cellStyle, workbook);
+            new BorderSouth().populate(cellStyle, workbook);
 
-			cellStyle.setFillForegroundColor(HSSFColor.BLUE.index);
-			cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		}
-	}
+            cellStyle.setFillForegroundColor(HSSFColor.BLUE.index);
+            cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        }
+    }
 
-	private static HSSFFont createFont(HSSFWorkbook workbook)
-	{
-		HSSFFont font = workbook.createFont();
-		font.setFontName(FONT_TYPE);
+    private static HSSFFont createFont(HSSFWorkbook workbook) {
+        HSSFFont font = workbook.createFont();
+        font.setFontName(FONT_TYPE);
 
-		return font;
-	}
+        return font;
+    }
 
-	public interface CellStylePopulator
-	{
-		public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook);
-	}
+    public interface CellStylePopulator {
+        public void populate(HSSFCellStyle cellStyle, HSSFWorkbook workbook);
+    }
 }

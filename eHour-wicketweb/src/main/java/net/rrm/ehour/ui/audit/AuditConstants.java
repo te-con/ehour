@@ -18,15 +18,13 @@ package net.rrm.ehour.ui.audit;
 
 public class AuditConstants
 {
-	public static final String PATH_FORM_START_DATE_HIDER = "startDateHider";
-	public static final String PATH_FORM_END_DATE_HIDER = "endDateHider";
 	public static final String PATH_FORM_NAME = "name";
 	public static final String PATH_FORM_ACTION = "action";
 	public static final String PATH_FORM_BORDER = "border";
 	public static final String ID_FORM = "criteriaForm";
-	public final static String PATH_CRITERIA = "reportCriteria";
-	public final static String PATH_DATA = "reportData";
-	public final static String PATH_FRAME = "frame";
-	public final static String PATH_FORM_SUBMIT = "submitButton";
+	public static final String PATH_CRITERIA = "reportCriteria";
+	public static final String PATH_DATA = "reportData";
+	public static final String PATH_FRAME = "frame";
+	public static final String PATH_FORM_SUBMIT = "submitButton";
 }
 

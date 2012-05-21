@@ -51,7 +51,7 @@ import java.util.Properties;
 @Service("mailService")
 public class MailServiceImpl implements MailService
 {
-    private final static Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
 
     @Autowired
     private MailLogDao mailLogDAO;
@@ -105,11 +105,10 @@ public class MailServiceImpl implements MailService
     public void mailPMFixedAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
     {
         String subject;
-        StringBuffer body = new StringBuffer();
+        StringBuilder body = new StringBuilder();
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
-        // TODO use templates
         subject = "eHour: All allotted hours used for project "
                 + assignmentAggregate.getProjectAssignment().getProject().getFullName()
                 + " by "
@@ -215,11 +214,9 @@ public class MailServiceImpl implements MailService
     public void mailPMFlexAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
     {
         String subject;
-        StringBuffer body = new StringBuffer();
+        StringBuilder body = new StringBuilder();
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-
-        // TODO use templates
 
         // and no, stringbuffers aren't faster anymore..
         subject = "eHour: All allotted hours used for project "
@@ -308,8 +305,8 @@ public class MailServiceImpl implements MailService
 
         for (MailLogAssignment mailLog : mlaList)
         {
-            if ((mailLog.getMailType().getMailTypeId().intValue() == mailTypeId)
-                    && mailLog.getSuccess().booleanValue())
+            if ((mailLog.getMailType().getMailTypeId() == mailTypeId)
+                    && mailLog.getSuccess())
             {
                 alreadySent = true;
                 LOGGER.info("Mail was already sent for assignment " + aggregate.getProjectAssignment().getAssignmentId() + ", not sending again");
@@ -409,14 +406,6 @@ public class MailServiceImpl implements MailService
         }
 
         return mailSender;
-    }
-
-    /**
-     * @param assignmentMsgCallback the assignmentMsgCallback to set
-     */
-    public void setAssignmentMsgCallback(AssignmentMsgCallback assignmentMsgCallback)
-    {
-        this.assignmentMsgCallback = assignmentMsgCallback;
     }
 
     /**

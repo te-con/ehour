@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.report.trend;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.WebUtils;
@@ -33,7 +32,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Detailed report
@@ -99,7 +97,7 @@ public class DetailedReportModel extends TreeReportModel
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
-	                	return new FlatCustomerNode(flatElement, hierarchyLevel);
+	                	return new FlatCustomerNode(flatElement);
 	                case 1:
 	                    return new FlatProjectNode(flatElement);
 	                case 2:

@@ -24,9 +24,9 @@ import net.rrm.ehour.domain.ProjectAssignment;
 public class ProjectAssignmentComparator implements Comparator<ProjectAssignment>, Serializable
 {
 	private static final long serialVersionUID = -6773438344877864288L;
-	public final static int	ASSIGNMENT_COMPARE_NAME = 0;
-	public final static int	ASSIGNMENT_COMPARE_START = 1;
-	public final static int ASSIGNMENT_COMPARE_CUSTDATEPRJ = 2;
+	public static final int	ASSIGNMENT_COMPARE_NAME = 0;
+	public static final int	ASSIGNMENT_COMPARE_START = 1;
+	public static final int ASSIGNMENT_COMPARE_CUSTDATEPRJ = 2;
 	
 	private int	compareType;
 	

@@ -26,16 +26,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Simple object cache that holds an object for a specified time in memory (INVALID_AFTER)
- * TODO Switch to ehcache someday
- * FIXME add refresh
  **/
 
 public class ObjectCache implements Serializable
 {
 	private static final long serialVersionUID = -4289955073669895813L;
-	private final static int 	MAX_ENTRIES = 5;
-	private final static long 	INVALID_AFTER = 30 * 60 * 1000;
-	private final static Logger LOGGER = Logger.getLogger(ObjectCache.class);
+	private static final int 	MAX_ENTRIES = 5;
+	private static final long 	INVALID_AFTER = 30 * 60 * 1000;
+	private static final Logger LOGGER = Logger.getLogger(ObjectCache.class);
 	
 	private Map<String, CacheEntry>	cache;
 	
@@ -93,20 +91,16 @@ public class ObjectCache implements Serializable
 	 */
 	private void checkCacheForAddition()
 	{
-		if (cache != null)
-		{
-			if (cache.size() >= MAX_ENTRIES)
-			{
-				List<CacheEntry> entries = new ArrayList<CacheEntry>(cache.values());
-				Collections.sort(entries);
-				
-				String idToDelete = entries.get(0).cachedObject.getCacheId();
-				
-				LOGGER.debug("Removing oldest entry with id " + idToDelete);
-				
-				cache.remove(idToDelete);
-			}
-		}		
+        if (cache != null && cache.size() >= MAX_ENTRIES) {
+            List<CacheEntry> entries = new ArrayList<CacheEntry>(cache.values());
+            Collections.sort(entries);
+
+            String idToDelete = entries.get(0).cachedObject.getCacheId();
+
+            LOGGER.debug("Removing oldest entry with id " + idToDelete);
+
+            cache.remove(idToDelete);
+        }
 	}
 	
 	/**

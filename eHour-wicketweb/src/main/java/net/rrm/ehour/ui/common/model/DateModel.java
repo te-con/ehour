@@ -37,15 +37,15 @@ import org.apache.wicket.model.Model;
 
 public class DateModel implements IModel
 {
-	public final static int	DATESTYLE_LONG = 1;
-	public final static int	DATESTYLE_MONTHONLY = 2;
-	public final static int DATESTYLE_TIMESHEET_DAYLONG = 3;
-	public final static int DATESTYLE_TIMESHEET_DAYONLY = 4;
-	public final static int	DATESTYLE_DAYONLY = 5;
-	public final static int	DATESTYLE_FULL_SHORT = 6;
-	public final static int	DATESTYLE_WEEK= 7;
-	public final static int	DATESTYLE_DAYONLY_LONG = 8;
-	public final static int	DATESTYLE_DATE_TIME = 9;
+	public static final int	DATESTYLE_LONG = 1;
+	public static final int	DATESTYLE_MONTHONLY = 2;
+	public static final int DATESTYLE_TIMESHEET_DAYLONG = 3;
+	public static final int DATESTYLE_TIMESHEET_DAYONLY = 4;
+	public static final int	DATESTYLE_DAYONLY = 5;
+	public static final int	DATESTYLE_FULL_SHORT = 6;
+	public static final int	DATESTYLE_WEEK= 7;
+	public static final int	DATESTYLE_DAYONLY_LONG = 8;
+	public static final int	DATESTYLE_DATE_TIME = 9;
 	
 	private String nullString = "&infin;";
 	

@@ -67,12 +67,8 @@ public class MainConfigBackingBean implements Serializable
                 continue;
             }
 
-            if (localeMap.containsKey(locale.getLanguage()))
-            {
-                if (locale.getDisplayName().indexOf('(') != -1)
-                {
-                    continue;
-                }
+            if (localeMap.containsKey(locale.getLanguage()) && locale.getDisplayName().indexOf('(') != -1) {
+                continue;
             }
 
             localeMap.put(locale.getLanguage(), locale);

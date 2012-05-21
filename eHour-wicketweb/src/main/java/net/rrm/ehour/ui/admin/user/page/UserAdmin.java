@@ -57,7 +57,7 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEvent
  */
 
 public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean> {
-    private final static Logger LOGGER = Logger.getLogger(UserAdmin.class);
+    private static final Logger LOGGER = Logger.getLogger(UserAdmin.class);
 
     @SpringBean
     private UserService userService;
