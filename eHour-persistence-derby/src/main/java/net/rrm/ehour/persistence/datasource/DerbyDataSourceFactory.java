@@ -2,6 +2,7 @@ package net.rrm.ehour.persistence.datasource;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
+import net.rrm.ehour.util.IoUtil;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 
 import javax.sql.DataSource;
@@ -24,10 +25,18 @@ public class DerbyDataSourceFactory {
         File ehourPropertiesFile = EhourHomeUtil.getEhourPropertiesFile();
 
         Properties properties = new Properties();
-        properties.load(new FileInputStream(ehourPropertiesFile));
-        DerbyDbValidator validator = new DerbyDbValidator(properties.getProperty("ehour.db.version"), dataSource);
-        validator.checkDatabaseState();
 
-        return dataSource;
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream(ehourPropertiesFile);
+            properties.load(stream);
+            DerbyDbValidator validator = new DerbyDbValidator(properties.getProperty("ehour.db.version"), dataSource);
+            validator.checkDatabaseState();
+
+            return dataSource;
+        } finally {
+            IoUtil.close(stream);
+
+        }
     }
 }
