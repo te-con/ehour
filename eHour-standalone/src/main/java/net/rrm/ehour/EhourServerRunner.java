@@ -5,6 +5,9 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class EhourServerRunner {
 
+    private EhourServerRunner() {
+    }
+
     public static void main(String[] args) throws Exception {
         EhourHomeFinder.fixEhourHome();
 

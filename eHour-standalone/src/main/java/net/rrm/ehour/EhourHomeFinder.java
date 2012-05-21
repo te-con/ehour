@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.io.IOException;
 
-class EhourHomeFinder {
+final class EhourHomeFinder {
 
     private EhourHomeFinder() {
     }
