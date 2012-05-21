@@ -360,6 +360,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         datePicker.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             private static final long serialVersionUID = -5588313671121851508L;
 
+            @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 AjaxEvent event = new AjaxEvent(QuickDateAjaxEventType.DATE_CHANGED);
                 EventPublisher.publishAjaxEvent(ReportCriteriaPanel.this, event);

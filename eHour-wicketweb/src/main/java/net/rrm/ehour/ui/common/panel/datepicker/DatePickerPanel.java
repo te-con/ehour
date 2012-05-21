@@ -39,7 +39,6 @@ public class DatePickerPanel extends Panel {
         updateTarget.add(dateInputField);
 
         dateInputField.add(new ConditionalRequiredValidator<Date>(infiniteModel));
-        dateInputField.add(new ValidatingFormComponentAjaxBehavior());
         dateInputField.setVisible(!infiniteModel.getObject());
 
         // indicator for validation issues
