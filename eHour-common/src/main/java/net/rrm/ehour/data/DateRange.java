@@ -57,6 +57,10 @@ public class DateRange implements Serializable
 		return dateEnd;
 	}
 
+    public boolean isOpenEnded() {
+        return dateStart == null && dateEnd == null;
+    }
+
     public Interval toInterval() {
         return new Interval(new DateTime(getDateStart()), new DateTime(getDateEnd()));
     }
