@@ -26,84 +26,100 @@ import java.util.*;
 
 /**
  * Various static methods for date manipulation
- **/
+ */
 
-public class DateUtil
-{
-	/**
-	 * Do not instantiate
-	 *
-	 */
-	private DateUtil()
-	{
-	}
-	
-	/**
-	 * ...
-	 * @param calendar
-	 */
-	public static void dayOfWeekFix(Calendar calendar)
-	{
-		calendar.add(Calendar.DATE, 1);
-		calendar.add(Calendar.DATE, -1);
-	}
+public class DateUtil {
+    /**
+     * Do not instantiate
+     */
+    private DateUtil() {
+    }
 
-	/**
-	 * Is date a weekend day?
-	 * @param calendar
-	 * @return
-	 */
-	public static boolean isWeekend(Calendar calendar)
-	{
-		int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
-		
-		return dayInWeek == Calendar.SATURDAY || dayInWeek == Calendar.SUNDAY;
-	}
-	
-	/**
-	 * Get days in month
-	 * @param calendar
-	 * @return
-	 */
-	public static int getDaysInMonth(Calendar calendar)
-	{
-		Calendar	cal;
+    /**
+     * Get week number for date but compensate with configured first day of week.
+     * Week officially starts on monday but when it's configured to start on sunday we have to compensate
+     * because the day falls in the previous week.
+     *
+     * @param date
+     * @param configuredFirstDayOfWeek
+     */
+    public static int getWeekNumberForDate(Date date, int configuredFirstDayOfWeek) {
+        DateTime dateTime = new DateTime(date);
 
-		cal = (Calendar)calendar.clone();
+        // SUNDAY
+        if (configuredFirstDayOfWeek == Calendar.SUNDAY) {
+            return dateTime.plusDays(1).getWeekOfWeekyear();
+        } else {
+            return dateTime.getWeekOfWeekyear();
+        }
+    }
 
-		cal.set(Calendar.DAY_OF_MONTH, 1);
+    /**
+     * ...
+     *
+     * @param calendar
+     */
+    public static void dayOfWeekFix(Calendar calendar) {
+        calendar.add(Calendar.DATE, 1);
+        calendar.add(Calendar.DATE, -1);
+    }
+
+    /**
+     * Is date a weekend day?
+     *
+     * @param calendar
+     * @return
+     */
+    public static boolean isWeekend(Calendar calendar) {
+        int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        return dayInWeek == Calendar.SATURDAY || dayInWeek == Calendar.SUNDAY;
+    }
+
+    /**
+     * Get days in month
+     *
+     * @param calendar
+     * @return
+     */
+    public static int getDaysInMonth(Calendar calendar) {
+        Calendar cal;
+
+        cal = (Calendar) calendar.clone();
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.add(Calendar.MONTH, 1);
         cal.add(Calendar.DAY_OF_MONTH, -1);
 
         return cal.get(Calendar.DATE);
-	}
+    }
 
-	/**
-	 * Get days in month
-	 * @param calendar
-	 * @return
-	 */
-	public static int getDaysInMonth(DateTime calendar)
-	{
-		DateTime start = new DateTime(calendar.getYear(), calendar.getMonthOfYear(), 1, 0, 0, 0, 0);
-		DateTime end = start.plusMonths(1);
+    /**
+     * Get days in month
+     *
+     * @param calendar
+     * @return
+     */
+    public static int getDaysInMonth(DateTime calendar) {
+        DateTime start = new DateTime(calendar.getYear(), calendar.getMonthOfYear(), 1, 0, 0, 0, 0);
+        DateTime end = start.plusMonths(1);
 
-		Days days = Days.daysBetween(start, end);
+        Days days = Days.daysBetween(start, end);
 
-		return days.getDays();
-	}
+        return days.getDays();
+    }
 
 
-	/**
-	 * Converts a calendar to a range covering that month
-	 * @return first Calendar object is start of the month, last Calendar object is end of the month
-	 */
-	public static DateRange calendarToMonthRange(Calendar calendar)
-	{
-		DateRange	dateRange = new DateRange();
-		Calendar	cal;
+    /**
+     * Converts a calendar to a range covering that month
+     *
+     * @return first Calendar object is start of the month, last Calendar object is end of the month
+     */
+    public static DateRange calendarToMonthRange(Calendar calendar) {
+        DateRange dateRange = new DateRange();
+        Calendar cal;
 
-		cal = (Calendar)calendar.clone();
+        cal = (Calendar) calendar.clone();
 
         cal.set(Calendar.DATE, 1);
         dateRange.setDateStart(cal.getTime());
@@ -113,344 +129,304 @@ public class DateUtil
         dateRange.setDateEnd(cal.getTime());
 
         return dateRange;
-	}
+    }
 
-	/**
-	 * Check whether a date is within range
-	 * @return
-	 */
+    /**
+     * Check whether a date is within range
+     *
+     * @return
+     */
 
-	public static boolean isDateWithinRange(Date date, DateRange dateRange)
-	{
-		boolean	withinRange = true;
+    public static boolean isDateWithinRange(Date date, DateRange dateRange) {
+        boolean withinRange = true;
 
-		if (date == null)
-		{
-			return false;
-		}
+        if (date == null) {
+            return false;
+        }
 
-		if (dateRange.getDateStart() != null)
-		{
-			withinRange = !dateRange.getDateStart().after(date);
-		}
+        if (dateRange.getDateStart() != null) {
+            withinRange = !dateRange.getDateStart().after(date);
+        }
 
-		if (dateRange.getDateEnd() != null)
-		{
-			withinRange = withinRange && !dateRange.getDateEnd().before(date);
-		}
+        if (dateRange.getDateEnd() != null) {
+            withinRange = withinRange && !dateRange.getDateEnd().before(date);
+        }
 
-		return withinRange;
-	}
-	
-	/**
-	 * Is calendar within date range ?
-	 * @param calendar
-	 * @param dateRange
-	 * @return
-	 */
-	public static boolean isDateWithinRange(Calendar calendar, DateRange dateRange)
-	{
-		return DateUtil.isDateWithinRange(calendar.getTime(), dateRange);
-	}	
+        return withinRange;
+    }
 
-	/**
-	 * Check whether two dateranges overlap eachother
-	 * @param rangeA
-	 * @param rangeB
-	 * @return
-	 */
-	public static boolean isDateRangeOverlaps(DateRange rangeA, DateRange rangeB)
-	{
-		boolean	overlaps;
+    /**
+     * Is calendar within date range ?
+     *
+     * @param calendar
+     * @param dateRange
+     * @return
+     */
+    public static boolean isDateWithinRange(Calendar calendar, DateRange dateRange) {
+        return DateUtil.isDateWithinRange(calendar.getTime(), dateRange);
+    }
 
-		boolean includeStart;
-		boolean includeEnd;
-		
-		includeStart = rangeA.getDateStart() != null;
-		includeEnd = rangeA.getDateEnd() != null;
-		
-		if (includeStart && includeEnd)
-		{
-			overlaps = rangeA.getDateEnd().after(rangeB.getDateStart()) &&
-					   rangeA.getDateStart().before(rangeB.getDateEnd());
-		}
-		else if (!includeStart && includeEnd)
-		{
-			overlaps = rangeB.getDateStart().before(rangeA.getDateEnd());
-		}
-		else if (includeStart && !includeEnd)
-		{
-			overlaps = rangeB.getDateEnd().after(rangeA.getDateStart());
-		}
-		else
-		{
-			overlaps = true;
-		}
+    /**
+     * Check whether two dateranges overlap eachother
+     *
+     * @param rangeA
+     * @param rangeB
+     * @return
+     */
+    public static boolean isDateRangeOverlaps(DateRange rangeA, DateRange rangeB) {
+        boolean overlaps;
 
-		return overlaps;
-	}
+        boolean includeStart;
+        boolean includeEnd;
 
-	/**
-	 * Get a date range covering the week the supplied calendar is in
-	 * @param calendar
-	 * @return
-	 */
-	public static DateRange getDateRangeForWeek(Calendar calendar)
-	{
-		DateRange	weekRange = new DateRange();
-		Calendar	calClone = (Calendar)calendar.clone();
-		
-		DateUtil.dayOfWeekFix(calClone);
-		calClone.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-		weekRange.setDateStart(calClone.getTime());
+        includeStart = rangeA.getDateStart() != null;
+        includeEnd = rangeA.getDateEnd() != null;
 
-		calClone.add(Calendar.DAY_OF_MONTH, +6);
-		weekRange.setDateEnd(calClone.getTime());
+        if (includeStart && includeEnd) {
+            overlaps = rangeA.getDateEnd().after(rangeB.getDateStart()) &&
+                    rangeA.getDateStart().before(rangeB.getDateEnd());
+        } else if (!includeStart && includeEnd) {
+            overlaps = rangeB.getDateStart().before(rangeA.getDateEnd());
+        } else if (includeStart && !includeEnd) {
+            overlaps = rangeB.getDateEnd().after(rangeA.getDateStart());
+        } else {
+            overlaps = true;
+        }
 
-		return weekRange;
-	}
+        return overlaps;
+    }
 
-	/**
-	 * Get inversed date range for week where dateStart = friday 23:59 and dateEnd = tuesday 00:00
-	 * @param calendar
-	 * @return
-	 */
-	public static DateRange getInversedDateRangeForWeek(Calendar calendar)
-	{
-		DateRange	weekRange = new DateRange();
-		Calendar	calClone = (Calendar)calendar.clone();
+    /**
+     * Get a date range covering the week the supplied calendar is in
+     *
+     * @param calendar
+     * @return
+     */
+    public static DateRange getDateRangeForWeek(Calendar calendar) {
+        DateRange weekRange = new DateRange();
+        Calendar calClone = (Calendar) calendar.clone();
 
-		DateUtil.dayOfWeekFix(calClone);
-		calClone.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-		calClone.add(Calendar.DAY_OF_MONTH, 1);
-		weekRange.setDateEnd(calClone.getTime());
+        DateUtil.dayOfWeekFix(calClone);
+        calClone.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+        weekRange.setDateStart(calClone.getTime());
 
-		calClone.add(Calendar.DAY_OF_MONTH, +4);
-		weekRange.setDateStart(calClone.getTime());
+        calClone.add(Calendar.DAY_OF_MONTH, +6);
+        weekRange.setDateEnd(calClone.getTime());
 
-		return weekRange;
-	}
+        return weekRange;
+    }
 
-	public static DateRange getDateRangeForMonth(Date date)
-	{
-		return getDateRangeForMonth(getCalendar(date));
-	}
-	
-	/**
-	 * Get a date range covering the month the supplied calendar is in
-	 * @param calendar
-	 * @return
-	 */
-	public static DateRange getDateRangeForMonth(Calendar calendar)
-	{
-		DateRange	monthRange = new DateRange();
+    public static DateRange getDateRangeForMonth(Date date) {
+        return getDateRangeForMonth(getCalendar(date));
+    }
 
-		Calendar	calClone = (Calendar)calendar.clone();
+    /**
+     * Get a date range covering the month the supplied calendar is in
+     *
+     * @param calendar
+     * @return
+     */
+    public static DateRange getDateRangeForMonth(Calendar calendar) {
+        DateRange monthRange = new DateRange();
 
-		calClone.set(Calendar.DAY_OF_MONTH, 1);
-		monthRange.setDateStart(calClone.getTime());
+        Calendar calClone = (Calendar) calendar.clone();
 
-		calClone.add(Calendar.MONTH, 1);
-		calClone.add(Calendar.DATE, -1);
-		monthRange.setDateEnd(calClone.getTime());
+        calClone.set(Calendar.DAY_OF_MONTH, 1);
+        monthRange.setDateStart(calClone.getTime());
 
-		return monthRange;
-	}
+        calClone.add(Calendar.MONTH, 1);
+        calClone.add(Calendar.DATE, -1);
+        monthRange.setDateEnd(calClone.getTime());
 
-	/**
-	 * Get date range for quarter
-	 * @param calendar
-	 * @return
-	 */
-	public static DateRange getDateRangeForQuarter(Calendar calendar)
-	{
-		DateRange	quarterRange;
-		Calendar	startMonth, endMonth;
+        return monthRange;
+    }
 
-		int month = calendar.get(Calendar.MONTH);
-		int quarter = month / 3;
+    /**
+     * Get date range for quarter
+     *
+     * @param calendar
+     * @return
+     */
+    public static DateRange getDateRangeForQuarter(Calendar calendar) {
+        DateRange quarterRange;
+        Calendar startMonth, endMonth;
 
-		startMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
-		endMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter  * 3, 1);
-		endMonth.add(Calendar.MONTH, 3);
-		endMonth.add(Calendar.DATE, -1);
+        int month = calendar.get(Calendar.MONTH);
+        int quarter = month / 3;
 
-		quarterRange = new DateRange(startMonth.getTime(), endMonth.getTime());
+        startMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
+        endMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
+        endMonth.add(Calendar.MONTH, 3);
+        endMonth.add(Calendar.DATE, -1);
 
-		return quarterRange;
-	}
+        quarterRange = new DateRange(startMonth.getTime(), endMonth.getTime());
 
-	/**
-	 * Add quarter to current
-	 * @param calendar
-	 * @param quarterDelta
-	 * @return
-	 */
-	public static Calendar addQuarter(Calendar calendar, int quarterDelta)
-	{
-		int month = calendar.get(Calendar.MONTH);
-		int quarter = month / 3;
+        return quarterRange;
+    }
 
-		Calendar startMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
-		startMonth.add(Calendar.MONTH, quarterDelta * 3);
+    /**
+     * Add quarter to current
+     *
+     * @param calendar
+     * @param quarterDelta
+     * @return
+     */
+    public static Calendar addQuarter(Calendar calendar, int quarterDelta) {
+        int month = calendar.get(Calendar.MONTH);
+        int quarter = month / 3;
 
-		return startMonth;
-	}
+        Calendar startMonth = new GregorianCalendar(calendar.get(Calendar.YEAR), quarter * 3, 1);
+        startMonth.add(Calendar.MONTH, quarterDelta * 3);
+
+        return startMonth;
+    }
 
 
+    /**
+     * Set the time of a date to 00:00.00 (up to the ms)
+     *
+     * @param date
+     * @return
+     */
 
-	/**
-	 * Set the time of a date to 00:00.00 (up to the ms)
-	 * @param date
-	 * @return
-	 */
+    public static Date nullifyTime(Date date) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        nullifyTime(cal);
 
-	public static Date nullifyTime(Date date)
-	{
-		Calendar	cal = new GregorianCalendar();
-		cal.setTime(date);
-		nullifyTime(cal);
+        return cal.getTime();
+    }
 
-		return cal.getTime();
-	}
+    /**
+     * Set the time of a calendar to 00:00.00 (up to the ms)
+     *
+     * @param cal
+     * @return
+     */
+    public static void nullifyTime(Calendar cal) {
+        // #1753473: thx to Uriah/umlsdl for pointing this out
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+    }
 
-	/**
-	 * Set the time of a calendar to 00:00.00 (up to the ms)
-	 * @param cal
-	 * @return
-	 */
-	public static void nullifyTime(Calendar cal)
-	{
-		// #1753473: thx to Uriah/umlsdl for pointing this out
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-	}
+    /**
+     * Set the time of a calendar to 23:59:59.999
+     *
+     * @param cal
+     */
+    public static void maximizeTime(Calendar cal) {
+        // #1753473: thx to Uriah/umlsdl for pointing this out
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+    }
 
-	/**
-	 * Set the time of a calendar to 23:59:59.999
-	 * @param cal
-	 */
-	public static void maximizeTime(Calendar cal)
-	{
-		// #1753473: thx to Uriah/umlsdl for pointing this out
-		cal.set(Calendar.HOUR_OF_DAY, 23);
-		cal.set(Calendar.MINUTE, 59);
-		cal.set(Calendar.SECOND, 59);
-		cal.set(Calendar.MILLISECOND, 999);
-	}
+    /**
+     * Set the time of a date to 23:59:59.999
+     */
+    public static Date maximizeTime(Date date) {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        maximizeTime(cal);
 
-	/**
-	 * Set the time of a date to 23:59:59.999
-	 */
-	public static Date maximizeTime(Date date)
-	{
-		Calendar	cal = new GregorianCalendar();
-		cal.setTime(date);
-		maximizeTime(cal);
+        return cal.getTime();
+    }
 
-		return cal.getTime();
-	}
+    /**
+     * Create a sequence of dates from the date range
+     *
+     * @return
+     */
+    public static List<Date> createDateSequence(DateRange range, EhourConfig config) {
+        List<Date> dateSequence = new ArrayList<Date>();
+        Calendar calendar;
 
-	/**
-	 * Create a sequence of dates from the date range
-	 * 
-	 * @return
-	 */
-	public static List<Date> createDateSequence(DateRange range, EhourConfig config)
-	{
-		List<Date>	dateSequence = new ArrayList<Date>();
-		Calendar		calendar;
+        calendar = DateUtil.getCalendar(config);
+        calendar.setTime(range.getDateStart());
 
-		calendar = DateUtil.getCalendar(config);
-		calendar.setTime(range.getDateStart());
+        while (calendar.getTime().before(range.getDateEnd())) {
+            DateUtil.nullifyTime(calendar);
+            dateSequence.add(calendar.getTime());
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
 
-		while (calendar.getTime().before(range.getDateEnd()))
-		{
-			DateUtil.nullifyTime(calendar);
-			dateSequence.add(calendar.getTime());
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-		}
+        return dateSequence;
+    }
 
-		return dateSequence;
-	}
+    /**
+     * Get date end for display (as in, time is set to 12:00pm)
+     * TODO pretty bad hack as this is a timezone issue
+     *
+     * @return
+     */
+    public static Date getDateEndForDisplay(Date date) {
+        Calendar cal;
 
-	/**
-	 * Get date end for display (as in, time is set to 12:00pm)
-	 * TODO pretty bad hack as this is a timezone issue
-	 * @return
-	 */
-	public static Date getDateEndForDisplay(Date date)
-	{
-		Calendar cal;
+        if (date != null) {
+            cal = new GregorianCalendar();
 
-		if (date != null)
-		{
-			cal = new GregorianCalendar();
+            cal.setTime(date);
+            cal.add(Calendar.HOUR, -12);
 
-			cal.setTime(date);
-			cal.add(Calendar.HOUR, -12);
+            return cal.getTime();
+        } else {
+            return null;
+        }
+    }
 
-			return cal.getTime();
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * Get calendar with timezone set
+     *
+     * @param config
+     * @return
+     */
+    public static Calendar getCalendar(EhourConfig config) {
+        Calendar calendar;
 
-	/**
-	 * Get calendar with timezone set
-	 * @param config
-	 * @return
-	 */
-	public static Calendar getCalendar(EhourConfig config)
-	{
-		Calendar	calendar;
+        calendar = new GregorianCalendar(config.getTzAsTimeZone());
+        calendar.setFirstDayOfWeek(config.getFirstDayOfWeek());
+        return calendar;
+    }
 
-		calendar = new GregorianCalendar(config.getTzAsTimeZone());
-		calendar.setFirstDayOfWeek(config.getFirstDayOfWeek());
-		return calendar;
-	}
-	
-	/**
-	 * Convert date to calendar (why didn't I use Jodatime from the beginning, argh!)
-	 * @param date
-	 * @return
-	 */
-	public static Calendar getCalendar(Date date)
-	{
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		
-		return calendar;
-	}
-	
-	
+    /**
+     * Convert date to calendar (why didn't I use Jodatime from the beginning, argh!)
+     *
+     * @param date
+     * @return
+     */
+    public static Calendar getCalendar(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-	/**
-	 * Get the dd/mm/yyyy date formatting pattern for a given locale
-	 * This is a bit of a hack..
-	 * @param dateLocale
-	 * @return the pattern using DateFormatSymbols
-	 */
-	public static String getPatternForDateLocale(Locale dateLocale)
-	{
-		Calendar cal = new GregorianCalendar();
-		cal.set(Calendar.MONTH, 4);
-		cal.set(Calendar.DAY_OF_MONTH, 30);
-		cal.set(Calendar.YEAR, 2007);
+        return calendar;
+    }
 
-		String formatted = DateFormat.getDateInstance(DateFormat.SHORT, dateLocale).format(cal.getTime());
 
-		// first get the separator
-		String f = formatted.replaceAll("\\d", "");
-		char separator = f.charAt(0);
+    /**
+     * Get the dd/mm/yyyy date formatting pattern for a given locale
+     * This is a bit of a hack..
+     *
+     * @param dateLocale
+     * @return the pattern using DateFormatSymbols
+     */
+    public static String getPatternForDateLocale(Locale dateLocale) {
+        Calendar cal = new GregorianCalendar();
+        cal.set(Calendar.MONTH, 4);
+        cal.set(Calendar.DAY_OF_MONTH, 30);
+        cal.set(Calendar.YEAR, 2007);
 
-		String[] parts = formatted.split("\\" + separator);
+        String formatted = DateFormat.getDateInstance(DateFormat.SHORT, dateLocale).format(cal.getTime());
 
-		StringBuilder pattern = new StringBuilder();
+        // first get the separator
+        String f = formatted.replaceAll("\\d", "");
+        char separator = f.charAt(0);
+
+        String[] parts = formatted.split("\\" + separator);
+
+        StringBuilder pattern = new StringBuilder();
 
         for (String part : parts) {
             int i = Integer.parseInt(part);
@@ -466,8 +442,8 @@ public class DateUtil
             pattern.append(separator);
         }
 
-		pattern.deleteCharAt(pattern.length() - 1);
+        pattern.deleteCharAt(pattern.length() - 1);
 
-		return pattern.toString();
-	}
+        return pattern.toString();
+    }
 }

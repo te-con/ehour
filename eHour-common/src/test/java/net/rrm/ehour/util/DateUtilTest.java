@@ -313,4 +313,19 @@ public class DateUtilTest
 		assertEquals("MM/dd/yyyy", DateUtil.getPatternForDateLocale(Locale.US));
 		assertEquals("dd.MM.yyyy", DateUtil.getPatternForDateLocale(Locale.GERMANY));
 	}
+
+    @Test
+    public void shouldGetWeek35ForAugust28WithSundayAsFirstDayOfWeek() {
+        GregorianCalendar calendar = new GregorianCalendar(2011, 7, 28);
+
+        assertEquals(35, DateUtil.getWeekNumberForDate(calendar.getTime(), Calendar.SUNDAY));
+    }
+
+    @Test
+    public void shouldGetWeek35ForAugust29WithMondayAsFirstDayOfWeek() {
+        GregorianCalendar calendar = new GregorianCalendar(2011, 7, 29);
+
+        assertEquals(35, DateUtil.getWeekNumberForDate(calendar.getTime(), Calendar.MONDAY));
+    }
+
 }

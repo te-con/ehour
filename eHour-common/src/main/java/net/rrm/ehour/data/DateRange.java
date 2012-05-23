@@ -29,7 +29,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * Time is set to 00:00 for the start date and 23:59 for the date end therefore
  * including the start & the end 
  **/
-// TODO replace with jodatime
 public class DateRange implements Serializable
 {
 	private static final long serialVersionUID = 4901436851703213753L;
