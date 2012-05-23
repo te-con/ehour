@@ -29,7 +29,7 @@ import java.util.*;
 public class Timesheet implements Serializable
 {
 	private static final long 	serialVersionUID = -547682050331580675L;
-	private SortedMap<Customer, List<TimesheetRow>>	customers;
+	private SortedMap<Customer, SortedSet<TimesheetRow>>	customers;
 	private	Date[]				dateSequence;
 	private	Date				weekStart;
 	private	Date				weekEnd;
@@ -112,9 +112,9 @@ public class Timesheet implements Serializable
 	{
 		List<TimesheetEntry> timesheetEntries = new ArrayList<TimesheetEntry>();
 		
-		Collection<List<TimesheetRow>> rows = getCustomers().values();
+		Collection<SortedSet<TimesheetRow>> rows = getCustomers().values();
 		
-		for (List<TimesheetRow> list : rows)
+		for (SortedSet<TimesheetRow> list : rows)
 		{
 			for (TimesheetRow timesheetRow : list)
 			{
@@ -208,7 +208,7 @@ public class Timesheet implements Serializable
 	/**
 	 * @return the customers
 	 */
-	public SortedMap<Customer, List<TimesheetRow>> getCustomers()
+	public SortedMap<Customer, SortedSet<TimesheetRow>> getCustomers()
 	{
 		return customers;
 	}
@@ -224,10 +224,11 @@ public class Timesheet implements Serializable
 	
 	/**
 	 * 
-	 * @param customer
-	 * @return
+	 *
+     * @param customer
+     * @return
 	 */
-	public List<TimesheetRow> getTimesheetRows(Customer customer)
+	public SortedSet<TimesheetRow> getTimesheetRows(Customer customer)
 	{
 		return customers.get(customer);
 	}
@@ -235,7 +236,7 @@ public class Timesheet implements Serializable
 	/**
 	 * @param customers the customers to set
 	 */
-	public void setCustomers(SortedMap<Customer, List<TimesheetRow>> customers)
+	public void setCustomers(SortedMap<Customer, SortedSet<TimesheetRow>> customers)
 	{
 		this.customers = customers;
 	}

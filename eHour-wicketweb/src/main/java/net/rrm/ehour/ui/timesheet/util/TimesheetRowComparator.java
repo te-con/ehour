@@ -20,11 +20,6 @@ import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 
 import java.util.Comparator;
 
-
-/**
- * TODO 
- **/
-
 public class TimesheetRowComparator implements Comparator<TimesheetRow>
 {
     public static final TimesheetRowComparator INSTANCE = new TimesheetRowComparator();
