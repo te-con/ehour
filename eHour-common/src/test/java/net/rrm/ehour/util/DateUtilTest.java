@@ -46,6 +46,9 @@ public class DateUtilTest
 		assertEquals(10, dr.getDateEnd().getMonth());
 		assertEquals(30, dr.getDateEnd().getDate());
 
+        assertEquals(23, dr.getDateEnd().getHours());
+        assertEquals(0, dr.getDateStart().getHours());
+
 		assertEquals(4, cal.get(Calendar.DATE));
 	}
 	
@@ -72,33 +75,26 @@ public class DateUtilTest
 	@Test
 	public void testIsDateWithinRange()
 	{
-		boolean	inRange;
-		DateRange dr = new DateRange(new GregorianCalendar(2006, 5, 5).getTime(),
+        DateRange dr = new DateRange(new GregorianCalendar(2006, 5, 5).getTime(),
 						 			new GregorianCalendar(2006, 6, 5).getTime());
 		
 		Date testCal = new GregorianCalendar(2006, 5, 10).getTime();
-		inRange = DateUtil.isDateWithinRange(testCal, dr);
-		assertTrue(inRange);
+        assertTrue(DateUtil.isDateWithinRange(testCal, dr));
 
 		testCal = new GregorianCalendar(2006, 4, 10).getTime();
-		inRange = DateUtil.isDateWithinRange(testCal, dr);
-		assertFalse(inRange);
+        assertFalse(DateUtil.isDateWithinRange(testCal, dr));
 
 		testCal = new GregorianCalendar(2006, 5, 5).getTime();
-		inRange = DateUtil.isDateWithinRange(testCal, dr);
-		assertTrue(inRange);
+        assertTrue(DateUtil.isDateWithinRange(testCal, dr));
 
 		testCal = new GregorianCalendar(2006, 6, 5).getTime();
-		inRange = DateUtil.isDateWithinRange(testCal, dr);
-		assertTrue(inRange);
+        assertTrue(DateUtil.isDateWithinRange(testCal, dr));
 
 		testCal = new GregorianCalendar(2006, 6, 6).getTime();
-		inRange = DateUtil.isDateWithinRange(testCal, dr);
-		assertFalse(inRange);
+        assertFalse(DateUtil.isDateWithinRange(testCal, dr));
 
 		testCal = new GregorianCalendar(2006, 5, 4).getTime();
-		inRange = DateUtil.isDateWithinRange(testCal, dr);
-		assertFalse(inRange);
+        assertFalse(DateUtil.isDateWithinRange(testCal, dr));
 		
 	}
 	
@@ -183,10 +179,6 @@ public class DateUtilTest
 		assertTrue(DateUtil.isDateRangeOverlaps(rangeA, rangeB));
 	}	
 	
-	/**
-	 * 
-	 *
-	 */
 	@Test
 	public void testGetDateRangeForWeek()
 	{
@@ -229,10 +221,6 @@ public class DateUtilTest
 		assertEquals(23, cal.get(Calendar.HOUR_OF_DAY));
 	}	
 	
-	/**
-	 * 
-	 *
-	 */
 	@Test
 	public void testGetDateRangeForMonth()
 	{
@@ -315,17 +303,25 @@ public class DateUtilTest
 	}
 
     @Test
-    public void shouldGetWeek35ForAugust28WithSundayAsFirstDayOfWeek() {
-        GregorianCalendar calendar = new GregorianCalendar(2011, 7, 28);
+    public void should_return_week_35_for_august_28_with_Sunday_as_first_day_of_week() {
 
-        assertEquals(35, DateUtil.getWeekNumberForDate(calendar.getTime(), Calendar.SUNDAY));
+        assertEquals(35, DateUtil.getWeekNumberForDate(new GregorianCalendar(2011, 7, 28).getTime(), Calendar.SUNDAY));
     }
 
     @Test
-    public void shouldGetWeek35ForAugust29WithMondayAsFirstDayOfWeek() {
-        GregorianCalendar calendar = new GregorianCalendar(2011, 7, 29);
+    public void should_return_week_35_for_august_29_with_Monday_as_first_day_of_week() {
+        assertEquals(35, DateUtil.getWeekNumberForDate(new GregorianCalendar(2011, 7, 29).getTime(), Calendar.MONDAY));
+    }
 
-        assertEquals(35, DateUtil.getWeekNumberForDate(calendar.getTime(), Calendar.MONDAY));
+
+    @Test
+    public void should_return_31_days_as_amount_of_days_in_January() {
+        assertEquals(31, DateUtil.getDaysInMonth(new GregorianCalendar(2012, 0, 15)));
+    }
+
+    @Test
+    public void should_return_29_days_as_amount_of_days_in_February_2012() {
+        assertEquals(29, DateUtil.getDaysInMonth(new GregorianCalendar(2012, 1, 15)));
     }
 
 }

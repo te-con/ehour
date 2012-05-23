@@ -20,6 +20,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Interval;
 
 import java.text.DateFormat;
 import java.util.*;
@@ -46,18 +47,11 @@ public class DateUtil {
     public static int getWeekNumberForDate(Date date, int configuredFirstDayOfWeek) {
         DateTime dateTime = new DateTime(date);
 
-        // SUNDAY
-        if (configuredFirstDayOfWeek == Calendar.SUNDAY) {
-            return dateTime.plusDays(1).getWeekOfWeekyear();
-        } else {
-            return dateTime.getWeekOfWeekyear();
-        }
+        return configuredFirstDayOfWeek == Calendar.SUNDAY ? dateTime.plusDays(1).getWeekOfWeekyear() : dateTime.getWeekOfWeekyear();
     }
 
     /**
-     * ...
-     *
-     * @param calendar
+     * wtf is this??
      */
     public static void dayOfWeekFix(Calendar calendar) {
         calendar.add(Calendar.DATE, 1);
@@ -83,15 +77,7 @@ public class DateUtil {
      * @return
      */
     public static int getDaysInMonth(Calendar calendar) {
-        Calendar cal;
-
-        cal = (Calendar) calendar.clone();
-
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.add(Calendar.MONTH, 1);
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-
-        return cal.get(Calendar.DATE);
+        return getDaysInMonth(new DateTime(calendar));
     }
 
     /**
@@ -101,12 +87,7 @@ public class DateUtil {
      * @return
      */
     public static int getDaysInMonth(DateTime calendar) {
-        DateTime start = new DateTime(calendar.getYear(), calendar.getMonthOfYear(), 1, 0, 0, 0, 0);
-        DateTime end = start.plusMonths(1);
-
-        Days days = Days.daysBetween(start, end);
-
-        return days.getDays();
+        return calendar.dayOfMonth().getMaximumValue();
     }
 
 
@@ -116,19 +97,10 @@ public class DateUtil {
      * @return first Calendar object is start of the month, last Calendar object is end of the month
      */
     public static DateRange calendarToMonthRange(Calendar calendar) {
-        DateRange dateRange = new DateRange();
-        Calendar cal;
 
-        cal = (Calendar) calendar.clone();
+        DateTime date = new DateTime(calendar);
 
-        cal.set(Calendar.DATE, 1);
-        dateRange.setDateStart(cal.getTime());
-
-        cal.add(Calendar.MONTH, 1);
-        cal.add(Calendar.DATE, -1);
-        dateRange.setDateEnd(cal.getTime());
-
-        return dateRange;
+        return new DateRange(new Interval(date.withDayOfMonth(1), date.withDayOfMonth(getDaysInMonth(date))));
     }
 
     /**
@@ -138,21 +110,7 @@ public class DateUtil {
      */
 
     public static boolean isDateWithinRange(Date date, DateRange dateRange) {
-        boolean withinRange = true;
-
-        if (date == null) {
-            return false;
-        }
-
-        if (dateRange.getDateStart() != null) {
-            withinRange = !dateRange.getDateStart().after(date);
-        }
-
-        if (dateRange.getDateEnd() != null) {
-            withinRange = withinRange && !dateRange.getDateEnd().before(date);
-        }
-
-        return withinRange;
+        return dateRange.toInterval().contains(new DateTime(date));
     }
 
     /**
@@ -168,10 +126,6 @@ public class DateUtil {
 
     /**
      * Check whether two dateranges overlap eachother
-     *
-     * @param rangeA
-     * @param rangeB
-     * @return
      */
     public static boolean isDateRangeOverlaps(DateRange rangeA, DateRange rangeB) {
         boolean overlaps;
@@ -183,8 +137,7 @@ public class DateUtil {
         includeEnd = rangeA.getDateEnd() != null;
 
         if (includeStart && includeEnd) {
-            overlaps = rangeA.getDateEnd().after(rangeB.getDateStart()) &&
-                    rangeA.getDateStart().before(rangeB.getDateEnd());
+            overlaps = rangeA.toInterval().overlaps(rangeB.toInterval());
         } else if (!includeStart && includeEnd) {
             overlaps = rangeB.getDateStart().before(rangeA.getDateEnd());
         } else if (includeStart && !includeEnd) {

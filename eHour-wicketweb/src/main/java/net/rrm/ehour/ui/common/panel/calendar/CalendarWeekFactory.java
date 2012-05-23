@@ -56,9 +56,8 @@ public class CalendarWeekFactory implements Serializable {
         do {
             int dayInMonth = dateIterator.get(Calendar.DAY_OF_MONTH);
             int dayInWeek = dateIterator.get(Calendar.DAY_OF_WEEK);
-            boolean inWeekend = (dayInWeek == Calendar.SUNDAY || dayInWeek == Calendar.SATURDAY);
 
-            CalendarDay day = new CalendarDay(dayInMonth, bookedDays[dayInMonth - 1], inWeekend);
+            CalendarDay day = new CalendarDay(dayInMonth, bookedDays[dayInMonth - 1]);
 
             week.addDayInWeek(dayInWeek, day);
 

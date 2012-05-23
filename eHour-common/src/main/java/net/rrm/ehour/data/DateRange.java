@@ -23,6 +23,8 @@ import net.rrm.ehour.util.DateUtil;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 /**
  * Object containing a range of dates.
@@ -45,14 +47,19 @@ public class DateRange implements Serializable
 		setDateEnd(dateEnd);
 	}
 
-	/**
-	 * Get date end
-	 * @return
-	 */
+    public DateRange(Interval range) {
+        setDateStart(range.getStart().toDate());
+        setDateEnd(range.getEnd().toDate());
+    }
+
 	public Date getDateEnd()
 	{
 		return dateEnd;
 	}
+
+    public Interval toInterval() {
+        return new Interval(new DateTime(getDateStart()), new DateTime(getDateEnd()));
+    }
 	
 	/**
 	 * Get date end for display (as in, time is set to 12:00pm)
@@ -113,7 +120,7 @@ public class DateRange implements Serializable
 	
 	public String toString()
 	{
-		return "date start: " + ((dateStart != null) ? dateStart.toString() : "null") 
+		return  "date start: " + ((dateStart != null) ? dateStart.toString() : "null")
 				+ ", date end: " + ((dateEnd != null) ? dateEnd.toString() : "null");
 	}
 

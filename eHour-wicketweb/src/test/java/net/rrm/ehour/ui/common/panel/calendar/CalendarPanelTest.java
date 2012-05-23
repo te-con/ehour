@@ -55,7 +55,6 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 	
 	@SuppressWarnings("unchecked")
 	@Test
-    @Ignore
 	public void reproduceIssueEHO131()
 	{
 		AjaxEventHook hook = new AjaxEventHook();
