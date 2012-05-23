@@ -99,7 +99,7 @@
             <outputDirectory>/app</outputDirectory>
             <directoryMode>0775</directoryMode>
             <unpack>false</unpack>
-            <outputFileNameMapping>ehour-${pom.version}.war</outputFileNameMapping>
+            <outputFileNameMapping>ehour-${project.version}.war</outputFileNameMapping>
         </dependencySet>
     </dependencySets>
 </assembly>
