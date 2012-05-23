@@ -68,7 +68,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private static final long serialVersionUID = 161160822264046559L;
     private static final String ID_USERDEPT_PLACEHOLDER = "userDepartmentPlaceholder";
 
-
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
 
@@ -79,6 +78,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private ListMultipleChoice<User> users;
     private ListMultipleChoice<UserDepartment> departments;
     private List<WebMarkupContainer> quickSelections;
+    private final Form<ReportCriteriaBackingBean> form;
 
     /**
      * Constructor which sets up the basic borded form
@@ -91,7 +91,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         setOutputMarkupId(true);
 
-        Form<ReportCriteriaBackingBean> form = new Form<ReportCriteriaBackingBean>("criteriaForm");
+        form = new Form<ReportCriteriaBackingBean>("criteriaForm");
+        form.setOutputMarkupId(true);
         greyBorder.add(form);
 
         addDates(form, model);
@@ -308,22 +309,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         AjaxButton resetButton = new AjaxButton("resetCriteria") {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                // reset user criteria
-                ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
-                backingBean.setQuickWeek(null);
-                backingBean.setQuickMonth(null);
-                backingBean.setQuickQuarter(null);
-
-                ReportCriteria reportCriteria = new ReportCriteria(new UserCriteria());
-                backingBean.setReportCriteria(reportCriteria);
-                reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
-
-                target.addComponent(projects);
-                target.addComponent(customers);
-                target.addComponent(users);
-                target.addComponent(departments);
-
-                updateDates(target);
+                EventPublisher.publishAjaxEvent(this, new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_RESET));
             }
 
             @Override
@@ -331,6 +317,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 onSubmit(target, form);
             }
         };
+
+        resetButton.setDefaultFormProcessing(false);
 
         form.add(resetButton);
     }

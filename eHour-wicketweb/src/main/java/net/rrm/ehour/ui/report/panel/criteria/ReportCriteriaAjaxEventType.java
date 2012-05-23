@@ -18,11 +18,8 @@ package net.rrm.ehour.ui.report.panel.criteria;
 
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 
-/**
- * TODO 
- **/
-
 public enum ReportCriteriaAjaxEventType implements AjaxEventType
 {
-	CRITERIA_UPDATED
+	CRITERIA_UPDATED,
+    CRITERIA_RESET
 }
