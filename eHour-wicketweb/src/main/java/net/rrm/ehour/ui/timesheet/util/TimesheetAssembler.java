@@ -82,11 +82,10 @@ public class TimesheetAssembler
 	protected SortedMap<Customer, SortedSet<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows)
 	{
 		SortedMap<Customer, SortedSet<TimesheetRow>> customerMap = new TreeMap<Customer, SortedSet<TimesheetRow>>();
-		Customer			customer;
 
 		for (TimesheetRow timesheetRow : rows)
 		{
-			customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
+			Customer customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
 
             SortedSet<TimesheetRow>  timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new TreeSet<TimesheetRow>(TimesheetRowComparator.INSTANCE);
 			timesheetRows.add(timesheetRow);

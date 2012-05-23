@@ -221,15 +221,23 @@ public class Customer extends DomainObject<Integer, Customer>
 	public int compareTo(Customer object)
 	{
 		return new CompareToBuilder()
-			.append(this.getName(), object.getName())
-			.append(this.getCode(), object.getCode())
+			.append(this.getNameLowerCase(), object.getNameLowerCase())
+			.append(this.getCodeLowerCase(), object.getCodeLowerCase())
 			.append(this.getCustomerId(), object.getCustomerId()).toComparison();
 	}
-	
-	
+
+    private final String getNameLowerCase() {
+        return getName() == null ? null : getName().toLowerCase();
+    }
+
+    private final String getCodeLowerCase() {
+        return getCode() == null ? null : getCode().toLowerCase();
+    }
 
 
-	@Override
+
+
+    @Override
 	public Integer getPK()
 	{
 		return customerId;
