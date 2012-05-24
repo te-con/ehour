@@ -91,7 +91,6 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		final String comment = "commentaar";
 	
 		ModalWindow window = (ModalWindow)tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayWin");
-		System.out.println(window.hashCode());
 		tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:customers:0:rows:0:day1:dayLink", "onclick");
 		assertTrue(window.isShown());
 
