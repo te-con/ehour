@@ -15,9 +15,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>${parent.groupId}</groupId>
+            <groupId>${project.parent.groupId}</groupId>
             <artifactId>eHour-web</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
             <type>war</type>
         </dependency>
     </dependencies>
