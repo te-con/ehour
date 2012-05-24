@@ -18,21 +18,21 @@
     <filesets />
     <roots />
     <mountPoints>
-      <mountPoint id="22" root="" location="" mode="755" />
       <mountPoint id="171" root="" location="home" mode="755" />
       <mountPoint id="172" root="" location="home/log" mode="755" />
+      <mountPoint id="22" root="" location="" mode="755" />
     </mountPoints>
     <entries>
-      <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.0-SNAPSHOT-standalone.dir/ehour-1.0-SNAPSHOT/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="subdir" subDirectory="lib" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.0-SNAPSHOT-standalone/ehour-1.0-SNAPSHOT/resources" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="subdir" subDirectory="resources" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
-      <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.0-SNAPSHOT-standalone.dir/ehour-1.0-SNAPSHOT/app" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="subdir" subDirectory="app" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.0-SNAPSHOT-standalone/ehour-1.0-SNAPSHOT/conf" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="subdir" subDirectory="conf" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
-      <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.0-SNAPSHOT-standalone.dir/ehour-1.0-SNAPSHOT/resources" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="subdir" subDirectory="resources" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.0-SNAPSHOT-standalone/ehour-1.0-SNAPSHOT/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="subdir" subDirectory="lib" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
-      <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.0-SNAPSHOT-standalone.dir/ehour-1.0-SNAPSHOT/conf" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="subdir" subDirectory="conf" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.0-SNAPSHOT-standalone/ehour-1.0-SNAPSHOT/app" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="subdir" subDirectory="app" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
     </entries>
