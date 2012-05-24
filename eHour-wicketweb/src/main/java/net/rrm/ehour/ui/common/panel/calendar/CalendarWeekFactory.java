@@ -26,27 +26,29 @@ public class CalendarWeekFactory implements Serializable {
         this.timesheetService = timesheetService;
     }
 
-    public List<CalendarWeek> createWeeks(Integer firstDayOfWeek, Integer userId, Calendar dateIterator) {
+    public List<CalendarWeek> createWeeks(Integer firstDayOfWeek, Integer userId, Calendar calendar) {
         List<CalendarWeek> calendarWeeks = new ArrayList<CalendarWeek>();
-        boolean[] bookedDays;
-        CalendarWeek week;
+        calendar.setFirstDayOfWeek(firstDayOfWeek);
 
         // grab date
-        bookedDays = getMonthNavCalendar(userId, dateIterator);
+        boolean[] bookedDays = getMonthNavCalendar(userId, calendar);
 
-        dateIterator.set(Calendar.DAY_OF_MONTH, 1);
-        int currentMonth = dateIterator.get(Calendar.MONTH);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        int currentMonth = calendar.get(Calendar.MONTH);
 
-        week = new CalendarWeek(ElementLocation.FIRST);
-        int weekOfYear = dateIterator.get(Calendar.WEEK_OF_YEAR);
+        CalendarWeek week = new CalendarWeek(ElementLocation.FIRST);
+        int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+        System.out.println(weekOfYear);
+
+
         week.setWeek(weekOfYear);
 
         if (weekOfYear > 51 && currentMonth == Calendar.JANUARY) {
-            week.setYear(dateIterator.get(Calendar.YEAR) - 1);
+            week.setYear(calendar.get(Calendar.YEAR) - 1);
         } else {
-            week.setYear(dateIterator.get(Calendar.YEAR));
+            week.setYear(calendar.get(Calendar.YEAR));
         }
-        week.setWeekStart((Calendar) dateIterator.clone());
+        week.setWeekStart((Calendar) calendar.clone());
 
         DateUtil.dayOfWeekFix(week.getWeekStart());
         week.getWeekStart().set(Calendar.DAY_OF_WEEK, firstDayOfWeek);
@@ -54,37 +56,37 @@ public class CalendarWeekFactory implements Serializable {
         int previousWeek = -1;
 
         do {
-            int dayInMonth = dateIterator.get(Calendar.DAY_OF_MONTH);
-            int dayInWeek = dateIterator.get(Calendar.DAY_OF_WEEK);
+            int dayInMonth = calendar.get(Calendar.DAY_OF_MONTH);
+            int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
             CalendarDay day = new CalendarDay(dayInMonth, bookedDays[dayInMonth - 1]);
 
             week.addDayInWeek(dayInWeek, day);
 
-            dateIterator.add(Calendar.DAY_OF_MONTH, 1);
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
 
             // next week? add current week and create a new one
-            if (dateIterator.get(Calendar.DAY_OF_WEEK) == firstDayOfWeek) {
+            if (calendar.get(Calendar.DAY_OF_WEEK) == firstDayOfWeek) {
                 calendarWeeks.add(week);
 
                 week = new CalendarWeek(ElementLocation.MIDDLE);
-                week.setWeek(dateIterator.get(Calendar.WEEK_OF_YEAR));
-                week.setWeekStart((Calendar) dateIterator.clone());
+                week.setWeek(calendar.get(Calendar.WEEK_OF_YEAR));
+                week.setWeekStart((Calendar) calendar.clone());
 
                 // fix that the year is still the old year but the week is already in the next year
-                if (previousWeek != -1 && previousWeek > dateIterator.get(Calendar.WEEK_OF_YEAR)) {
-                    week.setYear(dateIterator.get(Calendar.YEAR) + 1);
+                if (previousWeek != -1 && previousWeek > calendar.get(Calendar.WEEK_OF_YEAR)) {
+                    week.setYear(calendar.get(Calendar.YEAR) + 1);
                 } else {
-                    week.setYear(dateIterator.get(Calendar.YEAR));
+                    week.setYear(calendar.get(Calendar.YEAR));
                 }
 
-                previousWeek = dateIterator.get(Calendar.WEEK_OF_YEAR);
+                previousWeek = calendar.get(Calendar.WEEK_OF_YEAR);
             }
 
-        } while (dateIterator.get(Calendar.MONTH) == currentMonth);
+        } while (calendar.get(Calendar.MONTH) == currentMonth);
 
         // first day of week is already stored
-        if (dateIterator.get(Calendar.DAY_OF_WEEK) != firstDayOfWeek) {
+        if (calendar.get(Calendar.DAY_OF_WEEK) != firstDayOfWeek) {
             calendarWeeks.add(week);
         }
 
@@ -95,16 +97,12 @@ public class CalendarWeekFactory implements Serializable {
 
 
     private boolean[] getMonthNavCalendar(Integer userId, Calendar requestedMonth) {
-        List<BookedDay> bookedDays;
-        boolean[] monthOverview;
-        Calendar cal;
+        List<BookedDay> bookedDays = getTimesheetService().getBookedDaysMonthOverview(userId, requestedMonth);
 
-        bookedDays = getTimesheetService().getBookedDaysMonthOverview(userId, requestedMonth);
-
-        monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
+        boolean[] monthOverview = new boolean[DateUtil.getDaysInMonth(requestedMonth)];
 
         for (BookedDay day : bookedDays) {
-            cal = new GregorianCalendar();
+            Calendar cal = new GregorianCalendar();
             cal.setTime(day.getDate());
 
             // just in case.. it shouldn't happen that the returned month

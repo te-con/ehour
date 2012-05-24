@@ -19,6 +19,7 @@ package net.rrm.ehour.util;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.junit.Test;
 
 import java.util.*;
@@ -313,6 +314,11 @@ public class DateUtilTest
         assertEquals(35, DateUtil.getWeekNumberForDate(new GregorianCalendar(2011, 7, 29).getTime(), Calendar.MONDAY));
     }
 
+    @Test
+    public void should_return_week_1_for_january_1_2012_with_Sunday_as_first_day_of_week() {
+        assertEquals(1, DateUtil.getWeekNumberForDate(new GregorianCalendar(2012, Calendar.JANUARY, 1).getTime(), Calendar.SUNDAY));
+    }
+
 
     @Test
     public void should_return_31_days_as_amount_of_days_in_January() {
@@ -322,6 +328,16 @@ public class DateUtilTest
     @Test
     public void should_return_29_days_as_amount_of_days_in_February_2012() {
         assertEquals(29, DateUtil.getDaysInMonth(new GregorianCalendar(2012, 1, 15)));
+    }
+
+    @Test
+    public void should_convert_calendar_sunday_to_jodatime_sunday() {
+        assertEquals(DateTimeConstants.SUNDAY, DateUtil.fromCalendarToJodaTimeDayInWeek(Calendar.SUNDAY));
+    }
+
+    @Test
+    public void should_convert_calendar_thursday_to_jodatime_thursday() {
+        assertEquals(DateTimeConstants.THURSDAY, DateUtil.fromCalendarToJodaTimeDayInWeek(Calendar.THURSDAY));
     }
 
 }

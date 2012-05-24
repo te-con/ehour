@@ -28,7 +28,6 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -59,37 +58,38 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester
 	{
 		AjaxEventHook hook = new AjaxEventHook();
 		EventPublisher.listenerHook = hook;
-		
+
 		Calendar requestedMonth = new ComparableGreggieCalendar(2009, 1 - 1, 2);
 		EhourWebSession session = getWebApp().getSession();
+        requestedMonth.setFirstDayOfWeek(requestedMonth.getFirstDayOfWeek());
 
 		session.setNavCalendar(requestedMonth);
-		
+
 		List<BookedDay> days = generateBookDays();
 
 		expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
-				.andReturn(days);					
+				.andReturn(days);
 
 		replay(timesheetService);
-		
+
 		startPanel();
-		
+
 		tester.executeAjaxEvent("panel:calendarFrame:weeks:0", "onclick");
-		
+
 		assertEquals(1, hook.events.size());
-		
+
 		for (AjaxEvent event : hook.events)
 		{
 			assertEquals(CalendarAjaxEventType.WEEK_CLICK, event.getEventType());
-			
+
 			PayloadAjaxEvent<Calendar> pae = (PayloadAjaxEvent<Calendar>)event;
-			
+
 			assertEquals(12 -1, pae.getPayload().get(Calendar.MONTH));
 			assertEquals(2008, pae.getPayload().get(Calendar.YEAR));
 			assertEquals(28, pae.getPayload().get(Calendar.DAY_OF_MONTH));
 		}
-		
-		
+
+
 		verify(timesheetService);
 	}
 

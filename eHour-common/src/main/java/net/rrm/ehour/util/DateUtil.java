@@ -19,7 +19,7 @@ package net.rrm.ehour.util;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Interval;
 
 import java.text.DateFormat;
@@ -398,5 +398,16 @@ public class DateUtil {
         pattern.deleteCharAt(pattern.length() - 1);
 
         return pattern.toString();
+    }
+
+    /**
+     * java.util.Calendar.SUNDAY = 1 while in jodatime it's day 7.
+     * @return
+     */
+    public static int fromCalendarToJodaTimeDayInWeek(int dayInWeek) {
+        int jodatimeDayInWeek = dayInWeek - 1;
+
+        return jodatimeDayInWeek == 0 ? DateTimeConstants.SUNDAY : jodatimeDayInWeek;
+
     }
 }

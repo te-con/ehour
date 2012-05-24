@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.config;
 
+import net.rrm.ehour.domain.AuditType;
+
 import java.util.Locale;
 import java.util.TimeZone;
-
-import net.rrm.ehour.domain.AuditType;
 
 
 /**
@@ -136,7 +136,7 @@ public interface EhourConfig {
     /**
      * Get first day of week
      *
-     * @return 0 = sunday, 1 = monday, etc.
+     * @return 1 = sunday, 2 = monday, Calendar.<WEEKDAY />etc.
      */
     int getFirstDayOfWeek();
 
