@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.command.DefaultGlobalReportPageAggregateCommand;
 import net.rrm.ehour.ui.report.page.command.DefaultGlobalReportPageDetailedCommand;
 import net.rrm.ehour.ui.report.page.command.GlobalReportPageAggregateCommand;
@@ -64,55 +66,73 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 
 		this.aggregateCommand = aggregateCommand;
 		this.detailedCommand = detailedCommand;
-		
-		final ReportCriteria reportCriteria = getReportCriteria();
-		final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<ReportCriteriaBackingBean>(new ReportCriteriaBackingBean(reportCriteria));
-		setDefaultModel(model);
-		
-		List<ITab> tabList = new ArrayList<ITab>();
-		
-		tabList.add(new AbstractTab(new KeyResourceModel("report.criteria.title"))
-		{
-			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("unchecked")
-			@Override
-			public Panel getPanel(String panelId)
-			{
-				return new ReportCriteriaPanel(panelId, model);
-			}
-		});
-		
-		tabPanel = new ReportTabbedPanel("reportContainer", tabList);
-		add(tabPanel);
+        setupPage();
 	}
-	
-	@Override
+
+    private void setupPage() {
+        final ReportCriteria reportCriteria = getReportCriteria();
+        final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<ReportCriteriaBackingBean>(new ReportCriteriaBackingBean(reportCriteria));
+        setDefaultModel(model);
+
+        List<ITab> tabList = new ArrayList<ITab>();
+
+        tabList.add(new AbstractTab(new KeyResourceModel("report.criteria.title"))
+        {
+            private static final long serialVersionUID = 1L;
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public Panel getPanel(String panelId)
+            {
+                return new ReportCriteriaPanel(panelId, model);
+            }
+        });
+
+        tabPanel = new ReportTabbedPanel("reportContainer", tabList);
+        addOrReplace(tabPanel);
+    }
+
+    @Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED)
 		{
-			ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getDefaultModelObject();
-	
-			clearTabs();
-			
-			if (backingBean.getReportType().equals(ReportType.AGGREGATE))
-			{
-				addAggregateReportPanelTabs	(backingBean);
-			}
-			else
-			{
-				addDetailedReportPanelTabs(backingBean);
-			}
-			
-			ajaxEvent.getTarget().addComponent(tabPanel);
-		}
+            updateCriteria(ajaxEvent);
+		} else if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_RESET) {
+            resetCriteria(ajaxEvent);
+        }
 		
 		return false;
 	}
-	
 
-	/**
+    private void resetCriteria(AjaxEvent ajaxEvent) {
+        EhourWebSession.getSession().setUserCriteria(null);
+
+        setupPage();
+
+        ajaxEvent.getTarget().addComponent(tabPanel);
+    }
+
+    private void updateCriteria(AjaxEvent ajaxEvent) {
+        ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getDefaultModelObject();
+
+        clearTabs();
+
+        if (backingBean.getReportType().equals(ReportType.AGGREGATE))
+        {
+            addAggregateReportPanelTabs	(backingBean);
+        }
+        else
+        {
+            addDetailedReportPanelTabs(backingBean);
+        }
+
+        ajaxEvent.getTarget().addComponent(tabPanel);
+    }
+
+
+    /**
 	 * Clear tabs except for the first one
 	 */
 	private void clearTabs()

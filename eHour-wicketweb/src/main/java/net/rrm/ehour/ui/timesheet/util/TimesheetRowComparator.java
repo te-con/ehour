@@ -18,14 +18,10 @@ package net.rrm.ehour.ui.timesheet.util;
 
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-
-/**
- * TODO 
- **/
-
-public class TimesheetRowComparator implements Comparator<TimesheetRow>
+public class TimesheetRowComparator implements Comparator<TimesheetRow>, Serializable
 {
     public static final TimesheetRowComparator INSTANCE = new TimesheetRowComparator();
 

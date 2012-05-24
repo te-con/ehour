@@ -38,11 +38,7 @@ public class TimesheetAssembler
 {
 	private EhourConfig 		config;
 	private SimpleDateFormat	keyDateFormatter;
-	
-	/**
-	 * 
-	 * @param config
-	 */
+
 	public TimesheetAssembler(EhourConfig config)
 	{
 		this.config = config;
@@ -57,27 +53,17 @@ public class TimesheetAssembler
 	 */
 	public Timesheet createTimesheetForm(WeekOverview weekOverview)
 	{
-		Map<ProjectAssignment, Map<String, TimesheetEntry>>	assignmentMap;
-		List<Date>	 										dateSequence;
-		List<TimesheetRow>									timesheetRows;
-		Timesheet											timesheet;
-		SortedMap<Customer, List<TimesheetRow>>				customerMap;
-		
-		dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
+        List<Date> dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
 
-		timesheet = new Timesheet();
+        Timesheet timesheet = new Timesheet();
 		timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
-	
-		assignmentMap = createAssignmentMap(weekOverview);
+
+        Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap = createAssignmentMap(weekOverview);
 		mergeUnbookedAssignments(weekOverview, assignmentMap);
+
+        List<TimesheetRow> timesheetRows = createTimesheetRows(assignmentMap, dateSequence, weekOverview.getProjectAssignments(), timesheet);
 		
-		timesheetRows = createTimesheetRows(assignmentMap, dateSequence, weekOverview.getProjectAssignments(), timesheet);
-		
-		customerMap = structureRowsPerCustomer(timesheetRows);
-		
-		sortCustomerMap(customerMap);
-		
-		timesheet.setCustomers(customerMap);
+		timesheet.setCustomers(structureRowsPerCustomer(timesheetRows));
 		timesheet.setDateSequence(dateSequence.toArray(new Date[7]));
 		timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());		
 		timesheet.setWeekEnd(weekOverview.getWeekRange().getDateEnd());
@@ -87,43 +73,21 @@ public class TimesheetAssembler
 		
 		return timesheet;
 	}
-	
-	/**
-	 * Sort the timesheet rows in a customer map
-	 * @param customerMap
-	 */
-	protected void sortCustomerMap(SortedMap<Customer, List<TimesheetRow>> customerMap)
-	{
-        for (Map.Entry<Customer, List<TimesheetRow>> entry : customerMap.entrySet())
-        {
-            Collections.sort(entry.getValue(), TimesheetRowComparator.INSTANCE);
-		}
-	}
-	
+
 	/**
 	 * Structure timesheet rows per customers
 	 * @param rows
 	 * @return
 	 */
-	protected SortedMap<Customer, List<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows)
+	protected SortedMap<Customer, SortedSet<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows)
 	{
-		SortedMap<Customer, List<TimesheetRow>>	customerMap = new TreeMap<Customer, List<TimesheetRow>>();
-		Customer			customer;
-		List<TimesheetRow>	timesheetRows;
-		
+		SortedMap<Customer, SortedSet<TimesheetRow>> customerMap = new TreeMap<Customer, SortedSet<TimesheetRow>>();
+
 		for (TimesheetRow timesheetRow : rows)
 		{
-			customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
-			
-			if (customerMap.containsKey(customer))
-			{
-				timesheetRows = customerMap.get(customer);
-			}
-			else
-			{
-				timesheetRows = new ArrayList<TimesheetRow>();
-			}
+			Customer customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
 
+            SortedSet<TimesheetRow>  timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new TreeSet<TimesheetRow>(TimesheetRowComparator.INSTANCE);
 			timesheetRows.add(timesheetRow);
 			
 			customerMap.put(customer, timesheetRows);
@@ -181,7 +145,7 @@ public class TimesheetAssembler
 	 * @param date
 	 * @return
 	 */
-	protected TimesheetCell createTimesheetCell(ProjectAssignment assignment,
+	private TimesheetCell createTimesheetCell(ProjectAssignment assignment,
 												TimesheetEntry entry, Date date,
 												List<ProjectAssignment> validProjectAssignments)
 	{
@@ -202,7 +166,7 @@ public class TimesheetAssembler
 	 * @param date
 	 * @return
 	 */
-	protected boolean isCellValid(ProjectAssignment assignment, 
+    private boolean isCellValid(ProjectAssignment assignment,
 								List<ProjectAssignment> validProjectAssignments,
 								Date date)
 	{
@@ -221,7 +185,7 @@ public class TimesheetAssembler
 	 * Merge unused project assignments into the week overview
 	 * @param weekOverview
 	 */
-	protected void mergeUnbookedAssignments(WeekOverview weekOverview,
+    private void mergeUnbookedAssignments(WeekOverview weekOverview,
 											Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap)
 	{
 		if (weekOverview.getProjectAssignments() != null)
@@ -241,7 +205,7 @@ public class TimesheetAssembler
 	 * Create a map of the project assignments and the timesheet entries
 	 * @return
 	 */
-	protected Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
+    private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
 	{
 		Map<String, TimesheetEntry>	entryDateMap;	
 		Map<ProjectAssignment, Map<String, TimesheetEntry>>	assignmentMap;

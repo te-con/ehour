@@ -4,7 +4,8 @@ import org.apache.commons.lang.StringUtils;
 
 public class ServerConfig
 {
-	private int port;
+    public static final int DEFAULT_PORT = 8000;
+    private int port;
 	private String defaultConfigFileName;
 	private String dataBase;
 	private String dataBaseDriver;
@@ -13,7 +14,7 @@ public class ServerConfig
 	private String dataBasePassword;
 	
 	public ServerConfig() {
-		port = 8000;
+		port = DEFAULT_PORT;
 		defaultConfigFileName = "jetty.xml";
 	}
 

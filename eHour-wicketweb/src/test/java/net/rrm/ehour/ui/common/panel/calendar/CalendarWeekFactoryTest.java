@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -27,10 +28,22 @@ public class CalendarWeekFactoryTest {
 
     @Test
     public void should_mark_first_and_last_rows() {
-        List<CalendarWeek> weeks = factory.createWeeks(1, 1, GregorianCalendar.getInstance());
+        List<CalendarWeek> weeks = factory.createWeeks(Calendar.SUNDAY, 1, GregorianCalendar.getInstance());
 
         assertEquals(ElementLocation.FIRST, weeks.get(0).getLocation());
         assertEquals(ElementLocation.MIDDLE, weeks.get(1).getLocation());
         assertEquals(ElementLocation.LAST, weeks.get(weeks.size() - 1).getLocation());
+    }
+
+    @Test
+    public void should_create_weeks_for_january_2012() {
+
+        List<CalendarWeek> weeks = factory.createWeeks(Calendar.SUNDAY, 1, new GregorianCalendar(2012, Calendar.JANUARY, 1));
+
+        CalendarWeek calendarWeek = weeks.get(0);
+        assertEquals(1, calendarWeek.getWeek());
+        assertEquals(1, calendarWeek.getWeekStart().get(Calendar.DAY_OF_MONTH));
+        assertEquals(5, weeks.size());
+
     }
 }

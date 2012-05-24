@@ -25,7 +25,7 @@ public class CalendarDay implements Serializable
 	private boolean booked;
 
 
-	public CalendarDay(int monthDay, boolean booked, boolean weekendDay)
+	public CalendarDay(int monthDay, boolean booked)
 	{
 		this.monthDay = monthDay;
 		this.booked = booked;

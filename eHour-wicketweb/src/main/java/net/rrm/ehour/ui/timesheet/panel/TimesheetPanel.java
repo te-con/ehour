@@ -151,7 +151,7 @@ public class TimesheetPanel extends Panel implements Serializable
         Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
 
-        int weekOfYear = new DateTime(weekStart).getWeekOfWeekyear(); // at least jodatime's version is not buggy
+        int weekOfYear = DateUtil.getWeekNumberForDate(weekStart, config.getFirstDayOfWeek());
 
         IModel<String> weekLabelModel = new MessageResourceModel("timesheet.weekTitle", this, weekOfYear, dateFormatter.format(weekStart), dateFormatter.format(weekEnd));
 

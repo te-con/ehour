@@ -11,47 +11,45 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+
 import static org.junit.Assert.assertTrue
 import static org.mockito.Mockito.when
 
 class ExportServiceImplTest {
-	@Mock
-	private ExportDao exportDao;
+    @Mock
+    private ExportDao exportDao;
 
-	@Mock
-	private ConfigurationService configurationService
+    @Mock
+    private ConfigurationService configurationService
 
-	private ExportServiceImpl service;
+    private ExportServiceImpl service;
 
-	@Before
-	void setUp()
-	{
-		MockitoAnnotations.initMocks(this)
+    @Before
+    void setUp() {
+        MockitoAnnotations.initMocks(this)
 
-		service = new ExportServiceImpl(exportDao: exportDao, configurationService: configurationService);
-	}
+        service = new ExportServiceImpl(exportDao: exportDao, configurationService: configurationService);
+    }
 
-	@Test
-	void shouldProduceXml() {
-		def map = ["ASSIGNMENT_ID":1, "ENTRY_DATE":new Date()]
-		def rows = [map]
+    @Test
+    void shouldProduceXml() {
+        def map = ["ASSIGNMENT_ID": 1, "ENTRY_DATE": new Date()]
+        def rows = [map]
 
-		when(exportDao.findForType(ExportType.TIMESHEET_ENTRY)).thenReturn(rows);
+        when(exportDao.findForType(ExportType.TIMESHEET_ENTRY)).thenReturn(rows);
 
-		def configuration = new EhourConfigStub(version:0.9)
-		when(configurationService.getConfiguration()).thenReturn(configuration);
+        def configuration = new EhourConfigStub(version: 0.9)
+        when(configurationService.getConfiguration()).thenReturn(configuration);
 
         def configurationList = [new Configuration(ConfigurationItem.AVAILABLE_TRANSLATIONS.dbField, "nl")]
         when(configurationService.findAllConfiguration()).thenReturn(configurationList)
 
-		String xml = service.exportDatabase()
+        String xml = service.exportDatabase()
 
         assertTrue xml.contains("0.9")
         assertTrue xml.contains("TIMESHEET_ENTRY")
         assertTrue xml.contains("CONFIG")
 
-		assertTrue(xml.startsWith("<?xml version="))
-
-      System.out.println(xml);
-	}
+        assertTrue(xml.startsWith("<?xml version="))
+    }
 }
