@@ -38,8 +38,6 @@ public class CalendarWeekFactory implements Serializable {
 
         CalendarWeek week = new CalendarWeek(ElementLocation.FIRST);
         int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
-        System.out.println(weekOfYear);
-
 
         week.setWeek(weekOfYear);
 
