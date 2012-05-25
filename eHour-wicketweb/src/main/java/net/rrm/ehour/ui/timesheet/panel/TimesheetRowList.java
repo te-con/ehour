@@ -18,10 +18,10 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.common.component.CommonJavascript;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
-import net.rrm.ehour.ui.common.component.TooltipLabel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
@@ -88,10 +88,14 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	protected void populateItem(ListItem<TimesheetRow> item)
 	{
 		final TimesheetRow row = item.getModelObject();
+        ProjectAssignment assignment = row.getProjectAssignment();
 
-		item.add(createBookWholeWeekLink(row));
-		item.add(createProjectLabel(row));
-		item.add(new Label("projectCode", row.getProjectAssignment().getProject().getProjectCode()));
+        item.add(createBookWholeWeekLink(row));
+        item.add(new Label("project", assignment.getProject().getName()));
+        Label role = new Label("role", String.format("(%s)", assignment.getRole()));
+        role.setVisible(StringUtils.isNotBlank(assignment.getRole()));
+        item.add(role);
+		item.add(new Label("projectCode", assignment.getProject().getProjectCode()));
 		item.add(createStatusLabel(item));
 		addInputCells(item, row);
 		item.add(createTotalHoursLabel(row));
@@ -155,11 +159,6 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		return getRequest().getRelativePathPrefixToContextRoot();
 	}
 
-
-	private TooltipLabel createProjectLabel(final TimesheetRow row)
-	{
-		return new TooltipLabel("project", row.getProjectAssignment().getProject().getName(), row.getProjectAssignment().getProject().getDescription());
-    }
 
     private Label createStatusLabel(ListItem<TimesheetRow> item)
 	{
