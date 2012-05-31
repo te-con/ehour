@@ -16,12 +16,16 @@
 
 package net.rrm.ehour.ui.report.panel;
 
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
+import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.ColumnType;
 import net.rrm.ehour.ui.common.report.ReportColumn;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
 import net.rrm.ehour.ui.report.TreeReportElement;
@@ -43,6 +47,7 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -52,57 +57,53 @@ import java.util.List;
 
 /**
  * Aggregate report data panel
- **/
+ */
 
-public class TreeReportDataPanel extends Panel
-{
-	private static final long serialVersionUID = -6757047600645464803L;
+public class TreeReportDataPanel extends Panel {
+    private static final long serialVersionUID = -6757047600645464803L;
 
-	private ReportConfig reportConfig;
+    private ReportConfig reportConfig;
 
-	public TreeReportDataPanel(String id,
-								TreeReportModel reportModel,
-								ReportConfig reportConfig,
-								String excelResourceName
-								)
-	{
-		super(id);
+    public TreeReportDataPanel(String id,
+                               TreeReportModel reportModel,
+                               ReportConfig reportConfig,
+                               String excelResourceName
+    ) {
+        super(id);
 
-		this.reportConfig = reportConfig;
+        this.reportConfig = reportConfig;
 
         Border blueBorder = new BlueTabRoundedBorder("blueFrame");
-		add(blueBorder);
-		blueBorder.setOutputMarkupId(true);
+        add(blueBorder);
+        blueBorder.setOutputMarkupId(true);
 
-		if (excelResourceName != null)
-		{
-			final String reportId = reportModel.getCacheId();
+        if (excelResourceName != null) {
+            final String reportId = reportModel.getCacheId();
 
-			ResourceReference excelResource = new ResourceReference(excelResourceName);
-			ValueMap params = new ValueMap();
-			params.add("reportId", reportId);
-			ResourceLink<Void> excelLink = new ResourceLink<Void>("excelLink", excelResource, params);
+            ResourceReference excelResource = new ResourceReference(excelResourceName);
+            ValueMap params = new ValueMap();
+            params.add("reportId", reportId);
+            ResourceLink<Void> excelLink = new ResourceLink<Void>("excelLink", excelResource, params);
             blueBorder.add(excelLink);
-		} else {
+        } else {
             blueBorder.add(HtmlUtil.getInvisibleLink("excelLink"));
-		}
+        }
 
-		addHeaderColumns(blueBorder);
-		addReportData(reportModel, blueBorder);
-		addGrandTotal(reportModel, blueBorder);
+        blueBorder.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getSession().getEhourConfig()));
+        addHeaderColumns(blueBorder);
+        addReportData(reportModel, blueBorder);
+        addGrandTotal(reportModel, blueBorder);
 
-		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
-	}
+        add(new StyleSheetReference("reportStyle", new CompressedResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
+    }
 
-    private void addGrandTotal(TreeReportModel reportModel, WebMarkupContainer parent)
-	{
-		RepeatingView totalView = new RepeatingView("cell");
+    private void addGrandTotal(TreeReportModel reportModel, WebMarkupContainer parent) {
+        RepeatingView totalView = new RepeatingView("cell");
 
-		// add cells
+        // add cells
         for (ReportColumn column : reportConfig.getReportColumns()) {
-			if (column.isVisible())
-			{
-				Label label;
+            if (column.isVisible()) {
+                Label label;
 
                 String id = totalView.newChildId();
 
@@ -119,139 +120,139 @@ public class TreeReportDataPanel extends Panel
                         break;
                 }
 
-				addColumnTypeStyling(column.getColumnType(), label);
-				totalView.add(label);
-			}
-		}
+                addColumnTypeStyling(column.getColumnType(), label);
+                totalView.add(label);
+            }
+        }
 
-		parent.add(totalView);
-	}
+        parent.add(totalView);
+    }
 
-	/**
-	 * Get root node rows & cells
-	 */
-	@SuppressWarnings("unchecked")
-    private void addReportData(TreeReportModel reportModel, WebMarkupContainer parent)
-	{
-		List<TreeReportElement> elements = (List<TreeReportElement>) reportModel.getReportData().getReportElements();
+    /**
+     * Get report header label
+     *
+     * @param reportRange
+     * @param config
+     * @return
+     */
+    protected Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config) {
+        Label reportHeaderLabel = new Label(id, new StringResourceModel("report.header",
+                this, null,
+                new Object[]{new DateModel(reportRange.getDateStart(), config),
+                        new DateModel(reportRange.getDateEnd(), config)}));
+        reportHeaderLabel.setEscapeModelStrings(false);
 
-		DataView<TreeReportElement> dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
-		dataView.setOutputMarkupId(true);
-		dataView.setItemsPerPage(20);
+        return reportHeaderLabel;
+    }
 
-		parent.add(new HoverPagingNavigator("navigator", dataView));
-		parent.add(dataView);
-	}
+    /**
+     * Get root node rows & cells
+     */
+    @SuppressWarnings("unchecked")
+    private void addReportData(TreeReportModel reportModel, WebMarkupContainer parent) {
+        List<TreeReportElement> elements = (List<TreeReportElement>) reportModel.getReportData().getReportElements();
+
+        DataView<TreeReportElement> dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
+        dataView.setOutputMarkupId(true);
+        dataView.setItemsPerPage(20);
+
+        parent.add(new HoverPagingNavigator("navigator", dataView));
+        parent.add(dataView);
+    }
 
 
-	private void addHeaderColumns(WebMarkupContainer parent)
-	{
-		RepeatingView	columnHeaders = new RepeatingView("columnHeaders");
+    private void addHeaderColumns(WebMarkupContainer parent) {
+        RepeatingView columnHeaders = new RepeatingView("columnHeaders");
 
-		for (ReportColumn reportColumn : reportConfig.getReportColumns())
-		{
-			Label columnHeader = new Label(columnHeaders.newChildId(), new ResourceModel(reportColumn.getColumnHeaderResourceKey()));
-			columnHeader.setVisible(reportColumn.isVisible());
-			columnHeaders.add(columnHeader);
+        for (ReportColumn reportColumn : reportConfig.getReportColumns()) {
+            Label columnHeader = new Label(columnHeaders.newChildId(), new ResourceModel(reportColumn.getColumnHeaderResourceKey()));
+            columnHeader.setVisible(reportColumn.isVisible());
+            columnHeaders.add(columnHeader);
 
             if (reportColumn.getColumnType().isNumeric()) {
                 columnHeader.add(new SimpleAttributeModifier("style", "text-align: right;"));
             }
 
-		}
+        }
 
-		parent.add(columnHeaders);
-	}
+        parent.add(columnHeaders);
+    }
 
-	/**
-	 * Add column type specific styling
-	 * @param columnType
-	 * @param label
-	 */
-	private void addColumnTypeStyling(ColumnType columnType, Label label)
-	{
-        if (label != null)
-        {
+    /**
+     * Add column type specific styling
+     *
+     * @param columnType
+     * @param label
+     */
+    private void addColumnTypeStyling(ColumnType columnType, Label label) {
+        if (label != null) {
             if (columnType.isNumeric()) {
                 label.add(new SimpleAttributeModifier("style", "text-align: right;"));
             }
 
-            if (columnType == ColumnType.COMMENT)
-            {
+            if (columnType == ColumnType.COMMENT) {
                 label.add(new SimpleAttributeModifier("style", "width: 300px;"));
             }
         }
-	}
+    }
 
-	private class TreeReportDataView extends DataView<TreeReportElement>
-	{
-		private static final long serialVersionUID = 1L;
+    private class TreeReportDataView extends DataView<TreeReportElement> {
+        private static final long serialVersionUID = 1L;
 
-		private int previousForPage = -1;
-		private List<Serializable> previousCellValues;
+        private int previousForPage = -1;
+        private List<Serializable> previousCellValues;
 
-		public TreeReportDataView(String id, IDataProvider<TreeReportElement> dataProvider)
-		{
-			super(id, dataProvider);
-		}
+        public TreeReportDataView(String id, IDataProvider<TreeReportElement> dataProvider) {
+            super(id, dataProvider);
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.repeater.RefreshingView#populateItem(org.apache.wicket.markup.repeater.Item)
-		 */
-		@Override
-		protected void populateItem(Item<TreeReportElement> item)
-		{
+        /*
+           * (non-Javadoc)
+           * @see org.apache.wicket.markup.repeater.RefreshingView#populateItem(org.apache.wicket.markup.repeater.Item)
+           */
+        @Override
+        protected void populateItem(Item<TreeReportElement> item) {
             internalGetItemCount();
-			RepeatingView cells = new RepeatingView("cell");
-			TreeReportElement row = item.getModelObject();
+            RepeatingView cells = new RepeatingView("cell");
+            TreeReportElement row = item.getModelObject();
 
-			List<Serializable> thisCellValues = new ArrayList<Serializable>();
+            List<Serializable> thisCellValues = new ArrayList<Serializable>();
 
-			boolean newValueInPreviousColumn = false;
+            boolean newValueInPreviousColumn = false;
 
             int column = 0;
 
-			// add cells for a row
-			for (Serializable cellValue : row.getRow())
-			{
-				thisCellValues.add(cellValue);
+            // add cells for a row
+            for (Serializable cellValue : row.getRow()) {
+                thisCellValues.add(cellValue);
 
-				if (reportConfig.getReportColumns()[column].isVisible())
-				{
-					Label cellLabel;
+                if (reportConfig.getReportColumns()[column].isVisible()) {
+                    Label cellLabel;
 
-					if (isDuplicate(column, cellValue) && !newValueInPreviousColumn)
-					{
-						cellLabel = new Label(Integer.toString(column), new Model<String>(""));
-						newValueInPreviousColumn = false;
-					}
-					else if (reportConfig.getReportColumns()[column].getConverter()  != null)
-					{
+                    if (isDuplicate(column, cellValue) && !newValueInPreviousColumn) {
+                        cellLabel = new Label(Integer.toString(column), new Model<String>(""));
+                        newValueInPreviousColumn = false;
+                    } else if (reportConfig.getReportColumns()[column].getConverter() != null) {
                         final IConverter converter = reportConfig.getReportColumns()[column].getConverter();
 
-                        cellLabel = new Label(Integer.toString(column), new Model<Serializable>(cellValue))
-                        {
+                        cellLabel = new Label(Integer.toString(column), new Model<Serializable>(cellValue)) {
                             @Override
-                            public IConverter getConverter(Class<?> type)
-                            {
+                            public IConverter getConverter(Class<?> type) {
                                 return converter;
                             }
                         };
 
                         addColumnTypeStyling(reportConfig.getReportColumns()[column].getColumnType(), cellLabel);
 
-						newValueInPreviousColumn = true;
-					}
-					else
-					{
-						newValueInPreviousColumn = true;
+                        newValueInPreviousColumn = true;
+                    } else {
+                        newValueInPreviousColumn = true;
 
-						IModel<Serializable> model = new Model<Serializable>(cellValue);
+                        IModel<Serializable> model = new Model<Serializable>(cellValue);
 
-						cellLabel = new Label(Integer.toString(column), model);
-						addColumnTypeStyling(reportConfig.getReportColumns()[column].getColumnType(), cellLabel);
-					}
+                        cellLabel = new Label(Integer.toString(column), model);
+                        addColumnTypeStyling(reportConfig.getReportColumns()[column].getColumnType(), cellLabel);
+                    }
 
                     StringBuilder cssClassBuilder = new StringBuilder();
                     cssClassBuilder.append(item.getIndex() == 0 ? "firstRow" : "");
@@ -259,39 +260,35 @@ public class TreeReportDataPanel extends Panel
 
                     String cssClass = cssClassBuilder.toString();
 
-                    if (StringUtils.isNotEmpty(cssClass))
-                    {
+                    if (StringUtils.isNotEmpty(cssClass)) {
                         cellLabel.add(new SimpleAttributeModifier("class", cssClass));
                     }
 
                     cells.add(cellLabel);
-				}
+                }
 
-				column++;
-			}
+                column++;
+            }
 
-			item.add(cells);
+            item.add(cells);
 
-			setCssStyle(item);
-			previousForPage = getCurrentPage();
-			previousCellValues = thisCellValues;
-		}
+            setCssStyle(item);
+            previousForPage = getCurrentPage();
+            previousCellValues = thisCellValues;
+        }
 
-        private void setCssStyle(Item<?> item)
-		{
-			if (item.getIndex() % 2 == 1)
-			{
-				item.add(new SimpleAttributeModifier("style", "background-color: #fefeff"));
-			}
-		}
+        private void setCssStyle(Item<?> item) {
+            if (item.getIndex() % 2 == 1) {
+                item.add(new SimpleAttributeModifier("style", "background-color: #fefeff"));
+            }
+        }
 
-		private boolean isDuplicate(int i, Serializable cellValue)
-		{
-			return (!reportConfig.getReportColumns()[i].isAllowDuplicates()
-					&& previousCellValues != null
-					&& previousForPage == getCurrentPage()
-					&& previousCellValues.get(i) != null
-					&& previousCellValues.get(i).equals(cellValue));
-		}
-	}
+        private boolean isDuplicate(int i, Serializable cellValue) {
+            return (!reportConfig.getReportColumns()[i].isAllowDuplicates()
+                    && previousCellValues != null
+                    && previousForPage == getCurrentPage()
+                    && previousCellValues.get(i) != null
+                    && previousCellValues.get(i).equals(cellValue));
+        }
+    }
 }
