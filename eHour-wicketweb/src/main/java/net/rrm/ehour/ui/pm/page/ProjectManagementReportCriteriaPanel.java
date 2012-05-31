@@ -30,7 +30,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListChoice;
-import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
@@ -41,33 +40,24 @@ import java.util.List;
  * Date range and project selection
  */
 
-public class UserReportCriteriaPanel extends SidePanel {
+public class ProjectManagementReportCriteriaPanel extends SidePanel {
     private static final long serialVersionUID = -6129389795390181179L;
 
 
-    public UserReportCriteriaPanel(String id, IModel<ReportCriteria> model, boolean multipleChoice) {
+    public ProjectManagementReportCriteriaPanel(String id, IModel<ReportCriteria> model) {
         super(id);
 
         Form<Void> form = new Form<Void>("criteriaForm");
 
-        if (multipleChoice) {
-            ListMultipleChoice<Project> projectDropDown;
-            projectDropDown = new ListMultipleChoice<Project>("userCriteria.projects",
-                    new PropertyModel<List<Project>>(model, "availableCriteria.projects"),
-                    new DomainObjectChoiceRenderer<Project>());
-            projectDropDown.setMaxRows(3);
-            form.add(projectDropDown);
-        } else {
-            ListChoice<Project> projectDropDown;
-            projectDropDown = new ListChoice<Project>("userCriteria.projects",
-                    new PropertyModel<Project>(model, "userCriteria.project"),
-                    new PropertyModel<List<Project>>(model, "availableCriteria.projects"),
-                    new DomainObjectChoiceRenderer<Project>());
-            projectDropDown.setNullValid(false);
-            projectDropDown.setMaxRows(1);
-            projectDropDown.setRequired(true);
-            form.add(projectDropDown);
-        }
+        ListChoice<Project> projectDropDown;
+        projectDropDown = new ListChoice<Project>("userCriteria.projects",
+                new PropertyModel<Project>(model, "userCriteria.project"),
+                new PropertyModel<List<Project>>(model, "availableCriteria.projects"),
+                new DomainObjectChoiceRenderer<Project>());
+        projectDropDown.setNullValid(false);
+        projectDropDown.setMaxRows(1);
+        projectDropDown.setRequired(true);
+        form.add(projectDropDown);
 
         addDatePickers(form, model);
 

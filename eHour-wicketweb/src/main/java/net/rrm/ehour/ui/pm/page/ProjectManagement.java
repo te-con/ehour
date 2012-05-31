@@ -34,7 +34,6 @@ import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.pm.panel.PmReportPanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -65,7 +64,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 		setDefaultModel(model);
 		
 		// add criteria
-		add(new UserReportCriteriaPanel("sidePanel", model, false));
+		add(new ProjectManagementReportCriteriaPanel("sidePanel", model));
 		
 		add(new PlaceholderPanel(REPORT_PANEL));
 	}
@@ -99,7 +98,8 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 	
 	private ProjectManagerReport getReportData()
 	{
-		ReportCriteria 	criteria = (ReportCriteria)(getDefaultModelObject());
+		ReportCriteria 	criteria = getPageModelObject();
+
 		ProjectManagerReport reportData = null;
 		DateRange	reportRange = criteria.getUserCriteria().getReportRange();
 		
