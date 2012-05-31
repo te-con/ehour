@@ -149,24 +149,25 @@ public class DerbyDbValidator
 		if (ddlType == DdlType.CREATE_TABLE)
 		{
 			platform.createTables(ddlModel, false, false);
-			insertData(platform, ddlModel, getDmlFilename());
+			insertData(platform, ddlModel);
 		}
 		else
 		{
 			platform.alterTables(ddlModel, false);
-			updateVersion(dataSource, ddlModel, platform);
+			updateVersion(ddlModel, platform);
 		}
 	}
 
 	/**
 	 * Insert data
-	 * @param platform
-	 * @param model
-	 * @throws IOException
+	 *
+     * @param platform
+     * @param model
+     * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws DdlUtilsException
 	 */
-	private void insertData(Platform platform, Database model, String dmlFile) throws DdlUtilsException, IOException
+	private void insertData(Platform platform, Database model) throws DdlUtilsException, IOException
 	{
 		DatabaseDataIO	dataIO = new DatabaseDataIO();
 
@@ -219,11 +220,10 @@ public class DerbyDbValidator
 
 	/**
 	 *
-	 * @param dataSource
-	 * @param database
-	 * @param platform
-	 */
-	private void updateVersion(DataSource dataSource, Database database, Platform platform)
+     * @param database
+     * @param platform
+     */
+	private void updateVersion(Database database, Platform platform)
 	{
 		DynaBean configuration = database.createDynaBeanFor("CONFIGURATION", false);
 		configuration.set("config_key", "version");
