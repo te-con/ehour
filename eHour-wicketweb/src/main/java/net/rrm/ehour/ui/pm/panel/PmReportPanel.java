@@ -16,19 +16,17 @@
 
 package net.rrm.ehour.ui.pm.panel;
 
-import java.util.ArrayList;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.common.util.WebGeo;
-import net.rrm.ehour.ui.report.panel.AbstractReportPanel;
-
+import net.rrm.ehour.ui.common.util.WebUtils;
+import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -38,56 +36,54 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 
+import java.util.ArrayList;
+
 /**
  * PM Report panel
- **/
+ */
 
-public class PmReportPanel extends AbstractReportPanel
-{
-	private static final long serialVersionUID = -1735419536027937563L;
-	
-	public PmReportPanel(String id, ProjectManagerReport report)
-	{
-		super(id, WebGeo.NOT_DEFINED, WebGeo.W_CONTENT_MEDIUM);
+public class PmReportPanel extends AbstractBasePanel<Void> {
+    private static final long serialVersionUID = -1735419536027937563L;
 
-		setOutputMarkupId(true);
-		
-		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-		
-		// Report model
-		StringResourceModel reportTitle = new StringResourceModel("pmReport.header", 
-																this, null, 
-																new Object[]{report.getProject().getFullName(),
-																			 new DateModel(report.getReportRange().getDateStart(), config),
-																			 new DateModel(report.getReportRange().getDateEnd(), config)});
-		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, null, null, WebGeo.W_CONTENT_MEDIUM);
-		add(greyBorder);
-		GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
-		greyBorder.add(blueBorder);
-		
-		blueBorder.add(new ListView<AssignmentAggregateReportElement>("report", new ArrayList<AssignmentAggregateReportElement>(report.getAggregates()))
-		{
-			private static final long serialVersionUID = 1L;
+    public PmReportPanel(String id, ProjectManagerReport report) {
+        super(id);
 
-			@Override
-			protected void populateItem(ListItem<AssignmentAggregateReportElement> item)
-			{
-				AssignmentAggregateReportElement aggregate = item.getModelObject();
-				
-				item.add(new Label("user", aggregate.getProjectAssignment().getUser().getFullName()));
-				item.add(new Label("role", aggregate.getProjectAssignment().getRole()));
-				item.add(new Label("type", new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType()))));
-				item.add(new Label("booked", new Model<Float>(aggregate.getHours().floatValue())));
-				item.add(new Label("allotted", new Model<Float>(aggregate.getProjectAssignment().getAllottedHours())));
-				item.add(new Label("overrun", new Model<Float>(aggregate.getProjectAssignment().getAllowedOverrun())));
-				item.add(new Label("available", new Model<Float>(aggregate.getAvailableHours())));
-				item.add(new Label("percentageUsed", new Model<Float>(aggregate.getProgressPercentage())));
-				
-			}
-		});
-		
-		// borrow css from the general reports.
-		add(new StyleSheetReference("reportStyle", new CompressedResourceReference(AbstractReportPanel.class, "style/reportStyle.css")));
-	}
+        setOutputMarkupId(true);
+
+        final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+
+        // Report model
+        StringResourceModel reportTitle = new StringResourceModel("pmReport.header",
+                this, null,
+                new Object[]{report.getProject().getFullName(),
+                        new DateModel(report.getReportRange().getDateStart(), config),
+                        new DateModel(report.getReportRange().getDateEnd(), config)});
+
+        GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, null, null, WebGeo.W_CONTENT_MEDIUM);
+        add(greyBorder);
+        GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
+        greyBorder.add(blueBorder);
+
+        blueBorder.add(new ListView<AssignmentAggregateReportElement>("report", new ArrayList<AssignmentAggregateReportElement>(report.getAggregates())) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void populateItem(ListItem<AssignmentAggregateReportElement> item) {
+                AssignmentAggregateReportElement aggregate = item.getModelObject();
+
+                item.add(new Label("user", aggregate.getProjectAssignment().getUser().getFullName()));
+                item.add(new Label("role", aggregate.getProjectAssignment().getRole()));
+                item.add(new Label("type", new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType()))));
+                item.add(new Label("booked", new Model<Float>(aggregate.getHours().floatValue())));
+                item.add(new Label("allotted", new Model<Float>(aggregate.getProjectAssignment().getAllottedHours())));
+                item.add(new Label("overrun", new Model<Float>(aggregate.getProjectAssignment().getAllowedOverrun())));
+                item.add(new Label("available", new Model<Float>(aggregate.getAvailableHours())));
+                item.add(new Label("percentageUsed", new Model<Float>(aggregate.getProgressPercentage())));
+
+            }
+        });
+
+        // borrow css from the general reports.
+        add(new StyleSheetReference("reportStyle", new CompressedResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
+    }
 }

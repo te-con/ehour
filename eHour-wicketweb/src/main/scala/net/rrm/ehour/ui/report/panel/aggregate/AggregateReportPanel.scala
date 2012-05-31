@@ -2,17 +2,16 @@ package net.rrm.ehour.ui.report.panel.aggregate
 
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.ui.common.report.ReportConfig
-import net.rrm.ehour.ui.common.util.WebGeo
-import net.rrm.ehour.ui.report.panel.AbstractReportPanel
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel
 import org.apache.wicket.markup.html.WebMarkupContainer
 import net.rrm.ehour.ui.report.{TreeReportData, TreeReportModel}
 import org.apache.wicket.model.Model
 import net.rrm.ehour.ui.chart.HighChartContainer
 import net.rrm.ehour.config.EhourConfig
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 
 
-abstract class AggregateReportPanel(id: String, reportModel: TreeReportModel, reportConfig: ReportConfig, generateChart: (String, ReportData, EhourConfig) => String) extends AbstractReportPanel(id, WebGeo.W_FULL) {
+abstract class AggregateReportPanel(id: String, reportModel: TreeReportModel, reportConfig: ReportConfig, generateChart: (String, ReportData, EhourConfig) => String) extends AbstractBasePanel[TreeReportModel](id) {
   setDefaultModel(reportModel)
   setOutputMarkupId(true)
 

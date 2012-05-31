@@ -4,7 +4,6 @@ package detail
 
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.ui.common.report.ReportConfig
-import net.rrm.ehour.ui.report.panel.AbstractReportPanel
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel
 import net.rrm.ehour.ui.report.trend.DetailedReportModel
 import net.rrm.ehour.ui.chart.HighChartContainer
@@ -14,8 +13,9 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.component.AjaxBehaviorComponent
 import net.rrm.ehour.config.EhourConfig
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 
-class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractReportPanel(id) {
+class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
 
   setDefaultModel(report)
   setOutputMarkupId(true)
