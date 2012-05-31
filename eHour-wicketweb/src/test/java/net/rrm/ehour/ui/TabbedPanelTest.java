@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO once this junit test fails remove the AbstractTabbedPanel class
+ * TODO once this junit test fails remove the TabbedPanel class
  *
  * With wicket extensions 1.4.3, TabbedPanel throws an IndexOutOfBounds exception on the tabsVisibilityCache array when adding more tabs after the panel is rendered.
  *

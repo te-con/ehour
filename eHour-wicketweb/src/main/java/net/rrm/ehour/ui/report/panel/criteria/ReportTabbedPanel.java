@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.report.panel.criteria;
 
 import java.util.List;
 
-import net.rrm.ehour.ui.common.component.AbstractTabbedPanel;
+import net.rrm.ehour.ui.common.component.TabbedPanel;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 
@@ -32,7 +32,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * Ajax tabbed report panel
  **/
 
-public class ReportTabbedPanel extends AbstractTabbedPanel
+public class ReportTabbedPanel extends TabbedPanel
 {
 	private static final long serialVersionUID = 5957279200970383021L;
 

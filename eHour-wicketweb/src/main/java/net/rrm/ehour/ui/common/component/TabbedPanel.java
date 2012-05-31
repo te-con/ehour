@@ -14,14 +14,14 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
  * @author thies
  *
  */
-public abstract class AbstractTabbedPanel extends AjaxTabbedPanel
+public class TabbedPanel extends AjaxTabbedPanel
 {
 	private static final long serialVersionUID = 589057465612946921L;
 
 	private transient Boolean[] tabsVisibilityCache;
 
 	
-	public AbstractTabbedPanel(String id, List<ITab> tabs)
+	public TabbedPanel(String id, List<ITab> tabs)
 	{
 		super(id, tabs);
 	}

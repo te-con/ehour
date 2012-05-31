@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Multi tabbed
  **/
 
-public class MultiTabbedPanel extends AbstractTabbedPanel
+public class MultiTabbedPanel extends TabbedPanel
 {
 	private static final long serialVersionUID = -6237966897046476493L;
 

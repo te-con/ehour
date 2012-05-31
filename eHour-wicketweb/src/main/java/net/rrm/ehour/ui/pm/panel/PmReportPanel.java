@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.pm.panel;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -28,6 +29,7 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
@@ -59,10 +61,10 @@ public class PmReportPanel extends AbstractBasePanel<Void> {
                         new DateModel(report.getReportRange().getDateStart(), config),
                         new DateModel(report.getReportRange().getDateEnd(), config)});
 
-        GreyRoundedBorder greyBorder = new GreyRoundedBorder("reportFrame", reportTitle, true, null, null, WebGeo.W_CONTENT_MEDIUM);
-        add(greyBorder);
-        GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
-        greyBorder.add(blueBorder);
+
+        Border blueBorder = new BlueTabRoundedBorder("reportFrame");
+        add(blueBorder);
+
 
         blueBorder.add(new ListView<AssignmentAggregateReportElement>("report", new ArrayList<AssignmentAggregateReportElement>(report.getAggregates())) {
             private static final long serialVersionUID = 1L;

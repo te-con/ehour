@@ -16,8 +16,10 @@
 
 package net.rrm.ehour.ui.pm.page;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -27,16 +29,25 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
+import net.rrm.ehour.ui.common.component.TabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.pm.panel.PmReportPanel;
 
+import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel;
+import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -74,7 +85,34 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 	{
 		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED && ajaxEvent.getTarget() != null)
 		{
-            PmReportPanel reportPanel = new PmReportPanel(REPORT_PANEL, getReportData());
+            List<ITab> tabList = new ArrayList<ITab>();
+
+            final ProjectManagerReport report = getReportData();
+
+            EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+
+
+            StringResourceModel reportTitle = new StringResourceModel("pmReport.header",
+                    this, null,
+                    new Object[]{report.getProject().getFullName(),
+                            new DateModel(report.getReportRange().getDateStart(), config),
+                            new DateModel(report.getReportRange().getDateEnd(), config)});
+
+
+            tabList.add(new AbstractTab(reportTitle)
+            {
+                private static final long serialVersionUID = 1L;
+
+                @SuppressWarnings("unchecked")
+                @Override
+                public Panel getPanel(String panelId)
+                {
+                    return new PmReportPanel(panelId, report);
+                }
+            });
+
+
+            TabbedPanel reportPanel = new TabbedPanel(REPORT_PANEL, tabList);
             addOrReplace(reportPanel);
 			ajaxEvent.getTarget().addComponent(reportPanel);
 		}
