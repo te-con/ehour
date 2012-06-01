@@ -59,7 +59,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -132,6 +131,8 @@ public class TimesheetPanel extends Panel implements Serializable
         // attach onsubmit ajax events
         setSubmitActions(timesheetForm, commentsFrame);
 
+        blueBorder.add(new SubmitButton("submitButtonTop", timesheetForm));
+
         // server message
         serverMsgLabel = new WebComponent("serverMessage");
         serverMsgLabel.setOutputMarkupId(true);
@@ -181,7 +182,7 @@ public class TimesheetPanel extends Panel implements Serializable
         @Override
         public void onClick(AjaxRequestTarget target)
         {
-            moveWeek(weekStart, target, delta);
+            moveWeek(weekStart, delta);
         }
     }
 
@@ -239,43 +240,7 @@ public class TimesheetPanel extends Panel implements Serializable
     private void setSubmitActions(Form<?> form, MarkupContainer parent)
     {
         // default submit
-        parent.add(new AjaxButton("submitButton", form)
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
-            {
-                List<ProjectAssignmentStatus> failedProjects = persistTimesheetEntries();
-
-                // success
-                if (failedProjects.isEmpty())
-                {
-                    target.addComponent(updatePostPersistMessage());
-                } else
-                {
-                    target.addComponent(updateErrorMessage());
-                }
-
-                addFailedProjectMessages(failedProjects, target);
-
-                EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
-
-                target.appendJavascript("wicket.guardform.clean();");
-            }
-
-            @Override
-            protected IAjaxCallDecorator getAjaxCallDecorator()
-            {
-                return new LoadingSpinnerDecorator();
-            }
-
-            @Override
-            protected void onError(final AjaxRequestTarget target, Form<?> form)
-            {
-                form.visitFormComponents(new FormHighlighter(target));
-            }
-        });
+        parent.add(new SubmitButton("submitButton", form));
 
         // reset, should fetch the original contents
         AjaxButton resetButton = new AjaxButton("resetButton", form)
@@ -377,9 +342,8 @@ public class TimesheetPanel extends Panel implements Serializable
     /**
      * Move to next week after succesfull form submit or week navigation
      *
-     * @param target
      */
-    private void moveWeek(Date onScreenDate, AjaxRequestTarget target, int weekDiff)
+    private void moveWeek(Date onScreenDate, int weekDiff)
     {
         EhourWebSession session = (EhourWebSession) getSession();
         Calendar cal = DateUtil.getCalendar(config);
@@ -430,5 +394,46 @@ public class TimesheetPanel extends Panel implements Serializable
         parent.add(customers);
 
         return grandTotals;
+    }
+
+    private class SubmitButton extends AjaxButton {
+        private static final long serialVersionUID = 1L;
+
+        public SubmitButton(String id, Form<?> form) {
+            super(id, form);
+        }
+
+        @Override
+        protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+        {
+            List<ProjectAssignmentStatus> failedProjects = persistTimesheetEntries();
+
+            // success
+            if (failedProjects.isEmpty())
+            {
+                target.addComponent(updatePostPersistMessage());
+            } else
+            {
+                target.addComponent(updateErrorMessage());
+            }
+
+            addFailedProjectMessages(failedProjects, target);
+
+            EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
+
+            target.appendJavascript("wicket.guardform.clean();");
+        }
+
+        @Override
+        protected IAjaxCallDecorator getAjaxCallDecorator()
+        {
+            return new LoadingSpinnerDecorator();
+        }
+
+        @Override
+        protected void onError(final AjaxRequestTarget target, Form<?> form)
+        {
+            form.visitFormComponents(new FormHighlighter(target));
+        }
     }
 }
