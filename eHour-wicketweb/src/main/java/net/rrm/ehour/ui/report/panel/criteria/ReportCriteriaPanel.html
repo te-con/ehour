@@ -63,13 +63,13 @@
 
                     <label>
                         <div style="width: 40%;float:left">
-                            <wicket:message key="report.onlyActiveCustomers"/>
+                            <label wicket:for="reportCriteria.userCriteria.onlyActiveCustomers"><wicket:message key="report.onlyActiveCustomers"/></label>
                         </div>
                         &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveCustomers" type="checkbox"/></label>
                     <br/>
                     <label>
                         <div style="width: 40%;float:left">
-                            <wicket:message key="report.onlyBillableCustomers"/>
+                            <label wicket:for="reportCriteria.userCriteria.onlyBillableCustomers"><wicket:message key="report.onlyBillableCustomers"/></label>
                         </div>
                         &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyBillableCustomers" type="checkbox"/></label>
                 </div>
@@ -83,13 +83,13 @@
 
                     <label>
                         <div style="width: 40%;float:left">
-                            <wicket:message key="report.onlyActiveProjects"/>
+                            <label wicket:for="reportCriteria.userCriteria.onlyActiveProjects"><wicket:message key="report.onlyActiveProjects"/></label>
                         </div>
                         &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveProjects" type="checkbox"/></label>
                     <br/>
                     <label>
                         <div style="width: 40%;float:left">
-                            <wicket:message key="report.onlyBillableProjects"/>
+                            <label wicket:for="reportCriteria.userCriteria.onlyBillableProjects"><wicket:message key="report.onlyBillableProjects"/></label>
                         </div>
                         &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyBillableProjects" type="checkbox"/></label>
                 </div>
@@ -134,7 +134,7 @@
                         style="width: 90%"></select>
                 <br/>
 
-                <span wicket:id="onlyActiveUsersLabel"></span>&nbsp;&nbsp;&nbsp;<input
+                <label wicket:for="reportCriteria.userCriteria.onlyActiveUsers"><span wicket:id="onlyActiveUsersLabel"></span></label>&nbsp;&nbsp;&nbsp;<input
                     wicket:id="reportCriteria.userCriteria.onlyActiveUsers" type="checkbox"/>
             </div>
 
