@@ -44,10 +44,7 @@ import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInst
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
@@ -91,15 +88,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 
             EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 
-
-            StringResourceModel reportTitle = new StringResourceModel("pmReport.header",
-                    this, null,
-                    new Object[]{report.getProject().getFullName(),
-                            new DateModel(report.getReportRange().getDateStart(), config),
-                            new DateModel(report.getReportRange().getDateEnd(), config)});
-
-
-            tabList.add(new AbstractTab(reportTitle)
+            tabList.add(new AbstractTab(new Model<String>(report.getProject().getFullName()))
             {
                 private static final long serialVersionUID = 1L;
 

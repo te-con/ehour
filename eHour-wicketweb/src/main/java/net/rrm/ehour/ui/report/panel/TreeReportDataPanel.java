@@ -135,7 +135,7 @@ public class TreeReportDataPanel extends Panel {
      * @param config
      * @return
      */
-    protected Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config) {
+    private Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config) {
         Label reportHeaderLabel = new Label(id, new StringResourceModel("report.header",
                 this, null,
                 new Object[]{new DateModel(reportRange.getDateStart(), config),

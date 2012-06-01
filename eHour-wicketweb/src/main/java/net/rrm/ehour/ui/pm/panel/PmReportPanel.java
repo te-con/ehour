@@ -17,17 +17,17 @@
 package net.rrm.ehour.ui.pm.panel;
 
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
-import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
+import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -54,17 +54,10 @@ public class PmReportPanel extends AbstractBasePanel<Void> {
 
         final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 
-        // Report model
-        StringResourceModel reportTitle = new StringResourceModel("pmReport.header",
-                this, null,
-                new Object[]{report.getProject().getFullName(),
-                        new DateModel(report.getReportRange().getDateStart(), config),
-                        new DateModel(report.getReportRange().getDateEnd(), config)});
-
-
         Border blueBorder = new BlueTabRoundedBorder("reportFrame");
         add(blueBorder);
 
+        blueBorder.add(getReportHeaderLabel("reportHeader", report.getReportRange(), config));
 
         blueBorder.add(new ListView<AssignmentAggregateReportElement>("report", new ArrayList<AssignmentAggregateReportElement>(report.getAggregates())) {
             private static final long serialVersionUID = 1L;
@@ -73,19 +66,61 @@ public class PmReportPanel extends AbstractBasePanel<Void> {
             protected void populateItem(ListItem<AssignmentAggregateReportElement> item) {
                 AssignmentAggregateReportElement aggregate = item.getModelObject();
 
-                item.add(new Label("user", aggregate.getProjectAssignment().getUser().getFullName()));
-                item.add(new Label("role", aggregate.getProjectAssignment().getRole()));
-                item.add(new Label("type", new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType()))));
-                item.add(new Label("booked", new Model<Float>(aggregate.getHours().floatValue())));
-                item.add(new Label("allotted", new Model<Float>(aggregate.getProjectAssignment().getAllottedHours())));
-                item.add(new Label("overrun", new Model<Float>(aggregate.getProjectAssignment().getAllowedOverrun())));
-                item.add(new Label("available", new Model<Float>(aggregate.getAvailableHours())));
-                item.add(new Label("percentageUsed", new Model<Float>(aggregate.getProgressPercentage())));
+                int column = 0;
+
+                Label user = new Label("user", aggregate.getProjectAssignment().getUser().getFullName());
+                applyCss(item, column++, user);
+                item.add(user);
+
+                Label role = new Label("role", aggregate.getProjectAssignment().getRole());
+                applyCss(item,column++, role);
+                item.add(role);
+                Label type = new Label("type", new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType())));
+                applyCss(item, column++, type);
+                item.add(type);
+                Label booked = new Label("booked", new Model<Float>(aggregate.getHours().floatValue()));
+                applyCss(item, column++, booked);
+                item.add(booked);
+                Label allotted = new Label("allotted", new Model<Float>(aggregate.getProjectAssignment().getAllottedHours()));
+                applyCss(item, column++, allotted);
+                item.add(allotted);
+                Label overrun = new Label("overrun", new Model<Float>(aggregate.getProjectAssignment().getAllowedOverrun()));
+                applyCss(item, column++, overrun);
+                item.add(overrun);
+                Label available = new Label("available", new Model<Float>(aggregate.getAvailableHours()));
+                applyCss(item, column++, available);
+                item.add(available);
+                Label percentageUsed = new Label("percentageUsed", new Model<Float>(aggregate.getProgressPercentage()));
+                applyCss(item, column, percentageUsed);
+                item.add(percentageUsed);
 
             }
         });
 
         // borrow css from the general reports.
         add(new StyleSheetReference("reportStyle", new CompressedResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
+    }
+
+    private void applyCss(ListItem<AssignmentAggregateReportElement> item, int column, Label cellLabel) {
+        StringBuilder cssClassBuilder = new StringBuilder();
+        cssClassBuilder.append(item.getIndex() == 0 ? "firstRow" : "");
+        cssClassBuilder.append(column == 0 ? " firstColumn" : "");
+
+        String cssClass = cssClassBuilder.toString();
+
+        if (StringUtils.isNotEmpty(cssClass)) {
+            cellLabel.add(new SimpleAttributeModifier("class", cssClass));
+        }
+    }
+
+
+    private Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config) {
+        Label reportHeaderLabel = new Label(id, new StringResourceModel("report.header",
+                this, null,
+                new Object[]{new DateModel(reportRange.getDateStart(), config),
+                        new DateModel(reportRange.getDateEnd(), config)}));
+        reportHeaderLabel.setEscapeModelStrings(false);
+
+        return reportHeaderLabel;
     }
 }
