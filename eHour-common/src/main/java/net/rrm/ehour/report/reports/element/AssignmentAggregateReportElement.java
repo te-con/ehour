@@ -95,9 +95,9 @@ public class AssignmentAggregateReportElement
      *
      * @return
      */
-    public float getAvailableHours()
+    public Float getAvailableHours()
     {
-        float available = 0;
+        Float available = null;
 
         if (projectAssignment == null)
         {
