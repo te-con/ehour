@@ -17,7 +17,7 @@ class AssignmentAggregateReportElementTest
   {
     def element = new AssignmentAggregateReportElement()
     assertEquals 0, element.getProgressPercentage(), 0.01
-    assertEquals 0, element.getAvailableHours(), 0.01
+    assertEquals null, element.getAvailableHours()
     assertEquals 0, element.getTurnOver().floatValue(), 0.01
   }
 
