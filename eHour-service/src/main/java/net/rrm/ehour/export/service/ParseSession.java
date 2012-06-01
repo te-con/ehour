@@ -78,9 +78,7 @@ public class ParseSession implements Serializable
             insertionCount = 0;
         }
 
-        insertionCount++;
-
-        insertions.put(type, insertionCount);
+        insertions.put(type, ++insertionCount);
     }
 
     public Map<ExportType, Integer> getInsertions()
