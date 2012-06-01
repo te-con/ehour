@@ -86,8 +86,6 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 
             final ProjectManagerReport report = getReportData();
 
-            EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-
             tabList.add(new AbstractTab(new Model<String>(report.getProject().getFullName()))
             {
                 private static final long serialVersionUID = 1L;

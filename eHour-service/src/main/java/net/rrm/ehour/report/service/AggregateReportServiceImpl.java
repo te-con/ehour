@@ -31,7 +31,6 @@ import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ProjectManagerDashboard;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
@@ -155,8 +154,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		// get the project
 		project = getProjectDAO().findById(projectId);
 		report.setProject(project);
-		LOGGER.debug("PM report for project " + project.getName());
-		
+
 		// get a proper report range
 		reportRange = getReportRangeForProject(reportRange, project);
 		report.setReportRange(reportRange);
@@ -257,14 +255,4 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		this.projectAssignmentService = projectAssignmentService;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.AggregateReportService#getProjectManagerDashboard(net.rrm.ehour.persistence.persistence.domain.User)
-	 */
-	public ProjectManagerDashboard getProjectManagerDashboard(User user)
-	{
-//		projectSer
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
