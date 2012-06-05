@@ -311,7 +311,6 @@ public class DateUtil {
 
     /**
      * Get date end for display (as in, time is set to 12:00pm)
-     * TODO pretty bad hack as this is a timezone issue
      *
      * @return
      */

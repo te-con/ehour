@@ -68,17 +68,6 @@ public class DateRange implements Serializable
                 end != null ? new DateTime(end) : new DateTime().plusYears(100));
 
     }
-	
-	/**
-	 * Get date end for display (as in, time is set to 12:00pm)
-	 * TODO pretty bad hack as this is a timezone issue
-	 * @return
-	 */
-	public Date getDateEndForDisplay()
-	{
-		return DateUtil.getDateEndForDisplay(getDateEnd());
-	}
-
 
 	/**
 	 * Is DateRange empty?
