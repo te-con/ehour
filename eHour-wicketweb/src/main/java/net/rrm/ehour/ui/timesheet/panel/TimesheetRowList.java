@@ -110,7 +110,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 
 	private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row)
 	{
-		Calendar dateIterator = (Calendar)row.getFirstDayOfWeekDate().clone();
+		Calendar currentDate = (Calendar)row.getFirstDayOfWeekDate().clone();
 
 		DateRange range = new DateRange(row.getProjectAssignment().getDateStart(),
 										row.getProjectAssignment().getDateEnd());
@@ -118,13 +118,13 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		// now add every cell
 		for (int i = 1;
 			 i <= 7;
-			 i++, dateIterator.add(Calendar.DAY_OF_YEAR, 1))
+			 i++, currentDate.add(Calendar.DAY_OF_YEAR, 1))
 		{
 			String id = "day" + i;
 			
-			if (DateUtil.isDateWithinRange(dateIterator, range))
+			if (DateUtil.isDateWithinRange(currentDate, range))
 			{
-				createTimesheetEntryItems(id, row, dateIterator.get(Calendar.DAY_OF_WEEK) - 1, item);
+				createTimesheetEntryItems(id, row, currentDate.get(Calendar.DAY_OF_WEEK) - 1, item);
 			}
 			else
 			{

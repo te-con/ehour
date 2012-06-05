@@ -48,46 +48,39 @@ public class TimesheetModel implements IModel<Timesheet>
 	private	User				user;
 	private Calendar			forWeek;
 	private Timesheet			timesheet;
-	
-	/**
-	 * 
-	 */
+
 	public TimesheetModel(User user, Calendar forWeek)
 	{
 		WebUtils.springInjection(this);
-		
+
 		this.user = user;
 		this.forWeek = forWeek;
-		
+
 		timesheet = load();
 	}
 
 	/**
 	 * Perist Timesheet
-	 * @return 
+	 * @return
 	 */
 	public List<ProjectAssignmentStatus> persistTimesheet()
 	{
 		WebUtils.springInjection(this);
-		
+
 		Timesheet timesheet = getObject();
-		
-		return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(), 
+
+		return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(),
 												timesheet.getCommentForPersist(),
 												new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
 	}
-	
-	/**
-	 * 
-	 * @return
-	 */
+
 	public Date getWeekStart()
 	{
 		return getObject().getWeekStart();
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public Date getWeekEnd()
@@ -95,29 +88,26 @@ public class TimesheetModel implements IModel<Timesheet>
 		return getObject().getWeekEnd();
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
+
 	private Timesheet load()
 	{
 		WeekOverview	weekOverview;
 		Timesheet		timesheet;
 		EhourConfig		config;
-		
+
 		config = EhourWebSession.getSession().getEhourConfig();
-		
+
 		weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
-		
-		timesheet = getTimesheetAssembler(config).createTimesheetForm(weekOverview);		
-		
+
+		timesheet = getTimesheetAssembler(config).createTimesheetForm(weekOverview);
+
 		if (timesheet.getComment() == null)
 		{
 			TimesheetComment comment = new TimesheetComment();
 			comment.setNewComment(Boolean.TRUE);
 			timesheet.setComment(comment);
 		}
-		
+
 		return timesheet;
 	}
 
@@ -130,23 +120,18 @@ public class TimesheetModel implements IModel<Timesheet>
 	public void setObject(Timesheet sheet)
 	{
 		this.timesheet = sheet;
-		
+
 	}
 
 	public void detach()
 	{
 		timesheetService = null;
-	}	
-	
-	
-	/**
-	 * Get timesheet assembler
-	 * @param config
-	 * @return
-	 */
+	}
+
+
 	private TimesheetAssembler getTimesheetAssembler(EhourConfig config)
 	{
 		return new TimesheetAssembler(config);
 	}
-	
+
 }
