@@ -319,7 +319,6 @@ public class DateUtilTest
         assertEquals(1, DateUtil.getWeekNumberForDate(new GregorianCalendar(2012, Calendar.JANUARY, 1).getTime(), Calendar.SUNDAY));
     }
 
-
     @Test
     public void should_return_31_days_as_amount_of_days_in_January() {
         assertEquals(31, DateUtil.getDaysInMonth(new GregorianCalendar(2012, 0, 15)));
@@ -338,6 +337,24 @@ public class DateUtilTest
     @Test
     public void should_convert_calendar_thursday_to_jodatime_thursday() {
         assertEquals(DateTimeConstants.THURSDAY, DateUtil.fromCalendarToJodaTimeDayInWeek(Calendar.THURSDAY));
+    }
+
+    @Test
+    public void should_have_date_in_range_with_open_end() {
+        DateTime now = new DateTime();
+
+        DateRange range = new DateRange(now.toDate(), null);
+
+        assertTrue(DateUtil.isDateWithinRange(now.plusDays(1).toDate(), range));
+    }
+
+    @Test
+    public void should_have_date_in_range_with_open_start() {
+        DateTime now = new DateTime();
+
+        DateRange range = new DateRange(null, now.plusDays(15).toDate());
+
+        assertTrue(DateUtil.isDateWithinRange(now.plusDays(1).toDate(), range));
     }
 
 }

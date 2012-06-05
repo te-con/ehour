@@ -62,7 +62,11 @@ public class DateRange implements Serializable
     }
 
     public Interval toInterval() {
-        return new Interval(new DateTime(getDateStart()), new DateTime(getDateEnd()));
+        Date start = getDateStart();
+        Date end = getDateEnd();
+        return new Interval(start != null ? new DateTime(start) : new DateTime().minusYears(100),
+                end != null ? new DateTime(end) : new DateTime().plusYears(100));
+
     }
 	
 	/**
