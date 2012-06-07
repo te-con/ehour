@@ -39,6 +39,7 @@ public class DomainObjectParser
 
     static
     {
+
         transformerMap.put(Integer.class, new IntegerTransformer());
         transformerMap.put(Float.class, new FloatTransformer());
         transformerMap.put(Date.class, new DateTransformer());

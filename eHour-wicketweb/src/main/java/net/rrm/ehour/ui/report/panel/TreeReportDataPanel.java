@@ -61,8 +61,9 @@ import java.util.List;
 
 public class TreeReportDataPanel extends Panel {
     private static final long serialVersionUID = -6757047600645464803L;
+    private static final SimpleAttributeModifier CSS_ALIGN_RIGHT = new SimpleAttributeModifier("style", "text-align: right;");
 
-    private ReportConfig reportConfig;
+    private final ReportConfig reportConfig;
 
     public TreeReportDataPanel(String id,
                                TreeReportModel reportModel,
@@ -170,7 +171,7 @@ public class TreeReportDataPanel extends Panel {
             columnHeaders.add(columnHeader);
 
             if (reportColumn.getColumnType().isNumeric()) {
-                columnHeader.add(new SimpleAttributeModifier("style", "text-align: right;"));
+                columnHeader.add(CSS_ALIGN_RIGHT);
             }
 
         }
@@ -187,7 +188,7 @@ public class TreeReportDataPanel extends Panel {
     private void addColumnTypeStyling(ColumnType columnType, Label label) {
         if (label != null) {
             if (columnType.isNumeric()) {
-                label.add(new SimpleAttributeModifier("style", "text-align: right;"));
+                label.add(CSS_ALIGN_RIGHT);
             }
 
             if (columnType == ColumnType.COMMENT) {

@@ -20,7 +20,6 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
-import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -67,6 +66,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
     private static final long serialVersionUID = 161160822264046559L;
     private static final String ID_USERDEPT_PLACEHOLDER = "userDepartmentPlaceholder";
+    public static final int AMOUNT_OF_QUICKWEEKS = 8;
+    public static final int AMOUNT_OF_QUICKMONTHS = 6;
+    public static final int AMOUNT_OF_QUICKQUARTERS = 3;
 
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
@@ -76,9 +78,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private ListMultipleChoice<Project> projects;
     private ListMultipleChoice<Customer> customers;
     private ListMultipleChoice<User> users;
-    private ListMultipleChoice<UserDepartment> departments;
     private List<WebMarkupContainer> quickSelections;
-    private final Form<ReportCriteriaBackingBean> form;
 
     /**
      * Constructor which sets up the basic borded form
@@ -91,7 +91,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         setOutputMarkupId(true);
 
-        form = new Form<ReportCriteriaBackingBean>("criteriaForm");
+        Form<ReportCriteriaBackingBean> form = new Form<ReportCriteriaBackingBean>("criteriaForm");
         form.setOutputMarkupId(true);
         greyBorder.add(form);
 
@@ -239,7 +239,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addUserDepartmentSelection(WebMarkupContainer parent) {
-        departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userCriteria.userDepartments",
+        ListMultipleChoice<UserDepartment> departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userCriteria.userDepartments",
                 new PropertyModel<List<UserDepartment>>(getDefaultModel(), "reportCriteria.availableCriteria.userDepartments"),
                 new DomainObjectChoiceRenderer<UserDepartment>());
         departments.setMaxRows(MAX_CRITERIA_ROW);
@@ -287,7 +287,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         // Submit
         AjaxButton submitButton = new AjaxButton("createReport", form) {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            protected final void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 EventPublisher.publishAjaxEvent(this, new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
             }
 
@@ -308,7 +308,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         // reset button
         AjaxButton resetButton = new AjaxButton("resetCriteria") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            protected final void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 EventPublisher.publishAjaxEvent(this, new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_RESET));
             }
 
@@ -361,7 +361,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private WebMarkupContainer getQuickWeek() {
         List<QuickWeek> weeks = new ArrayList<QuickWeek>();
         Calendar currentDate = new GregorianCalendar();
-        int currentWeek = -8;
+        int currentWeek = -AMOUNT_OF_QUICKWEEKS;
 
         EhourConfig config = ((EhourWebSession) getSession()).getEhourConfig();
 
@@ -369,7 +369,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         currentDate.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
         currentDate.add(Calendar.WEEK_OF_YEAR, currentWeek);
 
-        for (; currentWeek < 8; currentWeek++) {
+        for (; currentWeek < AMOUNT_OF_QUICKWEEKS; currentWeek++) {
             weeks.add(new QuickWeek(currentDate, config));
 
             currentDate.add(Calendar.WEEK_OF_YEAR, 1);
@@ -384,13 +384,13 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private WebMarkupContainer getQuickMonth() {
         List<QuickMonth> months = new ArrayList<QuickMonth>();
         Calendar currentDate = new GregorianCalendar();
-        int currentMonth = -6;
+        int currentMonth = -AMOUNT_OF_QUICKMONTHS;
 
         currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         currentDate.setFirstDayOfWeek(Calendar.SUNDAY);
         currentDate.add(Calendar.MONTH, currentMonth);
 
-        for (; currentMonth < 6; currentMonth++) {
+        for (; currentMonth < AMOUNT_OF_QUICKMONTHS; currentMonth++) {
             months.add(new QuickMonth(currentDate));
 
             currentDate.add(Calendar.MONTH, 1);
@@ -403,16 +403,16 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private WebMarkupContainer getQuickQuarter() {
         List<QuickQuarter> quarters = new ArrayList<QuickQuarter>();
         Calendar currentDate = new GregorianCalendar();
-        int currentQuarter = -3;
+        int currentQuarter = -AMOUNT_OF_QUICKQUARTERS;
 
-        int quarter = currentDate.get(Calendar.MONTH) / 3;
-        currentDate.set(Calendar.MONTH, quarter * 3); // abuse rounding off
-        currentDate.add(Calendar.MONTH, currentQuarter * 3);
+        int quarter = currentDate.get(Calendar.MONTH) / AMOUNT_OF_QUICKQUARTERS;
+        currentDate.set(Calendar.MONTH, quarter * AMOUNT_OF_QUICKQUARTERS); // abuse rounding off
+        currentDate.add(Calendar.MONTH, currentQuarter * AMOUNT_OF_QUICKQUARTERS);
 
-        for (; currentQuarter < 3; currentQuarter++) {
+        for (; currentQuarter < AMOUNT_OF_QUICKQUARTERS; currentQuarter++) {
             quarters.add(new QuickQuarter(currentDate));
 
-            currentDate.add(Calendar.MONTH, 3);
+            currentDate.add(Calendar.MONTH, AMOUNT_OF_QUICKQUARTERS);
         }
 
         return new QuickDropDownChoice<QuickQuarter>("quickQuarter", quarters, new QuickQuarterRenderer());
