@@ -100,9 +100,6 @@
                 <serializedBean>
                   <java class="java.beans.XMLDecoder">
                     <object class="com.install4j.runtime.beans.actions.misc.RequestPrivilegesAction">
-                      <void property="failIfNotRootUnix">
-                        <boolean>true</boolean>
-                      </void>
                       <void property="obtainIfAdminMac">
                         <boolean>true</boolean>
                       </void>
@@ -205,6 +202,9 @@
                 <object class="com.install4j.runtime.beans.screens.StandardProgramGroupScreen">
                   <void property="programGroupName">
                     <string>${compiler:sys.fullName}</string>
+                  </void>
+                  <void property="unixSymlinks">
+                    <boolean>false</boolean>
                   </void>
                 </object>
               </java>
