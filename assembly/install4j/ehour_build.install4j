@@ -307,12 +307,16 @@
                     <object class="com.install4j.runtime.beans.formcomponents.MultilineHtmlLabelComponent">
                       <void property="labelHtml">
                         <string>&lt;html&gt;
+&lt;br /&gt;
+eHour is succesfully installed in ${installer:sys.installationDir}
+&lt;br /&gt;&lt;br /&gt;
 
-Access eHour with your browser at &lt;a href="http://localhost:8000/"&gt;http://localhost:8000/&lt;/a&gt;.&lt;br /&gt;
+To access eHour with your browser at &lt;a href="http://localhost:8000/"&gt;http://localhost:8000/&lt;/a&gt;.&lt;br /&gt;
 &lt;br /&gt;
 The default login is username &lt;b&gt;admin&lt;/b&gt; with password &lt;b&gt;admin&lt;/b&gt;.
 &lt;br /&gt;&lt;br /&gt;
-Documentation is available at &lt;a href="http://wiki.ehour.nl/"&gt;http://wiki.ehour.nl/&lt;/a&gt;.</string>
+Documentation is available at &lt;a href="http://wiki.ehour.nl/"&gt;http://wiki.ehour.nl/&lt;/a&gt;.
+&lt;/html&gt;</string>
                       </void>
                     </object>
                   </java>
