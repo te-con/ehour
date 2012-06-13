@@ -148,7 +148,7 @@ public class ObjectCache implements Serializable
 		}
 	}
 	
-	private class CacheEntry implements Comparable<CacheEntry>, Serializable
+	private static class CacheEntry implements Comparable<CacheEntry>, Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		private long addedTimestamp;

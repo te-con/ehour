@@ -322,7 +322,7 @@ public class MailServiceImpl implements MailService
      *
      * @author Thies
      */
-    class MailTask implements Runnable
+    static class MailTask implements Runnable
     {
         private MailTaskMessage mailTaskMessage;
         private MailSender javaMailSender;

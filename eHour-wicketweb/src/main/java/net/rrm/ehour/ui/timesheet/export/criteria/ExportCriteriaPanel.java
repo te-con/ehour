@@ -134,7 +134,7 @@ public class ExportCriteriaPanel extends Panel
 	 * @author Thies Edeling (thies@te-con.nl) 
 	 *
 	 */
-	private class SelectionForm extends Form<ReportCriteria>
+	private static class SelectionForm extends Form<ReportCriteria>
 	{
 		private static final long serialVersionUID = -8232635495078008621L;
 

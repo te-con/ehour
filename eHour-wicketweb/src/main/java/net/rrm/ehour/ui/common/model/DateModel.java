@@ -95,7 +95,7 @@ public class DateModel implements IModel
 	 */
 	public DateModel(Date date, EhourConfig config, int dateStyle)
 	{
-		this(new Model(date), config, dateStyle);
+		this(new Model<Date>(date), config, dateStyle);
 	}
 	
 	/**
@@ -217,7 +217,7 @@ public class DateModel implements IModel
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
 			try
 			{
-				this.model = new Model(format.parse((String)value));
+				this.model = new Model<Date>(format.parse((String)value));
 			} catch (ParseException e)
 			{
 				this.model = null;
@@ -225,7 +225,7 @@ public class DateModel implements IModel
 		}
 		else if (value instanceof Date)
 		{
-			this.model = new Model((Date)value);
+			this.model = new Model<Date>((Date)value);
 		}
 		else if (value instanceof IModel)
 		{
@@ -233,12 +233,7 @@ public class DateModel implements IModel
 		}
 	}
 	
-	/**
-	 * 
-	 * @author Thies
-	 *
-	 */
-	private class TimesheetLongFormatter extends SimpleDateFormat
+	private static class TimesheetLongFormatter extends SimpleDateFormat
 	{
 		private static final long serialVersionUID = 2697598002926018462L;
 		private boolean breakSpaces = true;

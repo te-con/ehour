@@ -127,7 +127,7 @@ public class Login extends WebPage {
         }
     }
 
-    public final class LoginFeedbackPanel extends FeedbackPanel {
+    public static final class LoginFeedbackPanel extends FeedbackPanel {
         private static final long serialVersionUID = 1931344611905158185L;
 
         public LoginFeedbackPanel(final String id) {

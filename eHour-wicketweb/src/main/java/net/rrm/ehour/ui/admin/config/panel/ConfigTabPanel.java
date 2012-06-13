@@ -53,7 +53,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	}
 
 	@SuppressWarnings("serial")
-	private class AuditConfigPanelFactory implements TabFactory
+	private static class AuditConfigPanelFactory implements TabFactory
 	{
 		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
 		{
@@ -62,7 +62,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	}	
 	
 	@SuppressWarnings("serial")
-	private class SkinConfigPanelFactory implements TabFactory
+	private static class SkinConfigPanelFactory implements TabFactory
 	{
 		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
 		{
@@ -72,7 +72,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	
 	
 	@SuppressWarnings("serial")
-	private class MiscConfigPanelFactory implements TabFactory
+	private static class MiscConfigPanelFactory implements TabFactory
 	{
 		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
 		{
@@ -81,7 +81,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	}
 	
 	@SuppressWarnings("serial")
-	private class LocaleConfigPanelFactory implements TabFactory
+	private static class LocaleConfigPanelFactory implements TabFactory
 	{
 		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
 		{
@@ -90,7 +90,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 	}
 	
 	@SuppressWarnings("serial")
-	private class MailServerConfigPanelFactory implements TabFactory
+	private static class MailServerConfigPanelFactory implements TabFactory
 	{
 		public Panel createTab(String panelId, IModel<MainConfigBackingBean> model)
 		{
@@ -98,7 +98,7 @@ public class ConfigTabPanel extends MultiTabbedPanel
 		}
 	}
 	
-	private interface TabFactory extends Serializable
+	private static interface TabFactory extends Serializable
 	{
 		Panel createTab(String panelId, IModel<MainConfigBackingBean> model);
 	}

@@ -81,7 +81,7 @@ public class MiscConfigPanel extends AbstractConfigPanel
 		
 	}
 	
-	private final class WeekDayRenderer extends ChoiceRenderer<Date>
+	private static final class WeekDayRenderer extends ChoiceRenderer<Date>
 	{
 		private static final long serialVersionUID = -2044803875511515992L;
 		SimpleDateFormat formatter;

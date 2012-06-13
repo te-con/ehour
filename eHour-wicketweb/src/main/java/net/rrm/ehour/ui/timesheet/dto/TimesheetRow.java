@@ -252,7 +252,7 @@ public class TimesheetRow implements Serializable
 	}
 	
 	@SuppressWarnings("serial")
-	private class AvailableHours implements Serializable
+	private static class AvailableHours implements Serializable
 	{
 		int hours;
 		

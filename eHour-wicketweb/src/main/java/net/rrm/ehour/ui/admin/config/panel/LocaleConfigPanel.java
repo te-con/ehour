@@ -154,7 +154,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel
      * Choice for a locale.
      */
 	@SuppressWarnings("serial")
-    private final class LocaleChoiceRenderer extends ChoiceRenderer<Locale>
+    private static final class LocaleChoiceRenderer extends ChoiceRenderer<Locale>
     {
         private static final int COUNTRY = 0;
         private static final int LANGUAGE = 1;

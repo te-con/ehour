@@ -137,7 +137,7 @@ public class DateConverter implements IConverter
 	}
 
 	
-	private class TimesheetLongFormatter extends SimpleDateFormat
+	private static class TimesheetLongFormatter extends SimpleDateFormat
 	{
 		private static final long serialVersionUID = 2697598002926018462L;
 		private boolean breakSpaces = true;

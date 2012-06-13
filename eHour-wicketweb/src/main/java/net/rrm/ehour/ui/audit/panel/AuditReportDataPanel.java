@@ -122,7 +122,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
 		return (AuditReportRequest)criteria.getUserCriteria();
 	}
 	
-	private class DateColumn extends AbstractColumn<Audit>
+	private static class DateColumn extends AbstractColumn<Audit>
 	{
 		private static final long serialVersionUID = -5517077439980001335L;
 		private EhourConfig config;

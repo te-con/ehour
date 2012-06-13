@@ -70,7 +70,7 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
         };
     }
 
-    private final class UserNode extends ReportNode {
+    private static final class UserNode extends ReportNode {
         private static final long serialVersionUID = 8534482324216994500L;
 
         private UserNode(AssignmentAggregateReportElement aggregate) {
@@ -86,7 +86,7 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
         }
     }
 
-    private final class ProjectEndNode extends ReportNode {
+    private static final class ProjectEndNode extends ReportNode {
         private static final long serialVersionUID = 1L;
 
         private Number hours;
