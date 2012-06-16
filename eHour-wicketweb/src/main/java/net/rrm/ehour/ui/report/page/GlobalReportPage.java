@@ -46,7 +46,7 @@ import org.apache.wicket.model.ResourceModel;
  * Reporting 
  **/
 
-@AuthorizeInstantiation("ROLE_CONSULTANT")
+@AuthorizeInstantiation(value = {"ROLE_CONSULTANT", "ROLE_REPORT"})
 public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean>
 {
 	private static final long serialVersionUID = 6614404841734599622L;
