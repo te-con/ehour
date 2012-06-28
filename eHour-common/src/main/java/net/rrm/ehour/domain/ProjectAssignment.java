@@ -60,7 +60,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     @Column(name = "DATE_END")
     private Date dateEnd;
 
-    @Column(name = "role", length = 255)
+    @Column(name = "ROLE", length = 255)
     private String role;
 
     @ManyToOne

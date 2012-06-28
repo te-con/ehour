@@ -39,7 +39,6 @@ public class DomainObjectParser
 
     static
     {
-
         transformerMap.put(Integer.class, new IntegerTransformer());
         transformerMap.put(Float.class, new FloatTransformer());
         transformerMap.put(Date.class, new DateTransformer());
@@ -106,7 +105,7 @@ public class DomainObjectParser
 
             StartElement startElement = event.asStartElement();
             String dbField = startElement.getName().getLocalPart();
-            Field field = fieldMap.get(dbField);
+            Field field = fieldMap.get(dbField.toLowerCase());
 
             String data = ParserUtil.parseNextEventAsCharacters(reader);
 
@@ -259,13 +258,13 @@ public class DomainObjectParser
                 Column column = field.getAnnotation(Column.class);
                 String columnName = column.name();
 
-                fieldMap.put(columnName, field);
+                fieldMap.put(columnName.toLowerCase(), field);
             } else if (field.isAnnotationPresent(JoinColumn.class))
             {
                 JoinColumn column = field.getAnnotation(JoinColumn.class);
                 String columnName = column.name();
 
-                fieldMap.put(columnName, field);
+                fieldMap.put(columnName.toLowerCase(), field);
             } else
             {
                 Class<?> fieldType = field.getType();
