@@ -35,8 +35,12 @@
             <form wicket:id="form">
                 <table class="contentTable">
                     <tr>
-                        <td><wicket:message key="admin.import.label.backupFile" />:</td>
-                        <td><input wicket:id="file" type="file" class="textInputSmall"/></td>
+                        <td colspan="2">
+                            <wicket:message key="admin.import.restore.body" /> <br />
+                            <wicket:message key="admin.import.restore.warning" /><br />
+                            <br />
+                            <wicket:message key="admin.import.label.backupFile" />:
+                            <input wicket:id="file" type="file" class="textInputSmall"/></td>
                     </tr>
 
                     <tr>

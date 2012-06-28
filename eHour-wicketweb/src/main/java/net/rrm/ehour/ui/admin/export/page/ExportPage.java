@@ -45,7 +45,7 @@ public class ExportPage extends AbstractAdminPage<Void>
     {
         super(new ResourceModel("admin.export.title"), "admin.export.help.header", "admin.export.help.body");
 
-        GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("audit.report.title"));
+        GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("admin.export.title"));
         add(frame);
 
         GreyBlueRoundedBorder backupBorder = new GreyBlueRoundedBorder("backupBorder");
