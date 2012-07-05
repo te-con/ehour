@@ -37,6 +37,7 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -270,7 +271,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent)
 	{
 		final ModalWindow modalWindow;
-		final AjaxLink<Void> commentLink;
+
 		final PropertyModel<String> commentModel = new PropertyModel<String>(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 		
 		modalWindow = new ModalWindow("dayWin");
@@ -281,15 +282,23 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		modalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
 		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
 																		commentModel, row, index, modalWindow));
-		
-		commentLink = new AjaxLink<Void>("dayLink")
+
+        final AjaxLink<Void> commentLink = new AjaxLink<Void>("dayLink")
 		{
 			@Override
 			public void onClick(AjaxRequestTarget target)
 			{
 				modalWindow.show(target);
 			}
-		};		
+
+            @Override
+            protected void onBeforeRender() {
+                ContextImage img = createContextImage(commentModel);
+
+                addOrReplace(img);
+                super.onBeforeRender();
+            }
+        };
 		
 		modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback()
 		{
@@ -305,32 +314,33 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 		
 		commentLink.setOutputMarkupId(true);
 		commentLink.add(CommonModifiers.tabIndexModifier(255));
-		
-		ContextImage img;
-		if (StringUtils.isBlank(commentModel.getObject()))
-		{
-			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
-			CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/comment/comment_blue_on.gif", getContextRoot() + "img/comment/comment_blue_off.gif", "comment");
-		}
-		else
-		{
-			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
-		}
-		commentLink.add(img);
-		
+
 		parent.add(commentLink);
 	}
-	
-	/**
+
+    private ContextImage createContextImage(PropertyModel<String> commentModel) {
+        ContextImage img;
+
+        if (StringUtils.isBlank(commentModel.getObject()))
+        {
+            img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
+            CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/comment/comment_blue_on.gif", getContextRoot() + "img/comment/comment_blue_off.gif", "comment");
+        }
+        else
+        {
+            img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
+        }
+        return img;
+    }
+
+    /**
 	 * Set comment link css class
 	 * @param commentModel
 	 * @param commentLink
 	 */
 	private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink)
 	{
-		commentLink.add(new SimpleAttributeModifier("class"
-				, StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment"
-				: "timesheetEntryCommented"));
+		commentLink.add(new SimpleAttributeModifier("class", StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment" : "timesheetEntryCommented"));
 	}	
 	
 	/**
