@@ -133,7 +133,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication
         mountExcelReport(new ExportReportExcel(), ExportReportExcel.getId());
 
         getSharedResources().add(ExportDatabase.ID_EXPORT_DB, new ExportDatabase());
-        mountSharedResource("/exportDb", new ResourceReference(ExportDatabase.ID_EXPORT_DB).getSharedResourceKey());
+        mountResource("/exportDb", new PackageResourceReference(ExportDatabase.ID_EXPORT_DB));
+
     }
 
     private void mountExcelReport(AbstractExcelResource excelReport, String id)
