@@ -19,7 +19,8 @@ package net.rrm.ehour.ui.common.event;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
-import org.apache.wicket.Component.IVisitor;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 
 public class EventPublisher
 {
@@ -31,8 +32,6 @@ public class EventPublisher
 
 	/**
 	 * Publish ajax event to container and upwards upto and including the page
-	 * @param event
-	 * @param container
 	 */
 	public static void publishAjaxEvent(Component container, AjaxEvent event)
 	{
@@ -65,8 +64,6 @@ public class EventPublisher
 	
 	/**
 	 * Publish ajax event to page itself and then all it's children
-	 * @param parent
-	 * @param event
 	 */
 	public static void publishAjaxEventToPageChildren(MarkupContainer parent, AjaxEvent event)
 	{
@@ -118,6 +115,10 @@ public class EventPublisher
 			
 			return proceed ? IVisitor.CONTINUE_TRAVERSAL : IVisitor.STOP_TRAVERSAL;
 		}
-		
-	}	
+
+        @Override
+        public void component(Component component, IVisit iVisit) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+    }
 }

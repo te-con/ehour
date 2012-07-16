@@ -19,7 +19,8 @@ package net.rrm.ehour.ui.admin;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.common.panel.nav.admin.AdminNavPanel;
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
