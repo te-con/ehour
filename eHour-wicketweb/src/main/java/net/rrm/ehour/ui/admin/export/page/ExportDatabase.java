@@ -9,9 +9,12 @@ import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.DynamicWebResource;
 import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.request.resource.ByteArrayResource;
+import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Time;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,7 +23,7 @@ import java.util.Date;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: Nov 13, 2010 - 12:26:28 AM
  */
-public class ExportDatabase extends DynamicWebResource
+public class ExportDatabase extends ByteArrayResource
 {
     public static final String ID_EXPORT_DB = "exportDb";
 
@@ -28,6 +31,42 @@ public class ExportDatabase extends DynamicWebResource
 
     @SpringBean(name = "exportService")
     private ExportService exportService;
+
+    public ExportDatabase() {
+        super("");
+    }
+
+    @Override
+    protected ResourceResponse newResourceResponse(final Attributes attributes) {
+        final ResourceResponse response = new ResourceResponse();
+
+        response.setLastModified(Time.now());
+
+        response.setFileName(AbstractExcelResource.this.getFilename());
+
+        if (response.dataNeedsToBeWritten(attributes)) {
+            response.setContentType(CONTENT_TYPE);
+
+            response.setContentDisposition(ContentDisposition.ATTACHMENT);
+
+            final byte[] imageData = getReport(attributes);
+            if (imageData == null) {
+                response.setError(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                response.setWriteCallback(new WriteCallback() {
+                    @Override
+                    public void writeData(final Attributes attributes) {
+                        attributes.getResponse().write(imageData);
+                    }
+                });
+
+                configureResponse(response, attributes);
+            }
+        }
+
+        return response;
+    }
+
 
     @Override
     protected ResourceState getResourceState()

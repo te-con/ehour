@@ -20,118 +20,84 @@ import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
 import org.apache.log4j.Logger;
-import org.apache.wicket.markup.html.DynamicWebResource;
-import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.ByteArrayResource;
+import org.apache.wicket.request.resource.ContentDisposition;
+import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.time.Time;
-import org.apache.wicket.util.value.ValueMap;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Abstract excel resource which sets content type and rest
- **/
+ */
 
-public abstract class AbstractExcelResource extends DynamicWebResource
-{
-	private static final long serialVersionUID = -9078717513448771202L;
-	private static final Logger LOGGER = Logger.getLogger(AbstractExcelResource.class);
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.DynamicWebResource#getResourceState()
-	 */
-	@Override
-	protected ResourceState getResourceState()
-	{
-		ValueMap 		params = getParameters();
-		ExcelResourceState	state = new ExcelResourceState();
-		
-		if (params.containsKey("reportId"))
-		{
-			Report report = getReport(params);
-			
-			try
-			{
-				byte[] data = getExcelData(report);
-				state.setData(data);
-				
-			} catch (Exception e)
-			{
-				// FIXME handle better
-				LOGGER.error("While creating excel report", e);
-			}
-		}
-		else
-		{
-			LOGGER.error("No valid report id provided");
-		}
-		
-		return state;
-	}
+public abstract class AbstractExcelResource extends ByteArrayResource {
+    private static final long serialVersionUID = -9078717513448771202L;
+    private static final Logger LOGGER = Logger.getLogger(AbstractExcelResource.class);
+    public static final String CONTENT_TYPE = "application/x-ms-excel";
 
-	private Report getReport(ValueMap params)
-	{
-		String reportId = params.getString("reportId");
-		return (Report)EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
-	}
-	
-	/**
-	 * Get excel data as a byte array
-	 * (public for testing)
-	 * @return
-	 */
-	public abstract byte[] getExcelData(Report report) throws Exception;
-	
-	protected abstract String getFilename();
+    public AbstractExcelResource() {
+        super(CONTENT_TYPE);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.DynamicWebResource#setHeaders(org.apache.wicket.protocol.http.WebResponse)
-	 */
-	protected void setHeaders(WebResponse response)
-	{
-//		response.setHeader("Cache-Control", "no-cache, must-revalidate");
-		response.setAttachmentHeader(getFilename());
-	}
+    protected byte[] getReport(Attributes attributes) {
+        PageParameters parameters = attributes.getParameters();
 
-	/**
-	 * Resource state
-	 * @author Thies
-	 *
-	 */
-	private class ExcelResourceState extends ResourceState
-	{
-		private byte[] data;
-		
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.DynamicWebResource$ResourceState#getContentType()
-		 */
-		@Override
-		public String getContentType()
-		{
-			return "application/x-ms-excel";
-		}
+        StringValue optionalReportId = parameters.get("reportId");
 
-		@Override
-		public byte[] getData()
-		{
-			return data;
-		}
+        if (!optionalReportId.isEmpty()) {
+            String reportId = optionalReportId.toString();
+            Report report = getReport(reportId);
 
-		void setData(byte[] data)
-		{
-			this.data = data;
-		}
+            try {
+                return getExcelData(report);
 
-		@Override
-		public int getLength()
-		{
-			return data.length;
-		}
+            } catch (Exception e) {
+                // FIXME handle better
+                LOGGER.error("While creating excel report", e);
+            }
+        }
 
-		@Override
-		public Time lastModifiedTime()
-		{
-			return Time.now();
-		}
-	}
+        throw new IllegalArgumentException("No valid report id provided");
+    }
+
+    private Report getReport(String reportId) {
+        return (Report) EhourWebSession.getSession().getObjectCache().getObjectFromCache(reportId);
+    }
+
+    public abstract byte[] getExcelData(Report report) throws Exception;
+
+    protected abstract String getFilename();
+
+    @Override
+    protected ResourceResponse newResourceResponse(final Attributes attributes) {
+        final ResourceResponse response = new ResourceResponse();
+
+        response.setLastModified(Time.now());
+
+        response.setFileName(AbstractExcelResource.this.getFilename());
+
+        if (response.dataNeedsToBeWritten(attributes)) {
+            response.setContentType(CONTENT_TYPE);
+
+            response.setContentDisposition(ContentDisposition.ATTACHMENT);
+
+            final byte[] imageData = getReport(attributes);
+            if (imageData == null) {
+                response.setError(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                response.setWriteCallback(new WriteCallback() {
+                    @Override
+                    public void writeData(final Attributes attributes) {
+                        attributes.getResponse().write(imageData);
+                    }
+                });
+
+                configureResponse(response, attributes);
+            }
+        }
+
+        return response;
+    }
 }

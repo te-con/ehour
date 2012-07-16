@@ -54,6 +54,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.resource.IPropertiesFactory;
 import org.apache.wicket.resource.IPropertiesLoader;
@@ -138,11 +139,11 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     private void mountExcelReport(AbstractExcelResource excelReport, String id)
     {
         getSharedResources().add(id, excelReport);
-        mountSharedResource("/" + id, new ResourceReference(id).getSharedResourceKey());
+        mountResource("/" + id,  new PackageResourceReference(id));
     }
 
     @Override
-    public String getConfigurationType()
+    public RuntimeConfigurationType getConfigurationType()
     {
         if (configurationType == null || (!configurationType.equalsIgnoreCase(Application.DEPLOYMENT) &&
                 !configurationType.equalsIgnoreCase(Application.DEVELOPMENT)))
@@ -156,31 +157,31 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
     private void mountPages()
     {
-        mount(new HybridUrlCodingStrategy("/login", Login.class));
-        mount(new HybridUrlCodingStrategy("/logout", Logout.class));
+        mountPage("/login", Login.class);
+        mountPage("/logout", Logout.class);
 
 
-        mount(new HybridUrlCodingStrategy("/admin", MainConfigPage.class));
-        mount(new HybridUrlCodingStrategy("/admin/employee", UserAdmin.class));
-        mount(new HybridUrlCodingStrategy("/admin/department", DepartmentAdmin.class));
-        mount(new HybridUrlCodingStrategy("/admin/customer", CustomerAdmin.class));
-        mount(new HybridUrlCodingStrategy("/admin/project", ProjectAdmin.class));
-        mount(new HybridUrlCodingStrategy("/admin/assignment", AssignmentAdmin.class));
+        mountPage("/admin", MainConfigPage.class);
+        mountPage("/admin/employee", UserAdmin.class);
+        mountPage("/admin/department", DepartmentAdmin.class);
+        mountPage("/admin/customer", CustomerAdmin.class);
+        mountPage("/admin/project", ProjectAdmin.class);
+        mountPage("/admin/assignment", AssignmentAdmin.class);
 
-        mount(new HybridUrlCodingStrategy("/consultant/overview", MonthOverviewPage.class));
+        mountPage("/consultant/overview", MonthOverviewPage.class);
 
-        mount(new HybridUrlCodingStrategy("/consultant/exportmonth", ExportMonthSelectionPage.class));
-        mount(new HybridUrlCodingStrategy("/consultant/print", PrintMonth.class));
+        mountPage("/consultant/exportmonth", ExportMonthSelectionPage.class);
+        mountPage("/consultant/print", PrintMonth.class);
 
-        mount(new HybridUrlCodingStrategy("/report", GlobalReportPage.class));
+        mountPage("/report", GlobalReportPage.class);
 
-        mount(new HybridUrlCodingStrategy("/audit", AuditReportPage.class));
+        mountPage("/audit", AuditReportPage.class);
 
-        mount(new HybridUrlCodingStrategy("/pm", ProjectManagement.class));
+        mountPage("/pm", ProjectManagement.class);
 
-        mount(new HybridUrlCodingStrategy("/prefs", UserPreferencePage.class));
+        mountPage("/prefs", UserPreferencePage.class);
 
-        mount(new HybridUrlCodingStrategy("/backup", ExportPage.class));
+        mountPage("/backup", ExportPage.class);
     }
 
     protected void springInjection()
