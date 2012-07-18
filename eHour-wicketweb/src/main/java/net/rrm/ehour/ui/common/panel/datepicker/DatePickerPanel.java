@@ -1,16 +1,12 @@
 package net.rrm.ehour.ui.common.panel.datepicker;
 
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
-import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
@@ -54,10 +50,10 @@ public class DatePickerPanel extends Panel {
                 dateInputField.setVisible(!visible);
 
                 if (!visible) {
-                    target.appendJavascript(dateInputField.enableDatePickerJavascript());
+                    target.appendJavaScript(dateInputField.enableDatePickerJavascript());
                 }
 
-                target.addComponent(updateTarget);
+                target.add(updateTarget);
             }
         };
 

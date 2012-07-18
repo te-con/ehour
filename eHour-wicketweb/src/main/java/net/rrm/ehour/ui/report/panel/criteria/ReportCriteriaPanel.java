@@ -140,7 +140,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             protected void onUpdate(AjaxRequestTarget target) {
                 // show only projects for selected customers
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
-                target.addComponent(projects);
+                target.add(projects);
             }
         });
 
@@ -159,7 +159,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
-                target.addComponent(customers);
+                target.add(customers);
             }
         };
 
@@ -175,12 +175,12 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
-                target.addComponent(customers);
-                target.addComponent(projects);
+                target.add(customers);
+                target.add(projects);
 
                 // bahh!
-                target.addComponent(ReportCriteriaPanel.this.get("border:criteriaForm:customerProjectsBorder:reportCriteria.userCriteria.onlyBillableCustomers"));
-                target.addComponent(ReportCriteriaPanel.this.get("border:criteriaForm:customerProjectsBorder:reportCriteria.userCriteria.onlyBillableProjects"));
+                target.add(ReportCriteriaPanel.this.get("border:criteriaForm:customerProjectsBorder:reportCriteria.userCriteria.onlyBillableCustomers"));
+                target.add(ReportCriteriaPanel.this.get("border:criteriaForm:customerProjectsBorder:reportCriteria.userCriteria.onlyBillableProjects"));
             }
         };
 
@@ -203,7 +203,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
-                target.addComponent(projects);
+                target.add(projects);
             }
         };
 
@@ -228,7 +228,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS);
-                target.addComponent(users);
+                target.add(users);
             }
         };
 
@@ -251,7 +251,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             protected void onUpdate(AjaxRequestTarget target) {
                 // show only projects for selected customers
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS);
-                target.addComponent(users);
+                target.add(users);
             }
         });
 
@@ -298,7 +298,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.addComponent(form);
+                target.add(form);
             }
         };
 
@@ -444,11 +444,11 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void updateDates(AjaxRequestTarget target) {
-        target.addComponent(startDatePicker);
-        target.addComponent(endDatePicker);
+        target.add(startDatePicker);
+        target.add(endDatePicker);
 
         for (WebMarkupContainer cont : quickSelections) {
-            target.addComponent(cont);
+            target.add(cont);
         }
     }
 }

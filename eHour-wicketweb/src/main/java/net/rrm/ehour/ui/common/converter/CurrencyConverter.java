@@ -1,22 +1,21 @@
 package net.rrm.ehour.ui.common.converter;
 
+import net.rrm.ehour.config.EhourConfig;
+import org.apache.log4j.Logger;
+
 import java.text.NumberFormat;
 import java.util.Currency;
 
-import net.rrm.ehour.config.EhourConfig;
-
-import org.apache.log4j.Logger;
-
-public class CurrencyConverter extends AbstractNumberConverter
+public class CurrencyConverter extends AbstractNumberConverter<Currency>
 {
 	private static final long serialVersionUID = 1717369597555092582L;
 	private static final Logger LOGGER = Logger.getLogger(CurrencyConverter.class);
 	
 	private static final CurrencyConverter instance = new CurrencyConverter();
 	
-	public Object convertToObject(String value, EhourConfig config)
+	public Currency convertToObject(String value, EhourConfig config)
 	{
-		return 0;
+		return null;
 	}
 
 	@Override

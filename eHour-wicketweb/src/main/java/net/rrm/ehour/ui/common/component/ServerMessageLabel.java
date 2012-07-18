@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.common.component;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
@@ -42,7 +41,7 @@ public class ServerMessageLabel extends Label
 	{
 		super(id, model);
 
-		add(new SimpleAttributeModifier("class", cssClass));
+		add(AttributeModifier.replace("class", cssClass));
 		setOutputMarkupId(true);
 
 		add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(3))
@@ -52,7 +51,7 @@ public class ServerMessageLabel extends Label
 			@Override
 			protected void onPostProcessTarget(AjaxRequestTarget target)
 			{
-				target.addComponent(ServerMessageLabel.this);
+				target.add(ServerMessageLabel.this);
 				overrideVisibility = true;
 			}
 		});		

@@ -27,8 +27,8 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
-import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.common.util.WebGeo;
+import net.rrm.ehour.ui.common.util.WebUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -92,7 +92,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void>
 	{
 		assignmentListView.setList(getProjectAssignments(user));
 		
-		target.addComponent(this);
+		target.add(this);
 	}
 
 	/**

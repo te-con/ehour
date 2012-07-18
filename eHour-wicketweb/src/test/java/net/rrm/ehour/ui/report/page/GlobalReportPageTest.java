@@ -106,7 +106,7 @@ public class GlobalReportPageTest extends BaseTestReport {
         AjaxRequestTarget target = createMock(AjaxRequestTarget.class);
         AjaxEvent event = new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED, target);
 
-        target.addComponent(isA(ReportTabbedPanel.class));
+        target.add(isA(ReportTabbedPanel.class));
         replay(target);
 
         page.ajaxEventReceived(event);

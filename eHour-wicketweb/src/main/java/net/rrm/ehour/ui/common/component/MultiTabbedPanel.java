@@ -139,7 +139,7 @@ public class MultiTabbedPanel extends TabbedPanel
 				
 				if (target != null)
 				{
-					target.addComponent(MultiTabbedPanel.this);
+					target.add(MultiTabbedPanel.this);
 				}
 				onAjaxUpdate(target);
 			}

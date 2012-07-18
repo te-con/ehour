@@ -62,12 +62,12 @@ public class ValidatingFormComponentAjaxBehavior extends AjaxFormComponentUpdati
 				{
 					if ( ((AjaxFormComponentFeedbackIndicator)component).getIndicatorFor() == getFormComponent())
 					{
-						target.addComponent(component);
+						target.add(component);
 					}
 				}
 				else
 				{
-					target.addComponent(component);
+					target.add(component);
 				}
 			
 				return IVisitor.CONTINUE_TRAVERSAL;

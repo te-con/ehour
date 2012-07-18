@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
@@ -113,8 +112,8 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 
         if (!config.isShowTurnover())
         {
-            customerLabel.add(new SimpleAttributeModifier("style", "width: 30%"));
-            projectLabel.add(new SimpleAttributeModifier("style", "width: 35%"));
+            customerLabel.add(AttributeModifier.replace("style", "width: 30%"));
+            projectLabel.add(AttributeModifier.replace("style", "width: 35%"));
         }
         container.add(customerLabel);
         container.add(projectLabel);
@@ -227,10 +226,10 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 
                 original.replaceWith(replacement);
                 originalImage.replaceWith(replacementImage);
-                target.addComponent(replacement);
-                target.addComponent(replacementImage);
+                target.add(replacement);
+                target.add(replacementImage);
 
-                target.appendJavascript("initImagePreload();");
+                target.appendJavaScript("initImagePreload();");
             }
         };
 
@@ -317,7 +316,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
     {
         if (!isTurnOverVisible())
         {
-            label.add(new SimpleAttributeModifier("style", "width: 30%;"));
+            label.add(AttributeModifier.replace("style", "width: 30%;"));
         }
     }
 
@@ -325,7 +324,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
     {
         if (!isTurnOverVisible())
         {
-            label.add(new SimpleAttributeModifier("style", "width: 35%;"));
+            label.add(AttributeModifier.replace("style", "width: 35%;"));
         }
     }
 

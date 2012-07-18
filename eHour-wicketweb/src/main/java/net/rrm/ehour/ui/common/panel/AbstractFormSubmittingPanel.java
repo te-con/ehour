@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.event.CommonAjaxEventType;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
@@ -75,7 +74,7 @@ public abstract class AbstractFormSubmittingPanel<T> extends AbstractAjaxPanel<T
 			{
 				logger.error("While trying to persist/delete", e);
 				backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
-				target.addComponent(this);
+				target.add(this);
 				
 				return false;
 			}

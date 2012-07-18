@@ -1,7 +1,6 @@
 package net.rrm.ehour.ui.common.menu
 
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
-import org.apache.wicket.PageParameters
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage
 import net.rrm.ehour.ui.report.page.GlobalReportPage
 import net.rrm.ehour.ui.pm.page.ProjectManagement
@@ -15,12 +14,13 @@ import java.util.Arrays
 import java.util.{List => JList}
 import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin
+import org.apache.wicket.request.mapper.parameter.PageParameters
 
 object MenuDefinition {
 
   def createMenuDefinition:JList[_ <: MenuItem] = {
     val params = new PageParameters()
-    params.put(MonthOverviewPage.PARAM_OPEN, MonthOverviewPage.OpenPanel.TIMESHEET)
+    params.add(MonthOverviewPage.PARAM_OPEN, MonthOverviewPage.OpenPanel.TIMESHEET)
 
     val enterHours = new LinkItem("nav.hours.enter", classOf[MonthOverviewPage], new Some(params))
     val hoursOverview = new LinkItem("nav.hours.overview", classOf[MonthOverviewPage])

@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.ui.common;
 
-import static org.easymock.EasyMock.createMock;
+import net.rrm.ehour.audit.service.AuditService;
+import net.rrm.ehour.config.EhourConfigStub;
+import org.apache.wicket.spring.test.ApplicationContextMock;
 
 import java.util.Calendar;
 
-import net.rrm.ehour.audit.service.AuditService;
-import net.rrm.ehour.config.EhourConfigStub;
+import static org.easymock.EasyMock.createMock;
 
-import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock;
 
 /**
  * Created on Mar 17, 2009, 5:31:37 AM
@@ -32,13 +32,13 @@ import org.apache.wicket.spring.injection.annot.test.AnnotApplicationContextMock
  */
 public abstract class AbstractSpringTester
 {
-	protected AnnotApplicationContextMock mockContext;
+    protected ApplicationContextMock mockContext;
 	private EhourConfigStub config;
 	private AuditService auditService;
 
 	private void createContextSetup() 
 	{
-		mockContext = new AnnotApplicationContextMock();
+        mockContext=new ApplicationContextMock();
 		config = new EhourConfigStub();
 		config.setFirstDayOfWeek(Calendar.SUNDAY);
 
@@ -48,7 +48,7 @@ public abstract class AbstractSpringTester
 		mockContext.putBean("auditService", auditService);
 	}
 	
-	public final AnnotApplicationContextMock getMockContext()
+	public final ApplicationContextMock getMockContext()
 	{
 		if (mockContext == null)
 		{

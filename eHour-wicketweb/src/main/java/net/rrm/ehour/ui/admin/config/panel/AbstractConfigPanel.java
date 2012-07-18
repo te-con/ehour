@@ -27,10 +27,10 @@ import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.log4j.Logger;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -137,7 +137,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form<?> form)
 			{
-				target.addComponent(form);
+				target.add(form);
             }
         });		
 	}
@@ -146,7 +146,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 	{
 		Label replacementLabel = new Label("serverMessage", msgModel);
 		replacementLabel.setOutputMarkupId(true);
-		replacementLabel.add(new SimpleAttributeModifier("class", "smallTextRed"));
+		replacementLabel.add(AttributeModifier.replace("class", "smallTextRed"));
 		serverMessage.replaceWith(replacementLabel);
 		serverMessage = replacementLabel;
 
@@ -155,7 +155,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 
 		if (target != null)
 		{
-			target.addComponent(serverMessage);
+			target.add(serverMessage);
 		}
 	}
 	

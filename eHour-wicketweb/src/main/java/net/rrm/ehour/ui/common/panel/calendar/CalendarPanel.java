@@ -35,7 +35,6 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -111,7 +110,7 @@ public class CalendarPanel extends SidePanel {
 
         calendarFrame.replaceWith(replacementFrame);
         calendarFrame = replacementFrame;
-        target.addComponent(replacementFrame);
+        target.add(replacementFrame);
     }
 
     private WebMarkupContainer getFrame() {
@@ -159,16 +158,16 @@ public class CalendarPanel extends SidePanel {
                 if (fireWeekClicks) {
                     fireWeekClicks(item, week, isCurrentWeek);
                 } else {
-                    item.add(new SimpleAttributeModifier("class", "CalendarWeek other"));
-                    item.add(new SimpleAttributeModifier("style", "cursor:default"));
+                    item.add(AttributeModifier.replace("class", "CalendarWeek other"));
+                    item.add(AttributeModifier.replace("style", "cursor:default"));
                 }
             }
 
             private void fireWeekClicks(ListItem<CalendarWeek> item, CalendarWeek week, boolean isCurrentWeek) {
                 if (isCurrentWeek) {
-                    item.add(new SimpleAttributeModifier("class", "CalendarWeek selectedWeek"));
+                    item.add(AttributeModifier.replace("class", "CalendarWeek selectedWeek"));
                 } else {
-                    item.add(new SimpleAttributeModifier("class", "CalendarWeek other"));
+                    item.add(AttributeModifier.replace("class", "CalendarWeek other"));
                     item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
                 } 
             }
@@ -206,7 +205,7 @@ public class CalendarPanel extends SidePanel {
                     }
                 }
 
-                label.add(new SimpleAttributeModifier("class", cssClass.toString()));
+                label.add(AttributeModifier.replace("class", cssClass.toString()));
 
                 return label;
             }

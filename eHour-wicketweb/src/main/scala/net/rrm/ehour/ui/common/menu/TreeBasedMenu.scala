@@ -1,7 +1,6 @@
 package net.rrm.ehour.ui.common.menu
 
 import org.apache.wicket.markup.html.WebPage
-import org.apache.wicket.PageParameters
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.{Fragment, Panel}
@@ -9,6 +8,7 @@ import org.apache.wicket.markup.html.link.Link
 import org.apache.wicket.model.ResourceModel
 import java.util.{List => JList}
 import net.rrm.ehour.ui.common.util.AuthUtil
+import org.apache.wicket.request.mapper.parameter.PageParameters
 
 sealed abstract class MenuItem {
   def isVisibleForLoggedInUser: Boolean

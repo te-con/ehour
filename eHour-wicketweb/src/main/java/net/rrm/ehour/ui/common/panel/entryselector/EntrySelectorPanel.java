@@ -60,7 +60,7 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 
 	public void refreshList(AjaxRequestTarget target)
 	{
-		target.addComponent(blueBorder);
+		target.add(blueBorder);
 	}
 
 	private void setUpPanel(WebMarkupContainer itemListHolder)
@@ -107,7 +107,7 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 
             	callbackAfterFilter(target, filter);
 
-                target.appendJavascript("filterList();");
+                target.appendJavaScript("filterList();");
 			}
 		};
 
@@ -125,6 +125,6 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE, filter);
         EventPublisher.publishAjaxEvent(this, payloadEvent);
 		
-    	target.addComponent(blueBorder);
+    	target.add(blueBorder);
 	}
 }

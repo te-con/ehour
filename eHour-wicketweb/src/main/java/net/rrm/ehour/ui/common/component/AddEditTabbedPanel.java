@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.common.component;
 
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
@@ -74,7 +73,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 		addAddTab();
 		setSelectedTab(TABPOS_ADD);
 		
-		target.addComponent(this);
+		target.add(this);
 	}
 
 	/**
@@ -84,7 +83,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	public void failedSave(AdminBackingBean backingBean, AjaxRequestTarget target)
 	{
 		backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
-		target.addComponent(this);
+		target.add(this);
 	}	
 	
 	
@@ -218,7 +217,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 		}
 		
 		setSelectedTab(tabIndex);
-		target.addComponent(this);
+		target.add(this);
 	}
 
 	/**

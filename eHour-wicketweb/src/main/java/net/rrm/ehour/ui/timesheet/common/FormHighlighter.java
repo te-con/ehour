@@ -58,7 +58,7 @@ public class FormHighlighter implements FormComponent.IVisitor, Serializable {
                     ((TimesheetTextField) formComponent).rememberCurrentValue();
                 }
 
-                target.addComponent(formComponent);
+                target.add(formComponent);
             }
             // reset color if it was invalid and needs to be reset
             else if (formComponent instanceof TimesheetTextField) {
@@ -72,7 +72,7 @@ public class FormHighlighter implements FormComponent.IVisitor, Serializable {
                         ttField.rememberCurrentValidity();
                     }
 
-                    target.addComponent(formComponent);
+                    target.add(formComponent);
                 }else {
                     LOGGER.trace(markupId + " is not changed");
                 }

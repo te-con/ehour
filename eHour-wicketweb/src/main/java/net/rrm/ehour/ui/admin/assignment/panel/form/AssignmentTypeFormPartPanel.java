@@ -18,13 +18,13 @@ package net.rrm.ehour.ui.admin.assignment.panel.form;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.ui.common.panel.datepicker.DatePickerPanel;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
+import net.rrm.ehour.ui.common.panel.datepicker.DatePickerPanel;
 import net.rrm.ehour.ui.common.renderers.ProjectAssignmentTypeRenderer;
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator;
 import org.apache.wicket.Component;
@@ -143,13 +143,13 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 				// to disable the required validation
 				allottedHours.setEnabled(showAllottedHoursModel.getObject());
 				overrunHours.setEnabled(showOverrunHoursModel.getObject());
-				target.addComponent(allottedHours);
-				target.addComponent(overrunHours);
+				target.add(allottedHours);
+				target.add(overrunHours);
 
 				// show/hide rows dependent on the assignment type selected
-				target.addComponent(allottedRow);
-				target.addComponent(overrunRow);
-				target.addComponent(notifyPmRow);
+				target.add(allottedRow);
+				target.add(overrunRow);
+				target.add(notifyPmRow);
             }
         });
 
@@ -176,7 +176,7 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 
             for (Component notifiableComponent : notifiableComponents)
             {
-                target.addComponent(notifiableComponent);
+                target.add(notifiableComponent);
             }
         }
 

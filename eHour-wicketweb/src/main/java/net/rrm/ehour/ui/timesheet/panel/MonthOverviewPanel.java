@@ -29,7 +29,6 @@ import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.util.DateUtil;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -146,7 +145,7 @@ public class MonthOverviewPanel extends Panel {
         }
 
         if (DateUtil.isWeekend(overviewFor)) {
-            fragment.add(new SimpleAttributeModifier("style", "background-color: #eef6fe"));
+            fragment.add(AttributeModifier.replace("style", "background-color: #eef6fe"));
         }
 
         return fragment;
@@ -184,9 +183,9 @@ public class MonthOverviewPanel extends Panel {
         Label label = HtmlUtil.getNbspLabel(dayId);
 
         if (monthIsBeforeCurrent(overviewFor, thisMonth, thisYear)) {
-            label.add(new SimpleAttributeModifier("class", "noMonthBefore"));
+            label.add(AttributeModifier.replace("class", "noMonthBefore"));
         } else {
-            label.add(new SimpleAttributeModifier("class", "noMonthAfter"));
+            label.add(AttributeModifier.replace("class", "noMonthAfter"));
         }
         return label;
     }
@@ -205,7 +204,7 @@ public class MonthOverviewPanel extends Panel {
                 dayLabel = HtmlUtil.getNbspLabel(id);
 
                 if (!monthIsBeforeCurrent(overviewFor, thisMonth, thisYear)) {
-                    dayLabel.add(new SimpleAttributeModifier("class", "noMonth"));
+                    dayLabel.add(AttributeModifier.replace("class", "noMonth"));
                 }
             }
 

@@ -89,7 +89,7 @@ public class AssignmentProjectSelectionPanel extends Panel {
         // make project update automatically when customers changed
         customerChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
             protected void onUpdate(AjaxRequestTarget target) {
-                target.addComponent(projectChoice);
+                target.add(projectChoice);
             }
         });
 

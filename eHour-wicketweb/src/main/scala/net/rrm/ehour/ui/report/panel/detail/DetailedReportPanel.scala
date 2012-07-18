@@ -35,7 +35,7 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
       new AjaxBehaviorComponent(id, "onclick", (target: AjaxRequestTarget) => {
         val chart = new HighChartContainer("chart", new Model(rawData), generateChart)
         frame.addOrReplace(chart)
-        target.addComponent(chart)
+        target.add(chart)
       })
     }
 

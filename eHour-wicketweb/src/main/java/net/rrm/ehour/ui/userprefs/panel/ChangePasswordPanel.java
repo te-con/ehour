@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -107,16 +106,16 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
 
                 Label replacementLabel = new Label("serverMessage", new ResourceModel("userprefs.saved"));
                 replacementLabel.setOutputMarkupId(true);
-                replacementLabel.add(new SimpleAttributeModifier("class", "smallText"));
+                replacementLabel.add(AttributeModifier.replace("class", "smallText"));
 
                 form.addOrReplace(replacementLabel);
-                target.addComponent(replacementLabel);
-                target.addComponent(form);
+                target.add(replacementLabel);
+                target.add(form);
             } catch (BadCredentialsException bce) {
                 processFormSubmitError(target);
 
                 currentPasswordField.error(new ValidationError().addMessageKey("user.invalidCurrentPassword"));
-                target.addComponent(form);
+                target.add(form);
             }
         }
     }
@@ -125,7 +124,7 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
     protected boolean processFormSubmitError(AjaxRequestTarget target) {
         WebComponent emptyServerMessage = createEmptyServerMessage();
         form.addOrReplace(emptyServerMessage);
-        target.addComponent(emptyServerMessage);
+        target.add(emptyServerMessage);
 
         return false;
     }

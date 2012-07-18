@@ -6,24 +6,19 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.IConverter;
 
-public class CurrencyLabel extends Label
-{
-	private static final long serialVersionUID = -8777767390766813803L;
+public class CurrencyLabel extends Label {
+    private static final long serialVersionUID = -8777767390766813803L;
 
-	public CurrencyLabel(String id, IModel<?> model)
-	{
+    public CurrencyLabel(String id, IModel<?> model) {
         super(id, model);
-	}
+    }
 
-    public CurrencyLabel(String id, Float value)
-    {
+    public CurrencyLabel(String id, Float value) {
         super(id, new Model<Float>(value));
     }
 
-
     @Override
-    public final IConverter getConverter(Class<?> type)
-    {
+    public <Currency> IConverter<Currency> getConverter(Class<Currency> type) {
         return CurrencyConverter.getInstance();
     }
 }

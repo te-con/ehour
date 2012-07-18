@@ -1,15 +1,14 @@
 package net.rrm.ehour.ui.common.panel.datepicker;
 
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.validation.ValidationError;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -28,26 +27,26 @@ public class DateInputField extends TextField<Date> implements IHeaderContributo
     }
 
     @Override
-    public IConverter getConverter(Class<?> type) {
-        return new IConverter() {
+    public <Date> IConverter<Date> getConverter(Class<Date> type) {
+
+        return new IConverter<Date>() {
             @Override
-            public Object convertToObject(String value, Locale locale) {
+            public Date convertToObject(String value, Locale locale) {
                 try {
-                    return FORMATTER.parseDateTime(value).toDate();
+                    return (FORMATTER.parseDateTime(value)).toDate();
                 } catch (IllegalArgumentException iae) {
                     AjaxRequestTarget target = AjaxRequestTarget.get();
 
                     if (target != null) {
                         DateInputField.this.add(new RedBorderModifier());
-                        target.addComponent(DateInputField.this);
+                        target.add(DateInputField.this);
                     }
 
                     error("failure");
                     return null;
                 }
-
-
             }
+
 
             @Override
             public String convertToString(Object value, Locale locale) {
@@ -59,7 +58,7 @@ public class DateInputField extends TextField<Date> implements IHeaderContributo
     @Override
     public void renderHead(IHeaderResponse response) {
         if (isVisible()) {
-            response.renderOnDomReadyJavascript(enableDatePickerJavascript());
+            response.renderOnDomReadyJavaScript(enableDatePickerJavascript());
         }
     }
 
@@ -67,13 +66,13 @@ public class DateInputField extends TextField<Date> implements IHeaderContributo
         return String.format("$('#%s').datepicker({changeMonth:true,changeYear:true})", getMarkupId());
     }
 
-    private static class RedBorderModifier extends SimpleAttributeModifier {
+    private static class RedBorderModifier extends AttributeModifier {
         public RedBorderModifier() {
             super("style", "width: 5em;border-color: #ff0000");
         }
 
         @Override
-        public boolean isTemporary() {
+        public boolean isTemporary(Component component) {
             return true;
         }
     }

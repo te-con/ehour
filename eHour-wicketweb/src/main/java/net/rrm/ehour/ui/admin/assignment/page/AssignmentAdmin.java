@@ -50,6 +50,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
 
     @SpringBean
     private UserService userService;
+
     private Panel assignmentPanel;
 
     public AssignmentAdmin() {
@@ -110,7 +111,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
                 user);
 
         assignmentPanel.replaceWith(newAssignmentPanel);
-        target.addComponent(newAssignmentPanel);
+        target.add(newAssignmentPanel);
 
         assignmentPanel = newAssignmentPanel;
     }

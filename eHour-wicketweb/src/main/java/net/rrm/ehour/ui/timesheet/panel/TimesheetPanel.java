@@ -40,11 +40,11 @@ import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.util.DateUtil;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -277,7 +277,7 @@ public class TimesheetPanel extends Panel implements Serializable
             {
                 if (label.getId().equals("status")) {
                     label.setVisible(true);
-                    target.addComponent(label);
+                    target.add(label);
                 }
 
                 return IVisitor.CONTINUE_TRAVERSAL;
@@ -317,7 +317,7 @@ public class TimesheetPanel extends Panel implements Serializable
     private Label updateServerMessage(IModel<String> model)
     {
         Label label = new Label("serverMessage", model);
-        label.add(new SimpleAttributeModifier("style", "timesheetPersisted"));
+        label.add(AttributeModifier.replace("style", "timesheetPersisted"));
         label.setOutputMarkupId(true);
         serverMsgLabel.replaceWith(label);
         serverMsgLabel = label;
@@ -411,17 +411,17 @@ public class TimesheetPanel extends Panel implements Serializable
             // success
             if (failedProjects.isEmpty())
             {
-                target.addComponent(updatePostPersistMessage());
+                target.add(updatePostPersistMessage());
             } else
             {
-                target.addComponent(updateErrorMessage());
+                target.add(updateErrorMessage());
             }
 
             addFailedProjectMessages(failedProjects, target);
 
             EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
 
-            target.appendJavascript("wicket.guardform.clean();");
+            target.appendJavaScript("wicket.guardform.clean();");
         }
 
         @Override

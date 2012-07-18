@@ -16,22 +16,21 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 
 /**
  * Common modifiers
- **/
+ */
 
-public class CommonModifiers
-{
-	/**
-	 * Tabindex modifier
-	 * @param tabIndex
-	 * @return
-	 */
-	public static SimpleAttributeModifier tabIndexModifier(int tabIndex)
-	{
-		return new SimpleAttributeModifier("tabindex", Integer.toString(tabIndex));
-	}
-	
+public class CommonModifiers {
+    /**
+     * Tabindex modifier
+     *
+     * @param tabIndex
+     * @return
+     */
+    public static AttributeModifier tabIndexModifier(int tabIndex) {
+        return AttributeModifier.replace("tabindex", Integer.toString(tabIndex));
+    }
+
 }

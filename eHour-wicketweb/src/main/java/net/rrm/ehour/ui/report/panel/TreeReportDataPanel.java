@@ -31,15 +31,12 @@ import net.rrm.ehour.ui.report.TreeReportDataProvider;
 import net.rrm.ehour.ui.report.TreeReportElement;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -48,6 +45,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -61,7 +61,7 @@ import java.util.List;
 
 public class TreeReportDataPanel extends Panel {
     private static final long serialVersionUID = -6757047600645464803L;
-    private static final SimpleAttributeModifier CSS_ALIGN_RIGHT = new SimpleAttributeModifier("style", "text-align: right;");
+    private static final AttributeModifier CSS_ALIGN_RIGHT = AttributeModifier.replace("style", "text-align: right;");
 
     private final ReportConfig reportConfig;
 
@@ -81,7 +81,7 @@ public class TreeReportDataPanel extends Panel {
         if (excelResourceName != null) {
             final String reportId = reportModel.getCacheId();
 
-            ResourceReference excelResource = new ResourceReference(excelResourceName);
+            ResourceReference excelResource = new PackageResourceReference(excelResourceName);
             ValueMap params = new ValueMap();
             params.add("reportId", reportId);
             ResourceLink<Void> excelLink = new ResourceLink<Void>("excelLink", excelResource, params);
@@ -95,7 +95,7 @@ public class TreeReportDataPanel extends Panel {
         addReportData(reportModel, blueBorder);
         addGrandTotal(reportModel, blueBorder);
 
-        add(new StyleSheetReference("reportStyle", new CompressedResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
+        add(new CssResourceReference(TreeReportDataPanel.class, "style/reportStyle.css"));
     }
 
     private void addGrandTotal(TreeReportModel reportModel, WebMarkupContainer parent) {
@@ -192,7 +192,7 @@ public class TreeReportDataPanel extends Panel {
             }
 
             if (columnType == ColumnType.COMMENT) {
-                label.add(new SimpleAttributeModifier("style", "width: 300px;"));
+                label.add(AttributeModifier.replace("style", "width: 300px;"));
             }
         }
     }
@@ -262,7 +262,7 @@ public class TreeReportDataPanel extends Panel {
                     String cssClass = cssClassBuilder.toString();
 
                     if (StringUtils.isNotEmpty(cssClass)) {
-                        cellLabel.add(new SimpleAttributeModifier("class", cssClass));
+                        cellLabel.add(AttributeModifier.replace("class", cssClass));
                     }
 
                     cells.add(cellLabel);
@@ -280,7 +280,7 @@ public class TreeReportDataPanel extends Panel {
 
         private void setCssStyle(Item<?> item) {
             if (item.getIndex() % 2 == 1) {
-                item.add(new SimpleAttributeModifier("style", "background-color: #fefeff"));
+                item.add(AttributeModifier.replace("style", "background-color: #fefeff"));
             }
         }
 

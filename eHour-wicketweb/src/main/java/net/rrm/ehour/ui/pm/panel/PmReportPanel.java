@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -109,7 +108,7 @@ public class PmReportPanel extends AbstractBasePanel<Void> {
         String cssClass = cssClassBuilder.toString();
 
         if (StringUtils.isNotEmpty(cssClass)) {
-            cellLabel.add(new SimpleAttributeModifier("class", cssClass));
+            cellLabel.add(AttributeModifier.replace("class", cssClass));
         }
     }
 

@@ -55,12 +55,10 @@ import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizati
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.resource.IPropertiesFactory;
 import org.apache.wicket.resource.IPropertiesLoader;
 import org.apache.wicket.resource.PropertiesFactory;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.lang.PackageName;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -140,20 +138,23 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     private void mountExcelReport(AbstractExcelResource excelReport, String id)
     {
         getSharedResources().add(id, excelReport);
-        mountResource("/" + id,  new PackageResourceReference(id));
+        mountResource("/" + id, new PackageResourceReference(id));
     }
 
     @Override
     public RuntimeConfigurationType getConfigurationType()
     {
-        if (configurationType == null || (!configurationType.equalsIgnoreCase(Application.DEPLOYMENT) &&
-                !configurationType.equalsIgnoreCase(Application.DEVELOPMENT)))
+        String development = RuntimeConfigurationType.DEVELOPMENT.name();
+        String deployment = RuntimeConfigurationType.DEPLOYMENT.name();
+
+        if (configurationType == null || (!configurationType.equalsIgnoreCase(deployment) &&
+                !configurationType.equalsIgnoreCase(development)))
         {
-            LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + Application.DEPLOYMENT + " or " + Application.DEVELOPMENT);
-            return Application.DEVELOPMENT;
+            LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + deployment + " or " + development);
+            return RuntimeConfigurationType.DEVELOPMENT;
         }
 
-        return configurationType;
+        return RuntimeConfigurationType.valueOf(configurationType.toUpperCase());
     }
 
     private void mountPages()
@@ -187,7 +188,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
     protected void springInjection()
     {
-        addComponentInstantiationListener(new SpringComponentInjector(this));
+        getComponentInstantiationListeners().add(new SpringComponentInjector(this));
     }
 
     protected void setupSecurity()
@@ -257,16 +258,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     public void setAuthenticationManager(AuthenticationManager authenticationManager)
     {
         this.authenticationManager = authenticationManager;
-    }
-
-    /*
-      * (non-Javadoc)
-      * @see org.apache.wicket.protocol.http.WebApplication#newRequestCycleProcessor()
-      */
-    @Override
-    protected IRequestCycleProcessor newRequestCycleProcessor()
-    {
-        return new UrlCompressingWebRequestProcessor();
     }
 
     public static EhourWebApplication get()

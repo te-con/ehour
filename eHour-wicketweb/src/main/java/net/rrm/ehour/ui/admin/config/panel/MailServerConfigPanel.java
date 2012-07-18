@@ -19,10 +19,8 @@ package net.rrm.ehour.ui.admin.config.panel;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -90,10 +88,10 @@ public class MailServerConfigPanel extends AbstractConfigPanel
 				
 				Label replacementLabel = new Label("serverMessage", new ResourceModel("admin.config.testSmtpSent"));
 				replacementLabel.setOutputMarkupId(true);
-				replacementLabel.add(new SimpleAttributeModifier("class", "whiteText"));
+				replacementLabel.add(AttributeModifier.replace("class", "whiteText"));
 				getServerMessage().replaceWith(replacementLabel);
 				setServerMessage(replacementLabel);
-				target.addComponent(replacementLabel);
+				target.add(replacementLabel);
 			}
 		});
 	}	

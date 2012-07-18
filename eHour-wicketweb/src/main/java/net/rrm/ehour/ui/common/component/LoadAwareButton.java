@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.common.component;
 
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
@@ -47,6 +46,6 @@ public abstract class LoadAwareButton extends AjaxFallbackButton
 	@Override
 	protected void onError(AjaxRequestTarget target, Form<?> form)
 	{
-		target.addComponent(form);
+		target.add(form);
 	}
 }

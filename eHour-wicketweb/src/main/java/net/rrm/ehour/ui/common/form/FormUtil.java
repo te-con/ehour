@@ -94,7 +94,7 @@ public class FormUtil
 			@Override
             protected void onError(AjaxRequestTarget target, Form<?> form)
 			{
-				target.addComponent(form);
+				target.add(form);
 
 				if (formConfig.getErrorEventType() != null)
 				{

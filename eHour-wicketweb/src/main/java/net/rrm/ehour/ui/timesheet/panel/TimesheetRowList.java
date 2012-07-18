@@ -35,9 +35,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -144,7 +142,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			public void onClick(AjaxRequestTarget target)
 			{
 				row.bookRemainingHoursOnRow();
-				target.addComponent(form);
+				target.add(form);
 			}
 		};
 		
@@ -233,17 +231,17 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			{
                 LOGGER.trace(target.getLastFocusedElementId() + " onblur");
 				// update the project total
-				target.addComponent(dayInput.getParent().getParent().get("total"));
+				target.add(dayInput.getParent().getParent().get("total"));
 				
 				// update the grand total & day total
-				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
-												.get("blueFrame"))
-												.get("grandTotal"));
+				target.add(((MarkupContainer) dayInput.findParent(Form.class)
+                        .get("blueFrame"))
+                        .get("grandTotal"));
 				
 				
-				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
-												.get("blueFrame"))
-												.get("day" + grandTotals.getOrderForIndex(index) + "Total"));
+				target.add(((MarkupContainer) dayInput.findParent(Form.class)
+                        .get("blueFrame"))
+                        .get("day" + grandTotals.getOrderForIndex(index) + "Total"));
 				
 				form.visitFormComponents(new FormHighlighter(target));
 			}		
@@ -306,7 +304,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 			{
 				setCommentLinkClass(commentModel, commentLink);
 				
-				target.addComponent(commentLink);
+				target.add(commentLink);
 			}
 		});
 		
@@ -340,7 +338,7 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 	 */
 	private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink)
 	{
-		commentLink.add(new SimpleAttributeModifier("class", StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment" : "timesheetEntryCommented"));
+		commentLink.add(AttributeModifier.replace("class", StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment" : "timesheetEntryCommented"));
 	}	
 	
 	/**

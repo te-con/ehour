@@ -125,7 +125,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
         ContextualHelpPanel replacementHelp = getTimesheetHelpPanel();
         helpPanel.replaceWith(replacementHelp);
         helpPanel = replacementHelp;
-        target.addComponent(replacementHelp);
+        target.add(replacementHelp);
 
     }
 

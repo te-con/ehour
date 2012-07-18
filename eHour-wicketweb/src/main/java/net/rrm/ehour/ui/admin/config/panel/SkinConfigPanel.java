@@ -32,7 +32,6 @@ import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
@@ -123,8 +122,8 @@ public class SkinConfigPanel extends AbstractConfigPanel
 		
 		Image img = new Image("excelImage");
 		img.setOutputMarkupId(true);
-		img.add(new SimpleAttributeModifier("width", "350"));
-		img.add(new SimpleAttributeModifier("height", Integer.toString((int) height)));
+		img.add(AttributeModifier.replace("width", "350"));
+		img.add(AttributeModifier.replace("height", Integer.toString((int) height)));
 		
 		img.setImageResource(new ImageResource(excelLogo));
 		return img;

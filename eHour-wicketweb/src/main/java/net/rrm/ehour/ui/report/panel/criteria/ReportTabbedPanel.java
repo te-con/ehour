@@ -16,17 +16,16 @@
 
 package net.rrm.ehour.ui.report.panel.criteria;
 
-import java.util.List;
-
 import net.rrm.ehour.ui.common.component.TabbedPanel;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+
+import java.util.List;
 
 /**
  * Ajax tabbed report panel
@@ -54,7 +53,7 @@ public class ReportTabbedPanel extends TabbedPanel
 				setSelectedTab(index);
 				if (target != null)
 				{
-					target.addComponent(ReportTabbedPanel.this);
+					target.add(ReportTabbedPanel.this);
 				}
 				onAjaxUpdate(target);
 			}

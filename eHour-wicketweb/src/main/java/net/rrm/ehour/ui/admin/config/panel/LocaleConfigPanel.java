@@ -97,16 +97,16 @@ public class LocaleConfigPanel extends AbstractConfigPanel
 			{
 				// update the date format example
 				dateFormat.setDefaultModel(new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
-				target.addComponent(dateFormat);
+				target.add(dateFormat);
 				
 				// refresh langugae
-				target.addComponent(languageDropDownChoice);
+				target.add(languageDropDownChoice);
 				
 				// and currency
 				if (configBackingBean.getLocaleCountry().getCountry() != null)
 				{
 					configBackingBean.setCurrency(configBackingBean.getLocaleCountry());
-					target.addComponent(currencyDropDownChoice);
+					target.add(currencyDropDownChoice);
 				}
 			}
 		});
@@ -128,7 +128,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel
 			@Override
 			protected void onUpdate(AjaxRequestTarget target)
 			{
-				target.addComponent(languageDropDownChoice);
+				target.add(languageDropDownChoice);
 			}
 		};
 		onlyTranslationsBox.setOutputMarkupId(true);
@@ -142,10 +142,10 @@ public class LocaleConfigPanel extends AbstractConfigPanel
 			protected void onUpdate(AjaxRequestTarget target)
 			{
 				languageDropDownChoice.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
-				target.addComponent(languageDropDownChoice);
+				target.add(languageDropDownChoice);
 				
 				onlyTranslationsBox.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
-				target.addComponent(onlyTranslationsBox);
+				target.add(onlyTranslationsBox);
 			}
 		});				
 	}

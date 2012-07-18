@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.component;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -26,26 +26,24 @@ import org.apache.wicket.markup.html.panel.Panel;
  * Tooltip label with info image next to it.
  * Displays a tooltip when hovered over the text using SweetTitles
  * When the tooltipText is empty the tooltip img button is now shown
- * 
+ * <p/>
  * Created on Feb 1, 2009, 6:57:30 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class TooltipLabel extends Panel
-{
-	private static final long serialVersionUID = -2407607082770130038L;
+public class TooltipLabel extends Panel {
+    private static final long serialVersionUID = -2407607082770130038L;
 
-	public TooltipLabel(final String id, String label, String tooltipText)
-	{
+    public TooltipLabel(final String id, String label, String tooltipText) {
         super(id);
 
         WebMarkupContainer title = new WebMarkupContainer("title");
 
         if (StringUtils.isNotBlank(tooltipText)) {
-            title.add(new SimpleAttributeModifier("title", tooltipText));
+            title.add(AttributeModifier.replace("title", tooltipText));
         }
 
         add(title);
         title.add(new Label("content", label));
-	}
+    }
 }
