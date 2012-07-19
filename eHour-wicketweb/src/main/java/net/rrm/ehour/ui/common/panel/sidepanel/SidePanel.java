@@ -16,11 +16,10 @@
 
 package net.rrm.ehour.ui.common.panel.sidepanel;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * Blue navigation side panel
@@ -39,11 +38,10 @@ public abstract class SidePanel extends Panel
 	public SidePanel(String id, IModel<?> model)
 	{
 		super(id, model);
-		add(new StyleSheetReference("navSidePanelStyle", navSidePanelStyle()));
 	}
 
-	protected ResourceReference navSidePanelStyle()
-	{
-		return new CompressedResourceReference(SidePanel.class, "style/sidePanel.css");
-	}		
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.renderCSSReference(new PackageResourceReference(SidePanel.class, "style/sidePanel.css"));
+    }
 }

@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.ui.pm.page;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -31,69 +27,64 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.component.TabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
-import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.pm.panel.PmReportPanel;
-
-import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel;
-import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Project management base station :)
- **/
+ */
 @AuthorizeInstantiation("ROLE_PROJECTMANAGER")
-public class ProjectManagement extends AbstractBasePage<ReportCriteria>
-{
-	private static final long serialVersionUID = 898442184509251553L;
+public class ProjectManagement extends AbstractBasePage<ReportCriteria> {
+    private static final long serialVersionUID = 898442184509251553L;
     public static final String REPORT_PANEL = "reportPanel";
 
     @SpringBean
-	private ProjectService	projectService;
+    private ProjectService projectService;
 
-	@SpringBean
-	private AggregateReportService	aggregateReportService;
+    @SpringBean
+    private AggregateReportService aggregateReportService;
 
-	public ProjectManagement()
-	{
-		super(new ResourceModel("pmReport.title"));
-		
-		ReportCriteria reportCriteria = getReportCriteria();
-		
-		IModel<ReportCriteria>	model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
-		setDefaultModel(model);
-		
-		// add criteria
-		add(new ProjectManagementReportCriteriaPanel("sidePanel", model));
-		
-		add(new PlaceholderPanel(REPORT_PANEL));
-	}
+    public ProjectManagement() {
+        super(new ResourceModel("pmReport.title"));
 
-	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED && ajaxEvent.getTarget() != null)
-		{
+        ReportCriteria reportCriteria = getReportCriteria();
+
+        IModel<ReportCriteria> model = new CompoundPropertyModel<ReportCriteria>(reportCriteria);
+        setDefaultModel(model);
+
+        // add criteria
+        add(new ProjectManagementReportCriteriaPanel("sidePanel", model));
+
+        add(new PlaceholderPanel(REPORT_PANEL));
+    }
+
+    @Override
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED && ajaxEvent.getTarget() != null) {
             List<ITab> tabList = new ArrayList<ITab>();
 
             final ProjectManagerReport report = getReportData();
 
-            tabList.add(new AbstractTab(new Model<String>(report.getProject().getFullName()))
-            {
+            tabList.add(new AbstractTab(new Model<String>(report.getProject().getFullName())) {
                 private static final long serialVersionUID = 1L;
 
                 @SuppressWarnings("unchecked")
                 @Override
-                public Panel getPanel(String panelId)
-                {
+                public Panel getPanel(String panelId) {
                     return new PmReportPanel(panelId, report);
                 }
             });
@@ -101,51 +92,46 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria>
 
             TabbedPanel reportPanel = new TabbedPanel(REPORT_PANEL, tabList);
             addOrReplace(reportPanel);
-			ajaxEvent.getTarget().addComponent(reportPanel);
-		}
-		
-		return true;
-	}
+            ajaxEvent.getTarget().add(reportPanel);
+        }
 
-	private ReportCriteria getReportCriteria()
-	{
-		ReportCriteria reportCriteria = new ReportCriteria();
-		
-		User user = EhourWebSession.getSession().getUser().getUser();
-		
-		List<Project> projects = projectService.getProjectManagerProjects(user);
-		
-		AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
-		availCriteria.setProjects(projects);
-		
-		return reportCriteria;
-	}
-	
-	private ProjectManagerReport getReportData()
-	{
-		ReportCriteria 	criteria = getPageModelObject();
+        return true;
+    }
 
-		ProjectManagerReport reportData = null;
-		DateRange	reportRange = criteria.getUserCriteria().getReportRange();
-		
-		if (criteria.getUserCriteria().isInfiniteStartDate())
-		{
-			reportRange.setDateStart(null);
-		}
+    private ReportCriteria getReportCriteria() {
+        ReportCriteria reportCriteria = new ReportCriteria();
 
-		if (criteria.getUserCriteria().isInfiniteEndDate())
-		{
-			reportRange.setDateEnd(null);
-		}
+        User user = EhourWebSession.getSession().getUser().getUser();
 
-		if (criteria.getUserCriteria().getProject() != null)
-		{
-			// only one can be there
-			Project project = criteria.getUserCriteria().getProject();
-			reportData = aggregateReportService.getProjectManagerDetailedReport(reportRange, project.getPK());
-		}
-		
-		return reportData;
-	}
+        List<Project> projects = projectService.getProjectManagerProjects(user);
+
+        AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
+        availCriteria.setProjects(projects);
+
+        return reportCriteria;
+    }
+
+    private ProjectManagerReport getReportData() {
+        ReportCriteria criteria = getPageModelObject();
+
+        ProjectManagerReport reportData = null;
+        DateRange reportRange = criteria.getUserCriteria().getReportRange();
+
+        if (criteria.getUserCriteria().isInfiniteStartDate()) {
+            reportRange.setDateStart(null);
+        }
+
+        if (criteria.getUserCriteria().isInfiniteEndDate()) {
+            reportRange.setDateEnd(null);
+        }
+
+        if (criteria.getUserCriteria().getProject() != null) {
+            // only one can be there
+            Project project = criteria.getUserCriteria().getProject();
+            reportData = aggregateReportService.getProjectManagerDetailedReport(reportRange, project.getPK());
+        }
+
+        return reportData;
+    }
 
 }

@@ -18,8 +18,7 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
 import net.rrm.ehour.ui.common.report.ReportConfig;
-
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 

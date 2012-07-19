@@ -45,6 +45,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -53,12 +54,12 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.util.visit.IVisitor;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -137,9 +138,11 @@ public class TimesheetPanel extends Panel implements Serializable
         serverMsgLabel = new WebComponent("serverMessage");
         serverMsgLabel.setOutputMarkupId(true);
         commentsFrame.add(serverMsgLabel);
+    }
 
-        // add CSS
-        add(new StyleSheetReference("timesheetStyle", new CompressedResourceReference(TimesheetPanel.class, "css/timesheetForm.css")));
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.renderCSSReference(new PackageResourceReference(TimesheetPanel.class, "css/timesheetForm.css"));
     }
 
     /**
@@ -253,6 +256,11 @@ public class TimesheetPanel extends Panel implements Serializable
                 // basically fake a week click
                 EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.WEEK_NAV));
             }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // reset doesn't error
+            }
         };
 
         resetButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("timesheet.confirmReset")));
@@ -294,9 +302,9 @@ public class TimesheetPanel extends Panel implements Serializable
         IModel<String> model = new StringResourceModel("timesheet.weekSaved",
                 TimesheetPanel.this,
                 null,
-                new Object[]{new PropertyModel<Date>(getDefaultModel(), "totalBookedHours"),
-                             new DateModel(new PropertyModel<Date>(getDefaultModel(), "weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
-                             new DateModel(new PropertyModel<Date>(getDefaultModel(), "weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT)});
+                new PropertyModel<Date>(getDefaultModel(), "totalBookedHours"),
+                new DateModel(new PropertyModel<Date>(getDefaultModel(), "weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
+                new DateModel(new PropertyModel<Date>(getDefaultModel(), "weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT));
 
         return updateServerMessage(model);
 
@@ -304,7 +312,7 @@ public class TimesheetPanel extends Panel implements Serializable
 
     private Label updateErrorMessage()
     {
-        IModel<String> model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null, new Object[]{});
+        IModel<String> model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null);
 
         return updateServerMessage(model);
     }

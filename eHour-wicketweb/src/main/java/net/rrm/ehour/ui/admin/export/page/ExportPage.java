@@ -84,7 +84,7 @@ public class ExportPage extends AbstractAdminPage<Void>
         form.add(new AjaxSubmitLink("ajaxSubmit")
         {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+            protected void onSubmit(final AjaxRequestTarget target, Form<?> form)
             {
                 Component replacementPanel;
 
@@ -100,14 +100,14 @@ public class ExportPage extends AbstractAdminPage<Void>
                         @Override
                         public Component getLazyLoadComponent(String markupId)
                         {
-                            AjaxRequestTarget.get().appendJavascript("showHideSpinner(false);");
+                            target.appendJavaScript("showHideSpinner(false);");
                             return new ValidateImportPanel(markupId, xmlData);
                         }
 
                         @Override
                         public Component getLoadingComponent(String markupId)
                         {
-                            AjaxRequestTarget.get().appendJavascript("showHideSpinner(true);");
+                            target.appendJavaScript("showHideSpinner(true);");
                             return new Label(markupId, new ResourceModel("admin.import.label.validating"));
                         }
                     };
@@ -117,6 +117,11 @@ public class ExportPage extends AbstractAdminPage<Void>
                 }
 
                 replaceStatusPanel(replacementPanel, target);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // TODO Implement
             }
         });
 

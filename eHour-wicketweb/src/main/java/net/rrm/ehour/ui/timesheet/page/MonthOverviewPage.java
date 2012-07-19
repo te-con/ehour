@@ -27,11 +27,11 @@ import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.panel.OverviewPanel;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
 import net.rrm.ehour.util.DateUtil;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
 public class MonthOverviewPage extends AbstractBasePage<Void>
@@ -54,9 +54,8 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
         this(OpenPanel.OVERVIEW);
     }
 
-    public MonthOverviewPage(PageParameters parameters)
-    {
-        this(parameters.getAsEnum(PARAM_OPEN, OpenPanel.class));
+    public MonthOverviewPage(PageParameters parameters) {
+        this(OpenPanel.valueOf(parameters.get(PARAM_OPEN).toString()));
     }
 
     public MonthOverviewPage(OpenPanel panelToOpen)
@@ -158,7 +157,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
     private void addOrReplaceContentContainer(WebMarkupContainer contentContainer, AjaxRequestTarget target)
     {
         addOrReplaceContentContainer(contentContainer);
-        AjaxRequestTarget.get().addComponent(contentContainer);
+        target.add(contentContainer);
     }
 
     /**
