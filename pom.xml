@@ -762,7 +762,7 @@
         <repository>
             <id>eHour</id>
             <name>eHour Maven Repository Group</name>
-            <url>http://dev.ehour.nl/nexus/content/groups/public</url>
+            <url>http://nexus.te-con.nl/content/groups/public</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
@@ -778,13 +778,13 @@
     <distributionManagement>
         <repository>
             <id>releases</id>
-            <url>http://dev.ehour.nl/nexus/content/repositories/releases</url>
+            <url>http://nexus.te-con.nl/content/repositories/releases</url>
         </repository>
 
         <snapshotRepository>
             <id>snapshots</id>
             <name>Internal Snapshots</name>
-            <url>http://dev.ehour.nl/nexus/content/repositories/snapshots</url>
+            <url>http://nexus.te-con.nl/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
