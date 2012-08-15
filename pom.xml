@@ -32,7 +32,7 @@
   </scm>
     <issueManagement>
         <system>eHour bugtracker</system>
-        <url>http://dev.ehour.nl/jira/</url>
+        <url>http://jira.ehour.nl/</url>
     </issueManagement>
     <ciManagement>
         <system>bamboo</system>
