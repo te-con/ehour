@@ -30,7 +30,7 @@ import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
@@ -41,6 +41,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -122,13 +123,13 @@ public class CalendarPanel extends SidePanel {
 
     private AjaxLink<Void> createNextMonthLink(String id) {
         AjaxLink<Void> nextMonthLink = new ChangeMonthLink(id, 1);
-        nextMonthLink.add(new Image("nextMonthImg", new ResourceReference(CalendarPanel.class, "arrow_right.gif")));
+        nextMonthLink.add(new Image("nextMonthImg", new PackageResourceReference(CalendarPanel.class, "arrow_right.gif")));
         return nextMonthLink;
     }
 
     private AjaxLink<Void> createPreviousMonthLink(String id) {
         AjaxLink<Void> previousMonthLink = new ChangeMonthLink(id, -1);
-        previousMonthLink.add(new Image("previousMonthImg", new ResourceReference(CalendarPanel.class, "arrow_left.gif")));
+        previousMonthLink.add(new Image("previousMonthImg", new PackageResourceReference(CalendarPanel.class, "arrow_left.gif")));
         return previousMonthLink;
     }
 

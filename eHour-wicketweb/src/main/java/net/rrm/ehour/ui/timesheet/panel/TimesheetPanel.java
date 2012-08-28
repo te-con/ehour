@@ -59,6 +59,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
 import java.io.Serializable;
@@ -279,16 +280,14 @@ public class TimesheetPanel extends Panel implements Serializable
     {
         ((Timesheet) getDefaultModelObject()).updateFailedProjects(failedProjects);
 
-        timesheetForm.visitChildren(Label.class, new IVisitor<Label>()
+        timesheetForm.visitChildren(Label.class, new IVisitor<Label, Void>()
         {
-            public Object component(Label label)
-            {
+            @Override
+            public void component(Label label, IVisit visit) {
                 if (label.getId().equals("status")) {
                     label.setVisible(true);
                     target.add(label);
                 }
-
-                return IVisitor.CONTINUE_TRAVERSAL;
             }
         });
     }

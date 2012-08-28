@@ -29,7 +29,7 @@ import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportDummyCreater;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
@@ -37,6 +37,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.util.value.ValueMap;
 
@@ -72,6 +73,11 @@ public class SkinConfigPanel extends AbstractConfigPanel
 			{
 				createDummyExcelExport();
 			}
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                //
+            }
         });
 	}
 	
@@ -140,8 +146,8 @@ public class SkinConfigPanel extends AbstractConfigPanel
 		EhourWebSession.getSession().getObjectCache().addObjectToCache(report);
 		
 		final String reportId = report.getCacheId();
-		
-		ResourceReference excelResource = new ResourceReference(ExportReportExcel.getId());
+
+        PackageResourceReference excelResource = new PackageResourceReference(ExportReportExcel.getId());
 		ValueMap params = new ValueMap();
 		params.add("reportId", reportId);
 		

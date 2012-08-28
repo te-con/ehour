@@ -52,6 +52,11 @@ public class AuditReportCriteriaForm extends Form<ReportCriteria> {
                 AjaxEvent event = new AjaxEvent(Events.FORM_SUBMIT);
                 EventPublisher.publishAjaxEvent(AuditReportCriteriaForm.this, event);
             }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+
+            }
         };
 
         add(submitButton);

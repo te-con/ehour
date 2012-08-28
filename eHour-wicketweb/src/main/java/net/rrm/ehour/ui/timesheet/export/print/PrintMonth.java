@@ -27,7 +27,8 @@ import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.util.DateUtil;
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -99,7 +100,7 @@ public class PrintMonth extends WebPage
 		
 		WebMarkupContainer colspanner = new WebMarkupContainer("colspanner");
 		// got 16 cells left, 16 cells right
-		colspanner.add(AttributeModifier.replace("colspan", Integer.toString(1 + days.size() -15 -16 )));
+		colspanner.add(AttributeModifier.replace("colspan", Integer.toString(1 + days.size() - 15 - 16)));
 		signOffContainer.add(colspanner);
 		
 		return signOffContainer;

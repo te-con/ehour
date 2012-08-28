@@ -134,7 +134,7 @@ public class TimesheetRow implements Serializable
 				}
 				else
 				{
-					entry.setHours(entry.getHours().floatValue() + remaining);
+					entry.setHours(entry.getHours() + remaining);
 				}
 				
 				timesheetCells[day].setTimesheetEntry(entry);

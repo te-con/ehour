@@ -23,6 +23,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IFormVisitorParticipant;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.util.visit.IVisitor;
 
 import java.io.Serializable;
 
@@ -31,7 +32,7 @@ import java.io.Serializable;
  *
  * @author Thies
  */
-public class FormHighlighter implements FormComponent.IVisitor, Serializable {
+public class FormHighlighter implements IVisitor, Serializable {
     private static final long serialVersionUID = 6905807838333630105L;
 
     private transient AjaxRequestTarget target;
@@ -86,7 +87,7 @@ public class FormHighlighter implements FormComponent.IVisitor, Serializable {
 
     @SuppressWarnings("serial")
     private AttributeModifier getColorModifier(final String color) {
-        return new AttributeModifier("style", true, new AbstractReadOnlyModel<String>() {
+        return new AttributeModifier("style", new AbstractReadOnlyModel<String>() {
             public String getObject() {
                 return "color: " + color;
             }

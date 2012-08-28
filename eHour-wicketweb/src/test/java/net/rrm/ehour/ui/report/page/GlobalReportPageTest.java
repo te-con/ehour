@@ -31,6 +31,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.junit.Before;
@@ -123,7 +124,7 @@ public class GlobalReportPageTest extends BaseTestReport {
 
                 @Override
                 public Panel getPanel(String panelId) {
-                    return new Panel(panelId);
+                    return new EmptyPanel(panelId);
                 }
             };
 

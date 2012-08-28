@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.admin.config.panel;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -93,6 +94,11 @@ public class MailServerConfigPanel extends AbstractConfigPanel
 				setServerMessage(replacementLabel);
 				target.add(replacementLabel);
 			}
-		});
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                //
+            }
+        });
 	}	
 }

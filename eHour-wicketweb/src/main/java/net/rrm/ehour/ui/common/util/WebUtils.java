@@ -16,22 +16,22 @@
 
 package net.rrm.ehour.ui.common.util;
 
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.util.EhourConstants;
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.util.EhourConstants;
-
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Component.IVisitor;
-import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.model.IModel;
 
 /**
  * Common functionality
@@ -62,7 +62,7 @@ public class WebUtils
 	 */
 	public static void springInjection(Object injectionTarget)
 	{
-		InjectorHolder.getInjector().inject(injectionTarget);
+		Injector.get().inject(injectionTarget);
 	}
 	
 	/**
@@ -75,21 +75,17 @@ public class WebUtils
 	{
 		final List<CO> components = new ArrayList<CO>();
 		
-		parent.visitChildren(new Component.IVisitor<Component>()
+		parent.visitChildren(new IVisitor<Component, Void>()
 		{
-
-			@SuppressWarnings("unchecked")
-			public Object component(Component component)
-			{
-				if (component.getClass() == classToFind)
-				{
-					components.add((CO)component);
-				}
-				
-				return IVisitor.CONTINUE_TRAVERSAL;
-			}
-			
-		});
+            @SuppressWarnings("unchecked")
+            @Override
+            public void component(Component object, IVisit visit) {
+                if (object.getClass() == classToFind)
+                {
+                    components.add((CO)object);
+                }
+            }
+        });
 		
 		return components;
 	}

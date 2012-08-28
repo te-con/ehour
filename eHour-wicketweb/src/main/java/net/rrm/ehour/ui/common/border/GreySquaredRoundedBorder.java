@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.common.border;
 
 import net.rrm.ehour.ui.common.util.WebGeo;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 
