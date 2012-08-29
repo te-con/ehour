@@ -89,25 +89,18 @@ public class TimesheetRow implements Serializable
 	 */
 	public String getStatus()
 	{
-		if (assignmentStatus == null)
-		{
-			return null;
-		}
-		else
-		{
-			if (getAssignmentStatus().getAggregate().getAvailableHours() < 0)
-			{
-				AvailableHours hours = new AvailableHours((int)(getAssignmentStatus().getAggregate().getAvailableHours() * -1));
-			
-				Localizer localizer = Application.get().getResourceSettings().getLocalizer();
-				
-				return localizer.getString("timesheet.errorNoHours", null, new Model<AvailableHours>(hours));
-			}
-			
-			
-			return "<br />";
-		}
-	}
+        if (assignmentStatus != null && assignmentStatus.getAggregate() != null && assignmentStatus.getAggregate().getAvailableHours() != null
+                && assignmentStatus.getAggregate().getAvailableHours() < 0) {
+            AvailableHours hours = new AvailableHours((int) (getAssignmentStatus().getAggregate().getAvailableHours() * -1));
+
+            Localizer localizer = Application.get().getResourceSettings().getLocalizer();
+
+            return localizer.getString("timesheet.errorNoHours", null, new Model<AvailableHours>(hours));
+        }
+
+
+        return "<br />";
+    }
 
 	/**
 	 * 
