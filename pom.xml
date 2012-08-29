@@ -647,6 +647,7 @@
                     <threadCount>2</threadCount>
                 </configuration>
             </plugin>
+
         </plugins>
 
         <pluginManagement>
@@ -756,6 +757,35 @@
                 </plugins>
             </build>
         </profile>
+
+	<profile>
+		<id>quality-build</id>
+		<build>
+			<plugins>
+			    <plugin>
+				<groupId>com.atlassian.maven.plugins</groupId>
+				<artifactId>maven-clover2-plugin</artifactId>
+				<version>${clover.version}</version>
+				<configuration>
+				    <jdk>1.6</jdk>
+				    <generateXml>true</generateXml>
+				    <licenseLocation>${clover2.licenseLocation}</licenseLocation>
+				    <includesTestSourceRoots>false</includesTestSourceRoots>
+				</configuration>
+				<executions>
+				    <execution>
+					<phase>verify</phase>
+					<goals>
+					    <goal>instrument</goal>
+					    <goal>clover</goal>
+					    <goal>check</goal>
+					</goals>
+				    </execution>
+				</executions>
+			    </plugin>
+			</plugins>
+		</build>
+	</profile>
     </profiles>
 
     <repositories>
