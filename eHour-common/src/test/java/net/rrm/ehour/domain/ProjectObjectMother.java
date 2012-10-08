@@ -9,7 +9,7 @@ import java.util.List;
  * @author thies (www.te-con.nl)
  *
  */
-public class ProjectMother
+public class ProjectObjectMother
 {
 	public static List<Project> createProjects(int projectCount)
 	{

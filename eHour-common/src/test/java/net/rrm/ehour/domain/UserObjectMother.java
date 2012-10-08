@@ -9,7 +9,7 @@ import java.util.List;
  * @author thies (www.te-con.nl)
  *
  */
-public class UserMother
+public class UserObjectMother
 {
 	public static User createUser()
 	{

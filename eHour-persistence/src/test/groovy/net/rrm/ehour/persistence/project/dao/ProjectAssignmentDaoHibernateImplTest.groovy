@@ -5,8 +5,9 @@ import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import net.rrm.ehour.util.EhourConstants
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import static junit.framework.Assert.*
 import net.rrm.ehour.domain.*
+
+import static junit.framework.Assert.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -61,7 +62,7 @@ class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDaoTest
     Calendar cal = new GregorianCalendar();
     cal.add(Calendar.MONTH, 1);
 
-    def assignment = ProjectAssignmentMother.createProjectAssignment(new User(5), new Project(1))
+    def assignment = ProjectAssignmentObjectMother.createProjectAssignment(new User(5), new Project(1))
     assignment.dateStart = new Date()
     assignment.dateEnd = cal.getTime()
     assignment.assignmentType = new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE)

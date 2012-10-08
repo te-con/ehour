@@ -79,13 +79,6 @@ public class TimesheetPanel extends Panel implements Serializable
     private WebComponent serverMsgLabel;
     private Form<TimesheetModel> timesheetForm;
 
-    /**
-     * Construct timesheetPanel for entering hours
-     *
-     * @param id
-     * @param user
-     * @param forWeek
-     */
     public TimesheetPanel(String id, User user, Calendar forWeek)
     {
         super(id);
@@ -165,25 +158,6 @@ public class TimesheetPanel extends Panel implements Serializable
         titleFragment.add(nextWeekLink);
 
         return titleFragment;
-    }
-
-    private class GuardedWeekLink extends GuardedAjaxLink<Void>
-    {
-        private int delta;
-        private Date weekStart;
-
-        private GuardedWeekLink(String id, Date weekStart, int delta)
-        {
-            super(id);
-            this.delta = delta;
-            this.weekStart = weekStart;
-        }
-
-        @Override
-        public void onClick(AjaxRequestTarget target)
-        {
-            moveWeek(weekStart, delta);
-        }
     }
 
     /**
@@ -329,11 +303,9 @@ public class TimesheetPanel extends Panel implements Serializable
      */
     private void addDateLabels(WebMarkupContainer parent)
     {
-        Label label;
-
         for (int i = 1, j = 0; i <= 7; i++, j++)
         {
-            label = new Label("day" + i + "Label", new DateModel(new PropertyModel<Date>(getDefaultModelObject(), "dateSequence[" + j + "]"), config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
+            Label label = new Label("day" + i + "Label", new DateModel(new PropertyModel<Date>(getDefaultModelObject(), "dateSequence[" + j + "]"), config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
             label.setEscapeModelStrings(false);
             parent.add(label);
         }
@@ -397,8 +369,8 @@ public class TimesheetPanel extends Panel implements Serializable
     }
 
     private class SubmitButton extends AjaxButton {
-        private static final long serialVersionUID = 1L;
 
+        private static final long serialVersionUID = 1L;
         public SubmitButton(String id, Form<?> form) {
             super(id, form);
         }
@@ -434,6 +406,25 @@ public class TimesheetPanel extends Panel implements Serializable
         protected void onError(final AjaxRequestTarget target, Form<?> form)
         {
             form.visitFormComponents(new FormHighlighter(target));
+        }
+
+    }
+    private class GuardedWeekLink extends GuardedAjaxLink<Void>
+    {
+        private int delta;
+        private Date weekStart;
+
+        private GuardedWeekLink(String id, Date weekStart, int delta)
+        {
+            super(id);
+            this.delta = delta;
+            this.weekStart = weekStart;
+        }
+
+        @Override
+        public void onClick(AjaxRequestTarget target)
+        {
+            moveWeek(weekStart, delta);
         }
     }
 }

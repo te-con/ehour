@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.admin.user.panel
 
 import net.rrm.ehour.domain.UserDepartmentMother
-import net.rrm.ehour.domain.UserMother
+import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.domain.UserRole
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
@@ -16,6 +16,7 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+
 import static org.junit.Assert.assertEquals
 import static org.mockito.Matchers.anyObject
 import static org.mockito.Mockito.verify
@@ -71,7 +72,7 @@ public class UserAdminFormPanelTest extends AbstractSpringWebAppTester {
             @Override
             Panel getTestPanel(String panelId) {
                 return new UserAdminFormPanel(panelId,
-                        new CompoundPropertyModel<UserBackingBean>(new UserBackingBean(UserMother.createUser(), AdminAction.NEW)),
+                        new CompoundPropertyModel<UserBackingBean>(new UserBackingBean(UserObjectMother.createUser(), AdminAction.NEW)),
                         Arrays.asList(UserRole.ADMIN),
                         Arrays.asList(UserDepartmentMother.createUserDepartment()))
 

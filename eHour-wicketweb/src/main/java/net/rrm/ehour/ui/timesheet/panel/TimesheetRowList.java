@@ -37,7 +37,6 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -53,9 +52,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.validation.validator.MinimumValidator;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.SortedSet;
+import java.util.List;
 
 /**
  * Representation of a timesheet row
@@ -71,9 +69,9 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 
     private	static final Logger LOGGER = Logger.getLogger(TimesheetRowList.class);
 
-	public TimesheetRowList(String id, final SortedSet<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
+	public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
 	{
-		super(id, new ArrayList<TimesheetRow>(model));
+		super(id, model);
 		setReuseItems(true);
 		this.grandTotals = grandTotals;
 		this.form = form;

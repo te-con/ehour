@@ -138,7 +138,7 @@ public class TimesheetServiceTest
 		daoResults.add(entryB);
 
 		AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
-		ProjectAssignment pa = ProjectAssignmentMother.createProjectAssignment(0);
+		ProjectAssignment pa = ProjectAssignmentObjectMother.createProjectAssignment(0);
 		agg.setProjectAssignment(pa);
 		reportResults.add(agg);
 

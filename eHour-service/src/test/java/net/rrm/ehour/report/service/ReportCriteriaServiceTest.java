@@ -16,24 +16,8 @@
 
 package net.rrm.ehour.report.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.customer.dao.CustomerDao;
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
@@ -43,9 +27,14 @@ import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserCriteria;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * test case for report criteria 
@@ -95,8 +84,8 @@ public class ReportCriteriaServiceTest
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
 		
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
+		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
+		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
 		
 		// bit odd but otherwise unnecc. stuff is called
 //		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
@@ -133,8 +122,8 @@ public class ReportCriteriaServiceTest
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
+		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
+		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
 		
 		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called
@@ -179,8 +168,8 @@ public class ReportCriteriaServiceTest
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(1));
-		prjAsgs.add(ProjectAssignmentMother.createProjectAssignment(2));
+		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
+		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
 		
 		reportCriteria = new ReportCriteria();
 		// bit odd but otherwise unnecc. stuff is called

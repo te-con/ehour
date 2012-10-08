@@ -16,10 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.model;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.TimesheetComment;
@@ -30,10 +26,13 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
-import net.rrm.ehour.ui.timesheet.util.TimesheetAssembler;
-
+import net.rrm.ehour.ui.timesheet.dto.TimesheetBuilder;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Model that holds the timesheet
@@ -91,25 +90,18 @@ public class TimesheetModel implements IModel<Timesheet>
 
 	private Timesheet load()
 	{
-		WeekOverview	weekOverview;
-		Timesheet		timesheet;
-		EhourConfig		config;
+        EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+        WeekOverview weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
+        Timesheet timesheet = getTimesheetAssembler(config).createTimesheet(weekOverview);
 
-		config = EhourWebSession.getSession().getEhourConfig();
+        if (timesheet.getComment() == null) {
+            TimesheetComment comment = new TimesheetComment();
+            comment.setNewComment(Boolean.TRUE);
+            timesheet.setComment(comment);
+        }
 
-		weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
-
-		timesheet = getTimesheetAssembler(config).createTimesheetForm(weekOverview);
-
-		if (timesheet.getComment() == null)
-		{
-			TimesheetComment comment = new TimesheetComment();
-			comment.setNewComment(Boolean.TRUE);
-			timesheet.setComment(comment);
-		}
-
-		return timesheet;
-	}
+        return timesheet;
+    }
 
 
 	public Timesheet getObject()
@@ -129,9 +121,9 @@ public class TimesheetModel implements IModel<Timesheet>
 	}
 
 
-	private TimesheetAssembler getTimesheetAssembler(EhourConfig config)
+	private TimesheetBuilder getTimesheetAssembler(EhourConfig config)
 	{
-		return new TimesheetAssembler(config);
+		return new TimesheetBuilder(config);
 	}
 
 }

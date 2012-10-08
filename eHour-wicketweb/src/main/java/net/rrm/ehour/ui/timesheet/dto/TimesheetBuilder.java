@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.timesheet.util;
+package net.rrm.ehour.ui.timesheet.dto;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
@@ -22,9 +22,7 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
-import net.rrm.ehour.ui.timesheet.dto.Timesheet;
-import net.rrm.ehour.ui.timesheet.dto.TimesheetCell;
-import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
+import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
 import net.rrm.ehour.util.DateUtil;
 
 import java.text.SimpleDateFormat;
@@ -34,12 +32,12 @@ import java.util.*;
  * Generates the timesheet backing object
  **/
 
-public class TimesheetAssembler
+public class TimesheetBuilder
 {
 	private EhourConfig 		config;
 	private SimpleDateFormat	keyDateFormatter;
 
-	public TimesheetAssembler(EhourConfig config)
+	public TimesheetBuilder(EhourConfig config)
 	{
 		this.config = config;
 		
@@ -51,7 +49,7 @@ public class TimesheetAssembler
 	 * @param weekOverview
 	 * @return
 	 */
-	public Timesheet createTimesheetForm(WeekOverview weekOverview)
+	public Timesheet createTimesheet(WeekOverview weekOverview)
 	{
         List<Date> dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
 
@@ -79,22 +77,32 @@ public class TimesheetAssembler
 	 * @param rows
 	 * @return
 	 */
-	protected SortedMap<Customer, SortedSet<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows)
+    private SortedMap<Customer, List<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows)
 	{
-		SortedMap<Customer, SortedSet<TimesheetRow>> customerMap = new TreeMap<Customer, SortedSet<TimesheetRow>>();
+		SortedMap<Customer, List<TimesheetRow>> customerMap = new TreeMap<Customer, List<TimesheetRow>>();
 
 		for (TimesheetRow timesheetRow : rows)
 		{
 			Customer customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
 
-            SortedSet<TimesheetRow>  timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new TreeSet<TimesheetRow>(TimesheetRowComparator.INSTANCE);
+            List<TimesheetRow>  timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new ArrayList<TimesheetRow>();
 			timesheetRows.add(timesheetRow);
 			
 			customerMap.put(customer, timesheetRows);
 		}
-		
+
+        sortTimesheetRows(customerMap);
+
 		return customerMap;
 	}
+
+    private void sortTimesheetRows(SortedMap<Customer, List<TimesheetRow>> rows) {
+        Set<Map.Entry<Customer, List<TimesheetRow>>> entries = rows.entrySet();
+
+        for (Map.Entry<Customer, List<TimesheetRow>> entry : entries) {
+            Collections.sort(entry.getValue(), TimesheetRowComparator.INSTANCE);
+        }
+    }
 	
 	/**
 	 * Create the timesheet rows
@@ -102,21 +110,18 @@ public class TimesheetAssembler
 	 * @param dateSequence
 	 * @return
 	 */
-	protected List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap, 
+	private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap,
 													List<Date> dateSequence,
 													List<ProjectAssignment> validProjectAssignments,
 													Timesheet timesheet)
 	{
 		List<TimesheetRow> 	timesheetRows = new ArrayList<TimesheetRow>();
-		TimesheetRow		timesheetRow;
-		TimesheetEntry		entry;
-		Calendar			calendar;
-		Calendar			firstDate = DateUtil.getCalendar(config);
+		Calendar firstDate = DateUtil.getCalendar(config);
 		firstDate.setTime(dateSequence.get(0));
 		
 		for (ProjectAssignment assignment : assignmentMap.keySet())
 		{
-			timesheetRow = new TimesheetRow(config);
+            TimesheetRow timesheetRow = new TimesheetRow(config);
 			timesheetRow.setTimesheet(timesheet);
 			timesheetRow.setProjectAssignment(assignment);
 			timesheetRow.setFirstDayOfWeekDate(firstDate);
@@ -124,8 +129,8 @@ public class TimesheetAssembler
 			// create a cell for every requested date
 			for (Date date : dateSequence)
 			{
-				entry = assignmentMap.get(assignment).get(keyDateFormatter.format(date));
-				calendar = DateUtil.getCalendar(config);
+                TimesheetEntry entry = assignmentMap.get(assignment).get(keyDateFormatter.format(date));
+                Calendar calendar = DateUtil.getCalendar(config);
 				calendar.setTime(date);
 				
 				timesheetRow.addTimesheetCell(calendar.get(Calendar.DAY_OF_WEEK) - 1,
@@ -207,23 +212,13 @@ public class TimesheetAssembler
 	 */
     private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
 	{
-		Map<String, TimesheetEntry>	entryDateMap;	
-		Map<ProjectAssignment, Map<String, TimesheetEntry>>	assignmentMap;
-		
-		assignmentMap = new HashMap<ProjectAssignment, Map<String, TimesheetEntry>>();	
+        Map<ProjectAssignment, Map<String, TimesheetEntry>>	assignmentMap = new HashMap<ProjectAssignment, Map<String, TimesheetEntry>>();
 
 		for (TimesheetEntry entry : weekOverview.getTimesheetEntries())
 		{
 			ProjectAssignment assignment = entry.getEntryId().getProjectAssignment();
-			
-			if (assignmentMap.containsKey(assignment))
-			{
-				entryDateMap = assignmentMap.get(assignment);
-			}
-			else
-			{
-				entryDateMap = new HashMap<String, TimesheetEntry>();
-			}
+
+            Map<String, TimesheetEntry> entryDateMap = assignmentMap.containsKey(assignment) ? assignmentMap.get(assignment) : new HashMap<String, TimesheetEntry>();
 			
 			entryDateMap.put(keyDateFormatter.format(entry.getEntryId().getEntryDate()), entry);
 			

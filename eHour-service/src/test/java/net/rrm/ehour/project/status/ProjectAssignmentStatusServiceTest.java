@@ -16,30 +16,22 @@
 
 package net.rrm.ehour.project.status;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
+import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.*;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ProjectAssignmentStatusServiceTest
 {
@@ -61,7 +53,7 @@ public class ProjectAssignmentStatusServiceTest
 	@Test
 	public final void testGetAssignmentStatusDateIn()
 	{
-		ProjectAssignment assignment = ProjectAssignmentMother.createProjectAssignment(1);
+		ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
 		
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
@@ -95,7 +87,7 @@ public class ProjectAssignmentStatusServiceTest
 	@Test
 	public final void testGetAssignmentStatusDateOut()
 	{
-		ProjectAssignment assignment = ProjectAssignmentMother.createProjectAssignment(1);
+		ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
 
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);

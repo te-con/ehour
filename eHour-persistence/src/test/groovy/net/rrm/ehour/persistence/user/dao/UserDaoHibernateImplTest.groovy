@@ -4,9 +4,10 @@ import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import net.rrm.ehour.util.EhourConstants
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import net.rrm.ehour.domain.*
+
 import static junit.framework.Assert.assertEquals
 import static junit.framework.Assert.assertNotNull
-import net.rrm.ehour.domain.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -45,7 +46,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   {
     def org = UserDepartmentMother.createUserDepartment()
 
-    User user = UserMother.createUser()
+    User user = UserObjectMother.createUser()
     user.setUserId 5
 
     ProjectAssignment pa = new ProjectAssignment(user: user, assignmentId: 1, project: new Project(1), assignmentType: new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE))

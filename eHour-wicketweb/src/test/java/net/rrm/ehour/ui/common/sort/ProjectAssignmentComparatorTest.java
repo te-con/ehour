@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.common.sort;
 
-import static org.junit.Assert.assertTrue;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
-
+import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class ProjectAssignmentComparatorTest
 {
@@ -27,7 +27,7 @@ public class ProjectAssignmentComparatorTest
 	public void testCompareCustDatePrj()
 	{
 		int x = new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ)
-					.compare(ProjectAssignmentMother.createProjectAssignment(2), ProjectAssignmentMother.createProjectAssignment(1));
+					.compare(ProjectAssignmentObjectMother.createProjectAssignment(2), ProjectAssignmentObjectMother.createProjectAssignment(1));
 		
 		assertTrue(x > 0);
 	}
@@ -36,7 +36,7 @@ public class ProjectAssignmentComparatorTest
 	public void testCompareName()
 	{
 		int x = new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_NAME)
-					.compare(ProjectAssignmentMother.createProjectAssignment(2), ProjectAssignmentMother.createProjectAssignment(1));
+					.compare(ProjectAssignmentObjectMother.createProjectAssignment(2), ProjectAssignmentObjectMother.createProjectAssignment(1));
 		
 		assertTrue(x > 0);
 	}	
@@ -45,7 +45,7 @@ public class ProjectAssignmentComparatorTest
 	public void testCompareStart()
 	{
 		int x = new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_START)
-					.compare(ProjectAssignmentMother.createProjectAssignment(1), ProjectAssignmentMother.createProjectAssignment(1));
+					.compare(ProjectAssignmentObjectMother.createProjectAssignment(1), ProjectAssignmentObjectMother.createProjectAssignment(1));
 		
 		assertTrue(x == 0);
 	}	

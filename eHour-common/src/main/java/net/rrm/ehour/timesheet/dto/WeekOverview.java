@@ -16,17 +16,13 @@
 
 package net.rrm.ehour.timesheet.dto;
 
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.TimesheetComment;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.User;
 
 /**
  * Value object for timesheet entries of a week and corresponding comments
@@ -42,9 +38,6 @@ public class WeekOverview implements Serializable
 	private	User					user;
 	private	Set<Customer>			customers;
 
-	/**
-	 * 
-	 */
 	public void initCustomers()
 	{
 		customers = new HashSet<Customer>();

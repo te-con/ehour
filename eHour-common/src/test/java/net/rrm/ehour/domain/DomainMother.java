@@ -22,7 +22,7 @@ public class DomainMother
 		Customer customer = CustomerMother.createCustomer();
 		Project project = customer.getProjects().iterator().next();
 		
-		ProjectAssignment assignment = ProjectAssignmentMother.createProjectAssignment(user, project);
+		ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(user, project);
 		project.addProjectAssignment(assignment);
 		
 		return customer;

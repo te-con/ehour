@@ -21,6 +21,8 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.Model;
@@ -127,7 +129,7 @@ public class TimesheetRow implements Serializable
 				}
 				else
 				{
-					entry.setHours(entry.getHours().floatValue() + remaining);
+					entry.setHours(entry.getHours() + remaining);
 				}
 				
 				timesheetCells[day].setTimesheetEntry(entry);
@@ -239,6 +241,7 @@ public class TimesheetRow implements Serializable
 	{
 		return timesheet;
 	}
+
 	public void setTimesheet(Timesheet timesheet)
 	{
 		this.timesheet = timesheet;
@@ -261,5 +264,27 @@ public class TimesheetRow implements Serializable
 			return hours;
 		}
 	}
+
+    @Override
+    public boolean equals(final Object other)
+    {
+        if (!(other instanceof TimesheetRow))
+        {
+            return false;
+        }
+        TimesheetRow castOther = (TimesheetRow) other;
+        return new EqualsBuilder()
+                .append(projectAssignment, castOther.projectAssignment)
+                .isEquals();
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        return new HashCodeBuilder()
+                .append(projectAssignment)
+                .toHashCode();
+    }
 	
 }
