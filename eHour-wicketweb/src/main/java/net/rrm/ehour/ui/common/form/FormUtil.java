@@ -23,17 +23,12 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
-import net.rrm.ehour.ui.common.validator.IdentifiableFormValidator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.model.ResourceModel;
-import org.springframework.util.Assert;
-
-import java.util.Collection;
 
 /**
  * Common form stuff
@@ -41,33 +36,9 @@ import java.util.Collection;
 @SuppressWarnings("serial")
 public class FormUtil
 {
-	/**
-	 * Remove an identifiable form validator from the form
-	 */
-	public static void removeValidator(String id, Form<?> form)
-	{
-		Assert.notNull(id);
-
-		Collection<IFormValidator> validators = form.getFormValidators();
-
-		for (IFormValidator iFormValidator : validators)
-		{
-			if (iFormValidator instanceof IdentifiableFormValidator)
-			{
-				IdentifiableFormValidator identifiable = (IdentifiableFormValidator)iFormValidator;
-
-				if (identifiable.getIdentity().equalsIgnoreCase(id))
-				{
-					form.remove(iFormValidator);
-					break;
-				}
-			}
-		}
-	}
 
 
-
-	public static <T> void setSubmitActions(final FormConfig formConfig)
+    public static <T> void setSubmitActions(final FormConfig formConfig)
 	{
         final boolean inDemoMode = formConfig.getConfig().isInDemoMode();
 
