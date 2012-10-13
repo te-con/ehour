@@ -266,6 +266,8 @@ public class EhourWebSession extends AuthenticatedWebSession
         AuthUser user = getUser();
 
         setAuthentication(null);
+        setUserCriteria(null);
+
         super.signOut();
 
         auditService.doAudit(new Audit()
