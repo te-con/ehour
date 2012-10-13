@@ -22,7 +22,7 @@ object AggregateReportChartGenerator {
   def generateProjectReportChart(renderToId: String, reportData: ReportData, config: EhourConfig): String =
     generateReportChart(renderToId, reportData, config, _.getProjectAssignment.getFullName, "Projects in hours")
 
-  private def isWithTurnover: Boolean = EhourWebSession.getSession.getRoles.hasRole(UserRole.ROLE_REPORT)
+  private def isWithTurnover: Boolean = EhourWebSession.getSession.isWithReportRole
 
   private def generateReportChart(renderToId: String, reportData: ReportData, config: EhourConfig, findCategory: (AssignmentAggregateReportElement) => String, chartTitle: String): String = {
     import nl.tecon.highcharts.config.Conversions.valueToOption

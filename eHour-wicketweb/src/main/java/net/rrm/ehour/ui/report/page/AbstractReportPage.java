@@ -98,6 +98,6 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 	}
 
     protected boolean isReportForSingleUser() {
-        return !AuthUtil.hasRole(UserRole.ROLE_REPORT);
+        return !EhourWebSession.getSession().isWithReportRole();
     }
 }

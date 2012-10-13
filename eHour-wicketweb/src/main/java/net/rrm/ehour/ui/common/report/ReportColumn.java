@@ -73,8 +73,7 @@ public class ReportColumn implements Serializable {
             boolean showTurnover = session.getEhourConfig().isShowTurnover();
 
             if (!showTurnover) {
-                Roles roles = session.getRoles();
-                isVisibleAndAuthorized = roles.hasRole(UserRole.ROLE_REPORT);
+                isVisibleAndAuthorized = session.isWithReportRole();
             }
         }
 

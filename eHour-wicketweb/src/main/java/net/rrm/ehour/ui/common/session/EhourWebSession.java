@@ -21,6 +21,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
@@ -251,6 +252,10 @@ public class EhourWebSession extends AuthenticatedWebSession
             }
         }
         return null;
+    }
+
+    public boolean isWithReportRole() {
+        return getRoles().hasRole(UserRole.ROLE_REPORT);
     }
 
     /**

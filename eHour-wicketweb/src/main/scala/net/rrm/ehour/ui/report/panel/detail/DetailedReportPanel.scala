@@ -39,8 +39,13 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
       })
     }
 
-    frame.add(radioButton("turnover", DetailedReportChartGenerator.generateTurnoverBasedDetailedChart))
-    frame.add(radioButton("time", DetailedReportChartGenerator.generateHourBasedDetailedChart))
+    val typeSelector = new WebMarkupContainer("typeSelector")
+    frame.add(typeSelector)
+
+    typeSelector.add(radioButton("turnover", DetailedReportChartGenerator.generateTurnoverBasedDetailedChart))
+    typeSelector.add(radioButton("time", DetailedReportChartGenerator.generateHourBasedDetailedChart))
+
+    typeSelector.setVisible(getEhourWebSession.isWithReportRole)
 
     super.onBeforeRender()
   }

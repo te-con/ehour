@@ -103,7 +103,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         addCustomerSelection(model.getObject(), blueBorder);
         addProjectSelection(blueBorder);
 
-        form.add(AuthUtil.hasRole(UserRole.ROLE_REPORT) ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
+        form.add(getEhourWebSession().isWithReportRole() ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
 
         addSubmitButtons(form);
 
