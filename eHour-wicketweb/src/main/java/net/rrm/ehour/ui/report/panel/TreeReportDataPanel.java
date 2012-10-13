@@ -105,7 +105,7 @@ public class TreeReportDataPanel extends Panel {
 
         // add cells
         for (ReportColumn column : reportConfig.getReportColumns()) {
-            if (isReportColumnVisible(column)) {
+            if (column.isVisible()) {
                 Label label;
 
                 String id = totalView.newChildId();
@@ -169,7 +169,7 @@ public class TreeReportDataPanel extends Panel {
 
         for (ReportColumn reportColumn : reportConfig.getReportColumns()) {
             Label columnHeader = new Label(columnHeaders.newChildId(), new ResourceModel(reportColumn.getColumnHeaderResourceKey()));
-            columnHeader.setVisible(isReportColumnVisible(reportColumn));
+            columnHeader.setVisible(reportColumn.isVisible());
             columnHeaders.add(columnHeader);
 
             if (reportColumn.getColumnType().isNumeric()) {
@@ -200,27 +200,6 @@ public class TreeReportDataPanel extends Panel {
     }
 
 
-    private boolean isReportColumnVisible(ReportColumn reportColumn) {
-        if (!reportColumn.isVisible()) {
-            return false;
-        }
-
-        boolean isAuthorized = true;
-
-        if (reportColumn.isRateRelated()) {
-            EhourWebSession session = EhourWebSession.getSession();
-
-            boolean showTurnover = session.getEhourConfig().isShowTurnover();
-
-            if (!showTurnover) {
-                Roles roles = session.getRoles();
-                isAuthorized = roles.hasRole(UserRole.ROLE_REPORT);
-            }
-        }
-
-        return isAuthorized;
-    }
-
     private class TreeReportDataView extends DataView<TreeReportElement> {
         private static final long serialVersionUID = 1L;
 
@@ -249,7 +228,7 @@ public class TreeReportDataPanel extends Panel {
 
                 ReportColumn reportColumn = reportConfig.getReportColumns()[column];
 
-                if (isReportColumnVisible(reportColumn)) {
+                if (reportColumn.isVisible()) {
                     Label cellLabel;
 
                     if (isDuplicate(column, cellValue) && !newValueInPreviousColumn) {

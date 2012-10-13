@@ -16,6 +16,9 @@
 
 package net.rrm.ehour.ui.common.report;
 
+import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.util.convert.IConverter;
 
 import java.io.Serializable;
@@ -58,7 +61,24 @@ public class ReportColumn implements Serializable {
     }
 
     public boolean isVisible() {
-        return displayTypes.contains(DisplayType.VISIBLE);
+        if (!displayTypes.contains(DisplayType.VISIBLE)) {
+            return false;
+        }
+
+        boolean isVisibleAndAuthorized = true;
+
+        if (displayTypes.contains(DisplayType.IS_RATE_RELATED)) {
+            EhourWebSession session = EhourWebSession.getSession();
+
+            boolean showTurnover = session.getEhourConfig().isShowTurnover();
+
+            if (!showTurnover) {
+                Roles roles = session.getRoles();
+                isVisibleAndAuthorized = roles.hasRole(UserRole.ROLE_REPORT);
+            }
+        }
+
+        return isVisibleAndAuthorized;
     }
 
     public String getColumnHeaderResourceKey() {
@@ -75,10 +95,6 @@ public class ReportColumn implements Serializable {
 
     public boolean isAllowDuplicates() {
         return displayTypes.contains(DisplayType.ALLOW_DUPLICATES);
-    }
-
-    public boolean isRateRelated() {
-        return displayTypes.contains(DisplayType.IS_RATE_RELATED);
     }
 
 }
