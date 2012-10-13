@@ -8,20 +8,21 @@ import nl.tecon.highcharts.config._
 import java.lang.String
 import net.rrm.ehour.config.EhourConfig
 import collection.Seq
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.domain.UserRole
 
 object AggregateReportChartGenerator {
 
-  def generateEmployeeReportChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    generateReportChart(renderToId, reportData, config, _.getProjectAssignment.getUser.getFullName, "Users in hours and turnover")
-  }
+  def generateEmployeeReportChart(renderToId: String, reportData: ReportData, config: EhourConfig): String =
+    generateReportChart(renderToId, reportData, config, _.getProjectAssignment.getUser.getFullName, "Users in hours")
 
-  def generateCustomerReportChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    generateReportChart(renderToId, reportData, config, _.getProjectAssignment.getProject.getCustomer.getFullName, "Customers in hours and turnover")
-  }
+  def generateCustomerReportChart(renderToId: String, reportData: ReportData, config: EhourConfig): String =
+    generateReportChart(renderToId, reportData, config, _.getProjectAssignment.getProject.getCustomer.getFullName, "Customers in hours")
 
-  def generateProjectReportChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    generateReportChart(renderToId, reportData, config, _.getProjectAssignment.getFullName, "Projects in hours and turnover")
-  }
+  def generateProjectReportChart(renderToId: String, reportData: ReportData, config: EhourConfig): String =
+    generateReportChart(renderToId, reportData, config, _.getProjectAssignment.getFullName, "Projects in hours")
+
+  private def isWithTurnover: Boolean = EhourWebSession.getSession.getRoles.hasRole(UserRole.ROLE_REPORT)
 
   private def generateReportChart(renderToId: String, reportData: ReportData, config: EhourConfig, findCategory: (AssignmentAggregateReportElement) => String, chartTitle: String): String = {
     import nl.tecon.highcharts.config.Conversions.valueToOption
@@ -32,18 +33,33 @@ object AggregateReportChartGenerator {
 
     val categories = categoryData map (_._1)
     val hourSeries = Series(name = "Booked hours", data = categoryData map (_._2), yAxis = 0)
-    val turnoverSeries = Series(name = "Turnover", data = categoryData map (_._3), yAxis = 1)
+    val legend = Labels(formatter = JavascriptFunction("function() { return this.value.toLocaleString();}"))
+
+    // not winning a beauty contest with this..
+    val series: Option[List[Series[Int]]] = Some(if (isWithTurnover) {
+      val turnoverSeries = Series(name = "Turnover", data = categoryData map (_._3), yAxis = 1)
+      List(hourSeries, turnoverSeries)
+    } else {
+      List(hourSeries)
+    })
+
+    val yAxis: Option[Seq[Axis]] = Some(if (isWithTurnover) {
+      Seq(Axis(title = Title(text = "Hours"), opposite = true), Axis(title = Title(text = config.getCurrencySymbol), labels = legend))
+    } else {
+      Seq(Axis(title = Title(text = "Hours"), opposite = true))
+    })
+
+
+    val chartTitleText = if (isWithTurnover) chartTitle + " and turnover" else chartTitle
 
     val height = (categories.size * 35) + 110
     val chart = Chart(defaultSeriesType = SeriesType.Bar, height = if (height < 400) 400 else height)
 
-    val legend = Labels(formatter = JavascriptFunction("function() { return this.value.toLocaleString();}"))
-
     HighChart(chart = chart,
       xAxis = Seq(Axis(Some(categories.toArray))),
-      yAxis = Seq(Axis(title = Title(text = "Hours"), opposite = true), Axis(title = Title(text = config.getCurrencySymbol), labels = legend)),
-      series = List(hourSeries, turnoverSeries),
-      title = Title(text = chartTitle),
+      yAxis = yAxis,
+      series = series,
+      title = Title(text = chartTitleText),
       tooltip = Tooltip(shared = true, formatter = Some(JavascriptFunction("""function() { var s = '<b>'+ this.x +'</b>'; $.each(this.points, function(i, point) { s += '<br/>'+ point.series.name +': ' + point.y.toLocaleString(); }); return s; }"""))),
       plotOptions = PlotOptions(PlotOptionsSeries(shadow = false))
     ).build(renderToId)
