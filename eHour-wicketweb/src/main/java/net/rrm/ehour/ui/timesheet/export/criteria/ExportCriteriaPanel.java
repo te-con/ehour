@@ -104,12 +104,16 @@ public class ExportCriteriaPanel extends Panel
 		ReportCriteria criteria = (ReportCriteria)getDefaultModelObject();
 		
 		List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
-		
-		ListView<Project> billableProjects = getAssignmentCheckboxesForProjects("billableProjects", ProjectUtil.getBillableProjects(allProjects));
-		projectGroup.add(billableProjects);
 
-		ListView<Project> unbillableProjects = getAssignmentCheckboxesForProjects("unbillableProjects", ProjectUtil.getUnbillableProjects(allProjects));
-		projectGroup.add(unbillableProjects);
+        List<Project> billableProjects = ProjectUtil.getBillableProjects(allProjects);
+        ListView<Project> billableProjectsView = getAssignmentCheckboxesForProjects("billableProjects", billableProjects);
+        billableProjectsView.setVisible(billableProjects.size() > 0);
+		projectGroup.add(billableProjectsView);
+
+        List<Project> unbillableProjects = ProjectUtil.getUnbillableProjects(allProjects);
+        ListView<Project> unbillableProjectsView = getAssignmentCheckboxesForProjects("unbillableProjects", unbillableProjects);
+        unbillableProjectsView.setVisible(unbillableProjects.size() > 0);
+        projectGroup.add(unbillableProjectsView);
 
 		return projectGroup;
 	}
