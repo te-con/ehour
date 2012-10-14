@@ -67,6 +67,7 @@ public class ExportReportDummyCreater
 		element.setCustomerCode("TE1");
 		element.setCustomerName("TEST #1");
 		element.setProjectName("Project #1");
+        element.setProjectCode("PRJ");
 		element.setDayDate(date);
 		element.setHours(Math.random() * 8);
 		element.setTotalHours(element.getHours());

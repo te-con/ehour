@@ -44,10 +44,6 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 		return getReportData(reportCriteria);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.persistence.persistence.data.DateRange)
-	 */
 	@Override
 	protected List<FlatReportElement> getReportElements(List<User> users,
 														List<Project >projects,
@@ -77,9 +73,6 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 		return elements;
 	}
 
-	/**
-	 * @param detailedReportDAO the detailedReportDAO to set
-	 */
 	public void setDetailedReportDAO(DetailedReportDao detailedReportDAO)
 	{
 		this.detailedReportDAO = detailedReportDAO;

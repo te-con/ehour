@@ -40,6 +40,7 @@
 		       USR.LAST_NAME AS userLastName,
 		       PAG.ROLE AS assignmentDesc,
 		       PRJ.PROJECT_ID AS projectId,
+		       PRJ.PROJECT_CODE as projectCode,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
 		       ENTRY.COMMENT AS comment
@@ -74,6 +75,7 @@
 		       USR.LAST_NAME AS userLastName,
 		       PAG.ROLE AS assignmentDesc,
 		       PRJ.PROJECT_ID AS projectId,
+		       PRJ.PROJECT_CODE as projectCode,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
 		       ENTRY.COMMENT AS comment
@@ -108,6 +110,7 @@
 		       USR.LAST_NAME AS userLastName,
 		       PAG.ROLE AS assignmentDesc,
 		       PRJ.PROJECT_ID AS projectId,
+		       PRJ.PROJECT_CODE as projectCode,
 		       PRJ.NAME AS projectName,
 		       PAG.ASSIGNMENT_ID AS assignmentId,
 		       ENTRY.COMMENT AS comment
@@ -142,6 +145,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
+		       PRJ.PROJECT_CODE as projectCode,
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -187,6 +191,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
+		       PRJ.PROJECT_CODE as projectCode,
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -232,6 +237,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
+		       PRJ.PROJECT_CODE as projectCode,
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -277,6 +283,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
+		       PRJ.PROJECT_CODE as projectCode,
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -323,6 +330,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
+		       PRJ.PROJECT_CODE as projectCode,
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,

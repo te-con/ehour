@@ -52,8 +52,9 @@ public class ExportReportTotal extends AbstractExportReportPart
 		addTotalValue(total, row);
 
 		createEmptyCells(row, BORDER_NORTH);
-		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER.getColumn(), getWorkbook(), BORDER_NORTH);
+		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER_CODE.getColumn(), getWorkbook(), BORDER_NORTH);
 		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), getWorkbook(), BORDER_NORTH);
+        CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT_CODE.getColumn(), getWorkbook(), BORDER_NORTH);
 		
 		return rowNumber;
 	}

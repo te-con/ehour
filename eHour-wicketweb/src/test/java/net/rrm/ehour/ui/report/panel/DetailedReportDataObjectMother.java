@@ -48,6 +48,7 @@ public class DetailedReportDataObjectMother
             fre.setTotalTurnOver(15);
 			fre.setProjectId(1);
 			fre.setProjectName("PRJ");
+            fre.setProjectCode("PRJ");
 			fre.setUserId(5);
 			els.add(fre);
 		}
@@ -67,7 +68,9 @@ public class DetailedReportDataObjectMother
             fre.setTotalTurnOver(16);
 			fre.setProjectId(1);
 			fre.setProjectName("PRJ");
-			fre.setUserId(5);
+            fre.setProjectCode("PRJ");
+
+            fre.setUserId(5);
 			els.add(fre);
 		}
 
@@ -86,7 +89,9 @@ public class DetailedReportDataObjectMother
             fre.setTotalTurnOver(17);
 			fre.setProjectId(1);
 			fre.setProjectName("PRJ");
-			fre.setUserId(6);
+            fre.setProjectCode("PRJ");
+
+            fre.setUserId(6);
 			els.add(fre);
 		}
 
@@ -105,7 +110,9 @@ public class DetailedReportDataObjectMother
             fre.setTotalTurnOver(18);
 			fre.setProjectId(1);
 			fre.setProjectName("PRJ");
-			fre.setUserId(6);
+            fre.setProjectCode("PRJ");
+
+            fre.setUserId(6);
 			els.add(fre);
 		}
 		return els;

@@ -24,22 +24,20 @@ package net.rrm.ehour.ui.timesheet.export.excel.part;
  */
 public enum ExportReportColumn
 {
-	CUSTOMER(1),
-	PROJECT(2),
-	DATE(0),
-	HOURS(6),
-	EMPTY(3, 4, 5);
-	
+    DATE(0),
+    CUSTOMER_CODE(1),
+    PROJECT_CODE(2),
+    PROJECT(3),
+    EMPTY(4, 5),
+    HOURS(6);
+
 	private int[] columns;
 	
 	ExportReportColumn(int... columns)
 	{
 		this.columns= columns;
 	}
-	
-	/**
-	 * @return the column
-	 */
+
 	public int[] getColumns()
 	{
 		return columns;
@@ -49,6 +47,4 @@ public enum ExportReportColumn
 	{
 		return columns[0];
 	}
-
-
 }

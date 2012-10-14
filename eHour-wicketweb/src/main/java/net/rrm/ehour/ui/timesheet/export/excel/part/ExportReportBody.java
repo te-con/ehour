@@ -60,15 +60,8 @@ public class ExportReportBody extends AbstractExportReportPart
 			List<FlatReportElement> flatList = dateMap.get(date);
 			
 			boolean borderCells = isFirstDayOfWeek(date);
-			
-			if (!CollectionUtils.isEmpty(flatList))
-			{
-				rowNumber = addColumnsToRow(date, flatList, rowNumber, borderCells);
-			}
-			else
-			{
-				rowNumber = addEmptyRow(rowNumber, date, borderCells);
-			}
+
+            rowNumber = !CollectionUtils.isEmpty(flatList) ? addColumnsToRow(date, flatList, rowNumber, borderCells) : addEmptyRow(rowNumber, date, borderCells);
 		}
 		return rowNumber;
 	}
@@ -94,8 +87,9 @@ public class ExportReportBody extends AbstractExportReportPart
 			
 			createEmptyCells(row, border);
 			
-			CellFactory.createCell(row, getCellMargin() +  ExportReportColumn.CUSTOMER.getColumn(), getWorkbook(), border);
+			CellFactory.createCell(row, getCellMargin() +  ExportReportColumn.CUSTOMER_CODE.getColumn(), getWorkbook(), border);
 			CellFactory.createCell(row, getCellMargin() +  ExportReportColumn.PROJECT.getColumn(), getWorkbook(), border);
+            CellFactory.createCell(row, getCellMargin() +  ExportReportColumn.PROJECT_CODE.getColumn(), getWorkbook(), border);
 			CellFactory.createCell(row, getCellMargin() +  ExportReportColumn.HOURS.getColumn(), getWorkbook(), border);
 		}
 
@@ -113,17 +107,19 @@ public class ExportReportBody extends AbstractExportReportPart
 			if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() > 0.0)
 			{
 				HSSFCell dateCell = createDateCell(date, row);
-				HSSFCell projectCell = createProjectCell(flatReportElement.getProjectName(), row);
+                HSSFCell projectCell = createProjectCell(flatReportElement.getProjectName(), row);
+                HSSFCell projectCodeCell = createProjectCodeCell(flatReportElement.getProjectCode(), row);
 				HSSFCell hoursCell = createHoursCell(flatReportElement.getTotalHours(), row);
-				HSSFCell customerCell = createCustomerCell(flatReportElement.getCustomerCode(), row);
+				HSSFCell customerCodeCell = createCustomerCodeCell(flatReportElement.getCustomerCode(), row);
 				
 				if (borderCells)
 				{
 					addThinNorthBorder(dateCell);
-					addThinNorthBorder(projectCell);
-					addThinNorthBorder(hoursCell);
-					addThinNorthBorder(customerCell);
-					
+                    addThinNorthBorder(customerCodeCell);
+                    addThinNorthBorder(projectCell);
+                    addThinNorthBorder(projectCodeCell);
+                    addThinNorthBorder(hoursCell);
+
 					createEmptyCells(row, StaticCellStyle.BORDER_NORTH_THIN);
 					
 					getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, getCellMargin() + 3, getCellMargin() + 5));
@@ -154,7 +150,7 @@ public class ExportReportBody extends AbstractExportReportPart
 		HSSFCellStyle cellStyle = cell.getCellStyle();
 		StaticCellStyle.BORDER_NORTH_THIN.getCellStylePopulator().populate(cellStyle, getWorkbook());
 	}
-	
+
 	private HSSFCell createHoursCell(Number hours, HSSFRow row)
 	{
 		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.HOURS.getColumn() ,hours,  getWorkbook(), StaticCellStyle.DIGIT);
@@ -165,12 +161,17 @@ public class ExportReportBody extends AbstractExportReportPart
 		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), project, getWorkbook());
 	}
 
-	private HSSFCell createCustomerCell(String customerCode, HSSFRow row)
+    private HSSFCell createProjectCodeCell(String project, HSSFRow row)
+    {
+        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT_CODE.getColumn(), project, getWorkbook());
+    }
+
+
+    private HSSFCell createCustomerCodeCell(String customerCode, HSSFRow row)
 	{
-		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER.getColumn(), customerCode, getWorkbook());
+		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER_CODE.getColumn(), customerCode, getWorkbook());
 	}
 
-	
 	private HSSFCell createDateCell(Date date, HSSFRow row)
 	{
 		return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.DATE.getColumn() , getFormatter().format(date), getWorkbook(), StaticCellStyle.DATE);

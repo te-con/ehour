@@ -48,12 +48,12 @@ public class ExportReportBodyHeader extends AbstractExportReportPart
 		HSSFRow row = sheet.createRow(rowNumber);
 		
         CellFactory.createCell(row, cellMargin + ExportReportColumn.DATE.getColumn(), new ResourceModel("excelMonth.body.date"), workbook, BOLD, BORDER_SOUTH);
-		CellFactory.createCell(row, cellMargin + ExportReportColumn.CUSTOMER.getColumn(), new ResourceModel("excelMonth.body.customer"), workbook, BOLD, BORDER_SOUTH);
-		CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT.getColumn(), new ResourceModel("excelMonth.body.project"), workbook, BOLD, BORDER_SOUTH);
+        CellFactory.createCell(row, cellMargin + ExportReportColumn.CUSTOMER_CODE.getColumn(), new ResourceModel("excelMonth.body.customerCode"), workbook, BOLD, BORDER_SOUTH);
+        CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT.getColumn(), new ResourceModel("excelMonth.body.project"), workbook, BOLD, BORDER_SOUTH);
+        CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT_CODE.getColumn(), new ResourceModel("excelMonth.body.projectCode"), workbook, BOLD, BORDER_SOUTH);
 
 		createEmptyCells(row, BORDER_SOUTH);
 
-//		sheet.addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, cellMargin + 3, cellMargin + 5));
 		CellFactory.createCell(row, cellMargin + ExportReportColumn.HOURS.getColumn(), new ResourceModel("excelMonth.body.hours"), workbook, BOLD, BORDER_SOUTH);
 		
 		rowNumber++;
