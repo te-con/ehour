@@ -21,10 +21,6 @@ import net.rrm.ehour.ui.common.component.header.HeaderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import org.apache.wicket.Application;
-import org.apache.wicket.Component;
-import org.apache.wicket.devutils.debugbar.DebugBar;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -56,24 +52,6 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
 	{
 		add(new HeaderPanel("mainNav"));
 		add(new Label("pageTitle", pageTitle));
-		add(createDebugBar("debug"));
-	}
-	
-	private Component createDebugBar(String id)
-	{
-		String type = getApplication().getConfigurationType();
-		
-		if (type.equalsIgnoreCase(Application.DEVELOPMENT))
-		{
-			return new DebugBar(id);
-		}
-		else
-		{
-			WebMarkupContainer container = new WebMarkupContainer(id);
-			container.setVisible(false);
-			return container;
-		}
-		
 	}
 	
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
