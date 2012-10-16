@@ -2,133 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <sql-query name="Report.getHoursPerMonthPerAssignmentForUsersAndProjects">
-	<![CDATA[
-		SELECT SUM(ENTRY.HOURS) AS totalHours,
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS totalTurnOver,
-		       MONTH(ENTRY_DATE) + YEAR(ENTRY_DATE) ,
-		       PAG.ASSIGNMENT_ID AS assignmentId
-		FROM TIMESHEET_ENTRY ENTRY,
-		     CUSTOMER CUST,
-		     PROJECT PRJ,
-		     PROJECT_ASSIGNMENT PAG,
-		     USERS USR
-		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
-		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
-		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
-		      PAG.USER_ID = USR.USER_ID AND
-		      PAG.USER_ID IN (:userIdList) AND
-		      PAG.PROJECT_ID IN (:projectIdList) AND
-		      (ENTRY.ENTRY_DATE >= :dateStart AND
-		      ENTRY.ENTRY_DATE <= :dateEnd)
-		GROUP BY PAG.ASSIGNMENT_ID,
-		         MONTH(ENTRY_DATE) + YEAR(ENTRY_DATE)
-		         ]]>
-	</sql-query>
-	
-    <sql-query name="Report.getHoursPerMonthPerAssignmentForUsers">
-	<![CDATA[	
-		SELECT SUM(ENTRY.HOURS) AS totalHours,
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS totalTurnOver,
-		       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS entryDate,
-		       CUST.CUSTOMER_ID AS customerId,
-		       CUST.NAME AS customerName,
-		       CUST.CODE AS customerCode,
-		       PAG.PROJECT_ID AS projectId,
-		       PAG.USER_ID AS userId,
-		       USR.FIRST_NAME AS userFirstName,
-		       USR.LAST_NAME AS userLastName,
-		       PAG.ROLE AS assignmentDesc,
-		       PRJ.PROJECT_ID AS projectId,
-		       PRJ.PROJECT_CODE as projectCode,
-		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment
-		FROM TIMESHEET_ENTRY ENTRY,
-		     CUSTOMER CUST,
-		     PROJECT PRJ,
-		     PROJECT_ASSIGNMENT PAG,
-		     USERS USR
-		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
-		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
-		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
-		      PAG.USER_ID = USR.USER_ID AND
-		      PAG.USER_ID IN (:userIdList) AND
-		      (ENTRY.ENTRY_DATE >= :dateStart AND
-		      ENTRY.ENTRY_DATE <= :dateEnd)
-		GROUP BY PAG.ASSIGNMENT_ID,
-		         DATE_FORMAT(ENTRY_DATE, '%U %Y')
-		         ]]>		         
-	</sql-query>
-	
-    <sql-query name="Report.getHoursPerMonthPerAssignmentForProjects">
-	<![CDATA[	
-		SELECT SUM(ENTRY.HOURS) AS totalHours,
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS totalTurnOver,
-		       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS entryDate,
-		       CUST.CUSTOMER_ID AS customerId,
-		       CUST.NAME AS customerName,
-		       CUST.CODE AS customerCode,
-		       PAG.PROJECT_ID AS projectId,
-		       PAG.USER_ID AS userId,
-		       USR.FIRST_NAME AS userFirstName,
-		       USR.LAST_NAME AS userLastName,
-		       PAG.ROLE AS assignmentDesc,
-		       PRJ.PROJECT_ID AS projectId,
-		       PRJ.PROJECT_CODE as projectCode,
-		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment
-		FROM TIMESHEET_ENTRY ENTRY,
-		     CUSTOMER CUST,
-		     PROJECT PRJ,
-		     PROJECT_ASSIGNMENT PAG,
-		     USERS USR
-		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
-		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
-		      PAG.PROJECT_ID IN (:projectIdList) AND
-		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
-		      PAG.USER_ID = USR.USER_ID AND
-		      (ENTRY.ENTRY_DATE >= :dateStart AND
-		      ENTRY.ENTRY_DATE <= :dateEnd)
-		GROUP BY PAG.ASSIGNMENT_ID,
-		         DATE_FORMAT(ENTRY_DATE, '%U %Y')
-		         ]]>		         
-	</sql-query>	
-	
-    <sql-query name="Report.getHoursPerMonthPerAssignment">
-	<![CDATA[	
-		SELECT SUM(ENTRY.HOURS) AS totalHours,
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS totalTurnOver,
-		       DATE_FORMAT(ENTRY_DATE, '%U %Y') AS entryDate,
-		       CUST.CUSTOMER_ID AS customerId,
-		       CUST.NAME AS customerName,
-		       CUST.CODE AS customerCode,
-		       PAG.PROJECT_ID AS projectId,
-		       PAG.USER_ID AS userId,
-		       USR.FIRST_NAME AS userFirstName,
-		       USR.LAST_NAME AS userLastName,
-		       PAG.ROLE AS assignmentDesc,
-		       PRJ.PROJECT_ID AS projectId,
-		       PRJ.PROJECT_CODE as projectCode,
-		       PRJ.NAME AS projectName,
-		       PAG.ASSIGNMENT_ID AS assignmentId,
-		       ENTRY.COMMENT AS comment
-		FROM TIMESHEET_ENTRY ENTRY,
-		     CUSTOMER CUST,
-		     PROJECT PRJ,
-		     PROJECT_ASSIGNMENT PAG,
-		     USERS USR
-		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
-		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
-		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
-		      PAG.USER_ID = USR.USER_ID AND
-		      (ENTRY.ENTRY_DATE >= :dateStart AND
-		      ENTRY.ENTRY_DATE <= :dateEnd)
-		GROUP BY PAG.ASSIGNMENT_ID,
-		         DATE_FORMAT(ENTRY_DATE, '%U %Y')
-		         ]]>		         
-	</sql-query>	
+
 
     <sql-query name="Report.getHoursPerDayForAssignment">
 	<![CDATA[	
@@ -171,6 +45,7 @@
 				USR.LAST_NAME,
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT
          ]]>
@@ -191,7 +66,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
-		       PRJ.PROJECT_CODE as projectCode,
+		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -217,6 +92,7 @@
 				USR.LAST_NAME,
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT
          ]]>         
@@ -237,7 +113,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
-		       PRJ.PROJECT_CODE as projectCode,
+		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -263,6 +139,7 @@
 				USR.LAST_NAME,
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT
          ]]>         
@@ -283,7 +160,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
-		       PRJ.PROJECT_CODE as projectCode,
+		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -310,6 +187,7 @@
 				USR.LAST_NAME,
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT
          ]]>         
@@ -330,7 +208,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
-		       PRJ.PROJECT_CODE as projectCode,
+		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -355,6 +233,7 @@
 				USR.LAST_NAME,
 				PAG.ROLE,
 				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT
          ]]>         
