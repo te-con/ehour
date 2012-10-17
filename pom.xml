@@ -62,7 +62,6 @@
         <jetty.version>7.6.3.v20120416</jetty.version>
         <derbydb.version>10.8.2.2</derbydb.version>
         <aspectj.version>1.6.12</aspectj.version>
-        <clover.version>3.1.6</clover.version>
         <gmaven.version>1.4</gmaven.version>
         <groovy.version>1.7.2</groovy.version>
         <slf4j.version>1.6.4</slf4j.version>
@@ -757,35 +756,6 @@
                 </plugins>
             </build>
         </profile>
-
-	<profile>
-		<id>quality-build</id>
-		<build>
-			<plugins>
-			    <plugin>
-				<groupId>com.atlassian.maven.plugins</groupId>
-				<artifactId>maven-clover2-plugin</artifactId>
-				<version>${clover.version}</version>
-				<configuration>
-				    <jdk>1.6</jdk>
-				    <generateXml>true</generateXml>
-				    <licenseLocation>${clover2.licenseLocation}</licenseLocation>
-				    <includesTestSourceRoots>false</includesTestSourceRoots>
-				</configuration>
-				<executions>
-				    <execution>
-					<phase>verify</phase>
-					<goals>
-					    <goal>instrument</goal>
-					    <goal>clover</goal>
-					    <goal>check</goal>
-					</goals>
-				    </execution>
-				</executions>
-			    </plugin>
-			</plugins>
-		</build>
-	</profile>
     </profiles>
 
     <repositories>
