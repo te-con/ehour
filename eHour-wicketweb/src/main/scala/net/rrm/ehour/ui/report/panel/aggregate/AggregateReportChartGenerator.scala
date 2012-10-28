@@ -64,6 +64,7 @@ object AggregateReportChartGenerator {
       plotOptions = PlotOptions(PlotOptionsSeries(shadow = false))
     ).build(renderToId)
   }
+
   private def extractCategoryData(elements: Seq[AssignmentAggregateReportElement], findCategory: (AssignmentAggregateReportElement) => String): List[(String, Int, Int)] = {
     val categories = (elements map (findCategory(_))).toSet
 

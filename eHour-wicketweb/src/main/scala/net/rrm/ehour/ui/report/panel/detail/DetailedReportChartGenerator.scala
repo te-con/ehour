@@ -21,18 +21,18 @@ object DetailedReportChartGenerator {
 
 
   def generateHourBasedDetailedChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    val highChart = generateDetailedChart(reportData, config, h => round(h.getTotalHours.doubleValue()))
+    val highChart = generateDetailedChart(reportData, config, h => round(h.getTotalHours.floatValue()))
 
     highChart.copy(yAxis = axis("Hours"), title = title("Hours booked on customers per day"), tooltip = tooltip("hours")).build(renderToId)
   }
 
   def generateTurnoverBasedDetailedChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    val highChart = generateDetailedChart(reportData, config, _.getTotalTurnOver)
+    val highChart = generateDetailedChart(reportData, config, _.getTotalTurnOver.floatValue())
 
     highChart.copy(yAxis = axis(config.getCurrencySymbol), title = title("Turnover booked on customers per day"), tooltip = tooltip(config.getCurrencySymbol)).build(renderToId)
   }
 
-  private def generateDetailedChart(reportData: ReportData, config: EhourConfig, f: FlatReportElement => Number): HighChart = {
+  private def generateDetailedChart(reportData: ReportData, config: EhourConfig, f: FlatReportElement => Float): HighChart = {
     val elements: Seq[FlatReportElement] = reportData.getReportElements.asScala.asInstanceOf[Seq[FlatReportElement]]
 
     val reportRange: DateRange = reportData.getReportRange
@@ -40,7 +40,7 @@ object DetailedReportChartGenerator {
     val (categoryDataMap, categoryNameMap) = buildCategoryMap(elements, f)
 
     val series = (for (category <- categoryDataMap.keySet) yield {
-      val values: ListBuffer[DateNumericValue] = categoryDataMap.get(category).get
+      val values: ListBuffer[DateFloatValue] = categoryDataMap.get(category).get
 
       SparseDateSeries(name = categoryNameMap.get(category), data = values, dateStart = new DateTime(reportRange.getDateStart), dateEnd = new DateTime(reportRange.getDateEnd))
     }).toList
@@ -60,16 +60,16 @@ object DetailedReportChartGenerator {
     )
   }
 
-  private def buildCategoryMap(elements: Seq[FlatReportElement], f: FlatReportElement => Number) = {
-    val categoryDataMap = MutableMap[Int, ListBuffer[DateNumericValue]]()
+  private def buildCategoryMap(elements: Seq[FlatReportElement], f: FlatReportElement => Float) = {
+    val categoryDataMap = MutableMap[Int, ListBuffer[DateFloatValue]]()
     val categoryNameMap = MutableMap[Int, String]()
 
     for (element <- elements) {
       categoryNameMap.put(element.getCustomerId, element.getCustomerName)
 
-      val data = DateNumericValue(new DateTime(element.getDayDate), f(element))
+      val data = DateFloatValue(new DateTime(element.getDayDate), f(element))
 
-      val list = categoryDataMap.getOrElse(element.getCustomerId, new ListBuffer[DateNumericValue]) += data
+      val list = categoryDataMap.getOrElse(element.getCustomerId, new ListBuffer[DateFloatValue]) += data
       categoryDataMap.put(element.getCustomerId, list)
     }
 

@@ -62,7 +62,7 @@ public class DetailedReportTest extends AbstractSpringInjectorTester
 		replay(detailedReportService);
 		
 		DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
-		assertEquals(4, detailedReport.getReportData().getReportElements().size());
+		assertEquals(5, detailedReport.getReportData().getReportElements().size());
 
 		verify(detailedReportService);
 	}
