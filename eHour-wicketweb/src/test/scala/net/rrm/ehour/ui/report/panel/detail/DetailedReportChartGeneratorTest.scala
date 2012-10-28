@@ -29,7 +29,7 @@ class DetailedReportChartGeneratorTest extends FunSuite with ShouldMatchers with
   }
 
   test("should have hourly based data set") {
-    chart should include("""series:[{"name":"A Company","data":[0.0,16.0,7.0,6.0,5.0,0.0]}]""")
+    chart should include("""series:[{"name":"A Company","data":[0.0,16.25,7.0,6.0,5.0,0.0]}]""")
   }
 
   test("should have proper title set") {

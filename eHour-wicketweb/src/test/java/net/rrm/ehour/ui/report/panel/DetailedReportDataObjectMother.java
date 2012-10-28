@@ -126,8 +126,8 @@ public class DetailedReportDataObjectMother
             fre.setDayDate(new Date(2007 - 1900, 12 - 1, 28));
             fre.setDisplayOrder(2);
             fre.setEntryDate("492007");
-            fre.setHours(8);
-            fre.setTotalHours(8);
+            fre.setHours(8.25);
+            fre.setTotalHours(8.25);
             fre.setTotalTurnOver(18);
             fre.setProjectId(2);
             fre.setProjectName("PRJB");
