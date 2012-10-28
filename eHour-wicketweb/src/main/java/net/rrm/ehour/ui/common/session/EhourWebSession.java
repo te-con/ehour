@@ -265,6 +265,8 @@ public class EhourWebSession extends AuthenticatedWebSession
     {
         AuthUser user = getUser();
 
+        getSession().clear();
+
         setAuthentication(null);
         setUserCriteria(null);
 

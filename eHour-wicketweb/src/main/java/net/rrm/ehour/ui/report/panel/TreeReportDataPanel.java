@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.report.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
@@ -33,7 +32,6 @@ import net.rrm.ehour.ui.report.TreeReportElement;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;

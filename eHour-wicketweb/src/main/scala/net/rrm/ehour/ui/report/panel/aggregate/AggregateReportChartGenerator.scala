@@ -9,7 +9,6 @@ import java.lang.String
 import net.rrm.ehour.config.EhourConfig
 import collection.Seq
 import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.domain.UserRole
 
 object AggregateReportChartGenerator {
 
