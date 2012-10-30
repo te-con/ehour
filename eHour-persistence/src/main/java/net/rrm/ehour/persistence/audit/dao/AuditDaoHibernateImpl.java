@@ -31,62 +31,44 @@ import java.util.List;
 @Repository("auditDao")
 public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit, Number>  implements AuditDao
 {
-	/**
-	 * @todo fix this a bit better
-	 */
 	public AuditDaoHibernateImpl()
 	{
 		super(Audit.class);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.dao.AuditDAO#findAudit(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
-	 */
 	@SuppressWarnings("unchecked")
-	private List<Audit> findAudit(AuditReportRequest request, boolean ignoreOffset)
+    @Override
+    public List<Audit> findAudits(AuditReportRequest request)
 	{
-		Criteria criteria = buildCriteria(request, ignoreOffset);
+		Criteria criteria = buildCriteria(request);
 		criteria.addOrder(Order.asc("date"));
 		
 		return criteria.list();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.dao.AuditDAO#findAuditCount(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
-	 */
-	public Number count(AuditReportRequest request)
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Audit> findAudits(AuditReportRequest request, int offset, int max) {
+        Criteria criteria = buildCriteria(request);
+        criteria.setFirstResult(offset);
+        criteria.setMaxResults(max);
+        criteria.addOrder(Order.asc("date"));
+
+        return criteria.list();
+    }
+
+    public Number count(AuditReportRequest request)
 	{
-		Criteria criteria = buildCriteria(request, false);
+		Criteria criteria = buildCriteria(request);
 		criteria.setProjection(Projections.rowCount());
 
 		return (Number)criteria.uniqueResult();
 	}
 	
-	/**
-	 * Build criteria
-	 * @param request
-	 * @param ignoreOffset
-	 * @return
-	 */
-	private Criteria buildCriteria(AuditReportRequest request, boolean ignoreOffset)
+	private Criteria buildCriteria(AuditReportRequest request)
 	{
 		Criteria criteria = getSession().createCriteria(Audit.class);
-		
-		if (!ignoreOffset)
-		{
-			if (request.getOffset() != null)
-			{
-				criteria.setFirstResult(request.getOffset());
-			}
-			
-			if (request.getMax() != null)
-			{
-				criteria.setMaxResults(request.getMax());
-			}
-		}
-		
+
 		if (!StringUtils.isBlank(request.getAction()))
 		{
 			criteria.add(Restrictions.like("action", "%" + request.getAction().toLowerCase() + "%").ignoreCase());
@@ -109,23 +91,5 @@ public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit
 		}
 
 		return criteria;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.dao.AuditDAO#findAuditAll(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
-	 */
-	public List<Audit> findAllAudits(AuditReportRequest request)
-	{
-		return findAudit(request, true);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.dao.AuditDAO#findAudit(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
-	 */
-	public List<Audit> findAudit(AuditReportRequest request)
-	{
-		return findAudit(request, false);
 	}
 }

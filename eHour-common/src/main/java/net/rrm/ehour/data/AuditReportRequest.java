@@ -33,8 +33,6 @@ public class AuditReportRequest extends UserCriteria
 	private String		name;
 	private String		action;
 	private AuditType	auditType;
-	private Integer		offset;
-	private Integer		max;
 
 	/*
 	 * (non-Javadoc)
@@ -50,48 +48,11 @@ public class AuditReportRequest extends UserCriteria
 									.toString();
 	}
 	
-	/**
-	 * @return the offset
-	 */
-	public Integer getOffset()
-	{
-		return offset;
-	}
-	/**
-	 * @return the max
-	 */
-	public Integer getMax()
-	{
-		return max;
-	}
-	/**
-	 * @param offset the offset to set
-	 */
-	public AuditReportRequest setOffset(Integer offset)
-	{
-		this.offset = offset;
-		return this;
-	}
-	/**
-	 * @param max the max to set
-	 */
-	public AuditReportRequest setMax(Integer max)
-	{
-		this.max = max;
-		
-		return this;
-	}
-	/**
-	 * @return the auditType
-	 */
 	public AuditType getAuditType()
 	{
 		return auditType;
 	}
 
-	/**
-	 * @param auditType the auditType to set
-	 */
 	public void setAuditType(AuditType auditType)
 	{
 		this.auditType = auditType;

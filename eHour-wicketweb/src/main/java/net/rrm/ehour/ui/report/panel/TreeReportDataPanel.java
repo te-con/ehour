@@ -173,7 +173,6 @@ public class TreeReportDataPanel extends Panel {
             if (reportColumn.getColumnType().isNumeric()) {
                 columnHeader.add(CSS_ALIGN_RIGHT);
             }
-
         }
 
         parent.add(columnHeaders);

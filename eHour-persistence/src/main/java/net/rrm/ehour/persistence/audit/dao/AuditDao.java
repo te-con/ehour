@@ -29,19 +29,19 @@ public interface AuditDao extends GenericDao<Audit, Number>
 	 * @param request
 	 * @return
 	 */
-	public List<Audit> findAudit(AuditReportRequest request);
+	List<Audit> findAudits(AuditReportRequest request);
 
 	/**
-	 * Find all audits for a request
+	 * Find audits for a request
 	 * @param request
 	 * @return
 	 */
-	public List<Audit> findAllAudits(AuditReportRequest request);
+	List<Audit> findAudits(AuditReportRequest request, int offset, int max);
 	
 	/**
 	 * Count audits for request
 	 * @param request
 	 * @return
 	 */
-	public Number count(AuditReportRequest request);
+	Number count(AuditReportRequest request);
 }

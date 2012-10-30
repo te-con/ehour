@@ -51,25 +51,18 @@ public class AuditServiceImpl implements AuditService
 	public void doAudit(final Audit audit)
 	{
 		auditDAO.persist(audit);
-	}	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#getAudit(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
-	 */
-	@NonAuditable
-	public List<Audit> getAudit(AuditReportRequest request)
-	{
-		return auditDAO.findAudit(request);
 	}
-	
-	/**
-	 * 
-	 */
+
+    @Override
+    @NonAuditable
+    public List<Audit> findAudits(AuditReportRequest request, int offset, int max) {
+        return auditDAO.findAudits(request, offset, max);
+    }
+
 	@NonAuditable
-	public List<Audit> getAuditAll(AuditReportRequest request)
+	public List<Audit> findAudits(AuditReportRequest request)
 	{
-		return auditDAO.findAllAudits(request);
+		return auditDAO.findAudits(request);
 	}	
 
 	/*

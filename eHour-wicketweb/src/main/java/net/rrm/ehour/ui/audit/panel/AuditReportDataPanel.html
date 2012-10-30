@@ -19,7 +19,19 @@
 
 	<div wicket:id="border">
 		<span wicket:id="dataContainer">
-			<table cellpadding="0" cellspacing="0" style="padding: 0 5px 0 5px" wicket:id="data"  class="reportTable"></table>
+            <table class="reportTable" cellpadding="0" cellspacing="0">
+
+                <tbody>
+                <tr class="dataRow" wicket:id="data">
+                    <td wicket:id="date" valign="top"></td>
+                    <td wicket:id="lastName" valign="top"></td>
+                    <td wicket:id="action" valign="top"></td>
+                    <td wicket:id="type" valign="top"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <span wicket:id="navigator">[dataview navigator]</span>
 		</span>
 			
 	</div>

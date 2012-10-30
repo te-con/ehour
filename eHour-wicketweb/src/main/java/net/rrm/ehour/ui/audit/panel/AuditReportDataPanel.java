@@ -23,6 +23,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
 import net.rrm.ehour.ui.audit.report.AuditReport;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -37,9 +38,11 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.value.ValueMap;
@@ -107,12 +110,31 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
         columns[2] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.action"), "action");
         columns[3] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
-        AjaxFallbackDefaultDataTable<Audit> table = new AjaxFallbackDefaultDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
+        DataView<Audit> view = new DataView<Audit>("data", new AuditReportDataProvider(getReportRequest(model))) {
+
+            @Override
+            protected void populateItem(Item<Audit> item) {
+                Audit audit = item.getModelObject();
+
+                item.add(new Label("date", audit.getDate().toString()));
+                item.add(new Label("lastName", audit.getUserFullName()));
+                item.add(new Label("action", audit.getAction()));
+                item.add(new Label("type", audit.getAuditActionType().getValue()));
+            }
+        };
+
+        view.setItemsPerPage(10);
+
+
+//        AjaxFallbackDefaultDataTable<Audit> table = new AjaxFallbackDefaultDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
 
 //        AjaxDataTable<Audit> table = new AjaxDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
-		dataContainer.add(table);
-		
-		return dataContainer;
+		dataContainer.add(view);
+
+        dataContainer.add(new PagingNavigator("navigator", view));
+
+
+        return dataContainer;
 	}
 	
 	private AuditReportRequest getReportRequest(IModel<ReportCriteria> model)
