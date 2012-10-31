@@ -28,9 +28,10 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
+import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackHeadersToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -38,11 +39,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
-import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.markup.repeater.OddEvenItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.value.ValueMap;
@@ -110,29 +110,23 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
         columns[2] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.action"), "action");
         columns[3] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
-        DataView<Audit> view = new DataView<Audit>("data", new AuditReportDataProvider(getReportRequest(model))) {
 
+        AuditReportDataProvider dataProvider = new AuditReportDataProvider(getReportRequest(model));
+        DataTable<Audit> table = new DataTable<Audit>("data", columns, dataProvider, 20)
+        {
             @Override
-            protected void populateItem(Item<Audit> item) {
-                Audit audit = item.getModelObject();
-
-                item.add(new Label("date", audit.getDate().toString()));
-                item.add(new Label("lastName", audit.getUserFullName()));
-                item.add(new Label("action", audit.getAction()));
-                item.add(new Label("type", audit.getAuditActionType().getValue()));
+            protected Item<Audit> newRowItem(String id, int index, IModel<Audit> model)
+            {
+                return new OddEvenItem<Audit>(id, index, model);
             }
         };
 
-        view.setItemsPerPage(10);
+        table.setOutputMarkupId(true);
 
+		dataContainer.add(table);
+        table.addTopToolbar(new AjaxFallbackHeadersToolbar(table, dataProvider));
 
-//        AjaxFallbackDefaultDataTable<Audit> table = new AjaxFallbackDefaultDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
-
-//        AjaxDataTable<Audit> table = new AjaxDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
-		dataContainer.add(view);
-
-        dataContainer.add(new PagingNavigator("navigator", view));
-
+        dataContainer.add(new HoverPagingNavigator("navigator", table));
 
         return dataContainer;
 	}

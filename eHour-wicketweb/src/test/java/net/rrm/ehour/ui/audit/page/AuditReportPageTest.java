@@ -41,7 +41,7 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 			.andReturn(5)
 			.anyTimes();
 
-		expect(getAuditService().findAudits(isA(AuditReportRequest.class)))
+		expect(getAuditService().findAudits(isA(AuditReportRequest.class), isA(Integer.class), isA(Integer.class)))
 			.andReturn(new ArrayList<Audit>())
 			.anyTimes();
 	}

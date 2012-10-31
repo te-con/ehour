@@ -44,7 +44,7 @@ public class MockAuditImpl implements AuditService, MockAudit
 	}
 
     @Override
-    public List<Audit> findAudits(AuditReportRequest request, int offset, int max) {
+    public List<Audit> findAudits(AuditReportRequest request, Integer offset, Integer max) {
         return null;
     }
 

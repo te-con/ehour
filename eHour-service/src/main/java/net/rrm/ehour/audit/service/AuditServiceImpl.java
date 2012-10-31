@@ -55,7 +55,7 @@ public class AuditServiceImpl implements AuditService
 
     @Override
     @NonAuditable
-    public List<Audit> findAudits(AuditReportRequest request, int offset, int max) {
+    public List<Audit> findAudits(AuditReportRequest request, Integer offset, Integer max) {
         return auditDAO.findAudits(request, offset, max);
     }
 

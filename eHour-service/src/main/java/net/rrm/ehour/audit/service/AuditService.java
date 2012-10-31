@@ -38,7 +38,7 @@ public interface AuditService
 	 * @param request
 	 * @return
 	 */
-	List<Audit> findAudits(AuditReportRequest request, int offset, int max);
+	List<Audit> findAudits(AuditReportRequest request, Integer offset, Integer max);
 	
 	/**
 	 * Get audit report ignoring any offset or max
