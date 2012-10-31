@@ -47,7 +47,7 @@ public class DateOverlapValidator extends IdentifiableFormValidator
 	 */
 	public FormComponent<Date>[] getDependentFormComponents()
 	{
-		return components;
+		return null;
 	}
 
 	/*

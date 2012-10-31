@@ -17,6 +17,7 @@
 package net.rrm.ehour.persistence.audit.dao;
 
 import net.rrm.ehour.data.AuditReportRequest;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
 import org.apache.commons.lang.StringUtils;
@@ -79,15 +80,15 @@ public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit
 			criteria.add(Restrictions.like("userFullName", "%" + request.getName().toLowerCase() + "%").ignoreCase());
 		}
 
-		
-		if (request.getReportRange().getDateStart() != null)
+        DateRange reportRange = request.getReportRange();
+        if (!request.isInfiniteStartDate() && reportRange.getDateStart() != null)
 		{
-			criteria.add(Restrictions.ge("date", request.getReportRange().getDateStart()));
+			criteria.add(Restrictions.ge("date", reportRange.getDateStart()));
 		}
 
-		if (request.getReportRange().getDateEnd() != null)
+		if (!request.isInfiniteEndDate() && reportRange.getDateEnd() != null)
 		{
-			criteria.add(Restrictions.le("date", request.getReportRange().getDateEnd()));
+			criteria.add(Restrictions.le("date", reportRange.getDateEnd()));
 		}
 
 		return criteria;
