@@ -35,11 +35,11 @@ import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
+import net.rrm.ehour.ui.report.excel.UserReportExcel;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
-import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportExcel;
-import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportExcel;
-import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportExcel;
-import net.rrm.ehour.ui.report.panel.detail.DetailedReportExcel;
+import net.rrm.ehour.ui.report.excel.CustomerReportExcel;
+import net.rrm.ehour.ui.report.excel.ProjectReportExcel;
+import net.rrm.ehour.ui.report.excel.DetailedReportExcel;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
@@ -61,7 +61,6 @@ import org.apache.wicket.resource.IPropertiesFactory;
 import org.apache.wicket.resource.PropertiesFactory;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.ConverterLocator;
-import org.apache.wicket.util.lang.PackageName;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -127,7 +126,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     private void registerSharedResources()
     {
         mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
-        mountExcelReport(new EmployeeReportExcel(), EmployeeReportExcel.getId());
+        mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
         mountExcelReport(new ProjectReportExcel(), ProjectReportExcel.getId());
         mountExcelReport(new DetailedReportExcel(), DetailedReportExcel.getId());
         mountExcelReport(new AuditReportExcel(), AuditReportExcel.getId());

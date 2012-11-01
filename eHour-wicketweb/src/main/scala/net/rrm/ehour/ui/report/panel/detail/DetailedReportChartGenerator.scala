@@ -23,11 +23,13 @@ object DetailedReportChartGenerator {
     highChart.copy(yAxis = axis("Hours"), title = title("Hours booked on customers per day"), tooltip = tooltip("hours")).build(renderToId)
   }
 
+
   def generateTurnoverBasedDetailedChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
     val highChart = generateDetailedChart(reportData, config, _.getTotalTurnOver.floatValue())
 
     highChart.copy(yAxis = axis(config.getCurrencySymbol), title = title("Turnover booked on customers per day"), tooltip = tooltip(config.getCurrencySymbol)).build(renderToId)
   }
+
 
   private def generateDetailedChart(reportData: ReportData, config: EhourConfig, f: FlatReportElement => Float): HighChart = {
     val elements = reportData.getReportElements.asScala.asInstanceOf[Seq[FlatReportElement]]

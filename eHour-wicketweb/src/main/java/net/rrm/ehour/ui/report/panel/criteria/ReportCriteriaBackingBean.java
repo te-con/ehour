@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.report.panel.criteria;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
@@ -25,7 +23,8 @@ import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickPeriod;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickQuarter;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeek;
-import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
+
+import java.io.Serializable;
 
 /**
  * Backing bean for report criteria
@@ -39,8 +38,6 @@ public class ReportCriteriaBackingBean implements Serializable
 	private QuickWeek		quickWeek;
 	private QuickMonth		quickMonth;
 	private QuickQuarter	quickQuarter;
-	
-	private ReportType		reportType;
 	
 	public ReportCriteriaBackingBean(ReportCriteria reportCriteria)
 	{
@@ -127,19 +124,4 @@ public class ReportCriteriaBackingBean implements Serializable
 		this.reportCriteria = reportCriteria;
 	}
 
-	/**
-	 * @return the reportType
-	 */
-	public ReportType getReportType()
-	{
-		return reportType;
-	}
-
-	/**
-	 * @param reportType the reportType to set
-	 */
-	public void setReportType(ReportType reportType)
-	{
-		this.reportType = reportType;
-	}
 }

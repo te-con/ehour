@@ -49,10 +49,15 @@ public class DetailedReportModel extends TreeReportModel
 		super(reportCriteria, ReportConfig.DETAILED_REPORT);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#fetchReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-	 */
-	@Override
+    public DetailedReportModel(ReportCriteria reportCriteria, DetailedReportService detailedReportService)
+    {
+        this(reportCriteria);
+
+        this.detailedReportService = detailedReportService;
+    }
+
+
+    @Override
 	protected ReportData fetchReportData(ReportCriteria reportCriteria)
 	{
 		return getDetailedReportService().getDetailedReportData(reportCriteria);
@@ -81,10 +86,6 @@ public class DetailedReportModel extends TreeReportModel
 		return detailedReportService;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#getReportNodeFactory()
-	 */
 	@Override
 	public ReportNodeFactory<FlatReportElement> getReportNodeFactory()
 	{

@@ -16,24 +16,16 @@
 
 package net.rrm.ehour.ui.report.page;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.report.page.command.DefaultGlobalReportPageAggregateCommand;
-import net.rrm.ehour.ui.report.page.command.DefaultGlobalReportPageDetailedCommand;
-import net.rrm.ehour.ui.report.page.command.GlobalReportPageAggregateCommand;
-import net.rrm.ehour.ui.report.page.command.GlobalReportPageDetailedCommand;
+import net.rrm.ehour.ui.report.page.command.DefaultReportTabCommand;
+import net.rrm.ehour.ui.report.page.command.ReportTabCommand;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
-import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
-
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
@@ -42,33 +34,28 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-/**
- * Reporting 
- **/
+import java.util.ArrayList;
+import java.util.List;
 
 @AuthorizeInstantiation(value = {"ROLE_CONSULTANT", "ROLE_REPORT"})
-public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean>
-{
-	private static final long serialVersionUID = 6614404841734599622L;
-	
-	private ReportTabbedPanel tabPanel;
-	private GlobalReportPageAggregateCommand aggregateCommand;
-	private GlobalReportPageDetailedCommand detailedCommand;
+public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
+    private static final long serialVersionUID = 6614404841734599622L;
 
-	public GlobalReportPage()
-	{
-		this(new DefaultGlobalReportPageAggregateCommand(), new DefaultGlobalReportPageDetailedCommand());
-	}
+    private ReportTabbedPanel tabPanel;
+    private ReportTabCommand reportTabCreationCommand;
 
-	public GlobalReportPage(GlobalReportPageAggregateCommand aggregateCommand, GlobalReportPageDetailedCommand detailedCommand)
-	{
-		super(new ResourceModel("report.global.title"));
+    @SuppressWarnings("UnusedDeclaration")
+    public GlobalReportPage() {
+        this(new DefaultReportTabCommand());
+    }
 
-		this.aggregateCommand = aggregateCommand;
-		this.detailedCommand = detailedCommand;
+    public GlobalReportPage(ReportTabCommand reportTabCreationCommand) {
+        super(new ResourceModel("report.global.title"));
+
+        this.reportTabCreationCommand = reportTabCreationCommand;
 
         setupPage();
-	}
+    }
 
     private void setupPage() {
         final ReportCriteria reportCriteria = getReportCriteria();
@@ -77,14 +64,12 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 
         List<ITab> tabList = new ArrayList<ITab>();
 
-        tabList.add(new AbstractTab(new KeyResourceModel("report.criteria.title"))
-        {
+        tabList.add(new AbstractTab(new KeyResourceModel("report.criteria.title")) {
             private static final long serialVersionUID = 1L;
 
             @SuppressWarnings("unchecked")
             @Override
-            public Panel getPanel(String panelId)
-            {
+            public Panel getPanel(String panelId) {
                 return new ReportCriteriaPanel(panelId, model);
             }
         });
@@ -94,17 +79,15 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     }
 
     @Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED)
-		{
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED) {
             updateCriteria(ajaxEvent);
-		} else if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_RESET) {
+        } else if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_RESET) {
             resetCriteria(ajaxEvent);
         }
-		
-		return false;
-	}
+
+        return false;
+    }
 
     private void resetCriteria(AjaxEvent ajaxEvent) {
         EhourWebSession.getSession().setUserCriteria(null);
@@ -115,59 +98,39 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     }
 
     private void updateCriteria(AjaxEvent ajaxEvent) {
-        ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean)getDefaultModelObject();
+        ReportCriteriaBackingBean backingBean = (ReportCriteriaBackingBean) getDefaultModelObject();
 
         clearTabs();
 
-        if (backingBean.getReportType().equals(ReportType.AGGREGATE))
-        {
-            addAggregateReportPanelTabs	(backingBean);
-        }
-        else
-        {
-            addDetailedReportPanelTabs(backingBean);
-        }
+        addReportTabs(backingBean);
 
         ajaxEvent.getTarget().addComponent(tabPanel);
     }
 
 
     /**
-	 * Clear tabs except for the first one
-	 */
-	private void clearTabs()
-	{
-		List<ITab> tabs = tabPanel.getTabs();
-		
-		while (tabs.size() > 1)
-		{
-			tabs.remove(1);
-		}
-	}
+     * Clear tabs except for the first one
+     */
+    private void clearTabs() {
+        List<ITab> tabs = tabPanel.getTabs();
 
-	private void addAggregateReportPanelTabs(ReportCriteriaBackingBean backingBean)
-	{
-		List<ITab> tabs = aggregateCommand.createAggregateReportTabs(backingBean);
+        while (tabs.size() > 1) {
+            tabs.remove(1);
+        }
+    }
 
-		addTabs(tabs);
-		
-		tabPanel.setSelectedTab(1);
-	}
+    private void addReportTabs(ReportCriteriaBackingBean backingBean) {
+        List<ITab> tabs = reportTabCreationCommand.createAggregateReportTabs(backingBean);
 
-	private void addTabs(List<ITab> tabs)
-	{
-		for (ITab iTab : tabs)
-		{
-			tabPanel.addTab(iTab);
-		}
-	}
+        addTabs(tabs);
 
-	private void addDetailedReportPanelTabs(ReportCriteriaBackingBean backingBean)
-	{
-		List<ITab> tabs = detailedCommand.createDetailedReportTabs(backingBean);
-		
-		addTabs(tabs);
-		
-		tabPanel.setSelectedTab(1);	
-	}
+        tabPanel.setSelectedTab(1);
+    }
+
+    private void addTabs(List<ITab> tabs) {
+        for (ITab iTab : tabs) {
+            tabPanel.addTab(iTab);
+        }
+    }
+
 }

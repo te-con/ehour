@@ -10,6 +10,7 @@ import net.rrm.ehour.ui.chart.HighChartContainer
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import org.apache.wicket.markup.html.panel.Panel
+import net.rrm.ehour.ui.report.excel.ProjectReportExcel
 
 
 abstract class AggregateReportPanel(id: String, reportModel: TreeReportModel, reportConfig: ReportConfig, generateChart: (String, ReportData, EhourConfig) => String) extends AbstractBasePanel[TreeReportModel](id) {

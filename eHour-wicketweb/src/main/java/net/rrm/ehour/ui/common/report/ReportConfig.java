@@ -55,7 +55,7 @@ public enum ReportConfig
 						new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
 						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 
-	AGGREGATE_EMPLOYEE (new ReportColumn("userReport.report.user"),
+	AGGREGATE_USER(new ReportColumn("userReport.report.user"),
 						new ReportColumn("userReport.report.customer"),
 						new ReportColumn("userReport.report.project"),
 						new ReportColumn("userReport.report.projectCode"),

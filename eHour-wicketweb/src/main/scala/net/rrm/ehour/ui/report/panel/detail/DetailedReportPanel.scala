@@ -14,6 +14,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.component.AjaxBehaviorComponent
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
+import net.rrm.ehour.ui.report.excel.DetailedReportExcel
 
 class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
 

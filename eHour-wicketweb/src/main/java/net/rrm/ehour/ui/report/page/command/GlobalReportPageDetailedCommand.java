@@ -14,5 +14,5 @@ public interface GlobalReportPageDetailedCommand extends Serializable
 	 * @param backingBean
 	 * @return
 	 */
-	public List<ITab> createDetailedReportTabs(ReportCriteriaBackingBean backingBean);
+	List<ITab> createDetailedReportTabs(ReportCriteriaBackingBean backingBean);
 }

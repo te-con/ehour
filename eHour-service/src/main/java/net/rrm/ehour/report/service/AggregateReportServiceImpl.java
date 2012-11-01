@@ -229,27 +229,16 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 		return reportRange;
 	}
 	
-	
-	/**
-	 *  
-	 *
-	 */
 	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
 	{
 		this.reportAggregatedDAO = reportAggregatedDAO;
 	}
 
-	/**
-	 * @param mailService the mailService to set
-	 */
 	public void setMailService(MailService mailService)
 	{
 		this.mailService = mailService;
 	}
 
-	/**
-	 * @param projectAssignmentService the projectAssignmentService to set
-	 */
 	public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService)
 	{
 		this.projectAssignmentService = projectAssignmentService;

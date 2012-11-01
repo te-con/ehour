@@ -20,12 +20,10 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
-import net.rrm.ehour.ui.report.page.command.GlobalReportPageAggregateCommand;
-import net.rrm.ehour.ui.report.page.command.GlobalReportPageDetailedCommand;
+import net.rrm.ehour.ui.report.page.command.ReportTabCommand;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
-import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -41,17 +39,14 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("serial")
 public class GlobalReportPageTest extends BaseTestReport {
     private AggregateCommand aggregateCommand;
-    private DetailedCommand detailedCommand;
 
     @Before
     public void setup() {
         aggregateCommand = new AggregateCommand();
-        detailedCommand = new DetailedCommand();
 
     }
 
@@ -71,24 +66,12 @@ public class GlobalReportPageTest extends BaseTestReport {
     public void shouldUpdateTabsForAggregate() {
         aggregateCommand.returnTabs = createTabs(3);
 
-        shouldUpdateTabs(ReportType.AGGREGATE);
+        shouldUpdateTabs();
 
         assertNotNull(aggregateCommand.argBean);
-        assertNull(detailedCommand.argBean);
     }
 
-    @Test
-    public void shouldUpdateTabsForDetailed() {
-        detailedCommand.returnTabs = createTabs(1);
-
-        shouldUpdateTabs(ReportType.DETAILED);
-
-        assertNull(aggregateCommand.argBean);
-        assertNotNull(detailedCommand.argBean);
-    }
-
-
-    private void shouldUpdateTabs(ReportType reportType) {
+    private void shouldUpdateTabs() {
         expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class),
                 eq(ReportCriteriaUpdateType.UPDATE_ALL)))
                 .andReturn(reportCriteria);
@@ -99,9 +82,6 @@ public class GlobalReportPageTest extends BaseTestReport {
 
         Component component = tester.getComponentFromLastRenderedPage("");
         GlobalReportPage page = (GlobalReportPage) component;
-
-        ReportCriteriaBackingBean bean = (ReportCriteriaBackingBean) page.getDefaultModelObject();
-        bean.setReportType(reportType);
 
         AjaxRequestTarget target = createMock(AjaxRequestTarget.class);
         AjaxEvent event = new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED, target);
@@ -138,7 +118,7 @@ public class GlobalReportPageTest extends BaseTestReport {
         getTester().startPage(new ITestPageSource() {
 
             public Page getTestPage() {
-                return new GlobalReportPage(aggregateCommand, detailedCommand);
+                return new GlobalReportPage(aggregateCommand);
             }
         });
 
@@ -146,22 +126,11 @@ public class GlobalReportPageTest extends BaseTestReport {
         getTester().assertNoErrorMessage();
     }
 
-    private class AggregateCommand implements GlobalReportPageAggregateCommand {
+    private class AggregateCommand implements ReportTabCommand {
         ReportCriteriaBackingBean argBean;
         List<ITab> returnTabs;
 
         public List<ITab> createAggregateReportTabs(ReportCriteriaBackingBean backingBean) {
-            this.argBean = backingBean;
-            return returnTabs;
-        }
-
-    }
-
-    private class DetailedCommand implements GlobalReportPageDetailedCommand {
-        ReportCriteriaBackingBean argBean;
-        List<ITab> returnTabs;
-
-        public List<ITab> createDetailedReportTabs(ReportCriteriaBackingBean backingBean) {
             this.argBean = backingBean;
             return returnTabs;
         }
