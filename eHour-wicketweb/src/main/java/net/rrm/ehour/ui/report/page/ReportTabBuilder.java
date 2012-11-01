@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.report.page.command;
+package net.rrm.ehour.ui.report.page;
 
 import java.io.Serializable;
 import java.util.List;
@@ -7,7 +7,7 @@ import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 
-public interface ReportTabCommand extends Serializable
+public interface ReportTabBuilder extends Serializable
 {
 	/**
 	 * Create report tabs for an aggregate report

@@ -20,7 +20,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
-import net.rrm.ehour.ui.report.page.command.ReportTabCommand;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
@@ -42,11 +41,11 @@ import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("serial")
 public class GlobalReportPageTest extends BaseTestReport {
-    private AggregateCommand aggregateCommand;
+    private AggregateBuilder aggregateCommand;
 
     @Before
     public void setup() {
-        aggregateCommand = new AggregateCommand();
+        aggregateCommand = new AggregateBuilder();
 
     }
 
@@ -126,7 +125,7 @@ public class GlobalReportPageTest extends BaseTestReport {
         getTester().assertNoErrorMessage();
     }
 
-    private class AggregateCommand implements ReportTabCommand {
+    private class AggregateBuilder implements ReportTabBuilder {
         ReportCriteriaBackingBean argBean;
         List<ITab> returnTabs;
 

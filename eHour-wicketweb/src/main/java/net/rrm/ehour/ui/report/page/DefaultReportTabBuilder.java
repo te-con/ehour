@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.report.page.command;
+package net.rrm.ehour.ui.report.page;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
@@ -19,7 +19,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultReportTabCommand implements ReportTabCommand {
+public class DefaultReportTabBuilder implements ReportTabBuilder {
     private static final long serialVersionUID = -2377556952455077542L;
 
     public List<ITab> createAggregateReportTabs(ReportCriteriaBackingBean backingBean) {

@@ -20,8 +20,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.report.page.command.DefaultReportTabCommand;
-import net.rrm.ehour.ui.report.page.command.ReportTabCommand;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel;
@@ -42,17 +40,17 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     private static final long serialVersionUID = 6614404841734599622L;
 
     private ReportTabbedPanel tabPanel;
-    private ReportTabCommand reportTabCreationCommand;
+    private ReportTabBuilder reportTabCreationBuilder;
 
     @SuppressWarnings("UnusedDeclaration")
     public GlobalReportPage() {
-        this(new DefaultReportTabCommand());
+        this(new DefaultReportTabBuilder());
     }
 
-    public GlobalReportPage(ReportTabCommand reportTabCreationCommand) {
+    public GlobalReportPage(ReportTabBuilder reportTabCreationBuilder) {
         super(new ResourceModel("report.global.title"));
 
-        this.reportTabCreationCommand = reportTabCreationCommand;
+        this.reportTabCreationBuilder = reportTabCreationBuilder;
 
         setupPage();
     }
@@ -120,7 +118,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     }
 
     private void addReportTabs(ReportCriteriaBackingBean backingBean) {
-        List<ITab> tabs = reportTabCreationCommand.createAggregateReportTabs(backingBean);
+        List<ITab> tabs = reportTabCreationBuilder.createAggregateReportTabs(backingBean);
 
         addTabs(tabs);
 
