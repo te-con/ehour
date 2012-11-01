@@ -32,6 +32,7 @@ public enum ReportConfig
 	// take note, the columnResourceKey is used for serie creation with trend charts (pardon my English, it's late.. or early in the morning)
 	DETAILED_REPORT (new ReportColumn("userReport.report.customer"),
 						new ReportColumn("userReport.report.project"),
+                        new ReportColumn("userReport.report.projectCode"),
 						new ReportColumn("userReport.report.date", ColumnType.DATE, new DateConverter(FULL_SHORT, ""), VISIBLE),
 						new ReportColumn("userReport.report.user"),
 						new ReportColumn("userReport.report.comment", ColumnType.COMMENT, VISIBLE, ALLOW_DUPLICATES),

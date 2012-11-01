@@ -93,18 +93,19 @@ public class DetailedReportModel extends TreeReportModel
 	        @Override
 	        public ReportNode createReportNode(FlatReportElement flatElement, int hierarchyLevel)
 	        {
-	        	// TODO make this a bit more understandable
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
 	                	return new FlatCustomerNode(flatElement);
 	                case 1:
 	                    return new FlatProjectNode(flatElement);
-	                case 2:
+                    case 2:
+                        return new FlatProjectCodeNode(flatElement);
+                    case 3:
 	                    return new FlatDateNode(flatElement);
-	                case 3:
-	                	return new FlatUserNode(flatElement);
 	                case 4:
+	                	return new FlatUserNode(flatElement);
+	                case 5:
 	                	return new FlatEntryEndNode(flatElement);
 	            }
 	
