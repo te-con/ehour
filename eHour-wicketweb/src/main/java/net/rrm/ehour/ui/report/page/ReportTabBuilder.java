@@ -10,9 +10,9 @@ import org.apache.wicket.extensions.markup.html.tabs.ITab;
 public interface ReportTabBuilder extends Serializable
 {
 	/**
-	 * Create report tabs for an aggregate report
+	 * Create report tabs
 	 * @param backingBean
 	 * @return
 	 */
-	List<ITab> createAggregateReportTabs(ReportCriteriaBackingBean backingBean);
+	List<ITab> createReportTabs(ReportCriteriaBackingBean backingBean);
 }

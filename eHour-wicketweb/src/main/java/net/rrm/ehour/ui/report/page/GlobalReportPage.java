@@ -118,7 +118,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     }
 
     private void addReportTabs(ReportCriteriaBackingBean backingBean) {
-        List<ITab> tabs = reportTabCreationBuilder.createAggregateReportTabs(backingBean);
+        List<ITab> tabs = reportTabCreationBuilder.createReportTabs(backingBean);
 
         addTabs(tabs);
 

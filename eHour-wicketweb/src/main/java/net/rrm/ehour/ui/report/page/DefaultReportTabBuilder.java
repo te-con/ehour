@@ -22,7 +22,7 @@ import java.util.List;
 public class DefaultReportTabBuilder implements ReportTabBuilder {
     private static final long serialVersionUID = -2377556952455077542L;
 
-    public List<ITab> createAggregateReportTabs(ReportCriteriaBackingBean backingBean) {
+    public List<ITab> createReportTabs(ReportCriteriaBackingBean backingBean) {
         List<ITab> tabs = new ArrayList<ITab>();
 
         final ReportCriteria criteria = backingBean.getReportCriteria();
