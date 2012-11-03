@@ -64,24 +64,20 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
 		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
 
-		if (ignoreProjects && ignoreUsers)
-		{
-		}
-		else if (ignoreProjects && !ignoreUsers)
-		{
-			users = getUsers(userCriteria);
-		}
-		else if (ignoreUsers)
-		{
-			projects = getProjects(userCriteria);
-		}
-		else
-		{
-			users = getUsers(userCriteria);
-			projects = getProjects(userCriteria);
-		}
+        if (!ignoreProjects || !ignoreUsers) {
+            if (ignoreProjects && !ignoreUsers)
+            {
+                users = getUsers(userCriteria);
+            }
+            else if (ignoreUsers) {
+                projects = getProjects(userCriteria);
+            } else {
+                users = getUsers(userCriteria);
+                projects = getProjects(userCriteria);
+            }
+        }
 
-		return new ReportData(getReportElements(users, projects, reportRange), reportRange);
+        return new ReportData(getReportElements(users, projects, reportRange), reportRange);
 	}
 
 	/**
