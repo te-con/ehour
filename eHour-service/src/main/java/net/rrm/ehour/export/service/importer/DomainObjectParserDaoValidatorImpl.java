@@ -23,7 +23,7 @@ public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao
         initialize();
     }
 
-    public boolean initialize() {
+    private boolean initialize() {
         this.id = 1;
         this.persistCount = new HashMap<Class<?>, Integer>();
         return true;
