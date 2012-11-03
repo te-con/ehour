@@ -16,166 +16,103 @@
 
 package net.rrm.ehour.customer.service;
 
-import java.util.List;
-
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.customer.dao.CustomerDao;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
- * Customer service implementation 
- **/
+ * Customer service implementation
+ */
 @Service("customerService")
-public class CustomerServiceImpl implements CustomerService
-{
-	@Autowired
-	private	CustomerDao		customerDAO;
-	
-	private	static final Logger	LOGGER = Logger.getLogger(CustomerServiceImpl.class);
+public class CustomerServiceImpl implements CustomerService {
+    @Autowired
+    private CustomerDao customerDAO;
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.customer.service.CustomerService#getCustomer(java.lang.String, java.lang.String)
-	 */
-	@Transactional(readOnly=true)
-	public Customer getCustomer(String customerName, String customerCode)
-	{
-		return customerDAO.findOnNameAndCode(customerName, customerCode);
-	}	
-	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#deleteCustomer(java.lang.Integer)
-	 */
-	@Transactional
-	@Auditable(actionType=AuditActionType.DELETE)
-	public void deleteCustomer(Integer customerId) throws ParentChildConstraintException
-	{
-		Customer customer = customerDAO.findById(customerId);
-		
-		LOGGER.info("Deleting customer: " + customer);
-		
-		if (customer != null)
-		{
-			if (customer.getProjects() != null &&
-				customer.getProjects().size() > 0)
-			{
-				throw new ParentChildConstraintException(customer.getProjects().size() + " projects attached to customer");
-			}
-			else
-			{
-				try
-				{
-					customerDAO.delete(customer);
-				}
-				catch (DataIntegrityViolationException cve)
-				{
-					throw new ParentChildConstraintException(cve);
-				}				
-			}
-		}
-	}
+    private static final Logger LOGGER = Logger.getLogger(CustomerServiceImpl.class);
+
+    public CustomerServiceImpl() {
+    }
+
+    @Transactional(readOnly = true)
+    public Customer getCustomer(String customerName, String customerCode) {
+        return customerDAO.findOnNameAndCode(customerName, customerCode);
+    }
+
+    @Auditable(actionType = AuditActionType.DELETE)
+    public void deleteCustomer(Integer customerId) throws ParentChildConstraintException {
+        Customer customer = customerDAO.findById(customerId);
+
+        LOGGER.info("Deleting customer: " + customer);
+
+        if (customer != null) {
+            if (customer.getProjects() != null &&
+                    customer.getProjects().size() > 0) {
+                throw new ParentChildConstraintException(customer.getProjects().size() + " projects attached to customer");
+            } else {
+                try {
+                    customerDAO.delete(customer);
+                } catch (DataIntegrityViolationException cve) {
+                    throw new ParentChildConstraintException(cve);
+                }
+            }
+        }
+    }
 
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getCustomer(java.lang.Integer)
-	 */
-	@Transactional(readOnly=true)
-	public Customer getCustomer(Integer customerId)
-	{
-		return customerDAO.findById(customerId);
-	}
+    @Transactional(readOnly = true)
+    public Customer getCustomer(Integer customerId) {
+        return customerDAO.findById(customerId);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.customer.service.CustomerService#getCustomerAndCheckDeletability(java.lang.Integer)
-	 */
-	@Transactional(readOnly=true)
-	public Customer getCustomerAndCheckDeletability(Integer customerId)
-	{
-		Customer customer = customerDAO.findById(customerId);
-		
-		if (customer.getProjects() != null && customer.getProjects().size() > 0)
-		{
-			// okay, this is going to be pricey...
-			boolean	deletable = false;
-			
-//			for (Project project : customer.getProjects())
-//			{
-//				projectService.setProjectDeletability(project);
-//				
-//				deletable = project.isDeletable();
-//				
-//				if (!deletable)
-//				{
-//					break;
-//				}
-//			}
-//			
-			customer.setDeletable(deletable);
-		}
-		else
-		{
-			customer.setDeletable(true);
-		}
-		
-		return customer;
-	}	
-	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getCustomers()
-	 */
-	@Transactional(readOnly=true)
-	public List<Customer> getCustomers()
-	{
-		return customerDAO.findAll();
-	}
+    @Transactional(readOnly = true)
+    public Customer getCustomerAndCheckDeletability(Integer customerId) {
+        Customer customer = customerDAO.findById(customerId);
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#persistCustomer(net.rrm.ehour.persistence.persistence.project.domain.Customer)
-	 */
-	@Transactional
-	public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException
-	{
-		LOGGER.info("Persisting customer: " + customer);
-		
-		try
-		{
-			customerDAO.persist(customer);
-		}
-		catch (DataIntegrityViolationException cve)
-		{
-			throw new ObjectNotUniqueException(cve);
-		}
-		
-		return customer;
-	}
+        if (customer.getProjects() != null && customer.getProjects().size() > 0) {
+            boolean deletable = false;
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.customer.service.CustomerService#getCustomers(boolean)
-	 */
-	@Transactional(readOnly=true)
-	public List<Customer> getCustomers(boolean hideInactive)
-	{
-		return (hideInactive) ? customerDAO.findAllActive() : customerDAO.findAll();
-	}
+            customer.setDeletable(deletable);
+        } else {
+            customer.setDeletable(true);
+        }
 
-	
-	/**
-	 * @param customerDAO the customerDAO to set
-	 */
-	public void setCustomerDAO(CustomerDao customerDAO)
-	{
-		this.customerDAO = customerDAO;
-	}
+        return customer;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Customer> getCustomers() {
+        return customerDAO.findAll();
+    }
+
+    @Transactional
+    public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException {
+        LOGGER.info("Persisting customer: " + customer);
+
+        try {
+            customerDAO.persist(customer);
+        } catch (DataIntegrityViolationException cve) {
+            throw new ObjectNotUniqueException(cve);
+        }
+
+        return customer;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Customer> getCustomers(boolean hideInactive) {
+        return (hideInactive) ? customerDAO.findAllActive() : customerDAO.findAll();
+    }
+
+    public void setCustomerDAO(CustomerDao customerDAO) {
+        this.customerDAO = customerDAO;
+    }
 }

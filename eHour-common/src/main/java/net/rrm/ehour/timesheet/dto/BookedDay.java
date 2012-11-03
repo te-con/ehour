@@ -20,56 +20,35 @@ import java.util.Date;
 
 /**
  * Booked day dto
- **/
+ */
 
-public class BookedDay
-{
-	private	Date	date;
-	private	Number	hours;
-	
-	
-	public BookedDay()
-	{
-		
-	}
-	
-	public BookedDay(Date date, Number hours)
-	{
-		this.date = date;
-		this.hours = hours;
-	}
-	
-	public Date getDate()
-	{
-		return date;
-	}
-	public void setDate(Date date)
-	{
-		this.date = date;
-	}
-	public Number getHours()
-	{
-		return hours;
-	}
-	public void setHours(Number hours)
-	{
-		this.hours = hours;
-	}
-	
+public class BookedDay {
+    private Date date;
+    private Number hours;
 
-//	public boolean equals(Object other)
-//	{
-//		if ((this == other))
-//			return true;
-//		if (!(other instanceof BookedDay))
-//			return false;
-//		BookedDay castOther = (BookedDay) other;
-//		return new EqualsBuilder().append(this.getDate(), castOther.getDate()).isEquals();
-//	}
-//
-//	public int hashCode()
-//	{
-//		return new HashCodeBuilder().append(getDate())
-//									.append(getHours()).toHashCode();
-//	}	
+
+    public BookedDay() {
+
+    }
+
+    public BookedDay(Date date, Number hours) {
+        this.date = date;
+        this.hours = hours;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Number getHours() {
+        return hours;
+    }
+
+    public void setHours(Number hours) {
+        this.hours = hours;
+    }
 }

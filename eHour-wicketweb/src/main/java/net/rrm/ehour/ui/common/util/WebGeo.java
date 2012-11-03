@@ -52,11 +52,7 @@ public enum WebGeo {
     }
 
     public Integer getWidth() {
-//        if ("px".equalsIgnoreCase(unit)) {
             return value;
-//        } else {
-//            throw new IllegalArgumentException("Unit is not in pixel");
-//        }
     }
 
 

@@ -32,7 +32,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.UserComparator;
 import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -86,8 +85,8 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean> {
         Fragment userListHolder = getUserListHolder(users);
 
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame",
-                new ResourceModel("admin.user.title"),
-                WebGeo.W_ENTRY_SELECTOR);
+                new ResourceModel("admin.user.title")
+        );
         add(greyBorder);
 
         selectorPanel = new EntrySelectorPanel("userSelector", userListHolder, new ResourceModel("admin.user.hideInactive"));

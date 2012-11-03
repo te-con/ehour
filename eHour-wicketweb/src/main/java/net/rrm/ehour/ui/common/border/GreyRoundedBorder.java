@@ -17,9 +17,6 @@
 package net.rrm.ehour.ui.common.border;
 
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import net.rrm.ehour.ui.common.util.WebGeo;
-
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -46,17 +43,6 @@ public class GreyRoundedBorder extends Border
 	}
 
 	/**
-	 * No title but specified width
-	 * @param id
-	 * @param width
-	 */
-	public GreyRoundedBorder(String id, WebGeo width)
-	{
-		this(id, new Model<String>(), false, null, null, width);
-	}
-
-	
-	/**
 	 * No title but with print & excel link
 	 * @param id
 	 * @param printLink
@@ -64,7 +50,7 @@ public class GreyRoundedBorder extends Border
 	 */
 	public GreyRoundedBorder(String id, Link<Void> printLink, Link<Void> excelLink)
 	{
-		this(id, new Model<String>(), false, printLink, excelLink, null);
+		this(id, new Model<String>(), false, printLink, excelLink);
 	}
 	
 	/**
@@ -88,16 +74,6 @@ public class GreyRoundedBorder extends Border
 	}
 	
 	/**
-	 * Title, without the links but with specified width
-	 * @param id
-	 * @param title
-	 */
-	public GreyRoundedBorder(String id, IModel<String> title, WebGeo width)
-	{
-		this(id, title, true, null, null, width);
-	}	
-	
-	/**
 	 * Title and print & excel links
 	 * @param id
 	 * @param title
@@ -106,10 +82,10 @@ public class GreyRoundedBorder extends Border
 	 */
 	public GreyRoundedBorder(String id, IModel<String> title, Link<Void> printLink, Link<Void> excelLink)
 	{
-		this(id, title, true, printLink, excelLink, null);
+		this(id, title, true, printLink, excelLink);
 	}
 	
-	public GreyRoundedBorder(String id, IModel<String> title, boolean showTitle, Link<?> printLink, Link<?> excelLink, WebGeo width)
+	public GreyRoundedBorder(String id, IModel<String> title, boolean showTitle, Link<?> printLink, Link<?> excelLink)
 	{
 		super(id);
 		
