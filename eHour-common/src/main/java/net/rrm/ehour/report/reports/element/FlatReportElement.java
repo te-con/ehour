@@ -124,7 +124,7 @@ public class FlatReportElement implements ReportElement
 	 */
 	public Number getTotalTurnOver()
 	{
-		return totalTurnOver;
+		return totalTurnOver == null ? 0 : totalTurnOver;
 	}
 	/**
 	 * @param totalTurnOver the totalTurnOver to set
