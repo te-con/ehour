@@ -23,6 +23,6 @@ class TranslationDiscoveryTest {
     discovery.scanTranslations()
     def translations =  discovery.translations.sort()
 
-    assert translations == ["de", "en", "el", "es", "fr", "it", "ja", "nl", "pl", "pt", "sv", "unknown"].sort()
+    assert translations == ["cs", "de", "en", "el", "es", "fr", "it", "ja", "nl", "pl", "pt", "sv", "unknown"].sort()
   }
 }
