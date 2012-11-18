@@ -25,6 +25,7 @@
       <mountPoint id="22" root="" location="" mode="755" />
     </mountPoints>
     <entries>
+      <fileEntry mountPoint="226" file="../../eHour-standalone/target/ehour-1.1-SNAPSHOT-standalone/ehour-1.1-SNAPSHOT/conf/ehour.properties" overwriteMode="5" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" />
       <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.1-SNAPSHOT-standalone/ehour-1.1-SNAPSHOT/resources" overwriteMode="3" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="subdir" subDirectory="resources" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
@@ -33,7 +34,6 @@
           <entry location="ehour.properties" fileType="regular" />
         </exclude>
       </dirEntry>
-      <fileEntry mountPoint="226" file="../../eHour-standalone/target/ehour-1.1-SNAPSHOT-standalone/ehour-1.1-SNAPSHOT/conf/ehour.properties" overwriteMode="5" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" />
       <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.1-SNAPSHOT-standalone/ehour-1.1-SNAPSHOT/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="2" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="true" entryMode="subdir" subDirectory="lib" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
@@ -235,10 +235,29 @@
             <preActivation />
             <postActivation />
             <actions>
-              <action name="" id="227" customizedId="" beanClass="com.install4j.runtime.beans.actions.files.DeleteFileAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+              <action name="" id="309" customizedId="" beanClass="com.install4j.runtime.beans.actions.services.StopServiceAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="4" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.services.StopServiceAction">
+                      <void property="launcherId">
+                        <string>23</string>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+              <action name="" id="227" customizedId="" beanClass="com.install4j.runtime.beans.actions.files.DeleteFileAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="4" errorMessage="">
                 <serializedBean>
                   <java class="java.beans.XMLDecoder">
                     <object class="com.install4j.runtime.beans.actions.files.DeleteFileAction">
+                      <void property="directoryFilter">
+                        <object class="com.install4j.api.beans.ScriptProperty">
+                          <void property="value">
+                            <string>true</string>
+                          </void>
+                        </object>
+                      </void>
                       <void property="files">
                         <array class="java.io.File" length="2">
                           <void index="0">
@@ -428,6 +447,29 @@ Documentation is available at &lt;a href="http://wiki.ehour.nl/"&gt;http://wiki.
                 </serializedBean>
                 <condition />
               </action>
+              <action name="" id="281" customizedId="" beanClass="com.install4j.runtime.beans.actions.files.DeleteFileAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.files.DeleteFileAction">
+                      <void property="files">
+                        <array class="java.io.File" length="2">
+                          <void index="0">
+                            <object class="java.io.File">
+                              <string>lib</string>
+                            </object>
+                          </void>
+                          <void index="1">
+                            <object class="java.io.File">
+                              <string>app</string>
+                            </object>
+                          </void>
+                        </array>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
             </actions>
             <formComponents />
           </screen>
@@ -520,6 +562,7 @@ Documentation is available at &lt;a href="http://wiki.ehour.nl/"&gt;http://wiki.
   </mediaSets>
   <buildIds buildAll="false">
     <mediaSet refId="24" />
+    <mediaSet refId="25" />
   </buildIds>
   <buildOptions verbose="false" faster="true" disableSigning="false" debug="false" />
 </install4j>
