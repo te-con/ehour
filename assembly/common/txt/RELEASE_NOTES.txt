@@ -1,3 +1,84 @@
+eHour 1.1 release notes (19 November 2012)
+------------------------------------------
+TE-CON is proud to present eHour 1.1 !
+
+This update fixes a number of bugs: Backup & restore now properly restores all data in the backup and properly handles deleted users. The timesheet now can handle many projects for a single user. Detailed report charts display fractions (7.5 hours) properly and sums up multiple project bookings on the same day. And eHour is translated into Czech, thanks to Pavel Vitek.
+
+The full release notes:
+
+Improvements
+
+[EHO-277] - Add Project Code to the monthly export
+[EHO-295] - Provide Czech translation
+
+Bug fixes
+[EHO-278] - Restore of backup fails to restore project assignments
+[EHO-290] - Restore of backup fails when users were deleted in the past
+[EHO-288] - Logging out does not clear session completely
+[EHO-285] - Save of timesheet fails when there are lots of projects and customers
+[EHO-286] - Multiple assignments from the same project on the same user not shown in the timesheet
+[EHO-287] - Reporting tab shows rates even though they are disabled in config
+[EHO-289] - Project Code shown in Detailed Report
+[EHO-291] - Chart in Detailed Report does not sum values for individual days
+[EHO-292] - Fractions are not shown in the reporting charts
+[EHO-281] - Pagination in the Audit report does not work
+[EHO-296] - Automatic upgrade of the standalone dist using the installer fails to remove the previous version
+
+
+eHour 1.0 release notes (15 June 2012)
+--------------------------------------
+TE-CON is proud to present a new release of eHour, version 1.0 ! This new version has:
+
+An improved standalone version
+install4j kindly donated a license for their installer allowing eHour to use a "next-next-next" installer. On Windows, eHour is now automatically installed as a service and oh, there's 64-bit support as well.
+
+An improved user interface
+Previous versions of eHour used a fixed width of your browser, regardless of how much screen estate your browser owned. eHour 1.0 uses the full available width of your browser, replacing customer/project codes with their full names when space allows. Columns are re-sized to use the full width which gives a more clear and usable view, especially in the reports.
+
+Internet Explorer support is improved, some glitches and layout issues with Internet Explorer 8 are fixed.
+
+Many bug fixes and (minor) improvements
+There are a lot of bugs squashed like users with the PM role who couldn't be edited, incorrect week number calculation, etc. The Italian translation has been revised.
+
+All bugs that are resolved:
+
+[EHO-10] - Print and excel icons are now properly positioned
+[EHO-95] - When entering an invalid date into the calendar, the calendar didn't work anymore - even with valid input. Fixed
+[EHO-98] - Marking a project as default did not add the project to existing employees. Fixed, it now applies to existing and new employees.
+[EHO-121] - In the monthly overview page, long customer names were not displayed properly.
+[EHO-138] - Project list background does not repeat when list is very long. Increased the background to fix it.
+[EHO-162] - The list of customers in the admin screen is now sorted on customer code and then full name.
+[EHO-163] - The sorting of projects in the weekly calendar is now case insensitive.
+[EHO-173] - The selected currency is now used in the exports to excel, previously it was always a $
+[EHO-223] - The "reset" button in the report now resets all criteria, including "only billable"
+[EHO-224] - Deleting almost empty assignment causes error. This was due to empty timesheets with comments which were not deleted.
+[EHO-232] - Hourly rate was visible in the reports, even when hide for user is enabled.
+[EHO-233] - Multiple installations on same machine still shared the same log file.
+[EHO-238] - Users who are PM of a project could not be updated and gave "unknown error".
+[EHO-240] - Summary row on the Month Overview page crashed when you wanted to display the summary (that grey little line, opened with the arrow)
+[EHO-241] - ProjectManagement reporting threw an error when there empty timesheets.
+[EHO-243] - Week number calculation was wrong when the first day of the week was set to Sunday.
+[EHO-244] - PM user can't change his password
+[EHO-247] - When using a datepicker to edit a date, the time portion (12:00 AM) is added to the date rendering it invalid as a date.
+[EHO-251] - Can't update some users because the PM role was not removed properly.
+[EHO-252] - eHour is now compatible with Java 7
+[EHO-257] - Unable to remove a projectmanager from a project once it's set.
+[EHO-258] - java.lang.NullPointerException
+[EHO-259] - When entering a non-numeric value in the timesheet, no validation error appears but instead an exception is thrown.
+[EHO-261] - Bad behavior with IE8.
+[EHO-262] - Reporter role has access to all projects when exporting a month.
+[EHO-263] - In the reporting section, when selecting a "quick week", 8 days were selected rather than 7.
+[EHO-264] - Once edited TimesheetTextField are alway refreshed with blur event
+[EHO-265] - Logging in after logging out failed the first time
+[EHO-266] - In the PM section the layout is off when project name is too long.
+
+Improvements
+[EHO-199] - In the timesheet the store button is at the top (and bottom) of week view
+[EHO-226] - Fix Windows 64-bit standalone
+[EHO-239] - Project sort on reporting page
+[EHO-245] - Ask for the current password into the password change form
+[EHO-272] - Show role behind project in the timesheet
+
 eHour 0.9.1 release notes (23 April 2011)
 -----------------------------------------
 eHour 0.9.1 adds MySQL and PostgreSQL support to the standalone version, enabling the standalone version to run in a production environment.
