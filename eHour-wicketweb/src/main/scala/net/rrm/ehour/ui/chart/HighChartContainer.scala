@@ -6,14 +6,16 @@ import net.rrm.ehour.report.reports.ReportData
 import org.apache.wicket.model.IModel
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.config.EhourConfig
+import net.rrm.ehour.ui.report.panel.aggregate.ChartContext
 
-class HighChartContainer(id: String, reportModel: IModel[ReportData], generateChart: (String, ReportData, EhourConfig) => String) extends Panel(id, reportModel) with IHeaderContributor {
+class HighChartContainer(id: String, reportModel: IModel[ReportData], generateChart: (ChartContext) => String) extends Panel(id, reportModel) with IHeaderContributor {
   setOutputMarkupId(true)
   
   def renderHead(response: IHeaderResponse) {
-    val config = EhourWebSession.getSession.getEhourConfig
+    val session = EhourWebSession.getSession
+    val config = session.getEhourConfig
 
-    val chart = generateChart(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config)
+    val chart = generateChart(ChartContext(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config.getCurrencySymbol, session.isWithReportRole))
     val javascript = "new Highcharts.Chart({%s});\n" format chart
     
     response.renderOnLoadJavascript(javascript)

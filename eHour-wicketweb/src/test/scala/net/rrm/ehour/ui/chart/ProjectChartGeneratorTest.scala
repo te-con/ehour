@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import net.rrm.ehour.config.EhourConfigStub
-import net.rrm.ehour.ui.report.panel.aggregate.AggregateReportChartGenerator
+import net.rrm.ehour.ui.report.panel.aggregate.{ChartContext, AggregateReportChartGenerator}
 
 @RunWith(classOf[JUnitRunner])
 class ProjectChartGeneratorTest extends FunSuite with ShouldMatchers with BeforeAndAfter {
@@ -15,7 +15,7 @@ class ProjectChartGeneratorTest extends FunSuite with ShouldMatchers with Before
   before {
     val reportData = AggregateReportDataObjectMother.generateReportData
 
-    chart = AggregateReportChartGenerator.generateProjectReportChart("container", reportData, new EhourConfigStub())
+    chart = AggregateReportChartGenerator.generateProjectReportChart(ChartContext("container", reportData, "$", true))
   }
 
   test("should have minimum height of 400px") {

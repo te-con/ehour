@@ -15,6 +15,7 @@ import net.rrm.ehour.ui.common.component.AjaxBehaviorComponent
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.report.excel.DetailedReportExcel
+import aggregate.ChartContext
 
 class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
 
@@ -32,7 +33,7 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
     val rawData: ReportData = treeReportData.getRawReportData
     frame.add(new HighChartContainer("chart", new Model(rawData), DetailedReportChartGenerator.generateHourBasedDetailedChart))
 
-    val radioButton = (id: String, generateChart: (String, ReportData, EhourConfig) => String) => {
+    val radioButton = (id: String, generateChart: (ChartContext) => String) => {
       new AjaxBehaviorComponent(id, "onclick", (target: AjaxRequestTarget) => {
         val chart = new HighChartContainer("chart", new Model(rawData), generateChart)
         frame.addOrReplace(chart)

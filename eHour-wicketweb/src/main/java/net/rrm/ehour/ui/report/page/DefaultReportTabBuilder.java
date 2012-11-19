@@ -70,7 +70,6 @@ public class DefaultReportTabBuilder implements ReportTabBuilder {
         return detailedReport;
     }
 
-
     private Panel getCustomerReportPanel(String id, ReportCriteria reportCriteria) {
         CustomerAggregateReportModel customerAggregateReport = new CustomerAggregateReportModel(reportCriteria);
         ReportUtil.storeInCache(customerAggregateReport);

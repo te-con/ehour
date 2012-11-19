@@ -5,4 +5,6 @@ import net.rrm.ehour.ui.report.TreeReportModel
 
 class EmployeeReportPanel(id: String, reportModel: TreeReportModel) extends AggregateReportPanel(id, reportModel,
   ReportConfig.AGGREGATE_USER,
-  AggregateReportChartGenerator.generateEmployeeReportChart)
+  AggregateReportChartGenerator.generateEmployeeReportChart){
+
+  implicit val withTurnover: Boolean = false                 }

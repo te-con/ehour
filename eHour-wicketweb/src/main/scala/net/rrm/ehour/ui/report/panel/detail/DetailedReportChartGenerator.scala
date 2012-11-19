@@ -1,7 +1,6 @@
 package net.rrm.ehour.ui.report.panel.detail
 
 import net.rrm.ehour.report.reports.ReportData
-import net.rrm.ehour.config.EhourConfig
 import scalaj.collection.Imports._
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import nl.tecon.highcharts.HighChart
@@ -10,6 +9,7 @@ import collection.Seq
 import java.lang.String
 import org.joda.time.DateTime
 import nl.tecon.highcharts.config.Conversions._
+import net.rrm.ehour.ui.report.panel.aggregate.ChartContext
 
 object DetailedReportChartGenerator {
   val axis = (title: String) => Seq(Axis(title = Title(text = title)))
@@ -17,21 +17,21 @@ object DetailedReportChartGenerator {
   val tooltip = (t: String) => Tooltip(formatter = Some(JavascriptFunction("function() { return new Date(this.x).toLocaleDateString() + '<br />' + this.series.name + ': ' + this.y.toLocaleString() + ' " + t + "' } ")))
 
 
-  def generateHourBasedDetailedChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    val highChart = generateDetailedChart(reportData, config, _.getTotalHours.floatValue())
+  def generateHourBasedDetailedChart(chartContext: ChartContext): String = {
+    val highChart = generateDetailedChart(chartContext.reportData, _.getTotalHours.floatValue())
 
-    highChart.copy(yAxis = axis("Hours"), title = title("Hours booked on customers per day"), tooltip = tooltip("hours")).build(renderToId)
+    highChart.copy(yAxis = axis("Hours"), title = title("Hours booked on customers per day"), tooltip = tooltip("hours")).build(chartContext.renderToId)
   }
 
 
-  def generateTurnoverBasedDetailedChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    val highChart = generateDetailedChart(reportData, config, _.getTotalTurnOver.floatValue())
+  def generateTurnoverBasedDetailedChart(chartContext: ChartContext): String = {
+    val highChart = generateDetailedChart(chartContext.reportData, _.getTotalTurnOver.floatValue())
 
-    highChart.copy(yAxis = axis(config.getCurrencySymbol), title = title("Turnover booked on customers per day"), tooltip = tooltip(config.getCurrencySymbol)).build(renderToId)
+    highChart.copy(yAxis = axis(chartContext.currencySymbol), title = title("Turnover booked on customers per day"), tooltip = tooltip(chartContext.currencySymbol)).build(chartContext.renderToId)
   }
 
 
-  private def generateDetailedChart(reportData: ReportData, config: EhourConfig, f: FlatReportElement => Float): HighChart = {
+  private def generateDetailedChart(reportData: ReportData, f: FlatReportElement => Float): HighChart = {
     val elements = reportData.getReportElements.asScala.asInstanceOf[Seq[FlatReportElement]]
 
     val reportRange = reportData.getReportRange
