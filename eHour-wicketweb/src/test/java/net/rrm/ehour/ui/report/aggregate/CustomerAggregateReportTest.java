@@ -28,6 +28,7 @@ import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringInjectorTester;
 
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,22 +39,20 @@ import org.junit.Test;
  * @since <pre>09/11/2007</pre>
  * @version 1.0
  */
-public class CustomerAggregateReportTest extends AbstractSpringInjectorTester
+public class CustomerAggregateReportTest extends AbstractSpringWebAppTester
 {
 	private AggregateReportService aggregateReportService;
 
 	@Before
 	public void setup() throws Exception
 	{
-		super.springLocatorSetup();
-		
 		aggregateReportService = createMock(AggregateReportService.class);
 		getMockContext().putBean("aggregateReportService", aggregateReportService);
 
 	}
 	
 	@Test
-    public void testCreateReport() throws Exception
+    public void should_create_report() throws Exception
     {
 		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
 			.andReturn(AggregateReportDataObjectMother.getAssignmentReportData());
