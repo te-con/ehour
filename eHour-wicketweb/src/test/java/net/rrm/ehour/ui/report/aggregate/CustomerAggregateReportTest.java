@@ -26,7 +26,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.ui.common.AbstractSpringInjectorTester;
 
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import org.junit.Before;

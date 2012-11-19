@@ -28,7 +28,6 @@ import java.util.Locale;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.ui.common.AbstractSpringInjectorTester;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 
