@@ -22,119 +22,94 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import org.apache.wicket.Page;
-import org.apache.wicket.authorization.strategies.role.Roles;
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
 
 /**
  * Common stuff for auth
- **/
+ */
 
-public class AuthUtil
-{
-	/**
-	 * Get logged in user
-	 * @return
-	 */
-	public static User getUser()
-	{
-		EhourWebSession session = EhourWebSession.getSession();
+public class AuthUtil {
+    public static User getUser() {
+        EhourWebSession session = EhourWebSession.getSession();
 
-		return (session.getUser() != null) ? session.getUser().getUser() : null;
-	}
+        return (session.getUser() != null) ? session.getUser().getUser() : null;
+    }
 
-	/**
-	 * Check if the logged in user has the specified role
-	 * @param role
-	 * @return
-	 */
-	public static boolean hasRole(String role)
-	{
-		Roles roles = getRoles();
+    /**
+     * Check if the logged in user has the specified role
+     *
+     * @param role
+     * @return
+     */
+    public static boolean hasRole(String role) {
+        Roles roles = getRoles();
 
-		return (roles != null) && roles.contains(role);
-	}
+        return (roles != null) && roles.contains(role);
+    }
 
-	/**
-	 * Get the roles of the logged in user
-	 * @return
-	 */
-	public static Roles getRoles()
-	{
-		EhourWebSession session = EhourWebSession.getSession();
+    /**
+     * Get the roles of the logged in user
+     *
+     * @return
+     */
+    public static Roles getRoles() {
+        EhourWebSession session = EhourWebSession.getSession();
 
-		return session.getRoles();
-	}
+        return session.getRoles();
+    }
 
-	/**
-	 * Is the user authorized for the page?
-	 * @param pageClass
-	 * @return
-	 */
-	public static boolean isUserAuthorizedForPage(Class<? extends WebPage> pageClass)
-	{
-		AuthorizeInstantiation	authorizeAnnotation;
-		Roles					userRoles;
-		boolean					authorized = false;
+    /**
+     * Is the user authorized for the page?
+     *
+     * @param pageClass
+     * @return
+     */
+    public static boolean isUserAuthorizedForPage(Class<? extends WebPage> pageClass) {
+        AuthorizeInstantiation authorizeAnnotation;
+        Roles userRoles;
+        boolean authorized = false;
 
-		if (pageClass.isAnnotationPresent(AuthorizeInstantiation.class))
-		{
-			userRoles = getRoles();
+        if (pageClass.isAnnotationPresent(AuthorizeInstantiation.class)) {
+            userRoles = getRoles();
 
-			if (userRoles != null)
-			{
-				authorizeAnnotation = pageClass.getAnnotation(AuthorizeInstantiation.class);
+            if (userRoles != null) {
+                authorizeAnnotation = pageClass.getAnnotation(AuthorizeInstantiation.class);
 
-				OUTER: for (String role : userRoles)
-				{
-					for (int i = 0;
-							i < authorizeAnnotation.value().length;
-							i++)
-					{
-						if (authorizeAnnotation.value()[i].equalsIgnoreCase(role))
-						{
-							authorized = true;
-							break OUTER;
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			// no authorize annotation available
-			authorized = true;
-		}
+                OUTER:
+                for (String role : userRoles) {
+                    for (int i = 0;
+                         i < authorizeAnnotation.value().length;
+                         i++) {
+                        if (authorizeAnnotation.value()[i].equalsIgnoreCase(role)) {
+                            authorized = true;
+                            break OUTER;
+                        }
+                    }
+                }
+            }
+        } else {
+            // no authorize annotation available
+            authorized = true;
+        }
 
-		return authorized;
-	}
+        return authorized;
+    }
 
-	/**
-	 *
-	 * @param roles
-	 * @return
-	 */
-	public static Class<? extends Page> getHomepageForRole(Roles roles)
-	{
-		Class<? extends Page>	homepage;
+    public static Class<? extends Page> getHomepageForRole(Roles roles) {
+        Class<? extends Page> homepage;
 
-		if (roles.contains(WebUtils.ROLE_CONSULTANT))
-		{
-			homepage = MonthOverviewPage.class;
-		}
-		else if (roles.contains(WebUtils.ROLE_ADMIN))
-		{
-			homepage = MainConfigPage.class;
-		}
-		else if (roles.contains(WebUtils.ROLE_REPORT))
-		{
-			homepage = GlobalReportPage.class;
-		}
-		else
-		{
-			homepage = MonthOverviewPage.class;
-		}
+        if (roles.contains(WebUtils.ROLE_CONSULTANT)) {
+            homepage = MonthOverviewPage.class;
+        } else if (roles.contains(WebUtils.ROLE_ADMIN)) {
+            homepage = MainConfigPage.class;
+        } else if (roles.contains(WebUtils.ROLE_REPORT)) {
+            homepage = GlobalReportPage.class;
+        } else {
+            homepage = MonthOverviewPage.class;
+        }
 
-		return homepage;
-	}
+        return homepage;
+    }
 }
