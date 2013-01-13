@@ -26,7 +26,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.persistence.CookieValuePersister;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -57,18 +56,7 @@ public class Login extends WebPage {
     private void setupForm() {
         addOrReplace(new Label("pageTitle", new ResourceModel("login.login.header")));
 
-        SimpleUser user = preloadUsernameFromCookie();
-
-        addOrReplace(new SignInForm("loginform", user));
-    }
-
-    private SimpleUser preloadUsernameFromCookie() {
-        CookieValuePersister persister = new CookieValuePersister();
-        String cookieUsername = persister.load(EHOUR_USERNAME);
-
-        SimpleUser user = new SimpleUser();
-        user.setUsername(cookieUsername);
-        return user;
+        addOrReplace(new SignInForm("loginform", new SimpleUser()));
     }
 
     private void redirectToHomepage(EhourWebSession session) {
@@ -114,9 +102,6 @@ public class Login extends WebPage {
             EhourWebSession session = EhourWebSession.getSession();
 
             if (session.signIn(username, password)) {
-                CookieValuePersister persister = new CookieValuePersister();
-                persister.save(EHOUR_USERNAME, username);
-
                 redirectToHomepage(session);
             } else {
                 error(getLocalizer().getString("login.login.failed", this));
