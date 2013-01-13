@@ -21,7 +21,6 @@ import net.rrm.ehour.persistence.value.ImageLogo;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
-import net.rrm.ehour.ui.common.component.ImageResource;
 import net.rrm.ehour.ui.common.form.ImageUploadForm;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
@@ -37,8 +36,8 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.util.value.ValueMap;
 
 /**
@@ -126,12 +125,17 @@ public class SkinConfigPanel extends AbstractConfigPanel
 		double divideBy = width / 350d;
 		double height = (double)excelLogo.getHeight() / divideBy;
 		
-		Image img = new Image("excelImage");
+		Image img = new Image("excelImage", "img");
 		img.setOutputMarkupId(true);
 		img.add(AttributeModifier.replace("width", "350"));
 		img.add(AttributeModifier.replace("height", Integer.toString((int) height)));
 		
-		img.setImageResource(new ImageResource(excelLogo));
+		img.setImageResource(new DynamicImageResource() {
+            @Override
+            protected byte[] getImageData(Attributes attributes) {
+                return excelLogo.getImageData();
+            }
+        });
 		return img;
 	}
 	
