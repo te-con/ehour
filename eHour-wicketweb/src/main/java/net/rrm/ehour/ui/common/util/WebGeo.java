@@ -51,15 +51,6 @@ public enum WebGeo {
         this.unit = unit;
     }
 
-    public Integer getWidth() {
-//        if ("px".equalsIgnoreCase(unit)) {
-            return value;
-//        } else {
-//            throw new IllegalArgumentException("Unit is not in pixel");
-//        }
-    }
-
-
     @Override
     public String toString() {
         return String.format("%d%s", value, unit);
