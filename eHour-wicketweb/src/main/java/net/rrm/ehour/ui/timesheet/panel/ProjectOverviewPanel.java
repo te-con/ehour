@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -69,7 +68,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 
         // this should be easier..
         Label label = new Label("title", new MessageResourceModel("projectoverview.aggregatedPerMonth", this, new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY)));
-        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_GREY_BORDER, label, WebGeo.W_CONTENT_MEDIUM);
+        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_GREY_BORDER, label);
 
         addGrandTotals(greyBorder, projectStatusses, getConfig());
         addColumnLabels(greyBorder);

@@ -16,10 +16,7 @@
 
 package net.rrm.ehour.ui.common.border;
 
-import net.rrm.ehour.ui.common.util.WebGeo;
-
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 
@@ -32,11 +29,6 @@ public class CustomTitledGreyRoundedBorder extends Border
 	private static final long serialVersionUID = -7069112450640627111L;
 
 	public CustomTitledGreyRoundedBorder(String id, Component title)
-	{
-		this(id, title, null);
-	}
-
-	public CustomTitledGreyRoundedBorder(String id, Component title, WebGeo width)
 	{
 		super(id);
 		

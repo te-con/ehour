@@ -33,7 +33,6 @@ import net.rrm.ehour.ui.common.formguard.GuardedAjaxLink;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
@@ -105,8 +104,8 @@ public class TimesheetPanel extends Panel implements Serializable
 
         // grey & blue frame border
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame",
-                getWeekNavigation(timesheet.getWeekStart(), timesheet.getWeekEnd()),
-                WebGeo.W_CONTENT_MEDIUM);
+                getWeekNavigation(timesheet.getWeekStart(), timesheet.getWeekEnd())
+        );
         add(greyBorder);
 
         // add form
