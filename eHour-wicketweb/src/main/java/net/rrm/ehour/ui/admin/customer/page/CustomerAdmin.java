@@ -34,7 +34,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
-import net.rrm.ehour.ui.common.util.WebGeo;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -79,8 +78,8 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 		Fragment customerListHolder = getCustomerListHolder(customers);
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
-						new ResourceModel("admin.customer.title"), 
-						WebGeo.W_ENTRY_SELECTOR);
+						new ResourceModel("admin.customer.title")
+        );
 		add(greyBorder);			
 		
 		greyBorder.add(new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,

@@ -30,7 +30,6 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 
 import org.apache.log4j.Logger;
@@ -78,8 +77,8 @@ public class DepartmentAdmin extends AbstractTabbedAdminPage<DepartmentAdminBack
 		Fragment deptListHolder = getDepartmentListHolder(departments);
 
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
-																new ResourceModel("admin.dept.title"),
-																WebGeo.W_ENTRY_SELECTOR);
+																new ResourceModel("admin.dept.title")
+        );
 		add(greyBorder);
 		
 		greyBorder.add(new EntrySelectorPanel(DEPT_SELECTOR_ID, deptListHolder));

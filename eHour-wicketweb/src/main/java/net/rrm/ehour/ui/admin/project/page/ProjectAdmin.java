@@ -32,7 +32,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -80,8 +79,8 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 		Fragment projectListHolder = getProjectListHolder(projects);
 
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame",
-											new ResourceModel("admin.project.title"),
-											WebGeo.W_ENTRY_SELECTOR);
+											new ResourceModel("admin.project.title")
+        );
 		add(greyBorder);
 
 		greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,

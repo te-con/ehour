@@ -26,7 +26,6 @@ import net.rrm.ehour.ui.common.component.sort.TimesheetEntryComparator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
@@ -85,8 +84,8 @@ public class MonthOverviewPanel extends Panel {
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyFrame",
                 new ResourceModel("monthoverview.overview"),
                 true,
-                printLink, null,
-                WebGeo.W_CONTENT_MEDIUM);
+                printLink, null
+        );
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 
         greyBorder.add(blueBorder);

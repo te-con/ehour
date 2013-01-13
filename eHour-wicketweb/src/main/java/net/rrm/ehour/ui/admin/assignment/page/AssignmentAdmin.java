@@ -24,7 +24,6 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -65,8 +64,8 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
         Fragment userListHolder = getUserListHolder(users);
 
         GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame",
-                new ResourceModel("admin.assignment.title"),
-                WebGeo.W_ENTRY_SELECTOR);
+                new ResourceModel("admin.assignment.title")
+        );
         add(grey);
 
         grey.add(new EntrySelectorPanel(USER_SELECTOR_ID, userListHolder));
