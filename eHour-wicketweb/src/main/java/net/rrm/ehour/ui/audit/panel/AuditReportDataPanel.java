@@ -26,11 +26,14 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -39,12 +42,13 @@ import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.value.ValueMap;
 
 import java.util.Date;
 
-public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
+public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>  implements IHeaderContributor
 {
 	private static final long serialVersionUID = -2380789244030608920L;
 
@@ -67,8 +71,6 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
 		
 		greyBorder.add(getPagingDataView(model));
 
-		add(new CssReference("auditStyle", new CompressedResourceReference(AuditReportDataPanel.class, "style/auditStyle.css")));
-		
 		addExcelLink();
 	}
 
@@ -119,6 +121,13 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>
 		
 		return (AuditReportRequest)criteria.getUserCriteria();
 	}
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.renderCSSReference(new PackageResourceReference(AuditReportDataPanel.class, "style/auditStyle.css"));
+    }
 	
 	private static class DateColumn extends AbstractColumn<Audit>
 	{

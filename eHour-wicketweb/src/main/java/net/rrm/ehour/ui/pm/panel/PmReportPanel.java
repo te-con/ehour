@@ -27,15 +27,18 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.ArrayList;
 
@@ -43,7 +46,7 @@ import java.util.ArrayList;
  * PM Report panel
  */
 
-public class PmReportPanel extends AbstractBasePanel<Void> {
+public class PmReportPanel extends AbstractBasePanel<Void> implements IHeaderContributor {
     private static final long serialVersionUID = -1735419536027937563L;
 
     public PmReportPanel(String id, ProjectManagerReport report) {
@@ -95,9 +98,6 @@ public class PmReportPanel extends AbstractBasePanel<Void> {
 
             }
         });
-
-        // borrow css from the general reports.
-        add(new StyleSheetReference("reportStyle", new CompressedResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
     }
 
     private void applyCss(ListItem<AssignmentAggregateReportElement> item, int column, Label cellLabel) {
@@ -121,5 +121,12 @@ public class PmReportPanel extends AbstractBasePanel<Void> {
         reportHeaderLabel.setEscapeModelStrings(false);
 
         return reportHeaderLabel;
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.renderCSSReference(new PackageResourceReference(TreeReportDataPanel.class, "style/reportStyle.css"));
     }
 }

@@ -23,16 +23,18 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
+import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Container for month + project overview 
  **/
 
-public class OverviewPanel extends Panel
+public class OverviewPanel extends Panel implements IHeaderContributor
 {
 	private static final long serialVersionUID = 1415235065167294169L;
 
@@ -53,10 +55,18 @@ public class OverviewPanel extends Panel
 		
 		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, overviewFor);
 		
-		add(new StyleSheetReference("overviewStyle", new CompressedResourceReference(OverviewPanel.class, "css/overview.css")));
-		
 		add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
 		add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
 	}
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.renderCSSReference(new PackageResourceReference(OverviewPanel.class, "css/overview.css"));
+    }
+
+
+
 }
 

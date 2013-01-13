@@ -13,7 +13,6 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
@@ -23,13 +22,10 @@ import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.target.basic.RedirectRequestTarget;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
-/**
- * User: thies
- * Date: Nov 12, 2010
- * Time: 10:54:38 PM
- */
+
 public class ExportPage extends AbstractAdminPage<Void>
 {
     private static final String ID_PARSE_STATUS = "parseStatus";
@@ -53,12 +49,15 @@ public class ExportPage extends AbstractAdminPage<Void>
             @Override
             public void onClick()
             {
-                ResourceReference exportReference = new ResourceReference(ExportDatabase.ID_EXPORT_DB);
-
-                exportReference.bind(getApplication());
-                CharSequence url = getRequestCycle().urlFor(exportReference);
-
-                getRequestCycle().setRequestTarget(new RedirectRequestTarget(url.toString()));
+                // TODO FIXME
+//                ResourceReference exportReference = new PackageResourceReference(ExportDatabase.ID_EXPORT_DB);
+//
+//                exportReference.
+//
+//                exportReference.bind(getApplication());
+//                CharSequence url = getRequestCycle().urlFor(exportReference);
+//
+//                getRequestCycle().setRequestTarget(new RedirectRequestTarget(url.toString()));
             }
         });
 
