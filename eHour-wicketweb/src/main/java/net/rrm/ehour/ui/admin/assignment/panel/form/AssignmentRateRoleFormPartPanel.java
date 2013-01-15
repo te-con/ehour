@@ -16,49 +16,46 @@
 
 package net.rrm.ehour.ui.admin.assignment.panel.form;
 
-import java.util.Currency;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
+
+import java.util.Currency;
 
 /**
- * Rate & role 
- **/
+ * Rate & role
+ */
 
-public class AssignmentRateRoleFormPartPanel extends Panel
-{
-	private static final long serialVersionUID = -3250880303705076821L;
+public class AssignmentRateRoleFormPartPanel extends Panel {
+    private static final long serialVersionUID = -3250880303705076821L;
 
-	public AssignmentRateRoleFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model)
-	{
-		super(id, model);
+    public AssignmentRateRoleFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model) {
+        super(id, model);
 
-		EhourConfig config = ((EhourWebSession)getSession()).getEhourConfig();
-		
-		// add role
-		TextField<String> role = new TextField<String>("projectAssignment.role");
-		add(role);
-		
-		// add hourly rate
-		TextField<Float> hourlyRate = new TextField<Float>("projectAssignment.hourlyRate",
-											new PropertyModel<Float>(model, "projectAssignment.hourlyRate"));
-		hourlyRate.setType(Float.class);
-		hourlyRate.add(new ValidatingFormComponentAjaxBehavior());
-		hourlyRate.add(new MinimumValidator<Float>(0f));
-		add(hourlyRate);
-		add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
+        EhourConfig config = ((EhourWebSession) getSession()).getEhourConfig();
 
-		// and currency
-		add(new Label("currency",  Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
-	}
+        // add role
+        TextField<String> role = new TextField<String>("projectAssignment.role");
+        add(role);
+
+        // add hourly rate
+        TextField<Float> hourlyRate = new TextField<Float>("projectAssignment.hourlyRate",
+                new PropertyModel<Float>(model, "projectAssignment.hourlyRate"));
+        hourlyRate.setType(Float.class);
+        hourlyRate.add(new ValidatingFormComponentAjaxBehavior());
+        hourlyRate.add(RangeValidator.minimum(0f));
+        add(hourlyRate);
+        add(new AjaxFormComponentFeedbackIndicator("rateValidationError", hourlyRate));
+
+        // and currency
+        add(new Label("currency", Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
+    }
 }

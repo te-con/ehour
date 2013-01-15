@@ -39,143 +39,134 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.Date;
 import java.util.List;
 
 /**
  * Assignment type part of form
- **/
+ */
 
-public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListener
-{
-	private static final long serialVersionUID = 1L;
-	private Component[] notifiableComponents;
+public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListener {
+    private static final long serialVersionUID = 1L;
+    private Component[] notifiableComponents;
 
-	@SpringBean
-	private ProjectAssignmentService projectAssignmentService;
+    @SpringBean
+    private ProjectAssignmentService projectAssignmentService;
 
-	public AssignmentTypeFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model, Form<AssignmentAdminBackingBean> form)
-	{
-		super(id, model);
+    public AssignmentTypeFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model, Form<AssignmentAdminBackingBean> form) {
+        super(id, model);
 
-		addAssignmentType(model);
-		addDates(form, model);
-	}
+        addAssignmentType(model);
+        addDates(form, model);
+    }
 
-	private void addAssignmentType(IModel<AssignmentAdminBackingBean> model)
-	{
-		List<ProjectAssignmentType> assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();
+    private void addAssignmentType(IModel<AssignmentAdminBackingBean> model) {
+        List<ProjectAssignmentType> assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();
 
-		final PropertyModel<Boolean> showAllottedHoursModel = new PropertyModel<Boolean>(model, "showAllottedHours");
-		final PropertyModel<Boolean> showOverrunHoursModel = new PropertyModel<Boolean>(model, "showOverrunHours");
+        final PropertyModel<Boolean> showAllottedHoursModel = new PropertyModel<Boolean>(model, "showAllottedHours");
+        final PropertyModel<Boolean> showOverrunHoursModel = new PropertyModel<Boolean>(model, "showOverrunHours");
 
-		// assignment type
-		final DropDownChoice<ProjectAssignmentType> assignmentTypeChoice = new DropDownChoice<ProjectAssignmentType>("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer());
-		assignmentTypeChoice.setRequired(true);
-		assignmentTypeChoice.setNullValid(false);
-		assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
-		assignmentTypeChoice.add(new ValidatingFormComponentAjaxBehavior());
-		add(assignmentTypeChoice);
-		add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
+        // assignment type
+        final DropDownChoice<ProjectAssignmentType> assignmentTypeChoice = new DropDownChoice<ProjectAssignmentType>("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer());
+        assignmentTypeChoice.setRequired(true);
+        assignmentTypeChoice.setNullValid(false);
+        assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
+        assignmentTypeChoice.add(new ValidatingFormComponentAjaxBehavior());
+        add(assignmentTypeChoice);
+        add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
 
-		// allotted hours
-		final TextField<Float> allottedHours = new RequiredTextField<Float>("projectAssignment.allottedHours",
-												new PropertyModel<Float>(model, "projectAssignment.allottedHours"));
-		allottedHours.setType(float.class);
-		allottedHours.add(new ValidatingFormComponentAjaxBehavior());
-		allottedHours.add(new MinimumValidator<Float>(0f));
-		allottedHours.setOutputMarkupId(true);
-		allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
-		allottedHours.setEnabled(showAllottedHoursModel.getObject());
+        // allotted hours
+        final TextField<Float> allottedHours = new RequiredTextField<Float>("projectAssignment.allottedHours",
+                new PropertyModel<Float>(model, "projectAssignment.allottedHours"));
+        allottedHours.setType(float.class);
+        allottedHours.add(new ValidatingFormComponentAjaxBehavior());
+        allottedHours.add(RangeValidator.minimum(0f));
+        allottedHours.setOutputMarkupId(true);
+        allottedHours.setLabel(new ResourceModel("admin.assignment.timeAllotted"));
+        allottedHours.setEnabled(showAllottedHoursModel.getObject());
 
-		// allotted hours row
-		final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
-		allottedRow.setOutputMarkupId(true);
-		allottedRow.add(allottedHours);
-		allottedRow.add(new AjaxFormComponentFeedbackIndicator("allottedHoursValidationError", allottedHours));
-		allottedRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showAllottedHoursModel));
-		add(allottedRow);
+        // allotted hours row
+        final WebMarkupContainer allottedRow = new WebMarkupContainer("allottedRow");
+        allottedRow.setOutputMarkupId(true);
+        allottedRow.add(allottedHours);
+        allottedRow.add(new AjaxFormComponentFeedbackIndicator("allottedHoursValidationError", allottedHours));
+        allottedRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showAllottedHoursModel));
+        add(allottedRow);
 
-		// overrun hours
-		final TextField<Float> overrunHours = new RequiredTextField<Float>("projectAssignment.allowedOverrun",
-											new PropertyModel<Float>(model, "projectAssignment.allowedOverrun"));
-		overrunHours.setType(float.class);
-		overrunHours.add(new ValidatingFormComponentAjaxBehavior());
-		overrunHours.add(new MinimumValidator<Float>(0f));
-		overrunHours.setOutputMarkupId(true);
-		overrunHours.setEnabled(showOverrunHoursModel.getObject());
-		overrunHours.setLabel(new ResourceModel("admin.assignment.allowedOverrun"));
+        // overrun hours
+        final TextField<Float> overrunHours = new RequiredTextField<Float>("projectAssignment.allowedOverrun",
+                new PropertyModel<Float>(model, "projectAssignment.allowedOverrun"));
+        overrunHours.setType(float.class);
+        overrunHours.add(new ValidatingFormComponentAjaxBehavior());
+        overrunHours.add(RangeValidator.minimum(0f));
+        overrunHours.setOutputMarkupId(true);
+        overrunHours.setEnabled(showOverrunHoursModel.getObject());
+        overrunHours.setLabel(new ResourceModel("admin.assignment.allowedOverrun"));
 
-		// overrun hours row
-		final WebMarkupContainer overrunRow = new WebMarkupContainer("overrunRow");
-		overrunRow.setOutputMarkupId(true);
-		overrunRow.add(overrunHours);
-		overrunRow.add(new AjaxFormComponentFeedbackIndicator("overrunHoursValidationError", overrunHours));
-		overrunRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showOverrunHoursModel));
-		add(overrunRow);
+        // overrun hours row
+        final WebMarkupContainer overrunRow = new WebMarkupContainer("overrunRow");
+        overrunRow.setOutputMarkupId(true);
+        overrunRow.add(overrunHours);
+        overrunRow.add(new AjaxFormComponentFeedbackIndicator("overrunHoursValidationError", overrunHours));
+        overrunRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showOverrunHoursModel));
+        add(overrunRow);
 
-		// notify PM when possible
-		CheckBox notifyPm = new CheckBox("projectAssignment.notifyPm");
-		notifyPm.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled")));
-		notifyPm.setOutputMarkupId(true);
+        // notify PM when possible
+        CheckBox notifyPm = new CheckBox("projectAssignment.notifyPm");
+        notifyPm.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled")));
+        notifyPm.setOutputMarkupId(true);
 
-		Label notifyDisabled = new Label("notifyDisabled", new ResourceModel("admin.assignment.cantNotify"));
-		notifyDisabled.add(new DynamicAttributeModifier("style", true,
-														new Model<String>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled"), true));
-		notifyDisabled.setOutputMarkupId(true);
+        Label notifyDisabled = new Label("notifyDisabled", new ResourceModel("admin.assignment.cantNotify"));
+        notifyDisabled.add(new DynamicAttributeModifier("style", true,
+                new Model<String>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled"), true));
+        notifyDisabled.setOutputMarkupId(true);
 
-		// notify PM row
-		final WebMarkupContainer notifyPmRow = new WebMarkupContainer("notifyPmRow");
-		notifyPmRow.setOutputMarkupId(true);
-		notifyPmRow.add(notifyPm);
-		notifyPmRow.add(notifyDisabled);
-		notifyPmRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showAllottedHoursModel));
-		add(notifyPmRow);
+        // notify PM row
+        final WebMarkupContainer notifyPmRow = new WebMarkupContainer("notifyPmRow");
+        notifyPmRow.setOutputMarkupId(true);
+        notifyPmRow.add(notifyPm);
+        notifyPmRow.add(notifyDisabled);
+        notifyPmRow.add(new DynamicAttributeModifier("style", true, new Model<String>("display: none;"), showAllottedHoursModel));
+        add(notifyPmRow);
 
-		assignmentTypeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
-        {
-			private static final long serialVersionUID = 1L;
+        assignmentTypeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            private static final long serialVersionUID = 1L;
 
-			protected void onUpdate(AjaxRequestTarget target)
-            {
-				// to disable the required validation
-				allottedHours.setEnabled(showAllottedHoursModel.getObject());
-				overrunHours.setEnabled(showOverrunHoursModel.getObject());
-				target.add(allottedHours);
-				target.add(overrunHours);
+            protected void onUpdate(AjaxRequestTarget target) {
+                // to disable the required validation
+                allottedHours.setEnabled(showAllottedHoursModel.getObject());
+                overrunHours.setEnabled(showOverrunHoursModel.getObject());
+                target.add(allottedHours);
+                target.add(overrunHours);
 
-				// show/hide rows dependent on the assignment type selected
-				target.add(allottedRow);
-				target.add(overrunRow);
-				target.add(notifyPmRow);
+                // show/hide rows dependent on the assignment type selected
+                target.add(allottedRow);
+                target.add(overrunRow);
+                target.add(notifyPmRow);
             }
         });
 
-		notifiableComponents = new Component[]{notifyPm, notifyDisabled};
-	}
+        notifiableComponents = new Component[]{notifyPm, notifyDisabled};
+    }
 
-	private void addDates(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model)
-	{
-		DatePickerPanel dateStart = new DatePickerPanel("dateStart", new PropertyModel<Date>(model, "projectAssignment.dateStart"), new PropertyModel<Boolean>(model, "infiniteStartDate"));
-		DatePickerPanel dateEnd = new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "projectAssignment.dateEnd"), new PropertyModel<Boolean>(model, "infiniteEndDate"));
+    private void addDates(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model) {
+        DatePickerPanel dateStart = new DatePickerPanel("dateStart", new PropertyModel<Date>(model, "projectAssignment.dateStart"), new PropertyModel<Boolean>(model, "infiniteStartDate"));
+        DatePickerPanel dateEnd = new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "projectAssignment.dateEnd"), new PropertyModel<Boolean>(model, "infiniteEndDate"));
 
-		add(dateStart);
-		add(dateEnd);
+        add(dateStart);
+        add(dateEnd);
 
-		form.add(new DateOverlapValidator("dateStartDateEnd", dateStart.getDateInputFormComponent(), dateEnd.getDateInputFormComponent()));
-	}
+        form.add(new DateOverlapValidator("dateStartDateEnd", dateStart.getDateInputFormComponent(), dateEnd.getDateInputFormComponent()));
+    }
 
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-    {
-        if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE)
-        {
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
             AjaxRequestTarget target = ajaxEvent.getTarget();
 
-            for (Component notifiableComponent : notifiableComponents)
-            {
+            for (Component notifiableComponent : notifiableComponents) {
                 target.add(notifiableComponent);
             }
         }

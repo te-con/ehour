@@ -35,8 +35,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.validation.validator.MaximumValidator;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 /**
  * Created on Apr 21, 2009, 5:10:16 PM
@@ -67,8 +66,8 @@ public class MiscConfigPanel extends AbstractConfigPanel
 		// working hours
 		TextField<Float> workHours = new TextField<Float>("config.completeDayHours", Float.class);
 		workHours.add(new ValidatingFormComponentAjaxBehavior());
-		workHours.add(new MinimumValidator<Float>(0f));
-		workHours.add(new MaximumValidator<Float>(24f));
+		workHours.add(RangeValidator.minimum(0f));
+		workHours.add(RangeValidator.maximum(24f));
 		form.add(new AjaxFormComponentFeedbackIndicator("workHoursValidationError", workHours));
 		form.add(workHours);
 		
