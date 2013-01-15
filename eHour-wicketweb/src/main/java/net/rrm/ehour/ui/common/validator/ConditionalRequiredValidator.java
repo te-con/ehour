@@ -17,63 +17,35 @@
 package net.rrm.ehour.ui.common.validator;
 
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.INullAcceptingValidator;
 import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
+import org.apache.wicket.validation.ValidationError;
 
 /**
- * Conditional required validator, field is only required when the model evaluates to true 
- **/
+ * Conditional required validator, field is only required when the model evaluates to true
+ */
 
-public class ConditionalRequiredValidator<T> extends AbstractValidator<T>
-{
-	private static final long serialVersionUID = 6633525281870496233L;
-	private IModel<Boolean>	conditionalModel;
-	private	boolean	reverse;
+public class ConditionalRequiredValidator<T> implements INullAcceptingValidator<T> {
+    private static final long serialVersionUID = 6633525281870496233L;
+    private IModel<Boolean> conditionalModel;
 
-	/**
-	 * 
-	 * @param conditionalModel
-	 */
-	public ConditionalRequiredValidator(IModel<Boolean> conditionalModel)
-	{
-		this(conditionalModel, false);
-	}
-
-	/**
-	 * 
-	 * @param conditionalModel
-	 * @param reverse the conditional model
-	 */
-	public ConditionalRequiredValidator(IModel<Boolean> conditionalModel, boolean reverse)
-	{
-		this.conditionalModel = conditionalModel;
-	}
+    /**
+     * @param conditionalModel
+     *
+     */
+    public ConditionalRequiredValidator(IModel<Boolean> conditionalModel) {
+        this.conditionalModel = conditionalModel;
+    }
 
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.validation.validator.AbstractValidator#onValidate(org.apache.wicket.validation.IValidatable)
-	 */
-	@Override
-	public void onValidate(IValidatable<T> validatable)
-	{
-		boolean	condition = conditionalModel.getObject().booleanValue();
-		
-		if ( (reverse && condition || !reverse && !condition)
-				&& (validatable.getValue() == null 
-						|| validatable.getValue().toString().trim() == null)) 
-		{
-			error(validatable, "Required");
-		}		
-	}
+    @Override
+    public void validate(IValidatable<T> validatable) {
+        boolean condition = conditionalModel.getObject();
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.validation.validator.AbstractValidator#validateOnNullValue()
-	 */
-	@Override
-	public boolean validateOnNullValue()
-	{
-		return true;
-	}	
+        if ((!condition)
+                && (validatable.getValue() == null
+                || validatable.getValue().toString().trim() == null)) {
+            validatable.error(new ValidationError("Required"));
+        }
+    }
 }

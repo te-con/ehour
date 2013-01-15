@@ -41,7 +41,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import java.util.List;
@@ -74,7 +75,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
         // username
         RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
         form.add(usernameField);
-        usernameField.add(new StringValidator.MaximumLengthValidator(32));
+        usernameField.add(new StringValidator(0, 32));
         usernameField.add(new DuplicateUsernameValidator());
         usernameField.setLabel(new ResourceModel("admin.user.username"));
         usernameField.add(new ValidatingFormComponentAjaxBehavior());
@@ -158,16 +159,16 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
         userService.deleteUser(userBackingBean.getUser().getUserId());
     }
 
-    private class DuplicateUsernameValidator extends AbstractValidator<String> {
+    private class DuplicateUsernameValidator implements IValidator<String> {
         private static final long serialVersionUID = 542950054849279025L;
 
         @Override
-        protected void onValidate(IValidatable<String> validatable) {
+        public void validate(IValidatable<String> validatable) {
             String username = validatable.getValue();
             String orgUsername = ((UserBackingBean) getDefaultModelObject()).getOriginalUsername();
 
             if ((StringUtils.isNotBlank(orgUsername) && !username.equalsIgnoreCase(orgUsername) && userService.getUser(username) != null)) {
-                error(validatable, "admin.user.errorUsernameExists");
+                validatable.error(new ValidationError("admin.user.errorUsernameExists"));
             }
         }
     }
