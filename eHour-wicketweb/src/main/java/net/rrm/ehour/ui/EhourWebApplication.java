@@ -54,6 +54,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.resource.IPropertiesFactory;
 import org.apache.wicket.resource.IPropertiesLoader;
@@ -100,6 +101,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication
             registerSharedResources();
 
             registerStringLoader();
+
+            getRequestCycleListeners().add(new PageRequestHandlerTracker());
 
             initialized = true;
         }
