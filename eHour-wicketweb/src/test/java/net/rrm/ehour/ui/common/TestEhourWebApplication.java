@@ -22,17 +22,15 @@ import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
-import org.apache.wicket.*;
+import org.apache.wicket.Component;
+import org.apache.wicket.RuntimeConfigurationType;
+import org.apache.wicket.Session;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
-import org.apache.wicket.authorization.strategies.role.RoleAuthorizationStrategy;
-import org.apache.wicket.authorization.strategies.role.Roles;
-import org.apache.wicket.protocol.http.HttpSessionStore;
-import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
-import org.apache.wicket.protocol.http.WebResponse;
-import org.apache.wicket.request.IRequestCycleProcessor;
-import org.apache.wicket.session.ISessionStore;
+import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.HashSet;
 
@@ -57,23 +55,6 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
         });
     }
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see net.rrm.ehour.persistence.persistence.ui.EhourWebApplication#newRequestCycleProcessor()
-      */
-    @Override
-    protected IRequestCycleProcessor newRequestCycleProcessor() {
-        return new WebRequestCycleProcessor();
-    }
-
-    /*
-      * (non-Javadoc)
-      *
-      * @see
-      * org.apache.wicket.authentication.AuthenticatedWebApplication#newSession
-      * (org.apache.wicket.Request, org.apache.wicket.Response)
-      */
     @SuppressWarnings("serial")
     @Override
     public Session newSession(final Request request, final Response response) {
@@ -140,26 +121,25 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
         return session;
     }
 
-    protected ISessionStore newSessionStore() {
-        return new HttpSessionStore(this) {
-            @Override
-            public Session lookup(Request request) {
-                return session;
-            }
-        };
-    }
-
-    protected WebResponse newWebResponse(final HttpServletResponse servletResponse) {
-        return new WebResponse(servletResponse);
-    }
+//    protected ISessionStore newSessionStore() {
+//        return new HttpSessionStore(this) {
+//            @Override
+//            public Session lookup(Request request) {
+//                return session;
+//            }
+//        };
+//    }
+//
+//    protected WebResponse newWebResponse(final HttpServletResponse servletResponse) {
+//        return new WebResponse(servletResponse);
+//    }
 
     @Override
     protected void outputDevelopmentModeWarning() {
     }
 
     @Override
-    public String getConfigurationType() {
-        return Application.DEPLOYMENT;
+    public RuntimeConfigurationType getConfigurationType() {
+        return RuntimeConfigurationType.DEPLOYMENT;
     }
-
 }

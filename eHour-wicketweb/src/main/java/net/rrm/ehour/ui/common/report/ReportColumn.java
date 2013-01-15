@@ -16,9 +16,7 @@
 
 package net.rrm.ehour.ui.common.report;
 
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.util.convert.IConverter;
 
 import java.io.Serializable;
