@@ -3,7 +3,7 @@ package net.rrm.ehour.mail.service
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.config.EhourConfigStub
 import net.rrm.ehour.config.service.ConfigurationService
-import net.rrm.ehour.domain.UserMother
+import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.mail.service.MailServiceImpl.MailTask
 import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother
@@ -12,6 +12,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.springframework.core.task.TaskExecutor
+
 import static org.mockito.Mockito.when
 
 /**
@@ -73,7 +74,7 @@ class MailServiceImplTest
 
     when(configurationService.getConfiguration()).thenReturn stub
 
-    mailService.mailPMFixedAllottedReached(aggregate, new Date(), UserMother.createUser())
+    mailService.mailPMFixedAllottedReached(aggregate, new Date(), UserObjectMother.createUser())
 
     MailTask task = (MailTask)taskExecutor.task
     assert task.mailTaskMessage.mailMessage.subject == "eHour: All allotted hours used for project aa10 - aa10 by Dummy TestUser"

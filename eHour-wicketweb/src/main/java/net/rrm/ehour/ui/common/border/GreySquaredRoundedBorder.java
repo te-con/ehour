@@ -43,8 +43,8 @@ public class GreySquaredRoundedBorder extends Border
 		add(greyFrame);
 		
 		WebMarkupContainer greySquaredFrame = new WebMarkupContainer("greySquaredFrame");
-		
-		if (width != null)
+
+		if (width != null && width != WebGeo.NOT_DEFINED)
 		{
 			greySquaredFrame.add(AttributeModifier.replace("style", "width: " + width.toString()));
 		}

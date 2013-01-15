@@ -395,14 +395,27 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
             return false;
         }
         ProjectAssignment castOther = (ProjectAssignment) other;
-        return new EqualsBuilder().append(user, castOther.user).append(project, castOther.project).append(hourlyRate, castOther.hourlyRate).append(dateStart, castOther.dateStart).append(dateEnd, castOther.dateEnd).append(role, castOther.role).append(assignmentType,
-                castOther.assignmentType).append(allottedHours, castOther.allottedHours).append(allowedOverrun, castOther.allowedOverrun).append(active, castOther.active).isEquals();
+        return new EqualsBuilder()
+                .append(user, castOther.user)
+                .append(project, castOther.project)
+                .append(hourlyRate, castOther.hourlyRate)
+                .append(dateStart, castOther.dateStart)
+                .append(dateEnd, castOther.dateEnd)
+                .append(role, castOther.role)
+                .append(assignmentType, castOther.assignmentType)
+                .append(allottedHours, castOther.allottedHours)
+                .append(allowedOverrun, castOther.allowedOverrun)
+                .append(active, castOther.active)
+                .isEquals();
     }
 
     @Override
     public int hashCode()
     {
-        return new HashCodeBuilder().append(user).append(project).append(hourlyRate).append(dateStart).append(dateEnd).append(role).append(assignmentType).append(allottedHours).append(allowedOverrun).append(active).toHashCode();
+        return new HashCodeBuilder()
+                .append(user)
+                .append(project)
+                .append(hourlyRate).append(dateStart).append(dateEnd).append(role).append(assignmentType).append(allottedHours).append(allowedOverrun).append(active).toHashCode();
     }
 
 }

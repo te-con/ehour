@@ -51,6 +51,7 @@ public enum WebGeo {
         this.unit = unit;
     }
 
+
     @Override
     public String toString() {
         return String.format("%d%s", value, unit);

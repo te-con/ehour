@@ -34,7 +34,7 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
      * @param reportData
      */
     public UserAggregateReportModel(ReportCriteria reportCriteria) {
-        super(reportCriteria, ReportConfig.AGGREGATE_EMPLOYEE);
+        super(reportCriteria, ReportConfig.AGGREGATE_USER);
     }
 
     /*

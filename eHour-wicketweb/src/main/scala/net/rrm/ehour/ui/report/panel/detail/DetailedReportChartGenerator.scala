@@ -1,18 +1,15 @@
 package net.rrm.ehour.ui.report.panel.detail
 
 import net.rrm.ehour.report.reports.ReportData
-import net.rrm.ehour.config.EhourConfig
 import scalaj.collection.Imports._
 import net.rrm.ehour.report.reports.element.FlatReportElement
-import collection.mutable.{ListBuffer, Map => MutableMap}
 import nl.tecon.highcharts.HighChart
 import nl.tecon.highcharts.config._
-import net.rrm.ehour.data.DateRange
 import collection.Seq
 import java.lang.String
 import org.joda.time.DateTime
 import nl.tecon.highcharts.config.Conversions._
-import scala.math.round
+import net.rrm.ehour.ui.report.panel.aggregate.ChartContext
 
 object DetailedReportChartGenerator {
   val axis = (title: String) => Seq(Axis(title = Title(text = title)))
@@ -20,27 +17,29 @@ object DetailedReportChartGenerator {
   val tooltip = (t: String) => Tooltip(formatter = Some(JavascriptFunction("function() { return new Date(this.x).toLocaleDateString() + '<br />' + this.series.name + ': ' + this.y.toLocaleString() + ' " + t + "' } ")))
 
 
-  def generateHourBasedDetailedChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    val highChart = generateDetailedChart(reportData, config, h => round(h.getTotalHours.doubleValue()))
+  def generateHourBasedDetailedChart(chartContext: ChartContext): String = {
+    val highChart = generateDetailedChart(chartContext.reportData, _.getTotalHours.floatValue())
 
-    highChart.copy(yAxis = axis("Hours"), title = title("Hours booked on customers per day"), tooltip = tooltip("hours")).build(renderToId)
+    highChart.copy(yAxis = axis("Hours"), title = title("Hours booked on customers per day"), tooltip = tooltip("hours")).build(chartContext.renderToId)
   }
 
-  def generateTurnoverBasedDetailedChart(renderToId: String, reportData: ReportData, config: EhourConfig): String = {
-    val highChart = generateDetailedChart(reportData, config, _.getTotalTurnOver)
 
-    highChart.copy(yAxis = axis(config.getCurrencySymbol), title = title("Turnover booked on customers per day"), tooltip = tooltip(config.getCurrencySymbol)).build(renderToId)
+  def generateTurnoverBasedDetailedChart(chartContext: ChartContext): String = {
+    val highChart = generateDetailedChart(chartContext.reportData, _.getTotalTurnOver.floatValue())
+
+    highChart.copy(yAxis = axis(chartContext.currencySymbol), title = title("Turnover booked on customers per day"), tooltip = tooltip(chartContext.currencySymbol)).build(chartContext.renderToId)
   }
 
-  private def generateDetailedChart(reportData: ReportData, config: EhourConfig, f: FlatReportElement => Number): HighChart = {
-    val elements: Seq[FlatReportElement] = reportData.getReportElements.asScala.asInstanceOf[Seq[FlatReportElement]]
 
-    val reportRange: DateRange = reportData.getReportRange
+  private def generateDetailedChart(reportData: ReportData, f: FlatReportElement => Float): HighChart = {
+    val elements = reportData.getReportElements.asScala.asInstanceOf[Seq[FlatReportElement]]
+
+    val reportRange = reportData.getReportRange
 
     val (categoryDataMap, categoryNameMap) = buildCategoryMap(elements, f)
 
     val series = (for (category <- categoryDataMap.keySet) yield {
-      val values: ListBuffer[DateNumericValue] = categoryDataMap.get(category).get
+      val values = categoryDataMap.get(category).get
 
       SparseDateSeries(name = categoryNameMap.get(category), data = values, dateStart = new DateTime(reportRange.getDateStart), dateEnd = new DateTime(reportRange.getDateEnd))
     }).toList
@@ -60,19 +59,27 @@ object DetailedReportChartGenerator {
     )
   }
 
-  private def buildCategoryMap(elements: Seq[FlatReportElement], f: FlatReportElement => Number) = {
-    val categoryDataMap = MutableMap[Int, ListBuffer[DateNumericValue]]()
-    val categoryNameMap = MutableMap[Int, String]()
+  private def buildCategoryMap(elements: Seq[FlatReportElement], f: FlatReportElement => Float) = {
 
-    for (element <- elements) {
-      categoryNameMap.put(element.getCustomerId, element.getCustomerName)
+    type NameMap = Map[Int, String]
+    type DataMap = Map[Int, List[DateFloatValue]]
 
-      val data = DateNumericValue(new DateTime(element.getDayDate), f(element))
+    def add(es: Seq[FlatReportElement], nameMap: NameMap = Map(), dataMap: DataMap = Map()): (DataMap, NameMap) = {
+      if (es.isEmpty) {
+        (dataMap, nameMap)
+      } else {
+        val e = es.head
+        val id = e.getCustomerId.toInt
+        val nameMap2 = nameMap + (id -> e.getCustomerName)
 
-      val list = categoryDataMap.getOrElse(element.getCustomerId, new ListBuffer[DateNumericValue]) += data
-      categoryDataMap.put(element.getCustomerId, list)
+        val item = DateFloatValue(new DateTime(e.getDayDate), f(e))
+
+        val d = (item :: dataMap.getOrElse(id, List()).reverse).reverse
+
+        add(es.tail, nameMap2, dataMap + (id -> d))
+      }
     }
 
-    (categoryDataMap, categoryNameMap)
+    add(elements)
   }
 }

@@ -29,7 +29,7 @@ import java.util.*;
 public class Timesheet implements Serializable
 {
 	private static final long 	serialVersionUID = -547682050331580675L;
-	private SortedMap<Customer, SortedSet<TimesheetRow>>	customers;
+	private SortedMap<Customer, List<TimesheetRow>>	customers;
 	private	Date[]				dateSequence;
 	private	Date				weekStart;
 	private	Date				weekEnd;
@@ -112,9 +112,9 @@ public class Timesheet implements Serializable
 	{
 		List<TimesheetEntry> timesheetEntries = new ArrayList<TimesheetEntry>();
 		
-		Collection<SortedSet<TimesheetRow>> rows = getCustomers().values();
+		Collection<List<TimesheetRow>> rows = getCustomers().values();
 		
-		for (SortedSet<TimesheetRow> list : rows)
+		for (List<TimesheetRow> list : rows)
 		{
 			for (TimesheetRow timesheetRow : list)
 			{
@@ -142,7 +142,7 @@ public class Timesheet implements Serializable
 				
 				if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null)
 				{
-					remainingHours -= cell.getTimesheetEntry().getHours().floatValue();
+					remainingHours -= cell.getTimesheetEntry().getHours();
 				}
 			}
 		}
@@ -168,7 +168,7 @@ public class Timesheet implements Serializable
 							&& cell.getTimesheetEntry() != null 
 							&& cell.getTimesheetEntry().getHours() != null)
 					{
-						totalHours += cell.getTimesheetEntry().getHours().floatValue();
+						totalHours += cell.getTimesheetEntry().getHours();
 					}
 				}
 			}
@@ -208,7 +208,7 @@ public class Timesheet implements Serializable
 	/**
 	 * @return the customers
 	 */
-	public SortedMap<Customer, SortedSet<TimesheetRow>> getCustomers()
+	public SortedMap<Customer, List<TimesheetRow>> getCustomers()
 	{
 		return customers;
 	}
@@ -217,7 +217,7 @@ public class Timesheet implements Serializable
 	 * 
 	 * @return
 	 */
-	public Collection<Customer> getCustomerList()
+	public List<Customer> getCustomerList()
 	{
 		return new ArrayList<Customer>(getCustomers().keySet());
 	}	
@@ -228,7 +228,7 @@ public class Timesheet implements Serializable
      * @param customer
      * @return
 	 */
-	public SortedSet<TimesheetRow> getTimesheetRows(Customer customer)
+	public List<TimesheetRow> getTimesheetRows(Customer customer)
 	{
 		return customers.get(customer);
 	}
@@ -236,7 +236,7 @@ public class Timesheet implements Serializable
 	/**
 	 * @param customers the customers to set
 	 */
-	public void setCustomers(SortedMap<Customer, SortedSet<TimesheetRow>> customers)
+	public void setCustomers(SortedMap<Customer, List<TimesheetRow>> customers)
 	{
 		this.customers = customers;
 	}

@@ -39,9 +39,7 @@ class AuditDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   public void shouldFind20AuditRecords()
   {
-    request.setMax(20).setOffset(10);
-
-    List<Audit> res = auditDAO.findAudit(request);
+    List<Audit> res = auditDAO.findAudits(request, 10, 20);
 
     assertEquals(20, res.size());
     assertEquals(79, res[9].getAuditId());
@@ -59,7 +57,7 @@ class AuditDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   public void shouldFindAll()
   {
-    List<Audit> all = auditDAO.findAllAudits(request);
+    List<Audit> all = auditDAO.findAudits(request);
 
     assertEquals(40, all.size());
   }

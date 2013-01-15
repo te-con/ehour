@@ -39,10 +39,7 @@ public class TreeReportData extends ReportData
 		
 		this.rawReportData = rawReportData;
 	}
-	
-	/**
-	 * @return the rawReportData
-	 */
+
 	public ReportData getRawReportData()
 	{
 		return rawReportData;

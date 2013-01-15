@@ -17,7 +17,7 @@ class ProjectAssignmentTest extends FunSuite
   before {
     customersCache.clear()
     projectCache.clear()
-    user = UserMother.createUser()
+    user = UserObjectMother.createUser()
   }
   
   test("it should sort by Customer name") {
@@ -79,14 +79,14 @@ class ProjectAssignmentTest extends FunSuite
     val customer = customersCache(customerName)
 
     if(!projectCache.exists(_._1 == projectName)) {
-      val tmp = ProjectMother.createProject(projectCache.size+1, customer)
+      val tmp = ProjectObjectMother.createProject(projectCache.size+1, customer)
       tmp.setProjectCode(projectCode)
       tmp.setName(projectName)
       projectCache += projectName -> tmp
     }
     val project = projectCache(projectName)
 
-    ProjectAssignmentMother.createProjectAssignment(user, project)
+    ProjectAssignmentObjectMother.createProjectAssignment(user, project)
   }
 
   def sortAssignments(unsorted: List[ProjectAssignment]) = {

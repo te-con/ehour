@@ -211,7 +211,7 @@ public class UserServiceImplTest {
 
     @Test
     public void shouldCreateNewUser() throws ObjectNotUniqueException {
-        User user = UserMother.createUser();
+        User user = UserObjectMother.createUser();
 
         expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
 

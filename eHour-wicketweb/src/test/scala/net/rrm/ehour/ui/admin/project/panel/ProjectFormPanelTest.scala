@@ -5,7 +5,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.apache.wicket.model.CompoundPropertyModel
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean
-import net.rrm.ehour.domain.ProjectMother
+import net.rrm.ehour.domain.ProjectObjectMother
 import org.apache.wicket.util.tester.{DummyPanelPage, ITestPanelSource}
 import org.easymock.EasyMock._
 import net.rrm.ehour.project.service.ProjectService
@@ -51,7 +51,7 @@ class ProjectFormPanelTest extends AbstractSpringWebAppTester with FunSuite with
   }
 
   def createModel() = {
-    val project = ProjectMother.createProject(1)
+    val project = ProjectObjectMother.createProject(1)
     val backingBean = new ProjectAdminBackingBean(project)
     new CompoundPropertyModel[ProjectAdminBackingBean](backingBean)
   }

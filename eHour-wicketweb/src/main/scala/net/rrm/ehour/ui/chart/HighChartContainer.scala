@@ -11,9 +11,10 @@ class HighChartContainer(id: String, reportModel: IModel[ReportData], generateCh
   setOutputMarkupId(true)
   
   override def renderHead(response: IHeaderResponse) {
-    val config = EhourWebSession.getSession.getEhourConfig
+    val session = EhourWebSession.getSession
+    val config = session.getEhourConfig
 
-    val chart = generateChart(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config)
+    val chart = generateChart(ChartContext(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config.getCurrencySymbol, session.isWithReportRole))
     val javascript = "new Highcharts.Chart({%s});\n" format chart
 
     response.renderOnLoadJavaScript(javascript)

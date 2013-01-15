@@ -60,7 +60,7 @@ public class AuditReport extends AbstractCachableReportModel
 
 		UserCriteria userCriteria = reportCriteria.getUserCriteria();
 		
-		List<Audit> audit = auditService.getAuditAll((AuditReportRequest) userCriteria);
+		List<Audit> audit = auditService.findAudits((AuditReportRequest) userCriteria);
 		
 		return new ReportData(convert(audit), reportCriteria.getReportRange());
 	}

@@ -64,29 +64,7 @@ public class ObjectCache implements Serializable
 		return id;
 	}
 
-	/**
-	 * Check cache for stale entries
-	 */
-	public void checkCache()
-	{
-		if (cache != null)
-		{
-			long expireBefore = new Date().getTime() - INVALID_AFTER;
-			
-			for (String id : cache.keySet())
-			{
-				CacheEntry cacheEntry = cache.get(id);
-				
-				if (cacheEntry.addedTimestamp < expireBefore)
-				{
-					LOGGER.info("Removing id " + id + " from cache");
-					cache.remove(id);
-				}
-			}
-		}
-	}
-	
-	/**
+    /**
 	 * Check the cache and remove the oldest entry if MAX_ENTRIES reached
 	 */
 	private void checkCacheForAddition()

@@ -1,14 +1,17 @@
 package net.rrm.ehour.export.service.importer
 
-import javax.xml.stream.XMLEventReader
-import javax.xml.stream.XMLInputFactory
 import net.rrm.ehour.export.service.ParseSession
 import net.rrm.ehour.persistence.export.dao.ExportType
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+
+import javax.xml.stream.XMLEventReader
+import javax.xml.stream.XMLInputFactory
+
 import net.rrm.ehour.domain.*
+
 import static org.junit.Assert.*
 
 /**
@@ -62,7 +65,7 @@ class DomainObjectParserTest {
    <HOURS>0.0</HOURS>
   </TIMESHEET_ENTRY>
   </TIMESHEET_ENTRIES>
-""", ProjectAssignmentMother.createProjectAssignment(1), 1)
+""", ProjectAssignmentObjectMother.createProjectAssignment(1), 1)
 
         def type = ExportType.TIMESHEET_ENTRY;
 
@@ -141,7 +144,7 @@ class DomainObjectParserTest {
    <SUCCESS>Y</SUCCESS>
    <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>
   </AUDIT></AUDITS>
-""", UserMother.createUser(), 2)
+""", UserObjectMother.createUser(), 2)
 
         def type = ExportType.AUDIT
 
@@ -154,7 +157,7 @@ class DomainObjectParserTest {
 
     @Test
     void shouldRetrieveManyToOne() {
-        def user = UserMother.createUser()
+        def user = UserObjectMother.createUser()
 
         def resolver = createResolver(""" <AUDITS CLASS="net.rrm.ehour.domain.Audit"><AUDIT>
    <AUDIT_ID>173</AUDIT_ID>

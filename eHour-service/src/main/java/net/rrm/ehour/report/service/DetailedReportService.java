@@ -31,5 +31,5 @@ public interface DetailedReportService
 	 * @param dateRange
 	 * @return
 	 */
-	public ReportData getDetailedReportData(ReportCriteria criteria);
+	ReportData getDetailedReportData(ReportCriteria criteria);
 }

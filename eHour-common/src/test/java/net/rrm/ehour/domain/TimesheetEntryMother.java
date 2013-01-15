@@ -17,7 +17,7 @@ public class TimesheetEntryMother
 		
 		id = new TimesheetEntryId();
 		id.setEntryDate(date);
-		id.setProjectAssignment(ProjectAssignmentMother.createProjectAssignment(prjId, prjId, 1));
+		id.setProjectAssignment(ProjectAssignmentObjectMother.createProjectAssignment(prjId, prjId, 1));
 		
 		entry = new TimesheetEntry();
 		entry.setEntryId(id);

@@ -31,7 +31,7 @@ public interface DetailedReportDao
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatReportElement> getHoursPerDayForAssignment(List<? extends Serializable> assignmentId, DateRange dateRange);
+	List<FlatReportElement> getHoursPerDayForAssignment(List<? extends Serializable> assignmentId, DateRange dateRange);
 
 	/**
 	 * Get hours per day for users
@@ -39,7 +39,7 @@ public interface DetailedReportDao
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatReportElement> getHoursPerDayForUsers(List<? extends Serializable> userIds, DateRange dateRange);
+	List<FlatReportElement> getHoursPerDayForUsers(List<? extends Serializable> userIds, DateRange dateRange);
 
 	/**
 	 * Get hours per day for projects
@@ -47,7 +47,7 @@ public interface DetailedReportDao
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatReportElement> getHoursPerDayForProjects(List<? extends Serializable> projectIds, DateRange dateRange);
+	List<FlatReportElement> getHoursPerDayForProjects(List<? extends Serializable> projectIds, DateRange dateRange);
 
 	/**
 	 * Get hours per day for projects & users
@@ -55,13 +55,13 @@ public interface DetailedReportDao
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<? extends Serializable> projectIds, List<? extends Serializable> userIds, DateRange dateRange);
+	List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<? extends Serializable> projectIds, List<? extends Serializable> userIds, DateRange dateRange);
 
 	/**
 	 * Get hours per day
 	 * @param dateRange
 	 * @return
 	 */
-	public List<FlatReportElement> getHoursPerDay(DateRange dateRange);
+	List<FlatReportElement> getHoursPerDay(DateRange dateRange);
 
 }

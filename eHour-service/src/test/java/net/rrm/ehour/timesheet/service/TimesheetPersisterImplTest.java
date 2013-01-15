@@ -16,25 +16,8 @@
 
 package net.rrm.ehour.timesheet.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.TimesheetEntryId;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserMother;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
@@ -43,9 +26,15 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.fail;
 
 /**
  * @author thies
@@ -81,8 +70,8 @@ public class TimesheetPersisterImplTest
 	@SuppressWarnings("deprecation") //new dates
 	private void initData()
 	{
-		assignment = ProjectAssignmentMother.createProjectAssignment(1);
-		assignment.getProject().setProjectManager(UserMother.createUser());
+		assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+		assignment.getProject().setProjectManager(UserObjectMother.createUser());
 		assignment.setNotifyPm(true);
 
 		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX));

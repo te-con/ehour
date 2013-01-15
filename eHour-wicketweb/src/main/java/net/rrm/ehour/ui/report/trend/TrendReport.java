@@ -48,10 +48,6 @@ public abstract class TrendReport<RK extends Comparable<?>> extends AbstractCach
         super(criteria);
     }
 
-    /*
-      * 3(non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-      */
     @Override
     protected ReportData getReportData(ReportCriteria reportCriteria)
     {

@@ -21,6 +21,8 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.Model;
@@ -89,25 +91,18 @@ public class TimesheetRow implements Serializable
 	 */
 	public String getStatus()
 	{
-		if (assignmentStatus == null)
-		{
-			return null;
-		}
-		else
-		{
-			if (getAssignmentStatus().getAggregate().getAvailableHours() < 0)
-			{
-				AvailableHours hours = new AvailableHours((int)(getAssignmentStatus().getAggregate().getAvailableHours() * -1));
-			
-				Localizer localizer = Application.get().getResourceSettings().getLocalizer();
-				
-				return localizer.getString("timesheet.errorNoHours", null, new Model<AvailableHours>(hours));
-			}
-			
-			
-			return "<br />";
-		}
-	}
+        if (assignmentStatus != null && assignmentStatus.getAggregate() != null && assignmentStatus.getAggregate().getAvailableHours() != null
+                && assignmentStatus.getAggregate().getAvailableHours() < 0) {
+            AvailableHours hours = new AvailableHours((int) (getAssignmentStatus().getAggregate().getAvailableHours() * -1));
+
+            Localizer localizer = Application.get().getResourceSettings().getLocalizer();
+
+            return localizer.getString("timesheet.errorNoHours", null, new Model<AvailableHours>(hours));
+        }
+
+
+        return "<br />";
+    }
 
 	/**
 	 * 
@@ -246,6 +241,7 @@ public class TimesheetRow implements Serializable
 	{
 		return timesheet;
 	}
+
 	public void setTimesheet(Timesheet timesheet)
 	{
 		this.timesheet = timesheet;
@@ -268,5 +264,27 @@ public class TimesheetRow implements Serializable
 			return hours;
 		}
 	}
+
+    @Override
+    public boolean equals(final Object other)
+    {
+        if (!(other instanceof TimesheetRow))
+        {
+            return false;
+        }
+        TimesheetRow castOther = (TimesheetRow) other;
+        return new EqualsBuilder()
+                .append(projectAssignment, castOther.projectAssignment)
+                .isEquals();
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        return new HashCodeBuilder()
+                .append(projectAssignment)
+                .toHashCode();
+    }
 	
 }

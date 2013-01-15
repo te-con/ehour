@@ -49,10 +49,15 @@ public class DetailedReportModel extends TreeReportModel
 		super(reportCriteria, ReportConfig.DETAILED_REPORT);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#fetchReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-	 */
-	@Override
+    public DetailedReportModel(ReportCriteria reportCriteria, DetailedReportService detailedReportService)
+    {
+        this(reportCriteria);
+
+        this.detailedReportService = detailedReportService;
+    }
+
+
+    @Override
 	protected ReportData fetchReportData(ReportCriteria reportCriteria)
 	{
 		return getDetailedReportService().getDetailedReportData(reportCriteria);
@@ -81,10 +86,6 @@ public class DetailedReportModel extends TreeReportModel
 		return detailedReportService;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#getReportNodeFactory()
-	 */
 	@Override
 	public ReportNodeFactory<FlatReportElement> getReportNodeFactory()
 	{
@@ -93,18 +94,19 @@ public class DetailedReportModel extends TreeReportModel
 	        @Override
 	        public ReportNode createReportNode(FlatReportElement flatElement, int hierarchyLevel)
 	        {
-	        	// TODO make this a bit more understandable
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
 	                	return new FlatCustomerNode(flatElement);
 	                case 1:
 	                    return new FlatProjectNode(flatElement);
-	                case 2:
+                    case 2:
+                        return new FlatProjectCodeNode(flatElement);
+                    case 3:
 	                    return new FlatDateNode(flatElement);
-	                case 3:
-	                	return new FlatUserNode(flatElement);
 	                case 4:
+	                	return new FlatUserNode(flatElement);
+	                case 5:
 	                	return new FlatEntryEndNode(flatElement);
 	            }
 	

@@ -42,8 +42,14 @@ public class MockAuditImpl implements AuditService, MockAudit
 		this.audit = audit;
 		called++;
 	}
-	@NonAuditable
-	public List<Audit> getAudit(AuditReportRequest request)
+
+    @Override
+    public List<Audit> findAudits(AuditReportRequest request, Integer offset, Integer max) {
+        return null;
+    }
+
+    @NonAuditable
+	public List<Audit> findAudits(AuditReportRequest request)
 	{
 		return null;
 	}
@@ -52,11 +58,6 @@ public class MockAuditImpl implements AuditService, MockAudit
 	{
 		return null;
 	}
-	public List<Audit> getAuditAll(AuditReportRequest request)
-	{
-		return null;
-	}
-	
 	public int getCalled()
 	{
 		return called;

@@ -22,7 +22,7 @@ public class CustomerMother
 		cust.setActive(true);
 		cust.setCode(customerId + "");
 		
-		Project project = ProjectMother.createProject(1, cust);
+		Project project = ProjectObjectMother.createProject(1, cust);
 		cust.addProject(project);
 		
 		return cust;

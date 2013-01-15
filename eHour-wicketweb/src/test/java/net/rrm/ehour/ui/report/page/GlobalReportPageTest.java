@@ -16,16 +16,21 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import net.rrm.ehour.domain.*;
+import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
+import net.rrm.ehour.report.reports.ReportData;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.report.service.ReportCriteriaService;
+import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
-import net.rrm.ehour.ui.report.page.command.GlobalReportPageAggregateCommand;
-import net.rrm.ehour.ui.report.page.command.GlobalReportPageDetailedCommand;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
-import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -37,23 +42,25 @@ import org.apache.wicket.util.tester.ITestPageSource;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 @SuppressWarnings("serial")
-public class GlobalReportPageTest extends BaseTestReport {
-    private AggregateCommand aggregateCommand;
-    private DetailedCommand detailedCommand;
+public class GlobalReportPageTest extends AbstractSpringWebAppTester implements Serializable {
+    private MockReportTabBuilder mockReportTabCommand;
+    protected ReportCriteriaService reportCriteriaService;
+    protected AggregateReportService aggregateReportService;
+    protected DetailedReportService  detailedReportService;
+    protected ReportData data;
+    protected ReportCriteria reportCriteria;
 
     @Before
     public void setup() {
-        aggregateCommand = new AggregateCommand();
-        detailedCommand = new DetailedCommand();
-
+        mockReportTabCommand = new MockReportTabBuilder();
     }
 
     @Test
@@ -69,27 +76,15 @@ public class GlobalReportPageTest extends BaseTestReport {
     }
 
     @Test
-    public void shouldUpdateTabsForAggregate() {
-        aggregateCommand.returnTabs = createTabs(3);
+    public void shouldUpdateTabs() {
+        mockReportTabCommand.returnTabs = createTabs(3);
 
-        shouldUpdateTabs(ReportType.AGGREGATE);
+        updateTabs();
 
-        assertNotNull(aggregateCommand.argBean);
-        assertNull(detailedCommand.argBean);
+        assertNotNull(mockReportTabCommand.argBean);
     }
 
-    @Test
-    public void shouldUpdateTabsForDetailed() {
-        detailedCommand.returnTabs = createTabs(1);
-
-        shouldUpdateTabs(ReportType.DETAILED);
-
-        assertNull(aggregateCommand.argBean);
-        assertNotNull(detailedCommand.argBean);
-    }
-
-
-    private void shouldUpdateTabs(ReportType reportType) {
+    private void updateTabs() {
         expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class),
                 eq(ReportCriteriaUpdateType.UPDATE_ALL)))
                 .andReturn(reportCriteria);
@@ -100,9 +95,6 @@ public class GlobalReportPageTest extends BaseTestReport {
 
         Component component = tester.getComponentFromLastRenderedPage("");
         GlobalReportPage page = (GlobalReportPage) component;
-
-        ReportCriteriaBackingBean bean = (ReportCriteriaBackingBean) page.getDefaultModelObject();
-        bean.setReportType(reportType);
 
         AjaxRequestTarget target = createMock(AjaxRequestTarget.class);
         AjaxEvent event = new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED, target);
@@ -139,7 +131,7 @@ public class GlobalReportPageTest extends BaseTestReport {
         getTester().startPage(new ITestPageSource() {
 
             public Page getTestPage() {
-                return new GlobalReportPage(aggregateCommand, detailedCommand);
+                return new GlobalReportPage(mockReportTabCommand);
             }
         });
 
@@ -147,22 +139,60 @@ public class GlobalReportPageTest extends BaseTestReport {
         getTester().assertNoErrorMessage();
     }
 
-    private class AggregateCommand implements GlobalReportPageAggregateCommand {
-        ReportCriteriaBackingBean argBean;
-        List<ITab> returnTabs;
+    @Before
+    public final void before() throws Exception
+    {
+        reportCriteriaService = createMock(ReportCriteriaService.class);
+        getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 
-        public List<ITab> createAggregateReportTabs(ReportCriteriaBackingBean backingBean) {
-            this.argBean = backingBean;
-            return returnTabs;
-        }
+        aggregateReportService = createMock(AggregateReportService.class);
+        getMockContext().putBean("aggregatedReportService", aggregateReportService);
 
+        detailedReportService = createMock(DetailedReportService.class);
+        getMockContext().putBean("detailedReportService", detailedReportService);
+
+        AvailableCriteria availCriteria = new AvailableCriteria();
+
+        List<Customer> customers = new ArrayList<Customer>();
+        customers.add(new Customer(1));
+        availCriteria.setCustomers(customers);
+
+        List<Project> projects = new ArrayList<Project>();
+        projects.add(new Project(2));
+        availCriteria.setProjects(projects);
+
+        List<UserDepartment> depts = new ArrayList<UserDepartment>();
+        depts.add(new UserDepartment(2));
+        availCriteria.setUserDepartments(depts);
+
+        List<User> usrs = new ArrayList<User>();
+        usrs.add(new User(2));
+        availCriteria.setUsers(usrs);
+
+        reportCriteria = new ReportCriteria(availCriteria);
+
+        List<AssignmentAggregateReportElement> agg = new ArrayList<AssignmentAggregateReportElement>();
+        AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
+        ProjectAssignment ass = new ProjectAssignment(1);
+        User user = new User(1);
+        ass.setUser(user);
+
+        Customer cust = new Customer(1);
+        Project prj = new Project(1);
+        prj.setCustomer(cust);
+        ass.setProject(prj);
+        pag.setProjectAssignment(ass);
+
+        agg.add(pag);
+
+        data = new ReportData(agg, reportCriteria.getReportRange());
     }
 
-    private class DetailedCommand implements GlobalReportPageDetailedCommand {
+    private class MockReportTabBuilder implements ReportTabBuilder {
         ReportCriteriaBackingBean argBean;
         List<ITab> returnTabs;
 
-        public List<ITab> createDetailedReportTabs(ReportCriteriaBackingBean backingBean) {
+        public List<ITab> createReportTabs(ReportCriteriaBackingBean backingBean) {
             this.argBean = backingBean;
             return returnTabs;
         }

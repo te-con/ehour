@@ -17,6 +17,9 @@
 package net.rrm.ehour.ui.common.border;
 
 import net.rrm.ehour.ui.common.util.HtmlUtil;
+import net.rrm.ehour.ui.common.util.WebGeo;
+
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -35,6 +38,7 @@ public class GreyRoundedBorder extends Border
 	
 	/**
 	 * Default border. No title, links and default width 
+	 * @param id
 	 */
 	public GreyRoundedBorder(String id)
 	{
@@ -44,6 +48,9 @@ public class GreyRoundedBorder extends Border
 
 	/**
 	 * No title but with print & excel link
+	 * @param id
+	 * @param printLink
+	 * @param excelLink
 	 */
 	public GreyRoundedBorder(String id, Link<Void> printLink, Link<Void> excelLink)
 	{
@@ -52,6 +59,8 @@ public class GreyRoundedBorder extends Border
 	
 	/**
 	 * Title, without the links 
+	 * @param id
+	 * @param title
 	 */
 	public GreyRoundedBorder(String id, String title)
 	{
@@ -60,6 +69,8 @@ public class GreyRoundedBorder extends Border
 	
 	/**
 	 * Title, without the links
+	 * @param id
+	 * @param title
 	 */
 	public GreyRoundedBorder(String id, IModel<String> title)
 	{
@@ -68,6 +79,10 @@ public class GreyRoundedBorder extends Border
 	
 	/**
 	 * Title and print & excel links
+	 * @param id
+	 * @param title
+	 * @param printLink
+	 * @param excelLink
 	 */
 	public GreyRoundedBorder(String id, IModel<String> title, Link<Void> printLink, Link<Void> excelLink)
 	{

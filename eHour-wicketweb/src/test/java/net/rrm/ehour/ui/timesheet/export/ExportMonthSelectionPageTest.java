@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
-import net.rrm.ehour.domain.ProjectMother;
+import net.rrm.ehour.domain.ProjectObjectMother;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
@@ -115,7 +115,7 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 	private ReportCriteria createReportCriteria()
 	{
 		AvailableCriteria availableCriteria = new AvailableCriteria();
-		availableCriteria.setProjects(ProjectMother.createProjects(5));
+		availableCriteria.setProjects(ProjectObjectMother.createProjects(5));
 		
 		return new ReportCriteria(availableCriteria);
 	}

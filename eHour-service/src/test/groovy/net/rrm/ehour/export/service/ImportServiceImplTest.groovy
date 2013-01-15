@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
 import static org.mockito.Mockito.when
+import net.rrm.ehour.config.EhourConfigStub
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -74,9 +75,9 @@ class ImportServiceImplTest
   @Test
   void shouldImport()
   {
-    def configuration = new Configuration("version", "0.8.3")
+    def version = new Configuration("version", "0.8.3")
 
-    when(configurationDao.findById("version")).thenReturn(configuration)
+    when(configurationDao.findById("version")).thenReturn(version)
 
     def file = new File("src/test/resources/import/import_data_full.xml");
     def tempPath = FileUtils.getTempDirectoryPath()
@@ -90,6 +91,7 @@ class ImportServiceImplTest
     importService.domainObjectParserDao = new DomainObjectParserDaoValidatorImpl()
     importService.userRoleParserDao = userVal
     importService.configurationParserDao = configurationParserDao
+    importService.ehourConfig = new EhourConfigStub()
 
     def status = importService.importDatabase(session)
 
@@ -98,4 +100,35 @@ class ImportServiceImplTest
     assertFalse destFile.exists()
     assert userVal.findUserCount == 6
   }
+
+    @Test
+    void shouldNotImportInDemoMode()
+    {
+        def version = new Configuration("version", "0.8.3")
+
+        when(configurationDao.findById("version")).thenReturn(version)
+
+        def file = new File("src/test/resources/import/import_data_full.xml");
+        def tempPath = FileUtils.getTempDirectoryPath()
+        def destFile = new File(tempPath + "/tmp.xml");
+        FileUtils.copyFile(file, destFile)
+
+        ParseSession session = new ParseSession(filename: destFile.getAbsolutePath())
+
+        def userVal = new UserRoleParserDaoValidatorImpl()
+
+        importService.domainObjectParserDao = new DomainObjectParserDaoValidatorImpl()
+        importService.userRoleParserDao = userVal
+        importService.configurationParserDao = configurationParserDao
+        def config = new EhourConfigStub()
+        config.setDemoMode(true)
+        importService.ehourConfig = config
+
+        def status = importService.importDatabase(session)
+
+        assertFalse status.importable
+
+        assertFalse destFile.exists()
+        assert userVal.findUserCount == 0
+    }
 }

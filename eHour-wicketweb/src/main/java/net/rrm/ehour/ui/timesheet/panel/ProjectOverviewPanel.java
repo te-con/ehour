@@ -155,12 +155,15 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 
                 item.add(createFoldLink(projectStatus, item.getId()));
 
+                WebMarkupContainer projectNameContainer = new WebMarkupContainer("projectNameContainer");
+                item.add(projectNameContainer);
+                setProjectLabelWidth(projectNameContainer);
+
                 Project project = projectStatus.getProjectAssignment().getProject();
                 Label projectLabel = new Label("projectName", project.getName());
                 projectLabel.setMarkupId(String.format("prjN%d", project.getProjectId()));
                 projectLabel.setOutputMarkupId(true);
-                setProjectLabelWidth(projectLabel);
-                item.add(projectLabel);
+                projectNameContainer.add(projectLabel);
 
                 Label customerLabel = new Label("customerName", project.getCustomer().getName());
                 setCustomerLabelWidth(customerLabel);

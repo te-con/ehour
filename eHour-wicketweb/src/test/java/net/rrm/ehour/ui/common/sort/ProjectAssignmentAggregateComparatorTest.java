@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.ui.common.sort;
 
-import static org.junit.Assert.assertTrue;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
+import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class ProjectAssignmentAggregateComparatorTest
 {
@@ -34,8 +34,8 @@ public class ProjectAssignmentAggregateComparatorTest
 		a1 = new AssignmentAggregateReportElement();
 		a2 = new AssignmentAggregateReportElement();
 		
-		a1.setProjectAssignment(ProjectAssignmentMother.createProjectAssignment(1));
-		a2.setProjectAssignment(ProjectAssignmentMother.createProjectAssignment(2));
+		a1.setProjectAssignment(ProjectAssignmentObjectMother.createProjectAssignment(1));
+		a2.setProjectAssignment(ProjectAssignmentObjectMother.createProjectAssignment(2));
 	}
 
 	/**

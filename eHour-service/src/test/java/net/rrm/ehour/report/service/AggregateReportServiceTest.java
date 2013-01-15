@@ -16,25 +16,9 @@
 
 package net.rrm.ehour.report.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import junit.framework.TestCase;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.MailLogAssignment;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
@@ -45,6 +29,12 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  *  
@@ -237,7 +227,7 @@ private	ProjectAssignmentService	assignmentService;
 		
 		List<ProjectAssignment> assignments = new ArrayList<ProjectAssignment>();
 		
-		assignments.add(ProjectAssignmentMother.createProjectAssignment(2));
+		assignments.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
 		
 		expect(assignmentService.getProjectAssignments(prj, dr))
 			.andReturn(assignments);

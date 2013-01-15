@@ -18,8 +18,6 @@ public class ImportDaoHibernateImpl extends AbstractAnnotationDaoHibernateImpl i
     @Override
     public <T extends DomainObject<?, ?>> Serializable persist(T object)
     {
-//        getHibernateTemplate().evict(object);
-
         getHibernateTemplate().persist(object);
 
         return object.getPK();
@@ -28,7 +26,7 @@ public class ImportDaoHibernateImpl extends AbstractAnnotationDaoHibernateImpl i
     @Override
     public <T, PK extends Serializable> T find(PK primaryKey, Class<T> type)
     {
-        return (T)getHibernateTemplate().get(type, primaryKey);
+        return getHibernateTemplate().get(type, primaryKey);
     }
 
     public void flush() {

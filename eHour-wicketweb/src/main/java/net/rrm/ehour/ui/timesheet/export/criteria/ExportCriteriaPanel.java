@@ -98,22 +98,26 @@ public class ExportCriteriaPanel extends Panel
 	private CheckGroup<Project> createAssignmentCheckboxes(String id)
 	{
 		CheckGroup<Project> projectGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(getDefaultModel(), "userCriteria.projects"));
-		
+
 		ReportCriteria criteria = (ReportCriteria)getDefaultModelObject();
 		
 		List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
-		
-		ListView<Project> billableProjects = getAssignmentCheckboxesForProjects("billableProjects", ProjectUtil.getBillableProjects(allProjects));
-		projectGroup.add(billableProjects);
 
-		ListView<Project> unbillableProjects = getAssignmentCheckboxesForProjects("unbillableProjects", ProjectUtil.getUnbillableProjects(allProjects));
-		projectGroup.add(unbillableProjects);
+        List<Project> billableProjects = ProjectUtil.getBillableProjects(allProjects);
+        ListView<Project> billableProjectsView = getAssignmentCheckboxesView("billableProjects", billableProjects);
+        billableProjectsView.setVisible(billableProjects.size() > 0);
+		projectGroup.add(billableProjectsView);
+
+        List<Project> unbillableProjects = ProjectUtil.getUnbillableProjects(allProjects);
+        ListView<Project> unbillableProjectsView = getAssignmentCheckboxesView("unbillableProjects", unbillableProjects);
+        unbillableProjectsView.setVisible(unbillableProjects.size() > 0);
+        projectGroup.add(unbillableProjectsView);
 
 		return projectGroup;
 	}
 
 	@SuppressWarnings("serial")
-	private ListView<Project> getAssignmentCheckboxesForProjects(String id, List<Project> projects)
+	private ListView<Project> getAssignmentCheckboxesView(String id, List<Project> projects)
 	{
 		return new ListView<Project>(id, projects)
 		{
@@ -121,15 +125,15 @@ public class ExportCriteriaPanel extends Panel
 			protected void populateItem(ListItem<Project> item)
 			{
 				item.add(new Check<Project>("check", item.getModel()));
-				item.add(new Label("project", new PropertyModel<String>(item.getModel(), "fullName")));
+				item.add(new Label("project", new PropertyModel<String>(item.getModel(), "fullNameWithCustomer")));
 			}
 		};
 	}
 
 	/**
-	 * 
+	 *
 	 * Created on Feb 18, 2009, 5:39:23 PM
-	 * @author Thies Edeling (thies@te-con.nl) 
+	 * @author Thies Edeling (thies@te-con.nl)
 	 *
 	 */
 	private static class SelectionForm extends Form<ReportCriteria>

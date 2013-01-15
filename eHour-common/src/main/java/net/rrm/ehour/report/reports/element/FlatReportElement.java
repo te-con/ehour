@@ -40,6 +40,7 @@ public class FlatReportElement implements ReportElement
 	private	String	userFirstName;
 	private	Integer	projectId;
 	private	String	projectName;
+    private String projectCode;
 	private	Integer	assignmentId;
 	private	String	assignmentDesc;
 	private Date	dayDate;
@@ -123,7 +124,7 @@ public class FlatReportElement implements ReportElement
 	 */
 	public Number getTotalTurnOver()
 	{
-		return totalTurnOver;
+		return totalTurnOver == null ? 0 : totalTurnOver;
 	}
 	/**
 	 * @param totalTurnOver the totalTurnOver to set
@@ -276,10 +277,18 @@ public class FlatReportElement implements ReportElement
 	{
 		this.dayDate = dayDate;
 	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    /* (non-Javadoc)
+      * @see java.lang.Object#toString()
+      */
 	@Override
 	public String toString()
 	{

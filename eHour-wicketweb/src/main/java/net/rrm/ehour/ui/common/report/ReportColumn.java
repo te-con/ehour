@@ -16,6 +16,9 @@
 
 package net.rrm.ehour.ui.common.report;
 
+import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.util.convert.IConverter;
 
 import java.io.Serializable;
@@ -32,7 +35,7 @@ import java.util.List;
  */
 
 public class ReportColumn implements Serializable {
-    public enum DisplayType {VISIBLE, HIDE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN}
+    public enum DisplayType {VISIBLE, HIDE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN, IS_RATE_RELATED}
 
     private static final long serialVersionUID = -6736366461333244457L;
 
@@ -58,7 +61,23 @@ public class ReportColumn implements Serializable {
     }
 
     public boolean isVisible() {
-        return displayTypes.contains(DisplayType.VISIBLE);
+        if (!displayTypes.contains(DisplayType.VISIBLE)) {
+            return false;
+        }
+
+        boolean isVisibleAndAuthorized = true;
+
+        if (displayTypes.contains(DisplayType.IS_RATE_RELATED)) {
+            EhourWebSession session = EhourWebSession.getSession();
+
+            boolean showTurnover = session.getEhourConfig().isShowTurnover();
+
+            if (!showTurnover) {
+                isVisibleAndAuthorized = session.isWithReportRole();
+            }
+        }
+
+        return isVisibleAndAuthorized;
     }
 
     public String getColumnHeaderResourceKey() {
@@ -77,7 +96,4 @@ public class ReportColumn implements Serializable {
         return displayTypes.contains(DisplayType.ALLOW_DUPLICATES);
     }
 
-    public boolean isChartSeriesColumn() {
-        return displayTypes.contains(DisplayType.CHART_SERIES_COLUMN);
-    }
 }

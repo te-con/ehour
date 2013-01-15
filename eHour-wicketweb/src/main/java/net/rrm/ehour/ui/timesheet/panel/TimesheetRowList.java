@@ -51,9 +51,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.validation.validator.MinimumValidator;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.SortedSet;
+import java.util.List;
 
 /**
  * Representation of a timesheet row
@@ -69,9 +68,9 @@ public class TimesheetRowList extends ListView<TimesheetRow>
 
     private	static final Logger LOGGER = Logger.getLogger(TimesheetRowList.class);
 
-	public TimesheetRowList(String id, final SortedSet<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
+	public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
 	{
-		super(id, new ArrayList<TimesheetRow>(model));
+		super(id, model);
 		setReuseItems(true);
 		this.grandTotals = grandTotals;
 		this.form = form;

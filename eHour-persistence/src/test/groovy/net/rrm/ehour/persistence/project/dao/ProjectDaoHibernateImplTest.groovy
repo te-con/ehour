@@ -3,8 +3,9 @@ package net.rrm.ehour.persistence.project.dao
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import static junit.framework.Assert.*
 import net.rrm.ehour.domain.*
+
+import static junit.framework.Assert.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -52,7 +53,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
     customer.customerId = 10
     customer.projects.clear()
 
-    def project = ProjectMother.createProject(null, customer)
+    def project = ProjectObjectMother.createProject(null, customer)
     
     def prj = projectDAO.persist(project)
 

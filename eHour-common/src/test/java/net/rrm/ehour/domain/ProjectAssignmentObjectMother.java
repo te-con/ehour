@@ -8,7 +8,7 @@ import net.rrm.ehour.util.EhourConstants;
  * @author thies (www.te-con.nl)
  *
  */
-public class ProjectAssignmentMother
+public class ProjectAssignmentObjectMother
 {
 	public static ProjectAssignment createProjectAssignment(User user, Project project)
 	{
@@ -66,13 +66,13 @@ public class ProjectAssignmentMother
 		
 		cust = CustomerMother.createCustomer(customerId);
 		
-		prj = ProjectMother.createProject(projectId, cust);
+		prj = ProjectObjectMother.createProject(projectId, cust);
 		
 		prjAsg = new ProjectAssignment();
 		prjAsg.setProject(prj);
 		prjAsg.setAssignmentId(assignmentId);
 		
-		user = UserMother.createUser();
+		user = UserObjectMother.createUser();
 		user.setUserId(userId);
 		
 		prjAsg.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));

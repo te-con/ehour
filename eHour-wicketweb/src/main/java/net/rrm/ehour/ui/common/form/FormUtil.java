@@ -50,24 +50,7 @@ public class FormUtil
 
 		Collection<IFormValidator> validators = form.getFormValidators();
 
-		for (IFormValidator iFormValidator : validators)
-		{
-			if (iFormValidator instanceof IdentifiableFormValidator)
-			{
-				IdentifiableFormValidator identifiable = (IdentifiableFormValidator)iFormValidator;
-
-				if (identifiable.getIdentity().equalsIgnoreCase(id))
-				{
-					form.remove(iFormValidator);
-					break;
-				}
-			}
-		}
-	}
-
-
-
-	public static <T> void setSubmitActions(final FormConfig formConfig)
+    public static <T> void setSubmitActions(final FormConfig formConfig)
 	{
         final boolean inDemoMode = formConfig.getConfig().isInDemoMode();
 

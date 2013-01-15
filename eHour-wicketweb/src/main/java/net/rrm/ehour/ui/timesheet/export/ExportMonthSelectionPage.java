@@ -109,10 +109,6 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
         return true;
     }
 
-    /*
-    * (non-Javadoc)
-    * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
-    */
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == CalendarAjaxEventType.MONTH_CHANGE)

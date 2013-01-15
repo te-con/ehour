@@ -17,13 +17,15 @@
 package net.rrm.ehour.ui.report.panel.criteria;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.domain.*;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
-import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -34,11 +36,8 @@ import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
-import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.report.panel.criteria.quick.*;
-import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
-import net.rrm.ehour.ui.report.panel.criteria.type.ReportTypeRenderer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -46,7 +45,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -103,25 +101,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         addCustomerSelection(model.getObject(), blueBorder);
         addProjectSelection(blueBorder);
 
-        form.add(AuthUtil.hasRole(UserRole.ROLE_REPORT) ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
+        form.add(getEhourWebSession().isWithReportRole() ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
 
         addSubmitButtons(form);
-
-        addReportTypeSelection(form);
-    }
-
-    private void addReportTypeSelection(WebMarkupContainer parent) {
-        List<ReportType> reportTypes = new ArrayList<ReportType>();
-
-        reportTypes.add(ReportType.AGGREGATE);
-        reportTypes.add(ReportType.DETAILED);
-
-        DropDownChoice<ReportType> reportTypeSelection = new DropDownChoice<ReportType>("reportType", reportTypes, new ReportTypeRenderer());
-        reportTypeSelection.setRequired(true);
-        reportTypeSelection.setLabel(new ResourceModel("report.type.name"));
-        parent.add(new AjaxFormComponentFeedbackIndicator("reportTypeSelectionError", reportTypeSelection));
-        parent.add(reportTypeSelection);
-
     }
 
     private void addCustomerSelection(ReportCriteriaBackingBean bean, WebMarkupContainer parent) {

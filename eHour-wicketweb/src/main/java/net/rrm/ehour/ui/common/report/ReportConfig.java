@@ -20,8 +20,7 @@ import net.rrm.ehour.ui.common.converter.CurrencyConverter;
 import net.rrm.ehour.ui.common.converter.DateConverter;
 
 import static net.rrm.ehour.ui.common.converter.DateConverter.DateStyle.FULL_SHORT;
-import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.ALLOW_DUPLICATES;
-import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.VISIBLE;
+import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.*;
 
 /**
  * All report definitions
@@ -33,35 +32,36 @@ public enum ReportConfig
 	// take note, the columnResourceKey is used for serie creation with trend charts (pardon my English, it's late.. or early in the morning)
 	DETAILED_REPORT (new ReportColumn("userReport.report.customer"),
 						new ReportColumn("userReport.report.project"),
+                        new ReportColumn("userReport.report.projectCode"),
 						new ReportColumn("userReport.report.date", ColumnType.DATE, new DateConverter(FULL_SHORT, ""), VISIBLE),
 						new ReportColumn("userReport.report.user"),
 						new ReportColumn("userReport.report.comment", ColumnType.COMMENT, VISIBLE, ALLOW_DUPLICATES),
 						new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),  
-						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES)),
+						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 	
 	AGGREGATE_CUSTOMER (new ReportColumn("userReport.report.customer"),
 						new ReportColumn("userReport.report.project"),
 						new ReportColumn("userReport.report.projectCode"),
 						new ReportColumn("userReport.report.user"),
-						new ReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES),
+						new ReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED),
 						new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
-						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES)),
+						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 														
 	AGGREGATE_PROJECT (new ReportColumn("userReport.report.project"),
 						new ReportColumn("userReport.report.projectCode"),
 						new ReportColumn("userReport.report.customer"),
 						new ReportColumn("userReport.report.user"),
-						new ReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES),
+						new ReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED),
 						new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
-						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES)),
+						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 
-	AGGREGATE_EMPLOYEE (new ReportColumn("userReport.report.user"),
+	AGGREGATE_USER(new ReportColumn("userReport.report.user"),
 						new ReportColumn("userReport.report.customer"),
 						new ReportColumn("userReport.report.project"),
 						new ReportColumn("userReport.report.projectCode"),
-						new ReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES),
+						new ReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED),
 						new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
-						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES)),
+						new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 
 	AUDIT_REPORT (new ReportColumn("audit.report.column.date", ColumnType.DATE, new DateConverter(FULL_SHORT, ""), VISIBLE),
 					new ReportColumn("audit.report.column.lastName"),

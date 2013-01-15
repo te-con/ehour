@@ -21,6 +21,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
@@ -28,10 +29,10 @@ import net.rrm.ehour.ui.common.cache.ObjectCache;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.log4j.Logger;
+import org.apache.wicket.Request;
 import org.apache.wicket.Session;
-import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
-import org.apache.wicket.authroles.authorization.strategies.role.Roles;
-import org.apache.wicket.request.Request;
+import org.apache.wicket.authentication.AuthenticatedWebSession;
+import org.apache.wicket.authorization.strategies.role.Roles;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -50,8 +51,7 @@ import java.util.Date;
  * Ehour Web session
  */
 
-public class EhourWebSession extends AuthenticatedWebSession
-{
+public class EhourWebSession extends AuthenticatedWebSession {
     @SpringBean
     private EhourConfig ehourConfig;
 
@@ -66,62 +66,44 @@ public class EhourWebSession extends AuthenticatedWebSession
 
     private static final long serialVersionUID = 93189812483240412L;
 
-    public EhourWebSession(Request req)
-    {
+    public EhourWebSession(Request req) {
         super(req);
 
         reloadConfig();
     }
 
-    /**
-     *
-     */
-    public void reloadConfig()
-    {
+    public final void reloadConfig() {
         WebUtils.springInjection(this);
 
-        if (!ehourConfig.isDontForceLanguage())
-        {
+        if (!ehourConfig.isDontForceLanguage()) {
             LOGGER.debug("Setting locale to " + ehourConfig.getLocale().getDisplayLanguage());
 
             setLocale(ehourConfig.getLocale());
-        } else
-        {
+        } else {
             LOGGER.debug("Not forcing locale, using browser's locale");
         }
     }
 
-    /**
-     * @return the hideInactiveSelections
-     */
-    public Boolean getHideInactiveSelections()
-    {
+    public Boolean getHideInactiveSelections() {
         return hideInactiveSelections;
     }
 
-    /**
-     * @param hideInactiveSelections the hideInactiveSelections to set
-     */
-    public void setHideInactiveSelections(Boolean hideInactiveSelections)
-    {
+    public void setHideInactiveSelections(Boolean hideInactiveSelections) {
         this.hideInactiveSelections = hideInactiveSelections;
     }
 
     /**
      * Get ehour config
+     *
+     * @return
      */
     public EhourConfig getEhourConfig()
     {
         return ehourConfig;
     }
 
-    /**
-     * @return the navCalendar
-     */
-    public Calendar getNavCalendar()
-    {
-        if (navCalendar == null)
-        {
+    public Calendar getNavCalendar() {
+        if (navCalendar == null) {
             navCalendar = DateUtil.getCalendar(ehourConfig);
         }
 
@@ -131,24 +113,22 @@ public class EhourWebSession extends AuthenticatedWebSession
     /**
      * @param navCalendar the navCalendar to set
      */
-    public void setNavCalendar(Calendar navCalendar)
-    {
+    public void setNavCalendar(Calendar navCalendar) {
         this.navCalendar = navCalendar;
     }
 
     /**
      * Get logged in user id
+     *
+     * @return
      */
-    public AuthUser getUser()
-    {
+    public AuthUser getUser() {
         AuthUser user = null;
 
-        if (isSignedIn())
-        {
+        if (isSignedIn()) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (authentication != null)
-            {
+            if (authentication != null) {
                 user = (AuthUser) authentication.getPrincipal();
             }
         }
@@ -159,20 +139,17 @@ public class EhourWebSession extends AuthenticatedWebSession
      * Authenticate based on username/pass
      */
     @Override
-    public boolean authenticate(String username, String password)
-    {
+    public boolean authenticate(String username, String password) {
         String u = username == null ? "" : username;
         String p = password == null ? "" : password;
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
 
         // Attempt authentication.
-        try
-        {
+        try {
             AuthenticationManager authenticationManager = ((EhourWebApplication) getApplication()).getAuthenticationManager();
 
-            if (authenticationManager == null)
-            {
+            if (authenticationManager == null) {
                 throw new AuthenticationServiceException("no authentication manager defined");
             }
 
@@ -191,20 +168,17 @@ public class EhourWebSession extends AuthenticatedWebSession
             LOGGER.info("Login by user '" + username + "'.");
             return true;
 
-        } catch (BadCredentialsException e)
-        {
+        } catch (BadCredentialsException e) {
             LOGGER.info("Failed login by user '" + username + "'.");
             setAuthentication(null);
             return false;
 
-        } catch (AuthenticationException e)
-        {
+        } catch (AuthenticationException e) {
             LOGGER.info("Could not authenticate a user", e);
             setAuthentication(null);
             throw e;
 
-        } catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             LOGGER.info("Unexpected exception while authenticating a user", e);
             setAuthentication(null);
             throw e;
@@ -216,47 +190,48 @@ public class EhourWebSession extends AuthenticatedWebSession
       * @see org.apache.wicket.authentication.AuthenticatedWebSession#getRoles()
       */
     @Override
-    public Roles getRoles()
-    {
-        if (isSignedIn())
-        {
+    public Roles getRoles() {
+        if (isSignedIn()) {
             Roles roles = new Roles();
             // Retrieve the granted authorities from the current authentication. These correspond one on
             // one with user roles.
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-            if (auth != null)
-            {
+            if (auth != null) {
                 Collection<GrantedAuthority> authorities = auth.getAuthorities();
 
-                for (GrantedAuthority grantedAuthority : authorities)
-                {
+                for (GrantedAuthority grantedAuthority : authorities) {
                     roles.add(grantedAuthority.getAuthority());
                 }
 
-                if (roles.size() == 0)
-                {
+                if (roles.size() == 0) {
                     LOGGER.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
                 }
 
                 return roles;
-            } else
-            {
+            } else {
                 LOGGER.warn("User is signed in but authentication is not set!");
             }
         }
         return null;
     }
 
+    public boolean isWithReportRole() {
+        return getRoles().hasRole(UserRole.ROLE_REPORT);
+    }
+
     /**
      * Invalidate authenticated user
      */
-    public void signOut()
-    {
+    public void signOut() {
         AuthUser user = getUser();
 
+        getSession().clear();
+
         setAuthentication(null);
+        setUserCriteria(null);
+
         super.signOut();
 
         auditService.doAudit(new Audit()
@@ -267,40 +242,35 @@ public class EhourWebSession extends AuthenticatedWebSession
                 .setSuccess(Boolean.TRUE));
     }
 
-    private void setAuthentication(Authentication authentication)
-    {
+    private void setAuthentication(Authentication authentication) {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     /**
      * @return the current session
      */
-    public static EhourWebSession getSession()
-    {
+    public static EhourWebSession getSession() {
         return (EhourWebSession) Session.get();
     }
 
     /**
      * @return the userCriteria
      */
-    public UserCriteria getUserCriteria()
-    {
+    public UserCriteria getUserCriteria() {
         return userCriteria;
     }
 
     /**
      * @param userCriteria the userCriteria to set
      */
-    public void setUserCriteria(UserCriteria userCriteria)
-    {
+    public void setUserCriteria(UserCriteria userCriteria) {
         this.userCriteria = userCriteria;
     }
 
     /**
      * @return the reportCache
      */
-    public ObjectCache getObjectCache()
-    {
+    public ObjectCache getObjectCache() {
         return reportCache;
     }
 }

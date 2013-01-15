@@ -1,6 +1,6 @@
 package net.rrm.ehour.report.reports.element;
 
-import net.rrm.ehour.domain.ProjectAssignmentMother;
+import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 
 /**
  * Created on Feb 7, 2010 2:58:49 PM
@@ -14,7 +14,7 @@ public class AssignmentAggregateReportElementMother
 	{
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		pag.setHours(baseId);
-		pag.setProjectAssignment(ProjectAssignmentMother.createProjectAssignment(baseId, customerId, userId));
+		pag.setProjectAssignment(ProjectAssignmentObjectMother.createProjectAssignment(baseId, customerId, userId));
 		return pag;
 	}
 }

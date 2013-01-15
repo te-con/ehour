@@ -76,7 +76,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester
 		overview.setTimesheetEntries(entries);
 
 		List<ProjectAssignment> ass = new ArrayList<ProjectAssignment>();
-		ass.add(ProjectAssignmentMother.createProjectAssignment(1));
+		ass.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
 		overview.setProjectAssignments(ass);
 		
 		expect(timesheetService.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))

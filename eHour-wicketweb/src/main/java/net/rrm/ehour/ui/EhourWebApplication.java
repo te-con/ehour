@@ -47,6 +47,8 @@ import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import org.apache.log4j.Logger;
 import org.apache.wicket.*;
+import org.apache.wicket.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
@@ -60,6 +62,8 @@ import org.apache.wicket.resource.IPropertiesFactory;
 import org.apache.wicket.resource.IPropertiesLoader;
 import org.apache.wicket.resource.PropertiesFactory;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.convert.ConverterLocator;
+import org.apache.wicket.util.lang.PackageName;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -127,7 +131,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     private void registerSharedResources()
     {
         mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
-        mountExcelReport(new EmployeeReportExcel(), EmployeeReportExcel.getId());
+        mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
         mountExcelReport(new ProjectReportExcel(), ProjectReportExcel.getId());
         mountExcelReport(new DetailedReportExcel(), DetailedReportExcel.getId());
         mountExcelReport(new AuditReportExcel(), AuditReportExcel.getId());
@@ -261,6 +265,16 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     public void setAuthenticationManager(AuthenticationManager authenticationManager)
     {
         this.authenticationManager = authenticationManager;
+    }
+
+    /*
+      * (non-Javadoc)
+      * @see org.apache.wicket.protocol.http.WebApplication#newRequestCycleProcessor()
+      */
+    @Override
+    protected IRequestCycleProcessor newRequestCycleProcessor()
+    {
+        return new UrlCompressingWebRequestProcessor();
     }
 
     public static EhourWebApplication get()

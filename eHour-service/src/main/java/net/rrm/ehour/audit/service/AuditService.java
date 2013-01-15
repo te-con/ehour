@@ -31,26 +31,26 @@ public interface AuditService
 	 * Persist audit
 	 * @param audit
 	 */
-	public void doAudit(Audit audit);
+	void doAudit(Audit audit);
 
 	/**
 	 * Get audit report
 	 * @param request
 	 * @return
 	 */
-	public List<Audit> getAudit(AuditReportRequest request);
+	List<Audit> findAudits(AuditReportRequest request, Integer offset, Integer max);
 	
 	/**
 	 * Get audit report ignoring any offset or max
 	 * @param request
 	 * @return
 	 */
-	public List<Audit> getAuditAll(AuditReportRequest request);
+	List<Audit> findAudits(AuditReportRequest request);
 	
 	/**
 	 * get audit count
 	 * @param request
 	 * @return
 	 */
-	public Number getAuditCount(AuditReportRequest request);
+	Number getAuditCount(AuditReportRequest request);
 }

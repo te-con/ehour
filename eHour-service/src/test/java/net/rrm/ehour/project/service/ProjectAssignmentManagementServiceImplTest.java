@@ -37,7 +37,7 @@ public class ProjectAssignmentManagementServiceImplTest {
 
     @Test
     public void shouldAssignUserToProject() throws ProjectAlreadyAssignedException {
-        ProjectAssignment projectAssignment = ProjectAssignmentMother.createProjectAssignment(1);
+        ProjectAssignment projectAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         service.assignUserToProject(projectAssignment);
 
         verify(projectAssignmentDao).persist(projectAssignment);
@@ -45,11 +45,11 @@ public class ProjectAssignmentManagementServiceImplTest {
 
     @Test
     public void shouldAssignUserToDefaultProjects() {
-        Project project = ProjectMother.createProject(1);
+        Project project = ProjectObjectMother.createProject(1);
 
         when(projectDao.findDefaultProjects()).thenReturn(Arrays.asList(project));
 
-        User user = UserMother.createUser();
+        User user = UserObjectMother.createUser();
 
         service.assignUserToDefaultProjects(user);
 

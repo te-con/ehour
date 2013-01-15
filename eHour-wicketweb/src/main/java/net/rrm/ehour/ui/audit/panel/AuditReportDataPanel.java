@@ -26,6 +26,7 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
@@ -38,6 +39,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -95,22 +98,38 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria>  imp
 	 * @param model
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private WebMarkupContainer getPagingDataView(IModel<ReportCriteria> model)
 	{
 		final WebMarkupContainer dataContainer = new WebMarkupContainer("dataContainer");
 		dataContainer.setOutputMarkupId(true);
 		final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
         
-		List<IColumn<Audit>> columns = new ArrayList<IColumn<Audit>>();
-        columns.add(new DateColumn(new ResourceModel("audit.report.column.date"), config));
-        columns.add(new PropertyColumn<Audit>(new ResourceModel("audit.report.column.lastName"), "userFullName"));
-        columns.add(new PropertyColumn<Audit>(new ResourceModel("audit.report.column.action"), "action"));
-        columns.add(new PropertyColumn<Audit>(new ResourceModel("audit.report.column.type"), "auditActionType.value"));
+		IColumn<Audit>[] columns = new IColumn[4];
+        columns[0] = new DateColumn(new ResourceModel("audit.report.column.date"), config);
+        columns[1] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.lastName"), "userFullName");
+        columns[2] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.action"), "action");
+        columns[3] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
-        AjaxFallbackDefaultDataTable<Audit> table = new AjaxFallbackDefaultDataTable<Audit>("data", columns, new AuditReportDataProvider(getReportRequest(model)), 20);
+
+        AuditReportDataProvider dataProvider = new AuditReportDataProvider(getReportRequest(model));
+        DataTable<Audit> table = new DataTable<Audit>("data", columns, dataProvider, 20)
+        {
+            @Override
+            protected Item<Audit> newRowItem(String id, int index, IModel<Audit> model)
+            {
+                return new OddEvenItem<Audit>(id, index, model);
+            }
+        };
+
+        table.setOutputMarkupId(true);
+
 		dataContainer.add(table);
-		
-		return dataContainer;
+        table.addTopToolbar(new AjaxFallbackHeadersToolbar(table, dataProvider));
+
+        dataContainer.add(new HoverPagingNavigator("navigator", table));
+
+        return dataContainer;
 	}
 	
 	private AuditReportRequest getReportRequest(IModel<ReportCriteria> model)

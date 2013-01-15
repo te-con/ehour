@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.audit.model;
 
 import java.util.Iterator;
-import java.util.List;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.data.AuditReportRequest;
@@ -29,78 +28,33 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class AuditReportDataProvider extends SortableDataProvider<Audit>
-{
-	private static final long serialVersionUID = 8795552030531153903L;
+public class AuditReportDataProvider extends SortableDataProvider<Audit> {
+    private static final long serialVersionUID = 8795552030531153903L;
 
-	@SpringBean
-	private AuditService auditService;
-	
-	private transient Integer		auditsCount;
-	private transient List<Audit>	audits;
-	private transient int			auditCacheFirst;
-	private transient int			auditCacheCount;
-	private AuditReportRequest		request;
-	
-	public AuditReportDataProvider(AuditReportRequest request)
-	{
-		this.request = request;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#iterator(int, int)
-	 */
-	public Iterator<Audit> iterator(int first, int count)
-	{
-		if (audits == null ||
-				auditCacheFirst != first &&
-				auditCacheCount != count)
-		{
-			WebUtils.springInjection(this);
-			
-			request.setOffset(first);
-			request.setMax(count);
-			
-			audits = auditService.getAudit(request);
-		}
-		
-		return audits.iterator();
-	}
+    @SpringBean
+    private AuditService auditService;
 
+    private AuditReportRequest request;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#size()
-	 */
-	public int size()
-	{
-		if (auditsCount == null)
-		{
-			WebUtils.springInjection(this);
-			
-			auditsCount = auditService.getAuditCount(request).intValue();
-		}
-		
-		return auditsCount;
-	}	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
-	 */
-	public IModel<Audit> model(Audit audit)
-	{
-		return new CompoundPropertyModel<Audit>(audit);
-	}
+    public AuditReportDataProvider(AuditReportRequest request) {
+        WebUtils.springInjection(this);
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.model.IDetachable#detach()
-	 */
-	public void detach()
-	{
-		auditsCount = null;
-		audits = null;
-	}
+        this.request = request;
+    }
+
+    public Iterator<Audit> iterator(int first, int count) {
+        return auditService.findAudits(request, first, count).iterator();
+    }
+
+    public int size() {
+        return auditService.getAuditCount(request).intValue();
+    }
+
+    public IModel<Audit> model(Audit audit) {
+        return new CompoundPropertyModel<Audit>(audit);
+    }
+
+    public void detach() {
+
+    }
 }

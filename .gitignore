@@ -3,3 +3,4 @@
 */target
 *.iml
 derby.log
+atlassian-ide-plugin.xml

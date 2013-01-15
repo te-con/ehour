@@ -25,11 +25,15 @@ import org.apache.wicket.markup.html.navigation.paging.IPageable;
 
 public class HoverPagingNavigator extends AjaxPagingNavigator {
     private static final long serialVersionUID = 1095553728045877576L;
+    private final IPageable pageable;
 
     public HoverPagingNavigator(String id, IPageable pageable) {
         super(id, pageable);
-
-        setVisible(pageable.getPageCount() > 1);
+        this.pageable = pageable;
     }
 
+    @Override
+    public boolean isVisible() {
+        return pageable.getPageCount() > 1;
+    }
 }

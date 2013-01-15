@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.report.panel.aggregate;
+package net.rrm.ehour.ui.report.excel;
 
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
 import net.rrm.ehour.ui.common.report.ReportConfig;

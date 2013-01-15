@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.timesheet.panel.util;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentMother;
+import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
 import org.junit.Test;
@@ -34,12 +34,12 @@ public class TimesheetRowComparatorTest
 	@Test
 	public void testCompare()
 	{
-		ProjectAssignment pA = ProjectAssignmentMother.createProjectAssignment(1);
+		ProjectAssignment pA = ProjectAssignmentObjectMother.createProjectAssignment(1);
 		pA.getProject().setName("A");
 		TimesheetRow rowA = new TimesheetRow(new EhourConfigStub());
 		rowA.setProjectAssignment(pA);
 		
-		ProjectAssignment pB = ProjectAssignmentMother.createProjectAssignment(1);
+		ProjectAssignment pB = ProjectAssignmentObjectMother.createProjectAssignment(1);
 		pB.getProject().setName("b");
 		TimesheetRow rowB = new TimesheetRow(new EhourConfigStub());
 		rowB.setProjectAssignment(pB);

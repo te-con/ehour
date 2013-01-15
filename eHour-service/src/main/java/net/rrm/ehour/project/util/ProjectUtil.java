@@ -16,12 +16,10 @@
 
 package net.rrm.ehour.project.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import net.rrm.ehour.domain.Project;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
  * @author Thies on Aug 24, 2009 10:40:38 PM
@@ -31,7 +29,6 @@ public class ProjectUtil
 {
 	private ProjectUtil()
 	{
-		
 	}
 	
 	public static List<Project> getBillableProjects(Collection<Project> projects)
@@ -56,7 +53,15 @@ public class ProjectUtil
 			}
 		}
 		
-		Collections.sort(sortedProjects);
+		Collections.sort(sortedProjects, new Comparator<Project>() {
+            @Override
+            public int compare(Project o1, Project o2) {
+                return new CompareToBuilder()
+                        .append(o1.getCustomer(), o2.getCustomer())
+                        .append(o1.getName(), o2.getName())
+                        .append(o1.getProjectCode(), o2.getProjectCode())
+                        .append(o1.getProjectId(), o2.getProjectId()).toComparison();            }
+        });
 		return sortedProjects;
 	}
 }
