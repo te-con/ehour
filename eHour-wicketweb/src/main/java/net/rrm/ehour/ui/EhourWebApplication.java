@@ -35,11 +35,11 @@ import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
+import net.rrm.ehour.ui.report.excel.CustomerReportExcel;
+import net.rrm.ehour.ui.report.excel.DetailedReportExcel;
+import net.rrm.ehour.ui.report.excel.ProjectReportExcel;
+import net.rrm.ehour.ui.report.excel.UserReportExcel;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
-import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportExcel;
-import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportExcel;
-import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportExcel;
-import net.rrm.ehour.ui.report.panel.detail.DetailedReportExcel;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
@@ -47,8 +47,6 @@ import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import org.apache.log4j.Logger;
 import org.apache.wicket.*;
-import org.apache.wicket.authentication.AuthenticatedWebApplication;
-import org.apache.wicket.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
@@ -62,8 +60,6 @@ import org.apache.wicket.resource.IPropertiesFactory;
 import org.apache.wicket.resource.IPropertiesLoader;
 import org.apache.wicket.resource.PropertiesFactory;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.convert.ConverterLocator;
-import org.apache.wicket.util.lang.PackageName;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -73,8 +69,7 @@ import java.util.List;
  * Base config for wicket eHour webapp
  */
 
-public class EhourWebApplication extends AuthenticatedWebApplication
-{
+public class EhourWebApplication extends AuthenticatedWebApplication {
     private static final Logger LOGGER = Logger.getLogger(EhourWebApplication.class);
 
     private AuthenticationManager authenticationManager;
@@ -91,10 +86,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     @Value("${ehour.translations}")
     private String translationsDir;
 
-    public void init()
-    {
-        if (!initialized)
-        {
+    public void init() {
+        if (!initialized) {
             super.init();
             springInjection();
 
@@ -112,24 +105,20 @@ public class EhourWebApplication extends AuthenticatedWebApplication
         }
     }
 
-    private void registerStringLoader()
-    {
+    private void registerStringLoader() {
         IPropertiesFactory propertiesFactory = getResourceSettings().getPropertiesFactory();
 
-        if (translationsDir != null)
-        {
+        if (translationsDir != null) {
             String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(eHourHome, translationsDir);
 
-            if (propertiesFactory instanceof PropertiesFactory)
-            {
+            if (propertiesFactory instanceof PropertiesFactory) {
                 List<IPropertiesLoader> loaders = ((PropertiesFactory) propertiesFactory).getPropertiesLoaders();
                 loaders.add(0, new EhourHomeResourceLoader(this, absoluteTranslationsPath));
             }
         }
     }
 
-    private void registerSharedResources()
-    {
+    private void registerSharedResources() {
         mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
         mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
         mountExcelReport(new ProjectReportExcel(), ProjectReportExcel.getId());
@@ -142,21 +131,18 @@ public class EhourWebApplication extends AuthenticatedWebApplication
 
     }
 
-    private void mountExcelReport(AbstractExcelResource excelReport, String id)
-    {
+    private void mountExcelReport(AbstractExcelResource excelReport, String id) {
         getSharedResources().add(id, excelReport);
         mountResource("/" + id, new PackageResourceReference(id));
     }
 
     @Override
-    public RuntimeConfigurationType getConfigurationType()
-    {
+    public RuntimeConfigurationType getConfigurationType() {
         String development = RuntimeConfigurationType.DEVELOPMENT.name();
         String deployment = RuntimeConfigurationType.DEPLOYMENT.name();
 
         if (configurationType == null || (!configurationType.equalsIgnoreCase(deployment) &&
-                !configurationType.equalsIgnoreCase(development)))
-        {
+                !configurationType.equalsIgnoreCase(development))) {
             LOGGER.warn("Invalid configuration type defined in ehour.properties. Valid values are " + deployment + " or " + development);
             return RuntimeConfigurationType.DEVELOPMENT;
         }
@@ -164,8 +150,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
         return RuntimeConfigurationType.valueOf(configurationType.toUpperCase());
     }
 
-    private void mountPages()
-    {
+    private void mountPages() {
         mountPage("/login", Login.class);
         mountPage("/logout", Logout.class);
 
@@ -193,26 +178,20 @@ public class EhourWebApplication extends AuthenticatedWebApplication
         mountPage("/backup", ExportPage.class);
     }
 
-    protected void springInjection()
-    {
+    protected void springInjection() {
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
     }
 
-    protected void setupSecurity()
-    {
+    protected void setupSecurity() {
         getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 
         getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
 
-        getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener()
-        {
-            public void onUnauthorizedInstantiation(final Component component)
-            {
-                if (component instanceof Page)
-                {
+        getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener() {
+            public void onUnauthorizedInstantiation(final Component component) {
+                if (component instanceof Page) {
                     throw new RestartResponseAtInterceptPageException(Login.class);
-                } else
-                {
+                } else {
                     throw new UnauthorizedInstantiationException(component.getClass());
                 }
             }
@@ -220,8 +199,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication
     }
 
     @Override
-    protected IConverterLocator newConverterLocator()
-    {
+    protected IConverterLocator newConverterLocator() {
         ConverterLocator converterLocator = new ConverterLocator();
         converterLocator.set(Float.class, new FloatConverter());
         return converterLocator;
@@ -231,21 +209,18 @@ public class EhourWebApplication extends AuthenticatedWebApplication
      * Set the homepage
      */
     @Override
-    public Class<? extends WebPage> getHomePage()
-    {
+    public Class<? extends WebPage> getHomePage() {
         return MonthOverviewPage.class;
     }
 
     /**
      * The login page for unauthenticated clients
      */
-    protected Class<? extends WebPage> getSignInPageClass()
-    {
+    protected Class<? extends WebPage> getSignInPageClass() {
         return Login.class;
     }
 
-    public AuthenticationManager getAuthenticationManager()
-    {
+    public AuthenticationManager getAuthenticationManager() {
         return authenticationManager;
     }
 
@@ -254,57 +229,41 @@ public class EhourWebApplication extends AuthenticatedWebApplication
       * @see org.apache.wicket.authentication.AuthenticatedWebApplication#getWebSessionClass()
       */
     @Override
-    protected Class<? extends AuthenticatedWebSession> getWebSessionClass()
-    {
+    protected Class<? extends AuthenticatedWebSession> getWebSessionClass() {
         return EhourWebSession.class;
     }
 
     /**
      * @param authenticationManager the authenticationManager to set
      */
-    public void setAuthenticationManager(AuthenticationManager authenticationManager)
-    {
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see org.apache.wicket.protocol.http.WebApplication#newRequestCycleProcessor()
-      */
-    @Override
-    protected IRequestCycleProcessor newRequestCycleProcessor()
-    {
-        return new UrlCompressingWebRequestProcessor();
-    }
 
-    public static EhourWebApplication get()
-    {
+    public static EhourWebApplication get() {
         return (EhourWebApplication) WebApplication.get();
     }
 
     /**
      * @return the version
      */
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
     /**
      * @param version the version to set
      */
-    public void setVersion(String version)
-    {
+    public void setVersion(String version) {
         this.version = version;
     }
 
-    public String getWikiBaseUrl()
-    {
+    public String getWikiBaseUrl() {
         return wikiBaseUrl;
     }
 
-    public void setWikiBaseUrl(String wikiBaseUrl)
-    {
+    public void setWikiBaseUrl(String wikiBaseUrl) {
         this.wikiBaseUrl = wikiBaseUrl;
     }
 }
