@@ -16,36 +16,31 @@
 
 package net.rrm.ehour.ui.common.decorator;
 
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Display demo decorator
- **/
+ */
 
-public class DemoDecorator implements IAjaxCallDecorator
-{
-	private static final long serialVersionUID = 1432993030793501257L;
+public class DemoDecorator extends AjaxCallListener {
+    private static final long serialVersionUID = 1432993030793501257L;
 
-	private IModel<String>	msgModel;
-	
-	public DemoDecorator(IModel<String> msgModel)
-	{
-		this.msgModel = msgModel;
-	}
-	
-	public CharSequence decorateOnFailureScript(CharSequence script)
-	{
-		return "alert('" + msgModel.getObject() + "');";
-	}
+    private IModel<String> msgModel = new ResourceModel("demoMode");
 
-	public CharSequence decorateOnSuccessScript(CharSequence script)
-	{
-		return "alert('" +  msgModel.getObject() + "');";
-	}
+    @Override
+    public CharSequence getSuccessHandler(Component component) {
+        return alertDemoMode();
+    }
 
-	public CharSequence decorateScript(CharSequence script)
-	{
-		return "alert('" +  msgModel.getObject() + "');";
-	}
+    @Override
+    public CharSequence getFailureHandler(Component component) {
+        return alertDemoMode();
+    }
+
+    private CharSequence alertDemoMode() {
+        return "alert('" + msgModel.getObject() + "');";
+    }
 }

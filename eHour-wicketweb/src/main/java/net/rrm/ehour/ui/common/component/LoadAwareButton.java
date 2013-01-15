@@ -18,34 +18,32 @@ package net.rrm.ehour.ui.common.component;
 
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.markup.html.form.Form;
 
 /**
  * AjaxFallbackButton which adds the loading rotating anim when loading
  * and adds the form to the AjaxRequestTarget on validation errors
- * @author Thies
  *
+ * @author Thies
  */
-public abstract class LoadAwareButton extends AjaxFallbackButton
-{
-	private static final long serialVersionUID = -6504165692150025275L;
+public abstract class LoadAwareButton extends AjaxFallbackButton {
+    private static final long serialVersionUID = -6504165692150025275L;
 
-	public LoadAwareButton(String id, Form<?> form)
-	{
-		super(id, form);
-	}
+    public LoadAwareButton(String id, Form<?> form) {
+        super(id, form);
+    }
 
-	@Override
-	protected IAjaxCallDecorator getAjaxCallDecorator()
-	{
-		return new LoadingSpinnerDecorator();
-	}
+    @Override
+    protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+        super.updateAjaxAttributes(attributes);
 
-	@Override
-	protected void onError(AjaxRequestTarget target, Form<?> form)
-	{
-		target.add(form);
-	}
+        attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+    }
+
+    @Override
+    protected void onError(AjaxRequestTarget target, Form<?> form) {
+        target.add(form);
+    }
 }

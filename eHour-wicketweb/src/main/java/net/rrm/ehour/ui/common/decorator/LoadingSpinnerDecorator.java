@@ -16,28 +16,23 @@
 
 package net.rrm.ehour.ui.common.decorator;
 
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
 
 /**
- * LoadingSpinner decorator 
- **/
+ * LoadingSpinner decorator
+ */
 
-public class LoadingSpinnerDecorator implements IAjaxCallDecorator
-{
-	private static final long serialVersionUID = 1432993030793501257L;
+public class LoadingSpinnerDecorator extends AjaxCallListener {
+    private static final long serialVersionUID = 1432993030793501257L;
 
-	public CharSequence decorateOnFailureScript(CharSequence script)
-	{
-		return "showHideSpinner(false);" + script;
-	}
+    @Override
+    public CharSequence getBeforeHandler(Component component) {
+        return "showHideSpinner(true);";
+    }
 
-	public CharSequence decorateOnSuccessScript(CharSequence script)
-	{
-		return "showHideSpinner(false);" + script;
-	}
-
-	public CharSequence decorateScript(CharSequence script)
-	{
-		return "showHideSpinner(true);" + script;
-	}
+    @Override
+    public CharSequence getCompleteHandler(Component component) {
+        return "showHideSpinner(false);";
+    }
 }

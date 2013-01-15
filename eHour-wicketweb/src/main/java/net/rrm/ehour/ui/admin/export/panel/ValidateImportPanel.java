@@ -10,7 +10,7 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -58,13 +58,12 @@ public class ValidateImportPanel extends AbstractBasePanel<ParseSession> {
             }
 
             @Override
-            protected IAjaxCallDecorator getAjaxCallDecorator() {
-                if (getConfig().isInDemoMode()) {
-                    return new DemoDecorator(new ResourceModel("demoMode"));
-                } else {
-                    return new LoadingSpinnerDecorator();
-                }
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(getConfig().isInDemoMode() ? new DemoDecorator() : new LoadingSpinnerDecorator());
             }
+
         };
 
         link.setVisible(model.getObject().isImportable());

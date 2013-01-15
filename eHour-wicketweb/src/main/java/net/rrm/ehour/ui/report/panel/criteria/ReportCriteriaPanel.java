@@ -39,7 +39,7 @@ import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.report.panel.criteria.quick.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
@@ -274,8 +274,10 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             }
 
             @Override
-            protected IAjaxCallDecorator getAjaxCallDecorator() {
-                return new LoadingSpinnerDecorator();
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
             }
 
             @Override

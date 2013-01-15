@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.common.panel.calendar;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.ui.common.component.DisablingAjaxLink;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
@@ -33,7 +32,7 @@ import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -170,7 +169,7 @@ public class CalendarPanel extends SidePanel {
                 } else {
                     item.add(AttributeModifier.replace("class", "CalendarWeek other"));
                     item.add(new WeekClick("onclick", week.getWeek(), week.getYear()));
-                } 
+                }
             }
 
             private Label createLabel(int dayOfWeek, CalendarWeek week, CalendarDay day, boolean weekend) {
@@ -220,7 +219,7 @@ public class CalendarPanel extends SidePanel {
      *
      * @author Thies
      */
-    private class ChangeMonthLink extends DisablingAjaxLink {
+    private class ChangeMonthLink extends AjaxLink {
         private static final long serialVersionUID = 1L;
         private int monthChange;
 
@@ -247,8 +246,10 @@ public class CalendarPanel extends SidePanel {
         }
 
         @Override
-        protected IAjaxCallDecorator getAjaxCallDecorator() {
-            return new LoadingSpinnerDecorator();
+        protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+            super.updateAjaxAttributes(attributes);
+
+            attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
         }
     }
 
@@ -285,8 +286,10 @@ public class CalendarPanel extends SidePanel {
         }
 
         @Override
-        protected IAjaxCallDecorator getAjaxCallDecorator() {
-            return new LoadingSpinnerDecorator();
+        protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+            super.updateAjaxAttributes(attributes);
+
+            attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
         }
     }
 

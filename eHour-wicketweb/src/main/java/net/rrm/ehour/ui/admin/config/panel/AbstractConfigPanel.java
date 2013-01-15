@@ -29,7 +29,7 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
@@ -121,19 +121,13 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 				}
             }
 
-			@Override
-			protected IAjaxCallDecorator getAjaxCallDecorator()
-			{
-				if (getConfig().isInDemoMode())
-				{
-					return new DemoDecorator(new ResourceModel("demoMode"));
-				}
-				else
-				{
-					return new LoadingSpinnerDecorator();
-				}
-			}			
-			
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(getConfig().isInDemoMode() ? new DemoDecorator() : new LoadingSpinnerDecorator());
+            }
+
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form<?> form)
 			{
@@ -165,13 +159,8 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 	}
 	
 	protected abstract void addFormComponents(Form<MainConfigBackingBean> form);
-	
-	protected final EhourConfigStub getDbConfig()
-	{
-		return configService.getConfiguration();
-	}
-	
-	protected final WebComponent getServerMessage()
+
+    protected final WebComponent getServerMessage()
 	{
 		return serverMessage;
 	}

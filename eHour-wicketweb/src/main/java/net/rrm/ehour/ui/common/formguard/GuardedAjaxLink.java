@@ -1,9 +1,9 @@
 package net.rrm.ehour.ui.common.formguard;
 
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.calldecorator.CancelEventIfNoAjaxDecorator;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.ComponentTag;
 
@@ -34,9 +34,10 @@ public abstract class GuardedAjaxLink<T> extends AjaxLink<T>
                 }
 
                 @Override
-                protected IAjaxCallDecorator getAjaxCallDecorator()
-                {
-                    return new CancelEventIfNoAjaxDecorator(GuardedAjaxLink.this.getAjaxCallDecorator());
+                protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                    super.updateAjaxAttributes(attributes);
+
+                    attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
                 }
 
                 @Override
