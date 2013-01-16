@@ -43,55 +43,55 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 /**
  * Customer admin form panel
- **/
+ */
 
-public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdminBackingBean>
-{
-	private static final long serialVersionUID = 8536721437867359030L;
+public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdminBackingBean> {
+    private static final long serialVersionUID = 8536721437867359030L;
 
-	@SpringBean
-	private CustomerService		customerService;
+    @SpringBean
+    private CustomerService customerService;
 
-    public CustomerFormPanel(String id, CompoundPropertyModel<CustomerAdminBackingBean> model)
-	{
-		super(id, model);
-		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
-		add(greyBorder);
-		
-		setOutputMarkupId(true);
-		
-		final Form<CustomerAdminBackingBean> form = new Form<CustomerAdminBackingBean>("customerForm", model);
-		
-		// name
-		RequiredTextField<String> nameField = new RequiredTextField<String>("customer.name");
-		form.add(nameField);
-		nameField.add(new StringValidator.MaximumLengthValidator(64));
-		nameField.setLabel(new ResourceModel("admin.customer.name"));
-		nameField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
-			
-		// code
-		final RequiredTextField<String>	codeField = new RequiredTextField<String>("customer.code");
-		form.add(codeField);
-		codeField.add(new StringValidator.MaximumLengthValidator(16));
-		codeField.setLabel(new ResourceModel("admin.customer.code"));
-		codeField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new UniqueCustomerValidator(nameField, codeField));
-		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
-		
-		// description
-		TextArea<String> textArea = new KeepAliveTextArea("customer.description");
-		textArea.setLabel(new ResourceModel("admin.customer.description"));
+    public CustomerFormPanel(String id, CompoundPropertyModel<CustomerAdminBackingBean> model) {
+        super(id, model);
+
+        GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+        add(greyBorder);
+
+        setOutputMarkupId(true);
+
+        final Form<CustomerAdminBackingBean> form = new Form<CustomerAdminBackingBean>("customerForm", model);
+
+        // name
+        RequiredTextField<String> nameField = new RequiredTextField<String>("customer.name");
+        form.add(nameField);
+
+
+        nameField.add(StringValidator.lengthBetween(0, 64));
+        nameField.setLabel(new ResourceModel("admin.customer.name"));
+        nameField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
+
+        // code
+        final RequiredTextField<String> codeField = new RequiredTextField<String>("customer.code");
+        form.add(codeField);
+        codeField.add(StringValidator.lengthBetween(0, 16));
+        codeField.setLabel(new ResourceModel("admin.customer.code"));
+        codeField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(new UniqueCustomerValidator(nameField, codeField));
+        form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
+
+        // description
+        TextArea<String> textArea = new KeepAliveTextArea("customer.description");
+        textArea.setLabel(new ResourceModel("admin.customer.description"));
         form.add(textArea);
-			
-		// active
-		form.add(new CheckBox("customer.active"));
-		
-		// data save label
-		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
-	
-		//
+
+        // active
+        form.add(new CheckBox("customer.active"));
+
+        // data save label
+        form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
+
+        //
 
         boolean deletable = model.getObject().getCustomer().isDeletable();
         FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
@@ -100,104 +100,92 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 
 
         FormUtil.setSubmitActions(formConfig);
-		
-		greyBorder.add(form);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
-	 */
-	@Override
-	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
-	{
-		CustomerAdminBackingBean customerBackingBean = (CustomerAdminBackingBean) backingBean;
-		
-		if (type == CustomerAjaxEventType.CUSTOMER_UPDATED)
-		{
-			persistCustomer(customerBackingBean);
-		}
-		else if (type == CustomerAjaxEventType.CUSTOMER_DELETED)
-		{
-			deleteCustomer(customerBackingBean);
-		}
-	}	
-	
-	/**
-	 * Persist customer to db
-	 * @param backingBean
-	 * @throws ObjectNotUniqueException 
-	 */
-	private void persistCustomer(CustomerAdminBackingBean backingBean) throws ObjectNotUniqueException
-	{
-		customerService.persistCustomer(backingBean.getCustomer());
-	}
-	
-	/**
-	 * Delete customer
-	 * @param backingBean
-	 * @throws ParentChildConstraintException
-	 */
-	private void deleteCustomer(CustomerAdminBackingBean backingBean) throws ParentChildConstraintException
-	{
-		customerService.deleteCustomer(backingBean.getCustomer().getCustomerId());
-	}
-	
-	/**
-	 * Unique customer code / name validator
-	 * @author Thies
-	 *
-	 */
-	private class UniqueCustomerValidator extends AbstractFormValidator
-	{
-		private static final long serialVersionUID = 1181184585571474550L;
-		private FormComponent<String>[] components;
-		
-		/**
-		 * 
-		 * @param passwordField
-		 * @param confirmField
-		 */
-		@SuppressWarnings("unchecked")
-		public UniqueCustomerValidator(FormComponent<String> customerName, FormComponent<String> customerCode)
-		{
-			components = new FormComponent[]{customerName, customerCode};
-		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
-		 */
-		public FormComponent<?>[] getDependentFormComponents()
-		{
-			return components;
-		}
+        greyBorder.add(form);
+    }
 
-		/*
-		 * (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
-		 */
-		public void validate(Form<?> form)
-		{
-			if (!StringUtils.isBlank(components[0].getInput())
-					&& !StringUtils.isBlank(components[1].getInput()))
-			{
-				String orgName = ((CustomerAdminBackingBean)getDefaultModelObject()).getOriginalCustomerName();
-				String orgCode = ((CustomerAdminBackingBean)getDefaultModelObject()).getOriginalCustomerCode();
-				
-				if ((StringUtils.equals(orgName, components[0].getInput()))
-						&& StringUtils.equals(orgCode, components[1].getInput()))
-				{
-					return;
-				}
-				
-				Customer customer = customerService.getCustomer(components[0].getInput(), components[1].getInput());
-				
-				if (customer != null)
-				{
-					error(components[0], "admin.customer.errorNotUnique");	
-				}
-			}
-		}
-	}	
+    /*
+     * (non-Javadoc)
+     * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
+     */
+    @Override
+    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+        CustomerAdminBackingBean customerBackingBean = (CustomerAdminBackingBean) backingBean;
+
+        if (type == CustomerAjaxEventType.CUSTOMER_UPDATED) {
+            persistCustomer(customerBackingBean);
+        } else if (type == CustomerAjaxEventType.CUSTOMER_DELETED) {
+            deleteCustomer(customerBackingBean);
+        }
+    }
+
+    /**
+     * Persist customer to db
+     *
+     * @param backingBean
+     * @throws ObjectNotUniqueException
+     */
+    private void persistCustomer(CustomerAdminBackingBean backingBean) throws ObjectNotUniqueException {
+        customerService.persistCustomer(backingBean.getCustomer());
+    }
+
+    /**
+     * Delete customer
+     *
+     * @param backingBean
+     * @throws ParentChildConstraintException
+     */
+    private void deleteCustomer(CustomerAdminBackingBean backingBean) throws ParentChildConstraintException {
+        customerService.deleteCustomer(backingBean.getCustomer().getCustomerId());
+    }
+
+    /**
+     * Unique customer code / name validator
+     *
+     * @author Thies
+     */
+    private class UniqueCustomerValidator extends AbstractFormValidator {
+        private static final long serialVersionUID = 1181184585571474550L;
+        private FormComponent<String>[] components;
+
+        /**
+         * @param passwordField
+         * @param confirmField
+         */
+        @SuppressWarnings("unchecked")
+        public UniqueCustomerValidator(FormComponent<String> customerName, FormComponent<String> customerCode) {
+            components = new FormComponent[]{customerName, customerCode};
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
+         */
+        public FormComponent<?>[] getDependentFormComponents() {
+            return components;
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
+         */
+        public void validate(Form<?> form) {
+            if (!StringUtils.isBlank(components[0].getInput())
+                    && !StringUtils.isBlank(components[1].getInput())) {
+                String orgName = ((CustomerAdminBackingBean) getDefaultModelObject()).getOriginalCustomerName();
+                String orgCode = ((CustomerAdminBackingBean) getDefaultModelObject()).getOriginalCustomerCode();
+
+                if ((StringUtils.equals(orgName, components[0].getInput()))
+                        && StringUtils.equals(orgCode, components[1].getInput())) {
+                    return;
+                }
+
+                Customer customer = customerService.getCustomer(components[0].getInput(), components[1].getInput());
+
+                if (customer != null) {
+                    error(components[0], "admin.customer.errorNotUnique");
+                }
+            }
+        }
+    }
 }
