@@ -44,7 +44,9 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.CssReferenceHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -133,7 +135,9 @@ public class TimesheetPanel extends Panel implements Serializable {
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(new PackageResourceReference(TimesheetPanel.class, "css/timesheetForm.css"));
+        super.renderHead(response);
+        CssReferenceHeaderItem cssReferenceHeaderItem = CssHeaderItem.forReference(new PackageResourceReference(TimesheetPanel.class, "css/timesheetForm.css"));
+        response.render(cssReferenceHeaderItem);
     }
 
     /**

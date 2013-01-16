@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.timesheet.panel;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.ui.common.component.CommonJavascript;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -31,6 +30,7 @@ import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -133,14 +133,9 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         };
 
         ContextImage img = new ContextImage("bookImg", new Model<String>("img/check_all_off.png"));
-        CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/check_all_on.png", getContextRoot() + "img/check_all_off.png", "bwh");
         projectLink.add(img);
 
         return projectLink;
-    }
-
-    private String getContextRoot() {
-        return getRequest().getRelativePathPrefixToContextRoot();
     }
 
 
@@ -297,7 +292,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         if (StringUtils.isBlank(commentModel.getObject())) {
             img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
-            CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/comment/comment_blue_on.gif", getContextRoot() + "img/comment/comment_blue_off.gif", "comment");
         } else {
             img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
         }

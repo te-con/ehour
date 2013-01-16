@@ -16,11 +16,9 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
-import net.rrm.ehour.ui.common.component.CommonJavascript;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -246,15 +244,10 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
 
         ContextImage img = new ContextImage(ID_FOLD_IMG, new Model<String>(upStr + "off.gif"));
         img.setOutputMarkupId(true);
-        CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif", "upDown");
 
         return img;
     }
 
-    private String getContextRoot()
-    {
-        return getRequest().getRelativePathPrefixToContextRoot();
-    }
 
     private String getFoldImagePath(String domId)
     {

@@ -16,32 +16,32 @@
 
 package net.rrm.ehour.ui.common.panel.sidepanel;
 
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.CssReferenceHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * Blue navigation side panel
- **/
+ */
 
-public abstract class SidePanel extends Panel
-{
-	private static final long serialVersionUID = 4573739445050690761L;
+public abstract class SidePanel extends Panel {
+    private static final long serialVersionUID = 4573739445050690761L;
 
 
-	public SidePanel(String id)
-	{
-		this(id, null);
-	}
+    public SidePanel(String id) {
+        this(id, null);
+    }
 
-	public SidePanel(String id, IModel<?> model)
-	{
-		super(id, model);
-	}
+    public SidePanel(String id, IModel<?> model) {
+        super(id, model);
+    }
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(new PackageResourceReference(SidePanel.class, "style/sidePanel.css"));
+        CssReferenceHeaderItem cssReferenceHeaderItem = CssHeaderItem.forReference(new PackageResourceReference(SidePanel.class, "style/sidePanel.css"));
+        response.render(cssReferenceHeaderItem);
     }
 }

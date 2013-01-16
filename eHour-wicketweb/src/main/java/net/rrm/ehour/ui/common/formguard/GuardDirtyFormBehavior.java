@@ -4,7 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.*;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
@@ -17,10 +17,6 @@ import org.apache.wicket.request.resource.PackageResourceReference;
 public class GuardDirtyFormBehavior extends Behavior {
     private Component component;
     private IModel<String> promptModel;
-
-    public GuardDirtyFormBehavior() {
-        this(null);
-    }
 
     public GuardDirtyFormBehavior(IModel<String> promptModel) {
         this.promptModel = promptModel;
@@ -54,13 +50,15 @@ public class GuardDirtyFormBehavior extends Behavior {
 
     @Override
     public void renderHead(Component component, IHeaderResponse response) {
-        response.renderJavaScriptReference(new PackageResourceReference(GuardDirtyFormBehavior.class, "GuardDirtyFormBehavior.js"));
+        JavaScriptReferenceHeaderItem js = JavaScriptHeaderItem.forReference(new PackageResourceReference(GuardDirtyFormBehavior.class, "GuardDirtyFormBehavior.js"));
+        response.render(js);
 
         if (this.promptModel != null) {
             final String prompt = this.promptModel.getObject();
-            response.renderJavaScript("wicket.guardform.prompt='" + prompt + "';", "wicket.guardform.prompt");
+
+            response.render(new OnDomReadyHeaderItem("wicket.guardform.prompt='" + prompt + "';"));
         }
 
-        response.renderOnDomReadyJavaScript("wicket.guardform.init('" + this.component.getMarkupId() + "');");
+        response.render(new OnDomReadyHeaderItem("wicket.guardform.init('" + this.component.getMarkupId() + "');"));
     }
 }
