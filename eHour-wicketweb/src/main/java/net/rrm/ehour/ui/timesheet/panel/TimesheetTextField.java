@@ -46,7 +46,7 @@ public class TimesheetTextField extends TextField<Float> {
     }
 
     @Override
-    public IConverter getConverter(Class<?> c) {
+    public <Float> IConverter<Float> getConverter(Class<Float> c) {
         return TimesheetFloatConverter.getInstance();
     }
 
