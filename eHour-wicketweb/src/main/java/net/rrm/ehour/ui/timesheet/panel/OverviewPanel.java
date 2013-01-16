@@ -16,56 +16,54 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import java.util.Calendar;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
-import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.CssReferenceHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.Calendar;
+
 /**
- * Container for month + project overview 
- **/
+ * Container for month + project overview
+ */
 
-public class OverviewPanel extends Panel implements IHeaderContributor
-{
-	private static final long serialVersionUID = 1415235065167294169L;
+public class OverviewPanel extends Panel implements IHeaderContributor {
+    private static final long serialVersionUID = 1415235065167294169L;
 
-	@SpringBean
-	private TimesheetService	timesheetService;
+    @SpringBean
+    private TimesheetService timesheetService;
 
-	public OverviewPanel(String id)
-	{
-		super(id);
+    public OverviewPanel(String id) {
+        super(id);
 
-		setOutputMarkupId(true);
-		EhourWebSession session = ((EhourWebSession)this.getSession());
-		User user = session.getUser().getUser();
-		
-		Calendar overviewFor = session.getNavCalendar();
-		
-		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-		
-		TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, overviewFor);
-		
-		add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
-		add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
-	}
+        setOutputMarkupId(true);
+        EhourWebSession session = ((EhourWebSession) this.getSession());
+        User user = session.getUser().getUser();
+
+        Calendar overviewFor = session.getNavCalendar();
+
+        overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+
+        TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, overviewFor);
+
+        add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
+        add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
+    }
 
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
 
-        response.renderCSSReference(new PackageResourceReference(OverviewPanel.class, "css/overview.css"));
+        CssReferenceHeaderItem cssReferenceHeaderItem = CssHeaderItem.forReference(new PackageResourceReference(OverviewPanel.class, "style/overview.css"));
+        response.render(cssReferenceHeaderItem);
     }
-
 
 
 }

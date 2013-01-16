@@ -28,11 +28,12 @@ import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.CssReferenceHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
@@ -75,7 +76,7 @@ public class PmReportPanel extends AbstractBasePanel<Void> implements IHeaderCon
                 item.add(user);
 
                 Label role = new Label("role", aggregate.getProjectAssignment().getRole());
-                applyCss(item,column++, role);
+                applyCss(item, column++, role);
                 item.add(role);
                 Label type = new Label("type", new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(aggregate.getProjectAssignment().getAssignmentType())));
                 applyCss(item, column++, type);
@@ -127,6 +128,7 @@ public class PmReportPanel extends AbstractBasePanel<Void> implements IHeaderCon
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
 
-        response.renderCSSReference(new PackageResourceReference(TreeReportDataPanel.class, "style/reportStyle.css"));
+        CssReferenceHeaderItem cssReferenceHeaderItem = CssHeaderItem.forReference(new PackageResourceReference(TreeReportDataPanel.class, "style/reportStyle.css"));
+        response.render(cssReferenceHeaderItem);
     }
 }

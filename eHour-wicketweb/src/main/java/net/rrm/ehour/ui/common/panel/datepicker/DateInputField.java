@@ -4,8 +4,9 @@ import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
@@ -33,7 +34,10 @@ public class DateInputField extends TextField<Date> implements IHeaderContributo
             @Override
             public Date convertToObject(String value, Locale locale) {
                 try {
-                    return (FORMATTER.parseDateTime(value)).toDate();
+                    DateTime time = FORMATTER.parseDateTime(value);
+
+                    java.util.Date date = time.toDate();
+                    return date;
                 } catch (IllegalArgumentException iae) {
                     AjaxRequestTarget target = AjaxRequestTarget.get();
 
@@ -57,10 +61,15 @@ public class DateInputField extends TextField<Date> implements IHeaderContributo
 
     @Override
     public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
         if (isVisible()) {
-            response.renderOnDomReadyJavaScript(enableDatePickerJavascript());
+
+            OnDomReadyHeaderItem item = new OnDomReadyHeaderItem(enableDatePickerJavascript());
+            response.render(item);
         }
     }
+
 
     public String enableDatePickerJavascript() {
         return String.format("$('#%s').datepicker({changeMonth:true,changeYear:true})", getMarkupId());
