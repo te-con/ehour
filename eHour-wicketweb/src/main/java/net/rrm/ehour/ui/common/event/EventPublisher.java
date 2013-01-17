@@ -22,103 +22,75 @@ import org.apache.wicket.Page;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
-public class EventPublisher
-{
-	private EventPublisher() {
-	}
-	
-	// purely for junit testing
-	public static AjaxEventListener listenerHook;
+public class EventPublisher {
+    private EventPublisher() {
+    }
 
-	/**
-	 * Publish ajax event to container and upwards upto and including the page
-	 */
-	public static void publishAjaxEvent(Component container, AjaxEvent event)
-	{
-		notifyHook(event);
+    // purely for junit testing
+    public static AjaxEventListener listenerHook;
 
-		recursivePublishAjaxEvent(container, event);
-	}
+    /**
+     * Publish ajax event to container and upwards upto and including the page
+     */
+    public static void publishAjaxEvent(Component container, AjaxEvent event) {
+        notifyHook(event);
 
-	private static void recursivePublishAjaxEvent(Component container, AjaxEvent event)
-	{
-		boolean proceed = true;
+        recursivePublishAjaxEvent(container, event);
+    }
 
-		if (container instanceof AjaxEventListener)
-		{
-			proceed = ((AjaxEventListener)container).ajaxEventReceived(event);
-		}
-		
-		if (proceed && !(container instanceof Page))
-		{
-			MarkupContainer parent = container.getParent();
-			
-			if (parent == null)
-			{
-				parent = container.getPage();
-			}
-			
-			recursivePublishAjaxEvent(parent, event);
-		}
-	}
-	
-	/**
-	 * Publish ajax event to page itself and then all it's children
-	 */
-	public static void publishAjaxEventToPageChildren(MarkupContainer parent, AjaxEvent event)
-	{
-		notifyHook(event);
+    private static void recursivePublishAjaxEvent(Component container, AjaxEvent event) {
+        boolean proceed = true;
 
-		IVisitor<Component> visitor = new AjaxEventVisitor(event);
-		
-		visitor.component(parent.getPage());
-		parent.getPage().visitChildren(AjaxEventListener.class, visitor);
-	}
-	
-	/**
-	 * Publish ajax event to children of parent container
-	 * @param parent
-	 * @param event
-	 */
-	public static void publishAjaxEventToParentChildren(MarkupContainer parent, AjaxEvent event)
-	{
-		notifyHook(event);
-		
-		parent.visitChildren(AjaxEventListener.class, new AjaxEventVisitor(event));
-	}	
-	
-	private static void notifyHook(AjaxEvent event)
-	{
-		if (listenerHook != null)
-		{
-			listenerHook.ajaxEventReceived(event);
-		}
-	}
-	
-	private static class AjaxEventVisitor implements IVisitor<Component>
-	{
-		private AjaxEvent event;
-		
-		private AjaxEventVisitor(AjaxEvent ajaxEvent)
-		{
-			this.event = ajaxEvent;
-		}
+        if (container instanceof AjaxEventListener) {
+            proceed = ((AjaxEventListener) container).ajaxEventReceived(event);
+        }
 
-		public Object component(Component component)
-		{
-			boolean proceed = true;
-			
-			if (component instanceof AjaxEventListener)
-			{
-				proceed = ((AjaxEventListener)component).ajaxEventReceived(event);
-			}
-			
-			return proceed ? IVisitor.CONTINUE_TRAVERSAL : IVisitor.STOP_TRAVERSAL;
-		}
+        if (proceed && !(container instanceof Page)) {
+            MarkupContainer parent = container.getParent();
 
-        @Override
+            if (parent == null) {
+                parent = container.getPage();
+            }
+
+            recursivePublishAjaxEvent(parent, event);
+        }
+    }
+
+    /**
+     * Publish ajax event to children of parent container
+     *
+     * @param parent
+     * @param event
+     */
+    public static void publishAjaxEventToParentChildren(MarkupContainer parent, AjaxEvent event) {
+        notifyHook(event);
+
+        parent.visitChildren(AjaxEventListener.class, new AjaxEventVisitor(event));
+    }
+
+    private static void notifyHook(AjaxEvent event) {
+        if (listenerHook != null) {
+            listenerHook.ajaxEventReceived(event);
+        }
+    }
+
+    private static class AjaxEventVisitor implements IVisitor<Component, Void> {
+        private AjaxEvent event;
+
+        private AjaxEventVisitor(AjaxEvent ajaxEvent) {
+            this.event = ajaxEvent;
+        }
+
         public void component(Component component, IVisit iVisit) {
-            //To change body of implemented methods use File | Settings | File Templates.
+            boolean proceed = true;
+
+            if (component instanceof AjaxEventListener) {
+                proceed = ((AjaxEventListener) component).ajaxEventReceived(event);
+            }
+
+            if (!proceed) {
+                iVisit.stop();
+            }
         }
     }
 }

@@ -39,93 +39,87 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 /**
  * user department form panel
- **/
+ */
 
-public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentAdminBackingBean>
-{
-	private static final long serialVersionUID = -6469066920645156569L;
+public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentAdminBackingBean> {
+    private static final long serialVersionUID = -6469066920645156569L;
 
-	@SpringBean
-	private UserService userService;
-	
-	public DepartmentFormPanel(String id, CompoundPropertyModel<DepartmentAdminBackingBean> model)
-	{
-		super(id, model);
-		
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
-		add(greyBorder);
-		
-		setOutputMarkupId(true);
-		
-		final Form<DepartmentAdminBackingBean> form = new Form<DepartmentAdminBackingBean>("deptForm", model);
-		
-		// name
-		RequiredTextField<String> nameField = new RequiredTextField<String>("department.name");
-		form.add(nameField);
-		nameField.add(new StringValidator.MaximumLengthValidator(64));
-		nameField.setLabel(new ResourceModel("admin.dept.name"));
-		nameField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
-			
-		// code
-		RequiredTextField<String> codeField = new RequiredTextField<String>("department.code");
-		form.add(codeField);
-		codeField.add(new StringValidator.MaximumLengthValidator(16));
-		codeField.setLabel(new ResourceModel("admin.dept.code"));
-		codeField.add(new ValidatingFormComponentAjaxBehavior());
-		form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
-		
-		// data save label
-		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
-	
-		//
+    @SpringBean
+    private UserService userService;
+
+    public DepartmentFormPanel(String id, CompoundPropertyModel<DepartmentAdminBackingBean> model) {
+        super(id, model);
+
+        GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+        add(greyBorder);
+
+        setOutputMarkupId(true);
+
+        final Form<DepartmentAdminBackingBean> form = new Form<DepartmentAdminBackingBean>("deptForm", model);
+
+        // name
+        RequiredTextField<String> nameField = new RequiredTextField<String>("department.name");
+        form.add(nameField);
+        nameField.add(StringValidator.maximumLength(64));
+        nameField.setLabel(new ResourceModel("admin.dept.name"));
+        nameField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
+
+        // code
+        RequiredTextField<String> codeField = new RequiredTextField<String>("department.code");
+        form.add(codeField);
+        codeField.add(StringValidator.maximumLength(16));
+        codeField.setLabel(new ResourceModel("admin.dept.code"));
+        codeField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));
+
+        // data save label
+        form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
+
+        //
 
         boolean deletable = model.getObject().getDepartment().isDeletable();
         FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(DepartmentAjaxEventType.DEPARTMENT_DELETED)
                 .withSubmitEventType(DepartmentAjaxEventType.DEPARTMENT_UPDATED);
         FormUtil.setSubmitActions(formConfig);
-		
-		greyBorder.add(form);
-	}
-	
-	
-	/**
-	 * Persist dept
-	 * @param backingBean
-	 * @throws ObjectNotUniqueException 
-	 */
-	private void persistDepartment(DepartmentAdminBackingBean backingBean) throws ObjectNotUniqueException
-	{
-		userService.persistUserDepartment(backingBean.getDepartment());
-	}
-	
-	
-	/**
-	 * Delete department
-	 * @param backingBean
-	 */
-	private void deleteDepartment(DepartmentAdminBackingBean backingBean)
-	{
-		userService.deleteDepartment(backingBean.getDepartment().getDepartmentId());
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
-	 */
-	@Override
-	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
-	{
-		DepartmentAdminBackingBean departmentBackingBean = (DepartmentAdminBackingBean) backingBean;
-		
-		if (type == DepartmentAjaxEventType.DEPARTMENT_UPDATED)
-		{
-			persistDepartment(departmentBackingBean);
-		}
-		else if (type == DepartmentAjaxEventType.DEPARTMENT_DELETED)
-		{
-			deleteDepartment(departmentBackingBean);
-		}		
-	}	
+
+        greyBorder.add(form);
+    }
+
+
+    /**
+     * Persist dept
+     *
+     * @param backingBean
+     * @throws ObjectNotUniqueException
+     */
+    private void persistDepartment(DepartmentAdminBackingBean backingBean) throws ObjectNotUniqueException {
+        userService.persistUserDepartment(backingBean.getDepartment());
+    }
+
+
+    /**
+     * Delete department
+     *
+     * @param backingBean
+     */
+    private void deleteDepartment(DepartmentAdminBackingBean backingBean) {
+        userService.deleteDepartment(backingBean.getDepartment().getDepartmentId());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
+     */
+    @Override
+    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+        DepartmentAdminBackingBean departmentBackingBean = (DepartmentAdminBackingBean) backingBean;
+
+        if (type == DepartmentAjaxEventType.DEPARTMENT_UPDATED) {
+            persistDepartment(departmentBackingBean);
+        } else if (type == DepartmentAjaxEventType.DEPARTMENT_DELETED) {
+            deleteDepartment(departmentBackingBean);
+        }
+    }
 }

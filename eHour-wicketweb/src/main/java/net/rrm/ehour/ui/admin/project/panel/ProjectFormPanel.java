@@ -36,9 +36,7 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.UserComparator;
 import net.rrm.ehour.user.service.UserService;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.*;
@@ -107,7 +105,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         // name
         RequiredTextField<String> nameField = new RequiredTextField<String>("project.name");
         parent.add(nameField);
-        nameField.add(new StringValidator.MaximumLengthValidator(64));
+        nameField.add(StringValidator.maximumLength(64));
         nameField.setLabel(new ResourceModel("admin.project.name"));
         nameField.add(new ValidatingFormComponentAjaxBehavior());
         parent.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
@@ -115,7 +113,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         // project code
         RequiredTextField<String> codeField = new RequiredTextField<String>("project.projectCode");
         parent.add(codeField);
-        codeField.add(new StringValidator.MaximumLengthValidator(16));
+        codeField.add(StringValidator.maximumLength(16));
         codeField.setLabel(new ResourceModel("admin.project.code"));
         codeField.add(new ValidatingFormComponentAjaxBehavior());
         parent.add(new AjaxFormComponentFeedbackIndicator("codeValidationError", codeField));

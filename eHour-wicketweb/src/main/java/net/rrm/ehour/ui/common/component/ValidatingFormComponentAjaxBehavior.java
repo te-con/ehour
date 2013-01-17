@@ -17,61 +17,50 @@
 package net.rrm.ehour.ui.common.component;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.Component.IVisitor;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.feedback.IFeedback;
 import org.apache.wicket.util.time.Duration;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 
 /**
  * Validate formcomponent without submitting the form
  */
 
-public class ValidatingFormComponentAjaxBehavior extends AjaxFormComponentUpdatingBehavior
-{
-	private static final long serialVersionUID = 5521068510893118073L;
+public class ValidatingFormComponentAjaxBehavior extends AjaxFormComponentUpdatingBehavior {
+    private static final long serialVersionUID = 5521068510893118073L;
 
-	public ValidatingFormComponentAjaxBehavior()
-	{
-		super("onchange");
-		
-		setThrottleDelay(Duration.ONE_SECOND);
-	}
-	
-	@Override
-	protected void onError(final AjaxRequestTarget target, RuntimeException e)
-	{
-		super.onError(target, e);
-		addFeedbackPanels(target);
+    public ValidatingFormComponentAjaxBehavior() {
+        super("onchange");
 
-	}
+        setThrottleDelay(Duration.ONE_SECOND);
+    }
 
-	@Override
-	protected void onUpdate(final AjaxRequestTarget target)
-	{
-		addFeedbackPanels(target);
-	}
-	
-	private void addFeedbackPanels(final AjaxRequestTarget target)
-	{
-		getComponent().getPage().visitChildren(IFeedback.class, new IVisitor<Component>()
-		{
-			public Object component(Component component)
-			{
-				if (component instanceof AjaxFormComponentFeedbackIndicator)
-				{
-					if ( ((AjaxFormComponentFeedbackIndicator)component).getIndicatorFor() == getFormComponent())
-					{
-						target.add(component);
-					}
-				}
-				else
-				{
-					target.add(component);
-				}
-			
-				return IVisitor.CONTINUE_TRAVERSAL;
-			}
-		});		
-	}
+    @Override
+    protected void onError(final AjaxRequestTarget target, RuntimeException e) {
+        super.onError(target, e);
+        addFeedbackPanels(target);
+
+    }
+
+    @Override
+    protected void onUpdate(final AjaxRequestTarget target) {
+        addFeedbackPanels(target);
+    }
+
+    private void addFeedbackPanels(final AjaxRequestTarget target) {
+        getComponent().getPage().visitChildren(IFeedback.class, new IVisitor<Component, Void>() {
+            @Override
+            public void component(Component component, IVisit visit) {
+                if (component instanceof AjaxFormComponentFeedbackIndicator) {
+                    if (((AjaxFormComponentFeedbackIndicator) component).getIndicatorFor() == getFormComponent()) {
+                        target.add(component);
+                    }
+                } else {
+                    target.add(component);
+                }
+            }
+        });
+    }
 }

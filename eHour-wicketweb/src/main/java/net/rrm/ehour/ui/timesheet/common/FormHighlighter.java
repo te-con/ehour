@@ -19,10 +19,11 @@ package net.rrm.ehour.ui.timesheet.common;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetTextField;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.IFormVisitorParticipant;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
 import java.io.Serializable;
@@ -32,20 +33,21 @@ import java.io.Serializable;
  *
  * @author Thies
  */
-public class FormHighlighter implements IVisitor, Serializable {
+public class FormHighlighter implements IVisitor<FormComponent<?>, Object>, Serializable {
     private static final long serialVersionUID = 6905807838333630105L;
 
     private transient AjaxRequestTarget target;
 
-    private	static final Logger LOGGER = Logger.getLogger(FormHighlighter.class);
+    private static final Logger LOGGER = Logger.getLogger(FormHighlighter.class);
 
     public FormHighlighter(AjaxRequestTarget target) {
         this.target = target;
     }
 
-    public Object formComponent(IFormVisitorParticipant visitor) {
-        FormComponent<?> formComponent = (FormComponent<?>) visitor;
 
+
+    @Override
+    public void component(FormComponent<?> formComponent, IVisit<Object> visit) {
         if (target != null) {
             String markupId = formComponent.getMarkupId();
 
@@ -74,15 +76,13 @@ public class FormHighlighter implements IVisitor, Serializable {
                     }
 
                     target.add(formComponent);
-                }else {
+                } else {
                     LOGGER.trace(markupId + " is not changed");
                 }
 
                 ttField.rememberCurrentValue();
             }
         }
-
-        return formComponent;
     }
 
     @SuppressWarnings("serial")

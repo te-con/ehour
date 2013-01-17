@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.audit.model;
 
+import java.util.Date;
 import java.util.Iterator;
 
 import net.rrm.ehour.audit.service.AuditService;
@@ -28,7 +29,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class AuditReportDataProvider extends SortableDataProvider<Audit> {
+public class AuditReportDataProvider extends SortableDataProvider<Audit, Date> {
     private static final long serialVersionUID = 8795552030531153903L;
 
     @SpringBean
@@ -42,14 +43,16 @@ public class AuditReportDataProvider extends SortableDataProvider<Audit> {
         this.request = request;
     }
 
-    public Iterator<Audit> iterator(int first, int count) {
-        return auditService.findAudits(request, first, count).iterator();
+    @Override
+    public Iterator iterator(long first, long count) {
+        return auditService.findAudits(request, (int)first, (int)count).iterator();
     }
 
-    public int size() {
+    public long size() {
         return auditService.getAuditCount(request).intValue();
     }
 
+    @Override
     public IModel<Audit> model(Audit audit) {
         return new CompoundPropertyModel<Audit>(audit);
     }
