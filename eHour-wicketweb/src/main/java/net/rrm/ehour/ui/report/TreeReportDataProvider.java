@@ -41,30 +41,26 @@ public class TreeReportDataProvider implements IDataProvider<TreeReportElement>
 	{
 		this.nodes = nodes;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#iterator(int, int)
-	 */
-	public Iterator<TreeReportElement> iterator(int first, int count)
-	{
-		return nodes.subList(first, first + count).iterator();
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
-	 */
+    /*
+     * (non-Javadoc)
+     * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
+     */
 	public IModel<TreeReportElement> model(TreeReportElement object)
 	{
 		return new Model<TreeReportElement>(object);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.repeater.data.IDataProvider#size()
-	 */
-	public int size()
+    @Override
+    public Iterator<? extends TreeReportElement> iterator(long first, long count) {
+        return nodes.subList((int)first, (int)(first + count)).iterator();
+    }
+
+    /*
+         * (non-Javadoc)
+         * @see org.apache.wicket.markup.repeater.data.IDataProvider#size()
+         */
+	public long size()
 	{
 		return nodes.size();
 	}
