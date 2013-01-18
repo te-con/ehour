@@ -27,7 +27,6 @@ import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 import java.awt.*;
 import java.io.BufferedInputStream;
@@ -40,19 +39,17 @@ import java.io.InputStream;
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-public abstract class ImageUploadForm<T> extends Form<T>
-{
+public abstract class ImageUploadForm<T> extends Form<T> {
     private static final long serialVersionUID = 808442352504816831L;
     private FileUploadField fileUploadField;
 
     private static final Logger LOGGER = Logger.getLogger(ImageUploadForm.class);
 
-    public ImageUploadForm(String id, IModel<T> model)
-    {
+    public ImageUploadForm(String id, IModel<T> model) {
         super(id, model);
 
         setMultiPart(true);
-        add(fileUploadField = new FileUploadField("fileInput", new Model<FileUpload>()));
+        add(fileUploadField = new FileUploadField("fileInput"));
 
         add(new SubmitLink("uploadSubmit"));
     }
@@ -61,19 +58,15 @@ public abstract class ImageUploadForm<T> extends Form<T>
      * @see org.apache.wicket.markup.html.form.Form#onSubmit()
      */
     @Override
-    protected void onSubmit()
-    {
+    protected void onSubmit() {
         final FileUpload upload = fileUploadField.getFileUpload();
 
-        if (upload != null)
-        {
-            try
-            {
+        if (upload != null) {
+            try {
                 ImageLogo logo = parseImageLogo(upload);
 
                 uploadImage(logo);
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 LOGGER.warn("While uploading new image: " + e.getMessage());
                 uploadImageError();
             }
@@ -85,8 +78,7 @@ public abstract class ImageUploadForm<T> extends Form<T>
     protected abstract void uploadImageError();
 
 
-    private ImageLogo parseImageLogo(FileUpload upload) throws IOException, ImageReadException
-    {
+    private ImageLogo parseImageLogo(FileUpload upload) throws IOException, ImageReadException {
         byte[] bytes = getBytes(upload);
 
         ImageLogo logo = new ImageLogo();
@@ -101,23 +93,19 @@ public abstract class ImageUploadForm<T> extends Form<T>
         return logo;
     }
 
-    private byte[] getBytes(FileUpload upload) throws IOException
-    {
+    private byte[] getBytes(FileUpload upload) throws IOException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         InputStream in = new BufferedInputStream(upload.getInputStream());
 
-        try
-        {
+        try {
             int b;
 
-            while ((b = in.read()) != -1)
-            {
+            while ((b = in.read()) != -1) {
                 bout.write(b);
             }
 
             return bout.toByteArray();
-        } finally
-        {
+        } finally {
             IoUtil.close(in);
         }
     }
