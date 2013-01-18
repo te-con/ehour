@@ -23,11 +23,14 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
 import net.rrm.ehour.ui.audit.report.AuditReport;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackHeadersToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -37,16 +40,17 @@ import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.OddEvenItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.value.ValueMap;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> implements IHeaderContributor {
@@ -96,15 +100,16 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
         dataContainer.setOutputMarkupId(true);
         final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 
-        IColumn<Audit>[] columns = new IColumn[4];
-        columns[0] = new DateColumn(new ResourceModel("audit.report.column.date"), config);
-        columns[1] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.lastName"), "userFullName");
-        columns[2] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.action"), "action");
-        columns[3] = new PropertyColumn<Audit>(new ResourceModel("audit.report.column.type"), "auditActionType.value");
+
+        ArrayList<IColumn<Audit, Date>> columns = new ArrayList<IColumn<Audit, Date>>();
+        columns.add(new DateColumn(new ResourceModel("audit.report.column.date"), config));
+        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.lastName"), "userFullName");
+        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.action"), "action");
+        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.type"), "auditActionType.value");
 
 
         AuditReportDataProvider dataProvider = new AuditReportDataProvider(getReportRequest(model));
-        DataTable<Audit> table = new DataTable<Audit>("data", columns, dataProvider, 20) {
+        DataTable<Audit, Date> table = new DataTable<Audit, Date>("data", columns, dataProvider, 20) {
             @Override
             protected Item<Audit> newRowItem(String id, int index, IModel<Audit> model) {
                 return new OddEvenItem<Audit>(id, index, model);
@@ -134,7 +139,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
         response.render(cssReferenceHeaderItem);
     }
 
-    private static class DateColumn extends AbstractColumn<Audit> {
+    private static class DateColumn extends AbstractColumn<Audit, Date> {
         private static final long serialVersionUID = -5517077439980001335L;
         private EhourConfig config;
 
