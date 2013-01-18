@@ -103,9 +103,9 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
 
         ArrayList<IColumn<Audit, Date>> columns = new ArrayList<IColumn<Audit, Date>>();
         columns.add(new DateColumn(new ResourceModel("audit.report.column.date"), config));
-        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.lastName"), "userFullName");
-        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.action"), "action");
-        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.type"), "auditActionType.value");
+        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.lastName"), "userFullName"));
+        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.action"), "action"));
+        columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.type"), "auditActionType.value"));
 
 
         AuditReportDataProvider dataProvider = new AuditReportDataProvider(getReportRequest(model));
