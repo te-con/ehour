@@ -144,10 +144,9 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 		serverMessage.replaceWith(replacementLabel);
 		serverMessage = replacementLabel;
 
-		
-		AjaxRequestTarget target = AjaxRequestTarget.get();
+        AjaxRequestTarget target = getRequestCycle().find(AjaxRequestTarget.class);
 
-		if (target != null)
+        if (target != null)
 		{
 			target.add(serverMessage);
 		}

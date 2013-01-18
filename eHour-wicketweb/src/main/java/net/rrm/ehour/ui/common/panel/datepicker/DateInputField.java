@@ -28,18 +28,16 @@ public class DateInputField extends TextField<Date> implements IHeaderContributo
     }
 
     @Override
-    public <Date> IConverter<Date> getConverter(Class<Date> type) {
-
-        return new IConverter<Date>() {
+    public <C> IConverter<C> getConverter(Class<C> type) {
+        return new IConverter<C>() {
             @Override
-            public Date convertToObject(String value, Locale locale) {
+            public C convertToObject(String value, Locale locale) {
                 try {
                     DateTime time = FORMATTER.parseDateTime(value);
 
-                    java.util.Date date = time.toDate();
-                    return date;
+                    return (C) time.toDate();
                 } catch (IllegalArgumentException iae) {
-                    AjaxRequestTarget target = AjaxRequestTarget.get();
+                    AjaxRequestTarget target = getRequestCycle().find(AjaxRequestTarget.class);
 
                     if (target != null) {
                         DateInputField.this.add(new RedBorderModifier());

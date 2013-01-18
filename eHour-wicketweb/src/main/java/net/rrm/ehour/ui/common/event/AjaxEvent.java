@@ -16,57 +16,49 @@
 
 package net.rrm.ehour.ui.common.event;
 
-import java.io.Serializable;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.request.cycle.RequestCycle;
+
+import java.io.Serializable;
 
 /**
  * Transfer object for ajax events
- **/
+ */
 
-public class AjaxEvent implements Serializable
-{
-	private static final long serialVersionUID = -8723330496152721044L;
-	private AjaxEventType	eventType;
-	private AjaxRequestTarget target;
-	
-	/**
-	 * 
-	 * @param target
-	 * @param eventType
-	 */
-	public AjaxEvent(AjaxEventType eventType)
-	{
-		this(eventType, null);
-	}
+public class AjaxEvent implements Serializable {
+    private static final long serialVersionUID = -8723330496152721044L;
+    private AjaxEventType eventType;
+    private AjaxRequestTarget target;
 
-	public AjaxEvent(AjaxEventType eventType, AjaxRequestTarget target)
-	{
-		this.eventType = eventType;
-		this.target = target;
-	}
+    /**
+     * @param target
+     * @param eventType
+     */
+    public AjaxEvent(AjaxEventType eventType) {
+        this(eventType, null);
+    }
 
-	
-	/**
-	 * @return the target
-	 */
-	public AjaxRequestTarget getTarget()
-	{
-		if (target != null)
-		{
-			return target;
-		}
-		else
-		{
-			return AjaxRequestTarget.get();
-		}
-	}
+    public AjaxEvent(AjaxEventType eventType, AjaxRequestTarget target) {
+        this.eventType = eventType;
+        this.target = target;
+    }
 
-	/**
-	 * @return the eventType
-	 */
-	public AjaxEventType getEventType()
-	{
-		return eventType;
-	}
+
+    /**
+     * @return the target
+     */
+    public AjaxRequestTarget getTarget() {
+        if (target != null) {
+            return target;
+        } else {
+            return RequestCycle.get().find(AjaxRequestTarget.class);
+        }
+    }
+
+    /**
+     * @return the eventType
+     */
+    public AjaxEventType getEventType() {
+        return eventType;
+    }
 }

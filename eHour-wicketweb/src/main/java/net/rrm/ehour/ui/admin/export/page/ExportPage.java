@@ -22,20 +22,16 @@ import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 
 
-public class ExportPage extends AbstractAdminPage<Void>
-{
+public class ExportPage extends AbstractAdminPage<Void> {
     private static final String ID_PARSE_STATUS = "parseStatus";
     private static final String ID_RESTORE_BORDER = "restoreBorder";
 
     private static final long serialVersionUID = 821234996218723175L;
     private Form<Void> form;
 
-    public ExportPage()
-    {
+    public ExportPage() {
         super(new ResourceModel("admin.export.title"), "admin.export.help.header", "admin.export.help.body");
 
         GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("admin.export.title"));
@@ -44,11 +40,9 @@ public class ExportPage extends AbstractAdminPage<Void>
         GreyBlueRoundedBorder backupBorder = new GreyBlueRoundedBorder("backupBorder");
         frame.add(backupBorder);
 
-        backupBorder.add(new Link<Void>("exportLink")
-        {
+        backupBorder.add(new Link<Void>("exportLink") {
             @Override
-            public void onClick()
-            {
+            public void onClick() {
                 // TODO FIXME
 //                ResourceReference exportReference = new PackageResourceReference(ExportDatabase.ID_EXPORT_DB);
 //
@@ -70,8 +64,7 @@ public class ExportPage extends AbstractAdminPage<Void>
         form.add(new PlaceholderPanel(ID_PARSE_STATUS));
     }
 
-    private Form<Void> addUploadForm(String id)
-    {
+    private Form<Void> addUploadForm(String id) {
         Form<Void> form = new Form<Void>(id);
         form.setMultiPart(true);
 
@@ -80,38 +73,31 @@ public class ExportPage extends AbstractAdminPage<Void>
         final FileUploadField file = new FileUploadField("file");
         form.add(file);
 
-        form.add(new AjaxSubmitLink("ajaxSubmit")
-        {
+        form.add(new AjaxSubmitLink("ajaxSubmit") {
             @Override
-            protected void onSubmit(final AjaxRequestTarget target, Form<?> form)
-            {
+            protected void onSubmit(final AjaxRequestTarget target, Form<?> form) {
                 Component replacementPanel;
 
                 String errorMessage;
 
-                if ((errorMessage = isValidUpload(file)) == null)
-                {
+                if ((errorMessage = isValidUpload(file)) == null) {
                     byte[] bytes = file.getFileUpload().getBytes();
                     final String xmlData = new String(bytes);
 
-                    replacementPanel = new AjaxLazyLoadPanel(ID_PARSE_STATUS)
-                    {
+                    replacementPanel = new AjaxLazyLoadPanel(ID_PARSE_STATUS) {
                         @Override
-                        public Component getLazyLoadComponent(String markupId)
-                        {
+                        public Component getLazyLoadComponent(String markupId) {
                             target.appendJavaScript("showHideSpinner(false);");
                             return new ValidateImportPanel(markupId, xmlData);
                         }
 
                         @Override
-                        public Component getLoadingComponent(String markupId)
-                        {
+                        public Component getLoadingComponent(String markupId) {
                             target.appendJavaScript("showHideSpinner(true);");
                             return new Label(markupId, new ResourceModel("admin.import.label.validating"));
                         }
                     };
-                } else
-                {
+                } else {
                     replacementPanel = new Label(ID_PARSE_STATUS, new MessageResourceModel("admin.import.error.invalidFile", this, errorMessage));
                 }
 
@@ -127,29 +113,22 @@ public class ExportPage extends AbstractAdminPage<Void>
         return form;
     }
 
-    private String isValidUpload(FileUploadField field)
-    {
+    private String isValidUpload(FileUploadField field) {
         String errorMessage;
 
-        if (field.getFileUpload() != null)
-        {
+        if (field.getFileUpload() != null) {
             FileUpload upload = field.getFileUpload();
 
-            if (upload.getContentType() == null || !upload.getContentType().toLowerCase().contains("text"))
-            {
+            if (upload.getContentType() == null || !upload.getContentType().toLowerCase().contains("text")) {
                 errorMessage = "Invalid content type";
-            } else if (StringUtils.isBlank(upload.getClientFileName()))
-            {
+            } else if (StringUtils.isBlank(upload.getClientFileName())) {
                 errorMessage = "Empty file";
-            } else if (upload.getBytes() == null || upload.getBytes().length == 0 || upload.getSize() == 0)
-            {
+            } else if (upload.getBytes() == null || upload.getBytes().length == 0 || upload.getSize() == 0) {
                 errorMessage = "Empty file";
-            } else
-            {
+            } else {
                 errorMessage = null;
             }
-        } else
-        {
+        } else {
             errorMessage = "Empty file";
         }
 
@@ -158,28 +137,27 @@ public class ExportPage extends AbstractAdminPage<Void>
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-    {
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         boolean continueWithPropagating = true;
 
-        if (ajaxEvent.getEventType() == ExportAjaxEventType.VALIDATED)
-        {
+        if (ajaxEvent.getEventType() == ExportAjaxEventType.VALIDATED) {
             PayloadAjaxEvent<ParseSession> event = (PayloadAjaxEvent<ParseSession>) ajaxEvent;
             final ParseSession session = event.getPayload();
 
-            Component replacement = new AjaxLazyLoadPanel(ID_PARSE_STATUS)
-            {
+            Component replacement = new AjaxLazyLoadPanel(ID_PARSE_STATUS) {
                 @Override
-                public Component getLazyLoadComponent(String markupId)
-                {
-                    AjaxRequestTarget.get().appendJavascript("showHideSpinner(false);");
+                public Component getLazyLoadComponent(String markupId) {
+                    AjaxRequestTarget target = getRequestCycle().find(AjaxRequestTarget.class);
+
+                    target.appendJavaScript("showHideSpinner(false);");
                     return new ImportPanel(markupId, session);
                 }
 
                 @Override
-                public Component getLoadingComponent(String markupId)
-                {
-                    AjaxRequestTarget.get().appendJavascript("showHideSpinner(true);");
+                public Component getLoadingComponent(String markupId) {
+                    AjaxRequestTarget target = getRequestCycle().find(AjaxRequestTarget.class);
+
+                    target.appendJavaScript("showHideSpinner(true);");
                     return new Label(markupId, new ResourceModel("admin.import.label.restoring"));
                 }
             };
@@ -193,8 +171,7 @@ public class ExportPage extends AbstractAdminPage<Void>
         return continueWithPropagating;
     }
 
-    private void replaceStatusPanel(Component replacement, AjaxRequestTarget target)
-    {
+    private void replaceStatusPanel(Component replacement, AjaxRequestTarget target) {
         replacement.setOutputMarkupId(true);
         form.addOrReplace(replacement);
         target.add(replacement);
