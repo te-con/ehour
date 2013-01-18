@@ -420,8 +420,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         if (ajaxEvent.getEventType() == QuickDateAjaxEventType.DATE_CHANGED) {
             updateDates(ajaxEvent.getTarget());
             updateReportCriteria(ReportCriteriaUpdateType.UPDATE_ALL);
-            ajaxEvent.getTarget().addComponent(customers);
-            ajaxEvent.getTarget().addComponent(projects);
+            ajaxEvent.getTarget().add(customers);
+            ajaxEvent.getTarget().add(projects);
         }
 
         return true;

@@ -92,7 +92,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 
         setupPage();
 
-        ajaxEvent.getTarget().addComponent(tabPanel);
+        ajaxEvent.getTarget().add(tabPanel);
     }
 
     private void updateCriteria(AjaxEvent ajaxEvent) {
@@ -102,7 +102,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
 
         addReportTabs(backingBean);
 
-        ajaxEvent.getTarget().addComponent(tabPanel);
+        ajaxEvent.getTarget().add(tabPanel);
     }
 
 
