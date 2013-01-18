@@ -9,12 +9,7 @@ import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
-/**
- * TODO submit as JIRA issue, isTabVisible -> cache is broken
- * @author thies
- *
- */
-public class TabbedPanel extends AjaxTabbedPanel
+public class TabbedPanel extends AjaxTabbedPanel<ITab>
 {
 	private static final long serialVersionUID = 589057465612946921L;
 
@@ -26,7 +21,8 @@ public class TabbedPanel extends AjaxTabbedPanel
 		super(id, tabs);
 	}
 
-	public void setSelectedTab(int index)
+    @Override
+	public TabbedPanel setSelectedTab(int index)
 	{
 		if (index < 0 || (index >= getTabs().size() && index > 0))
 		{
@@ -65,6 +61,8 @@ public class TabbedPanel extends AjaxTabbedPanel
 		}
 
 		addOrReplace(component);
+
+        return this;
 	}
 	
 	private boolean isTabVisible(int tabIndex)
