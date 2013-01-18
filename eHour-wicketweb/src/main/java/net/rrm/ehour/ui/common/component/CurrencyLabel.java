@@ -19,6 +19,6 @@ public class CurrencyLabel extends Label {
 
     @Override
     public <Currency> IConverter<Currency> getConverter(Class<Currency> type) {
-        return CurrencyConverter.getInstance();
+        return (IConverter<Currency>) CurrencyConverter.getInstance();
     }
 }
