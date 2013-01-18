@@ -128,13 +128,13 @@ public class ExportMonthSelectionPage extends AbstractReportPage<ReportCriteria>
 		ExportCriteriaPanel replacementPanel = createExportCriteriaPanel(ID_SELECTION_FORM);
 		
 		originalForm.replaceWith(replacementPanel);
-		ajaxEvent.getTarget().addComponent(replacementPanel);
+		ajaxEvent.getTarget().add(replacementPanel);
 
 		Label newLabel = getTitleLabel(getEhourWebSession().getNavCalendar());
 		newLabel.setOutputMarkupId(true);
 		titleLabel.replaceWith(newLabel);
 		titleLabel = newLabel;
-		ajaxEvent.getTarget().addComponent(newLabel);
+		ajaxEvent.getTarget().add(newLabel);
 	}
 	
 	
