@@ -20,6 +20,7 @@ import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import org.apache.wicket.Page;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -38,14 +39,13 @@ import java.io.Serializable;
 
 public class Login extends WebPage {
     private static final long serialVersionUID = -134022212692477120L;
-    private static final String EHOUR_USERNAME = "ehour.username";
 
     @Override
     protected void onBeforeRender() {
         EhourWebSession session = EhourWebSession.getSession();
 
         if (session.isSignedIn()) {
-            throw new RedirectException(AuthUtil.getHomepageForRole(session.getRoles()));
+            throw new RestartResponseAtInterceptPageException(AuthUtil.getHomepageForRole(session.getRoles()));
         }
 
         setupForm();
@@ -106,8 +106,6 @@ public class Login extends WebPage {
             } else {
                 error(getLocalizer().getString("login.login.failed", this));
             }
-
-            setRedirect(true);
         }
     }
 
