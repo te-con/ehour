@@ -30,6 +30,12 @@ public class DynamicAttributeModifier extends AttributeModifier {
     private IModel<Boolean> enablingModel;
     private boolean reverseResult;
 
+	public DynamicAttributeModifier(String attribute,
+                                    IModel<?> replaceModel, IModel<Boolean> enablingModel)
+	{
+		this(attribute, replaceModel, enablingModel, false);
+	}
+
     public DynamicAttributeModifier(String attribute,
                                     IModel<?> replaceModel, IModel<Boolean> enablingModel, boolean reverseResult) {
         super(attribute, replaceModel);
