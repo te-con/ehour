@@ -200,7 +200,7 @@ public class TreeReportDataPanel extends Panel {
     private class TreeReportDataView extends DataView<TreeReportElement> {
         private static final long serialVersionUID = 1L;
 
-        private int previousForPage = -1;
+        private long previousForPage = -1;
         private List<Serializable> previousCellValues;
 
         public TreeReportDataView(String id, IDataProvider<TreeReportElement> dataProvider) {
@@ -236,7 +236,7 @@ public class TreeReportDataPanel extends Panel {
 
                         cellLabel = new Label(Integer.toString(column), new Model<Serializable>(cellValue)) {
                             @Override
-                            public IConverter getConverter(Class<?> type) {
+                            public <C> IConverter<C> getConverter(Class<C> type) {
                                 return converter;
                             }
                         };

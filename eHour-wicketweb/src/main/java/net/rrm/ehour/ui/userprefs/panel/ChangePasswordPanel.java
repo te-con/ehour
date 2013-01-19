@@ -114,7 +114,7 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
             } catch (BadCredentialsException bce) {
                 processFormSubmitError(target);
 
-                currentPasswordField.error(new ValidationError().addMessageKey("user.invalidCurrentPassword"));
+                currentPasswordField.error(new ValidationError().addKey("user.invalidCurrentPassword"));
                 target.add(form);
             }
         }
