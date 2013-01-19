@@ -18,6 +18,8 @@ package net.rrm.ehour.ui.common.component;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.ThrottlingSettings;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.feedback.IFeedback;
 import org.apache.wicket.util.time.Duration;
@@ -33,8 +35,13 @@ public class ValidatingFormComponentAjaxBehavior extends AjaxFormComponentUpdati
 
     public ValidatingFormComponentAjaxBehavior() {
         super("onchange");
+    }
 
-        setThrottleDelay(Duration.ONE_SECOND);
+    @Override
+    protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+        super.updateAjaxAttributes(attributes);
+
+        attributes.setThrottlingSettings(new ThrottlingSettings("1", Duration.ONE_SECOND, true));
     }
 
     @Override
