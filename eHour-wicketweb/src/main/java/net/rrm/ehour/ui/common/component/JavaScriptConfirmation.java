@@ -18,48 +18,24 @@ package net.rrm.ehour.ui.common.component;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 /**
  * Javascript confirmation dialog
  */
 
-public class JavaScriptConfirmation extends AttributeModifier
-{
-	private static final long serialVersionUID = -4438660782434392618L;
+public class JavaScriptConfirmation extends AttributeModifier {
+    private static final long serialVersionUID = -4438660782434392618L;
 
-	/**
-	 * 
-	 * @param event
-	 * @param msg
-	 */
-	public JavaScriptConfirmation(String event, String msg)
-	{
-		this(event, new Model<String>(msg));
-	}
+    public JavaScriptConfirmation(String event, IModel<String> msg) {
+        super(event, msg);
+    }
 
-	/**
-	 * 
-	 * @param event
-	 * @param msg
-	 */
-	public JavaScriptConfirmation(String event, IModel<String> msg)
-	{
-		super(event, true, msg);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.AttributeModifier#newValue(java.lang.String, java.lang.String)
-	 */
-	protected String newValue(final String currentValue, final String replacementValue)
-	{
-		String result = "if (confirm('" + replacementValue + "')) { ";
-		
-		if (currentValue != null)
-		{
-			result = result + currentValue + "; } else { return false; }";
-		}
-		return result;
-	}
+    protected String newValue(final String currentValue, final String replacementValue) {
+        String result = "if (confirm('" + replacementValue + "')) { ";
+
+        if (currentValue != null) {
+            result = result + currentValue + "; } else { return false; }";
+        }
+        return result;
+    }
 }

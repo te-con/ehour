@@ -32,6 +32,9 @@ import net.rrm.ehour.ui.report.TreeReportElement;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.CssReferenceHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -94,8 +97,13 @@ public class TreeReportDataPanel extends Panel {
         addHeaderColumns(blueBorder);
         addReportData(reportModel, blueBorder);
         addGrandTotal(reportModel, blueBorder);
+    }
 
-        add(new CssResourceReference(TreeReportDataPanel.class, "style/reportStyle.css"));
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        CssReferenceHeaderItem cssReferenceHeaderItem = CssHeaderItem.forReference(new PackageResourceReference(TreeReportDataPanel.class, "style/reportStyle.css"));
+        response.render(cssReferenceHeaderItem);
     }
 
     private void addGrandTotal(TreeReportModel reportModel, WebMarkupContainer parent) {
