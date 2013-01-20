@@ -20,7 +20,6 @@ import net.rrm.ehour.ui.test.StrictWicketTester;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
-import org.apache.wicket.settings.Settings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.tester.DummyPanelPage;
 import org.junit.After;
@@ -44,7 +43,7 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester {
         webApp = new TestEhourWebApplication() {
             @Override
             protected void springInjection() {
-                addComponentInstantiationListener(new SpringComponentInjector(this, getMockContext(), true));
+                getComponentInstantiationListeners().add((new SpringComponentInjector(this, getMockContext(), true)));
             }
         };
 
@@ -60,16 +59,16 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester {
 
 
     private void bypassStringResourceLoading() {
-        ((Settings) webApp.getApplicationSettings()).addStringResourceLoader(new IStringResourceLoader() {
-
-            public String loadStringResource(Component component, String key) {
+        webApp.getResourceSettings().getStringResourceLoaders().add(new IStringResourceLoader() {
+            @Override
+            public String loadStringResource(Class<?> clazz, String key, Locale locale, String style, String variation) {
                 return key;
             }
 
-            public String loadStringResource(Class<?> clazz, String key, Locale locale, String style) {
+            @Override
+            public String loadStringResource(Component component, String key, Locale locale, String style, String variation) {
                 return key;
             }
-
         });
     }
 

@@ -109,10 +109,6 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
         return authenticatedUser;
     }
 
-    public void setAuthenticatedUser(User authenticatedUser) {
-        this.authenticatedUser = authenticatedUser;
-    }
-
     public void setAuthorizedRoles(Roles authorizedRoles) {
         this.authorizedRoles = authorizedRoles;
     }
@@ -120,19 +116,6 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
     public EhourWebSession getSession() {
         return session;
     }
-
-//    protected ISessionStore newSessionStore() {
-//        return new HttpSessionStore(this) {
-//            @Override
-//            public Session lookup(Request request) {
-//                return session;
-//            }
-//        };
-//    }
-//
-//    protected WebResponse newWebResponse(final HttpServletResponse servletResponse) {
-//        return new WebResponse(servletResponse);
-//    }
 
     @Override
     protected void outputDevelopmentModeWarning() {

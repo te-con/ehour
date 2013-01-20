@@ -32,13 +32,11 @@ import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
 import org.apache.wicket.Component;
-import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.ITestPageSource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,7 +52,7 @@ public class GlobalReportPageTest extends AbstractSpringWebAppTester implements 
     private MockReportTabBuilder mockReportTabCommand;
     protected ReportCriteriaService reportCriteriaService;
     protected AggregateReportService aggregateReportService;
-    protected DetailedReportService  detailedReportService;
+    protected DetailedReportService detailedReportService;
     protected ReportData data;
     protected ReportCriteria reportCriteria;
 
@@ -128,20 +126,14 @@ public class GlobalReportPageTest extends AbstractSpringWebAppTester implements 
     }
 
     private void startPage() {
-        getTester().startPage(new ITestPageSource() {
-
-            public Page getTestPage() {
-                return new GlobalReportPage(mockReportTabCommand);
-            }
-        });
+        getTester().startComponentInPage(new GlobalReportPage(mockReportTabCommand));
 
         getTester().assertRenderedPage(GlobalReportPage.class);
         getTester().assertNoErrorMessage();
     }
 
     @Before
-    public final void before() throws Exception
-    {
+    public final void before() throws Exception {
         reportCriteriaService = createMock(ReportCriteriaService.class);
         getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 

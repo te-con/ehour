@@ -33,19 +33,20 @@ public class StrictFormTester extends FormTester
 		super(path, workingForm, wicketTester, fillBlankString);
 	}
 	
-	public void selectMultiple(String formComponentId, int[] indexes)
+	public FormTester selectMultiple(String formComponentId, int[] indexes)
 	{
 		checkComponentExistence(formComponentId);
 		super.selectMultiple(formComponentId, indexes);
-	}
+        return this;
+    }
 
 	@Override
-	public void setValue(final String formComponentId, final String value)
+	public FormTester setValue(final String formComponentId, final String value)
 	{
-		// not hyper efficient since the lookup is done twice (one in the super) but heck, it's testing env
 		checkComponentExistence(formComponentId);
 		super.setValue(formComponentId, value);
-	}	
+        return this;
+    }
 
 	private void checkComponentExistence(String formComponentId)
 	{

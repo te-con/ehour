@@ -6,7 +6,7 @@ import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.apache.wicket.model.CompoundPropertyModel
 import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean
 import net.rrm.ehour.domain.ProjectObjectMother
-import org.apache.wicket.util.tester.{DummyPanelPage, ITestPanelSource}
+import org.apache.wicket.util.tester.DummyPanelPage
 import org.easymock.EasyMock._
 import net.rrm.ehour.project.service.ProjectService
 import net.rrm.ehour.user.service.UserService
@@ -57,8 +57,6 @@ class ProjectFormPanelTest extends AbstractSpringWebAppTester with FunSuite with
   }
 
   def startPanel(model: CompoundPropertyModel[ProjectAdminBackingBean]) {
-    tester.startPanel(new ITestPanelSource {
-      override def getTestPanel(panelId: String) = new ProjectFormPanel(panelId, model)
-    })
+    tester.startComponentInPage(new ProjectFormPanel("id", model))
   }
 }

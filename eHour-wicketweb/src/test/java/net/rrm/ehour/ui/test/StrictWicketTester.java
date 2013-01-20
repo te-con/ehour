@@ -16,48 +16,28 @@
 
 package net.rrm.ehour.ui.test;
 
-import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.FormTester;
-import org.apache.wicket.util.tester.ITestPageSource;
-import org.apache.wicket.util.tester.ITestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 
 /**
- * WicketTester with some enhancements: 
- *  - uses a StrictFormTester
- *  - WICKET-254 inclusion
- **/
+ * WicketTester with some enhancements:
+ * - uses a StrictFormTester
+ * - WICKET-254 inclusion
+ */
 
-public class StrictWicketTester extends WicketTester
-{
-	public StrictWicketTester(WebApplication webApplication)
-	{
-		super(webApplication);
-	}
-	
-	public final Panel startPanelWithHead(final ITestPanelSource testPanelSource)
-	{
-		return (Panel)startPage(new ITestPageSource()
-		{
-			private static final long serialVersionUID = 1L;
+public class StrictWicketTester extends WicketTester {
+    public StrictWicketTester(WebApplication webApplication) {
+        super(webApplication);
+    }
 
-			public Page getTestPage()
-			{
-				return new DummyHeadPanelPage(testPanelSource);
-			}
-		}).get(DummyHeadPanelPage.TEST_PANEL_ID);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.util.getTester().BaseWicketTester#newFormTester(java.lang.String, boolean)
-	 */
-	@Override
-	public FormTester newFormTester(String path, boolean fillBlankString)
-	{
-		return new StrictFormTester(path, (Form<?>)getComponentFromLastRenderedPage(path), this, fillBlankString);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.apache.wicket.util.getTester().BaseWicketTester#newFormTester(java.lang.String, boolean)
+     */
+    @Override
+    public FormTester newFormTester(String path, boolean fillBlankString) {
+        return new StrictFormTester(path, (Form<?>) getComponentFromLastRenderedPage(path), this, fillBlankString);
+    }
 }

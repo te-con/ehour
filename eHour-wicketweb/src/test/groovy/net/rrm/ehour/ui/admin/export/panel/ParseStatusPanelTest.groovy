@@ -4,10 +4,9 @@ import net.rrm.ehour.export.service.ParseSession
 import net.rrm.ehour.persistence.export.dao.ExportType
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import org.apache.wicket.markup.html.list.ListView
-import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.Model
-import org.apache.wicket.util.tester.ITestPanelSource
 import org.junit.Test
+
 import static org.junit.Assert.assertEquals
 
 /**
@@ -52,13 +51,6 @@ class ParseStatusPanelTest extends AbstractSpringWebAppTester
 
   private void startPanel(final ParseSession status)
   {
-    tester.startPanel(new ITestPanelSource()
-    {
-      @Override
-      Panel getTestPanel(String panelId)
-      {
-        return new ParseStatusPanel(panelId, new Model<ParseSession>(status))
-      }
-    })
+    tester.startComponentInPage(new ParseStatusPanel("id", new Model<ParseSession>(status)))
   }
 }

@@ -23,7 +23,6 @@ import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.DummyPanelPage;
-import org.apache.wicket.util.tester.ITestPanelSource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,62 +30,48 @@ import static org.easymock.EasyMock.*;
 
 /**
  * Created on Mar 17, 2009, 6:39:39 AM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester
-{
-	private AggregateReportService aggregateReportService;
+public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester {
+    private AggregateReportService aggregateReportService;
 
 
-	@Before
-	public void setup()
-	{
-		aggregateReportService = createMock(AggregateReportService.class);
-		mockContext.putBean("aggregateReportService", aggregateReportService);
-	}
+    @Before
+    public void setup() {
+        aggregateReportService = createMock(AggregateReportService.class);
+        mockContext.putBean("aggregateReportService", aggregateReportService);
+    }
 
-	@Test
-	public void shouldRenderReportPanel()
-	{
-		setupExpectations();
-		
-		replay(aggregateReportService);
-		
-		startReportPanel();
+    @Test
+    public void shouldRenderReportPanel() {
+        setupExpectations();
+
+        replay(aggregateReportService);
+
+        startReportPanel();
 
         tester.assertRenderedPage(DummyPanelPage.class);
-		tester.assertNoErrorMessage();
+        tester.assertNoErrorMessage();
 
-		verify(aggregateReportService);
-	}
+        verify(aggregateReportService);
+    }
 
-	protected void setupExpectations()
-	{
-		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-			.andReturn(AggregateReportDataObjectMother.getAssignmentReportData())
-			.anyTimes();
-	}
+    protected void setupExpectations() {
+        expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
+                .andReturn(AggregateReportDataObjectMother.getAssignmentReportData())
+                .anyTimes();
+    }
 
-	@SuppressWarnings("serial")
-	protected Panel startReportPanel()
-	{
-		return tester.startPanel(new ITestPanelSource(){
-	
-			public Panel getTestPanel(String panelId)
-			{
-				return createReportPanel(panelId, getAggregateReport());
-			}
-		});
-	}
-	
-	public AggregateReportService getAggregateReportService()
-	{
-		return aggregateReportService;
-	}
-	
-	protected abstract TreeReportModel getAggregateReport();
-	
-	protected abstract Panel createReportPanel(String panelId, TreeReportModel reportModel);
+    protected Panel startReportPanel() {
+        return tester.startComponentInPage(createReportPanel("id", getAggregateReport()));
+    }
 
+    public AggregateReportService getAggregateReportService() {
+        return aggregateReportService;
+    }
+
+    protected abstract TreeReportModel getAggregateReport();
+
+    protected abstract Panel createReportPanel(String panelId, TreeReportModel reportModel);
 }

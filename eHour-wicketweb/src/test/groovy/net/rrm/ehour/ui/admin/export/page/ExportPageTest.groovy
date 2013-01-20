@@ -7,7 +7,7 @@ import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import org.apache.wicket.Page
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.protocol.http.MockHttpServletRequest
+import org.apache.wicket.protocol.http.mock.MockHttpServletRequest
 import org.apache.wicket.util.file.File
 import org.apache.wicket.util.tester.FormTester
 import org.junit.Before
@@ -15,6 +15,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+
 import static org.mockito.Mockito.verifyZeroInteractions
 import static org.mockito.Mockito.when
 

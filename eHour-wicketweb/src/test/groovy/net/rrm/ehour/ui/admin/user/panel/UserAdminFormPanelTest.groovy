@@ -8,9 +8,7 @@ import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import net.rrm.ehour.ui.common.AdminAction
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.markup.html.form.Form
-import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.CompoundPropertyModel
-import org.apache.wicket.util.tester.ITestPanelSource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
@@ -68,17 +66,9 @@ public class UserAdminFormPanelTest extends AbstractSpringWebAppTester {
 
 
     void startPanel() {
-        tester.startPanel(new ITestPanelSource() {
-            @Override
-            Panel getTestPanel(String panelId) {
-                return new UserAdminFormPanel(panelId,
+        tester.startComponentInPage(new UserAdminFormPanel("id",
                         new CompoundPropertyModel<UserBackingBean>(new UserBackingBean(UserObjectMother.createUser(), AdminAction.NEW)),
                         Arrays.asList(UserRole.ADMIN),
-                        Arrays.asList(UserDepartmentMother.createUserDepartment()))
-
-
-
-            }
-        })
+                        Arrays.asList(UserDepartmentMother.createUserDepartment())))
     }
 }

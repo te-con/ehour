@@ -3,18 +3,14 @@ package net.rrm.ehour.ui.userprefs.panel
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.markup.html.form.Form
-import org.apache.wicket.markup.html.panel.Panel
-import org.apache.wicket.util.tester.ITestPanelSource
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-
-import static org.mockito.Mockito.when
 import org.springframework.security.authentication.BadCredentialsException
 
-import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.doThrow
+import static org.mockito.Mockito.verify
 
 class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
     @Mock
@@ -76,13 +72,6 @@ class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
     }
 
     void startPanel() {
-        tester.startPanel(new ITestPanelSource() {
-            @Override
-            Panel getTestPanel(String panelId) {
-                return new ChangePasswordPanel(panelId, new ChangePasswordBackingBean())
-
-
-            }
-        })
+        tester.startComponentInPage(new ChangePasswordPanel("id", new ChangePasswordBackingBean()))
     }
 }
