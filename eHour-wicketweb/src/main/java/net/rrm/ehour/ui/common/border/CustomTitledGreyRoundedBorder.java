@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.common.border;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 
 /**
@@ -31,13 +30,8 @@ public class CustomTitledGreyRoundedBorder extends Border
 	public CustomTitledGreyRoundedBorder(String id, Component title)
 	{
 		super(id);
-		
-		WebMarkupContainer greyFrame = new WebMarkupContainer("greyFrame");
-		
-		greyFrame.add(title);
-		add(greyFrame);
-		
-		greyFrame.add(getBodyContainer());
+
+        addToBorder(title);
 	}
 
 }
