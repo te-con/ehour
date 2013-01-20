@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.component;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 
 /**
@@ -28,7 +28,7 @@ import org.apache.wicket.markup.html.form.Form;
  *
  * @author Thies
  */
-public abstract class LoadAwareButton extends AjaxFallbackButton {
+public abstract class LoadAwareButton extends AjaxButton {
     private static final long serialVersionUID = -6504165692150025275L;
 
     public LoadAwareButton(String id, Form<?> form) {

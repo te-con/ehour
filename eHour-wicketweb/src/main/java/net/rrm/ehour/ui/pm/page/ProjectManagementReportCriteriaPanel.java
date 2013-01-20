@@ -26,7 +26,7 @@ import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListChoice;
@@ -68,7 +68,7 @@ public class ProjectManagementReportCriteriaPanel extends SidePanel {
 
     protected void addSubmits(Form<?> form) {
         @SuppressWarnings("serial")
-        AjaxFallbackButton submitButton = new LoadAwareButton("submitButton", form) {
+        AjaxButton submitButton = new LoadAwareButton("submitButton", form) {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 EventPublisher.publishAjaxEvent(this, new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
