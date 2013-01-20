@@ -49,6 +49,7 @@ public class DetailedReportPanelTest extends AbstractSpringWebAppTester {
         replay(detailedReportService);
 
         final DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
+        detailedReport.setCacheId("1");
 
         tester.startComponentInPage(new DetailedReportPanel("id", detailedReport));
 

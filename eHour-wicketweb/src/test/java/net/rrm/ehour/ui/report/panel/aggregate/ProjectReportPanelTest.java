@@ -20,28 +20,21 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReportModel;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
-
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * Created on Mar 17, 2009, 6:44:27 AM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class ProjectReportPanelTest extends AbstractReportPanelTest
-{
-	@Override
-	protected Panel createReportPanel(String panelId, TreeReportModel reportModel)
-	{
-		return new ProjectReportPanel(panelId, reportModel);
-	}
+public class ProjectReportPanelTest extends AbstractReportPanelTest {
+    @Override
+    protected Panel createReportPanel(String panelId, TreeReportModel reportModel) {
+        return new ProjectReportPanel(panelId, reportModel);
+    }
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.panel.aggregate.AbstractReportPanelTest#getAggregateReport()
-	 */
-	@Override
-	protected TreeReportModel getAggregateReport()
-	{
-		return new ProjectAggregateReportModel(DetailedReportDataObjectMother.getReportCriteria());
-	}
+    @Override
+    protected TreeReportModel getAggregateReport() {
+        return new ProjectAggregateReportModel(DetailedReportDataObjectMother.getReportCriteria());
+    }
 }
