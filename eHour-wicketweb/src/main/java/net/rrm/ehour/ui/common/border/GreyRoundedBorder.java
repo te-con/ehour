@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.common.border;
 
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
@@ -31,9 +30,8 @@ import org.apache.wicket.model.Model;
 public class GreyRoundedBorder extends Border
 {
 	private static final long serialVersionUID = 7184643596615028876L;
-	protected WebMarkupContainer greyFrame;
-	
-	/**
+
+    /**
 	 * Default border. No title, links and default width 
 	 * @param id
 	 */
@@ -89,29 +87,25 @@ public class GreyRoundedBorder extends Border
 	public GreyRoundedBorder(String id, IModel<String> title, boolean showTitle, Link<?> printLink, Link<?> excelLink)
 	{
 		super(id);
-		
-		greyFrame = new WebMarkupContainer("greyFrame");
 
 		Label	label = new Label("greyTabTitle", title);
-		greyFrame.add(label);
+		addToBorder(label);
 		label.setVisible(showTitle);
 		
 		if (printLink == null)
 		{
 			printLink = HtmlUtil.getInvisibleLink("printLink");
 		}
-		
-		greyFrame.add(printLink);
+
+        addToBorder(printLink);
 		
 		if (excelLink == null)
 		{
 			excelLink = HtmlUtil.getInvisibleLink("excelLink");
 		}
+
+        addToBorder(excelLink);
 		
-		greyFrame.add(excelLink);
-		
-		add(greyFrame);
-		
-		greyFrame.add(getBodyContainer());
+//		greyFrame.add(getBodyContainer());
 	}
 }

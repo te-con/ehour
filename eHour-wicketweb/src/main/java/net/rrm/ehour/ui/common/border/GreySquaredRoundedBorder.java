@@ -39,9 +39,6 @@ public class GreySquaredRoundedBorder extends Border
 	{
 		super(id);
 		
-		WebMarkupContainer greyFrame = new WebMarkupContainer("greyFrame");
-		add(greyFrame);
-		
 		WebMarkupContainer greySquaredFrame = new WebMarkupContainer("greySquaredFrame");
 
 		if (width != null && width != WebGeo.NOT_DEFINED)
@@ -50,7 +47,6 @@ public class GreySquaredRoundedBorder extends Border
 		}
 		
 		greySquaredFrame.add(getBodyContainer());
-		greyFrame.add(greySquaredFrame);
+		addToBorder(greySquaredFrame);
 	}
-
 }
