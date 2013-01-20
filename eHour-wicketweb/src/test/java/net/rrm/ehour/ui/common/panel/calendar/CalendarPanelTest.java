@@ -72,6 +72,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester {
 
         assertEquals(1, hook.events.size());
 
+
         for (AjaxEvent event : hook.events) {
             assertEquals(CalendarAjaxEventType.WEEK_CLICK, event.getEventType());
 
@@ -142,7 +143,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester {
     }
 
     private void startPanel() {
-        tester.startComponentInPage(new CalendarPanel("id", new User(1)));
+        tester.startComponentInPage(new CalendarPanel("panel", new User(1)));
     }
 
     @SuppressWarnings("serial")

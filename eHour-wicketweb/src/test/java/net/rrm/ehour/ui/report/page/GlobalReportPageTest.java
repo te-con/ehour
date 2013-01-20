@@ -126,10 +126,10 @@ public class GlobalReportPageTest extends AbstractSpringWebAppTester implements 
     }
 
     private void startPage() {
-        getTester().startComponentInPage(new GlobalReportPage(mockReportTabCommand));
+        tester.startComponentInPage(new GlobalReportPage(mockReportTabCommand));
 
-        getTester().assertRenderedPage(GlobalReportPage.class);
-        getTester().assertNoErrorMessage();
+        tester.assertRenderedPage(GlobalReportPage.class);
+        tester.assertNoErrorMessage();
     }
 
     @Before

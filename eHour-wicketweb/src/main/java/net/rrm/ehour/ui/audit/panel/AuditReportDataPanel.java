@@ -65,9 +65,6 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
         addComponents(model);
     }
 
-    /**
-     * Add components to the page
-     */
     private void addComponents(IModel<ReportCriteria> model) {
         Border greyBorder = new GreyBlueRoundedBorder("border");
         add(greyBorder);
