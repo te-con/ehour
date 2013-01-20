@@ -21,11 +21,10 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
@@ -61,8 +60,7 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
 
-        CssReferenceHeaderItem cssReferenceHeaderItem = CssHeaderItem.forReference(new PackageResourceReference(OverviewPanel.class, "style/overview.css"));
-        response.render(cssReferenceHeaderItem);
+        response.render(CssHeaderItem.forReference(new CssResourceReference(OverviewPanel.class, "style/overview.css")));
     }
 
 

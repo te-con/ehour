@@ -29,7 +29,6 @@ import net.rrm.ehour.ui.report.panel.TreeReportDataPanel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
@@ -39,7 +38,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.CssResourceReference;
 
 import java.util.ArrayList;
 
@@ -128,7 +127,6 @@ public class PmReportPanel extends AbstractBasePanel<Void> implements IHeaderCon
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
 
-        CssReferenceHeaderItem cssReferenceHeaderItem = CssHeaderItem.forReference(new PackageResourceReference(TreeReportDataPanel.class, "style/reportStyle.css"));
-        response.render(cssReferenceHeaderItem);
+        response.render(CssHeaderItem.forReference(new CssResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
     }
 }

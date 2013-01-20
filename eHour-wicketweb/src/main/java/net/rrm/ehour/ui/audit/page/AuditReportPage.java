@@ -25,17 +25,12 @@ import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
 import net.rrm.ehour.ui.audit.panel.AuditReportDataPanel;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
-
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
-/**
- * @author thies
- *
- */
-public class AuditReportPage extends AbstractAdminPage<String> 
+public class AuditReportPage extends AbstractAdminPage<String>
 {
 	
 	public AuditReportPage()
@@ -63,10 +58,6 @@ public class AuditReportPage extends AbstractAdminPage<String>
 		return new CompoundPropertyModel<ReportCriteria>(criteria);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
-	 */
 	@Override
 	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

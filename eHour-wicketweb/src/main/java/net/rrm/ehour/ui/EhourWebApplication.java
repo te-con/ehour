@@ -52,6 +52,7 @@ import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy;
+import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
@@ -91,6 +92,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             super.init();
             springInjection();
 
+            configureResourceGuard();
+
             getMarkupSettings().setStripWicketTags(true);
             mountPages();
             getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
@@ -103,6 +106,12 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
             initialized = true;
         }
+    }
+
+    private void configureResourceGuard() {
+        SecurePackageResourceGuard guard = new SecurePackageResourceGuard();
+        guard.addPattern("+style/*.css");
+        getResourceSettings().setPackageResourceGuard(guard);
     }
 
     private void registerStringLoader() {

@@ -16,21 +16,17 @@
 
 package net.rrm.ehour.ui.audit.page;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
+import static org.easymock.EasyMock.*;
 
 public class AuditReportPageTest extends AbstractSpringWebAppTester
 {
@@ -54,8 +50,8 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 	
 	private void startPage()
 	{
-		getTester().startPage(AuditReportPage.class);
-		getTester().assertRenderedPage(AuditReportPage.class);
+		tester.startPage(AuditReportPage.class);
+		tester.assertRenderedPage(AuditReportPage.class);
 	}
 	
 	@Test
@@ -69,13 +65,13 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 						AuditConstants.PATH_FORM_BORDER + ":" +
 						AuditConstants.ID_FORM;
 		
-		getTester().executeAjaxEvent(formPath + ":" +
+		tester.executeAjaxEvent(formPath + ":" +
 								AuditConstants.PATH_FORM_SUBMIT,
 								"onclick");
 		
-		getTester().assertRenderedPage(AuditReportPage.class);
+		tester.assertRenderedPage(AuditReportPage.class);
 		
-		getTester().assertNoErrorMessage();
+		tester.assertNoErrorMessage();
 	}
 	
 	

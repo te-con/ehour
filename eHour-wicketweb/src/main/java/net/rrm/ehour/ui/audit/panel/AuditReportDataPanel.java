@@ -34,7 +34,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -47,11 +46,13 @@ import org.apache.wicket.markup.repeater.OddEvenItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> implements IHeaderContributor {
     private static final long serialVersionUID = -2380789244030608920L;
@@ -101,7 +102,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
         final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 
 
-        ArrayList<IColumn<Audit, Date>> columns = new ArrayList<IColumn<Audit, Date>>();
+        List<IColumn<Audit, Date>> columns = new ArrayList<IColumn<Audit, Date>>();
         columns.add(new DateColumn(new ResourceModel("audit.report.column.date"), config));
         columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.lastName"), "userFullName"));
         columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.action"), "action"));
@@ -135,8 +136,8 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
-        CssReferenceHeaderItem cssReferenceHeaderItem = CssHeaderItem.forReference(new PackageResourceReference(AuditReportDataPanel.class, "style/auditStyle.css"));
-        response.render(cssReferenceHeaderItem);
+
+        response.render(CssHeaderItem.forReference(new CssResourceReference(AuditReportDataPanel.class, "auditStyle.css")));
     }
 
     private static class DateColumn extends AbstractColumn<Audit, Date> {
@@ -149,10 +150,6 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
             this.config = config;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator#populateItem(org.apache.wicket.markup.repeater.Item, java.lang.String, org.apache.wicket.model.IModel)
-         */
         public void populateItem(Item<ICellPopulator<Audit>> item, String componentId, IModel<Audit> model) {
             Date date = model.getObject().getDate();
             item.add(new Label(componentId, new DateModel(date, config, DateModel.DATESTYLE_DATE_TIME)));
