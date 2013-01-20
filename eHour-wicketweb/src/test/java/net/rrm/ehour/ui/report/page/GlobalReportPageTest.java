@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
@@ -59,6 +58,8 @@ public class GlobalReportPageTest extends AbstractSpringWebAppTester implements 
     @Before
     public void setup() {
         mockReportTabCommand = new MockReportTabBuilder();
+
+        getMockContext().putBean("reportTabBuilder", mockReportTabCommand);
     }
 
     @Test
@@ -91,8 +92,7 @@ public class GlobalReportPageTest extends AbstractSpringWebAppTester implements 
 
         startPage();
 
-        Component component = tester.getComponentFromLastRenderedPage("");
-        GlobalReportPage page = (GlobalReportPage) component;
+        GlobalReportPage page = (GlobalReportPage) tester.getLastRenderedPage();
 
         AjaxRequestTarget target = createMock(AjaxRequestTarget.class);
         AjaxEvent event = new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED, target);
@@ -126,7 +126,7 @@ public class GlobalReportPageTest extends AbstractSpringWebAppTester implements 
     }
 
     private void startPage() {
-        tester.startComponentInPage(new GlobalReportPage(mockReportTabCommand));
+        tester.startPage(GlobalReportPage.class);
 
         tester.assertRenderedPage(GlobalReportPage.class);
         tester.assertNoErrorMessage();

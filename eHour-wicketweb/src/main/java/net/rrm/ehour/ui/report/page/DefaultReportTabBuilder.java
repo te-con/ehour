@@ -15,10 +15,12 @@ import net.rrm.ehour.ui.report.util.ReportUtil;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class DefaultReportTabBuilder implements ReportTabBuilder {
     private static final long serialVersionUID = -2377556952455077542L;
 

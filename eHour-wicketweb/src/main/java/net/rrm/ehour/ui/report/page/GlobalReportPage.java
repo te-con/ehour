@@ -31,6 +31,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,22 +41,22 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     private static final long serialVersionUID = 6614404841734599622L;
 
     private ReportTabbedPanel tabPanel;
+
+    @SpringBean
     private ReportTabBuilder reportTabCreationBuilder;
 
-    @SuppressWarnings("UnusedDeclaration")
     public GlobalReportPage() {
-        this(new DefaultReportTabBuilder());
-    }
-
-    public GlobalReportPage(ReportTabBuilder reportTabCreationBuilder) {
         super(new ResourceModel("report.global.title"));
-
-        this.reportTabCreationBuilder = reportTabCreationBuilder;
-
-        setupPage();
     }
 
-    private void setupPage() {
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        reset();
+    }
+
+    private void reset() {
         final ReportCriteria reportCriteria = getReportCriteria();
         final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<ReportCriteriaBackingBean>(new ReportCriteriaBackingBean(reportCriteria));
         setDefaultModel(model);
@@ -90,7 +91,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     private void resetCriteria(AjaxEvent ajaxEvent) {
         EhourWebSession.getSession().setUserCriteria(null);
 
-        setupPage();
+        reset();
 
         ajaxEvent.getTarget().add(tabPanel);
     }
