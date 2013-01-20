@@ -343,7 +343,7 @@ public class TimesheetPanel extends Panel implements Serializable {
                 Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
                 item.add(new Label("customer", customer.getName()));
 
-                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), grandTotals, form));
+                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), grandTotals, form, TimesheetPanel.this));
             }
         };
         customers.setReuseItems(true);

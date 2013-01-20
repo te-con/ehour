@@ -31,6 +31,7 @@ import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -65,9 +66,11 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private Form<?> form;
 
     private static final Logger LOGGER = Logger.getLogger(TimesheetRowList.class);
+    private MarkupContainer provider;
 
-    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form) {
+    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider) {
         super(id, model);
+        this.provider = provider;
         setReuseItems(true);
         this.grandTotals = grandTotals;
         this.form = form;
@@ -154,7 +157,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     }
 
     private void createEmptyTimesheetEntry(String id, ListItem<TimesheetRow> item) {
-        Fragment fragment = new Fragment(id, "dayInputHidden", this);
+        Fragment fragment = new Fragment(id, "dayInputHidden", provider);
 
         item.add(fragment);
     }
@@ -168,7 +171,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
      * @return
      */
     private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item) {
-        Fragment fragment = new Fragment(id, "dayInput", this);
+        Fragment fragment = new Fragment(id, "dayInput", provider);
 
         item.add(fragment);
 
