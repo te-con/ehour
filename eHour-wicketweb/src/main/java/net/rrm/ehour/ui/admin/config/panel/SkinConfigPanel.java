@@ -36,9 +36,10 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.http.handler.RedirectRequestHandler;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.util.value.ValueMap;
 
 /**
  * Created on Apr 22, 2009, 4:14:39 PM
@@ -152,12 +153,11 @@ public class SkinConfigPanel extends AbstractConfigPanel
 		final String reportId = report.getCacheId();
 
         PackageResourceReference excelResource = new PackageResourceReference(ExportReportExcel.getId());
-		ValueMap params = new ValueMap();
+		PageParameters params = new PageParameters();
 		params.add("reportId", reportId);
-		
-		excelResource.bind(getApplication());
+
 		CharSequence url = getRequestCycle().urlFor(excelResource, params);
-		
-		getRequestCycle().setRequestTarget(new RedirectRequestTarget(url.toString()));		
+
+        getRequestCycle().scheduleRequestHandlerAfterCurrent(new RedirectRequestHandler(url.toString()));
 	}
 }

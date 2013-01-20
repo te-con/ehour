@@ -48,11 +48,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.util.value.ValueMap;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -85,7 +84,7 @@ public class TreeReportDataPanel extends Panel {
             final String reportId = reportModel.getCacheId();
 
             ResourceReference excelResource = new PackageResourceReference(excelResourceName);
-            ValueMap params = new ValueMap();
+            PageParameters params = new PageParameters();
             params.add("reportId", reportId);
             ResourceLink<Void> excelLink = new ResourceLink<Void>("excelLink", excelResource, params);
             blueBorder.add(excelLink);

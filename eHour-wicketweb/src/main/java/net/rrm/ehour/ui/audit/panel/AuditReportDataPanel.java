@@ -46,9 +46,9 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.OddEvenItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.util.value.ValueMap;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,8 +77,8 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
     }
 
     private void addExcelLink() {
-        ResourceReference excelResource = new ResourceReference("auditReportExcel");
-        ValueMap params = new ValueMap();
+        ResourceReference excelResource = new PackageResourceReference("auditReportExcel");
+        PageParameters params = new PageParameters();
 
         ReportCriteria criteria = (ReportCriteria) AuditReportDataPanel.this.getDefaultModelObject();
 

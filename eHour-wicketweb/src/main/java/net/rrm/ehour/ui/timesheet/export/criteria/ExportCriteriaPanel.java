@@ -31,7 +31,10 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.util.value.ValueMap;
+import org.apache.wicket.request.http.handler.RedirectRequestHandler;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 import java.util.Collection;
 import java.util.List;
@@ -172,14 +175,13 @@ public class ExportCriteriaPanel extends Panel
 			
 			final String reportId = report.getCacheId();
 			
-			ResourceReference excelResource = new ResourceReference(ExportReportExcel.getId());
-			ValueMap params = new ValueMap();
+			ResourceReference excelResource = new PackageResourceReference(ExportReportExcel.getId());
+			PageParameters params = new PageParameters();
 			params.add("reportId", reportId);
 			
-			excelResource.bind(getApplication());
 			CharSequence url = getRequestCycle().urlFor(excelResource, params);
-			
-			getRequestCycle().setRequestTarget(new RedirectRequestTarget(url.toString()));
+
+            getRequestCycle().scheduleRequestHandlerAfterCurrent(new RedirectRequestHandler(url.toString()));
 		}
 	}
 }
