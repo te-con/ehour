@@ -16,6 +16,9 @@ class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
     @Mock
     private UserService userService
 
+    private static FORM_PATH = "id:border:border_body:changePasswordForm"
+
+
     @Before
     void "set up"() {
         MockitoAnnotations.initMocks this
@@ -27,8 +30,7 @@ class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
         startPanel()
 
         tester.assertNoErrorMessage()
-        def path = makePanelPath(ChangePasswordPanel.BORDER, ChangePasswordPanel.CHANGE_PASSWORD_FORM)
-        tester.assertComponent(path, Form.class)
+        tester.assertComponent(FORM_PATH, Form.class)
     }
 
     @Test
@@ -37,36 +39,32 @@ class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
 
         startPanel()
 
-        def formPath = makePanelPath(ChangePasswordPanel.BORDER, ChangePasswordPanel.CHANGE_PASSWORD_FORM)
-
-        def formTester = tester.newFormTester(formPath)
+        def formTester = tester.newFormTester(FORM_PATH)
 
         formTester.setValue("password", "a")
         formTester.setValue("confirmPassword", "a")
         formTester.setValue("currentPassword", "b")
 
-        tester.executeAjaxEvent(formPath + ":submitButton", "onclick")
+        tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick")
 
         tester.assertErrorMessages(["currentPassword.user.invalidCurrentPassword"] as String[])
-        tester.assertComponent(formPath, Form.class)
+        tester.assertComponent(FORM_PATH, Form.class)
     }
 
     @Test
     void "should change password"() {
         startPanel()
 
-        def formPath = makePanelPath(ChangePasswordPanel.BORDER, ChangePasswordPanel.CHANGE_PASSWORD_FORM)
-
-        def formTester = tester.newFormTester(formPath)
+        def formTester = tester.newFormTester(FORM_PATH)
 
         formTester.setValue("password", "a")
         formTester.setValue("confirmPassword", "a")
         formTester.setValue("currentPassword", "b")
 
-        tester.executeAjaxEvent(formPath + ":submitButton", "onclick")
+        tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick")
 
         tester.assertNoErrorMessage()
-        tester.assertComponent(formPath, Form.class)
+        tester.assertComponent(FORM_PATH, Form.class)
 
         verify(userService).changePassword("thies", "b", "a")
     }
