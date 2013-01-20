@@ -51,6 +51,6 @@ class ParseStatusPanelTest extends AbstractSpringWebAppTester
 
   private void startPanel(final ParseSession status)
   {
-    tester.startComponentInPage(new ParseStatusPanel("id", new Model<ParseSession>(status)))
+    tester.startComponentInPage(new ParseStatusPanel("panel", new Model<ParseSession>(status)))
   }
 }

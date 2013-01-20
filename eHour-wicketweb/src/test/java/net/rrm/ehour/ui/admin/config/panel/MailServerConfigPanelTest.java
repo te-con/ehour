@@ -46,21 +46,21 @@ public class MailServerConfigPanelTest extends AbstractMainConfigTest
 		
 		startPage();
 		
-		getTester().assertComponent("configTabs:panel:border:form", Form.class);
+		tester.assertComponent(FORM_PATH, Form.class);
+
+		tester.clickLink("configTabs:tabs-container:tabs:2:link", true);
 		
-		getTester().clickLink("configTabs:tabs-container:tabs:2:link", true);
-		
-		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
+		FormTester miscFormTester = tester.newFormTester(FORM_PATH);
 		
 		miscFormTester.setValue("config.mailFrom", "thies@thies.net");
 		miscFormTester.setValue("config.mailSmtp", "localhost");
 		miscFormTester.setValue("config.smtpPort", "25");
 
-		getTester().executeAjaxEvent("configTabs:panel:border:form:testMail", "onclick");
+		tester.executeAjaxEvent(FORM_PATH + ":testMail", "onclick");
 		
 		verify(getMailService());
 		
-		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
+		tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick");
 		
 		assertEquals("thies@thies.net", getConfigStub().getMailFrom());
 		assertEquals("localhost", getConfigStub().getMailSmtp());

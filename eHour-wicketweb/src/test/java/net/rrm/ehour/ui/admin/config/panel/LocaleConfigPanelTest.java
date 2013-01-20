@@ -42,18 +42,18 @@ public class LocaleConfigPanelTest extends AbstractMainConfigTest
 		replay(getConfigService());
 		
 		startPage();
+
+        tester.assertComponent(FORM_PATH, Form.class);
+
+        tester.clickLink("configTabs:tabs-container:tabs:1:link", true);
 		
-		getTester().assertComponent("configTabs:panel:border:form", Form.class);
-		
-		getTester().clickLink("configTabs:tabs-container:tabs:1:link", true);
-		
-		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
+		FormTester miscFormTester = tester.newFormTester(FORM_PATH);
 		
 		miscFormTester.select("config.currency", 1);
 		miscFormTester.select("localeCountry", 0);
 		miscFormTester.select("localeLanguage", 0);
-		
-		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
+
+        tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick");
 		
 		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), getConfigStub().getCurrency());
 		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getLocale());

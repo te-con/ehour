@@ -43,13 +43,13 @@ public class MiscConfigPanelTest extends AbstractMainConfigTest
 		
 		startPage();
 		
-		getTester().assertComponent("configTabs:panel:border:form", Form.class);
+		tester.assertComponent(FORM_PATH, Form.class);
 		
-		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
+		FormTester miscFormTester = tester.newFormTester(FORM_PATH);
 		
 		miscFormTester.setValue("config.completeDayHours", "4");
 		
-		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
+		tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick");
 		
 		assertEquals(4f, getConfigStub().getCompleteDayHours(), 0.001);
 	}

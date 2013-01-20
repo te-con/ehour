@@ -32,7 +32,9 @@ import static org.easymock.EasyMock.*;
 @SuppressWarnings("serial")
 public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester implements Serializable
 {
-	protected ConfigurationServiceImpl configService;
+    public  static final String FORM_PATH = "configTabs:panel:border:greySquaredFrame:border_body:form";
+
+    protected ConfigurationServiceImpl configService;
 	private MailService mailService;
 	private EhourConfigStub config;
 

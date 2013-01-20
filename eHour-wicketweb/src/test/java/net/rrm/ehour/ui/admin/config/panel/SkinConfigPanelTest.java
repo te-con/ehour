@@ -21,7 +21,6 @@ package net.rrm.ehour.ui.admin.config.panel;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.ui.admin.config.page.AbstractMainConfigTest;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
@@ -55,23 +54,9 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest
 		
 		startPage();
 		
-		getTester().assertComponent("configTabs:panel:border:form", Form.class);
+		tester.assertComponent(FORM_PATH, Form.class);
 		
-		getTester().clickLink("configTabs:tabs-container:tabs:3:link", true);
-		
-		@SuppressWarnings("unused")
-		FormTester miscFormTester = getTester().newFormTester("configTabs:panel:border:form");
-		
-//		getTester().executeAjaxEvent("configTabs:panel:border:form:excelPreview", "onclick");
-		
-//		miscFormTester.select("config.currency", 1);
-//		miscFormTester.select("localeCountry", 0);
-//		miscFormTester.select("localeLanguage", 0);
-		
-//		getTester().executeAjaxEvent("configTabs:panel:border:form:submitButton", "onclick");
-//		
-//		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), getConfigStub().getCurrency());
-//		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getLocale());
+		tester.clickLink("configTabs:tabs-container:tabs:3:link", true);
 		
 		verify(getMailService());
 		verify(binConfigDao);

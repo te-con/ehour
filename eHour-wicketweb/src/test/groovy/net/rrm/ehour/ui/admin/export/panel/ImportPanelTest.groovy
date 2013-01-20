@@ -36,7 +36,7 @@ class ImportPanelTest extends AbstractSpringWebAppTester
     startPanel status
 
     tester.assertNoErrorMessage()
-    tester.assertComponent "panel:${ValidateImportPanel.ID_STATUS}", ParseStatusPanel.class
+    tester.assertComponent "id:${ValidateImportPanel.ID_STATUS}", ParseStatusPanel.class
   }
 
   private void startPanel(final ParseSession session)

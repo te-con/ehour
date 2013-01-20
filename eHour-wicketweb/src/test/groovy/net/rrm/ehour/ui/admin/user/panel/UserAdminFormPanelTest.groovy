@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify
 public class UserAdminFormPanelTest extends AbstractSpringWebAppTester {
     @Mock
     private UserService userService
-    def formPath =  makePanelPath(UserAdminFormPanel.BORDER, UserAdminFormPanel.FORM)
+    def formPath =  "panel:border:greySquaredFrame:border_body:userForm"
 
     @Before
     void "set up"() {
@@ -35,6 +35,7 @@ public class UserAdminFormPanelTest extends AbstractSpringWebAppTester {
         startPanel()
 
         tester.assertNoErrorMessage()
+        tester.debugComponentTrees()
         tester.assertComponent(formPath, Form.class)
     }
 
@@ -66,7 +67,7 @@ public class UserAdminFormPanelTest extends AbstractSpringWebAppTester {
 
 
     void startPanel() {
-        tester.startComponentInPage(new UserAdminFormPanel("id",
+        tester.startComponentInPage(new UserAdminFormPanel("panel",
                         new CompoundPropertyModel<UserBackingBean>(new UserBackingBean(UserObjectMother.createUser(), AdminAction.NEW)),
                         Arrays.asList(UserRole.ADMIN),
                         Arrays.asList(UserDepartmentMother.createUserDepartment())))

@@ -71,6 +71,6 @@ class ValidateImportPanelTest extends AbstractSpringWebAppTester {
 
 
     private void startPanel(final String constructParameter) {
-        tester.startComponentInPage(new ValidateImportPanel("id", constructParameter))
+        tester.startComponentInPage(new ValidateImportPanel("panel", constructParameter))
     }
 }
