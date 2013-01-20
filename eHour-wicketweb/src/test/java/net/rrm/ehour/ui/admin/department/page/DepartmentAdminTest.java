@@ -16,21 +16,17 @@
 
 package net.rrm.ehour.ui.admin.department.page;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 public class DepartmentAdminTest extends AbstractSpringWebAppTester
 {
@@ -56,9 +52,9 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 	{
 		replay(userService);
 		
-		getTester().startPage(DepartmentAdmin.class);
-		getTester().assertRenderedPage(DepartmentAdmin.class);
-		getTester().assertNoErrorMessage();
+		tester.startPage(DepartmentAdmin.class);
+		tester.assertRenderedPage(DepartmentAdmin.class);
+		tester.assertNoErrorMessage();
 		
 		verify(userService);
 	}
@@ -68,11 +64,11 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 	{
 		replay(userService);
 
-		getTester().startPage(DepartmentAdmin.class);
-		getTester().assertRenderedPage(DepartmentAdmin.class);
-		getTester().assertNoErrorMessage();
+		tester.startPage(DepartmentAdmin.class);
+		tester.assertRenderedPage(DepartmentAdmin.class);
+		tester.assertNoErrorMessage();
 		
-		getTester().clickLink("tabs:tabs-container:tabs:1:link", true);
+		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
 		verify(userService);
 	}
 	
@@ -84,31 +80,13 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 		
 		replay(userService);
 
-		getTester().startPage(DepartmentAdmin.class);
-		getTester().assertRenderedPage(DepartmentAdmin.class);
-		getTester().assertNoErrorMessage();
+		tester.startPage(DepartmentAdmin.class);
+		tester.assertRenderedPage(DepartmentAdmin.class);
+		tester.assertNoErrorMessage();
+
+        tester.debugComponentTrees();
 		
-		getTester().clickLink("entrySelectorFrame:deptSelector:entrySelectorFrame:blueBorder:itemListHolder:itemList:0:itemLink", true);
+		tester.clickLink("entrySelectorFrame:entrySelectorFrame_body:deptSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0:itemLink", true);
 		verify(userService);
 	}	
-	
-//	FIXME, https://issues.apache.org/jira/browse/WICKET-861?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel
-//	@Test
-//	public void testAddDepartment() throws ObjectNotFoundException
-//	{
-//		replay(userService);
-//
-//		getTester().startPage(DepartmentAdmin.class);
-//		getTester().assertRenderedPage(DepartmentAdmin.class);
-//		getTester().assertNoErrorMessage();
-//		
-//		FormTester formTester = getTester().newFormTester("tabs:panel:border:deptForm");
-//		formTester.setValue("department.name", "test");
-//		formTester.submit();
-//		
-//		getTester().assertErrorMessages(new String[]{"bla"});
-//		
-//		
-//		verify(userService);
-//	}		
 }

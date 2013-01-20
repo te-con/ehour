@@ -3,10 +3,6 @@ package net.rrm.ehour.config
 import org.junit.Before
 import org.junit.Test
 
-/**
- * User: x082062 (Thies Edeling - thies@te-con.nl)
- * Date: 1/12/11 1:05 PM
- */
 class TranslationDiscoveryTest {
 
   def discovery;

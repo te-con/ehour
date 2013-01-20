@@ -52,7 +52,7 @@ class ExportPageTest extends AbstractSpringWebAppTester
 
     def page = getTester().startPage(ExportPage)
 
-    MockHttpServletRequest request = tester.getServletRequest()
+    MockHttpServletRequest request = tester.getRequest()
     request.setUseMultiPartContentType true
 
     return page
@@ -64,7 +64,8 @@ class ExportPageTest extends AbstractSpringWebAppTester
     when(exportService.exportDatabase()).thenReturn("this should be xml");
 
     startPage()
-    tester.clickLink "frame:backupBorder:exportLink"
+
+    tester.clickLink "frame:frame_body:backupBorder:backupBorder_body:exportLink"
     tester.assertRenderedPage ExportPage.class
   }
 
@@ -73,13 +74,13 @@ class ExportPageTest extends AbstractSpringWebAppTester
   {
     startPage()
 
-    FormTester formTester = tester.newFormTester("frame:restoreBorder:form")
+    FormTester formTester = tester.newFormTester("frame:frame_body:restoreBorder:restoreBorder_body:form")
 
     when(importService.prepareImportDatabase(Mockito.any())).thenReturn(new ParseSession());
 
     formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "text/xml"
-    tester.executeAjaxEvent "frame:restoreBorder:form:ajaxSubmit", "onclick"
-    tester.assertComponent "frame:restoreBorder:form:parseStatus", AjaxLazyLoadPanel.class
+    tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
+    tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", AjaxLazyLoadPanel.class
   }
 
   @Test
@@ -87,11 +88,11 @@ class ExportPageTest extends AbstractSpringWebAppTester
   {
     startPage()
 
-    FormTester formTester = tester.newFormTester("frame:restoreBorder:form")
+    FormTester formTester = tester.newFormTester("frame:frame_body:restoreBorder:restoreBorder_body:form")
     formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "application/zip"
 
-    tester.executeAjaxEvent "frame:restoreBorder:form:ajaxSubmit", "onclick"
-    tester.assertComponent "frame:restoreBorder:form:parseStatus", Label.class
+    tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
+    tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", Label.class
 
     verifyZeroInteractions(importService)
   }
@@ -101,8 +102,8 @@ class ExportPageTest extends AbstractSpringWebAppTester
   {
     startPage()
 
-    tester.executeAjaxEvent "frame:restoreBorder:form:ajaxSubmit", "onclick"
-    tester.assertComponent "frame:restoreBorder:form:parseStatus", Label.class
+    tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
+    tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", Label.class
 
     verifyZeroInteractions(importService)
   }
