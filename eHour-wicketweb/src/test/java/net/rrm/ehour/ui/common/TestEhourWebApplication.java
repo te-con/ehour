@@ -118,10 +118,6 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
     }
 
     @Override
-    protected void outputDevelopmentModeWarning() {
-    }
-
-    @Override
     public RuntimeConfigurationType getConfigurationType() {
         return RuntimeConfigurationType.DEPLOYMENT;
     }

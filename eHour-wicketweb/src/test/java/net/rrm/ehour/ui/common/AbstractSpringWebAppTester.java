@@ -17,17 +17,12 @@
 package net.rrm.ehour.ui.common;
 
 import net.rrm.ehour.ui.test.StrictWicketTester;
-import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.tester.DummyPanelPage;
 import org.junit.After;
 import org.junit.Before;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -80,11 +75,4 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester {
         return webApp;
     }
 
-    protected final String makePanelPath(String... paths) {
-        List<String> pathList = new ArrayList<String>();
-        pathList.add(DummyPanelPage.TEST_PANEL_ID);
-        pathList.addAll(Arrays.asList(paths));
-
-        return StringUtils.join(pathList.toArray(), ':');
-    }
 }
