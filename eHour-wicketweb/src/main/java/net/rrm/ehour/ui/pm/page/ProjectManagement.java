@@ -25,13 +25,13 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
-import net.rrm.ehour.ui.common.component.TabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.pm.panel.PmReportPanel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -90,7 +90,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria> {
             });
 
 
-            TabbedPanel reportPanel = new TabbedPanel(REPORT_PANEL, tabList);
+            AjaxTabbedPanel<ITab> reportPanel = new AjaxTabbedPanel<ITab>(REPORT_PANEL, tabList);
             addOrReplace(reportPanel);
             ajaxEvent.getTarget().add(reportPanel);
         }

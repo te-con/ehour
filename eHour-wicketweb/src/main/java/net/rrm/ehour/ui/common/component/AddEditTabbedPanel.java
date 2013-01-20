@@ -20,7 +20,6 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -41,12 +40,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	private	ResourceModel		editTabTitle;
 	private ResourceModel 		noEntrySelectedText;
 	
-	/**
-	 * 
-	 * @param id
-	 * @param tabs
-	 */
-	public AddEditTabbedPanel(String id, 
+	public AddEditTabbedPanel(String id,
 								ResourceModel addTabTitle, ResourceModel editTabTitle, 
 								ResourceModel noEntrySelectedText)
 	{
@@ -76,38 +70,17 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 		target.add(this);
 	}
 
-	/**
-	 * Failed save
-	 * @param target
-	 */
-	public void failedSave(AdminBackingBean backingBean, AjaxRequestTarget target)
-	{
-		backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
-		target.add(this);
-	}	
-	
-	
-	/**
+
+    /**
 	 * Setup tabs
 	 */
 	private void setUpTabs()
 	{
 		addAddTab();
 		addNoSelectionTab();
-	}	
-
-	/**
-	 * Add tab on tab index in panel. Removes any tab at the tabIndex first
-	 * @param tab
-	 * @param tabIndex
-	 */
-	public void addTab(AbstractTab tab, int tabIndex)
-	{
-		removeTab(tabIndex);
-		getTabs().add(tabIndex, tab);
 	}
-	
-	/**
+
+    /**
 	 * Add add tab at position 0
 	 */
 	private void addAddTab()
@@ -124,21 +97,10 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 		};
 
 		getTabs().add(TABPOS_ADD, addTab);	
-	}	
-	
-	/**
-	 * Add tab at the end of the list
-	 * @param tab
-	 */
-	public int addTab(ITab tab)
-	{
-		getTabs().add(tab);
-		
-		return getTabs().size() - 1;
 	}
-	
-	
-	/**
+
+
+    /**
 	 * Get the panel for the add tab
 	 * @param panelId
 	 * @return

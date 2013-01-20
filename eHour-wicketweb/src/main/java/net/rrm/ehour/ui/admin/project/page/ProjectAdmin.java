@@ -33,7 +33,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import org.apache.log4j.Logger;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -50,175 +49,150 @@ import java.util.List;
 
 /**
  * Project admin page
- **/
+ */
 
-public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBean>
-{
-	private static final String	PROJECT_SELECTOR_ID = "projectSelector";
-	private static final long 	serialVersionUID = 9196677804018589806L;
+public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBean> {
+    private static final long serialVersionUID = 9196677804018589806L;
 
-	private static final int TABPOS_USERS = 2;
+    private static final Logger LOGGER = Logger.getLogger(ProjectAdmin.class);
 
-	@SpringBean
-	private ProjectService		projectService;
-	private	static final Logger LOGGER = Logger.getLogger(ProjectAdmin.class);
-	private EntrySelectorFilter	currentFilter;
-	private	ListView<Project> 	projectListView;
+    private static final String PROJECT_SELECTOR_ID = "projectSelector";
 
-	public ProjectAdmin()
-	{
-		super(new ResourceModel("admin.project.title"),
-				new ResourceModel("admin.project.addProject"),
-				new ResourceModel("admin.project.editProject"),
-				new ResourceModel("admin.project.noEditEntrySelected"),
-				"admin.project.help.header",
-				"admin.project.help.body");
+    private static final int TABPOS_USERS = 2;
+    @SpringBean
+    private ProjectService projectService;
 
-		List<Project> projects = getProjects();
+    private EntrySelectorFilter currentFilter;
+    private ListView<Project> projectListView;
 
-		Fragment projectListHolder = getProjectListHolder(projects);
+    public ProjectAdmin() {
+        super(new ResourceModel("admin.project.title"),
+                new ResourceModel("admin.project.addProject"),
+                new ResourceModel("admin.project.editProject"),
+                new ResourceModel("admin.project.noEditEntrySelected"),
+                "admin.project.help.header",
+                "admin.project.help.body");
 
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame",
-											new ResourceModel("admin.project.title")
-        );
-		add(greyBorder);
+        List<Project> projects = getProjects();
 
-		greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
-											projectListHolder,
-											new ResourceModel("admin.project.hideInactive")));
-	}
+        Fragment projectListHolder = getProjectListHolder(projects);
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.page.BasePage#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		AjaxEventType type = ajaxEvent.getEventType();
+        GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"));
+        add(greyBorder);
 
-		if (type == EntrySelectorAjaxEventType.FILTER_CHANGE)
-		{
-			currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent).getPayload();
+        greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
+                projectListHolder,
+                new ResourceModel("admin.project.hideInactive")));
+    }
 
-			List<Project> projects = getProjects();
-			projectListView.setList(projects);
-		}
-		else if (type == ProjectAjaxEventType.PROJECT_UPDATED
-					|| type == ProjectAjaxEventType.PROJECT_DELETED)
-		{
-			// update project list
-			List<Project> projects = getProjects();
-			projectListView.setList(projects);
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        AjaxEventType type = ajaxEvent.getEventType();
 
-			((EntrySelectorPanel)
-					((MarkupContainer)get("entrySelectorFrame"))
-						.get(PROJECT_SELECTOR_ID)).refreshList(ajaxEvent.getTarget());
+        if (type == EntrySelectorAjaxEventType.FILTER_CHANGE) {
+            currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>) ajaxEvent).getPayload();
 
-			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
-		}
+            List<Project> projects = getProjects();
+            projectListView.setList(projects);
+        } else if (type == ProjectAjaxEventType.PROJECT_UPDATED
+                || type == ProjectAjaxEventType.PROJECT_DELETED) {
+            // update project list
+            List<Project> projects = getProjects();
+            projectListView.setList(projects);
 
-		return false;
-	}
+            ((EntrySelectorPanel) get("entrySelectorFrame").get(PROJECT_SELECTOR_ID)).refreshList(ajaxEvent.getTarget());
+
+            getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
+        }
+
+        return false;
+    }
 
 
-	@Override
-	protected Panel getBaseAddPanel(String panelId)
-	{
-		return new ProjectFormPanel(panelId,
-									new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
-	}
+    @Override
+    protected Panel getBaseAddPanel(String panelId) {
+        return new ProjectFormPanel(panelId,
+                new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
+    }
 
-	@Override
-	protected Panel getBaseEditPanel(String panelId)
-	{
-		return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
+    @Override
+    protected Panel getBaseEditPanel(String panelId) {
+        return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
 
-	}
+    }
 
-	@Override
-	protected void onTabSwitch(int index)
-	{
-		if (index == AddEditTabbedPanel.TABPOS_ADD)
-		{
-			getTabbedPanel().removeTab(TABPOS_USERS);
-		}
-	}
+    @Override
+    protected void onTabSwitch(int index) {
+        if (index == AddEditTabbedPanel.TABPOS_ADD) {
+            getTabbedPanel().removeTab(TABPOS_USERS);
+        }
+    }
 
-	@Override
-	protected ProjectAdminBackingBean getNewAddBaseBackingBean()
-	{
-		Project	project = new Project();
-		project.setActive(true);
+    @Override
+    protected ProjectAdminBackingBean getNewAddBaseBackingBean() {
+        Project project = new Project();
+        project.setActive(true);
 
-		return new ProjectAdminBackingBean(project);
-	}
+        return new ProjectAdminBackingBean(project);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
-	 */
-	@Override
-	protected ProjectAdminBackingBean getNewEditBaseBackingBean()
-	{
-		return new ProjectAdminBackingBean(new Project());
-	}
+    /*
+     * (non-Javadoc)
+     * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
+     */
+    @Override
+    protected ProjectAdminBackingBean getNewEditBaseBackingBean() {
+        return new ProjectAdminBackingBean(new Project());
+    }
 
-	/**
-	 * Get a the projectListHolder fragment containing the listView
-	 * @param projects
-	 * @return
-	 */
-	@SuppressWarnings("serial")
-	private Fragment getProjectListHolder(List<Project> projects)
-	{
-		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdmin.this);
+    /**
+     * Get a the projectListHolder fragment containing the listView
+     *
+     * @param projects
+     * @return
+     */
+    @SuppressWarnings("serial")
+    private Fragment getProjectListHolder(List<Project> projects) {
+        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdmin.this);
 
-		projectListView = new ListView<Project>("itemList", projects)
-		{
-			@Override
-			protected void populateItem(ListItem<Project> item)
-			{
-				Project project = item.getModelObject();
-				final Integer	projectId = project.getProjectId();
+        projectListView = new ListView<Project>("itemList", projects) {
+            @Override
+            protected void populateItem(ListItem<Project> item) {
+                Project project = item.getModelObject();
+                final Integer projectId = project.getProjectId();
 
-				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
-				{
-					@Override
-					public void onClick(AjaxRequestTarget target)
-					{
-						try
-						{
-							getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)));
-							getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
-						} catch (ObjectNotFoundException e)
-						{
+                AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        try {
+                            getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)));
+                            getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
+                        } catch (ObjectNotFoundException e) {
                             LOGGER.error(e);
-						}
-					}
-				};
+                        }
+                    }
+                };
 
-				item.add(link);
+                item.add(link);
 
-				link.add(new Label("linkLabel", project.getProjectCode() + " - " + project.getName() + (project.isActive() ? "" : "*")));
-			}
-		};
+                link.add(new Label("linkLabel", project.getProjectCode() + " - " + project.getName() + (project.isActive() ? "" : "*")));
+            }
+        };
 
-		fragment.add(projectListView);
+        fragment.add(projectListView);
 
-		return fragment;
-	}
+        return fragment;
+    }
 
-	/**
-	 * Get the projects from the backend
-	 */
-	private List<Project> getProjects()
-	{
-		List<Project> projects = projectService.getProjects(currentFilter == null || currentFilter.isActivateToggle());
+    /**
+     * Get the projects from the backend
+     */
+    private List<Project> getProjects() {
+        List<Project> projects = projectService.getProjects(currentFilter == null || currentFilter.isActivateToggle());
 
-		Collections.sort(projects, new ProjectComparator());
+        Collections.sort(projects, new ProjectComparator());
 
-		return projects;
-	}
+        return projects;
+    }
 }

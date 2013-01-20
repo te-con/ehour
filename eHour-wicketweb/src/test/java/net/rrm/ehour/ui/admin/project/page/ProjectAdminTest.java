@@ -16,13 +16,6 @@
 
 package net.rrm.ehour.ui.admin.project.page;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -30,9 +23,12 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
+import static org.easymock.EasyMock.*;
 
 public class ProjectAdminTest extends AbstractSpringWebAppTester
 {
@@ -67,53 +63,10 @@ public class ProjectAdminTest extends AbstractSpringWebAppTester
 		
 		replay(projectService, userService, customerService);
 		
-		getTester().startPage(ProjectAdmin.class);
-		getTester().assertRenderedPage(ProjectAdmin.class);
-		getTester().assertNoErrorMessage();
+		tester.startPage(ProjectAdmin.class);
+		tester.assertRenderedPage(ProjectAdmin.class);
+		tester.assertNoErrorMessage();
 		
 		verify(projectService, userService, customerService);
 	}
-	
-//	@Test
-//	public void removeEditTab()
-//	{
-//		expect(customerService.getCustomers(true))
-//				.andReturn(new ArrayList<Customer>())
-//				.times(2);
-//		
-//		expect(userService.getUsersWithEmailSet())
-//				.andReturn(new ArrayList<User>())
-//				.times(2);
-//
-//		List<Project> projects = new ArrayList<Project>();
-//		projects.add(DummUIDataGenerator.createProject());
-//
-//		expect(projectService.getActiveProjects(true))
-//				.andReturn(projects)
-//				.times(2);
-//		
-//		replay(projectService, userService, customerService);
-//		
-//		getTester().startPage(ProjectAdmin.class);
-//		getTester().assertRenderedPage(ProjectAdmin.class);
-//		getTester().assertNoErrorMessage();
-//		
-////		getTester().clickLink("entrySelectorFrame:projectSelector", true);
-//		
-//		Component itemList = getTester().getComponentFromLastRenderedPage("entrySelectorFrame:projectSelector:itemListHolder");
-//		
-//		AddEditTabbedPanel tabs = (AddEditTabbedPanel)getTester().getComponentFromLastRenderedPage("tabs");
-//		tabs.setEditBackingBean(new ProjectAdminBackingBeanImpl(new Project()));
-//		getTester().clickLink("tabs:tabs-container:tabs:1:link", true);
-//		
-//		assertEquals(3, tabs.getTabs().size());
-//		
-////		getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBeanImpl(projectService.getProjectAndCheckDeletability(projectId)));
-//		
-//		getTester().clickLink("tabs:tabs-container:tabs:0:link", true);
-//		assertEquals(1, tabs.getTabs().size());
-//		
-//		verify(projectService, userService, customerService);
-//	}
-	
 }

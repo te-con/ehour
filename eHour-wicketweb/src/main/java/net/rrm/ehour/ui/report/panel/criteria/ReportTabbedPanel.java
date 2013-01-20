@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.ui.report.panel.criteria;
 
-import net.rrm.ehour.ui.common.component.TabbedPanel;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -31,7 +31,7 @@ import java.util.List;
  * Ajax tabbed report panel
  */
 
-public class ReportTabbedPanel extends TabbedPanel {
+public class ReportTabbedPanel extends AjaxTabbedPanel<ITab> {
     private static final long serialVersionUID = 5957279200970383021L;
 
     public ReportTabbedPanel(final String id, final List<ITab> tabs) {

@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.common.component;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
  * Multi tabbed
  **/
 
-public class MultiTabbedPanel extends TabbedPanel
+public class MultiTabbedPanel extends AjaxTabbedPanel<ITab>
 {
 	private static final long serialVersionUID = -6237966897046476493L;
 
@@ -36,78 +37,8 @@ public class MultiTabbedPanel extends TabbedPanel
 		super(id, new ArrayList<ITab>());
 	}
 
-	/**
-	 * Set selected tab based on id
-	 * @param title
-	 */
-	public void setSelectedTabOnId(AbstractIdTab.TabId id)
-	{
-		int i = 0;
-		
-		for (Object tabObj : getTabs())
-		{
-			if (tabObj instanceof AbstractIdTab)
-			{
-				AbstractIdTab idTab = (AbstractIdTab)tabObj;
-				
-				if (idTab.getId().equals(id))
-				{
-					setSelectedTab(i);
-					break;
-				}
-			}
-			
-			i++;
-		}
-	}	
-	
-	/**
-	 * 
-	 * @param tab
-	 */
-	public void addOrUpdateTab(AbstractIdTab tab)
-	{
-		int idx = getIndexForTabId(tab.getId());
-		
-		if (idx == -1)
-		{
-			getTabs().add(tab);
-		}
-		else
-		{
-			getTabs().set(idx, tab);
-		}
-	}
-	
-	/**
-	 * Is the with the id already added
-	 * @param id
-	 * @return
-	 */
-	public int getIndexForTabId(AbstractIdTab.TabId id)
-	{
-		int index = 0;
-		
-		for (Object tabObj : getTabs())
-		{
-			if (tabObj instanceof AbstractIdTab)
-			{
-				AbstractIdTab idTab = (AbstractIdTab)tabObj;
-				
-				if (idTab.getId().equals(id))
-				{
-					return index;
-				}
-			}
-			
-			index++;
-		}
-		
-		return -1;
-	}	
-	
-	
-	/**
+
+    /**
 	 * Removes tab from specified position
 	 * @param index
 	 */

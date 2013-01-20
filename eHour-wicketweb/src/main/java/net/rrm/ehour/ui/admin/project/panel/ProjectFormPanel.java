@@ -67,8 +67,14 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         super(id, model);
 
         setOutputMarkupId(true);
+    }
 
-        setUpPage(model);
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        setUpPage(getPanelModel());
+
     }
 
     private void setUpPage(IModel<ProjectAdminBackingBean> model) {
@@ -78,7 +84,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         Form<ProjectAdminBackingBean> form = new Form<ProjectAdminBackingBean>("projectForm", model);
         addFormComponents(form);
 
-
         boolean deletable = model.getObject().getProject().isDeletable();
         FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(ProjectAjaxEventType.PROJECT_DELETED)
@@ -87,7 +92,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         FormUtil.setSubmitActions(formConfig);
 
         border.add(form);
-
     }
 
     private void addFormComponents(Form<ProjectAdminBackingBean> form) {
@@ -157,10 +161,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         parent.add(new ServerMessageLabel("serverMessage", "formValidationError"));
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
-      */
     @Override
     protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
         ProjectAdminBackingBean projectBackingBean = (ProjectAdminBackingBean) backingBean;
@@ -192,9 +192,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
      * Get customers for customer dropdown
      */
     private List<Customer> getCustomers() {
-        List<Customer> customers;
-
-        customers = customerService.getCustomers(true);
+        List<Customer> customers = customerService.getCustomers(true);
 
         if (customers != null) {
             Collections.sort(customers, new CustomerComparator());

@@ -23,7 +23,7 @@ import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.common.component.TabbedPanel;
+import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
 import org.junit.Test;
@@ -87,7 +87,7 @@ public class ProjectManagementTest extends AbstractSpringWebAppTester {
 
         verify(aggregateReportService);
 
-        getTester().assertComponent("reportPanel", TabbedPanel.class);
+        getTester().assertComponent("reportPanel", AjaxTabbedPanel.class);
         getTester().assertComponentOnAjaxResponse("reportPanel");
     }
 }
