@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common.report;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CurrencyCellStyle;
 import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
@@ -44,11 +45,13 @@ public abstract class AbstractExcelReport implements ExcelReport {
     }
 
     @Override
-    public final byte[] getExcelData(Report report) throws IOException {
-        HSSFWorkbook workbook = createWorkbook(report);
+    public final byte[] getExcelData(ReportCriteria reportCriteria) throws IOException {
+        HSSFWorkbook workbook = createWorkbook(createReport(reportCriteria));
 
         return PoiUtil.getWorkbookAsBytes(workbook);
     }
+
+    protected abstract Report createReport(ReportCriteria reportCriteria);
 
     /**
      * Create the workbook

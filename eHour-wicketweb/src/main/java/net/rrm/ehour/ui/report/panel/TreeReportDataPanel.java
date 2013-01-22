@@ -22,9 +22,7 @@ import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.report.ColumnType;
-import net.rrm.ehour.ui.common.report.ReportColumn;
-import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.report.*;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
@@ -37,7 +35,6 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -47,10 +44,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.CssResourceReference;
-import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.convert.IConverter;
 
 import java.io.Serializable;
@@ -70,7 +64,7 @@ public class TreeReportDataPanel extends Panel {
     public TreeReportDataPanel(String id,
                                TreeReportModel reportModel,
                                ReportConfig reportConfig,
-                               String excelResourceName
+                               final ExcelReport excelReport
     ) {
         super(id);
 
@@ -80,14 +74,15 @@ public class TreeReportDataPanel extends Panel {
         add(blueBorder);
         blueBorder.setOutputMarkupId(true);
 
-        if (excelResourceName != null) {
-            final String reportId = reportModel.getCacheId();
+        if (excelReport != null) {
+            blueBorder.add(new ExcelLink("excelLink", reportModel.getReportCriteria()) {
 
-            ResourceReference excelResource = new PackageResourceReference(excelResourceName);
-            PageParameters params = new PageParameters();
-            params.add("reportId", reportId);
-            ResourceLink<Void> excelLink = new ResourceLink<Void>("excelLink", excelResource, params);
-            blueBorder.add(excelLink);
+
+                @Override
+                protected ExcelReport createReportBuilder() {
+                    return excelReport;
+                }
+            });
         } else {
             blueBorder.add(HtmlUtil.getInvisibleLink("excelLink"));
         }

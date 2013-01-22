@@ -21,11 +21,12 @@ import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
-import net.rrm.ehour.ui.audit.report.AuditReport;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
+import net.rrm.ehour.ui.common.report.ExcelLink;
+import net.rrm.ehour.ui.common.report.ExcelReport;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackHeadersToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
@@ -44,12 +45,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.OddEvenItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.IRequestCycle;
-import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,38 +72,10 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
     }
 
     private void addExcelLink() {
-        Link<?> excelLink = new Link("excelLink") {
-
+        Link<?> excelLink = new ExcelLink("excelLink", getPanelModel().getObject()) {
             @Override
-            public void onClick() {
-                getRequestCycle().scheduleRequestHandlerAfterCurrent(new IRequestHandler() {
-
-                    @Override
-                    public void detach(IRequestCycle requestCycle) {
-
-                    }
-
-                    @Override
-                    public void respond(IRequestCycle requestCycle) {
-                        ReportCriteria criteria = (ReportCriteria) AuditReportDataPanel.this.getDefaultModelObject();
-
-                        AuditReport auditReport = new AuditReport(criteria);
-
-                        AuditReportExcel auditReportExcel = new AuditReportExcel();
-
-                        try {
-
-                            HttpServletResponse httpResponse = (HttpServletResponse)requestCycle.getResponse().getContainerResponse();
-                            httpResponse.setContentType( "application/vnd.ms-excel" );
-                            httpResponse.setHeader("Content-disposition", "attachment; filename=" + auditReportExcel.getFilename());
-                            ServletOutputStream outputStream = httpResponse.getOutputStream();
-
-                            outputStream.write(auditReportExcel.getExcelData(auditReport));
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
+            protected ExcelReport createReportBuilder() {
+                return new AuditReportExcel();
             }
         };
 

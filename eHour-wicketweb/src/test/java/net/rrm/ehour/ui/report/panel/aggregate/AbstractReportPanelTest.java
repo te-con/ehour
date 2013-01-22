@@ -22,7 +22,6 @@ import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.DummyPanelPage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,7 +50,6 @@ public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester
 
         startReportPanel();
 
-        tester.assertRenderedPage(DummyPanelPage.class);
         tester.assertNoErrorMessage();
 
         verify(aggregateReportService);

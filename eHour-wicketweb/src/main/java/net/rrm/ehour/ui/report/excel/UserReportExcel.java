@@ -16,9 +16,11 @@
 
 package net.rrm.ehour.ui.report.excel;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
+import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.ReportConfig;
-
+import net.rrm.ehour.ui.report.aggregate.UserAggregateReportModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -26,12 +28,19 @@ public class UserReportExcel extends AbstractExcelReport
 {
 	private static final long serialVersionUID = 1L;
 
-	public UserReportExcel()
+    private static final UserReportExcel INSTANCE = new UserReportExcel();
+
+	private UserReportExcel()
 	{
 		super(ReportConfig.AGGREGATE_USER);
 	}
 
-	@Override
+    @Override
+    protected Report createReport(ReportCriteria reportCriteria) {
+        return new UserAggregateReportModel(reportCriteria);
+    }
+
+    @Override
 	protected IModel<String> getExcelReportName()
 	{
 		return new ResourceModel("report.title.employee");
@@ -43,8 +52,8 @@ public class UserReportExcel extends AbstractExcelReport
 		return new ResourceModel("report.title.employee");
 	}
 
-	public static String getId()
+	public static UserReportExcel getInstance()
 	{
-		return "employeeReportExcel";
+		return INSTANCE;
 	}
 }

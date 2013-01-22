@@ -16,8 +16,11 @@
 
 package net.rrm.ehour.ui.report.excel;
 
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
+import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReportModel;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -31,8 +34,13 @@ public class CustomerReportExcel extends AbstractExcelReport
 	{
 		super(ReportConfig.AGGREGATE_CUSTOMER);
 	}
-	
-	@Override
+
+    @Override
+    protected Report createReport(ReportCriteria reportCriteria) {
+        return new CustomerAggregateReportModel(reportCriteria);
+    }
+
+    @Override
 	protected IModel<String> getExcelReportName()
 	{
 		return new ResourceModel("report.title.customer");

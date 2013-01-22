@@ -26,7 +26,7 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
     addOrReplace(frame)
 
     val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
-    frame.add(new TreeReportDataPanel("reportTable", report, ReportConfig.DETAILED_REPORT, DetailedReportExcel.getId))
+    frame.add(new TreeReportDataPanel("reportTable", report, ReportConfig.DETAILED_REPORT, DetailedReportExcel.getInstance()))
 
     val treeReportData: TreeReportData = reportModel.getReportData.asInstanceOf[TreeReportData]
     val rawData: ReportData = treeReportData.getRawReportData

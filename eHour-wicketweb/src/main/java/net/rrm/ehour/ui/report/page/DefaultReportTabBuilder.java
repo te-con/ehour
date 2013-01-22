@@ -60,8 +60,7 @@ public class DefaultReportTabBuilder implements ReportTabBuilder {
         return tabs;
     }
 
-    private Panel getDetailedReportPanel(String id, ReportCriteria reportCriteria)
-    {
+    private Panel getDetailedReportPanel(String id, ReportCriteria reportCriteria) {
         DetailedReportModel detailedReport = createAndCacheDetailedReport(reportCriteria);
         return new DetailedReportPanel(id, detailedReport);
     }

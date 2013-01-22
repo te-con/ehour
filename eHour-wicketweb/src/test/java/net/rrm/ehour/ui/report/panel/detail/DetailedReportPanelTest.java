@@ -21,7 +21,6 @@ import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import net.rrm.ehour.ui.report.trend.DetailedReportModel;
-import org.apache.wicket.util.tester.DummyPanelPage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,7 +53,6 @@ public class DetailedReportPanelTest extends AbstractSpringWebAppTester {
         tester.startComponentInPage(new DetailedReportPanel("id", detailedReport));
 
         tester.assertNoErrorMessage();
-        tester.assertRenderedPage(DummyPanelPage.class);
 
         verify(detailedReportService);
     }

@@ -267,7 +267,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     @SuppressWarnings("serial")
     private void addSubmitButtons(Form<ReportCriteriaBackingBean> form) {
         // Submit
-        AjaxButton submitButton = new AjaxButton("createReport", form) {
+        AjaxButton submitButton = new AjaxButton("createReportBuilder", form) {
             @Override
             protected final void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 EventPublisher.publishAjaxEvent(this, new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED));
