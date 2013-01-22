@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.common.report;
 
-import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CurrencyCellStyle;
 import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
@@ -35,7 +34,7 @@ import java.util.List;
 /**
  * Abstract aggregate excel report
  */
-public abstract class AbstractExcelReport extends AbstractExcelResource {
+public abstract class AbstractExcelReport implements ExcelReport {
     private static final long serialVersionUID = 1L;
 
     private ReportConfig reportConfig;
@@ -45,7 +44,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource {
     }
 
     @Override
-    public byte[] getExcelData(Report report) throws IOException {
+    public final byte[] getExcelData(Report report) throws IOException {
         HSSFWorkbook workbook = createWorkbook(report);
 
         return PoiUtil.getWorkbookAsBytes(workbook);
@@ -147,7 +146,7 @@ public abstract class AbstractExcelReport extends AbstractExcelResource {
     }
 
     @Override
-    protected String getFilename() {
+    public String getFilename() {
         return getExcelReportName().getObject().toLowerCase().replace(' ', '_') + ".xls";
     }
 

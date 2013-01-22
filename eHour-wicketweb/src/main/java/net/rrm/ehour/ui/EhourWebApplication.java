@@ -26,8 +26,6 @@ import net.rrm.ehour.ui.admin.export.page.ExportPage;
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdmin;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
-import net.rrm.ehour.ui.audit.panel.AuditReportExcel;
-import net.rrm.ehour.ui.common.component.AbstractExcelResource;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -35,13 +33,8 @@ import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
-import net.rrm.ehour.ui.report.excel.CustomerReportExcel;
-import net.rrm.ehour.ui.report.excel.DetailedReportExcel;
-import net.rrm.ehour.ui.report.excel.ProjectReportExcel;
-import net.rrm.ehour.ui.report.excel.UserReportExcel;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
-import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
@@ -128,21 +121,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     }
 
     private void registerSharedResources() {
-        mountExcelReport(new CustomerReportExcel(), CustomerReportExcel.getId());
-        mountExcelReport(new UserReportExcel(), UserReportExcel.getId());
-        mountExcelReport(new ProjectReportExcel(), ProjectReportExcel.getId());
-        mountExcelReport(new DetailedReportExcel(), DetailedReportExcel.getId());
-        mountExcelReport(new AuditReportExcel(), AuditReportExcel.getId());
-        mountExcelReport(new ExportReportExcel(), ExportReportExcel.getId());
-
         getSharedResources().add(ExportDatabase.ID_EXPORT_DB, new ExportDatabase());
         mountResource("/exportDb", new PackageResourceReference(ExportDatabase.ID_EXPORT_DB));
 
-    }
-
-    private void mountExcelReport(AbstractExcelResource excelReport, String id) {
-        getSharedResources().add(id, excelReport);
-        mountResource("/" + id, new PackageResourceReference(id));
     }
 
     @Override

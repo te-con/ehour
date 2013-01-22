@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.audit.page;
 
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
-import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import org.junit.After;
 import org.junit.Before;
@@ -60,14 +59,9 @@ public class AuditReportPageTest extends AbstractSpringWebAppTester
 		replay(getAuditService());
 		startPage();
 
-		String formPath = AuditConstants.PATH_FRAME + ":" + 
-						AuditConstants.PATH_CRITERIA + ":" + 
-						AuditConstants.PATH_FORM_BORDER + ":" +
-						AuditConstants.ID_FORM;
-		
-		tester.executeAjaxEvent(formPath + ":" +
-								AuditConstants.PATH_FORM_SUBMIT,
-								"onclick");
+        tester.debugComponentTrees();
+
+        tester.executeAjaxEvent("frame:frame_body:reportCriteria:border:border_body:criteriaForm:submitButton", "onclick");
 		
 		tester.assertRenderedPage(AuditReportPage.class);
 		

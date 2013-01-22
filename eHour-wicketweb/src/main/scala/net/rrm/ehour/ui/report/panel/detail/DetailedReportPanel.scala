@@ -12,7 +12,6 @@ import net.rrm.ehour.ui.report.{TreeReportData, TreeReportModel}
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.component.AjaxBehaviorComponent
-import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.report.excel.DetailedReportExcel
 import aggregate.ChartContext

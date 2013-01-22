@@ -63,7 +63,9 @@ public class AuditReportPage extends AbstractAdminPage<String>
 	{
 		if (ajaxEvent.getEventType() == AuditReportCriteriaForm.Events.FORM_SUBMIT)
 		{
-			ajaxEvent.getTarget().add(get(AuditConstants.PATH_FRAME + ":" + AuditConstants.PATH_DATA));
+            String path = AuditConstants.PATH_FRAME + ":frame_body:" + AuditConstants.PATH_DATA;
+
+            ajaxEvent.getTarget().add(get(path));
 			
 			return false;
 		}

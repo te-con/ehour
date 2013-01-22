@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.audit.panel;
 
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
 import net.rrm.ehour.ui.common.report.ReportConfig;
-
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -35,12 +34,8 @@ public class AuditReportExcel extends AbstractExcelReport
 		super(ReportConfig.AUDIT_REPORT);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.component.AbstractExcelResource#getFilename()
-	 */
 	@Override
-	protected String getFilename()
+	public String getFilename()
 	{
 		return "audit_report.xls";
 	}
@@ -57,10 +52,5 @@ public class AuditReportExcel extends AbstractExcelReport
 	protected IModel<String> getHeaderReportName()
 	{
 		return new ResourceModel("audit.report.title");
-	}
-
-	public static String getId()
-	{
-		return "auditReportExcel";
 	}
 }

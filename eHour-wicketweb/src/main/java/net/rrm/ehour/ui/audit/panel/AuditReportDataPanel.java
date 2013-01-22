@@ -40,16 +40,16 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.link.ResourceLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.OddEvenItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.IRequestCycle;
+import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.resource.CssResourceReference;
-import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,16 +75,41 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
     }
 
     private void addExcelLink() {
-        ResourceReference excelResource = new PackageResourceReference("auditReportExcel");
-        PageParameters params = new PageParameters();
+        Link<?> excelLink = new Link("excelLink") {
 
-        ReportCriteria criteria = (ReportCriteria) AuditReportDataPanel.this.getDefaultModelObject();
+            @Override
+            public void onClick() {
+                getRequestCycle().scheduleRequestHandlerAfterCurrent(new IRequestHandler() {
 
-        AuditReport auditReport = new AuditReport(criteria);
-        final String reportId = getEhourWebSession().getObjectCache().addObjectToCache(auditReport);
-        params.add("reportId", reportId);
+                    @Override
+                    public void detach(IRequestCycle requestCycle) {
 
-        Link<?> excelLink = new ResourceLink<Void>("excelLink", excelResource, params);
+                    }
+
+                    @Override
+                    public void respond(IRequestCycle requestCycle) {
+                        ReportCriteria criteria = (ReportCriteria) AuditReportDataPanel.this.getDefaultModelObject();
+
+                        AuditReport auditReport = new AuditReport(criteria);
+
+                        AuditReportExcel auditReportExcel = new AuditReportExcel();
+
+                        try {
+
+                            HttpServletResponse httpResponse = (HttpServletResponse)requestCycle.getResponse().getContainerResponse();
+                            httpResponse.setContentType( "application/vnd.ms-excel" );
+                            httpResponse.setHeader("Content-disposition", "attachment; filename=" + auditReportExcel.getFilename());
+                            ServletOutputStream outputStream = httpResponse.getOutputStream();
+
+                            outputStream.write(auditReportExcel.getExcelData(auditReport));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+        };
+
         add(excelLink);
     }
 
