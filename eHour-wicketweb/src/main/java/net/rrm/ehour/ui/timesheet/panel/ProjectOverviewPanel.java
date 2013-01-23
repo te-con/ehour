@@ -21,7 +21,6 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
-import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
@@ -35,7 +34,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
@@ -48,8 +46,7 @@ import java.util.List;
  * Panel showing overview
  */
 
-public class ProjectOverviewPanel extends AbstractBasePanel<Void>
-{
+public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
     private static final long serialVersionUID = -5935376941518756941L;
     private static final String ID_GREY_BORDER = "greyBorder";
     private static final String ID_TABLE_DATA = "projectStatus";
@@ -57,10 +54,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
     private static final String ID_FOLD_LINK = "foldLink";
     private static final String ID_FOLD_IMG = "foldImg";
 
-    private String tableDatePath;
-
-    public ProjectOverviewPanel(String id, Calendar overviewFor, Collection<UserProjectStatus> projectStatusses)
-    {
+    public ProjectOverviewPanel(String id, Calendar overviewFor, Collection<UserProjectStatus> projectStatusses) {
         super(id);
 
         this.setOutputMarkupId(true);
@@ -72,22 +66,18 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         addGrandTotals(greyBorder, projectStatusses, getConfig());
         addColumnLabels(greyBorder);
 
-        tableDatePath = ID_GREY_BORDER;
         addTableData(greyBorder, projectStatusses);
 
         add(greyBorder);
     }
 
-    private void addGrandTotals(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config)
-    {
+    private void addGrandTotals(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config) {
         float totalHours = 0;
         float totalTurnover = 0;
         Label turnOverLabel;
 
-        if (projectStatusSet != null)
-        {
-            for (UserProjectStatus status : projectStatusSet)
-            {
+        if (projectStatusSet != null) {
+            for (UserProjectStatus status : projectStatusSet) {
                 totalHours += (status.getHours() != null) ? status.getHours().floatValue() : 0;
                 totalTurnover += (status.getTurnOver() != null) ? status.getTurnOver().floatValue() : 0;
             }
@@ -109,8 +99,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         Label projectLabel = HtmlUtil.getNbspLabel("grandProject");
         Label customerLabel = HtmlUtil.getNbspLabel("grandCustomer");
 
-        if (!config.isShowTurnover())
-        {
+        if (!config.isShowTurnover()) {
             customerLabel.add(AttributeModifier.replace("style", "width: 30%"));
             projectLabel.add(AttributeModifier.replace("style", "width: 35%"));
         }
@@ -118,8 +107,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         container.add(projectLabel);
     }
 
-    private void addColumnLabels(WebMarkupContainer container)
-    {
+    private void addColumnLabels(WebMarkupContainer container) {
         Label projectLabel = new Label("projectLabel", new ResourceModel("overview.project"));
         setProjectLabelWidth(projectLabel);
         container.add(projectLabel);
@@ -140,19 +128,13 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
     }
 
     @SuppressWarnings("serial")
-    private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet)
-    {
+    private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet) {
         List<UserProjectStatus> statusses = projectStatusSet == null ? new ArrayList<UserProjectStatus>() : new ArrayList<UserProjectStatus>(projectStatusSet);
 
         // table data should reflect the path to the listView
-        this.tableDatePath += ":" + ID_TABLE_DATA;
-        ListView<UserProjectStatus> view = new ListView<UserProjectStatus>(ID_TABLE_DATA, statusses)
-        {
-            public void populateItem(final ListItem<UserProjectStatus> item)
-            {
+        ListView<UserProjectStatus> view = new ListView<UserProjectStatus>(ID_TABLE_DATA, statusses) {
+            public void populateItem(final ListItem<UserProjectStatus> item) {
                 UserProjectStatus projectStatus = item.getModelObject();
-
-                item.add(createFoldLink(projectStatus, item.getId()));
 
                 WebMarkupContainer projectNameContainer = new WebMarkupContainer("projectNameContainer");
                 item.add(projectNameContainer);
@@ -190,7 +172,10 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
                 item.add(turnOverLabel);
 
                 // SummaryRow
-                item.add(new PlaceholderPanel(ID_SUMMARY_ROW));
+                Component projectSummaryRow = createProjectSummaryRow(ID_SUMMARY_ROW, projectStatus);
+                item.add(projectSummaryRow);
+
+                item.add(createFoldLink(projectStatus, projectSummaryRow));
             }
         };
 
@@ -201,28 +186,32 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
      * Create fold link (also contains the creation of the summary row)
      */
     @SuppressWarnings("serial")
-    private Component createFoldLink(final UserProjectStatus projectStatus, final String domId)
-    {
+    private Component createFoldLink(final UserProjectStatus projectStatus, final Component original) {
         // set relative URL to image and set id
-        ContextImage img = createFoldImage(false);
+        final ContextImage originalImage = createFoldImage(false);
 
-        AjaxLink<String> foldLink = new AjaxLink<String>(ID_FOLD_LINK)
-        {
+        AjaxLink<String> foldLink = new AjaxLink<String>(ID_FOLD_LINK) {
             @Override
-            public void onClick(AjaxRequestTarget target)
-            {
-                Component original = ProjectOverviewPanel.this.get(getSummaryRowPath(domId));
-                Component originalImage = ProjectOverviewPanel.this.get(getFoldImagePath(domId));
+            public void onClick(AjaxRequestTarget target) {
+                boolean isVisible = original.isVisible();
+
+                original.setVisible(!isVisible);
+                target.add(original);
+
+                ContextImage img = createFoldImage(!isVisible);
+                this.get(ID_FOLD_IMG).replaceWith(img);
+                target.add(img);
+
+/*
+
                 Component replacement;
                 Component replacementImage;
 
-                if (original instanceof PlaceholderPanel)
-                {
-                    replacement = createProjectSummaryRow(projectStatus);
+                if (original instanceof PlaceholderPanel) {
+                    replacement = createProjectSummaryRow(original.getId(), projectStatus);
                     replacementImage = createFoldImage(true);
-                } else
-                {
-                    replacement = new PlaceholderPanel(ID_SUMMARY_ROW);
+                } else {
+                    replacement = new PlaceholderPanel(original.getId());
                     replacementImage = createFoldImage(false);
                 }
 
@@ -230,17 +219,16 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
                 originalImage.replaceWith(replacementImage);
                 target.add(replacement);
                 target.add(replacementImage);
+*/
 
-                target.appendJavaScript("initImagePreload();");
             }
         };
 
-        foldLink.add(img);
+        foldLink.add(originalImage);
         return foldLink;
     }
 
-    private ContextImage createFoldImage(boolean up)
-    {
+    private ContextImage createFoldImage(boolean up) {
         String upStr = "img/icon_" + (up ? "up_" : "down_");
 
         ContextImage img = new ContextImage(ID_FOLD_IMG, new Model<String>(upStr + "off.gif"));
@@ -249,41 +237,19 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         return img;
     }
 
-
-    private String getFoldImagePath(String domId)
-    {
-        StringBuilder builder = new StringBuilder(tableDatePath);
-        builder.append(":");
-        builder.append(domId);
-        builder.append(":");
-        builder.append(ID_FOLD_LINK);
-        builder.append(":");
-        builder.append(ID_FOLD_IMG);
-
-        return builder.toString();
-    }
-
-    private String getSummaryRowPath(String domId)
-    {
-        StringBuilder builder = new StringBuilder(tableDatePath);
-        builder.append(":");
-        builder.append(domId);
-        builder.append(":");
-        builder.append(ID_SUMMARY_ROW);
-
-        return builder.toString();
-    }
-
-    private Component createProjectSummaryRow(UserProjectStatus projectStatus)
-    {
+    private Component createProjectSummaryRow(String id, UserProjectStatus projectStatus) {
         // SummaryRow placeholder
-        Fragment summaryRow = new Fragment(ID_SUMMARY_ROW, "summaryRowFragment", ProjectOverviewPanel.this);
-        summaryRow.setOutputMarkupId(true);
+        WebMarkupContainer container = new WebMarkupContainer(id);
+        container.setOutputMarkupId(true);
+        container.setOutputMarkupPlaceholderTag(true);
+        container.setVisible(false);
+
         // valid from until label
-        Label validityLabel = new Label("overview.validity", new MessageResourceModel("overview.validity", this, new DateModel(projectStatus.getProjectAssignment().getDateStart(), getConfig()),
-                             new DateModel(projectStatus.getProjectAssignment().getDateEnd(), getConfig())));
+        DateModel startDate = new DateModel(projectStatus.getProjectAssignment().getDateStart(), getConfig());
+        DateModel endDate = new DateModel(projectStatus.getProjectAssignment().getDateEnd(), getConfig());
+        Label validityLabel = new Label("overview.validity", new MessageResourceModel("overview.validity", this, startDate, endDate));
         validityLabel.setEscapeModelStrings(false);
-        summaryRow.add(validityLabel);
+        container.add(validityLabel);
 
         WebMarkupContainer cont = new WebMarkupContainer("remainingHoursLabel");
         // only shown for allotted types
@@ -303,40 +269,33 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void>
         remainingFlexLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
         cont.add(remainingFlexLabel);
 
-        summaryRow.add(cont);
+        container.add(cont);
 
-        return summaryRow;
+        return container;
     }
 
 
-    private void setCustomerLabelWidth(Label label)
-    {
-        if (!isTurnOverVisible())
-        {
+    private void setCustomerLabelWidth(Label label) {
+        if (!isTurnOverVisible()) {
             label.add(AttributeModifier.replace("style", "width: 30%;"));
         }
     }
 
-    private void setProjectLabelWidth(Component label)
-    {
-        if (!isTurnOverVisible())
-        {
+    private void setProjectLabelWidth(Component label) {
+        if (!isTurnOverVisible()) {
             label.add(AttributeModifier.replace("style", "width: 35%;"));
         }
     }
 
-    private void setRateWidthOrHide(Label label)
-    {
+    private void setRateWidthOrHide(Label label) {
         label.setVisible(isTurnOverVisible());
     }
 
-    private void setTurnoverWidthOrHide(Label label)
-    {
+    private void setTurnoverWidthOrHide(Label label) {
         label.setVisible(isTurnOverVisible());
     }
 
-    private boolean isTurnOverVisible()
-    {
+    private boolean isTurnOverVisible() {
         return getConfig().isShowTurnover();
     }
 }

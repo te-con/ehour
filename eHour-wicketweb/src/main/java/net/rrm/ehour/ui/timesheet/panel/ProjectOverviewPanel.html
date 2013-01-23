@@ -22,7 +22,7 @@
 
 			<wicket:container wicket:id="projectStatus">
 				<div class="AggregateRow">
-					<div class="foldCell"><a href="#" wicket:id="foldLink"><img border="0"  src="img/icon_up_off.gif" wicket:id="foldImg" /></a></div>
+					<div class="foldCell"><a wicket:id="foldLink"><img border="0" src="img/icon_up_off.gif" wicket:id="foldImg" /></a></div>
 					<div class="textCell" style="width: 22%" wicket:id="customerName">[customerName]</div>
 					<div class="textCell" style="width:15%" wicket:id="projectCode">[projectCode]</div>
 					<div class="textCell" style="overflow:hidden;cursor:pointer" wicket:id="projectNameContainer"><span wicket:id="projectName">[project name]</span></div>
@@ -30,8 +30,16 @@
 					<div class="numbCell" style="width:8%" wicket:id="monthHours">24.50</div>
 					<div class="numbCell" style="width: 19%" wicket:id="turnover">&euro; 16.000</div>
 				</div>
-	
-				<span wicket:id="summaryRow"></span>
+
+                <div class="SummaryRow" wicket:id="summaryRow">
+                    <div class="foldCell">&nbsp;</div>
+                    <wicket:container wicket:id="overview.validity"></wicket:container>.
+                    <wicket:container wicket:id="remainingHoursLabel">
+                        <wicket:container wicket:id="overview.totalbooked"></wicket:container>
+                        <wicket:container wicket:id="overview.remainingfixed"></wicket:container>
+                        <wicket:container wicket:id="overview.remainingflex"></wicket:container>
+                    </wicket:container>
+                </div>
 			</wicket:container>
 			
 			<div class="TotalRow">
@@ -45,19 +53,6 @@
 			</div>
 		</div>
 	</span>
-	
-	<wicket:fragment wicket:id="summaryRowFragment">
-		<div class="SummaryRow">
-			<div class="foldCell">&nbsp;</div>
-			<wicket:container wicket:id="overview.validity"></wicket:container>. 
-			<wicket:container wicket:id="remainingHoursLabel">
-				<wicket:container wicket:id="overview.totalbooked"></wicket:container>
-				<wicket:container wicket:id="overview.remainingfixed"></wicket:container>
-				<wicket:container wicket:id="overview.remainingflex"></wicket:container>
-			</wicket:container>
-		</div>
-	</wicket:fragment>
-	
 </wicket:panel>
 
 </body>

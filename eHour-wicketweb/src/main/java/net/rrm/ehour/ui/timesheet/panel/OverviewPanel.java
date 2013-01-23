@@ -60,7 +60,7 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
 
-        response.render(CssHeaderItem.forReference(new CssResourceReference(OverviewPanel.class, "style/overview.css")));
+        response.render(CssHeaderItem.forReference(new CssResourceReference(OverviewPanel.class, "css/overview.css")));
     }
 
 
