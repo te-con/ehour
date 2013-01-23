@@ -50,13 +50,12 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.resource.IPropertiesFactory;
-import org.apache.wicket.resource.IPropertiesLoader;
-import org.apache.wicket.resource.PropertiesFactory;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.file.IResourceFinder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,16 +107,14 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     }
 
     private void registerStringLoader() {
-        IPropertiesFactory propertiesFactory = getResourceSettings().getPropertiesFactory();
 
-        if (translationsDir != null) {
-            String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(eHourHome, translationsDir);
+        String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(eHourHome, translationsDir);
+        EhourHomeResourceLoader resourceLoader = new EhourHomeResourceLoader(absoluteTranslationsPath);
 
-            if (propertiesFactory instanceof PropertiesFactory) {
-                List<IPropertiesLoader> loaders = ((PropertiesFactory) propertiesFactory).getPropertiesLoaders();
-                loaders.add(0, new EhourHomeResourceLoader(this, absoluteTranslationsPath));
-            }
-        }
+        List<IResourceFinder> iResourceFinders = new ArrayList<IResourceFinder>();
+        iResourceFinders.add(resourceLoader);
+
+        getResourceSettings().setResourceFinders(iResourceFinders);
     }
 
     private void registerSharedResources() {
