@@ -87,7 +87,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             setupSecurity();
             registerSharedResources();
 
-            registerStringLoader();
+            registerEhourHomeResourceLoader();
 
             getRequestCycleListeners().add(new PageRequestHandlerTracker());
 
@@ -104,7 +104,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     }
 */
 
-    private void registerStringLoader() {
+    protected void registerEhourHomeResourceLoader() {
         String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(eHourHome, translationsDir);
         EhourHomeResourceLoader resourceLoader = new EhourHomeResourceLoader(absoluteTranslationsPath);
 

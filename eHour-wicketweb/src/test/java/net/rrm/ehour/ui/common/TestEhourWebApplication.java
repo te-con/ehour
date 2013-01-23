@@ -121,4 +121,8 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
     public RuntimeConfigurationType getConfigurationType() {
         return RuntimeConfigurationType.DEPLOYMENT;
     }
+
+    @Override
+    protected void registerEhourHomeResourceLoader() {
+    }
 }
