@@ -45,18 +45,13 @@ import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy;
-import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.file.IResourceFinder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Base config for wicket eHour webapp
@@ -84,7 +79,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             super.init();
             springInjection();
 
-            configureResourceGuard();
+//            configureResourceGuard();
 
             getMarkupSettings().setStripWicketTags(true);
             mountPages();
@@ -100,21 +95,20 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         }
     }
 
+/*
     private void configureResourceGuard() {
         SecurePackageResourceGuard guard = new SecurePackageResourceGuard();
-        guard.addPattern("+style/*.css");
+        guard.addPattern("+style*/
+/*.css");
         getResourceSettings().setPackageResourceGuard(guard);
     }
+*/
 
     private void registerStringLoader() {
-
         String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(eHourHome, translationsDir);
         EhourHomeResourceLoader resourceLoader = new EhourHomeResourceLoader(absoluteTranslationsPath);
 
-        List<IResourceFinder> iResourceFinders = new ArrayList<IResourceFinder>();
-        iResourceFinders.add(resourceLoader);
-
-        getResourceSettings().setResourceFinders(iResourceFinders);
+        getResourceSettings().getResourceFinders().add(resourceLoader);
     }
 
     private void registerSharedResources() {
