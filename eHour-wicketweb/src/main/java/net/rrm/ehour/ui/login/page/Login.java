@@ -19,8 +19,11 @@ package net.rrm.ehour.ui.login.page;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
+import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -62,6 +65,14 @@ public class Login extends WebPage {
     private void redirectToHomepage(EhourWebSession session) {
         Class<? extends Page> homepage = AuthUtil.getHomepageForRole(session.getRoles());
         setResponsePage(homepage);
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        // add jQuery library
+        response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
+        // set focus to the username on load - check that the field exists
+        response.render(JavaScriptHeaderItem.forScript("$(document).ready(function () { var user = $(\"#username\"); if (!user.val()) $(user).focus(); else $(\"#password\").focus(); });", "onready-master"));
     }
 
     public class SignInForm extends Form<SimpleUser> {
