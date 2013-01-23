@@ -28,7 +28,6 @@ import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
-import net.rrm.ehour.ui.common.formguard.GuardDirtyFormBehavior;
 import net.rrm.ehour.ui.common.formguard.GuardedAjaxLink;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
@@ -102,7 +101,8 @@ public class TimesheetPanel extends Panel implements Serializable {
 
         // add form
         timesheetForm = new Form<TimesheetModel>("timesheetForm");
-        timesheetForm.add(new GuardDirtyFormBehavior(new ResourceModel("timesheet.dirtyForm")));
+        // TODO Re-add guard
+        /*timesheetForm.add(new GuardDirtyFormBehavior(new ResourceModel("timesheet.dirtyForm")));*/
         timesheetForm.setOutputMarkupId(true);
         greyBorder.add(timesheetForm);
 
@@ -375,8 +375,6 @@ public class TimesheetPanel extends Panel implements Serializable {
             addFailedProjectMessages(failedProjects, target);
 
             EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
-
-            target.appendJavaScript("wicket.guardform.clean();");
         }
 
         @Override

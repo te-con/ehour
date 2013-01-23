@@ -1,21 +1,13 @@
 package net.rrm.ehour.ui.common.formguard;
 
-import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
-import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.attributes.AjaxCallListener;
-import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.IHeaderContributor;
 
-import java.util.List;
-
-public abstract class GuardedAjaxLink<T> extends AjaxLink<T> {
+public abstract class GuardedAjaxLink<T> extends AjaxLink<T> implements IHeaderContributor {
     public GuardedAjaxLink(String id) {
         super(id);
 
-        List<AjaxEventBehavior> behaviors = getBehaviors(AjaxEventBehavior.class);
+       /* List<AjaxEventBehavior> behaviors = getBehaviors(AjaxEventBehavior.class);
 
         for (AjaxEventBehavior behavior : behaviors) {
             remove(behavior);
@@ -46,8 +38,7 @@ public abstract class GuardedAjaxLink<T> extends AjaxLink<T> {
                         super.onComponentTag(tag);
                     }
                 }
-
             });
-        }
+        }*/
     }
 }

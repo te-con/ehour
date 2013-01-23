@@ -23,17 +23,14 @@ import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
-import net.rrm.ehour.ui.common.formguard.GuardDirtyFormUtil;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -285,12 +282,15 @@ public class CalendarPanel extends SidePanel {
         protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
             super.updateAjaxAttributes(attributes);
 
+            // TODO Thies: re-add guard
+/*
             attributes.getAjaxCallListeners().add(0, new AjaxCallListener() {
                 @Override
                 public CharSequence getPrecondition(Component component) {
                     return GuardDirtyFormUtil.PRECONDITION;
                 }
             });
+*/
 
             attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
         }
