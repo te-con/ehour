@@ -19,6 +19,8 @@ public class DetailedReportExcelTest extends AbstractSpringWebAppTester {
     @Before
     public void set_up() {
         MockitoAnnotations.initMocks(this);
+
+        getMockContext().putBean(detailedReportService);
     }
 
     @Test
