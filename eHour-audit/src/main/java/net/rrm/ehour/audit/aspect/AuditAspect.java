@@ -26,6 +26,7 @@ import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.core.request.handler.IPageRequestHandler;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -222,12 +223,19 @@ public class AuditAspect {
 
         String page = null;
 
-        IRequestablePage responsePage = PageRequestHandlerTracker.getLastHandler(RequestCycle.get()).getPage();
+        RequestCycle cycle = RequestCycle.get();
 
-        if (responsePage != null) {
-            page = responsePage.getClass().getCanonicalName();
+        if (cycle != null) {
+            IPageRequestHandler lastHandler = PageRequestHandlerTracker.getLastHandler(cycle);
+
+            if (lastHandler != null) {
+                IRequestablePage responsePage = lastHandler.getPage();
+
+                if (responsePage != null) {
+                    page = responsePage.getClass().getCanonicalName();
+                }
+            }
         }
-
         return new Audit()
                 .setUser(user)
                 .setUserFullName(user != null ? user.getFullName() : null)
