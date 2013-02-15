@@ -21,12 +21,10 @@ import net.rrm.ehour.persistence.datasource.DerbyDataSourceFactory;
 import net.rrm.ehour.util.IoUtil;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.jetty.jndi.NamingUtil;
+import org.eclipse.jetty.plus.jndi.Resource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.xml.XmlConfiguration;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.File;
@@ -75,18 +73,10 @@ public class EhourServer {
         } finally {
             IoUtil.close(stream);
         }
-
     }
 
     private void registerJndiDS(ServerConfig config) throws IOException, NamingException {
-        DataSource dataSource = createDataSource(config);
-
-        Context context;
-
-        context = new InitialContext();
-        Context compCtx = (Context) context.lookup("java:comp");
-        Context envCtx = compCtx.createSubcontext("env");
-        NamingUtil.bind(envCtx, "jdbc/eHourDS", dataSource);
+        new Resource("jdbc/eHourDS", createDataSource(config));
     }
 
     private DataSource createDataSource(ServerConfig config) throws IOException {
