@@ -35,6 +35,7 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
         super(id);
 
         setOutputMarkupId(true);
+        setOutputMarkupPlaceholderTag(true);
 
         this.indicatorFor = indicatorFor;
         setIndicatorFor(this.indicatorFor);
