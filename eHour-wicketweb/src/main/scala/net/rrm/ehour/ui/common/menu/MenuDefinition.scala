@@ -12,7 +12,7 @@ import net.rrm.ehour.ui.audit.page.AuditReportPage
 import net.rrm.ehour.ui.admin.export.page.ExportPage
 import java.util.Arrays
 import java.util.{List => JList}
-import net.rrm.ehour.ui.admin.department.page.DepartmentAdmin
+import net.rrm.ehour.ui.admin.department.page.DepartmentAdminPage
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin
 import org.apache.wicket.request.mapper.parameter.PageParameters
 
@@ -30,7 +30,7 @@ object MenuDefinition {
     val report = new LinkItem("nav.report", classOf[GlobalReportPage])
     val pm = new LinkItem("nav.pm", classOf[ProjectManagement])
 
-    val deptAdmin = new LinkItem("nav.admin.departments", classOf[DepartmentAdmin])
+    val deptAdmin = new LinkItem("nav.admin.departments", classOf[DepartmentAdminPage])
     val userAdmin = new LinkItem("nav.admin.users", classOf[UserAdmin])
     val customerAdmin = new LinkItem("nav.admin.customers", classOf[CustomerAdmin])
     val projectAdmin = new LinkItem("nav.admin.projects", classOf[ProjectAdmin])
