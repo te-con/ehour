@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.panel.nav.admin;
 
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
-import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
+import net.rrm.ehour.ui.admin.customer.page.CustomerAdminPage;
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage;
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdminPage;
@@ -38,7 +38,7 @@ public class AdminNavPanel extends Panel
 
 		add(new BookmarkablePageLink<UserAdminPage>("userAdmin", UserAdminPage.class));
 		add(new BookmarkablePageLink<DepartmentAdminPage>("deptAdmin", DepartmentAdminPage.class));
-		add(new BookmarkablePageLink<CustomerAdmin>("customerAdmin", CustomerAdmin.class));
+		add(new BookmarkablePageLink<CustomerAdminPage>("customerAdmin", CustomerAdminPage.class));
 		add(new BookmarkablePageLink<ProjectAdmin>("projectAdmin", ProjectAdmin.class));
 		add(new BookmarkablePageLink<AssignmentAdmin>("assignmentAdmin", AssignmentAdmin.class));
 	}

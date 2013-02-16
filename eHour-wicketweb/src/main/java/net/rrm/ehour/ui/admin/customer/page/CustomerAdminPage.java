@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.admin.customer.page;
 
-import java.util.Collections;
-import java.util.List;
-
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
@@ -34,7 +31,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -47,11 +43,14 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Customer admin page
  **/
 
-public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingBean>
+public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBackingBean>
 {
 	private static final String	CUSTOMER_SELECTOR_ID = "customerSelector";
 	
@@ -62,7 +61,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	private	ListView<Customer> customerListView;
 	private EntrySelectorFilter	currentFilter;
 	
-	public CustomerAdmin()
+	public CustomerAdminPage()
 	{
 		super(new ResourceModel("admin.customer.title"),
 				new ResourceModel("admin.customer.addCustomer"),
@@ -174,7 +173,7 @@ public class CustomerAdmin extends AbstractTabbedAdminPage<CustomerAdminBackingB
 	@SuppressWarnings("serial")
 	private Fragment getCustomerListHolder(List<Customer> customers)
 	{
-		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", CustomerAdmin.this);
+		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", CustomerAdminPage.this);
 		
 		customerListView = new ListView<Customer>("itemList", customers)
 		{
