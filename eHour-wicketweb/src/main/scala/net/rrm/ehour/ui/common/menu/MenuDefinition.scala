@@ -12,9 +12,9 @@ import net.rrm.ehour.ui.audit.page.AuditReportPage
 import net.rrm.ehour.ui.admin.export.page.ExportPage
 import java.util.Arrays
 import java.util.{List => JList}
-import net.rrm.ehour.ui.admin.department.page.DepartmentAdminPage
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin
 import org.apache.wicket.request.mapper.parameter.PageParameters
+import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
 
 object MenuDefinition {
 

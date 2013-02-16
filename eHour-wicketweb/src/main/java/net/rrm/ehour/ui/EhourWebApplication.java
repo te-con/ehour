@@ -20,7 +20,7 @@ import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin;
-import net.rrm.ehour.ui.admin.department.page.DepartmentAdminPage;
+import net.rrm.ehour.ui.admin.department.DepartmentAdminPage;
 import net.rrm.ehour.ui.admin.export.page.ExportDatabase;
 import net.rrm.ehour.ui.admin.export.page.ExportPage;
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
