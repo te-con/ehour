@@ -28,7 +28,7 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 
-public class UserAdminTest extends AbstractSpringWebAppTester
+public class UserAdminPageTest extends AbstractSpringWebAppTester
 {
 	/**
 	 * Test render
@@ -57,8 +57,8 @@ public class UserAdminTest extends AbstractSpringWebAppTester
 
 		replay(userService);
 		
-		getTester().startPage(UserAdmin.class);
-		getTester().assertRenderedPage(UserAdmin.class);
+		getTester().startPage(UserAdminPage.class);
+		getTester().assertRenderedPage(UserAdminPage.class);
 		getTester().assertNoErrorMessage();
 		
 		verify(userService);

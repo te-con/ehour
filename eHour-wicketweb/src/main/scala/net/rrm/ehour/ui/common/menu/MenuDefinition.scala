@@ -4,7 +4,7 @@ import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
 import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage
 import net.rrm.ehour.ui.report.page.GlobalReportPage
 import net.rrm.ehour.ui.pm.page.ProjectManagement
-import net.rrm.ehour.ui.admin.user.page.UserAdmin
+import net.rrm.ehour.ui.admin.user.page.UserAdminPage
 import net.rrm.ehour.ui.admin.customer.page.CustomerAdmin
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage
@@ -31,7 +31,7 @@ object MenuDefinition {
     val pm = new LinkItem("nav.pm", classOf[ProjectManagement])
 
     val deptAdmin = new LinkItem("nav.admin.departments", classOf[DepartmentAdminPage])
-    val userAdmin = new LinkItem("nav.admin.users", classOf[UserAdmin])
+    val userAdmin = new LinkItem("nav.admin.users", classOf[UserAdminPage])
     val customerAdmin = new LinkItem("nav.admin.customers", classOf[CustomerAdmin])
     val projectAdmin = new LinkItem("nav.admin.projects", classOf[ProjectAdmin])
     val assignmentAdmin = new LinkItem("nav.admin.assignments", classOf[AssignmentAdmin])

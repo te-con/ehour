@@ -24,7 +24,7 @@ import net.rrm.ehour.ui.admin.department.DepartmentAdminPage;
 import net.rrm.ehour.ui.admin.export.page.ExportDatabase;
 import net.rrm.ehour.ui.admin.export.page.ExportPage;
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
-import net.rrm.ehour.ui.admin.user.page.UserAdmin;
+import net.rrm.ehour.ui.admin.user.page.UserAdminPage;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
@@ -137,7 +137,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
 
         mountPage("/admin", MainConfigPage.class);
-        mountPage("/admin/employee", UserAdmin.class);
+        mountPage("/admin/employee", UserAdminPage.class);
         mountPage("/admin/department", DepartmentAdminPage.class);
         mountPage("/admin/customer", CustomerAdmin.class);
         mountPage("/admin/project", ProjectAdmin.class);

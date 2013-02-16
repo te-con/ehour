@@ -55,8 +55,8 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEvent
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel
  */
 
-public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean> {
-    private static final Logger LOGGER = Logger.getLogger(UserAdmin.class);
+public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
+    private static final Logger LOGGER = Logger.getLogger(UserAdminPage.class);
 
     @SpringBean
     private UserService userService;
@@ -68,10 +68,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean> {
 
     private static final long serialVersionUID = 1883278850247747252L;
 
-    /**
-     *
-     */
-    public UserAdmin() {
+    public UserAdminPage() {
         super(new ResourceModel("admin.user.title"),
                 new ResourceModel("admin.user.addUser"),
                 new ResourceModel("admin.user.editUser"),
@@ -94,7 +91,7 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean> {
     }
 
     private Fragment getUserListHolder(List<User> users) {
-        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", UserAdmin.this);
+        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", UserAdminPage.this);
 
         userListView = new ListView<User>("itemList", users) {
             private static final long serialVersionUID = 5334338761736798802L;
@@ -240,12 +237,9 @@ public class UserAdmin extends AbstractTabbedAdminPage<UserBackingBean> {
     private List<UserDepartment> getUserDepartments() {
         if (departments == null) {
             departments = userService.getUserDepartments();
-
         }
 
-
         Collections.sort(departments, new UserDepartmentComparator());
-
 
         return departments;
     }
