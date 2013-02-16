@@ -19,6 +19,13 @@ public class FormConfig implements Serializable {
     
     private MarkupContainer submitTarget;
 
+    public FormConfig() {
+    }
+
+    public FormConfig(Form<?> form) {
+        this.form = form;
+    }
+
     public MarkupContainer getSubmitTarget() {
         return submitTarget;
     }
@@ -28,9 +35,8 @@ public class FormConfig implements Serializable {
         return this;
     }
 
-    public FormConfig forForm(Form<?> form) {
-        this.form = form;
-        return this;
+    public static FormConfig forForm(Form<?> form) {
+        return new FormConfig(form);
     }
 
     public FormConfig withDelete() {

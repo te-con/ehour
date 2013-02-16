@@ -75,7 +75,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
         form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 
         boolean deletable = model.getObject().getDepartment().isDeletable();
-        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+        FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(DepartmentAjaxEventType.DEPARTMENT_DELETED)
                 .withSubmitEventType(DepartmentAjaxEventType.DEPARTMENT_UPDATED);
         FormUtil.setSubmitActions(formConfig);
@@ -83,31 +83,14 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
         greyBorder.add(form);
     }
 
-
-    /**
-     * Persist dept
-     *
-     * @param backingBean
-     * @throws ObjectNotUniqueException
-     */
     private void persistDepartment(DepartmentAdminBackingBean backingBean) throws ObjectNotUniqueException {
         userService.persistUserDepartment(backingBean.getDepartment());
     }
 
-
-    /**
-     * Delete department
-     *
-     * @param backingBean
-     */
     private void deleteDepartment(DepartmentAdminBackingBean backingBean) {
         userService.deleteDepartment(backingBean.getDepartment().getDepartmentId());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
-     */
     @Override
     protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
         DepartmentAdminBackingBean departmentBackingBean = (DepartmentAdminBackingBean) backingBean;
