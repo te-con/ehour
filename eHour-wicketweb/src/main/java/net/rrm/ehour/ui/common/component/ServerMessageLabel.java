@@ -25,41 +25,35 @@ import org.apache.wicket.util.time.Duration;
 
 /**
  * ServerMessage label which disappears after 5 seconds and is not visible when no content is provided
- * @author Thies
  *
+ * @author Thies
  */
-public class ServerMessageLabel extends Label
-{
-	private static final long serialVersionUID = -6276174722682301972L;
-	private boolean overrideVisibility = false;
-	
-	public ServerMessageLabel(String id, String cssClass)
-	{
-		this(id, cssClass, null);
-	}
-	
-	public ServerMessageLabel(String id, String cssClass, IModel<?> model)
-	{
-		super(id, model);
+public class ServerMessageLabel extends Label {
+    private static final long serialVersionUID = -6276174722682301972L;
+    private boolean overrideVisibility = false;
 
-		add(AttributeModifier.replace("class", cssClass));
-		setOutputMarkupId(true);
+    public ServerMessageLabel(String id, String cssClass) {
+        this(id, cssClass, null);
+    }
 
-		add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(3))
-		{
-			private static final long serialVersionUID = 3340397062856229947L;
+    public ServerMessageLabel(String id, String cssClass, IModel<?> model) {
+        super(id, model);
 
-			@Override
-			protected void onPostProcessTarget(AjaxRequestTarget target)
-			{
-				target.add(ServerMessageLabel.this);
-				overrideVisibility = true;
-			}
-		});		
-	}
+        add(AttributeModifier.replace("class", cssClass));
+        setOutputMarkupId(true);
+        setOutputMarkupPlaceholderTag(true);
 
-	public boolean isVisible()
-	{
-		return !overrideVisibility && getDefaultModel() != null && getDefaultModelObject() != null;
-	}		
+        if (isVisible()) {
+            add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(3)) {
+                @Override
+                protected void onPostProcessTarget(AjaxRequestTarget target) {
+                    overrideVisibility = true;
+                }
+            });
+        }
+    }
+
+    public boolean isVisible() {
+        return !overrideVisibility && getDefaultModel() != null && getDefaultModelObject() != null;
+    }
 }
