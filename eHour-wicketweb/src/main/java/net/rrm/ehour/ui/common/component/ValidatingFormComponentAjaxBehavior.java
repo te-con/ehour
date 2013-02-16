@@ -61,7 +61,7 @@ public class ValidatingFormComponentAjaxBehavior extends AjaxFormComponentUpdati
             @Override
             public void component(Component component, IVisit visit) {
                 if (component instanceof AjaxFormComponentFeedbackIndicator) {
-                    if (((AjaxFormComponentFeedbackIndicator) component).getIndicatorFor() == getFormComponent()) {
+                    if (((AjaxFormComponentFeedbackIndicator) component).isIndicatingFor(getFormComponent())) {
                         target.add(component);
                     }
                 } else {

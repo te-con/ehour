@@ -415,8 +415,9 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 .formValidationError {
-    font: 0.8em Geneva, Arial, Helvetica, sans-serif;
+    font: 0.9em Geneva, Arial, Helvetica, sans-serif;
     color: red;
+    margin-bottom: 5px;
 }
 
 .whiteText {

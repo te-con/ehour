@@ -16,105 +16,42 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.Session;
-import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.feedback.FeedbackCollector;
 import org.apache.wicket.feedback.FeedbackMessage;
-import org.apache.wicket.feedback.IFeedback;
-import org.apache.wicket.feedback.IFeedbackMessageFilter;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator;
+import org.apache.wicket.model.Model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Displays error indicator when indicated field does not validate
- * <p/>
- * Not extending FormComponentFeedbackIndicator because that sets visible in onBeforeRender
- */
 
-public class AjaxFormComponentFeedbackIndicator extends Panel implements IFeedback {
+public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackIndicator {
     private static final long serialVersionUID = 7840885174109746055L;
-    private List<FeedbackMessage> messages = new ArrayList<FeedbackMessage>();
-    private IFeedbackMessageFilter filter;
-    private Component indicatorFor;
+    private final Component indicatorFor;
 
-    /**
-     * @param id
-     */
-    public AjaxFormComponentFeedbackIndicator(String id) {
-        this(id, null);
-    }
-
-    /**
-     * @param id
-     * @param indicatorFor
-     */
-    public AjaxFormComponentFeedbackIndicator(String id, Component indicatorFor) {
+    public AjaxFormComponentFeedbackIndicator(String id, final Component indicatorFor) {
         super(id);
 
         setOutputMarkupId(true);
 
         this.indicatorFor = indicatorFor;
+        setIndicatorFor(this.indicatorFor);
 
-        if (indicatorFor != null) {
-            indicatorFor.setOutputMarkupId(true);
+        add(new Label("errorText", new Model<Serializable>() {
+            @Override
+            public Serializable getObject() {
+                List<FeedbackMessage> collect = new FeedbackCollector(getPage()).collect(getFeedbackMessageFilter());
 
-            filter = new ComponentFeedbackMessageFilter(indicatorFor);
-        }
+                return collect.size() > 0 ? collect.get(0).getMessage() : "";
+            }
+        }));
+    }
 
-        add(new ErrorIndicator("errorIndicator"));
+    public boolean isIndicatingFor(Component other) {
+        return indicatorFor == other;
     }
 
 
-    /**
-     * @return the indicatorFor
-     */
-    public Component getIndicatorFor() {
-        return indicatorFor;
-    }
-
-    /*
-      * (non-Javadoc)
-      * @see org.apache.wicket.markup.html.form.validation.FormComponentFeedbackIndicator#onBeforeRender()
-      */
-    @Override
-    public void onBeforeRender() {
-        super.onBeforeRender();
-        // Get the messages for the current page
-        messages = Session.get().getFeedbackMessages().messages(filter);
-    }
-
-
-    /**
-     * @author Thies
-     */
-    @SuppressWarnings("serial")
-    private final class ErrorIndicator extends WebMarkupContainer {
-        private static final long serialVersionUID = 4005048136024661255L;
-
-        public ErrorIndicator(String id) {
-            super(id);
-
-            add(new Label("errorText", new PropertyModel<String>(this, "message")) {
-                @Override
-                public boolean isVisible() {
-                    return messages != null && messages.size() > 0;
-                }
-            });
-
-            add(AttributeModifier.replace("class", "formValidationError"));
-        }
-
-        // used by reflection
-        @SuppressWarnings("unused")
-        public Serializable getMessage() {
-            return messages != null && messages.size() > 0 ? messages.get(0).getMessage() : "";
-        }
-    }
 }
