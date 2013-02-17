@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -53,15 +52,16 @@ import java.util.List;
 public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBackingBean>
 {
 	private static final String	CUSTOMER_SELECTOR_ID = "customerSelector";
-	
+
 	private static final long serialVersionUID = 3190421612132110664L;
-	
-	@SpringBean
+    private final EntrySelectorPanel entrySelectorPanel;
+
+    @SpringBean
 	private CustomerService		customerService;
 	private	ListView<Customer> customerListView;
 	private EntrySelectorFilter	currentFilter;
-	
-	public CustomerAdminPage()
+
+    public CustomerAdminPage()
 	{
 		super(new ResourceModel("admin.customer.title"),
 				new ResourceModel("admin.customer.addCustomer"),
@@ -69,59 +69,41 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
 				new ResourceModel("admin.customer.noEditEntrySelected"),
 				"admin.customer.help.header",
 				"admin.customer.help.body");
-		
+
 		// setup the entry selector
-		List<Customer> customers;
-		customers = getCustomers();
-		
-		Fragment customerListHolder = getCustomerListHolder(customers);
-		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", 
-						new ResourceModel("admin.customer.title")
+
+        Fragment customerListHolder = getCustomerListHolder(getCustomers());
+
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.customer.title"));
+        add(greyBorder);
+
+        entrySelectorPanel = new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
+                customerListHolder,
+                new ResourceModel("admin.customer.hideInactive")
         );
-		add(greyBorder);			
-		
-		greyBorder.add(new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
-												customerListHolder,
-												new ResourceModel("admin.customer.hideInactive")
-												));
-		
+
+        greyBorder.add(entrySelectorPanel);
+
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getAddPanel(java.lang.String)
-	 */
 	@Override
 	protected Panel getBaseAddPanel(String panelId)
 	{
 		return new CustomerFormPanel(panelId, new CompoundPropertyModel<CustomerAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getEditPanel(java.lang.String)
-	 */
 	@Override
 	protected Panel getBaseEditPanel(String panelId)
 	{
 		return new CustomerFormPanel(panelId, new CompoundPropertyModel<CustomerAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
-	 */
 	@Override
 	protected CustomerAdminBackingBean getNewAddBaseBackingBean()
 	{
 		return CustomerAdminBackingBean.createCustomerAdminBackingBean();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
-	 */
 	@Override
 	protected CustomerAdminBackingBean getNewEditBaseBackingBean()
 	{
@@ -142,10 +124,10 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
 		if (type == EntrySelectorAjaxEventType.FILTER_CHANGE)
 		{
 			currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>)ajaxEvent).getPayload();
-			
+
 			List<Customer> customers = getCustomers();
 			customerListView.setList(customers);
-			
+
 			return false;
 		}
 		else if (type == CustomerAjaxEventType.CUSTOMER_UPDATED
@@ -153,18 +135,16 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
 		{
 			List<Customer> customers = getCustomers();
 			customerListView.setList(customers);
-			
-			((EntrySelectorPanel)
-					((MarkupContainer)get("entrySelectorFrame"))
-						.get(CUSTOMER_SELECTOR_ID)).refreshList(ajaxEvent.getTarget());					
-			
+
+            entrySelectorPanel.refreshList(ajaxEvent.getTarget());
+
 			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Get a the customerListHolder fragment containing the listView
 	 * @param users
@@ -174,7 +154,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
 	private Fragment getCustomerListHolder(List<Customer> customers)
 	{
 		Fragment fragment = new Fragment("itemListHolder", "itemListHolder", CustomerAdminPage.this);
-		
+
 		customerListView = new ListView<Customer>("itemList", customers)
 		{
 			@Override
@@ -182,7 +162,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
 			{
 				Customer		customer = item.getModelObject();
 				final Integer	customerId = customer.getCustomerId();
-				
+
 				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
 				{
 					@Override
@@ -198,21 +178,21 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
 						}
 					}
 				};
-				
+
 				item.add(link);
 
 				link.add(new Label("linkLabel", customer.getCode() + " - " + customer.getName() + (customer.isActive() ? "" : "*")));
 			}
 		};
-		
+
 		fragment.add(customerListView);
-		
+
 		return fragment;
-	}	
-	
+	}
+
 	/**
 	 * Get customers from the backend
-	 * 
+	 *
 	 * @return
 	 */
 	private List<Customer> getCustomers()
