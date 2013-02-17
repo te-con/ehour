@@ -49,6 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Auditable(actionType = AuditActionType.DELETE)
+    @Transactional
     public void deleteCustomer(Integer customerId) throws ParentChildConstraintException {
         Customer customer = customerDAO.findById(customerId);
 
