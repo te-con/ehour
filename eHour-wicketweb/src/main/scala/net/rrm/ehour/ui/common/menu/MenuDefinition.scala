@@ -5,7 +5,6 @@ import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage
 import net.rrm.ehour.ui.report.page.GlobalReportPage
 import net.rrm.ehour.ui.pm.page.ProjectManagement
 import net.rrm.ehour.ui.admin.user.page.UserAdminPage
-import net.rrm.ehour.ui.admin.customer.page.CustomerAdminPage
 import net.rrm.ehour.ui.admin.project.page.ProjectAdmin
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage
 import net.rrm.ehour.ui.audit.page.AuditReportPage
@@ -15,6 +14,7 @@ import java.util.{List => JList}
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
+import net.rrm.ehour.ui.admin.customer.CustomerAdminPage
 
 object MenuDefinition {
 
