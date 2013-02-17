@@ -21,6 +21,7 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.ui.admin.project.ProjectAdmin;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;

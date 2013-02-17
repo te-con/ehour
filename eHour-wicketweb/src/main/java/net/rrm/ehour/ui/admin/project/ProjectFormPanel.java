@@ -14,15 +14,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.project.panel;
+package net.rrm.ehour.ui.admin.project;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
-import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;

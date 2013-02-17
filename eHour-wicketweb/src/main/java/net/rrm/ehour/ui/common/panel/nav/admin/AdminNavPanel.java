@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.panel.nav.admin;
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage;
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage;
-import net.rrm.ehour.ui.admin.project.page.ProjectAdmin;
+import net.rrm.ehour.ui.admin.project.ProjectAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdminPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;

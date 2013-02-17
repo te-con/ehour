@@ -14,15 +14,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.project.page;
+package net.rrm.ehour.ui.admin.project;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
-import net.rrm.ehour.ui.admin.project.common.ProjectAjaxEventType;
-import net.rrm.ehour.ui.admin.project.dto.ProjectAdminBackingBean;
-import net.rrm.ehour.ui.admin.project.panel.ProjectFormPanel;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -59,6 +56,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
     private static final String PROJECT_SELECTOR_ID = "projectSelector";
 
     private static final int TABPOS_USERS = 2;
+    private final EntrySelectorPanel entrySelectorPanel;
     @SpringBean
     private ProjectService projectService;
 
@@ -80,9 +78,10 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"));
         add(greyBorder);
 
-        greyBorder.add(new EntrySelectorPanel(PROJECT_SELECTOR_ID,
+        entrySelectorPanel = new EntrySelectorPanel(PROJECT_SELECTOR_ID,
                 projectListHolder,
-                new ResourceModel("admin.project.hideInactive")));
+                new ResourceModel("admin.project.hideInactive"));
+        greyBorder.add(entrySelectorPanel);
     }
 
     @SuppressWarnings("unchecked")
@@ -98,11 +97,9 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
         } else if (type == ProjectAjaxEventType.PROJECT_UPDATED
                 || type == ProjectAjaxEventType.PROJECT_DELETED) {
             // update project list
-            List<Project> projects = getProjects();
-            projectListView.setList(projects);
+            projectListView.setList(getProjects());
 
-            ((EntrySelectorPanel) get("entrySelectorFrame").get(PROJECT_SELECTOR_ID)).refreshList(ajaxEvent.getTarget());
-
+            entrySelectorPanel.refreshList(ajaxEvent.getTarget());
             getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
         }
 
