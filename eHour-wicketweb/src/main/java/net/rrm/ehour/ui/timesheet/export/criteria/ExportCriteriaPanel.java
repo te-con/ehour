@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.timesheet.export.criteria;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.report.trend.PrintReport;
+import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
+import net.rrm.ehour.ui.common.util.Function;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
@@ -31,159 +31,127 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.http.handler.RedirectRequestHandler;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
  * ExportCriteriaPanel holding the form for month based exports for consultants
- **/
+ */
 
-public class ExportCriteriaPanel extends Panel
-{
-	private static final long serialVersionUID = -3732529050866431376L;
+public class ExportCriteriaPanel extends Panel {
+    private static final long serialVersionUID = -3732529050866431376L;
 
-	private enum ExportType
-	{
-		EXCEL,
-		PRINT
+    private enum ExportType {
+        EXCEL,
+        PRINT
     }
-	
-	public ExportCriteriaPanel(String id, IModel<ReportCriteria> model)
-	{
-		super(id, model);
-		setOutputMarkupId(true);
-		
-		add(createCriteriaPanel("criteriaForm", model));
-	}
 
-	/**
-	 * Create the criteria panel with the form, assignments and submit buttons
-	 */
-	private Form<ReportCriteria> createCriteriaPanel(String id, IModel<ReportCriteria> model)
-	{
-		SelectionForm form = new SelectionForm(id, model);
+    public ExportCriteriaPanel(String id, IModel<ReportCriteria> model) {
+        super(id, model);
+        setOutputMarkupId(true);
 
-		form.add(createAssignmentCheckboxes("projectGroup"));
-		
-		form.add(createSignOffCheck("signOff"));
-		
-		form.add(createSubmitButton("printButton", form, ExportType.PRINT));
-		form.add(createSubmitButton("excelButton", form, ExportType.EXCEL));
-		
-		return form;
-	}
+        add(createCriteriaPanel("criteriaForm", model));
+    }
 
-	@SuppressWarnings("serial")
-	private SubmitLink createSubmitButton(String id, SelectionForm form, final ExportType type)
-	{
-		return new SubmitLink(id, form)
-		{
-			@Override
-			public void onSubmit()
-			{
-				ReportCriteria criteria = (ReportCriteria)ExportCriteriaPanel.this.getDefaultModelObject();
-				
-				criteria.getUserCriteria().getCustomParameters().put(ExportCriteriaParameter.EXPORT_TYPE, type);
-			}
-		};
-	}
-	
-	private CheckBox createSignOffCheck(String id)
-	{
-		return new CheckBox(id, new PropertyModel<Boolean>(this.getDefaultModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
-	}
-	
-	private CheckGroup<Project> createAssignmentCheckboxes(String id)
-	{
-		CheckGroup<Project> projectGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(getDefaultModel(), "userCriteria.projects"));
+    /**
+     * Create the criteria panel with the form, assignments and submit buttons
+     */
+    private Form<ReportCriteria> createCriteriaPanel(String id, IModel<ReportCriteria> model) {
+        SelectionForm form = new SelectionForm(id, model);
 
-		ReportCriteria criteria = (ReportCriteria)getDefaultModelObject();
-		
-		List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
+        form.add(createAssignmentCheckboxes("projectGroup"));
+
+        form.add(createSignOffCheck("signOff"));
+
+        form.add(createSubmitButton("printButton", form, ExportType.PRINT));
+        form.add(createSubmitButton("excelButton", form, ExportType.EXCEL));
+
+        return form;
+    }
+
+    @SuppressWarnings("serial")
+    private SubmitLink createSubmitButton(String id, SelectionForm form, final ExportType type) {
+        return new SubmitLink(id, form) {
+            @Override
+            public void onSubmit() {
+                ReportCriteria criteria = (ReportCriteria) ExportCriteriaPanel.this.getDefaultModelObject();
+
+                criteria.getUserCriteria().getCustomParameters().put(ExportCriteriaParameter.EXPORT_TYPE, type);
+            }
+        };
+    }
+
+    private CheckBox createSignOffCheck(String id) {
+        return new CheckBox(id, new PropertyModel<Boolean>(this.getDefaultModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
+    }
+
+    private CheckGroup<Project> createAssignmentCheckboxes(String id) {
+        CheckGroup<Project> projectGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(getDefaultModel(), "userCriteria.projects"));
+
+        ReportCriteria criteria = (ReportCriteria) getDefaultModelObject();
+
+        List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
 
         List<Project> billableProjects = ProjectUtil.getBillableProjects(allProjects);
         ListView<Project> billableProjectsView = getAssignmentCheckboxesView("billableProjects", billableProjects);
         billableProjectsView.setVisible(billableProjects.size() > 0);
-		projectGroup.add(billableProjectsView);
+        projectGroup.add(billableProjectsView);
 
         List<Project> unbillableProjects = ProjectUtil.getUnbillableProjects(allProjects);
         ListView<Project> unbillableProjectsView = getAssignmentCheckboxesView("unbillableProjects", unbillableProjects);
         unbillableProjectsView.setVisible(unbillableProjects.size() > 0);
         projectGroup.add(unbillableProjectsView);
 
-		return projectGroup;
-	}
+        return projectGroup;
+    }
 
-	@SuppressWarnings("serial")
-	private ListView<Project> getAssignmentCheckboxesView(String id, List<Project> projects)
-	{
-		return new ListView<Project>(id, projects)
-		{
-			@Override
-			protected void populateItem(ListItem<Project> item)
-			{
-				item.add(new Check<Project>("check", item.getModel()));
-				item.add(new Label("project", new PropertyModel<String>(item.getModel(), "fullNameWithCustomer")));
-			}
-		};
-	}
+    @SuppressWarnings("serial")
+    private ListView<Project> getAssignmentCheckboxesView(String id, List<Project> projects) {
+        return new ListView<Project>(id, projects) {
+            @Override
+            protected void populateItem(ListItem<Project> item) {
+                item.add(new Check<Project>("check", item.getModel()));
+                item.add(new Label("project", new PropertyModel<String>(item.getModel(), "fullNameWithCustomer")));
+            }
+        };
+    }
 
-	/**
-	 *
-	 * Created on Feb 18, 2009, 5:39:23 PM
-	 * @author Thies Edeling (thies@te-con.nl)
-	 *
-	 */
-	private static class SelectionForm extends Form<ReportCriteria>
-	{
-		private static final long serialVersionUID = -8232635495078008621L;
+    /**
+     * Created on Feb 18, 2009, 5:39:23 PM
+     *
+     * @author Thies Edeling (thies@te-con.nl)
+     */
+    private static class SelectionForm extends Form<ReportCriteria> {
+        private static final long serialVersionUID = -8232635495078008621L;
 
-		public SelectionForm(String id, IModel<ReportCriteria> model)
-		{
-			super(id, model);
-		}
-		
-		@Override
-		protected void onSubmit()
-		{
-			ReportCriteria criteria = getModelObject();
+        public SelectionForm(String id, IModel<ReportCriteria> model) {
+            super(id, model);
+        }
 
-			ExportType type = (ExportType)criteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.EXPORT_TYPE);
-			
-			if (type == ExportType.EXCEL)
-			{
-				excelExport(criteria);
-			}
-			else if (type == ExportType.PRINT)
-			{
-				setResponsePage(new PrintMonth(criteria));
-			}
-		}
+        @Override
+        protected void onSubmit() {
+            ReportCriteria criteria = getModelObject();
 
-		/**
-		 * @param criteria
-		 */
-		private void excelExport(ReportCriteria criteria)
-		{
-			PrintReport report = new PrintReport(criteria);
-			EhourWebSession.getSession().getObjectCache().addObjectToCache(report);
-			
-			final String reportId = report.getCacheId();
-			
-			ResourceReference excelResource = new PackageResourceReference(ExportReportExcel.getId());
-			PageParameters params = new PageParameters();
-			params.add("reportId", reportId);
-			
-			CharSequence url = getRequestCycle().urlFor(excelResource, params);
+            ExportType type = (ExportType) criteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.EXPORT_TYPE);
 
-            getRequestCycle().scheduleRequestHandlerAfterCurrent(new RedirectRequestHandler(url.toString()));
+            if (type == ExportType.EXCEL) {
+                excelExport(criteria);
+            } else if (type == ExportType.PRINT) {
+                setResponsePage(new PrintMonth(criteria));
+            }
+        }
 
+        private void excelExport(final ReportCriteria criteria) {
+            final ExportReportExcel exportReportExcel = new ExportReportExcel();
 
-		}
-	}
+            getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(exportReportExcel.getFilename(), new Function<byte[]>() {
+                @Override
+                public byte[] apply() {
+
+                    return exportReportExcel.getExcelData(criteria);
+                }
+            }));
+        }
+    }
 }

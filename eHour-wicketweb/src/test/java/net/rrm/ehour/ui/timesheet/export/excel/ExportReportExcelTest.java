@@ -26,8 +26,6 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.util.DateUtil;
 import org.junit.Before;
@@ -78,15 +76,12 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester {
         userCriteria.getCustomParameters().put(ExportCriteriaParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
         userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
         ReportCriteria criteria = new ReportCriteria(userCriteria);
-        Report report = new PrintReport(criteria);
 
-        expect(detailedReportService.getDetailedReportData(criteria))
-                .andReturn(data);
+        expect(detailedReportService.getDetailedReportData(criteria)).andReturn(data);
 
         replay(detailedReportService);
-        byte[] excelData = new ExportReportExcel().getExcelData(report);
+        byte[] excelData = new ExportReportExcel().getExcelData(criteria);
         assertTrue(excelData.length > 0);
-//		writeByteData(excelData);
 
         verify(detailedReportService);
     }
@@ -100,13 +95,12 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester {
         UserCriteria userCriteria = new UserCriteria();
         userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
         ReportCriteria criteria = new ReportCriteria(userCriteria);
-        Report report = new PrintReport(criteria);
 
         expect(detailedReportService.getDetailedReportData(criteria))
                 .andReturn(data);
 
         replay(detailedReportService);
-        byte[] excelData = new ExportReportExcel().getExcelData(report);
+        byte[] excelData = new ExportReportExcel().getExcelData(criteria);
         assertTrue(excelData.length > 0);
 
         verify(detailedReportService);

@@ -16,12 +16,15 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel;
 
-import net.rrm.ehour.ui.common.component.AbstractExcelResource;
+import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.ui.common.report.ExcelReport;
 import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.util.WebUtils;
+import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.ui.timesheet.export.excel.part.*;
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -29,70 +32,67 @@ import java.io.IOException;
 
 /**
  * Created on Mar 23, 2009, 1:30:04 PM
- * @author Thies Edeling (thies@te-con.nl)
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class ExportReportExcel extends AbstractExcelResource
-{
-	private static final long serialVersionUID = -4841781257347819473L;
+public class ExportReportExcel implements ExcelReport {
+    private static final long serialVersionUID = -4841781257347819473L;
 
-	private static final int CELL_BORDER = 1;
+    private static final int CELL_BORDER = 1;
 
-	public static String getId()
-	{
-		return "exportReportExcel";
-	}
+    private static final Logger LOGGER = Logger.getLogger(ExportReportExcel.class);
 
-	@Override
-	public byte[] getExcelData(Report report) throws IOException
-	{
-		HSSFWorkbook workbook = createWorkbook(report);
+    public static String getId() {
+        return "exportReportExcel";
+    }
 
-		return PoiUtil.getWorkbookAsBytes(workbook);
-	}
+    @Override
+    public byte[] getExcelData(ReportCriteria reportCriteria) {
+        PrintReport report = new PrintReport(reportCriteria);
+        HSSFWorkbook workbook = createWorkbook(report);
 
-	private HSSFWorkbook createWorkbook(Report report)
-	{
-		HSSFWorkbook workbook = new HSSFWorkbook();
+        try {
+            return PoiUtil.getWorkbookAsBytes(workbook);
+        } catch (IOException e) {
+            LOGGER.warn(e);
+            return new byte[0];
+        }
+    }
 
-		HSSFSheet 	sheet = workbook.createSheet(WebUtils.formatDate("MMMM yyyy", report.getReportRange().getDateStart()));
+    private HSSFWorkbook createWorkbook(Report report) {
+        HSSFWorkbook workbook = new HSSFWorkbook();
 
-		sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.DATE.getColumn()));
+        HSSFSheet sheet = workbook.createSheet(WebUtils.formatDate("MMMM yyyy", report.getReportRange().getDateStart()));
+
+        sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.DATE.getColumn()));
         sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.CUSTOMER_CODE.getColumn()));
         sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.PROJECT.getColumn()));
         sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.PROJECT_CODE.getColumn()));
         sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.HOURS.getColumn()));
-		sheet.setColumnWidth(0, 1024);
+        sheet.setColumnWidth(0, 1024);
 
-		int rowNumber = 9;
+        int rowNumber = 9;
 
-		rowNumber = new ExportReportHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
-		rowNumber = new ExportReportBodyHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
-		rowNumber = new ExportReportBody(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
-		rowNumber = new ExportReportTotal(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
+        rowNumber = new ExportReportHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
+        rowNumber = new ExportReportBodyHeader(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
+        rowNumber = new ExportReportBody(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
+        rowNumber = new ExportReportTotal(CELL_BORDER, sheet, report, workbook).createPart(rowNumber);
 
-		if (isInclSignOff(report))
-		{
-			new ExportReportSignOff(CELL_BORDER, sheet, report, workbook).createPart(rowNumber + 1);
-		}
+        if (isInclSignOff(report)) {
+            new ExportReportSignOff(CELL_BORDER, sheet, report, workbook).createPart(rowNumber + 1);
+        }
 
-		return workbook;
-	}
+        return workbook;
+    }
 
-	private boolean isInclSignOff(Report report)
-	{
-		String key = ExportCriteriaParameter.INCL_SIGN_OFF.name();
-		Object object = report.getReportCriteria().getUserCriteria().getCustomParameters().get(key);
-		return (object != null) && (Boolean) object;
-	}
+    private boolean isInclSignOff(Report report) {
+        String key = ExportCriteriaParameter.INCL_SIGN_OFF.name();
+        Object object = report.getReportCriteria().getUserCriteria().getCustomParameters().get(key);
+        return (object != null) && (Boolean) object;
+    }
 
-
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.component.AbstractExcelResource#getFilename()
-	 */
-	@Override
-	protected String getFilename()
-	{
-		return "month_report.xls";
-	}
+    @Override
+    public String getFilename() {
+        return "month_report.xls";
+    }
 }
