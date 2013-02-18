@@ -182,6 +182,8 @@ public class ExportCriteriaPanel extends Panel
 			CharSequence url = getRequestCycle().urlFor(excelResource, params);
 
             getRequestCycle().scheduleRequestHandlerAfterCurrent(new RedirectRequestHandler(url.toString()));
+
+
 		}
 	}
 }

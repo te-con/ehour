@@ -76,8 +76,6 @@ public class TreeReportDataPanel extends Panel {
 
         if (excelReport != null) {
             blueBorder.add(new ExcelLink("excelLink", reportModel.getReportCriteria()) {
-
-
                 @Override
                 protected ExcelReport createReportBuilder() {
                     return excelReport;

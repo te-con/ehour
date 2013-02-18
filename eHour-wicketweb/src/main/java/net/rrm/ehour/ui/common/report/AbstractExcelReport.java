@@ -21,6 +21,7 @@ import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CurrencyCellStyle;
 import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
 import net.rrm.ehour.ui.report.TreeReportElement;
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -38,6 +39,8 @@ import java.util.List;
 public abstract class AbstractExcelReport implements ExcelReport {
     private static final long serialVersionUID = 1L;
 
+    private static final Logger LOGGER = Logger.getLogger(AbstractExcelReport.class);
+
     private ReportConfig reportConfig;
 
     public AbstractExcelReport(ReportConfig reportConfig) {
@@ -45,10 +48,15 @@ public abstract class AbstractExcelReport implements ExcelReport {
     }
 
     @Override
-    public final byte[] getExcelData(ReportCriteria reportCriteria) throws IOException {
+    public final byte[] getExcelData(ReportCriteria reportCriteria)  {
         HSSFWorkbook workbook = createWorkbook(createReport(reportCriteria));
 
-        return PoiUtil.getWorkbookAsBytes(workbook);
+        try {
+            return PoiUtil.getWorkbookAsBytes(workbook);
+        } catch (IOException e) {
+            LOGGER.warn(e);
+            return new byte[0];
+        }
     }
 
     protected abstract Report createReport(ReportCriteria reportCriteria);
