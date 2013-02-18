@@ -15,7 +15,7 @@
  * eHour is sponsored by TE-CON  - http://www.te-con.nl/
  */
 
-package net.rrm.ehour.ui.timesheet.export.excel;
+package net.rrm.ehour.ui.timesheet.export;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
@@ -25,8 +25,8 @@ import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
+import net.rrm.ehour.ui.admin.config.panel.SkinConfigPanel;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
-import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
 import net.rrm.ehour.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +47,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-public class ExportReportExcelTest extends AbstractSpringWebAppTester {
+public class TimesheetExcelExportTest extends AbstractSpringWebAppTester {
     private ConfigurationServiceImpl configService;
     private DetailedReportService detailedReportService;
 
@@ -68,19 +68,19 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester {
 
     @Test
     public void produceExcelReport() throws IOException {
-        List<FlatReportElement> elements = ExportReportDummyCreater.createMonthData(getConfig());
+        List<FlatReportElement> elements = SkinConfigPanel.TimesheetExportDummyDataGenerator.createMonthData(getConfig());
 
-        ReportData data = new ReportData(elements, ExportReportDummyCreater.getDateRangeForCurrentMonth());
+        ReportData data = new ReportData(elements, SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
 
         UserCriteria userCriteria = new UserCriteria();
-        userCriteria.getCustomParameters().put(ExportCriteriaParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
-        userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
+        userCriteria.getCustomParameters().put(TimesheetExportParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
+        userCriteria.setReportRange(SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
         ReportCriteria criteria = new ReportCriteria(userCriteria);
 
         expect(detailedReportService.getDetailedReportData(criteria)).andReturn(data);
 
         replay(detailedReportService);
-        byte[] excelData = new ExportReportExcel().getExcelData(criteria);
+        byte[] excelData = new TimesheetExcelExport().getExcelData(criteria);
         assertTrue(excelData.length > 0);
 
         verify(detailedReportService);
@@ -93,14 +93,14 @@ public class ExportReportExcelTest extends AbstractSpringWebAppTester {
 
         ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
         UserCriteria userCriteria = new UserCriteria();
-        userCriteria.setReportRange(ExportReportDummyCreater.getDateRangeForCurrentMonth());
+        userCriteria.setReportRange(SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
         ReportCriteria criteria = new ReportCriteria(userCriteria);
 
         expect(detailedReportService.getDetailedReportData(criteria))
                 .andReturn(data);
 
         replay(detailedReportService);
-        byte[] excelData = new ExportReportExcel().getExcelData(criteria);
+        byte[] excelData = new TimesheetExcelExport().getExcelData(criteria);
         assertTrue(excelData.length > 0);
 
         verify(detailedReportService);

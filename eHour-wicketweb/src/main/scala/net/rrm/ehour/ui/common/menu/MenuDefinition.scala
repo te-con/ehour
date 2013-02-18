@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.common.menu
 
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
-import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage
+import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage
 import net.rrm.ehour.ui.report.page.GlobalReportPage
 import net.rrm.ehour.ui.pm.page.ProjectManagement
 import net.rrm.ehour.ui.admin.user.page.UserAdminPage
@@ -24,7 +24,7 @@ object MenuDefinition {
 
     val enterHours = new LinkItem("nav.hours.enter", classOf[MonthOverviewPage], new Some(params))
     val hoursOverview = new LinkItem("nav.hours.overview", classOf[MonthOverviewPage])
-    val monthExport = new LinkItem("nav.hours.export", classOf[ExportMonthSelectionPage])
+    val monthExport = new LinkItem("nav.hours.export", classOf[TimesheetExportPage])
     val hoursDropdown = new DropdownMenu("nav.hours.yourHours", Arrays.asList(enterHours, hoursOverview, monthExport))
 
     val report = new LinkItem("nav.report", classOf[GlobalReportPage])

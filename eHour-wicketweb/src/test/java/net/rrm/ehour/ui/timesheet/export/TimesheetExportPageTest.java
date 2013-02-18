@@ -44,7 +44,7 @@ import static org.junit.Assert.fail;
  * @author Thies Edeling (thies@te-con.nl) 
  *
  */
-public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
+public class TimesheetExportPageTest extends AbstractSpringWebAppTester
 {
 	private TimesheetService 	timesheetService;
 	private ReportCriteriaService reportCriteriaService;
@@ -75,7 +75,7 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 				.andReturn(DetailedReportDataObjectMother.getFlatReportData());
 		replay(timesheetService, reportCriteriaService, detailedReportService);
 		
-		tester.startPage(ExportMonthSelectionPage.class);		
+		tester.startPage(TimesheetExportPage.class);
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class ExportMonthSelectionPageTest extends AbstractSpringWebAppTester
 		
 		tester.assertRenderedPage(PrintMonth.class);
 		tester.assertNoErrorMessage();
-		assertEquals(Boolean.TRUE, reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name()));
+		assertEquals(Boolean.TRUE, reportCriteria.getUserCriteria().getCustomParameters().get(TimesheetExportParameter.INCL_SIGN_OFF.name()));
 		
 		assertEquals(2, reportCriteria.getUserCriteria().getProjects().size());
 		

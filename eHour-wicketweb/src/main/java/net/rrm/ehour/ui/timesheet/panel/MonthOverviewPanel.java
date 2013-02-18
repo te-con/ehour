@@ -26,7 +26,7 @@ import net.rrm.ehour.ui.common.component.sort.TimesheetEntryComparator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
+import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -77,7 +77,7 @@ public class MonthOverviewPanel extends Panel {
         Link<String> printLink = new Link<String>("printLink") {
             @Override
             public void onClick() {
-                setResponsePage(new ExportMonthSelectionPage(overviewForMonth));
+                setResponsePage(new TimesheetExportPage(overviewForMonth));
             }
         };
 

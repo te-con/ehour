@@ -25,7 +25,7 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.trend.PrintReport;
-import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
+import net.rrm.ehour.ui.timesheet.export.TimesheetExportParameter;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -108,7 +108,7 @@ public class PrintMonth extends WebPage
 	
 	private boolean isSignOffEnabled(ReportCriteria reportCriteria)
 	{
-		Boolean signOff = (Boolean)reportCriteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.INCL_SIGN_OFF.name());
+		Boolean signOff = (Boolean)reportCriteria.getUserCriteria().getCustomParameters().get(TimesheetExportParameter.INCL_SIGN_OFF.name());
 
 		return (signOff != null) && signOff.booleanValue();
 	}

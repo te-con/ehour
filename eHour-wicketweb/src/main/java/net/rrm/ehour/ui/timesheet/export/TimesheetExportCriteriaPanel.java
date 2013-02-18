@@ -14,15 +14,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.timesheet.export.criteria;
+package net.rrm.ehour.ui.timesheet.export;
 
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
 import net.rrm.ehour.ui.common.util.Function;
-import net.rrm.ehour.ui.timesheet.export.ExportCriteriaParameter;
-import net.rrm.ehour.ui.timesheet.export.excel.ExportReportExcel;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
@@ -36,18 +34,20 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * ExportCriteriaPanel holding the form for month based exports for consultants
+ * TimesheetExportCriteriaPanel holding the form for month based exports for consultants
  */
 
-public class ExportCriteriaPanel extends Panel {
+public class TimesheetExportCriteriaPanel extends Panel {
     private static final long serialVersionUID = -3732529050866431376L;
+
+    private static final String EXPORT_TYPE_KEY = "exportTypeKey";
 
     private enum ExportType {
         EXCEL,
         PRINT
     }
 
-    public ExportCriteriaPanel(String id, IModel<ReportCriteria> model) {
+    public TimesheetExportCriteriaPanel(String id, IModel<ReportCriteria> model) {
         super(id, model);
         setOutputMarkupId(true);
 
@@ -75,9 +75,9 @@ public class ExportCriteriaPanel extends Panel {
         return new SubmitLink(id, form) {
             @Override
             public void onSubmit() {
-                ReportCriteria criteria = (ReportCriteria) ExportCriteriaPanel.this.getDefaultModelObject();
+                ReportCriteria criteria = (ReportCriteria) TimesheetExportCriteriaPanel.this.getDefaultModelObject();
 
-                criteria.getUserCriteria().getCustomParameters().put(ExportCriteriaParameter.EXPORT_TYPE, type);
+                criteria.getUserCriteria().getCustomParameters().put(EXPORT_TYPE_KEY, type);
             }
         };
     }
@@ -133,7 +133,7 @@ public class ExportCriteriaPanel extends Panel {
         protected void onSubmit() {
             ReportCriteria criteria = getModelObject();
 
-            ExportType type = (ExportType) criteria.getUserCriteria().getCustomParameters().get(ExportCriteriaParameter.EXPORT_TYPE);
+            ExportType type = (ExportType) criteria.getUserCriteria().getCustomParameters().get(EXPORT_TYPE_KEY);
 
             if (type == ExportType.EXCEL) {
                 excelExport(criteria);
@@ -143,13 +143,12 @@ public class ExportCriteriaPanel extends Panel {
         }
 
         private void excelExport(final ReportCriteria criteria) {
-            final ExportReportExcel exportReportExcel = new ExportReportExcel();
+            final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport();
 
-            getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(exportReportExcel.getFilename(), new Function<byte[]>() {
+            getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(timesheetExcelExport.getFilename(), new Function<byte[]>() {
                 @Override
                 public byte[] apply() {
-
-                    return exportReportExcel.getExcelData(criteria);
+                    return timesheetExcelExport.getExcelData(criteria);
                 }
             }));
         }

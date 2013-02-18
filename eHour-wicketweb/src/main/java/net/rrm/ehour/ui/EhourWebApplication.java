@@ -34,7 +34,7 @@ import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.pm.page.ProjectManagement;
 import net.rrm.ehour.ui.report.page.GlobalReportPage;
-import net.rrm.ehour.ui.timesheet.export.ExportMonthSelectionPage;
+import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
@@ -145,7 +145,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
         mountPage("/consultant/overview", MonthOverviewPage.class);
 
-        mountPage("/consultant/exportmonth", ExportMonthSelectionPage.class);
+        mountPage("/consultant/exportmonth", TimesheetExportPage.class);
         mountPage("/consultant/print", PrintMonth.class);
 
         mountPage("/report", GlobalReportPage.class);
