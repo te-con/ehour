@@ -17,12 +17,14 @@
 
 package net.rrm.ehour.persistence.value;
 
+import java.io.Serializable;
+
 /**
  * Created on Apr 22, 2009, 5:49:56 PM
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-public class ImageLogo
+public class ImageLogo implements Serializable
 {
     private byte[] imageData;
     private int width;
