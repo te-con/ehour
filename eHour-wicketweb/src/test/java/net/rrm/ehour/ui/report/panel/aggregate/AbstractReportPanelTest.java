@@ -63,7 +63,6 @@ public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester
 
     protected Panel startReportPanel() {
         TreeReportModel model = getAggregateReport();
-        model.setCacheId("1");
         return tester.startComponentInPage(createReportPanel("id", model));
     }
 
