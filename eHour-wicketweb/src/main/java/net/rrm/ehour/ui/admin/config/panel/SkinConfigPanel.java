@@ -32,11 +32,10 @@ import net.rrm.ehour.ui.timesheet.export.TimesheetExcelExport;
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportParameter;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.DynamicImageResource;
@@ -65,15 +64,10 @@ public class SkinConfigPanel extends AbstractConfigPanel {
 
         form.add(new UploadProgressBar("progress", form));
 
-        form.add(new AjaxButton("excelPreview") {
+        form.add(new Link<Void>("excelPreview") {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            public void onClick() {
                 createDummyExcelExport();
-            }
-
-            @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form) {
-                //
             }
         });
     }
