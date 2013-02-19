@@ -20,7 +20,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
+import net.rrm.ehour.ui.common.report.AbstractReportModel;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.log4j.Logger;
 
@@ -33,7 +33,7 @@ import static org.springframework.util.Assert.notNull;
  * Base trend report
  */
 
-public abstract class TrendReport<RK extends Comparable<?>> extends AbstractCachableReportModel
+public abstract class TrendReport<RK extends Comparable<?>> extends AbstractReportModel
 {
     private static final long serialVersionUID = -8062083697181324496L;
 

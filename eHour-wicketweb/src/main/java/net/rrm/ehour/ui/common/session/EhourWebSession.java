@@ -25,7 +25,6 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
-import net.rrm.ehour.ui.common.cache.ObjectCache;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.log4j.Logger;
@@ -59,7 +58,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
     private AuditService auditService;
     private Calendar navCalendar;
     private UserCriteria userCriteria;
-    private ObjectCache reportCache = new ObjectCache();
     private Boolean hideInactiveSelections = Boolean.TRUE;
 
     private static final Logger LOGGER = Logger.getLogger(EhourWebSession.class);
@@ -264,12 +262,5 @@ public class EhourWebSession extends AuthenticatedWebSession {
      */
     public void setUserCriteria(UserCriteria userCriteria) {
         this.userCriteria = userCriteria;
-    }
-
-    /**
-     * @return the reportCache
-     */
-    public ObjectCache getObjectCache() {
-        return reportCache;
     }
 }

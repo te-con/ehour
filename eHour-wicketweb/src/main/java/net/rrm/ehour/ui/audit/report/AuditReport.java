@@ -22,7 +22,7 @@ import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
+import net.rrm.ehour.ui.common.report.AbstractReportModel;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.TreeReportElement;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -35,7 +35,7 @@ import java.util.List;
  * Audit report
  **/
 
-public class AuditReport extends AbstractCachableReportModel
+public class AuditReport extends AbstractReportModel
 {
 	private static final long serialVersionUID = -5162817322066082796L;
 
@@ -51,7 +51,7 @@ public class AuditReport extends AbstractCachableReportModel
 	}
 
 	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.report.AbstractCachableReportModel#getReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
+	 * @see net.rrm.ehour.persistence.persistence.ui.common.report.AbstractReportModel#getReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
 	 */
 	@Override
 	protected ReportData getReportData(ReportCriteria reportCriteria)

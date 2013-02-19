@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.ui.common.report.AbstractCachableReportModel;
+import net.rrm.ehour.ui.common.report.AbstractReportModel;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
@@ -29,7 +29,7 @@ import java.util.List;
 
 import static org.springframework.util.Assert.notNull;
 
-public abstract class TreeReportModel extends AbstractCachableReportModel
+public abstract class TreeReportModel extends AbstractReportModel
 {
 	private static final long serialVersionUID = -3717854276306653784L;
 
