@@ -18,7 +18,7 @@ package net.rrm.ehour.ui;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
-import net.rrm.ehour.ui.admin.backup.ExportPage;
+import net.rrm.ehour.ui.admin.backup.BackupDbPage;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage;
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage;
@@ -145,7 +145,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
         mountPage("/prefs", UserPreferencePage.class);
 
-        mountPage("/backup", ExportPage.class);
+        mountPage("/backup", BackupDbPage.class);
     }
 
     protected void springInjection() {

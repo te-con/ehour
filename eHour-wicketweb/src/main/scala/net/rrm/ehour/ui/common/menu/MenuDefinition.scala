@@ -7,7 +7,6 @@ import net.rrm.ehour.ui.pm.page.ProjectManagement
 import net.rrm.ehour.ui.admin.user.page.UserAdminPage
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage
 import net.rrm.ehour.ui.audit.page.AuditReportPage
-import net.rrm.ehour.ui.admin.export.page.ExportPage
 import java.util.Arrays
 import java.util.{List => JList}
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin
@@ -15,6 +14,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage
 import net.rrm.ehour.ui.admin.project.ProjectAdmin
+import net.rrm.ehour.ui.admin.backup.BackupDbPage
 
 object MenuDefinition {
 
@@ -39,7 +39,7 @@ object MenuDefinition {
 
     val mainConfig = new LinkItem("nav.admin.config", classOf[MainConfigPage])
     val auditReport = new LinkItem("nav.admin.audit", classOf[AuditReportPage])
-    val export = new LinkItem("nav.admin.export", classOf[ExportPage])
+    val export = new LinkItem("nav.admin.export", classOf[BackupDbPage])
     val configDropdown = new DropdownMenu("nav.admin", Arrays.asList(mainConfig, auditReport, export))
 
     Arrays.asList(hoursDropdown, report, pm, adminDropdown, configDropdown)
