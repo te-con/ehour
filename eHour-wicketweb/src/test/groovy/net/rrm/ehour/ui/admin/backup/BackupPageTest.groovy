@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.admin.backup.page
+package net.rrm.ehour.ui.admin.backup
 
 import net.rrm.ehour.backup.service.DatabaseBackupService
 import net.rrm.ehour.backup.service.ParseSession
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 12, 2010 - 11:42:00 PM
  */
-class ExportPageTest extends AbstractSpringWebAppTester
+class BackupPageTest extends AbstractSpringWebAppTester
 {
   @Mock
   private DatabaseBackupService exportService
@@ -59,14 +59,14 @@ class ExportPageTest extends AbstractSpringWebAppTester
   }
 
   @Test
-  void shouldClickExportLink()
+  void shouldClickBackupLink()
   {
     when(exportService.exportDatabase()).thenReturn("this should be xml");
 
     startPage()
 
-    tester.clickLink "frame:frame_body:backupBorder:backupBorder_body:exportLink"
-    tester.assertRenderedPage BackupDbPage.class
+    tester.clickLink "frame:frame_body:backupBorder:backupBorder_body:backupLink"
+    tester.assertNoErrorMessage()
   }
 
   @Test
