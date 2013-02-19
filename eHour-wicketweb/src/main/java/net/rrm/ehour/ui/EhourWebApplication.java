@@ -18,11 +18,10 @@ package net.rrm.ehour.ui;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin;
+import net.rrm.ehour.ui.admin.backup.ExportPage;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage;
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage;
-import net.rrm.ehour.ui.admin.export.page.ExportDatabase;
-import net.rrm.ehour.ui.admin.export.page.ExportPage;
 import net.rrm.ehour.ui.admin.project.ProjectAdmin;
 import net.rrm.ehour.ui.admin.user.page.UserAdminPage;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
@@ -48,7 +47,6 @@ import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizati
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -62,7 +60,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     private AuthenticationManager authenticationManager;
     private String version;
-    private String wikiBaseUrl;
     private boolean initialized;
 
     @Value("${ehour.configurationType}")
@@ -85,7 +82,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             mountPages();
             getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
             setupSecurity();
-            registerSharedResources();
 
             registerEhourHomeResourceLoader();
 
@@ -111,12 +107,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         getResourceSettings().getResourceFinders().add(resourceLoader);
     }
 
-    private void registerSharedResources() {
-        getSharedResources().add(ExportDatabase.ID_EXPORT_DB, new ExportDatabase());
-        mountResource("/exportDb", new PackageResourceReference(ExportDatabase.ID_EXPORT_DB));
-
-    }
-
     @Override
     public RuntimeConfigurationType getConfigurationType() {
         String development = RuntimeConfigurationType.DEVELOPMENT.name();
@@ -134,7 +124,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private void mountPages() {
         mountPage("/login", Login.class);
         mountPage("/logout", Logout.class);
-
 
         mountPage("/admin", MainConfigPage.class);
         mountPage("/admin/employee", UserAdminPage.class);
@@ -238,13 +227,5 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
      */
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public String getWikiBaseUrl() {
-        return wikiBaseUrl;
-    }
-
-    public void setWikiBaseUrl(String wikiBaseUrl) {
-        this.wikiBaseUrl = wikiBaseUrl;
     }
 }
