@@ -16,19 +16,14 @@
 
 package net.rrm.ehour.persistence.project.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * CRUD stuff on PA do 
@@ -111,28 +106,10 @@ public class ProjectAssignmentDaoHibernateImpl
 		return results;
 	}
 
-	/**
-	 * Find project assignments for user for a specific type
-	 */
-	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId, Integer assignmentType)
-	{
-		List<ProjectAssignment>		results;
-		String[]	names = new String[]{"userId", "type"};
-		Integer[]	values = new Integer[]{userId, assignmentType};
-		
-		results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectsForUserForType"
-				, names
-				, values
-				, true
-				, CACHEREGION);		
-		
-		return results;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.dao.ProjectAssignmentDAO#findProjectAssignmentsForProject(net.rrm.ehour.persistence.persistence.project.domain.Project, net.rrm.ehour.persistence.persistence.data.DateRange)
-	 */
+    /*
+     * (non-Javadoc)
+     * @see net.rrm.ehour.persistence.persistence.project.dao.ProjectAssignmentDAO#findProjectAssignmentsForProject(net.rrm.ehour.persistence.persistence.project.domain.Project, net.rrm.ehour.persistence.persistence.data.DateRange)
+     */
 	public List<ProjectAssignment> findProjectAssignmentsForProject(Project project, DateRange range)
 	{
 		List<ProjectAssignment>		results;

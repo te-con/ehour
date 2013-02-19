@@ -226,11 +226,11 @@ public class Customer extends DomainObject<Integer, Customer>
 			.append(this.getCustomerId(), object.getCustomerId()).toComparison();
 	}
 
-    private final String getNameLowerCase() {
+    private String getNameLowerCase() {
         return getName() == null ? null : getName().toLowerCase();
     }
 
-    private final String getCodeLowerCase() {
+    private String getCodeLowerCase() {
         return getCode() == null ? null : getCode().toLowerCase();
     }
 

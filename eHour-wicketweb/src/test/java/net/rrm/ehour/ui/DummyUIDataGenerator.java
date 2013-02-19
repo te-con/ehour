@@ -1,31 +1,13 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.domain.*;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 public class DummyUIDataGenerator {
-    public static Project createProject() {
-        Project prj = new Project(1);
-        prj.setCustomer(createCustomer());
-        prj.setActive(true);
-        prj.setName("eHour");
-
-        return prj;
-    }
-
-    public static Customer createCustomer() {
-        Customer cust = new Customer(1);
-        cust.setActive(true);
-        cust.setName("TE-CON");
-
-        return cust;
-    }
 
     public static List<ProjectAssignmentType> getProjectAssignmentTypes() {
         List<ProjectAssignmentType> list = new ArrayList<ProjectAssignmentType>();
@@ -97,13 +79,6 @@ public class DummyUIDataGenerator {
         return cust;
     }
 
-    public static AssignmentAggregateReportElement getProjectAssignmentAggregate(int baseId, int customerId, int userId) {
-        AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
-        pag.setHours(baseId);
-        pag.setProjectAssignment(getProjectAssignment(baseId, customerId, userId));
-        return pag;
-    }
-
     public static User getUser() {
         User user = new User();
 
@@ -122,28 +97,6 @@ public class DummyUIDataGenerator {
         user.setUserRoles(userRoles);
 
         return user;
-    }
-
-    public static List<User> getUserList() {
-        ArrayList<User> list = new ArrayList<User>();
-        list.add(getUser());
-
-        return list;
-    }
-
-    public static TimesheetEntry getTimesheetEntry(int prjId, Date date, float hours) {
-        TimesheetEntry entry;
-        TimesheetEntryId id;
-
-        id = new TimesheetEntryId();
-        id.setEntryDate(date);
-        id.setProjectAssignment(getProjectAssignment(prjId, prjId, 1));
-
-        entry = new TimesheetEntry();
-        entry.setEntryId(id);
-        entry.setHours(hours);
-
-        return entry;
     }
 
 

@@ -51,9 +51,4 @@ public class CustomerReportExcel extends AbstractExcelReport
 	{
 		return new ResourceModel("report.title.customer");
 	}
-
-	public static String getId()
-	{
-		return "customerReportExcel";
-	}
 }

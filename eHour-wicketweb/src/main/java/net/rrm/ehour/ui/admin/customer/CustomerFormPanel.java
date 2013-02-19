@@ -92,7 +92,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
         //
 
         boolean deletable = model.getObject().getCustomer().isDeletable();
-        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+        FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(CustomerAjaxEventType.CUSTOMER_DELETED)
                 .withSubmitEventType(CustomerAjaxEventType.CUSTOMER_UPDATED);
 

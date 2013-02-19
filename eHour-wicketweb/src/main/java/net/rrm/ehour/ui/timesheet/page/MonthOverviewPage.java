@@ -70,7 +70,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
 
         if (panelToOpen == OpenPanel.OVERVIEW)
         {
-            helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body", "Month+overview");
+            helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
             contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);
         } else
         {
@@ -179,8 +179,8 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
     {
         ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp",
                 "timesheet.help.header",
-                "timesheet.help.body",
-                "Entering+hours");
+                "timesheet.help.body"
+        );
 
         helpPanel.setOutputMarkupId(true);
 

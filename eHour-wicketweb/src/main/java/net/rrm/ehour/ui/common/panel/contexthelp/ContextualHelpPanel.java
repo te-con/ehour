@@ -30,11 +30,6 @@ public class ContextualHelpPanel extends Panel
 	
 	public ContextualHelpPanel(String id, String headerResourceId, String bodyResourceId)
 	{
-		this(id, headerResourceId, bodyResourceId, null);
-	}
-	
-	public ContextualHelpPanel(String id, String headerResourceId, String bodyResourceId, String wikiPageTitle)
-	{
 		super(id);
 		
 		add(new Label("header", new ResourceModel(headerResourceId)));

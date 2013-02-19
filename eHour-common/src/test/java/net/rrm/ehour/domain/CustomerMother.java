@@ -1,7 +1,5 @@
 package net.rrm.ehour.domain;
 
-import java.util.List;
-
 /**
  * Created on Feb 7, 2010 2:35:44 PM
  *
@@ -27,9 +25,5 @@ public class CustomerMother
 		
 		return cust;
 	}
-	
-	public static List<Customer> createCustomers()
-	{
-		return MotherUtil.createMultiple(createCustomer());
-	}
+
 }

@@ -87,7 +87,7 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
         form.add(serverMessage);
 
 
-        FormConfig formConfig = new FormConfig().forForm(form).withSubmitTarget(this)
+        FormConfig formConfig = FormConfig.forForm(form).withSubmitTarget(this)
                 .withSubmitEventType(PASSWORD_CHANGED)
                 .withErrorEventType(SUBMIT_ERROR);
 

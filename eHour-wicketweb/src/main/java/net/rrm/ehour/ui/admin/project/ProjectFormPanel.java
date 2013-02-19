@@ -83,7 +83,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         addFormComponents(form);
 
         boolean deletable = model.getObject().getProject().isDeletable();
-        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+        FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(ProjectAjaxEventType.PROJECT_DELETED)
                 .withSubmitEventType(ProjectAjaxEventType.PROJECT_UPDATED);
 

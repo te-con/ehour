@@ -276,21 +276,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     }
 
 
-    public boolean equalsIgnoringUser(ProjectAssignment assignment)
-    {
-        return new EqualsBuilder()
-                .append(this.getAllottedHours(), assignment.getAllottedHours())
-                .append(this.getAllowedOverrun(), assignment.getAllowedOverrun())
-                .append(this.getAssignmentType(), assignment.getAssignmentType())
-                .append(this.getDateEnd(), assignment.getDateEnd())
-                .append(this.getDateStart(), assignment.getDateStart())
-                .append(this.getFullName(), assignment.getFullName())
-                .append(this.getHourlyRate(), assignment.getHourlyRate())
-                .append(this.getProject(), assignment.getProject())
-                .isEquals();
-    }
-
-
     public boolean isDeletable()
     {
         return deletable;

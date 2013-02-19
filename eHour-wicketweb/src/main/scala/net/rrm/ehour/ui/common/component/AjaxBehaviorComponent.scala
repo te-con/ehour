@@ -14,7 +14,7 @@ class AjaxBehaviorComponent(id: String, event: String, behavior: AjaxRequestTarg
       behavior(target)
     }
 
-    override def updateAjaxAttributes(attributes: AjaxRequestAttributes) = {
+    override def updateAjaxAttributes(attributes: AjaxRequestAttributes) {
       super.updateAjaxAttributes(attributes)
 
       attributes.getAjaxCallListeners.add(new LoadingSpinnerDecorator)

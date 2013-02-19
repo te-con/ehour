@@ -35,13 +35,8 @@ public class UserObjectMother
 		return user;
 	}
 
-	public static List<User> createUsers()
-	{
-		return MotherUtil.createMultiple(createUser(new UserDepartment(1)));
-	}
 
-	
-	public static List<User> createUsers(UserDepartment department)
+    public static List<User> createUsers(UserDepartment department)
 	{
 		return MotherUtil.createMultiple(createUser(department));
 	}

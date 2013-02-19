@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.common.sort;
 
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+
 import java.io.Serializable;
 import java.util.Comparator;
-
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 /**
  * Project Assignment aggregate comparator 
@@ -32,16 +32,7 @@ public class ProjectAssignmentAggregateComparator implements Comparator<Assignme
 	public static final int SORT_ON_PROJECT = 2;
 	
 	private int	sortType;
-	
-	public ProjectAssignmentAggregateComparator()
-	{
-		sortType = SORT_ON_CUSTOMER;
-	}
-	
-	/**
-	 * 
-	 * @param sortType
-	 */
+
 	public ProjectAssignmentAggregateComparator(int sortType)
 	{
 		this.sortType = sortType;

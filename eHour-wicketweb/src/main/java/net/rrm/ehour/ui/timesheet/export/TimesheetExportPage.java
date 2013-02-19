@@ -66,7 +66,7 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
         titleLabel = getTitleLabel(forMonth);
         titleLabel.setOutputMarkupId(true);
 
-        add(new ContextualHelpPanel("contextHelp", "printMonth.help.header", "printMonth.help.body", "Export+month"));
+        add(new ContextualHelpPanel("contextHelp", "printMonth.help.header", "printMonth.help.body"));
 
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_FRAME, titleLabel);
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder(ID_BLUE_BORDER);

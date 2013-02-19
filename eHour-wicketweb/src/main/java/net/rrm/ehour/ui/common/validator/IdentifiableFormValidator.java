@@ -18,9 +18,4 @@ public abstract class IdentifiableFormValidator extends AbstractFormValidator im
 	}
 
 
-	@Override
-	public final String getIdentity()
-	{
-		return id;
-	}
 }

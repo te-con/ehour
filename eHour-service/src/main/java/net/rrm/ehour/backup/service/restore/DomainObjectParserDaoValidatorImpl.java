@@ -11,15 +11,13 @@ import java.util.Map;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 11/28/10 - 1:43 AM
  */
-public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao
-{
+public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao {
     private static final Logger LOG = Logger.getLogger(DomainObjectParserDaoValidatorImpl.class);
 
     private int id;
     private Map<Class<?>, Integer> persistCount;
 
-    public DomainObjectParserDaoValidatorImpl()
-    {
+    public DomainObjectParserDaoValidatorImpl() {
         initialize();
     }
 
@@ -30,12 +28,10 @@ public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao
     }
 
     @Override
-    public <T extends DomainObject<?, ?>> Serializable persist(T object)
-    {
+    public <T extends DomainObject<?, ?>> Serializable persist(T object) {
         Integer count = 0;
 
-        if (persistCount.containsKey(object.getClass()))
-        {
+        if (persistCount.containsKey(object.getClass())) {
             count = persistCount.get(object.getClass());
         }
 
@@ -45,33 +41,22 @@ public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao
     }
 
     @Override
-    public <T extends Serializable> T find(Serializable primaryKey, Class<T> type)
-    {
-        try
-        {
+    public <T extends Serializable> T find(Serializable primaryKey, Class<T> type) {
+        try {
             return type.newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             LOG.error(e);
             return null;
         }
     }
 
-    int getTotalPersistCount()
-    {
+    int getTotalPersistCount() {
         int totalCount = 0;
 
-        for (Integer count : persistCount.values())
-        {
+        for (Integer count : persistCount.values()) {
             totalCount += count;
-
         }
 
         return totalCount;
-    }
-
-    public Map<Class<?>, Integer> getPersistCount()
-    {
-        return persistCount;
     }
 }

@@ -20,11 +20,9 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 
 /**
  * Ajax event types
- **/
+ */
 
-public enum CustomerAjaxEventType implements AjaxEventType
-{
-	CUSTOMER_NEW_PANEL_REQUEST,
-	CUSTOMER_UPDATED,
-	CUSTOMER_DELETED
+public enum CustomerAjaxEventType implements AjaxEventType {
+    CUSTOMER_UPDATED,
+    CUSTOMER_DELETED
 }

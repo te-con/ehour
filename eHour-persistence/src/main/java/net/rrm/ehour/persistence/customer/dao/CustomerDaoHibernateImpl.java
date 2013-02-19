@@ -16,12 +16,11 @@
 
 package net.rrm.ehour.persistence.customer.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
-
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Customer DAO 
@@ -66,13 +65,4 @@ public class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Cu
 		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", true, false, CACHEREGION);
 	}
 
-	public List<Customer> findAllActiveWithBillableProjects()
-	{
-		throw new IllegalArgumentException("not implemented");
-	}
-
-	public List<Customer> findAllWithBillableProjects()
-	{
-		throw new IllegalArgumentException("not implemented");
-	}
 }

@@ -16,14 +16,13 @@
 
 package net.rrm.ehour.ui.report.panel.criteria.quick;
 
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.Session;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
-
-import org.apache.wicket.Session;
 
 public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
 {
@@ -42,11 +41,9 @@ public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
 	 * (non-Javadoc)
 	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
 	 */
-	public Object getDisplayValue(QuickMonth object)
+	public Object getDisplayValue(QuickMonth quickMonth)
 	{
 		String	value;
-		
-		QuickMonth quickMonth = (QuickMonth)object;
 		
 		int month = quickMonth.getPeriodIndex();
 		

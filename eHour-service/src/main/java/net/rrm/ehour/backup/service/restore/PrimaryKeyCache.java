@@ -18,7 +18,7 @@ public class PrimaryKeyCache
 
         if (keyMap.containsKey(domainObjectClass))
         {
-            oldNewKeyMap = (Map<Serializable, Serializable>) keyMap.get(domainObjectClass);
+            oldNewKeyMap = keyMap.get(domainObjectClass);
         } else
         {
             oldNewKeyMap = new HashMap<Serializable, Serializable>();

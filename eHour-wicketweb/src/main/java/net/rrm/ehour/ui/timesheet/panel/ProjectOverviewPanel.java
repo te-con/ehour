@@ -175,7 +175,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 Component projectSummaryRow = createProjectSummaryRow(ID_SUMMARY_ROW, projectStatus);
                 item.add(projectSummaryRow);
 
-                item.add(createFoldLink(projectStatus, projectSummaryRow));
+                item.add(createFoldLink(projectSummaryRow));
             }
         };
 
@@ -186,7 +186,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
      * Create fold link (also contains the creation of the summary row)
      */
     @SuppressWarnings("serial")
-    private Component createFoldLink(final UserProjectStatus projectStatus, final Component original) {
+    private Component createFoldLink(final Component original) {
         // set relative URL to image and set id
         final ContextImage originalImage = createFoldImage(false);
 

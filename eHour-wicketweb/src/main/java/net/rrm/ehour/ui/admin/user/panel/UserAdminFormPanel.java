@@ -125,7 +125,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 
         boolean deletable = userModel.getObject().getUser().isDeletable();
 
-        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+        FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(UserEditAjaxEventType.USER_DELETED)
                 .withSubmitEventType(UserEditAjaxEventType.USER_UPDATED);
 

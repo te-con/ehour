@@ -33,7 +33,7 @@ import java.util.List;
  */
 
 public class ReportColumn implements Serializable {
-    public enum DisplayType {VISIBLE, HIDE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN, IS_RATE_RELATED}
+    public enum DisplayType {VISIBLE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN, IS_RATE_RELATED}
 
     private static final long serialVersionUID = -6736366461333244457L;
 

@@ -7,5 +7,4 @@ package net.rrm.ehour.ui.common.validator;
  */
 public interface Identifiable
 {
-	public String getIdentity();
 }

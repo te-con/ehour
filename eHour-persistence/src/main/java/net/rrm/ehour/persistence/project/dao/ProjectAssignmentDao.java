@@ -16,15 +16,11 @@
 
 package net.rrm.ehour.persistence.project.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.GenericDao;
+
+import java.util.List;
 
 /**
  * CRUD on ProjectAssignment domain object
@@ -39,17 +35,8 @@ public interface ProjectAssignmentDao  extends GenericDao<ProjectAssignment, Int
 	 * @return
 	 */
 	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId);
-	
-	/**
-	 * Find assigned (active) projects for user with specific assignment type
-	 * @param projectId
-	 * @param userId
-	 * @param assignmentType
-	 * @return
-	 */
-	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId, Integer assignmentType);
-	
-	/**
+
+    /**
 	 * Find (active) projects for user
 	 * @param userId
 	 * @return

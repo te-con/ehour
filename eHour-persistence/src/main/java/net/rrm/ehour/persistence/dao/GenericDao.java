@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.persistence.dao;
 
+import net.rrm.ehour.domain.DomainObject;
+
 import java.io.Serializable;
 import java.util.List;
-
-import net.rrm.ehour.domain.DomainObject;
 
 /**
  * GenericDAO interface for CRUD on domain objects **/
@@ -62,10 +62,5 @@ public interface GenericDao <T extends DomainObject<?, ?>, PK extends Serializab
 	 * Merge the domain object
 	 */
 	public T merge(T domoj);
-	
-	/**
-	 * Initialize lazy loading domain object
-	 * @param domObj
-	 */
-	public void initializeObject(Object domObj);
+
 }

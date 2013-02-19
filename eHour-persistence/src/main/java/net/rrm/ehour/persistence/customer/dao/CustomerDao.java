@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.persistence.customer.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.persistence.dao.GenericDao;
+
+import java.util.List;
 
 /**
  * CRUD on the Customer domain object 
@@ -27,30 +27,19 @@ import net.rrm.ehour.persistence.dao.GenericDao;
 
 public interface CustomerDao extends GenericDao<Customer, Integer>
 {
-	/**
-	 * Find all active customers with billable projects
-	 * @return
-	 */
-	public List<Customer> findAllActiveWithBillableProjects();
-	
-	/**
-	 * Find all customers with billable projects
-	 * @return
-	 */
-	public List<Customer> findAllWithBillableProjects();
 
-	/**
+    /**
 	 * Get all customers
 	 * @param active
 	 * @return
 	 */
-	public List<Customer> findAll();
+	List<Customer> findAll();
 	
 	/**
 	 * Find all active customers
 	 * @return
 	 */
-	public List<Customer> findAllActive();
+	List<Customer> findAllActive();
 	
 	/**
 	 * Find customer on name and code
@@ -58,5 +47,5 @@ public interface CustomerDao extends GenericDao<Customer, Integer>
 	 * @param code
 	 * @return
 	 */
-	public Customer findOnNameAndCode(String name, String code);
+	Customer findOnNameAndCode(String name, String code);
 }

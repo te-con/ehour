@@ -1,5 +1,10 @@
 package net.rrm.ehour.ui.common.converter;
 
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.util.DateUtil;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.convert.IConverter;
+
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParseException;
@@ -7,12 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.util.DateUtil;
-
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.convert.IConverter;
 
 public class DateConverter implements IConverter
 {
@@ -39,13 +38,8 @@ public class DateConverter implements IConverter
 		this.dateStyle = dateStyle;
 		this.nullString = nullString;
 	}
-	
-	public DateConverter(Locale locale, DateStyle dateStyle)
-	{
-		initFormatter(locale, dateStyle);
-	}
-	
-	/**
+
+    /**
 	 * Init formatter and fetch locale from session's config
 	 * @param dateStyle
 	 * @return 

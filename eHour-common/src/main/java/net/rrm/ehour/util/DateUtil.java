@@ -310,26 +310,6 @@ public class DateUtil {
     }
 
     /**
-     * Get date end for display (as in, time is set to 12:00pm)
-     *
-     * @return
-     */
-    public static Date getDateEndForDisplay(Date date) {
-        Calendar cal;
-
-        if (date != null) {
-            cal = new GregorianCalendar();
-
-            cal.setTime(date);
-            cal.add(Calendar.HOUR, -12);
-
-            return cal.getTime();
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Get calendar with timezone set
      *
      * @param config

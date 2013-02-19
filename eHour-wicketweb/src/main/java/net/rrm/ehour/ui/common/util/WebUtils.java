@@ -35,7 +35,6 @@ public class WebUtils {
     public static final String ROLE_CONSULTANT = "ROLE_CONSULTANT";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_REPORT = "ROLE_REPORT";
-    public static final String ROLE_PM = "ROLE_PROJECTMANAGER";
 
     public static String formatDate(String format, Date date) {
         Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();

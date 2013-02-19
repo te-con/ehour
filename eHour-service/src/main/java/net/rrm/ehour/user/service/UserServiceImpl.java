@@ -380,14 +380,6 @@ public class UserServiceImpl implements UserService {
         userDepartmentDAO.delete(department);
     }
 
-    public void setTimesheetService(TimesheetService timesheetService) {
-        this.timesheetService = timesheetService;
-    }
-
-    public void setAggregateReportService(AggregateReportService aggregateReportService) {
-        this.aggregateReportService = aggregateReportService;
-    }
-
     public void setPasswordEncoder(MessageDigestPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }

@@ -62,16 +62,6 @@ public class HtmlUtil
 		link.setVisible(false);
 		
 		return link;
-	}	
-	
-	/**
-	 * Get an invisible label
-	 */
-	public static Label getInvisibleLabel(String id)
-	{
-		Label label = new Label(id, "");
-		label.setVisible(false);
-		return label;
 	}
 
 }

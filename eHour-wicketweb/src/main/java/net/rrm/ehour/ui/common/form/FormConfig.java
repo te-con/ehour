@@ -39,10 +39,6 @@ public class FormConfig implements Serializable {
         return new FormConfig(form);
     }
 
-    public FormConfig withDelete() {
-        return withDelete(true);
-    }
-
     public FormConfig withDelete(boolean withDelete) {
         includeDelete = withDelete;
         return this;
@@ -82,11 +78,6 @@ public class FormConfig implements Serializable {
 
     public AjaxEventType getErrorEventType() {
         return errorEventType;
-    }
-
-    public FormConfig withConfig(EhourConfig config) {
-        this.config = config;
-        return this;
     }
 
     public EhourConfig getConfig() {

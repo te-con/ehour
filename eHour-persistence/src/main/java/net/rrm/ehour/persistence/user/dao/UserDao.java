@@ -16,22 +16,14 @@
 
 package net.rrm.ehour.persistence.user.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.dao.GenericDao;
 
+import java.util.List;
+
 public interface UserDao extends GenericDao<User, Integer>
 {
-	/**
-	 * Find a user by username and password
-	 * @param username
-	 * @param password
-     * @return
-	 */
-	User findByUsernameAndPassword(String username, String password);
-	
 	/**
 	 * Find user by username
 	 * @param username

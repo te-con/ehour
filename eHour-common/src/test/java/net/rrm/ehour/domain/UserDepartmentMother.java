@@ -1,7 +1,5 @@
 package net.rrm.ehour.domain;
 
-import java.util.List;
-
 /**
  * Created on Feb 7, 2010 1:50:16 PM
  *
@@ -19,9 +17,5 @@ public class UserDepartmentMother
 		department.setUsers(MotherUtil.asSet(UserObjectMother.createUsers(department)));
 		return department;
 	}
-	
-	public static List<UserDepartment> createUserDepartments()
-	{
-		return MotherUtil.createMultiple(createUserDepartment());
-	}
+
 }

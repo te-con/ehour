@@ -46,7 +46,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 
 		// add submit form
         boolean deletable = ((AssignmentAdminBackingBean) getDefaultModelObject()).getProjectAssignment().isDeletable();
-        FormConfig formConfig = new FormConfig().forForm(form).withDelete(deletable).withSubmitTarget(this)
+        FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(AssignmentAjaxEventType.ASSIGNMENT_DELETED)
                 .withSubmitEventType(AssignmentAjaxEventType.ASSIGNMENT_UPDATED);
 

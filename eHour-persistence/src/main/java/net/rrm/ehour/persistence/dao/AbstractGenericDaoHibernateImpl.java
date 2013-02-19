@@ -17,7 +17,6 @@
 package net.rrm.ehour.persistence.dao;
 
 import net.rrm.ehour.domain.DomainObject;
-import org.hibernate.Hibernate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -182,13 +181,5 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?,
 		
 		return pattern;
 	}
-	
-	/**
-	 * Initialize lazy loading domain object
-	 * @param domObj
-	 */
-	public void initializeObject(Object domObj)
-	{
-		Hibernate.initialize(domObj);
-	}
+
 }

@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.ui.common.panel.entryselector;
 
-import org.apache.wicket.model.StringResourceModel;
-
 import java.io.Serializable;
 
 /**
@@ -39,13 +37,8 @@ public class EntrySelectorFilter implements Serializable
 	{
 		this.activateToggle = activateToggle;
 	}
-	
-	public String getOnId()
-	{
-		return onId;
-	}
 
-	public void setOnId(String onId)
+    public void setOnId(String onId)
 	{
 		this.onId = onId;
 	}

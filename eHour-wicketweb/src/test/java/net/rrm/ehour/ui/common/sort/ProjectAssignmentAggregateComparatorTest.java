@@ -49,6 +49,7 @@ public class ProjectAssignmentAggregateComparatorTest
 		assertTrue(x < 0);
 	}
 
+    @Test
 	public void testCompareCustomer()
 	{
 		int x = new ProjectAssignmentAggregateComparator(ProjectAssignmentAggregateComparator.SORT_ON_CUSTOMER).compare(a1, a2);

@@ -153,7 +153,7 @@ public class PrintMonth extends WebPage
 	 */
 	private void addProjectRow(ListItem<ProjectAssignment> item, List<Date> days, PrintReport report)
 	{
-		ProjectAssignment assignment = (ProjectAssignment)item.getModelObject();
+		ProjectAssignment assignment = item.getModelObject();
 
 		item.add(new Label("project", assignment.getProject().getFullName()));
 		

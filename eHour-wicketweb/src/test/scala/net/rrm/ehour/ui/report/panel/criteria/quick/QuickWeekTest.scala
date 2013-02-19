@@ -30,7 +30,7 @@ class QuickWeekTest extends FunSuite with BeforeAndAfter with ShouldMatchers {
     IsTheSameDay(endCal.getTime, qw.getPeriodEnd)
   }
   
-  private def IsTheSameDay(expected: Date,  toCheck: Date) : Unit = {
+  private def IsTheSameDay(expected: Date,  toCheck: Date) {
     toCheck should have (
       'day (expected.getDay),
       'month (expected.getMonth),

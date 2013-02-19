@@ -38,11 +38,8 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 {
 	public enum DisplayOption
 	{
-		HIDE_PROJECT_SELECTION,
 		SHOW_PROJECT_SELECTION,
-		HIDE_SAVE_BUTTON,
 		SHOW_SAVE_BUTTON,
-		HIDE_DELETE_BUTTON,
 		SHOW_DELETE_BUTTON
 	}
 
