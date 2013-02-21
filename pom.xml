@@ -71,7 +71,6 @@
         
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scalaj.artifactId>scalaj-collection_2.9.1</scalaj.artifactId>
-	<sonar.language>scala</sonar.language>
     </properties>
 
     <dependencyManagement>
