@@ -16,39 +16,36 @@
 
 package net.rrm.ehour.ui.common;
 
-import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.notNull;
+
 /**
  * Mock expectations
- **/
+ */
 
-public class MockExpectations
-{
-	private MockExpectations()
-	{
-		
-	}
-	
-	@SuppressWarnings("deprecation")
-	public static void navCalendar(TimesheetService timesheetService, TestEhourWebApplication webApp)
-	{
-		Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
-		EhourWebSession session = webApp.getSession();
-		session.setNavCalendar(requestedMonth);
-		
-		List<BookedDay> days = new ArrayList<BookedDay>();
-		BookedDay day = new BookedDay();
-		day.setDate(new Date(2007 - 1900, 12 - 1, 15));
-		day.setHours(8);
-		days.add(day);
-		
-		expect(timesheetService.getBookedDaysMonthOverview((Integer)notNull(), (Calendar)notNull()))
-				.andReturn(days);		
-	}
+public class MockExpectations {
+    private MockExpectations() {
+
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void navCalendar(TimesheetService timesheetService, TestEhourWebApplication webApp) {
+        Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
+        EhourWebSession session = webApp.getSession();
+        session.setNavCalendar(requestedMonth);
+
+        LocalDate bookedDay = new LocalDate(2007, DateTimeConstants.DECEMBER, 15);
+
+        expect(timesheetService.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
+                .andReturn(Arrays.asList(bookedDay));
+    }
 }

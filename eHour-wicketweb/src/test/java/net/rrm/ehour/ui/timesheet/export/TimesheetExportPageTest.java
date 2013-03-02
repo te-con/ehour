@@ -22,12 +22,12 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import org.apache.wicket.util.tester.FormTester;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,8 +65,7 @@ public class TimesheetExportPageTest extends AbstractSpringWebAppTester
 		
 		reportCriteria = createReportCriteria();
 		
-		expect(timesheetService.getBookedDaysMonthOverview(isA(Integer.class),  isA(Calendar.class)))
-				.andReturn(new ArrayList<BookedDay>());	
+		expect(timesheetService.getBookedDaysMonthOverview(isA(Integer.class),  isA(Calendar.class))).andReturn(new ArrayList<LocalDate>());
 		
 		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
 				.andReturn(reportCriteria);

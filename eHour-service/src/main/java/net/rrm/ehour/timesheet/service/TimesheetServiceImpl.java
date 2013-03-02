@@ -35,6 +35,7 @@ import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,34 +157,25 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param userId
 	 * @param requestedMonth
 	 * @return List with Integers of complete booked days
-	 * @throws ObjectNotFoundException
 	 */
-	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth)
+	public List<LocalDate> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth)
 	{
-		DateRange		monthRange;
-		List<BookedDay>	bookedDays;
-		List<BookedDay>	bookedDaysReturn = new ArrayList<BookedDay>();
-		
-		monthRange = DateUtil.calendarToMonthRange(requestedMonth);
-		LOGGER.debug("Getting booked days overview for userId " + userId + " in range " + monthRange);
-		
-		bookedDays = timesheetDAO.getBookedHoursperDayInRange(userId, monthRange);
-		
+		DateRange monthRange = DateUtil.calendarToMonthRange(requestedMonth);
+
+        List<BookedDay> bookedDays = timesheetDAO.getBookedHoursperDayInRange(userId, monthRange);
+        List<LocalDate>	fullyBookedDays = new ArrayList<LocalDate>();
+
 		for (BookedDay bookedDay : bookedDays)
 		{
 			if (bookedDay.getHours() != null &&
-					bookedDay.getHours().floatValue() >= configuration.getCompleteDayHours())
-			{
-				bookedDaysReturn.add(bookedDay);
-			}
-		}
+					bookedDay.getHours().floatValue() >= configuration.getCompleteDayHours()) {
+                fullyBookedDays.add(new LocalDate(bookedDay.getDate()));
+            }
+        }
 		
-		LOGGER.debug("Booked days found for userId " + userId + ": " + bookedDaysReturn.size());
-		LOGGER.debug("Total booked days found for userId " + userId + ": " + bookedDays.size());
+		Collections.sort(fullyBookedDays);
 		
-		Collections.sort(bookedDaysReturn, new BookedDayComparator());
-		
-		return bookedDaysReturn;
+		return fullyBookedDays;
 	}		
 	
 	/**

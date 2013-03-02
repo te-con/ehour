@@ -16,20 +16,19 @@
 
 package net.rrm.ehour.timesheet.service;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
-import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
+import org.joda.time.LocalDate;
+
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Provides services for displaying and manipulating timesheets.
@@ -45,17 +44,16 @@ public interface TimesheetService
 	 * @param requestedMonth only the month and year of the calendar is used
 	 * @return TimesheetOverviewAction
 	 */
-	public TimesheetOverview getTimesheetOverview(User user, Calendar requestedMonth);
+	TimesheetOverview getTimesheetOverview(User user, Calendar requestedMonth);
 	
 	/**
-	 * Get a list with all day numbers in this month that has complete booked days (config defines the completion
+	 * Get a list with all dats in a specific month that have been fully booked
 	 * level). 
 	 * @param userId
 	 * @param requestedMonth
-	 * @return List with Integers of complete booked days
-	 * @throws ObjectNotFoundException
+	 * @return List with dates with fully booked dates
 	 */
-	public List<BookedDay> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth);
+	List<LocalDate> getBookedDaysMonthOverview(Integer userId, Calendar requestedMonth);
 	
 	/**
 	 * Get week overview for a date. Weeknumber of supplied requested week is used
@@ -63,7 +61,7 @@ public interface TimesheetService
 	 * @param requestedWeek
 	 * @return
 	 */
-	public WeekOverview getWeekOverview(User userId, Calendar requestedWeek, EhourConfig config);
+	WeekOverview getWeekOverview(User userId, Calendar requestedWeek, EhourConfig config);
 	
 	/**
 	 * Persist timesheet entries and comment
@@ -71,7 +69,7 @@ public interface TimesheetService
 	 * @param timesheetComment
 	 * @param weekRange
 	 */
-	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, 
+	List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
 																TimesheetComment timesheetComment,
 																DateRange weekRange);
 	
@@ -80,5 +78,5 @@ public interface TimesheetService
 	 * @param assignments
 	 * @return
 	 */
-	public void deleteTimesheetEntries(User user);
+	void deleteTimesheetEntries(User user);
 }

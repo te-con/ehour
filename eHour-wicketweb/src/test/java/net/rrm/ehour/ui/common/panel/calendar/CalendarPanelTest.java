@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.common.panel.calendar;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -25,10 +24,15 @@ import net.rrm.ehour.ui.common.event.AjaxEventHook;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
@@ -59,10 +63,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester {
 
         session.setNavCalendar(requestedMonth);
 
-        List<BookedDay> days = generateBookDays();
-
-        expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
-                .andReturn(days);
+        expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth)).andReturn(generateBookDays());
 
         replay(timesheetService);
 
@@ -94,10 +95,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester {
         EhourWebSession session = getWebApp().getSession();
         session.setNavCalendar(requestedMonth);
 
-        List<BookedDay> days = generateBookDays();
-
-        expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
-                .andReturn(days);
+        expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth)).andReturn(generateBookDays());
 
         replay(timesheetService);
 
@@ -115,13 +113,13 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester {
         EhourWebSession session = getWebApp().getSession();
         session.setNavCalendar(requestedMonth);
 
-        List<BookedDay> days = generateBookDays();
+        List<LocalDate> bookedDays = generateBookDays();
 
         expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
-                .andReturn(days);
+                .andReturn(bookedDays);
 
         expect(timesheetService.getBookedDaysMonthOverview(1, nextMonth))
-                .andReturn(days);
+                .andReturn(bookedDays);
 
         replay(timesheetService);
 
@@ -132,14 +130,10 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester {
         verify(timesheetService);
     }
 
-    private List<BookedDay> generateBookDays() {
-        List<BookedDay> days = new ArrayList<BookedDay>();
+    private List<LocalDate> generateBookDays() {
+        LocalDate bookedDay = new LocalDate(2007, DateTimeConstants.DECEMBER, 15);
 
-        BookedDay day = new BookedDay();
-        day.setDate(new Date(2007 - 1900, 12 - 1, 15));
-        day.setHours(8);
-        days.add(day);
-        return days;
+        return Arrays.asList(bookedDay);
     }
 
     private void startPanel() {
@@ -161,9 +155,7 @@ public class CalendarPanelTest extends AbstractSpringWebAppTester {
             } else {
                 GregorianCalendar cal = (GregorianCalendar) obj;
 
-                equals = true;
-
-                equals &= compare(cal, Calendar.DAY_OF_MONTH);
+                equals = compare(cal, Calendar.DAY_OF_MONTH);
                 equals &= compare(cal, Calendar.MONTH);
                 equals &= compare(cal, Calendar.YEAR);
 
