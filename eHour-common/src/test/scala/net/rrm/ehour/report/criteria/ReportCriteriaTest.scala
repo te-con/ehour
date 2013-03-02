@@ -58,12 +58,12 @@ class ReportCriteriaTest extends FunSuite {
     val userCriteria = new UserCriteria
     userCriteria.setReportRange(userRange)
 
-    val criteria = new ReportCriteria(availableCriteria, userCriteria )
+    val criteria = new ReportCriteria(availableCriteria, userCriteria)
 
-    val criteriaStart = DateUtil.nullifyTime(userCal)
-    criteriaStart == criteria.getReportRange.getDateStart
+    DateUtil.nullifyTime(userCal)
+    userCal == criteria.getReportRange.getDateStart
 
-    val criteriaEnd = DateUtil.maximizeTime(availCal)
-    criteriaEnd == criteria.getReportRange.getDateEnd
+    DateUtil.maximizeTime(availCal)
+    availCal == criteria.getReportRange.getDateEnd
   }
 }
