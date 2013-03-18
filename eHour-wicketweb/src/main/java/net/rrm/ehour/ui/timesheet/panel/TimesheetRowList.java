@@ -31,6 +31,7 @@ import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -208,19 +209,14 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                LOGGER.trace(target.getLastFocusedElementId() + " onblur");
                 // update the project total
                 target.add(dayInput.getParent().getParent().get("total"));
 
                 // update the grand total & day total
-                target.add(dayInput.findParent(Form.class)
-                        .get("blueFrame")
-                        .get("grandTotal"));
+                Component parent = dayInput.findParent(Form.class).get("blueFrame").get("blueFrame_body");
 
-
-                target.add(dayInput.findParent(Form.class)
-                        .get("blueFrame")
-                        .get("day" + grandTotals.getOrderForIndex(index) + "Total"));
+                target.add(parent.get("grandTotal"));
+                target.add(parent.get("day" + grandTotals.getOrderForIndex(index) + "Total"));
 
                 form.visitFormComponents(new FormHighlighter(target));
             }
