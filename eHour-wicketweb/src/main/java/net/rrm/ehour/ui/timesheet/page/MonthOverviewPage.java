@@ -32,15 +32,14 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.string.StringValue;
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
-public class MonthOverviewPage extends AbstractBasePage<Void>
-{
+public class MonthOverviewPage extends AbstractBasePage<Void> {
     private static final long serialVersionUID = -6873845464139697303L;
     private static final String ID_CONTENT_CONTAINER = "contentContainer";
 
-    public enum OpenPanel
-    {
+    public enum OpenPanel {
         OVERVIEW, TIMESHEET
     }
 
@@ -49,31 +48,40 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
     private CalendarPanel calendarPanel;
     private ContextualHelpPanel helpPanel;
 
-    public MonthOverviewPage()
-    {
+    public MonthOverviewPage() {
         this(OpenPanel.OVERVIEW);
     }
 
     public MonthOverviewPage(PageParameters parameters) {
-        this(OpenPanel.valueOf(parameters.get(PARAM_OPEN).toString()));
-    }
-
-    public MonthOverviewPage(OpenPanel panelToOpen)
-    {
         super(new ResourceModel("overview.title"), null);
 
+
+        StringValue param = parameters.get(PARAM_OPEN);
+
+        if (param != null) {
+            init(OpenPanel.valueOf(param.toOptionalString()));
+        } else {
+            init(OpenPanel.OVERVIEW);
+        }
+    }
+
+    public MonthOverviewPage(OpenPanel panelToOpen) {
+        super(new ResourceModel("overview.title"), null);
+
+        init(panelToOpen);
+    }
+
+    private void init(OpenPanel panelToOpen) {
         // add calendar panel
         calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
         add(calendarPanel);
 
         WebMarkupContainer contentContainer;
 
-        if (panelToOpen == OpenPanel.OVERVIEW)
-        {
+        if (panelToOpen == OpenPanel.OVERVIEW) {
             helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
             contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);
-        } else
-        {
+        } else {
             calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
             helpPanel = getTimesheetHelpPanel();
             contentContainer = getTimesheetPanel();
@@ -89,22 +97,18 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
      * @param target
      */
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-    {
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
         AjaxRequestTarget target = ajaxEvent.getTarget();
 
-        if (type == CalendarAjaxEventType.MONTH_CHANGE)
-        {
+        if (type == CalendarAjaxEventType.MONTH_CHANGE) {
             calendarChanged(target);
         } else if (type == CalendarAjaxEventType.WEEK_CLICK
-                || type == TimesheetAjaxEventType.WEEK_NAV)
-        {
+                || type == TimesheetAjaxEventType.WEEK_NAV) {
             calendarWeekClicked(target);
             calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
             calendarPanel.refreshCalendar(target);
-        } else if (type == TimesheetAjaxEventType.TIMESHEET_SUBMIT)
-        {
+        } else if (type == TimesheetAjaxEventType.TIMESHEET_SUBMIT) {
             calendarPanel.refreshCalendar(target);
         }
 
@@ -116,8 +120,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
      *
      * @param target
      */
-    private void calendarWeekClicked(AjaxRequestTarget target)
-    {
+    private void calendarWeekClicked(AjaxRequestTarget target) {
         TimesheetPanel panel = getTimesheetPanel();
         addOrReplaceContentContainer(panel, target);
 
@@ -133,29 +136,24 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
      *
      * @param target
      */
-    private void calendarChanged(AjaxRequestTarget target)
-    {
+    private void calendarChanged(AjaxRequestTarget target) {
         WebMarkupContainer replacementPanel;
 
-        if (this.get(ID_CONTENT_CONTAINER) instanceof TimesheetPanel)
-        {
+        if (this.get(ID_CONTENT_CONTAINER) instanceof TimesheetPanel) {
             replacementPanel = getTimesheetPanel();
-        } else
-        {
+        } else {
             replacementPanel = new OverviewPanel(ID_CONTENT_CONTAINER);
         }
 
         addOrReplaceContentContainer(replacementPanel, target);
     }
 
-    private void addOrReplaceContentContainer(WebMarkupContainer contentContainer)
-    {
+    private void addOrReplaceContentContainer(WebMarkupContainer contentContainer) {
         contentContainer.setOutputMarkupId(true);
         addOrReplace(contentContainer);
     }
 
-    private void addOrReplaceContentContainer(WebMarkupContainer contentContainer, AjaxRequestTarget target)
-    {
+    private void addOrReplaceContentContainer(WebMarkupContainer contentContainer, AjaxRequestTarget target) {
         addOrReplaceContentContainer(contentContainer);
         target.add(contentContainer);
     }
@@ -165,8 +163,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
      *
      * @return
      */
-    private TimesheetPanel getTimesheetPanel()
-    {
+    private TimesheetPanel getTimesheetPanel() {
         return new TimesheetPanel(ID_CONTENT_CONTAINER,
                 getEhourWebSession().getUser().getUser(),
                 getEhourWebSession().getNavCalendar());
@@ -175,8 +172,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void>
     /**
      * @return
      */
-    private ContextualHelpPanel getTimesheetHelpPanel()
-    {
+    private ContextualHelpPanel getTimesheetHelpPanel() {
         ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp",
                 "timesheet.help.header",
                 "timesheet.help.body"
