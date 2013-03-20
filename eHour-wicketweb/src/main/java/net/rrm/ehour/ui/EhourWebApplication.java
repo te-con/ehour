@@ -44,12 +44,16 @@ import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.RoleAuthorizationStrategy;
+import org.apache.wicket.markup.head.ResourceAggregator;
+import org.apache.wicket.markup.head.StringHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+
+import java.util.Comparator;
 
 /**
  * Base config for wicket eHour webapp
@@ -75,6 +79,21 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         if (!initialized) {
             super.init();
             springInjection();
+
+            getResourceSettings().setHeaderItemComparator(new Comparator<ResourceAggregator.RecordedHeaderItem>() {
+                @Override
+                public int compare(ResourceAggregator.RecordedHeaderItem o1, ResourceAggregator.RecordedHeaderItem o2) {
+                    if (o1.getItem() instanceof StringHeaderItem) {
+                        StringHeaderItem headerItem = (StringHeaderItem) o1.getItem();
+
+                        if (headerItem.getString().toString().contains("X-UA-Compatible")) {
+                            return -1;
+                        }
+                    }
+
+                    return 0;
+                }
+            });
 
 //            configureResourceGuard();
 
