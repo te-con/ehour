@@ -40,6 +40,10 @@
             <param-name>applicationFactoryClassName</param-name>
             <param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
         </init-param>
+        <init-param>
+            <param-name>filterMappingUrlPattern</param-name>
+            <param-value>/eh/*</param-value>
+        </init-param>
     </filter>
 
     <filter-mapping>
