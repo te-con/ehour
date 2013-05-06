@@ -1,7 +1,9 @@
 package net.rrm.ehour.ui.common.panel.datepicker;
 
+import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -12,7 +14,10 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class DatePickerPanel extends Panel {
     private static final long serialVersionUID = -7769909552498244968L;
@@ -32,7 +37,10 @@ public class DatePickerPanel extends Panel {
         add(updateTarget);
         updateTarget.setOutputMarkupId(true);
 
-        dateInputField = new DatePicker("date", dateModel);
+        Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
+        String pattern = ((SimpleDateFormat)SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, locale)).toPattern();
+
+        dateInputField = new DatePicker("date", dateModel, pattern, new Options());
         updateTarget.add(dateInputField);
 
         dateInputField.add(new ConditionalRequiredValidator<Date>(infiniteModel));
