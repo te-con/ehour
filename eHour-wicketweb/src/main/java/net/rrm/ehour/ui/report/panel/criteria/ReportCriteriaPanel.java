@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.report.panel.criteria;
 
+import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -31,7 +32,6 @@ import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
-import net.rrm.ehour.ui.common.panel.datepicker.DateInputField;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
@@ -71,8 +71,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
 
-    private DateInputField startDatePicker;
-    private DateInputField endDatePicker;
+    private DatePicker startDatePicker;
+    private DatePicker endDatePicker;
     private ListMultipleChoice<Project> projects;
     private ListMultipleChoice<Customer> customers;
     private ListMultipleChoice<User> users;
@@ -325,8 +325,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         }
     }
 
-    private DateInputField createDatePicker(String id, IModel<Date> model) {
-        DateInputField datePicker = new DateInputField(id, model);
+    private DatePicker createDatePicker(String id, IModel<Date> model) {
+        DatePicker datePicker = new DatePicker(id, model);
 
         datePicker.setOutputMarkupId(true);
         datePicker.add(new AjaxFormComponentUpdatingBehavior("onchange") {

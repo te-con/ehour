@@ -1,10 +1,12 @@
 package net.rrm.ehour.ui.common.panel.datepicker;
 
+import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -15,7 +17,7 @@ import java.util.Date;
 public class DatePickerPanel extends Panel {
     private static final long serialVersionUID = -7769909552498244968L;
 
-    private DateInputField dateInputField;
+    private DateTextField dateInputField;
 
     public DatePickerPanel(String id, IModel<Date> dateModel, IModel<Boolean> infiniteModel) {
         super(id);
@@ -30,8 +32,7 @@ public class DatePickerPanel extends Panel {
         add(updateTarget);
         updateTarget.setOutputMarkupId(true);
 
-        // start date
-        dateInputField = new DateInputField("date", dateModel);
+        dateInputField = new DatePicker("date", dateModel);
         updateTarget.add(dateInputField);
 
         dateInputField.add(new ConditionalRequiredValidator<Date>(infiniteModel));
@@ -48,10 +49,6 @@ public class DatePickerPanel extends Panel {
                 boolean visible = StringUtils.isNotBlank(input) && "on".equalsIgnoreCase(input);
 
                 dateInputField.setVisible(!visible);
-
-                if (!visible) {
-                    target.appendJavaScript(dateInputField.enableDatePickerJavascript());
-                }
 
                 target.add(updateTarget);
             }
