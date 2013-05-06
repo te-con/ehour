@@ -26,9 +26,9 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -75,8 +75,9 @@ public class Login extends WebPage {
         response.render(JavaScriptHeaderItem.forScript("$(document).ready(function () { var user = $(\"#username\"); if (!user.val()) $(user).focus(); else $(\"#password\").focus(); });", "onready-master"));
     }
 
-    public class SignInForm extends Form<SimpleUser> {
+    public class SignInForm extends StatelessForm<SimpleUser> {
         private static final long serialVersionUID = -4355842488508724254L;
+        private final TextField<String> usernameInput;
 
         public SignInForm(String id, SimpleUser model) {
             super(id, new CompoundPropertyModel<SimpleUser>(model));
@@ -85,7 +86,7 @@ public class Login extends WebPage {
             feedback.setMaxMessages(1);
             add(feedback);
 
-            TextField<String> usernameInput = new RequiredTextField<String>("username");
+            usernameInput = new RequiredTextField<String>("username");
             usernameInput.setMarkupId("username");
             usernameInput.setOutputMarkupId(true);
             add(usernameInput);
@@ -115,7 +116,7 @@ public class Login extends WebPage {
             if (session.signIn(username, password)) {
                 redirectToHomepage(session);
             } else {
-                error(getLocalizer().getString("login.login.failed", this));
+                SignInForm.this.error(getLocalizer().getString("login.login.failed", this));
             }
         }
     }
@@ -125,6 +126,11 @@ public class Login extends WebPage {
 
         public LoginFeedbackPanel(final String id) {
             super(id);
+        }
+
+        @Override
+        protected void onConfigure() {
+            detach();
         }
     }
 
