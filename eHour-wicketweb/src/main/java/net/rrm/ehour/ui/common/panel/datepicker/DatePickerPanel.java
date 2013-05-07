@@ -9,8 +9,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
@@ -30,17 +32,29 @@ public class DatePickerPanel extends Panel {
         addDates(dateModel, infiniteModel);
     }
 
+    @Override
+    public void renderHead(HtmlHeaderContainer container) {
+        super.renderHead(container);
+
+        container.getHeaderResponse().render(JavaScriptHeaderItem.forUrl("js/i18n/jquery-ui-i18n.js"));
+
+        Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
+        String country = locale.getCountry();
+        container.getHeaderResponse().render(JavaScriptHeaderItem.forUrl(String.format("js/i18n/jquery.ui.datepicker-%s.js", country.toLowerCase())));
+    }
+
     @SuppressWarnings("serial")
     private void addDates(IModel<Date> dateModel, IModel<Boolean> infiniteModel) {
-        // container for hiding input field
         final WebMarkupContainer updateTarget = new WebMarkupContainer("updateTarget");
         add(updateTarget);
         updateTarget.setOutputMarkupId(true);
 
         Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
-        String pattern = ((SimpleDateFormat)SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, locale)).toPattern();
+        String pattern = ((SimpleDateFormat)SimpleDateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
+        String country = locale.getCountry();
+        Options option = new Options("option", String.format("$.datepicker.regional['%s']", country));
 
-        dateInputField = new DatePicker("date", dateModel, pattern, new Options());
+        dateInputField = new DatePicker("date", dateModel, pattern, option);
         updateTarget.add(dateInputField);
 
         dateInputField.add(new ConditionalRequiredValidator<Date>(infiniteModel));
