@@ -35,7 +35,6 @@ public class DatePickerPanel extends AbstractBasePanel<Date> {
     public DatePickerPanel(String id, IModel<Date> dateModel, IModel<Boolean> infiniteModel) {
         super(id, dateModel);
 
-
         this.infiniteModel = infiniteModel;
     }
 
@@ -93,6 +92,7 @@ public class DatePickerPanel extends AbstractBasePanel<Date> {
                 String input = this.getInput();
                 boolean visible = StringUtils.isNotBlank(input) && "on".equalsIgnoreCase(input);
 
+                dateInputField.getFeedbackMessages().clear();
                 dateInputField.setVisible(!visible);
 
                 target.add(updateTarget);

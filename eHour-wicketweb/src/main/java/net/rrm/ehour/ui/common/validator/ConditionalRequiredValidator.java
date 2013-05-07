@@ -40,7 +40,7 @@ public class ConditionalRequiredValidator<T> implements INullAcceptingValidator<
         if ((!condition)
                 && (validatable.getValue() == null
                 || validatable.getValue().toString().trim() == null)) {
-            validatable.error(new ValidationError("Required"));
+            validatable.error(new ValidationError().addKey("Required"));
         }
     }
 }
