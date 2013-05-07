@@ -46,7 +46,9 @@ public class DateOverlapValidator extends IdentifiableFormValidator {
 
     @Override
     public void validate(Form<?> form) {
-        if (components[0].isVisible()
+        if (components[0] != null &&
+                components[1] != null &&
+                components[0].isVisible()
                 && components[1].isVisible()
                 && components[0].getInput() != null
                 && components[0].getConvertedInput() != null
