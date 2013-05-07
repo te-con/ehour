@@ -56,7 +56,14 @@ public interface EhourConfig {
      *
      * @return
      */
-    Locale getLocale();
+    Locale getFormattingLocale();
+
+
+    /**
+     * Get locale for the language
+     * @return
+     */
+    Locale getLanguageLocale();
 
     /**
      * Get configured currency

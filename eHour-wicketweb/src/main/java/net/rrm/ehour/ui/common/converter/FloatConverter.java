@@ -1,11 +1,10 @@
 package net.rrm.ehour.ui.common.converter;
 
-import java.text.NumberFormat;
-
 import net.rrm.ehour.config.EhourConfig;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.util.convert.ConversionException;
+
+import java.text.NumberFormat;
 
 public class FloatConverter extends AbstractNumberConverter
 {
@@ -23,7 +22,7 @@ public class FloatConverter extends AbstractNumberConverter
 	@Override
 	protected NumberFormat getStringFormatter(EhourConfig config)
 	{
-		NumberFormat formatter = NumberFormat.getNumberInstance(config.getLocale());
+		NumberFormat formatter = NumberFormat.getNumberInstance(config.getFormattingLocale());
 		formatter.setMaximumFractionDigits(2);
 		formatter.setMinimumFractionDigits(2);
 		

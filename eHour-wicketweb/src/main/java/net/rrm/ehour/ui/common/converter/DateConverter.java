@@ -46,7 +46,7 @@ public class DateConverter implements IConverter
 	 */
 	private DateFormat initFormatter(DateStyle dateStyle)
 	{
-		return initFormatter(EhourWebSession.getSession().getEhourConfig().getLocale(), dateStyle);
+		return initFormatter(EhourWebSession.getSession().getEhourConfig().getFormattingLocale(), dateStyle);
 	}
 	
 	/**

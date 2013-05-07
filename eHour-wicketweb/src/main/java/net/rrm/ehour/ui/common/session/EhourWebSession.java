@@ -73,12 +73,12 @@ public class EhourWebSession extends AuthenticatedWebSession {
     public final void reloadConfig() {
         WebUtils.springInjection(this);
 
-        if (!ehourConfig.isDontForceLanguage()) {
-            LOGGER.debug("Setting locale to " + ehourConfig.getLocale().getDisplayLanguage());
-
-            setLocale(ehourConfig.getLocale());
-        } else {
+        if (ehourConfig.isDontForceLanguage()) {
             LOGGER.debug("Not forcing locale, using browser's locale");
+        } else {
+            LOGGER.debug("Setting locale to " + ehourConfig.getFormattingLocale().getDisplayLanguage());
+
+            setLocale(ehourConfig.getFormattingLocale());
         }
     }
 

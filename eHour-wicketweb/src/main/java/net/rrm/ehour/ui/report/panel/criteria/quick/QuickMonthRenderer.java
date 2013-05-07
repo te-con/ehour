@@ -64,7 +64,7 @@ public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
 		{
 			EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
 			
-			SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getLocale());
+			SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getFormattingLocale());
 			value = format.format(quickMonth.getPeriodStart());
 		}
 		

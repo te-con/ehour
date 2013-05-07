@@ -16,6 +16,12 @@
 
 package net.rrm.ehour.ui.common.model;
 
+import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.util.DateUtil;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParseException;
@@ -23,13 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.util.DateUtil;
-
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 
 /**
  * TODO rewrite this, should be a renderer or a converter; not a model
@@ -117,7 +116,7 @@ public class DateModel implements IModel
 	 */
 	public DateModel(IModel model, EhourConfig config, int dateStyle)
 	{
-		this(model, config.getLocale(), dateStyle);
+		this(model, config.getFormattingLocale(), dateStyle);
 		
 	}
 	
@@ -149,7 +148,7 @@ public class DateModel implements IModel
 	 */
 	private void initFormatter(int dateStyle)
 	{
-		initFormatter(EhourWebSession.getSession().getEhourConfig().getLocale(), dateStyle);
+		initFormatter(EhourWebSession.getSession().getEhourConfig().getFormattingLocale(), dateStyle);
 	}
 	
 	/**

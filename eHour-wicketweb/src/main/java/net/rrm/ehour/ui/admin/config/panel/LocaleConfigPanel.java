@@ -59,7 +59,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
         final DropDownChoice<Locale> currencyDropDownChoice;
         final Label dateFormat;
 
-        final MainConfigBackingBean configBackingBean = (MainConfigBackingBean) getDefaultModelObject();
+        final MainConfigBackingBean configBackingBean = getPanelModelObject();
 
         configForm.setOutputMarkupId(true);
 
@@ -71,8 +71,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
         configForm.add(currencyDropDownChoice);
 
         // date format example
-        dateFormat = new Label("dateFormat",
-                new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG));
+        dateFormat = new Label("dateFormat", new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG));
         dateFormat.setOutputMarkupId(true);
         configForm.add(dateFormat);
 
@@ -82,8 +81,11 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
                 new PropertyModel<List<Locale>>(configBackingBean, "availableLanguages"),
                 new LocaleChoiceRenderer(1));
 
+
+        System.out.println(new PropertyModel<Locale>(configBackingBean, "localeCountry").getObject());
         // locale selection
         localeDropDownChoice = new DropDownChoice<Locale>("localeCountry",
+                new PropertyModel<Locale>(configBackingBean, "localeCountry"),
                 new PropertyModel<List<Locale>>(configBackingBean, "availableLocales"),
                 new LocaleChoiceRenderer(0));
         localeDropDownChoice.setOutputMarkupId(true);

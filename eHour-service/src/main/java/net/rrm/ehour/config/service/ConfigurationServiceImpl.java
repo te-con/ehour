@@ -202,17 +202,16 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 Locale locale;
 
                 if (value != null && value.contains("_")) {
-                    String[] split = value.split("_");
-                    locale = new Locale(split[0], split[1]);
+                    locale = Locale.forLanguageTag(value);
                 } else {
                     locale = new Locale("nl", "NL");
                 }
 
                 config.setCurrency(locale);
             } else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_LANGUAGE.getDbField())) {
-                config.setLocaleLanguage(value);
+                config.setLocaleLanguage(Locale.forLanguageTag(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_COUNTRY.getDbField())) {
-                config.setLocaleCountry(value);
+                config.setLocaleFormatting(Locale.forLanguageTag(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.SHOW_TURNOVER.getDbField())) {
                 config.setShowTurnover(Boolean.parseBoolean(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.TIMEZONE.getDbField())) {
@@ -264,8 +263,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             persistConfig(ConfigurationItem.COMPLETE_DAY_HOURS.getDbField(), config.getCompleteDayHours());
         }
 
-        persistConfig(ConfigurationItem.LOCALE_COUNTRY.getDbField(), config.getLocale().getCountry());
-        persistConfig(ConfigurationItem.LOCALE_LANGUAGE.getDbField(), config.getLocale().getLanguage());
+        persistConfig(ConfigurationItem.LOCALE_COUNTRY.getDbField(), config.getFormattingLocale().getCountry());
+        persistConfig(ConfigurationItem.LOCALE_LANGUAGE.getDbField(), config.getFormattingLocale().getLanguage());
         persistConfig(ConfigurationItem.DONT_FORCE_LANGUAGE.getDbField(), config.isDontForceLanguage());
         persistConfig(ConfigurationItem.SHOW_TURNOVER.getDbField(), config.isShowTurnover());
         persistConfig(ConfigurationItem.MAIL_FROM.getDbField(), config.getMailFrom());

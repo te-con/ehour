@@ -152,7 +152,7 @@ public class MainConfigBackingBean implements Serializable
      */
     public Locale getLocaleLanguage()
     {
-        return config.getLocale();
+        return config.getFormattingLocale();
     }
 
     /**
@@ -160,18 +160,16 @@ public class MainConfigBackingBean implements Serializable
      */
     public void setLocaleLanguage(Locale localeLanguage)
     {
-        config.setLocaleLanguage(localeLanguage.getLanguage());
+        config.setLocaleLanguage(localeLanguage);
     }
 
     public Locale getLocaleCountry()
     {
-        return config.getLocale();
+        return config.getFormattingLocale();
     }
 
-    public void setLocaleCountry(Locale localeCountry)
-    {
-        config.setLocaleCountry(localeCountry.getCountry());
-        config.setLocaleLanguage(localeCountry.getLanguage());
+    public void setLocaleCountry(Locale localeCountry) {
+        config.setLocaleFormatting(localeCountry);
     }
 
     public void setCurrency(Locale currencySymbol)

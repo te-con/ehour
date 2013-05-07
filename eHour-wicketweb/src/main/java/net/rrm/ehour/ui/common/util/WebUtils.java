@@ -37,7 +37,7 @@ public class WebUtils {
     public static final String ROLE_REPORT = "ROLE_REPORT";
 
     public static String formatDate(String format, Date date) {
-        Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
+        Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
 
         SimpleDateFormat formatter = new SimpleDateFormat(format, locale);
 

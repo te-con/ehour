@@ -69,9 +69,7 @@ public class Login extends WebPage {
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        // add jQuery library
         response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
-        // set focus to the username on load - check that the field exists
         response.render(JavaScriptHeaderItem.forScript("$(document).ready(function () { var user = $(\"#username\"); if (!user.val()) $(user).focus(); else $(\"#password\").focus(); });", "onready-master"));
     }
 

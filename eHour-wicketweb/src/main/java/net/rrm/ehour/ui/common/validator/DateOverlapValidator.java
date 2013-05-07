@@ -39,10 +39,12 @@ public class DateOverlapValidator extends IdentifiableFormValidator {
         components = new FormComponent[]{startDate, endDate};
     }
 
+    @Override
     public FormComponent<Date>[] getDependentFormComponents() {
         return null;
     }
 
+    @Override
     public void validate(Form<?> form) {
         if (components[0].isVisible()
                 && components[1].isVisible()

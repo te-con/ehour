@@ -56,6 +56,6 @@ public class LocaleConfigPanelTest extends AbstractMainConfigTest
         tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick");
 		
 		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), getConfigStub().getCurrency());
-		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getLocale());
+		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getFormattingLocale());
 	}
 }

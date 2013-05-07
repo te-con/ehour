@@ -3,6 +3,8 @@ package net.rrm.ehour.ui.common.panel.datepicker;
 import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.validator.ConditionalRequiredValidator;
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +15,6 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
 import java.text.DateFormat;
@@ -23,24 +24,33 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class DatePickerPanel extends Panel {
+public class DatePickerPanel extends AbstractBasePanel<Date> {
     private static final long serialVersionUID = -7769909552498244968L;
 
-    private static final List<String> KNOWN_COUNTRIES = Arrays.asList("af","ar-dz","ar","az","be","bg","bs","ca","cs","cy-gb","da","de","el","en-au","en-gb","en-nz","eo","es","et","eu","fa","fi","fo","fr-ca","fr-ch","fr","gl","he","hi","hr","hu","hy","id","is","it","ja","ka","kk","km","ko","ky","lb","lt","lv","mk","ml","ms","nb","nl-be","nl","nn","no","pl","pt-br","pt","rm","ro","ru","sk","sl","sq","sr","sr-sr","sv","ta","th","tj","tr","uk","vi","zh-cn","zh-hk","zh-tw");
+    private static final List<String> KNOWN_COUNTRIES = Arrays.asList("af", "ar-dz", "ar", "az", "be", "bg", "bs", "ca", "cs", "cy-gb", "da", "de", "el", "en-au", "en-gb", "en-nz", "eo", "es", "et", "eu", "fa", "fi", "fo", "fr-ca", "fr-ch", "fr", "gl", "he", "hi", "hr", "hu", "hy", "id", "is", "it", "ja", "ka", "kk", "km", "ko", "ky", "lb", "lt", "lv", "mk", "ml", "ms", "nb", "nl-be", "nl", "nn", "no", "pl", "pt-br", "pt", "rm", "ro", "ru", "sk", "sl", "sq", "sr", "sr-sr", "sv", "ta", "th", "tj", "tr", "uk", "vi", "zh-cn", "zh-hk", "zh-tw");
 
     private DateTextField dateInputField;
+    private IModel<Boolean> infiniteModel;
 
     public DatePickerPanel(String id, IModel<Date> dateModel, IModel<Boolean> infiniteModel) {
-        super(id);
+        super(id, dateModel);
 
-        addDates(dateModel, infiniteModel);
+
+        this.infiniteModel = infiniteModel;
+    }
+
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+
+        addDates(getPanelModel(), infiniteModel);
     }
 
     @Override
     public void renderHead(HtmlHeaderContainer container) {
         super.renderHead(container);
 
-        Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
+        Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
         String languageTag = getLanguageTag(locale);
 
         if (isSupported(languageTag)) {
@@ -52,24 +62,25 @@ public class DatePickerPanel extends Panel {
     @SuppressWarnings("serial")
     private void addDates(IModel<Date> dateModel, IModel<Boolean> infiniteModel) {
         final WebMarkupContainer updateTarget = new WebMarkupContainer("updateTarget");
-        add(updateTarget);
+        addOrReplace(updateTarget);
         updateTarget.setOutputMarkupId(true);
 
-        Locale locale = EhourWebSession.getSession().getEhourConfig().getLocale();
+        Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
         String languageTag = getLanguageTag(locale);
 
         if (isSupported(languageTag)) {
-            String pattern = ((SimpleDateFormat)SimpleDateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
+            String pattern = ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
             Options option = new Options("option", String.format("$.datepicker.regional['%s']", languageTag));
             dateInputField = new DatePicker("date", dateModel, pattern, option);
         } else {
-            String pattern = ((SimpleDateFormat)SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.US)).toPattern();
+            String pattern = ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.US)).toPattern();
             dateInputField = new DatePicker("date", dateModel, pattern, new Options());
         }
 
         updateTarget.add(dateInputField);
 
         dateInputField.add(new ConditionalRequiredValidator<Date>(infiniteModel));
+        dateInputField.add(new ValidatingFormComponentAjaxBehavior());
         dateInputField.setVisible(!infiniteModel.getObject());
 
         // indicator for validation issues
@@ -100,7 +111,7 @@ public class DatePickerPanel extends Panel {
         String[] languageTags = languageTag.split("-");
 
         // Dutch locale is nl-NL, remove the -NL part if the language is the same as the country
-        return languageTags[0].equalsIgnoreCase(languageTags[0]) ? languageTags[0] : languageTag;
+        return languageTags[0].equalsIgnoreCase(languageTags[1]) ? languageTags[0] : languageTag;
     }
 
     public FormComponent<Date> getDateInputFormComponent() {

@@ -48,6 +48,10 @@ public abstract class AbstractBasePanel<T> extends Panel
         return (IModel<T>)super.getDefaultModel();
     }
 
+    protected final T getPanelModelObject() {
+        return getPanelModel().getObject();
+    }
+
     protected final EhourConfig getConfig()
 	{
 		return getEhourWebSession().getEhourConfig();

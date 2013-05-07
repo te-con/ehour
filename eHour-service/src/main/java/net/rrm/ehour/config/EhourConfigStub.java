@@ -17,7 +17,6 @@
 package net.rrm.ehour.config;
 
 import net.rrm.ehour.domain.AuditType;
-import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.Currency;
@@ -32,9 +31,9 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     private static final long serialVersionUID = 3017492603595731493L;
     private String[] availableTranslations;
     private float completeDayHours;
-    private Locale currency = new Locale("nl", "NL");
+    private Locale currency = Locale.forLanguageTag("en_US");
     private Locale localeLanguage = Locale.forLanguageTag("en_US");
-    private String localeCountry = "nl_NL";
+    private Locale localeFormatting = Locale.forLanguageTag("en_US");
     private String timeZone;
     private boolean showTurnover;
     private String mailFrom;
@@ -156,20 +155,20 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     }
 
     public Locale getFormattingLocale() {
-        if (StringUtils.isBlank(localeLanguage)) {
-            localeLanguage = "en";
-        }
-
-        if (StringUtils.isBlank(localeCountry)) {
-            localeCountry = "NL";
-        }
-
-        return new Locale(localeLanguage, localeCountry);
+        return localeFormatting;
     }
 
     @Override
     public Locale getLanguageLocale() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return localeLanguage;
+    }
+
+    public void setLocaleLanguage(Locale localeLanguage) {
+        this.localeLanguage = localeLanguage;
+    }
+
+    public void setLocaleFormatting(Locale localeFormatting) {
+        this.localeFormatting = localeFormatting;
     }
 
     public boolean isInDemoMode() {
@@ -183,19 +182,6 @@ public class EhourConfigStub implements EhourConfig, Serializable {
         this.demoMode = demoMode;
     }
 
-    /**
-     * @param localeLanguage the localeLanguage to set
-     */
-    public void setLocaleLanguage(String localeLanguage) {
-        this.localeLanguage = localeLanguage;
-    }
-
-    /**
-     * @param localeCountry the localeCountry to set
-     */
-    public void setLocaleCountry(String localeCountry) {
-        this.localeCountry = localeCountry;
-    }
 
     public boolean isDontForceLanguage() {
         return dontForceLanguage;

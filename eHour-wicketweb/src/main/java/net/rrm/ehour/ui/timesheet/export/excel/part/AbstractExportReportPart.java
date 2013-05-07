@@ -16,18 +16,17 @@
 
 package net.rrm.ehour.ui.timesheet.export.excel.part;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created on Mar 25, 2009, 3:34:34 PM
@@ -58,7 +57,7 @@ public abstract class AbstractExportReportPart
 	private void init()
 	{
 		config = EhourWebSession.getSession().getEhourConfig();
-		Locale locale = config.getLocale();
+		Locale locale = config.getFormattingLocale();
 		formatter = new SimpleDateFormat("dd MMM yy", locale);
 	}
 

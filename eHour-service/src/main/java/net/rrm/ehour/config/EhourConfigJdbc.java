@@ -68,12 +68,10 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("timezone");
 	}
 
+    @Override
 	public Locale getCurrency()
 	{
-		String split = this.getString("localeCurrency", "nl_NL");
-		String[] splitted = split.split("_");
-		
-		return new Locale(splitted[0], splitted[1]);
+		return Locale.forLanguageTag(this.getString("localeCurrency", "nl_NL"));
 	}
 
     @Override
@@ -106,15 +104,29 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 		return this.getString("mailSmtp", "127.0.0.1");
 	}
 
-	public Locale getLocale()
+	public Locale getFormattingLocale()
 	{
-		String country = this.getString("localeCountry", "US");
-		String language = this.getString("localeLanguage", "en");
-		
-		return new Locale(language, country);
+		String formattingLocale = this.getString("localeCountry", "en_US");
+
+        if (!formattingLocale.contains("_")) {
+            return new Locale(formattingLocale, formattingLocale);
+        } else {
+            return Locale.forLanguageTag(formattingLocale);
+        }
 	}
 
-	public boolean isInDemoMode()
+    @Override
+    public Locale getLanguageLocale() {
+        String formattingLocale = this.getString("localeLanguage", "en_US");
+
+        if (!formattingLocale.contains("_")) {
+            return new Locale(formattingLocale, formattingLocale);
+        } else {
+            return Locale.forLanguageTag(formattingLocale);
+        }
+    }
+
+    public boolean isInDemoMode()
 	{
 		if (demoMode == null)
 		{
