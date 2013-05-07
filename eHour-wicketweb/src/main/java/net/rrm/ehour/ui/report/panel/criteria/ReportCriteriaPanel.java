@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
+import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
@@ -326,7 +327,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private DatePicker createDatePicker(String id, IModel<Date> model) {
-        DatePicker datePicker = new DatePicker(id, model);
+        DatePicker datePicker = new LocalizedDatePicker(id, model);
 
         datePicker.setOutputMarkupId(true);
         datePicker.add(new AjaxFormComponentUpdatingBehavior("onchange") {
