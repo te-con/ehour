@@ -31,9 +31,9 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     private static final long serialVersionUID = 3017492603595731493L;
     private String[] availableTranslations;
     private float completeDayHours;
-    private Locale currency = Locale.forLanguageTag("en_US");
-    private Locale localeLanguage = Locale.forLanguageTag("en_US");
-    private Locale localeFormatting = Locale.forLanguageTag("en_US");
+    private Locale currency = Locale.US;
+    private Locale localeLanguage = Locale.US;
+    private Locale localeFormatting = Locale.US;
     private String timeZone;
     private boolean showTurnover;
     private String mailFrom;
