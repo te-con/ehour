@@ -29,14 +29,9 @@ public class ConditionalRequiredValidator<T> implements INullAcceptingValidator<
     private static final long serialVersionUID = 6633525281870496233L;
     private IModel<Boolean> conditionalModel;
 
-    /**
-     * @param conditionalModel
-     *
-     */
     public ConditionalRequiredValidator(IModel<Boolean> conditionalModel) {
         this.conditionalModel = conditionalModel;
     }
-
 
     @Override
     public void validate(IValidatable<T> validatable) {

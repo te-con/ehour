@@ -16,60 +16,46 @@
 
 package net.rrm.ehour.ui.common.validator;
 
-import java.util.Date;
-
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
+
+import java.util.Date;
 
 /**
  * Checks whether the start date isn't after the end date
  * Fixes bug 1780975
- **/
+ */
 
-public class DateOverlapValidator extends IdentifiableFormValidator
-{
-	private static final long serialVersionUID = -7176398632862551019L;
-	private FormComponent<Date>[] components;
+public class DateOverlapValidator extends IdentifiableFormValidator {
+    private static final long serialVersionUID = -7176398632862551019L;
+    private FormComponent<Date>[] components;
 
-	@SuppressWarnings("unchecked")
-	public DateOverlapValidator(String id,
-								FormComponent<Date> startDate,
-								FormComponent<Date> endDate)
-	{
-		super(id);
+    @SuppressWarnings("unchecked")
+    public DateOverlapValidator(String id,
+                                FormComponent<Date> startDate,
+                                FormComponent<Date> endDate) {
+        super(id);
 
-		components = new FormComponent[]{startDate, endDate};
-	}
+        components = new FormComponent[]{startDate, endDate};
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#getDependentFormComponents()
-	 */
-	public FormComponent<Date>[] getDependentFormComponents()
-	{
-		return null;
-	}
+    public FormComponent<Date>[] getDependentFormComponents() {
+        return null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.form.validation.IFormValidator#validate(org.apache.wicket.markup.html.form.Form)
-	 */
-	public void validate(Form<?> form)
-	{
-		if (components[0].isVisible()
-				&& components[1].isVisible()
-				&& components[0].getInput() != null
-				&& components[0].getConvertedInput() != null
-				&& components[1].getInput() != null
-				&& components[1].getConvertedInput() != null)
-		{
-			Date startDate = components[0].getConvertedInput();
-			Date endDate = components[1].getConvertedInput();
+    public void validate(Form<?> form) {
+        if (components[0].isVisible()
+                && components[1].isVisible()
+                && components[0].getInput() != null
+                && components[0].getConvertedInput() != null
+                && components[1].getInput() != null
+                && components[1].getConvertedInput() != null) {
+            Date startDate = components[0].getConvertedInput();
+            Date endDate = components[1].getConvertedInput();
 
-			if (endDate.before(startDate))
-			{
-				error(components[0], "Date.StartDateAfterEnd");
-			}
-		}
-	}
+            if (endDate.before(startDate)) {
+                error(components[0], "Date.StartDateAfterEnd");
+            }
+        }
+    }
 }
