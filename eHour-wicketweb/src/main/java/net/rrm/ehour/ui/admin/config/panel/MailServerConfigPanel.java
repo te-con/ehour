@@ -47,23 +47,31 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
     protected void addFormComponents(Form<MainConfigBackingBean> form) {
         // reply sender
         RequiredTextField<String> mailFrom = new RequiredTextField<String>("config.mailFrom");
+        mailFrom.setLabel(new ResourceModel("admin.config.mailFrom"));
         mailFrom.add(EmailAddressValidator.getInstance());
         form.add(mailFrom);
         form.add(new AjaxFormComponentFeedbackIndicator("mailFromError", mailFrom));
 
         // smtp server, port, username, pass
         TextField<String> mailSmtp = new RequiredTextField<String>("config.mailSmtp");
+        mailSmtp.setLabel(new ResourceModel("admin.config.mailSmtp"));
         form.add(new AjaxFormComponentFeedbackIndicator("mailSmtpValidationError", mailSmtp));
         form.add(mailSmtp);
 
         TextField<Integer> smtpPort = new RequiredTextField<Integer>("config.smtpPort");
+        smtpPort.setLabel(new ResourceModel("admin.config.smtpPort"));
         form.add(new AjaxFormComponentFeedbackIndicator("smtpPortValidationError", mailSmtp));
         smtpPort.setType(Integer.class);
         smtpPort.add(RangeValidator.minimum(0));
         form.add(smtpPort);
 
-        form.add(new TextField<String>("config.smtpUsername"));
-        form.add(new TextField<String>("config.smtpPassword"));
+        TextField<String> smtpUsername = new TextField<String>("config.smtpUsername");
+        smtpUsername.setLabel(new ResourceModel("admin.config.smtpUsername"));
+        form.add(smtpUsername);
+
+        TextField<String> smtpPassword = new TextField<String>("config.smtpPassword");
+        smtpPassword.setLabel(new ResourceModel("admin.config.smtpPassword"));
+        form.add(smtpPassword);
         addTestMailSettingsButton(form);
     }
 

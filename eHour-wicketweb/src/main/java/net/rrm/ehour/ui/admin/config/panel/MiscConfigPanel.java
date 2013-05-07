@@ -17,25 +17,21 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.util.DateUtil;
-
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.validation.validator.RangeValidator;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Created on Apr 21, 2009, 5:10:16 PM
@@ -65,10 +61,12 @@ public class MiscConfigPanel extends AbstractConfigPanel
 
 		// working hours
 		TextField<Float> workHours = new TextField<Float>("config.completeDayHours", Float.class);
-		workHours.add(new ValidatingFormComponentAjaxBehavior());
+        workHours.setLabel(new ResourceModel("admin.config.workHours"));
+        workHours.add(new ValidatingFormComponentAjaxBehavior());
 		workHours.add(RangeValidator.minimum(0f));
 		workHours.add(RangeValidator.maximum(24f));
-		form.add(new AjaxFormComponentFeedbackIndicator("workHoursValidationError", workHours));
+        workHours.setRequired(true);
+        form.add(new AjaxFormComponentFeedbackIndicator("workHoursValidationError", workHours));
 		form.add(workHours);
 		
 		// weeks start at
