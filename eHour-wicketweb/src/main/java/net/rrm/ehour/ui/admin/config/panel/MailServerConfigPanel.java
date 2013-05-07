@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.admin.config.panel;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
+import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -49,17 +50,20 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
         RequiredTextField<String> mailFrom = new RequiredTextField<String>("config.mailFrom");
         mailFrom.setLabel(new ResourceModel("admin.config.mailFrom"));
         mailFrom.add(EmailAddressValidator.getInstance());
+        mailFrom.add(new ValidatingFormComponentAjaxBehavior());
         form.add(mailFrom);
         form.add(new AjaxFormComponentFeedbackIndicator("mailFromError", mailFrom));
 
         // smtp server, port, username, pass
         TextField<String> mailSmtp = new RequiredTextField<String>("config.mailSmtp");
         mailSmtp.setLabel(new ResourceModel("admin.config.mailSmtp"));
+        mailSmtp.add(new ValidatingFormComponentAjaxBehavior());
         form.add(new AjaxFormComponentFeedbackIndicator("mailSmtpValidationError", mailSmtp));
         form.add(mailSmtp);
 
         TextField<Integer> smtpPort = new RequiredTextField<Integer>("config.smtpPort");
         smtpPort.setLabel(new ResourceModel("admin.config.smtpPort"));
+        smtpPort.add(new ValidatingFormComponentAjaxBehavior());
         form.add(new AjaxFormComponentFeedbackIndicator("smtpPortValidationError", mailSmtp));
         smtpPort.setType(Integer.class);
         smtpPort.add(RangeValidator.minimum(0));
