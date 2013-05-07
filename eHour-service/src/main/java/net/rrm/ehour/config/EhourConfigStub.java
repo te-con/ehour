@@ -26,77 +26,74 @@ import java.util.TimeZone;
 
 /**
  * Stub for config
- **/
+ */
 
-public class EhourConfigStub  implements EhourConfig, Serializable
-{
-	private static final long serialVersionUID = 3017492603595731493L;
-	private	String[] 	availableTranslations;
-	private	float		completeDayHours;
-	private	Locale		currency = new Locale("nl", "NL");
-	private String		localeLanguage ="en";
-	private String		localeCountry = "NL";
-	private	String		timeZone;
-	private	boolean		showTurnover;
-	private	String		mailFrom;
-	private	String		mailSmtp;
-	private boolean		demoMode = false;
-	private boolean		dontForceLanguage;
-	private boolean		initialized;
-	private String		smtpUsername;
-	private String		smtpPassword;
-	private String		smtpPort = "25";
-	private int			firstDayOfWeek = 1;
-	private AuditType	auditType;
-	private String  version;
+public class EhourConfigStub implements EhourConfig, Serializable {
+    private static final long serialVersionUID = 3017492603595731493L;
+    private String[] availableTranslations;
+    private float completeDayHours;
+    private Locale currency = new Locale("nl", "NL");
+    private Locale localeLanguage = Locale.forLanguageTag("en_US");
+    private String localeCountry = "nl_NL";
+    private String timeZone;
+    private boolean showTurnover;
+    private String mailFrom;
+    private String mailSmtp;
+    private boolean demoMode = false;
+    private boolean dontForceLanguage;
+    private boolean initialized;
+    private String smtpUsername;
+    private String smtpPassword;
+    private String smtpPort = "25";
+    private int firstDayOfWeek = 1;
+    private AuditType auditType;
+    private String version;
 
-	public TimeZone getTzAsTimeZone()
-	{
-		return EhourConfigUtil.getTzAsTimeZone(this);
-	}
+    public TimeZone getTzAsTimeZone() {
+        return EhourConfigUtil.getTzAsTimeZone(this);
+    }
 
-	/**
-	 * @return the availableTranslations
-	 */
-	public String[] getAvailableTranslations()
-	{
-		return availableTranslations;
-	}
-	/**
-	 * @param availableTranslations the availableTranslations to set
-	 */
-	public void setAvailableTranslations(String[] availableTranslations)
-	{
-		this.availableTranslations = availableTranslations;
-	}
-	/**
-	 * @return the completeDayHours
-	 */
-	public float getCompleteDayHours()
-	{
-		return completeDayHours;
-	}
-	/**
-	 * @param completeDayHours the completeDayHours to set
-	 */
-	public void setCompleteDayHours(float completeDayHours)
-	{
-		this.completeDayHours = completeDayHours;
-	}
-	/**
-	 * @return the currency
-	 */
-	public Locale getCurrency()
-	{
-		return currency;
-	}
-	/**
-	 * @param currency the currency to set
-	 */
-	public void setCurrency(Locale currency)
-	{
-		this.currency = currency;
-	}
+    /**
+     * @return the availableTranslations
+     */
+    public String[] getAvailableTranslations() {
+        return availableTranslations;
+    }
+
+    /**
+     * @param availableTranslations the availableTranslations to set
+     */
+    public void setAvailableTranslations(String[] availableTranslations) {
+        this.availableTranslations = availableTranslations;
+    }
+
+    /**
+     * @return the completeDayHours
+     */
+    public float getCompleteDayHours() {
+        return completeDayHours;
+    }
+
+    /**
+     * @param completeDayHours the completeDayHours to set
+     */
+    public void setCompleteDayHours(float completeDayHours) {
+        this.completeDayHours = completeDayHours;
+    }
+
+    /**
+     * @return the currency
+     */
+    public Locale getCurrency() {
+        return currency;
+    }
+
+    /**
+     * @param currency the currency to set
+     */
+    public void setCurrency(Locale currency) {
+        this.currency = currency;
+    }
 
     @Override
     public String getCurrencySymbol() {
@@ -108,176 +105,180 @@ public class EhourConfigStub  implements EhourConfig, Serializable
         return Currency.getInstance(getCurrency()).getCurrencyCode();
     }
 
-	/**
-	 * @return the showTurnover
-	 */
-	public boolean isShowTurnover()
-	{
-		return showTurnover;
-	}
-	/**
-	 * @param showTurnover the showTurnover to set
-	 */
-	public void setShowTurnover(boolean showTurnover)
-	{
-		this.showTurnover = showTurnover;
-	}
-	/**
-	 * @return the timeZone
-	 */
-	public String getTimeZone()
-	{
-		return timeZone;
-	}
-	/**
-	 * @param timeZone the timeZone to set
-	 */
-	public void setTimeZone(String timeZone)
-	{
-		this.timeZone = timeZone;
-	}
-	public String getMailFrom()
-	{
-		return mailFrom;
-	}
-	public String getMailSmtp()
-	{
-		return mailSmtp;
-	}
-	/**
-	 * @param mailFrom the mailFrom to set
-	 */
-	public void setMailFrom(String mailFrom)
-	{
-		this.mailFrom = mailFrom;
-	}
-	/**
-	 * @param mailSmtp the mailSmtp to set
-	 */
-	public void setMailSmtp(String mailSmtp)
-	{
-		this.mailSmtp = mailSmtp;
-	}
+    /**
+     * @return the showTurnover
+     */
+    public boolean isShowTurnover() {
+        return showTurnover;
+    }
 
-	public Locale getLocale()
-	{
-		if (StringUtils.isBlank(localeLanguage))
-		{
-			localeLanguage = "en";
-		}
+    /**
+     * @param showTurnover the showTurnover to set
+     */
+    public void setShowTurnover(boolean showTurnover) {
+        this.showTurnover = showTurnover;
+    }
 
-		if (StringUtils.isBlank(localeCountry))
-		{
-			localeCountry = "NL";
-		}
+    /**
+     * @return the timeZone
+     */
+    public String getTimeZone() {
+        return timeZone;
+    }
 
-		return new Locale(localeLanguage, localeCountry);
-	}
+    /**
+     * @param timeZone the timeZone to set
+     */
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
 
-	public boolean isInDemoMode()
-	{
-		return demoMode;
-	}
-	/**
-	 * @param demoMode the demoMode to set
-	 */
-	public void setDemoMode(boolean demoMode)
-	{
-		this.demoMode = demoMode;
-	}
-	/**
-	 * @param localeLanguage the localeLanguage to set
-	 */
-	public void setLocaleLanguage(String localeLanguage)
-	{
-		this.localeLanguage = localeLanguage;
-	}
-	/**
-	 * @param localeCountry the localeCountry to set
-	 */
-	public void setLocaleCountry(String localeCountry)
-	{
-		this.localeCountry = localeCountry;
-	}
-	public boolean isDontForceLanguage()
-	{
-		return dontForceLanguage;
-	}
-	/**
-	 * @param dontForceLanguage the dontForceLanguage to set
-	 */
-	public void setDontForceLanguage(boolean dontForceLanguage)
-	{
-		this.dontForceLanguage = dontForceLanguage;
-	}
-	/**
-	 * @return the initialized
-	 */
-	public boolean isInitialized()
-	{
-		return initialized;
-	}
-	/**
-	 * @param initialized the initialized to set
-	 */
-	public void setInitialized(boolean initialized)
-	{
-		this.initialized = initialized;
-	}
-	public String getSmtpUsername() {
-		return smtpUsername;
-	}
-	public void setSmtpUsername(String smtpUsername) {
-		this.smtpUsername = smtpUsername;
-	}
-	public String getSmtpPassword() {
-		return smtpPassword;
-	}
-	public void setSmtpPassword(String smtpPassword) {
-		this.smtpPassword = smtpPassword;
-	}
-	public String getSmtpPort() {
-		return smtpPort;
-	}
-	public void setSmtpPort(String smtpPort) {
-		this.smtpPort = smtpPort;
-	}
-	/**
-	 * @return the firstDayOfWeek
-	 */
-	public int getFirstDayOfWeek()
-	{
-		return firstDayOfWeek;
-	}
-	/**
-	 * @param firstDayOfWeek the firstDayOfWeek to set
-	 */
-	public void setFirstDayOfWeek(int firstDayOfWeek)
-	{
-		this.firstDayOfWeek = firstDayOfWeek;
-	}
-	/**
-	 * @return the auditType
-	 */
-	public AuditType getAuditType()
-	{
-		return auditType;
-	}
-	/**
-	 * @param auditType the auditType to set
-	 */
-	public void setAuditType(AuditType auditType)
-	{
-		this.auditType = auditType;
-	}
+    public String getMailFrom() {
+        return mailFrom;
+    }
 
-	public String getVersion()
-	{
-		return version;
-	}
+    public String getMailSmtp() {
+        return mailSmtp;
+    }
 
-	public void setVersion(String version)
-	{
-		this.version = version;
-	}
+    /**
+     * @param mailFrom the mailFrom to set
+     */
+    public void setMailFrom(String mailFrom) {
+        this.mailFrom = mailFrom;
+    }
+
+    /**
+     * @param mailSmtp the mailSmtp to set
+     */
+    public void setMailSmtp(String mailSmtp) {
+        this.mailSmtp = mailSmtp;
+    }
+
+    public Locale getFormattingLocale() {
+        if (StringUtils.isBlank(localeLanguage)) {
+            localeLanguage = "en";
+        }
+
+        if (StringUtils.isBlank(localeCountry)) {
+            localeCountry = "NL";
+        }
+
+        return new Locale(localeLanguage, localeCountry);
+    }
+
+    @Override
+    public Locale getLanguageLocale() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean isInDemoMode() {
+        return demoMode;
+    }
+
+    /**
+     * @param demoMode the demoMode to set
+     */
+    public void setDemoMode(boolean demoMode) {
+        this.demoMode = demoMode;
+    }
+
+    /**
+     * @param localeLanguage the localeLanguage to set
+     */
+    public void setLocaleLanguage(String localeLanguage) {
+        this.localeLanguage = localeLanguage;
+    }
+
+    /**
+     * @param localeCountry the localeCountry to set
+     */
+    public void setLocaleCountry(String localeCountry) {
+        this.localeCountry = localeCountry;
+    }
+
+    public boolean isDontForceLanguage() {
+        return dontForceLanguage;
+    }
+
+    /**
+     * @param dontForceLanguage the dontForceLanguage to set
+     */
+    public void setDontForceLanguage(boolean dontForceLanguage) {
+        this.dontForceLanguage = dontForceLanguage;
+    }
+
+    /**
+     * @return the initialized
+     */
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    /**
+     * @param initialized the initialized to set
+     */
+    public void setInitialized(boolean initialized) {
+        this.initialized = initialized;
+    }
+
+    public String getSmtpUsername() {
+        return smtpUsername;
+    }
+
+    public void setSmtpUsername(String smtpUsername) {
+        this.smtpUsername = smtpUsername;
+    }
+
+    public String getSmtpPassword() {
+        return smtpPassword;
+    }
+
+    public void setSmtpPassword(String smtpPassword) {
+        this.smtpPassword = smtpPassword;
+    }
+
+    public String getSmtpPort() {
+        return smtpPort;
+    }
+
+    public void setSmtpPort(String smtpPort) {
+        this.smtpPort = smtpPort;
+    }
+
+    /**
+     * @return the firstDayOfWeek
+     */
+    public int getFirstDayOfWeek() {
+        return firstDayOfWeek;
+    }
+
+    /**
+     * @param firstDayOfWeek the firstDayOfWeek to set
+     */
+    public void setFirstDayOfWeek(int firstDayOfWeek) {
+        this.firstDayOfWeek = firstDayOfWeek;
+    }
+
+    /**
+     * @return the auditType
+     */
+    public AuditType getAuditType() {
+        return auditType;
+    }
+
+    /**
+     * @param auditType the auditType to set
+     */
+    public void setAuditType(AuditType auditType) {
+        this.auditType = auditType;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 }
