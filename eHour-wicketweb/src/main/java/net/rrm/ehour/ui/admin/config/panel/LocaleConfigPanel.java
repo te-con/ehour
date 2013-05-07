@@ -40,185 +40,157 @@ import java.util.Locale;
 
 /**
  * Created on Apr 21, 2009, 4:01:41 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class LocaleConfigPanel extends AbstractConfigPanel
-{
-	private static final long serialVersionUID = 3411339351917181309L;
+public class LocaleConfigPanel extends AbstractConfigPanel {
+    private static final long serialVersionUID = 3411339351917181309L;
 
-	public LocaleConfigPanel(String id, IModel<MainConfigBackingBean> model)
-	{
-		super(id, model);
-	}
+    public LocaleConfigPanel(String id, IModel<MainConfigBackingBean> model) {
+        super(id, model);
+    }
 
-	@SuppressWarnings("serial")
-	@Override
-	protected void addFormComponents(Form<MainConfigBackingBean> configForm)
-	{
-		final DropDownChoice<Locale>	localeDropDownChoice;
-		final DropDownChoice<Locale>	languageDropDownChoice;
-		final AjaxCheckBox		onlyTranslationsBox;
-		final DropDownChoice<Locale>	currencyDropDownChoice;
-		final Label				dateFormat;
-		
-		final MainConfigBackingBean configBackingBean = (MainConfigBackingBean)getDefaultModelObject();
-		
-		configForm.setOutputMarkupId(true);
+    @SuppressWarnings("serial")
+    @Override
+    protected void addFormComponents(Form<MainConfigBackingBean> configForm) {
+        final DropDownChoice<Locale> localeDropDownChoice;
+        final DropDownChoice<Locale> languageDropDownChoice;
+        final AjaxCheckBox onlyTranslationsBox;
+        final DropDownChoice<Locale> currencyDropDownChoice;
+        final Label dateFormat;
 
-		// currency dropdown
-		currencyDropDownChoice = new DropDownChoice<Locale>("config.currency",
-											new PropertyModel<List<Locale>>(configBackingBean, "availableCurrencies"),
-											new LocaleChoiceRenderer(2));
-		currencyDropDownChoice.setOutputMarkupId(true);
-		configForm.add(currencyDropDownChoice);
-		
-		// date format example
-		dateFormat = new Label("dateFormat", 
-							new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
-		dateFormat.setOutputMarkupId(true);
-		configForm.add(dateFormat);
+        final MainConfigBackingBean configBackingBean = (MainConfigBackingBean) getDefaultModelObject();
 
-		// language selection
-		languageDropDownChoice = new DropDownChoice<Locale>("localeLanguage",
-													new PropertyModel<Locale>(configBackingBean, "localeLanguage"),
-													new PropertyModel<List<Locale>>(configBackingBean, "availableLanguages"),
-													new LocaleChoiceRenderer(1)); 
+        configForm.setOutputMarkupId(true);
 
-		// locale selection
-		localeDropDownChoice = new DropDownChoice<Locale>("localeCountry",
-													new PropertyModel<List<Locale>>(configBackingBean, "availableLocales"),
-													new LocaleChoiceRenderer(0)); 
-		localeDropDownChoice.setOutputMarkupId(true);
-		localeDropDownChoice.add(new AjaxFormComponentUpdatingBehavior("onchange")
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				// update the date format example
-				dateFormat.setDefaultModel(new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG ) );
-				target.add(dateFormat);
-				
-				// refresh langugae
-				target.add(languageDropDownChoice);
-				
-				// and currency
-				if (configBackingBean.getLocaleCountry().getCountry() != null)
-				{
-					configBackingBean.setCurrency(configBackingBean.getLocaleCountry());
-					target.add(currencyDropDownChoice);
-				}
-			}
-		});
-		
-		configForm.add(localeDropDownChoice);
+        // currency dropdown
+        currencyDropDownChoice = new DropDownChoice<Locale>("config.currency",
+                new PropertyModel<List<Locale>>(configBackingBean, "availableCurrencies"),
+                new LocaleChoiceRenderer(2));
+        currencyDropDownChoice.setOutputMarkupId(true);
+        configForm.add(currencyDropDownChoice);
 
-		// behaviour for language selection
-		languageDropDownChoice.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
-		languageDropDownChoice.setOutputMarkupId(true);
-		languageDropDownChoice.setRequired(true);
-		languageDropDownChoice.setLabel(new ResourceModel("admin.config.locale.languageLabel"));
-		
-		configForm.add(new AjaxFormComponentFeedbackIndicator("localeLanguageValidationError", localeDropDownChoice));
-		configForm.add(languageDropDownChoice);		
-		
-		// only translations
-		onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel<Boolean>(configBackingBean, "translationsOnly"))
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				target.add(languageDropDownChoice);
-			}
-		};
-		onlyTranslationsBox.setOutputMarkupId(true);
-		onlyTranslationsBox.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
-		configForm.add(onlyTranslationsBox);
-		
-		// don't force locale checkbox
-		configForm.add(new AjaxCheckBox("config.dontForceLanguage")
-		{
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-				languageDropDownChoice.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
-				target.add(languageDropDownChoice);
-				
-				onlyTranslationsBox.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
-				target.add(onlyTranslationsBox);
-			}
-		});				
-	}
-	
+        // date format example
+        dateFormat = new Label("dateFormat",
+                new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG));
+        dateFormat.setOutputMarkupId(true);
+        configForm.add(dateFormat);
+
+        // language selection
+        languageDropDownChoice = new DropDownChoice<Locale>("localeLanguage",
+                new PropertyModel<Locale>(configBackingBean, "localeLanguage"),
+                new PropertyModel<List<Locale>>(configBackingBean, "availableLanguages"),
+                new LocaleChoiceRenderer(1));
+
+        // locale selection
+        localeDropDownChoice = new DropDownChoice<Locale>("localeCountry",
+                new PropertyModel<List<Locale>>(configBackingBean, "availableLocales"),
+                new LocaleChoiceRenderer(0));
+        localeDropDownChoice.setOutputMarkupId(true);
+        localeDropDownChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                // update the date format example
+                dateFormat.setDefaultModel(new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG));
+                target.add(dateFormat);
+
+                // refresh langugae
+                target.add(languageDropDownChoice);
+
+                // and currency
+                if (configBackingBean.getLocaleCountry().getCountry() != null) {
+                    configBackingBean.setCurrency(configBackingBean.getLocaleCountry());
+                    target.add(currencyDropDownChoice);
+                }
+            }
+        });
+
+        configForm.add(localeDropDownChoice);
+
+        // behaviour for language selection
+        languageDropDownChoice.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
+        languageDropDownChoice.setOutputMarkupId(true);
+        languageDropDownChoice.setRequired(true);
+        languageDropDownChoice.setLabel(new ResourceModel("admin.config.locale.languageLabel"));
+
+        configForm.add(new AjaxFormComponentFeedbackIndicator("localeLanguageValidationError", localeDropDownChoice));
+        configForm.add(languageDropDownChoice);
+
+        // only translations
+        onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel<Boolean>(configBackingBean, "translationsOnly")) {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                target.add(languageDropDownChoice);
+            }
+        };
+        onlyTranslationsBox.setOutputMarkupId(true);
+        onlyTranslationsBox.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
+        configForm.add(onlyTranslationsBox);
+
+        // don't force locale checkbox
+        configForm.add(new AjaxCheckBox("config.dontForceLanguage") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                languageDropDownChoice.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
+                target.add(languageDropDownChoice);
+
+                onlyTranslationsBox.setEnabled(!configBackingBean.getConfig().isDontForceLanguage());
+                target.add(onlyTranslationsBox);
+            }
+        });
+    }
+
     /**
      * Choice for a locale.
      */
-	@SuppressWarnings("serial")
-    private static final class LocaleChoiceRenderer extends ChoiceRenderer<Locale>
-    {
+    @SuppressWarnings("serial")
+    private static final class LocaleChoiceRenderer extends ChoiceRenderer<Locale> {
         private static final int COUNTRY = 0;
         private static final int LANGUAGE = 1;
         int type;
-		
-		// type == 0 -> country, 1 => language, 2=> currency
-		public LocaleChoiceRenderer(int type)
-		{
-			this.type = type;
-		}
+
+        // type == 0 -> country, 1 => language, 2=> currency
+        public LocaleChoiceRenderer(int type) {
+            this.type = type;
+        }
+
         /**
          * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(Object)
          */
-    	@Override
-        public Object getDisplayValue(Locale locale)
-        {
+        @Override
+        public Object getDisplayValue(Locale locale) {
             String display;
-            
-            if (type == COUNTRY)
-            {
-	            display = locale.getDisplayCountry();
-	            
-	            display += " (" + locale.getDisplayLanguage();
-	
-	            if (!StringUtils.isBlank(locale.getVariant()))
-	    		{
-	            	display += ", " + locale.getDisplayVariant();
-	    		}
-	            
-	            display += ")";
-            }
-            else if (type == LANGUAGE)
-            {
-	            display = locale.getDisplayLanguage();
-            }
-            else
-            {
-            	Currency curr = Currency.getInstance(locale);
-            	display = locale.getDisplayCountry() + ": " +  curr.getSymbol(locale);
+
+            if (type == COUNTRY) {
+                display = locale.getDisplayCountry();
+
+                display += " (" + locale.getDisplayLanguage();
+
+                if (!StringUtils.isBlank(locale.getVariant())) {
+                    display += ", " + locale.getDisplayVariant();
+                }
+
+                display += ")";
+            } else if (type == LANGUAGE) {
+                display = locale.getDisplayLanguage();
+            } else {
+                Currency curr = Currency.getInstance(locale);
+                display = locale.getDisplayCountry() + ": " + curr.getSymbol(locale);
             }
 
             return display;
         }
 
-    	/*
-    	 * (non-Javadoc)
-    	 * @see org.apache.wicket.markup.html.form.ChoiceRenderer#getIdValue(java.lang.Object, int)
-    	 */
-    	@Override
-    	public String getIdValue(Locale locale, int index)
-    	{
-    		if (type == 0)
-    		{
-    			return locale.getCountry() + "_" + locale.getLanguage();
-    		}
-    		else if (type == 1)
-    		{
-    			return locale.getLanguage();
-    		}
-    		else
-    		{
-    			return locale.getCountry();
-    		}
-    	}
+        @Override
+        public String getIdValue(Locale locale, int index) {
+            if (type == 0) {
+                return locale.getCountry() + "_" + locale.getLanguage();
+            } else if (type == 1) {
+                return locale.getLanguage();
+            } else {
+                return locale.getCountry();
+            }
+        }
     }
-	
+
 }
