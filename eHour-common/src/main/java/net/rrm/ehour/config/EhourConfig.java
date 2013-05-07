@@ -58,7 +58,6 @@ public interface EhourConfig {
      */
     Locale getFormattingLocale();
 
-
     /**
      * Get locale for the language
      * @return

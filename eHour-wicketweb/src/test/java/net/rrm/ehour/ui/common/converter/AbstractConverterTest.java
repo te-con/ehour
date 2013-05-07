@@ -1,8 +1,9 @@
 package net.rrm.ehour.ui.common.converter;
 
 import net.rrm.ehour.config.EhourConfigStub;
-
 import org.junit.Before;
+
+import java.util.Locale;
 
 public abstract class AbstractConverterTest
 {
@@ -12,6 +13,6 @@ public abstract class AbstractConverterTest
 	public final void setup()
 	{
 		config = new EhourConfigStub();
-		config.setLocaleCountry("us");
+		config.setLocaleFormatting(Locale.US);
 	}
 }

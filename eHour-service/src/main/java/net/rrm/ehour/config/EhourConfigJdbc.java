@@ -108,7 +108,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 	{
 		String formattingLocale = this.getString("localeCountry", "en_US");
 
-        if (!formattingLocale.contains("_")) {
+        if (!formattingLocale.contains("-")) {
             return new Locale(formattingLocale, formattingLocale);
         } else {
             return Locale.forLanguageTag(formattingLocale);
@@ -119,7 +119,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     public Locale getLanguageLocale() {
         String formattingLocale = this.getString("localeLanguage", "en_US");
 
-        if (!formattingLocale.contains("_")) {
+        if (!formattingLocale.contains("-")) {
             return new Locale(formattingLocale, formattingLocale);
         } else {
             return Locale.forLanguageTag(formattingLocale);
