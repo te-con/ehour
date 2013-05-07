@@ -82,7 +82,6 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
                 new LocaleChoiceRenderer(1));
 
 
-        System.out.println(new PropertyModel<Locale>(configBackingBean, "localeCountry").getObject());
         // locale selection
         localeDropDownChoice = new DropDownChoice<Locale>("localeCountry",
                 new PropertyModel<Locale>(configBackingBean, "localeCountry"),

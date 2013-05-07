@@ -257,14 +257,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     (EhourConfig
              config) {
         LOGGER.debug("Persisting config");
-        persistConfig(ConfigurationItem.LOCALE_CURRENCY.getDbField(), config.getCurrency().getLanguage() + "_" + config.getCurrency().getCountry());
+        persistConfig(ConfigurationItem.LOCALE_CURRENCY.getDbField(), config.getCurrency().toLanguageTag());
 
         if (config.getCompleteDayHours() != 0) {
             persistConfig(ConfigurationItem.COMPLETE_DAY_HOURS.getDbField(), config.getCompleteDayHours());
         }
 
-        persistConfig(ConfigurationItem.LOCALE_COUNTRY.getDbField(), config.getFormattingLocale().getCountry());
-        persistConfig(ConfigurationItem.LOCALE_LANGUAGE.getDbField(), config.getFormattingLocale().getLanguage());
+        persistConfig(ConfigurationItem.LOCALE_COUNTRY.getDbField(), config.getFormattingLocale().toLanguageTag());
+        persistConfig(ConfigurationItem.LOCALE_LANGUAGE.getDbField(), config.getLanguageLocale().toLanguageTag());
         persistConfig(ConfigurationItem.DONT_FORCE_LANGUAGE.getDbField(), config.isDontForceLanguage());
         persistConfig(ConfigurationItem.SHOW_TURNOVER.getDbField(), config.isShowTurnover());
         persistConfig(ConfigurationItem.MAIL_FROM.getDbField(), config.getMailFrom());

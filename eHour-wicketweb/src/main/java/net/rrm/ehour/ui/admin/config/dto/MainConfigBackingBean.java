@@ -152,7 +152,7 @@ public class MainConfigBackingBean implements Serializable
      */
     public Locale getLocaleLanguage()
     {
-        return config.getFormattingLocale();
+        return config.getLanguageLocale();
     }
 
     /**
