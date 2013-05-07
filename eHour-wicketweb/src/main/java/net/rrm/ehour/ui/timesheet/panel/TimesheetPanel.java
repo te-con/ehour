@@ -101,8 +101,7 @@ public class TimesheetPanel extends Panel implements Serializable {
 
         // add form
         timesheetForm = new Form<TimesheetModel>("timesheetForm");
-        // TODO Re-add guard
-        /*timesheetForm.add(new GuardDirtyFormBehavior(new ResourceModel("timesheet.dirtyForm")));*/
+        timesheetForm.setMarkupId("timesheetForm");
         timesheetForm.setOutputMarkupId(true);
         greyBorder.add(timesheetForm);
 
@@ -144,7 +143,7 @@ public class TimesheetPanel extends Panel implements Serializable {
     @SuppressWarnings("serial")
     private WebMarkupContainer getWeekNavigation(final Date weekStart, final Date weekEnd) {
         Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getLocale());
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getFormattingLocale());
 
         int weekOfYear = DateUtil.getWeekNumberForDate(weekStart, config.getFirstDayOfWeek());
 

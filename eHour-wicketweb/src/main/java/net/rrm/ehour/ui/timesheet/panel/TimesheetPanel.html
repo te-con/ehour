@@ -144,6 +144,23 @@
    	<wicket:fragment wicket:id="dayInputHidden">
    		&nbsp;
 	</wicket:fragment>
+
+    <script>
+        function guardForm() {
+            $("#timesheetForm :input").change(function () {
+                $(this).closest('form').data('changed', true);
+            });
+        }
+
+        $(document).ready(function () {
+            guardForm();
+        }) ;
+
+
+        $(window).unload( function () { alert("Bye now!"); } );
+
+        alert('x');
+    </script>
 </wicket:panel>
 
 </body>
