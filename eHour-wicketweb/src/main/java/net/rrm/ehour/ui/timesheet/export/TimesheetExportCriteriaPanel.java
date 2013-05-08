@@ -21,7 +21,6 @@ import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
 import net.rrm.ehour.ui.common.util.Function;
-import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -40,13 +39,6 @@ import java.util.List;
 public class TimesheetExportCriteriaPanel extends Panel {
     private static final long serialVersionUID = -3732529050866431376L;
 
-    private static final String EXPORT_TYPE_KEY = "exportTypeKey";
-
-    private enum ExportType {
-        EXCEL,
-        PRINT
-    }
-
     public TimesheetExportCriteriaPanel(String id, IModel<ReportCriteria> model) {
         super(id, model);
         setOutputMarkupId(true);
@@ -64,22 +56,14 @@ public class TimesheetExportCriteriaPanel extends Panel {
 
         form.add(createSignOffCheck("signOff"));
 
-        form.add(createSubmitButton("printButton", form, ExportType.PRINT));
-        form.add(createSubmitButton("excelButton", form, ExportType.EXCEL));
+        form.add(createSubmitButton("store", form));
 
         return form;
     }
 
     @SuppressWarnings("serial")
-    private SubmitLink createSubmitButton(String id, SelectionForm form, final ExportType type) {
-        return new SubmitLink(id, form) {
-            @Override
-            public void onSubmit() {
-                ReportCriteria criteria = (ReportCriteria) TimesheetExportCriteriaPanel.this.getDefaultModelObject();
-
-                criteria.getUserCriteria().getCustomParameters().put(EXPORT_TYPE_KEY, type);
-            }
-        };
+    private SubmitLink createSubmitButton(String id, SelectionForm form) {
+        return new SubmitLink(id, form);
     }
 
     private CheckBox createSignOffCheck(String id) {
@@ -131,24 +115,12 @@ public class TimesheetExportCriteriaPanel extends Panel {
 
         @Override
         protected void onSubmit() {
-            ReportCriteria criteria = getModelObject();
-
-            ExportType type = (ExportType) criteria.getUserCriteria().getCustomParameters().get(EXPORT_TYPE_KEY);
-
-            if (type == ExportType.EXCEL) {
-                excelExport(criteria);
-            } else if (type == ExportType.PRINT) {
-                setResponsePage(new PrintMonth(criteria));
-            }
-        }
-
-        private void excelExport(final ReportCriteria criteria) {
             final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport();
 
             getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(timesheetExcelExport.getFilename(), new Function<byte[]>() {
                 @Override
                 public byte[] apply() {
-                    return timesheetExcelExport.getExcelData(criteria);
+                    return timesheetExcelExport.getExcelData(getModelObject());
                 }
             }));
         }

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
+import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.ProjectObjectMother;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -25,7 +26,6 @@ import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
-import net.rrm.ehour.ui.timesheet.export.print.PrintMonth;
 import org.apache.wicket.util.tester.FormTester;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -41,7 +41,7 @@ import static org.junit.Assert.fail;
 
 /**
  * Created on Feb 3, 2009, 11:10:24 PM
- * @author Thies Edeling (thies@te-con.nl) 
+ * @author Thies Edeling (thies@te-con.nl)
  *
  */
 public class TimesheetExportPageTest extends AbstractSpringWebAppTester
@@ -50,50 +50,52 @@ public class TimesheetExportPageTest extends AbstractSpringWebAppTester
 	private ReportCriteriaService reportCriteriaService;
 	private DetailedReportService detailedReportService;
 	private ReportCriteria reportCriteria;
+    private ConfigurationService configurationService;
 
 	@Before
-	public void before() throws Exception
+	public void before() throws Exception {
+        configurationService = createMock(ConfigurationService.class);
+        getMockContext().putBean("configurationService", configurationService);
+
+        timesheetService = createMock(TimesheetService.class);
+        getMockContext().putBean("timesheetService", timesheetService);
+
+        reportCriteriaService = createMock(ReportCriteriaService.class);
+        getMockContext().putBean("reportCriteriaService", reportCriteriaService);
+
+        detailedReportService = createMock(DetailedReportService.class);
+        getMockContext().putBean("detailedReportService", detailedReportService);
+
+        reportCriteria = createReportCriteria();
+
+        expect(timesheetService.getBookedDaysMonthOverview(isA(Integer.class), isA(Calendar.class))).andReturn(new ArrayList<LocalDate>());
+
+        expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
+                .andReturn(reportCriteria);
+
+        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
+                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
+        replay(timesheetService, reportCriteriaService, detailedReportService);
+
+        tester.startPage(TimesheetExportPage.class);
+    }
+
+    @Test
+	public void submit()
 	{
-		timesheetService = createMock(TimesheetService.class);
-		getMockContext().putBean("timesheetService", timesheetService);
-
-		reportCriteriaService = createMock(ReportCriteriaService.class);
-		getMockContext().putBean("reportCriteriaService", reportCriteriaService);
-
-		detailedReportService = createMock(DetailedReportService.class);
-		getMockContext().putBean("detailedReportService", detailedReportService);
-		
-		reportCriteria = createReportCriteria();
-		
-		expect(timesheetService.getBookedDaysMonthOverview(isA(Integer.class),  isA(Calendar.class))).andReturn(new ArrayList<LocalDate>());
-		
-		expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
-				.andReturn(reportCriteria);
-
-		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-				.andReturn(DetailedReportDataObjectMother.getFlatReportData());
-		replay(timesheetService, reportCriteriaService, detailedReportService);
-		
-		tester.startPage(TimesheetExportPage.class);
-	}
-	
-	@Test
-	public void submitToPrint()
-	{
-		FormTester formTester = tester.newFormTester("printSelectionFrame:printSelectionFrame_body:blueBorder:blueBorder_body:selectionForm:criteriaForm");
+        FormTester formTester = tester.newFormTester("printSelectionFrame:printSelectionFrame_body:blueBorder:blueBorder_body:selectionForm:criteriaForm");
 		formTester.selectMultiple("projectGroup", new int[]{0, 2});
 		formTester.setValue("signOff", "true");
 
-		formTester.submit("printButton");
-		
-		tester.assertRenderedPage(PrintMonth.class);
+		formTester.submit("store");
+
 		tester.assertNoErrorMessage();
 		assertEquals(Boolean.TRUE, reportCriteria.getUserCriteria().getCustomParameters().get(TimesheetExportParameter.INCL_SIGN_OFF.name()));
-		
+
 		assertEquals(2, reportCriteria.getUserCriteria().getProjects().size());
-		
+
 		Integer id =  reportCriteria.getUserCriteria().getProjects().get(1).getProjectId();
-		
+
 		// order is unknown
 		if (id != 0 && id != 2)
 		{
@@ -108,14 +110,14 @@ public class TimesheetExportPageTest extends AbstractSpringWebAppTester
 		verify(timesheetService);
 		verify(reportCriteriaService);
 		verify(detailedReportService);
-		
+
 	}
-	
+
 	private ReportCriteria createReportCriteria()
 	{
 		AvailableCriteria availableCriteria = new AvailableCriteria();
 		availableCriteria.setProjects(ProjectObjectMother.createProjects(5));
-		
+
 		return new ReportCriteria(availableCriteria);
 	}
 }

@@ -68,6 +68,10 @@ public class ExportReportHeader extends AbstractExportReportPart
     {
         ImageLogo excelLogo = getConfigurationService().getExcelLogo();
 
+        if (excelLogo == null) {
+            return rowNumber;
+        }
+
         byte[] image = excelLogo.getImageData();
 
         int index = getWorkbook().addPicture(image, PoiUtil.getImageType(excelLogo.getImageType()));
