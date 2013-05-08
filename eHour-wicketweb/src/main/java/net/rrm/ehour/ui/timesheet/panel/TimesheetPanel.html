@@ -147,19 +147,25 @@
 
     <script>
         function guardForm() {
-            $("#timesheetForm :input").change(function () {
-                $(this).closest('form').data('changed', true);
+            $('#timesheetForm :input').change(function () {
+                $('#timesheetForm').data('changed', true);
             });
         }
 
         $(document).ready(function () {
             guardForm();
-        }) ;
 
+            $(window).bind('beforeunload', function () {
+                if ($('#timesheetForm').data('changed') === true) {
+                    return "You entered hours but you have not stored them yet. Please click 'store' before proceeding, otherwise your data may be lost.";
+                }
+            });
 
-        $(window).unload( function () { alert("Bye now!"); } );
-
-        alert('x');
+            $("#submit").click(function () {
+                $('#timesheetForm').data('changed', false);
+                $(window).unbind("beforeunload");
+            });
+        });
     </script>
 </wicket:panel>
 

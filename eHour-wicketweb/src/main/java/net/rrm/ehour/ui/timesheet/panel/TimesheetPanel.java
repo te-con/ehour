@@ -210,7 +210,10 @@ public class TimesheetPanel extends Panel implements Serializable {
      */
     private void setSubmitActions(Form<?> form, MarkupContainer parent) {
         // default submit
-        parent.add(new SubmitButton("submitButton", form));
+        SubmitButton submitButton = new SubmitButton("submitButton", form);
+        submitButton.setOutputMarkupId(true);
+        submitButton.setMarkupId("submit");
+        parent.add(submitButton);
 
         // reset, should fetch the original contents
         AjaxButton resetButton = new AjaxButton("resetButton", form) {
