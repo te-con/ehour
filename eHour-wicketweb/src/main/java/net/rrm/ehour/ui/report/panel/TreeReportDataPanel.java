@@ -72,23 +72,26 @@ public class TreeReportDataPanel extends Panel {
 
         Border blueBorder = new BlueTabRoundedBorder("blueFrame");
         add(blueBorder);
-        blueBorder.setOutputMarkupId(true);
+
+        WebMarkupContainer reportContent = new WebMarkupContainer("reportContent");
+        reportContent.setOutputMarkupId(true);
+        blueBorder.add(reportContent);
 
         if (excelReport != null) {
-            blueBorder.add(new ExcelLink("excelLink", reportModel.getReportCriteria()) {
+            reportContent.add(new ExcelLink("excelLink", reportModel.getReportCriteria()) {
                 @Override
                 protected ExcelReport createReportBuilder() {
                     return excelReport;
                 }
             });
         } else {
-            blueBorder.add(HtmlUtil.getInvisibleLink("excelLink"));
+            reportContent.add(HtmlUtil.getInvisibleLink("excelLink"));
         }
 
-        blueBorder.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getSession().getEhourConfig()));
-        addHeaderColumns(blueBorder);
-        addReportData(reportModel, blueBorder);
-        addGrandTotal(reportModel, blueBorder);
+        reportContent.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getSession().getEhourConfig()));
+        addHeaderColumns(reportContent);
+        addReportData(reportModel, reportContent);
+        addGrandTotal(reportModel, reportContent);
     }
 
     @Override

@@ -33,6 +33,7 @@ import org.apache.wicket.request.Response;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 
 public class TestEhourWebApplication extends EhourWebApplication implements Serializable {
     private static final long serialVersionUID = -7336200909844170964L;
@@ -97,7 +98,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
             user.setUsername("thies");
             user.setPassword("secret");
 
-            HashSet<UserRole> userRoles = new HashSet<UserRole>();
+            Set<UserRole> userRoles = new HashSet<UserRole>();
             userRoles.addAll(UserRole.ROLES.values());
 
             user.setUserRoles(userRoles);
