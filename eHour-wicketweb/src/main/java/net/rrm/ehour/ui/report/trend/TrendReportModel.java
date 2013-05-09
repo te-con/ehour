@@ -33,17 +33,17 @@ import static org.springframework.util.Assert.notNull;
  * Base trend report
  */
 
-public abstract class TrendReport<RK extends Comparable<?>> extends AbstractReportModel
+public abstract class TrendReportModel<RK extends Comparable<?>> extends AbstractReportModel
 {
     private static final long serialVersionUID = -8062083697181324496L;
 
-    private static final Logger LOGGER = Logger.getLogger(TrendReport.class);
+    private static final Logger LOGGER = Logger.getLogger(TrendReportModel.class);
     private transient SortedMap<RK, Map<Date, FlatReportElement>> rowMap;
 
     /**
      * @param criteria
      */
-    public TrendReport(ReportCriteria criteria)
+    public TrendReportModel(ReportCriteria criteria)
     {
         super(criteria);
     }
