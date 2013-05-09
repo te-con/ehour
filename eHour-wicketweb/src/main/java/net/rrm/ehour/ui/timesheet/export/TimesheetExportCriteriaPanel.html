@@ -17,12 +17,16 @@
                 </td>
 
                 <td style="padding-left: 5px">
-                    <wicket:container wicket:id="projectGroup">
-                        <wicket:enclosure child="billableProjects">
-
+                    <wicket:enclosure child="billableProjectGroup">
+                        <wicket:container wicket:id="billableProjectGroup">
                             <strong>
                                 <wicket:message key="printMonth.billable"/>
                             </strong><br/>
+
+                            <p style="margin:0 0 5px 0;padding:0">
+                                <input type="checkbox" wicket:id="checkall">
+                                <wicket:message key="printMonth.checkAll" />
+                            </p>
 
                             <p style="border-top: solid 1px white;margin:0 0 5px 0;padding:0">
                                 <wicket:container wicket:id="billableProjects">
@@ -31,26 +35,31 @@
                                     <br/>
                                 </wicket:container>
                             </p>
-                        </wicket:enclosure>
+                        </wicket:container>
+                    </wicket:enclosure>
 
 
-                        <wicket:enclosure child="unbillableProjects">
+                    <wicket:enclosure child="unbillableProjectGroup">
+                        <wicket:container wicket:id="unbillableProjectGroup">
                             <br/>
                             <strong>
                                 <wicket:message key="printMonth.unbillable"/>
                             </strong>
 
+                            <p style="margin:0 0 5px 0;padding:0">
+                                <input type="checkbox" wicket:id="checkall">
+                                <wicket:message key="printMonth.checkAll" />
+                            </p>
+
                             <p style="border-top: solid 1px white;margin:0 0 5px 0;padding:0">
                                 <wicket:container wicket:id="unbillableProjects">
                                     <input type="checkbox" wicket:id="check"/>
                                     <wicket:container wicket:id="project"></wicket:container>
-
                                     <br/>
                                 </wicket:container>
                             </p>
-                        </wicket:enclosure>
-                    </wicket:container>
-
+                        </wicket:container>
+                    </wicket:enclosure>
                 </td>
             </tr>
 
@@ -75,14 +84,14 @@
             <tr>
                 <td style="border: 0;padding-right: 20px">
                     <nobr>
-                        Include hours made between:
+                        <wicket:message key="printMonth.range" />:
                     </nobr>
                 </td>
 
                 <td style="padding-left: 5px">
-                    <input type="text" wicket:id="startDate"  class="textInputSmall" style="width: 8em;" />
-                    <wicket:message key="report.criteria.until" />
-                    <input type="text" wicket:id="endDate" class="textInputSmall" style="width: 8em;" />
+                    <input type="text" wicket:id="startDate" class="textInputSmall" style="width: 8em;"/>
+                    <wicket:message key="report.criteria.until"/>
+                    <input type="text" wicket:id="endDate" class="textInputSmall" style="width: 8em;"/>
 
                 </td>
             </tr>

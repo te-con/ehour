@@ -30,6 +30,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +42,9 @@ import java.util.List;
 
 public class TimesheetExportCriteriaPanel extends Panel {
     private static final long serialVersionUID = -3732529050866431376L;
+
+    private Projects billableProjects;
+    private Projects unbillableProjects;
 
     public TimesheetExportCriteriaPanel(String id, IModel<ReportCriteria> model) {
         super(id, model);
@@ -54,7 +59,14 @@ public class TimesheetExportCriteriaPanel extends Panel {
     private Form<ReportCriteria> createCriteriaPanel(String id, IModel<ReportCriteria> model) {
         SelectionForm form = new SelectionForm(id, model);
 
-        form.add(createAssignmentCheckboxes("projectGroup"));
+
+        ReportCriteria criteria = (ReportCriteria) getDefaultModelObject();
+        List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
+        billableProjects = new Projects();
+        unbillableProjects = new Projects();
+
+        form.add(createBillableProjectGroup("billableProjectGroup", allProjects));
+        form.add(createUnbillableProjectGroup("unbillableProjectGroup", allProjects));
 
         form.add(createSignOffCheck("signOff"));
 
@@ -75,24 +87,30 @@ public class TimesheetExportCriteriaPanel extends Panel {
         return new CheckBox(id, new PropertyModel<Boolean>(this.getDefaultModel(), "userCriteria.customParameters[INCL_SIGN_OFF]"));
     }
 
-    private CheckGroup<Project> createAssignmentCheckboxes(String id) {
-        CheckGroup<Project> projectGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(getDefaultModel(), "userCriteria.projects"));
-
-        ReportCriteria criteria = (ReportCriteria) getDefaultModelObject();
-
-        List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
-
-        List<Project> billableProjects = ProjectUtil.getBillableProjects(allProjects);
-        ListView<Project> billableProjectsView = getAssignmentCheckboxesView("billableProjects", billableProjects);
-        billableProjectsView.setVisible(billableProjects.size() > 0);
-        projectGroup.add(billableProjectsView);
+    private CheckGroup<Project> createUnbillableProjectGroup(String id, List<Project> allProjects) {
+        CheckGroup<Project> unbillableGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(unbillableProjects, "projects"));
+        unbillableGroup.add(new CheckGroupSelector("checkall"));
 
         List<Project> unbillableProjects = ProjectUtil.getUnbillableProjects(allProjects);
-        ListView<Project> unbillableProjectsView = getAssignmentCheckboxesView("unbillableProjects", unbillableProjects);
-        unbillableProjectsView.setVisible(unbillableProjects.size() > 0);
-        projectGroup.add(unbillableProjectsView);
+        unbillableGroup.setVisible(unbillableProjects.size() > 0);
 
-        return projectGroup;
+        ListView<Project> unbillableProjectsView = getAssignmentCheckboxesView("unbillableProjects", unbillableProjects);
+        unbillableGroup.add(unbillableProjectsView);
+
+        return unbillableGroup;
+    }
+
+    private CheckGroup<Project> createBillableProjectGroup(String id, List<Project> allProjects) {
+        CheckGroup<Project> billableGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(billableProjects, "projects"));
+        billableGroup.add(new CheckGroupSelector("checkall"));
+
+        List<Project> billableProjects = ProjectUtil.getBillableProjects(allProjects);
+        billableGroup.setVisible(billableProjects.size() > 0);
+
+        ListView<Project> billableProjectsView = getAssignmentCheckboxesView("billableProjects", billableProjects);
+        billableGroup.add(billableProjectsView);
+
+        return billableGroup;
     }
 
     @SuppressWarnings("serial")
@@ -111,7 +129,7 @@ public class TimesheetExportCriteriaPanel extends Panel {
      *
      * @author Thies Edeling (thies@te-con.nl)
      */
-    private static class SelectionForm extends Form<ReportCriteria> {
+    private class SelectionForm extends Form<ReportCriteria> {
         private static final long serialVersionUID = -8232635495078008621L;
 
         public SelectionForm(String id, IModel<ReportCriteria> model) {
@@ -122,12 +140,31 @@ public class TimesheetExportCriteriaPanel extends Panel {
         protected void onSubmit() {
             final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport();
 
+            List<Project> projects = new ArrayList<Project>(TimesheetExportCriteriaPanel.this.billableProjects.getProjects());
+            projects.addAll(TimesheetExportCriteriaPanel.this.unbillableProjects.getProjects());
+
+            final ReportCriteria reportCriteria = getModelObject();
+            reportCriteria.getUserCriteria().setProjects(projects);
+
             getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(timesheetExcelExport.getFilename(), new Function<byte[]>() {
                 @Override
                 public byte[] apply() {
-                    return timesheetExcelExport.getExcelData(getModelObject());
+                    return timesheetExcelExport.getExcelData(reportCriteria);
                 }
             }));
         }
     }
+
+    private static class Projects implements Serializable{
+        private List<Project> projects = new ArrayList<Project>();
+
+        private List<Project> getProjects() {
+            return projects;
+        }
+
+        private void setProjects(List<Project> projects) {
+            this.projects = projects;
+        }
+    }
+
 }

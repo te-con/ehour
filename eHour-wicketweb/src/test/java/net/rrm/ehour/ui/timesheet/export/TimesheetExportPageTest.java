@@ -84,7 +84,7 @@ public class TimesheetExportPageTest extends AbstractSpringWebAppTester
 	public void submit()
 	{
         FormTester formTester = tester.newFormTester("printSelectionFrame:printSelectionFrame_body:blueBorder:blueBorder_body:selectionForm:criteriaForm");
-		formTester.selectMultiple("projectGroup", new int[]{0, 2});
+		formTester.selectMultiple("billableProjectGroup", new int[]{0, 2});
 		formTester.setValue("signOff", "true");
 
 		formTester.submit("store");
