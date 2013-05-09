@@ -16,9 +16,11 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;
 import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
 import net.rrm.ehour.ui.common.util.Function;
@@ -26,11 +28,11 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -40,7 +42,7 @@ import java.util.List;
  * TimesheetExportCriteriaPanel holding the form for month based exports for consultants
  */
 
-public class TimesheetExportCriteriaPanel extends Panel {
+public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriteria> {
     private static final long serialVersionUID = -3732529050866431376L;
 
     private Projects billableProjects;
@@ -139,23 +141,38 @@ public class TimesheetExportCriteriaPanel extends Panel {
         @Override
         protected void onSubmit() {
             final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport();
+            final ReportCriteria reportCriteria = mergeBillablesAndUnbillables();
 
-            List<Project> projects = new ArrayList<Project>(TimesheetExportCriteriaPanel.this.billableProjects.getProjects());
-            projects.addAll(TimesheetExportCriteriaPanel.this.unbillableProjects.getProjects());
+            String filename = createFilename(reportCriteria);
 
-            final ReportCriteria reportCriteria = getModelObject();
-            reportCriteria.getUserCriteria().setProjects(projects);
-
-            getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(timesheetExcelExport.getFilename(), new Function<byte[]>() {
+            getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(filename, new Function<byte[]>() {
                 @Override
                 public byte[] apply() {
                     return timesheetExcelExport.getExcelData(reportCriteria);
                 }
             }));
         }
+
+        private ReportCriteria mergeBillablesAndUnbillables() {
+            List<Project> projects = new ArrayList<Project>(TimesheetExportCriteriaPanel.this.billableProjects.getProjects());
+            projects.addAll(TimesheetExportCriteriaPanel.this.unbillableProjects.getProjects());
+
+            final ReportCriteria reportCriteria = getModelObject();
+            reportCriteria.getUserCriteria().setProjects(projects);
+            return reportCriteria;
+        }
+
+        private String createFilename(ReportCriteria reportCriteria) {
+            DateRange reportRange = reportCriteria.getUserCriteria().getReportRange();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            String start = formatter.format(reportRange.getDateStart());
+            String end = formatter.format(reportRange.getDateEnd());
+
+            return String.format("eHour_export_%s-%s.xls", start, end);
+        }
     }
 
-    private static class Projects implements Serializable{
+    private static class Projects implements Serializable {
         private List<Project> projects = new ArrayList<Project>();
 
         private List<Project> getProjects() {
