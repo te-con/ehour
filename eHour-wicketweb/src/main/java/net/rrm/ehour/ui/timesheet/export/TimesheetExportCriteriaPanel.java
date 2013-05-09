@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.timesheet.export;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;
 import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
 import net.rrm.ehour.ui.common.util.Function;
 import org.apache.wicket.markup.html.basic.Label;
@@ -30,6 +31,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,6 +59,9 @@ public class TimesheetExportCriteriaPanel extends Panel {
         form.add(createSignOffCheck("signOff"));
 
         form.add(createSubmitButton("store", form));
+
+        form.add(new LocalizedDatePicker("startDate", new PropertyModel<Date>(model, "reportRange.dateStart")));
+        form.add(new LocalizedDatePicker("endDate", new PropertyModel<Date>(model, "reportRange.dateEnd")));
 
         return form;
     }
