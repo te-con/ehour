@@ -29,7 +29,6 @@ import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.AbstractReportPage;
 import net.rrm.ehour.util.DateUtil;
-import org.apache.wicket.Component;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -50,7 +49,8 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     private static final String ID_FRAME = "printSelectionFrame";
     private static final String ID_BLUE_BORDER = "blueBorder";
 
-    private Label titleLabel;
+    private TimesheetExportCriteriaPanel criteriaPanel;
+    private CustomTitledGreyRoundedBorder greyBorder;
 
     public TimesheetExportPage() {
         this(EhourWebSession.getSession().getNavCalendar());
@@ -63,17 +63,15 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
 
         add(createCalendarPanel("sidePanel"));
 
-        titleLabel = getTitleLabel(forMonth);
-        titleLabel.setOutputMarkupId(true);
-
         add(new ContextualHelpPanel("contextHelp", "printMonth.help.header", "printMonth.help.body"));
 
-        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_FRAME, titleLabel);
+        greyBorder = new CustomTitledGreyRoundedBorder(ID_FRAME, newTitleLabel(forMonth));
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder(ID_BLUE_BORDER);
         greyBorder.add(blueBorder);
         add(greyBorder);
 
-        blueBorder.add(createExportCriteriaPanel(ID_SELECTION_FORM));
+        criteriaPanel = createExportCriteriaPanel(ID_SELECTION_FORM);
+        blueBorder.add(criteriaPanel);
     }
 
     private TimesheetExportCriteriaPanel createExportCriteriaPanel(String id) {
@@ -112,23 +110,22 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     private void changeMonth(AjaxEvent ajaxEvent) {
         createModelForMonth(getEhourWebSession().getNavCalendar());
 
-        Component originalForm = get(ID_FRAME + ":" + ID_BLUE_BORDER + ":" + ID_SELECTION_FORM);
-
         TimesheetExportCriteriaPanel replacementPanel = createExportCriteriaPanel(ID_SELECTION_FORM);
 
-        originalForm.replaceWith(replacementPanel);
+        criteriaPanel.replaceWith(replacementPanel);
         ajaxEvent.getTarget().add(replacementPanel);
+        criteriaPanel = replacementPanel;
 
-        Label newLabel = getTitleLabel(getEhourWebSession().getNavCalendar());
-        newLabel.setOutputMarkupId(true);
-        titleLabel.replaceWith(newLabel);
-        titleLabel = newLabel;
+        Label newLabel = newTitleLabel(getEhourWebSession().getNavCalendar());
+        greyBorder.replaceInBorder(newLabel);
         ajaxEvent.getTarget().add(newLabel);
     }
 
-    private Label getTitleLabel(Calendar cal) {
-        return new Label("title", new StringResourceModel("printMonth.header",
+    private Label newTitleLabel(Calendar cal) {
+        Label label = new Label("title", new StringResourceModel("printMonth.header",
                 this, null,
                 new Object[]{new DateModel(cal, getConfig(), DateModel.DATESTYLE_MONTHONLY)}));
+        label.setOutputMarkupId(true);
+        return label;
     }
 }

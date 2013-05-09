@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.common.report.ExcelReport;
 import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.util.WebUtils;
-import net.rrm.ehour.ui.report.trend.PrintReport;
 import net.rrm.ehour.ui.timesheet.export.excel.part.*;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -43,7 +42,7 @@ public class TimesheetExcelExport implements ExcelReport {
 
     @Override
     public byte[] getExcelData(ReportCriteria reportCriteria) {
-        PrintReport report = new PrintReport(reportCriteria);
+        ExcelExportReportModel report = new ExcelExportReportModel(reportCriteria);
         HSSFWorkbook workbook = createWorkbook(report);
 
         try {
