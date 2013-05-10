@@ -59,7 +59,8 @@ div.MonthAggregateTable div.TotalRow
 	float: left;
 	padding-right: 5px;
 	margin: 1px;
-	line-height: 1;
+	line-height: 0.9em;
+    overflow: hidden;
 }
 
 .numbCell

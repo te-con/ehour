@@ -112,7 +112,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         setProjectLabelWidth(projectLabel);
         container.add(projectLabel);
 
-        Label customerLabel = new Label("customerLabel", new ResourceModel("overview.customer"));
+        Label customerLabel = new Label("label", new ResourceModel("overview.customer"));
         setCustomerLabelWidth(customerLabel);
         container.add(customerLabel);
 
@@ -146,11 +146,15 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 projectLabel.setOutputMarkupId(true);
                 projectNameContainer.add(projectLabel);
 
-                Label customerLabel = new Label("customerName", project.getCustomer().getName());
+                String name = project.getCustomer().getName();
+                Label customerLabel = new Label("customerName", name);
+                createTitle(customerLabel, name);
                 setCustomerLabelWidth(customerLabel);
                 item.add(customerLabel);
 
-                Label projectCodeLabel = new Label("projectCode", project.getProjectCode());
+                String projectCode = project.getProjectCode();
+                Label projectCodeLabel = new Label("projectCode", projectCode);
+                createTitle(customerLabel, projectCode);
                 projectCodeLabel.setMarkupId(String.format("prjC%d", project.getProjectId()));
                 projectCodeLabel.setOutputMarkupId(true);
                 item.add(projectCodeLabel);
@@ -182,6 +186,10 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         container.add(view);
     }
 
+    private void createTitle(Label label, String title) {
+        label.add(AttributeModifier.append("title", title));
+    }
+
     /**
      * Create fold link (also contains the creation of the summary row)
      */
@@ -201,26 +209,6 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 ContextImage img = createFoldImage(!isVisible);
                 this.get(ID_FOLD_IMG).replaceWith(img);
                 target.add(img);
-
-/*
-
-                Component replacement;
-                Component replacementImage;
-
-                if (original instanceof PlaceholderPanel) {
-                    replacement = createProjectSummaryRow(original.getId(), projectStatus);
-                    replacementImage = createFoldImage(true);
-                } else {
-                    replacement = new PlaceholderPanel(original.getId());
-                    replacementImage = createFoldImage(false);
-                }
-
-                original.replaceWith(replacement);
-                originalImage.replaceWith(replacementImage);
-                target.add(replacement);
-                target.add(replacementImage);
-*/
-
             }
         };
 
