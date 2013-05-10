@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.ui.common.component.CommonModifiers;
-import net.rrm.ehour.ui.timesheet.converter.TimesheetFloatConverter;
+import net.rrm.ehour.ui.common.converter.FloatConverter;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
@@ -47,7 +47,7 @@ public class TimesheetTextField extends TextField<Float> {
 
     @Override
     public <Float> IConverter<Float> getConverter(Class<Float> c) {
-        return TimesheetFloatConverter.getInstance();
+        return new FloatConverter("");
     }
 
     /**

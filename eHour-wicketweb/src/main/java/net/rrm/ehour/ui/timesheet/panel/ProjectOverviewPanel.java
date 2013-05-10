@@ -112,7 +112,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         setProjectLabelWidth(projectLabel);
         container.add(projectLabel);
 
-        Label customerLabel = new Label("label", new ResourceModel("overview.customer"));
+        Label customerLabel = new Label("customerLabel", new ResourceModel("overview.customer"));
         setCustomerLabelWidth(customerLabel);
         container.add(customerLabel);
 
