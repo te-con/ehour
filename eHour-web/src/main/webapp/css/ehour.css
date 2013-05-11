@@ -238,6 +238,8 @@ div.GreyNavFrameFooter p {
     color: white;
     border: 1px solid #f0f0f0;
     border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
 
 .submitButton:hover {
@@ -320,6 +322,8 @@ div.Help a:active {
     color: #233e55;
     background-color: white !important;
     border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
 
 li a:link {
@@ -402,6 +406,9 @@ input {
     color: #233e55;
     background-color: white  !important;
     border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+
     padding: 0 0 0 5px;
 }
 
@@ -599,39 +606,6 @@ a.bluebutton:active span {
     letter-spacing: 1.5px;
 }
 
-/* Fading Tooltips By Dustin Diaz*/
-body div#toolTip {
-    position: absolute;
-    -index: 1000;
-    width: 220px;
-    background: #acc9e6;
-    border: 2px double #edf5fc;
-    text-align: left;
-    padding: 5px;
-    min-height: 1em;
-    -moz-border-radius: 5px;
-}
-
-body div#toolTip p {
-    margin: 0;
-    padding: 0;
-    color: #2f3e4c;
-    font: 11px/ 12px verdana, arial, sans-serif;
-}
-
-body div#toolTip p em {
-    display: block;
-    margin-top: 3px;
-    color: white;
-    font-style: normal;
-    font-weight: bold;
-}
-
-body div#toolTip p em span {
-    font-weight: bold;
-    color: #fff;
-}
-
 hr {
     background-color: white;
     color: white;
@@ -692,4 +666,13 @@ hr {
     color: red;
     font-size: 0.8em;
     text-align: left;
+}
+
+.searchInput {
+    width: 206px;
+    background-color: #fefefe;
+    padding: 0 5px 0 5px;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
 }

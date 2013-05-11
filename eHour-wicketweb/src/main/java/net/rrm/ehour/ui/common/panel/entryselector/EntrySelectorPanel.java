@@ -20,6 +20,7 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -27,6 +28,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Selector with autocompletion filter 
@@ -93,6 +95,7 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
         WebMarkupContainer listFilter = new WebMarkupContainer("listFilter");
         listFilter.setMarkupId("listFilter");
         listFilter.setOutputMarkupId(true);
+        listFilter.add(AttributeModifier.replace("placeholder", new ResourceModel("report.filter").getObject()));
         filterInputContainer.add(listFilter);
 
 		
