@@ -90,13 +90,13 @@ public class DetailedReportModel extends TreeReportModel
 	            switch (hierarchyLevel)
 	            {
 	                case 0:
+                        return new FlatDateNode(flatElement);
+                    case 1:
 	                	return new FlatCustomerNode(flatElement);
-	                case 1:
+	                case 2:
 	                    return new FlatProjectNode(flatElement);
-                    case 2:
-                        return new FlatProjectCodeNode(flatElement);
                     case 3:
-	                    return new FlatDateNode(flatElement);
+                        return new FlatProjectCodeNode(flatElement);
 	                case 4:
 	                	return new FlatUserNode(flatElement);
 	                case 5:
