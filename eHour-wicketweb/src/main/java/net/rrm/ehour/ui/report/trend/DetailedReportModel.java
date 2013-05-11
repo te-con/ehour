@@ -49,13 +49,6 @@ public class DetailedReportModel extends TreeReportModel
 		super(reportCriteria, ReportConfig.DETAILED_REPORT);
 	}
 
-    public DetailedReportModel(ReportCriteria reportCriteria, DetailedReportService detailedReportService)
-    {
-        this(reportCriteria);
-
-        this.detailedReportService = detailedReportService;
-    }
-
 
     @Override
 	protected ReportData fetchReportData(ReportCriteria reportCriteria)

@@ -31,50 +31,39 @@ import java.util.List;
 
 /**
  * Report service for detailed reports implementation
- **/
+ */
 @Service("detailedReportService")
 public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatReportElement>
-										implements DetailedReportService
-{
-	@Autowired
-	private	DetailedReportDao	detailedReportDAO;
+        implements DetailedReportService {
+    @Autowired
+    private DetailedReportDao detailedReportDAO;
 
-	public ReportData getDetailedReportData(ReportCriteria reportCriteria)
-	{
-		return getReportData(reportCriteria);
-	}
-	
-	@Override
-	protected List<FlatReportElement> getReportElements(List<User> users,
-														List<Project >projects,
-														DateRange reportRange)
-	{
-		List<FlatReportElement>	elements;
-		
-		if (users == null && projects == null)
-		{
-			elements = detailedReportDAO.getHoursPerDay(reportRange);
-		}
-		else if (projects == null)
-		{
-			elements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getIdsFromDomainObjects(users), reportRange);
-		}
-		else if (users == null)
-		{
-			elements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getIdsFromDomainObjects(projects), reportRange);
-		}
-		else
-		{
-			elements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(EhourUtil.getIdsFromDomainObjects(projects),
-																			EhourUtil.getIdsFromDomainObjects(users),
-																			reportRange);
-		}
-		
-		return elements;
-	}
+    public ReportData getDetailedReportData(ReportCriteria reportCriteria) {
+        return getReportData(reportCriteria);
+    }
 
-	public void setDetailedReportDAO(DetailedReportDao detailedReportDAO)
-	{
-		this.detailedReportDAO = detailedReportDAO;
-	}
+    @Override
+    protected List<FlatReportElement> getReportElements(List<User> users,
+                                                        List<Project> projects,
+                                                        DateRange reportRange) {
+        List<FlatReportElement> elements;
+
+        if (users == null && projects == null) {
+            elements = detailedReportDAO.getHoursPerDay(reportRange);
+        } else if (projects == null) {
+            elements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getIdsFromDomainObjects(users), reportRange);
+        } else if (users == null) {
+            elements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getIdsFromDomainObjects(projects), reportRange);
+        } else {
+            elements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(EhourUtil.getIdsFromDomainObjects(projects),
+                    EhourUtil.getIdsFromDomainObjects(users),
+                    reportRange);
+        }
+
+        return elements;
+    }
+
+    public void setDetailedReportDAO(DetailedReportDao detailedReportDAO) {
+        this.detailedReportDAO = detailedReportDAO;
+    }
 }

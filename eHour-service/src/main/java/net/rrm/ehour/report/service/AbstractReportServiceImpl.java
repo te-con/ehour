@@ -25,7 +25,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -65,7 +64,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
 
         if (!ignoreProjects || !ignoreUsers) {
-            if (ignoreProjects && !ignoreUsers)
+            if (ignoreProjects)
             {
                 users = getUsers(userCriteria);
             }
