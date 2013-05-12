@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.common.report;
 
 public enum ColumnType {
-    STRING, DATE, RATE(true), HOUR(true), TURNOVER(true), COMMENT;
+    STRING, DATE, RATE(true), HOUR(true), TURNOVER(true), COMMENT, LINK;
 
     private boolean numeric;
 

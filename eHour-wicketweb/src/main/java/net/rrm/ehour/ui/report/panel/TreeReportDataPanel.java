@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
 import net.rrm.ehour.ui.report.TreeReportElement;
 import net.rrm.ehour.ui.report.TreeReportModel;
+import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -35,15 +36,17 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.util.convert.IConverter;
 
@@ -222,7 +225,7 @@ public class TreeReportDataPanel extends Panel {
             int column = 0;
 
             // add cells for a row
-            for (Serializable cellValue : row.getRow()) {
+            for (final Serializable cellValue : row.getRow()) {
                 thisCellValues.add(cellValue);
 
                 ReportColumn reportColumn = reportConfig.getReportColumns()[column];
@@ -230,13 +233,37 @@ public class TreeReportDataPanel extends Panel {
                 if (reportColumn.isVisible()) {
                     Label cellLabel;
 
+                    final String id = Integer.toString(column);
+
                     if (isDuplicate(column, cellValue) && !newValueInPreviousColumn) {
-                        cellLabel = new Label(Integer.toString(column), new Model<String>(""));
+                        cellLabel = new Label(id, new Model<String>(""));
                         newValueInPreviousColumn = false;
+
+                        cells.add(cellLabel);
+                    } else if (reportColumn.getColumnType() == ColumnType.LINK) {
+                        Fragment linkFragment = new Fragment(id, "linkFragment", TreeReportDataPanel.this);
+                        cells.add(linkFragment);
+
+                        Link link = new Link("link") {
+
+                            @Override
+                            public void onClick() {
+                                PageParameters pageParameters = new PageParameters();
+                                pageParameters.add("id", cellValue);
+
+                                setResponsePage(ProjectSummaryPage.class, pageParameters);
+                            }
+                        };
+
+                        linkFragment.add(link);
+
+                        cellLabel = new Label("linkLabel", new Model<Serializable>(cellValue));
+                        link.add(cellLabel);
+
                     } else if (reportColumn.getConverter() != null) {
                         final IConverter converter = reportColumn.getConverter();
 
-                        cellLabel = new Label(Integer.toString(column), new Model<Serializable>(cellValue)) {
+                        cellLabel = new Label(id, new Model<Serializable>(cellValue)) {
                             @Override
                             public <C> IConverter<C> getConverter(Class<C> type) {
                                 return converter;
@@ -246,13 +273,15 @@ public class TreeReportDataPanel extends Panel {
                         addColumnTypeStyling(reportColumn.getColumnType(), cellLabel);
 
                         newValueInPreviousColumn = true;
+
+                        cells.add(cellLabel);
                     } else {
                         newValueInPreviousColumn = true;
 
-                        IModel<Serializable> model = new Model<Serializable>(cellValue);
-
-                        cellLabel = new Label(Integer.toString(column), model);
+                        cellLabel = new Label(id, new Model<Serializable>(cellValue));
                         addColumnTypeStyling(reportColumn.getColumnType(), cellLabel);
+
+                        cells.add(cellLabel);
                     }
 
                     StringBuilder cssClassBuilder = new StringBuilder();
@@ -264,8 +293,6 @@ public class TreeReportDataPanel extends Panel {
                     if (StringUtils.isNotEmpty(cssClass)) {
                         cellLabel.add(AttributeModifier.replace("class", cssClass));
                     }
-
-                    cells.add(cellLabel);
                 }
 
                 column++;
