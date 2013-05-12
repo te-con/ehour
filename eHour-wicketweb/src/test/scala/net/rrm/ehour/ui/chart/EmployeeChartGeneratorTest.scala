@@ -33,10 +33,10 @@ class EmployeeChartGeneratorTest extends FunSuite with ShouldMatchers with Befor
   }
 
   test("should have series with booked hours") {
-    chart should include("""series:[{"name":"Booked hours","data":[22,42],"yAxis":0}""")
+    chart should include("""series:[{"name":"Booked hours","data":[22.0,42.0],"yAxis":0}""")
   }
 
   test("should have series with turnover") {
-    chart should include("""{"name":"Turnover","data":[340,1110],"yAxis":1}]""")
+    chart should include("""{"name":"Turnover","data":[340.0,1110.0],"yAxis":1}]""")
   }
 }

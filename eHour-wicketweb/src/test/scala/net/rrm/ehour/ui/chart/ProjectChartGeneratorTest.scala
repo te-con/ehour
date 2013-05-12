@@ -32,10 +32,10 @@ class ProjectChartGeneratorTest extends FunSuite with ShouldMatchers with Before
   }
 
   test("should have series with booked hours") {
-    chart should include("""series:[{"name":"Booked hours","data":[14,18,10,12,10],"yAxis":0}""")
+    chart should include("""series:[{"name":"Booked hours","data":[14.0,18.0,10.0,12.0,10.0],"yAxis":0}""")
   }
 
   test("should have series with turnover") {
-    chart should include("""{"name":"Turnover","data":[140,550,350,60,350],"yAxis":1}]""")
+    chart should include("""{"name":"Turnover","data":[140.0,550.0,350.0,60.0,350.0],"yAxis":1}]""")
   }
 }

@@ -6,9 +6,7 @@ import nl.tecon.highcharts.HighChart
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
 import nl.tecon.highcharts.config._
 import java.lang.String
-import net.rrm.ehour.config.EhourConfig
 import collection.Seq
-import net.rrm.ehour.ui.common.session.EhourWebSession
 
 case class ChartContext(renderToId: String, reportData: ReportData, currencySymbol: String, withTurnover: Boolean)
 
@@ -35,7 +33,7 @@ object AggregateReportChartGenerator {
     val legend = Labels(formatter = JavascriptFunction("function() { return this.value.toLocaleString();}"))
 
     // not winning a beauty contest with this..
-    val series: Option[List[Series[Int]]] = Some(if (chartContext.withTurnover) {
+    val series: Option[List[Series[Float]]] = Some(if (chartContext.withTurnover) {
       val turnoverSeries = Series(name = "Turnover", data = categoryData map (_._3), yAxis = 1)
       List(hourSeries, turnoverSeries)
     } else {
@@ -64,13 +62,13 @@ object AggregateReportChartGenerator {
     ).build(chartContext.renderToId)
   }
 
-  private def extractCategoryData(elements: Seq[AssignmentAggregateReportElement], findCategory: (AssignmentAggregateReportElement) => String): List[(String, Int, Int)] = {
+  private def extractCategoryData(elements: Seq[AssignmentAggregateReportElement], findCategory: (AssignmentAggregateReportElement) => String): List[(String, Float, Float)] = {
     val categories = (elements map (findCategory(_))).toSet
 
-    val aggregator = (id: String, valueOf: (AssignmentAggregateReportElement) => Int) => elements.foldLeft(0)((total, element) => if (findCategory(element) == id) total + valueOf(element) else total)
+    val aggregator = (id: String, valueOf: (AssignmentAggregateReportElement) => Float) => elements.foldLeft(0f)((total, element) => if (findCategory(element) == id) total + valueOf(element) else total)
 
-    val hourAggregator = (id: String) => aggregator(id, _.getHours.intValue())
-    val turnOverAggregator = (id: String) => aggregator(id, _.getTurnOver.intValue())
+    val hourAggregator = (id: String) => aggregator(id, _.getHours.floatValue())
+    val turnOverAggregator = (id: String) => aggregator(id, _.getTurnOver.floatValue())
 
     val categoryTuples = categories map (category => (category, hourAggregator(category), turnOverAggregator(category)))
 
