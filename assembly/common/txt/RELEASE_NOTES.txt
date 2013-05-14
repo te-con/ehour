@@ -1,8 +1,47 @@
+eHour 1.2 release notes (15 May 2013)
+------------------------------------------
+TE-CON is proud to present eHour 1.2.
+
+In version 1.2 the underlying web framework (Wicket) has been upgraded from version 1.4.20 to 6.7. This fixes
+deployment issues on the latest Tomcat versions and increases browser compatibility.
+The export month feature was a bit enhanced, rather than just exporting a month you can now export any date range;
+be it a week or multiple months.
+The calendar/datepicker now uses the proper date format and a Finnish translation is added, thanks to Janne Viljanen.
+
+The release notes:
+
+Bug
+[EHO-270] - Sorting on date in the detailed reports is broken
+[EHO-279] - eHour WAR doesn´t show "Additional comments" screen (with Tomcat 7+)
+[EHO-280] - Date format is incorrect with component calendar for French locale
+[EHO-299] - MySQL fresh install script doesn't work
+[EHO-302] - Aggregate report graphs round-off errors
+[EHO-306] - MS IE 8 compatability
+[EHO-307] - Can't delete customers
+[EHO-313] - Calendar bug with non english date format ...
+[EHO-314] - Validation messages in the general configuration are missing
+[EHO-315] - The country set for localization is not properly used for number formatting
+[EHO-320] - Long customer / project names are not shown properly in the project overview on the month overview page
+
+Improvement
+[EHO-184] - Export weeks
+[EHO-271] - Improve performance of detailed reports chart
+[EHO-312] - Add Finnish translation
+[EHO-316] - Upgrade Highcharts to latest version
+[EHO-317] - Delete print from month overview
+[EHO-318] - Add 'check all' option to project selection in export month
+[EHO-319] - Improve filename of export month excel sheet
+
+
 eHour 1.1 release notes (19 November 2012)
 ------------------------------------------
 TE-CON is proud to present eHour 1.1 !
 
-This update fixes a number of bugs: Backup & restore now properly restores all data in the backup and properly handles deleted users. The timesheet now can handle many projects for a single user. Detailed report charts display fractions (7.5 hours) properly and sums up multiple project bookings on the same day. And eHour is translated into Czech, thanks to Pavel Vitek.
+This update fixes a number of bugs: Backup & restore now properly restores all data in the backup and
+properly handles deleted users.
+The timesheet now can handle many projects for a single user. Detailed report charts display fractions
+(7.5 hours) properly and sums up multiple project bookings on the same day.
+And eHour is translated into Czech, thanks to Pavel Vitek.
 
 The full release notes:
 
