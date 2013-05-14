@@ -8,6 +8,11 @@ The export month feature was a bit enhanced, rather than just exporting a month 
 be it a week or multiple months.
 The calendar/datepicker now uses the proper date format and a Finnish translation is added, thanks to Janne Viljanen.
 
+***
+ Due to a change in how the configured locale and currency is stored, you may need to reset the localization, the
+ language and the currency in System -> Configure eHour -> Localization tab
+***
+
 The release notes:
 
 Bug
