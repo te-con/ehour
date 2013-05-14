@@ -2,6 +2,7 @@ package net.rrm.ehour.ui.common.panel.datepicker;
 
 import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
+import net.rrm.ehour.config.LocaleUtil;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
@@ -48,7 +49,7 @@ public class LocalizedDatePicker extends DatePicker {
     }
 
     private static String getLanguageTag(Locale locale) {
-        String languageTag = locale.toLanguageTag().toLowerCase();
+        String languageTag = LocaleUtil.toLanguageTag(locale).toLowerCase();
         String[] languageTags = languageTag.split("-");
 
         // Dutch locale is nl-NL, remove the -NL part if the language is the same as the country

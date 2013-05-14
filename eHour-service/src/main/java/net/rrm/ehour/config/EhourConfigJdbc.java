@@ -71,7 +71,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     @Override
 	public Locale getCurrency()
 	{
-		return Locale.forLanguageTag(this.getString("localeCurrency", "nl_NL"));
+		return LocaleUtil.forLanguageTag(this.getString("localeCurrency", "nl_NL"));
 	}
 
     @Override
@@ -111,7 +111,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
         if (!formattingLocale.contains("-")) {
             return new Locale(formattingLocale, formattingLocale);
         } else {
-            return Locale.forLanguageTag(formattingLocale);
+            return LocaleUtil.forLanguageTag(formattingLocale);
         }
 	}
 
@@ -122,7 +122,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
         if (!formattingLocale.contains("-")) {
             return new Locale(formattingLocale, formattingLocale);
         } else {
-            return Locale.forLanguageTag(formattingLocale);
+            return LocaleUtil.forLanguageTag(formattingLocale);
         }
     }
 

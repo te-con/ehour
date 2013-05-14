@@ -19,10 +19,7 @@ package net.rrm.ehour.config.service;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.config.ConfigurationItem;
-import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.TranslationDiscovery;
+import net.rrm.ehour.config.*;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.BinaryConfiguration;
@@ -202,16 +199,16 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 Locale locale;
 
                 if (value != null && value.contains("_")) {
-                    locale = Locale.forLanguageTag(value);
+                    locale = LocaleUtil.forLanguageTag(value);
                 } else {
                     locale = new Locale("nl", "NL");
                 }
 
                 config.setCurrency(locale);
             } else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_LANGUAGE.getDbField())) {
-                config.setLocaleLanguage(Locale.forLanguageTag(value));
+                config.setLocaleLanguage(LocaleUtil.forLanguageTag(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_COUNTRY.getDbField())) {
-                config.setLocaleFormatting(Locale.forLanguageTag(value));
+                config.setLocaleFormatting(LocaleUtil.forLanguageTag(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.SHOW_TURNOVER.getDbField())) {
                 config.setShowTurnover(Boolean.parseBoolean(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.TIMEZONE.getDbField())) {
@@ -257,14 +254,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     (EhourConfig
              config) {
         LOGGER.debug("Persisting config");
-        persistConfig(ConfigurationItem.LOCALE_CURRENCY.getDbField(), config.getCurrency().toLanguageTag());
+        persistConfig(ConfigurationItem.LOCALE_CURRENCY.getDbField(), LocaleUtil.toLanguageTag((config.getCurrency())));
 
         if (config.getCompleteDayHours() != 0) {
             persistConfig(ConfigurationItem.COMPLETE_DAY_HOURS.getDbField(), config.getCompleteDayHours());
         }
 
-        persistConfig(ConfigurationItem.LOCALE_COUNTRY.getDbField(), config.getFormattingLocale().toLanguageTag());
-        persistConfig(ConfigurationItem.LOCALE_LANGUAGE.getDbField(), config.getLanguageLocale().toLanguageTag());
+        persistConfig(ConfigurationItem.LOCALE_COUNTRY.getDbField(), LocaleUtil.toLanguageTag(config.getFormattingLocale()));
+        persistConfig(ConfigurationItem.LOCALE_LANGUAGE.getDbField(), LocaleUtil.toLanguageTag(config.getLanguageLocale()));
         persistConfig(ConfigurationItem.DONT_FORCE_LANGUAGE.getDbField(), config.isDontForceLanguage());
         persistConfig(ConfigurationItem.SHOW_TURNOVER.getDbField(), config.isShowTurnover());
         persistConfig(ConfigurationItem.MAIL_FROM.getDbField(), config.getMailFrom());
