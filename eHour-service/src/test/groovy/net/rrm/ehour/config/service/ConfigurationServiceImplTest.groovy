@@ -2,6 +2,7 @@ package net.rrm.ehour.config.service
 
 import net.rrm.ehour.appconfig.EhourHomeUtil
 import net.rrm.ehour.config.EhourConfigStub
+import net.rrm.ehour.config.LocaleUtil
 import net.rrm.ehour.config.TranslationDiscovery
 import net.rrm.ehour.domain.AuditType
 import net.rrm.ehour.domain.Configuration
@@ -83,7 +84,7 @@ class ConfigurationServiceImplTest
   @Test
   void shouldPersistConfiguration()
   {
-    def stub = new EhourConfigStub(completeDayHours: 8, localeFormatting: Locale.forLanguageTag("en_US"), dontForceLanguage: true,
+    def stub = new EhourConfigStub(completeDayHours: 8, localeFormatting: LocaleUtil.forLanguageTag("en-US"), dontForceLanguage: true,
                                   showTurnover: true, mailFrom: "re", mailSmtp: "ee", auditType: AuditType.WRITE)
     when(configDAO.persist(anyObject())).thenReturn(null)
 
