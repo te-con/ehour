@@ -92,16 +92,19 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 // update the date format example
-                dateFormat.setDefaultModel(new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG));
+                Locale localeCountry = configBackingBean.getLocaleCountry();
+                dateFormat.setDefaultModel(new DateModel(new Model<Date>(new Date()), localeCountry, DateModel.DATESTYLE_LONG));
                 target.add(dateFormat);
 
-                // refresh langugae
-                target.add(languageDropDownChoice);
 
-                // and currency
-                if (configBackingBean.getLocaleCountry().getCountry() != null) {
-                    configBackingBean.setCurrency(configBackingBean.getLocaleCountry());
+                if (localeCountry.getCountry() != null) {
+                    // refresh currency
+                    configBackingBean.setCurrency(localeCountry);
                     target.add(currencyDropDownChoice);
+
+                    // and langugae
+                    configBackingBean.setLocaleLanguage(localeCountry);
+                    target.add(languageDropDownChoice);
                 }
             }
         });
