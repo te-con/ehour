@@ -24,9 +24,11 @@ public class LocalizedDatePicker extends DatePicker {
 
     private static String getPattern() {
         Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
-        return ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern();
-    }
 
+        Locale localeToUse = isSupported(getLanguageTag(locale)) ? locale : Locale.US;
+
+        return ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, localeToUse)).toPattern();
+    }
 
     public static Options getOptions() {
         Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
