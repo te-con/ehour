@@ -45,5 +45,10 @@ public class LocaleUtilTest {
         assertEquals(new Locale("nl", "be"), LocaleUtil.forLanguageTag("nl-be"));
     }
 
+    @Test
+    public void should_default_to_nl_when_locale_not_set() {
+        assertEquals(new Locale("nl", "nl"), LocaleUtil.forLanguageTag(""));
+    }
+
 
 }

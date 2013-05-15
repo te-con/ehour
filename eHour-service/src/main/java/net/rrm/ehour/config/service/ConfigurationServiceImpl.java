@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Configuration service
@@ -180,7 +179,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     public EhourConfigStub getConfiguration() {
         List<Configuration> configs = configDAO.findAll();
         EhourConfigStub config = new EhourConfigStub();
-        String key, value;
 
         List<String> translations = translationDiscovery.getTranslations();
 
@@ -188,23 +186,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             config.setAvailableTranslations(translations.toArray(new String[translations.size()]));
         }
 
-        // spaghetti, anyone?
         for (Configuration configuration : configs) {
-            key = configuration.getConfigKey();
-            value = configuration.getConfigValue();
+            String key = configuration.getConfigKey();
+            String value = configuration.getConfigValue();
 
             if (key.equalsIgnoreCase(ConfigurationItem.COMPLETE_DAY_HOURS.getDbField())) {
                 config.setCompleteDayHours(Float.parseFloat(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_CURRENCY.getDbField())) {
-                Locale locale;
-
-                if (value != null && value.contains("_")) {
-                    locale = LocaleUtil.forLanguageTag(value);
-                } else {
-                    locale = new Locale("nl", "NL");
-                }
-
-                config.setCurrency(locale);
+                config.setCurrency(LocaleUtil.forLanguageTag(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_LANGUAGE.getDbField())) {
                 config.setLocaleLanguage(LocaleUtil.forLanguageTag(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.LOCALE_COUNTRY.getDbField())) {
