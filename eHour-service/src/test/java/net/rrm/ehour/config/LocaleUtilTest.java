@@ -37,12 +37,12 @@ public class LocaleUtilTest {
 
     @Test
     public void should_deserialize_locale() {
-        assertEquals(Locale.US, LocaleUtil.forLanguageTag("en-us"));
+        assertEquals(Locale.US, LocaleUtil.forLanguageTag("en-US"));
     }
 
     @Test
     public void should_deserialize_locale2() {
-        assertEquals(new Locale("nl", "be"), LocaleUtil.forLanguageTag("nl-be"));
+        assertEquals(new Locale("nl", "BE"), LocaleUtil.forLanguageTag("nl-BE"));
     }
 
     @Test
