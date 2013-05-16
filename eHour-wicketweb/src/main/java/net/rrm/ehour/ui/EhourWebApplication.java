@@ -83,15 +83,15 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             getResourceSettings().setHeaderItemComparator(new Comparator<ResourceAggregator.RecordedHeaderItem>() {
                 @Override
                 public int compare(ResourceAggregator.RecordedHeaderItem o1, ResourceAggregator.RecordedHeaderItem o2) {
-                    if (o1.getItem() instanceof StringHeaderItem) {
-                        StringHeaderItem headerItem = (StringHeaderItem) o1.getItem();
+                if (o1.getItem() instanceof StringHeaderItem) {
+                    StringHeaderItem headerItem = (StringHeaderItem) o1.getItem();
 
-                        if (headerItem.getString().toString().contains("X-UA-Compatible")) {
-                            return -1;
-                        }
+                    if (headerItem.getString().toString().contains("X-UA-Compatible")) {
+                        return -1;
                     }
+                }
 
-                    return 0;
+                return 1;
                 }
             });
 
