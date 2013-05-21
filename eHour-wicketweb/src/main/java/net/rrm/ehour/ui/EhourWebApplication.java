@@ -80,20 +80,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             super.init();
             springInjection();
 
-            getResourceSettings().setHeaderItemComparator(new Comparator<ResourceAggregator.RecordedHeaderItem>() {
-                @Override
-                public int compare(ResourceAggregator.RecordedHeaderItem o1, ResourceAggregator.RecordedHeaderItem o2) {
-                if (o1.getItem() instanceof StringHeaderItem) {
-                    StringHeaderItem headerItem = (StringHeaderItem) o1.getItem();
-
-                    if (headerItem.getString().toString().contains("X-UA-Compatible")) {
-                        return -1;
-                    }
-                }
-
-                return 1;
-                }
-            });
+            setUACHeaderPriority();
 
             getMarkupSettings().setStripWicketTags(true);
             mountPages();
@@ -106,6 +93,29 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
             initialized = true;
         }
+
+    }
+
+    private void setUACHeaderPriority() {
+        final Comparator<? super ResourceAggregator.RecordedHeaderItem> defaultHeaderComparator = getResourceSettings().getHeaderItemComparator();
+
+        getResourceSettings().setHeaderItemComparator(new Comparator<ResourceAggregator.RecordedHeaderItem>() {
+            @Override
+            public int compare(ResourceAggregator.RecordedHeaderItem o1, ResourceAggregator.RecordedHeaderItem o2) {
+                if (o1.getItem() instanceof StringHeaderItem && isIEHeader(o1))
+                    return -1;
+                else if (o2.getItem() instanceof StringHeaderItem && isIEHeader(o2))
+                    return 1;
+                else
+                    return defaultHeaderComparator.compare(o1, o2);
+            }
+
+            private boolean isIEHeader(ResourceAggregator.RecordedHeaderItem o1) {
+                StringHeaderItem headerItem = (StringHeaderItem) o1.getItem();
+
+                return headerItem.getString().toString().contains("X-UA-Compatible");
+            }
+        });
     }
 
     protected void registerEhourHomeResourceLoader() {
