@@ -50,5 +50,8 @@ public class LocaleUtilTest {
         assertEquals(new Locale("nl", "nl"), LocaleUtil.forLanguageTag(""));
     }
 
-
+    @Test
+    public void should_ignore_euro_and_return_default() {
+        assertEquals(new Locale("nl", "nl"), LocaleUtil.currencyForLanguageTag("euro"));
+    }
 }

@@ -59,7 +59,7 @@ PRIMARY KEY (`config_key`)
 
 LOCK TABLES `CONFIGURATION` WRITE;
 /*!40000 ALTER TABLE `CONFIGURATION` DISABLE KEYS */;
-INSERT INTO `CONFIGURATION` VALUES ('initialized','false'),('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','Euro'),('localeCountry',NULL),('availableTranslations','en,nl,fr,it'),('mailFrom','noreply@localhost.net'),('smtpPort','25'),('mailSmtp','127.0.0.1'),('demoMode','false'),('version', '0.8.3');
+INSERT INTO `CONFIGURATION` VALUES ('initialized','false'),('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','en-US'),('localeCountry','en-US'),('availableTranslations','en,nl,fr,it'),('mailFrom','noreply@localhost.net'),('smtpPort','25'),('mailSmtp','127.0.0.1'),('demoMode','false'),('version', '0.8.3');
 /*!40000 ALTER TABLE `CONFIGURATION` ENABLE KEYS */;
 UNLOCK TABLES;
 

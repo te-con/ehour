@@ -4,8 +4,8 @@
   <configuration config_key="completeDayHours" config_value="8"></configuration>
   <configuration config_key="showTurnOver" config_value="true"></configuration>
   <configuration config_key="localeLanguage" config_value="en"></configuration>
-  <configuration config_key="localeCountry" config_value="en_NL"></configuration>
-  <configuration config_key="localeCurrency" config_value="en_NL"></configuration>
+  <configuration config_key="localeCountry" config_value="en-US"></configuration>
+  <configuration config_key="localeCurrency" config_value="en-US"></configuration>
   <configuration config_key="availableTranslations" config_value="en,nl,fr,it"></configuration>
   <configuration config_key="mailFrom" config_value="admin@localhost.net"></configuration>
   <configuration config_key="mailSmtp" config_value="127.0.0.1"></configuration>

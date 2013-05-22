@@ -31,8 +31,8 @@ CREATE TABLE CONFIGURATION (
 
 INSERT INTO CONFIGURATION VALUES
 ('initialized','false'), ('completeDayHours','8'),
-('showTurnOver','true'), ('localeLanguage','en'), ('currency','Euro'),
-('localeCountry',NULL), ('availableTranslations','en,nl,fr,it'),
+('showTurnOver','true'), ('localeLanguage','en'), ('currency','en-US'),
+('localeCountry','en-US'), ('availableTranslations','en,nl,fr,it'),
 ('mailFrom','noreply@localhost.net'), ('smtpPort','25'),
 ('mailSmtp','127.0.0.1'), ('demoMode','false'), ('version', '0.8.3');
 
