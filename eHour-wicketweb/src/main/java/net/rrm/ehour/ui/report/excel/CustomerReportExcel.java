@@ -26,14 +26,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
 @AuthorizeInstantiation("ROLE_REPORT")
-public class CustomerReportExcel extends AbstractExcelReport
-{
-	private static final long serialVersionUID = 7211392869328367507L;
-	
-	public CustomerReportExcel()
-	{
-		super(ReportConfig.AGGREGATE_CUSTOMER);
-	}
+public class CustomerReportExcel extends AbstractExcelReport {
+    private static final long serialVersionUID = 7211392869328367507L;
+
+    private static final CustomerReportExcel INSTANCE = new CustomerReportExcel();
+
+    private CustomerReportExcel() {
+        super(ReportConfig.AGGREGATE_CUSTOMER);
+    }
 
     @Override
     protected Report createReport(ReportCriteria reportCriteria) {
@@ -41,14 +41,17 @@ public class CustomerReportExcel extends AbstractExcelReport
     }
 
     @Override
-	protected IModel<String> getExcelReportName()
-	{
-		return new ResourceModel("report.title.customer");
-	}
+    protected IModel<String> getExcelReportName() {
+        return new ResourceModel("report.title.customer");
+    }
 
-	@Override
-	protected IModel<String> getHeaderReportName()
-	{
-		return new ResourceModel("report.title.customer");
-	}
+    @Override
+    protected IModel<String> getHeaderReportName() {
+        return new ResourceModel("report.title.customer");
+    }
+
+    public static CustomerReportExcel getInstance() {
+        return INSTANCE;
+    }
+
 }

@@ -21,19 +21,19 @@ import net.rrm.ehour.ui.common.report.AbstractExcelReport;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReportModel;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-public class ProjectReportExcel extends AbstractExcelReport
-{
-	private static final long serialVersionUID = 1L;
+@AuthorizeInstantiation("ROLE_REPORT")
+public class ProjectReportExcel extends AbstractExcelReport {
+    private static final long serialVersionUID = 1L;
 
     private static final ProjectReportExcel INSTANCE = new ProjectReportExcel();
 
-	private ProjectReportExcel()
-	{
-		super(ReportConfig.AGGREGATE_PROJECT);
-	}
+    private ProjectReportExcel() {
+        super(ReportConfig.AGGREGATE_PROJECT);
+    }
 
     @Override
     protected Report createReport(ReportCriteria reportCriteria) {
@@ -41,19 +41,16 @@ public class ProjectReportExcel extends AbstractExcelReport
     }
 
     @Override
-	protected IModel<String> getExcelReportName()
-	{
-		return new ResourceModel("report.title.project");
-	}
+    protected IModel<String> getExcelReportName() {
+        return new ResourceModel("report.title.project");
+    }
 
-	@Override
-	protected IModel<String> getHeaderReportName()
-	{
-		return new ResourceModel("report.title.project");
-	}
+    @Override
+    protected IModel<String> getHeaderReportName() {
+        return new ResourceModel("report.title.project");
+    }
 
-	public static ProjectReportExcel getInstance()
-	{
-		return INSTANCE;
-	}
+    public static ProjectReportExcel getInstance() {
+        return INSTANCE;
+    }
 }

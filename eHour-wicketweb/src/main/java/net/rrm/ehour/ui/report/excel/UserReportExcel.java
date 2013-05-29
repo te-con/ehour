@@ -24,16 +24,14 @@ import net.rrm.ehour.ui.report.aggregate.UserAggregateReportModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-public class UserReportExcel extends AbstractExcelReport
-{
-	private static final long serialVersionUID = 1L;
+public class UserReportExcel extends AbstractExcelReport {
+    private static final long serialVersionUID = 1L;
 
     private static final UserReportExcel INSTANCE = new UserReportExcel();
 
-	private UserReportExcel()
-	{
-		super(ReportConfig.AGGREGATE_USER);
-	}
+    private UserReportExcel() {
+        super(ReportConfig.AGGREGATE_USER);
+    }
 
     @Override
     protected Report createReport(ReportCriteria reportCriteria) {
@@ -41,19 +39,16 @@ public class UserReportExcel extends AbstractExcelReport
     }
 
     @Override
-	protected IModel<String> getExcelReportName()
-	{
-		return new ResourceModel("report.title.employee");
-	}
+    protected IModel<String> getExcelReportName() {
+        return new ResourceModel("report.title.employee");
+    }
 
-	@Override
-	protected IModel<String> getHeaderReportName()
-	{
-		return new ResourceModel("report.title.employee");
-	}
+    @Override
+    protected IModel<String> getHeaderReportName() {
+        return new ResourceModel("report.title.employee");
+    }
 
-	public static UserReportExcel getInstance()
-	{
-		return INSTANCE;
-	}
+    public static UserReportExcel getInstance() {
+        return INSTANCE;
+    }
 }
