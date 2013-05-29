@@ -24,10 +24,13 @@ import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
-import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
+import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -44,14 +47,11 @@ public class ExportReportHeader extends AbstractExportReportPart
     private ConfigurationService configurationService;
 
 
-    public ExportReportHeader(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
+    public ExportReportHeader(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
     {
         super(cellMargin, sheet, report, workbook);
     }
 
-    /* (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.timesheet.export.excel.part.AbstractExportReportPart#createPart(int)
-      */
     @Override
     public int createPart(int rowNumber)
     {
@@ -90,7 +90,7 @@ public class ExportReportHeader extends AbstractExportReportPart
     {
         HSSFRow row = getSheet().createRow(rowNumber++);
 
-        CellFactory.createCell(row, getCellMargin(), getExcelReportName(getReport().getReportRange()), getWorkbook(), StaticCellStyle.NORMAL);
+        CellFactory.createCell(row, getCellMargin(), getExcelReportName(getReport().getReportRange()), getWorkbook());
         return rowNumber;
     }
 
@@ -98,8 +98,8 @@ public class ExportReportHeader extends AbstractExportReportPart
     {
         HSSFRow row = getSheet().createRow(rowNumber++);
 
-        CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.date"), getWorkbook(), StaticCellStyle.NORMAL);
-        CellFactory.createCell(row, getCellMargin() + 2, WebUtils.formatDate("MMMM yyyy", getReport().getReportRange().getDateStart()), getWorkbook(), StaticCellStyle.NORMAL);
+        CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.date"), getWorkbook());
+        CellFactory.createCell(row, getCellMargin() + 2, WebUtils.formatDate("MMMM yyyy", getReport().getReportRange().getDateStart()), getWorkbook());
 
         return rowNumber;
     }

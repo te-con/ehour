@@ -19,10 +19,10 @@ package net.rrm.ehour.ui.timesheet.export.excel.part;
 
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
+import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -35,19 +35,16 @@ import org.apache.wicket.model.StringResourceModel;
  */
 public class ExportReportSignOff extends AbstractExportReportPart
 {
-	public ExportReportSignOff(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
+	public ExportReportSignOff(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
 	{
 		super(cellMargin, sheet, report, workbook);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.timesheet.export.excel.part.AbstractExportReportPart#createPart(int)
-	 */
 	@Override
 	public int createPart(int rowNumber)
 	{
 		HSSFSheet sheet = getSheet();
-		HSSFWorkbook workbook = getWorkbook();
+		ExcelWorkbook workbook = getWorkbook();
 		int cellMargin = getCellMargin();
 		
 		HSSFRow row = sheet.createRow(rowNumber);
@@ -61,12 +58,12 @@ public class ExportReportSignOff extends AbstractExportReportPart
 		return rowNumber;
 	}
 
-	private void createCustomerSignature(HSSFWorkbook workbook, int cellMargin, HSSFRow row)
+	private void createCustomerSignature(ExcelWorkbook workbook, int cellMargin, HSSFRow row)
 	{
 		CellFactory.createCell(row, cellMargin, new ResourceModel("excelMonth.managerSignature"), workbook);
 	}
 
-	private void createUserSignature(HSSFWorkbook workbook, int cellMargin, HSSFRow row)
+	private void createUserSignature(ExcelWorkbook workbook, int cellMargin, HSSFRow row)
 	{
 		IModel<String> userSignature = new StringResourceModel("excelMonth.userSignature",
 				null,

@@ -20,11 +20,11 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.ExcelReport;
 import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
+import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.export.excel.part.*;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.IOException;
 
@@ -43,7 +43,7 @@ public class TimesheetExcelExport implements ExcelReport {
     @Override
     public byte[] getExcelData(ReportCriteria reportCriteria) {
         ExcelExportReportModel report = new ExcelExportReportModel(reportCriteria);
-        HSSFWorkbook workbook = createWorkbook(report);
+        ExcelWorkbook workbook = createWorkbook(report);
 
         try {
             return PoiUtil.getWorkbookAsBytes(workbook);
@@ -53,8 +53,8 @@ public class TimesheetExcelExport implements ExcelReport {
         }
     }
 
-    private HSSFWorkbook createWorkbook(Report report) {
-        HSSFWorkbook workbook = new HSSFWorkbook();
+    private ExcelWorkbook createWorkbook(Report report) {
+        ExcelWorkbook workbook = new ExcelWorkbook();
 
         HSSFSheet sheet = workbook.createSheet(WebUtils.formatDate("MMMM yyyy", report.getReportRange().getDateStart()));
 

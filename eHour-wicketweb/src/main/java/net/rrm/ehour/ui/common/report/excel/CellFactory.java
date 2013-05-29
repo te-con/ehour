@@ -17,73 +17,46 @@
 package net.rrm.ehour.ui.common.report.excel;
 
 import net.rrm.ehour.ui.common.util.WebUtils;
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
 
 /**
  * Created on Mar 25, 2009, 6:45:57 AM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class CellFactory
-{
-	public static HSSFCell createCell(HSSFRow row, int column, String value, HSSFWorkbook workbook)
-	{
-		return CellFactory.createCell(row, column, value, workbook, StaticCellStyle.NORMAL);
-	}
+public class CellFactory {
+    public static HSSFCell createCell(HSSFRow row, int column, String value, ExcelWorkbook workbook) {
+        return CellFactory.createCell(row, column, value, workbook, CellStyle.NORMAL_FONT);
+    }
 
-	public static HSSFCell createCell(HSSFRow row, int column, ResourceModel valueModel, HSSFWorkbook workbook)
-	{
-		return CellFactory.createCell(row, column, valueModel, workbook, StaticCellStyle.NORMAL);
-	}
+    public static HSSFCell createCell(HSSFRow row, int column, IModel<String> valueModel, ExcelWorkbook workbook) {
+        return CellFactory.createCell(row, column, valueModel, workbook, CellStyle.NORMAL_FONT);
+    }
 
-	public static HSSFCell createCell(HSSFRow row, int column, HSSFWorkbook workbook, CellStyle... cellStyles)
-	{
-		return createCell(row, column, "", workbook, cellStyles);
-	}
-	
-	public static HSSFCell createCell(HSSFRow row, int column, IModel<String> valueModel, HSSFWorkbook workbook, CellStyle... cellStyles)
-	{
-		return createCell(row, column, WebUtils.getResourceModelString(valueModel), workbook, cellStyles);
-	}
-	
-	public static HSSFCell createCell(HSSFRow row, int column, Object value, HSSFWorkbook workbook, CellStyle... cellStyles)
-	{
-		HSSFCell cell = row.createCell(column);
-		
-		if (value instanceof Float)
-		{
-			cell.setCellValue((Float)value);
-		}
-		else if (value instanceof Number)
-		{
-			cell.setCellValue( ((Number)value).doubleValue());
-		}
-		else
-		{
-			cell.setCellValue(new HSSFRichTextString(value.toString()));
-		}
-		
-		cell.setCellStyle(applyCellStyles(workbook, cellStyles));
-		
-		return cell;
-	}
-	
-	private static HSSFCellStyle applyCellStyles(HSSFWorkbook workbook, CellStyle... cellStyles)
-	{
-		HSSFCellStyle style = workbook.createCellStyle();
-		
-		for (CellStyle cellStyle : cellStyles)
-		{
-			cellStyle.getCellStylePopulator().populate(style, workbook);
-		}
-		
-		if (style.getFont(workbook) == null)
-		{
-			new CellStyleElement.NormalFont().populate(style, workbook);
-		}
+    public static HSSFCell createCell(HSSFRow row, int column, ExcelWorkbook workbook, CellStyle cellStyle) {
+        return createCell(row, column, "", workbook, cellStyle);
+    }
 
-		return style;
-	}
+    public static HSSFCell createCell(HSSFRow row, int column, IModel<String> valueModel, ExcelWorkbook workbook, CellStyle cellStyle) {
+        return createCell(row, column, WebUtils.getResourceModelString(valueModel), workbook, cellStyle);
+    }
+
+    public static HSSFCell createCell(HSSFRow row, int column, Object value, ExcelWorkbook workbook, CellStyle cellStyle) {
+        HSSFCell cell = row.createCell(column);
+
+        if (value instanceof Float) {
+            cell.setCellValue((Float) value);
+        } else if (value instanceof Number) {
+            cell.setCellValue(((Number) value).doubleValue());
+        } else {
+            cell.setCellValue(new HSSFRichTextString(value.toString()));
+        }
+
+        cell.setCellStyle(workbook.getCellStyle(cellStyle));
+
+        return cell;
+    }
 }

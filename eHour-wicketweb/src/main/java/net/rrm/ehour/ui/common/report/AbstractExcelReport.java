@@ -18,13 +18,12 @@ package net.rrm.ehour.ui.common.report;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
-import net.rrm.ehour.ui.common.report.excel.CurrencyCellStyle;
-import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
+import net.rrm.ehour.ui.common.report.excel.CellStyle;
+import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.report.TreeReportElement;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -49,7 +48,7 @@ public abstract class AbstractExcelReport implements ExcelReport {
 
     @Override
     public final byte[] getExcelData(ReportCriteria reportCriteria)  {
-        HSSFWorkbook workbook = createWorkbook(createReport(reportCriteria));
+        ExcelWorkbook workbook = createWorkbook(createReport(reportCriteria));
 
         try {
             return PoiUtil.getWorkbookAsBytes(workbook);
@@ -64,8 +63,9 @@ public abstract class AbstractExcelReport implements ExcelReport {
     /**
      * Create the workbook
      */
-    protected HSSFWorkbook createWorkbook(Report treeReport) {
-        HSSFWorkbook wb = new HSSFWorkbook();
+    protected ExcelWorkbook createWorkbook(Report treeReport) {
+        ExcelWorkbook wb = new ExcelWorkbook();
+
         HSSFSheet sheet = wb.createSheet(getExcelReportName().getObject());
         int rowNumber = 0;
         short column;
@@ -91,7 +91,7 @@ public abstract class AbstractExcelReport implements ExcelReport {
 
     protected abstract IModel<String> getHeaderReportName();
 
-    private int addColumnHeaders(int rowNumber, HSSFSheet sheet, HSSFWorkbook workbook) {
+    private int addColumnHeaders(int rowNumber, HSSFSheet sheet, ExcelWorkbook workbook) {
         HSSFRow row;
         int cellNumber = 0;
         IModel<String> headerModel;
@@ -102,7 +102,7 @@ public abstract class AbstractExcelReport implements ExcelReport {
             if (reportColumn.isVisible()) {
                 headerModel = new ResourceModel(reportColumn.getColumnHeaderResourceKey());
 
-                CellFactory.createCell(row, cellNumber++, headerModel, workbook, StaticCellStyle.HEADER);
+                CellFactory.createCell(row, cellNumber++, headerModel, workbook, CellStyle.HEADER);
             }
         }
 
@@ -110,7 +110,7 @@ public abstract class AbstractExcelReport implements ExcelReport {
     }
 
     @SuppressWarnings("unchecked")
-    protected void fillReportSheet(Report reportData, HSSFSheet sheet, int rowNumber, HSSFWorkbook workbook) {
+    protected void fillReportSheet(Report reportData, HSSFSheet sheet, int rowNumber, ExcelWorkbook workbook) {
         List<TreeReportElement> matrix = (List<TreeReportElement>) reportData.getReportData().getReportElements();
         ReportColumn[] columnHeaders = reportConfig.getReportColumns();
         HSSFRow row;
@@ -122,11 +122,9 @@ public abstract class AbstractExcelReport implements ExcelReport {
         }
     }
 
-    private void addColumns(HSSFWorkbook workbook, ReportColumn[] columnHeaders, HSSFRow row, TreeReportElement element) {
+    private void addColumns(ExcelWorkbook workbook, ReportColumn[] columnHeaders, HSSFRow row, TreeReportElement element) {
         int i = 0;
         int cellNumber = 0;
-
-        CurrencyCellStyle currencyCellStyle = new CurrencyCellStyle();
 
         // add cells for a row
         for (Serializable cellValue : element.getRow()) {
@@ -134,17 +132,17 @@ public abstract class AbstractExcelReport implements ExcelReport {
                 if (cellValue != null) {
                     switch (columnHeaders[i].getColumnType()) {
                         case HOUR:
-                            CellFactory.createCell(row, cellNumber++, cellValue, workbook, StaticCellStyle.DIGIT);
+                            CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DIGIT);
                             break;
                         case TURNOVER:
                         case RATE:
-                            CellFactory.createCell(row, cellNumber++, cellValue, workbook, currencyCellStyle);
+                            CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.CURRENCY);
                             break;
                         case DATE:
-                            CellFactory.createCell(row, cellNumber++, cellValue, workbook, StaticCellStyle.DATE);
+                            CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.DATE);
                             break;
                         default:
-                            CellFactory.createCell(row, cellNumber++, cellValue, workbook, StaticCellStyle.NORMAL);
+                            CellFactory.createCell(row, cellNumber++, cellValue, workbook, CellStyle.NORMAL_FONT);
                             break;
                     }
                 } else {
@@ -162,29 +160,29 @@ public abstract class AbstractExcelReport implements ExcelReport {
     }
 
 
-    protected int createHeaders(int rowNumber, HSSFSheet sheet, Report report, HSSFWorkbook workbook) {
+    protected int createHeaders(int rowNumber, HSSFSheet sheet, Report report, ExcelWorkbook workbook) {
         HSSFRow row;
 
         row = sheet.createRow(rowNumber++);
-        CellFactory.createCell(row, 0, getHeaderReportName(), workbook, StaticCellStyle.BOLD);
+        CellFactory.createCell(row, 0, getHeaderReportName(), workbook, CellStyle.BOLD_FONT);
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
 
         row = sheet.createRow(rowNumber++);
-        CellFactory.createCell(row, 0, new ResourceModel("report.dateStart"), workbook, StaticCellStyle.BOLD);
+        CellFactory.createCell(row, 0, new ResourceModel("report.dateStart"), workbook, CellStyle.BOLD_FONT);
 
         if (report.getReportRange() == null ||
                 report.getReportRange().getDateStart() == null) {
-            CellFactory.createCell(row, 1, "--", workbook, StaticCellStyle.BOLD);
+            CellFactory.createCell(row, 1, "--", workbook, CellStyle.BOLD_FONT);
         } else {
-            CellFactory.createCell(row, 1, report.getReportCriteria().getReportRange().getDateStart(), workbook, StaticCellStyle.BOLD, StaticCellStyle.DATE);
+            CellFactory.createCell(row, 1, report.getReportCriteria().getReportRange().getDateStart(), workbook, CellStyle.BOLD_DATE);
         }
 
-        CellFactory.createCell(row, 3, new ResourceModel("report.dateEnd"), workbook, StaticCellStyle.BOLD);
+        CellFactory.createCell(row, 3, new ResourceModel("report.dateEnd"), workbook, CellStyle.BOLD_FONT);
 
         if (report.getReportRange() == null || report.getReportRange().getDateEnd() == null) {
-            CellFactory.createCell(row, 4, "--", workbook, StaticCellStyle.BOLD);
+            CellFactory.createCell(row, 4, "--", workbook, CellStyle.BOLD_FONT);
         } else {
-            CellFactory.createCell(row, 4, report.getReportCriteria().getReportRange().getDateEnd(), workbook, StaticCellStyle.BOLD, StaticCellStyle.DATE);
+            CellFactory.createCell(row, 4, report.getReportCriteria().getReportRange().getDateEnd(), workbook, CellStyle.BOLD_DATE);
         }
 
         rowNumber++;

@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.common.report;
 
+import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.io.ByteArrayOutputStream;
@@ -24,7 +25,7 @@ import java.io.IOException;
 
 public class PoiUtil
 {
-	public static byte[] getWorkbookAsBytes(HSSFWorkbook workbook) throws IOException
+	public static byte[] getWorkbookAsBytes(ExcelWorkbook workbook) throws IOException
 	{
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		workbook.write(output);

@@ -20,10 +20,10 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
+import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -40,9 +40,9 @@ public abstract class AbstractExportReportPart
 	private SimpleDateFormat formatter;
 	private HSSFSheet sheet;
 	private Report report;
-	private HSSFWorkbook workbook;
+	private ExcelWorkbook workbook;
 	
-	public AbstractExportReportPart(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
+	public AbstractExportReportPart(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
 	{
 		this.cellMargin = cellMargin;
 		this.sheet = sheet;
@@ -86,16 +86,16 @@ public abstract class AbstractExportReportPart
 		return report;
 	}
 
-	protected HSSFWorkbook getWorkbook()
+	protected ExcelWorkbook getWorkbook()
 	{
 		return workbook;
 	}
 	
-	protected void createEmptyCells(HSSFRow row, CellStyle... cellStyles)
+	protected void createEmptyCells(HSSFRow row, CellStyle cellStyle)
 	{
 		for (int i : ExportReportColumn.EMPTY.getColumns())
 		{
-			CellFactory.createCell(row, getCellMargin() + i, getWorkbook(), cellStyles);	
+			CellFactory.createCell(row, getCellMargin() + i, getWorkbook(), cellStyle);
 		}
 	}	
 }

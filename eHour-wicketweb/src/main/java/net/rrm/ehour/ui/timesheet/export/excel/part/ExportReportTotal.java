@@ -21,13 +21,11 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
-import net.rrm.ehour.ui.common.report.excel.StaticCellStyle;
+import net.rrm.ehour.ui.common.report.excel.CellStyle;
+import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.wicket.model.ResourceModel;
-
-import static net.rrm.ehour.ui.common.report.excel.StaticCellStyle.BORDER_NORTH;
 
 /**
  * Created on Mar 25, 2009, 6:40:48 AM
@@ -36,7 +34,7 @@ import static net.rrm.ehour.ui.common.report.excel.StaticCellStyle.BORDER_NORTH;
  */
 public class ExportReportTotal extends AbstractExportReportPart
 {
-	public ExportReportTotal(int cellMargin, HSSFSheet sheet, Report report, HSSFWorkbook workbook)
+	public ExportReportTotal(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
 	{
 		super(cellMargin, sheet, report, workbook);
 	}
@@ -51,22 +49,22 @@ public class ExportReportTotal extends AbstractExportReportPart
 		float total = getTotal();
 		addTotalValue(total, row);
 
-		createEmptyCells(row, BORDER_NORTH);
-		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER_CODE.getColumn(), getWorkbook(), BORDER_NORTH);
-		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), getWorkbook(), BORDER_NORTH);
-        CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT_CODE.getColumn(), getWorkbook(), BORDER_NORTH);
+
+        createEmptyCells(row, CellStyle.BORDER_NORTH);
+		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER_CODE.getColumn(), getWorkbook(), CellStyle.BORDER_NORTH);
+		CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), getWorkbook(), CellStyle.BORDER_NORTH);
+        CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT_CODE.getColumn(), getWorkbook(), CellStyle.BORDER_NORTH);
 		
 		return rowNumber;
 	}
 
-	private void addTotalValue(float total, HSSFRow row)
+	private void addTotalValue(float total, HSSFRow row) {
+        CellFactory.createCell(row, getCellMargin() + 6, total, getWorkbook(), CellStyle.DIGIT_BOLD_BORDER_NORTH);
+    }
+
+    private void addTotalLabel(HSSFRow row)
 	{
-		CellFactory.createCell(row, getCellMargin() + 6, total, getWorkbook(), StaticCellStyle.DIGIT, StaticCellStyle.BOLD, StaticCellStyle.BORDER_NORTH);
-	}
-	
-	private void addTotalLabel(HSSFRow row)
-	{
-		CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.total"), getWorkbook(), StaticCellStyle.BOLD, StaticCellStyle.BORDER_NORTH);
+		CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.total"), getWorkbook(), CellStyle.BOLD_BORDER_NORTH);
 	}
 	
 	private float getTotal()

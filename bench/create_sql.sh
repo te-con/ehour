@@ -11,7 +11,7 @@ function create_projects {
 		printf "INSERT INTO project VALUES(%s, %s, '%s', '', '', '%s', 'N', 'Y', 'Y', null);\n" "$id" "$customer_id" "$name" "$name"
 
 		(( rate = $RANDOM % 150 ))
-		(( user_id = ($RANDOM % 1999) + 1000 + 1))
+		(( user_id = ($RANDOM % $USERS) + 1000 + 1))
 
 		printf "INSERT INTO project_assignment VALUES(%s, %s, %s, '2011-1-1', '2014-1-1', 'Dev', %s, 'Y',  0, 0, 0, 'F');\n" \
 			"$assignment_id" "$id" "$rate" "$user_id"
@@ -88,9 +88,9 @@ function random_date {
 IFS=$'\n'
 names=( $(cat names.txt | sort -R) )
 
-USERS=2000
+USERS=400
 DEPTS=10
-PROJECTS_PER_CUSTOMER=20
+PROJECTS_PER_CUSTOMER=30
 CUSTOMERS=1000
 BOOKED_HOURS=10000
 
