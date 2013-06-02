@@ -19,26 +19,45 @@ package net.rrm.ehour.ui.report.trend.node;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.node.ReportNode;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
 /**
  * User node
- **/
+ */
 
-public class FlatUserNode extends ReportNode
-{
-	private static final long serialVersionUID = 7854152602780377915L;
-	
-	public FlatUserNode(FlatReportElement element) {
+public class FlatUserNode extends ReportNode {
+    private static final long serialVersionUID = 7854152602780377915L;
+
+    public FlatUserNode(FlatReportElement element) {
         super(element.getUserId());
-        this.columnValues = new String[]{element.getUserLastName()};
+        this.columnValues = new String[]{getFullName(element)};
     }
 
-	@Override
-	protected Serializable getElementId(ReportElement element)
-	{
-		return ((FlatReportElement)element).getUserId();
-	}
+    @Override
+    protected Serializable getElementId(ReportElement element) {
+        return ((FlatReportElement) element).getUserId();
+    }
 
+    private String getFullName(FlatReportElement element) {
+        StringBuilder fullName = new StringBuilder();
+
+        String lastName = element.getUserLastName();
+        String firstName = element.getUserFirstName();
+
+        if (!StringUtils.isBlank(lastName)) {
+            fullName.append(lastName);
+
+            if (!StringUtils.isBlank(firstName)) {
+                fullName.append(", ");
+            }
+        }
+
+        if (!StringUtils.isBlank(firstName)) {
+            fullName.append(firstName);
+        }
+
+        return fullName.toString();
+    }
 }
