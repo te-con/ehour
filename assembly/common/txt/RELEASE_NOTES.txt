@@ -1,3 +1,18 @@
+eHour 1.2.1 release notes (2 June 2013)
+------------------------------------------
+And eHour reaches version 1.2.1 - a bug-fix release fixing the following issues:
+
+[EHO-306] Internet Explorer 8's compatibility mode was not properly overriden. In other words,
+          eHour now properly works with IE8 even when IE8 is set to be in IE7 compatible mode.
+[EHO-322] The full name of a user (first and last name) is shown in the detailed report
+[EHO-323] In eHour 1.2 changes were made to how the configured currency to use is stored in the database. 
+	 	  However the default value, when you install eHour for the first time, was not set properly and eHour
+	 	  didn't handle this correctly. The default currency is now set to a correct value.
+[EHO-327] The excel export of the detailed report crashed when trying to export a larger data set (more than 200 users).
+[EHO-328] All the excel exports in the global reporting section returned the "project export" excel.
+
+
+
 eHour 1.2 release notes (15 May 2013)
 ------------------------------------------
 TE-CON is proud to present eHour 1.2.
