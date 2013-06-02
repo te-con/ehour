@@ -108,7 +108,7 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     }
 
     private void changeMonth(AjaxEvent ajaxEvent) {
-        createModelForMonth(getEhourWebSession().getNavCalendar());
+        setDefaultModel(createModelForMonth(getEhourWebSession().getNavCalendar()));
 
         TimesheetExportCriteriaPanel replacementPanel = createExportCriteriaPanel(ID_SELECTION_FORM);
 
