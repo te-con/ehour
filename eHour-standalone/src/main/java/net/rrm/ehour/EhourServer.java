@@ -40,7 +40,7 @@ public class EhourServer {
         ServerPropertiesConfigurator configuration = new ServerPropertiesConfigurator();
 
         ServerConfig config = configuration.configureFromProperties(replaceSystemEnv(configurationFilename));
-        new EhourServer().startServer(config);
+        startServer(config);
     }
 
     private String replaceSystemEnv(String filename) {
@@ -69,11 +69,21 @@ public class EhourServer {
             registerJndiDS(config);
 
             server.start();
-            server.join();
+
+            if (!isInTestMode()) {
+                server.join();
+            } else {
+                System.out.println(server.isStarted());
+            }
         } finally {
             IoUtil.close(stream);
         }
     }
+
+    private boolean isInTestMode() {
+        return Boolean.parseBoolean(System.getProperty("EHOUR_TEST", "false"));
+    }
+
 
     private void registerJndiDS(ServerConfig config) throws IOException, NamingException {
         new Resource("jdbc/eHourDS", createDataSource(config));

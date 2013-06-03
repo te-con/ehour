@@ -94,7 +94,17 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             initialized = true;
         }
 
+        if (isInTestMode()) {
+            getDebugSettings().setOutputComponentPath(true);
+
+        }
+
     }
+
+    private boolean isInTestMode() {
+        return Boolean.parseBoolean(System.getProperty("EHOUR_TEST", "false"));
+    }
+
 
     private void setUACHeaderPriority() {
         final Comparator<? super ResourceAggregator.RecordedHeaderItem> defaultHeaderComparator = getResourceSettings().getHeaderItemComparator();
