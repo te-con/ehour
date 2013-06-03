@@ -21,7 +21,11 @@ public abstract class AbstractScenario {
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
                 public void run() {
-                    Driver.quit();
+                    try {
+                        Driver.quit();
+                    } catch (Exception e) {
+
+                    }
                 }
             });
         }
