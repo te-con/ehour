@@ -10,6 +10,8 @@ import static org.junit.Assert.assertTrue;
 public class LoginScenario extends AbstractScenario {
     @Test
     public void shouldLogin() throws Exception {
+        Driver.manage().deleteAllCookies();
+
         Driver.get(baseUrl + "/eh/login");
         Driver.findElement(WicketBy.wicketPath("loginform_username")).clear();
         Driver.findElement(WicketBy.wicketPath("loginform_username")).sendKeys("admin");
