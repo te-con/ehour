@@ -72,8 +72,6 @@ public class EhourServer {
 
             if (!isInTestMode()) {
                 server.join();
-            } else {
-                System.out.println(server.isStarted());
             }
         } finally {
             IoUtil.close(stream);
