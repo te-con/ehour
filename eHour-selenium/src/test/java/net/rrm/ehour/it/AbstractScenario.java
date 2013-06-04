@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractScenario {
     private static boolean initialized = false;
     public static RemoteWebDriver Driver;
-    protected final String baseUrl = "http://localhost:18000";
+    public static final String BASE_URL = "http://localhost:18000";
 
     @Rule
     public ScreenshotTestRule screenshotTestRule = new ScreenshotTestRule();
