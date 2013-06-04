@@ -1,4 +1,4 @@
-package net.rrm.ehour.it.scenario.admin;
+package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.EhourApplicationDriver;
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class ConfigCustomizeScenario extends AbstractScenario {
+public class ChangeExcelLogoScenario extends AbstractScenario {
     @Test
     public void should_upload_excel() {
         EhourApplicationDriver.Login();
