@@ -1,6 +1,7 @@
 package net.rrm.ehour.it;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -10,6 +11,9 @@ public abstract class AbstractScenario {
     private static boolean initialized = false;
     public static RemoteWebDriver Driver;
     protected final String baseUrl = "http://localhost:18000";
+
+    @Rule
+    public ScreenshotTestRule screenshotTestRule = new ScreenshotTestRule();
 
     @Before
     public void setUp() throws Exception {
