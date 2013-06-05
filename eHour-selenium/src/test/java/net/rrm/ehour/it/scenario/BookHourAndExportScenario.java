@@ -12,6 +12,9 @@ public class BookHourAndExportScenario extends AbstractScenario {
     public void should_book_hours() {
         loginAdmin();
         createUser("thies", "a");
+        createCustomer("KLM", "KLM");
+        createProject("ET", "ET", "KLM", "KLM");
+        createProjectAssignment(0, "KLM", "KLM", "ET", "ET");
         logout();
 
         login("thies", "a");

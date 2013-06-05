@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseTruncater {
     public static void truncate(DataSource dataSource) throws SQLException {
-        Connection connection = dataSource.getConnection();
+         Connection connection = dataSource.getConnection();
 
         connection.prepareCall("DELETE FROM AUDIT").execute();
         connection.prepareCall("DELETE FROM MAIL_LOG_ASSIGNMENT").execute();
