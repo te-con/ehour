@@ -7,7 +7,7 @@ import org.junit.Test;
 public class LoginScenario extends AbstractScenario {
     @Test
     public void shouldLogin() throws Exception {
-        EhourApplicationDriver.login();
+        EhourApplicationDriver.loginAdmin();
 
 
     }

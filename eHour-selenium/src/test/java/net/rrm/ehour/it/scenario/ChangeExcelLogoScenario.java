@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 public class ChangeExcelLogoScenario extends AbstractScenario {
     @Test
     public void should_upload_excel() {
-        EhourApplicationDriver.login();
+        EhourApplicationDriver.loginAdmin();
 
         Driver.findElement(WicketBy.wicketPath("configTabs_tabs-container_tabs_3_link_title")).click();
 
