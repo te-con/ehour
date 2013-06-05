@@ -92,7 +92,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
     }
 
     @Override
-    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+    protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
         DepartmentAdminBackingBean departmentBackingBean = (DepartmentAdminBackingBean) backingBean;
 
         if (type == DepartmentAjaxEventType.DEPARTMENT_UPDATED) {
@@ -100,5 +100,6 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
         } else if (type == DepartmentAjaxEventType.DEPARTMENT_DELETED) {
             deleteDepartment(departmentBackingBean);
         }
+        return true;
     }
 }

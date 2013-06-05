@@ -107,7 +107,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
      * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#processFormSubmit(net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean, int)
      */
     @Override
-    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+    protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
         CustomerAdminBackingBean customerBackingBean = (CustomerAdminBackingBean) backingBean;
 
         if (type == CustomerAjaxEventType.CUSTOMER_UPDATED) {
@@ -115,6 +115,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
         } else if (type == CustomerAjaxEventType.CUSTOMER_DELETED) {
             deleteCustomer(customerBackingBean);
         }
+        return true;
     }
 
     /**

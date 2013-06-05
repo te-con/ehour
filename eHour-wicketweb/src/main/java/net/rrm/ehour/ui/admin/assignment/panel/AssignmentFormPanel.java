@@ -59,7 +59,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 	}
 	
 	@Override
-	protected final void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	protected final boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
 		AssignmentAdminBackingBean assignmentBackingBean = (AssignmentAdminBackingBean) backingBean;
 		
@@ -70,8 +70,9 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 		else if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED)
 		{
 			deleteAssignment(assignmentBackingBean);
-		}		
-	}		
+		}
+        return true;
+    }
 	
 	private void persistAssignment(AssignmentAdminBackingBean backingBean)
 	{

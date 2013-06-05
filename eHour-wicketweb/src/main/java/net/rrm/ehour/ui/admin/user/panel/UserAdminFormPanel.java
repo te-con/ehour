@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.admin.user.panel;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.common.AdminAction;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -136,23 +137,31 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
     }
 
     @Override
-    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+    protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
         UserBackingBean userBackingBean = (UserBackingBean) backingBean;
 
-        if (type == UserEditAjaxEventType.USER_UPDATED) {
-            if (userBackingBean.getAdminAction() == AdminAction.NEW) {
-                userService.newUser(userBackingBean.getUser(), userBackingBean.getUser().getPassword());
-            } else {
-                userService.editUser(userBackingBean.getUser());
+        try {
+            if (type == UserEditAjaxEventType.USER_UPDATED) {
+                if (userBackingBean.getAdminAction() == AdminAction.NEW) {
+                    userService.newUser(userBackingBean.getUser(), userBackingBean.getUser().getPassword());
+                } else {
+                    userService.editUser(userBackingBean.getUser());
 
-                String password = userBackingBean.getUser().getPassword();
-                if (StringUtils.isNotBlank(password)) {
-                    userService.changePassword(userBackingBean.getUser().getUsername(), password);
+                    String password = userBackingBean.getUser().getPassword();
+                    if (StringUtils.isNotBlank(password)) {
+                        userService.changePassword(userBackingBean.getUser().getUsername(), password);
+                    }
                 }
+            } else if (type == UserEditAjaxEventType.USER_DELETED) {
+                deleteUser(userBackingBean);
             }
-        } else if (type == UserEditAjaxEventType.USER_DELETED) {
-            deleteUser(userBackingBean);
+        } catch (ObjectNotUniqueException obnu) {
+            backingBean.setServerMessage(obnu.getMessage());
+            target.add(this);
+            return false;
         }
+
+        return true;
     }
 
     private void deleteUser(UserBackingBean userBackingBean) {

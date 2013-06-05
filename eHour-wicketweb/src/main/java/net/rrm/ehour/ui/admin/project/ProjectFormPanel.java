@@ -160,7 +160,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     }
 
     @Override
-    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+    protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
         ProjectAdminBackingBean projectBackingBean = (ProjectAdminBackingBean) backingBean;
 
         if (type == ProjectAjaxEventType.PROJECT_UPDATED) {
@@ -168,6 +168,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         } else if (type == ProjectAjaxEventType.PROJECT_DELETED) {
             deleteProject(projectBackingBean);
         }
+        return true;
     }
 
     /**

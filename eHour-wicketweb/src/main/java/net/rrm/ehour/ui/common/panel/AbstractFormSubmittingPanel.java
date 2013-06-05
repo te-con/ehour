@@ -33,7 +33,7 @@ import org.apache.wicket.model.IModel;
 public abstract class AbstractFormSubmittingPanel<T> extends AbstractAjaxPanel<T>
 {
 	private static final long serialVersionUID = 1L;
-	private	static final Logger	logger = Logger.getLogger(AbstractFormSubmittingPanel.class);
+	private	static final Logger LOGGER = Logger.getLogger(AbstractFormSubmittingPanel.class);
 
 
 	public AbstractFormSubmittingPanel(String id)
@@ -68,31 +68,31 @@ public abstract class AbstractFormSubmittingPanel<T> extends AbstractAjaxPanel<T
 			
 			try
 			{
-				processFormSubmit(target, backingBean, type);
-				
+				return processFormSubmit(target, backingBean, type);
 			} catch (Exception e)
 			{
-				logger.error("While trying to persist/delete", e);
+				LOGGER.error("While trying to persist/delete", e);
 				backingBean.setServerMessage(getLocalizer().getString("general.saveError", this));
 				target.add(this);
 				
 				return false;
 			}
 		}
-		
+
 		return true;
-	}	
+	}
 	
 	/**
 	 * Process form submit
-	 * @param backingBean
-	 * @param type
-	 * @throws Exception
+	 *
+     * @param backingBean
+     * @param type
+     * @throws Exception
 	 */
-	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
+	protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
 	{
-		
-	}
+        return true;
+    }
 
 	/**
 	 * Process form submit error (validation)

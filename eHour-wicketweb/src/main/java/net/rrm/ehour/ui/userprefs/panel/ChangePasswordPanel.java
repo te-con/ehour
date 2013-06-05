@@ -97,7 +97,7 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
     }
 
     @Override
-    protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+    protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
         ChangePasswordBackingBean bean = (ChangePasswordBackingBean) backingBean;
 
         if (type == PASSWORD_CHANGED) {
@@ -118,6 +118,7 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
                 target.add(form);
             }
         }
+        return false;
     }
 
     @Override
