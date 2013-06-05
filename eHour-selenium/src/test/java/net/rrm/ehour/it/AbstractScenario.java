@@ -1,24 +1,31 @@
 package net.rrm.ehour.it;
 
+import net.rrm.ehour.EhourServer;
 import org.junit.Before;
 import org.junit.Rule;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractScenario {
-    private static boolean initialized = false;
-    public static RemoteWebDriver Driver;
     public static final String BASE_URL = "http://localhost:18000";
+
+    public static RemoteWebDriver Driver;
+    public static DataSource dataSource;
+
+    private static boolean initialized = false;
 
     @Rule
     public ScreenshotTestRule screenshotTestRule = new ScreenshotTestRule();
 
+
     @Before
     public void setUp() throws Exception {
         if (!initialized) {
-            EhourTestApplication.start();
+            EhourServer ehourServer = EhourTestApplication.start();
+            dataSource = ehourServer.getDataSource();
             Driver = new FirefoxDriver();
             Driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
@@ -28,11 +35,13 @@ public abstract class AbstractScenario {
                     try {
                         Driver.quit();
                     } catch (Exception e) {
-
+                        //
                     }
                 }
             });
         }
+
+        DatabaseTruncater.truncate(dataSource);
 
         initialized = true;
     }

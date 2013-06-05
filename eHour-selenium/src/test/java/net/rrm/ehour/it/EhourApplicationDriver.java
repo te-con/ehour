@@ -41,6 +41,7 @@ public class EhourApplicationDriver {
         Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_submitButton")).click();
 
         assertTrue(Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_serverMessage")).getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
-
     }
+
+
 }

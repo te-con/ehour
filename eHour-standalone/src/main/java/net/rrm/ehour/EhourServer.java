@@ -36,6 +36,9 @@ import java.io.IOException;
  */
 
 public class EhourServer {
+
+    private DataSource dataSource;
+
     public void start(String configurationFilename) throws Exception {
         ServerPropertiesConfigurator configuration = new ServerPropertiesConfigurator();
 
@@ -78,20 +81,24 @@ public class EhourServer {
         }
     }
 
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
     private boolean isInTestMode() {
         return Boolean.parseBoolean(System.getProperty("EHOUR_TEST", "false"));
     }
 
-
     private void registerJndiDS(ServerConfig config) throws IOException, NamingException {
-        new Resource("jdbc/eHourDS", createDataSource(config));
+        dataSource = createDataSource(config);
+        new Resource("jdbc/eHourDS", dataSource);
     }
 
     private DataSource createDataSource(ServerConfig config) throws IOException {
         DataSource dataSource;
 
         if ("derby".equalsIgnoreCase(config.getDataBase())) {
-            dataSource = new DerbyDataSourceFactory().createDataSource("ehourDb");
+            dataSource = new DerbyDataSourceFactory().createDataSource(isInTestMode() ? "memory:ehourDb" : "ehourDb");
         } else {
             BasicDataSource dbcpDataSource = new BasicDataSource();
 

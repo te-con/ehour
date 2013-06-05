@@ -9,6 +9,10 @@ public class EhourServerRunner {
     }
 
     public static void main(String[] args) throws Exception {
+        startServer(args);
+    }
+
+    public static EhourServer startServer(String[] args) throws Exception {
         EhourHomeFinder.fixEhourHome();
 
         // log4j configuring
@@ -16,6 +20,11 @@ public class EhourServerRunner {
 
         String filename = args != null && args.length >= 1 ? args[0] : "${EHOUR_HOME}/conf/ehour.properties";
 
-        new EhourServer().start(filename);
+        EhourServer server = new EhourServer();
+        server.start(filename);
+
+        return server;
     }
+
+
 }
