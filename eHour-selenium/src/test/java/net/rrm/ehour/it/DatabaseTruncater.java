@@ -16,7 +16,6 @@ public class DatabaseTruncater {
         connection.prepareCall("DELETE FROM TIMESHEET_ENTRY").execute();
 
         connection.prepareCall("DELETE FROM PROJECT_ASSIGNMENT").execute();
-        connection.prepareCall("DELETE FROM PROJECT_ASSIGNMENT_TYPE").execute();
 
         connection.prepareCall("DELETE FROM USER_TO_USERROLE WHERE user_id > 1").execute();
         connection.prepareCall("DELETE FROM USERS WHERE user_id > 1").execute();
