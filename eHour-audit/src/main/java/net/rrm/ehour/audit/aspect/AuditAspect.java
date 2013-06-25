@@ -196,9 +196,6 @@ public class AuditAspect {
         return !nonAuditable;
     }
 
-    /**
-     * @return
-     */
     private User getUser() {
         User user;
 
@@ -211,13 +208,6 @@ public class AuditAspect {
         return user;
     }
 
-    /**
-     * @param user
-     * @param success
-     * @param action
-     * @param pjp
-     * @return
-     */
     private Audit createAudit(User user, Boolean success, AuditActionType auditActionType, ProceedingJoinPoint pjp) {
         String parameters = getAuditParameters(pjp);
 
@@ -229,10 +219,10 @@ public class AuditAspect {
             IPageRequestHandler lastHandler = PageRequestHandlerTracker.getLastHandler(cycle);
 
             if (lastHandler != null) {
-                IRequestablePage responsePage = lastHandler.getPage();
+                Class<? extends IRequestablePage> pageClass = lastHandler.getPageClass();
 
-                if (responsePage != null) {
-                    page = responsePage.getClass().getCanonicalName();
+                if (pageClass != null) {
+                    page = pageClass.getCanonicalName();
                 }
             }
         }
