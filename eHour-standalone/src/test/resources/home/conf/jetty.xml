@@ -19,6 +19,8 @@
 							class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
 							<New class="org.eclipse.jetty.webapp.WebAppContext">
 								<Set name="contextPath">/</Set>
+                                <Set name="maxFormkeys">4000</Set>
+                                <Set name="maxFormContentSize">400000</Set>
 							</New>
 						</New>
 					</Item>
