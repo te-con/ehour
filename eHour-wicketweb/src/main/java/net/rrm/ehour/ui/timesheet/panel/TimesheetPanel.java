@@ -407,5 +407,12 @@ public class TimesheetPanel extends Panel implements Serializable {
         public void onClick(AjaxRequestTarget target) {
             moveWeek(weekStart, delta);
         }
+
+        @Override
+        protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+            super.updateAjaxAttributes(attributes);
+
+            attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+        }
     }
 }
