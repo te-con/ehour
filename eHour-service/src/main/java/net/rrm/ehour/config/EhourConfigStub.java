@@ -52,6 +52,7 @@ public class EhourConfigStub implements EhourConfig, Serializable {
         return EhourConfigUtil.getTzAsTimeZone(this);
     }
 
+
     /**
      * @return the availableTranslations
      */

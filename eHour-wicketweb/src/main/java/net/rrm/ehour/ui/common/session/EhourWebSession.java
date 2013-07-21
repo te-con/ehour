@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.common.session;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.config.EhourConfigCache;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
@@ -52,6 +53,8 @@ import java.util.Date;
 
 public class EhourWebSession extends AuthenticatedWebSession {
     @SpringBean
+    private EhourConfig unCachedEhourConfig;
+
     private EhourConfig ehourConfig;
 
     @SpringBean
@@ -72,6 +75,8 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     public final void reloadConfig() {
         WebUtils.springInjection(this);
+
+        ehourConfig = new EhourConfigCache(unCachedEhourConfig);
 
         if (ehourConfig.isDontForceLanguage()) {
             LOGGER.debug("Not forcing locale, using browser's locale");
