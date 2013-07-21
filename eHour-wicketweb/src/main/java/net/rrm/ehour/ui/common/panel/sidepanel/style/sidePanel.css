@@ -89,7 +89,7 @@ div.Calendar div.CalendarHeader div.CurrentMonth {
 }
 
 .Calendar .selectedWeek {
-    background-color: #edf5fe !important;
+    background-color: #d1e5f9 !important;
 }
 
 .Calendar .other  {
@@ -97,11 +97,11 @@ div.Calendar div.CalendarHeader div.CurrentMonth {
 }
 
 .Calendar .other:hover  {
-   background-color: #edf5fe;
+   background-color: #d1e5f9;
 }
 
 .Calendar .WeekendDay {
-    background-color: #edf5fe  !important;
+    background-color: #d1e5f9  !important;
 }
 
 .Calendar .Booked {
@@ -111,7 +111,7 @@ div.Calendar div.CalendarHeader div.CurrentMonth {
 .Calendar .FirstDay {
     border: 0 !important;
 }
-                                                                                                                                   gn
+
 .Calendar .FirstDayOfFirstRow {
     border-top-left-radius: 3px;
     border-color: #b8d1ed;
