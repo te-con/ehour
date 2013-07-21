@@ -23,6 +23,7 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -49,6 +50,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester {
     @Before
     public void setup() {
         getConfig().setCompleteDayHours(8l);
+        EhourWebSession.getSession().reloadConfig();
 
         timesheetService = createMock(TimesheetService.class);
         getMockContext().putBean("timesheetService", timesheetService);
