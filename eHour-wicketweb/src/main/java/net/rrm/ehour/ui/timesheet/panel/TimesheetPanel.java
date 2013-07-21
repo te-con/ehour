@@ -42,6 +42,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -390,7 +391,6 @@ public class TimesheetPanel extends Panel implements Serializable {
         protected void onError(final AjaxRequestTarget target, Form<?> form) {
             form.visitFormComponents(new FormHighlighter(target));
         }
-
     }
 
     private class GuardedWeekLink extends GuardedAjaxLink<Void> {
@@ -412,7 +412,8 @@ public class TimesheetPanel extends Panel implements Serializable {
         protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
             super.updateAjaxAttributes(attributes);
 
-            attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+            List<IAjaxCallListener> listeners = attributes.getAjaxCallListeners();
+            listeners.add(new LoadingSpinnerDecorator());
         }
     }
 }

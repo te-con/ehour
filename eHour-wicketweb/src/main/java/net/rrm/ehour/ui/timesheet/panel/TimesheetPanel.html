@@ -150,10 +150,7 @@
             $('#timesheetForm :input').change(function () {
                 $('#timesheetForm').data('changed', true);
             });
-        }
 
-        $(document).ready(function () {
-            guardForm();
 
             $(window).bind('beforeunload', function () {
                 if ($('#timesheetForm').data('changed') === true) {
@@ -165,6 +162,10 @@
                 $('#timesheetForm').data('changed', false);
                 $(window).unbind("beforeunload");
             });
+        }
+
+        $(document).ready(function () {
+            guardForm();
         });
     </script>
 </wicket:panel>
