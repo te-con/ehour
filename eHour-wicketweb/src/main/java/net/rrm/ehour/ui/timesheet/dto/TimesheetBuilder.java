@@ -25,6 +25,7 @@ import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
 import net.rrm.ehour.util.DateUtil;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -52,6 +53,7 @@ public class TimesheetBuilder
 	public Timesheet createTimesheet(WeekOverview weekOverview)
 	{
         List<Date> dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
+        List<TimesheetDate> timesheetDateSequence = createDateSequence(dateSequence);
 
         Timesheet timesheet = new Timesheet();
 		timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
@@ -59,7 +61,7 @@ public class TimesheetBuilder
         Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap = createAssignmentMap(weekOverview);
 		mergeUnbookedAssignments(weekOverview, assignmentMap);
 
-        List<TimesheetRow> timesheetRows = createTimesheetRows(assignmentMap, dateSequence, weekOverview.getProjectAssignments(), timesheet);
+        List<TimesheetRow> timesheetRows = createTimesheetRows(assignmentMap, timesheetDateSequence, weekOverview.getProjectAssignments(), timesheet);
 		
 		timesheet.setCustomers(structureRowsPerCustomer(timesheetRows));
 		timesheet.setDateSequence(dateSequence.toArray(new Date[7]));
@@ -71,6 +73,20 @@ public class TimesheetBuilder
 		
 		return timesheet;
 	}
+
+    private List<TimesheetDate> createDateSequence(List<Date> dateSequence) {
+
+        List<TimesheetDate> dates = new ArrayList<TimesheetDate>();
+
+        for (Date date : dateSequence) {
+            Calendar calendar = DateUtil.getCalendar(config);
+            calendar.setTime(date);
+            String formatted = keyDateFormatter.format(date);
+            dates.add(new TimesheetDate(date, calendar.get(Calendar.DAY_OF_WEEK) - 1, formatted));
+        }
+
+        return dates;
+    }
 
 	/**
 	 * Structure timesheet rows per customers
@@ -111,13 +127,13 @@ public class TimesheetBuilder
 	 * @return
 	 */
 	private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap,
-													List<Date> dateSequence,
+													List<TimesheetDate> dateSequence,
 													List<ProjectAssignment> validProjectAssignments,
 													Timesheet timesheet)
 	{
 		List<TimesheetRow> 	timesheetRows = new ArrayList<TimesheetRow>();
 		Calendar firstDate = DateUtil.getCalendar(config);
-		firstDate.setTime(dateSequence.get(0));
+		firstDate.setTime(dateSequence.get(0).date);
 		
 		for (ProjectAssignment assignment : assignmentMap.keySet())
 		{
@@ -126,15 +142,13 @@ public class TimesheetBuilder
 			timesheetRow.setProjectAssignment(assignment);
 			timesheetRow.setFirstDayOfWeekDate(firstDate);
 
-			// create a cell for every requested date
-			for (Date date : dateSequence)
+			// create a cell for every requested timesheetDate
+			for (TimesheetDate timesheetDate : dateSequence)
 			{
-                TimesheetEntry entry = assignmentMap.get(assignment).get(keyDateFormatter.format(date));
-                Calendar calendar = DateUtil.getCalendar(config);
-				calendar.setTime(date);
-				
-				timesheetRow.addTimesheetCell(calendar.get(Calendar.DAY_OF_WEEK) - 1,
-												createTimesheetCell(assignment, entry, date, validProjectAssignments));
+                TimesheetEntry entry = assignmentMap.get(assignment).get(timesheetDate.formatted);
+
+				timesheetRow.addTimesheetCell(timesheetDate.dayInWeek,
+												createTimesheetCell(assignment, entry, timesheetDate.date, validProjectAssignments));
 			}
 			
 			timesheetRows.add(timesheetRow);
@@ -144,7 +158,7 @@ public class TimesheetBuilder
 	}
 	
 	/**
-	 * Create timesheet cell, a cell is valid when the date is within the assignment valid range
+	 * Create timesheet cell, a cell is valid when the timesheetDate is within the assignment valid range
 	 * @param assignment
 	 * @param entry
 	 * @param date
@@ -227,4 +241,16 @@ public class TimesheetBuilder
 		
 		return assignmentMap;
 	}
+
+    private class TimesheetDate implements Serializable {
+        final Date date;
+        final int dayInWeek;
+        final String formatted;
+
+        private TimesheetDate(Date date, int dayInWeek, String formatted) {
+            this.date = date;
+            this.dayInWeek = dayInWeek;
+            this.formatted = formatted;
+        }
+    }
 }
