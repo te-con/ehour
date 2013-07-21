@@ -95,8 +95,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         }
 
         if (isInTestMode()) {
+            LOGGER.info("*** Running in test mode ***");
             getDebugSettings().setOutputComponentPath(true);
-
         }
 
     }
