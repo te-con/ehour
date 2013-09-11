@@ -38,16 +38,17 @@ public class TimesheetTextField extends TextField<Float> {
 
         if (getModelObject() != null) {
             previousValue = getModelObject().toString();
-        }else {
+        } else {
             previousValue = "";
         }
 
         add(CommonModifiers.tabIndexModifier(tabIndex));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <Float> IConverter<Float> getConverter(Class<Float> c) {
-        return new FloatConverter("");
+    public <C> IConverter<C> getConverter(Class<C> type) {
+        return (IConverter<C>) new FloatConverter("");
     }
 
     /**
@@ -74,19 +75,20 @@ public class TimesheetTextField extends TextField<Float> {
         return true;
     }
 
-    /***
+    /**
      * Extracts the real user input
+     *
      * @return the string input or an empty string if no input provided
      */
     protected String getRealInput() {
         //first try to get the float value
         Float value = getConvertedInput();
-        if(value != null)
+        if (value != null)
             return value.toString();
 
         //if there was a conversion error we can see the rawInput
         String raw = getRawInput();
-        if(raw == null)
+        if (raw == null)
             raw = "";
         return raw;
     }

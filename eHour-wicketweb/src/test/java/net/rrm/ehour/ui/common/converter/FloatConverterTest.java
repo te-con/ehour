@@ -1,9 +1,9 @@
 package net.rrm.ehour.ui.common.converter;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class FloatConverterTest extends AbstractConverterTest
@@ -29,7 +29,7 @@ public class FloatConverterTest extends AbstractConverterTest
 	@Test
 	public void testConvertToString()
 	{
-		String string = converter. convertToString(12f, config);
+		String string = converter.convertToString(12f, config);
 		
 		assertEquals("12.00", string);
 	}
