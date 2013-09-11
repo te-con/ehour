@@ -8,7 +8,5 @@ public class LoginScenario extends AbstractScenario {
     @Test
     public void shouldLogin() throws Exception {
         EhourApplicationDriver.loginAdmin();
-
-
     }
 }

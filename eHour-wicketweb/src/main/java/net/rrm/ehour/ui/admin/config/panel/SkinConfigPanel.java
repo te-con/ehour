@@ -58,7 +58,7 @@ public class SkinConfigPanel extends AbstractConfigPanel {
 
     @SuppressWarnings("serial")
     @Override
-    protected void addFormComponents(Form<MainConfigBackingBean> form) {
+    protected void addFormComponents(Form<?> form) {
         previewImage = createPreviewImage();
         form.add(previewImage);
 
@@ -75,8 +75,8 @@ public class SkinConfigPanel extends AbstractConfigPanel {
 
     @SuppressWarnings("serial")
     @Override
-    protected Form<MainConfigBackingBean> createForm(String id, IModel<MainConfigBackingBean> model) {
-        return new ImageUploadForm<MainConfigBackingBean>(id, model) {
+    protected Form<Void> createForm(String id, IModel<MainConfigBackingBean> model) {
+        return new ImageUploadForm(id) {
             @Override
             protected void uploadImage(ImageLogo logo) {
                 if (!getConfig().isInDemoMode()) {

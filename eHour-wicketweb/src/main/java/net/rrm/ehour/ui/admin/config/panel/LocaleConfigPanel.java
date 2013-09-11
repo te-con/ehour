@@ -52,7 +52,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
 
     @SuppressWarnings("serial")
     @Override
-    protected void addFormComponents(Form<MainConfigBackingBean> configForm) {
+    protected void addFormComponents(Form<?> configForm) {
         final DropDownChoice<Locale> localeDropDownChoice;
         final DropDownChoice<Locale> languageDropDownChoice;
         final AjaxCheckBox onlyTranslationsBox;

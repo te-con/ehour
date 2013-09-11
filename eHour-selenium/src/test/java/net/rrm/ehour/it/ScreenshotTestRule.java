@@ -9,6 +9,7 @@ import org.openqa.selenium.TakesScreenshot;
 
 import java.io.File;
 
+@SuppressWarnings("deprecation")
 class ScreenshotTestRule implements MethodRule {
     public Statement apply(final Statement statement, final FrameworkMethod frameworkMethod, final Object o) {
         return new Statement() {

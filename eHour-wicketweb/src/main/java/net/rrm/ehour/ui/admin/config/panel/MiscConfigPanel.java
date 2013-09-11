@@ -52,7 +52,7 @@ public class MiscConfigPanel extends AbstractConfigPanel
 	}
 
 	@Override
-	protected void addFormComponents(Form<MainConfigBackingBean> form)
+	protected void addFormComponents(Form<?> form)
 	{
 		// show turnover checkbox
 		form.add(new CheckBox("config.showTurnover"));		

@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.util.ListModel;
 
 import java.awt.*;
 import java.io.BufferedInputStream;
@@ -39,17 +39,17 @@ import java.io.InputStream;
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-public abstract class ImageUploadForm<T> extends Form<T> {
+public abstract class ImageUploadForm extends Form<Void> {
     private static final long serialVersionUID = 808442352504816831L;
     private FileUploadField fileUploadField;
 
     private static final Logger LOGGER = Logger.getLogger(ImageUploadForm.class);
 
-    public ImageUploadForm(String id, IModel<T> model) {
-        super(id, model);
+    public ImageUploadForm(String id) {
+        super(id);
 
         setMultiPart(true);
-        add(fileUploadField = new FileUploadField("fileInput"));
+        add(fileUploadField = new FileUploadField("fileInput", new ListModel<FileUpload>()));
 
         add(new SubmitLink("uploadSubmit"));
     }

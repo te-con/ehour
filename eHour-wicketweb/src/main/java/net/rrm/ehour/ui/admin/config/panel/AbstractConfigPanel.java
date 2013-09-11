@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -51,7 +50,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 	private WebComponent serverMessage;
 	
 	@SpringBean
-	private ConfigurationService	configService;
+	private ConfigurationService configService;
 
 	public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model)
 	{
@@ -70,7 +69,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", width);
 		add(greyBorder);
 		
-		Form<MainConfigBackingBean> form = createForm("form", model);
+		Form<?> form = createForm("form", model);
 		greyBorder.add(form);
 		form.setOutputMarkupId(true);
 		
@@ -82,7 +81,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 		addSubmitButton(form);
 	}
 	
-	protected Form<MainConfigBackingBean> createForm(String id, IModel<MainConfigBackingBean> model)
+	protected Form<?> createForm(String id, IModel<MainConfigBackingBean> model)
 	{
 		return new Form<MainConfigBackingBean>(id, model);
 	}
@@ -93,7 +92,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 	 * @param dbConfig
 	 */
 	@SuppressWarnings("serial")
-	private void addSubmitButton(Form<MainConfigBackingBean> form)
+	private void addSubmitButton(Form<?> form)
 	{
 		form.add(new AjaxButton("submitButton", form)
 		{
@@ -157,7 +156,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 		return ((MainConfigBackingBean)getDefaultModelObject()).getConfig();
 	}
 	
-	protected abstract void addFormComponents(Form<MainConfigBackingBean> form);
+	protected abstract void addFormComponents(Form<?> form);
 
     protected final WebComponent getServerMessage()
 	{

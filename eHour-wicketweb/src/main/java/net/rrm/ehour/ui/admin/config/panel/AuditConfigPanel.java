@@ -17,14 +17,13 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
-import java.util.Arrays;
-
 import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
-
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
+
+import java.util.Arrays;
 
 
 /**
@@ -47,7 +46,7 @@ public class AuditConfigPanel extends AbstractConfigPanel
 	 * @see net.rrm.ehour.persistence.persistence.ui.admin.config.panel.AbstractConfigPanel#addFormComponents(org.apache.wicket.markup.html.form.Form)
 	 */
 	@Override
-	protected void addFormComponents(Form<MainConfigBackingBean> configForm)
+	protected void addFormComponents(Form<?> configForm)
 	{
 		final DropDownChoice<AuditType>	auditTypeDropDown;
 		

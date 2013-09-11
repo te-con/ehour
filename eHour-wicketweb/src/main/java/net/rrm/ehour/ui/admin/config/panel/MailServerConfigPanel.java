@@ -45,7 +45,7 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
     }
 
     @Override
-    protected void addFormComponents(Form<MainConfigBackingBean> form) {
+    protected void addFormComponents(Form<?> form) {
         // reply sender
         RequiredTextField<String> mailFrom = new RequiredTextField<String>("config.mailFrom");
         mailFrom.setLabel(new ResourceModel("admin.config.mailFrom"));
@@ -84,7 +84,7 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
      *
      * @param form
      */
-    private void addTestMailSettingsButton(Form<MainConfigBackingBean> form) {
+    private void addTestMailSettingsButton(Form<?> form) {
         form.add(new AjaxButton("testMail", form) {
             private static final long serialVersionUID = 1L;
 
