@@ -18,7 +18,7 @@ public class UpdateService {
         this.latestVersionFetcher = latestVersionFetcher;
     }
 
-    @Scheduled(cron ="0 3 * * *")
+    @Scheduled(cron ="0 0 3 * * *")
     public void fetchLatestVersion() {
         LOGGER.info("Fetching latest version from");
 
