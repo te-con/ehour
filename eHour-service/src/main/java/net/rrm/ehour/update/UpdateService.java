@@ -13,7 +13,7 @@ public class UpdateService {
     private LatestVersionFetcher latestVersionFetcher;
     private Optional<String> latestVersionNumber;
 
-    UpdateService() {
+    public UpdateService() {
     }
 
     public UpdateService(String thisVersion, LatestVersionFetcher latestVersionFetcher) {
