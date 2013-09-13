@@ -37,7 +37,7 @@ public class LatestVersionFetcherHttpImpl implements LatestVersionFetcher {
 
             return Optional.of(response);
         } catch (Exception e) {
-            LOGGER.info("Failed to retrieve latest published eHour version.", e);
+            LOGGER.info("Failed to retrieve latest published eHour version: " + e.getMessage());
 
         }
 
