@@ -17,7 +17,7 @@ public class UpdateService {
     private Integer thisVersion;
 
     private LatestVersionFetcher latestVersionFetcher;
-    private Future<Optional<Integer>> latestVersionNumber;
+    private Future<Optional<String>> latestVersionNumber;
 
     @SuppressWarnings("UnusedDeclaration")
     public UpdateService() {
@@ -42,7 +42,7 @@ public class UpdateService {
         }
     }
 
-    public Optional<Integer> getLatestVersionNumber() {
+    public Optional<String> getLatestVersionNumber() {
         if (isLatestVersionNumberValid()) {
             try {
                 return latestVersionNumber.get();
@@ -59,15 +59,15 @@ public class UpdateService {
     }
 
     public boolean isLatestVersion() {
-        Optional<Integer> latest = getLatestVersionNumber();
+        Optional<String> latest = getLatestVersionNumber();
 
-        return thisVersion >= latest.or(0);
+        return thisVersion >= VersionNumberSanitizer.sanitize(latest.or("")).or(0);
     }
 
-    class VersionFetcher implements Callable<Optional<Integer>> {
+    class VersionFetcher implements Callable<Optional<String>> {
 
         @Override
-        public Optional<Integer> call() throws Exception {
+        public Optional<String> call() throws Exception {
             return latestVersionFetcher.getLatestVersionNumber();
         }
     }

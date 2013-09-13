@@ -64,9 +64,10 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
         if (updateService.isLatestVersion()) {
             add(new WebMarkupContainer(id));
         } else {
-            Optional<Integer> latestVersionNumber = updateService.getLatestVersionNumber();
+            Optional<String> latestVersionNumber = updateService.getLatestVersionNumber();
 
             Fragment newVersionFragment = new Fragment(id, "newVersionFragment", this);
+            newVersionFragment.add(new Label("latestVersion", latestVersionNumber.or("unknown")));
             add(newVersionFragment);
         }
     }

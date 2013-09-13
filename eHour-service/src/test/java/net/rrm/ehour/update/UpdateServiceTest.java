@@ -33,7 +33,7 @@ public class UpdateServiceTest {
 
     @Test
     public void should_say_version_is_latest_when_it_failed_to_retrieve() throws Exception {
-        when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.<Integer>absent());
+        when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.<String>absent());
         updateService.fetchLatestVersion();
 
         assertTrue(updateService.isLatestVersion());
@@ -42,7 +42,7 @@ public class UpdateServiceTest {
 
     @Test
     public void should_say_version_is_not_latest_when_version_dont_match() throws Exception {
-        when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.of(130));
+        when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.of("1.3"));
         updateService.fetchLatestVersion();
 
         Thread.sleep(500);
@@ -53,7 +53,7 @@ public class UpdateServiceTest {
 
     @Test
     public void should_say_version_is_latest_when_versions_match() throws Exception {
-        when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.of(120));
+        when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.of("1.2"));
         updateService.fetchLatestVersion();
 
         Thread.sleep(500);
@@ -66,7 +66,7 @@ public class UpdateServiceTest {
     @Test
     public void should_say_version_is_latest_when_current_is_nightly() throws Exception {
         updateService = new UpdateService("1.3-SNAPSHOT", latestVersionFetcher);
-        when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.of(120));
+        when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.of("1.2"));
         updateService.fetchLatestVersion();
 
         Thread.sleep(500);

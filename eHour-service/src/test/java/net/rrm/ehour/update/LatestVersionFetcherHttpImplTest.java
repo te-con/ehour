@@ -1,6 +1,7 @@
 package net.rrm.ehour.update;
 
 import com.google.common.base.Optional;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -30,10 +31,11 @@ public class LatestVersionFetcherHttpImplTest {
         server.start();
 
         LatestVersionFetcherHttpImpl fetcherHttp = new LatestVersionFetcherHttpImpl("http://localhost:8100/");
-        Optional<Integer> latestVersionNumber = fetcherHttp.getLatestVersionNumber();
+        Optional<String> latestVersionNumber = fetcherHttp.getLatestVersionNumber();
 
         server.stop();
 
-        assertEquals(121, latestVersionNumber.get().intValue());
+
+        assertEquals("1.2.1", StringUtils.chomp(latestVersionNumber.get()));
     }
 }

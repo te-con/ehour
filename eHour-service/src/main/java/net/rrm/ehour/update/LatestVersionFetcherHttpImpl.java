@@ -23,7 +23,7 @@ public class LatestVersionFetcherHttpImpl implements LatestVersionFetcher {
     }
 
     @Override
-    public Optional<Integer> getLatestVersionNumber() {
+    public Optional<String> getLatestVersionNumber() {
         HttpClient client = new DefaultHttpClient();
 
         try {
@@ -35,7 +35,7 @@ public class LatestVersionFetcherHttpImpl implements LatestVersionFetcher {
             BasicResponseHandler responseHandler = new BasicResponseHandler();
             String response = client.execute(request, responseHandler);
 
-            return VersionNumberSanitizer.sanitize(response);
+            return Optional.of(response);
         } catch (Exception e) {
             LOGGER.info("Failed to retrieve latest published eHour version.", e);
 
