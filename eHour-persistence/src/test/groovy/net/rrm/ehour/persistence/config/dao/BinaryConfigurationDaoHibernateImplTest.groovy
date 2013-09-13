@@ -4,7 +4,8 @@ import net.rrm.ehour.domain.BinaryConfiguration
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import static junit.framework.Assert.assertNotNull
+
+import static org.junit.Assert.assertNotNull
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)

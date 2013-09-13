@@ -3,7 +3,8 @@ package net.rrm.ehour.report.util
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
 import net.rrm.ehour.report.reports.util.ReportUtil
 import org.junit.Test
-import static junit.framework.Assert.assertTrue
+
+import static org.junit.Assert.assertTrue
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)

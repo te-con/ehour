@@ -1,15 +1,16 @@
 package net.rrm.ehour.persistence.appconfig
 
-import java.sql.Connection
-import java.sql.DatabaseMetaData
-import javax.sql.DataSource
 import org.hibernate.SessionFactory
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import static junit.framework.Assert.assertNotNull
-import static junit.framework.Assert.fail
+
+import javax.sql.DataSource
+import java.sql.Connection
+import java.sql.DatabaseMetaData
+
+import static org.junit.Assert.assertNotNull
 import static org.mockito.Mockito.when
 
 /**

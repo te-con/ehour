@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.report.excel;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 
 public class UserReportExcelTest extends AbstractReportExcelTest {
     @Test
