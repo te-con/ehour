@@ -676,3 +676,9 @@ hr {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
 }
+
+.newVersion {
+    width: 100%;
+    text-align: center;
+    color:  #ff3333;
+}
