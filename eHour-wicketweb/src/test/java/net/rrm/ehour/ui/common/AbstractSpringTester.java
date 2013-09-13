@@ -18,57 +18,59 @@ package net.rrm.ehour.ui.common;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.update.UpdateService;
 import org.apache.wicket.spring.test.ApplicationContextMock;
 
 import java.util.Calendar;
 
-import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.*;
 
 
 /**
  * Created on Mar 17, 2009, 5:31:37 AM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public abstract class AbstractSpringTester
-{
+public abstract class AbstractSpringTester {
     protected ApplicationContextMock mockContext;
-	private EhourConfigStub config;
-	private AuditService auditService;
+    private EhourConfigStub config;
+    private AuditService auditService;
+    private UpdateService updateService;
 
-	private void createContextSetup() 
-	{
-        mockContext=new ApplicationContextMock();
-		config = new EhourConfigStub();
-		config.setFirstDayOfWeek(Calendar.SUNDAY);
+    private void createContextSetup() {
+        mockContext = new ApplicationContextMock();
+        config = new EhourConfigStub();
+        config.setFirstDayOfWeek(Calendar.SUNDAY);
 
-		mockContext.putBean("EhourConfig", config);
+        mockContext.putBean("EhourConfig", config);
 
-		auditService = createMock(AuditService.class);
-		mockContext.putBean("auditService", auditService);
-	}
-	
-	public final ApplicationContextMock getMockContext()
-	{
-		if (mockContext == null)
-		{
-			createContextSetup();
-		}
-		
-		return mockContext;
-	}
+        auditService = createMock(AuditService.class);
+        mockContext.putBean("auditService", auditService);
+
+        updateService = createMock(UpdateService.class);
+        mockContext.putBean(updateService);
+
+        expect(updateService.isLatestVersion()).andReturn(Boolean.TRUE).atLeastOnce();
+        replay(updateService);
+    }
+
+    public final ApplicationContextMock getMockContext() {
+        if (mockContext == null) {
+            createContextSetup();
+        }
+
+        return mockContext;
+    }
 
     public final void clearMockContext() {
         mockContext = null;
     }
-	
-	public final EhourConfigStub getConfig()
-	{
-		return config;
-	}
-	
-	public final AuditService getAuditService()
-	{
-		return auditService;
-	}
+
+    public final EhourConfigStub getConfig() {
+        return config;
+    }
+
+    public final AuditService getAuditService() {
+        return auditService;
+    }
 }

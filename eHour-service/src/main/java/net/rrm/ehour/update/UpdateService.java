@@ -13,6 +13,9 @@ public class UpdateService {
     private LatestVersionFetcher latestVersionFetcher;
     private Optional<String> latestVersionNumber;
 
+    UpdateService() {
+    }
+
     public UpdateService(String thisVersion, LatestVersionFetcher latestVersionFetcher) {
         this.thisVersion = thisVersion;
         this.latestVersionFetcher = latestVersionFetcher;
@@ -25,6 +28,10 @@ public class UpdateService {
         synchronized (this) {
             latestVersionNumber = latestVersionFetcher.getLatestVersionNumber();
         }
+    }
+
+    public Optional<String> getLatestVersionNumber() {
+        return latestVersionNumber;
     }
 
     public boolean isLatestVersion() {
