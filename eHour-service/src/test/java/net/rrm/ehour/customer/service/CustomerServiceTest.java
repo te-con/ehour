@@ -16,35 +16,28 @@
 
 package net.rrm.ehour.customer.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import junit.framework.TestCase;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.customer.dao.CustomerDao;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * TODO 
- **/
+import java.util.HashSet;
+import java.util.Set;
 
-public class CustomerServiceTest extends TestCase
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.fail;
+
+public class CustomerServiceTest
 {
 	private	CustomerService	customerService;
 	private	CustomerDao		customerDAO;
-	
-	/**
-	 * 
-	 */
-	protected void setUp()
+
+    @Before
+	public void setUp()
 	{
 		customerService = new CustomerServiceImpl();
 
@@ -52,7 +45,7 @@ public class CustomerServiceTest extends TestCase
 		((CustomerServiceImpl)customerService).setCustomerDAO(customerDAO);
 	}
 
-
+    @Test
 	public void testDeleteCustomerWithConstraintViolation()
 	{
 		Customer cust = new Customer();
@@ -80,8 +73,9 @@ public class CustomerServiceTest extends TestCase
 		
 		verify(customerDAO);
 	}
-	
-	public void testDeleteCustomer() throws ParentChildConstraintException
+
+    @Test
+    public void testDeleteCustomer() throws ParentChildConstraintException
 	{
 		Customer cust = new Customer();
 		cust.setCustomerId(1);
@@ -97,9 +91,10 @@ public class CustomerServiceTest extends TestCase
 		
 		verify(customerDAO);
 	}
-	
 
-	public void testGetCustomer() throws ObjectNotFoundException
+
+    @Test
+    public void testGetCustomer() throws ObjectNotFoundException
 	{
 		customerDAO.findById(1);
 		expectLastCall().andReturn(new Customer(1));
@@ -111,6 +106,7 @@ public class CustomerServiceTest extends TestCase
 		verify(customerDAO);
 	}
 
+    @Test
 	public void testGetCustomers()
 	{
 		customerDAO.findAll();
@@ -123,7 +119,8 @@ public class CustomerServiceTest extends TestCase
 		verify(customerDAO);
 	}
 
-	public void testGetActiveCustomers()
+    @Test
+    public void testGetActiveCustomers()
 	{
 		customerDAO.findAllActive();
 		expectLastCall().andReturn(null);
@@ -133,8 +130,9 @@ public class CustomerServiceTest extends TestCase
 		customerService.getCustomers(true);
 		
 		verify(customerDAO);
-	}	
-	
+	}
+
+    @Test
 	public void testPersistCustomer() throws ObjectNotUniqueException
 	{
 		Customer cust = new Customer();

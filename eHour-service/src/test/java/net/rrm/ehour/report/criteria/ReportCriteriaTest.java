@@ -15,51 +15,25 @@
  */
 
 package net.rrm.ehour.report.criteria;
+
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.util.DateUtil;
+import org.junit.Test;
+
 import java.util.GregorianCalendar;
 
-import junit.framework.TestCase;
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.util.DateUtil;
+import static org.junit.Assert.assertEquals;
 
-/**
- * TODO 
- **/
+public class ReportCriteriaTest {
+    @Test
+    public void testGetReportRange() {
+        DateRange dr = DateUtil.calendarToMonthRange(new GregorianCalendar());
 
-public class ReportCriteriaTest extends TestCase
-{
-	ReportCriteriaService 	reportCriteriaService;
-	
-	protected void setUp() throws Exception
-	{
-		super.setUp();
-	}
+        AvailableCriteria availCriteria = new AvailableCriteria();
+        ReportCriteria reportCriteria = new ReportCriteria(availCriteria);
 
+        availCriteria.setReportRange(dr);
 
-	
-	public void testGetReportRange()
-	{
-		DateRange dr = DateUtil.calendarToMonthRange(new GregorianCalendar());
-		
-		AvailableCriteria availCriteria = new AvailableCriteria();
-		ReportCriteria reportCriteria = new ReportCriteria(availCriteria);
-
-		availCriteria.setReportRange(dr);
-		
-		assertEquals(dr, reportCriteria.getReportRange());
-	}
-
-//	
-//	public void testSetUserCriteria()
-//	{
-//		expect(reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteria.UPDATE_ALL)).andReturn(reportCriteria);
-//
-//		replay(reportCriteriaService);
-//		
-//		reportCriteria.setUserCriteria(new UserCriteria());
-//		reportCriteria.updateAvailableCriteria();
-//		
-//		verify(reportCriteriaService);
-//	}
-
+        assertEquals(dr, reportCriteria.getReportRange());
+    }
 }
