@@ -28,6 +28,8 @@ public class UpdateServiceTest {
     public void should_fetch_latest_version() throws Exception {
         updateService.fetchLatestVersion();
 
+        Thread.sleep(500);
+
         verify(latestVersionFetcher).getLatestVersionNumber();
     }
 
