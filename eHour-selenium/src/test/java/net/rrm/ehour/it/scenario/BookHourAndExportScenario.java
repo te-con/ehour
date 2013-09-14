@@ -4,14 +4,15 @@ import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.WicketBy;
 import org.junit.Test;
 
-import static net.rrm.ehour.it.EhourApplicationDriver.*;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
+import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.createUser;
 import static org.junit.Assert.assertTrue;
 
 public class BookHourAndExportScenario extends AbstractScenario {
     @Test
     public void should_book_hours() {
         loginAdmin();
-        createUser("thies", "a");
+        createUser("thies", "a", "Edeling");
         createCustomer("KLM", "KLM");
         createProject("ET", "ET", "KLM", "KLM");
         createProjectAssignment(0, "KLM", "KLM", "ET", "ET");

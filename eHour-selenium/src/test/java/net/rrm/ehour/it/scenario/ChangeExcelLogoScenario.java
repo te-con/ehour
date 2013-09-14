@@ -1,8 +1,8 @@
 package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
-import net.rrm.ehour.it.EhourApplicationDriver;
 import net.rrm.ehour.it.WicketBy;
+import net.rrm.ehour.it.driver.EhourApplicationDriver;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

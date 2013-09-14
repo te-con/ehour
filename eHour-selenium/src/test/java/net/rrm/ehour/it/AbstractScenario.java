@@ -20,7 +20,6 @@ public abstract class AbstractScenario {
     @Rule
     public ScreenshotTestRule screenshotTestRule = new ScreenshotTestRule();
 
-
     @Before
     public void setUp() throws Exception {
         if (!initialized) {

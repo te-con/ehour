@@ -465,6 +465,13 @@
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
+                <artifactId>eHour-standalone</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>net.rrm.ehour</groupId>
                 <artifactId>eHour-common</artifactId>
                 <version>${project.version}</version>
                 <type>test-jar</type>
