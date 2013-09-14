@@ -38,6 +38,8 @@ public class UpdateServiceTest {
         when(latestVersionFetcher.getLatestVersionNumber()).thenReturn(Optional.<String>absent());
         updateService.fetchLatestVersion();
 
+        Thread.sleep(500);
+
         assertTrue(updateService.isLatestVersion());
         verify(latestVersionFetcher).getLatestVersionNumber();
     }
