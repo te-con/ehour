@@ -202,17 +202,13 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     public User editUser(User user) throws ObjectNotUniqueException {
-        User dbUser;
-
-        LOGGER.info("Persisting user: " + user);
-
         // check username uniqueness
-        dbUser = userDAO.findByUsername(user.getUsername());
+        User dbUser = userDAO.findByUsername(user.getUsername());
 
         if (dbUser != null && !dbUser.getUserId().equals(user.getUserId())) {
             throw new ObjectNotUniqueException("Username already in use");
         } else if (dbUser == null) {
-            dbUser = new User();
+            dbUser = findUserOnId(user);
         }
 
         dbUser.setActive(user.isActive());
@@ -225,6 +221,16 @@ public class UserServiceImpl implements UserService {
 
         userDAO.persist(dbUser);
 
+        return dbUser;
+    }
+
+    private User findUserOnId(User user) {
+        User dbUser;
+        dbUser = userDAO.findById(user.getUserId());
+
+        if (dbUser == null) {
+            throw new IllegalArgumentException(String.format("%d user ID not found", user.getUserId()));
+        }
         return dbUser;
     }
 

@@ -214,9 +214,7 @@ public class UserServiceImplTest {
         User user = UserObjectMother.createUser();
 
         expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
-
         expect(userDAO.persist(user)).andReturn(user);
-
         expect(assignmentService.assignUserToDefaultProjects(user)).andReturn(user);
 
         replay(userDAO, assignmentService);
@@ -226,6 +224,21 @@ public class UserServiceImplTest {
         verify(userDAO, assignmentService);
 
         assertNotSame("password", user.getPassword());
+    }
 
+    @Test
+    public void shouldChangeUsername() throws ObjectNotUniqueException {
+        User user = UserObjectMother.createUser();
+        User persistedUser = new User();
+
+        expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
+        expect(userDAO.findById(user.getUserId())).andReturn(persistedUser);
+        expect(userDAO.persist(persistedUser)).andReturn(persistedUser);
+
+        replay(userDAO, assignmentService);
+
+        userService.editUser(user);
+
+        verify(userDAO, assignmentService);
     }
 }
