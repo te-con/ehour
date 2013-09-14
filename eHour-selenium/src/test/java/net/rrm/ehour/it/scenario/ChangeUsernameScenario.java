@@ -10,9 +10,12 @@ import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.*;
 public class ChangeUsernameScenario extends AbstractScenario {
     @Test
     public void should_change_username() {
-        loginAdmin();
         String lastName = "Edeling2";
+
+        loginAdmin();
+
         createUser("thies2", "a", lastName);
+        assertDataSaved();
 
         editUser(lastName);
 

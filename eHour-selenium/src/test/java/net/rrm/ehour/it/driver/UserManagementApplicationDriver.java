@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.Select;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public abstract class UserManagementApplicationDriver {
 
@@ -31,8 +30,6 @@ public abstract class UserManagementApplicationDriver {
         new Select(Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_user.userRoles"))).selectByVisibleText("User");
 
         Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_submitButton")).click();
-
-        assertTrue(Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_serverMessage")).getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
     }
 
     public static void editUser(String name) {
@@ -51,7 +48,11 @@ public abstract class UserManagementApplicationDriver {
     }
 
     public static void assertDataSaved() {
-        assertEquals("Data saved", Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_serverMessage")).getText());
+        assertServerMessage("Data saved");
+    }
+
+    public static void assertServerMessage(String expected) {
+        assertEquals(expected, Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_serverMessage")).getText());
     }
 
     public static void setFormFieldTo(String field, String value) {
