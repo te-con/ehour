@@ -658,7 +658,7 @@
                         <include>**/*Test.java</include>
                     </includes>
                     <parallel>both</parallel>
-                    <threadCount>2</threadCount>
+                    <threadCount>6</threadCount>
                 </configuration>
             </plugin>
         </plugins>
