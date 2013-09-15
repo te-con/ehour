@@ -43,15 +43,15 @@ public abstract class UserManagementApplicationDriver {
         EhourApplicationDriver.sleep(500);
     }
 
-    public static void submitForm() {
+    public static void submitUserForm() {
         Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_submitButton")).click();
     }
 
-    public static void assertDataSaved() {
-        assertServerMessage("Data saved");
+    public static void assertUserDataSaved() {
+        assertUserServerMessage("Data saved");
     }
 
-    public static void assertServerMessage(String expected) {
+    public static void assertUserServerMessage(String expected) {
         assertEquals(expected, Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_serverMessage")).getText());
     }
 

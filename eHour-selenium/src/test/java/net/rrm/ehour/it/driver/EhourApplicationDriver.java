@@ -76,7 +76,7 @@ public class EhourApplicationDriver {
         Driver.findElement(WicketBy.wicketPath("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_submitButton")).click();
     }
 
-    static void sleep(int millis) {
+    public static void sleep(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
@@ -84,5 +84,7 @@ public class EhourApplicationDriver {
         }
     }
 
-
+    public static void sleep() {
+        sleep(1500);
+    }
 }

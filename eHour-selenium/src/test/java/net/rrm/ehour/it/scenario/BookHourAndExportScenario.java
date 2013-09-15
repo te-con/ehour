@@ -1,11 +1,11 @@
 package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
-import net.rrm.ehour.it.WicketBy;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
-import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.assertDataSaved;
+import static net.rrm.ehour.it.driver.TimesheetApplicationDriver.*;
+import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.assertUserDataSaved;
 import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.createUser;
 import static org.junit.Assert.assertTrue;
 
@@ -14,7 +14,7 @@ public class BookHourAndExportScenario extends AbstractScenario {
     public void should_book_hours() {
         loginAdmin();
         createUser("thies", "a", "Edeling");
-        assertDataSaved();
+        assertUserDataSaved();
         createCustomer("KLM", "KLM");
         createProject("ET", "ET", "KLM", "KLM");
         createProjectAssignment(0, "KLM", "KLM", "ET", "ET");
@@ -22,6 +22,16 @@ public class BookHourAndExportScenario extends AbstractScenario {
 
         login("thies", "a");
 
-        assertTrue(Driver.findElement(WicketBy.wicketPath("contentContainer_projectOverview_greyBorder_title")).getText().contains("Aggregated hours"));
+        assertInOverviewPage();
+
+        clickInWeek(1);
+
+        bookHours(2, 8f);
+
+        addDayComment(2, "some comment");
+
+        submitTimesheet();
+
+        assertTrue(getServerMessage().startsWith("8 hours booked"));
     }
 }

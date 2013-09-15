@@ -12,9 +12,9 @@ public class DuplicateUsernameScenario extends AbstractScenario {
         loginAdmin();
         String lastName = "Edeling3";
         createUser("thies3", "a", lastName);
-        assertDataSaved();
+        assertUserDataSaved();
 
         createUser("thies3", "a", lastName);
-        assertServerMessage("Username already in use");
+        assertUserServerMessage("Username already in use");
     }
 }

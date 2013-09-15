@@ -15,13 +15,13 @@ public class ChangeUsernameScenario extends AbstractScenario {
         loginAdmin();
 
         createUser("thies2", "a", lastName);
-        assertDataSaved();
+        assertUserDataSaved();
 
         editUser(lastName);
 
         setFormFieldTo("username", "thies3");
-        submitForm();
+        submitUserForm();
 
-        assertDataSaved();
+        assertUserDataSaved();
     }
 }
