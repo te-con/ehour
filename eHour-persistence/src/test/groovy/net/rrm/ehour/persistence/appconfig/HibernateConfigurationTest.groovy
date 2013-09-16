@@ -51,7 +51,7 @@ class HibernateConfigurationTest
 
   private SessionFactory createSessionFactoryForDb(String db)
   {
-    HibernateConfiguration configuration = new HibernateConfiguration(databaseName: db, dataSource: dataSource)
+    HibernateConfiguration configuration = new HibernateConfiguration(databaseName: db, dataSource: dataSource, caching: "true")
 
     return configuration.getSessionFactory()
   }

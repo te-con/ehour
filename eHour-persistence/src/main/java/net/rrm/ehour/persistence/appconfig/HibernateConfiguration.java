@@ -39,9 +39,9 @@ public class HibernateConfiguration {
 
     @Bean(name = "sessionFactory")
     public SessionFactory getSessionFactory() throws Exception {
-        if (!caching.equalsIgnoreCase("true") && !caching.equalsIgnoreCase("false")) {
-            throw new IllegalArgumentException("ehour.db.cache property must either be true or false");
-        }
+        setDefaultCachingType();
+
+        validateCachingAttribute();
 
         Properties configProperties = EhourHomeUtil.loadDatabaseProperties(databaseName);
 
@@ -68,6 +68,18 @@ public class HibernateConfiguration {
         factoryBean.afterPropertiesSet();
 
         return factoryBean.getObject();
+    }
+
+    private void validateCachingAttribute() {
+        if (!caching.equalsIgnoreCase("true") && !caching.equalsIgnoreCase("false")) {
+            throw new IllegalArgumentException("ehour.db.cache property must either be true or false");
+        }
+    }
+
+    private void setDefaultCachingType() {
+        if (caching == null) {
+            caching = "true";
+        }
     }
 
     private List<Resource> getMappingResources(Properties configProperties) throws IOException {
