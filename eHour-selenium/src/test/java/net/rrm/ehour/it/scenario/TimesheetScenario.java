@@ -36,7 +36,7 @@ public class TimesheetScenario extends AbstractScenario {
         cancelDayCommentModal(2);
 
         String base = openDayCommentModal(2);// now this should be filled by the previous booking
-        assertEquals(comment, driver.findElement(WicketBy.wicketPath(base + "_dayWin_content_comment")).getText());
+        assertEquals(comment, Driver.findElement(WicketBy.wicketPath(base + "_dayWin_content_comment")).getText());
     }
 
     private void book8Hours() {

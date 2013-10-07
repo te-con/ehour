@@ -19,15 +19,15 @@ public class ChangeExcelLogoScenario extends AbstractScenario {
         WebElement previewButton = findPreviewButton();
         assertTrue(previewButton.getText().matches("^[\\s\\S]*Preview in excel[\\s\\S]*$"));
 
-        driver.findElement(By.xpath("//input[@type='file']")).sendKeys("resources/replacement_logo.png");
-        driver.findElement(WicketBy.wicketPath("configTabs_panel_border_greySquaredFrame_border__body_form_uploadSubmit")).click();
+        Driver.findElement(By.xpath("//input[@type='file']")).sendKeys("resources/replacement_logo.png");
+        Driver.findElement(WicketBy.wicketPath("configTabs_panel_border_greySquaredFrame_border__body_form_uploadSubmit")).click();
     }
 
     private WebElement findPreviewButton() {
-        return driver.findElement(WicketBy.wicketPath("configTabs_panel_border_greySquaredFrame_border__body_form_excelPreview"));
+        return Driver.findElement(WicketBy.wicketPath("configTabs_panel_border_greySquaredFrame_border__body_form_excelPreview"));
     }
 
     private void clickCustomizeTab() {
-        driver.findElement(WicketBy.wicketPath("configTabs_tabs-container_tabs_3_link_title")).click();
+        Driver.findElement(WicketBy.wicketPath("configTabs_tabs-container_tabs_3_link_title")).click();
     }
 }

@@ -13,13 +13,13 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractScenario {
     public static final String BASE_URL = "http://localhost:18000";
 
-    public RemoteWebDriver driver;
+    public static RemoteWebDriver Driver;
     public static DataSource dataSource;
 
     private static boolean initialized = false;
 
     @Rule
-    public ScreenshotTestRule screenshotTestRule = new ScreenshotTestRule();
+    public ScreenshotTestRule screenshotTestRule;
 
     @Before
     public void setUp() throws Exception {
@@ -28,14 +28,16 @@ public abstract class AbstractScenario {
             dataSource = ehourServer.getDataSource();
         }
 
-        driver = new FirefoxDriver();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        Driver = new FirefoxDriver();
+        Driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
+        screenshotTestRule = new ScreenshotTestRule(Driver);
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
                 try {
-                    driver.quit();
+                    Driver.quit();
                 } catch (Exception e) {
                     //
                 }
@@ -50,6 +52,6 @@ public abstract class AbstractScenario {
 
     @After
     public void quitBrowser() {
-        driver.quit();
+        Driver.quit();
     }
 }
