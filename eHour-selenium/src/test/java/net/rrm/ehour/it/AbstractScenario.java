@@ -1,6 +1,7 @@
 package net.rrm.ehour.it;
 
 import net.rrm.ehour.EhourServer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractScenario {
     public static final String BASE_URL = "http://localhost:18000";
 
-    public static RemoteWebDriver Driver;
+    public RemoteWebDriver driver;
     public static DataSource dataSource;
 
     private static boolean initialized = false;
@@ -25,23 +26,30 @@ public abstract class AbstractScenario {
         if (!initialized) {
             EhourServer ehourServer = EhourTestApplication.start();
             dataSource = ehourServer.getDataSource();
-            Driver = new FirefoxDriver();
-            Driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Driver.quit();
-                    } catch (Exception e) {
-                        //
-                    }
-                }
-            });
         }
+
+        driver = new FirefoxDriver();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                try {
+                    driver.quit();
+                } catch (Exception e) {
+                    //
+                }
+            }
+        });
+
 
         DatabaseTruncater.truncate(dataSource);
 
         initialized = true;
+    }
+
+    @After
+    public void quitBrowser() {
+        driver.quit();
     }
 }

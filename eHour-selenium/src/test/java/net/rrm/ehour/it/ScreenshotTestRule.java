@@ -25,7 +25,7 @@ class ScreenshotTestRule implements MethodRule {
 
             public void captureScreenshot(String fileName) {
                 try {
-                    File screenshot = ((TakesScreenshot) AbstractScenario.Driver).getScreenshotAs(OutputType.FILE);
+                    File screenshot = ((TakesScreenshot) AbstractScenario.driver).getScreenshotAs(OutputType.FILE);
                     FileUtils.copyFile(screenshot, new File("target/screenshot-" + fileName + ".png"));
                 } catch (Exception e) {
                     // No need to crash the tests if the screenshot fails
