@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.sql.SQLException;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.login;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.navigateToMonthOverview;
 import static net.rrm.ehour.it.driver.TimesheetApplicationDriver.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,21 +28,15 @@ public class TimesheetScenario extends AbstractScenario {
         createUserAndAssign();
 
         login("thies", "a");
-        book8Hours();
-
-        navigateToMonthOverview();
 
         clickInWeek(1);
-        openDayCommentModal(2); // now this should be filled by the previous booking
+        String comment = "this is a comment";
+        addDayComment(2, comment);
+        openDayCommentModal(2);
         cancelDayCommentModal(2);
 
-        submitTimesheet();
-
-        navigateToMonthOverview();
-
-        clickInWeek(1);
         String base = openDayCommentModal(2);// now this should be filled by the previous booking
-        assertEquals("some comment", Driver.findElement(WicketBy.wicketPath(base + "_dayWin_content_comment")).getText());
+        assertEquals(comment, Driver.findElement(WicketBy.wicketPath(base + "_dayWin_content_comment")).getText());
     }
 
     private void book8Hours() {

@@ -22,6 +22,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
@@ -45,7 +46,6 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -79,10 +79,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         config = EhourWebSession.getSession().getEhourConfig();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
-     */
     @Override
     protected void populateItem(ListItem<TimesheetRow> item) {
         final TimesheetRow row = item.getModelObject();
@@ -163,14 +159,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         item.add(fragment);
     }
 
-    /**
-     * Get validated text field
-     *
-     * @param id
-     * @param row
-     * @param index
-     * @return
-     */
     private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item) {
         Fragment fragment = new Fragment(id, "dayInput", provider);
 
@@ -181,14 +169,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         createTimesheetEntryComment(row, index, fragment);
     }
 
-    /**
-     * Create a validating text field for row[index]
-     *
-     * @param id
-     * @param row
-     * @param index
-     * @return
-     */
     private TimesheetTextField createValidatedTextField(TimesheetRow row, final int index) {
         final TimesheetTextField dayInput;
         PropertyModel<Float> cellModel;
@@ -233,13 +213,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return dayInput;
     }
 
-    /**
-     * Create comment box for timesheet entry
-     *
-     * @param id
-     * @param row
-     * @param index
-     */
     @SuppressWarnings("serial")
     private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent) {
         final ModalWindow modalWindow;
@@ -297,40 +270,42 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return img;
     }
 
-    /**
-     * Set comment link css class
-     *
-     * @param commentModel
-     * @param commentLink
-     */
     private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink) {
         commentLink.add(AttributeModifier.replace("class", StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment" : "timesheetEntryCommented"));
     }
 
-    /**
-     * Comments panel for timesheet entries
-     *
-     * @author Thies
-     */
-    class TimesheetEntryCommentPanel extends Panel {
+    class TimesheetEntryCommentPanel extends AbstractBasePanel<String> {
         private static final long serialVersionUID = 1L;
+        private final TimesheetRow row;
+        private final int index;
+        private final ModalWindow window;
 
         public TimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
-            super(id);
+            super(id, model);
+
+            this.row = row;
+            this.index = index;
+            this.window = window;
+        }
+
+        @Override
+        protected void onBeforeRender() {
+            super.onBeforeRender();
+
 
             Calendar thisDate = (Calendar) row.getFirstDayOfWeekDate().clone();
             // Use the render order, not the index order, when calculating the date
             thisDate.add(Calendar.DAY_OF_YEAR, grandTotals.getOrderForIndex(index) - 1);
 
-            final String previousModel = model.getObject();
-            add(new Label("dayComments",
+            final String previousModel = getPanelModelObject();
+            addOrReplace(new Label("dayComments",
                     new StringResourceModel("timesheet.dayComments",
                             this,
                             null,
                             new Object[]{row.getProjectAssignment().getFullName(),
                                     new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
 
-            final KeepAliveTextArea textArea = new KeepAliveTextArea("comment", model);
+            final KeepAliveTextArea textArea = new KeepAliveTextArea("comment", getPanelModel());
             textArea.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 private static final long serialVersionUID = 1L;
 
@@ -341,7 +316,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             });
             textArea.setOutputMarkupId(true);
 
-            add(textArea);
+            addOrReplace(textArea);
 
             AjaxLink<Void> submitButton = new AjaxLink<Void>("submit") {
                 private static final long serialVersionUID = 1L;
@@ -351,18 +326,18 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                     window.close(target);
                 }
             };
-            add(submitButton);
+            addOrReplace(submitButton);
 
             AbstractLink cancelButton = new AjaxLink<Void>("cancel") {
                 private static final long serialVersionUID = 1L;
 
                 @Override
                 public void onClick(AjaxRequestTarget target) {
-                    model.setObject(previousModel);
+                    TimesheetEntryCommentPanel.this.getPanelModel().setObject(previousModel);
                     window.close(target);
                 }
             };
-            add(cancelButton);
+            addOrReplace(cancelButton);
         }
     }
 }
