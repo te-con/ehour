@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="5.1.6" transformSequenceNumber="4">
-  <directoryPresets config="../../eHour-standalone/target/ehour-1.2.2-SNAPSHOT-standalone/ehour-1.2.2-SNAPSHOT/conf/ehour.properties" />
-  <application name="eHour" distributionSourceDir="" applicationId="2498-7425-0494-0609" mediaDir="../../dist" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="9" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="eHour" publisher="TE-CON B.V." publisherWeb="http://www.te-con.nl/" version="1.2.2-SNAPSHOT" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.5" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
+  <directoryPresets config="../../eHour-standalone/target/ehour-1.3-SNAPSHOT-standalone/ehour-1.3-SNAPSHOT/conf/ehour.properties" />
+  <application name="eHour" distributionSourceDir="" applicationId="2498-7425-0494-0609" mediaDir="../../dist" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="9" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="eHour" publisher="TE-CON B.V." publisherWeb="http://www.te-con.nl/" version="1.3-SNAPSHOT" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.5" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="./install_en.properties" />
       <additionalLanguages />
@@ -25,19 +25,19 @@
       <mountPoint id="22" root="" location="" mode="755" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="226" file="../../eHour-standalone/target/ehour-1.2.2-SNAPSHOT-standalone/ehour-1.2.2-SNAPSHOT/conf/ehour.properties" overwriteMode="0" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" />
-      <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.2.2-SNAPSHOT-standalone/ehour-1.2.2-SNAPSHOT/resources" overwriteMode="3" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="subdir" subDirectory="resources" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <fileEntry mountPoint="226" file="../../eHour-standalone/target/ehour-1.3-SNAPSHOT-standalone/ehour-1.3-SNAPSHOT/conf/ehour.properties" overwriteMode="0" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" />
+      <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.3-SNAPSHOT-standalone/ehour-1.3-SNAPSHOT/resources" overwriteMode="3" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="subdir" subDirectory="resources" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
-      <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.2.2-SNAPSHOT-standalone/ehour-1.2.2-SNAPSHOT/conf" overwriteMode="3" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="subdir" subDirectory="conf" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="171" file="../../eHour-standalone/target/ehour-1.3-SNAPSHOT-standalone/ehour-1.3-SNAPSHOT/conf" overwriteMode="3" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="subdir" subDirectory="conf" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude>
           <entry location="ehour.properties" fileType="regular" />
         </exclude>
       </dirEntry>
-      <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.2.2-SNAPSHOT-standalone/ehour-1.2.2-SNAPSHOT/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="2" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="true" entryMode="subdir" subDirectory="lib" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.3-SNAPSHOT-standalone/ehour-1.3-SNAPSHOT/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="2" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="true" entryMode="subdir" subDirectory="lib" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
-      <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.2.2-SNAPSHOT-standalone/ehour-1.2.2-SNAPSHOT/app" overwriteMode="4" shared="false" fileMode="644" uninstallMode="2" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="true" entryMode="subdir" subDirectory="app" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="22" file="../../eHour-standalone/target/ehour-1.3-SNAPSHOT-standalone/ehour-1.3-SNAPSHOT/app" overwriteMode="4" shared="false" fileMode="644" uninstallMode="2" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="true" entryMode="subdir" subDirectory="app" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
     </entries>
