@@ -1,3 +1,16 @@
+eHour 1.2.2 release notes (16 October 2013)
+------------------------------------------
+eHour 1.2.2 fixes a number of bugs, including a critical one in the auditing functionality.
+
+[EHO-329] Replacement logo can be updated again, this was broken in 1.2.1
+[EHO-331] Proper error message when trying to add a user with a non-unique username
+[EHO-333] Auditing all events (read & write) resulted into an endless loop. This is fixed.
+[EHO-336] A large number of active projects broke the screen where a user enters his/hers hours.
+[EHO-338] A dialogue pops up when a user enters hours but does not save the timesheet. This was broken when changing the weeks.
+[EHO-339] Trying to change the username of an existing user through the admin interface was broken. Fixed.
+[EHO-341] Cancelling editing the comment of an hour entry, would erase any existing comment for that entry.
+[EHO-343] eHour now checks regularly (daily) for an update and displays a notification when a new version of eHour is released.
+
 eHour 1.2.1 release notes (2 June 2013)
 ------------------------------------------
 And eHour reaches version 1.2.1 - a bug-fix release fixing the following issues:
