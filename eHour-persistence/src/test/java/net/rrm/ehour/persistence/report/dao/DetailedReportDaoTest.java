@@ -15,22 +15,20 @@
  */
 
 package net.rrm.ehour.persistence.report.dao;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
-import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
-import net.rrm.ehour.report.reports.element.FlatReportElement;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings({"deprecation"})
 public class DetailedReportDaoTest extends AbstractAnnotationDaoTest

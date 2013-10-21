@@ -58,7 +58,7 @@
         </developer>
     </developers>
     <properties>
-        <spring.version>3.0.7.RELEASE</spring.version>
+        <spring.version>3.2.4.RELEASE</spring.version>
         <wicket.version>6.10.0</wicket.version>
         <jetty.version>8.1.11.v20130520</jetty.version>
         <derbydb.version>10.8.2.2</derbydb.version>
@@ -72,6 +72,7 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scalaj.artifactId>scalaj-collection_2.9.1</scalaj.artifactId>
+        <spring-security.version>3.1.4.RELEASE</spring-security.version>
     </properties>
 
     <dependencyManagement>
@@ -256,8 +257,38 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-expression</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring-security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-tx</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
@@ -288,6 +319,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
@@ -420,17 +456,7 @@
                 <artifactId>xercesImpl</artifactId>
                 <version>2.8.1</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>3.0.2.RELEASE</version>
-            </dependency>
 
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>3.0.2.RELEASE</version>
-            </dependency>
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>
@@ -467,7 +493,6 @@
                 <artifactId>eHour-standalone</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>net.rrm.ehour</groupId>

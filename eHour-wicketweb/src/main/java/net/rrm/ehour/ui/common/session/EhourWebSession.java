@@ -201,7 +201,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
             if (auth != null) {
-                Collection<GrantedAuthority> authorities = auth.getAuthorities();
+                Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 
                 for (GrantedAuthority grantedAuthority : authorities) {
                     roles.add(grantedAuthority.getAuthority());

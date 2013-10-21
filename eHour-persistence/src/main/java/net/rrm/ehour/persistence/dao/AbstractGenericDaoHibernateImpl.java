@@ -17,7 +17,6 @@
 package net.rrm.ehour.persistence.dao;
 
 import net.rrm.ehour.domain.DomainObject;
-import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -72,7 +71,6 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?,
 	 * @param isCaching
 	 * @param cachingRegion
 	 * @return
-	 * @throws DataAccessException
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> findByNamedQueryAndNamedParam(final String queryName, 
@@ -80,7 +78,6 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?,
 												final Object[] values,
 												boolean isCaching,
 												final String cachingRegion)
-					throws DataAccessException 
 	{
 		if (!isCaching)
 		{

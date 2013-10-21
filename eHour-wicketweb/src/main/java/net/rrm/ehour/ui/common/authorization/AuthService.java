@@ -18,10 +18,8 @@ package net.rrm.ehour.ui.common.authorization;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,7 +40,7 @@ public class AuthService implements UserDetailsService
 	 * @param username
 	 */
 	
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		AuthUser	authUser;
 		
