@@ -7,7 +7,7 @@ import net.rrm.ehour.util.EhourConstants
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-import static org.junit.Assert.assertEquals
+import static org.junit.Assert.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
