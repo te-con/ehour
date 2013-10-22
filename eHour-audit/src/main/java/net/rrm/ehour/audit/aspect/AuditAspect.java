@@ -250,7 +250,7 @@ public class AuditAspect {
         int i = 0;
 
         for (Object object : pjp.getArgs()) {
-            parameters.append(i++ + ":");
+            parameters.append(i++).append(":");
 
             if (object == null) {
                 parameters.append("null");
