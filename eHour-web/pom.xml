@@ -6,7 +6,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.rrm.ehour</groupId>
 	<artifactId>eHour-web</artifactId>
 	<packaging>war</packaging>
 	<name>eHour web UI</name>
