@@ -37,7 +37,4 @@ class QuickWeekTest extends FunSuite with BeforeAndAfter with ShouldMatchers {
       'year (expected.getYear)
     )
   }
-
-
-
 }

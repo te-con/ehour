@@ -44,7 +44,7 @@ object DetailedReportChartGenerator {
       SparseDateSeries(name = categoryNameMap.get(category), data = values, dateStart = new DateTime(reportRange.getDateStart), dateEnd = new DateTime(reportRange.getDateEnd))
     }).toList
 
-    val chart = new Chart(defaultSeriesType = SeriesType.Column, zoomType = ZoomType.X)
+    val chart = new Chart(defaultSeriesType = SeriesType.column, zoomType = ZoomType.x)
 
     val seriesLength = if (series.length > 0) series.head.data.length else 1
 
@@ -53,7 +53,7 @@ object DetailedReportChartGenerator {
 
     val plotOptions = PlotOptions(PlotOptionsSeries(shadow = !isBigDataSet, pointStart = Some(new DateTime(reportRange.getDateStart)), pointInterval = Some(PointInterval.DAY)), column = PlotOptionsColumn(pointWidth = 10))
     new HighChart(chart = chart,
-      xAxis = Seq(Axis(axisType = AxisType.Datetime, maxZoom = 3)),
+      xAxis = Seq(Axis(axisType = AxisType.datetime, maxZoom = 3)),
       series = series,
       plotOptions = plotOptions
     )

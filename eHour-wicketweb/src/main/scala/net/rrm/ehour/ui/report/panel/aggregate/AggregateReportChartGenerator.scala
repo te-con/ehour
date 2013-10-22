@@ -50,7 +50,7 @@ object AggregateReportChartGenerator {
     val chartTitleText = if (chartContext.withTurnover) chartTitle + " and turnover" else chartTitle
 
     val height = (categories.size * 35) + 110
-    val chart = Chart(defaultSeriesType = SeriesType.Bar, height = if (height < 400) 400 else height)
+    val chart = Chart(defaultSeriesType = SeriesType.bar, height = if (height < 400) 400 else height)
 
     HighChart(chart = chart,
       xAxis = Seq(Axis(Some(categories.toArray))),
