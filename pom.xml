@@ -736,9 +736,9 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>org.scala-tools</groupId>
-                    <artifactId>maven-scala-plugin</artifactId>
-                    <version>2.15.2</version>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <version>3.1.5</version>
                     <executions>
                         <execution>
                             <id>scala-compile-first</id>
@@ -757,12 +757,19 @@
                         </execution>
                     </executions>
                     <configuration>
+                        <scalaVersion>${scala.version}</scalaVersion>
+                        <recompileMode>incremental</recompileMode>
+                        <useZincServer>true</useZincServer>
                         <jvmArgs>
                             <arg>-XX:+TieredCompilation</arg>
-                            <arg>-XX:CICompilerCount=1</arg>
+                            <arg>-XX:CICompilerCount=4</arg>
                         </jvmArgs>
+                        <args>
+                            <arg>-deprecation</arg>
+                            <arg>-unchecked</arg>
+                        </args>
                     </configuration>
-                </plugin>
+                </plugin>                
 
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>

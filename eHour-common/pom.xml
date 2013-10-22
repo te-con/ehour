@@ -17,60 +17,11 @@
               </plugin>
 
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <scalaVersion>${scala.version}</scalaVersion>
-                </configuration>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
             </plugin>
         </plugins>
 
-        <resources>
-            <resource>
-                <filtering>false</filtering>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-            </resource>
-        </resources>
-
-        <testResources>
-            <testResource>
-                <filtering>false</filtering>
-                <directory>src/test/java</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </testResource>
-            <testResource>
-                <filtering>false</filtering>
-                <directory>src/test/resources</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-            </testResource>
-            <testResource>
-                <filtering>false</filtering>
-                <directory>src/test/scala</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-                <excludes>
-                    <exclude>**/*.scala</exclude>
-                </excludes>
-            </testResource>
-        </testResources>
     </build>
 
     <dependencies>

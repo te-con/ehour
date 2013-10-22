@@ -10,30 +10,6 @@
     <packaging>jar</packaging>
     <name>eHour audit interceptor</name>
 
-    <build>
-        <testResources>
-            <testResource>
-                <filtering>false</filtering>
-                <directory>src/test/java</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </testResource>
-            <testResource>
-                <filtering>false</filtering>
-                <directory>src/test/resources</directory>
-                <includes>
-                    <include>**</include>
-                </includes>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </testResource>
-        </testResources>
-    </build>
     <dependencies>
         <dependency>
             <groupId>net.rrm.ehour</groupId>
