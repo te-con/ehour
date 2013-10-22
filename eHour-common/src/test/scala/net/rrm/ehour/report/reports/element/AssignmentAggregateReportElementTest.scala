@@ -41,7 +41,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAllowedOverrun(10)
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
-    20 == e.getAvailableHours
+    20 == e.getAvailableHours.toInt
   }
 
   test("should calculate available hours for allotted fixed") {
@@ -49,7 +49,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED)
     assignment.setAllottedHours(20)
 
-    10 == new AssignmentAggregateReportElement(assignment, 10).getAvailableHours
+    10 == new AssignmentAggregateReportElement(assignment, 10).getAvailableHours.toInt
   }
 
   test("should get 50% progress for date assignment when we're in the middle") {

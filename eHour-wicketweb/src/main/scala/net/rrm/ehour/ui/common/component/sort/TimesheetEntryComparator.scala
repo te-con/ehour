@@ -23,11 +23,11 @@ import net.rrm.ehour.domain.TimesheetEntry
  */
 class TimesheetEntryComparator extends Comparator[TimesheetEntry] {
   def compare(t1: TimesheetEntry,  t2: TimesheetEntry) : Int = {
-    val t1_code = t1.getEntryId().getProjectAssignment()
-      .getProject().getProjectCode()
+    val t1_code = t1.getEntryId().getProjectAssignment
+      .getProject.getProjectCode
 
     val t2_code = t2.getEntryId().getProjectAssignment()
-      .getProject().getProjectCode()
+      .getProject().getProjectCode
 
     t1_code.compare(t2_code)
   }

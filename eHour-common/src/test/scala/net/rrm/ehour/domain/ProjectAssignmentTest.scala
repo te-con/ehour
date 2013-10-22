@@ -91,7 +91,7 @@ class ProjectAssignmentTest extends FunSuite
 
   def sortAssignments(unsorted: List[ProjectAssignment]) = {
     val sorted = new TreeSet[ProjectAssignment]
-    unsorted.foreach(sorted.add(_))
-    sorted.toArray()
+    unsorted.foreach(sorted.add)
+    sorted.toArray
   }
 }

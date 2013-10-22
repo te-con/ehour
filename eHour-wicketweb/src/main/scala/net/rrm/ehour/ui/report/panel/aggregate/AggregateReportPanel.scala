@@ -31,7 +31,7 @@ abstract class AggregateReportPanel(id: String, reportModel: TreeReportModel, re
   }
 
   private def addCharts(data: ReportData, parent: WebMarkupContainer): Panel = {
-    val rawData: ReportData = (data.asInstanceOf[TreeReportData]).getRawReportData
+    val rawData: ReportData = data.asInstanceOf[TreeReportData].getRawReportData
     implicit val withTurnover = EhourWebSession.getSession.isWithReportRole
 
     new HighChartContainer("chart", new Model(rawData), generateChart)

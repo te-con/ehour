@@ -53,16 +53,14 @@ public class DateRangeTest {
 
         assertFalse(rA.equals(new Object()));
 
-        rB = new DateRange(da, null);
         assertFalse(rA.equals(new Object()));
 
-        rB = new DateRange(null, da);
         assertFalse(rA.equals(new Object()));
 
         rB = new DateRange(db, da);
         assertFalse(rA.equals(new Object()));
 
-        assertFalse(rA.equals(null));
+        assertNotNull(rA);
         rA = new DateRange(da, null);
         assertFalse(rA.equals(rB));
 

@@ -120,16 +120,6 @@ public class ReportCriteriaServiceTest
 		ReportCriteria		reportCriteria;
 		UserCriteria		userCriteria;
 		
-		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
-		
-		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
-		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
-		
-		reportCriteria = new ReportCriteria();
-		// bit odd but otherwise unnecc. stuff is called
-//		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
-//		reportCriteria.setReportCriteriaService(rsMock);
-		
 		userCriteria = new UserCriteria();
 		userCriteria.setOnlyActiveUsers(false);
 		userCriteria.setOnlyActiveCustomers(true);
@@ -165,17 +155,7 @@ public class ReportCriteriaServiceTest
 	{
 		ReportCriteria		reportCriteria;
 		UserCriteria		userCriteria;
-		
-		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
-		
-		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
-		prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
-		
-		reportCriteria = new ReportCriteria();
-		// bit odd but otherwise unnecc. stuff is called
-//		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
-//		reportCriteria.setReportCriteriaService(rsMock);
-		
+
 		userCriteria = new UserCriteria();
 		userCriteria.setOnlyActiveUsers(false);
 		userCriteria.setOnlyActiveCustomers(true);

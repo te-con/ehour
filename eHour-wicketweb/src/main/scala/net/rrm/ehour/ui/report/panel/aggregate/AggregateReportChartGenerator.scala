@@ -63,7 +63,7 @@ object AggregateReportChartGenerator {
   }
 
   private def extractCategoryData(elements: Seq[AssignmentAggregateReportElement], findCategory: (AssignmentAggregateReportElement) => String): List[(String, Float, Float)] = {
-    val categories = (elements map (findCategory(_))).toSet
+    val categories = (elements map findCategory).toSet
 
     val aggregator = (id: String, valueOf: (AssignmentAggregateReportElement) => Float) => elements.foldLeft(0f)((total, element) => if (findCategory(element) == id) total + valueOf(element) else total)
 

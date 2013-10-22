@@ -52,11 +52,13 @@ public class TranslationDiscovery {
 
         List<String> translations = new ArrayList<String>();
 
-        for (File file : files) {
-            if (file.getName().startsWith(FILE_PREFIX)) {
-                translations.add(parseTranslationFile(file));
-            } else {
-                LOG.warn("Invalid filename for translations, ignoring: " + file.getName());
+        if (files != null) {
+            for (File file : files) {
+                if (file.getName().startsWith(FILE_PREFIX)) {
+                    translations.add(parseTranslationFile(file));
+                } else {
+                    LOG.warn("Invalid filename for translations, ignoring: " + file.getName());
+                }
             }
         }
 
