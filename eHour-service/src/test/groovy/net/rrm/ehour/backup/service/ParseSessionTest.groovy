@@ -1,9 +1,10 @@
 package net.rrm.ehour.backup.service
 
-import junit.framework.Assert
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType
 import org.junit.Before
 import org.junit.Test
+
+import static junit.framework.TestCase.assertFalse
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -20,18 +21,18 @@ class ParseSessionTest {
   @Test
   void shouldNotBeImportableWithGlobalErrors() {
     session.globalError = true
-    Assert.assertFalse session.importable
+    assertFalse session.importable
   }
 
   @Test
   void shouldNotBeImportableWhenImported() {
     session.imported = true
-    Assert.assertFalse session.importable
+    assertFalse session.importable
   }
 
   @Test
   void shouldNotBeImportableWhenErrorOccured() {
     session.addError BackupEntityType.USER_ROLE, "fe"
-    Assert.assertFalse session.importable
+    assertFalse session.importable
   }
 }

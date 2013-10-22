@@ -1,13 +1,13 @@
 package net.rrm.ehour.persistence.project.dao
 
 import net.rrm.ehour.data.DateRange
+import net.rrm.ehour.domain.*
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import net.rrm.ehour.util.EhourConstants
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import net.rrm.ehour.domain.*
 
-import static junit.framework.Assert.*
+import static org.junit.Assert.assertEquals
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)

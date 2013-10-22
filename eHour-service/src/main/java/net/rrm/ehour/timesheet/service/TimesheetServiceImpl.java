@@ -45,7 +45,7 @@ import java.util.*;
 
 /**
  * Provides services for displaying and manipulating timesheets.
- * Methods are organized by their functionality rather than technical impact. 
+ * Methods are organized by their functionality rather than technical impact.
  * @author Thies
  *
  */
@@ -57,19 +57,19 @@ public class TimesheetServiceImpl implements TimesheetService
 
 	@Autowired
 	private TimesheetCommentDao	timesheetCommentDAO;
-	
+
 	@Autowired
 	private	AggregateReportService		aggregateReportService;
-	
+
 	@Autowired
 	private ProjectAssignmentService	projectAssignmentService;
-	
+
 	@Autowired
 	private	EhourConfig			configuration;
-	
+
 	@Autowired
 	private TimesheetPersister	timesheetPersister;
-	
+
 
 	private	static final Logger	LOGGER = Logger.getLogger(TimesheetServiceImpl.class);
 
@@ -80,25 +80,25 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @param requestedMonth only the month and year of the calendar is used
 	 * @return TimesheetOverviewAction
 	 * @throws ObjectNotFoundException
-	 */	
-	public TimesheetOverview getTimesheetOverview(User user, Calendar requestedMonth) 
+	 */
+	public TimesheetOverview getTimesheetOverview(User user, Calendar requestedMonth)
 	{
 		TimesheetOverview overview = new TimesheetOverview();
 
 		DateRange monthRange = DateUtil.calendarToMonthRange(requestedMonth);
 		LOGGER.debug("Getting timesheet overview for userId " + user.getUserId() + " in range " + monthRange);
-		
+
 		overview.setProjectStatus(getProjectStatus(user.getUserId(), monthRange));
-		
+
 		List<TimesheetEntry> timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), monthRange);
 		LOGGER.debug("Timesheet entries found for userId " + user.getUserId() + " in range " + monthRange + ": " + timesheetEntries.size());
 
 		Map<Integer, List<TimesheetEntry>> calendarMap = entriesToCalendarMap(timesheetEntries);
 		overview.setTimesheetEntries(calendarMap);
-		
+
 		return overview;
 	}
-	
+
 	/**
 	 * Get project status for user
 	 * @param userId
@@ -113,11 +113,11 @@ public class TimesheetServiceImpl implements TimesheetService
 		List<AssignmentAggregateReportElement> 	timeAllottedAggregates;
 		Map<Integer, AssignmentAggregateReportElement>	originalAggregates = new HashMap<Integer, AssignmentAggregateReportElement>();
 		Integer 							assignmentId;
-		
+
 		aggregates = aggregateReportService.getHoursPerAssignmentInRange(userId, monthRange);
-		
+
 		LOGGER.debug("Getting project status for " + aggregates.size() + " assignments");
-		
+
 		// only flex & fixed needed, others can already be added to the returned list
 		for (AssignmentAggregateReportElement aggregate : aggregates)
 		{
@@ -135,25 +135,25 @@ public class TimesheetServiceImpl implements TimesheetService
 				userProjectStatus.add(new UserProjectStatus(aggregate));
 			}
 		}
-		
+
 		// fetch total hours for flex/fixed assignments
 		if (assignmentIds.size() > 0)
 		{
 			timeAllottedAggregates = aggregateReportService.getHoursPerAssignment(assignmentIds);
-			
+
 			for (AssignmentAggregateReportElement aggregate : timeAllottedAggregates)
 			{
 				userProjectStatus.add(new UserProjectStatus(originalAggregates.get(aggregate.getProjectAssignment().getAssignmentId()),
 																					aggregate.getHours()));
 			}
 		}
-		
+
 		return userProjectStatus;
 	}
-	
+
 	/**
 	 * Get a list with all day numbers in this month that has complete booked days (config defines the completion
-	 * level). 
+	 * level).
 	 * @param userId
 	 * @param requestedMonth
 	 * @return List with Integers of complete booked days
@@ -172,12 +172,12 @@ public class TimesheetServiceImpl implements TimesheetService
                 fullyBookedDays.add(new LocalDate(bookedDay.getDate()));
             }
         }
-		
+
 		Collections.sort(fullyBookedDays);
-		
+
 		return fullyBookedDays;
-	}		
-	
+	}
+
 	/**
 	 * Put the timesheet entries in a map where the day is the key and
 	 * the value is a list of timesheet entries filled out for that date
@@ -190,20 +190,20 @@ public class TimesheetServiceImpl implements TimesheetService
 		Calendar							cal;
 		Integer								dayKey;
 		List<TimesheetEntry> 				dayEntries;
-		
+
 		calendarMap = new HashMap<Integer, List<TimesheetEntry>>();
-		
+
 		for (TimesheetEntry entry: timesheetEntries)
 		{
 			if (entry == null)
 			{
 				continue;
 			}
-				
+
            cal = new GregorianCalendar();
            cal.setTime(entry.getEntryId().getEntryDate());
-           
-           dayKey = Integer.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+
+           dayKey = cal.get(Calendar.DAY_OF_MONTH);
 
            if (calendarMap.containsKey(dayKey))
            {
@@ -217,11 +217,11 @@ public class TimesheetServiceImpl implements TimesheetService
            dayEntries.add(entry);
 
            calendarMap.put(dayKey, dayEntries);
-        }		
-		
+        }
+
 		return calendarMap;
 	}
-	
+
 	/**
 	 * Get week overview for a date. Week number of supplied requested week is used
 	 * @param userId
@@ -234,20 +234,20 @@ public class TimesheetServiceImpl implements TimesheetService
 		DateRange		range;
 
 		weekOverview = new WeekOverview();
-		
+
 		requestedWeek.setFirstDayOfWeek(config.getFirstDayOfWeek());
 		range = DateUtil.getDateRangeForWeek(requestedWeek);
 
 		weekOverview.setWeekRange(range);
-		
+
 		weekOverview.setTimesheetEntries(timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), range));
 		weekOverview.setComment(timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart())));
 		weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range));
 
 		weekOverview.initCustomers();
-		
+
 		weekOverview.setUser(user);
-		
+
 		return weekOverview;
 	}
 
@@ -256,14 +256,14 @@ public class TimesheetServiceImpl implements TimesheetService
 	 * @see net.rrm.ehour.persistence.persistence.timesheet.service.TimesheetService#persistTimesheetWeek(java.util.Collection, net.rrm.ehour.persistence.persistence.domain.TimesheetComment, net.rrm.ehour.persistence.persistence.data.DateRange)
 	 */
 	@Transactional
-	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, 
+	public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
 																TimesheetComment comment,
 																DateRange weekRange)
 	{
 		Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
 
 		List<ProjectAssignmentStatus> errorStatusses = new ArrayList<ProjectAssignmentStatus>();
-		
+
 		for (Map.Entry<ProjectAssignment, List<TimesheetEntry>> entry : timesheetRows.entrySet())
 		{
 			try
@@ -274,17 +274,17 @@ public class TimesheetServiceImpl implements TimesheetService
 				errorStatusses.add( e.getStatus());
 			}
 		}
-		
+
 		if (comment.getNewComment() == Boolean.FALSE ||
 				!StringUtils.isBlank(comment.getComment()))
 		{
 			LOGGER.debug("Persisting timesheet comment for week " + comment.getCommentId().getCommentDate());
 			timesheetCommentDAO.persist(comment);
 		}
-		
+
 		return errorStatusses;
 	}
-	
+
 	/**
 	 * Get timesheet as rows
 	 * @param entries
@@ -293,21 +293,21 @@ public class TimesheetServiceImpl implements TimesheetService
 	private Map<ProjectAssignment, List<TimesheetEntry>> getTimesheetAsRows(Collection<TimesheetEntry> entries)
 	{
 		Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = new HashMap<ProjectAssignment, List<TimesheetEntry>>();
-		
+
 		for (TimesheetEntry timesheetEntry : entries)
 		{
 			ProjectAssignment assignment = timesheetEntry.getEntryId().getProjectAssignment();
-			
-			List<TimesheetEntry> assignmentEntries = (timesheetRows.containsKey(assignment)) 
-															? timesheetRows.get(assignment) 
+
+			List<TimesheetEntry> assignmentEntries = (timesheetRows.containsKey(assignment))
+															? timesheetRows.get(assignment)
 															: new ArrayList<TimesheetEntry>();
-															
+
 			assignmentEntries.add(timesheetEntry);
-			
+
 			timesheetRows.put(assignment, assignmentEntries);
 		}
-		
-		return timesheetRows; 
+
+		return timesheetRows;
 	}
 
 	/*
@@ -318,14 +318,14 @@ public class TimesheetServiceImpl implements TimesheetService
 	public void deleteTimesheetEntries(User user)
 	{
 		timesheetCommentDAO.deleteCommentsForUser(user.getUserId());
-		
+
 		if (user.getProjectAssignments() != null && user.getProjectAssignments().size() > 0)
 		{
 			timesheetDAO.deleteTimesheetEntries(EhourUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
 		}
 	}
-		
-	
+
+
 	/**
 	 * DAO setter (Spring)
 	 * @param dao
@@ -338,13 +338,13 @@ public class TimesheetServiceImpl implements TimesheetService
 	/**
 	 * ReportData setter (Spring)
 	 * @param dao
-	 */	
-	
+	 */
+
 	public void setReportService(AggregateReportService aggregateReportService)
 	{
 		this.aggregateReportService = aggregateReportService;
 	}
-	
+
 	/**
 	 * Setter for the config
 	 * @param config

@@ -1,11 +1,9 @@
 package net.rrm.ehour.persistence.project.dao
 
+import net.rrm.ehour.domain.*
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import net.rrm.ehour.domain.*
-
-import static junit.framework.Assert.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
