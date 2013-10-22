@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.admin;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.common.panel.nav.admin.AdminNavPanel;
-
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -28,7 +28,7 @@ import org.apache.wicket.model.ResourceModel;
  * Base page for admin adding admin nav and contextual help
  **/
 
-@AuthorizeInstantiation("ROLE_ADMIN")
+@AuthorizeInstantiation(UserRole.ROLE_ADMIN)
 public abstract class AbstractAdminPage<T> extends AbstractBasePage<T>
 {
 	private static final long serialVersionUID = -1388562551962543722L;

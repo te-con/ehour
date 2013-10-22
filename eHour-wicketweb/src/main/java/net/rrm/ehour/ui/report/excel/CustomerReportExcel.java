@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.report.excel;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
 import net.rrm.ehour.ui.common.report.Report;
@@ -25,7 +26,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-@AuthorizeInstantiation("ROLE_REPORT")
+@AuthorizeInstantiation(UserRole.ROLE_REPORT)
 public class CustomerReportExcel extends AbstractExcelReport {
     private static final long serialVersionUID = 7211392869328367507L;
 

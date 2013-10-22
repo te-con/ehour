@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
@@ -36,7 +37,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 
-@AuthorizeInstantiation(value = {"ROLE_CONSULTANT", "ROLE_REPORT"})
+@AuthorizeInstantiation(value = {UserRole.ROLE_CONSULTANT, UserRole.ROLE_REPORT})
 public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     private static final long serialVersionUID = 6614404841734599622L;
 

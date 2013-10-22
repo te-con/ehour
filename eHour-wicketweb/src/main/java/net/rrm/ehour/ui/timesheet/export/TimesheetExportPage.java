@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.timesheet.export;
 
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -41,7 +42,7 @@ import java.util.Calendar;
 /**
  * Print month page
  */
-@AuthorizeInstantiation("ROLE_CONSULTANT")
+@AuthorizeInstantiation(UserRole.ROLE_CONSULTANT)
 public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> implements AjaxEventListener {
     private static final long serialVersionUID = 1891959724639181159L;
 

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.page;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
@@ -34,7 +35,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 
-@AuthorizeInstantiation("ROLE_CONSULTANT")
+@AuthorizeInstantiation(UserRole.ROLE_CONSULTANT)
 public class MonthOverviewPage extends AbstractBasePage<Void> {
     private static final long serialVersionUID = -6873845464139697303L;
     private static final String ID_CONTENT_CONTAINER = "contentContainer";

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.admin;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -28,7 +29,7 @@ import org.apache.wicket.model.ResourceModel;
  **/
 
 @SuppressWarnings("serial")
-@AuthorizeInstantiation("ROLE_ADMIN")
+@AuthorizeInstantiation(UserRole.ROLE_ADMIN)
 public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractAdminPage<BB>
 {
 	private	AddEditTabbedPanel<BB>	tabbedPanel;

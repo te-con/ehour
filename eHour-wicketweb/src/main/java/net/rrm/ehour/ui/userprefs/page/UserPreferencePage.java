@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.userprefs.page;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
@@ -32,7 +33,7 @@ import org.apache.wicket.model.ResourceModel;
 /**
  * User preference page 
  **/
-@AuthorizeInstantiation({"ROLE_CONSULTANT", "ROLE_ADMIN", "ROLE_REPORT"})
+@AuthorizeInstantiation({UserRole.ROLE_CONSULTANT, UserRole.ROLE_ADMIN, UserRole.ROLE_REPORT})
 public class UserPreferencePage extends AbstractBasePage<Void>
 {
 	public UserPreferencePage() throws ObjectNotFoundException

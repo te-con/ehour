@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.pm.page;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -47,7 +48,7 @@ import java.util.List;
 /**
  * Project management base station :)
  */
-@AuthorizeInstantiation("ROLE_PROJECTMANAGER")
+@AuthorizeInstantiation(UserRole.ROLE_PROJECTMANAGER)
 public class ProjectManagement extends AbstractBasePage<ReportCriteria> {
     private static final long serialVersionUID = 898442184509251553L;
     public static final String REPORT_PANEL = "reportPanel";
