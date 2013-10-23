@@ -18,7 +18,6 @@ class ProjectFormPanelTest extends AbstractSpringWebAppTester with FunSuite with
   var userService: UserService = _
   var customerService: CustomerService = _
 
-
   before {
     super.setUp()
 

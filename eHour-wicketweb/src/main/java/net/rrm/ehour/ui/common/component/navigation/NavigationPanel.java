@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.component.header;
+package net.rrm.ehour.ui.common.component.navigation;
 
 import net.rrm.ehour.ui.common.menu.MenuDefinition$;
 import net.rrm.ehour.ui.common.menu.TreeBasedMenu;
@@ -34,11 +34,11 @@ import org.apache.wicket.model.Model;
  * Main navigation panel
  **/
 
-public class HeaderPanel extends AbstractBasePanel<Void>
+public class NavigationPanel extends AbstractBasePanel<Void>
 {
 	private static final long serialVersionUID = 854412484275829659L;
 
-	public HeaderPanel(String id)
+	public NavigationPanel(String id)
 	{
 		super(id);
 

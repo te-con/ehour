@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.common.page;
 
 import com.google.common.base.Optional;
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.common.component.header.HeaderPanel;
+import net.rrm.ehour.ui.common.component.navigation.NavigationPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -55,7 +55,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     }
 
     private void setupPage(ResourceModel pageTitle) {
-        add(new HeaderPanel("mainNav"));
+        add(new NavigationPanel("mainNav"));
         add(new Label("pageTitle", pageTitle));
         addLatestVersionBlock(NEW_VERSION_ID);
     }
