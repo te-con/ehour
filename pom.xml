@@ -682,6 +682,9 @@
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
+                        <include>**/*Test.scala</include>
+                        <include>**/*Spec.java</include>
+                        <include>**/*Spec.scala</include>
                     </includes>
                     <parallel>both</parallel>
                     <threadCount>6</threadCount>
