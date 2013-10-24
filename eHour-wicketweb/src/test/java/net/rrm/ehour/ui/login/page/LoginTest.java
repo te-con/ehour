@@ -34,13 +34,17 @@ import static org.easymock.EasyMock.*;
 
 public class LoginTest extends AbstractSpringWebAppTester
 {
+    @Override
+    protected Roles getRoles() {
+        Roles authorizedRoles = new Roles();
+        authorizedRoles.add(WebUtils.ROLE_ADMIN);
+
+        return authorizedRoles;
+    }
+
 	@Test
 	public void shouldLoginPageRender()
 	{
-		Roles authorizedRoles = new Roles();
-		authorizedRoles.add(WebUtils.ROLE_ADMIN);
-
-		webApp.setAuthorizedRoles(authorizedRoles);
 
 		getTester().startPage(Login.class);
 		getTester().assertRenderedPage(Login.class);

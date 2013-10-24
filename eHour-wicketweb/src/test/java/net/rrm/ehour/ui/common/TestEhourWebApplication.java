@@ -16,10 +16,8 @@
 
 package net.rrm.ehour.ui.common;
 
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.common.authorization.AuthUser;
+import net.rrm.ehour.ui.common.session.DevelopmentWebSession;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import org.apache.wicket.Component;
@@ -32,14 +30,11 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 public class TestEhourWebApplication extends EhourWebApplication implements Serializable {
     private static final long serialVersionUID = -7336200909844170964L;
     private EhourWebSession session;
-    private Roles authorizedRoles;
-    private User authenticatedUser;
+    private Roles authorizedRoles = null;
 
     /**
      * When not authorized, just let it pass
@@ -59,55 +54,9 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
     @SuppressWarnings("serial")
     @Override
     public Session newSession(final Request request, final Response response) {
-        session = new EhourWebSession(request) {
-            public AuthUser getUser() {
-                User user = createAuthenticatedUser();
-
-                return new AuthUser(user);
-            }
-
-
-            public Roles getRoles() {
-                return createAuthorizedRoles();
-            }
-
-            @Override
-            public boolean authenticate(String username, String password) {
-                return true;
-            }
-        };
+        session = new DevelopmentWebSession(request, authorizedRoles);
 
         return session;
-    }
-
-    protected Roles createAuthorizedRoles() {
-        if (authorizedRoles == null) {
-            authorizedRoles = new Roles();
-            authorizedRoles.add(UserRole.ROLE_PROJECTMANAGER);
-            authorizedRoles.add(UserRole.ROLE_CONSULTANT);
-            authorizedRoles.add(UserRole.ROLE_ADMIN);
-            authorizedRoles.add(UserRole.ROLE_REPORT);
-        }
-
-        return authorizedRoles;
-    }
-
-    protected User createAuthenticatedUser() {
-        if (authenticatedUser == null) {
-            User user = new User(1);
-            user.setUsername("thies");
-            user.setPassword("secret");
-
-            Set<UserRole> userRoles = new HashSet<UserRole>();
-            userRoles.addAll(UserRole.ROLES.values());
-
-            user.setUserRoles(userRoles);
-
-            authenticatedUser = user;
-        }
-
-
-        return authenticatedUser;
     }
 
     public void setAuthorizedRoles(Roles authorizedRoles) {

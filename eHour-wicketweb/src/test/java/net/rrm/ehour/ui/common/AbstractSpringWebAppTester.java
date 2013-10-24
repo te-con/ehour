@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.common;
 
 import net.rrm.ehour.ui.test.StrictWicketTester;
 import org.apache.wicket.Component;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.junit.After;
@@ -42,9 +43,15 @@ public abstract class AbstractSpringWebAppTester extends AbstractSpringTester {
             }
         };
 
+        webApp.setAuthorizedRoles(getRoles());
+
         tester = new StrictWicketTester(webApp);
 
         bypassStringResourceLoading();
+    }
+
+    protected Roles getRoles() {
+        return null;
     }
 
     @After

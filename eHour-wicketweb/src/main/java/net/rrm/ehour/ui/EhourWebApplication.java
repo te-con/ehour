@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.admin.user.page.UserAdminPage;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
+import net.rrm.ehour.ui.common.session.DevelopmentWebSession;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
@@ -48,6 +49,8 @@ import org.apache.wicket.markup.head.ResourceAggregator;
 import org.apache.wicket.markup.head.StringHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,6 +77,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     @Value("${ehour.translations}")
     private String translationsDir;
+
+    @Value("${ehour.disableAuth:false}")
+    private Boolean disableAuth;
 
     public void init() {
         if (!initialized) {
@@ -194,6 +200,15 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
                 }
             }
         });
+    }
+
+    @Override
+    public Session newSession(Request request, Response response) {
+        if (disableAuth) {
+            return new DevelopmentWebSession(request);
+        } else {
+            return super.newSession(request, response);
+        }
     }
 
     @Override
