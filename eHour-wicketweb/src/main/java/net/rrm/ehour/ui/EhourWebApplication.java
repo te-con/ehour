@@ -205,6 +205,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     @Override
     public Session newSession(Request request, Response response) {
         if (disableAuth) {
+            System.err.println("*** eHour is configured to disable any authentication");
+            System.err.println("*** Enable by setting ehour.disableAuth=false in your ehour.properties");
+            System.err.println("*** DO NOT RUN IN PRODUCTION WITH THIS CONFIGURATION");
             return new DevelopmentWebSession(request);
         } else {
             return super.newSession(request, response);
