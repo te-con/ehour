@@ -532,6 +532,13 @@ div.LoggedInAs a:link, div.LoggedInAs a:visited {
     float: left;
 }
 
+.content {
+    margin-left: 10px;
+    font: 1.0em Geneva, Arial, Helvetica, sans-serif;
+    color: #3b556d;
+
+}
+
 /* from http://www.oscaralexander.com/tutorials/how-to-make-sexy-buttons-with-css.html */
 .clear {
     overflow: hidden;
