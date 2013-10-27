@@ -1,15 +1,11 @@
 package net.rrm.ehour.persistence.datasource;
 
-import net.rrm.ehour.appconfig.EhourHomeUtil;
+import net.rrm.ehour.config.PersistenceConfig;
 import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
-import net.rrm.ehour.util.IoUtil;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * @author thies
@@ -22,21 +18,9 @@ public class DerbyDataSourceFactory {
         EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
         dataSource.setDatabaseName(databaseName);
 
-        File ehourPropertiesFile = EhourHomeUtil.getEhourPropertiesFile();
+        DerbyDbValidator validator = new DerbyDbValidator(PersistenceConfig.DB_VERSION, dataSource);
+        validator.checkDatabaseState();
 
-        Properties properties = new Properties();
-
-        FileInputStream stream = null;
-        try {
-            stream = new FileInputStream(ehourPropertiesFile);
-            properties.load(stream);
-            DerbyDbValidator validator = new DerbyDbValidator(properties.getProperty("ehour.db.version"), dataSource);
-            validator.checkDatabaseState();
-
-            return dataSource;
-        } finally {
-            IoUtil.close(stream);
-
-        }
+        return dataSource;
     }
 }

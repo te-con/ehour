@@ -1,5 +1,6 @@
 package net.rrm.ehour.persistence.dao;
 
+import net.rrm.ehour.config.PersistenceConfig;
 import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -9,7 +10,6 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,9 +32,6 @@ public abstract class AbstractAnnotationDaoTest
 {
     @Autowired
     private DataSource eHourDataSource;
-
-    @Value("${ehour.db.version}")
-    private String dbVersion;
 
     private static FlatXmlDataSet userDataSet;
     private String[] additionalDataSetFileNames = new String[0];
@@ -64,16 +61,11 @@ public abstract class AbstractAnnotationDaoTest
         this.additionalDataSetFileNames = dataSetFileNames;
     }
 
-    protected void setAdditionalDataSetFileNames(String[] additionalDataSetFileNames)
-    {
-        this.additionalDataSetFileNames = additionalDataSetFileNames;
-    }
-
 
     @Before
     public final void setUpDatabase() throws Exception
     {
-        DerbyDbValidator validator = new DerbyDbValidator(dbVersion, eHourDataSource);
+        DerbyDbValidator validator = new DerbyDbValidator(PersistenceConfig.DB_VERSION, eHourDataSource);
         validator.checkDatabaseState();
 
         Connection con = DataSourceUtils.getConnection(eHourDataSource);
