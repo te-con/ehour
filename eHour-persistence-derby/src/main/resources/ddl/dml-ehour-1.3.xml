@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <hibernate_unique_key next_hi="1000"></hibernate_unique_key>
+  <configuration config_key="completeDayHours" config_value="8"></configuration>
+  <configuration config_key="showTurnOver" config_value="true"></configuration>
+  <configuration config_key="localeLanguage" config_value="en"></configuration>
+  <configuration config_key="localeCountry" config_value="en-US"></configuration>
+  <configuration config_key="localeCurrency" config_value="en-US"></configuration>
+  <configuration config_key="availableTranslations" config_value="en,nl,fr,it"></configuration>
+  <configuration config_key="mailFrom" config_value="admin@localhost.net"></configuration>
+  <configuration config_key="mailSmtp" config_value="127.0.0.1"></configuration>
+  <configuration config_key="smtpPort" config_value="25"></configuration>
+  <configuration config_key="version" config_value="1.3"></configuration>
+  <configuration config_key="demoMode" config_value="false"></configuration>
+  <configuration config_key="initialized" config_value="false"></configuration>
+  <configuration config_key="auditType" config_value="WRITE"></configuration>
+  <mail_type MAIL_TYPE_ID="1" MAIL_TYPE="FIXED_ALLOTTED_REACHED"></mail_type>
+  <mail_type MAIL_TYPE_ID="2" MAIL_TYPE="FLEX_ALLOTTED_REACHED"></mail_type>
+  <mail_type MAIL_TYPE_ID="3" MAIL_TYPE="FLEX_OVERRUN_REACHED"></mail_type>
+  <project_assignment_type ASSIGNMENT_TYPE_ID="0" ASSIGNMENT_TYPE="DATE_TYPE"></project_assignment_type>
+  <project_assignment_type ASSIGNMENT_TYPE_ID="2" ASSIGNMENT_TYPE="TIME_ALLOTTED_FIXED"></project_assignment_type>
+  <project_assignment_type ASSIGNMENT_TYPE_ID="3" ASSIGNMENT_TYPE="TIME_ALLOTTED_FLEX"></project_assignment_type>
+  <user_department DEPARTMENT_ID="1" NAME="Internal" CODE="INT"></user_department>
+  <user_role ROLE="ROLE_ADMIN" NAME="Administrator"></user_role>
+  <user_role ROLE="ROLE_CONSULTANT" NAME="Consultant"></user_role>
+  <user_role ROLE="ROLE_PROJECTMANAGER" NAME="PM"></user_role>
+  <user_role ROLE="ROLE_REPORT" NAME="Report role"></user_role>
+  <users USER_ID="1" USERNAME="admin" PASSWORD="admin" FIRST_NAME="eHour" LAST_NAME="Admin" DEPARTMENT_ID="1" ACTIVE="Y"></users>
+  <user_to_userrole ROLE="ROLE_ADMIN" USER_ID="1"></user_to_userrole>
+</data>

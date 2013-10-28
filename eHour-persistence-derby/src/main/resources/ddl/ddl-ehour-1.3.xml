@@ -1,0 +1,334 @@
+<?xml version="1.0"?>
+<database name="ehour-0.7">
+	<table name="hibernate_unique_key">
+		<column name="next_hi" primaryKey="false" required="false"
+			type="INTEGER" size="10" autoIncrement="false" />
+	</table>
+	<table name="configuration">
+		<column name="config_key" primaryKey="true" required="true"
+			type="VARCHAR" size="255" autoIncrement="false" />
+		<column name="config_value" primaryKey="false" required="false"
+			type="VARCHAR" size="255" autoIncrement="false" />
+	</table>
+	<table name="configuration_bin">
+		<column name="config_key" primaryKey="true" required="true"
+			type="VARCHAR" size="255" autoIncrement="false" />
+		<column name="config_value" primaryKey="false" required="false"
+			type="BLOB"  autoIncrement="false" />
+		<column name="metadata" primaryKey="false" required="false"
+			type="VARCHAR" size="255" autoIncrement="false" />
+			
+			
+	</table>
+	<table name="customer">
+		<column name="CUSTOMER_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="true" />
+		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
+			size="255" autoIncrement="false" />
+		<column name="DESCRIPTION" primaryKey="false" required="false"
+			type="VARCHAR" size="1024" autoIncrement="false" />
+		<column name="CODE" primaryKey="false" required="true" type="VARCHAR"
+			size="32" autoIncrement="false" />
+		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
+			size="1" default="Y" autoIncrement="false" />
+		<unique name="NAME">
+			<unique-column name="NAME" />
+			<unique-column name="CODE" />
+		</unique>
+	</table>
+	<table name="mail_log">
+		<column name="MAIL_LOG_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="true" />
+		<column name="MAIL_TYPE_ID" primaryKey="false" required="true"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="TIMESTAMP" primaryKey="false" required="true"
+			type="TIMESTAMP" autoIncrement="false" />
+		<column name="SUCCESS" primaryKey="false" required="true" type="CHAR"
+			size="1" autoIncrement="false" />
+		<column name="TO_USER_ID" primaryKey="false" required="false"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="RESULT_MSG" primaryKey="false" required="false"
+			type="VARCHAR" size="255" autoIncrement="false" />
+		<foreign-key foreignTable="mail_type" name="MAIL_LOG_fk">
+			<reference local="MAIL_TYPE_ID" foreign="MAIL_TYPE_ID" />
+		</foreign-key>
+		<foreign-key foreignTable="users" name="MAIL_LOG_fk1">
+			<reference local="TO_USER_ID" foreign="USER_ID" />
+		</foreign-key>
+		<unique name="MAIL_LOG_ID">
+			<unique-column name="MAIL_LOG_ID" />
+		</unique>
+		<index name="MAIL_TYPE_ID">
+			<index-column name="MAIL_TYPE_ID" />
+		</index>
+		<index name="TO_USER_ID">
+			<index-column name="TO_USER_ID" />
+		</index>
+	</table>
+	<table name="mail_log_assignment">
+		<column name="MAIL_LOG_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="PROJECT_ASSIGNMENT_ID" primaryKey="false"
+			required="true" type="INTEGER" size="10" autoIncrement="false" />
+		<column name="BOOKED_HOURS" primaryKey="false" required="false"
+			type="FLOAT" size="9,3" autoIncrement="false" />
+		<column name="BOOK_DATE" primaryKey="false" required="false"
+			type="TIMESTAMP" autoIncrement="false" />
+		<foreign-key foreignTable="mail_log" name="MAIL_LOG_ASSIGNMENT_fk">
+			<reference local="MAIL_LOG_ID" foreign="MAIL_LOG_ID" />
+		</foreign-key>
+		<foreign-key foreignTable="project_assignment" name="MAIL_LOG_ASSIGNMENT_fk1">
+			<reference local="PROJECT_ASSIGNMENT_ID" foreign="ASSIGNMENT_ID" />
+		</foreign-key>
+		<unique name="MAIL_LOG_ID">
+			<unique-column name="MAIL_LOG_ID" />
+		</unique>
+		<index name="PROJECT_ASSIGNMENT_ID">
+			<index-column name="PROJECT_ASSIGNMENT_ID" />
+		</index>
+	</table>
+	<table name="mail_type">
+		<column name="MAIL_TYPE_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="MAIL_TYPE" primaryKey="false" required="false"
+			type="VARCHAR" size="255" autoIncrement="false" />
+	</table>
+	<table name="project">
+		<column name="PROJECT_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="true" />
+		<column name="CUSTOMER_ID" primaryKey="false" required="false"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
+			size="255" autoIncrement="false" />
+		<column name="DESCRIPTION" primaryKey="false" required="false"
+			type="VARCHAR" size="1024" autoIncrement="false" />
+		<column name="CONTACT" primaryKey="false" required="false"
+			type="VARCHAR" size="255" autoIncrement="false" />
+		<column name="PROJECT_CODE" primaryKey="false" required="true"
+			type="VARCHAR" size="32" autoIncrement="false" />
+		<column name="DEFAULT_PROJECT" primaryKey="false" required="true"
+			type="CHAR" size="1" default="N" autoIncrement="false" />
+		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
+			size="1" default="Y" autoIncrement="false" />
+		<column name="BILLABLE" primaryKey="false" required="true" type="CHAR"
+			size="1" default="Y" autoIncrement="false" />
+		<column name="PROJECT_MANAGER" primaryKey="false" required="false"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<foreign-key foreignTable="customer" name="PROJECT_fk">
+			<reference local="CUSTOMER_ID" foreign="CUSTOMER_ID" />
+		</foreign-key>
+		<foreign-key foreignTable="users" name="PROJECT_fk1">
+			<reference local="PROJECT_MANAGER" foreign="USER_ID" />
+		</foreign-key>
+		<index name="CUSTOMER_ID">
+			<index-column name="CUSTOMER_ID" />
+		</index>
+		<index name="PROJECT_ACTIVE_ID">
+			<index-column name="ACTIVE" />
+		</index>
+	</table>
+	<table name="project_assignment">
+		<column name="ASSIGNMENT_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="true" />
+		<column name="PROJECT_ID" primaryKey="false" required="true"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="HOURLY_RATE" primaryKey="false" required="false"
+			type="FLOAT" size="9,3" autoIncrement="false" />
+		<column name="DATE_START" primaryKey="false" required="false"
+			type="DATE" autoIncrement="false" />
+		<column name="DATE_END" primaryKey="false" required="false"
+			type="DATE" autoIncrement="false" />
+		<column name="ROLE" primaryKey="false" required="false" type="VARCHAR"
+			size="255" autoIncrement="false" />
+		<column name="USER_ID" primaryKey="false" required="true" type="INTEGER"
+			size="10" autoIncrement="false" />
+		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
+			size="1" default="Y" autoIncrement="false" />
+		<column name="ASSIGNMENT_TYPE_ID" primaryKey="false" required="true"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="ALLOTTED_HOURS" primaryKey="false" required="false"
+			type="FLOAT" size="9,3" autoIncrement="false" />
+		<column name="ALLOTTED_HOURS_OVERRUN" primaryKey="false"
+			required="false" type="FLOAT" size="9,3" autoIncrement="false" />
+		<column name="NOTIFY_PM_ON_OVERRUN" primaryKey="false"
+			required="true" type="CHAR" size="1" default="N" autoIncrement="false" />
+		<foreign-key foreignTable="project" name="PROJECT_ASSIGNMENT_fk">
+			<reference local="PROJECT_ID" foreign="PROJECT_ID" />
+		</foreign-key>
+		<foreign-key foreignTable="users" name="PROJECT_ASSIGNMENT_fk1">
+			<reference local="USER_ID" foreign="USER_ID" />
+		</foreign-key>
+		<foreign-key foreignTable="project_assignment_type" name="PROJECT_ASSIGNMENT_fk2">
+			<reference local="ASSIGNMENT_TYPE_ID" foreign="ASSIGNMENT_TYPE_ID" />
+		</foreign-key>
+		<index name="PROJECT_ID">
+			<index-column name="PROJECT_ID" />
+		</index>
+		<index name="USER_ID">
+			<index-column name="USER_ID" />
+		</index>
+		<index name="ASSIGNMENT_TYPE_ID">
+			<index-column name="ASSIGNMENT_TYPE_ID" />
+		</index>
+	</table>
+	<table name="project_assignment_type">
+		<column name="ASSIGNMENT_TYPE_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="ASSIGNMENT_TYPE" primaryKey="false" required="false"
+			type="VARCHAR" size="64" autoIncrement="false" />
+	</table>
+	<table name="timesheet_comment">
+		<column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
+			size="10" autoIncrement="false" />
+		<column name="COMMENT_DATE" primaryKey="true" required="true"
+			type="DATE" autoIncrement="false" />
+		<column name="COMMENT" required="false" type="VARCHAR" size="2048"
+			autoIncrement="false" />
+	</table>
+	<table name="timesheet_entry">
+		<column name="ASSIGNMENT_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="ENTRY_DATE" primaryKey="true" required="true"
+			type="DATE" autoIncrement="false" />
+		<column name="HOURS" primaryKey="false" required="false" type="FLOAT"
+			size="9,3" autoIncrement="false" />
+		<column name="COMMENT" primaryKey="false" required="false"
+			type="VARCHAR" size="1024" autoIncrement="false" />
+		<column name="UPDATE_DATE" primaryKey="false" required="false"
+			type="TIMESTAMP" autoIncrement="false" />
+		<foreign-key foreignTable="project_assignment" name="TIMESHEET_ENTRY_fk">
+			<reference local="ASSIGNMENT_ID" foreign="ASSIGNMENT_ID" />
+		</foreign-key>
+		<index name="ENTRY">
+			<index-column name="ENTRY_DATE" />
+			<index-column name="ASSIGNMENT_ID" />
+		</index>
+		<index name="ASSIGNMENT_ID">
+			<index-column name="ASSIGNMENT_ID" />
+		</index>
+	</table>
+
+    <table name="timesheet_lock">
+        <column name="LOCK_ID" primaryKey="true" required="true" type="INTEGER"
+                size="10" autoIncrement="true" />
+        <column name="DATE_START" primaryKey="true" required="true"
+                type="DATE" autoIncrement="false" />
+        <column name="DATE_END" primaryKey="true" required="true"
+                type="DATE" autoIncrement="false" />
+        <column name="NAME" primaryKey="false" required="false" type="VARCHAR"
+                size="128" autoIncrement="false" />
+        <index name="LOCK_DATE">
+            <index-column name="DATE_START" />
+            <index-column name="DATE_END" />
+        </index>
+        <index name="LOCK_ID">
+            <index-column name="LOCK_ID" />
+        </index>
+    </table>
+
+	<table name="user_department">
+		<column name="DEPARTMENT_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="true" />
+		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
+			size="512" autoIncrement="false" />
+		<column name="CODE" primaryKey="false" required="true" type="VARCHAR"
+			size="64" autoIncrement="false" />
+		<unique name="DEPARTMENT_ID">
+			<unique-column name="DEPARTMENT_ID" />
+		</unique>
+	</table>
+	<table name="user_role">
+		<column name="ROLE" primaryKey="true" required="true" type="VARCHAR"
+			size="128" autoIncrement="false" />
+		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
+			size="128" autoIncrement="false" />
+	</table>
+	<table name="user_to_userrole">
+		<column name="ROLE" primaryKey="true" required="true" type="VARCHAR"
+			size="128" autoIncrement="false" />
+		<column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
+			size="10" autoIncrement="false" />
+		<foreign-key foreignTable="users" name="USER_TO_USERROLE_fk1">
+			<reference local="USER_ID" foreign="USER_ID" />
+		</foreign-key>
+		<index name="ROLE">
+			<index-column name="ROLE" />
+		</index>
+		<index name="ROLE_USER_ID">
+			<index-column name="USER_ID" />
+		</index>
+	</table>
+	<table name="users">
+		<column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
+			size="10" autoIncrement="true" />
+		<column name="USERNAME" primaryKey="false" required="true"
+			type="VARCHAR" size="64" autoIncrement="false" />
+		<column name="PASSWORD" primaryKey="false" required="true"
+			type="VARCHAR" size="128" autoIncrement="false" />
+		<column name="FIRST_NAME" primaryKey="false" required="false"
+			type="VARCHAR" size="64" autoIncrement="false" />
+		<column name="LAST_NAME" primaryKey="false" required="true"
+			type="VARCHAR" size="64" autoIncrement="false" />
+		<column name="DEPARTMENT_ID" primaryKey="false" required="true"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="EMAIL" primaryKey="false" required="false" type="VARCHAR"
+			size="128" autoIncrement="false" />
+		<column name="SALT" primaryKey="false" required="false" type="INTEGER"
+			size="64" autoIncrement="false" />
+		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
+			size="1" default="Y" autoIncrement="false" />
+		<foreign-key foreignTable="user_department" name="USER_fk">
+			<reference local="DEPARTMENT_ID" foreign="DEPARTMENT_ID" />
+		</foreign-key>
+		<unique name="USER_ID">
+			<unique-column name="USER_ID" />
+		</unique>
+		<unique name="USERNAME">
+			<unique-column name="USERNAME" />
+		</unique>
+		<unique name="USERNAME_ACTIVE">
+			<unique-column name="USERNAME" />
+			<unique-column name="ACTIVE" />
+		</unique>
+		<index name="IDX_USERNAME_PASSWORD">
+			<index-column name="USERNAME" />
+			<index-column name="PASSWORD" />
+		</index>
+		<index name="ORGANISATION_ID">
+			<index-column name="DEPARTMENT_ID" />
+		</index>
+	</table>
+	<table name="audit">
+		<column name="AUDIT_ID" primaryKey="true" required="true" type="INTEGER"
+			size="10" autoIncrement="true" />
+		<column name="USER_ID" primaryKey="false" required="false"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="USER_FULLNAME" primaryKey="false" required="false"
+			type="VARCHAR" size="256" autoIncrement="false" />
+		<column name="AUDIT_DATE" primaryKey="false" required="true"
+			type="TIMESTAMP" autoIncrement="false" />
+		<column name="PAGE" primaryKey="false" required="false" type="VARCHAR"
+			size="256" autoIncrement="false" />
+		<column name="ACTION" primaryKey="false" required="false" type="VARCHAR"
+			size="256" autoIncrement="false" />
+		<column name="PARAMETERS" primaryKey="false" required="false"
+			type="VARCHAR" size="4096" autoIncrement="false" />
+		<column name="SUCCESS" primaryKey="false" required="false"
+			type="CHAR" size="1" autoIncrement="false" />
+		<column name="AUDIT_ACTION_TYPE" primaryKey="false" required="false"
+			type="VARCHAR" size="32" autoIncrement="false" />
+
+		<index name="IDX_AUDIT_DATE">
+			<index-column name="AUDIT_DATE" />
+		</index>
+
+		<index name="IDX_AUDIT_USER_FULLNAME">
+			<index-column name="USER_FULLNAME" />
+		</index>
+
+		<index name="IDX_AUDIT_ACTION_TYPE">
+			<index-column name="AUDIT_ACTION_TYPE" />
+		</index>
+	</table>
+
+</database>
