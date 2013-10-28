@@ -7,7 +7,7 @@
 
     <task:annotation-driven/>
 
-    <bean id="updateService" class="net.rrm.ehour.update.UpdateService" init-method="fetchLatestVersion">
+    <bean id="updateService" class="net.rrm.ehour.update.UpdateService" init-method="initialFetchLatestVersion">
         <constructor-arg index="0" value="${project.version}"/>
         <constructor-arg index="1" ref="latestVersionFetcherHttpImpl"/>
     </bean>

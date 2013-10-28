@@ -23,14 +23,14 @@ public class LatestVersionFetcherHttpImpl implements LatestVersionFetcher {
     }
 
     @Override
-    public Optional<String> getLatestVersionNumber() {
+    public Optional<String> getLatestVersionNumber(String currentVersion, boolean isScheduled) {
         HttpClient client = new DefaultHttpClient();
 
         try {
             LOGGER.info("Fetching latest version number of eHour release from " + versionUrl);
 
             HttpGet request = new HttpGet(versionUrl);
-            request.setHeader("User-Agent", "eHour update client");
+            request.setHeader("User-Agent", String.format("%s eHour update client v%s", isScheduled ? "Scheduled" : "Bootstrap", currentVersion));
 
             BasicResponseHandler responseHandler = new BasicResponseHandler();
             String response = client.execute(request, responseHandler);

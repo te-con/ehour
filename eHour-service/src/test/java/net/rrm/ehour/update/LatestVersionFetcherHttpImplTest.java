@@ -31,7 +31,7 @@ public class LatestVersionFetcherHttpImplTest {
         server.start();
 
         LatestVersionFetcherHttpImpl fetcherHttp = new LatestVersionFetcherHttpImpl("http://localhost:8100/");
-        Optional<String> latestVersionNumber = fetcherHttp.getLatestVersionNumber();
+        Optional<String> latestVersionNumber = fetcherHttp.getLatestVersionNumber("1.3", true);
 
         server.stop();
 

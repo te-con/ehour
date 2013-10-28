@@ -14,7 +14,8 @@ public class UpdateService {
     private static final Logger LOGGER = Logger.getLogger(UpdateService.class);
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
-    private Integer thisVersion;
+    private String formattedVersion;
+    private Integer sanitizedVersion;
 
     private LatestVersionFetcher latestVersionFetcher;
     private Future<Optional<String>> latestVersionNumber;
@@ -23,24 +24,31 @@ public class UpdateService {
     public UpdateService() {
     }
 
-    public UpdateService(String thisVersion, LatestVersionFetcher latestVersionFetcher) {
-        Optional<Integer> sanitizedVersionNumber = VersionNumberSanitizer.sanitize(thisVersion);
-        this.thisVersion = sanitizedVersionNumber.or(0);
+    public UpdateService(String formattedVersion, LatestVersionFetcher latestVersionFetcher) {
+        this.formattedVersion = formattedVersion;
+        Optional<Integer> sanitizedVersionNumber = VersionNumberSanitizer.sanitize(formattedVersion);
+        this.sanitizedVersion = sanitizedVersionNumber.or(0);
 
         this.latestVersionFetcher = latestVersionFetcher;
     }
 
     @Scheduled(cron ="0 0 3 * * *")
-    public void fetchLatestVersion() {
+    public void scheduledFetchLatestVersion() {
+        fetchLatestVersion(new VersionFetcher(true));
+    }
 
+    public void initialFetchLatestVersion() {
+        fetchLatestVersion(new VersionFetcher(false));
+    }
+
+    private void fetchLatestVersion(VersionFetcher versionFetcher) {
         synchronized (this) {
-            VersionFetcher versionFetcher = new VersionFetcher();
-
             if (latestVersionNumber == null || latestVersionNumber.isDone()) {
                 latestVersionNumber = EXECUTOR.submit(versionFetcher);
             }
         }
     }
+
 
     public Optional<String> getLatestVersionNumber() {
         if (isLatestVersionNumberValid()) {
@@ -61,14 +69,19 @@ public class UpdateService {
     public boolean isLatestVersion() {
         Optional<String> latest = getLatestVersionNumber();
 
-        return thisVersion >= VersionNumberSanitizer.sanitize(latest.or("")).or(0);
+        return sanitizedVersion >= VersionNumberSanitizer.sanitize(latest.or("")).or(0);
     }
 
     class VersionFetcher implements Callable<Optional<String>> {
+        private final boolean isScheduled;
+
+        VersionFetcher(boolean isScheduled) {
+            this.isScheduled = isScheduled;
+        }
 
         @Override
         public Optional<String> call() throws Exception {
-            return latestVersionFetcher.getLatestVersionNumber();
+            return latestVersionFetcher.getLatestVersionNumber(formattedVersion, isScheduled);
         }
     }
 }
