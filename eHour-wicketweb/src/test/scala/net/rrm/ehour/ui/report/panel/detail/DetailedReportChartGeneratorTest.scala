@@ -1,14 +1,13 @@
 package net.rrm.ehour.ui.report.panel.detail
 
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import net.rrm.ehour.ui.report.panel.aggregate.ChartContext
 
 @RunWith(classOf[JUnitRunner])
-class DetailedReportChartGeneratorTest extends FunSuite with ShouldMatchers with BeforeAndAfter {
+class DetailedReportChartGeneratorTest extends FunSuite with Matchers with BeforeAndAfter {
   var chart: String = _
   val reportData = DetailedReportDataObjectMother.getFlatReportData
 

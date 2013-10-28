@@ -22,7 +22,7 @@ import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.user.service.UserService;
@@ -39,7 +39,7 @@ import java.util.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
-public class TimesheetPanelTest extends AbstractSpringWebAppTester {
+public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
 
     private TimesheetService timesheetService;

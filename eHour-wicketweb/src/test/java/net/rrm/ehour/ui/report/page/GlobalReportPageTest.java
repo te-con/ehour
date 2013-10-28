@@ -25,7 +25,7 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
@@ -47,7 +47,7 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("serial")
-public class GlobalReportPageTest extends AbstractSpringWebAppTester implements Serializable {
+public class GlobalReportPageTest extends BaseSpringWebAppTester implements Serializable {
     private MockReportTabBuilder mockReportTabCommand;
     protected ReportCriteriaService reportCriteriaService;
     protected AggregateReportService aggregateReportService;

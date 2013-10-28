@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.userprefs.panel
 
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.markup.html.form.Form
 import org.junit.Before
@@ -12,7 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException
 import static org.mockito.Mockito.doThrow
 import static org.mockito.Mockito.verify
 
-class ChangePasswordPanelTest extends AbstractSpringWebAppTester {
+class ChangePasswordPanelTest extends BaseSpringWebAppTester {
     @Mock
     private UserService userService
 

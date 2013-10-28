@@ -18,14 +18,14 @@ package net.rrm.ehour.ui.userprefs.page;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
 
-public class UserPreferencePageTest extends AbstractSpringWebAppTester
+public class UserPreferencePageTest extends BaseSpringWebAppTester
 {
 	@Test
 	public void shouldRenderPreferencePage() throws ObjectNotFoundException

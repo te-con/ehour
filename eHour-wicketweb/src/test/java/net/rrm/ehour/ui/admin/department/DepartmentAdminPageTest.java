@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.admin.department;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 
-public class DepartmentAdminPageTest extends AbstractSpringWebAppTester
+public class DepartmentAdminPageTest extends BaseSpringWebAppTester
 {
 	private UserService	userService;
 	

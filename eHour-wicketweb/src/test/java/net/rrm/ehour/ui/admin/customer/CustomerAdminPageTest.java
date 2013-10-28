@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.admin.customer;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import static org.easymock.EasyMock.*;
  * Customer admin test render
  **/
 
-public class CustomerAdminPageTest extends AbstractSpringWebAppTester
+public class CustomerAdminPageTest extends BaseSpringWebAppTester
 {
 	/**
 	 * Test render

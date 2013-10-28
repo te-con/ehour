@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.timesheet.page;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 import org.junit.Test;
 
@@ -31,7 +31,7 @@ import static org.easymock.EasyMock.*;
 /**
  * Overview page test
  **/
-public class MonthOverviewPageTest extends AbstractSpringWebAppTester
+public class MonthOverviewPageTest extends BaseSpringWebAppTester
 {
 	@Test
 	public void testOverviewPageRender()

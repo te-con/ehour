@@ -26,7 +26,7 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.admin.config.panel.SkinConfigPanel;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +47,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-public class TimesheetExcelExportTest extends AbstractSpringWebAppTester {
+public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
     private ConfigurationServiceImpl configService;
     private DetailedReportService detailedReportService;
 

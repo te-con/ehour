@@ -1,20 +1,20 @@
 package net.rrm.ehour.ui.common.menu
 
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
-import org.scalatest.matchers.ShouldMatchers
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 
 @RunWith(classOf[JUnitRunner])
-class TreeBasedMenuTest extends AbstractSpringWebAppTester with FunSuite with ShouldMatchers with BeforeAndAfter {
+class TreeBasedMenuTest extends FunSuite with Matchers with BeforeAndAfter {
+  val springTester = new BaseSpringWebAppTester()
 
   before {
-    super.setUp()
+    springTester.setUp()
   }
 
   test("should render menu") {
-    tester.startComponentInPage(new TreeBasedMenu("id", MenuDefinition.createMenuDefinition))
-    tester.assertNoErrorMessage()
+    springTester.tester.startComponentInPage(new TreeBasedMenu("id", MenuDefinition.createMenuDefinition))
+    springTester.tester.assertNoErrorMessage()
   }
 }

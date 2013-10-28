@@ -9,6 +9,4 @@ class ExistingLocksPanelSpec extends AbstractSpringWebAppSpec {
       tester.assertNoErrorMessage()
     }
   }
-
-
 }

@@ -1,18 +1,16 @@
 package net.rrm.ehour.domain
 
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import collection.mutable.HashMap
 import java.util.TreeSet
+import scala.collection.mutable
 
 @RunWith(classOf[JUnitRunner])
-class ProjectAssignmentTest extends FunSuite 
-  with ShouldMatchers with BeforeAndAfter {
+class ProjectAssignmentTest extends FunSuite with Matchers with BeforeAndAfter {
 
-  val customersCache = new HashMap[String,  Customer]
-  val projectCache = new HashMap[String, Project]
+  val customersCache = new mutable.HashMap[String,  Customer]
+  val projectCache = new mutable.HashMap[String, Project]
   var user: User = _
   before {
     customersCache.clear()

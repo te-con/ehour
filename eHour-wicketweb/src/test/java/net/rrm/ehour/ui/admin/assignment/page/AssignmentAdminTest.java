@@ -16,14 +16,6 @@
 
 package net.rrm.ehour.ui.admin.assignment.page;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignmentType;
@@ -31,13 +23,17 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class AssignmentAdminTest extends AbstractSpringWebAppTester
+import static org.easymock.EasyMock.*;
+
+
+public class AssignmentAdminTest extends BaseSpringWebAppTester
 {
 	/**
 	 * Test render

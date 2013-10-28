@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.admin.backup.restore
 
 import net.rrm.ehour.backup.service.ParseSession
 import net.rrm.ehour.backup.service.RestoreService
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: 12/12/10 - 12:49 AM
  */
-class RestoreDbPanelTest extends AbstractSpringWebAppTester
+class RestoreDbPanelTest extends BaseSpringWebAppTester
 {
   @Mock
   private RestoreService importService

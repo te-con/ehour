@@ -22,7 +22,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
@@ -37,7 +37,7 @@ import static org.easymock.EasyMock.*;
 /**
  * @author Thies
  */
-public class ProjectManagementTest extends AbstractSpringWebAppTester {
+public class ProjectManagementTest extends BaseSpringWebAppTester {
     ProjectService projectService;
 
     AggregateReportService aggregateReportService;

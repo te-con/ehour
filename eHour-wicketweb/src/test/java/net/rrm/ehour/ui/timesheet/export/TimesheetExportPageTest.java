@@ -24,7 +24,7 @@ import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import org.apache.wicket.util.tester.FormTester;
 import org.joda.time.LocalDate;
@@ -44,7 +44,7 @@ import static org.junit.Assert.fail;
  * @author Thies Edeling (thies@te-con.nl)
  *
  */
-public class TimesheetExportPageTest extends AbstractSpringWebAppTester
+public class TimesheetExportPageTest extends BaseSpringWebAppTester
 {
 	private TimesheetService 	timesheetService;
 	private ReportCriteriaService reportCriteriaService;

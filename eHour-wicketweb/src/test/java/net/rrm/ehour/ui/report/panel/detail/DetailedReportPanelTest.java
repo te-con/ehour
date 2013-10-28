@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.report.panel.detail;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import net.rrm.ehour.ui.report.trend.DetailedReportModel;
 import org.apache.wicket.Component;
@@ -31,7 +31,7 @@ import static org.easymock.EasyMock.*;
  * Detailed report panel test
  */
 
-public class DetailedReportPanelTest extends AbstractSpringWebAppTester {
+public class DetailedReportPanelTest extends BaseSpringWebAppTester {
     private DetailedReportService detailedReportService;
 
     @Before

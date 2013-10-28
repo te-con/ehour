@@ -3,7 +3,7 @@ package net.rrm.ehour.ui.admin.backup
 import net.rrm.ehour.backup.service.DatabaseBackupService
 import net.rrm.ehour.backup.service.ParseSession
 import net.rrm.ehour.backup.service.RestoreService
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import org.apache.wicket.Page
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel
 import org.apache.wicket.markup.html.basic.Label
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 12, 2010 - 11:42:00 PM
  */
-class BackupPageTest extends AbstractSpringWebAppTester
+class BackupPageTest extends BaseSpringWebAppTester
 {
   @Mock
   private DatabaseBackupService exportService

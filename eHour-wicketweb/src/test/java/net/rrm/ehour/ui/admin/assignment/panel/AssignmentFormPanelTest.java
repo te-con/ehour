@@ -6,7 +6,7 @@ import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
 import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import java.util.List;
 import static org.easymock.EasyMock.*;
 
 
-public class AssignmentFormPanelTest extends AbstractSpringWebAppTester {
+public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
     private AssignmentAdminBackingBean backingBean;
     private CustomerService customerService;
     private ProjectAssignmentService assignmentService;

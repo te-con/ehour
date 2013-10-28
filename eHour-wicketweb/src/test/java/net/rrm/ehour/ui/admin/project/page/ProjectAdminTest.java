@@ -22,7 +22,7 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.project.ProjectAdmin;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 import static org.easymock.EasyMock.*;
 
-public class ProjectAdminTest extends AbstractSpringWebAppTester
+public class ProjectAdminTest extends BaseSpringWebAppTester
 {
 	private ProjectService projectService;
 	private UserService userService;

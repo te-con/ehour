@@ -4,12 +4,11 @@ package chart
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import report.panel.aggregate.{ChartContext, AggregateReportChartGenerator}
 
 @RunWith(classOf[JUnitRunner])
-class EmployeeChartGeneratorTest extends FunSuite with ShouldMatchers with BeforeAndAfter {
+class EmployeeChartGeneratorTest extends FunSuite with Matchers with BeforeAndAfter {
   var chart: String = _
 
   before {

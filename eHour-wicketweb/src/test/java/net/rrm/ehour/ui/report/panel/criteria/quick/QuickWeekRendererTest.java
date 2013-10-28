@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.report.panel.criteria.quick;
 
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.apache.wicket.Localizer;
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,7 +29,7 @@ import java.util.Locale;
 
 import static org.easymock.EasyMock.*;
 
-public class QuickWeekRendererTest extends AbstractSpringWebAppTester
+public class QuickWeekRendererTest extends BaseSpringWebAppTester
 {
 	QuickWeekRenderer renderer;
 	Localizer			localizer;

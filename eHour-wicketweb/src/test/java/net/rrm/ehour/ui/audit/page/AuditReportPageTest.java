@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.audit.page;
 
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 import static org.easymock.EasyMock.*;
 
-public class AuditReportPageTest extends AbstractSpringWebAppTester
+public class AuditReportPageTest extends BaseSpringWebAppTester
 {
 	@Before
 	public void before() throws Exception

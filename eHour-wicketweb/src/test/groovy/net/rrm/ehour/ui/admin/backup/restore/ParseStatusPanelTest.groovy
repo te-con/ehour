@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.admin.backup.restore
 
 import net.rrm.ehour.backup.service.ParseSession
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import org.apache.wicket.markup.html.list.ListView
 import org.apache.wicket.model.Model
 import org.junit.Test
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: 12/5/10 - 12:32 AM
  */
-class ParseStatusPanelTest extends AbstractSpringWebAppTester
+class ParseStatusPanelTest extends BaseSpringWebAppTester
 {
   @Test
   public void shouldDisplayErrors()

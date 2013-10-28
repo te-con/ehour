@@ -4,8 +4,8 @@ import net.rrm.ehour.domain.UserDepartmentMother
 import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.domain.UserRole
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
 import net.rrm.ehour.ui.common.AdminAction
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.model.CompoundPropertyModel
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals
 import static org.mockito.Matchers.anyObject
 import static org.mockito.Mockito.verify
 
-public class UserAdminFormPanelTest extends AbstractSpringWebAppTester {
+public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
     @Mock
     private UserService userService
     def formPath =  "panel:border:greySquaredFrame:border_body:userForm"

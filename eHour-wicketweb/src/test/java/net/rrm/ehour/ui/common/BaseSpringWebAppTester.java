@@ -29,7 +29,7 @@ import java.util.Locale;
 /**
  * Base class for wicket unit tests
  */
-public abstract class AbstractSpringWebAppTester extends AbstractSpringTester {
+public class BaseSpringWebAppTester extends AbstractSpringTester {
     public StrictWicketTester tester;
     public TestEhourWebApplication webApp;
 

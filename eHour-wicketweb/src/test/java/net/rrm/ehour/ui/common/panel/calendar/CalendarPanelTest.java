@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.common.panel.calendar;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventHook;
 import net.rrm.ehour.ui.common.event.EventPublisher;
@@ -41,7 +41,7 @@ import static org.junit.Assert.assertEquals;
  * @author thies
  */
 @SuppressWarnings("deprecation")
-public class CalendarPanelTest extends AbstractSpringWebAppTester {
+public class CalendarPanelTest extends BaseSpringWebAppTester {
     private TimesheetService timesheetService;
 
     @Before

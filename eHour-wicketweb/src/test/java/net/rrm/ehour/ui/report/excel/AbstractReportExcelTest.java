@@ -3,14 +3,14 @@ package net.rrm.ehour.ui.report.excel;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import org.junit.After;
 import org.junit.Before;
 
 import static org.easymock.EasyMock.*;
 
-public class AbstractReportExcelTest extends AbstractSpringWebAppTester {
+public class AbstractReportExcelTest extends BaseSpringWebAppTester {
     protected ReportCriteria criteria;
     private AggregateReportService aggregateReportService;
 

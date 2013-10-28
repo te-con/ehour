@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report.panel.aggregate;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import static org.easymock.EasyMock.*;
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-public abstract class AbstractReportPanelTest extends AbstractSpringWebAppTester {
+public abstract class AbstractReportPanelTest extends BaseSpringWebAppTester {
     private AggregateReportService aggregateReportService;
 
 

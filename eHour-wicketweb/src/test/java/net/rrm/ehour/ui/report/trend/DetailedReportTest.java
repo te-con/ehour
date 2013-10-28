@@ -17,27 +17,20 @@
 package net.rrm.ehour.ui.report.trend;
 
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-
-import java.util.Locale;
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test of detailed report 
  **/
-public class DetailedReportTest extends AbstractSpringWebAppTester
+public class DetailedReportTest extends BaseSpringWebAppTester
 {
 	private DetailedReportService detailedReportService;
 	

@@ -3,18 +3,17 @@ package net.rrm.ehour.timesheet.service
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import org.scalatest.matchers.ClassicMatchers
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
+import org.scalatest._
 import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.joda.time.LocalDate
 import net.rrm.ehour.domain.TimesheetLock
 import java.util
 
 @RunWith(classOf[JUnitRunner])
-class TimesheetLockServiceImplTest extends  ClassicMatchers with MockitoSugar with WordSpec with BeforeAndAfterEach with BeforeAndAfterAll {
+class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach with BeforeAndAfterAll {
   val repository = mock[TimesheetLockDao]
   val service = new TimesheetLockServiceImpl(repository)
 
@@ -33,7 +32,10 @@ class TimesheetLockServiceImplTest extends  ClassicMatchers with MockitoSugar wi
 
       val timesheet = service.createNew(startDate, endDate)
 
-      assert(timesheet.startDate.equals(startDate))
+//      timesheet.startDate should be (startDate)
+
+      assert(timesheet.startDate === startDate)
+//      assert(timesheet.name)
     }
 
     "find all" in {

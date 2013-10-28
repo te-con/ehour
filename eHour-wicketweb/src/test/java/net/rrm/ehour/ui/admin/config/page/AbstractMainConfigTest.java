@@ -21,7 +21,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.junit.After;
 import org.junit.Before;
 
@@ -30,7 +30,7 @@ import java.io.Serializable;
 import static org.easymock.EasyMock.*;
 
 @SuppressWarnings("serial")
-public abstract class AbstractMainConfigTest extends AbstractSpringWebAppTester implements Serializable
+public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester implements Serializable
 {
     public  static final String FORM_PATH = "configTabs:panel:border:greySquaredFrame:border_body:form";
 

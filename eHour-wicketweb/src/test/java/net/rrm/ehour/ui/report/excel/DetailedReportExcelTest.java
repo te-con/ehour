@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.report.excel;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
-public class DetailedReportExcelTest extends AbstractSpringWebAppTester {
+public class DetailedReportExcelTest extends BaseSpringWebAppTester {
     @Mock
     private DetailedReportService detailedReportService;
 

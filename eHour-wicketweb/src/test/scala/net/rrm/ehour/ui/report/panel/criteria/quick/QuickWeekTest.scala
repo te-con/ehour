@@ -3,12 +3,11 @@ package net.rrm.ehour.ui.report.panel.criteria.quick
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import net.rrm.ehour.config.EhourConfigStub
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import java.util.{Date, Calendar}
-import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
-class QuickWeekTest extends FunSuite with BeforeAndAfter with ShouldMatchers {
+class QuickWeekTest extends FunSuite with BeforeAndAfter with Matchers {
   var cal: Calendar = _
   var config: EhourConfigStub = _
   before {

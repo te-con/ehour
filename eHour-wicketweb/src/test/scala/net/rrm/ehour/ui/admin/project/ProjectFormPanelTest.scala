@@ -1,8 +1,7 @@
 package net.rrm.ehour.ui.admin.project
 
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester
+import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import org.apache.wicket.model.CompoundPropertyModel
 import net.rrm.ehour.domain.ProjectObjectMother
 import org.easymock.EasyMock._
@@ -13,26 +12,29 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class ProjectFormPanelTest extends AbstractSpringWebAppTester with FunSuite with ShouldMatchers with BeforeAndAfter {
+class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter {
+
+  val springTester = new BaseSpringWebAppTester()
+
   var projectService: ProjectService = _
   var userService: UserService = _
   var customerService: CustomerService = _
 
   before {
-    super.setUp()
+    springTester.setUp()
 
     projectService = createMock(classOf[ProjectService])
-    getMockContext.putBean("projectService", projectService)
+    springTester.getMockContext.putBean("projectService", projectService)
 
     userService = createMock(classOf[UserService])
-    getMockContext.putBean("userService", userService)
+    springTester.getMockContext.putBean("userService", userService)
 
     customerService = createMock(classOf[CustomerService])
-    getMockContext.putBean("customerService", customerService)
+    springTester.getMockContext.putBean("customerService", customerService)
   }
 
   after {
-    super.clearMockContext()
+    springTester.clearMockContext()
   }
 
   test("should render projectFormPanel") {
@@ -42,8 +44,8 @@ class ProjectFormPanelTest extends AbstractSpringWebAppTester with FunSuite with
   }
 
   def assertOkay() {
-    tester.assertNoInfoMessage()
-    tester.assertNoErrorMessage()
+    springTester.tester.assertNoInfoMessage()
+    springTester.tester.assertNoErrorMessage()
   }
 
   def createModel() = {
@@ -53,6 +55,6 @@ class ProjectFormPanelTest extends AbstractSpringWebAppTester with FunSuite with
   }
 
   def startPanel(model: CompoundPropertyModel[ProjectAdminBackingBean]) {
-    tester.startComponentInPage(new ProjectFormPanel("id", model))
+    springTester.tester.startComponentInPage(new ProjectFormPanel("id", model))
   }
 }

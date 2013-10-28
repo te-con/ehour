@@ -20,7 +20,7 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.util.tester.FormTester;
@@ -32,7 +32,7 @@ import static org.easymock.EasyMock.*;
  * Tests the login tests
  **/
 
-public class LoginTest extends AbstractSpringWebAppTester
+public class LoginTest extends BaseSpringWebAppTester
 {
     @Override
     protected Roles getRoles() {
