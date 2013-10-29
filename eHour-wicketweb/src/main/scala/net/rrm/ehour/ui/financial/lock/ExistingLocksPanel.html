@@ -7,7 +7,15 @@
 <body>
 
 <wicket:panel>
-    <div wicket:id="border">
+    <div wicket:id="outerBorder">
+        <div wicket:id="innerBorder">
+            <div class="listScroll" id="listContents">
+                <span wicket:id="locks">
+                    <span wicket:id="startDate"></span>
+                    <span wicket:id="endDate"></span>
+                </span>
+            </div>
+        </div>
     </div>
 </wicket:panel>
 
