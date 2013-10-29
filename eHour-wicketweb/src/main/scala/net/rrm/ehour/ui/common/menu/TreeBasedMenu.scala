@@ -9,6 +9,7 @@ import org.apache.wicket.model.ResourceModel
 import java.util.{List => JList}
 import net.rrm.ehour.ui.common.util.AuthUtil
 import org.apache.wicket.request.mapper.parameter.PageParameters
+import scala.language.existentials
 
 sealed abstract class MenuItem {
   def isVisibleForLoggedInUser: Boolean
