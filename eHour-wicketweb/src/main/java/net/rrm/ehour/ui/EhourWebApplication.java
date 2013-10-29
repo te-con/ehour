@@ -29,6 +29,7 @@ import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
 import net.rrm.ehour.ui.common.session.DevelopmentWebSession;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.financial.lock.LockAdminPage;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
@@ -180,6 +181,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/prefs", UserPreferencePage.class);
 
         mountPage("/backup", BackupDbPage.class);
+
+        mountPage("/op/lock", LockAdminPage.class);
     }
 
     protected void springInjection() {

@@ -87,10 +87,4 @@ public class EhourApplicationDriver {
     public static void sleep() {
         sleep(1250);
     }
-
-    public static void navigateToMonthOverview() {
-        Driver.findElement(WicketBy.wicketPath("mainNav_nav_items_0_item_subItems_1_subItem_menuLink")).click();
-
-        sleep();
-    }
 }

@@ -9,27 +9,35 @@
 <wicket:panel>
     <div wicket:id="outerBorder">
         <div style="padding-left: 10px">
-            <form>
+            <form wicket:id="lockForm">
                 <div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
                     <div style="width: 10em;float:left">
-                        Lock timesheets of:
+                        Lock timesheets between:
                     </div>
 
                     <div style="float:left;margin-bottom: 5px">
 
-                        <input style="width: 5em; clear: both" type="text" value="1-10-13"
-                               name="reportCriteria.userCriteria.reportRange.dateStart"
-                               id="reportCriteria_userCriteria_reportRange_dateStart68" class="hasDatepicker">
-                        to :
-                        <input style="width: 5em; clear: both" type="text" value="31-10-13"
-                               name="reportCriteria.userCriteria.reportRange.dateEnd"
-                               id="reportCriteria_userCriteria_reportRange_dateEnd69" class="hasDatepicker">
-
+                        <input style="width: 5em; clear: both" type="text" wicket:id="startDate">
+                        and :
+                        <input style="width: 5em; clear: both" type="text" wicket:id="endDate">
                     </div>
                     <br clear="all">
 
+                    <div style="width: 10em;float:left">
+                        Name:
+                    </div>
+
+                    <div style="float:left;margin-bottom: 5px">
+                        <input type="text" wicket:id="name">
+                    </div>
+
+                    <br clear="all">
+
+                    <div style="width: 10em;float:left" wicket:id="saveConfirm">
+                    </div>
+
                     <div style="margin-left: 15px;margin-right: 15px; padding-top: 10px">
-                        <a class="button" style="float:right;" onclick="this.blur();">
+                        <a class="button" style="float:right;" onclick="this.blur();" wicket:id="submit">
                             <span>Lock</span>
                         </a>
                     </div>

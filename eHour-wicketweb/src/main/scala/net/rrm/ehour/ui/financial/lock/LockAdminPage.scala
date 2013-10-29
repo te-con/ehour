@@ -5,7 +5,7 @@ import net.rrm.ehour.domain.UserRole
 import net.rrm.ehour.ui.common.page.AbstractBasePage
 import org.apache.wicket.model.ResourceModel
 
-@AuthorizeInstantiation(value = Array(UserRole.ROLE_REPORT))
+@AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractBasePage[String](new ResourceModel("report.summary.title")) {
   override def onInitialize() {
     super.onInitialize()
@@ -21,5 +21,4 @@ object LockAdminPage {
   val ExistingLocksId = "existingLocks"
 
   val LockDetailsId = "lockDetails"
-
 }
