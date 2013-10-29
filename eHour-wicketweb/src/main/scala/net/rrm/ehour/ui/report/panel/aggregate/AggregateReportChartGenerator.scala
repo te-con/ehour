@@ -1,12 +1,12 @@
 package net.rrm.ehour.ui.report.panel.aggregate
 
 import net.rrm.ehour.report.reports.ReportData
-import scalaj.collection.Imports._
 import nl.tecon.highcharts.HighChart
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
 import nl.tecon.highcharts.config._
 import java.lang.String
 import collection.Seq
+import scala.collection.convert.WrapAsScala
 
 case class ChartContext(renderToId: String, reportData: ReportData, currencySymbol: String, withTurnover: Boolean)
 
@@ -24,7 +24,7 @@ object AggregateReportChartGenerator {
   private def generateReportChart(chartContext: ChartContext, findCategory: (AssignmentAggregateReportElement) => String, chartTitle: String): String = {
     import nl.tecon.highcharts.config.Conversions.valueToOption
 
-    val elements = chartContext.reportData.getReportElements.asScala.asInstanceOf[Seq[AssignmentAggregateReportElement]]
+    val elements = WrapAsScala.asScalaBuffer(chartContext.reportData.getReportElements).toSeq.asInstanceOf[Seq[AssignmentAggregateReportElement]]
 
     val categoryData = extractCategoryData(elements, findCategory)
 

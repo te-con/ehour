@@ -10,15 +10,14 @@ import java.util.{List => JList}
 import net.rrm.ehour.ui.common.util.AuthUtil
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import scala.language.existentials
+import scala.collection.convert.WrapAsScala
 
 sealed abstract class MenuItem {
   def isVisibleForLoggedInUser: Boolean
 }
 
 case class DropdownMenu(menuTitle: String, items: JList[LinkItem]) extends MenuItem {
-  import scalaj.collection.Imports._
-
-  def isVisibleForLoggedInUser = items.asScalaMutable.foldLeft(false)((total, item) => total || item.isVisibleForLoggedInUser)
+  def isVisibleForLoggedInUser = WrapAsScala.asScalaBuffer(items).foldLeft(false)((total, item) => total || item.isVisibleForLoggedInUser)
 }
 
 case class LinkItem(menuTitle: String, responsePageClass: Class[_ <: WebPage], pageParameters: Option[PageParameters] = None) extends MenuItem {

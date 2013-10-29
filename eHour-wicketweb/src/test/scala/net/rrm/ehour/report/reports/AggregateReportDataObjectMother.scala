@@ -1,11 +1,12 @@
 package net.rrm.ehour.report.reports
 
 import element.{AssignmentAggregateReportElementMother, AssignmentAggregateReportElement}
-import scalaj.collection.Imports._
 import net.rrm.ehour.domain._
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.util.DateUtil
 import java.util.Calendar
+import scala.collection.convert.WrapAsJava
+import scala.collection.mutable
 
 object AggregateReportDataObjectMother {
   def generateReportData: ReportData = {
@@ -30,7 +31,7 @@ object AggregateReportDataObjectMother {
     val reportElementE = new AssignmentAggregateReportElement(new ProjectAssignment(userT, projectE, 35), 10)
     val reportElementF = new AssignmentAggregateReportElement(new ProjectAssignment(userT, projectB, 35), 10)
 
-    new ReportData(List(reportElementA, reportElementB, reportElementC, reportElementD, reportElementE, reportElementF).asJava, DateUtil.getDateRangeForMonth(Calendar.getInstance()))
+    new ReportData(WrapAsJava.bufferAsJavaList(mutable.Buffer(reportElementA, reportElementB, reportElementC, reportElementD, reportElementE, reportElementF)), DateUtil.getDateRangeForMonth(Calendar.getInstance()))
   }
 
   def getAssignmentAggregateReportElements = {
@@ -47,7 +48,7 @@ object AggregateReportDataObjectMother {
     val pagF = AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(30, 1, 3)
     pagF.getProjectAssignment.getProject.setProjectId(2)
 
-    List(pagE, pagD, pagB, pagC, pagA, pagF).asJava
+    WrapAsJava.bufferAsJavaList(mutable.Buffer(pagE, pagD, pagB, pagC, pagA, pagF))
   }
 
   def getAssignmentReportData: ReportData = new ReportData(getAssignmentAggregateReportElements, new DateRange)

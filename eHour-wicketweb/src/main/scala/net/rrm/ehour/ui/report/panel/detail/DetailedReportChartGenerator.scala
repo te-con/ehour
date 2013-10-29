@@ -1,7 +1,6 @@
 package net.rrm.ehour.ui.report.panel.detail
 
 import net.rrm.ehour.report.reports.ReportData
-import scalaj.collection.Imports._
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import nl.tecon.highcharts.HighChart
 import nl.tecon.highcharts.config._
@@ -10,6 +9,7 @@ import java.lang.String
 import org.joda.time.DateTime
 import nl.tecon.highcharts.config.Conversions._
 import net.rrm.ehour.ui.report.panel.aggregate.ChartContext
+import scala.collection.convert.WrapAsScala
 
 object DetailedReportChartGenerator {
   val axis = (title: String) => Seq(Axis(title = Title(text = title)))
@@ -32,7 +32,7 @@ object DetailedReportChartGenerator {
 
 
   private def generateDetailedChart(reportData: ReportData, f: FlatReportElement => Float): HighChart = {
-    val elements = reportData.getReportElements.asScala.asInstanceOf[Seq[FlatReportElement]]
+    val elements = WrapAsScala.asScalaBuffer(reportData.getReportElements).toSeq.asInstanceOf[Seq[FlatReportElement]]
 
     val reportRange = reportData.getReportRange
 
