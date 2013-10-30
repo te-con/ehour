@@ -66,6 +66,7 @@ div.GreyFrame {
     margin: 0 20px 0 0;
     padding: 0;
     background-color: white;
+    max-width: 1350px;
 }
 
 div.GreyFrame h1 {
