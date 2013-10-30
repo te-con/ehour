@@ -7,6 +7,7 @@ import net.rrm.ehour.timesheet.service.{LockedTimesheet, TimesheetLockService}
 import scala.collection.convert.WrapAsJava
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.event.IEvent
 
 class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
   @SpringBean
@@ -15,8 +16,16 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
   override def onInitialize() {
     super.onInitialize()
 
+    setOutputMarkupId(true)
+
+
+  }
+
+  override def onBeforeRender() {
+    super.onBeforeRender()
+
     val greyBorder = new GreyRoundedBorder(ExistingLocksPanel.OuterBorderId, "Existing locks")
-    add(greyBorder)
+    addOrReplace(greyBorder)
 
     val blueBorder = new GreyBlueRoundedBorder(ExistingLocksPanel.BlueBorderId)
     blueBorder.setOutputMarkupId(true)
@@ -34,6 +43,17 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
     }
 
     blueBorder.add(repeater)
+
+
+  }
+
+  override def onEvent(event: IEvent[_]) {
+    Console.out.println(event.getPayload)
+    Console.err.println(event.getPayload.getClass)
+    event.getPayload match {
+      case lockedAddedEvent: LockAddedEvent => lockedAddedEvent.refresh(this)
+      case _ => Console.out.println("fefe")
+    }
   }
 }
 

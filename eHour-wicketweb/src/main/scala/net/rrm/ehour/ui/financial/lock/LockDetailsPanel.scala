@@ -14,6 +14,9 @@ import org.joda.time.LocalDate
 import scala.language.implicitConversions
 import net.rrm.ehour.ui.common.component.PlaceholderPanel
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.event.Broadcast
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.Component
 
 class LockDetailsPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
   @SpringBean
@@ -48,6 +51,8 @@ class LockDetailsPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
       label.setOutputMarkupId(true)
       form.addOrReplace(label)
       target.add(label)
+
+      send(this, Broadcast.BREADTH, LockAddedEvent(target))
     }
 
     val submitButton = new AjaxButton("submit", form, success)
@@ -62,3 +67,9 @@ object LockDetailsPanel {
 }
 
 class LockModel(var name: String = "", var startDate: Date = new Date(), var endDate: Date = new Date()) extends Serializable
+
+case class LockAddedEvent(target: AjaxRequestTarget) {
+  def refresh(components: Component*) {
+    target.add(components:_*)
+  }
+}

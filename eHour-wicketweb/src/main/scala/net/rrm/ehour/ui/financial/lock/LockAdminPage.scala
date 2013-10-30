@@ -17,8 +17,6 @@ class LockAdminPage extends AbstractBasePage[String](new ResourceModel("report.s
 
 object LockAdminPage {
   val FrameId = "frame"
-  
   val ExistingLocksId = "existingLocks"
-
   val LockDetailsId = "lockDetails"
 }
