@@ -4,6 +4,9 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang.StringUtils;
 
 public abstract class VersionNumberSanitizer {
+
+    public static final int MAX_DIGITS_VERSION_NO = 4;
+
     public static Optional<Integer> sanitize(String version) {
         if (version == null) {
             return Optional.absent();
@@ -16,7 +19,7 @@ public abstract class VersionNumberSanitizer {
         }
 
         try {
-            return Optional.of(Integer.valueOf(StringUtils.rightPad(stripped, 3, '0')));
+            return Optional.of(Integer.valueOf(StringUtils.rightPad(stripped, MAX_DIGITS_VERSION_NO, '0')));
         } catch (NumberFormatException nfe) {
             return Optional.absent();
         }
