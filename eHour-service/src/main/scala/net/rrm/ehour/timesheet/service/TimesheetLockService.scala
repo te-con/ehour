@@ -6,8 +6,9 @@ import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.springframework.beans.factory.annotation.Autowired
 import net.rrm.ehour.domain.TimesheetLock
 import scala.collection.JavaConversions._
-import java.util.Date
+import java.util.{Locale, Date}
 import org.springframework.transaction.annotation.Transactional
+import net.rrm.ehour.util.DateUtil
 
 trait TimesheetLockService {
   def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet
@@ -23,7 +24,17 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
   def findAll(): List[LockedTimesheet] = repository.findAll().map(LockedTimesheet(_)).toList
 }
 
-case class LockedTimesheet(startDate: LocalDate, endDate: LocalDate, name: Option[String])
+case class LockedTimesheet(dateStart: LocalDate, dateEnd: LocalDate, name: Option[String] = None) {
+  def lockName(implicit locale: Locale): String = name match {
+    case Some(n) => n
+    case _ => {
+      val start = DateUtil.formatDate(dateStart, locale)
+      val end = DateUtil.formatDate(dateEnd, locale)
+
+      s"$start - $end"
+    }
+  }
+}
 
 object LockedTimesheet {
   implicit private def dateToLocalDate(date: Date): LocalDate = LocalDate.fromDateFields(date)

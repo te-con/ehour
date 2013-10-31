@@ -21,6 +21,7 @@ import net.rrm.ehour.data.DateRange;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.Interval;
+import org.joda.time.LocalDate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -349,6 +350,19 @@ public class DateUtil {
         SimpleDateFormat dateFormat = (SimpleDateFormat) (SimpleDateFormat.getDateInstance(DateFormat.SHORT, dateLocale));
         return dateFormat.toPattern();
     }
+
+    public static String formatDate(Date date, Locale dateLocale) {
+        return SimpleDateFormat.getDateInstance(DateFormat.SHORT, dateLocale).format(date);
+    }
+
+    public static String formatDate(DateTime date, Locale dateLocale) {
+        return formatDate(date.toDate(), dateLocale);
+    }
+
+    public static String formatDate(LocalDate date, Locale dateLocale) {
+        return formatDate(date.toDateTimeAtStartOfDay(), dateLocale);
+    }
+
 
     /**
      * java.util.Calendar.SUNDAY = 1 while in jodatime it's day 7.

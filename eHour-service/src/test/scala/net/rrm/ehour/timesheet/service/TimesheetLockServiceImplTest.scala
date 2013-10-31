@@ -13,7 +13,7 @@ import net.rrm.ehour.domain.TimesheetLock
 import java.util
 
 @RunWith(classOf[JUnitRunner])
-class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach with BeforeAndAfterAll {
+class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach  {
   val repository = mock[TimesheetLockDao]
   val service = new TimesheetLockServiceImpl(repository)
 
@@ -32,10 +32,7 @@ class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSu
 
       val timesheet = service.createNew(startDate, endDate)
 
-//      timesheet.startDate should be (startDate)
-
-      assert(timesheet.startDate === startDate)
-//      assert(timesheet.name)
+      timesheet.dateStart should be (startDate)
     }
 
     "find all" in {
@@ -50,8 +47,8 @@ class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSu
       val lockedTimesheets: List[LockedTimesheet] = service.findAll()
 
       assert(lockedTimesheets.length == 2)
-      assert(lockedTimesheets(0).startDate == startDate)
-      assert(lockedTimesheets(1).startDate == startDate.plusDays(1))
+      assert(lockedTimesheets(0).dateStart == startDate)
+      assert(lockedTimesheets(1).dateStart == startDate.plusDays(1))
 
     }
   }

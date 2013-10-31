@@ -20,6 +20,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import java.util.*;
@@ -366,4 +367,11 @@ public class DateUtilTest {
         assertTrue(DateUtil.isDateWithinRange(now.plusDays(1).toDate(), range));
     }
 
+    @Test
+    public void should_format_date_with_local_pattern() {
+        LocalDate date = new LocalDate(2013, 1, 2);
+
+        String formatted = DateUtil.formatDate(date, Locale.ENGLISH);
+        assertEquals("1/2/13", formatted);
+    }
 }
