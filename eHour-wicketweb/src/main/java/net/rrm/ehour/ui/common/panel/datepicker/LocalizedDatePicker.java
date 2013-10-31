@@ -4,12 +4,11 @@ import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import net.rrm.ehour.config.LocaleUtil;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.model.IModel;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +26,7 @@ public class LocalizedDatePicker extends DatePicker {
 
         Locale localeToUse = isSupported(getLanguageTag(locale)) ? locale : Locale.US;
 
-        return ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, localeToUse)).toPattern();
+        return DateUtil.getPatternForDateLocale(localeToUse);
     }
 
     public static Options getOptions() {

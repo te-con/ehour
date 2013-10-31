@@ -23,6 +23,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.Interval;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -345,48 +346,18 @@ public class DateUtil {
      * @return the pattern using DateFormatSymbols
      */
     public static String getPatternForDateLocale(Locale dateLocale) {
-        Calendar cal = new GregorianCalendar();
-        cal.set(Calendar.MONTH, 4);
-        cal.set(Calendar.DAY_OF_MONTH, 30);
-        cal.set(Calendar.YEAR, 2007);
-
-        String formatted = DateFormat.getDateInstance(DateFormat.SHORT, dateLocale).format(cal.getTime());
-
-        // first get the separator
-        String f = formatted.replaceAll("\\d", "");
-        char separator = f.charAt(0);
-
-        String[] parts = formatted.split("\\" + separator);
-
-        StringBuilder pattern = new StringBuilder();
-
-        for (String part : parts) {
-            int i = Integer.parseInt(part);
-
-            if (i == cal.get(Calendar.DAY_OF_MONTH)) {
-                pattern.append("dd");
-            } else if (i == 1 + cal.get(Calendar.MONTH)) {
-                pattern.append("MM");
-            } else {
-                pattern.append("yyyy");
-            }
-
-            pattern.append(separator);
-        }
-
-        pattern.deleteCharAt(pattern.length() - 1);
-
-        return pattern.toString();
+        SimpleDateFormat dateFormat = (SimpleDateFormat) (SimpleDateFormat.getDateInstance(DateFormat.SHORT, dateLocale));
+        return dateFormat.toPattern();
     }
 
     /**
      * java.util.Calendar.SUNDAY = 1 while in jodatime it's day 7.
+     *
      * @return
      */
     public static int fromCalendarToJodaTimeDayInWeek(int dayInWeek) {
         int jodatimeDayInWeek = dayInWeek - 1;
 
         return jodatimeDayInWeek == 0 ? DateTimeConstants.SUNDAY : jodatimeDayInWeek;
-
     }
 }
