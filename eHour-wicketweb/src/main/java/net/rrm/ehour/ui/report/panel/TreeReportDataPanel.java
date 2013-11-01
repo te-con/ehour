@@ -31,8 +31,6 @@ import net.rrm.ehour.ui.report.TreeReportModel;
 import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -47,7 +45,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.util.convert.IConverter;
 
 import java.io.Serializable;
@@ -95,12 +92,6 @@ public class TreeReportDataPanel extends Panel {
         addHeaderColumns(reportContent);
         addReportData(reportModel, reportContent);
         addGrandTotal(reportModel, reportContent);
-    }
-
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        super.renderHead(response);
-        response.render(CssHeaderItem.forReference(new CssResourceReference(TreeReportDataPanel.class, "style/reportStyle.css")));
     }
 
     private void addGrandTotal(TreeReportModel reportModel, WebMarkupContainer parent) {
@@ -300,15 +291,15 @@ public class TreeReportDataPanel extends Panel {
 
             item.add(cells);
 
-            setCssStyle(item);
+            modifyClassForOddRows(item);
             previousForPage = getCurrentPage();
             previousCellValues = thisCellValues;
         }
 
 
-        private void setCssStyle(Item<?> item) {
+        private void modifyClassForOddRows(Item<?> item) {
             if (item.getIndex() % 2 == 1) {
-                item.add(AttributeModifier.replace("style", "background-color: #fefeff"));
+                item.add(AttributeModifier.append("class", "oddRow"));
             }
         }
 

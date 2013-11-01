@@ -701,17 +701,21 @@ hr {
     padding-right: 5px;
 }
 
-.reportTable {
+.dataTable {
     width: 100%;
 }
 
-.reportTable tr.dataRow {
+.dataTable tr.dataRow {
     background-color: #eef6fe;
     padding-bottom: 1px;
     border-top: 1px solid #a1bcd7;
 }
 
-.reportTable tr.dataRow td {
+.dataTable tr.oddRow {
+    background-color: #fefeff
+}
+
+.dataTable tr.dataRow td {
     color: #536e87;
     border-right: 1px solid #a1bcd7;
     padding: 0 5px 0 5px;
@@ -726,60 +730,60 @@ hr {
     border-left: 1px solid #a1bcd7;
 }
 
-.reportTable tr.dataRow td.lastChild {
+.dataTable tr.dataRow td.lastChild {
     border: 0;
 }
 
-.reportTable tr.dataRow a:link {
+.dataTable tr.dataRow a:link {
     color: #233e55;
     font-weight: normal;
     text-decoration: none;
 }
 
-.reportTable tr.dataRow a:visited {
+.dataTable tr.dataRow a:visited {
     color: #233e55;
     font-weight: normal;
     text-decoration: none;
 }
 
-.reportTable tr.dataRow a:hover {
+.dataTable tr.dataRow a:hover {
     text-decoration: underline;
 }
 
-.reportTable tr.dataRow a:active {
+.dataTable tr.dataRow a:active {
     text-decoration: none
 }
 
-.reportTable tr.totalRow td {
+.dataTable tr.totalRow td {
     color: #536e87;
     border-top: 1px solid #a1bcd7;
     padding: 0 5px 5px 5px;
     font: bold 0.9em Geneva, Arial, Helvetica, sans-serif;
 }
 
-.reportTable tr.reportTotal td {
+.dataTable tr.reportTotal td {
     font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     padding: 0 5px 0 5px;
 }
 
-.reportTable tr.customerRow {
+.dataTable tr.customerRow {
     background-color: #eef6fe;
     padding-bottom: 1px;
     border-top: 1px solid #a1bcd7;
 }
 
-.reportTable tr.customerRow td {
+.dataTable tr.customerRow td {
     color: #536e87;
     border-right: 1px solid #a1bcd7;
     padding: 0 5px 0 5px;
 }
 
-.reportTable tr.customerRow td.lastChild {
+.dataTable tr.customerRow td.lastChild {
     border: 0;
 }
 
-.reportTable th {
+.dataTable th {
     font: bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     margin: 0;
