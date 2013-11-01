@@ -40,6 +40,8 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
 
         if (item.getIndex == 0) {
           item.add(AttributeModifier.append("class", "firstRow"))
+        } else if (item.getIndex % 2 == 1) {
+          item.add(AttributeModifier.append("class", "oddRow"))
         }
 
         item.add(new Label("startDate", timesheet.dateStart.toString("MM/dd/YYYY")))

@@ -734,6 +734,15 @@ hr {
     border: 0;
 }
 
+.dataTable tr td.numeric {
+    text-align: right;
+}
+
+.dataTable tr td.comment {
+    width: 300px;
+}
+
+
 .dataTable tr.dataRow a:link {
     color: #233e55;
     font-weight: normal;

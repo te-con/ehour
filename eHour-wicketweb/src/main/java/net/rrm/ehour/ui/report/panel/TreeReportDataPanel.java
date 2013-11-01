@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.report.panel;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Optional;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
@@ -117,7 +119,11 @@ public class TreeReportDataPanel extends Panel {
                         break;
                 }
 
-                addColumnTypeStyling(column.getColumnType(), label);
+                Optional<String> optionalClass = addColumnTypeStyling(column.getColumnType());
+                if (optionalClass.isPresent()) {
+                    label.add(AttributeModifier.append("class", optionalClass.get()));
+                }
+
                 totalView.add(label);
             }
         }
@@ -174,21 +180,13 @@ public class TreeReportDataPanel extends Panel {
         parent.add(columnHeaders);
     }
 
-    /**
-     * Add column type specific styling
-     *
-     * @param columnType
-     * @param label
-     */
-    private void addColumnTypeStyling(ColumnType columnType, Label label) {
-        if (label != null) {
-            if (columnType.isNumeric()) {
-                label.add(CSS_ALIGN_RIGHT);
-            }
-
-            if (columnType == ColumnType.COMMENT) {
-                label.add(AttributeModifier.replace("style", "width: 300px;"));
-            }
+    private Optional<String> addColumnTypeStyling(ColumnType columnType) {
+        if (columnType.isNumeric()) {
+            return Optional.of("numeric");
+        } else if (columnType == ColumnType.COMMENT) {
+            return Optional.of("comment");
+        } else {
+            return Optional.absent();
         }
     }
 
@@ -222,6 +220,8 @@ public class TreeReportDataPanel extends Panel {
                 ReportColumn reportColumn = reportConfig.getReportColumns()[column];
 
                 if (reportColumn.isVisible()) {
+                    List<String> cssClasses = new ArrayList<String>();
+
                     Label cellLabel;
 
                     final String id = Integer.toString(column);
@@ -255,13 +255,18 @@ public class TreeReportDataPanel extends Panel {
                         final IConverter converter = reportColumn.getConverter();
 
                         cellLabel = new Label(id, new Model<Serializable>(cellValue)) {
+                            @SuppressWarnings("unchecked")
                             @Override
                             public <C> IConverter<C> getConverter(Class<C> type) {
                                 return converter;
                             }
                         };
 
-                        addColumnTypeStyling(reportColumn.getColumnType(), cellLabel);
+                        Optional<String> optionalClass = addColumnTypeStyling(reportColumn.getColumnType());
+                        if (optionalClass.isPresent()) {
+                            cssClasses.add(optionalClass.get());
+                        }
+
 
                         newValueInPreviousColumn = true;
 
@@ -270,16 +275,18 @@ public class TreeReportDataPanel extends Panel {
                         newValueInPreviousColumn = true;
 
                         cellLabel = new Label(id, new Model<Serializable>(cellValue));
-                        addColumnTypeStyling(reportColumn.getColumnType(), cellLabel);
+                        Optional<String> optionalClass = addColumnTypeStyling(reportColumn.getColumnType());
+                        if (optionalClass.isPresent()) {
+                            cssClasses.add(optionalClass.get());
+                        }
 
                         cells.add(cellLabel);
                     }
 
-                    StringBuilder cssClassBuilder = new StringBuilder();
-                    cssClassBuilder.append(item.getIndex() == 0 ? "firstRow" : "");
-                    cssClassBuilder.append(column == 0 ? " firstColumn" : "");
+                    cssClasses.add(item.getIndex() == 0 ? "firstRow" : "");
+                    cssClasses.add(column == 0 ? " firstColumn" : "");
 
-                    String cssClass = cssClassBuilder.toString();
+                    String cssClass = Joiner.on(" ").join(cssClasses);
 
                     if (StringUtils.isNotEmpty(cssClass)) {
                         cellLabel.add(AttributeModifier.replace("class", cssClass));
