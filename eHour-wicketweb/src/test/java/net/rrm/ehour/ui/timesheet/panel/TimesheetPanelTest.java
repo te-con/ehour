@@ -187,7 +187,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    @Ignore("The tree requests are performed in isolation")
+//    @Ignore("The tree requests are performed in isolation")
     public void shouldResetErrorState() {
         startAndReplay();
 
