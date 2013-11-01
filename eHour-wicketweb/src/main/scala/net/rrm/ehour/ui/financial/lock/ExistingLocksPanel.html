@@ -8,12 +8,21 @@
 
 <wicket:panel>
     <div wicket:id="outerBorder">
-        <div wicket:id="innerBorder">
-            <div class="listScroll" id="listContents">
-                <span wicket:id="locks">
-                    <span wicket:id="startDate"></span>
-                    <span wicket:id="endDate"></span>
-                </span>
+        <div wicket:id="innerBorder" style="width: 27em">
+            <div class="listScroll" id="listContents" style="width: 95%">
+                <table class="contentTable reportTable">
+                    <tr>
+                        <th>Name</th>
+                        <th>Start date</th>
+                        <th>End date</th>
+                    </tr>
+
+                    <tr class="dataRow" wicket:id="locks">
+                        <td wicket:id="name"></td>
+                        <td wicket:id="startDate"></td>
+                        <td wicket:id="endDate"></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
