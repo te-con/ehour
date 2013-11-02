@@ -14,6 +14,8 @@ trait TimesheetLockService {
   def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet
 
   def findAll(): List[LockedTimesheet]
+
+  def find(id: Int): Option[LockedTimesheet]
 }
 
 @Service("timesheetLockService")
@@ -22,6 +24,11 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
   override def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet = LockedTimesheet(repository.persist(new TimesheetLock(startDate.toDateMidnight.toDate, endDate.toDateMidnight.toDate)))
 
   def findAll(): List[LockedTimesheet] = repository.findAll().map(LockedTimesheet(_)).toList
+
+  def find(id: Int): Option[LockedTimesheet] = repository.findById(id) match {
+    case timesheet:TimesheetLock => Some(LockedTimesheet(timesheet))
+    case null => None
+  }
 }
 
 case class LockedTimesheet(id: Option[Int] = None, dateStart: LocalDate, dateEnd: LocalDate, name: Option[String] = None) {
@@ -39,7 +46,7 @@ case class LockedTimesheet(id: Option[Int] = None, dateStart: LocalDate, dateEnd
 object LockedTimesheet {
   implicit private def dateToLocalDate(date: Date): LocalDate = LocalDate.fromDateFields(date)
 
-  // weird if because of spnullpointer when unboxing getLockId: Integer = null to scala.Int primitive type
+  // weird if because of nullpointer when unboxing getLockId: Integer = null to scala.Int primitive type
   def apply(timesheetLock: TimesheetLock): LockedTimesheet = LockedTimesheet(if (timesheetLock.getLockId == null) None else Some(timesheetLock.getLockId), timesheetLock.getDateStart, timesheetLock.getDateEnd, Option(timesheetLock.getName))
 }
 

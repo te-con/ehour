@@ -7,7 +7,7 @@ import org.apache.wicket.model.{Model, PropertyModel}
 import net.rrm.ehour.ui.common.wicket.AjaxButton
 import net.rrm.ehour.ui.common.wicket.AjaxButton._
 import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.timesheet.service.TimesheetLockService
+import net.rrm.ehour.timesheet.service.{LockedTimesheet, TimesheetLockService}
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
 import org.joda.time.LocalDate
@@ -24,15 +24,12 @@ class LockDetailsPanel(id: String) extends AbstractAjaxPanel[LockModel](id, new 
 
   implicit private def dateToLocalDate(date: Date): LocalDate = LocalDate.fromDateFields(date)
 
+  setOutputMarkupId(true)
 
+  override def onBeforeRender() {
+    super.onBeforeRender()
 
-  override def onInitialize() {
-    super.onInitialize()
-
-    initialize(getPanelModelObject)
-  }
-
-  def initialize(model: LockModel) {
+    val model = getPanelModelObject
     val outerBorder = new GreyRoundedBorder(LockDetailsPanel.OuterBorderId, "Timesheet lock details")
     addOrReplace(outerBorder)
 
@@ -65,11 +62,17 @@ class LockDetailsPanel(id: String) extends AbstractAjaxPanel[LockModel](id, new 
   }
 
   override def onEvent(event: IEvent[_]) {
-    event.getPayload match {
-      case event: EditLockEvent => {
-        this.setPanelModelObject(new LockModel("oktober", new Date(), new Date()))
-        event.refresh(this)
+    def editTimesheet(event: EditLockEvent) {
+      lockService.find(event.id) match {
+        case Some(lockedTimesheet) => setPanelModelObject(LockModel(lockedTimesheet))
+        case None =>
       }
+
+      event.refresh(this)
+      }
+
+    event.getPayload match {
+      case event: EditLockEvent => editTimesheet(event)
       case _ =>
     }
   }
@@ -81,10 +84,16 @@ object LockDetailsPanel {
   val SaveConfirmId = "saveConfirm"
 }
 
-class LockModel(var name: String = "", var startDate: Date = new Date(), var endDate: Date = new Date()) extends Serializable
+class LockModel(var id: Option[Int] = None, var name: String = "", var startDate: Date = new Date(), var endDate: Date = new Date()) extends Serializable
+
+object LockModel {
+  def apply(lockedTimesheet: LockedTimesheet): LockModel = new LockModel(lockedTimesheet.id, lockedTimesheet.name.getOrElse(""), lockedTimesheet.dateStart.toDateMidnight.toDate, lockedTimesheet.dateStart.toDateMidnight.toDate)
+}
+
+
 
 case class LockAddedEvent(target: AjaxRequestTarget) {
   def refresh(components: Component*) {
-    target.add(components:_*)
+    target.add(components: _*)
   }
 }

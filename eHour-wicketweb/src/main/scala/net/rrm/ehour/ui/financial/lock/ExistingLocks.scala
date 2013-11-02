@@ -17,10 +17,12 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
   @SpringBean
   protected var lockService: TimesheetLockService = _
 
+  val self = this
+  setOutputMarkupId(true)
+
   override def onInitialize() {
     super.onInitialize()
 
-    setOutputMarkupId(true)
   }
 
   override def onBeforeRender() {
@@ -50,7 +52,7 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
         item.add(new Label("startDate", timesheet.dateStart.toString("MM/dd/YYYY")))
         item.add(new Label("endDate", timesheet.dateEnd.toString("MM/dd/YYYY")))
 
-        val linkCallback: LinkCallback = target => send(this, Broadcast.BREADTH, EditLockEvent(timesheet.id.get, target))
+        val linkCallback: LinkCallback = target => send(self.getParent, Broadcast.DEPTH, EditLockEvent(timesheet.id.get, target))
 
         val link = new AjaxLink("detailLink", linkCallback)
         link.add(new Label("detailLinkLabel", timesheet.lockName))
