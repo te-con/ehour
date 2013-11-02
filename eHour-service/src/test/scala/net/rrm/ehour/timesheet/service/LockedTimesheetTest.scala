@@ -9,7 +9,7 @@ class LockedTimesheetTest extends WordSpec with Matchers {
     implicit val locale = Locale.ENGLISH
     val dateStart = new LocalDate(2013,1,1)
     val dateEnd = new LocalDate(2013,2,1)
-    val lockedTimesheet = LockedTimesheet(dateStart, dateEnd)
+    val lockedTimesheet = LockedTimesheet(None, dateStart, dateEnd)
 
     "use specified name when supplied" in {
       lockedTimesheet.copy(name = Some("name")).lockName should be("name")

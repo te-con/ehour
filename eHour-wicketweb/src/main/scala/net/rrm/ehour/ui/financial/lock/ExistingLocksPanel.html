@@ -7,20 +7,20 @@
 <body>
 
 <wicket:panel>
-    <div wicket:id="outerBorder">
-        <div wicket:id="innerBorder" style="width: 27em">
+    <div wicket:id="outerBorder" class="existingLock">
+        <div wicket:id="innerBorder" class="left">
             <div class="listScroll" id="listContents" style="width: 95%">
                 <table class="contentTable dataTable" cellpadding="0" cellspacing="0" style="width: 95%">
                     <tr>
                         <th>Name</th>
-                        <th>Start date</th>
-                        <th>End date</th>
+                        <th style="text-align: right">Start date</th>
+                        <th style="text-align: right">End date</th>
                     </tr>
 
                     <tr class="dataRow" wicket:id="locks">
-                        <td wicket:id="name"></td>
-                        <td wicket:id="startDate"></td>
-                        <td wicket:id="endDate"></td>
+                        <td><a wicket:id="detailLink"><span wicket:id="detailLinkLabel"></span></a></td>
+                        <td class="numeric" wicket:id="startDate"></td>
+                        <td class="numeric" wicket:id="endDate"></td>
                     </tr>
                 </table>
             </div>

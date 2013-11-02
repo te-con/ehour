@@ -24,7 +24,7 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
   def findAll(): List[LockedTimesheet] = repository.findAll().map(LockedTimesheet(_)).toList
 }
 
-case class LockedTimesheet(dateStart: LocalDate, dateEnd: LocalDate, name: Option[String] = None) {
+case class LockedTimesheet(id: Option[Int] = None, dateStart: LocalDate, dateEnd: LocalDate, name: Option[String] = None) {
   def lockName(implicit locale: Locale): String = name match {
     case Some(n) => n
     case _ => {
@@ -39,6 +39,7 @@ case class LockedTimesheet(dateStart: LocalDate, dateEnd: LocalDate, name: Optio
 object LockedTimesheet {
   implicit private def dateToLocalDate(date: Date): LocalDate = LocalDate.fromDateFields(date)
 
-  def apply(timesheetLock: TimesheetLock): LockedTimesheet = LockedTimesheet(timesheetLock.getDateStart, timesheetLock.getDateEnd, Option(timesheetLock.getName))
+  // weird if because of spnullpointer when unboxing getLockId: Integer = null to scala.Int primitive type
+  def apply(timesheetLock: TimesheetLock): LockedTimesheet = LockedTimesheet(if (timesheetLock.getLockId == null) None else Some(timesheetLock.getLockId), timesheetLock.getDateStart, timesheetLock.getDateEnd, Option(timesheetLock.getName))
 }
 

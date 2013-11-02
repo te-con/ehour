@@ -12,7 +12,7 @@ class ExistingLocksPanelSpec extends AbstractSpringWebAppSpec {
     springTester.getMockContext.putBean(service)
 
     "render" in {
-      when(service.findAll()).thenReturn(List(LockedTimesheet(new LocalDate().minusDays(5), new LocalDate())))
+      when(service.findAll()).thenReturn(List(LockedTimesheet(None, new LocalDate().minusDays(5), new LocalDate())))
 
       tester.startComponentInPage(classOf[ExistingLocksPanel])
       tester.assertNoErrorMessage()

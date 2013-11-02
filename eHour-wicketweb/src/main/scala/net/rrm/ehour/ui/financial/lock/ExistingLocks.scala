@@ -7,8 +7,11 @@ import net.rrm.ehour.timesheet.service.{LockedTimesheet, TimesheetLockService}
 import scala.collection.convert.WrapAsJava
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.event.IEvent
-import org.apache.wicket.AttributeModifier
+import org.apache.wicket.event.{Broadcast, IEvent}
+import org.apache.wicket.{Component, AttributeModifier}
+import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
+import net.rrm.ehour.ui.common.wicket.AjaxLink
+import org.apache.wicket.ajax.AjaxRequestTarget
 
 class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
   @SpringBean
@@ -46,7 +49,13 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
 
         item.add(new Label("startDate", timesheet.dateStart.toString("MM/dd/YYYY")))
         item.add(new Label("endDate", timesheet.dateEnd.toString("MM/dd/YYYY")))
-        item.add(new Label("name", timesheet.lockName))
+
+        val linkCallback: LinkCallback = target => send(this, Broadcast.BREADTH, EditLockEvent(timesheet.id.get, target))
+
+        val link = new AjaxLink("detailLink", linkCallback)
+        link.add(new Label("detailLinkLabel", timesheet.lockName))
+        link.setEnabled(timesheet.id.isDefined)
+        item.add(link)
       }
     }
 
@@ -65,5 +74,11 @@ object ExistingLocksPanel {
   val OuterBorderId = "outerBorder"
   val BlueBorderId = "innerBorder"
   val LocksId = "locks"
+}
+
+case class EditLockEvent(id: Int, target: AjaxRequestTarget) {
+  def refresh(components: Component*) {
+    target.add(components:_*)
+  }
 }
 

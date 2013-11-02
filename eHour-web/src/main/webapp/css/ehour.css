@@ -688,10 +688,6 @@ hr {
     text-align: center;
     color:  #ff3333;
 }
-.existingLocksTable th {
-    margin-right: 20px;
-    text-align: right;
-}
 
 .reportContent {
     padding-left: 5px;
@@ -742,7 +738,6 @@ hr {
     width: 300px;
 }
 
-
 .dataTable tr.dataRow a:link {
     color: #233e55;
     font-weight: normal;
@@ -792,6 +787,10 @@ hr {
     border: 0;
 }
 
+.dataTable tr:hover {
+    background-color: #d1e5f9;
+}
+
 .dataTable th {
     font: bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
@@ -806,4 +805,9 @@ hr {
     margin-left: 5px;
     color: #6b90b2;
     font: bold 0.9em Geneva, Arial, Helvetica, sans-serif;
+}
+
+.existingLock .left {
+    min-width: 31em;
+    width: 40%;
 }
