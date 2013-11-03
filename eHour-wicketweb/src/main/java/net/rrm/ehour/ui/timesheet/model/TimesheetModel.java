@@ -92,6 +92,8 @@ public class TimesheetModel implements IModel<Timesheet>
 	{
         EhourConfig config = EhourWebSession.getSession().getEhourConfig();
         WeekOverview weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
+
+
         Timesheet timesheet = getTimesheetFactory(config).createTimesheet(weekOverview);
 
         if (timesheet.getComment() == null) {
