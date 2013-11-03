@@ -39,81 +39,36 @@ public class WeekOverview implements Serializable {
     private User user;
     private List<Date> lockedDays;
 
-    public List<Date> getLockedDays() {
-        return lockedDays;
-    }
-
-    public void setLockedDays(List<Date> lockedDays) {
+    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, List<Date> lockedDays) {
+        this.timesheetEntries = timesheetEntries;
+        this.comment = comment;
+        this.projectAssignments = projectAssignments;
+        this.weekRange = weekRange;
+        this.user = user;
         this.lockedDays = lockedDays;
     }
 
-    /**
-     * @return the timesheetEntries
-     */
     public List<TimesheetEntry> getTimesheetEntries() {
         return timesheetEntries;
     }
 
-    /**
-     * @param timesheetEntries the timesheetEntries to set
-     */
-    public void setTimesheetEntries(List<TimesheetEntry> timesheetEntries) {
-        this.timesheetEntries = timesheetEntries;
-    }
-
-    /**
-     * @return the projectAssignments
-     */
-    public List<ProjectAssignment> getProjectAssignments() {
-        return projectAssignments;
-    }
-
-    /**
-     * @param projectAssignments the projectAssignments to set
-     */
-    public void setProjectAssignments(List<ProjectAssignment> projectAssignments) {
-        this.projectAssignments = projectAssignments;
-    }
-
-    /**
-     * @return the weekRange
-     */
-    public DateRange getWeekRange() {
-        return weekRange;
-    }
-
-    /**
-     * @param weekRange the weekRange to set
-     */
-    public void setWeekRange(DateRange weekRange) {
-        this.weekRange = weekRange;
-    }
-
-    /**
-     * @return the comment
-     */
     public TimesheetComment getComment() {
         return comment;
     }
 
-    /**
-     * @param comment the comment to set
-     */
-    public void setComment(TimesheetComment comment) {
-        this.comment = comment;
+    public List<ProjectAssignment> getProjectAssignments() {
+        return projectAssignments;
     }
 
-    /**
-     * @return the user
-     */
+    public DateRange getWeekRange() {
+        return weekRange;
+    }
+
     public User getUser() {
         return user;
     }
 
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
+    public List<Date> getLockedDays() {
+        return lockedDays;
     }
 }

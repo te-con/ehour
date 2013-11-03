@@ -1,6 +1,7 @@
 package net.rrm.ehour.ui.timesheet.dto;
 
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
@@ -13,17 +14,14 @@ import static org.junit.Assert.assertEquals;
 
 public class TimesheetFactoryTest {
 
+    public static final DateRange RANGE = DateUtil.getDateRangeForWeek(new GregorianCalendar(2012, Calendar.OCTOBER, 8));
     private TimesheetFactory builder;
-    private WeekOverview weekOverview;
 
     @Before
     public void set_up() {
         EhourConfigStub config = new EhourConfigStub();
         config.setCompleteDayHours(8);
         builder = new TimesheetFactory(config);
-
-        weekOverview = new WeekOverview();
-        weekOverview.setWeekRange(DateUtil.getDateRangeForWeek(new GregorianCalendar(2012, Calendar.OCTOBER, 8)));
     }
 
     @Test
@@ -31,8 +29,8 @@ public class TimesheetFactoryTest {
         // given
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
 
-        weekOverview.setProjectAssignments(Arrays.asList(assignment));
-        weekOverview.setTimesheetEntries(Collections.<TimesheetEntry>emptyList());
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment), RANGE, null, null);
+
 
         // when
         Timesheet timesheet = builder.createTimesheet(weekOverview);
@@ -55,8 +53,7 @@ public class TimesheetFactoryTest {
         assignment02.setAssignmentId(2);
         assignment02.setRole("role");
 
-        weekOverview.setProjectAssignments(Arrays.asList(assignment01, assignment02));
-        weekOverview.setTimesheetEntries(Collections.<TimesheetEntry>emptyList());
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, null);
 
         // when
         Timesheet timesheet = builder.createTimesheet(weekOverview);
@@ -80,8 +77,7 @@ public class TimesheetFactoryTest {
         assignment02.setAssignmentId(2);
         assignment02.setRole("role");
 
-        weekOverview.setProjectAssignments(Arrays.asList(assignment01, assignment02));
-        weekOverview.setTimesheetEntries(Collections.<TimesheetEntry>emptyList());
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, null);
 
         // when
         Timesheet timesheet = builder.createTimesheet(weekOverview);

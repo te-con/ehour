@@ -82,7 +82,7 @@ public class TimesheetModel implements IModel<Timesheet> {
 
     private Timesheet load() {
         EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-        WeekOverview weekOverview = overviewTimesheet.getWeekOverview(user, forWeek, config);
+        WeekOverview weekOverview = overviewTimesheet.getWeekOverview(user, forWeek);
 
         Timesheet timesheet = getTimesheetFactory(config).createTimesheet(weekOverview);
 

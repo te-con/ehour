@@ -18,9 +18,7 @@ package net.rrm.ehour.timesheet.service;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.TimesheetCommentId;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
@@ -32,7 +30,6 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,8 +62,6 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
 
     @Autowired
     private EhourConfig configuration;
-
-    private static final Logger LOGGER = Logger.getLogger(TimesheetServiceImpl.class);
 
     /**
      * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
@@ -202,20 +197,19 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      * @param requestedWeek
      * @return
      */
-    public WeekOverview getWeekOverview(User user, Calendar requestedWeek, EhourConfig config) {
-        WeekOverview weekOverview = new WeekOverview();
-        requestedWeek.setFirstDayOfWeek(config.getFirstDayOfWeek());
+    public WeekOverview getWeekOverview(User user, Calendar requestedWeek) {
+        Calendar reqWeek = (Calendar) requestedWeek.clone();
+        reqWeek.setFirstDayOfWeek(configuration.getFirstDayOfWeek());
 
-        DateRange range = DateUtil.getDateRangeForWeek(requestedWeek);
-        weekOverview.setWeekRange(range);
+        DateRange range = DateUtil.getDateRangeForWeek(reqWeek);
 
-        weekOverview.setTimesheetEntries(timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), range));
-        weekOverview.setComment(timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart())));
-        weekOverview.setProjectAssignments(projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range));
+        List<TimesheetEntry> timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), range);
+        TimesheetComment comment = timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart()));
+        List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range);
 
-        weekOverview.setUser(user);
+//        timesheetLockService.find(range.getDateStart(), range.getDateEnd());
 
-        return weekOverview;
+        return new WeekOverview(timesheetEntries, comment, assignments, range, user, null);
     }
 
     public void setTimesheetDAO(TimesheetDao dao) {

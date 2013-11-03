@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.timesheet.service;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
@@ -25,11 +24,6 @@ import org.joda.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Provides services for displaying and manipulating timesheets.
- * Methods are organized by their functionality rather than technical impact. * @author Thies
- *
- */
 public interface IOverviewTimesheet
 {
 	/**
@@ -56,5 +50,5 @@ public interface IOverviewTimesheet
 	 * @param requestedWeek
 	 * @return
 	 */
-	WeekOverview getWeekOverview(User userId, Calendar requestedWeek, EhourConfig config);
+	WeekOverview getWeekOverview(User userId, Calendar requestedWeek);
 }

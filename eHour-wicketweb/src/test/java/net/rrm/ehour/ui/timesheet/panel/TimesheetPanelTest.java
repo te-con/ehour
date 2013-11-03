@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
@@ -65,24 +64,22 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         user = new User(1);
         cal = new GregorianCalendar();
-        WeekOverview overview = new WeekOverview();
-        overview.setUser(new User(1));
 
         Calendar now = GregorianCalendar.getInstance();
         now.add(Calendar.DAY_OF_WEEK, 7);
 
-        overview.setWeekRange(new DateRange(new Date(), now.getTime()));
+        DateRange range = new DateRange(new Date(), now.getTime());
 
         TimesheetEntry entry = TimesheetEntryMother.getTimesheetEntry(1, new Date(), 5);
         List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
         entries.add(entry);
-        overview.setTimesheetEntries(entries);
 
         List<ProjectAssignment> ass = new ArrayList<ProjectAssignment>();
         ass.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
-        overview.setProjectAssignments(ass);
 
-        expect(overviewTimesheet.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))
+        WeekOverview overview = new WeekOverview(entries, null, ass, range, new User(1), null);
+
+        expect(overviewTimesheet.getWeekOverview(isA(User.class), isA(Calendar.class)))
                 .andReturn(overview);
     }
 

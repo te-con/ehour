@@ -17,7 +17,6 @@
 package net.rrm.ehour.timesheet.service;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
@@ -100,7 +99,7 @@ public class TimesheetServiceImplTest
     }
 
 	@Test
-	public void testGetTimesheetOverview() throws Exception
+	public void should_get_timesheet_overview() throws Exception
 	{
 		List<TimesheetEntry> daoResults = new ArrayList<TimesheetEntry>();
 		List<AssignmentAggregateReportElement> reportResults = new ArrayList<AssignmentAggregateReportElement>();
@@ -140,7 +139,7 @@ public class TimesheetServiceImplTest
 	}
 
 	@Test
-	public void testGetTimesheetEntries()
+	public void should_get_timesheet_entries()
 	{
 		Date da = new Date(2006 - 1900, 12 - 1, 31);
 		Date db = new Date(2007 - 1900, 1 - 1, 6);
@@ -154,14 +153,15 @@ public class TimesheetServiceImplTest
 
 		expect(projectAssignmentService.getProjectAssignmentsForUser(1, rangeB)).andReturn(new ArrayList<ProjectAssignment>());
 
-		replay(timesheetDAO);
-		replay(timesheetCommentDAO);
-		replay(projectAssignmentService);
+        expect(config.getFirstDayOfWeek()).andReturn(1);
 
-		timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, 1 - 1, 1), new EhourConfigStub());
+		replay(timesheetDAO, timesheetCommentDAO, projectAssignmentService, config);
+
+		timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, 1 - 1, 1));
 
 		verify(timesheetDAO);
 		verify(timesheetCommentDAO);
 		verify(projectAssignmentService);
-	}
+        verify(config);
+    }
 }
