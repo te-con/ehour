@@ -17,12 +17,14 @@
 package net.rrm.ehour.timesheet.dto;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.*;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Value object for timesheet entries of a week and corresponding comments
@@ -35,28 +37,14 @@ public class WeekOverview implements Serializable {
     private List<ProjectAssignment> projectAssignments;
     private DateRange weekRange;
     private User user;
-    private Set<Customer> customers;
+    private List<Date> lockedDays;
 
-    public void initCustomers() {
-        customers = new HashSet<Customer>();
-
-        for (ProjectAssignment assignment : projectAssignments) {
-            customers.add(assignment.getProject().getCustomer());
-        }
-
-        for (TimesheetEntry entry : timesheetEntries) {
-            customers.add(entry.getEntryId().getProjectAssignment().getProject().getCustomer());
-        }
+    public List<Date> getLockedDays() {
+        return lockedDays;
     }
 
-
-    /**
-     * Get customser
-     *
-     * @return
-     */
-    public Set<Customer> getCustomers() {
-        return customers;
+    public void setLockedDays(List<Date> lockedDays) {
+        this.lockedDays = lockedDays;
     }
 
     /**
