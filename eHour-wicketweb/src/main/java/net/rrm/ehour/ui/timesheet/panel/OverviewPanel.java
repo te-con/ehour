@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -37,7 +37,7 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
     private static final long serialVersionUID = 1415235065167294169L;
 
     @SpringBean
-    private TimesheetService timesheetService;
+    private IOverviewTimesheet overviewTimesheet;
 
     public OverviewPanel(String id) {
         super(id);
@@ -50,7 +50,7 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
 
         overviewFor.set(Calendar.DAY_OF_MONTH, 1);
 
-        TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(user, overviewFor);
+        TimesheetOverview timesheetOverview = overviewTimesheet.getTimesheetOverview(user, overviewFor);
 
         add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
         add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));

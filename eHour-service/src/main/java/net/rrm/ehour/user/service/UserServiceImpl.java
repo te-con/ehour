@@ -30,7 +30,7 @@ import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IDeleteTimesheetEntry;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourUtil;
 import org.apache.commons.lang.Validate;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AggregateReportService aggregateReportService;
     @Autowired
-    private TimesheetService timesheetService;
+    private IDeleteTimesheetEntry deleteTimesheetEntryService;
 
     @Autowired
     private MessageDigestPasswordEncoder passwordEncoder;
@@ -362,7 +362,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Integer userId) {
         User user = userDAO.findById(userId);
 
-        timesheetService.deleteTimesheetEntries(user);
+        deleteTimesheetEntryService.deleteAllTimesheetDataForUser(user);
 
         userDAO.delete(user);
     }

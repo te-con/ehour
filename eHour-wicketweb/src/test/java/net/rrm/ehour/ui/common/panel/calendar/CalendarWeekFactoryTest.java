@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.common.panel.calendar;
 
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 public class CalendarWeekFactoryTest {
 
     @Mock
-    private TimesheetService timesheetService;
+    private IOverviewTimesheet overviewTimesheet;
 
     private CalendarWeekFactory factory;
 
@@ -28,7 +28,7 @@ public class CalendarWeekFactoryTest {
     public void init_subject() {
         MockitoAnnotations.initMocks(this);
 
-        factory = new CalendarWeekFactory(timesheetService);
+        factory = new CalendarWeekFactory(overviewTimesheet);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class CalendarWeekFactoryTest {
     public void should_create_weeks_for_february_2013() {
         GregorianCalendar requestedMonth = new GregorianCalendar(2013, Calendar.FEBRUARY, 1);
         LocalDate bookedDay = new LocalDate(2013, DateTimeConstants.FEBRUARY, 3);
-        when(timesheetService.getBookedDaysMonthOverview(1, requestedMonth)).thenReturn(Arrays.asList(bookedDay));
+        when(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth)).thenReturn(Arrays.asList(bookedDay));
 
         List<CalendarWeek> weeks = factory.createWeeks(Calendar.MONDAY, 1, requestedMonth);
 

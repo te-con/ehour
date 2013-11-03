@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.common;
 
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -38,14 +38,14 @@ public class MockExpectations {
     }
 
     @SuppressWarnings("deprecation")
-    public static void navCalendar(TimesheetService timesheetService, TestEhourWebApplication webApp) {
+    public static void navCalendar(IOverviewTimesheet IOverviewTimesheet, TestEhourWebApplication webApp) {
         Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
         EhourWebSession session = webApp.getSession();
         session.setNavCalendar(requestedMonth);
 
         LocalDate bookedDay = new LocalDate(2007, DateTimeConstants.DECEMBER, 15);
 
-        expect(timesheetService.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
+        expect(IOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
                 .andReturn(Arrays.asList(bookedDay));
     }
 }

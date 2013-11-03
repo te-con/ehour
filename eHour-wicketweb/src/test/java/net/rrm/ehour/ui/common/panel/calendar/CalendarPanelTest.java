@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.common.panel.calendar;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventHook;
@@ -42,12 +42,12 @@ import static org.junit.Assert.assertEquals;
  */
 @SuppressWarnings("deprecation")
 public class CalendarPanelTest extends BaseSpringWebAppTester {
-    private TimesheetService timesheetService;
+    private IOverviewTimesheet overviewTimesheet;
 
     @Before
     public void before() throws Exception {
-        timesheetService = createMock(TimesheetService.class);
-        getMockContext().putBean("timesheetService", timesheetService);
+        overviewTimesheet = createMock(IOverviewTimesheet.class);
+        getMockContext().putBean(overviewTimesheet);
 
     }
 
@@ -63,9 +63,9 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
 
         session.setNavCalendar(requestedMonth);
 
-        expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth)).andReturn(generateBookDays());
+        expect(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth)).andReturn(generateBookDays());
 
-        replay(timesheetService);
+        replay(overviewTimesheet);
 
         startPanel();
 
@@ -85,7 +85,7 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
         }
 
 
-        verify(timesheetService);
+        verify(overviewTimesheet);
     }
 
     @Test
@@ -95,13 +95,13 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
         EhourWebSession session = getWebApp().getSession();
         session.setNavCalendar(requestedMonth);
 
-        expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth)).andReturn(generateBookDays());
+        expect(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth)).andReturn(generateBookDays());
 
-        replay(timesheetService);
+        replay(overviewTimesheet);
 
         startPanel();
 
-        verify(timesheetService);
+        verify(overviewTimesheet);
     }
 
 
@@ -115,19 +115,19 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
 
         List<LocalDate> bookedDays = generateBookDays();
 
-        expect(timesheetService.getBookedDaysMonthOverview(1, requestedMonth))
+        expect(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth))
                 .andReturn(bookedDays);
 
-        expect(timesheetService.getBookedDaysMonthOverview(1, nextMonth))
+        expect(overviewTimesheet.getBookedDaysMonthOverview(1, nextMonth))
                 .andReturn(bookedDays);
 
-        replay(timesheetService);
+        replay(overviewTimesheet);
 
         startPanel();
 
         tester.executeAjaxEvent("panel:calendarFrame:nextMonthLink", "onclick");
 
-        verify(timesheetService);
+        verify(overviewTimesheet);
     }
 
     private List<LocalDate> generateBookDays() {

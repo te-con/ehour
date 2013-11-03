@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.userprefs.page;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 import net.rrm.ehour.user.service.UserService;
@@ -30,45 +30,45 @@ public class UserPreferencePageTest extends BaseSpringWebAppTester
 	@Test
 	public void shouldRenderPreferencePage() throws ObjectNotFoundException
 	{
-		TimesheetService timesheetService = createMock(TimesheetService.class);
-		getMockContext().putBean("timesheetService", timesheetService);
+		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
+		getMockContext().putBean(overviewTimesheet);
 
-		MockExpectations.navCalendar(timesheetService, getWebApp());
+		MockExpectations.navCalendar(overviewTimesheet, getWebApp());
 
 		UserService userService = createMock(UserService.class);
 		getMockContext().putBean("userService", userService);
 
 		replay(userService);
-		replay(timesheetService);
+		replay(overviewTimesheet);
 
 		tester.startPage(UserPreferencePage.class);
 		tester.assertRenderedPage(UserPreferencePage.class);
 		tester.assertNoErrorMessage();
 
 		verify(userService);
-		verify(timesheetService);
+		verify(overviewTimesheet);
 	}
 
     @Test
     public void shouldChangePasswordForUserWithPm12() throws ObjectNotFoundException
     {
-        TimesheetService timesheetService = createMock(TimesheetService.class);
-        getMockContext().putBean("timesheetService", timesheetService);
+        IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
+        getMockContext().putBean(overviewTimesheet);
 
-        MockExpectations.navCalendar(timesheetService, getWebApp());
+        MockExpectations.navCalendar(overviewTimesheet, getWebApp());
 
         UserService userService = createMock(UserService.class);
         getMockContext().putBean("userService", userService);
 
         replay(userService);
-        replay(timesheetService);
+        replay(overviewTimesheet);
 
         tester.startPage(UserPreferencePage.class);
         tester.assertRenderedPage(UserPreferencePage.class);
         tester.assertNoErrorMessage();
 
         verify(userService);
-        verify(timesheetService);
+        verify(overviewTimesheet);
     }
 
 }

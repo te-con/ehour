@@ -23,7 +23,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import org.apache.wicket.util.tester.FormTester;
@@ -46,7 +46,7 @@ import static org.junit.Assert.fail;
  */
 public class TimesheetExportPageTest extends BaseSpringWebAppTester
 {
-	private TimesheetService 	timesheetService;
+	private IOverviewTimesheet overviewTimesheet;
 	private ReportCriteriaService reportCriteriaService;
 	private DetailedReportService detailedReportService;
 	private ReportCriteria reportCriteria;
@@ -57,8 +57,8 @@ public class TimesheetExportPageTest extends BaseSpringWebAppTester
         configurationService = createMock(ConfigurationService.class);
         getMockContext().putBean("configurationService", configurationService);
 
-        timesheetService = createMock(TimesheetService.class);
-        getMockContext().putBean("timesheetService", timesheetService);
+        overviewTimesheet = createMock(IOverviewTimesheet.class);
+        getMockContext().putBean(overviewTimesheet);
 
         reportCriteriaService = createMock(ReportCriteriaService.class);
         getMockContext().putBean("reportCriteriaService", reportCriteriaService);
@@ -68,14 +68,14 @@ public class TimesheetExportPageTest extends BaseSpringWebAppTester
 
         reportCriteria = createReportCriteria();
 
-        expect(timesheetService.getBookedDaysMonthOverview(isA(Integer.class), isA(Calendar.class))).andReturn(new ArrayList<LocalDate>());
+        expect(overviewTimesheet.getBookedDaysMonthOverview(isA(Integer.class), isA(Calendar.class))).andReturn(new ArrayList<LocalDate>());
 
         expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
                 .andReturn(reportCriteria);
 
         expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
                 .andReturn(DetailedReportDataObjectMother.getFlatReportData());
-        replay(timesheetService, reportCriteriaService, detailedReportService);
+        replay(overviewTimesheet, reportCriteriaService, detailedReportService);
 
         tester.startPage(TimesheetExportPage.class);
     }
@@ -107,7 +107,7 @@ public class TimesheetExportPageTest extends BaseSpringWebAppTester
 	// don't put these in the teardown (@After) as failed expectations will hide any earlier thrown exceptions
 	public void verifyMocks()
 	{
-		verify(timesheetService);
+		verify(overviewTimesheet);
 		verify(reportCriteriaService);
 		verify(detailedReportService);
 

@@ -22,7 +22,8 @@ import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
+import net.rrm.ehour.timesheet.service.IPersistTimesheet;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
@@ -42,7 +43,11 @@ public class TimesheetModel implements IModel<Timesheet> {
     private static final long serialVersionUID = 4134613450587087107L;
 
     @SpringBean
-    private transient TimesheetService timesheetService;
+    private transient IPersistTimesheet persistTimesheet;
+
+    @SpringBean
+    private transient IOverviewTimesheet overviewTimesheet;
+
     private User user;
     private Calendar forWeek;
     private Timesheet timesheet;
@@ -61,7 +66,7 @@ public class TimesheetModel implements IModel<Timesheet> {
 
         Timesheet timesheet = getObject();
 
-        return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(),
+        return persistTimesheet.persistTimesheetWeek(timesheet.getTimesheetEntries(),
                 timesheet.getCommentForPersist(),
                 new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
     }
@@ -77,7 +82,7 @@ public class TimesheetModel implements IModel<Timesheet> {
 
     private Timesheet load() {
         EhourConfig config = EhourWebSession.getSession().getEhourConfig();
-        WeekOverview weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
+        WeekOverview weekOverview = overviewTimesheet.getWeekOverview(user, forWeek, config);
 
         Timesheet timesheet = getTimesheetFactory(config).createTimesheet(weekOverview);
 
@@ -101,7 +106,7 @@ public class TimesheetModel implements IModel<Timesheet> {
     }
 
     public void detach() {
-        timesheetService = null;
+        overviewTimesheet = null;
     }
 
     private TimesheetFactory getTimesheetFactory(EhourConfig config) {

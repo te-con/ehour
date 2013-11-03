@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.timesheet.page;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 import org.junit.Test;
@@ -36,23 +36,23 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
 	@Test
 	public void testOverviewPageRender()
 	{
-		TimesheetService timesheetService = createMock(TimesheetService.class);
-		getMockContext().putBean("timesheetService", timesheetService);
+		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
+		getMockContext().putBean(overviewTimesheet);
 		
-		MockExpectations.navCalendar(timesheetService, getWebApp());
+		MockExpectations.navCalendar(overviewTimesheet, getWebApp());
 
 		TimesheetOverview overview = new TimesheetOverview();
 		
-		expect(timesheetService.getTimesheetOverview((User)notNull(), (Calendar)notNull()))
+		expect(overviewTimesheet.getTimesheetOverview((User)notNull(), (Calendar)notNull()))
 				.andReturn(overview);					
 
 		
-		replay(timesheetService);
+		replay(overviewTimesheet);
 		
 		getTester().startPage(MonthOverviewPage.class);
 		getTester().assertRenderedPage(MonthOverviewPage.class);
 		getTester().assertNoErrorMessage();
 		
-		verify(timesheetService);
+		verify(overviewTimesheet);
 	}
 }

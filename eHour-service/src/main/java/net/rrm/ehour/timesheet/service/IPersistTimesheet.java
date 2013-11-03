@@ -16,28 +16,27 @@
 
 package net.rrm.ehour.timesheet.service;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.exception.BusinessException;
-import net.rrm.ehour.exception.OverBudgetException;
+import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Timesheet persister & validator
  **/
 
-public interface TimesheetPersister
+public interface IPersistTimesheet
 {
-	/**
-	 * Validate, persist and notify list of timesheet entries
-	 * @param assignment
-	 * @param entries
-	 * @throws BusinessException
-	 */
-	public void validateAndPersist(ProjectAssignment assignment, 
-									List<TimesheetEntry> entries,
-									DateRange weekRange) throws OverBudgetException;
-
+    /**
+     * Persist timesheet entries and comment
+     * @param timesheetEntries
+     * @param timesheetComment
+     * @param weekRange
+     */
+    List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
+                                                       TimesheetComment timesheetComment,
+                                                       DateRange weekRange);
 }

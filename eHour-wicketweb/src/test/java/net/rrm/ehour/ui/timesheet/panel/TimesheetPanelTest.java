@@ -21,7 +21,8 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
-import net.rrm.ehour.timesheet.service.TimesheetService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
+import net.rrm.ehour.timesheet.service.IPersistTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
@@ -42,7 +43,8 @@ import static org.junit.Assert.*;
 public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
 
-    private TimesheetService timesheetService;
+    private IPersistTimesheet persistTimesheet;
+    private IOverviewTimesheet overviewTimesheet;
     private UserService userService;
     private User user;
     private Calendar cal;
@@ -52,8 +54,11 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         getConfig().setCompleteDayHours(8l);
         EhourWebSession.getSession().reloadConfig();
 
-        timesheetService = createMock(TimesheetService.class);
-        getMockContext().putBean("timesheetService", timesheetService);
+        persistTimesheet = createMock(IPersistTimesheet.class);
+        getMockContext().putBean(persistTimesheet);
+
+        overviewTimesheet = createMock(IOverviewTimesheet.class);
+        getMockContext().putBean(overviewTimesheet);
 
         userService = createMock(UserService.class);
         getMockContext().putBean("userService", userService);
@@ -77,7 +82,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         ass.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
         overview.setProjectAssignments(ass);
 
-        expect(timesheetService.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))
+        expect(overviewTimesheet.getWeekOverview(isA(User.class), isA(Calendar.class), isA(EhourConfig.class)))
                 .andReturn(overview);
     }
 
@@ -215,7 +220,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     @SuppressWarnings("unchecked")
     @Test
     public void shouldSubmitSuccessful() {
-        expect(timesheetService.persistTimesheetWeek(isA(Collection.class), isA(TimesheetComment.class), isA(DateRange.class)))
+        expect(persistTimesheet.persistTimesheetWeek(isA(Collection.class), isA(TimesheetComment.class), isA(DateRange.class)))
                 .andReturn(new ArrayList<ProjectAssignmentStatus>());
 
         startAndReplay();
@@ -227,14 +232,16 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     @After
     public void verifyMocks() {
-        verify(timesheetService);
+        verify(overviewTimesheet);
         verify(userService);
+        verify(persistTimesheet);
 
     }
 
     private void startAndReplay() {
-        replay(timesheetService);
+        replay(overviewTimesheet);
         replay(userService);
+        replay(persistTimesheet);
 
         tester.startComponentInPage(new TimesheetPanel("panel", user, cal));
     }

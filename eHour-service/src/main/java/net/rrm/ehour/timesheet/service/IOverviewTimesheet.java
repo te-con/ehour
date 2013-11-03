@@ -17,17 +17,12 @@
 package net.rrm.ehour.timesheet.service;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.TimesheetComment;
-import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import org.joda.time.LocalDate;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,7 +30,7 @@ import java.util.List;
  * Methods are organized by their functionality rather than technical impact. * @author Thies
  *
  */
-public interface TimesheetService
+public interface IOverviewTimesheet
 {
 	/**
 	 * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
@@ -47,7 +42,7 @@ public interface TimesheetService
 	TimesheetOverview getTimesheetOverview(User user, Calendar requestedMonth);
 	
 	/**
-	 * Get a list with all dats in a specific month that have been fully booked
+	 * Get a list with all dates in a specific month that have been fully booked
 	 * level). 
 	 * @param userId
 	 * @param requestedMonth
@@ -62,21 +57,4 @@ public interface TimesheetService
 	 * @return
 	 */
 	WeekOverview getWeekOverview(User userId, Calendar requestedWeek, EhourConfig config);
-	
-	/**
-	 * Persist timesheet entries and comment
-	 * @param timesheetEntries
-	 * @param timesheetComment
-	 * @param weekRange
-	 */
-	List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
-																TimesheetComment timesheetComment,
-																DateRange weekRange);
-	
-	/**
-	 * Delete timesheet entries booked on assignments
-	 * @param assignments
-	 * @return
-	 */
-	void deleteTimesheetEntries(User user);
 }
