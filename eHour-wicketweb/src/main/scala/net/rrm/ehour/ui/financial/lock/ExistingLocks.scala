@@ -65,8 +65,9 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
   }
 
   override def onEvent(event: IEvent[_]) {
+    Console.err.println(event.getPayload)
     event.getPayload match {
-      case lockedAddedEvent: LockAddedEvent => lockedAddedEvent.refresh(this)
+      case event: LockModifiedEvent => event.refresh(this)
       case _ =>
     }
   }

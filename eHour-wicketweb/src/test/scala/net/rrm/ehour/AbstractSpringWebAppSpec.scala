@@ -4,10 +4,10 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import org.scalatest.mock.MockitoSugar
-import org.scalatest.{Matchers, BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
+import org.scalatest.{Matchers, BeforeAndAfterEach, WordSpec}
 
 @RunWith(classOf[JUnitRunner])
-abstract class AbstractSpringWebAppSpec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach with BeforeAndAfterAll {
+abstract class AbstractSpringWebAppSpec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach  {
   val springTester = new BaseSpringWebAppTester
   def tester = springTester.getTester
 

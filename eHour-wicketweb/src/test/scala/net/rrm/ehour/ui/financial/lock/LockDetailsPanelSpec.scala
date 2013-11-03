@@ -8,14 +8,24 @@ import org.mockito.Matchers._
 import org.joda.time.LocalDate
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.ajax.AjaxRequestTarget
+import org.scalatest.BeforeAndAfterAll
 
-class LockDetailsPanelSpec extends AbstractSpringWebAppSpec {
+class LockDetailsPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
 
   def createPath(path: String) = s"$OuterBorderId:outerBorder_body:$FormId:$path"
 
-  "Lock Details Panel" should {
-    val service = mock[TimesheetLockService]
+  val service = mock[TimesheetLockService]
+
+  override def beforeAll() {
     springTester.getMockContext.putBean(service)
+    springTester.setUp()
+  }
+
+  override def beforeEach() {
+    reset(service)
+  }
+
+  "Lock Details Panel" should {
 
     "render" in {
       tester.startComponentInPage(classOf[LockDetailsPanel])
@@ -30,7 +40,7 @@ class LockDetailsPanelSpec extends AbstractSpringWebAppSpec {
       formTester.setValue("startDate", "01/01/12")
       formTester.setValue("endDate", "01/01/13")
 
-      tester.executeAjaxEvent(createPath("submit"), "onclick")
+      submitForm
 
       tester.assertNoInfoMessage()
       tester.assertNoErrorMessage()
@@ -53,5 +63,25 @@ class LockDetailsPanelSpec extends AbstractSpringWebAppSpec {
       val model = panel.getDefaultModelObject.asInstanceOf[LockModel]
       model.name should be ("name")
     }
+
+    "update an existing lock" in {
+      val id = 5
+
+      val lockedTimesheet = LockedTimesheet(Some(id), new LocalDate(), new LocalDate(), Some("name"))
+
+      when(service.find(id)).thenReturn(Some(lockedTimesheet))
+
+      val panel = new LockDetailsPanel("testObject", new LockModel(Some(5), "name"))
+
+      tester.startComponentInPage(panel)
+
+      submitForm
+
+      verify(service).updateExisting(anyInt(), any(classOf[LocalDate]), any(classOf[LocalDate]), anyString)
+    }
+  }
+
+  def submitForm {
+    tester.executeAjaxEvent(createPath("submit"), "onclick")
   }
 }

@@ -13,6 +13,8 @@ import net.rrm.ehour.util.DateUtil
 trait TimesheetLockService {
   def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet
 
+  def updateExisting(id: Int, startDate: LocalDate, endDate: LocalDate, name: String)
+
   def findAll(): List[LockedTimesheet]
 
   def find(id: Int): Option[LockedTimesheet]
@@ -23,10 +25,16 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
   @Transactional
   override def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet = LockedTimesheet(repository.persist(new TimesheetLock(startDate.toDateMidnight.toDate, endDate.toDateMidnight.toDate)))
 
-  def findAll(): List[LockedTimesheet] = repository.findAll().map(LockedTimesheet(_)).toList
+  @Transactional
+  override def updateExisting(id: Int, startDate: LocalDate, endDate: LocalDate, name: String) {
+    val lock = new TimesheetLock(id, startDate.toDateMidnight.toDate, endDate.toDateMidnight.toDate, name)
+    repository.persist(lock)
+  }
 
-  def find(id: Int): Option[LockedTimesheet] = repository.findById(id) match {
-    case timesheet:TimesheetLock => Some(LockedTimesheet(timesheet))
+  override def findAll(): List[LockedTimesheet] = repository.findAll().map(LockedTimesheet(_)).toList
+
+  override def find(id: Int): Option[LockedTimesheet] = repository.findById(id) match {
+    case timesheet: TimesheetLock => Some(LockedTimesheet(timesheet))
     case null => None
   }
 }

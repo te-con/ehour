@@ -44,6 +44,13 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
         this.name = name;
     }
 
+    public TimesheetLock(Integer lockId, Date dateStart, Date dateEnd, String name) {
+        this(dateStart, dateEnd, name);
+        this.lockId = lockId;
+    }
+
+
+
     public Integer getLockId() {
         return lockId;
     }
