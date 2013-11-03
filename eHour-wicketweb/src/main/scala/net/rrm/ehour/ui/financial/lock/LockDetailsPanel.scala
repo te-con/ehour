@@ -62,7 +62,7 @@ class LockDetailsPanel(id: String, lockModel: LockModel) extends AbstractAjaxPan
       form.addOrReplace(label)
       target.add(label)
 
-      send(self, Broadcast.BREADTH, LockModifiedEvent(target))
+      send(self.getParent, Broadcast.BREADTH, LockModifiedEvent(target))
     }
 
     val submitButton = new AjaxButton("submit", form, success)
