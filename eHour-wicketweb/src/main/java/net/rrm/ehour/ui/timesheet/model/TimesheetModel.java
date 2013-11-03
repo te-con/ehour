@@ -36,63 +36,48 @@ import java.util.List;
 
 /**
  * Model that holds the timesheet
- **/
+ */
 
-public class TimesheetModel implements IModel<Timesheet>
-{
-	private static final long serialVersionUID = 4134613450587087107L;
+public class TimesheetModel implements IModel<Timesheet> {
+    private static final long serialVersionUID = 4134613450587087107L;
 
-	@SpringBean
-	private transient TimesheetService timesheetService;
-	private	User				user;
-	private Calendar			forWeek;
-	private Timesheet			timesheet;
+    @SpringBean
+    private transient TimesheetService timesheetService;
+    private User user;
+    private Calendar forWeek;
+    private Timesheet timesheet;
 
-	public TimesheetModel(User user, Calendar forWeek)
-	{
-		WebUtils.springInjection(this);
+    public TimesheetModel(User user, Calendar forWeek) {
+        WebUtils.springInjection(this);
 
-		this.user = user;
-		this.forWeek = forWeek;
+        this.user = user;
+        this.forWeek = forWeek;
 
-		timesheet = load();
-	}
+        timesheet = load();
+    }
 
-	/**
-	 * Perist Timesheet
-	 * @return
-	 */
-	public List<ProjectAssignmentStatus> persistTimesheet()
-	{
-		WebUtils.springInjection(this);
+    public List<ProjectAssignmentStatus> persistTimesheet() {
+        WebUtils.springInjection(this);
 
-		Timesheet timesheet = getObject();
+        Timesheet timesheet = getObject();
 
-		return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(),
-												timesheet.getCommentForPersist(),
-												new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
-	}
+        return timesheetService.persistTimesheetWeek(timesheet.getTimesheetEntries(),
+                timesheet.getCommentForPersist(),
+                new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
+    }
 
-	public Date getWeekStart()
-	{
-		return getObject().getWeekStart();
-	}
+    public Date getWeekStart() {
+        return getObject().getWeekStart();
+    }
 
-	/**
-	 *
-	 * @return
-	 */
-	public Date getWeekEnd()
-	{
-		return getObject().getWeekEnd();
-	}
+    public Date getWeekEnd() {
+        return getObject().getWeekEnd();
+    }
 
 
-	private Timesheet load()
-	{
+    private Timesheet load() {
         EhourConfig config = EhourWebSession.getSession().getEhourConfig();
         WeekOverview weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
-
 
         Timesheet timesheet = getTimesheetFactory(config).createTimesheet(weekOverview);
 
@@ -106,26 +91,20 @@ public class TimesheetModel implements IModel<Timesheet>
     }
 
 
-	public Timesheet getObject()
-	{
-		return timesheet;
-	}
+    public Timesheet getObject() {
+        return timesheet;
+    }
 
-	public void setObject(Timesheet sheet)
-	{
-		this.timesheet = sheet;
+    public void setObject(Timesheet sheet) {
+        this.timesheet = sheet;
 
-	}
+    }
 
-	public void detach()
-	{
-		timesheetService = null;
-	}
+    public void detach() {
+        timesheetService = null;
+    }
 
-
-	private TimesheetFactory getTimesheetFactory(EhourConfig config)
-	{
-		return new TimesheetFactory(config);
-	}
-
+    private TimesheetFactory getTimesheetFactory(EhourConfig config) {
+        return new TimesheetFactory(config);
+    }
 }
