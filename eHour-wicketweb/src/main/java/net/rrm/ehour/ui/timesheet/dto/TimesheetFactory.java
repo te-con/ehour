@@ -33,12 +33,12 @@ import java.util.*;
  * Generates the timesheet backing object
  **/
 
-public class TimesheetBuilder
+public class TimesheetFactory
 {
 	private EhourConfig 		config;
 	private SimpleDateFormat	keyDateFormatter;
 
-	public TimesheetBuilder(EhourConfig config)
+	public TimesheetFactory(EhourConfig config)
 	{
 		this.config = config;
 		
@@ -168,10 +168,13 @@ public class TimesheetBuilder
 												TimesheetEntry entry, Date date,
 												List<ProjectAssignment> validProjectAssignments)
 	{
-		TimesheetCell	cell = new TimesheetCell();
+		TimesheetCell cell = new TimesheetCell();
 		
 		cell.setTimesheetEntry(entry);
 		cell.setValid(isCellValid(assignment, validProjectAssignments, date));
+
+        // TODO: EHO-62
+//        cell.setLocked();
 		cell.setDate(date);
 		
 		return cell;

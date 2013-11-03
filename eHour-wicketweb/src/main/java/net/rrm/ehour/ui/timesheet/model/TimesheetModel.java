@@ -26,7 +26,7 @@ import net.rrm.ehour.timesheet.service.TimesheetService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
-import net.rrm.ehour.ui.timesheet.dto.TimesheetBuilder;
+import net.rrm.ehour.ui.timesheet.dto.TimesheetFactory;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -92,7 +92,7 @@ public class TimesheetModel implements IModel<Timesheet>
 	{
         EhourConfig config = EhourWebSession.getSession().getEhourConfig();
         WeekOverview weekOverview = timesheetService.getWeekOverview(user, forWeek, config);
-        Timesheet timesheet = getTimesheetAssembler(config).createTimesheet(weekOverview);
+        Timesheet timesheet = getTimesheetFactory(config).createTimesheet(weekOverview);
 
         if (timesheet.getComment() == null) {
             TimesheetComment comment = new TimesheetComment();
@@ -121,9 +121,9 @@ public class TimesheetModel implements IModel<Timesheet>
 	}
 
 
-	private TimesheetBuilder getTimesheetAssembler(EhourConfig config)
+	private TimesheetFactory getTimesheetFactory(EhourConfig config)
 	{
-		return new TimesheetBuilder(config);
+		return new TimesheetFactory(config);
 	}
 
 }

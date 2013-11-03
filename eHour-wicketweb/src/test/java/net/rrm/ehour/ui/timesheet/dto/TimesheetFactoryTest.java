@@ -11,16 +11,16 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class TimesheetBuilderTest {
+public class TimesheetFactoryTest {
 
-    private TimesheetBuilder builder;
+    private TimesheetFactory builder;
     private WeekOverview weekOverview;
 
     @Before
     public void set_up() {
         EhourConfigStub config = new EhourConfigStub();
         config.setCompleteDayHours(8);
-        builder = new TimesheetBuilder(config);
+        builder = new TimesheetFactory(config);
 
         weekOverview = new WeekOverview();
         weekOverview.setWeekRange(DateUtil.getDateRangeForWeek(new GregorianCalendar(2012, Calendar.OCTOBER, 8)));

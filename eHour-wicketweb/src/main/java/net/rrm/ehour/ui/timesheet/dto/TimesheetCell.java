@@ -28,21 +28,30 @@ import java.util.Date;
 public class TimesheetCell implements Comparable<TimesheetCell>, Serializable {
     private static final long serialVersionUID = -2708559856313387714L;
     private TimesheetEntry timesheetEntry;
-    private boolean isValid;
+    private boolean valid;
+    private boolean locked;
     private Date date;
 
-    /**
-     * @return the isValid
-     */
-    public boolean isValid() {
-        return isValid;
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     /**
-     * @param isValid the isValid to set
+     * @return the valid
+     */
+    public boolean isValid() {
+        return valid;
+    }
+
+    /**
+     * @param isValid the valid to set
      */
     public void setValid(boolean isValid) {
-        this.isValid = isValid;
+        this.valid = isValid;
     }
 
     /**
