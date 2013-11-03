@@ -6,7 +6,7 @@ import net.rrm.ehour.ui.common.page.AbstractBasePage
 import org.apache.wicket.model.ResourceModel
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
-class LockAdminPage extends AbstractBasePage[String](new ResourceModel("report.summary.title")) {
+class LockAdminPage extends AbstractBasePage[String](new ResourceModel("op.lock.admin.title")) {
   override def onInitialize() {
     super.onInitialize()
 
