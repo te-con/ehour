@@ -17,8 +17,10 @@
 package net.rrm.ehour.timesheet.service;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 import java.util.Collection;
@@ -26,12 +28,12 @@ import java.util.List;
 
 /**
  * Timesheet persister & validator
- **/
+ */
 
-public interface IPersistTimesheet
-{
+public interface IPersistTimesheet {
     /**
      * Persist timesheet entries and comment
+     *
      * @param timesheetEntries
      * @param timesheetComment
      * @param weekRange
@@ -39,4 +41,9 @@ public interface IPersistTimesheet
     List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
                                                        TimesheetComment timesheetComment,
                                                        DateRange weekRange);
+
+    void validateAndPersist(ProjectAssignment assignment,
+                            List<TimesheetEntry> entries,
+                            DateRange weekRange) throws OverBudgetException;
+
 }

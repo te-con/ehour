@@ -32,6 +32,7 @@ import net.rrm.ehour.util.EhourConstants;
 import net.rrm.ehour.util.EhourUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -49,6 +50,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     private MailService mailService;
     private ApplicationContext context;
 
+    @Autowired
     public TimesheetPersistance(TimesheetDao timesheetDAO, TimesheetCommentDao timesheetCommentDAO, ProjectAssignmentStatusService projectAssignmentStatusService, MailService mailService, ApplicationContext context) {
         this.timesheetDAO = timesheetDAO;
         this.timesheetCommentDAO = timesheetCommentDAO;
@@ -89,8 +91,8 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         return errorStatusses;
     }
 
-    private TimesheetPersistance getSpringProxy() {
-        return context.getBean(this.getClass());
+    private IPersistTimesheet getSpringProxy() {
+        return context.getBean(IPersistTimesheet.class);
     }
 
     private Map<ProjectAssignment, List<TimesheetEntry>> getTimesheetAsRows(Collection<TimesheetEntry> entries) {
