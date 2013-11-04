@@ -1,6 +1,6 @@
 package net.rrm.ehour.timesheet.service
 
-import org.joda.time.LocalDate
+import org.joda.time.{Interval, LocalDate}
 import org.springframework.stereotype.Service
 import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,7 +10,7 @@ import java.util.{Locale, Date}
 import org.springframework.transaction.annotation.Transactional
 import net.rrm.ehour.util.DateUtil
 import java.util.{List => JList}
-import scala.collection.convert.WrapAsJava
+import java.util
 
 trait TimesheetLockService {
   def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet
@@ -21,7 +21,7 @@ trait TimesheetLockService {
 
   def find(id: Int): Option[LockedTimesheet]
 
-  def find(startDate: Date, endDate: Date): JList[LockedTimesheet]
+  def findLockedDatesInRange(startDate: Date, endDate: Date): JList[Date]
 }
 
 @Service("timesheetLockService")
@@ -44,9 +44,16 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
     case null => None
   }
 
-  override def find(startDate: Date, endDate: Date): JList[LockedTimesheet] = {
-    val xs = repository.findMatchingLock(startDate, endDate)
-    WrapAsJava.bufferAsJavaList(xs.map(LockedTimesheet(_)).toBuffer)
+  override def findLockedDatesInRange(startDate: Date, endDate: Date): JList[Date] = {
+    new Interval(new LocalDate(), new LocalDate())
+//    val lockPeriod = repository.findMatchingLock(startDate, endDate).map(l => new Interval(LocalDate.fromDateFields(l.getDateStart), LocalDate.fromDateFields(l.getDateEnd)))
+
+//    lockPeriod(0).getClass
+
+//    WrapAsJava.bufferAsJavaList(xs.map(LockedTimesheet(_)).toBuffer)
+
+    new util.ArrayList[Date]()
+
   }
 }
 
@@ -72,7 +79,5 @@ object LockedTimesheet {
 
   // weird if because of nullpointer when unboxing getLockId: Integer = null to scala.Int primitive type
   def apply(timesheetLock: TimesheetLock): LockedTimesheet = LockedTimesheet(if (timesheetLock.getLockId == null) None else Some(timesheetLock.getLockId), timesheetLock.getDateStart, timesheetLock.getDateEnd, Option(timesheetLock.getName))
-
-
 }
 

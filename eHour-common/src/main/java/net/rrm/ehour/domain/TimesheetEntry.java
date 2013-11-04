@@ -63,7 +63,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 	/** default constructor */
 	public TimesheetEntry()
 	{
-	}
+    }
 
 	/** minimal constructor */
 	public TimesheetEntry(TimesheetEntryId entryId)

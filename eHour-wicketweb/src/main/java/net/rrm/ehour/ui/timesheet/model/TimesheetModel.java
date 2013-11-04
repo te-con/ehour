@@ -84,7 +84,7 @@ public class TimesheetModel implements IModel<Timesheet> {
         EhourConfig config = EhourWebSession.getSession().getEhourConfig();
         WeekOverview weekOverview = overviewTimesheet.getWeekOverview(user, forWeek);
 
-        Timesheet timesheet = getTimesheetFactory(config).createTimesheet(weekOverview);
+        Timesheet timesheet = new TimesheetFactory(config).createTimesheet(weekOverview);
 
         if (timesheet.getComment() == null) {
             TimesheetComment comment = new TimesheetComment();
@@ -107,9 +107,5 @@ public class TimesheetModel implements IModel<Timesheet> {
 
     public void detach() {
         overviewTimesheet = null;
-    }
-
-    private TimesheetFactory getTimesheetFactory(EhourConfig config) {
-        return new TimesheetFactory(config);
     }
 }

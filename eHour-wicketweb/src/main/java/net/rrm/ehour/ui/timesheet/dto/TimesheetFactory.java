@@ -21,11 +21,12 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.timesheet.dto.TimesheetDate;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
 import net.rrm.ehour.util.DateUtil;
+import scala.collection.immutable.List;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -52,8 +53,10 @@ public class TimesheetFactory
 	 */
 	public Timesheet createTimesheet(WeekOverview weekOverview)
 	{
-        List<Date> dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
-        List<TimesheetDate> timesheetDateSequence = createDateSequence(dateSequence);
+        List<TimesheetDate> timesheetDateSequence = weekOverview.timesheetDateSeq();
+
+//        List<Date> dateSequence = DateUtil.createDateSequence(weekOverview.weekRange(), config);
+//        List<TimesheetDate> timesheetDateSequence = createDateSequence(dateSequence);
 
         Timesheet timesheet = new Timesheet();
 		timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
@@ -244,16 +247,4 @@ public class TimesheetFactory
 		
 		return assignmentMap;
 	}
-
-    private class TimesheetDate implements Serializable {
-        final Date date;
-        final int dayInWeek;
-        final String formatted;
-
-        private TimesheetDate(Date date, int dayInWeek, String formatted) {
-            this.date = date;
-            this.dayInWeek = dayInWeek;
-            this.formatted = formatted;
-        }
-    }
 }
