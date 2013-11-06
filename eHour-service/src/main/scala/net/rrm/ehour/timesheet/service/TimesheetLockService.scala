@@ -1,6 +1,5 @@
 package net.rrm.ehour.timesheet.service
 
-import org.joda.time.{Interval, LocalDate}
 import org.springframework.stereotype.Service
 import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,7 +9,8 @@ import java.util.{Locale, Date}
 import org.springframework.transaction.annotation.Transactional
 import net.rrm.ehour.util.DateUtil
 import java.util.{List => JList}
-import java.util
+import scala.Some
+import com.github.nscala_time.time.Imports._
 
 trait TimesheetLockService {
   def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet
@@ -21,7 +21,7 @@ trait TimesheetLockService {
 
   def find(id: Int): Option[LockedTimesheet]
 
-  def findLockedDatesInRange(startDate: Date, endDate: Date): JList[Date]
+  def findLockedDatesInRange(startDate: Date, endDate: Date): Option[Interval]
 }
 
 @Service("timesheetLockService")
@@ -44,22 +44,31 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
     case null => None
   }
 
-  override def findLockedDatesInRange(startDate: Date, endDate: Date): JList[Date] = {
-    new Interval(new LocalDate(), new LocalDate())
-//    val lockPeriod = repository.findMatchingLock(startDate, endDate).map(l => new Interval(LocalDate.fromDateFields(l.getDateStart), LocalDate.fromDateFields(l.getDateEnd)))
+  override def findLockedDatesInRange(startDate: Date, endDate: Date): Option[Interval] = {
 
-//    lockPeriod(0).getClass
+    val lockIntervals = repository.findMatchingLock(startDate, endDate).map(l => new Interval(LocalDate.fromDateFields(l.getDateStart).toDateTimeAtStartOfDay, LocalDate.fromDateFields(l.getDateEnd).toDateTimeAtStartOfDay)).toList
 
-//    WrapAsJava.bufferAsJavaList(xs.map(LockedTimesheet(_)).toBuffer)
+    val dateInterval = new Interval(LocalDate.fromDateFields(startDate).toDateTimeAtStartOfDay, LocalDate.fromDateFields(endDate).toDateTimeAtStartOfDay)
 
-    new util.ArrayList[Date]()
+    val overlaps = lockIntervals.map(i => dateInterval.overlap(i))
 
+    Console.err.println(lockIntervals)
+
+    overlaps.sortWith(_.start isAfter _.start).foldLeft(Seq[Interval]()) {
+      case (Nil, e) => Seq(e)
+      case (h :: t, e) if (h gap e) == null =>
+        new Interval(e.toInterval.start, h.toInterval.end) +: t
+      case (a, e) => e +: a
+    } match {
+      case (x :: xs) => Some(x)
+      case Nil => None
+    }
   }
 }
 
 object TimesheetLockServiceImpl {
   def timesheetLockToLockedTimesheetList(xs: JList[TimesheetLock]): List[LockedTimesheet] = xs.map(x => LockedTimesheet(x)).toList
-  implicit def localDateToDate(date: LocalDate): Date = date.toDateMidnight.toDate
+  implicit def localDateToDate(date: LocalDate): Date = date.toDate
 }
 
 case class LockedTimesheet(id: Option[Int] = None, dateStart: LocalDate, dateEnd: LocalDate, name: Option[String] = None) {

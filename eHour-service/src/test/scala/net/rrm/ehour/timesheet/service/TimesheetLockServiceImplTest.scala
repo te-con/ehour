@@ -11,6 +11,7 @@ import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.joda.time.LocalDate
 import net.rrm.ehour.domain.TimesheetLock
 import java.util
+import java.{util => ju}
 
 @RunWith(classOf[JUnitRunner])
 class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach  {
@@ -20,7 +21,7 @@ class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSu
   val endDate = new LocalDate()
   val startDate = new LocalDate()
 
-  val lock = new TimesheetLock(startDate.toDateMidnight.toDate, endDate.toDateMidnight.toDate)
+  val lock = new TimesheetLock(startDate.toDate, endDate.toDate)
 
   override def beforeEach() {
     reset(repository)
@@ -36,7 +37,7 @@ class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSu
     }
 
     "find all" in {
-      val lock2 = new TimesheetLock(startDate.plusDays(1).toDateMidnight.toDate, endDate.plusDays(2).toDateMidnight.toDate)
+      val lock2 = new TimesheetLock(startDate.plusDays(1).toDate, endDate.plusDays(2).toDate)
 
       when(repository.findAll()).thenReturn(util.Arrays.asList(lock, lock2))
 
@@ -60,8 +61,41 @@ class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSu
 
       val lockedTimesheet = service.find(2)
 
-      lockedTimesheet should not be ('defined)
+      lockedTimesheet should not be 'defined
     }
 
+    "find no locked days when there are none" in {
+      val locked = service.findLockedDatesInRange(LocalDate.parse("20130101").toDate, LocalDate.parse("20130108").toDate)
+
+      locked should not be 'defined
+    }
+
+    "find first 2 days as locked" in {
+      val startDate = LocalDate.parse("2013-01-01")
+      val endDate = LocalDate.parse("2013-01-08")
+
+      val response = ju.Arrays.asList(new TimesheetLock(startDate.toDate, startDate.plusDays(2).toDate))
+      when(repository.findMatchingLock(startDate.toDate, endDate.toDate)).thenReturn(response)
+
+      val locked = service.findLockedDatesInRange(startDate.toDate, endDate.toDate)
+
+      locked.get.getStart.toLocalDate should be (startDate)
+      locked.get.getEnd.toLocalDate should be (startDate.plusDays(2))
+    }
+
+    "find 3 days as locked" in {
+      val startDate = LocalDate.parse("2013-01-01")
+      val endDate = LocalDate.parse("2013-01-08")
+
+      val response = ju.Arrays.asList(new TimesheetLock(startDate.toDate, startDate.plusDays(2).toDate), new TimesheetLock(endDate.minusDays(1).toDate, endDate.toDate))
+      when(repository.findMatchingLock(startDate.toDate, endDate.toDate)).thenReturn(response)
+
+      val locked = service.findLockedDatesInRange(startDate.toDate, endDate.toDate)
+
+      locked.get.getStart.toLocalDate should be (startDate)
+      locked.get.getEnd.toLocalDate should be (startDate.plusDays(2))
+
+      // TODO broken
+    }
   }
 }

@@ -102,7 +102,7 @@ object LockDetailsPanel {
 class LockModel(val id: Option[Int] = None, var name: String = "", var startDate: Date = new Date(), var endDate: Date = new Date()) extends Serializable
 
 object LockModel {
-  def apply(lockedTimesheet: LockedTimesheet): LockModel = new LockModel(lockedTimesheet.id, lockedTimesheet.name.getOrElse(""), lockedTimesheet.dateStart.toDateMidnight.toDate, lockedTimesheet.dateStart.toDateMidnight.toDate)
+  def apply(lockedTimesheet: LockedTimesheet): LockModel = new LockModel(lockedTimesheet.id, lockedTimesheet.name.getOrElse(""), lockedTimesheet.dateStart.toDate, lockedTimesheet.dateStart.toDate)
 
   def apply(): LockModel = new LockModel()
 }
