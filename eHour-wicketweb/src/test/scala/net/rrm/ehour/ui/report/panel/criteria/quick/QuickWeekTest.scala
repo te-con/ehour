@@ -7,6 +7,7 @@ import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import java.util.{Date, Calendar}
 
 @RunWith(classOf[JUnitRunner])
+@SuppressWarnings(Array("deprecation"))
 class QuickWeekTest extends FunSuite with BeforeAndAfter with Matchers {
   var cal: Calendar = _
   var config: EhourConfigStub = _
