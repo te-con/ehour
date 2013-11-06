@@ -73,7 +73,6 @@
         <scala.version>${scala.major.version}.${scala.minor.version}</scala.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scalaj.artifactId>scalaj-collection_2.9.1</scalaj.artifactId>
         <spring-security.version>3.1.4.RELEASE</spring-security.version>
     </properties>
 
@@ -83,12 +82,6 @@
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-library</artifactId>
                 <version>${scala.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.scalaj</groupId>
-                <artifactId>${scalaj.artifactId}</artifactId>
-                <version>1.2</version>
             </dependency>
 
             <dependency>
