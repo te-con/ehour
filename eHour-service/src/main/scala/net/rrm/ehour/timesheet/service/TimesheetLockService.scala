@@ -9,7 +9,6 @@ import java.util.{Locale, Date}
 import org.springframework.transaction.annotation.Transactional
 import net.rrm.ehour.util.DateUtil
 import java.util.{List => JList}
-import scala.Some
 import com.github.nscala_time.time.Imports._
 
 trait TimesheetLockService {
@@ -21,7 +20,7 @@ trait TimesheetLockService {
 
   def find(id: Int): Option[LockedTimesheet]
 
-  def findLockedDatesInRange(startDate: Date, endDate: Date): Option[Interval]
+  def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval]
 }
 
 @Service("timesheetLockService")
@@ -44,24 +43,31 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
     case null => None
   }
 
-  override def findLockedDatesInRange(startDate: Date, endDate: Date): Option[Interval] = {
+  override def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval] = {
+    implicit def dateToDateTime(d: Date):DateTime = LocalDate.fromDateFields(d).toDateTimeAtStartOfDay
 
-    val lockIntervals = repository.findMatchingLock(startDate, endDate).map(l => new Interval(LocalDate.fromDateFields(l.getDateStart).toDateTimeAtStartOfDay, LocalDate.fromDateFields(l.getDateEnd).toDateTimeAtStartOfDay)).toList
+    def overlapsAtEdges(i: Interval, r: Interval) = {
+      def isOverlappingAtStart = r.start equals i.end
+      def overlapsAtStart = if (isOverlappingAtStart) Some(new Interval(r.start, r.start)) else None
 
-    val dateInterval = new Interval(LocalDate.fromDateFields(startDate).toDateTimeAtStartOfDay, LocalDate.fromDateFields(endDate).toDateTimeAtStartOfDay)
+      def isOverlappingAtEnd = r.end equals i.start
+      def overlapsAtEnd = if (isOverlappingAtEnd) Some(new Interval(r.end, r.end)) else None
 
-    val overlaps = lockIntervals.map(i => dateInterval.overlap(i))
+      overlapsAtStart orElse overlapsAtEnd
+    }
 
-    Console.err.println(lockIntervals)
+    val requestedInterval = new Interval(startDate, endDate)
+    val lockIntervals = repository.findMatchingLock(startDate, endDate).map(l => new Interval(l.getDateStart, l.getDateEnd)).toList
+
+    val overlaps = lockIntervals.map(i => requestedInterval overlap i match {
+      case o: Interval => Some(o)
+      case null => overlapsAtEdges(i, requestedInterval)
+    }).flatten
 
     overlaps.sortWith(_.start isAfter _.start).foldLeft(Seq[Interval]()) {
       case (Nil, e) => Seq(e)
-      case (h :: t, e) if (h gap e) == null =>
-        new Interval(e.toInterval.start, h.toInterval.end) +: t
+      case (h :: t, e) if (h gap e) == null => new Interval(e.toInterval.start, h.toInterval.end) +: t
       case (a, e) => e +: a
-    } match {
-      case (x :: xs) => Some(x)
-      case Nil => None
     }
   }
 }
