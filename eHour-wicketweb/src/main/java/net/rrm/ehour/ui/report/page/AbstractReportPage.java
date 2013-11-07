@@ -54,24 +54,15 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 		}
 
         setSingleUserCriteria(userCriteria);
-		
-		AvailableCriteria availableCriteria = newAvailableCriteria();
+
+        AvailableCriteria availableCriteria = new AvailableCriteria();
 
 		ReportCriteria criteria = new ReportCriteria(availableCriteria, userCriteria);
 		
 		return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);
 	}
-	
-	/**
-	 * Get a fresh new shiny AvailableCriteria obj
-	 * @return
-	 */
-	protected AvailableCriteria newAvailableCriteria()
-	{
-		return new AvailableCriteria();
-	}
-	
-	/**
+
+    /**
 	 * Initialize user criteria 
 	 */
 	private UserCriteria initUserCriteria()

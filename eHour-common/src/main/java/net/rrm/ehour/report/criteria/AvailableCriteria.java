@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.report.criteria;
 
-import java.io.Serializable;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * ReportData Criteria
@@ -39,7 +39,17 @@ public class AvailableCriteria implements Serializable
 	private List<User>				users;
 	private List<UserDepartment>	userDepartments;
 
-	/**
+    public AvailableCriteria() {
+    }
+
+    public AvailableCriteria(List<Customer> customers, List<Project> projects, List<User> users, List<UserDepartment> userDepartments) {
+        this.customers = customers;
+        this.projects = projects;
+        this.users = users;
+        this.userDepartments = userDepartments;
+    }
+
+    /**
 	 * @return the userDepartments
 	 */
 	public List<UserDepartment> getUserDepartments()

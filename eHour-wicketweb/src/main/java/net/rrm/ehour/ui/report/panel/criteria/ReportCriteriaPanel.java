@@ -78,6 +78,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private ListMultipleChoice<Customer> customers;
     private ListMultipleChoice<User> users;
     private List<WebMarkupContainer> quickSelections;
+    private AjaxCheckBox onlyBillableCustomerCheckbox;
+    private AjaxCheckBox onlyBillableProjectsCheckbox;
 
     /**
      * Constructor which sets up the basic borded form
@@ -133,7 +135,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         AjaxCheckBox deactivateBox = createOnlyActiveCheckbox();
         parent.add(deactivateBox);
 
-        parent.add(createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableCustomers"));
+        onlyBillableCustomerCheckbox = createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableCustomers");
+        parent.add(onlyBillableCustomerCheckbox);
     }
 
     @SuppressWarnings("serial")
@@ -162,8 +165,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 target.add(projects);
 
                 // bahh!
-                target.add(ReportCriteriaPanel.this.get("border:criteriaForm:customerProjectsBorder:reportCriteria.userCriteria.onlyBillableCustomers"));
-                target.add(ReportCriteriaPanel.this.get("border:criteriaForm:customerProjectsBorder:reportCriteria.userCriteria.onlyBillableProjects"));
+                target.add(onlyBillableCustomerCheckbox);
+                target.add(onlyBillableProjectsCheckbox);
             }
         };
 
@@ -192,7 +195,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         parent.add(deactivateBox);
 
-        parent.add(createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableProjects"));
+        onlyBillableProjectsCheckbox = createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableProjects");
+        parent.add(onlyBillableProjectsCheckbox);
     }
 
 
