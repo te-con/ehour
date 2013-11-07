@@ -26,9 +26,11 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.util.DateUtil;
+import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import scala.collection.immutable.Vector;
 
 import java.util.*;
 
@@ -39,33 +41,26 @@ import static org.junit.Assert.assertEquals;
 public class TimesheetServiceImplTest
 {
 	private TimesheetServiceImpl timesheetService;
-
 	private TimesheetDao timesheetDAO;
-
 	private TimesheetCommentDao timesheetCommentDAO;
-
 	private EhourConfig config;
-
 	private AggregateReportService aggregateReportService;
-
 	private ProjectAssignmentService projectAssignmentService;
+    private TimesheetLockService timesheetLockService;
 
 	@Before
 	public void setUp()
 	{
-		timesheetService = new TimesheetServiceImpl();
 
 		config = createMock(EhourConfig.class);
 		timesheetDAO = createMock(TimesheetDao.class);
 		aggregateReportService = createMock(AggregateReportService.class);
 		timesheetCommentDAO = createMock(TimesheetCommentDao.class);
 		projectAssignmentService = createMock(ProjectAssignmentService.class);
+        timesheetLockService = createMock(TimesheetLockService.class);
 
-		timesheetService.setTimesheetDAO(timesheetDAO);
-		timesheetService.setReportService(aggregateReportService);
-		timesheetService.setEhourConfig(config);
-		timesheetService.setTimesheetCommentDAO(timesheetCommentDAO);
-		timesheetService.setProjectAssignmentService(projectAssignmentService);
+        timesheetService = new TimesheetServiceImpl(timesheetDAO, timesheetCommentDAO, timesheetLockService,
+                                                    aggregateReportService, projectAssignmentService, config);
 	}
 
 	@Test
@@ -147,14 +142,12 @@ public class TimesheetServiceImplTest
 		DateRange rangeB = new DateRange(new Date(2006 - 1900, 12 - 1, 31), new Date(2007 - 1900, 1 - 1, 6));
 
 		expect(timesheetDAO.getTimesheetEntriesInRange(1, range)).andReturn(new ArrayList<TimesheetEntry>());
-
 		expect(timesheetCommentDAO.findById(new TimesheetCommentId(1, range.getDateStart()))).andReturn(new TimesheetComment());
-
 		expect(projectAssignmentService.getProjectAssignmentsForUser(1, rangeB)).andReturn(new ArrayList<ProjectAssignment>());
-
         expect(config.getFirstDayOfWeek()).andReturn(1);
+        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class))).andReturn(new Vector<Interval>(0, 0, 1));
 
-		replay(timesheetDAO, timesheetCommentDAO, projectAssignmentService, config);
+		replay(timesheetDAO, timesheetCommentDAO, projectAssignmentService, config, timesheetLockService);
 
 		timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, 1 - 1, 1));
 
@@ -162,5 +155,6 @@ public class TimesheetServiceImplTest
 		verify(timesheetCommentDAO);
 		verify(projectAssignmentService);
         verify(config);
+        verify(timesheetLockService);
     }
 }

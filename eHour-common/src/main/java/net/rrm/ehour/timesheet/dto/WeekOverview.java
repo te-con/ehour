@@ -23,6 +23,7 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -37,15 +38,15 @@ public class WeekOverview implements Serializable {
     private List<ProjectAssignment> projectAssignments;
     private DateRange weekRange;
     private User user;
-    private List<Date> lockedDays;
+    private Collection<Date> lockedDays;
 
-    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, List<Date> lockedDays) {
+    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, Collection<Date> lockedDates) {
         this.timesheetEntries = timesheetEntries;
         this.comment = comment;
         this.projectAssignments = projectAssignments;
         this.weekRange = weekRange;
         this.user = user;
-        this.lockedDays = lockedDays;
+        this.lockedDays = lockedDates;
     }
 
     public List<TimesheetEntry> getTimesheetEntries() {
@@ -68,7 +69,7 @@ public class WeekOverview implements Serializable {
         return user;
     }
 
-    public List<Date> getLockedDays() {
+    public Collection<Date> getLockedDays() {
         return lockedDays;
     }
 }

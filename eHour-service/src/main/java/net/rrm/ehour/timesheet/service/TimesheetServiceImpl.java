@@ -30,9 +30,11 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
+import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import scala.collection.Seq;
 
 import java.io.Serializable;
 import java.util.*;
@@ -45,23 +47,32 @@ import java.util.*;
  */
 @Service("timesheetService")
 public class TimesheetServiceImpl implements IOverviewTimesheet {
-    @Autowired
     private TimesheetDao timesheetDAO;
 
-    @Autowired
     private TimesheetCommentDao timesheetCommentDAO;
 
-    @Autowired
     private TimesheetLockService timesheetLockService;
 
-    @Autowired
     private AggregateReportService aggregateReportService;
 
-    @Autowired
     private ProjectAssignmentService projectAssignmentService;
 
-    @Autowired
     private EhourConfig configuration;
+
+    @Autowired
+    public TimesheetServiceImpl(TimesheetDao timesheetDAO,
+                                TimesheetCommentDao timesheetCommentDAO,
+                                TimesheetLockService timesheetLockService,
+                                AggregateReportService aggregateReportService,
+                                ProjectAssignmentService projectAssignmentService,
+                                EhourConfig configuration) {
+        this.timesheetDAO = timesheetDAO;
+        this.timesheetCommentDAO = timesheetCommentDAO;
+        this.timesheetLockService = timesheetLockService;
+        this.aggregateReportService = aggregateReportService;
+        this.projectAssignmentService = projectAssignmentService;
+        this.configuration = configuration;
+    }
 
     /**
      * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
@@ -207,35 +218,9 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
         TimesheetComment comment = timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart()));
         List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range);
 
-//         timesheetLockService.findLockedDatesInRange(range.getDateStart(), range.getDateEnd());
+        Seq<Interval> lockedDatesAsIntervals = timesheetLockService.findLockedDatesInRange(range.getDateStart(), range.getDateEnd());
+        Collection<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);
 
-
-//        List<LockedTimesheet> lockedTimesheetList = timesheetLockService.find(range.getDateStart(), range.getDateEnd());
-
-        return new WeekOverview(timesheetEntries, comment, assignments, range, user, null);
-    }
-
-    public void setTimesheetDAO(TimesheetDao dao) {
-        timesheetDAO = dao;
-    }
-
-    public void setReportService(AggregateReportService aggregateReportService) {
-        this.aggregateReportService = aggregateReportService;
-    }
-
-    public void setEhourConfig(EhourConfig config) {
-        this.configuration = config;
-    }
-
-    public void setTimesheetCommentDAO(TimesheetCommentDao timesheetCommentDAO) {
-        this.timesheetCommentDAO = timesheetCommentDAO;
-    }
-
-    public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService) {
-        this.projectAssignmentService = projectAssignmentService;
-    }
-
-    public void setAggregateReportService(AggregateReportService aggregateReportService) {
-        this.aggregateReportService = aggregateReportService;
+        return new WeekOverview(timesheetEntries, comment, assignments, range, user, lockedDates);
     }
 }
