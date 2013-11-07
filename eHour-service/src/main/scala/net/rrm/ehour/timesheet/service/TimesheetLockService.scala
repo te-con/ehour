@@ -26,10 +26,25 @@ trait TimesheetLockService {
   def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval]
 }
 
-@Service("timesheetLockService")
-class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extends TimesheetLockService {
+object TimesheetLockService {
+  def timesheetLockToLockedTimesheetList(xs: ju.List[TimesheetLock]): List[LockedTimesheet] = xs.map(x => LockedTimesheet(x)).toList
+  def intervalToJavaList(xs: Seq[Interval]): ju.Collection[Date] = {
+    def inc(d: DateTime, i: Interval, l: List[Date]): List[Date] =
+      if (d.isBefore(i.getEnd) || d.isEqual(i.getEnd))
+        inc(d.plusDays(1), i, d.toDate :: l)
+      else
+        l.reverse
 
-  import TimesheetLockServiceImpl.localDateToDate
+    WrapAsJava.asJavaCollection(xs.map(i => inc(i.start, i, Nil)).flatten)
+  }
+
+  implicit def localDateToDate(date: LocalDate): Date = date.toDate
+}
+
+@Service("timesheetLockService")
+class TimesheetLockServiceSpringImpl @Autowired()(repository: TimesheetLockDao) extends TimesheetLockService {
+
+  import TimesheetLockService.localDateToDate
 
   @Transactional
   override def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet = LockedTimesheet(repository.persist(new TimesheetLock(startDate, endDate)))
@@ -40,7 +55,7 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
     repository.persist(lock)
   }
 
-  override def findAll(): List[LockedTimesheet] = TimesheetLockServiceImpl.timesheetLockToLockedTimesheetList(repository.findAll())
+  override def findAll(): List[LockedTimesheet] = TimesheetLockService.timesheetLockToLockedTimesheetList(repository.findAll())
 
   override def find(id: Int): Option[LockedTimesheet] = repository.findById(id) match {
     case timesheet: TimesheetLock => Some(LockedTimesheet(timesheet))
@@ -80,21 +95,6 @@ class TimesheetLockServiceImpl @Autowired()(repository: TimesheetLockDao) extend
 
     mergeIntervals(overlaps)
   }
-}
-
-object TimesheetLockServiceImpl {
-  def timesheetLockToLockedTimesheetList(xs: ju.List[TimesheetLock]): List[LockedTimesheet] = xs.map(x => LockedTimesheet(x)).toList
-  def intervalToJavaList(xs: Seq[Interval]): ju.Collection[Date] = {
-    def inc(d: DateTime, i: Interval, l: List[Date]): List[Date] =
-      if (d.isBefore(i.getEnd) || d.isEqual(i.getEnd))
-        inc(d.plusDays(1), i, d.toDate :: l)
-      else
-        l.reverse
-
-    WrapAsJava.asJavaCollection(xs.map(i => inc(i.start, i, Nil)).flatten)
-  }
-
-  implicit def localDateToDate(date: LocalDate): Date = date.toDate
 }
 
 case class LockedTimesheet(id: Option[Int] = None, dateStart: LocalDate, dateEnd: LocalDate, name: Option[String] = None) {
