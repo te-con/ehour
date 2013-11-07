@@ -207,6 +207,9 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
         TimesheetComment comment = timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart()));
         List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range);
 
+//         timesheetLockService.findLockedDatesInRange(range.getDateStart(), range.getDateEnd());
+
+
 //        List<LockedTimesheet> lockedTimesheetList = timesheetLockService.find(range.getDateStart(), range.getDateEnd());
 
         return new WeekOverview(timesheetEntries, comment, assignments, range, user, null);

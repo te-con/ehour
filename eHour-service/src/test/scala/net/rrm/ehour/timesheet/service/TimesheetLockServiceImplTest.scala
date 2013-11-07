@@ -10,9 +10,9 @@ import org.scalatest._
 import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.joda.time.LocalDate
 import net.rrm.ehour.domain.TimesheetLock
-import java.util
 import java.{util => ju}
 import com.github.nscala_time.time.Imports._
+import scala.collection.convert.WrapAsScala
 
 @RunWith(classOf[JUnitRunner])
 class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
@@ -40,7 +40,7 @@ class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSu
     "find all" in {
       val lock2 = new TimesheetLock(startDate.plusDays(1).toDate, endDate.plusDays(2).toDate)
 
-      when(repository.findAll()).thenReturn(util.Arrays.asList(lock, lock2))
+      when(repository.findAll()).thenReturn(ju.Arrays.asList(lock, lock2))
 
       val lockedTimesheets: List[LockedTimesheet] = service.findAll()
 
@@ -169,7 +169,18 @@ class TimesheetLockServiceImplTest extends WordSpec with Matchers with MockitoSu
         locked(1).start.toLocalDate should be(endDate)
         locked(1).end.toLocalDate should be(endDate)
       }
+    }
 
+    "should extract 3 dates from single interval" in {
+      val x: ju.Collection[ju.Date] = TimesheetLockServiceImpl.intervalToJavaList(Seq(new Interval(LocalDate.parse("2013-01-01").toDateTimeAtStartOfDay, LocalDate.parse("2013-01-03").toDateTimeAtStartOfDay)))
+
+      val y  = WrapAsScala.collectionAsScalaIterable(x).toList
+
+      y should have size 3
+
+      y should contain (LocalDate.parse("2013-01-01").toDate)
+      y should contain (LocalDate.parse("2013-01-02").toDate)
+      y should contain (LocalDate.parse("2013-01-03").toDate)
     }
   }
 }

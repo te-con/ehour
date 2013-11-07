@@ -35,8 +35,7 @@ import java.util.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
-@SuppressWarnings(
-{ "deprecation" })
+@SuppressWarnings( { "deprecation" })
 public class TimesheetServiceImplTest
 {
 	private TimesheetServiceImpl timesheetService;

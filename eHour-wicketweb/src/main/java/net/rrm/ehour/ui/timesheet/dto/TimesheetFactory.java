@@ -245,7 +245,7 @@ public class TimesheetFactory
         return assignmentMap;
     }
 
-    private class TimesheetDate implements Serializable {
+    private static class TimesheetDate implements Serializable {
         final Date date;
         final int dayInWeek;
         final String formatted;
