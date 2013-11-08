@@ -23,9 +23,8 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Value object for timesheet entries of a week and corresponding comments
@@ -33,6 +32,10 @@ import java.util.List;
 
 public class WeekOverview implements Serializable {
     private static final long serialVersionUID = -3281374385102106958L;
+    private final Map<ProjectAssignment,Map<String,TimesheetEntry>> assignmentMap;
+
+    public final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+
     private List<TimesheetEntry> timesheetEntries;
     private TimesheetComment comment;
     private List<ProjectAssignment> projectAssignments;
@@ -40,13 +43,54 @@ public class WeekOverview implements Serializable {
     private User user;
     private Collection<Date> lockedDays;
 
-    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, Collection<Date> lockedDates) {
+    public WeekOverview(List<TimesheetEntry> timesheetEntries, List<ProjectAssignment> projectAssignments) {
         this.timesheetEntries = timesheetEntries;
-        this.comment = comment;
         this.projectAssignments = projectAssignments;
+
+        assignmentMap = mergeUnbookedAssignments(createAssignmentMap());
+    }
+
+    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, Collection<Date> lockedDates) {
+        this(timesheetEntries, projectAssignments);
+        this.comment = comment;
         this.weekRange = weekRange;
         this.user = user;
         this.lockedDays = lockedDates;
+    }
+
+    public Map<ProjectAssignment, Map<String, TimesheetEntry>> getAssignmentMap() {
+        return assignmentMap;
+    }
+
+    private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap() {
+        Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap = new HashMap<ProjectAssignment, Map<String, TimesheetEntry>>();
+
+        for (TimesheetEntry entry : getTimesheetEntries()) {
+            ProjectAssignment assignment = entry.getEntryId().getProjectAssignment();
+
+            Map<String, TimesheetEntry> entryDateMap = assignmentMap.containsKey(assignment) ? assignmentMap.get(assignment) : new HashMap<String, TimesheetEntry>();
+
+            entryDateMap.put(formatter.format(entry.getEntryId().getEntryDate()), entry);
+
+            assignmentMap.put(assignment, entryDateMap);
+        }
+
+        return assignmentMap;
+    }
+
+    /**
+     * Merge unused project assignments into the week overview
+     */
+    private Map<ProjectAssignment, Map<String, TimesheetEntry>> mergeUnbookedAssignments(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap) {
+        if (getProjectAssignments() != null) {
+            for (ProjectAssignment assignment : getProjectAssignments()) {
+                if (!assignmentMap.containsKey(assignment)) {
+                    assignmentMap.put(assignment, new HashMap<String, TimesheetEntry>());
+                }
+            }
+        }
+
+        return assignmentMap;
     }
 
     public List<TimesheetEntry> getTimesheetEntries() {

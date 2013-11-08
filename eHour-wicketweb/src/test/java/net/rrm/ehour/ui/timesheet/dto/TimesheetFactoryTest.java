@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.timesheet.dto;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
@@ -13,15 +14,13 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 
 public class TimesheetFactoryTest {
-
-    public static final DateRange RANGE = DateUtil.getDateRangeForWeek(new GregorianCalendar(2012, Calendar.OCTOBER, 8));
-    private TimesheetFactory builder;
+    private static final DateRange RANGE = DateUtil.getDateRangeForWeek(new GregorianCalendar(2012, Calendar.OCTOBER, 8));
+    private EhourConfigStub config;
 
     @Before
     public void set_up() {
-        EhourConfigStub config = new EhourConfigStub();
+        config = new EhourConfigStub();
         config.setCompleteDayHours(8);
-        builder = new TimesheetFactory(config);
     }
 
     @Test
@@ -29,11 +28,11 @@ public class TimesheetFactoryTest {
         // given
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
 
-        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment), RANGE, null, null);
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment), RANGE, null, Lists.<Date>newArrayList());
 
 
         // when
-        Timesheet timesheet = builder.createTimesheet(weekOverview);
+        Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
         SortedMap<Customer,List<TimesheetRow>> customers = timesheet.getCustomers();
@@ -53,10 +52,10 @@ public class TimesheetFactoryTest {
         assignment02.setAssignmentId(2);
         assignment02.setRole("role");
 
-        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, null);
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, Lists.<Date>newArrayList());
 
         // when
-        Timesheet timesheet = builder.createTimesheet(weekOverview);
+        Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
         SortedMap<Customer,List<TimesheetRow>> customers = timesheet.getCustomers();
@@ -77,10 +76,10 @@ public class TimesheetFactoryTest {
         assignment02.setAssignmentId(2);
         assignment02.setRole("role");
 
-        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, null);
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, Lists.<Date>newArrayList());
 
         // when
-        Timesheet timesheet = builder.createTimesheet(weekOverview);
+        Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
         SortedMap<Customer,List<TimesheetRow>> customerRows = timesheet.getCustomers();

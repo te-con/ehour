@@ -70,7 +70,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         DateRange range = new DateRange(new Date(), now.getTime());
 
-        TimesheetEntry entry = TimesheetEntryMother.getTimesheetEntry(1, new Date(), 5);
+        TimesheetEntry entry = TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5);
         List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
         entries.add(entry);
 

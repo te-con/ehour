@@ -8,9 +8,9 @@ import java.util.Date;
  * @author thies (www.te-con.nl)
  *
  */
-public class TimesheetEntryMother
+public class TimesheetEntryObjectMother
 {
-	public static TimesheetEntry getTimesheetEntry(int prjId, Date date, float hours)
+	public static TimesheetEntry createTimesheetEntry(int prjId, Date date, float hours)
 	{
 		TimesheetEntry 	entry;
 		TimesheetEntryId id;

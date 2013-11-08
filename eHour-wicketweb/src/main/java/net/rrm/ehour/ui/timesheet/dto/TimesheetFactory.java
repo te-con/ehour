@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
@@ -26,42 +27,35 @@ import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
 import net.rrm.ehour.util.DateUtil;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Generates the timesheet backing object
- **/
+ */
 
-public class TimesheetFactory
-{
-    private EhourConfig 		config;
-    private SimpleDateFormat	keyDateFormatter;
+public class TimesheetFactory {
+    private final EhourConfig config;
+    private final WeekOverview weekOverview;
 
-    public TimesheetFactory(EhourConfig config)
-    {
+    public TimesheetFactory(EhourConfig config, WeekOverview weekOverview) {
         this.config = config;
-
-        keyDateFormatter = new SimpleDateFormat("yyyyMMdd");
+        this.weekOverview = weekOverview;
     }
 
     /**
      * Create timesheet form
+     *
      * @param weekOverview
      * @return
      */
-    public Timesheet createTimesheet(WeekOverview weekOverview)
-    {
+    public Timesheet createTimesheet() {
         List<Date> dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
-        List<TimesheetDate> timesheetDateSequence = createDateSequence(dateSequence);
+        List<TimesheetDate> timesheetDates = createTimesheetDates(dateSequence, weekOverview.getLockedDays());
 
         Timesheet timesheet = new Timesheet();
         timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
 
-        Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap = createAssignmentMap(weekOverview);
-        mergeUnbookedAssignments(weekOverview, assignmentMap);
-
-        List<TimesheetRow> timesheetRows = createTimesheetRows(assignmentMap, timesheetDateSequence, weekOverview.getProjectAssignments(), timesheet);
+        List<TimesheetRow> timesheetRows = createTimesheetRows(weekOverview.getAssignmentMap(), timesheetDates, weekOverview.getProjectAssignments(), timesheet);
 
         timesheet.setCustomers(structureRowsPerCustomer(timesheetRows));
         timesheet.setDateSequence(dateSequence.toArray(new Date[7]));
@@ -74,34 +68,40 @@ public class TimesheetFactory
         return timesheet;
     }
 
-    private List<TimesheetDate> createDateSequence(List<Date> dateSequence) {
+    private List<TimesheetDate> createTimesheetDates(List<Date> dateSequence, Collection<Date> lockedDays) {
+        List<String> formattedLockedDays = formatLockedDays(lockedDays);
 
         List<TimesheetDate> dates = new ArrayList<TimesheetDate>();
 
         for (Date date : dateSequence) {
             Calendar calendar = DateUtil.getCalendar(config);
             calendar.setTime(date);
-            String formatted = keyDateFormatter.format(date);
-            dates.add(new TimesheetDate(date, calendar.get(Calendar.DAY_OF_WEEK) - 1, formatted));
+            String formattedDate = weekOverview.formatter.format(date);
+            boolean locked = formattedLockedDays.contains(formattedDate);
+
+            dates.add(new TimesheetDate(date, calendar.get(Calendar.DAY_OF_WEEK) - 1, formattedDate, locked));
         }
 
         return dates;
     }
 
-    /**
-     * Structure timesheet rows per customers
-     * @param rows
-     * @return
-     */
-    private SortedMap<Customer, List<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows)
-    {
+    private List<String> formatLockedDays(Collection<Date> lockedDays) {
+        List<String> formattedLockedDays = Lists.newArrayList();
+
+        for (Date lockedDay : lockedDays) {
+            formattedLockedDays.add(weekOverview.formatter.format(lockedDay));
+        }
+
+        return formattedLockedDays;
+    }
+
+    private SortedMap<Customer, List<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows) {
         SortedMap<Customer, List<TimesheetRow>> customerMap = new TreeMap<Customer, List<TimesheetRow>>();
 
-        for (TimesheetRow timesheetRow : rows)
-        {
+        for (TimesheetRow timesheetRow : rows) {
             Customer customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
 
-            List<TimesheetRow>  timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new ArrayList<TimesheetRow>();
+            List<TimesheetRow> timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new ArrayList<TimesheetRow>();
             timesheetRows.add(timesheetRow);
 
             customerMap.put(customer, timesheetRows);
@@ -120,31 +120,22 @@ public class TimesheetFactory
         }
     }
 
-    /**
-     * Create the timesheet rows
-     * @param assignmentMap
-     * @param dateSequence
-     * @return
-     */
     private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap,
-                                                   List<TimesheetDate> dateSequence,
+                                                   List<TimesheetDate> timesheetDates,
                                                    List<ProjectAssignment> validProjectAssignments,
-                                                   Timesheet timesheet)
-    {
-        List<TimesheetRow> 	timesheetRows = new ArrayList<TimesheetRow>();
+                                                   Timesheet timesheet) {
+        List<TimesheetRow> timesheetRows = new ArrayList<TimesheetRow>();
         Calendar firstDate = DateUtil.getCalendar(config);
-        firstDate.setTime(dateSequence.get(0).date);
+        firstDate.setTime(timesheetDates.get(0).date);
 
-        for (ProjectAssignment assignment : assignmentMap.keySet())
-        {
+        for (ProjectAssignment assignment : assignmentMap.keySet()) {
             TimesheetRow timesheetRow = new TimesheetRow(config);
             timesheetRow.setTimesheet(timesheet);
             timesheetRow.setProjectAssignment(assignment);
             timesheetRow.setFirstDayOfWeekDate(firstDate);
 
             // create a cell for every requested timesheetDate
-            for (TimesheetDate timesheetDate : dateSequence)
-            {
+            for (TimesheetDate timesheetDate : timesheetDates) {
                 TimesheetEntry entry = assignmentMap.get(assignment).get(timesheetDate.formatted);
 
                 timesheetRow.addTimesheetCell(timesheetDate.dayInWeek,
@@ -159,15 +150,10 @@ public class TimesheetFactory
 
     /**
      * Create timesheet cell, a cell is valid when the timesheetDate is within the assignment valid range
-     * @param assignment
-     * @param entry
-     * @param date
-     * @return
      */
     private TimesheetCell createTimesheetCell(ProjectAssignment assignment,
                                               TimesheetEntry entry, Date date,
-                                              List<ProjectAssignment> validProjectAssignments)
-    {
+                                              List<ProjectAssignment> validProjectAssignments) {
         TimesheetCell cell = new TimesheetCell();
 
         cell.setTimesheetEntry(entry);
@@ -183,6 +169,7 @@ public class TimesheetFactory
     /**
      * Check if the cell is still valid. Even if they're in the timesheet entries it can be that time allotted
      * assignments are over their budget or default assignments are de-activated
+     *
      * @param assignment
      * @param validProjectAssignments
      * @param date
@@ -190,8 +177,7 @@ public class TimesheetFactory
      */
     private boolean isCellValid(ProjectAssignment assignment,
                                 List<ProjectAssignment> validProjectAssignments,
-                                Date date)
-    {
+                                Date date) {
         // first check if it's in valid project assignments (time allotted can have values
         // but not be valid anymore)
         boolean isValid = validProjectAssignments.contains(assignment);
@@ -203,57 +189,17 @@ public class TimesheetFactory
         return isValid;
     }
 
-    /**
-     * Merge unused project assignments into the week overview
-     * @param weekOverview
-     */
-    private void mergeUnbookedAssignments(WeekOverview weekOverview,
-                                          Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap)
-    {
-        if (weekOverview.getProjectAssignments() != null)
-        {
-            for (ProjectAssignment assignment : weekOverview.getProjectAssignments())
-            {
-                if (!assignmentMap.containsKey(assignment))
-                {
-                    assignmentMap.put(assignment, new HashMap<String, TimesheetEntry>());
-                }
-            }
-        }
-    }
-
-    /**
-     * @param weekOverview
-     * Create a map of the project assignments and the timesheet entries
-     * @return
-     */
-    private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap(WeekOverview weekOverview)
-    {
-        Map<ProjectAssignment, Map<String, TimesheetEntry>>	assignmentMap = new HashMap<ProjectAssignment, Map<String, TimesheetEntry>>();
-
-        for (TimesheetEntry entry : weekOverview.getTimesheetEntries())
-        {
-            ProjectAssignment assignment = entry.getEntryId().getProjectAssignment();
-
-            Map<String, TimesheetEntry> entryDateMap = assignmentMap.containsKey(assignment) ? assignmentMap.get(assignment) : new HashMap<String, TimesheetEntry>();
-
-            entryDateMap.put(keyDateFormatter.format(entry.getEntryId().getEntryDate()), entry);
-
-            assignmentMap.put(assignment, entryDateMap);
-        }
-
-        return assignmentMap;
-    }
-
     private static class TimesheetDate implements Serializable {
         final Date date;
         final int dayInWeek;
         final String formatted;
+        final boolean locked;
 
-        private TimesheetDate(Date date, int dayInWeek, String formatted) {
+        private TimesheetDate(Date date, int dayInWeek, String formatted, boolean locked) {
             this.date = date;
             this.dayInWeek = dayInWeek;
             this.formatted = formatted;
+            this.locked = locked;
         }
     }
 }
