@@ -24,26 +24,18 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * TODO 
- **/
+public class EhourUtilTest {
+    @Test
+    public void testGetPKsFromDomainObjects() {
+        List<Project> projectIds = new ArrayList<Project>();
 
-public class EhourUtilTest
-{
-	@Test
-	public void testGetPKsFromDomainObjects()
-	{
-		List<Project>	projectIds = new ArrayList<Project>();
-		
-		projectIds.add(new Project(1));
-		projectIds.add(new Project(2));
-		projectIds.add(new Project(3));
-		projectIds.add(new Project(4));
-		
-		List<Integer> ints = EhourUtil.getIdsFromDomainObjects(projectIds);
-		
-		assertEquals(4, ints.size());
-	}
+        projectIds.add(new Project(1));
+        projectIds.add(new Project(2));
+        projectIds.add(new Project(3));
+        projectIds.add(new Project(4));
 
+        List<Integer> ints = EhourUtil.getIdsFromDomainObjects(projectIds);
 
+        assertEquals(4, ints.size());
+    }
 }

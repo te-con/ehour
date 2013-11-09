@@ -20,49 +20,30 @@ import java.util.Comparator;
 
 import net.rrm.ehour.domain.User;
 
-/**
- * TODO 
- **/
+public class UserComparator implements Comparator<User> {
+    private boolean firstNameFirst;
 
-public class UserComparator implements Comparator<User>
-{
-	private boolean firstNameFirst;
-	
-	/**
-	 * 
-	 * @param firstNameFirst
-	 */
-	public UserComparator(boolean firstNameFirst)
-	{
-		this.firstNameFirst = firstNameFirst;
-	}
+    public UserComparator(boolean firstNameFirst) {
+        this.firstNameFirst = firstNameFirst;
+    }
 
-	/**
-	 * 
-	 */
-	public int compare(User o1, User o2)
-	{
-		int	cmp;
-		
-		if (firstNameFirst)
-		{
-			cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
+    public int compare(User o1, User o2) {
+        int cmp;
 
-			if (cmp == 0)
-			{
-				cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
-			}
-		}
-		else
-		{
-			cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
-			
-			if (cmp == 0)
-			{
-				cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
-			}
-		}
-		
-		return cmp;
-	}
+        if (firstNameFirst) {
+            cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
+
+            if (cmp == 0) {
+                cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
+            }
+        } else {
+            cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
+
+            if (cmp == 0) {
+                cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
+            }
+        }
+
+        return cmp;
+    }
 }

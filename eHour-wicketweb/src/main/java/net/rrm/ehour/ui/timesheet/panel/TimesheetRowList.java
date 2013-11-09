@@ -164,22 +164,19 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         item.add(fragment);
 
-        fragment.add(createValidatedTextField(row, index));
+        fragment.add(createTextFieldWithValidation(row, index));
 
         createTimesheetEntryComment(row, index, fragment);
     }
 
-    private TimesheetTextField createValidatedTextField(TimesheetRow row, final int index) {
-        final TimesheetTextField dayInput;
-        PropertyModel<Float> cellModel;
-
-        cellModel = new PropertyModel<Float>(row, "timesheetCells[" + index + "].timesheetEntry.hours");
+    private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index) {
+        PropertyModel<Float> cellModel = new PropertyModel<Float>(row, "timesheetCells[" + index + "].timesheetEntry.hours");
 
         // make sure it's added to the grandtotal
         grandTotals.addValue(index, cellModel);
 
         // list it on the page
-        dayInput = new TimesheetTextField("day", cellModel, 1);
+        final TimesheetTextField dayInput = new TimesheetTextField("day", cellModel, 1);
         dayInput.add(RangeValidator.minimum(0f));
         dayInput.setOutputMarkupId(true);
 

@@ -281,17 +281,6 @@ public class CalendarPanel extends SidePanel {
         @Override
         protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
             super.updateAjaxAttributes(attributes);
-
-            // TODO Thies: re-add guard
-/*
-            attributes.getAjaxCallListeners().add(0, new AjaxCallListener() {
-                @Override
-                public CharSequence getPrecondition(Component component) {
-                    return GuardDirtyFormUtil.PRECONDITION;
-                }
-            });
-*/
-
             attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
         }
     }

@@ -16,24 +16,14 @@
 
 package net.rrm.ehour.exception;
 
-/**
- * TODO 
- **/
+public class ProjectAlreadyAssignedException extends BusinessException {
+    private static final long serialVersionUID = -2477482932597433929L;
 
-public class ProjectAlreadyAssignedException extends BusinessException
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2477482932597433929L;
-
-	public ProjectAlreadyAssignedException()
-    {
+    public ProjectAlreadyAssignedException() {
         super();
     }
 
-    public ProjectAlreadyAssignedException(String s)
-    {
+    public ProjectAlreadyAssignedException(String s) {
         super(s);
     }
 }

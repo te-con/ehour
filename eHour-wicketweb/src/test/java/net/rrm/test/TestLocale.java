@@ -16,23 +16,11 @@
 
 package net.rrm.test;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Currency;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.*;
 
-/**
- * TODO 
- **/
-
-public class TestLocale
-{
-	public static void main(String[] argv)
-	{
-		Locale[] locales = Locale.getAvailableLocales();
+public class TestLocale {
+    public static void main(String[] argv) {
+        Locale[] locales = Locale.getAvailableLocales();
         for (Locale locale1 : locales) {
             if (locale1.getCountry() != null && locale1.getCountry().length() == 2) {
                 System.out.println(locale1.toString() + "=" + locale1.getDisplayCountry() + "."
@@ -44,32 +32,17 @@ public class TestLocale
                 System.out.println("--");
             }
         }
-		
-//		Locale locale = new Locale("nl_NL");
-		
-		Locale locale = new Locale("en", "IE");
-		Currency c = Currency.getInstance(locale);
-		System.out.println(c.getSymbol());
-		System.out.println(locale.getDisplayCountry());
-		
-		
-//		Currency curr = Currency.getInstance(locale);
-//		System.out.println(curr.getSymbol(locale));
-//		System.out.println(curr.getCurrencyCode());
-//		
-		Date d= new Date();
-		
-		Calendar cal = new GregorianCalendar();
-		cal.set(Calendar.MONTH, 4);
-		cal.set(Calendar.DAY_OF_YEAR, 30);
-		cal.set(Calendar.YEAR, 2007);
-		
-		DateFormat formatter = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, locale);
 
-//		String
-		
-		
-		System.out.println(formatter.format(d));
-		
-	}
+        Locale locale = new Locale("en", "IE");
+        Currency c = Currency.getInstance(locale);
+        System.out.println(c.getSymbol());
+        System.out.println(locale.getDisplayCountry());
+
+        Date d = new Date();
+
+        Calendar cal = new GregorianCalendar();
+        cal.set(Calendar.MONTH, 4);
+        cal.set(Calendar.DAY_OF_YEAR, 30);
+        cal.set(Calendar.YEAR, 2007);
+    }
 }

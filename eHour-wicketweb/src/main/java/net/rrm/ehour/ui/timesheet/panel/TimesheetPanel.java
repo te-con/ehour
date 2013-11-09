@@ -161,11 +161,6 @@ public class TimesheetPanel extends Panel implements Serializable {
         return titleFragment;
     }
 
-    /**
-     * Create comments input
-     *
-     * @param parent
-     */
     private MarkupContainer createCommentsInput(WebMarkupContainer parent) {
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("commentsFrame");
 
@@ -179,12 +174,6 @@ public class TimesheetPanel extends Panel implements Serializable {
         return blueBorder;
     }
 
-    /**
-     * Add grand totals to form
-     *
-     * @param parent
-     * @param grandTotals
-     */
     private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals, Date weekStart) {
         Label total;
 
@@ -204,11 +193,6 @@ public class TimesheetPanel extends Panel implements Serializable {
         parent.add(total);
     }
 
-    /**
-     * Set submit actions for form
-     *
-     * @param form
-     */
     private void setSubmitActions(Form<?> form, MarkupContainer parent) {
         // default submit
         SubmitButton submitButton = new SubmitButton("submitButton", form);
@@ -238,12 +222,6 @@ public class TimesheetPanel extends Panel implements Serializable {
         parent.add(resetButton);
     }
 
-    /**
-     * Add failed projects to overview
-     *
-     * @param failedProjects
-     * @param target
-     */
     private void addFailedProjectMessages(List<ProjectAssignmentStatus> failedProjects, final AjaxRequestTarget target) {
         ((Timesheet) getDefaultModelObject()).updateFailedProjects(failedProjects);
 
@@ -280,11 +258,6 @@ public class TimesheetPanel extends Panel implements Serializable {
         return updateServerMessage(model);
     }
 
-    /**
-     * Update server message
-     *
-     * @param model
-     */
     private Label updateServerMessage(IModel<String> model) {
         Label label = new Label("serverMessage", model);
         label.add(AttributeModifier.replace("style", "timesheetPersisted"));
@@ -321,18 +294,10 @@ public class TimesheetPanel extends Panel implements Serializable {
         EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.WEEK_NAV));
     }
 
-    /**
-     * Persist timesheet entries
-     */
     private List<ProjectAssignmentStatus> persistTimesheetEntries() {
         return ((TimesheetModel) getDefaultModel()).persistTimesheet();
     }
 
-    /**
-     * Build form
-     *
-     * @param parent
-     */
     private GrandTotal buildForm(final Form<?> form, WebMarkupContainer parent) {
         final GrandTotal grandTotals = new GrandTotal();
 

@@ -30,7 +30,6 @@ public class EhourConstants
 	public static final int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
 	public static final int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
 
-    // TODO move to PAT class
 	public static final ProjectAssignmentType ASSIGNMENT_TYPE_DATE = new ProjectAssignmentType(ASSIGNMENT_DATE);
 	public static final ProjectAssignmentType ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED = new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FIXED);
 	public static final ProjectAssignmentType ASSIGNMENT_TYPE_TIME_ALLOTTED_FLEX = new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FLEX);

@@ -44,9 +44,6 @@ public class TimesheetFactory {
 
     /**
      * Create timesheet form
-     *
-     * @param weekOverview
-     * @return
      */
     public Timesheet createTimesheet() {
         List<Date> dateSequence = DateUtil.createDateSequence(weekOverview.getWeekRange(), config);
@@ -139,7 +136,7 @@ public class TimesheetFactory {
                 TimesheetEntry entry = assignmentMap.get(assignment).get(timesheetDate.formatted);
 
                 timesheetRow.addTimesheetCell(timesheetDate.dayInWeek,
-                        createTimesheetCell(assignment, entry, timesheetDate.date, validProjectAssignments));
+                        createTimesheetCell(assignment, entry, timesheetDate.date, timesheetDate.locked, validProjectAssignments));
             }
 
             timesheetRows.add(timesheetRow);
@@ -152,15 +149,16 @@ public class TimesheetFactory {
      * Create timesheet cell, a cell is valid when the timesheetDate is within the assignment valid range
      */
     private TimesheetCell createTimesheetCell(ProjectAssignment assignment,
-                                              TimesheetEntry entry, Date date,
+                                              TimesheetEntry entry,
+                                              Date date,
+                                              Boolean locked,
                                               List<ProjectAssignment> validProjectAssignments) {
         TimesheetCell cell = new TimesheetCell();
 
         cell.setTimesheetEntry(entry);
         cell.setValid(isCellValid(assignment, validProjectAssignments, date));
 
-        // TODO: EHO-62
-//        cell.setLocked();
+        cell.setLocked(locked);
         cell.setDate(date);
 
         return cell;
@@ -169,11 +167,6 @@ public class TimesheetFactory {
     /**
      * Check if the cell is still valid. Even if they're in the timesheet entries it can be that time allotted
      * assignments are over their budget or default assignments are de-activated
-     *
-     * @param assignment
-     * @param validProjectAssignments
-     * @param date
-     * @return
      */
     private boolean isCellValid(ProjectAssignment assignment,
                                 List<ProjectAssignment> validProjectAssignments,
