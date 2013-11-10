@@ -35,7 +35,6 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         startPanel()
 
         tester.assertNoErrorMessage()
-        tester.debugComponentTrees()
         tester.assertComponent(formPath, Form.class)
     }
 

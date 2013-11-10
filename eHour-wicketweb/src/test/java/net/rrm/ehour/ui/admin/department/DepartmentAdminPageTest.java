@@ -84,8 +84,6 @@ public class DepartmentAdminPageTest extends BaseSpringWebAppTester
 		tester.assertRenderedPage(DepartmentAdminPage.class);
 		tester.assertNoErrorMessage();
 
-        tester.debugComponentTrees();
-		
 		tester.clickLink("entrySelectorFrame:entrySelectorFrame_body:deptSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0:itemLink", true);
 		verify(userService);
 	}	

@@ -53,7 +53,6 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
       when(service.syncUserReportCriteria(anyObject(), anyObject())).thenReturn(criteria)
 
       tester.startComponentInPage(new ReportCriteriaPanel("testObject", model))
-      tester.debugComponentTrees()
       val checkbox = tester.getComponentFromLastRenderedPage("testObject:border:greySquaredFrame:border_body:criteriaForm:customerProjectsBorder:customerProjectsBorder_body:reportCriteria.userCriteria.onlyBillableCustomers")
       tester.executeAjaxEvent(checkbox, "onclick")
       tester.assertNoErrorMessage()

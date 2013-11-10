@@ -59,8 +59,6 @@ public class AuditReportPageTest extends BaseSpringWebAppTester
 		replay(getAuditService());
 		startPage();
 
-        tester.debugComponentTrees();
-
         tester.executeAjaxEvent("frame:frame_body:reportCriteria:border:border_body:criteriaForm:submitButton", "onclick");
 		
 		tester.assertRenderedPage(AuditReportPage.class);
