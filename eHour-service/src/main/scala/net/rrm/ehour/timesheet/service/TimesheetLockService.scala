@@ -86,15 +86,19 @@ class TimesheetLockServiceSpringImpl @Autowired()(repository: TimesheetLockDao) 
 
     val overlaps = intervalsThatOverlap
 
-    def mergeIntervals(overlaps: List[Interval]): Seq[Interval] = {
-      overlaps.sortWith(_.start isAfter _.start).foldLeft(Seq[Interval]()) {
-        case (Nil, e) => Seq(e)
-        case (h :: t, e) if (h gap e) == null => new Interval(e.toInterval.start, h.toInterval.end) +: t
-        case (a, e) => e +: a
+
+    def mergeIntervals(current: Interval, stack: Seq[Interval], merged: Seq[Interval]):  Seq[Interval] = {
+      stack match {
+        case (x  :: xs) if x.overlaps(current) || x.abuts(current) => mergeIntervals(new Interval(current.start, x.end), xs, merged)
+        case (x :: xs) => mergeIntervals(x, xs, current +: merged)
+        case Nil => current +: merged
       }
     }
 
-    mergeIntervals(overlaps)
+    (overlaps.sortWith(_.start isBefore _.start) match {
+      case (x :: xs) => mergeIntervals(x, xs, Seq())
+      case (xs) => xs
+    }).reverse
   }
 }
 

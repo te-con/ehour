@@ -168,6 +168,27 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
         locked(1).start.toLocalDate should be(endDate)
         locked(1).end.toLocalDate should be(endDate)
       }
+
+      "find first 4 days as locked with locks overlapping eachother" in {
+        val response = ju.Arrays.asList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(2).toDate), new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(4).toDate))
+        val locked = findLockedDatesInRange(response)
+
+        locked should have size 1
+
+        locked(0).start.toLocalDate should be(startDate)
+        locked(0).end.toLocalDate should be(startDate + 4.days)
+      }
+
+
+      "find first 4 days as locked with locks abuts eachother" in {
+        val response = ju.Arrays.asList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(2).toDate), new TimesheetLock(startDate.plusDays(2).toDate, startDate.plusDays(4).toDate))
+        val locked = findLockedDatesInRange(response)
+
+        locked should have size 1
+
+        locked(0).start.toLocalDate should be(startDate)
+        locked(0).end.toLocalDate should be(startDate + 4.days)
+      }
     }
   }
 }
