@@ -35,10 +35,6 @@ public class TestLocale {
 
         Locale locale = new Locale("en", "IE");
         Currency c = Currency.getInstance(locale);
-        System.out.println(c.getSymbol());
-        System.out.println(locale.getDisplayCountry());
-
-        Date d = new Date();
 
         Calendar cal = new GregorianCalendar();
         cal.set(Calendar.MONTH, 4);

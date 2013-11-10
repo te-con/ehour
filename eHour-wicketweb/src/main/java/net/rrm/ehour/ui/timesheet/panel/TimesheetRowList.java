@@ -27,10 +27,10 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
+import net.rrm.ehour.ui.timesheet.dto.TimesheetCell;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -66,7 +66,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private final GrandTotal grandTotals;
     private Form<?> form;
 
-    private static final Logger LOGGER = Logger.getLogger(TimesheetRowList.class);
     private MarkupContainer provider;
 
     public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider) {
@@ -95,6 +94,38 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         item.add(createTotalHoursLabel(row));
     }
 
+    private AjaxLink<Void> createBookWholeWeekLink(final TimesheetRow row) {
+        AjaxLink<Void> projectLink = new AjaxLink<Void>("bookWholeWeek") {
+            private static final long serialVersionUID = -663239917205218384L;
+
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                row.bookRemainingHoursOnRow();
+                target.add(form);
+            }
+        };
+
+        ContextImage img = new ContextImage("bookImg", new Model<String>("img/check_all_off.png"));
+        projectLink.add(img);
+
+        return projectLink;
+    }
+
+    private Label createStatusLabel(ListItem<TimesheetRow> item) {
+        Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status")) {
+            @Override
+            public boolean isVisible() {
+                return StringUtils.isNotBlank(getDefaultModelObjectAsString());
+            }
+        };
+
+        label.setEscapeModelStrings(false);
+        label.setOutputMarkupId(true);
+        label.setOutputMarkupPlaceholderTag(true);
+        return label;
+    }
+
+
     private Label createTotalHoursLabel(final TimesheetRow row) {
         Label totalHours = new Label("total", new ProjectTotalModel(row));
         totalHours.setOutputMarkupId(true);
@@ -113,74 +144,63 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
              i++, currentDate.add(Calendar.DAY_OF_YEAR, 1)) {
             String id = "day" + i;
 
+            int index = currentDate.get(Calendar.DAY_OF_WEEK) - 1;
+            TimesheetCell timesheetCell = row.getTimesheetCells()[index];
+
             if (DateUtil.isDateWithinRange(currentDate, range)) {
-                createTimesheetEntryItems(id, row, currentDate.get(Calendar.DAY_OF_WEEK) - 1, item);
+                createTimesheetEntryItems(id, row, index, item);
+            } else if (timesheetCell.isLocked()) {
+                createLockedTimesheetEntry(id, row, index, item);
             } else {
                 createEmptyTimesheetEntry(id, item);
             }
         }
     }
 
-    private AjaxLink<Void> createBookWholeWeekLink(final TimesheetRow row) {
-        AjaxLink<Void> projectLink = new AjaxLink<Void>("bookWholeWeek") {
-            private static final long serialVersionUID = -663239917205218384L;
-
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                row.bookRemainingHoursOnRow();
-                target.add(form);
-            }
-        };
-
-        ContextImage img = new ContextImage("bookImg", new Model<String>("img/check_all_off.png"));
-        projectLink.add(img);
-
-        return projectLink;
+    private Fragment createAndAddFragment(String id, ListItem<TimesheetRow> item, String fragmentId) {
+        Fragment fragment = new Fragment(id, fragmentId, provider);
+        item.add(fragment);
+        return fragment;
     }
 
+    private void createLockedTimesheetEntry(String id, TimesheetRow row, int index, ListItem<TimesheetRow> item) {
+        Fragment fragment = createAndAddFragment(id, item, "dayLocked");
 
-    private Label createStatusLabel(ListItem<TimesheetRow> item) {
-        Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status")) {
-            @Override
-            public boolean isVisible() {
-                return StringUtils.isNotBlank(getDefaultModelObjectAsString());
-            }
-        };
+        TimesheetCell timesheetCell = row.getTimesheetCells()[index];
+        PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
 
-        label.setEscapeModelStrings(false);
-        label.setOutputMarkupId(true);
-        label.setOutputMarkupPlaceholderTag(true);
-        return label;
+        // make sure it's added to the grandtotal
+        grandTotals.addValue(index, cellModel);
+
+        fragment.add(new Label("day", cellModel));
+
+        createTimesheetEntryComment(row, index, fragment);
     }
 
     private void createEmptyTimesheetEntry(String id, ListItem<TimesheetRow> item) {
-        Fragment fragment = new Fragment(id, "dayInputHidden", provider);
-
-        item.add(fragment);
+        createAndAddFragment(id, item, "dayInputHidden");
     }
 
     private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item) {
-        Fragment fragment = new Fragment(id, "dayInput", provider);
-
-        item.add(fragment);
-
+        Fragment fragment = createAndAddFragment(id, item, "dayInput");
         fragment.add(createTextFieldWithValidation(row, index));
 
         createTimesheetEntryComment(row, index, fragment);
     }
 
     private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index) {
-        PropertyModel<Float> cellModel = new PropertyModel<Float>(row, "timesheetCells[" + index + "].timesheetEntry.hours");
+        TimesheetCell timesheetCell = row.getTimesheetCells()[index];
+        PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
 
         // make sure it's added to the grandtotal
         grandTotals.addValue(index, cellModel);
 
-        // list it on the page
+        // add inputfield with validation to the parent
         final TimesheetTextField dayInput = new TimesheetTextField("day", cellModel, 1);
         dayInput.add(RangeValidator.minimum(0f));
         dayInput.setOutputMarkupId(true);
 
-        // make sure values are checked
+        // add validation
         AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onblur") {
             private static final long serialVersionUID = 1L;
 
@@ -200,7 +220,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
             @Override
             protected void onError(final AjaxRequestTarget target, RuntimeException e) {
-                LOGGER.debug(target.getLastFocusedElementId() + " onblur error!", e);
                 form.visitFormComponents(new FormHighlighter(target));
             }
         };
@@ -335,6 +354,52 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                 }
             };
             addOrReplace(cancelButton);
+        }
+    }
+
+    class TimesheetEntryLockedCommentPanel extends AbstractBasePanel<String> {
+        private static final long serialVersionUID = 14343L;
+        private final TimesheetRow row;
+        private final int index;
+        private final ModalWindow window;
+
+        public TimesheetEntryLockedCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
+            super(id, model);
+
+            this.row = row;
+            this.index = index;
+            this.window = window;
+        }
+
+        @Override
+        protected void onBeforeRender() {
+            super.onBeforeRender();
+
+            Calendar thisDate = (Calendar) row.getFirstDayOfWeekDate().clone();
+            // Use the render order, not the index order, when calculating the date
+            thisDate.add(Calendar.DAY_OF_YEAR, grandTotals.getOrderForIndex(index) - 1);
+
+            addOrReplace(new Label("dayComments",
+                    new StringResourceModel("timesheet.dayComments",
+                            this,
+                            null,
+                            new Object[]{row.getProjectAssignment().getFullName(),
+                                    new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
+
+            final Label comment = new Label("comment", getPanelModel());
+            comment.setOutputMarkupId(true);
+
+            addOrReplace(comment);
+
+            AjaxLink<Void> closeButton = new AjaxLink<Void>("close") {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    window.close(target);
+                }
+            };
+            addOrReplace(closeButton);
         }
     }
 }
