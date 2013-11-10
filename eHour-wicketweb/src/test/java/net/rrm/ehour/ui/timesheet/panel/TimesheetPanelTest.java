@@ -30,9 +30,9 @@ import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.tester.FormTester;
+import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -42,12 +42,13 @@ import static org.junit.Assert.*;
 
 public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
+    private static final String DAY1_PATH = "blueFrame:blueFrame_body:customers:0:rows:0:day1";
+    private static final String DAY1_FULL_PATH = TIMESHEET_PATH + ":" + DAY1_PATH;
+    private static final User USER = new User(1);
 
     private IPersistTimesheet persistTimesheet;
     private IOverviewTimesheet overviewTimesheet;
     private UserService userService;
-    private User user;
-    private Calendar cal;
 
     @Before
     public void setup() {
@@ -62,44 +63,22 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         userService = createMock(UserService.class);
         getMockContext().putBean("userService", userService);
-
-        user = new User(1);
-        cal = new GregorianCalendar();
-
-        Calendar now = GregorianCalendar.getInstance();
-        now.add(Calendar.DAY_OF_WEEK, 7);
-
-        DateRange range = new DateRange(new Date(), now.getTime());
-
-        TimesheetEntry entry = TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5);
-        List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
-        entries.add(entry);
-
-        List<ProjectAssignment> ass = new ArrayList<ProjectAssignment>();
-        ass.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
-
-        WeekOverview overview = new WeekOverview(entries, null, ass, range, new User(1), Lists.<Date>newArrayList());
-
-        expect(overviewTimesheet.getWeekOverview(isA(User.class), isA(Calendar.class)))
-                .andReturn(overview);
     }
 
     @Test
     public void addDayComment() {
-        startAndReplay();
+        startAndReplayWithDefaultWeekOverview();
 
         final String comment = "commentaar";
 
-        ModalWindow window = (ModalWindow) tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:dayWin");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:dayLink", "onclick");
+        ModalWindow window = openCommentWindow(DAY1_FULL_PATH);
         assertTrue(window.isShown());
 
         FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
-        timesheetFormTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day1:dayWin:content:comment", comment);
+        timesheetFormTester.setValue(DAY1_PATH + ":dayWin:content:comment", comment);
 
-
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:dayWin:content:submit", "onclick");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayWin:content:comment", "onchange");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayWin:content:submit", "onclick");
 
         Timesheet timesheet = (Timesheet) tester.getComponentFromLastRenderedPage("panel").getDefaultModelObject();
         assertEquals(comment, timesheet.getTimesheetEntries().get(0).getComment());
@@ -107,19 +86,25 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         tester.assertNoErrorMessage();
     }
 
+    private ModalWindow openCommentWindow(String path) {
+        ModalWindow window = (ModalWindow) tester.getComponentFromLastRenderedPage(path + ":dayWin");
+        tester.executeAjaxEvent(path + ":dayLink", "onclick");
+        return window;
+    }
+
     @Test
     public void addDayCommentCancelled() {
-        startAndReplay();
+        startAndReplayWithDefaultWeekOverview();
 
         final String comment = "commentaar";
 
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:dayLink", "onclick");
+        clickDay1();
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
-        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day1:dayWin:content:comment", comment);
+        formTester.setValue(DAY1_PATH + ":dayWin:content:comment", comment);
 
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:dayWin:content:comment", "onchange");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:dayWin:content:cancel", "onclick");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayWin:content:comment", "onchange");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayWin:content:cancel", "onclick");
 
         Timesheet timesheet = (Timesheet) tester.getComponentFromLastRenderedPage("panel").getDefaultModelObject();
         assertNull(timesheet.getTimesheetEntries().get(0).getComment());
@@ -127,9 +112,13 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         tester.assertNoErrorMessage();
     }
 
+    private void clickDay1() {
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayLink", "onclick");
+    }
+
     @Test
     public void shouldBookAllHours() {
-        startAndReplay();
+        startAndReplayWithDefaultWeekOverview();
 
         tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:bookWholeWeek", "onclick");
         tester.assertNoErrorMessage();
@@ -142,14 +131,14 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     @Test
     public void updateCounts() {
-        startAndReplay();
+        startAndReplayWithDefaultWeekOverview();
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
 
-        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "12");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "onblur");
+        formTester.setValue(DAY1_PATH + ":day", "12");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
         tester.assertNoErrorMessage();
-        tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:day1:day");
+        tester.assertContains(DAY1_PATH + ":day");
 
         Label grandTotalLabel = (Label) tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:grandTotal");
         assertEquals(12f, (Float) grandTotalLabel.getDefaultModelObject(), 0.01f);
@@ -157,7 +146,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     @Test
     public void moveToNextWeek() {
-        startAndReplay();
+        startAndReplayWithDefaultWeekOverview();
 
         tester.executeAjaxEvent("panel:timesheetFrame:title:nextWeek", "onclick");
 
@@ -170,47 +159,44 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    @Ignore("The two requests are performed in isolation")
     public void shouldNotResendUnmodifiedEntries() {
-        startAndReplay();
+        startAndReplayWithDefaultWeekOverview();
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
 
-        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "12");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "onblur");
+        formTester.setValue(DAY1_PATH + ":day", "12");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
         tester.assertNoErrorMessage();
-        tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:day1:day");
+        tester.assertContains(DAY1_PATH + ":day");
 
         //changing another field should not resend the unmodified day1
         formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day2:day", "8");
         tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:day", "onblur");
         tester.assertNoErrorMessage();
         tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:day2:day");
-        tester.assertContainsNot("blueFrame:blueFrame_body:customers:0:rows:0:day1:day");
     }
 
     @Test
-//    @Ignore("The tree requests are performed in isolation")
     public void shouldResetErrorState() {
-        startAndReplay();
+        startAndReplayWithDefaultWeekOverview();
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
 
-        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "12");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "onblur");
+        formTester.setValue(DAY1_PATH + ":day", "12");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
         tester.assertNoErrorMessage();
-        tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:day1:day");
+        tester.assertContains(DAY1_PATH + ":day");
         tester.assertContainsNot("color: #ff0000");
 
-        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "ff");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "onblur");
-        tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:day1:day");
+        formTester.setValue(DAY1_PATH + ":day", "ff");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        tester.assertContains(DAY1_PATH + ":day");
         tester.assertContains("color: #ff0000");
         tester.assertErrorMessages("day.IConverter.Float");
 
-        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "1");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day1:day", "onblur");
-        tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:day1:day");
+        formTester.setValue(DAY1_PATH + ":day", "1");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        tester.assertContains(DAY1_PATH + ":day");
         tester.assertContainsNot("color: #ff0000");
     }
 
@@ -221,12 +207,38 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         expect(persistTimesheet.persistTimesheetWeek(isA(Collection.class), isA(TimesheetComment.class), isA(DateRange.class)))
                 .andReturn(new ArrayList<ProjectAssignmentStatus>());
 
-        startAndReplay();
+        startAndReplayWithDefaultWeekOverview();
 
         tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:commentsFrame_body:submitButton", "onclick");
 
         tester.assertNoErrorMessage();
     }
+
+    @Test
+    public void shouldDisableInputForLockedDays() {
+        Date lockedDay = new LocalDate().plusDays(1).toDate();
+
+        startAndReplayWithLockedDays(Arrays.asList(lockedDay));
+
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:day", Label.class);
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day3:day", TimesheetTextField.class);
+
+        tester.assertNoErrorMessage();
+    }
+
+    @Test
+    public void shouldDisableCommentInputForLockedDays() {
+        Date lockedDay = new LocalDate().plusDays(1).toDate();
+
+        startAndReplayWithLockedDays(Arrays.asList(lockedDay));
+
+        openCommentWindow(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2");
+
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:dayWin:content:comment", Label.class);
+
+        tester.assertNoErrorMessage();
+    }
+
 
     @After
     public void verifyMocks() {
@@ -236,11 +248,30 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     }
 
-    private void startAndReplay() {
+    private void startAndReplayWithDefaultWeekOverview() {
+        startAndReplayWithLockedDays(Lists.<Date>newArrayList());
+    }
+
+    private void startAndReplayWithLockedDays(List<Date> lockedDays) {
+        withDefaultWeekOverview(lockedDays);
+
         replay(overviewTimesheet);
         replay(userService);
         replay(persistTimesheet);
 
-        tester.startComponentInPage(new TimesheetPanel("panel", user, cal));
+        tester.startComponentInPage(new TimesheetPanel("panel", USER, new GregorianCalendar()));
+    }
+
+    private void withDefaultWeekOverview(List<Date> lockedDates) {
+        Calendar now = GregorianCalendar.getInstance();
+        now.add(Calendar.DAY_OF_WEEK, 7);
+
+        DateRange nextWeekRange = new DateRange(new Date(), now.getTime());
+
+        List<TimesheetEntry> entries = Arrays.asList(TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5));
+        List<ProjectAssignment> assignments = Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1));
+
+        WeekOverview overview = new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
+        expect(overviewTimesheet.getWeekOverview(isA(User.class), isA(Calendar.class))).andReturn(overview);
     }
 }

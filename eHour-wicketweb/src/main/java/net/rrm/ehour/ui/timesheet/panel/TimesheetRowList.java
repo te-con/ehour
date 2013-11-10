@@ -148,9 +148,11 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             TimesheetCell timesheetCell = row.getTimesheetCells()[index];
 
             if (DateUtil.isDateWithinRange(currentDate, range)) {
-                createTimesheetEntryItems(id, row, index, item);
-            } else if (timesheetCell.isLocked()) {
-                createLockedTimesheetEntry(id, row, index, item);
+                if (timesheetCell.isLocked()) {
+                    createLockedTimesheetEntry(id, row, index, item);
+                } else {
+                    createInputTimesheetEntry(id, row, index, item);
+                }
             } else {
                 createEmptyTimesheetEntry(id, item);
             }
@@ -174,18 +176,18 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         fragment.add(new Label("day", cellModel));
 
-        createTimesheetEntryComment(row, index, fragment);
+        createTimesheetEntryComment(row, index, fragment, DayStatus.LOCKED);
     }
 
     private void createEmptyTimesheetEntry(String id, ListItem<TimesheetRow> item) {
         createAndAddFragment(id, item, "dayInputHidden");
     }
 
-    private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item) {
+    private void createInputTimesheetEntry(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item) {
         Fragment fragment = createAndAddFragment(id, item, "dayInput");
         fragment.add(createTextFieldWithValidation(row, index));
 
-        createTimesheetEntryComment(row, index, fragment);
+        createTimesheetEntryComment(row, index, fragment, DayStatus.OPEN);
     }
 
     private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index) {
@@ -229,20 +231,25 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return dayInput;
     }
 
-    @SuppressWarnings("serial")
-    private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent) {
-        final ModalWindow modalWindow;
+    private enum DayStatus {
+        OPEN,
+        LOCKED
+    }
 
+    @SuppressWarnings("serial")
+    private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent, DayStatus status) {
         final PropertyModel<String> commentModel = new PropertyModel<String>(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 
-        modalWindow = new ModalWindow("dayWin");
+        final ModalWindow modalWindow = new ModalWindow("dayWin");
         modalWindow.setResizable(false);
         modalWindow.setInitialWidth(400);
         modalWindow.setInitialHeight(225);
 
         modalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
-        modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
-                commentModel, row, index, modalWindow));
+
+        Component panel = status == DayStatus.OPEN ? new TimesheetEntryCommentPanel(modalWindow.getContentId(), commentModel, row, index, modalWindow) :
+                                                     new TimesheetEntryLockedCommentPanel(modalWindow.getContentId(), commentModel, row, index, modalWindow);
+        modalWindow.setContent(panel);
 
         final AjaxLink<Void> commentLink = new AjaxLink<Void>("dayLink") {
             @Override
@@ -290,13 +297,13 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         commentLink.add(AttributeModifier.replace("class", StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment" : "timesheetEntryCommented"));
     }
 
-    class TimesheetEntryCommentPanel extends AbstractBasePanel<String> {
+    abstract class AbstractTimesheetEntryCommentPanel extends AbstractBasePanel<String> {
         private static final long serialVersionUID = 1L;
         private final TimesheetRow row;
         private final int index;
-        private final ModalWindow window;
+        protected final ModalWindow window;
 
-        public TimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
+        public AbstractTimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
             super(id, model);
 
             this.row = row;
@@ -321,6 +328,28 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                             new Object[]{row.getProjectAssignment().getFullName(),
                                     new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
 
+            AbstractLink cancelButton = new AjaxLink<Void>("cancel") {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    AbstractTimesheetEntryCommentPanel.this.getPanelModel().setObject(previousModel);
+                    window.close(target);
+                }
+            };
+            addOrReplace(cancelButton);
+        }
+    }
+
+    class TimesheetEntryCommentPanel extends AbstractTimesheetEntryCommentPanel {
+        public TimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
+            super(id, model, row, index, window);
+        }
+
+        @Override
+        protected void onBeforeRender() {
+            super.onBeforeRender();
+
             final KeepAliveTextArea textArea = new KeepAliveTextArea("comment", getPanelModel());
             textArea.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 private static final long serialVersionUID = 1L;
@@ -343,63 +372,21 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                 }
             };
             addOrReplace(submitButton);
-
-            AbstractLink cancelButton = new AjaxLink<Void>("cancel") {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void onClick(AjaxRequestTarget target) {
-                    TimesheetEntryCommentPanel.this.getPanelModel().setObject(previousModel);
-                    window.close(target);
-                }
-            };
-            addOrReplace(cancelButton);
         }
     }
 
-    class TimesheetEntryLockedCommentPanel extends AbstractBasePanel<String> {
+    class TimesheetEntryLockedCommentPanel extends AbstractTimesheetEntryCommentPanel {
         private static final long serialVersionUID = 14343L;
-        private final TimesheetRow row;
-        private final int index;
-        private final ModalWindow window;
 
         public TimesheetEntryLockedCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
-            super(id, model);
-
-            this.row = row;
-            this.index = index;
-            this.window = window;
+            super(id, model, row, index, window);
         }
 
         @Override
         protected void onBeforeRender() {
             super.onBeforeRender();
 
-            Calendar thisDate = (Calendar) row.getFirstDayOfWeekDate().clone();
-            // Use the render order, not the index order, when calculating the date
-            thisDate.add(Calendar.DAY_OF_YEAR, grandTotals.getOrderForIndex(index) - 1);
-
-            addOrReplace(new Label("dayComments",
-                    new StringResourceModel("timesheet.dayComments",
-                            this,
-                            null,
-                            new Object[]{row.getProjectAssignment().getFullName(),
-                                    new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
-
-            final Label comment = new Label("comment", getPanelModel());
-            comment.setOutputMarkupId(true);
-
-            addOrReplace(comment);
-
-            AjaxLink<Void> closeButton = new AjaxLink<Void>("close") {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void onClick(AjaxRequestTarget target) {
-                    window.close(target);
-                }
-            };
-            addOrReplace(closeButton);
+            addOrReplace(new Label("comment", getPanelModel()));
         }
     }
 }
