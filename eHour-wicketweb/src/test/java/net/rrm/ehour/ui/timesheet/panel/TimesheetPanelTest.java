@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.user.service.UserService;
+import org.apache.wicket.Component;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.tester.FormTester;
@@ -88,7 +89,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     private ModalWindow openCommentWindow(String path) {
         ModalWindow window = (ModalWindow) tester.getComponentFromLastRenderedPage(path + ":dayWin");
-        tester.executeAjaxEvent(path + ":dayLink", "onclick");
+        tester.executeAjaxEvent(path + ":commentLink", "onclick");
         return window;
     }
 
@@ -113,7 +114,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     private void clickDay1() {
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayLink", "onclick");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":commentLink", "onclick");
     }
 
     @Test
@@ -227,14 +228,50 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    public void shouldDisableCommentInputForLockedDays() {
+    public void shouldDisableCommentInputForLockedDaysWithExistingComment() {
+        // given
+        Date lockedDay = new LocalDate().plusDays(1).toDate();
+        List<Date> lockedDates = Arrays.asList(lockedDay);
+
+        Calendar now = GregorianCalendar.getInstance();
+        now.add(Calendar.DAY_OF_WEEK, 7);
+
+        DateRange nextWeekRange = new DateRange(new Date(), now.getTime());
+
+        TimesheetEntry timesheetEntry = TimesheetEntryObjectMother.createTimesheetEntry(1, lockedDay, 5);
+        timesheetEntry.setComment("Comment");
+
+        List<TimesheetEntry> entries = Arrays.asList(timesheetEntry);
+        List<ProjectAssignment> assignments = Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1));
+
+        WeekOverview overview = new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
+
+        expectDefaultWeekOverview(overview);
+
+        replay(overviewTimesheet);
+        replay(userService);
+        replay(persistTimesheet);
+
+        // when
+        tester.startComponentInPage(new TimesheetPanel("panel", USER, new GregorianCalendar()));
+
+        // then
+        openCommentWindow(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2");
+
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:dayWin:content:comment", Label.class);
+
+        tester.assertNoErrorMessage();
+        verify(overviewTimesheet, userService, persistTimesheet);
+    }
+
+    @Test
+    public void shouldHideCommentInputLinkForLockedDaysWithoutComment() {
         Date lockedDay = new LocalDate().plusDays(1).toDate();
 
         startAndReplayWithLockedDays(Arrays.asList(lockedDay));
 
-        openCommentWindow(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2");
-
-        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:dayWin:content:comment", Label.class);
+        Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:commentLink");
+        assertNull(commentLink); // null = not visible...
 
         tester.assertNoErrorMessage();
     }
@@ -253,7 +290,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     private void startAndReplayWithLockedDays(List<Date> lockedDays) {
-        withDefaultWeekOverview(lockedDays);
+        expectDefaultWeekOverview(withDefaultWeekOverview(lockedDays));
 
         replay(overviewTimesheet);
         replay(userService);
@@ -262,7 +299,11 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         tester.startComponentInPage(new TimesheetPanel("panel", USER, new GregorianCalendar()));
     }
 
-    private void withDefaultWeekOverview(List<Date> lockedDates) {
+    private void expectDefaultWeekOverview(WeekOverview overview) {
+        expect(overviewTimesheet.getWeekOverview(isA(User.class), isA(Calendar.class))).andReturn(overview);
+    }
+
+    private WeekOverview withDefaultWeekOverview(List<Date> lockedDates) {
         Calendar now = GregorianCalendar.getInstance();
         now.add(Calendar.DAY_OF_WEEK, 7);
 
@@ -271,7 +312,6 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         List<TimesheetEntry> entries = Arrays.asList(TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5));
         List<ProjectAssignment> assignments = Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1));
 
-        WeekOverview overview = new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
-        expect(overviewTimesheet.getWeekOverview(isA(User.class), isA(Calendar.class))).andReturn(overview);
+        return new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
     }
 }

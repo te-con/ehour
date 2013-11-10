@@ -248,10 +248,10 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         modalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
 
         Component panel = status == DayStatus.OPEN ? new TimesheetEntryCommentPanel(modalWindow.getContentId(), commentModel, row, index, modalWindow) :
-                                                     new TimesheetEntryLockedCommentPanel(modalWindow.getContentId(), commentModel, row, index, modalWindow);
+                new TimesheetEntryLockedCommentPanel(modalWindow.getContentId(), commentModel, row, index, modalWindow);
         modalWindow.setContent(panel);
 
-        final AjaxLink<Void> commentLink = new AjaxLink<Void>("dayLink") {
+        final AjaxLink<Void> commentLink = new AjaxLink<Void>("commentLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 modalWindow.show(target);
@@ -265,6 +265,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                 super.onBeforeRender();
             }
         };
+
+        commentLink.setVisible(status == DayStatus.OPEN || StringUtils.isNotBlank(commentModel.getObject()));
 
         modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             public void onClose(AjaxRequestTarget target) {

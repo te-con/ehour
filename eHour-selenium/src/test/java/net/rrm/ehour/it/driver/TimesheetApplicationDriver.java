@@ -45,7 +45,7 @@ public abstract class TimesheetApplicationDriver {
     public static String openDayCommentModal(int day) {
         String base = String.format("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_blueFrame_blueFrame__body_customers_0_rows_0_day%d", day);
 
-        Driver.findElement(WicketBy.wicketPath(base + "_dayLink")).click();
+        Driver.findElement(WicketBy.wicketPath(base + "_commentLink")).click();
 
         EhourApplicationDriver.sleep();
         return base;
