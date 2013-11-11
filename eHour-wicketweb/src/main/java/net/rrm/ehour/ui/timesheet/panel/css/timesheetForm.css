@@ -253,6 +253,21 @@ div.timesheet
     vertical-align: top;
 }
 
+td.lockedday, td.lockeddaynocomment {
+    vertical-align: middle !important;
+    text-align: right !important;
+}
+
+td.lockedday
+{
+    padding: 0 12px 0 0 !important;
+}
+
+td.lockeddaynocomment
+{
+    padding: 0 23px 0 0 !important;
+}
+
 .timesheetTable input
 {
     border: 1px solid #cfdbe6;

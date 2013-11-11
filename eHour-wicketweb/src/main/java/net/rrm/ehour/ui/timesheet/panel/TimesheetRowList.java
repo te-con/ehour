@@ -135,8 +135,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row) {
         Calendar currentDate = (Calendar) row.getFirstDayOfWeekDate().clone();
 
-        DateRange range = new DateRange(row.getProjectAssignment().getDateStart(),
-                row.getProjectAssignment().getDateEnd());
+        ProjectAssignment assignment = row.getProjectAssignment();
+        DateRange range = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
 
         // now add every cell
         for (int i = 1;
@@ -148,28 +148,25 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             TimesheetCell timesheetCell = row.getTimesheetCells()[index];
 
             if (DateUtil.isDateWithinRange(currentDate, range)) {
-                if (timesheetCell.isLocked()) {
-                    createLockedTimesheetEntry(id, row, index, item);
-                } else {
-                    createInputTimesheetEntry(id, row, index, item);
-                }
+                item.add(timesheetCell.isLocked() ? createLockedTimesheetEntry(id, row, index) : createInputTimesheetEntry(id, row, index));
             } else {
-                createEmptyTimesheetEntry(id, item);
+                item.add(createEmptyTimesheetEntry(id));
             }
         }
     }
 
-    private Fragment createAndAddFragment(String id, ListItem<TimesheetRow> item, String fragmentId) {
-        Fragment fragment = new Fragment(id, fragmentId, provider);
-        item.add(fragment);
-        return fragment;
+    private Fragment createAndAddFragment(String id, String fragmentId) {
+        return new Fragment(id, fragmentId, provider);
     }
 
-    private void createLockedTimesheetEntry(String id, TimesheetRow row, int index, ListItem<TimesheetRow> item) {
-        Fragment fragment = createAndAddFragment(id, item, "dayLocked");
+    private Fragment createLockedTimesheetEntry(String id, TimesheetRow row, int index) {
+        Fragment fragment = createAndAddFragment(id, "dayLocked");
 
         TimesheetCell timesheetCell = row.getTimesheetCells()[index];
         PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
+
+        String css = timesheetCell.getTimesheetEntry() != null && StringUtils.isNotBlank(timesheetCell.getTimesheetEntry().getComment()) ? "lockedday" : "lockeddaynocomment";
+        fragment.add(AttributeModifier.append("class", css));
 
         // make sure it's added to the grandtotal
         grandTotals.addValue(index, cellModel);
@@ -177,17 +174,21 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         fragment.add(new Label("day", cellModel));
 
         createTimesheetEntryComment(row, index, fragment, DayStatus.LOCKED);
+
+        return fragment;
     }
 
-    private void createEmptyTimesheetEntry(String id, ListItem<TimesheetRow> item) {
-        createAndAddFragment(id, item, "dayInputHidden");
+    private Fragment createEmptyTimesheetEntry(String id) {
+        return createAndAddFragment(id, "dayInputHidden");
     }
 
-    private void createInputTimesheetEntry(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item) {
-        Fragment fragment = createAndAddFragment(id, item, "dayInput");
+    private Fragment createInputTimesheetEntry(String id, TimesheetRow row, final int index) {
+        Fragment fragment = createAndAddFragment(id, "dayInput");
         fragment.add(createTextFieldWithValidation(row, index));
 
         createTimesheetEntryComment(row, index, fragment, DayStatus.OPEN);
+
+        return fragment;
     }
 
     private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index) {
