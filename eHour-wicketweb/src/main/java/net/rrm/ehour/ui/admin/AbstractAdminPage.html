@@ -8,30 +8,8 @@
 <body>
 
 <wicket:extend>
-    <div class="colmask leftmenu">
-        <div class="colright">
-            <div class="col1wrap">
-                <div class="col1">
-                    <div class="ContentPanelLoc"><wicket:child/></div>
-                </div>
-            </div>
-
-            <div class="col2">
-                <wicket:enclosure child="adminNav">
-                    <br/>
-
-                    <div class="SidePanelLoc" wicket:id="adminNav"></div>
-
-                    <br clear="all"/>
-                    <br/>
-                </wicket:enclosure>
-
-                <br clear="all"/>
-
-                <div class="ContextualHelp" wicket:id="contextHelp">
-                </div>
-            </div>
-        </div>
+    <div class="ContentPanelLoc">
+        <wicket:child/>
     </div>
 </wicket:extend>
 </body>

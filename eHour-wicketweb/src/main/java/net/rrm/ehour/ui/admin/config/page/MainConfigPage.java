@@ -21,7 +21,6 @@ import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.admin.config.panel.ConfigTabPanel;
-
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -39,8 +38,7 @@ public class MainConfigPage extends AbstractAdminPage<Void>
 	public MainConfigPage()
 	{
 		super(new ResourceModel("admin.config.title"), null,
-						"admin.config.help.header",
-						"admin.config.help.body");
+                "admin.config.help.body");
 		
 		setUpPage();
 	}

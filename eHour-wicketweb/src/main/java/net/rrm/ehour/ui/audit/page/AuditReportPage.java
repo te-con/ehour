@@ -35,7 +35,7 @@ public class AuditReportPage extends AbstractAdminPage<String>
 	
 	public AuditReportPage()
 	{
-		super(new ResourceModel("audit.report.title"), new Model<String>(), "audit.help.header", "audit.help.body");
+		super(new ResourceModel("audit.report.title"), new Model<String>());
 		
 		IModel<ReportCriteria> criteriaModel = getReportCriteriaModel();
 		setDefaultModel(criteriaModel);
