@@ -50,6 +50,7 @@ public class DepartmentAdminPage extends AbstractTabbedAdminPage<DepartmentAdmin
 
     @SpringBean
     private UserService userService;
+
     private static final Logger logger = Logger.getLogger(DepartmentAdminPage.class);
     private ListView<UserDepartment> deptListView;
 
@@ -63,9 +64,7 @@ public class DepartmentAdminPage extends AbstractTabbedAdminPage<DepartmentAdmin
         super(new ResourceModel("admin.dept.title"),
                 new ResourceModel("admin.dept.addDepartment"),
                 new ResourceModel("admin.dept.editDepartment"),
-                new ResourceModel("admin.dept.noEditEntrySelected"),
-                "admin.dept.help.header",
-                "admin.dept.help.body");
+                new ResourceModel("admin.dept.noEditEntrySelected"));
 
         List<UserDepartment> departments;
         departments = getUserDepartments();
@@ -99,7 +98,7 @@ public class DepartmentAdminPage extends AbstractTabbedAdminPage<DepartmentAdmin
 
     /*
      * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
+     * @see net.rrm.ehour.persistengiestce.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
      */
     @Override
     protected DepartmentAdminBackingBean getNewAddBaseBackingBean() {

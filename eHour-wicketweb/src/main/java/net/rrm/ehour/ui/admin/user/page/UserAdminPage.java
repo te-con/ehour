@@ -72,9 +72,7 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
         super(new ResourceModel("admin.user.title"),
                 new ResourceModel("admin.user.addUser"),
                 new ResourceModel("admin.user.editUser"),
-                new ResourceModel("admin.user.noEditEntrySelected"),
-                "admin.user.help.header",
-                "admin.user.help.body");
+                new ResourceModel("admin.user.noEditEntrySelected"));
 
         List<User> users;
         users = getUsers();

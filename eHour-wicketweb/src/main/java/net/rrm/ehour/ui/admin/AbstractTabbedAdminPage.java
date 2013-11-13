@@ -25,7 +25,6 @@ import org.apache.wicket.model.ResourceModel;
 
 /**
  * Base admin page template with 2 tabs, add & edit
- * TODO need refactor away from Templating to something a bit more flexible (see hacks in ProjectAdmin)
  **/
 
 @SuppressWarnings("serial")
@@ -37,12 +36,8 @@ public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> exten
 	public AbstractTabbedAdminPage(ResourceModel pageTitle,
 								ResourceModel addTabTitle,
 								ResourceModel editTabTitle,
-								ResourceModel noEntrySelectedText,
-								String headerResourceId,
-								String bodyResourceId
-								)
-	{
-		super(pageTitle, headerResourceId, bodyResourceId, true);
+								ResourceModel noEntrySelectedText) {
+        super(pageTitle);
 
 		tabbedPanel = new AddEditTabbedPanel<BB>("tabs", addTabTitle, editTabTitle, noEntrySelectedText)
 		{

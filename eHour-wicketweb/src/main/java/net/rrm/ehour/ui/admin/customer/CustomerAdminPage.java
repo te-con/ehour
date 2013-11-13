@@ -61,9 +61,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
         super(new ResourceModel("admin.customer.title"),
                 new ResourceModel("admin.customer.addCustomer"),
                 new ResourceModel("admin.customer.editCustomer"),
-                new ResourceModel("admin.customer.noEditEntrySelected"),
-                "admin.customer.help.header",
-                "admin.customer.help.body");
+                new ResourceModel("admin.customer.noEditEntrySelected"));
 
         // setup the entry selector
 

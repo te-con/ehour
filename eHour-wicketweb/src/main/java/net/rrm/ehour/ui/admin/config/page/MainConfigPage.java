@@ -27,30 +27,25 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Main config page
- **/
-public class MainConfigPage extends AbstractAdminPage<Void>
-{
-	private static final long serialVersionUID = 8613594529875207988L;
-	
-	@SpringBean
-	private ConfigurationService	configService;
-	
-	public MainConfigPage()
-	{
-		super(new ResourceModel("admin.config.title"), null,
-                "admin.config.help.body");
-		
-		setUpPage();
-	}
+ */
+public class MainConfigPage extends AbstractAdminPage<Void> {
+    private static final long serialVersionUID = 8613594529875207988L;
 
-	private void setUpPage()
-	{
-		MainConfigBackingBean configBackingBean = new MainConfigBackingBean(getDbConfig());
-		add(new ConfigTabPanel("configTabs", new CompoundPropertyModel<MainConfigBackingBean>(configBackingBean)));
-	}
+    @SpringBean
+    private ConfigurationService configService;
 
-	private EhourConfigStub getDbConfig()
-	{
-		return configService.getConfiguration();
-	}
+    public MainConfigPage() {
+        super(new ResourceModel("admin.config.title"));
+
+        setUpPage();
+    }
+
+    private void setUpPage() {
+        MainConfigBackingBean configBackingBean = new MainConfigBackingBean(getDbConfig());
+        add(new ConfigTabPanel("configTabs", new CompoundPropertyModel<MainConfigBackingBean>(configBackingBean)));
+    }
+
+    private EhourConfigStub getDbConfig() {
+        return configService.getConfiguration();
+    }
 }

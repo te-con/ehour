@@ -29,6 +29,11 @@ import org.apache.wicket.model.ResourceModel;
 public abstract class AbstractAdminPage<T> extends AbstractBasePage<T> {
     private static final long serialVersionUID = -1388562551962543722L;
 
+    public AbstractAdminPage(ResourceModel pageTitle) {
+        this(pageTitle, null);
+
+    }
+
     public AbstractAdminPage(ResourceModel pageTitle, IModel<T> model) {
         super(pageTitle, model);
     }

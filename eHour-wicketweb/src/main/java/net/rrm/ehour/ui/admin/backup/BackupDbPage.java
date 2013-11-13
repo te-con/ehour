@@ -31,7 +31,7 @@ public class BackupDbPage extends AbstractAdminPage<Void> {
     private Form<Void> form;
 
     public BackupDbPage() {
-        super(new ResourceModel("admin.export.title"), "admin.export.help.header", "admin.export.help.body");
+        super(new ResourceModel("admin.export.title"));
 
         GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("admin.export.title"));
         add(frame);

@@ -57,6 +57,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 
     private static final int TABPOS_USERS = 2;
     private final EntrySelectorPanel entrySelectorPanel;
+
     @SpringBean
     private ProjectService projectService;
 
@@ -67,9 +68,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
         super(new ResourceModel("admin.project.title"),
                 new ResourceModel("admin.project.addProject"),
                 new ResourceModel("admin.project.editProject"),
-                new ResourceModel("admin.project.noEditEntrySelected"),
-                "admin.project.help.header",
-                "admin.project.help.body");
+                new ResourceModel("admin.project.noEditEntrySelected"));
 
         List<Project> projects = getProjects();
 
@@ -134,10 +133,6 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
         return new ProjectAdminBackingBean(project);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
-     */
     @Override
     protected ProjectAdminBackingBean getNewEditBaseBackingBean() {
         return new ProjectAdminBackingBean(new Project());
@@ -182,9 +177,6 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
         return fragment;
     }
 
-    /**
-     * Get the projects from the backend
-     */
     private List<Project> getProjects() {
         List<Project> projects = projectService.getProjects(currentFilter == null || currentFilter.isActivateToggle());
 

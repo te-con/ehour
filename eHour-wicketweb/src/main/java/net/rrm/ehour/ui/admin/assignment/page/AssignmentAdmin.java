@@ -53,10 +53,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
     private Panel assignmentPanel;
 
     public AssignmentAdmin() {
-        super(new ResourceModel("admin.assignment.title"),
-                "admin.assignment.help.header",
-                "admin.assignment.help.body",
-                true);
+        super(new ResourceModel("admin.assignment.title"));
 
         List<User> users;
         users = getUsers();
