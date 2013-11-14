@@ -352,8 +352,8 @@ div.listScroll {
     margin: 0 5px 0 5px;
     overflow: auto;
     padding: 0;
-    width: 210px;
     font: 1em Geneva, Arial, Helvetica, sans-serif;
+    max-width: 450px;
 }
 
 .contentTable {
@@ -810,4 +810,11 @@ hr {
 .existingLock .left {
     min-width: 31em;
     width: 40%;
+}
+
+.inline {
+    display: -moz-inline-stack;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
 }

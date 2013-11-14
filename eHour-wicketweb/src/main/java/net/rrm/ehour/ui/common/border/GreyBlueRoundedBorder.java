@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common.border;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 
 /**
@@ -31,4 +32,13 @@ public class GreyBlueRoundedBorder extends Border
 		super(id);
 	}
 
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+        addToBorder(createComponent());
+    }
+
+    protected WebMarkupContainer createComponent() {
+        return new WebMarkupContainer("frame");
+    }
 }

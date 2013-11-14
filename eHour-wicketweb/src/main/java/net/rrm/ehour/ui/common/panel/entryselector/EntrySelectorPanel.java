@@ -69,7 +69,17 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
 	{
 		WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
 		
-		blueBorder = new GreyBlueRoundedBorder("blueBorder");
+		blueBorder = new GreyBlueRoundedBorder("blueBorder") {
+            @Override
+            protected WebMarkupContainer createComponent() {
+                WebMarkupContainer component = super.createComponent();
+
+                component.add(AttributeModifier.append("class", "inline"));
+
+                return component;
+            }
+        };
+
 		blueBorder.setOutputMarkupId(true);
 		selectorFrame.add(blueBorder);
 		
