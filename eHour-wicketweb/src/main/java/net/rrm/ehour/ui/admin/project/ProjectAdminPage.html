@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+
+<body>
+<wicket:extend>
+    <div style="float:left" wicket:id="entrySelectorFrame">
+        <wicket:container wicket:id="projectSelector"></wicket:container>
+    </div>
+
+    <wicket:fragment wicket:id="itemListHolder">
+
+        <table class="entrySelectorTable">
+
+            <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr wicket:id="itemList">
+                <td  wicket:id="code"></td>
+                <td><a wicket:id="projectLink"> <wicket:container wicket:id="name"></wicket:container> </a></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </wicket:fragment>
+</wicket:extend>
+</body>
+</html>

@@ -818,3 +818,12 @@ hr {
     zoom: 1;
     *display: inline;
 }
+
+.entrySelectorTable td {
+    vertical-align: top;
+}
+
+.entrySelectorTable  th {
+    border: 1px solid #f9f9f9;
+
+}

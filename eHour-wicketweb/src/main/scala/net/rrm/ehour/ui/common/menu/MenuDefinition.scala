@@ -12,7 +12,7 @@ import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage
-import net.rrm.ehour.ui.admin.project.ProjectAdmin
+import net.rrm.ehour.ui.admin.project.ProjectAdminPage
 import net.rrm.ehour.ui.admin.backup.BackupDbPage
 import java.util
 import net.rrm.ehour.ui.financial.lock.LockAdminPage
@@ -36,7 +36,7 @@ object MenuDefinition {
     val deptAdmin = LinkItem("nav.admin.departments", classOf[DepartmentAdminPage])
     val userAdmin = LinkItem("nav.admin.users", classOf[UserAdminPage])
     val customerAdmin = LinkItem("nav.admin.customers", classOf[CustomerAdminPage])
-    val projectAdmin = LinkItem("nav.admin.projects", classOf[ProjectAdmin])
+    val projectAdmin = LinkItem("nav.admin.projects", classOf[ProjectAdminPage])
     val assignmentAdmin = LinkItem("nav.admin.assignments", classOf[AssignmentAdmin])
     val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(deptAdmin, userAdmin, customerAdmin, projectAdmin, assignmentAdmin))
 

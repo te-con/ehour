@@ -48,10 +48,10 @@ import java.util.List;
  * Project admin page
  */
 
-public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBean> {
+public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackingBean> {
     private static final long serialVersionUID = 9196677804018589806L;
 
-    private static final Logger LOGGER = Logger.getLogger(ProjectAdmin.class);
+    private static final Logger LOGGER = Logger.getLogger(ProjectAdminPage.class);
 
     private static final String PROJECT_SELECTOR_ID = "projectSelector";
 
@@ -64,7 +64,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
     private EntrySelectorFilter currentFilter;
     private ListView<Project> projectListView;
 
-    public ProjectAdmin() {
+    public ProjectAdminPage() {
         super(new ResourceModel("admin.project.title"),
                 new ResourceModel("admin.project.addProject"),
                 new ResourceModel("admin.project.editProject"),
@@ -72,7 +72,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
 
         List<Project> projects = getProjects();
 
-        Fragment projectListHolder = getProjectListHolder(projects);
+        Fragment projectListHolder = createProjectListHolder(projects);
 
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"));
         add(greyBorder);
@@ -145,8 +145,8 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
      * @return
      */
     @SuppressWarnings("serial")
-    private Fragment getProjectListHolder(List<Project> projects) {
-        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdmin.this);
+    private Fragment createProjectListHolder(List<Project> projects) {
+        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdminPage.this);
 
         projectListView = new ListView<Project>("itemList", projects) {
             @Override
@@ -154,7 +154,7 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
                 Project project = item.getModelObject();
                 final Integer projectId = project.getProjectId();
 
-                AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
+                AjaxLink<Void> link = new AjaxLink<Void>("projectLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         try {
@@ -167,8 +167,8 @@ public class ProjectAdmin extends AbstractTabbedAdminPage<ProjectAdminBackingBea
                 };
 
                 item.add(link);
-
-                link.add(new Label("linkLabel", project.getProjectCode() + " - " + project.getName() + (project.isActive() ? "" : "*")));
+                link.add(new Label("name", project.getName()));
+                item.add(new Label("code", project.getProjectCode()));
             }
         };
 

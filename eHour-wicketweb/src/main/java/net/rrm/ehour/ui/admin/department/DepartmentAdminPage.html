@@ -12,9 +12,9 @@
     		</div>
    			
    	    	<wicket:fragment wicket:id="itemListHolder">
-   	    		<span wicket:id="itemList">
-   					<a wicket:id="itemLink"><span wicket:id="linkLabel"></span></a><br>
-   				</span>
+   	    		<wicket:container wicket:id="itemList">
+   					<a wicket:id="itemLink"><wicket:container wicket:id="linkLabel"></wicket:container></a><br>
+   				</wicket:container>
    			</wicket:fragment>
     	</wicket:extend>
     </body>
