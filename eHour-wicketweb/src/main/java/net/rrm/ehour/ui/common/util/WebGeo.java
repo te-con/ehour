@@ -36,7 +36,8 @@ public enum WebGeo {
     W_CHART_MEDIUM(460),
     W_CHART_WIDE(700),
     H_CHART(200),
-    W_FULL(95, "%");
+    W_FULL(95, "%"),
+    AUTO(0);
 
     private Integer value;
     private String unit;

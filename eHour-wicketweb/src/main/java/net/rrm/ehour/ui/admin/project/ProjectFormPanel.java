@@ -33,6 +33,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.sort.UserComparator;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -76,7 +77,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     }
 
     private void setUpPage(IModel<ProjectAdminBackingBean> model) {
-        Border border = new GreySquaredRoundedBorder("border");
+        Border border = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
         add(border);
 
         Form<ProjectAdminBackingBean> form = new Form<ProjectAdminBackingBean>("projectForm", model);

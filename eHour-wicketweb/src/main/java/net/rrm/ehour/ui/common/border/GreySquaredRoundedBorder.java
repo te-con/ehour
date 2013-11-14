@@ -23,30 +23,29 @@ import org.apache.wicket.markup.html.border.Border;
 
 
 /**
- * Rounded border with a square left top mainly used for tabs 
- **/
+ * Rounded border with a square left top mainly used for tabs
+ */
 
-public class GreySquaredRoundedBorder extends Border
-{
-	private static final long serialVersionUID = -793890240017442386L;
+public class GreySquaredRoundedBorder extends Border {
+    private static final long serialVersionUID = -793890240017442386L;
 
-	public GreySquaredRoundedBorder(String id)
-	{
-		this(id, WebGeo.NOT_DEFINED);
-	}
-	
-	public GreySquaredRoundedBorder(String id, WebGeo width)
-	{
-		super(id);
-		
-		WebMarkupContainer greySquaredFrame = new WebMarkupContainer("greySquaredFrame");
 
-		if (width != null && width != WebGeo.NOT_DEFINED)
-		{
-			greySquaredFrame.add(AttributeModifier.replace("style", "width: " + width.toString()));
-		}
-		
-		greySquaredFrame.add(getBodyContainer());
-		addToBorder(greySquaredFrame);
-	}
+
+    public GreySquaredRoundedBorder(String id, WebGeo width) {
+        super(id);
+
+        WebMarkupContainer greySquaredFrame = new WebMarkupContainer("greySquaredFrame");
+
+        if (width == WebGeo.AUTO) {
+            greySquaredFrame.add(AttributeModifier.append("class", "inline"));
+        } else {
+            if (width != null && width != WebGeo.NOT_DEFINED)
+                greySquaredFrame.add(AttributeModifier.replace("style", "width: " + width.toString()));
+            else
+                greySquaredFrame.add(AttributeModifier.replace("style", "width: 400px"));
+        }
+
+        greySquaredFrame.add(getBodyContainer());
+        addToBorder(greySquaredFrame);
+    }
 }

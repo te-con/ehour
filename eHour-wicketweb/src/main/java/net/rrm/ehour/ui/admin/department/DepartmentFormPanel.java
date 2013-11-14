@@ -26,6 +26,7 @@ import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
@@ -48,7 +49,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
     public DepartmentFormPanel(String id, CompoundPropertyModel<DepartmentAdminBackingBean> model) {
         super(id, model);
 
-        GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+        GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
         add(greyBorder);
 
         setOutputMarkupId(true);

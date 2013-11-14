@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
+import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.userprefs.panel.PasswordFieldFactory;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +67,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
                               List<UserDepartment> departments) {
         super(id, userModel);
 
-        GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder(BORDER);
+        GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder(BORDER, WebGeo.AUTO);
         add(greyBorder);
 
         setOutputMarkupId(true);
