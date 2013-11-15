@@ -30,8 +30,8 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -138,12 +138,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
         return new ProjectAdminBackingBean(new Project());
     }
 
-    /**
-     * Get a the projectListHolder fragment containing the listView
-     *
-     * @param projects
-     * @return
-     */
+
     @SuppressWarnings("serial")
     private Fragment createProjectListHolder(List<Project> projects) {
         Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdminPage.this);
@@ -154,21 +149,21 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
                 Project project = item.getModelObject();
                 final Integer projectId = project.getProjectId();
 
-                AjaxLink<Void> link = new AjaxLink<Void>("projectLink") {
+                item.add(new Label("name", project.getName()));
+                item.add(new Label("code", project.getProjectCode()));
+                item.add(new AjaxEventBehavior("onclick") {
                     @Override
-                    public void onClick(AjaxRequestTarget target) {
+                    protected void onEvent(AjaxRequestTarget target) {
                         try {
                             getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)));
                             getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
                         } catch (ObjectNotFoundException e) {
                             LOGGER.error(e);
                         }
-                    }
-                };
 
-                item.add(link);
-                link.add(new Label("name", project.getName()));
-                item.add(new Label("code", project.getProjectCode()));
+                    }
+                });
+
             }
         };
 

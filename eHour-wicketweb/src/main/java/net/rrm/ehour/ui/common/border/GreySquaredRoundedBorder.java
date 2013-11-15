@@ -29,8 +29,6 @@ import org.apache.wicket.markup.html.border.Border;
 public class GreySquaredRoundedBorder extends Border {
     private static final long serialVersionUID = -793890240017442386L;
 
-
-
     public GreySquaredRoundedBorder(String id, WebGeo width) {
         super(id);
 
