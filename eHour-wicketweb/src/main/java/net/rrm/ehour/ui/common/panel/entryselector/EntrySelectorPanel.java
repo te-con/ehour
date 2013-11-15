@@ -17,12 +17,12 @@
 package net.rrm.ehour.ui.common.panel.entryselector;
 
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.event.EventPublisher;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
-import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -34,7 +34,7 @@ import org.apache.wicket.model.ResourceModel;
  * Selector with autocompletion filter
  */
 
-public class EntrySelectorPanel extends AbstractAjaxPanel<Void> {
+public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     private IModel<String> checkBoxPrefixText;
     private boolean includeCheckboxToggle = false;
     private GreyBlueRoundedBorder blueBorder;
@@ -125,9 +125,24 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void> {
     }
 
     private void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter) {
-        PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE, filter);
-        EventPublisher.publishAjaxEvent(this, payloadEvent);
+        send(getParent(), Broadcast.DEPTH, new FilterChangedEvent(filter, target));
+    }
 
-        target.add(blueBorder);
+    public static class FilterChangedEvent {
+        private final EntrySelectorFilter filter;
+        private final AjaxRequestTarget target;
+
+        public FilterChangedEvent(EntrySelectorFilter filter, AjaxRequestTarget target) {
+            this.filter = filter;
+            this.target = target;
+        }
+
+        public EntrySelectorFilter getFilter() {
+            return filter;
+        }
+
+        public void refresh(Component... components) {
+            target.add(components);
+        }
     }
 }
