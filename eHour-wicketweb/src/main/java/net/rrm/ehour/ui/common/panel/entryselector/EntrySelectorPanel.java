@@ -31,45 +31,39 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
- * Selector with autocompletion filter 
- **/
+ * Selector with autocompletion filter
+ */
 
-public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
-{
-	private	IModel<String> checkBoxPrefixText;
-	private	boolean	includeCheckboxToggle = false;
-	private GreyBlueRoundedBorder blueBorder;
-	private static final long serialVersionUID = -7928428437664050056L;
+public class EntrySelectorPanel extends AbstractAjaxPanel<Void> {
+    private IModel<String> checkBoxPrefixText;
+    private boolean includeCheckboxToggle = false;
+    private GreyBlueRoundedBorder blueBorder;
+    private static final long serialVersionUID = -7928428437664050056L;
 
-	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder)
-	{
-		this(id, itemListHolder, null);
-	}
-	
-	public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, IModel<String> checkboxPrefix)
-	{
-		super(id);
+    public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder) {
+        this(id, itemListHolder, null);
+    }
 
-		if (checkboxPrefix != null)
-		{
-			this.checkBoxPrefixText = checkboxPrefix;
-			includeCheckboxToggle = true;
-		}
+    public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, IModel<String> checkboxPrefix) {
+        super(id);
 
-		setUpPanel(itemListHolder);
-	}	
+        if (checkboxPrefix != null) {
+            this.checkBoxPrefixText = checkboxPrefix;
+            includeCheckboxToggle = true;
+        }
+
+        setUpPanel(itemListHolder);
+    }
 
 
-	public void refreshList(AjaxRequestTarget target)
-	{
-		target.add(blueBorder);
-	}
+    public void refreshList(AjaxRequestTarget target) {
+        target.add(blueBorder);
+    }
 
-	private void setUpPanel(WebMarkupContainer itemListHolder)
-	{
-		WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
-		
-		blueBorder = new GreyBlueRoundedBorder("blueBorder") {
+    private void setUpPanel(WebMarkupContainer itemListHolder) {
+        WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
+
+        blueBorder = new GreyBlueRoundedBorder("blueBorder") {
             @Override
             protected WebMarkupContainer createComponent() {
                 WebMarkupContainer component = super.createComponent();
@@ -80,27 +74,26 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
             }
         };
 
-		blueBorder.setOutputMarkupId(true);
-		selectorFrame.add(blueBorder);
-		
-		selectorFrame.add(getFilterForm());
-		
-		add(selectorFrame);
-		
-		blueBorder.add(itemListHolder);
-	}
-	
-	private Form<Void> getFilterForm()
-	{
-		final EntrySelectorFilter filter = new EntrySelectorFilter();
-		filter.setOnId(this.getId());
-		filter.setActivateToggle(getEhourWebSession().getHideInactiveSelections());
-		
-		Form<Void> filterForm = new Form<Void>("filterForm");
-		
-		WebMarkupContainer filterInputContainer = new WebMarkupContainer("filterInputContainer");
-		add(filterInputContainer);
-		filterForm.add(filterInputContainer);
+        blueBorder.setOutputMarkupId(true);
+        selectorFrame.add(blueBorder);
+
+        selectorFrame.add(getFilterForm());
+
+        add(selectorFrame);
+
+        blueBorder.add(itemListHolder);
+    }
+
+    private Form<Void> getFilterForm() {
+        final EntrySelectorFilter filter = new EntrySelectorFilter();
+        filter.setOnId(this.getId());
+        filter.setActivateToggle(getEhourWebSession().getHideInactiveSelections());
+
+        Form<Void> filterForm = new Form<Void>("filterForm");
+
+        WebMarkupContainer filterInputContainer = new WebMarkupContainer("filterInputContainer");
+        add(filterInputContainer);
+        filterForm.add(filterInputContainer);
 
         WebMarkupContainer listFilter = new WebMarkupContainer("listFilter");
         listFilter.setMarkupId("listFilter");
@@ -108,21 +101,19 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
         listFilter.add(AttributeModifier.replace("placeholder", new ResourceModel("report.filter").getObject()));
         filterInputContainer.add(listFilter);
 
-		
-		final AjaxCheckBox	deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(filter, "activateToggle"))
-		{
-			private static final long serialVersionUID = 2585047163449150793L;
 
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-            	getEhourWebSession().setHideInactiveSelections(filter.isActivateToggle());
+        final AjaxCheckBox deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(filter, "activateToggle")) {
+            private static final long serialVersionUID = 2585047163449150793L;
 
-            	callbackAfterFilter(target, filter);
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                getEhourWebSession().setHideInactiveSelections(filter.isActivateToggle());
+
+                callbackAfterFilter(target, filter);
 
                 target.appendJavaScript("filterList();");
-			}
-		};
+            }
+        };
 
         deactivateBox.setVisible(includeCheckboxToggle);
         filterForm.add(deactivateBox);
@@ -130,14 +121,13 @@ public class EntrySelectorPanel extends AbstractAjaxPanel<Void>
         Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
         filterForm.add(filterToggleText);
 
-		return filterForm;
-	}
+        return filterForm;
+    }
 
-	private void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter)
-	{
-		PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE, filter);
+    private void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter) {
+        PayloadAjaxEvent<EntrySelectorFilter> payloadEvent = new PayloadAjaxEvent<EntrySelectorFilter>(EntrySelectorAjaxEventType.FILTER_CHANGE, filter);
         EventPublisher.publishAjaxEvent(this, payloadEvent);
-		
-    	target.add(blueBorder);
-	}
+
+        target.add(blueBorder);
+    }
 }
