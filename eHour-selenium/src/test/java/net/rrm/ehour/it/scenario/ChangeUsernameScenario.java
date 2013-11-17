@@ -14,9 +14,12 @@ public class ChangeUsernameScenario extends AbstractScenario {
 
         loginAdmin();
 
+        loadUserAdmin();
         createUser("thies2", "a", lastName);
         assertUserDataSaved();
 
+        loadUserAdmin();
+        showOnlyActiveUsers();
         editUser(lastName);
 
         setFormFieldTo("username", "thies3");

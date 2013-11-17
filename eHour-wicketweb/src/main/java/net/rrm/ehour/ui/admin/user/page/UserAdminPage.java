@@ -33,9 +33,9 @@ import net.rrm.ehour.ui.common.sort.UserComparator;
 import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -119,6 +119,7 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
         };
 
         fragment.add(userListView);
+        fragment.setOutputMarkupId(true);
 
         return fragment;
     }
@@ -149,23 +150,15 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
         return true;
     }
 
-
     @Override
-    public void onEvent(IEvent<?> event) {
-        Object payload = event.getPayload();
+    protected Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent) {
+        currentFilter = filterChangedEvent.getFilter();
 
-        if (payload instanceof EntrySelectorPanel.FilterChangedEvent) {
-            EntrySelectorPanel.FilterChangedEvent filterChangedEvent = (EntrySelectorPanel.FilterChangedEvent) payload;
-
-            currentFilter = filterChangedEvent.getFilter();
-
-            List<User> users = getUsers();
-            userListView.setList(users);
+        List<User> users = getUsers();
+        userListView.setList(users);
 
 
-            filterChangedEvent.refresh(userListView);
-
-        }
+        return userListView.getParent();
     }
 
     private List<User> getUsers() {
@@ -177,10 +170,6 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
     }
 
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.admin.BasedTabbedAdminPage#getAddPanel(java.lang.String)
-      */
     @Override
     protected Panel getBaseAddPanel(String panelId) {
         return new UserAdminFormPanel(panelId,
@@ -189,10 +178,6 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
                 getUserDepartments());
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewAddBackingBean()
-      */
     @Override
     protected UserBackingBean getNewAddBaseBackingBean() {
         UserBackingBean userBean;
@@ -203,19 +188,11 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
         return userBean;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.admin.BaseTabbedAdminPage#getNewEditBackingBean()
-      */
     @Override
     protected UserBackingBean getNewEditBaseBackingBean() {
         return new UserBackingBean(new User(), AdminAction.EDIT);
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.admin.BasedTabbedAdminPage#getEditPanel(java.lang.String)
-      */
     @Override
     protected Panel getBaseEditPanel(String panelId) {
         return new UserAdminFormPanel(panelId,
@@ -224,11 +201,6 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
                 getUserDepartments());
     }
 
-    /**
-     * Get all the roles from the backend
-     *
-     * @return
-     */
     private List<UserRole> getUserRoles() {
         if (roles == null) {
             roles = userService.getUserRoles();
@@ -237,11 +209,6 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
         return roles;
     }
 
-    /**
-     * Get all departments from the backend
-     *
-     * @return
-     */
     private List<UserDepartment> getUserDepartments() {
         if (departments == null) {
             departments = userService.getUserDepartments();

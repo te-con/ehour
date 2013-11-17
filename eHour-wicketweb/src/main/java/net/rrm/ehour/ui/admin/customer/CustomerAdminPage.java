@@ -26,9 +26,9 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -124,21 +124,13 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
     }
 
     @Override
-    public void onEvent(IEvent<?> event) {
-        Object payload = event.getPayload();
+    protected Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent) {
+        currentFilter = filterChangedEvent.getFilter();
 
-        if (payload instanceof EntrySelectorPanel.FilterChangedEvent) {
-            EntrySelectorPanel.FilterChangedEvent filterChangedEvent = (EntrySelectorPanel.FilterChangedEvent) payload;
+        List<Customer> customers = getCustomers();
+        customerListView.setList(customers);
 
-            currentFilter = filterChangedEvent.getFilter();
-
-            List<Customer> customers = getCustomers();
-            customerListView.setList(customers);
-
-
-            filterChangedEvent.refresh(customerListView);
-
-        }
+        return customerListView.getParent();
     }
 
     /**

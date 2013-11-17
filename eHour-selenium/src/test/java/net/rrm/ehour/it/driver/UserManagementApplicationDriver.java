@@ -12,8 +12,6 @@ import static org.junit.Assert.assertEquals;
 public abstract class UserManagementApplicationDriver {
 
     public static void createUser(String username, String password, String lastName) {
-        Driver.get(BASE_URL + "/eh/admin/employee");
-
         Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_user.username")).clear();
         Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_user.username")).sendKeys(username);
         Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_userForm_user.firstName")).clear();
@@ -33,13 +31,21 @@ public abstract class UserManagementApplicationDriver {
     }
 
     public static void editUser(String name) {
-        Driver.get(BASE_URL + "/eh/admin/employee");
-
         WebElement listFilter = Driver.findElement(By.id("listFilter"));
         listFilter.clear();
         listFilter.sendKeys(name);
 
         Driver.findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_1_itemLink")).click();
+        EhourApplicationDriver.sleep(500);
+    }
+
+    public static void loadUserAdmin() {
+        Driver.get(BASE_URL + "/eh/admin/employee");
+    }
+
+
+    public static void showOnlyActiveUsers() {
+        Driver.findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_filterForm_filterToggle")).click();
         EhourApplicationDriver.sleep(500);
     }
 

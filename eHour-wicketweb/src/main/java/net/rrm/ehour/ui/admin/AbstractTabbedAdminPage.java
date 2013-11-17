@@ -19,99 +19,110 @@ package net.rrm.ehour.ui.admin;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import org.apache.wicket.Component;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 
 /**
  * Base admin page template with 2 tabs, add & edit
- **/
+ */
 
 @SuppressWarnings("serial")
 @AuthorizeInstantiation(UserRole.ROLE_ADMIN)
-public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractAdminPage<BB>
-{
-	private	AddEditTabbedPanel<BB>	tabbedPanel;
+public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractAdminPage<BB> {
+    private AddEditTabbedPanel<BB> tabbedPanel;
 
-	public AbstractTabbedAdminPage(ResourceModel pageTitle,
-								ResourceModel addTabTitle,
-								ResourceModel editTabTitle,
-								ResourceModel noEntrySelectedText) {
+    public AbstractTabbedAdminPage(ResourceModel pageTitle,
+                                   ResourceModel addTabTitle,
+                                   ResourceModel editTabTitle,
+                                   ResourceModel noEntrySelectedText) {
         super(pageTitle);
 
-		tabbedPanel = new AddEditTabbedPanel<BB>("tabs", addTabTitle, editTabTitle, noEntrySelectedText)
-		{
-			@Override
-			protected Panel getAddPanel(String panelId)
-			{
-				return getBaseAddPanel(panelId);
-			}
+        tabbedPanel = new AddEditTabbedPanel<BB>("tabs", addTabTitle, editTabTitle, noEntrySelectedText) {
+            @Override
+            protected Panel getAddPanel(String panelId) {
+                return getBaseAddPanel(panelId);
+            }
 
-			@Override
-			protected Panel getEditPanel(String panelId)
-			{
-				return getBaseEditPanel(panelId);
-			}
+            @Override
+            protected Panel getEditPanel(String panelId) {
+                return getBaseEditPanel(panelId);
+            }
 
-			@Override
-			protected BB createAddBackingBean()
-			{
-				return getNewAddBaseBackingBean();
-			}
+            @Override
+            protected BB createAddBackingBean() {
+                return getNewAddBaseBackingBean();
+            }
 
-			@Override
-			protected BB createEditBackingBean()
-			{
-				return getNewEditBaseBackingBean();
-			}
+            @Override
+            protected BB createEditBackingBean() {
+                return getNewEditBaseBackingBean();
+            }
 
-			@Override
-			protected void onTabSwitch(int index)
-			{
-				AbstractTabbedAdminPage.this.onTabSwitch(index);
-			}
-		};
+            @Override
+            protected void onTabSwitch(int index) {
+                AbstractTabbedAdminPage.this.onTabSwitch(index);
+            }
+        };
 
-		add(tabbedPanel);
-	}
+        add(tabbedPanel);
+    }
 
-	protected void onTabSwitch(int index)
-	{
+    protected void onTabSwitch(int index) {
 
-	}
+    }
 
-	/**
-	 * Get the backing bean for the add panel
-	 *
-	 * @return
-	 */
-	protected abstract BB getNewAddBaseBackingBean();
+    /**
+     * Get the backing bean for the add panel
+     *
+     * @return
+     */
+    protected abstract BB getNewAddBaseBackingBean();
 
-	/**
-	 * Get the backing bean for the edit panel
-	 * @return
-	 */
-	protected abstract BB getNewEditBaseBackingBean();
+    /**
+     * Get the backing bean for the edit panel
+     *
+     * @return
+     */
+    protected abstract BB getNewEditBaseBackingBean();
 
-	/**
-	 * Get the panel for the add tab
-	 * @param panelId
-	 * @return
-	 */
-	protected abstract Panel getBaseAddPanel(String panelId);
+    /**
+     * Get the panel for the add tab
+     *
+     * @param panelId
+     * @return
+     */
+    protected abstract Panel getBaseAddPanel(String panelId);
 
-	/**
-	 * Get the panel for the edit tab
-	 * @param panelId
-	 * @return
-	 */
-	protected abstract Panel getBaseEditPanel(String panelId);
+    /**
+     * Get the panel for the edit tab
+     *
+     * @param panelId
+     * @return
+     */
+    protected abstract Panel getBaseEditPanel(String panelId);
 
-	/**
-	 * @return the tabbedPanel
-	 */
-	public AddEditTabbedPanel<BB> getTabbedPanel()
-	{
-		return tabbedPanel;
-	}
+    /**
+     * @return the tabbedPanel
+     */
+    public AddEditTabbedPanel<BB> getTabbedPanel() {
+        return tabbedPanel;
+    }
+
+
+    @Override
+    public void onEvent(IEvent<?> event) {
+        Object payload = event.getPayload();
+
+        if (payload instanceof EntrySelectorPanel.FilterChangedEvent) {
+            EntrySelectorPanel.FilterChangedEvent filterChangedEvent = (EntrySelectorPanel.FilterChangedEvent) payload;
+
+            filterChangedEvent.refresh(onFilterChanged(filterChangedEvent));
+        }
+    }
+
+    protected abstract Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent);
 }

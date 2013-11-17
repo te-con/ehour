@@ -29,9 +29,9 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -111,20 +111,13 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     }
 
     @Override
-    public void onEvent(IEvent<?> event) {
-        Object payload = event.getPayload();
+    protected Component onFilterChanged(FilterChangedEvent filterChangedEvent) {
+        currentFilter = filterChangedEvent.getFilter();
 
-        if (payload instanceof FilterChangedEvent) {
-            FilterChangedEvent filterChangedEvent = (FilterChangedEvent) payload;
+        List<Project> projects = getProjects();
+        projectListView.setList(projects);
 
-            currentFilter = filterChangedEvent.getFilter();
-
-            List<Project> projects = getProjects();
-            projectListView.setList(projects);
-
-            filterChangedEvent.refresh(projectListView.getParent());
-
-        }
+        return projectListView.getParent();
     }
 
     @Override
