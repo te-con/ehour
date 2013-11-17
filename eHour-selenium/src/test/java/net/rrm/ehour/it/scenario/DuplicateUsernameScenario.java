@@ -11,9 +11,12 @@ public class DuplicateUsernameScenario extends AbstractScenario {
     public void should_attempt_to_create_user_with_duplicate_username() {
         loginAdmin();
         String lastName = "Edeling3";
+
+        loadUserAdmin();
         createUser("thies3", "a", lastName);
         assertUserDataSaved();
 
+        loadUserAdmin();
         createUser("thies3", "a", lastName);
         assertUserServerMessage("Username already in use");
     }
