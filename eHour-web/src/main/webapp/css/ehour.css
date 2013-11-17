@@ -843,3 +843,7 @@ hr {
 .entrySelectorTable .inactive td {
     color: #6e9fcc !important;
 }
+
+.floatLeft {
+    float: left;
+}
