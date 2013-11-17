@@ -25,6 +25,7 @@ import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
 import net.rrm.ehour.ui.admin.user.panel.UserAdminFormPanel;
 import net.rrm.ehour.ui.common.AdminAction;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
@@ -33,9 +34,10 @@ import net.rrm.ehour.ui.common.sort.UserComparator;
 import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -59,6 +61,7 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
 
     @SpringBean
     private UserService userService;
+
     private ListView<User> userListView;
     private EntrySelectorFilter currentFilter;
     private List<UserRole> roles;
@@ -96,25 +99,28 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
             @Override
             protected void populateItem(ListItem<User> item) {
                 final User user = item.getModelObject();
+
+                if (!user.isActive()) {
+                    item.add(AttributeModifier.append("class", "inactive"));
+                }
+
                 final Integer userId = user.getUserId();
 
-                AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
-                    private static final long serialVersionUID = -3898942767521616039L;
+                item.add(new Label("firstName", user.getFirstName()));
+                item.add(new Label("lastName", user.getLastName()));
+                item.add(new Label("userName", user.getUsername()));
 
+                item.add(new AjaxEventBehavior("onclick") {
                     @Override
-                    public void onClick(AjaxRequestTarget target) {
+                    protected void onEvent(AjaxRequestTarget target) {
                         try {
                             getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId), AdminAction.EDIT));
-                            getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+                            getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
                         } catch (ObjectNotFoundException e) {
-                            LOGGER.error("User not found for id: " + userId);
+                            LOGGER.error(e);
                         }
-
                     }
-                };
-
-                item.add(link);
-                link.add(new Label("linkLabel", user.getFullName() + (user.isActive() ? "" : "*")));
+                });
             }
         };
 
