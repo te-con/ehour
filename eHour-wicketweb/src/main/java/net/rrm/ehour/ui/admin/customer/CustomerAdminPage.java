@@ -176,7 +176,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
      * @return
      */
     private List<Customer> getCustomers() {
-        List<Customer> customers = currentFilter != null && !currentFilter.isActivateToggle() ? customerService.getCustomers() : customerService.getCustomers(true);
+        List<Customer> customers = currentFilter != null && !currentFilter.isFilterToggle() ? customerService.getCustomers() : customerService.getCustomers(true);
         Collections.sort(customers, new CustomerComparator());
 
         return customers;

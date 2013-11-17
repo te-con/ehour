@@ -24,14 +24,13 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -43,6 +42,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.FilterChangedEvent;
 
 /**
  * Project admin page
@@ -88,12 +89,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
-        if (type == EntrySelectorAjaxEventType.FILTER_CHANGE) {
-            currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>) ajaxEvent).getPayload();
-
-            List<Project> projects = getProjects();
-            projectListView.setList(projects);
-        } else if (type == ProjectAjaxEventType.PROJECT_UPDATED
+         if (type == ProjectAjaxEventType.PROJECT_UPDATED
                 || type == ProjectAjaxEventType.PROJECT_DELETED) {
             // update project list
             projectListView.setList(getProjects());
@@ -105,6 +101,22 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
         return false;
     }
 
+    @Override
+    public void onEvent(IEvent<?> event) {
+        Object payload = event.getPayload();
+
+        if (payload instanceof FilterChangedEvent) {
+            FilterChangedEvent filterChangedEvent = (FilterChangedEvent) payload;
+
+            currentFilter = filterChangedEvent.getFilter();
+
+            List<Project> projects = getProjects();
+            projectListView.setList(projects);
+
+            filterChangedEvent.refresh(projectListView);
+
+        }
+    }
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
@@ -173,7 +185,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     }
 
     private List<Project> getProjects() {
-        List<Project> projects = projectService.getProjects(currentFilter == null || currentFilter.isActivateToggle());
+        List<Project> projects = projectService.getProjects(currentFilter == null || currentFilter.isFilterToggle());
 
         Collections.sort(projects, new ProjectComparator());
 

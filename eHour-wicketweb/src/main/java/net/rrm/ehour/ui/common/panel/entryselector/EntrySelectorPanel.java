@@ -86,8 +86,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
     private Form<Void> getFilterForm() {
         final EntrySelectorFilter filter = new EntrySelectorFilter();
-        filter.setOnId(this.getId());
-        filter.setActivateToggle(getEhourWebSession().getHideInactiveSelections());
+        filter.setFilterToggle(getEhourWebSession().getHideInactiveSelections());
 
         Form<Void> filterForm = new Form<Void>("filterForm");
 
@@ -102,12 +101,12 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         filterInputContainer.add(listFilter);
 
 
-        final AjaxCheckBox deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(filter, "activateToggle")) {
+        final AjaxCheckBox deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(filter, "filterToggle")) {
             private static final long serialVersionUID = 2585047163449150793L;
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                getEhourWebSession().setHideInactiveSelections(filter.isActivateToggle());
+                getEhourWebSession().setHideInactiveSelections(filter.isFilterToggle());
 
                 callbackAfterFilter(target, filter);
 
@@ -125,7 +124,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     }
 
     private void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter) {
-        send(getParent(), Broadcast.DEPTH, new FilterChangedEvent(filter, target));
+        send(getPage(), Broadcast.DEPTH, new FilterChangedEvent(filter, target));
     }
 
     public static class FilterChangedEvent {

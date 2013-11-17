@@ -25,21 +25,15 @@ import java.io.Serializable;
 public class EntrySelectorFilter implements Serializable
 {
 	private static final long serialVersionUID = -7713534314686523511L;
-	private	boolean	activateToggle = true;
-	private String	onId;
-	
-	public boolean isActivateToggle()
-	{
-		return activateToggle;
-	}
-	
-	public void setActivateToggle(boolean activateToggle)
-	{
-		this.activateToggle = activateToggle;
-	}
+	private	boolean filterToggle = true;
 
-    public void setOnId(String onId)
+	public boolean isFilterToggle()
 	{
-		this.onId = onId;
+		return filterToggle;
+	}
+	
+	public void setFilterToggle(boolean filterToggle)
+	{
+		this.filterToggle = filterToggle;
 	}
 }

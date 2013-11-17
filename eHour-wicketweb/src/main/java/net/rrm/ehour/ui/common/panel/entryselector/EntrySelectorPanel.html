@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
 
 <body>
 
@@ -10,24 +10,27 @@
 	<span wicket:id="entrySelectorFrame">
 	
 		<form onsubmit="return false;" wicket:id="filterForm" style="margin: 0; padding: 0">
-			<p>
+            <p>
                 <span wicket:id="filterInputContainer">
 					<input class="textInput searchInput"
                            wicket:id="listFilter"
-							type="text"
-							/>
-                    <br />
+                           type="text"
+                            />
+                    <br/>
 				</span>
 
-				<label wicket:for="filterToggle"><span wicket:id="filterToggleText"></span></label>&nbsp;&nbsp;&nbsp;<input style="border:0" wicket:id="filterToggle" type="checkbox" />
-			</p>
-		</form>	
+                <label wicket:for="filterToggle"><span
+                        wicket:id="filterToggleText"></span></label>&nbsp;&nbsp;&nbsp;<input style="border:0"
+                                                                                             wicket:id="filterToggle"
+                                                                                             type="checkbox"/>
+            </p>
+        </form>
 	
 		<div wicket:id="blueBorder" class="inline" style="padding-top: 0; margin-top: 10px">
-			<div class="listScroll inline" id="listContents">
-				<span wicket:id="itemListHolder"></span>
-			</div>	
-		</div>
+            <div class="listScroll inline" id="listContents">
+                <span wicket:id="itemListHolder"></span>
+            </div>
+        </div>
 	</span>
 
 
@@ -36,19 +39,40 @@
             filterList()
         });
 
+        staticTableWidth();
         filterList();
+
+        function staticTableWidth() {
+            $('.entrySelectorTable tr:first th').each(function() {
+                $(this).css({'width': $(this).width()+"px"});
+            });
+
+            var entrySelector = $("#entrySelector")
+            entrySelector.css({'width': entrySelector.width()+"px"});
+
+            var listContents = $("#listContents")
+            listContents.css({'width': entrySelector.width()+"px"});
+        }
 
         function filterList() {
             var q = $.trim($("#listFilter").val()).toLowerCase();
 
-            $("#listContents").find("span").each(function (idx, element) {
-                var e = $(element);
+            $(".entrySelectorTable").find(".filterRow").each(function (idx, element) {
+                var row = $(element);
+                var showRow = false;
 
-                if (e.text().toLowerCase().indexOf(q) >= 0) {
-                    e.show();
-                } else {
-                    e.hide();
-                }
+                row.find("td").each(function (i, td) {
+                    var e = $(td);
+
+                    if (e.text().toLowerCase().indexOf(q) >= 0 && !showRow) {
+                        showRow = true;
+                    }
+                });
+
+                if (showRow)
+                    row.show();
+                else
+                    row.hide();
             });
         }
     </script>
