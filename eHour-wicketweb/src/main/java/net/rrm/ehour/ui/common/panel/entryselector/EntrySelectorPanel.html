@@ -19,10 +19,13 @@
                     <br/>
 				</span>
 
+                <span wicket:enclosure="filterToggle">
+
                 <label wicket:for="filterToggle"><span
                         wicket:id="filterToggleText"></span></label>&nbsp;&nbsp;&nbsp;<input style="border:0"
                                                                                              wicket:id="filterToggle"
                                                                                              type="checkbox"/>
+                    </span>
             </p>
         </form>
 	
@@ -46,7 +49,7 @@
         function fetchInitialWidth() {
             var widths = new Array();
 
-            $('.entrySelectorTable tr:first th').each(function(idx) {
+            $('.entrySelectorTable tr:first th').each(function (idx) {
                 var width = $(this).width();
                 widths[idx] = width;
             });
@@ -60,15 +63,15 @@
         }
 
         function staticTableWidth() {
-            $('.entrySelectorTable tr:first th').each(function(idx) {
-                $(this).css({'width': widths[idx] +"px"});
+            $('.entrySelectorTable tr:first th').each(function (idx) {
+                $(this).css({'width': widths[idx] + "px"});
             });
 
             var entrySelector = $("#entrySelector")
-            entrySelector.css({'width': entrySelector.width()+"px"});
+            entrySelector.css({'width': entrySelector.width() + "px"});
 
             var listContents = $("#listContents")
-            listContents.css({'width': entrySelector.width()+"px"});
+            listContents.css({'width': entrySelector.width() + "px"});
         }
 
         function filterList() {
