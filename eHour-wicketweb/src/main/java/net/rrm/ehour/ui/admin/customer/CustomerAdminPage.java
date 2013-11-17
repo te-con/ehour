@@ -23,13 +23,12 @@ import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -110,14 +109,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
     public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
-        if (type == EntrySelectorAjaxEventType.FILTER_CHANGE) {
-            currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>) ajaxEvent).getPayload();
-
-            List<Customer> customers = getCustomers();
-            customerListView.setList(customers);
-
-            return false;
-        } else if (type == CustomerAjaxEventType.CUSTOMER_UPDATED
+        if (type == CustomerAjaxEventType.CUSTOMER_UPDATED
                 || type == CustomerAjaxEventType.CUSTOMER_DELETED) {
             List<Customer> customers = getCustomers();
             customerListView.setList(customers);
@@ -129,6 +121,24 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
         }
 
         return true;
+    }
+
+    @Override
+    public void onEvent(IEvent<?> event) {
+        Object payload = event.getPayload();
+
+        if (payload instanceof EntrySelectorPanel.FilterChangedEvent) {
+            EntrySelectorPanel.FilterChangedEvent filterChangedEvent = (EntrySelectorPanel.FilterChangedEvent) payload;
+
+            currentFilter = filterChangedEvent.getFilter();
+
+            List<Customer> customers = getCustomers();
+            customerListView.setList(customers);
+
+
+            filterChangedEvent.refresh(customerListView);
+
+        }
     }
 
     /**

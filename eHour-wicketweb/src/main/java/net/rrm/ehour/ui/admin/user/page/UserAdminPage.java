@@ -27,7 +27,6 @@ import net.rrm.ehour.ui.common.AdminAction;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.UserComparator;
@@ -36,6 +35,7 @@ import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -49,7 +49,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType.*;
-import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorAjaxEventType.FILTER_CHANGE;
 
 /**
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel
@@ -133,15 +132,7 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
     public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
-
-        if (type == FILTER_CHANGE) {
-            currentFilter = ((PayloadAjaxEvent<EntrySelectorFilter>) ajaxEvent).getPayload();
-
-            List<User> users = getUsers();
-            userListView.setList(users);
-
-            return false;
-        } else if (type == USER_UPDATED
+        if (type == USER_UPDATED
                 || type == USER_DELETED
                 || type == PASSWORD_CHANGED) {
             // update user list
@@ -156,6 +147,25 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
         }
 
         return true;
+    }
+
+
+    @Override
+    public void onEvent(IEvent<?> event) {
+        Object payload = event.getPayload();
+
+        if (payload instanceof EntrySelectorPanel.FilterChangedEvent) {
+            EntrySelectorPanel.FilterChangedEvent filterChangedEvent = (EntrySelectorPanel.FilterChangedEvent) payload;
+
+            currentFilter = filterChangedEvent.getFilter();
+
+            List<User> users = getUsers();
+            userListView.setList(users);
+
+
+            filterChangedEvent.refresh(userListView);
+
+        }
     }
 
     private List<User> getUsers() {
