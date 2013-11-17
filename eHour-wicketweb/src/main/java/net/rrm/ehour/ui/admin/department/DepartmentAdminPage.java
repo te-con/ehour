@@ -26,6 +26,7 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -94,6 +95,11 @@ public class DepartmentAdminPage extends AbstractTabbedAdminPage<DepartmentAdmin
     @Override
     protected Panel getBaseEditPanel(String panelId) {
         return new DepartmentFormPanel(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
+    }
+
+    @Override
+    protected Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent) {
+        throw new IllegalArgumentException("Not supported");
     }
 
     /*
