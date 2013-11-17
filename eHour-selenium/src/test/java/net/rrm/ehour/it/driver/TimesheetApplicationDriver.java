@@ -4,6 +4,7 @@ import net.rrm.ehour.it.WicketBy;
 
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
+import static net.rrm.ehour.it.driver.ProjectApplicationDriver.createProject;
 import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.assertUserDataSaved;
 import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.createUser;
 import static org.junit.Assert.assertTrue;

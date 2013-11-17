@@ -44,19 +44,7 @@ public class EhourApplicationDriver {
         assertTrue(Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_customerForm_serverMessage")).getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
     }
 
-    public static void createProject(String name, String code, String customerName, String customerCode) {
-        Driver.get(BASE_URL + "/eh/admin/project");
 
-        Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.name")).clear();
-        Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.name")).sendKeys(name);
-        Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.projectCode")).clear();
-        Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.projectCode")).sendKeys(code);
-        new Select(Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.customer"))).selectByVisibleText(customerCode + " - " + customerName);
-
-        Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_projectForm_submitButton")).click();
-
-        assertTrue(Driver.findElement(WicketBy.wicketPath("tabs_panel_border_greySquaredFrame_border__body_projectForm_serverMessage")).getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
-    }
 
     public static void createProjectAssignment(int userIndex, String customerName, String customerCode, String projectName, String projectCode) {
         Driver.get(BASE_URL + "/eh/admin/assignment");

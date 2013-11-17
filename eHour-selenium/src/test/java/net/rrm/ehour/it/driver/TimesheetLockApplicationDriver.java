@@ -26,7 +26,5 @@ public class TimesheetLockApplicationDriver {
 
     public static void assertServerMessage(String msg) {
         assertEquals(msg, Driver.findElement(WicketBy.wicketPath("lockDetails_outerBorder_outerBorder__body_lockForm_saveConfirm")).getText());
-
-
     }
 }

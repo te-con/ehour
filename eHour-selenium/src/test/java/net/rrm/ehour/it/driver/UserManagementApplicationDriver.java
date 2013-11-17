@@ -43,7 +43,6 @@ public abstract class UserManagementApplicationDriver {
         Driver.get(BASE_URL + "/eh/admin/employee");
     }
 
-
     public static void showOnlyActiveUsers() {
         Driver.findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_filterForm_filterToggle")).click();
         EhourApplicationDriver.sleep(500);
