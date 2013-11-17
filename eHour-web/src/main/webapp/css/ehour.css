@@ -839,8 +839,6 @@ hr {
     cursor: pointer;
 }
 
-.entrySelectorTable .filterRow .inactive {
-    background-color: #d1e5f9;
+.entrySelectorTable .inactive td {
+    color: #6e9fcc !important;
 }
-
-

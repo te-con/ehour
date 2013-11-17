@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import org.apache.log4j.Logger;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.IEvent;
@@ -57,13 +58,14 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     private static final String PROJECT_SELECTOR_ID = "projectSelector";
 
     private static final int TABPOS_USERS = 2;
-    private final EntrySelectorPanel entrySelectorPanel;
+    private EntrySelectorPanel entrySelectorPanel;
 
     @SpringBean
     private ProjectService projectService;
 
-    private EntrySelectorFilter currentFilter;
+    private EntrySelectorFilter currentFilter = new EntrySelectorFilter();
     private ListView<Project> projectListView;
+    private final GreyRoundedBorder greyBorder;
 
     public ProjectAdminPage() {
         super(new ResourceModel("admin.project.title"),
@@ -71,12 +73,19 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
                 new ResourceModel("admin.project.editProject"),
                 new ResourceModel("admin.project.noEditEntrySelected"));
 
+
+        greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"));
+        add(greyBorder);
+
+    }
+
+    @Override
+    protected void onBeforeRender() {
+        super.onBeforeRender();
+
         List<Project> projects = getProjects();
 
         Fragment projectListHolder = createProjectListHolder(projects);
-
-        GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"));
-        add(greyBorder);
 
         entrySelectorPanel = new EntrySelectorPanel(PROJECT_SELECTOR_ID,
                 projectListHolder,
@@ -89,7 +98,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
-         if (type == ProjectAjaxEventType.PROJECT_UPDATED
+        if (type == ProjectAjaxEventType.PROJECT_UPDATED
                 || type == ProjectAjaxEventType.PROJECT_DELETED) {
             // update project list
             projectListView.setList(getProjects());
@@ -113,7 +122,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
             List<Project> projects = getProjects();
             projectListView.setList(projects);
 
-            filterChangedEvent.refresh(projectListView);
+            filterChangedEvent.refresh(projectListView.getParent());
 
         }
     }
@@ -154,15 +163,22 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     @SuppressWarnings("serial")
     private Fragment createProjectListHolder(List<Project> projects) {
         Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdminPage.this);
+        fragment.setOutputMarkupId(true);
 
         projectListView = new ListView<Project>("itemList", projects) {
             @Override
             protected void populateItem(ListItem<Project> item) {
                 Project project = item.getModelObject();
-                final Integer projectId = project.getProjectId();
 
+                if (!project.isActive()) {
+                    item.add(AttributeModifier.append("class", "inactive"));
+                }
+
+                final Integer projectId = project.getProjectId();
                 item.add(new Label("name", project.getName()));
                 item.add(new Label("code", project.getProjectCode()));
+
+
                 item.add(new AjaxEventBehavior("onclick") {
                     @Override
                     protected void onEvent(AjaxRequestTarget target) {
@@ -172,7 +188,6 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
                         } catch (ObjectNotFoundException e) {
                             LOGGER.error(e);
                         }
-
                     }
                 });
 

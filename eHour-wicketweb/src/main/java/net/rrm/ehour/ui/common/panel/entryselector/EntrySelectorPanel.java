@@ -110,7 +110,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
                 callbackAfterFilter(target, filter);
 
-                target.appendJavaScript("filterList();");
+                target.appendJavaScript("refresh();");
             }
         };
 
