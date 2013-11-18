@@ -116,19 +116,19 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria> {
         ReportCriteria criteria = getPageModelObject();
 
         ProjectManagerReport reportData = null;
-        DateRange reportRange = criteria.getUserCriteria().getReportRange();
+        DateRange reportRange = criteria.getUserSelectedCriteria().getReportRange();
 
-        if (criteria.getUserCriteria().isInfiniteStartDate()) {
+        if (criteria.getUserSelectedCriteria().isInfiniteStartDate()) {
             reportRange.setDateStart(null);
         }
 
-        if (criteria.getUserCriteria().isInfiniteEndDate()) {
+        if (criteria.getUserSelectedCriteria().isInfiniteEndDate()) {
             reportRange.setDateEnd(null);
         }
 
-        if (criteria.getUserCriteria().getProject() != null) {
+        if (criteria.getUserSelectedCriteria().getProject() != null) {
             // only one can be there
-            Project project = criteria.getUserCriteria().getProject();
+            Project project = criteria.getUserSelectedCriteria().getProject();
             reportData = aggregateReportService.getProjectManagerDetailedReport(reportRange, project.getPK());
         }
 

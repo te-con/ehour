@@ -21,7 +21,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.persistence.value.ImageLogo;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.form.ImageUploadForm;
@@ -122,10 +122,10 @@ public class SkinConfigPanel extends AbstractConfigPanel {
     }
 
     private void createDummyExcelExport() {
-        final UserCriteria userCriteria = new UserCriteria();
-        userCriteria.getCustomParameters().put(TimesheetExportParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
-        userCriteria.setReportRange(TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
-        final ReportCriteria criteria = new ReportCriteria(userCriteria);
+        final UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.getCustomParameters().put(TimesheetExportParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
+        userSelectedCriteria.setReportRange(TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
+        final ReportCriteria criteria = new ReportCriteria(userSelectedCriteria);
 
         final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport();
 

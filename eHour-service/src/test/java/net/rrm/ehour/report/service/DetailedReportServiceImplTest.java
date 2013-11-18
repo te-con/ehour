@@ -16,25 +16,20 @@
 
 package net.rrm.ehour.report.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * DetailedReportServiceImplTest 
@@ -45,7 +40,7 @@ public class DetailedReportServiceImplTest
 	private	DetailedReportDao		detailedReportDAO;
 	private	DetailedReportService	detailedReportService;
 	private	ReportCriteria			rc;
-	private UserCriteria 			uc;
+	private UserSelectedCriteria uc;
 	private DateRange 				dr;
 	
 	/**
@@ -60,7 +55,7 @@ public class DetailedReportServiceImplTest
 		((DetailedReportServiceImpl)detailedReportService).setDetailedReportDAO(detailedReportDAO);
 
 		dr = new DateRange();
-		uc = new UserCriteria();
+		uc = new UserSelectedCriteria();
 		uc.setReportRange(dr);
 		rc = new ReportCriteria(uc);
 	}

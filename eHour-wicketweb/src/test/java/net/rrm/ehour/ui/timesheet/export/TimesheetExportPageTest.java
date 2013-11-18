@@ -90,11 +90,11 @@ public class TimesheetExportPageTest extends BaseSpringWebAppTester
 		formTester.submit("store");
 
 		tester.assertNoErrorMessage();
-		assertEquals(Boolean.TRUE, reportCriteria.getUserCriteria().getCustomParameters().get(TimesheetExportParameter.INCL_SIGN_OFF.name()));
+		assertEquals(Boolean.TRUE, reportCriteria.getUserSelectedCriteria().getCustomParameters().get(TimesheetExportParameter.INCL_SIGN_OFF.name()));
 
-		assertEquals(2, reportCriteria.getUserCriteria().getProjects().size());
+		assertEquals(2, reportCriteria.getUserSelectedCriteria().getProjects().size());
 
-		Integer id =  reportCriteria.getUserCriteria().getProjects().get(1).getProjectId();
+		Integer id =  reportCriteria.getUserSelectedCriteria().getProjects().get(1).getProjectId();
 
 		// order is unknown
 		if (id != 0 && id != 2)

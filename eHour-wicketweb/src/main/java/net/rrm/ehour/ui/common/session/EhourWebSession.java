@@ -23,7 +23,7 @@ import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.util.WebUtils;
@@ -60,7 +60,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
     @SpringBean
     private AuditService auditService;
     private Calendar navCalendar;
-    private UserCriteria userCriteria;
+    private UserSelectedCriteria userSelectedCriteria;
     private Boolean hideInactiveSelections = Boolean.TRUE;
 
     private static final Logger LOGGER = Logger.getLogger(EhourWebSession.class);
@@ -236,7 +236,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
         getSession().clear();
 
         setAuthentication(null);
-        setUserCriteria(null);
+        setUserSelectedCriteria(null);
 
         super.signOut();
 
@@ -260,16 +260,16 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     /**
-     * @return the userCriteria
+     * @return the userSelectedCriteria
      */
-    public UserCriteria getUserCriteria() {
-        return userCriteria;
+    public UserSelectedCriteria getUserSelectedCriteria() {
+        return userSelectedCriteria;
     }
 
     /**
-     * @param userCriteria the userCriteria to set
+     * @param userSelectedCriteria the userSelectedCriteria to set
      */
-    public void setUserCriteria(UserCriteria userCriteria) {
-        this.userCriteria = userCriteria;
+    public void setUserSelectedCriteria(UserSelectedCriteria userSelectedCriteria) {
+        this.userSelectedCriteria = userSelectedCriteria;
     }
 }

@@ -158,12 +158,12 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
             projects.addAll(TimesheetExportCriteriaPanel.this.unbillableProjects.getProjects());
 
             final ReportCriteria reportCriteria = getModelObject();
-            reportCriteria.getUserCriteria().setProjects(projects);
+            reportCriteria.getUserSelectedCriteria().setProjects(projects);
             return reportCriteria;
         }
 
         private String createFilename(ReportCriteria reportCriteria) {
-            DateRange reportRange = reportCriteria.getUserCriteria().getReportRange();
+            DateRange reportRange = reportCriteria.getUserSelectedCriteria().getReportRange();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
             String start = formatter.format(reportRange.getDateStart());
             String end = formatter.format(reportRange.getDateEnd());

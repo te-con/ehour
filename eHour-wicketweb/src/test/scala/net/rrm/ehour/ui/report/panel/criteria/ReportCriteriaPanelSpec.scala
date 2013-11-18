@@ -5,7 +5,7 @@ import net.rrm.ehour.report.service.ReportCriteriaService
 import org.scalatest.BeforeAndAfterAll
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import net.rrm.ehour.report.criteria.{ReportCriteria, AvailableCriteria, UserCriteria}
+import net.rrm.ehour.report.criteria.{ReportCriteria, AvailableCriteria, UserSelectedCriteria}
 import org.apache.wicket.model.CompoundPropertyModel
 import net.rrm.ehour.domain._
 import java.{util => ju}
@@ -32,7 +32,7 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
       toList(mutable.Buffer(ProjectObjectMother.createProject(1))),
       toList(mutable.Buffer(UserObjectMother.createUser())),
       toList(mutable.Buffer(UserDepartmentMother.createUserDepartment())))
-    val criteria = new ReportCriteria(availableCriteria, new UserCriteria)
+    val criteria = new ReportCriteria(availableCriteria, new UserSelectedCriteria)
     val model = new CompoundPropertyModel[ReportCriteriaBackingBean](new ReportCriteriaBackingBean(criteria))
 
     "render" in {

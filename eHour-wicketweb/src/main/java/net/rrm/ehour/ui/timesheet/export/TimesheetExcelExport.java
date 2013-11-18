@@ -81,7 +81,7 @@ public class TimesheetExcelExport implements ExcelReport {
 
     private boolean isInclSignOff(Report report) {
         String key = TimesheetExportParameter.INCL_SIGN_OFF.name();
-        Object object = report.getReportCriteria().getUserCriteria().getCustomParameters().get(key);
+        Object object = report.getReportCriteria().getUserSelectedCriteria().getCustomParameters().get(key);
         return (object != null) && (Boolean) object;
     }
 

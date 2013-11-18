@@ -17,8 +17,7 @@
 package net.rrm.ehour.data;
 
 import net.rrm.ehour.domain.AuditType;
-import net.rrm.ehour.report.criteria.UserCriteria;
-
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
@@ -26,7 +25,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author thies
  *
  */
-public class AuditReportRequest extends UserCriteria
+public class AuditReportRequest extends UserSelectedCriteria
 {
 	private static final long serialVersionUID = -8309219696303534810L;
 

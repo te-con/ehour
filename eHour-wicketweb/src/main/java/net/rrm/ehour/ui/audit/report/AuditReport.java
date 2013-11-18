@@ -20,7 +20,7 @@ import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractReportModel;
 import net.rrm.ehour.ui.common.util.WebUtils;
@@ -58,9 +58,9 @@ public class AuditReport extends AbstractReportModel
 	{
 		WebUtils.springInjection(this);
 
-		UserCriteria userCriteria = reportCriteria.getUserCriteria();
+		UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
 		
-		List<Audit> audit = auditService.findAudits((AuditReportRequest) userCriteria);
+		List<Audit> audit = auditService.findAudits((AuditReportRequest) userSelectedCriteria);
 		
 		return new ReportData(convert(audit), reportCriteria.getReportRange());
 	}

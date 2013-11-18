@@ -37,7 +37,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.ArrayList;
 import java.util.List;
 
-@AuthorizeInstantiation(value = {UserRole.ROLE_CONSULTANT, UserRole.ROLE_REPORT})
+@AuthorizeInstantiation(value = {UserRole.ROLE_CONSULTANT, UserRole.ROLE_REPORT, UserRole.ROLE_PROJECTMANAGER})
 public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     private static final long serialVersionUID = 6614404841734599622L;
 
@@ -90,7 +90,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     }
 
     private void resetCriteria(AjaxEvent ajaxEvent) {
-        EhourWebSession.getSession().setUserCriteria(null);
+        EhourWebSession.getSession().setUserSelectedCriteria(null);
 
         reset();
 
@@ -132,5 +132,4 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
             tabPanel.addTab(iTab);
         }
     }
-
 }
