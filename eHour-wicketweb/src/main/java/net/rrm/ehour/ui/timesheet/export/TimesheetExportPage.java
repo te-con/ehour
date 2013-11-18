@@ -96,7 +96,7 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     }
 
     @Override
-    protected final boolean isReportForSingleUser() {
+    protected final boolean isReportForIndividualUser() {
         return true;
     }
 

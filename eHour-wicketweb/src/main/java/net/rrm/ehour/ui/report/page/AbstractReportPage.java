@@ -76,19 +76,32 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
 
     protected void limitUserSelectedCriteriaForRole(UserSelectedCriteria userSelectedCriteria) {
         limitForSingleUser(userSelectedCriteria);
+        limitForPm(userSelectedCriteria);
+    }
+
+    private void limitForPm(UserSelectedCriteria userSelectedCriteria) {
+        boolean forPm = isReportForPm();
+
+        if (forPm) {
+            userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.PM);
+        }
+    }
+
+    private boolean isReportForPm() {
+        return getEhourWebSession().isWithPmRole();
     }
 
     private void limitForSingleUser(UserSelectedCriteria userSelectedCriteria) {
-        boolean singleReportUser = isReportForSingleUser();
+        boolean indivUser = isReportForIndividualUser();
 
-        userSelectedCriteria.setSingleUser(singleReportUser);
+        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
 
-        if (singleReportUser) {
+        if (indivUser) {
             userSelectedCriteria.setUser(getEhourWebSession().getUser());
         }
     }
 
-    protected boolean isReportForSingleUser() {
+    protected boolean isReportForIndividualUser() {
         return !getEhourWebSession().isWithReportRole();
     }
 }

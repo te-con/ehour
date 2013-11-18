@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.report.criteria;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -25,13 +27,22 @@ import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User selected criteria
  */
 
 public class UserSelectedCriteria implements Serializable {
+    public enum ReportType {
+        INDIVIDUAL_USER,
+        PM,
+        REPORT
+    }
+
     private static final long serialVersionUID = 375613059093184619L;
     private DateRange reportRange;
     private boolean onlyActiveProjects = true;
@@ -47,9 +58,9 @@ public class UserSelectedCriteria implements Serializable {
     private List<UserDepartment> userDepartments;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
-    private boolean singleUser;
+    private List<ReportType> reportTypes = Lists.newArrayList();
     private Project project;
-    private Map<Object, Object> customParameters;
+    private Map<Object, Object> customParameters = Maps.newHashMap();
 
     public UserSelectedCriteria() {
         onlyActiveProjects = true;
@@ -60,10 +71,7 @@ public class UserSelectedCriteria implements Serializable {
         infiniteEndDate = false;
 
         reportRange = DateUtil.getDateRangeForMonth(new GregorianCalendar());
-
-        setCustomParameters(new HashMap<Object, Object>());
     }
-
 
     public void setUser(User user) {
         if (users == null) {
@@ -72,6 +80,28 @@ public class UserSelectedCriteria implements Serializable {
 
         users.add(user);
     }
+
+    public List<ReportType> getReportTypes() {
+        return reportTypes;
+    }
+
+    public void addReportType(ReportType reportType) {
+        reportTypes.add(reportType);
+    }
+
+    public boolean isForIndividualUser() {
+        return reportTypes.contains(ReportType.INDIVIDUAL_USER);
+    }
+
+    public boolean isForPm() {
+        return reportTypes.contains(ReportType.PM);
+    }
+
+    public boolean isForGlobalReport() {
+        return reportTypes.contains(ReportType.REPORT);
+    }
+
+
 
     @Override
     public String toString() {
@@ -165,20 +195,6 @@ public class UserSelectedCriteria implements Serializable {
         this.reportRange = reportRange;
 
         return this;
-    }
-
-    /**
-     * @return the singleUser
-     */
-    public boolean isSingleUser() {
-        return singleUser;
-    }
-
-    /**
-     * @param singleUser the singleUser to set
-     */
-    public void setSingleUser(boolean singleUser) {
-        this.singleUser = singleUser;
     }
 
     /**

@@ -67,9 +67,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
         AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
 
-        if (userSelectedCriteria.isSingleUser()) {
-            syncCriteriaForSingleUser(reportCriteria);
-        } else {
+        if (userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm()) {
             if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
                 availCriteria.setCustomers(getAvailableCustomers(userSelectedCriteria));
@@ -90,6 +88,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
                 availCriteria.setUsers(getAvailableUsers(userSelectedCriteria));
             }
+        } else {
+            syncCriteriaForIndividualUser(reportCriteria);
         }
 
         return reportCriteria;
@@ -212,13 +212,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
      *
      * @param reportCriteria
      */
-    private void syncCriteriaForSingleUser(ReportCriteria reportCriteria) {
+    private void syncCriteriaForIndividualUser(ReportCriteria reportCriteria) {
         Set<Customer> customers = new HashSet<Customer>();
         Set<Project> projects = new HashSet<Project>();
         AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
-        User user;
 
-        user = reportCriteria.getUserSelectedCriteria().getUsers().get(0);
+        User user = reportCriteria.getUserSelectedCriteria().getUsers().get(0);
 
         List<ProjectAssignment> assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId(), reportCriteria.getUserSelectedCriteria().getReportRange());
 

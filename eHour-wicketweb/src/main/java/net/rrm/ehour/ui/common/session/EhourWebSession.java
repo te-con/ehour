@@ -224,7 +224,15 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     public boolean isWithReportRole() {
-        return getRoles().hasRole(UserRole.ROLE_REPORT);
+        return hasRole(UserRole.ROLE_REPORT);
+    }
+
+    public boolean isWithPmRole() {
+        return hasRole(UserRole.ROLE_PROJECTMANAGER);
+    }
+
+    private boolean hasRole(String role) {
+        return getRoles().hasRole(role);
     }
 
     /**
