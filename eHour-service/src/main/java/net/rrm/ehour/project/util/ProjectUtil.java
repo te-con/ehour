@@ -16,52 +16,72 @@
 
 package net.rrm.ehour.project.util;
 
-import java.util.*;
-
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import org.apache.commons.lang.builder.CompareToBuilder;
+
+import java.util.*;
 
 /**
  * @author Thies on Aug 24, 2009 10:40:38 PM
- *
  */
-public class ProjectUtil
-{
-	private ProjectUtil()
-	{
-	}
-	
-	public static List<Project> getBillableProjects(Collection<Project> projects)
-	{
-		return getProjectsOnBillability(projects, true);
-	}
+public class ProjectUtil {
+    private ProjectUtil() {
+    }
 
-	public static List<Project> getUnbillableProjects(Collection<Project> projects)
-	{
-		return getProjectsOnBillability(projects, false);
-	}
+    public static List<Project> filterBillable(Collection<Project> projects) {
+        return filterBillability(projects, true);
+    }
 
-	private static List<Project> getProjectsOnBillability(Collection<Project> projects, boolean billable)
-	{
-		List<Project> sortedProjects = new ArrayList<Project>();
-		
-		for (Project project : projects)
-		{
-			if (project.isBillable() == billable)
-			{
-				sortedProjects.add(project);
-			}
-		}
-		
-		Collections.sort(sortedProjects, new Comparator<Project>() {
+    public static List<Project> filterUnbillable(Collection<Project> projects) {
+        return filterBillability(projects, false);
+    }
+
+    private static List<Project> filterBillability(Collection<Project> projects, boolean billable) {
+        List<Project> sortedProjects = new ArrayList<Project>();
+
+        for (Project project : projects) {
+            if (project.isBillable() == billable) {
+                sortedProjects.add(project);
+            }
+        }
+
+        Collections.sort(sortedProjects, new Comparator<Project>() {
             @Override
             public int compare(Project o1, Project o2) {
                 return new CompareToBuilder()
                         .append(o1.getCustomer(), o2.getCustomer())
                         .append(o1.getName(), o2.getName())
                         .append(o1.getProjectCode(), o2.getProjectCode())
-                        .append(o1.getProjectId(), o2.getProjectId()).toComparison();            }
+                        .append(o1.getProjectId(), o2.getProjectId()).toComparison();
+            }
         });
-		return sortedProjects;
-	}
+        return sortedProjects;
+    }
+
+    public static List<Project> filterProjectsOnPm(User requiredPm, Collection<Project> projects) {
+        List<Project> pmProjects = Lists.newArrayList();
+
+        for (Project project : projects) {
+            if (requiredPm.equals(project.getProjectManager())) {
+                pmProjects.add(project);
+            }
+        }
+
+        return pmProjects;
+    }
+
+    public static List<Project> filterActiveProjects(Collection<Project> projects) {
+        List<Project> activeProjects = Lists.newArrayList();
+
+        for (Project project : projects) {
+            if (project.isActive()) {
+                activeProjects.add(project);
+            }
+        }
+
+        return activeProjects;
+
+    }
 }

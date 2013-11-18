@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.report.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -117,15 +118,36 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
      * @return
      */
     private List<Customer> getAvailableCustomers(UserSelectedCriteria userSelectedCriteria) {
-        List<Customer> customers;
+        List<Customer> customers = fetchCustomers(userSelectedCriteria);
 
-        customers = fetchCustomers(userSelectedCriteria);
+        List<Customer> billableCustomers = filterBillableCustomers(userSelectedCriteria, customers);
 
-        List<Customer> billableCustomers = checkForOnlyBillableCustomers(userSelectedCriteria, customers);
+        if (userSelectedCriteria.isForPm()) {
+            List<Customer> pmCustomer = Lists.newArrayList();
 
-        Collections.sort(billableCustomers);
+            for (Customer billableCustomer : billableCustomers) {
+                List<Project> pmProjects = ProjectUtil.filterProjectsOnPm(userSelectedCriteria.getPm(), billableCustomer.getProjects());
+
+                if (!pmProjects.isEmpty()) {
+                    pmCustomer.add(billableCustomer);
+                }
+            }
+
+            return pmCustomer;
+        }
 
         return billableCustomers;
+    }
+
+    private List<Customer> filterBillableCustomers(UserSelectedCriteria userSelectedCriteria, List<Customer> customers) {
+        if (userSelectedCriteria.isOnlyBillableProjects()) {
+            List<Customer> billableCustomers = checkForOnlyBillableCustomers(userSelectedCriteria, customers);
+            Collections.sort(billableCustomers);
+            return billableCustomers;
+        } else {
+            Collections.sort(customers);
+            return customers;
+        }
     }
 
     private List<Customer> checkForOnlyBillableCustomers(UserSelectedCriteria userSelectedCriteria, List<Customer> customers) {
@@ -133,22 +155,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
         LOGGER.debug("Finding on billable only: " + userSelectedCriteria.isOnlyBillableProjects());
 
-        if (userSelectedCriteria.isOnlyBillableProjects()) {
-            for (Customer customer : customers) {
-                List<Project> billableProjects;
+        for (Customer customer : customers) {
+            List<Project> billableProjects;
 
-                if (userSelectedCriteria.isOnlyActiveProjects()) {
-                    billableProjects = ProjectUtil.getBillableProjects(customer.getActiveProjects());
-                } else {
-                    billableProjects = ProjectUtil.getBillableProjects(customer.getProjects());
-                }
-
-                if (!CollectionUtils.isEmpty(billableProjects)) {
-                    billableCustomers.add(customer);
-                }
+            if (userSelectedCriteria.isOnlyActiveProjects()) {
+                billableProjects = ProjectUtil.filterBillable(customer.getActiveProjects());
+            } else {
+                billableProjects = ProjectUtil.filterBillable(customer.getProjects());
             }
-        } else {
-            return customers;
+
+            if (!CollectionUtils.isEmpty(billableProjects)) {
+                billableCustomers.add(customer);
+            }
         }
 
         return billableCustomers;
@@ -187,7 +205,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     private List<Project> checkForOnlyBillableProjects(UserSelectedCriteria userSelectedCriteria, List<Project> projects) {
         if (userSelectedCriteria.isOnlyBillableProjects()) {
-            projects = ProjectUtil.getBillableProjects(projects);
+            projects = ProjectUtil.filterBillable(projects);
         }
         return projects;
     }

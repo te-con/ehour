@@ -61,6 +61,7 @@ public class UserSelectedCriteria implements Serializable {
     private List<ReportType> reportTypes = Lists.newArrayList();
     private Project project;
     private Map<Object, Object> customParameters = Maps.newHashMap();
+    private User pm;
 
     public UserSelectedCriteria() {
         onlyActiveProjects = true;
@@ -79,6 +80,14 @@ public class UserSelectedCriteria implements Serializable {
         }
 
         users.add(user);
+    }
+
+    public User getPm() {
+        return pm;
+    }
+
+    public void setPm(User pm) {
+        this.pm = pm;
     }
 
     public List<ReportType> getReportTypes() {

@@ -175,4 +175,39 @@ public class ReportCriteriaServiceImplTest {
         verify(userDAO);
     }
 
+    @Test
+    public void should_sync_userreportcriteria_for_pm() {
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setOnlyActiveUsers(false);
+        userSelectedCriteria.setOnlyActiveCustomers(true);
+        userSelectedCriteria.setOnlyActiveProjects(false);
+        userSelectedCriteria.setOnlyBillableProjects(true);
+        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
+
+        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
+
+        expect(userDAO.findUsers(false)).andReturn(new ArrayList<User>());
+        replay(userDAO);
+
+        expect(customerDAO.findAllActive()).andReturn(new ArrayList<Customer>());
+        replay(customerDAO);
+
+        expect(projectDAO.findAll()).andReturn(new ArrayList<Project>());
+        replay(projectDAO);
+
+        expect(userDepartmentDAO.findAll()).andReturn(new ArrayList<UserDepartment>());
+        replay(userDepartmentDAO);
+
+        reportAggregatedDAO.getMinMaxDateTimesheetEntry();
+        expectLastCall().andReturn(null);
+        replay(reportAggregatedDAO);
+
+        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
+
+        verify(reportAggregatedDAO);
+        verify(projectDAO);
+        verify(customerDAO);
+        verify(userDAO);
+    }
+
 }
