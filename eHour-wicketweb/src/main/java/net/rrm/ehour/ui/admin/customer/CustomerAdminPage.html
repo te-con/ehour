@@ -12,9 +12,24 @@
     		</div>    	
    			
    	    	<wicket:fragment wicket:id="itemListHolder">
-   	    		<span wicket:id="itemList">
-   					<a wicket:id="itemLink"><span wicket:id="linkLabel"></span></a><br>
-   				</span>
+                <table class="entrySelectorTable">
+
+                    <thead>
+                    <tr>
+                        <th><wicket:message key="admin.customer.code" /></th>
+                        <th><wicket:message key="admin.customer.name" /></th>
+                        <th><wicket:message key="admin.customer.projects" /></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr wicket:id="itemList" class="filterRow">
+                        <td wicket:id="code"></td>
+                        <td wicket:id="name"></td>
+                        <td class="numeric" wicket:id="projects"></td>
+                    </tr>
+                    </tbody>
+                </table>
    			</wicket:fragment>
     	</wicket:extend>
     </body>

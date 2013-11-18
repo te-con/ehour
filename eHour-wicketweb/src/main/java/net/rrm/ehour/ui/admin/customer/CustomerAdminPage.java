@@ -21,14 +21,16 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.sort.CustomerComparator;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -149,21 +151,24 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
                 Customer customer = item.getModelObject();
                 final Integer customerId = customer.getCustomerId();
 
-                AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
+                if (!customer.isActive()) {
+                    item.add(AttributeModifier.append("class", "inactive"));
+                }
+
+                item.add(new Label("name", customer.getName()));
+                item.add(new Label("code", customer.getCode()));
+                item.add(new Label("projects", customer.getProjects() == null ? 0 : customer.getProjects().size()));
+
+                item.add(new AjaxEventBehavior("onclick") {
                     @Override
-                    public void onClick(AjaxRequestTarget target) {
+                    protected void onEvent(AjaxRequestTarget target) {
                         try {
                             getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
-                            getTabbedPanel().switchTabOnAjaxTarget(target, 1);
+                            getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
                         } catch (ObjectNotFoundException e) {
-
                         }
                     }
-                };
-
-                item.add(link);
-
-                link.add(new Label("linkLabel", customer.getCode() + " - " + customer.getName() + (customer.isActive() ? "" : "*")));
+                });
             }
         };
 
