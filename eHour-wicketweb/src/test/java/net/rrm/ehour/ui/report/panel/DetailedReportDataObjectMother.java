@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.report.panel;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 
@@ -146,9 +146,9 @@ public class DetailedReportDataObjectMother
 
 	public static ReportCriteria getReportCriteria()
 	{
-		UserCriteria userCriteria = new UserCriteria();
-		userCriteria.setReportRange(new DateRange(new Date(), new Date()));
+		UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+		userSelectedCriteria.setReportRange(new DateRange(new Date(), new Date()));
 
-        return new ReportCriteria(userCriteria);
+        return new ReportCriteria(userSelectedCriteria);
 	}
 }

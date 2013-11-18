@@ -24,7 +24,7 @@ import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
@@ -70,7 +70,7 @@ public class AggregateReportServiceTest {
     @Test
     public void testCreateProjectReportUserId() {
         DateRange dr = new DateRange();
-        UserCriteria uc = new UserCriteria();
+        UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         List<User> l = new ArrayList<User>();
         l.add(new User(1));
@@ -92,7 +92,7 @@ public class AggregateReportServiceTest {
     @Test
     public void testCreateProjectReportNoUserId() {
         DateRange dr = new DateRange();
-        UserCriteria uc = new UserCriteria();
+        UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         ReportCriteria rc = new ReportCriteria(uc);
         List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
@@ -114,7 +114,7 @@ public class AggregateReportServiceTest {
         users.add(user);
 
         DateRange dr = new DateRange();
-        UserCriteria uc = new UserCriteria();
+        UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         List<UserDepartment> l = new ArrayList<UserDepartment>();
         l.add(new UserDepartment(2));
@@ -151,7 +151,7 @@ public class AggregateReportServiceTest {
         prjs.add(prj);
 
         DateRange dr = new DateRange();
-        UserCriteria uc = new UserCriteria();
+        UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         uc.setCustomers(customers);
         ReportCriteria rc = new ReportCriteria(uc);

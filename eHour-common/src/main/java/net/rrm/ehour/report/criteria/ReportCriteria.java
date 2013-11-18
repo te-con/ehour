@@ -31,30 +31,30 @@ public class ReportCriteria implements Serializable
 {
     private static final long serialVersionUID = 7406265452950554098L;
     private AvailableCriteria availableCriteria;
-    private UserCriteria userCriteria;
+    private UserSelectedCriteria userSelectedCriteria;
 
     /**
      * Default constructor
      */
     public ReportCriteria()
     {
-        this(new AvailableCriteria(), new UserCriteria());
+        this(new AvailableCriteria(), new UserSelectedCriteria());
     }
 
     public ReportCriteria(AvailableCriteria availableCriteria)
     {
-        this(availableCriteria, new UserCriteria());
+        this(availableCriteria, new UserSelectedCriteria());
     }
 
-    public ReportCriteria(UserCriteria userCriteria)
+    public ReportCriteria(UserSelectedCriteria userSelectedCriteria)
     {
-        this(new AvailableCriteria(), userCriteria);
+        this(new AvailableCriteria(), userSelectedCriteria);
     }
 
-    public ReportCriteria(AvailableCriteria availableCriteria, UserCriteria userCriteria)
+    public ReportCriteria(AvailableCriteria availableCriteria, UserSelectedCriteria userSelectedCriteria)
     {
         this.availableCriteria = availableCriteria;
-        this.userCriteria = userCriteria;
+        this.userSelectedCriteria = userSelectedCriteria;
     }
 
     /**
@@ -67,9 +67,9 @@ public class ReportCriteria implements Serializable
     {
         DateRange reportRange;
 
-        reportRange = userCriteria.getReportRange();
+        reportRange = userSelectedCriteria.getReportRange();
 
-        if (reportRange.getDateStart() == null || userCriteria.isInfiniteStartDate())
+        if (reportRange.getDateStart() == null || userSelectedCriteria.isInfiniteStartDate())
         {
             if (availableCriteria == null || availableCriteria.getReportRange() == null)
             {
@@ -80,7 +80,7 @@ public class ReportCriteria implements Serializable
             }
         }
 
-        if (reportRange.getDateEnd() == null || userCriteria.isInfiniteEndDate())
+        if (reportRange.getDateEnd() == null || userSelectedCriteria.isInfiniteEndDate())
         {
             if (availableCriteria == null || availableCriteria.getReportRange() == null)
             {
@@ -92,7 +92,7 @@ public class ReportCriteria implements Serializable
         }
 
 
-        userCriteria.setReportRange(reportRange);
+        userSelectedCriteria.setReportRange(reportRange);
 
         // if no timesheets were specified, use the current month as the range
         if (reportRange.isEmpty())
@@ -104,11 +104,11 @@ public class ReportCriteria implements Serializable
     }
 
     /**
-     * @return the userCriteria
+     * @return the userSelectedCriteria
      */
-    public UserCriteria getUserCriteria()
+    public UserSelectedCriteria getUserSelectedCriteria()
     {
-        return userCriteria;
+        return userSelectedCriteria;
     }
 
     /**

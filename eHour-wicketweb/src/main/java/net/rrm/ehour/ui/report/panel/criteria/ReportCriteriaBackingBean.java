@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.report.panel.criteria;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonth;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickPeriod;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickQuarter;
@@ -71,17 +71,17 @@ public class ReportCriteriaBackingBean implements Serializable
 	 */
 	private void setReportRangeForQuickie(QuickPeriod period)
 	{
-		UserCriteria userCriteria = reportCriteria.getUserCriteria(); 
+		UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
 		
-		if (userCriteria.getReportRange() == null)
+		if (userSelectedCriteria.getReportRange() == null)
 		{
-			userCriteria.setReportRange(new DateRange());
+			userSelectedCriteria.setReportRange(new DateRange());
 		}
 		
 		if (period != null)
 		{
-			userCriteria.getReportRange().setDateStart(period.getPeriodStart());
-			userCriteria.getReportRange().setDateEnd(period.getPeriodEnd());
+			userSelectedCriteria.getReportRange().setDateStart(period.getPeriodStart());
+			userSelectedCriteria.getReportRange().setDateEnd(period.getPeriodEnd());
 		}
 	}
 

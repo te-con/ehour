@@ -121,7 +121,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
     private AuditReportRequest getReportRequest(IModel<ReportCriteria> model) {
         ReportCriteria criteria = model.getObject();
 
-        return (AuditReportRequest) criteria.getUserCriteria();
+        return (AuditReportRequest) criteria.getUserSelectedCriteria();
     }
 
     @Override

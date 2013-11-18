@@ -16,7 +16,7 @@ class ReportCriteriaTest extends FunSuite {
   val nowRange = DateUtil.calendarToMonthRange(new GregorianCalendar())
 
   test("should use user criteria report range when it's within the bounds of the available criteria") {
-    val userCriteria = new UserCriteria
+    val userCriteria = new UserSelectedCriteria
     userCriteria.setReportRange(new DateRange)
 
     val criteria = new ReportCriteria(availCriteria, userCriteria)
@@ -30,7 +30,7 @@ class ReportCriteriaTest extends FunSuite {
     val range = new DateRange()
     range.setDateStart(cal.getTime)
 
-    val userCriteria = new UserCriteria
+    val userCriteria = new UserSelectedCriteria
     userCriteria.setReportRange(range)
 
     val criteria = new ReportCriteria(availCriteria, userCriteria)
@@ -55,7 +55,7 @@ class ReportCriteriaTest extends FunSuite {
     val userRange = new DateRange()
     userRange.setDateStart(userCal.getTime)
 
-    val userCriteria = new UserCriteria
+    val userCriteria = new UserSelectedCriteria
     userCriteria.setReportRange(userRange)
 
     val criteria = new ReportCriteria(availableCriteria, userCriteria)

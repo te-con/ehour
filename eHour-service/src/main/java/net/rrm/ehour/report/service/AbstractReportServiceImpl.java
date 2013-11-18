@@ -22,7 +22,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,30 +49,30 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 	 */
 	protected ReportData getReportData(ReportCriteria reportCriteria)
 	{
-		UserCriteria	userCriteria;
+		UserSelectedCriteria userSelectedCriteria;
 		List<Project>	projects = null;
 		List<User>		users = null;
 		boolean			ignoreUsers;
 		boolean			ignoreProjects;
 		DateRange		reportRange;
 		
-		userCriteria = reportCriteria.getUserCriteria();
+		userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
 
 		reportRange = reportCriteria.getReportRange();
 		
-		ignoreUsers = userCriteria.isEmptyDepartments() && userCriteria.isEmptyUsers();
-		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
+		ignoreUsers = userSelectedCriteria.isEmptyDepartments() && userSelectedCriteria.isEmptyUsers();
+		ignoreProjects = userSelectedCriteria.isEmptyCustomers() && userSelectedCriteria.isEmptyProjects();
 
         if (!ignoreProjects || !ignoreUsers) {
             if (ignoreProjects)
             {
-                users = getUsers(userCriteria);
+                users = getUsers(userSelectedCriteria);
             }
             else if (ignoreUsers) {
-                projects = getProjects(userCriteria);
+                projects = getProjects(userSelectedCriteria);
             } else {
-                users = getUsers(userCriteria);
-                projects = getProjects(userCriteria);
+                users = getUsers(userSelectedCriteria);
+                projects = getProjects(userSelectedCriteria);
             }
         }
 
@@ -92,20 +92,20 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 	
 	/**
 	 * Get project id's based on selected customers
-	 * @param userCriteria
+	 * @param userSelectedCriteria
 	 * @return
 	 */
-	protected List<Project> getProjects(UserCriteria userCriteria)
+	protected List<Project> getProjects(UserSelectedCriteria userSelectedCriteria)
 	{
 		List<Project>	projects;
 		
 		// No projects selected by the user, use any given customer limitation 
-		if (userCriteria.isEmptyProjects())
+		if (userSelectedCriteria.isEmptyProjects())
 		{
-			if (!userCriteria.isEmptyCustomers())
+			if (!userSelectedCriteria.isEmptyCustomers())
 			{
-				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomers(),
-																userCriteria.isOnlyActiveProjects());
+				projects = projectDAO.findProjectForCustomers(userSelectedCriteria.getCustomers(),
+																userSelectedCriteria.isOnlyActiveProjects());
 			}
 			else
 			{
@@ -114,7 +114,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 		}
 		else
 		{
-			projects = userCriteria.getProjects();
+			projects = userSelectedCriteria.getProjects();
 		}
 		
 		return projects;
@@ -122,20 +122,20 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 	
 	/**
 	 * Get users based on selected departments
-	 * @param userCriteria
+	 * @param userSelectedCriteria
 	 * @return
 	 */
-	protected List<User> getUsers(UserCriteria userCriteria)
+	protected List<User> getUsers(UserSelectedCriteria userSelectedCriteria)
 	{
 		List<User>		users;
 		
-		if (userCriteria.isEmptyUsers())
+		if (userSelectedCriteria.isEmptyUsers())
 		{
-			if (!userCriteria.isEmptyDepartments())
+			if (!userSelectedCriteria.isEmptyDepartments())
 			{
 				users = userDAO.findUsersForDepartments(null,
-														userCriteria.getDepartments(),
-														userCriteria.isOnlyActiveUsers());
+														userSelectedCriteria.getDepartments(),
+														userSelectedCriteria.isOnlyActiveUsers());
 			}
 			else
 			{
@@ -144,7 +144,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement>
 		}
 		else
 		{
-			users = userCriteria.getUsers();
+			users = userSelectedCriteria.getUsers();
 		}
 		
 		return users;

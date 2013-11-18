@@ -19,13 +19,13 @@
                 <div style="float:left;margin-bottom: 5px">
 
                     <input style="width: 5em; clear: all" type="text"
-                           wicket:id="reportCriteria.userCriteria.reportRange.dateStart"/>
+                           wicket:id="reportCriteria.userSelectedCriteria.reportRange.dateStart"/>
                     &nbsp;&nbsp;
                     <wicket:message key="report.criteria.until"/>
                     :
                     &nbsp;&nbsp;
                     <input style="width: 5em; clear: all" type="text"
-                           wicket:id="reportCriteria.userCriteria.reportRange.dateEnd"/>
+                           wicket:id="reportCriteria.userSelectedCriteria.reportRange.dateEnd"/>
 
                 </div>
                 <br clear="both"/>
@@ -50,40 +50,40 @@
                     <b>
                         <wicket:message key="filter.customer"/>
                     </b><br/>
-                    <select wicket:id="reportCriteria.userCriteria.customers" class="textInputSmall" style="width: 90%"></select>
+                    <select wicket:id="reportCriteria.userSelectedCriteria.customers" class="textInputSmall" style="width: 90%"></select>
                     <br/>
 
                     <label>
                         <div style="width: 40%;float:left">
-                            <label wicket:for="reportCriteria.userCriteria.onlyActiveCustomers"><wicket:message key="report.onlyActiveCustomers"/></label>
+                            <label wicket:for="reportCriteria.userSelectedCriteria.onlyActiveCustomers"><wicket:message key="report.onlyActiveCustomers"/></label>
                         </div>
-                        &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveCustomers" type="checkbox"/></label>
+                        &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userSelectedCriteria.onlyActiveCustomers" type="checkbox"/></label>
                     <br/>
                     <label>
                         <div style="width: 40%;float:left">
-                            <label wicket:for="reportCriteria.userCriteria.onlyBillableCustomers"><wicket:message key="report.onlyBillableCustomers"/></label>
+                            <label wicket:for="reportCriteria.userSelectedCriteria.onlyBillableCustomers"><wicket:message key="report.onlyBillableCustomers"/></label>
                         </div>
-                        &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyBillableCustomers" type="checkbox"/></label>
+                        &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userSelectedCriteria.onlyBillableCustomers" type="checkbox"/></label>
                 </div>
 
                 <div style="padding-right: 10px;width: 48%;float:right">
                     <b>
                         <wicket:message key="filter.project"/>
                     </b><br/>
-                    <select wicket:id="reportCriteria.userCriteria.projects" class="textInputSmall" style="width: 90%"></select>
+                    <select wicket:id="reportCriteria.userSelectedCriteria.projects" class="textInputSmall" style="width: 90%"></select>
                     <br/>
 
                     <label>
                         <div style="width: 40%;float:left">
-                            <label wicket:for="reportCriteria.userCriteria.onlyActiveProjects"><wicket:message key="report.onlyActiveProjects"/></label>
+                            <label wicket:for="reportCriteria.userSelectedCriteria.onlyActiveProjects"><wicket:message key="report.onlyActiveProjects"/></label>
                         </div>
-                        &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyActiveProjects" type="checkbox"/></label>
+                        &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userSelectedCriteria.onlyActiveProjects" type="checkbox"/></label>
                     <br/>
                     <label>
                         <div style="width: 40%;float:left">
-                            <label wicket:for="reportCriteria.userCriteria.onlyBillableProjects"><wicket:message key="report.onlyBillableProjects"/></label>
+                            <label wicket:for="reportCriteria.userSelectedCriteria.onlyBillableProjects"><wicket:message key="report.onlyBillableProjects"/></label>
                         </div>
-                        &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userCriteria.onlyBillableProjects" type="checkbox"/></label>
+                        &nbsp;&nbsp;&nbsp;<input wicket:id="reportCriteria.userSelectedCriteria.onlyBillableProjects" type="checkbox"/></label>
                 </div>
 
                 <br clear="all"/>
@@ -112,7 +112,7 @@
                 <b>
                     <wicket:message key="filter.department"/>
                 </b><br/>
-                <select wicket:id="reportCriteria.userCriteria.userDepartments"
+                <select wicket:id="reportCriteria.userSelectedCriteria.userDepartments"
                         class="textInputSmall"
                         style="width: 90%"></select>
                 <br/>
@@ -122,12 +122,12 @@
                 <b>
                     <wicket:message key="filter.user"/>
                 </b><br/>
-                <select wicket:id="reportCriteria.userCriteria.users" class="textInputSmall"
+                <select wicket:id="reportCriteria.userSelectedCriteria.users" class="textInputSmall"
                         style="width: 90%"></select>
                 <br/>
 
-                <label wicket:for="reportCriteria.userCriteria.onlyActiveUsers"><span wicket:id="onlyActiveUsersLabel"></span></label>&nbsp;&nbsp;&nbsp;<input
-                    wicket:id="reportCriteria.userCriteria.onlyActiveUsers" type="checkbox"/>
+                <label wicket:for="reportCriteria.userSelectedCriteria.onlyActiveUsers"><span wicket:id="onlyActiveUsersLabel"></span></label>&nbsp;&nbsp;&nbsp;<input
+                    wicket:id="reportCriteria.userSelectedCriteria.onlyActiveUsers" type="checkbox"/>
             </div>
 
             <br clear="all"/>

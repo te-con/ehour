@@ -26,7 +26,7 @@ import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,7 +79,7 @@ public class ReportCriteriaServiceTest
 	public void testSyncUserReportCriteriaUserSingle()
 	{
 		ReportCriteria		reportCriteria;
-		UserCriteria		userCriteria;
+		UserSelectedCriteria userSelectedCriteria;
 		
 		List<ProjectAssignment>	prjAsgs = new ArrayList<ProjectAssignment>();
 		
@@ -91,12 +91,12 @@ public class ReportCriteriaServiceTest
 //		ReportCriteriaService rsMock = createMock(ReportCriteriaService.class);
 //		reportCriteria.setReportCriteriaService(rsMock);
 		
-		userCriteria = new UserCriteria();
-		userCriteria.setSingleUser(true);
+		userSelectedCriteria = new UserSelectedCriteria();
+		userSelectedCriteria.setSingleUser(true);
 		List<User> ids = new ArrayList<User>();
 		ids.add(new User(1));
-		userCriteria.setUsers(ids);
-		reportCriteria = new ReportCriteria(userCriteria);		
+		userSelectedCriteria.setUsers(ids);
+		reportCriteria = new ReportCriteria(userSelectedCriteria);
 		prjAssignmentDAO.findProjectAssignmentsForUser(isA(Integer.class), isA(DateRange.class));
 		expectLastCall().andReturn(prjAsgs);
 
@@ -118,13 +118,13 @@ public class ReportCriteriaServiceTest
 	public void testSyncUserReportCriteriaUserAll()
 	{
 		ReportCriteria		reportCriteria;
-		UserCriteria		userCriteria;
+		UserSelectedCriteria userSelectedCriteria;
 		
-		userCriteria = new UserCriteria();
-		userCriteria.setOnlyActiveUsers(false);
-		userCriteria.setOnlyActiveCustomers(true);
-		userCriteria.setOnlyActiveProjects(false);
-		reportCriteria = new ReportCriteria(userCriteria);
+		userSelectedCriteria = new UserSelectedCriteria();
+		userSelectedCriteria.setOnlyActiveUsers(false);
+		userSelectedCriteria.setOnlyActiveCustomers(true);
+		userSelectedCriteria.setOnlyActiveProjects(false);
+		reportCriteria = new ReportCriteria(userSelectedCriteria);
 		
 		expect(userDAO.findUsers(false) ).andReturn(new ArrayList<User>());
 		replay(userDAO);
@@ -154,14 +154,14 @@ public class ReportCriteriaServiceTest
 	public void shouldSyncUserReportCriteriaUserAllBillable()
 	{
 		ReportCriteria		reportCriteria;
-		UserCriteria		userCriteria;
+		UserSelectedCriteria userSelectedCriteria;
 
-		userCriteria = new UserCriteria();
-		userCriteria.setOnlyActiveUsers(false);
-		userCriteria.setOnlyActiveCustomers(true);
-		userCriteria.setOnlyActiveProjects(false);
-		userCriteria.setOnlyBillableProjects(true);
-		reportCriteria = new ReportCriteria(userCriteria);
+		userSelectedCriteria = new UserSelectedCriteria();
+		userSelectedCriteria.setOnlyActiveUsers(false);
+		userSelectedCriteria.setOnlyActiveCustomers(true);
+		userSelectedCriteria.setOnlyActiveProjects(false);
+		userSelectedCriteria.setOnlyBillableProjects(true);
+		reportCriteria = new ReportCriteria(userSelectedCriteria);
 		
 		expect(userDAO.findUsers(false) ).andReturn(new ArrayList<User>());
 		replay(userDAO);

@@ -86,10 +86,10 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     private CompoundPropertyModel<ReportCriteria> createModelForMonth(Calendar forMonth) {
         ReportCriteria reportCriteria = getReportCriteria();
 
-        reportCriteria.getUserCriteria().setReportRange(DateUtil.getDateRangeForMonth(forMonth));
+        reportCriteria.getUserSelectedCriteria().setReportRange(DateUtil.getDateRangeForMonth(forMonth));
 
-        if (reportCriteria.getUserCriteria().getProjects() == null) {
-            reportCriteria.getUserCriteria().setProjects(new ArrayList<Project>());
+        if (reportCriteria.getUserSelectedCriteria().getProjects() == null) {
+            reportCriteria.getUserSelectedCriteria().setProjects(new ArrayList<Project>());
         }
 
         return new CompoundPropertyModel<ReportCriteria>(reportCriteria);

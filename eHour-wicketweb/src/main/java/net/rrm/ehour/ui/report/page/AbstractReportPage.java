@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report.page;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -30,63 +30,65 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Base page for report criteria
- **/
+ */
 
-public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
-{
-	@SpringBean
-	private ReportCriteriaService	reportCriteriaService;
+public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
+    @SpringBean
+    private ReportCriteriaService reportCriteriaService;
 
-	protected static final Logger logger = Logger.getLogger(AbstractReportPage.class);
+    protected static final Logger logger = Logger.getLogger(AbstractReportPage.class);
 
-	public AbstractReportPage(ResourceModel pageTitle)
-	{
-		super(pageTitle, null);
-	}
+    public AbstractReportPage(ResourceModel pageTitle) {
+        super(pageTitle, null);
+    }
 
-	protected final ReportCriteria getReportCriteria()
-	{
-		UserCriteria userCriteria = EhourWebSession.getSession().getUserCriteria();
-		
-		if (userCriteria == null)
-		{
-			userCriteria = initUserCriteria();
-		}
+    protected final ReportCriteria getReportCriteria() {
+        UserSelectedCriteria userSelectedCriteria = getUserSelectedCriteria();
 
-        setSingleUserCriteria(userCriteria);
+        limitUserSelectedCriteriaForRole(userSelectedCriteria);
 
         AvailableCriteria availableCriteria = new AvailableCriteria();
 
-		ReportCriteria criteria = new ReportCriteria(availableCriteria, userCriteria);
-		
-		return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);
-	}
+        ReportCriteria criteria = new ReportCriteria(availableCriteria, userSelectedCriteria);
 
-    /**
-	 * Initialize user criteria 
-	 */
-	private UserCriteria initUserCriteria()
-	{
-        UserCriteria userCriteria = new UserCriteria();
+        return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);
+    }
 
-		userCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getSession().getEhourConfig())));
-        EhourWebSession.getSession().setUserCriteria(userCriteria);
+    private UserSelectedCriteria getUserSelectedCriteria() {
+        UserSelectedCriteria userSelectedCriteria = EhourWebSession.getSession().getUserSelectedCriteria();
 
-		return userCriteria;
-	}
+        if (userSelectedCriteria == null) {
+            userSelectedCriteria = initUserCriteria();
+        }
 
-	private void setSingleUserCriteria(UserCriteria userCriteria)
-	{
+        return userSelectedCriteria;
+    }
+
+    private UserSelectedCriteria initUserCriteria() {
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+
+        EhourWebSession session = getEhourWebSession();
+        userSelectedCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(session.getEhourConfig())));
+        session.setUserSelectedCriteria(userSelectedCriteria);
+
+        return userSelectedCriteria;
+    }
+
+    protected void limitUserSelectedCriteriaForRole(UserSelectedCriteria userSelectedCriteria) {
+        limitForSingleUser(userSelectedCriteria);
+    }
+
+    private void limitForSingleUser(UserSelectedCriteria userSelectedCriteria) {
         boolean singleReportUser = isReportForSingleUser();
 
-		userCriteria.setSingleUser(singleReportUser);
-		
-		if (singleReportUser) {
-			userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
-		}
-	}
+        userSelectedCriteria.setSingleUser(singleReportUser);
+
+        if (singleReportUser) {
+            userSelectedCriteria.setUser(getEhourWebSession().getUser().getUser());
+        }
+    }
 
     protected boolean isReportForSingleUser() {
-        return !EhourWebSession.getSession().isWithReportRole();
+        return !getEhourWebSession().isWithReportRole();
     }
 }

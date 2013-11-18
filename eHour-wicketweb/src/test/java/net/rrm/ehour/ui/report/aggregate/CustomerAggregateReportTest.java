@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.report.aggregate;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
@@ -52,9 +52,9 @@ public class CustomerAggregateReportTest extends BaseSpringWebAppTester
 		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
 			.andReturn(AggregateReportDataObjectMother.getAssignmentReportData());
 		replay(aggregateReportService);
-        UserCriteria userCriteria = new UserCriteria();
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
 
-        ReportCriteria rc = new ReportCriteria(userCriteria);
+        ReportCriteria rc = new ReportCriteria(userSelectedCriteria);
         
         CustomerAggregateReportModel aggReport = new CustomerAggregateReportModel(rc);
 

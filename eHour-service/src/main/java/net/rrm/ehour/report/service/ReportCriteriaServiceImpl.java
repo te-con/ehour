@@ -16,12 +16,6 @@
 
 package net.rrm.ehour.report.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -37,12 +31,13 @@ import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
-import net.rrm.ehour.report.criteria.UserCriteria;
-
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 /**
  * Report Criteria services
@@ -72,10 +67,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	
 	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdateType updateType)
 	{
-		UserCriteria		userCriteria = reportCriteria.getUserCriteria();
+		UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
 		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
 		
-		if (userCriteria.isSingleUser())
+		if (userSelectedCriteria.isSingleUser())
 		{
 			syncCriteriaForSingleUser(reportCriteria);
 		}
@@ -84,13 +79,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 			if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS ||
 				updateType == ReportCriteriaUpdateType.UPDATE_ALL)
 			{
-				availCriteria.setCustomers(getAvailableCustomers(userCriteria));
+				availCriteria.setCustomers(getAvailableCustomers(userSelectedCriteria));
 			}
 
 			if (updateType == ReportCriteriaUpdateType.UPDATE_PROJECTS ||
 				updateType == ReportCriteriaUpdateType.UPDATE_ALL)
 			{
-				availCriteria.setProjects(getAvailableProjects(userCriteria));
+				availCriteria.setProjects(getAvailableProjects(userSelectedCriteria));
 			}
 			
 			if (updateType == ReportCriteriaUpdateType.UPDATE_ALL)
@@ -103,27 +98,27 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 			if (updateType == ReportCriteriaUpdateType.UPDATE_USERS ||
 					updateType == ReportCriteriaUpdateType.UPDATE_ALL)
 			{
-				availCriteria.setUsers(getAvailableUsers(userCriteria));
+				availCriteria.setUsers(getAvailableUsers(userSelectedCriteria));
 			}
 		}	
 		
 		return reportCriteria;
 	}
 
-	private List<User> getAvailableUsers(UserCriteria userCriteria)
+	private List<User> getAvailableUsers(UserSelectedCriteria userSelectedCriteria)
 	{
 		List<User> 	users;
 
-		if (userCriteria.isEmptyDepartments()) 
+		if (userSelectedCriteria.isEmptyDepartments())
 		{
-			users = userDAO.findUsers(userCriteria.isOnlyActiveUsers());
+			users = userDAO.findUsers(userSelectedCriteria.isOnlyActiveUsers());
 		}
 		else
 		{
-			LOGGER.debug("Finding users for departments with filter '" + userCriteria.getUserFilter() + "'");
-			users = userDAO.findUsersForDepartments(userCriteria.getUserFilter()
-														, userCriteria.getDepartments()
-														, userCriteria.isOnlyActiveUsers());
+			LOGGER.debug("Finding users for departments with filter '" + userSelectedCriteria.getUserFilter() + "'");
+			users = userDAO.findUsersForDepartments(userSelectedCriteria.getUserFilter()
+														, userSelectedCriteria.getDepartments()
+														, userSelectedCriteria.isOnlyActiveUsers());
 		}
 		
 		return users;
@@ -131,35 +126,35 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	
 	/**
 	 * Get available customers
-	 * @param userCriteria
+	 * @param userSelectedCriteria
 	 * @return
 	 */
-	private List<Customer> getAvailableCustomers(UserCriteria userCriteria)
+	private List<Customer> getAvailableCustomers(UserSelectedCriteria userSelectedCriteria)
 	{
 		List<Customer> customers;
 		
-		customers = fetchCustomers(userCriteria);
+		customers = fetchCustomers(userSelectedCriteria);
 		
-		List<Customer> billableCustomers = checkForOnlyBillableCustomers(userCriteria, customers);
+		List<Customer> billableCustomers = checkForOnlyBillableCustomers(userSelectedCriteria, customers);
 		
 		Collections.sort(billableCustomers);
 		
 		return billableCustomers;
 	}
 
-	private List<Customer> checkForOnlyBillableCustomers(UserCriteria userCriteria, List<Customer> customers)
+	private List<Customer> checkForOnlyBillableCustomers(UserSelectedCriteria userSelectedCriteria, List<Customer> customers)
 	{
 		List<Customer> billableCustomers = new ArrayList<Customer>();
 		
-		LOGGER.debug("Finding on billable only: " + userCriteria.isOnlyBillableProjects());
+		LOGGER.debug("Finding on billable only: " + userSelectedCriteria.isOnlyBillableProjects());
 		
-		if (userCriteria.isOnlyBillableProjects())
+		if (userSelectedCriteria.isOnlyBillableProjects())
 		{
 			for (Customer customer : customers)
 			{
 				List<Project> billableProjects;
 				
-				if (userCriteria.isOnlyActiveProjects())
+				if (userSelectedCriteria.isOnlyActiveProjects())
 				{
 					 billableProjects = ProjectUtil.getBillableProjects(customer.getActiveProjects());
 				}
@@ -182,10 +177,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		return billableCustomers;
 	}
 
-	private List<Customer> fetchCustomers(UserCriteria userCriteria)
+	private List<Customer> fetchCustomers(UserSelectedCriteria userSelectedCriteria)
 	{
 		List<Customer> customers;
-		if (userCriteria.isOnlyActiveCustomers())
+		if (userSelectedCriteria.isOnlyActiveCustomers())
 		{
 			customers = customerDAO.findAllActive();
 		}
@@ -197,42 +192,42 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 	}
 	
 	/**
-	 * Get available projects depended on the userCriteria
-	 * @param userCriteria
+	 * Get available projects depended on the userSelectedCriteria
+	 * @param userSelectedCriteria
 	 * @return
 	 */
-	private List<Project> getAvailableProjects(UserCriteria userCriteria)
+	private List<Project> getAvailableProjects(UserSelectedCriteria userSelectedCriteria)
 	{
 		List<Project>	projects;
 		
-		if (userCriteria.isEmptyCustomers()) 
+		if (userSelectedCriteria.isEmptyCustomers())
 		{
-			projects = fetchProjects(userCriteria);
+			projects = fetchProjects(userSelectedCriteria);
 		}
 		else
 		{
-			projects = projectDAO.findProjectForCustomers(userCriteria.getCustomers(), 
-															userCriteria.isOnlyActiveProjects());
+			projects = projectDAO.findProjectForCustomers(userSelectedCriteria.getCustomers(),
+															userSelectedCriteria.isOnlyActiveProjects());
 		}
 		
-		projects = checkForOnlyBillableProjects(userCriteria, projects);
+		projects = checkForOnlyBillableProjects(userSelectedCriteria, projects);
 		
 		return projects;
 	}
 
-	private List<Project> checkForOnlyBillableProjects(UserCriteria userCriteria, List<Project> projects)
+	private List<Project> checkForOnlyBillableProjects(UserSelectedCriteria userSelectedCriteria, List<Project> projects)
 	{
-		if (userCriteria.isOnlyBillableProjects())
+		if (userSelectedCriteria.isOnlyBillableProjects())
 		{
 			projects = ProjectUtil.getBillableProjects(projects);
 		}
 		return projects;
 	}
 
-	private List<Project> fetchProjects(UserCriteria userCriteria)
+	private List<Project> fetchProjects(UserSelectedCriteria userSelectedCriteria)
 	{
 		List<Project> projects;
-		if (userCriteria.isOnlyActiveProjects())
+		if (userSelectedCriteria.isOnlyActiveProjects())
 		{
 			LOGGER.debug("Fetching only active projects");
 
@@ -259,9 +254,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
 		User					user;
 		
-		user = reportCriteria.getUserCriteria().getUsers().get(0);
+		user = reportCriteria.getUserSelectedCriteria().getUsers().get(0);
 		
-		List<ProjectAssignment>	assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId(), reportCriteria.getUserCriteria().getReportRange());
+		List<ProjectAssignment>	assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId(), reportCriteria.getUserSelectedCriteria().getReportRange());
 		
 		for (ProjectAssignment assignment : assignments)
 		{

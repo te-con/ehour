@@ -21,7 +21,7 @@ import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.criteria.UserCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
@@ -72,10 +72,10 @@ public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
 
         ReportData data = new ReportData(elements, SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
 
-        UserCriteria userCriteria = new UserCriteria();
-        userCriteria.getCustomParameters().put(TimesheetExportParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
-        userCriteria.setReportRange(SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
-        ReportCriteria criteria = new ReportCriteria(userCriteria);
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.getCustomParameters().put(TimesheetExportParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
+        userSelectedCriteria.setReportRange(SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
+        ReportCriteria criteria = new ReportCriteria(userSelectedCriteria);
 
         expect(detailedReportService.getDetailedReportData(criteria)).andReturn(data);
 
@@ -92,9 +92,9 @@ public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
         List<FlatReportElement> elements = new ArrayList<FlatReportElement>();
 
         ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
-        UserCriteria userCriteria = new UserCriteria();
-        userCriteria.setReportRange(SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
-        ReportCriteria criteria = new ReportCriteria(userCriteria);
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setReportRange(SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
+        ReportCriteria criteria = new ReportCriteria(userSelectedCriteria);
 
         expect(detailedReportService.getDetailedReportData(criteria))
                 .andReturn(data);
