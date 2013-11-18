@@ -124,7 +124,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
      *
      * @return
      */
-    public AuthUser getUser() {
+    public AuthUser getAuthUser() {
         AuthUser user = null;
 
         if (isSignedIn()) {
@@ -135,6 +135,10 @@ public class EhourWebSession extends AuthenticatedWebSession {
             }
         }
         return user;
+    }
+
+    public User getUser() {
+        return (getAuthUser() != null) ? getAuthUser().getUser() : null;
     }
 
     /**
@@ -227,7 +231,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
      * Invalidate authenticated user
      */
     public void signOut() {
-        AuthUser user = getUser();
+        AuthUser user = getAuthUser();
 
         getSession().clear();
 

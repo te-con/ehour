@@ -111,7 +111,7 @@ public class ExportReportHeader extends AbstractExportReportPart
 
         return new StringResourceModel("excelMonth.reportName",
                 null,
-                new Object[]{session.getUser().getUser().getFullName(),
+                new Object[]{session.getUser().getFullName(),
                              new DateModel(dateRange.getDateStart(), config, DateModel.DATESTYLE_MONTHONLY)});
     }
 

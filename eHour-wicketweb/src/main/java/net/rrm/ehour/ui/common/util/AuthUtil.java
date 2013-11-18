@@ -34,7 +34,7 @@ public class AuthUtil {
     public static User getUser() {
         EhourWebSession session = EhourWebSession.getSession();
 
-        return (session.getUser() != null) ? session.getUser().getUser() : null;
+        return (session.getAuthUser() != null) ? session.getAuthUser().getUser() : null;
     }
 
     /**

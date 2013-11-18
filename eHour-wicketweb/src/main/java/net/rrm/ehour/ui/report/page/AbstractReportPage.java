@@ -82,7 +82,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T>
 		userCriteria.setSingleUser(singleReportUser);
 		
 		if (singleReportUser) {
-			userCriteria.setUser(EhourWebSession.getSession().getUser().getUser());
+			userCriteria.setUser(EhourWebSession.getSession().getUser());
 		}
 	}
 

@@ -24,7 +24,7 @@ public class DevelopmentWebSession extends EhourWebSession {
     }
 
 
-    public AuthUser getUser() {
+    public AuthUser getAuthUser() {
         User user = createAuthenticatedUser();
 
         return new AuthUser(user);

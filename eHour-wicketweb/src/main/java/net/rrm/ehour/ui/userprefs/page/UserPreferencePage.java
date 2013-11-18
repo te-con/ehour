@@ -41,7 +41,7 @@ public class UserPreferencePage extends AbstractBasePage<Void>
 		super(new ResourceModel("userprefs.title"));
 		
 		// add calendar panel
-		add(new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser()));
+		add(new CalendarPanel("sidePanel", getEhourWebSession().getUser()));
 
 		// add 
 		add(new ChangePasswordPanel("preferenceForm", new ChangePasswordBackingBean()));

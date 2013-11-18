@@ -10,7 +10,7 @@ public class ChangePasswordBackingBean extends AdminBackingBeanImpl {
     private String password;
 
     public String getUsername() {
-        return EhourWebSession.getSession().getUser().getUsername();
+        return EhourWebSession.getSession().getAuthUser().getUsername();
     }
 
     public String getPassword() {

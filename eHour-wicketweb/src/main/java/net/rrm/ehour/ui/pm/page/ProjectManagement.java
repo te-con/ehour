@@ -102,7 +102,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria> {
     private ReportCriteria getReportCriteria() {
         ReportCriteria reportCriteria = new ReportCriteria();
 
-        User user = EhourWebSession.getSession().getUser().getUser();
+        User user = EhourWebSession.getSession().getAuthUser().getUser();
 
         List<Project> projects = projectService.getProjectManagerProjects(user);
 

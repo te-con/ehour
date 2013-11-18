@@ -43,8 +43,8 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
         super(id);
 
         setOutputMarkupId(true);
-        EhourWebSession session = ((EhourWebSession) this.getSession());
-        User user = session.getUser().getUser();
+        EhourWebSession session = EhourWebSession.getSession();
+        User user = session.getUser();
 
         Calendar overviewFor = session.getNavCalendar();
 
