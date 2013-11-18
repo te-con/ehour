@@ -10,7 +10,7 @@
               username="%ehour.db.username%"
               password="%ehour.db.password%"
               driverClassName="org.postgresql.Driver"
-              url="jdbc:postgresql://localhost:5432/%ehour.db.name%"
+              url="jdbc:postgresql://%ehour.db.hostname%:5432/%ehour.db.name%"
               validationQuery="SELECT 1"
               testOnBorrow="true"
               zeroDateTimeBehavior="convertToNull"

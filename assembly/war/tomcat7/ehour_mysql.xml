@@ -10,7 +10,7 @@
               username="%ehour.db.username%"
               password="%ehour.db.password%"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/%ehour.db.name%?useOldAliasMetadataBehavior=true"
+              url="jdbc:mysql://%ehour.db.hostname%:3306/%ehour.db.name%?useOldAliasMetadataBehavior=true"
               validationQuery="SELECT 1"
               testOnBorrow="true"
               zeroDateTimeBehavior="convertToNull"
