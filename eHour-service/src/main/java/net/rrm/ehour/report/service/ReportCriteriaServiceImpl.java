@@ -41,277 +41,219 @@ import java.util.*;
 
 /**
  * Report Criteria services
- **/
+ */
 @NonAuditable
 @Service("reportCriteriaService")
-public class ReportCriteriaServiceImpl implements ReportCriteriaService
-{
-	@Autowired
-	private	UserDao					userDAO;
-	@Autowired
-	private	UserDepartmentDao		userDepartmentDAO;
-	@Autowired
-	private	CustomerDao				customerDAO;
-	@Autowired
-	private	ProjectDao				projectDAO;
-	@Autowired
-	private	ProjectAssignmentDao	projectAssignmentDAO;
-	@Autowired
-	private	ReportAggregatedDao		reportAggregatedDAO;
+public class ReportCriteriaServiceImpl implements ReportCriteriaService {
+    @Autowired
+    private UserDao userDAO;
+    @Autowired
+    private UserDepartmentDao userDepartmentDAO;
+    @Autowired
+    private CustomerDao customerDAO;
+    @Autowired
+    private ProjectDao projectDAO;
+    @Autowired
+    private ProjectAssignmentDao projectAssignmentDAO;
+    @Autowired
+    private ReportAggregatedDao reportAggregatedDAO;
 
-	private	static final Logger	LOGGER = Logger.getLogger(ReportCriteriaServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(ReportCriteriaServiceImpl.class);
 
-	/**
-	 * Update available report criteria 
-	 */
-	
-	public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdateType updateType)
-	{
-		UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
-		AvailableCriteria	availCriteria = reportCriteria.getAvailableCriteria();
-		
-		if (userSelectedCriteria.isSingleUser())
-		{
-			syncCriteriaForSingleUser(reportCriteria);
-		}
-		else
-		{
-			if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS ||
-				updateType == ReportCriteriaUpdateType.UPDATE_ALL)
-			{
-				availCriteria.setCustomers(getAvailableCustomers(userSelectedCriteria));
-			}
+    /**
+     * Update available report criteria
+     */
+    public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdateType updateType) {
+        UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
+        AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
 
-			if (updateType == ReportCriteriaUpdateType.UPDATE_PROJECTS ||
-				updateType == ReportCriteriaUpdateType.UPDATE_ALL)
-			{
-				availCriteria.setProjects(getAvailableProjects(userSelectedCriteria));
-			}
-			
-			if (updateType == ReportCriteriaUpdateType.UPDATE_ALL)
-			{
-				availCriteria.setUserDepartments(userDepartmentDAO.findAll());
-				
-				availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry());
-			}
+        if (userSelectedCriteria.isSingleUser()) {
+            syncCriteriaForSingleUser(reportCriteria);
+        } else {
+            if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS ||
+                    updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
+                availCriteria.setCustomers(getAvailableCustomers(userSelectedCriteria));
+            }
 
-			if (updateType == ReportCriteriaUpdateType.UPDATE_USERS ||
-					updateType == ReportCriteriaUpdateType.UPDATE_ALL)
-			{
-				availCriteria.setUsers(getAvailableUsers(userSelectedCriteria));
-			}
-		}	
-		
-		return reportCriteria;
-	}
+            if (updateType == ReportCriteriaUpdateType.UPDATE_PROJECTS ||
+                    updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
+                availCriteria.setProjects(getAvailableProjects(userSelectedCriteria));
+            }
 
-	private List<User> getAvailableUsers(UserSelectedCriteria userSelectedCriteria)
-	{
-		List<User> 	users;
+            if (updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
+                availCriteria.setUserDepartments(userDepartmentDAO.findAll());
 
-		if (userSelectedCriteria.isEmptyDepartments())
-		{
-			users = userDAO.findUsers(userSelectedCriteria.isOnlyActiveUsers());
-		}
-		else
-		{
-			LOGGER.debug("Finding users for departments with filter '" + userSelectedCriteria.getUserFilter() + "'");
-			users = userDAO.findUsersForDepartments(userSelectedCriteria.getUserFilter()
-														, userSelectedCriteria.getDepartments()
-														, userSelectedCriteria.isOnlyActiveUsers());
-		}
-		
-		return users;
-	}
-	
-	/**
-	 * Get available customers
-	 * @param userSelectedCriteria
-	 * @return
-	 */
-	private List<Customer> getAvailableCustomers(UserSelectedCriteria userSelectedCriteria)
-	{
-		List<Customer> customers;
-		
-		customers = fetchCustomers(userSelectedCriteria);
-		
-		List<Customer> billableCustomers = checkForOnlyBillableCustomers(userSelectedCriteria, customers);
-		
-		Collections.sort(billableCustomers);
-		
-		return billableCustomers;
-	}
+                availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry());
+            }
 
-	private List<Customer> checkForOnlyBillableCustomers(UserSelectedCriteria userSelectedCriteria, List<Customer> customers)
-	{
-		List<Customer> billableCustomers = new ArrayList<Customer>();
-		
-		LOGGER.debug("Finding on billable only: " + userSelectedCriteria.isOnlyBillableProjects());
-		
-		if (userSelectedCriteria.isOnlyBillableProjects())
-		{
-			for (Customer customer : customers)
-			{
-				List<Project> billableProjects;
-				
-				if (userSelectedCriteria.isOnlyActiveProjects())
-				{
-					 billableProjects = ProjectUtil.getBillableProjects(customer.getActiveProjects());
-				}
-				else
-				{
-					 billableProjects = ProjectUtil.getBillableProjects(customer.getProjects());
-				}
-				
-				if (!CollectionUtils.isEmpty(billableProjects))
-				{
-					billableCustomers.add(customer);
-				}
-			}
-		}
-		else
-		{
-			return customers;
-		}
-		
-		return billableCustomers;
-	}
+            if (updateType == ReportCriteriaUpdateType.UPDATE_USERS ||
+                    updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
+                availCriteria.setUsers(getAvailableUsers(userSelectedCriteria));
+            }
+        }
 
-	private List<Customer> fetchCustomers(UserSelectedCriteria userSelectedCriteria)
-	{
-		List<Customer> customers;
-		if (userSelectedCriteria.isOnlyActiveCustomers())
-		{
-			customers = customerDAO.findAllActive();
-		}
-		else
-		{
-			customers = customerDAO.findAll();
-		}
-		return customers;
-	}
-	
-	/**
-	 * Get available projects depended on the userSelectedCriteria
-	 * @param userSelectedCriteria
-	 * @return
-	 */
-	private List<Project> getAvailableProjects(UserSelectedCriteria userSelectedCriteria)
-	{
-		List<Project>	projects;
-		
-		if (userSelectedCriteria.isEmptyCustomers())
-		{
-			projects = fetchProjects(userSelectedCriteria);
-		}
-		else
-		{
-			projects = projectDAO.findProjectForCustomers(userSelectedCriteria.getCustomers(),
-															userSelectedCriteria.isOnlyActiveProjects());
-		}
-		
-		projects = checkForOnlyBillableProjects(userSelectedCriteria, projects);
-		
-		return projects;
-	}
+        return reportCriteria;
+    }
 
-	private List<Project> checkForOnlyBillableProjects(UserSelectedCriteria userSelectedCriteria, List<Project> projects)
-	{
-		if (userSelectedCriteria.isOnlyBillableProjects())
-		{
-			projects = ProjectUtil.getBillableProjects(projects);
-		}
-		return projects;
-	}
+    private List<User> getAvailableUsers(UserSelectedCriteria userSelectedCriteria) {
+        List<User> users;
 
-	private List<Project> fetchProjects(UserSelectedCriteria userSelectedCriteria)
-	{
-		List<Project> projects;
-		if (userSelectedCriteria.isOnlyActiveProjects())
-		{
-			LOGGER.debug("Fetching only active projects");
+        if (userSelectedCriteria.isEmptyDepartments()) {
+            users = userDAO.findUsers(userSelectedCriteria.isOnlyActiveUsers());
+        } else {
+            LOGGER.debug("Finding users for departments with filter '" + userSelectedCriteria.getUserFilter() + "'");
+            users = userDAO.findUsersForDepartments(userSelectedCriteria.getUserFilter()
+                    , userSelectedCriteria.getDepartments()
+                    , userSelectedCriteria.isOnlyActiveUsers());
+        }
 
-			projects = projectDAO.findAllActive();
-		}
-		else
-		{
-			LOGGER.debug("Fetching all projects");
-			
-			projects = projectDAO.findAll();
-		}
-		return projects;
-	}
-		
-	/**
-	 * Sync criteria for users, only customers & projects
-	 * are displayed for users in this list
-	 * @param reportCriteria
-	 */
-	private void syncCriteriaForSingleUser(ReportCriteria reportCriteria)
-	{
-		Set<Customer>			customers = new HashSet<Customer>();
-		Set<Project>			projects = new HashSet<Project>();
-		AvailableCriteria		availCriteria = reportCriteria.getAvailableCriteria();
-		User					user;
-		
-		user = reportCriteria.getUserSelectedCriteria().getUsers().get(0);
-		
-		List<ProjectAssignment>	assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId(), reportCriteria.getUserSelectedCriteria().getReportRange());
-		
-		for (ProjectAssignment assignment : assignments)
-		{
-			customers.add(assignment.getProject().getCustomer());
-			projects.add(assignment.getProject());
-		}
-		
-		availCriteria.setCustomers(new ArrayList<Customer>(customers));
-		availCriteria.setProjects(new ArrayList<Project>(projects));
-		
-		availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry(user));
-	}
+        return users;
+    }
 
-	/**
-	 * @param userDAO the userDAO to set
-	 */
-	public void setUserDAO(UserDao userDAO)
-	{
-		this.userDAO = userDAO;
-	}
+    /**
+     * Get available customers
+     *
+     * @param userSelectedCriteria
+     * @return
+     */
+    private List<Customer> getAvailableCustomers(UserSelectedCriteria userSelectedCriteria) {
+        List<Customer> customers;
 
-	/**
-	 * @param customerDAO the customerDAO to set
-	 */
-	public void setCustomerDAO(CustomerDao customerDAO)
-	{
-		this.customerDAO = customerDAO;
-	}
+        customers = fetchCustomers(userSelectedCriteria);
 
-	/**
-	 * @param projectDAO the projectDAO to set
-	 */
-	public void setProjectDAO(ProjectDao projectDAO)
-	{
-		this.projectDAO = projectDAO;
-	}
+        List<Customer> billableCustomers = checkForOnlyBillableCustomers(userSelectedCriteria, customers);
 
-	/**
-	 * @param userDepartmentDAO the userDepartmentDAO to set
-	 */
-	public void setUserDepartmentDAO(UserDepartmentDao userDepartmentDAO)
-	{
-		this.userDepartmentDAO = userDepartmentDAO;
-	}
+        Collections.sort(billableCustomers);
 
-	/**
-	 * @param projectAssignmentDAO the projectAssignmentDAO to set
-	 */
-	public void setProjectAssignmentDAO(ProjectAssignmentDao projectAssignmentDAO)
-	{
-		this.projectAssignmentDAO = projectAssignmentDAO;
-	}	
+        return billableCustomers;
+    }
 
-	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
-	{
-		this.reportAggregatedDAO = reportAggregatedDAO;
-	}
+    private List<Customer> checkForOnlyBillableCustomers(UserSelectedCriteria userSelectedCriteria, List<Customer> customers) {
+        List<Customer> billableCustomers = new ArrayList<Customer>();
+
+        LOGGER.debug("Finding on billable only: " + userSelectedCriteria.isOnlyBillableProjects());
+
+        if (userSelectedCriteria.isOnlyBillableProjects()) {
+            for (Customer customer : customers) {
+                List<Project> billableProjects;
+
+                if (userSelectedCriteria.isOnlyActiveProjects()) {
+                    billableProjects = ProjectUtil.getBillableProjects(customer.getActiveProjects());
+                } else {
+                    billableProjects = ProjectUtil.getBillableProjects(customer.getProjects());
+                }
+
+                if (!CollectionUtils.isEmpty(billableProjects)) {
+                    billableCustomers.add(customer);
+                }
+            }
+        } else {
+            return customers;
+        }
+
+        return billableCustomers;
+    }
+
+    private List<Customer> fetchCustomers(UserSelectedCriteria userSelectedCriteria) {
+        List<Customer> customers;
+        if (userSelectedCriteria.isOnlyActiveCustomers()) {
+            customers = customerDAO.findAllActive();
+        } else {
+            customers = customerDAO.findAll();
+        }
+        return customers;
+    }
+
+    /**
+     * Get available projects depended on the userSelectedCriteria
+     *
+     * @param userSelectedCriteria
+     * @return
+     */
+    private List<Project> getAvailableProjects(UserSelectedCriteria userSelectedCriteria) {
+        List<Project> projects;
+
+        if (userSelectedCriteria.isEmptyCustomers()) {
+            projects = fetchProjects(userSelectedCriteria);
+        } else {
+            projects = projectDAO.findProjectForCustomers(userSelectedCriteria.getCustomers(),
+                    userSelectedCriteria.isOnlyActiveProjects());
+        }
+
+        projects = checkForOnlyBillableProjects(userSelectedCriteria, projects);
+
+        return projects;
+    }
+
+    private List<Project> checkForOnlyBillableProjects(UserSelectedCriteria userSelectedCriteria, List<Project> projects) {
+        if (userSelectedCriteria.isOnlyBillableProjects()) {
+            projects = ProjectUtil.getBillableProjects(projects);
+        }
+        return projects;
+    }
+
+    private List<Project> fetchProjects(UserSelectedCriteria userSelectedCriteria) {
+        List<Project> projects;
+        if (userSelectedCriteria.isOnlyActiveProjects()) {
+            LOGGER.debug("Fetching only active projects");
+
+            projects = projectDAO.findAllActive();
+        } else {
+            LOGGER.debug("Fetching all projects");
+
+            projects = projectDAO.findAll();
+        }
+        return projects;
+    }
+
+    /**
+     * Sync criteria for users, only customers & projects
+     * are displayed for users in this list
+     *
+     * @param reportCriteria
+     */
+    private void syncCriteriaForSingleUser(ReportCriteria reportCriteria) {
+        Set<Customer> customers = new HashSet<Customer>();
+        Set<Project> projects = new HashSet<Project>();
+        AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
+        User user;
+
+        user = reportCriteria.getUserSelectedCriteria().getUsers().get(0);
+
+        List<ProjectAssignment> assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId(), reportCriteria.getUserSelectedCriteria().getReportRange());
+
+        for (ProjectAssignment assignment : assignments) {
+            customers.add(assignment.getProject().getCustomer());
+            projects.add(assignment.getProject());
+        }
+
+        availCriteria.setCustomers(new ArrayList<Customer>(customers));
+        availCriteria.setProjects(new ArrayList<Project>(projects));
+
+        availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry(user));
+    }
+
+    public void setUserDAO(UserDao userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public void setCustomerDAO(CustomerDao customerDAO) {
+        this.customerDAO = customerDAO;
+    }
+
+    public void setProjectDAO(ProjectDao projectDAO) {
+        this.projectDAO = projectDAO;
+    }
+
+    public void setUserDepartmentDAO(UserDepartmentDao userDepartmentDAO) {
+        this.userDepartmentDAO = userDepartmentDAO;
+    }
+
+    public void setProjectAssignmentDAO(ProjectAssignmentDao projectAssignmentDAO) {
+        this.projectAssignmentDAO = projectAssignmentDAO;
+    }
+
+    public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO) {
+        this.reportAggregatedDAO = reportAggregatedDAO;
+    }
 }
