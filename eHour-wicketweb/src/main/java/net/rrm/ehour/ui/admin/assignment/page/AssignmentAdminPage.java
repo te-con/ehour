@@ -25,8 +25,9 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
 import net.rrm.ehour.user.service.UserService;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -43,7 +44,7 @@ import java.util.List;
  */
 
 @SuppressWarnings("serial")
-public class AssignmentAdmin extends AbstractAdminPage<Void> {
+public class AssignmentAdminPage extends AbstractAdminPage<Void> {
     private static final long serialVersionUID = 566527529422873370L;
     private static final String USER_SELECTOR_ID = "userSelector";
 
@@ -52,7 +53,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
 
     private Panel assignmentPanel;
 
-    public AssignmentAdmin() {
+    public AssignmentAdminPage() {
         super(new ResourceModel("admin.assignment.title"));
 
         List<User> users;
@@ -60,9 +61,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
 
         Fragment userListHolder = getUserListHolder(users);
 
-        GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame",
-                new ResourceModel("admin.assignment.title")
-        );
+        GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.assignment.title"));
         add(grey);
 
         grey.add(new EntrySelectorPanel(USER_SELECTOR_ID, userListHolder));
@@ -78,22 +77,27 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
     }
 
     private Fragment getUserListHolder(List<User> users) {
-        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdmin.this);
+        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdminPage.this);
 
         ListView<User> userListView = new ListView<User>("itemList", users) {
             @Override
             protected void populateItem(ListItem<User> item) {
                 final User user = item.getModelObject();
 
-                AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
+                if (!user.isActive()) {
+                    item.add(AttributeModifier.append("class", "inactive"));
+                }
+
+                item.add(new Label("firstName", user.getFirstName()));
+                item.add(new Label("lastName", user.getLastName()));
+                item.add(new Label("assignments", user.getProjectAssignments().size()));
+
+                item.add(new AjaxEventBehavior("onclick") {
                     @Override
-                    public void onClick(AjaxRequestTarget target) {
+                    protected void onEvent(AjaxRequestTarget target) {
                         replaceAssignmentPanel(target, user);
                     }
-                };
-
-                item.add(link);
-                link.add(new Label("linkLabel", user.getFullName()));
+                });
             }
         };
 
@@ -103,8 +107,7 @@ public class AssignmentAdmin extends AbstractAdminPage<Void> {
     }
 
     private void replaceAssignmentPanel(AjaxRequestTarget target, User user) {
-        AssignmentPanel newAssignmentPanel = new AssignmentPanel("assignmentPanel",
-                user);
+        AssignmentPanel newAssignmentPanel = new AssignmentPanel("assignmentPanel", user);
 
         assignmentPanel.replaceWith(newAssignmentPanel);
         target.add(newAssignmentPanel);

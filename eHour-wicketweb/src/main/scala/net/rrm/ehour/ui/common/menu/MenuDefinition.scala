@@ -8,7 +8,7 @@ import net.rrm.ehour.ui.admin.user.page.UserAdminPage
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage
 import net.rrm.ehour.ui.audit.page.AuditReportPage
 import java.util.{List => JList}
-import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdmin
+import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdminPage
 import org.apache.wicket.request.mapper.parameter.PageParameters
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage
@@ -37,7 +37,7 @@ object MenuDefinition {
     val userAdmin = LinkItem("nav.admin.users", classOf[UserAdminPage])
     val customerAdmin = LinkItem("nav.admin.customers", classOf[CustomerAdminPage])
     val projectAdmin = LinkItem("nav.admin.projects", classOf[ProjectAdminPage])
-    val assignmentAdmin = LinkItem("nav.admin.assignments", classOf[AssignmentAdmin])
+    val assignmentAdmin = LinkItem("nav.admin.assignments", classOf[AssignmentAdminPage])
     val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(deptAdmin, userAdmin, customerAdmin, projectAdmin, assignmentAdmin))
 
     val mainConfig = LinkItem("nav.admin.config", classOf[MainConfigPage])

@@ -35,7 +35,7 @@ public abstract class UserManagementApplicationDriver {
         listFilter.clear();
         listFilter.sendKeys(name);
 
-        Driver.findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_1_itemLink")).click();
+        Driver.findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_1")).click();
         EhourApplicationDriver.sleep(500);
     }
 

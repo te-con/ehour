@@ -33,7 +33,7 @@ import java.util.List;
 import static org.easymock.EasyMock.*;
 
 
-public class AssignmentAdminTest extends BaseSpringWebAppTester
+public class AssignmentAdminPageTest extends BaseSpringWebAppTester
 {
 	/**
 	 * Test render
@@ -72,8 +72,8 @@ public class AssignmentAdminTest extends BaseSpringWebAppTester
 
 		replay(userService);
 		
-		getTester().startPage(AssignmentAdmin.class);
-		getTester().assertRenderedPage(AssignmentAdmin.class);
+		getTester().startPage(AssignmentAdminPage.class);
+		getTester().assertRenderedPage(AssignmentAdminPage.class);
 		getTester().assertNoErrorMessage();
 		
 		verify(userService);

@@ -3,6 +3,7 @@ package net.rrm.ehour.it.driver;
 import net.rrm.ehour.it.WicketBy;
 
 import static net.rrm.ehour.it.AbstractScenario.Driver;
+import static net.rrm.ehour.it.driver.AssignmentAdminApplicationDriver.createProjectAssignment;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
 import static net.rrm.ehour.it.driver.ProjectApplicationDriver.createProject;
 import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.*;
@@ -17,7 +18,7 @@ public abstract class TimesheetApplicationDriver {
         assertUserDataSaved();
         createCustomer("KLM", "KLM");
         createProject("ET", "ET", "KLM", "KLM");
-        createProjectAssignment(0, "KLM", "KLM", "ET", "ET");
+        createProjectAssignment("thies", "KLM", "KLM", "ET", "ET");
         logout();
     }
 
