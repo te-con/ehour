@@ -110,7 +110,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addCustomerSelection(ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
-        customers = new ListMultipleChoice<Customer>("reportCriteria.userCriteria.customers",
+        customers = new ListMultipleChoice<Customer>("reportCriteria.userSelectedCriteria.customers",
                 new PropertyModel<List<Customer>>(bean, "reportCriteria.availableCriteria.customers"),
                 new DomainObjectChoiceRenderer<Customer>());
 
@@ -135,13 +135,13 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         AjaxCheckBox deactivateBox = createOnlyActiveCheckbox();
         parent.add(deactivateBox);
 
-        onlyBillableCustomerCheckbox = createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableCustomers");
+        onlyBillableCustomerCheckbox = createOnlyBillableCheckbox("reportCriteria.userSelectedCriteria.onlyBillableCustomers");
         parent.add(onlyBillableCustomerCheckbox);
     }
 
     @SuppressWarnings("serial")
     private AjaxCheckBox createOnlyActiveCheckbox() {
-        AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveCustomers") {
+        AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveCustomers") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
@@ -156,7 +156,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
     @SuppressWarnings("serial")
     private AjaxCheckBox createOnlyBillableCheckbox(String id) {
-        AjaxCheckBox deactivateBox = new AjaxCheckBox(id, new PropertyModel<Boolean>(getDefaultModel(), "reportCriteria.userCriteria.onlyBillableProjects")) {
+        AjaxCheckBox deactivateBox = new AjaxCheckBox(id, new PropertyModel<Boolean>(getDefaultModel(), "reportCriteria.userSelectedCriteria.onlyBillableProjects")) {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
@@ -175,7 +175,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addProjectSelection(WebMarkupContainer parent) {
-        projects = new ListMultipleChoice<Project>("reportCriteria.userCriteria.projects",
+        projects = new ListMultipleChoice<Project>("reportCriteria.userSelectedCriteria.projects",
                 new PropertyModel<List<Project>>(getDefaultModel(), "reportCriteria.availableCriteria.projects"),
                 new DomainObjectChoiceRenderer<Project>());
         projects.setMaxRows(MAX_CRITERIA_ROW);
@@ -183,7 +183,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         parent.add(projects);
 
         // hide active/inactive projects checkbox
-        final AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveProjects") {
+        final AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveProjects") {
             private static final long serialVersionUID = 2585047163449150793L;
 
             @Override
@@ -195,13 +195,13 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         parent.add(deactivateBox);
 
-        onlyBillableProjectsCheckbox = createOnlyBillableCheckbox("reportCriteria.userCriteria.onlyBillableProjects");
+        onlyBillableProjectsCheckbox = createOnlyBillableCheckbox("reportCriteria.userSelectedCriteria.onlyBillableProjects");
         parent.add(onlyBillableProjectsCheckbox);
     }
 
 
     private void addUserSelection(WebMarkupContainer parent) {
-        users = new ListMultipleChoice<User>("reportCriteria.userCriteria.users",
+        users = new ListMultipleChoice<User>("reportCriteria.userSelectedCriteria.users",
                 new PropertyModel<List<User>>(getDefaultModel(), "reportCriteria.availableCriteria.users"),
                 new DomainObjectChoiceRenderer<User>());
         users.setOutputMarkupId(true);
@@ -209,7 +209,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         parent.add(users);
 
         // hide active checkbox
-        final AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userCriteria.onlyActiveUsers") {
+        final AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveUsers") {
             private static final long serialVersionUID = 2585047163449150793L;
 
             @Override
@@ -226,7 +226,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addUserDepartmentSelection(WebMarkupContainer parent) {
-        ListMultipleChoice<UserDepartment> departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userCriteria.userDepartments",
+        ListMultipleChoice<UserDepartment> departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userSelectedCriteria.userDepartments",
                 new PropertyModel<List<UserDepartment>>(getDefaultModel(), "reportCriteria.availableCriteria.userDepartments"),
                 new DomainObjectChoiceRenderer<UserDepartment>());
         departments.setMaxRows(MAX_CRITERIA_ROW);
@@ -313,10 +313,10 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addDates(Form<ReportCriteriaBackingBean> form, IModel<ReportCriteriaBackingBean> model) {
-        startDatePicker = createDatePicker("reportCriteria.userCriteria.reportRange.dateStart", new PropertyModel<Date>(model, "reportCriteria.userCriteria.reportRange.dateStart"));
+        startDatePicker = createDatePicker("reportCriteria.userSelectedCriteria.reportRange.dateStart", new PropertyModel<Date>(model, "reportCriteria.userSelectedCriteria.reportRange.dateStart"));
         form.add(startDatePicker);
 
-        endDatePicker = createDatePicker("reportCriteria.userCriteria.reportRange.dateEnd", new PropertyModel<Date>(model, "reportCriteria.userCriteria.reportRange.dateEnd"));
+        endDatePicker = createDatePicker("reportCriteria.userSelectedCriteria.reportRange.dateEnd", new PropertyModel<Date>(model, "reportCriteria.userSelectedCriteria.reportRange.dateEnd"));
         form.add(endDatePicker);
 
         quickSelections = new ArrayList<WebMarkupContainer>();

@@ -76,7 +76,7 @@ public class ProjectManagementTest extends BaseSpringWebAppTester {
 
 
         FormTester form = getTester().newFormTester("sidePanel:criteriaForm");
-        form.select("userCriteria.projects", 0);
+        form.select("userSelectedCriteria.projects", 0);
 
         form.submit("submitButton");
 

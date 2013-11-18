@@ -50,8 +50,8 @@ public class ProjectManagementReportCriteriaPanel extends SidePanel {
         Form<Void> form = new Form<Void>("criteriaForm");
 
         ListChoice<Project> projectDropDown;
-        projectDropDown = new ListChoice<Project>("userCriteria.projects",
-                new PropertyModel<Project>(model, "userCriteria.project"),
+        projectDropDown = new ListChoice<Project>("userSelectedCriteria.projects",
+                new PropertyModel<Project>(model, "userSelectedCriteria.project"),
                 new PropertyModel<List<Project>>(model, "availableCriteria.projects"),
                 new DomainObjectChoiceRenderer<Project>());
         projectDropDown.setNullValid(false);
@@ -80,7 +80,7 @@ public class ProjectManagementReportCriteriaPanel extends SidePanel {
 
     private void addDatePickers(WebMarkupContainer parent, IModel<ReportCriteria> model) {
 
-        parent.add(new DatePickerPanel("dateStart", new PropertyModel<Date>(model, "userCriteria.reportRange.dateStart"), new PropertyModel<Boolean>(model, "userCriteria.infiniteStartDate")));
-        parent.add(new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "userCriteria.reportRange.dateEnd"), new PropertyModel<Boolean>(model, "userCriteria.infiniteEndDate")));
+        parent.add(new DatePickerPanel("dateStart", new PropertyModel<Date>(model, "userSelectedCriteria.reportRange.dateStart"), new PropertyModel<Boolean>(model, "userSelectedCriteria.infiniteStartDate")));
+        parent.add(new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "userSelectedCriteria.reportRange.dateEnd"), new PropertyModel<Boolean>(model, "userSelectedCriteria.infiniteEndDate")));
     }
 }

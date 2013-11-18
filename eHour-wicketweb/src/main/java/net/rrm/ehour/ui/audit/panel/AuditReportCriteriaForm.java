@@ -61,16 +61,16 @@ public class AuditReportCriteriaForm extends Form<ReportCriteria> {
 
         add(submitButton);
 
-        TextField<String> nameField = new TextField<String>(AuditConstants.PATH_FORM_NAME, new PropertyModel<String>(getModel(), "userCriteria.name"));
+        TextField<String> nameField = new TextField<String>(AuditConstants.PATH_FORM_NAME, new PropertyModel<String>(getModel(), "userSelectedCriteria.name"));
         add(nameField);
 
-        TextField<String> actionField = new TextField<String>(AuditConstants.PATH_FORM_ACTION, new PropertyModel<String>(getModel(), "userCriteria.action"));
+        TextField<String> actionField = new TextField<String>(AuditConstants.PATH_FORM_ACTION, new PropertyModel<String>(getModel(), "userSelectedCriteria.action"));
         add(actionField);
     }
 
     private void addDates(final IModel<ReportCriteria> model) {
-        DatePickerPanel dateStart = new DatePickerPanel("dateStart", new PropertyModel<Date>(model, "userCriteria.reportRange.dateStart"), new PropertyModel<Boolean>(model, "userCriteria.infiniteStartDate"));
-        DatePickerPanel dateEnd = new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "userCriteria.reportRange.dateEnd"), new PropertyModel<Boolean>(model, "userCriteria.infiniteEndDate"));
+        DatePickerPanel dateStart = new DatePickerPanel("dateStart", new PropertyModel<Date>(model, "userSelectedCriteria.reportRange.dateStart"), new PropertyModel<Boolean>(model, "userSelectedCriteria.infiniteStartDate"));
+        DatePickerPanel dateEnd = new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "userSelectedCriteria.reportRange.dateEnd"), new PropertyModel<Boolean>(model, "userSelectedCriteria.infiniteEndDate"));
 
         add(dateStart);
         add(dateEnd);
