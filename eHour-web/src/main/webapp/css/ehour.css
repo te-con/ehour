@@ -844,7 +844,7 @@ hr {
 
 .entrySelectorTable .numeric {
     text-align: right;
-    padding-right: 5px
+    padding-right: 2em;
 }
 
 .floatLeft {
