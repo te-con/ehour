@@ -4,8 +4,6 @@ import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.WicketBy;
 import org.junit.Test;
 
-import java.sql.SQLException;
-
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.login;
 import static net.rrm.ehour.it.driver.TimesheetApplicationDriver.*;
 import static org.junit.Assert.assertEquals;
@@ -24,7 +22,7 @@ public class TimesheetScenario extends AbstractScenario {
     }
 
     @Test
-    public void should_not_delete_previous_day_comment_when_cancelling_edit_comment() throws SQLException {
+    public void should_not_delete_previous_day_comment_when_cancelling_edit_comment() {
         createUserAndAssign();
 
         login("thies", "a");
