@@ -20,7 +20,6 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel;
@@ -90,7 +89,7 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     }
 
     private void resetCriteria(AjaxEvent ajaxEvent) {
-        EhourWebSession.getSession().setUserSelectedCriteria(null);
+        getEhourWebSession().setUserSelectedCriteria(null);
 
         reset();
 

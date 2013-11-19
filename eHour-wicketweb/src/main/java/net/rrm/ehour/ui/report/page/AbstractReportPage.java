@@ -77,9 +77,10 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
     protected void determineReportType(UserSelectedCriteria userSelectedCriteria) {
         if (getEhourWebSession().isWithReportRole()) {
             userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
+        } else if (isReportForPm()) {
+            limitForPm(userSelectedCriteria);
         } else {
             limitForIndividualUser(userSelectedCriteria);
-            limitForPm(userSelectedCriteria);
         }
     }
 

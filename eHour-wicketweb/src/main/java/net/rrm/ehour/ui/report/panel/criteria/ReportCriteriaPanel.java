@@ -59,7 +59,7 @@ import java.util.*;
  */
 
 public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBackingBean> {
-    private static final int MAX_CRITERIA_ROW = 4;
+    private static final int MAX_CRITERIA_ROW = 6;
 
     private static final long serialVersionUID = 161160822264046559L;
     private static final String ID_USERDEPT_PLACEHOLDER = "userDepartmentPlaceholder";
@@ -102,7 +102,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         addCustomerSelection(model.getObject(), blueBorder);
         addProjectSelection(blueBorder);
 
-        form.add(getEhourWebSession().isWithReportRole() ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
+        form.add(getEhourWebSession().isWithReportRole() || getEhourWebSession().isWithPmRole() ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
 
         addSubmitButtons(form);
     }
@@ -162,7 +162,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 target.add(customers);
                 target.add(projects);
 
-                // bahh!
                 target.add(onlyBillableCustomerCheckbox);
                 target.add(onlyBillableProjectsCheckbox);
             }

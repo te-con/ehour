@@ -28,7 +28,10 @@ class CustomerCriteriaFilter @Autowired()(customerDao: CustomerDao) {
 
     val customers = fetchCustomers(userSelectedCriteria)
     val projects = toScala(customers).flatMap(c => toScala(c.getProjects))
-    filterActive(filterPm(filterBillable(projects))).map(_.getCustomer)
+    val billables = filterBillable(projects)
+    val pm = filterPm(billables)
+    val filteredCustomers: List[Customer] = filterActive(pm).map(_.getCustomer).toSet.toList
+    filteredCustomers
   }
 }
 
