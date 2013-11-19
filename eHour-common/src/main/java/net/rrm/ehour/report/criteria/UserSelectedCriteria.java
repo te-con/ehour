@@ -49,8 +49,6 @@ public class UserSelectedCriteria implements Serializable {
     private boolean onlyActiveCustomers = true;
     private boolean onlyActiveUsers = true;
     private boolean onlyBillableProjects = false;
-    private int userActivityFilter;
-    private String userFilter;
     private String customerFilter;
     private List<User> users;
     private List<Project> projects;
@@ -204,40 +202,6 @@ public class UserSelectedCriteria implements Serializable {
         this.reportRange = reportRange;
 
         return this;
-    }
-
-    /**
-     * @return the userActivityFilter
-     */
-    public int getUserActivityFilter() {
-        return userActivityFilter;
-    }
-
-    /**
-     * @param userActivityFilter the userActivityFilter to set
-     */
-    public void setUserActivityFilter(int userFilter) {
-        this.userActivityFilter = userFilter;
-    }
-
-
-    /**
-     * @return the userFilter
-     */
-    public String getUserFilter() {
-        return userFilter;
-    }
-
-    /**
-     * @param userFilter the userFilter to set
-     */
-    public void setUserFilter(String userFilter) {
-        this.userFilter = userFilter;
-    }
-
-
-    public boolean isEmptyUserFilter() {
-        return userFilter == null || userFilter.trim().length() == 0;
     }
 
     /**

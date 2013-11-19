@@ -1,12 +1,14 @@
 package net.rrm.ehour.domain;
 
+import com.google.common.collect.Sets;
+
 /**
  * Created on Feb 7, 2010 1:50:16 PM
  *
  * @author thies (www.te-con.nl)
  *
  */
-public class UserDepartmentMother
+public class UserDepartmentObjectMother
 {
 	public static UserDepartment createUserDepartment()
 	{
@@ -14,7 +16,7 @@ public class UserDepartmentMother
 		department.setCode("aa");
 		department.setName("bb");
 		
-		department.setUsers(MotherUtil.asSet(UserObjectMother.createUsers(department)));
+		department.setUsers(Sets.newHashSet(UserObjectMother.createUsers(department)));
 		return department;
 	}
 

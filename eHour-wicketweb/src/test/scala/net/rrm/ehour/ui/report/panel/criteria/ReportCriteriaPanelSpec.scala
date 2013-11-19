@@ -31,7 +31,7 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     val availableCriteria = new AvailableCriteria(toList(mutable.Buffer(CustomerObjectMother.createCustomer())),
       toList(mutable.Buffer(ProjectObjectMother.createProject(1))),
       toList(mutable.Buffer(UserObjectMother.createUser())),
-      toList(mutable.Buffer(UserDepartmentMother.createUserDepartment())))
+      toList(mutable.Buffer(UserDepartmentObjectMother.createUserDepartment())))
     val criteria = new ReportCriteria(availableCriteria, new UserSelectedCriteria)
     val model = new CompoundPropertyModel[ReportCriteriaBackingBean](new ReportCriteriaBackingBean(criteria))
 

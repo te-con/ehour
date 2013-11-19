@@ -1,14 +1,15 @@
 package net.rrm.ehour.persistence.user.dao
 
+import net.rrm.ehour.domain.UserDepartmentObjectMother
+
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 14, 2010 - 11:46:46 PM
  */
-
-import net.rrm.ehour.domain.UserDepartmentMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+
 import static org.junit.Assert.*
 
 class UserDepartmentDaoHibernateImplTest extends AbstractAnnotationDaoTest
@@ -42,7 +43,7 @@ class UserDepartmentDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldPersist()
   {
-    def department = UserDepartmentMother.createUserDepartment()
+    def department = UserDepartmentObjectMother.createUserDepartment()
 
     userDepartmentDao.persist(department)
 

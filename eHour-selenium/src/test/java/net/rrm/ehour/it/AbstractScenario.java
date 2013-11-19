@@ -44,7 +44,6 @@ public abstract class AbstractScenario {
             }
         });
 
-
         DatabaseTruncater.truncate(dataSource);
 
         initialized = true;

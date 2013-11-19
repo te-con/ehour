@@ -1,7 +1,7 @@
 package net.rrm.ehour.persistence.backup.dao
 
 import net.rrm.ehour.domain.User
-import net.rrm.ehour.domain.UserDepartmentMother
+import net.rrm.ehour.domain.UserDepartmentObjectMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ class RestoreDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldPersist()
   {
-    def userDep = UserDepartmentMother.createUserDepartment()
+    def userDep = UserDepartmentObjectMother.createUserDepartment()
     userDep.departmentId = null
 
     importDao.persist userDep

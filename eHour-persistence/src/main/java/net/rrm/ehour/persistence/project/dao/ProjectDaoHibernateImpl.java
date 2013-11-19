@@ -25,58 +25,42 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("projectDao")
-public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Project, Integer> implements ProjectDao
-{
-	protected static final String CACHEREGION = "query.Project";
-	
-	public ProjectDaoHibernateImpl()
-	{
-		super(Project.class);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Project> findAllActive()
-	{
-		return getHibernateTemplate().findByNamedQuery("Project.findAllActive");
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Project> findDefaultProjects()
-	{
-		return getHibernateTemplate().findByNamedQuery("Project.findAllActiveDefault");
-	}
+public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Project, Integer> implements ProjectDao {
+    protected static final String CACHEREGION = "query.Project";
 
-	/**
-	 * Get projects for customer respecting the active flag
-	 */
-	public List<Project> findProjectForCustomers(List<Customer> customers, boolean onlyActive)
-	{
-		List<Project> results;
-		String	hqlName;
-		
-		if (!onlyActive)
-		{
-			hqlName = "Project.findAllProjectsForCustomers";
-		}
-		else
-		{
-			hqlName = "Project.findActiveProjectsForCustomers";
-		}
-		
-		results = findByNamedQueryAndNamedParam(hqlName,
-													"customers", 
-													customers.toArray(),
-													true,
-													CACHEREGION);
-		
-		return results;			
-	}
+    public ProjectDaoHibernateImpl() {
+        super(Project.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Project> findAllActive() {
+        return getHibernateTemplate().findByNamedQuery("Project.findAllActive");
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Project> findDefaultProjects() {
+        return getHibernateTemplate().findByNamedQuery("Project.findAllActiveDefault");
+    }
+
+    /**
+     * Get projects for customer respecting the active flag
+     */
+    public List<Project> findProjectForCustomers(List<Customer> customers, boolean onlyActive) {
+        String hqlName = onlyActive ? "Project.findActiveProjectsForCustomers" : "Project.findAllProjectsForCustomers";
+
+        List<Project> results = findByNamedQueryAndNamedParam(hqlName,
+                "customers",
+                customers.toArray(),
+                true,
+                CACHEREGION);
+
+        return results;
+    }
 
     @Override
-	public List<Project> findActiveProjectsWhereUserIsPM(User user)
-	{
-		return findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM",
-												"user", user,
-												true, CACHEREGION);
-	}
+    public List<Project> findActiveProjectsWhereUserIsPM(User user) {
+        return findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM",
+                "user", user,
+                true, CACHEREGION);
+    }
 }

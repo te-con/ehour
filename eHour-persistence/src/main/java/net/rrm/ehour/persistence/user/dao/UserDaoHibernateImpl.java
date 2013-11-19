@@ -51,18 +51,17 @@ public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, 
         return findUsers(true);
     }
 
-    public List<User> findUsersForDepartments(String pattern, List<UserDepartment> departments, boolean onlyActive) {
+    @Override
+    public List<User> findUsersForDepartments(List<UserDepartment> departments, boolean onlyActive) {
         String hql;
         String[] paramKeys;
         Object[] paramValues;
 
-        pattern = patternToSqlPattern(pattern);
+        hql = (onlyActive) ? "User.findActiveorDepartment" :
+                "User.findForDepartment";
 
-        hql = (onlyActive) ? "User.findActiveByNamePatternForDepartment" :
-                "User.findNamePatternForDepartment";
-
-        paramKeys = new String[]{"pattern", "departments"};
-        paramValues = new Object[]{pattern, departments.toArray()};
+        paramKeys = new String[]{"departments"};
+        paramValues = new Object[]{departments.toArray()};
 
         return findByNamedQueryAndNamedParam(hql, paramKeys, paramValues, true, CACHEREGION);
     }

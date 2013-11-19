@@ -19,7 +19,6 @@ public class CreateTimesheetLockScenario extends AbstractScenario {
 
         EhourApplicationDriver.sleep(500);
 
-
         assertServerMessage("Locked");
     }
 }

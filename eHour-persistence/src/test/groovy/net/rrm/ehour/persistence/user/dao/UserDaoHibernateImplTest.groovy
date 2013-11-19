@@ -44,7 +44,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldPersist()
   {
-    def org = UserDepartmentMother.createUserDepartment()
+    def org = UserDepartmentObjectMother.createUserDepartment()
 
     User user = UserObjectMother.createUser()
     user.setUserId 5

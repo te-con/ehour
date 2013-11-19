@@ -52,16 +52,16 @@ class ProjectCriteriaFilter @Autowired()(projectDao: ProjectDao) {
 
 @Service
 class UserCriteriaFilter @Autowired()(userDao: UserDao) {
-  def getAvailableUsers(userSelectedCriteria: UserSelectedCriteria): ju.Set[User] = {
-    val users = (if (userSelectedCriteria.isEmptyDepartments)
+  def getAvailableUsers(userSelectedCriteria: UserSelectedCriteria): ju.List[User] = {
+    val users = if (userSelectedCriteria.isEmptyDepartments)
       userDao.findUsers(userSelectedCriteria.isOnlyActiveUsers)
     else
-      userDao.findUsersForDepartments(userSelectedCriteria.getUserFilter, userSelectedCriteria.getDepartments, userSelectedCriteria.isOnlyActiveUsers)).toSet
+      userDao.findUsersForDepartments(userSelectedCriteria.getDepartments, userSelectedCriteria.isOnlyActiveUsers)
 
     if (userSelectedCriteria.isForPm) {
       users.filter(u => {
         val i = WrapAsScala.asScalaIterator(u.getProjectAssignments.iterator())
-        !i.filter(p => p.getProject.getProjectManager.equals(userSelectedCriteria.getPm)).isEmpty
+        !i.filter(p => userSelectedCriteria.getPm.equals(p.getProject.getProjectManager)).isEmpty
       })
     }
     else

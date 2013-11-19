@@ -131,7 +131,7 @@ public class AggregateReportServiceTest {
         expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
                 .andReturn(pags);
 
-        expect(userDAO.findUsersForDepartments(null, l, true)).andReturn(users);
+        expect(userDAO.findUsersForDepartments(l, true)).andReturn(users);
 
         replay(reportAggregatedDAO);
         replay(userDAO);

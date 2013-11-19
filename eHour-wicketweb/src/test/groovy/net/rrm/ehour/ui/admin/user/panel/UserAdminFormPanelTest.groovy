@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.user.panel
 
-import net.rrm.ehour.domain.UserDepartmentMother
+import net.rrm.ehour.domain.UserDepartmentObjectMother
 import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.domain.UserRole
 import net.rrm.ehour.ui.admin.user.dto.UserBackingBean
@@ -69,6 +69,6 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         tester.startComponentInPage(new UserAdminFormPanel("panel",
                         new CompoundPropertyModel<UserBackingBean>(new UserBackingBean(UserObjectMother.createUser(), AdminAction.NEW)),
                         Arrays.asList(UserRole.ADMIN),
-                        Arrays.asList(UserDepartmentMother.createUserDepartment())))
+                        Arrays.asList(UserDepartmentObjectMother.createUserDepartment())))
     }
 }

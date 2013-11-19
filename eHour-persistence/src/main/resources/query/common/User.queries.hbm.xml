@@ -35,20 +35,18 @@
 	    	
 	</query>	
 
-	<query name="User.findActiveByNamePatternForDepartment"> 
+	<query name="User.findActiveForDepartment">
 		SELECT DISTINCT user
 		FROM User as user
-	    WHERE (lower(firstName) like  :pattern OR lower(lastName) like :pattern)
-	    		AND active = true
+	    WHERE active = true
 	    		AND user.userDepartment IN (:departments)
 	    ORDER BY lastName, firstName	    
 	</query>
 
-	<query name="User.findNamePatternForDepartment"> 
+	<query name="User.findForDepartment">
 		SELECT DISTINCT user
 		FROM User as user
-	    WHERE (lower(firstName) like :pattern OR lower(lastName) like :pattern)
-	    		AND user.userDepartment IN (:departments)
+	    WHERE user.userDepartment IN (:departments)
 	    ORDER BY lastName, firstName	    
 	</query>
 	

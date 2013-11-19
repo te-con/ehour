@@ -52,13 +52,13 @@ public interface UserDao extends GenericDao<User, Integer>
 	List<User> findAllActiveUsersWithEmailSet();
 	
 	/**
-	 * Find users for departments with filter pattern and active flag
+	 * Find users for departments with active flag
 	 * @param pattern
 	 * @param departments
 	 * @param onlyActive
 	 * @return
 	 */
-	List<User> findUsersForDepartments(String pattern, List<UserDepartment> departments, boolean onlyActive);
+	List<User> findUsersForDepartments(List<UserDepartment> departments, boolean onlyActive);
 	
 	/**
 	 * Delete users with PM role but are not PM anymore

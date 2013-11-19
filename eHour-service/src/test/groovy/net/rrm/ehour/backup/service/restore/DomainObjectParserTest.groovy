@@ -84,7 +84,7 @@ class DomainObjectParserTest {
 
     @Test
     void shouldParseUserAndStoreNewKeyInCacheMap() {
-        def department = UserDepartmentMother.createUserDepartment()
+        def department = UserDepartmentObjectMother.createUserDepartment()
 
         def resolver = createResolver("""<USERLIST>
   <USERS>
