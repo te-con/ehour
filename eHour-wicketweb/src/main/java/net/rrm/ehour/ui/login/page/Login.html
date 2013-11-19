@@ -5,7 +5,7 @@
 
 
 <wicket:head>
-    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 
@@ -15,10 +15,8 @@
 </wicket:head>
 
 <body>
-<br/><br/>
-<br/><br/>
 
-<form wicket:id="loginform">
+<form wicket:id="loginform" style="padding-top: 100px;">
     <div class="GreyFrameContainer loginContainer">
         <h3>&nbsp;</h3>
 
@@ -30,47 +28,51 @@
                     </div>
                 </div>
 
-                <div class="logoContainer">
-                    <img src="img/ehour_grey.gif"/><br/>
+                <div style="padding: 10px">
+                    <div class="logoContainer">
+                        <img src="img/ehour_grey.gif"/><br/>
 
-                    <div style="padding-right: 6px" wicket:id="version">0.8.0</div>
-                </div>
+                        <div style="padding-right: 6px" wicket:id="version">0.8.0</div>
+                    </div>
 
-                <div style="float: left;padding: 7px 23px 0 9px">
-                    <img src="img/grey_frame/pixel_grey.gif" height="70" width="1"/>
-                </div>
+                    <div style="float: left;padding: 7px 23px 0 9px">
+                        <img src="img/grey_frame/pixel_grey.gif" height="70" width="1"/>
+                    </div>
 
-                <div style="margin: 0; padding: 47px 0 0 0">
-                    <table cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td style="padding-right:5px">
-                                <wicket:message key="login.login.username"/>
-                                :
-                            </td>
-                            <td><input size="25" autocomplete="off" onfocus='this.setAttribute("autocomplete", "on");' onblur='this.setAttribute("autocomplete", "off");'  wicket:id="username" type="text"/></td>
-                            <td>&nbsp;</td>
-                        </tr>
+                    <div style="margin: 0; padding: 30px 0 0 0">
+                        <table cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="padding-right:5px">
+                                    <wicket:message key="login.login.username"/>
+                                </td>
+                                <td><input size="23" autocomplete="off"
+                                           onfocus='this.setAttribute("autocomplete", "on");'
+                                           onblur='this.setAttribute("autocomplete", "off");' wicket:id="username"
+                                           type="text"/></td>
+                                <td>&nbsp;</td>
+                            </tr>
 
-                        <tr>
-                            <td style="padding-right:5px">
-                                <wicket:message key="login.login.password"/> :
-                            </td>
-                            <td><input size="25" wicket:id="password" type="password"/></td>
-                            <td style="padding-left:10px">
-                                <button class="submitButton" type="submit">
-                                    <wicket:message key="login.login.submit"/>
-                                </button>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td style="padding-right:5px">
+                                    <wicket:message key="login.login.password"/>
+                                </td>
+                                <td><input size="23" wicket:id="password" type="password"/></td>
+                                <td style="padding-left:10px">
+                                    <button class="submitButton" type="submit">
+                                        <wicket:message key="login.login.submit"/>
+                                    </button>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td colspan="3">
-                                <div wicket:id="feedback" class="error"></div>
-                                <div wicket:id="demoMode" class="error"></div>
-                            </td>
-                        </tr>
-                    </table>
+                            <tr>
+                                <td colspan="3">
+                                    <div wicket:id="feedback" class="error"></div>
+                                    <div wicket:id="demoMode" class="error"></div>
+                                </td>
+                            </tr>
+                        </table>
 
+                    </div>
                 </div>
 
 
