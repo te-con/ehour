@@ -50,7 +50,7 @@
                     <b>
                         <wicket:message key="filter.customer"/>
                     </b><br/>
-                    <select wicket:id="reportCriteria.userSelectedCriteria.customers" class="textInputSmall" style="width: 90%"></select>
+                    <select wicket:id="reportCriteria.userSelectedCriteria.customers" class="textInputSmall reportCriteriaDropdown"></select>
                     <br/>
 
                     <label>
@@ -70,7 +70,7 @@
                     <b>
                         <wicket:message key="filter.project"/>
                     </b><br/>
-                    <select wicket:id="reportCriteria.userSelectedCriteria.projects" class="textInputSmall" style="width: 90%"></select>
+                    <select wicket:id="reportCriteria.userSelectedCriteria.projects" class="textInputSmall reportCriteriaDropdown"></select>
                     <br/>
 
                     <label>
@@ -112,9 +112,7 @@
                 <b>
                     <wicket:message key="filter.department"/>
                 </b><br/>
-                <select wicket:id="reportCriteria.userSelectedCriteria.userDepartments"
-                        class="textInputSmall"
-                        style="width: 90%"></select>
+                <select wicket:id="reportCriteria.userSelectedCriteria.userDepartments" class="textInputSmall reportCriteriaDropdown"></select>
                 <br/>
             </div>
 
@@ -122,8 +120,7 @@
                 <b>
                     <wicket:message key="filter.user"/>
                 </b><br/>
-                <select wicket:id="reportCriteria.userSelectedCriteria.users" class="textInputSmall"
-                        style="width: 90%"></select>
+                <select wicket:id="reportCriteria.userSelectedCriteria.users" class="textInputSmall reportCriteriaDropdown"></select>
                 <br/>
 
                 <label wicket:for="reportCriteria.userSelectedCriteria.onlyActiveUsers"><span wicket:id="onlyActiveUsersLabel"></span></label>&nbsp;&nbsp;&nbsp;<input

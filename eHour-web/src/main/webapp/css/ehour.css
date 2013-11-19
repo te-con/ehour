@@ -851,4 +851,8 @@ hr {
     float: left;
 }
 
-
+.reportCriteriaDropdown {
+    width: 90%;
+    height: 180px;
+    margin-bottom: 5px;
+}
