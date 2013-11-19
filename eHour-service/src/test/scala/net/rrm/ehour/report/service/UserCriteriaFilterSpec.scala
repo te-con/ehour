@@ -11,17 +11,17 @@ import net.rrm.ehour.domain.{UserObjectMother, ProjectObjectMother, ProjectAssig
 
 class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
   val dao = mock[UserDao]
-  val subject = new UserCriteriaFilter(dao)
+  val subject = new UserAndDepartmentCriteriaFilter(dao)
 
   override protected def beforeEach() = reset(dao)
 
   "User Criteria Filter" must {
     "find all users when no departments are provided" in {
-      when(dao.findUsers(false)).thenReturn(List(pm))
+      when(dao.findUsers(false)).thenReturn(toJava(List(pm)))
 
       val criteria = new UserSelectedCriteria
       criteria.setOnlyActiveUsers(false)
-      val users = subject.getAvailableUsers(criteria)
+      val (departments, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
@@ -29,10 +29,10 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
     }
 
     "find all active users when no departments are provided" in {
-      when(dao.findUsers(true)).thenReturn(List(pm))
+      when(dao.findUsers(true)).thenReturn(toJava(List(pm)))
 
       val criteria = new UserSelectedCriteria
-      val users = subject.getAvailableUsers(criteria)
+      val (departments, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
@@ -40,29 +40,29 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
     }
 
     "find all users for given departments" in {
-      when(dao.findUsersForDepartments(List(department), false)).thenReturn(List(pm))
+      when(dao.findUsersForDepartments(toJava(List(department)), false)).thenReturn(toJava(List(pm)))
 
       val criteria = new UserSelectedCriteria
-      criteria.setDepartments(List(department))
+      criteria.setDepartments(toJava(List(department)))
       criteria.setOnlyActiveUsers(false)
-      val users = subject.getAvailableUsers(criteria)
+      val (departments, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
-      verify(dao).findUsersForDepartments(List(department), false)
+      verify(dao).findUsersForDepartments(toJava(List(department)), false)
     }
 
     "find all active users for given departments" in {
-      when(dao.findUsersForDepartments(List(department), true)).thenReturn(List(pm))
+      when(dao.findUsersForDepartments(toJava(List(department)), true)).thenReturn(toJava(List(pm)))
 
       val criteria = new UserSelectedCriteria
-      criteria.setDepartments(List(department))
+      criteria.setDepartments(toJava(List(department)))
       criteria.setOnlyActiveUsers(true)
-      val users = subject.getAvailableUsers(criteria)
+      val (departments, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
-      verify(dao).findUsersForDepartments(List(department), true)
+      verify(dao).findUsersForDepartments(toJava(List(department)), true)
     }
 
     "find all users who are assigned to a PM project" in {
@@ -79,16 +79,16 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
       val pmAssignment = ProjectAssignmentObjectMother.createProjectAssignment(userAssigned, projectPm)
       userAssigned.addProjectAssignment(pmAssignment)
 
-      when(dao.findUsers(true)).thenReturn(List(userNotAssigned, userAssigned))
+      when(dao.findUsers(true)).thenReturn(toJava(List(userNotAssigned, userAssigned)))
 
       val criteria = new UserSelectedCriteria
       criteria.addReportType(ReportType.PM)
       criteria.setPm(pm)
 
-      val users = subject.getAvailableUsers(criteria)
+      val (departments, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
-      users(0) should be (userAssigned)
+      users.get(0) should be (userAssigned)
     }
   }
 }

@@ -43,20 +43,17 @@ public class ReportCriteriaServiceImplTest {
     private UserDepartmentDao userDepartmentDAO;
 
     @Mock
-    private CustomerCriteriaFilter customerCriteriaFilter;
+    private CustomerAndProjectCriteriaFilter customerAndProjectCriteriaFilter;
 
     @Mock
-    private ProjectCriteriaFilter projectCriteriaFilter;
-
-    @Mock
-    private UserCriteriaFilter userCriteriaFilter;
+    private UserAndDepartmentCriteriaFilter userAndDepartmentCriteriaFilter;
 
     @Mock
     private IndividualUserCriteriaSync individualUserCriteriaSync;
 
     @Before
     public void setup() {
-        reportCriteriaService = new ReportCriteriaServiceImpl(userDepartmentDAO, reportAggregatedDAO, customerCriteriaFilter, projectCriteriaFilter, userCriteriaFilter, individualUserCriteriaSync);
+        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO, customerAndProjectCriteriaFilter, userAndDepartmentCriteriaFilter, individualUserCriteriaSync);
     }
 
     @Test
@@ -80,7 +77,7 @@ public class ReportCriteriaServiceImplTest {
 
         reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
 
-        verify(userCriteriaFilter).getAvailableUsers(userSelectedCriteria);
+        verify(userAndDepartmentCriteriaFilter).getAvailableUsers(userSelectedCriteria);
     }
 
     @Test
@@ -92,21 +89,6 @@ public class ReportCriteriaServiceImplTest {
 
         reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
 
-        verify(customerCriteriaFilter).getAvailableCustomers(userSelectedCriteria);
-        verify(projectCriteriaFilter).getAvailableProjects(userSelectedCriteria);
-
-    }
-
-    @Test
-    public void should_sync_criteria_for_global_for_all_departments() {
-        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
-        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
-        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
-
-        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
-
-        verify(userDepartmentDAO).findAll();
-        verify(reportAggregatedDAO).getMinMaxDateTimesheetEntry();
+        verify(customerAndProjectCriteriaFilter).getAvailableCustomers(userSelectedCriteria);
     }
 }

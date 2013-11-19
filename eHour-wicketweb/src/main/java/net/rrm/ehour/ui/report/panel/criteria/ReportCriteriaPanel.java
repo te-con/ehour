@@ -139,8 +139,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         AjaxCheckBox deactivateBox = new AjaxCheckBox(id) {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
-                target.add(customers);
+                updateCustomersAndProjects(target);
             }
         };
 

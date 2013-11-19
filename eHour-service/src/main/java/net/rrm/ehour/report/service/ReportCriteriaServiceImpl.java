@@ -17,14 +17,20 @@
 package net.rrm.ehour.report.service;
 
 import net.rrm.ehour.audit.annot.NonAuditable;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import scala.Tuple2;
+
+import java.util.List;
 
 /**
  * Report Criteria services
@@ -32,15 +38,11 @@ import org.springframework.stereotype.Service;
 @NonAuditable
 @Service("reportCriteriaService")
 public class ReportCriteriaServiceImpl implements ReportCriteriaService {
-    private UserDepartmentDao userDepartmentDAO;
-
     private ReportAggregatedDao reportAggregatedDAO;
 
-    private CustomerCriteriaFilter customerCriteriaFilter;
+    private CustomerAndProjectCriteriaFilter customerAndProjectCriteriaFilter;
 
-    private ProjectCriteriaFilter projectCriteriaFilter;
-
-    private UserCriteriaFilter userCriteriaFilter;
+    private UserAndDepartmentCriteriaFilter userAndDepartmentCriteriaFilter;
 
     private IndividualUserCriteriaSync individualUserCriteriaSync;
 
@@ -48,17 +50,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     }
 
     @Autowired
-    public ReportCriteriaServiceImpl(UserDepartmentDao userDepartmentDAO,
-                                     ReportAggregatedDao reportAggregatedDAO,
-                                     CustomerCriteriaFilter customerCriteriaFilter,
-                                     ProjectCriteriaFilter projectCriteriaFilter,
-                                     UserCriteriaFilter userCriteriaFilter,
+    public ReportCriteriaServiceImpl(ReportAggregatedDao reportAggregatedDAO,
+                                     CustomerAndProjectCriteriaFilter customerAndProjectCriteriaFilter,
+                                     UserAndDepartmentCriteriaFilter userAndDepartmentCriteriaFilter,
                                      IndividualUserCriteriaSync individualUserCriteriaSync) {
-        this.userDepartmentDAO = userDepartmentDAO;
         this.reportAggregatedDAO = reportAggregatedDAO;
-        this.customerCriteriaFilter = customerCriteriaFilter;
-        this.projectCriteriaFilter = projectCriteriaFilter;
-        this.userCriteriaFilter = userCriteriaFilter;
+        this.customerAndProjectCriteriaFilter = customerAndProjectCriteriaFilter;
+        this.userAndDepartmentCriteriaFilter = userAndDepartmentCriteriaFilter;
         this.individualUserCriteriaSync = individualUserCriteriaSync;
     }
 
@@ -72,14 +70,18 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         if (userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm()) {
             if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
-                availCriteria.setProjects(projectCriteriaFilter.getAvailableProjects(userSelectedCriteria));
-                availCriteria.setCustomers(customerCriteriaFilter.getAvailableCustomers(userSelectedCriteria));
+                Tuple2<List<Customer>, List<Project>> available = customerAndProjectCriteriaFilter.getAvailableCustomers(userSelectedCriteria);
+                availCriteria.setCustomers(available._1());
+                availCriteria.setProjects(available._2());
             }
 
             if (updateType == ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
-                availCriteria.setUsers(userCriteriaFilter.getAvailableUsers(userSelectedCriteria));
-                availCriteria.setUserDepartments(userDepartmentDAO.findAll());
+
+                Tuple2<List<UserDepartment>, List<User>> avail = userAndDepartmentCriteriaFilter.getAvailableUsers(userSelectedCriteria);
+
+                availCriteria.setUserDepartments(avail._1());
+                availCriteria.setUsers(avail._2());
             }
 
             if (updateType == ReportCriteriaUpdateType.UPDATE_ALL) {

@@ -12,7 +12,7 @@ class IndividualUserCriteriaSync @Autowired()(userDepartmentDAO: UserDepartmentD
   def syncCriteriaForIndividualUser(reportCriteria: ReportCriteria) {
     val availCriteria = reportCriteria.getAvailableCriteria
     val user = reportCriteria.getUserSelectedCriteria.getUsers.get(0)
-    val assignments = projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId, reportCriteria.getUserSelectedCriteria.getReportRange)
+    val assignments = toScala(projectAssignmentDAO.findProjectAssignmentsForUser(user.getUserId, reportCriteria.getUserSelectedCriteria.getReportRange))
 
     val customers = assignments.map(_.getProject.getCustomer).toSet
     val projects = assignments.map(_.getProject).toSet
@@ -21,5 +21,4 @@ class IndividualUserCriteriaSync @Autowired()(userDepartmentDAO: UserDepartmentD
     availCriteria.setProjects(projects)
     availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry(user))
   }
-
 }
