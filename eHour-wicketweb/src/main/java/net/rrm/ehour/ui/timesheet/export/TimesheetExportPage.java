@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.timesheet.export;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -96,8 +97,9 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     }
 
     @Override
-    protected final boolean isReportForIndividualUser() {
-        return true;
+    protected void determineReportType(UserSelectedCriteria userSelectedCriteria) {
+        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
+        userSelectedCriteria.setUser(getEhourWebSession().getUser());
     }
 
     public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {

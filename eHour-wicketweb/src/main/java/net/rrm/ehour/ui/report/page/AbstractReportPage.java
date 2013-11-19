@@ -45,7 +45,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
     protected final ReportCriteria getReportCriteria() {
         UserSelectedCriteria userSelectedCriteria = getUserSelectedCriteria();
 
-        limitUserSelectedCriteriaForRole(userSelectedCriteria);
+        determineReportType(userSelectedCriteria);
 
         AvailableCriteria availableCriteria = new AvailableCriteria();
 
@@ -74,9 +74,13 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
         return userSelectedCriteria;
     }
 
-    protected void limitUserSelectedCriteriaForRole(UserSelectedCriteria userSelectedCriteria) {
-        limitForSingleUser(userSelectedCriteria);
-        limitForPm(userSelectedCriteria);
+    protected void determineReportType(UserSelectedCriteria userSelectedCriteria) {
+        if (getEhourWebSession().isWithReportRole()) {
+            userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
+        } else {
+            limitForIndividualUser(userSelectedCriteria);
+            limitForPm(userSelectedCriteria);
+        }
     }
 
     private void limitForPm(UserSelectedCriteria userSelectedCriteria) {
@@ -92,17 +96,8 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
         return getEhourWebSession().isWithPmRole();
     }
 
-    private void limitForSingleUser(UserSelectedCriteria userSelectedCriteria) {
-        boolean indivUser = isReportForIndividualUser();
-
+    private void limitForIndividualUser(UserSelectedCriteria userSelectedCriteria) {
         userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
-
-        if (indivUser) {
-            userSelectedCriteria.setUser(getEhourWebSession().getUser());
-        }
-    }
-
-    protected boolean isReportForIndividualUser() {
-        return !getEhourWebSession().isWithReportRole();
+        userSelectedCriteria.setUser(getEhourWebSession().getUser());
     }
 }
