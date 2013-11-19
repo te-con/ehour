@@ -276,6 +276,8 @@ public class Project extends DomainObject<Integer, Project>
                 .append("projectCode", this.getProjectCode())
                 .append("name", this.getName())
                 .append("projectId", this.getProjectId())
+                .append("billable", this.isBillable())
+                .append("pm", this.getProjectManager())
                 .toString();
     }
 

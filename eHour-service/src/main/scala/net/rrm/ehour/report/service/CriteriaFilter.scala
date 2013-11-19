@@ -14,22 +14,22 @@ import scala.collection.convert.WrapAsScala
 @Service
 class CustomerCriteriaFilter @Autowired()(customerDao: CustomerDao) {
   def getAvailableCustomers(userSelectedCriteria: UserSelectedCriteria): ju.List[Customer] = {
+    def fetchCustomers(userSelectedCriteria: UserSelectedCriteria): List[Customer] =
+      if (userSelectedCriteria.isOnlyActiveCustomers) customerDao.findAllActive else customerDao.findAll
+
+    def filterBillable(xs: List[Project]): List[Project] =
+      if (userSelectedCriteria.isOnlyBillableProjects) xs.filter(ProjectPredicate.billablePredicate) else xs
+
+    def filterPm(xs: List[Project]): List[Project] =
+      if (userSelectedCriteria.isForPm) xs.filter(ProjectPredicate.pmPredicate(userSelectedCriteria.getPm)) else xs
+
+    def filterActive(xs: List[Project]): List[Project] =
+      if (userSelectedCriteria.isOnlyActiveProjects) xs.filter(ProjectPredicate.activePredicate) else xs
+
     val customers = fetchCustomers(userSelectedCriteria)
-
-    def filterBillable: List[Customer] =
-      if (userSelectedCriteria.isOnlyBillableProjects) ProjectFilter.filter(customers, ProjectFilter.billablePredicate) else customers
-
-    def filterPm(xs: List[Customer]): List[Customer] =
-      if (userSelectedCriteria.isForPm) ProjectFilter.filter(xs, ProjectFilter.pmPredicate(userSelectedCriteria.getPm)) else xs
-
-    def filterActive(xs: List[Customer]): List[Customer] =
-      if (userSelectedCriteria.isForPm) ProjectFilter.filter(xs, ProjectFilter.activePredicate) else xs
-
-    filterActive(filterPm(filterBillable))
+    val projects = toScala(customers).flatMap(c => toScala(c.getProjects))
+    filterActive(filterPm(filterBillable(projects))).map(_.getCustomer)
   }
-
-  private def fetchCustomers(userSelectedCriteria: UserSelectedCriteria): List[Customer] =
-    if (userSelectedCriteria.isOnlyActiveCustomers) customerDao.findAllActive else customerDao.findAll
 }
 
 @Service
@@ -37,12 +37,12 @@ class ProjectCriteriaFilter @Autowired()(projectDao: ProjectDao) {
   def getAvailableProjects(userSelectedCriteria: UserSelectedCriteria): ju.List[Project] = {
     val projects = fetchProjects(userSelectedCriteria)
 
-    val filteredProjects = if (userSelectedCriteria.isOnlyBillableProjects) projects.filter(ProjectFilter.billablePredicate) else projects
-    if (userSelectedCriteria.isForPm) filteredProjects.filter(ProjectFilter.pmPredicate(userSelectedCriteria.getPm)) else filteredProjects
+    val filteredProjects = if (userSelectedCriteria.isOnlyBillableProjects) projects.filter(ProjectPredicate.billablePredicate) else projects
+    if (userSelectedCriteria.isForPm) filteredProjects.filter(ProjectPredicate.pmPredicate(userSelectedCriteria.getPm)) else filteredProjects
   }
 
   private def fetchProjects(userSelectedCriteria: UserSelectedCriteria): List[Project] =
-    if (userSelectedCriteria.isEmptyCustomers)
+    if (!userSelectedCriteria.isEmptyCustomers)
       projectDao.findProjectForCustomers(userSelectedCriteria.getCustomers, userSelectedCriteria.isOnlyActiveProjects)
     else if (userSelectedCriteria.isOnlyActiveProjects)
       projectDao.findAllActive
@@ -66,5 +66,24 @@ class UserCriteriaFilter @Autowired()(userDao: UserDao) {
     }
     else
       users
+  }
+}
+
+private object ProjectPredicate {
+  type ProjectPredicate = (Project) => Boolean
+
+  val activePredicate: ProjectPredicate = (p: Project) => p.isActive
+
+  val billablePredicate: ProjectPredicate = (p: Project) => p.isBillable
+
+  def pmPredicate(pm: User): ProjectPredicate = (p: Project) => pm.equals(p.getProjectManager)
+
+  def filter(customers: List[Customer], predicate: ProjectPredicate): List[Customer] = {
+    val projects = customers.flatMap(c => WrapAsScala.asScalaSet(c.getProjects))
+    projects.filter(predicate)
+
+    val filteredProjects = projects.filter(predicate)
+
+    filteredProjects.map(p => p.getCustomer)
   }
 }

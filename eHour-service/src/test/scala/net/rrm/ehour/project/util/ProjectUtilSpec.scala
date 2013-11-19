@@ -7,7 +7,7 @@ import net.rrm.ehour.domain.{ProjectObjectMother, UserObjectMother}
 import scala.collection.convert.WrapAsJava
 
 @RunWith(classOf[JUnitRunner])
-class ProjectUtilTest extends WordSpec with Matchers {
+class ProjectUtilSpec extends WordSpec with Matchers {
   "Project Util" must {
     "find projects with PM" in {
       val user = UserObjectMother.createUser()

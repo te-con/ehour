@@ -23,6 +23,7 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -46,6 +47,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     protected ReportCriteriaServiceImpl() {
     }
 
+    @Autowired
     public ReportCriteriaServiceImpl(UserDepartmentDao userDepartmentDAO,
                                      ReportAggregatedDao reportAggregatedDAO,
                                      CustomerCriteriaFilter customerCriteriaFilter,

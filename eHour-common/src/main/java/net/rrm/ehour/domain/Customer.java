@@ -32,58 +32,56 @@ import java.util.Set;
 @Entity
 @Table(name = "CUSTOMER")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Customer extends DomainObject<Integer, Customer>
-{
-	private static final long serialVersionUID = 7179070624535327915L;
+public class Customer extends DomainObject<Integer, Customer> {
+    private static final long serialVersionUID = 7179070624535327915L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CUSTOMER_ID")
-	private Integer customerId;
+    private Integer customerId;
 
     @Column(name = "CODE", nullable = false, length = 32)
     @NotNull
-	private String code;
+    private String code;
 
     @Column(name = "NAME", nullable = false, length = 255)
-    @NotNull       
-	private String name;
+    @NotNull
+    private String name;
 
     @Column(name = "DESCRIPTION", length = 1024)
-	private String description;
+    private String description;
 
     @Column(name = "ACTIVE")
     @Type(type = "yes_no")
-	private Boolean active = Boolean.TRUE;
+    private Boolean active = Boolean.TRUE;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "customer")
-	private	Set<Project>		projects;
+    private Set<Project> projects;
 
     @Transient
-	private boolean deletable;
-	
-	// Constructors
+    private boolean deletable;
 
-	@Override
-	public String toString()
-	{
-		return new ToStringBuilder(this)
-			.append("customerId", customerId)
-			.append("code", code)
-			.append("name", name)
-			.append("active", active)
-			.toString();		
-	}
-	
-	/** default constructor */
-	public Customer()
-	{
-	}
-	
-	public Customer(Integer customerId)
-	{
-		this.customerId = customerId;
-	}
+    // Constructors
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("customerId", customerId)
+                .append("code", code)
+                .append("name", name)
+                .append("active", active)
+                .toString();
+    }
+
+    /**
+     * default constructor
+     */
+    public Customer() {
+    }
+
+    public Customer(Integer customerId) {
+        this.customerId = customerId;
+    }
 
     public Customer(Integer customerId, String code, String name) {
         this(customerId);
@@ -91,140 +89,126 @@ public class Customer extends DomainObject<Integer, Customer>
         this.name = name;
     }
 
-	/** full constructor */
-	public Customer(String code, String name, String description, boolean active)
-	{
-		this.code = code;
-		this.name = name;
-		this.description = description;
-		this.active = active;
-	}
+    /**
+     * full constructor
+     */
+    public Customer(String code, String name, String description, boolean active) {
+        this.code = code;
+        this.name = name;
+        this.description = description;
+        this.active = active;
+    }
 
-	/** full constructor */
-	public Customer(Customer customer)
-	{
-		this.customerId = customer.getCustomerId();
-		this.code = customer.getCode();
-		this.name = customer.getName();
-		this.description = customer.getDescription();
-		this.active = customer.isActive();
-	}	
+    /**
+     * full constructor
+     */
+    public Customer(Customer customer) {
+        this.customerId = customer.getCustomerId();
+        this.code = customer.getCode();
+        this.name = customer.getName();
+        this.description = customer.getDescription();
+        this.active = customer.isActive();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.domain.DomainObject#getFullName()
-	 */
-	@Override
-	public String getFullName()
-	{
-		return (getCode() != null) ?  getCode() + " - " + getName() : getName();
-	}
-	
-	// Property accessors
-	public Integer getCustomerId()
-	{
-		return this.customerId;
-	}
+    /*
+     * (non-Javadoc)
+     * @see net.rrm.ehour.domain.DomainObject#getFullName()
+     */
+    @Override
+    public String getFullName() {
+        return (getCode() != null) ? getCode() + " - " + getName() : getName();
+    }
 
-	public void setCustomerId(Integer customerId)
-	{
-		this.customerId = customerId;
-	}
+    // Property accessors
+    public Integer getCustomerId() {
+        return this.customerId;
+    }
 
-	public String getCode()
-	{
-		return this.code;
-	}
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
 
-	public void setCode(String code)
-	{
-		this.code = code;
-	}
+    public String getCode() {
+        return this.code;
+    }
 
-	public String getName()
-	{
-		return this.name;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public Customer setName(String name)
-	{
-		this.name = name;
+    public String getName() {
+        return this.name;
+    }
+
+    public Customer setName(String name) {
+        this.name = name;
         return this;
-	}
+    }
 
-	public String getDescription()
-	{
-		return this.description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	/**
-	 * @return the projects
-	 */
-	public Set<Project> getProjects()
-	{
-		return projects;
-	}
-	
-	/**
-	 * Get only active projects
-	 * @return
-	 */
-	public Set<Project> getActiveProjects()
-	{
-		Set<Project> activeProjects = new HashSet<Project>();
-		
-		for (Project project : getProjects())
-		{
-			if (project.isActive())
-			{
-				activeProjects.add(project);
-			}
-		}
-		
-		return activeProjects;
-		
-	}
+    /**
+     * @return the projects
+     */
+    public Set<Project> getProjects() {
+        return projects;
+    }
 
-	/**
-	 * @param projects the projects to set
-	 */
-	public void setProjects(Set<Project> projects)
-	{
-		this.projects = projects;
-	}
+    /**
+     * Get only active projects
+     *
+     * @return
+     */
+    public Set<Project> getActiveProjects() {
+        Set<Project> activeProjects = new HashSet<Project>();
 
-	/**
-	 * @return the active
-	 */
-	public boolean isActive()
-	{
-		return active;
-	}
+        for (Project project : getProjects()) {
+            if (project.isActive()) {
+                activeProjects.add(project);
+            }
+        }
 
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active)
-	{
-		this.active = active;
-	}
+        return activeProjects;
+
+    }
+
+    /**
+     * @param projects the projects to set
+     */
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
+    /**
+     * @return the active
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * @param active the active to set
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(Customer object)
-	{
-		return new CompareToBuilder()
-			.append(this.getNameLowerCase(), object.getNameLowerCase())
-			.append(this.getCodeLowerCase(), object.getCodeLowerCase())
-			.append(this.getCustomerId(), object.getCustomerId()).toComparison();
-	}
+    /**
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public int compareTo(Customer object) {
+        return new CompareToBuilder()
+                .append(this.getNameLowerCase(), object.getNameLowerCase())
+                .append(this.getCodeLowerCase(), object.getCodeLowerCase())
+                .append(this.getCustomerId(), object.getCustomerId()).toComparison();
+    }
 
     private String getNameLowerCase() {
         return getName() == null ? null : getName().toLowerCase();
@@ -235,55 +219,46 @@ public class Customer extends DomainObject<Integer, Customer>
     }
 
 
-
-
     @Override
-	public Integer getPK()
-	{
-		return customerId;
-	}
+    public Integer getPK() {
+        return customerId;
+    }
 
-	/**
-	 * @return the deletable
-	 */
-	public boolean isDeletable()
-	{
-		return deletable;
-	}
+    /**
+     * @return the deletable
+     */
+    public boolean isDeletable() {
+        return deletable;
+    }
 
-	/**
-	 * @param deletable the deletable to set
-	 */
-	public void setDeletable(boolean deletable)
-	{
-		this.deletable = deletable;
-	}	
+    /**
+     * @param deletable the deletable to set
+     */
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+    }
 
-	public void addProject(Project project)
-	{
-		if (projects == null)
-		{
-			projects = new HashSet<Project>();
-		}
-		
-		projects.add(project);
+    public void addProject(Project project) {
+        if (projects == null) {
+            projects = new HashSet<Project>();
+        }
+
+        projects.add(project);
 
         project.setCustomer(this);
-	}
+    }
 
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof Customer))
-			return false;
-		Customer castOther = (Customer) other;
-		return new EqualsBuilder().append(code, castOther.code).append(name, castOther.name).append(description, castOther.description).append(active, castOther.active).isEquals();
-	}
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof Customer))
+            return false;
+        Customer castOther = (Customer) other;
+        return new EqualsBuilder().append(code, castOther.code).append(name, castOther.name).append(description, castOther.description).append(active, castOther.active).isEquals();
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(code).append(name).append(description).append(active).toHashCode();
-	}
-	
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(code).append(name).append(description).append(active).toHashCode();
+    }
+
 }
