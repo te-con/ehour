@@ -50,7 +50,7 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
 
 @SuppressWarnings("serial")
-public class GlobalReportPageTest extends BaseSpringWebAppTester implements Serializable {
+public class ReportPageTest extends BaseSpringWebAppTester implements Serializable {
     private MockReportTabBuilder mockReportTabCommand;
     protected ReportCriteriaService reportCriteriaService;
     protected AggregateReportService aggregateReportService;
@@ -95,7 +95,7 @@ public class GlobalReportPageTest extends BaseSpringWebAppTester implements Seri
 
         startPage();
 
-        GlobalReportPage page = (GlobalReportPage) tester.getLastRenderedPage();
+        ReportPage page = (ReportPage) tester.getLastRenderedPage();
 
         AjaxRequestTarget target = createMock(AjaxRequestTarget.class);
         AjaxEvent event = new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED, target);
@@ -129,9 +129,9 @@ public class GlobalReportPageTest extends BaseSpringWebAppTester implements Seri
     }
 
     private void startPage() {
-        tester.startPage(GlobalReportPage.class);
+        tester.startPage(ReportPage.class);
 
-        tester.assertRenderedPage(GlobalReportPage.class);
+        tester.assertRenderedPage(ReportPage.class);
         tester.assertNoErrorMessage();
     }
 

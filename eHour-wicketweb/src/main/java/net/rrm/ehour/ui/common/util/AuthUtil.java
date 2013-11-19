@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.util;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.report.page.GlobalReportPage;
+import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import org.apache.wicket.Page;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -105,7 +105,7 @@ public class AuthUtil {
         } else if (roles.contains(WebUtils.ROLE_ADMIN)) {
             homepage = MainConfigPage.class;
         } else if (roles.contains(WebUtils.ROLE_REPORT)) {
-            homepage = GlobalReportPage.class;
+            homepage = ReportPage.class;
         } else {
             homepage = MonthOverviewPage.class;
         }

@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AuthorizeInstantiation(value = {UserRole.ROLE_CONSULTANT, UserRole.ROLE_REPORT, UserRole.ROLE_PROJECTMANAGER})
-public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
+public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     private static final long serialVersionUID = 6614404841734599622L;
 
     private ReportTabbedPanel tabPanel;
@@ -46,7 +46,7 @@ public class GlobalReportPage extends AbstractReportPage<ReportCriteriaBackingBe
     @SpringBean
     private ReportTabBuilder reportTabCreationBuilder;
 
-    public GlobalReportPage() {
+    public ReportPage() {
         super(new ResourceModel("report.global.title"));
     }
 
