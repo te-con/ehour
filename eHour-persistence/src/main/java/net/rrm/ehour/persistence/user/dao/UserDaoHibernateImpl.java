@@ -57,7 +57,7 @@ public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, 
         String[] paramKeys;
         Object[] paramValues;
 
-        hql = (onlyActive) ? "User.findActiveorDepartment" :
+        hql = (onlyActive) ? "User.findActiveForDepartment" :
                 "User.findForDepartment";
 
         paramKeys = new String[]{"departments"};
