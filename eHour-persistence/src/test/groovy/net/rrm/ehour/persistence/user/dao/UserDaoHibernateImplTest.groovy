@@ -65,9 +65,9 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   {
     def ids = [new UserDepartment(10)]
 
-    def results = userDao.findUsersForDepartments("in", ids, false);
+    def results = userDao.findUsersForDepartments(ids, false);
 
-    assertEquals(2, results.size());
+    assertEquals(5, results.size());
   }
 
   @Test
