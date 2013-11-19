@@ -20,9 +20,8 @@ public abstract class CustomerObjectMother
 		cust.setActive(true);
 		cust.setCode(customerId + "");
 		
-		Project project = ProjectObjectMother.createProject(1, cust);
-		cust.addProject(project);
-		
+		ProjectObjectMother.createProject(1, cust);
+
 		return cust;
 	}
 
