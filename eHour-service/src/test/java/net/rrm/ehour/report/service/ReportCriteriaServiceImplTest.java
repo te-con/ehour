@@ -16,198 +16,107 @@
 
 package net.rrm.ehour.report.service;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.*;
-import net.rrm.ehour.persistence.customer.dao.CustomerDao;
-import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
-import net.rrm.ehour.persistence.project.dao.ProjectDao;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
-/**
- * test case for report criteria
- */
-
+@RunWith(MockitoJUnitRunner.class)
 public class ReportCriteriaServiceImplTest {
-    private ReportCriteriaService reportCriteriaService;
+    private ReportCriteriaServiceImpl reportCriteriaService;
 
+    @Mock
     private ReportAggregatedDao reportAggregatedDAO;
-    private UserDao userDAO;
-    private ProjectAssignmentDao prjAssignmentDAO;
-    private CustomerDao customerDAO;
-    private ProjectDao projectDAO;
+
+    @Mock
     private UserDepartmentDao userDepartmentDAO;
+
+    @Mock
+    private CustomerCriteriaFilter customerCriteriaFilter;
+
+    @Mock
+    private ProjectCriteriaFilter projectCriteriaFilter;
+
+    @Mock
+    private UserCriteriaFilter userCriteriaFilter;
+
+    @Mock
+    private IndividualUserCriteriaSync individualUserCriteriaSync;
 
     @Before
     public void setup() {
-        reportCriteriaService = new ReportCriteriaServiceImpl();
-
-        reportAggregatedDAO = createMock(ReportAggregatedDao.class);
-        ((ReportCriteriaServiceImpl) reportCriteriaService).setReportAggregatedDAO(reportAggregatedDAO);
-
-        prjAssignmentDAO = createMock(ProjectAssignmentDao.class);
-        ((ReportCriteriaServiceImpl) reportCriteriaService).setProjectAssignmentDAO(prjAssignmentDAO);
-
-        userDAO = createMock(UserDao.class);
-        ((ReportCriteriaServiceImpl) reportCriteriaService).setUserDAO(userDAO);
-
-        customerDAO = createMock(CustomerDao.class);
-        ((ReportCriteriaServiceImpl) reportCriteriaService).setCustomerDAO(customerDAO);
-
-        projectDAO = createMock(ProjectDao.class);
-        ((ReportCriteriaServiceImpl) reportCriteriaService).setProjectDAO(projectDAO);
-
-        userDepartmentDAO = createMock(UserDepartmentDao.class);
-        ((ReportCriteriaServiceImpl) reportCriteriaService).setUserDepartmentDAO(userDepartmentDAO);
+        reportCriteriaService = new ReportCriteriaServiceImpl(userDepartmentDAO, reportAggregatedDAO, customerCriteriaFilter, projectCriteriaFilter, userCriteriaFilter, individualUserCriteriaSync);
     }
 
     @Test
-    public void should_sync_userreportcriteria_for_single_user() {
-        ReportCriteria reportCriteria;
-        UserSelectedCriteria userSelectedCriteria;
-
-        List<ProjectAssignment> prjAsgs = new ArrayList<ProjectAssignment>();
-
-        prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(1));
-        prjAsgs.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
-
-        userSelectedCriteria = new UserSelectedCriteria();
+    public void should_sync_criteria_for_single_user() {
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
         userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
-
-        List<User> ids = new ArrayList<User>();
-        ids.add(new User(1));
-        userSelectedCriteria.setUsers(ids);
-        reportCriteria = new ReportCriteria(userSelectedCriteria);
-        prjAssignmentDAO.findProjectAssignmentsForUser(isA(Integer.class), isA(DateRange.class));
-        expectLastCall().andReturn(prjAsgs);
-
-        reportAggregatedDAO.getMinMaxDateTimesheetEntry(isA(User.class));
-        expectLastCall().andReturn(null);
-
-        replay(prjAssignmentDAO);
-        replay(reportAggregatedDAO);
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
+        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
         reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
 
-        verify(reportAggregatedDAO);
-        verify(prjAssignmentDAO);
-
-        assertEquals(2, reportCriteria.getAvailableCriteria().getCustomers().size());
+        verify(individualUserCriteriaSync).syncCriteriaForIndividualUser(reportCriteria);
     }
 
     @Test
-    public void should_sync_userreportcriteria_for_all() {
+    public void should_sync_criteria_for_global_for_all_users() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.setOnlyActiveUsers(false);
-        userSelectedCriteria.setOnlyActiveCustomers(true);
-        userSelectedCriteria.setOnlyActiveProjects(false);
         userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
-        expect(userDAO.findUsers(false)).andReturn(new ArrayList<User>());
-        replay(userDAO);
+        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_USERS);
 
-        expect(customerDAO.findAllActive()).andReturn(new ArrayList<Customer>());
-        replay(customerDAO);
-
-        expect(projectDAO.findAll()).andReturn(new ArrayList<Project>());
-        replay(projectDAO);
-
-        expect(userDepartmentDAO.findAll()).andReturn(new ArrayList<UserDepartment>());
-        replay(userDepartmentDAO);
-
-        reportAggregatedDAO.getMinMaxDateTimesheetEntry();
-        expectLastCall().andReturn(null);
-        replay(reportAggregatedDAO);
-
-        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
-
-        verify(reportAggregatedDAO);
-        verify(projectDAO);
-        verify(customerDAO);
-        verify(userDAO);
+        verify(userCriteriaFilter).getAvailableUsers(userSelectedCriteria);
     }
 
     @Test
-    public void should_sync_userreportcriteria_with_only_billable_projects() {
+    public void should_sync_criteria_for_global_for_all_projects() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.setOnlyActiveUsers(false);
-        userSelectedCriteria.setOnlyActiveCustomers(true);
-        userSelectedCriteria.setOnlyActiveProjects(false);
-        userSelectedCriteria.setOnlyBillableProjects(true);
         userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
-
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
-        expect(userDAO.findUsers(false)).andReturn(new ArrayList<User>());
-        replay(userDAO);
+        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_USERS);
 
-        expect(customerDAO.findAllActive()).andReturn(new ArrayList<Customer>());
-        replay(customerDAO);
-
-        expect(projectDAO.findAll()).andReturn(new ArrayList<Project>());
-        replay(projectDAO);
-
-        expect(userDepartmentDAO.findAll()).andReturn(new ArrayList<UserDepartment>());
-        replay(userDepartmentDAO);
-
-        reportAggregatedDAO.getMinMaxDateTimesheetEntry();
-        expectLastCall().andReturn(null);
-        replay(reportAggregatedDAO);
-
-        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
-
-        verify(reportAggregatedDAO);
-        verify(projectDAO);
-        verify(customerDAO);
-        verify(userDAO);
+        verify(userCriteriaFilter).getAvailableUsers(userSelectedCriteria);
     }
 
     @Test
-    public void should_sync_userreportcriteria_for_pm() {
+    public void should_sync_criteria_for_global_for_all_customers() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.setOnlyActiveUsers(false);
-        userSelectedCriteria.setOnlyActiveCustomers(true);
-        userSelectedCriteria.setOnlyActiveProjects(false);
-        userSelectedCriteria.setOnlyBillableProjects(true);
         userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
-
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
-        expect(userDAO.findUsers(false)).andReturn(new ArrayList<User>());
-        replay(userDAO);
+        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
 
-        expect(customerDAO.findAllActive()).andReturn(new ArrayList<Customer>());
-        replay(customerDAO);
+        verify(customerCriteriaFilter).getAvailableCustomers(userSelectedCriteria);
+    }
 
-        expect(projectDAO.findAll()).andReturn(new ArrayList<Project>());
-        replay(projectDAO);
-
-        expect(userDepartmentDAO.findAll()).andReturn(new ArrayList<UserDepartment>());
-        replay(userDepartmentDAO);
-
-        reportAggregatedDAO.getMinMaxDateTimesheetEntry();
-        expectLastCall().andReturn(null);
-        replay(reportAggregatedDAO);
+    @Test
+    public void should_sync_criteria_for_global_for_all_departments() {
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
+        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
         reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
 
-        verify(reportAggregatedDAO);
-        verify(projectDAO);
-        verify(customerDAO);
-        verify(userDAO);
+        verify(userDepartmentDAO).findAll();
+        verify(reportAggregatedDAO).getMinMaxDateTimesheetEntry();
     }
-
 }

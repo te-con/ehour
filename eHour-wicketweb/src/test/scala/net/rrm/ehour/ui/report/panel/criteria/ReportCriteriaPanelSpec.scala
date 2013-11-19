@@ -28,7 +28,7 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
   "Report Criteria Panel" should {
     def toList[T](xs: mutable.Buffer[T]): ju.List[T] = WrapAsJava.bufferAsJavaList(xs)
 
-    val availableCriteria = new AvailableCriteria(toList(mutable.Buffer(CustomerMother.createCustomer())),
+    val availableCriteria = new AvailableCriteria(toList(mutable.Buffer(CustomerObjectMother.createCustomer())),
       toList(mutable.Buffer(ProjectObjectMother.createProject(1))),
       toList(mutable.Buffer(UserObjectMother.createUser())),
       toList(mutable.Buffer(UserDepartmentMother.createUserDepartment())))

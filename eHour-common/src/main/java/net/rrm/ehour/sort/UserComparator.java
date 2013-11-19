@@ -14,11 +14,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.sort;
-
-import java.util.Comparator;
+package net.rrm.ehour.sort;
 
 import net.rrm.ehour.domain.User;
+
+import java.util.Comparator;
 
 public class UserComparator implements Comparator<User> {
     private boolean firstNameFirst;

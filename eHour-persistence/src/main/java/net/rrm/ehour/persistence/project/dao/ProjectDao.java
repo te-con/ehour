@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.persistence.project.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.dao.GenericDao;
+
+import java.util.List;
 
 /**
  * CRUD on project domain object

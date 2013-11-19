@@ -27,8 +27,7 @@ import java.util.GregorianCalendar;
  * Container for the report criteria, available and user selected
  */
 
-public class ReportCriteria implements Serializable
-{
+public class ReportCriteria implements Serializable {
     private static final long serialVersionUID = 7406265452950554098L;
     private AvailableCriteria availableCriteria;
     private UserSelectedCriteria userSelectedCriteria;
@@ -36,23 +35,19 @@ public class ReportCriteria implements Serializable
     /**
      * Default constructor
      */
-    public ReportCriteria()
-    {
+    public ReportCriteria() {
         this(new AvailableCriteria(), new UserSelectedCriteria());
     }
 
-    public ReportCriteria(AvailableCriteria availableCriteria)
-    {
+    public ReportCriteria(AvailableCriteria availableCriteria) {
         this(availableCriteria, new UserSelectedCriteria());
     }
 
-    public ReportCriteria(UserSelectedCriteria userSelectedCriteria)
-    {
+    public ReportCriteria(UserSelectedCriteria userSelectedCriteria) {
         this(new AvailableCriteria(), userSelectedCriteria);
     }
 
-    public ReportCriteria(AvailableCriteria availableCriteria, UserSelectedCriteria userSelectedCriteria)
-    {
+    public ReportCriteria(AvailableCriteria availableCriteria, UserSelectedCriteria userSelectedCriteria) {
         this.availableCriteria = availableCriteria;
         this.userSelectedCriteria = userSelectedCriteria;
     }
@@ -63,30 +58,23 @@ public class ReportCriteria implements Serializable
      * @return
      */
     // TODO reduce complexity of method
-    public DateRange getReportRange()
-    {
+    public DateRange getReportRange() {
         DateRange reportRange;
 
         reportRange = userSelectedCriteria.getReportRange();
 
-        if (reportRange.getDateStart() == null || userSelectedCriteria.isInfiniteStartDate())
-        {
-            if (availableCriteria == null || availableCriteria.getReportRange() == null)
-            {
+        if (reportRange.getDateStart() == null || userSelectedCriteria.isInfiniteStartDate()) {
+            if (availableCriteria == null || availableCriteria.getReportRange() == null) {
                 reportRange.setDateStart(new Date());
-            } else
-            {
+            } else {
                 reportRange.setDateStart(availableCriteria.getReportRange().getDateStart());
             }
         }
 
-        if (reportRange.getDateEnd() == null || userSelectedCriteria.isInfiniteEndDate())
-        {
-            if (availableCriteria == null || availableCriteria.getReportRange() == null)
-            {
+        if (reportRange.getDateEnd() == null || userSelectedCriteria.isInfiniteEndDate()) {
+            if (availableCriteria == null || availableCriteria.getReportRange() == null) {
                 reportRange.setDateEnd(new Date());
-            } else
-            {
+            } else {
                 reportRange.setDateEnd(availableCriteria.getReportRange().getDateEnd());
             }
         }
@@ -95,27 +83,34 @@ public class ReportCriteria implements Serializable
         userSelectedCriteria.setReportRange(reportRange);
 
         // if no timesheets were specified, use the current month as the range
-        if (reportRange.isEmpty())
-        {
+        if (reportRange.isEmpty()) {
             reportRange = DateUtil.calendarToMonthRange(new GregorianCalendar());
         }
 
         return reportRange;
     }
 
+    public void sort() {
+//        Collections.
+
+//        getAvailableCriteria().getCustomers()
+//
+//        Collections.sort((reportCriteria.getAvailableCriteria()).getCustomers(), new CustomerComparator());
+//        Collections.sort((reportCriteria.getAvailableCriteria()).getProjects(), new ProjectComparator());
+
+    }
+
     /**
      * @return the userSelectedCriteria
      */
-    public UserSelectedCriteria getUserSelectedCriteria()
-    {
+    public UserSelectedCriteria getUserSelectedCriteria() {
         return userSelectedCriteria;
     }
 
     /**
      * @return the availableCriteria
      */
-    public AvailableCriteria getAvailableCriteria()
-    {
+    public AvailableCriteria getAvailableCriteria() {
         return availableCriteria;
     }
 }

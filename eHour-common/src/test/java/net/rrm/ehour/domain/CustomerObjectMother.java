@@ -6,7 +6,7 @@ package net.rrm.ehour.domain;
  * @author thies (www.te-con.nl)
  *
  */
-public class CustomerMother
+public abstract class CustomerObjectMother
 {
 	public static Customer createCustomer()
 	{

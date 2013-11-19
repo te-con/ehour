@@ -22,7 +22,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.ui.common.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.sort.ProjectAssignmentComparator;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.trend.TrendReportModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;

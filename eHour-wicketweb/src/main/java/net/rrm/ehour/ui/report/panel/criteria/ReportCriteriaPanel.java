@@ -35,8 +35,6 @@ import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.sort.CustomerComparator;
-import net.rrm.ehour.ui.common.sort.ProjectComparator;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.report.panel.criteria.quick.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -261,7 +259,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
 
         ReportCriteria reportCriteria = reportCriteriaService.syncUserReportCriteria(backingBean.getReportCriteria(), updateType);
-        sortReportCriteria(reportCriteria);
         backingBean.setReportCriteria(reportCriteria);
     }
 
@@ -407,20 +404,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         return new QuickDropDownChoice<QuickQuarter>("quickQuarter", quarters, new QuickQuarterRenderer());
     }
 
-    /**
-     * Sort available report criteria
-     *
-     * @param reportCriteria
-     */
-    private void sortReportCriteria(ReportCriteria reportCriteria) {
-        Collections.sort((reportCriteria.getAvailableCriteria()).getCustomers(), new CustomerComparator());
-        Collections.sort((reportCriteria.getAvailableCriteria()).getProjects(), new ProjectComparator());
-    }
-
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.common.panel.BaseAjaxPanel#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
-      */
     public final boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         if (ajaxEvent.getEventType() == QuickDateAjaxEventType.DATE_CHANGED) {
             updateDates(ajaxEvent.getTarget());

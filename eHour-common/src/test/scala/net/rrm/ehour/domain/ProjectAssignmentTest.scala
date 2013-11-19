@@ -70,7 +70,7 @@ class ProjectAssignmentTest extends FunSuite with Matchers with BeforeAndAfter {
                               projectName: String) : ProjectAssignment = {
 
     if(!customersCache.exists(_._1 == customerName)) {
-      val tmp = CustomerMother.createCustomer(customersCache.size+1)
+      val tmp = CustomerObjectMother.createCustomer(customersCache.size+1)
       tmp.setName(customerName)
       customersCache += customerName -> tmp
     }

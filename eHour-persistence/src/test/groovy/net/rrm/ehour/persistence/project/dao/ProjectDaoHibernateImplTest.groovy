@@ -49,7 +49,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldPersist()
   {
-    def customer = CustomerMother.createCustomer()
+    def customer = CustomerObjectMother.createCustomer()
     customer.customerId = 10
     customer.projects.clear()
 

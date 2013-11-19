@@ -14,12 +14,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.sort;
+package net.rrm.ehour.sort;
+
+import net.rrm.ehour.domain.ProjectAssignment;
 
 import java.io.Serializable;
 import java.util.Comparator;
-
-import net.rrm.ehour.domain.ProjectAssignment;
 
 public class ProjectAssignmentComparator implements Comparator<ProjectAssignment>, Serializable
 {
@@ -40,10 +40,6 @@ public class ProjectAssignmentComparator implements Comparator<ProjectAssignment
 		this.compareType = compareType;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-	 */
 	public int compare(ProjectAssignment o1, ProjectAssignment o2)
 	{
 		int	cmp;

@@ -1,6 +1,6 @@
 package net.rrm.ehour.persistence.customer.dao
 
-import net.rrm.ehour.domain.CustomerMother
+import net.rrm.ehour.domain.CustomerObjectMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,7 +52,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	@Test
 	void "should persist customer"()
 	{
-		def customer = CustomerMother.createCustomer()
+		def customer = CustomerObjectMother.createCustomer()
         customer.name = "aa"
         customer.code = "bb"
         customer.customerId = null

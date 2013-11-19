@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import com.google.common.collect.Sets;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -42,6 +43,8 @@ import org.junit.Test;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
@@ -145,11 +148,11 @@ public class GlobalReportPageTest extends BaseSpringWebAppTester implements Seri
 
         AvailableCriteria availCriteria = new AvailableCriteria();
 
-        List<Customer> customers = new ArrayList<Customer>();
+        SortedSet<Customer> customers = Sets.newTreeSet();
         customers.add(new Customer(1));
         availCriteria.setCustomers(customers);
 
-        List<Project> projects = new ArrayList<Project>();
+        Set<Project> projects = Sets.newHashSet();
         projects.add(new Project(2));
         availCriteria.setProjects(projects);
 
@@ -157,7 +160,7 @@ public class GlobalReportPageTest extends BaseSpringWebAppTester implements Seri
         depts.add(new UserDepartment(2));
         availCriteria.setUserDepartments(depts);
 
-        List<User> usrs = new ArrayList<User>();
+        Set<User> usrs = Sets.newHashSet();
         usrs.add(new User(2));
         availCriteria.setUsers(usrs);
 

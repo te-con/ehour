@@ -16,28 +16,36 @@
 
 package net.rrm.ehour.report.criteria;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.sort.CustomerComparator;
+import net.rrm.ehour.sort.ProjectComparator;
+import net.rrm.ehour.sort.UserComparator;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * ReportData Criteria
  * Contains input as well as output
- **/
+ */
 
-public class AvailableCriteria implements Serializable
-{
-	private static final long serialVersionUID = -6687214845760958691L;
-	private DateRange				reportRange;
-	private List<Customer>			customers;
-	private List<Project>			projects;
-	private List<User>				users;
-	private List<UserDepartment>	userDepartments;
+public class AvailableCriteria implements Serializable {
+    private static final long serialVersionUID = -6687214845760958691L;
+    private static final ProjectComparator PROJECT_COMPARATOR = new ProjectComparator();
+    private static final CustomerComparator CUSTOMER_COMPARATOR = new CustomerComparator();
+    private static final UserComparator USER_COMPARATOR = new UserComparator(false);
+    private DateRange reportRange;
+    private List<Customer> customers = Lists.newArrayList();
+    private List<Project> projects = Lists.newArrayList();
+    private List<User> users = Lists.newArrayList();
+    private List<UserDepartment> userDepartments;
 
     public AvailableCriteria() {
     }
@@ -50,75 +58,78 @@ public class AvailableCriteria implements Serializable
     }
 
     /**
-	 * @return the userDepartments
-	 */
-	public List<UserDepartment> getUserDepartments()
-	{
-		return userDepartments;
-	}
-	/**
-	 * @param userDepartments the userDepartments to set
-	 */
-	public void setUserDepartments(List<UserDepartment> userDepartments)
-	{
-		this.userDepartments = userDepartments;
-	}
-	/**
-	 * @return the users
-	 */
-	public List<User> getUsers()
-	{
-		return users;
-	}
-	/**
-	 * @param users the users to set
-	 */
-	public void setUsers(List<User> users)
-	{
-		this.users = users;
-	}
-	
-	/**
-	 * @return the reportRange
-	 */
-	public DateRange getReportRange()
-	{
-		return reportRange;
-	}
-	/**
-	 * @param reportRange the reportRange to set
-	 */
-	public void setReportRange(DateRange reportRange)
-	{
-		this.reportRange = reportRange;
-	}
-	
-	/**
-	 * @return the customers
-	 */
-	public List<Customer> getCustomers()
-	{
-		return customers;
-	}
-	/**
-	 * @param customers the customers to set
-	 */
-	public void setCustomers(List<Customer> customers)
-	{
-		this.customers = customers;
-	}
-	/**
-	 * @return the projects
-	 */
-	public List<Project> getProjects()
-	{
-		return projects;
-	}
-	/**
-	 * @param projects the projects to set
-	 */
-	public void setProjects(List<Project> projects)
-	{
-		this.projects = projects;
-	}
+     * @return the userDepartments
+     */
+    public List<UserDepartment> getUserDepartments() {
+        return userDepartments;
+    }
+
+    /**
+     * @param userDepartments the userDepartments to set
+     */
+    public void setUserDepartments(List<UserDepartment> userDepartments) {
+        this.userDepartments = userDepartments;
+    }
+
+    /**
+     * @return the users
+     */
+    public List<User> getUsers() {
+        return users;
+    }
+
+    /**
+     * @param users the users to set
+     */
+    public void setUsers(Collection<User> users) {
+        this.users.clear();
+        this.users.addAll(users);
+        Collections.sort(this.users, USER_COMPARATOR);
+    }
+
+    /**
+     * @return the reportRange
+     */
+    public DateRange getReportRange() {
+        return reportRange;
+    }
+
+    /**
+     * @param reportRange the reportRange to set
+     */
+    public void setReportRange(DateRange reportRange) {
+        this.reportRange = reportRange;
+    }
+
+    /**
+     * @return the customers
+     */
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    /**
+     * @param customers the customers to set
+     */
+    public void setCustomers(Collection<Customer> customers) {
+        this.customers.clear();
+        this.customers.addAll(customers);
+        Collections.sort(this.customers, CUSTOMER_COMPARATOR);
+    }
+
+    /**
+     * @return the projects
+     */
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    /**
+     * @param projects the projects to set
+     */
+    public void setProjects(Collection<Project> projects) {
+        this.projects.clear();
+        this.projects.addAll(projects);
+        Collections.sort(this.projects, PROJECT_COMPARATOR);
+    }
 }

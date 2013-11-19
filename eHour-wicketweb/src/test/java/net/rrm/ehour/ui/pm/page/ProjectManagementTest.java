@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.pm.page;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -28,7 +29,6 @@ import org.apache.wicket.util.tester.FormTester;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class ProjectManagementTest extends BaseSpringWebAppTester {
 
     @Test
     public void shouldRender() throws SecurityException, NoSuchMethodException {
-        List<Project> projects = new ArrayList<Project>();
+        List<Project> projects = Lists.newArrayList();
         projects.add(new Project(1));
 
         ProjectManagerReport report = new ProjectManagerReport();

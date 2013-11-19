@@ -18,13 +18,13 @@ package net.rrm.ehour.ui.admin.department;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.common.sort.UserDepartmentComparator;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;

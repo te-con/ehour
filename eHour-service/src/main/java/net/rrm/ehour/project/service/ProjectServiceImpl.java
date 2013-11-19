@@ -172,10 +172,6 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectManagerProjects(net.rrm.ehour.persistence.persistence.user.domain.User)
-      */
     public List<Project> getProjectManagerProjects(User user) {
         return projectDAO.findActiveProjectsWhereUserIsPM(user);
     }

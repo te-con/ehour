@@ -14,20 +14,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.sort;
+package net.rrm.ehour.sort;
+
+import net.rrm.ehour.domain.UserDepartment;
 
 import java.util.Comparator;
 
-import net.rrm.ehour.domain.Customer;
-
 /**
- * Customer name comparator
+ * User dept comparator ignoring case 
  **/
 
-public class CustomerComparator implements Comparator<Customer>
+public class UserDepartmentComparator implements Comparator<UserDepartment>
 {
 
-	public int compare(Customer o1, Customer o2)
+	public int compare(UserDepartment o1, UserDepartment o2)
 	{
 		return o1.getName().compareToIgnoreCase(o2.getName());
 	}

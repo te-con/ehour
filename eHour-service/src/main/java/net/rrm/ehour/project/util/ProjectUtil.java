@@ -71,17 +71,4 @@ public class ProjectUtil {
 
         return pmProjects;
     }
-
-    public static List<Project> filterActiveProjects(Collection<Project> projects) {
-        List<Project> activeProjects = Lists.newArrayList();
-
-        for (Project project : projects) {
-            if (project.isActive()) {
-                activeProjects.add(project);
-            }
-        }
-
-        return activeProjects;
-
-    }
 }

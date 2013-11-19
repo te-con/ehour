@@ -64,7 +64,7 @@ public class ProjectAssignmentObjectMother
 		}		
 
 		
-		cust = CustomerMother.createCustomer(customerId);
+		cust = CustomerObjectMother.createCustomer(customerId);
 		
 		prj = ProjectObjectMother.createProject(projectId, cust);
 		

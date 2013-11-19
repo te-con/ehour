@@ -267,6 +267,8 @@ public class Customer extends DomainObject<Integer, Customer>
 		}
 		
 		projects.add(project);
+
+        project.setCustomer(this);
 	}
 
 	@Override

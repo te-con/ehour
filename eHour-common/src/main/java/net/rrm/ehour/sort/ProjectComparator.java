@@ -14,32 +14,24 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.sort;
+package net.rrm.ehour.sort;
 
-import static org.junit.Assert.assertEquals;
-import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 
-import org.junit.Test;
+import java.io.Serializable;
+import java.util.Comparator;
 
 /**
- * TODO 
+ * Comparator on project's name 
  **/
 
-public class CustomerComparatorTest
+public class ProjectComparator implements Comparator<Project>, Serializable
 {
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.sort.CustomerComparator#compare(net.rrm.ehour.persistence.persistence.domain.Customer, net.rrm.ehour.persistence.persistence.domain.Customer)}.
-	 */
-	@Test
-	public void testCompare()
+	private static final long serialVersionUID = -2100973629921877419L;
+
+	public int compare(Project o1, Project o2)
 	{
-		Customer c1 = new Customer();
-		c1.setName("aa");
-		Customer c2 = new Customer();
-		c2.setName("bb");
-		
-		assertEquals(-1, new CustomerComparator().compare(c1, c2));
-		
+		return o1.getFullName().compareToIgnoreCase(o2.getFullName());
 	}
 
 }
