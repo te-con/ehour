@@ -218,7 +218,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         parent.add(deactivateBox);
 
-        Label filterToggleText = new Label("onlyActiveUsersLabel", new ResourceModel("report.hideInactive"));
+        Label filterToggleText = new Label("onlyActiveUsersLabel", new ResourceModel("report.onlyActiveUsers"));
         parent.add(filterToggleText);
     }
 
