@@ -48,14 +48,5 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
       tester.executeAjaxEvent(checkbox, "onclick")
       tester.assertNoErrorMessage()
     }
-
-    "EHO-352: tick only Billable customers should not throw an exception" in {
-      when(service.syncUserReportCriteria(anyObject(), anyObject())).thenReturn(criteria)
-
-      tester.startComponentInPage(new ReportCriteriaPanel("testObject", model))
-      val checkbox = tester.getComponentFromLastRenderedPage("testObject:border:greySquaredFrame:border_body:criteriaForm:customerProjectsBorder:customerProjectsBorder_body:reportCriteria.userSelectedCriteria.onlyBillableCustomers")
-      tester.executeAjaxEvent(checkbox, "onclick")
-      tester.assertNoErrorMessage()
-    }
   }
 }

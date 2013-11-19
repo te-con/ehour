@@ -70,25 +70,20 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
 
         if (userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm()) {
-            if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS ||
+            if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
+                availCriteria.setProjects(projectCriteriaFilter.getAvailableProjects(userSelectedCriteria));
                 availCriteria.setCustomers(customerCriteriaFilter.getAvailableCustomers(userSelectedCriteria));
             }
 
-            if (updateType == ReportCriteriaUpdateType.UPDATE_PROJECTS ||
+            if (updateType == ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
-                availCriteria.setProjects(projectCriteriaFilter.getAvailableProjects(userSelectedCriteria));
+                availCriteria.setUsers(userCriteriaFilter.getAvailableUsers(userSelectedCriteria));
+                availCriteria.setUserDepartments(userDepartmentDAO.findAll());
             }
 
             if (updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
-                availCriteria.setUserDepartments(userDepartmentDAO.findAll());
-
                 availCriteria.setReportRange(reportAggregatedDAO.getMinMaxDateTimesheetEntry());
-            }
-
-            if (updateType == ReportCriteriaUpdateType.UPDATE_USERS ||
-                    updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
-                availCriteria.setUsers(userCriteriaFilter.getAvailableUsers(userSelectedCriteria));
             }
         } else {
             individualUserCriteriaSync.syncCriteriaForIndividualUser(reportCriteria);

@@ -78,19 +78,7 @@ public class ReportCriteriaServiceImplTest {
         userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
-        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_USERS);
-
-        verify(userCriteriaFilter).getAvailableUsers(userSelectedCriteria);
-    }
-
-    @Test
-    public void should_sync_criteria_for_global_for_all_projects() {
-        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
-        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
-        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
-
-        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_USERS);
+        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
 
         verify(userCriteriaFilter).getAvailableUsers(userSelectedCriteria);
     }
@@ -102,9 +90,11 @@ public class ReportCriteriaServiceImplTest {
         userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
-        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
+        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
 
         verify(customerCriteriaFilter).getAvailableCustomers(userSelectedCriteria);
+        verify(projectCriteriaFilter).getAvailableProjects(userSelectedCriteria);
+
     }
 
     @Test

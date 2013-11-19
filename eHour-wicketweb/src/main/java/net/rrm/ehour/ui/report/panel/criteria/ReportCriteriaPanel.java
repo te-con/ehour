@@ -76,8 +76,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private ListMultipleChoice<Customer> customers;
     private ListMultipleChoice<User> users;
     private List<WebMarkupContainer> quickSelections;
-    private AjaxCheckBox onlyBillableCustomerCheckbox;
-    private AjaxCheckBox onlyBillableProjectsCheckbox;
+    private ListMultipleChoice<UserDepartment> departments;
 
     /**
      * Constructor which sets up the basic borded form
@@ -102,7 +101,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         addCustomerSelection(model.getObject(), blueBorder);
         addProjectSelection(blueBorder);
 
-        form.add(getEhourWebSession().isWithReportRole() || getEhourWebSession().isWithPmRole() ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
+        boolean showDepartmentAndOtherUsers = getEhourWebSession().isWithReportRole() || getEhourWebSession().isWithPmRole();
+        form.add(showDepartmentAndOtherUsers ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
 
         addSubmitButtons(form);
     }
@@ -115,34 +115,31 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         customers.setMaxRows(MAX_CRITERIA_ROW);
 
         customers.setOutputMarkupId(true);
-
-        // update projects when customer(s) selected
-        customers.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-            private static final long serialVersionUID = -5588313671121851508L;
-
-            protected void onUpdate(AjaxRequestTarget target) {
-                // show only projects for selected customers
-                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
-                target.add(projects);
-            }
-        });
-
         parent.add(customers);
 
-        // hide active/inactive customers checkbox
-        AjaxCheckBox deactivateBox = createOnlyActiveCheckbox();
-        parent.add(deactivateBox);
+        parent.add(createOnlyActiveCustomersAndProjectsCheckbox("reportCriteria.userSelectedCriteria.onlyActiveCustomers"));
+    }
 
-        onlyBillableCustomerCheckbox = createOnlyBillableCheckbox("reportCriteria.userSelectedCriteria.onlyBillableCustomers");
-        parent.add(onlyBillableCustomerCheckbox);
+    private void addProjectSelection(WebMarkupContainer parent) {
+        projects = new ListMultipleChoice<Project>("reportCriteria.userSelectedCriteria.projects",
+                new PropertyModel<List<Project>>(getDefaultModel(), "reportCriteria.availableCriteria.projects"),
+                new DomainObjectChoiceRenderer<Project>());
+        projects.setMaxRows(MAX_CRITERIA_ROW);
+        projects.setOutputMarkupId(true);
+        parent.add(projects);
+
+        parent.add(createOnlyActiveCustomersAndProjectsCheckbox("reportCriteria.userSelectedCriteria.onlyActiveProjects"));
+
+        AjaxCheckBox onlyBillableProjectsCheckbox = createOnlyBillableCheckbox("reportCriteria.userSelectedCriteria.onlyBillableProjects");
+        parent.add(onlyBillableProjectsCheckbox);
     }
 
     @SuppressWarnings("serial")
-    private AjaxCheckBox createOnlyActiveCheckbox() {
-        AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveCustomers") {
+    private AjaxCheckBox createOnlyActiveCustomersAndProjectsCheckbox(final String id) {
+        AjaxCheckBox deactivateBox = new AjaxCheckBox(id) {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
                 target.add(customers);
             }
         };
@@ -154,46 +151,21 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
     @SuppressWarnings("serial")
     private AjaxCheckBox createOnlyBillableCheckbox(String id) {
-        AjaxCheckBox deactivateBox = new AjaxCheckBox(id, new PropertyModel<Boolean>(getDefaultModel(), "reportCriteria.userSelectedCriteria.onlyBillableProjects")) {
+        AjaxCheckBox activeBox = new AjaxCheckBox(id, new PropertyModel<Boolean>(getDefaultModel(), "reportCriteria.userSelectedCriteria.onlyBillableProjects")) {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS);
-                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
-                target.add(customers);
-                target.add(projects);
-
-                target.add(onlyBillableCustomerCheckbox);
-                target.add(onlyBillableProjectsCheckbox);
+                updateCustomersAndProjects(target);
             }
         };
 
-        deactivateBox.setMarkupId(id);
-        return deactivateBox;
+        activeBox.setMarkupId(id);
+        return activeBox;
     }
 
-    private void addProjectSelection(WebMarkupContainer parent) {
-        projects = new ListMultipleChoice<Project>("reportCriteria.userSelectedCriteria.projects",
-                new PropertyModel<List<Project>>(getDefaultModel(), "reportCriteria.availableCriteria.projects"),
-                new DomainObjectChoiceRenderer<Project>());
-        projects.setMaxRows(MAX_CRITERIA_ROW);
-        projects.setOutputMarkupId(true);
-        parent.add(projects);
-
-        // hide active/inactive projects checkbox
-        final AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveProjects") {
-            private static final long serialVersionUID = 2585047163449150793L;
-
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_PROJECTS);
-                target.add(projects);
-            }
-        };
-
-        parent.add(deactivateBox);
-
-        onlyBillableProjectsCheckbox = createOnlyBillableCheckbox("reportCriteria.userSelectedCriteria.onlyBillableProjects");
-        parent.add(onlyBillableProjectsCheckbox);
+    private void updateCustomersAndProjects(AjaxRequestTarget target) {
+        updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
+        target.add(customers);
+        target.add(projects);
     }
 
 
@@ -211,8 +183,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS);
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
                 target.add(users);
+                target.add(departments);
             }
         };
 
@@ -223,21 +196,11 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addUserDepartmentSelection(WebMarkupContainer parent) {
-        ListMultipleChoice<UserDepartment> departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userSelectedCriteria.userDepartments",
+        departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userSelectedCriteria.userDepartments",
                 new PropertyModel<List<UserDepartment>>(getDefaultModel(), "reportCriteria.availableCriteria.userDepartments"),
                 new DomainObjectChoiceRenderer<UserDepartment>());
         departments.setMaxRows(MAX_CRITERIA_ROW);
-
-        // update projects when customer(s) selected
-        departments.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-            private static final long serialVersionUID = 1L;
-
-            protected void onUpdate(AjaxRequestTarget target) {
-                // show only projects for selected customers
-                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS);
-                target.add(users);
-            }
-        });
+        departments.setOutputMarkupId(true);
 
         parent.add(departments);
     }

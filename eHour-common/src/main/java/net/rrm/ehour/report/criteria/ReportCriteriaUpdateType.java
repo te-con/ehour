@@ -17,13 +17,11 @@
 package net.rrm.ehour.report.criteria;
 
 /**
- * ReportCriteria update types 
- **/
+ * ReportCriteria update types
+ */
 
-public enum ReportCriteriaUpdateType
-{
-	UPDATE_ALL,
-	UPDATE_USERS,
-	UPDATE_CUSTOMERS,
-	UPDATE_PROJECTS
+public enum ReportCriteriaUpdateType {
+    UPDATE_ALL,
+    UPDATE_USERS_AND_DEPTS,
+    UPDATE_CUSTOMERS_AND_PROJECTS
 }
