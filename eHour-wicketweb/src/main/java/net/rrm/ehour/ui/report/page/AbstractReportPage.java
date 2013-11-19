@@ -84,6 +84,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
 
         if (forPm) {
             userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.PM);
+            userSelectedCriteria.setPm(getEhourWebSession().getUser());
         }
     }
 
