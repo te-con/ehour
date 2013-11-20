@@ -16,24 +16,12 @@
 
 package net.rrm.ehour.ui.common.renderers;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.Localizer;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import net.rrm.ehour.domain.DomainObject;
 
-public abstract class LocalizedResourceRenderer<T> implements IChoiceRenderer<T> {
+public abstract class LocalizedDomainObjectResourceRenderer<T extends DomainObject<?, ?>> extends LocalizedResourceRenderer<T> {
     private static final long serialVersionUID = 3533972441275552509L;
 
-    public Object getDisplayValue(T obj) {
-        String key = getResourceKey(obj);
-
-        Localizer localizer = Application.get().getResourceSettings().getLocalizer();
-
-        return localizer.getString(key, null);
-    }
-
-    protected abstract String getResourceKey(T o);
-
-    public String getIdValue(T object, int index) {
-        return Integer.toString(index);
+    public String getIdValue(T domainObject, int index) {
+        return domainObject.getPK().toString();
     }
 }
