@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class EnvFileSystemResource extends FileSystemResource
 {
-    private static final Pattern ENV_PATTERN = Pattern.compile("\\$\\{(.*)\\}");
+    private static final Pattern ENV_PATTERN = Pattern.compile("\\$\\{([a-zA-Z|_]+)\\}");
 
     public EnvFileSystemResource(String path)
     {
