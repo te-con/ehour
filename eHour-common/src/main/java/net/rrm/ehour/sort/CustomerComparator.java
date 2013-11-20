@@ -17,6 +17,7 @@
 package net.rrm.ehour.sort;
 
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.report.criteria.Sort;
 
 import java.util.Comparator;
 
@@ -25,7 +26,21 @@ import java.util.Comparator;
  */
 
 public class CustomerComparator implements Comparator<Customer> {
+    private Sort sort;
+
+    public CustomerComparator() {
+        this(Sort.NAME);
+    }
+
+    public CustomerComparator(Sort sort) {
+        this.sort = sort;
+    }
+
     public int compare(Customer o1, Customer o2) {
-        return o1.getName().compareToIgnoreCase(o2.getName());
+        if (sort == Sort.NAME) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        } else {
+            return o1.getCode().compareToIgnoreCase(o2.getCode());
+        }
     }
 }

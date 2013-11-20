@@ -32,9 +32,6 @@ public class ReportCriteria implements Serializable {
     private AvailableCriteria availableCriteria;
     private UserSelectedCriteria userSelectedCriteria;
 
-    /**
-     * Default constructor
-     */
     public ReportCriteria() {
         this(new AvailableCriteria(), new UserSelectedCriteria());
     }
@@ -57,7 +54,6 @@ public class ReportCriteria implements Serializable {
      *
      * @return
      */
-    // TODO reduce complexity of method
     public DateRange getReportRange() {
         DateRange reportRange;
 
@@ -79,7 +75,6 @@ public class ReportCriteria implements Serializable {
             }
         }
 
-
         userSelectedCriteria.setReportRange(reportRange);
 
         // if no timesheets were specified, use the current month as the range
@@ -90,26 +85,14 @@ public class ReportCriteria implements Serializable {
         return reportRange;
     }
 
-    public void sort() {
-//        Collections.
-
-//        getAvailableCriteria().getCustomers()
-//
-//        Collections.sort((reportCriteria.getAvailableCriteria()).getCustomers(), new CustomerComparator());
-//        Collections.sort((reportCriteria.getAvailableCriteria()).getProjects(), new ProjectComparator());
-
+    public void updateCustomerSort() {
+        availableCriteria.setCustomerSortOrderAndSort(userSelectedCriteria.getCustomerSort());
     }
 
-    /**
-     * @return the userSelectedCriteria
-     */
     public UserSelectedCriteria getUserSelectedCriteria() {
         return userSelectedCriteria;
     }
 
-    /**
-     * @return the availableCriteria
-     */
     public AvailableCriteria getAvailableCriteria() {
         return availableCriteria;
     }

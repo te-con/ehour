@@ -18,39 +18,39 @@
 
                 <div style="float:left;margin-bottom: 5px">
 
-                    <input style="width: 5em; clear: both" type="text"
-                           wicket:id="reportCriteria.userSelectedCriteria.reportRange.dateStart"/>
+                    <input style="width: 5em; clear: both" type="text" wicket:id="reportCriteria.userSelectedCriteria.reportRange.dateStart"/>
                     &nbsp;&nbsp;
                     <wicket:message key="report.criteria.until"/>
-                    :
                     &nbsp;&nbsp;
-                    <input style="width: 5em; clear: both" type="text"
-                           wicket:id="reportCriteria.userSelectedCriteria.reportRange.dateEnd"/>
-
+                    <input style="width: 5em; clear: both" type="text" wicket:id="reportCriteria.userSelectedCriteria.reportRange.dateEnd"/>
                 </div>
-                <br clear="both"/>
+                <br clear="all"/>
 
                 <div style="width: 10em;float:left">
                     <wicket:message key="quickDates"/>
-                    :
                 </div>
                 <select class="textInputSmall" wicket:id="quickWeek"></select>
                 <select class="textInputSmall" wicket:id="quickMonth"></select>
                 <select class="textInputSmall" wicket:id="quickQuarter"></select>
             </div>
 
-            <!-- CUSTOMER AND PROJECT SELECTION -->
+            <!-- CUSTOMER AND PROJECT BLOCK -->
 
             <br/><br/>
 
             <br clear="all"/>
 
             <div wicket:id="customerProjectsBorder">
+                <!-- CUSTOMER SELECTION -->
                 <div style="float: left;width: 48%;padding-left: 10px;">
-                    <b>
-                        <wicket:message key="filter.customer"/>
-                    </b><br/>
-                    <select wicket:id="reportCriteria.userSelectedCriteria.customers" class="textInputSmall reportCriteriaDropdown"></select>
+                    <b><wicket:message key="filter.customer"/></b><a href="#" onclick="return toggleFilter('#customerFilter')">+</a>
+
+                    <div id="customerFilter" style="display:none;margin-bottom: 5px;">
+                        <input id="customerFilterInput" class="textInput searchInput" type="text" style="float:left" placeholder="Filter..." />
+                        Sort on <select wicket:id="customerSort"></select><br/>
+                    </div>
+
+                    <select id="customerSelect" wicket:id="reportCriteria.userSelectedCriteria.customers" class="textInputSmall reportCriteriaDropdown"></select>
                     <br/>
 
                     <label>
@@ -61,6 +61,7 @@
                     <br/>
                 </div>
 
+                <!-- PROJECT SELECTION -->
                 <div style="padding-right: 10px;width: 48%;float:right">
                     <b>
                         <wicket:message key="filter.project"/>
@@ -125,6 +126,10 @@
             <br clear="all"/>
         </div>
     </wicket:fragment>
+
+        <script>
+            initFilter('#customerSelect', '#customerFilterInput');
+        </script>
 </wicket:panel>
 
 </body>

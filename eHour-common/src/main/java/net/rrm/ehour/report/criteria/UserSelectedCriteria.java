@@ -53,6 +53,7 @@ public class UserSelectedCriteria implements Serializable {
     private List<User> users;
     private List<Project> projects;
     private List<Customer> customers;
+    private Sort customerSort;
     private List<UserDepartment> userDepartments;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
@@ -70,6 +71,14 @@ public class UserSelectedCriteria implements Serializable {
         infiniteEndDate = false;
 
         reportRange = DateUtil.getDateRangeForMonth(new GregorianCalendar());
+    }
+
+    public Sort getCustomerSort() {
+        return customerSort;
+    }
+
+    public void setCustomerSort(Sort customerSort) {
+        this.customerSort = customerSort;
     }
 
     public void setUser(User user) {

@@ -24,6 +24,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
+import net.rrm.ehour.report.criteria.Sort;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -42,14 +43,18 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.*;
@@ -59,10 +64,13 @@ import java.util.*;
  */
 
 public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBackingBean> {
-    private static final int MAX_CRITERIA_ROW = 6;
-
     private static final long serialVersionUID = 161160822264046559L;
+
+    private static final int MAX_CRITERIA_ROW = 6;
+    private static final JavaScriptResourceReference CRITERIA_JS = new JavaScriptResourceReference(ReportCriteriaPanel.class, "report_criteria.js");
+
     private static final String ID_USERDEPT_PLACEHOLDER = "userDepartmentPlaceholder";
+
     public static final int AMOUNT_OF_QUICKWEEKS = 8;
     public static final int AMOUNT_OF_QUICKMONTHS = 6;
     public static final int AMOUNT_OF_QUICKQUARTERS = 3;
@@ -111,13 +119,30 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         customers = new ListMultipleChoice<Customer>("reportCriteria.userSelectedCriteria.customers",
                 new PropertyModel<List<Customer>>(bean, "reportCriteria.availableCriteria.customers"),
                 new DomainObjectChoiceRenderer<Customer>());
-
+        customers.setMarkupId("customerSelect");
         customers.setMaxRows(MAX_CRITERIA_ROW);
 
         customers.setOutputMarkupId(true);
         parent.add(customers);
 
         parent.add(createOnlyActiveCustomersAndProjectsCheckbox("reportCriteria.userSelectedCriteria.onlyActiveCustomers"));
+
+        parent.add(createCustomerSort());
+    }
+
+    private DropDownChoice<Sort> createCustomerSort() {
+        DropDownChoice<Sort> customerSort = new DropDownChoice<Sort>("customerSort", new PropertyModel<Sort>(getPanelModelObject(), "reportCriteria.userSelectedCriteria.customerSort"), Arrays.asList(Sort.values()));
+        customerSort.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                ReportCriteria reportCriteria = ReportCriteriaPanel.this.getBackingBeanFromModel().getReportCriteria();
+                reportCriteria.updateCustomerSort();
+
+                target.add(customers);
+            }
+        });
+
+        return customerSort;
     }
 
     private void addProjectSelection(WebMarkupContainer parent) {
@@ -383,5 +408,10 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         for (WebMarkupContainer cont : quickSelections) {
             target.add(cont);
         }
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(JavaScriptReferenceHeaderItem.forReference(CRITERIA_JS));
     }
 }
