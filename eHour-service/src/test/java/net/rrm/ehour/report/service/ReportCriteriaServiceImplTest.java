@@ -16,7 +16,11 @@
 
 package net.rrm.ehour.report.service;
 
+import com.google.common.collect.Lists;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -27,10 +31,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import scala.Tuple2;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReportCriteriaServiceImplTest {
@@ -75,6 +82,9 @@ public class ReportCriteriaServiceImplTest {
         userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
+        Tuple2<List<UserDepartment>, List<User>> apply = new Tuple2<List<UserDepartment>, List<User>>(Lists.<UserDepartment>newArrayList(), Lists.<User>newArrayList());
+        when(userAndDepartmentCriteriaFilter.getAvailableUsers(userSelectedCriteria)).thenReturn(apply);
+
         reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
 
         verify(userAndDepartmentCriteriaFilter).getAvailableUsers(userSelectedCriteria);
@@ -85,8 +95,11 @@ public class ReportCriteriaServiceImplTest {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
         userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
         userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
-        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
+        Tuple2<List<Customer>, List<Project>> apply = new Tuple2<List<Customer>, List<Project>>(Lists.<Customer>newArrayList(), Lists.<Project>newArrayList());
+        when(customerAndProjectCriteriaFilter.getAvailableCustomers(userSelectedCriteria)).thenReturn(apply);
+
+        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
         reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
 
         verify(customerAndProjectCriteriaFilter).getAvailableCustomers(userSelectedCriteria);
