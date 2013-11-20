@@ -9,6 +9,6 @@ class EhourHomeUtilTest extends FunSuite {
   test("should get configuration dir") {
     val dir = EhourHomeUtil.getConfDir("a")
 
-    dir == "a/conf/"
+    assert(dir == "a/conf/")
   }
 }
