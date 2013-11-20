@@ -46,7 +46,7 @@ public class AvailableCriteria implements Serializable {
     private List<User> users = Lists.newArrayList();
     private List<UserDepartment> userDepartments;
 
-    private Sort customerSort = Sort.CODE;
+    private Sort customerSort = Sort.NAME;
     private Sort projectSort = Sort.CODE;
     private Sort userSort = Sort.CODE;
 

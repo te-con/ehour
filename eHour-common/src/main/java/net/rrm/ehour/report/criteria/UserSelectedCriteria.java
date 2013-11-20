@@ -53,7 +53,7 @@ public class UserSelectedCriteria implements Serializable {
     private List<User> users;
     private List<Project> projects;
     private List<Customer> customers;
-    private Sort customerSort;
+    private Sort customerSort = Sort.NAME;
     private List<UserDepartment> userDepartments;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
