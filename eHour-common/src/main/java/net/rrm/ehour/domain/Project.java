@@ -33,8 +33,7 @@ import java.util.Set;
 @Entity
 @Table(name = "PROJECT")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Project extends DomainObject<Integer, Project>
-{
+public class Project extends DomainObject<Integer, Project> {
     private static final long serialVersionUID = 6553709211219335091L;
 
     @Id
@@ -86,25 +85,21 @@ public class Project extends DomainObject<Integer, Project>
 
     // Constructors
 
-    public boolean isBillable()
-    {
+    public boolean isBillable() {
         return billable;
     }
 
-    public void setBillable(boolean billable)
-    {
+    public void setBillable(boolean billable) {
         this.billable = billable;
     }
 
     /**
      * default constructor
      */
-    public Project()
-    {
+    public Project() {
     }
 
-    public Project(Integer projectId)
-    {
+    public Project(Integer projectId) {
         this.projectId = projectId;
     }
 
@@ -114,8 +109,7 @@ public class Project extends DomainObject<Integer, Project>
     }
 
 
-    public String getFullName()
-    {
+    public String getFullName() {
         return (StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name;
     }
 
@@ -126,121 +120,101 @@ public class Project extends DomainObject<Integer, Project>
     /**
      * Get primary key
      */
-    public Integer getPK()
-    {
+    public Integer getPK() {
         return projectId;
     }
 
     // Property accessors
 
-    public Integer getProjectId()
-    {
+    public Integer getProjectId() {
         return this.projectId;
     }
 
-    public void setProjectId(Integer projectId)
-    {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
-    public String getProjectCode()
-    {
+    public String getProjectCode() {
         return this.projectCode;
     }
 
-    public void setProjectCode(String projectCode)
-    {
+    public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
     }
 
-    public String getContact()
-    {
+    public String getContact() {
         return this.contact;
     }
 
-    public void setContact(String contact)
-    {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return this.description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
-    public Project setName(String name)
-    {
+    public Project setName(String name) {
         this.name = name;
         return this;
     }
 
-    public boolean isDefaultProject()
-    {
+    public boolean isDefaultProject() {
         return this.defaultProject;
     }
 
-    public void setDefaultProject(boolean defaultProject)
-    {
+    public void setDefaultProject(boolean defaultProject) {
         this.defaultProject = defaultProject;
     }
 
-    public Customer getCustomer()
-    {
+    public Customer getCustomer() {
         return this.customer;
     }
 
-    public void setCustomer(Customer customer)
-    {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
     /**
      * @return the active
      */
-    public boolean isActive()
-    {
+    public boolean isActive() {
         return active;
     }
 
     /**
      * @param active the active to set
      */
-    public void setActive(boolean active)
-    {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
     /**
      * @return the projectAssignments
      */
-    public Set<ProjectAssignment> getProjectAssignments()
-    {
+    public Set<ProjectAssignment> getProjectAssignments() {
         return projectAssignments;
     }
 
     /**
      * @param projectAssignments the projectAssignments to set
      */
-    public void setProjectAssignments(Set<ProjectAssignment> projectAssignments)
-    {
+    public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
         this.projectAssignments = projectAssignments;
     }
 
     /**
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public int compareTo(Project object)
-    {
+    public int compareTo(Project object) {
         return new CompareToBuilder()
                 .append(this.getName(), object.getName())
                 .append(this.getProjectCode(), object.getProjectCode())
@@ -251,24 +225,21 @@ public class Project extends DomainObject<Integer, Project>
     /**
      * @return the projectManager
      */
-    public User getProjectManager()
-    {
+    public User getProjectManager() {
         return projectManager;
     }
 
     /**
      * @param projectManager the projectManager to set
      */
-    public void setProjectManager(User projectManager)
-    {
+    public void setProjectManager(User projectManager) {
         this.projectManager = projectManager;
     }
 
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return new ToStringBuilder(this).append("active", this.active)
                 .append("PK", this.getPK())
                 .append("defaultProject", this.defaultProject)
@@ -284,23 +255,19 @@ public class Project extends DomainObject<Integer, Project>
     /**
      * @return the deletable
      */
-    public boolean isDeletable()
-    {
+    public boolean isDeletable() {
         return deletable;
     }
 
     /**
      * @param deletable the deletable to set
      */
-    public void setDeletable(boolean deletable)
-    {
+    public void setDeletable(boolean deletable) {
         this.deletable = deletable;
     }
 
-    public void addProjectAssignment(ProjectAssignment assignment)
-    {
-        if (projectAssignments == null)
-        {
+    public void addProjectAssignment(ProjectAssignment assignment) {
+        if (projectAssignments == null) {
             projectAssignments = new HashSet<ProjectAssignment>();
         }
 
@@ -308,10 +275,8 @@ public class Project extends DomainObject<Integer, Project>
     }
 
     @Override
-    public boolean equals(final Object other)
-    {
-        if (!(other instanceof Project))
-        {
+    public boolean equals(final Object other) {
+        if (!(other instanceof Project)) {
             return false;
         }
         Project castOther = (Project) other;
@@ -320,8 +285,7 @@ public class Project extends DomainObject<Integer, Project>
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return new HashCodeBuilder().append(projectCode).append(contact).append(description).append(name).append(defaultProject).append(active).append(customer).append(billable).toHashCode();
     }
 

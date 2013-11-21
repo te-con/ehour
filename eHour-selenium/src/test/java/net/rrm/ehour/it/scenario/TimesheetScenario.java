@@ -4,8 +4,8 @@ import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.WicketBy;
 import org.junit.Test;
 
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.login;
-import static net.rrm.ehour.it.driver.TimesheetApplicationDriver.*;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginRegularUser;
+import static net.rrm.ehour.it.driver.TimesheetDriver.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -14,9 +14,9 @@ public class TimesheetScenario extends AbstractScenario {
     public void should_book_hours() {
         createUserAndAssign();
 
-        login("thies", "a");
+        loginRegularUser();
 
-        assertInOverviewPage();
+        amIOnTheOverviewPage();
 
         book8Hours();
     }
@@ -25,7 +25,7 @@ public class TimesheetScenario extends AbstractScenario {
     public void should_not_delete_previous_day_comment_when_cancelling_edit_comment() {
         createUserAndAssign();
 
-        login("thies", "a");
+        loginRegularUser();
 
         clickInWeek(1);
         String comment = "this is a comment";

@@ -21,7 +21,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED)
     assignment.setAllottedHours(20)
 
-    50 == new AssignmentAggregateReportElement(assignment, 10).getProgressPercentage
+    assert(50 == new AssignmentAggregateReportElement(assignment, 10).getProgressPercentage)
   }
 
   test("should get 50% progress for allotted flex") {
@@ -31,7 +31,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAllowedOverrun(10)
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
-    50 == e.getProgressPercentage
+    assert(50 == e.getProgressPercentage)
   }
 
   test("should calculate available hours for allotted flex") {
@@ -41,7 +41,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAllowedOverrun(10)
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
-    20 == e.getAvailableHours.toInt
+    assert(20 == e.getAvailableHours.toInt)
   }
 
   test("should calculate available hours for allotted fixed") {
@@ -49,7 +49,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED)
     assignment.setAllottedHours(20)
 
-    10 == new AssignmentAggregateReportElement(assignment, 10).getAvailableHours.toInt
+    assert(10 == new AssignmentAggregateReportElement(assignment, 10).getAvailableHours.toInt)
   }
 
   test("should get 50% progress for date assignment when we're in the middle") {
@@ -64,7 +64,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setDateEnd(now.getTime)
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
-    50 == e.getProgressPercentage
+    assert(50 == e.getProgressPercentage)
   }
 
   test("should get turnover") {
@@ -73,6 +73,6 @@ class AssignmentAggregateReportElementTest extends FunSuite {
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
 
-    150 == e.getTurnOver.intValue()
+    assert(150 == e.getTurnOver.intValue())
   }
 }

@@ -14,26 +14,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.report.criteria;
+package net.rrm.ehour.ui.common.renderers;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.util.DateUtil;
-import org.junit.Test;
+import net.rrm.ehour.domain.DomainObject;
 
-import java.util.GregorianCalendar;
+public abstract class LocalizedDomainObjectResourceRenderer<T extends DomainObject<?, ?>> extends LocalizedResourceRenderer<T> {
+    private static final long serialVersionUID = 3533972441275552509L;
 
-import static org.junit.Assert.assertEquals;
-
-public class ReportCriteriaTest {
-    @Test
-    public void testGetReportRange() {
-        DateRange dr = DateUtil.calendarToMonthRange(new GregorianCalendar());
-
-        AvailableCriteria availCriteria = new AvailableCriteria();
-        ReportCriteria reportCriteria = new ReportCriteria(availCriteria);
-
-        availCriteria.setReportRange(dr);
-
-        assertEquals(dr, reportCriteria.getReportRange());
+    public String getIdValue(T domainObject, int index) {
+        return domainObject.getPK().toString();
     }
 }

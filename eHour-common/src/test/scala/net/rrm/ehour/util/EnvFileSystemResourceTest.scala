@@ -12,12 +12,12 @@ class EnvFileSystemResourceTest extends FunSuite {
 
     val resource = new EnvFileSystemResource("${EHOUR_HOME}${SEPARATOR}test")
 
-    resource.getFile.getPath == "ok${SEPARATOR}test"
+    assert(resource.getFile.getPath == "ok${SEPARATOR}test")
   }
 
   test("should parse without environment") {
     val resource = new EnvFileSystemResource("ok${SEPARATOR}test")
 
-    resource.getFile.getPath == "ok${SEPARATOR}test"
+    assert(resource.getFile.getPath == "ok${SEPARATOR}test")
   }
 }

@@ -17,21 +17,34 @@
 package net.rrm.ehour.sort;
 
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.report.criteria.Sort;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * Comparator on project's name 
- **/
+ * Comparator on project's name
+ */
 
-public class ProjectComparator implements Comparator<Project>, Serializable
-{
-	private static final long serialVersionUID = -2100973629921877419L;
+public class ProjectComparator implements Comparator<Project>, Serializable {
+    private static final long serialVersionUID = -2100973629921877419L;
 
-	public int compare(Project o1, Project o2)
-	{
-		return o1.getFullName().compareToIgnoreCase(o2.getFullName());
-	}
+    private Sort sort;
+
+    public ProjectComparator() {
+        this(Sort.NAME);
+    }
+
+    public ProjectComparator(Sort sort) {
+        this.sort = sort;
+    }
+
+    public int compare(Project o1, Project o2) {
+        if (sort == Sort.NAME) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        } else {
+            return o1.getProjectCode().compareToIgnoreCase(o2.getProjectCode());
+        }
+    }
 
 }

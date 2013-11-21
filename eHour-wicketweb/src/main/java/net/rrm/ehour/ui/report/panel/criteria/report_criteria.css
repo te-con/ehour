@@ -1,0 +1,59 @@
+.leftColumn {
+    float: left;
+    width: 48%;
+    padding-left: 10px;
+}
+
+.rightColumn {
+    float: right;
+    width: 48%;
+    padding-right: 10px;
+}
+
+.foldIcon {
+    float: right;
+    width: 10%;
+    padding-right: 1.2em;
+}
+
+.borderLess {
+    border: 0 !important;
+}
+
+.filterContainer {
+    display: none;
+    margin-bottom: 5px
+}
+
+.toggleLabel {
+    width: 40%;
+    float: left;
+}
+
+.resetCriteria {
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-top: 10px
+}
+
+.dateContainer {
+    float: left;
+    vertical-align: bottom;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.dateCriteria {
+    width: 10em;
+    float: left;
+}
+
+.dateInput {
+    width: 5em;
+    clear: both
+}
+
+.dateInputLoc {
+    float: left;
+    margin-bottom: 5px;
+}

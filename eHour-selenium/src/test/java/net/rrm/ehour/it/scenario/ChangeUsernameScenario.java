@@ -4,7 +4,7 @@ import net.rrm.ehour.it.AbstractScenario;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
-import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.*;
+import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 
 // EHO-339
 public class ChangeUsernameScenario extends AbstractScenario {
@@ -15,7 +15,7 @@ public class ChangeUsernameScenario extends AbstractScenario {
         loginAdmin();
 
         loadUserAdmin();
-        createUser("thies2", "a", lastName);
+        createUser(new ItUser("thies2", "a"), lastName, "User");
         assertUserDataSaved();
 
         loadUserAdmin();

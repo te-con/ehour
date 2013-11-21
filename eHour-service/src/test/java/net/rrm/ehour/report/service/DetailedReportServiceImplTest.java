@@ -32,90 +32,74 @@ import java.util.List;
 import static org.easymock.EasyMock.*;
 
 /**
- * DetailedReportServiceImplTest 
- **/
+ * DetailedReportServiceImplTest
+ */
 @SuppressWarnings({"unchecked"})
-public class DetailedReportServiceImplTest
-{
-	private	DetailedReportDao		detailedReportDAO;
-	private	DetailedReportService	detailedReportService;
-	private	ReportCriteria			rc;
-	private UserSelectedCriteria uc;
-	private DateRange 				dr;
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception
-	{
-		detailedReportService = new DetailedReportServiceImpl();
+public class DetailedReportServiceImplTest {
+    private DetailedReportDao detailedReportDAO;
+    private DetailedReportServiceImpl detailedReportService;
+    private ReportCriteria reportCriteria;
+    private UserSelectedCriteria userSelectedCriteria;
 
-		detailedReportDAO = createMock(DetailedReportDao.class);
-		((DetailedReportServiceImpl)detailedReportService).setDetailedReportDAO(detailedReportDAO);
+    @Before
+    public void setUp() throws Exception {
+        detailedReportService = new DetailedReportServiceImpl();
 
-		dr = new DateRange();
-		uc = new UserSelectedCriteria();
-		uc.setReportRange(dr);
-		rc = new ReportCriteria(uc);
-	}
+        detailedReportDAO = createMock(DetailedReportDao.class);
+        detailedReportService.setDetailedReportDAO(detailedReportDAO);
 
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.report.service.DetailedReportServiceImpl#getDetailedReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)}.
-	 */
-	@Test
-	public void testGetDetailedReportAll()
-	{
-		expect(detailedReportDAO.getHoursPerDay(dr))
-				.andReturn(new ArrayList<FlatReportElement>());
-		replay(detailedReportDAO);
-		detailedReportService.getDetailedReportData(rc);
-		verify(detailedReportDAO);
-	}
+        userSelectedCriteria = new UserSelectedCriteria();
+        reportCriteria = new ReportCriteria(userSelectedCriteria);
+    }
 
-	@Test
-	public void testGetDetailedReportDataUsersOnly()
-	{
-		List<User> l = new ArrayList<User>();
-		l.add(new User(1));
-		uc.setUsers(l);
-		
-		expect(detailedReportDAO.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class)))
-			.andReturn(new ArrayList<FlatReportElement>());
-		replay(detailedReportDAO);
-		detailedReportService.getDetailedReportData(rc);
-		verify(detailedReportDAO);
-	}
-	
-	@Test
-	public void testGetDetailedReportDataProjectsOnly()
-	{
-		List<Project> l = new ArrayList<Project>();
-		l.add(new Project(1));
-		uc.setProjects(l);
-		
-		expect(detailedReportDAO.getHoursPerDayForProjects(isA(List.class), isA(DateRange.class)))
-			.andReturn(new ArrayList<FlatReportElement>());
-		replay(detailedReportDAO);
-		detailedReportService.getDetailedReportData(rc);
-		verify(detailedReportDAO);
-	}	
-	
-	@Test
-	public void testGetDetailedReportDataProjectsAndUsers()
-	{
-		List<Project> l = new ArrayList<Project>();
-		l.add(new Project(1));
-		uc.setProjects(l);
-		
-		List<User> u = new ArrayList<User>();
-		u.add(new User(1));
-		uc.setUsers(u);		
-		
-		expect(detailedReportDAO.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
-			.andReturn(new ArrayList<FlatReportElement>());
-		replay(detailedReportDAO);
-		detailedReportService.getDetailedReportData(rc);
-		verify(detailedReportDAO);
-	}	
+    @Test
+    public void testGetDetailedReportAll() {
+        expect(detailedReportDAO.getHoursPerDay(reportCriteria.getReportRange())).andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDAO);
+        detailedReportService.getDetailedReportData(reportCriteria);
+        verify(detailedReportDAO);
+    }
+
+    @Test
+    public void testGetDetailedReportDataUsersOnly() {
+        List<User> l = new ArrayList<User>();
+        l.add(new User(1));
+        userSelectedCriteria.setUsers(l);
+
+        expect(detailedReportDAO.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class)))
+                .andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDAO);
+        detailedReportService.getDetailedReportData(reportCriteria);
+        verify(detailedReportDAO);
+    }
+
+    @Test
+    public void testGetDetailedReportDataProjectsOnly() {
+        List<Project> l = new ArrayList<Project>();
+        l.add(new Project(1));
+        userSelectedCriteria.setProjects(l);
+
+        expect(detailedReportDAO.getHoursPerDayForProjects(isA(List.class), isA(DateRange.class)))
+                .andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDAO);
+        detailedReportService.getDetailedReportData(reportCriteria);
+        verify(detailedReportDAO);
+    }
+
+    @Test
+    public void testGetDetailedReportDataProjectsAndUsers() {
+        List<Project> l = new ArrayList<Project>();
+        l.add(new Project(1));
+        userSelectedCriteria.setProjects(l);
+
+        List<User> u = new ArrayList<User>();
+        u.add(new User(1));
+        userSelectedCriteria.setUsers(u);
+
+        expect(detailedReportDAO.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
+                .andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDAO);
+        detailedReportService.getDetailedReportData(reportCriteria);
+        verify(detailedReportDAO);
+    }
 }

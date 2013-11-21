@@ -16,42 +16,24 @@
 
 package net.rrm.ehour.ui.common.renderers;
 
-import net.rrm.ehour.domain.DomainObject;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
-public abstract class LocalizedResourceRenderer<T extends DomainObject<?, ?>> implements IChoiceRenderer<T>
-{
-	private static final long serialVersionUID = 3533972441275552509L;
+public abstract class LocalizedResourceRenderer<T> implements IChoiceRenderer<T> {
+    private static final long serialVersionUID = 3533972441275552509L;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-	 */
-	public Object getDisplayValue(T obj)
-	{
-		String key = getResourceKey(obj);
-			
-		Localizer localizer = Application.get().getResourceSettings().getLocalizer();
-		
-		return localizer.getString(key, null);
-	}
+    public Object getDisplayValue(T obj) {
+        String key = getResourceKey(obj);
 
-	/**
-	 * 
-	 * @param o
-	 * @return
-	 */
-	protected abstract String getResourceKey(T o);
+        Localizer localizer = Application.get().getResourceSettings().getLocalizer();
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getIdValue(java.lang.Object, int)
-	 */
-	public String getIdValue(T domainObject, int index)
-	{
-		return domainObject.getPK().toString();
-	}
+        return localizer.getString(key, null);
+    }
+
+    protected abstract String getResourceKey(T o);
+
+    public String getIdValue(T object, int index) {
+        return Integer.toString(index);
+    }
 }

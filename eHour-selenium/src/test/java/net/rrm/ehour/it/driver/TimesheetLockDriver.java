@@ -8,7 +8,7 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 
-public class TimesheetLockApplicationDriver {
+public class TimesheetLockDriver {
     public static void navigateToAdminLocks() {
         Driver.get(BASE_URL + "/eh/op/lock");
     }

@@ -3,8 +3,8 @@ package net.rrm.ehour.domain
 import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import java.util.TreeSet
 import scala.collection.mutable
+import java.util
 
 @RunWith(classOf[JUnitRunner])
 class ProjectAssignmentTest extends FunSuite with Matchers with BeforeAndAfter {
@@ -88,7 +88,7 @@ class ProjectAssignmentTest extends FunSuite with Matchers with BeforeAndAfter {
   }
 
   def sortAssignments(unsorted: List[ProjectAssignment]) = {
-    val sorted = new TreeSet[ProjectAssignment]
+    val sorted = new util.TreeSet[ProjectAssignment]
     unsorted.foreach(sorted.add)
     sorted.toArray
   }

@@ -21,19 +21,14 @@ import net.rrm.ehour.ui.common.util.WebUtils;
 
 /**
  * ProjectAssignment renderer
- **/
+ */
 
-public class ProjectAssignmentTypeRenderer extends LocalizedResourceRenderer<ProjectAssignmentType>
-{
-	private static final long serialVersionUID = -4020935210828625185L;
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.renderers.LocalizedResourceRenderer#getResourceKey(java.lang.Object)
-	 */
-	@Override
-	protected String getResourceKey(ProjectAssignmentType pat)
-	{
-		return WebUtils.getResourceKeyForProjectAssignmentType(pat);
-	}
+public class ProjectAssignmentTypeRenderer extends LocalizedDomainObjectResourceRenderer<ProjectAssignmentType> {
+    private static final long serialVersionUID = -4020935210828625185L;
+
+    @Override
+    protected String getResourceKey(ProjectAssignmentType pat) {
+        return WebUtils.getResourceKeyForProjectAssignmentType(pat);
+    }
 
 }

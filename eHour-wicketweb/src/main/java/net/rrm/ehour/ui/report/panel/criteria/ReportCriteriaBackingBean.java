@@ -28,100 +28,74 @@ import java.io.Serializable;
 
 /**
  * Backing bean for report criteria
- **/
+ */
 
-public class ReportCriteriaBackingBean implements Serializable
-{
-	private static final long serialVersionUID = 4417220135092280759L;
+public class ReportCriteriaBackingBean implements Serializable {
+    private static final long serialVersionUID = 4417220135092280759L;
 
-	private ReportCriteria	reportCriteria;
-	private QuickWeek		quickWeek;
-	private QuickMonth		quickMonth;
-	private QuickQuarter	quickQuarter;
-	
-	public ReportCriteriaBackingBean(ReportCriteria reportCriteria)
-	{
-		this.reportCriteria = reportCriteria;
-	}
+    private ReportCriteria reportCriteria;
+    private QuickWeek quickWeek;
+    private QuickMonth quickMonth;
+    private QuickQuarter quickQuarter;
 
-	/**
-	 * @return the quickWeek
-	 */
-	public QuickWeek getQuickWeek()
-	{
-		return quickWeek;
-	}
+    public ReportCriteriaBackingBean(ReportCriteria reportCriteria) {
+        this.reportCriteria = reportCriteria;
+    }
 
-	/**
-	 * @param quickWeek the quickWeek to set
-	 */
-	public void setQuickWeek(QuickWeek quickWeek)
-	{
-		quickQuarter = null;
-		quickMonth = null;
-		
-		this.quickWeek = quickWeek;
-		
-		setReportRangeForQuickie(quickWeek);
-	}
-	
-	/**
-	 * Set report range based on quickie
-	 * @param period
-	 */
-	private void setReportRangeForQuickie(QuickPeriod period)
-	{
-		UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
-		
-		if (userSelectedCriteria.getReportRange() == null)
-		{
-			userSelectedCriteria.setReportRange(new DateRange());
-		}
-		
-		if (period != null)
-		{
-			userSelectedCriteria.getReportRange().setDateStart(period.getPeriodStart());
-			userSelectedCriteria.getReportRange().setDateEnd(period.getPeriodEnd());
-		}
-	}
+    public QuickWeek getQuickWeek() {
+        return quickWeek;
+    }
 
-	public ReportCriteria getReportCriteria()
-	{
-		return reportCriteria;
-	}
+    public void setQuickWeek(QuickWeek quickWeek) {
+        quickQuarter = null;
+        quickMonth = null;
 
-	public QuickMonth getQuickMonth()
-	{
-		return quickMonth;
-	}
+        this.quickWeek = quickWeek;
 
-	public void setQuickMonth(QuickMonth quickMonth)
-	{
-		quickWeek = null;
-		quickQuarter = null;
-		this.quickMonth = quickMonth;
-		setReportRangeForQuickie(quickMonth);
-	}
+        setReportRangeForQuickie(quickWeek);
+    }
 
-	public QuickQuarter getQuickQuarter()
-	{
-		return quickQuarter;
-	}
+    private void setReportRangeForQuickie(QuickPeriod period) {
+        UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
 
-	public void setQuickQuarter(QuickQuarter quickQuarter)
-	{
-		quickWeek = null;
-		quickMonth = null;
-		this.quickQuarter = quickQuarter;
-		setReportRangeForQuickie(quickQuarter);
-	}
+        if (userSelectedCriteria.getReportRange() == null) {
+            userSelectedCriteria.setReportRange(new DateRange());
+        }
 
-	/**
-	 * @param reportCriteria the reportCriteria to set
-	 */
-	public void setReportCriteria(ReportCriteria reportCriteria)
-	{
-		this.reportCriteria = reportCriteria;
-	}
+        if (period != null) {
+            userSelectedCriteria.getReportRange().setDateStart(period.getPeriodStart());
+            userSelectedCriteria.getReportRange().setDateEnd(period.getPeriodEnd());
+        }
+    }
+
+    public ReportCriteria getReportCriteria() {
+        return reportCriteria;
+    }
+
+    public QuickMonth getQuickMonth() {
+        return quickMonth;
+    }
+
+    public void setQuickMonth(QuickMonth quickMonth) {
+        quickWeek = null;
+        quickQuarter = null;
+        this.quickMonth = quickMonth;
+        setReportRangeForQuickie(quickMonth);
+    }
+
+    public QuickQuarter getQuickQuarter() {
+        return quickQuarter;
+    }
+
+    public void setQuickQuarter(QuickQuarter quickQuarter) {
+        quickWeek = null;
+        quickMonth = null;
+        this.quickQuarter = quickQuarter;
+        setReportRangeForQuickie(quickQuarter);
+    }
+
+    public void setReportCriteria(ReportCriteria reportCriteria) {
+        this.reportCriteria = reportCriteria;
+    }
 
 }

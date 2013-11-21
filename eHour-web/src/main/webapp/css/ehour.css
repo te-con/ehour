@@ -851,6 +851,11 @@ hr {
     float: left;
 }
 
+
+.floatRight {
+    float: right !important;
+}
+
 .reportCriteriaDropdown {
     width: 90%;
     height: 180px;

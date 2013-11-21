@@ -4,7 +4,7 @@ import net.rrm.ehour.it.AbstractScenario;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
-import static net.rrm.ehour.it.driver.UserManagementApplicationDriver.*;
+import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 
 public class DuplicateUsernameScenario extends AbstractScenario {
     @Test
@@ -13,11 +13,11 @@ public class DuplicateUsernameScenario extends AbstractScenario {
         String lastName = "Edeling3";
 
         loadUserAdmin();
-        createUser("thies3", "a", lastName);
+        createUser(new ItUser("thies3", "a"), lastName, "User");
         assertUserDataSaved();
 
         loadUserAdmin();
-        createUser("thies3", "a", lastName);
+        createUser(new ItUser("thies3", "a"), lastName, "User");
         assertUserServerMessage("Username already in use");
     }
 }

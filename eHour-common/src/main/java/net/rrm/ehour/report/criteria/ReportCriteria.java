@@ -20,7 +20,6 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.util.DateUtil;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -32,9 +31,6 @@ public class ReportCriteria implements Serializable {
     private AvailableCriteria availableCriteria;
     private UserSelectedCriteria userSelectedCriteria;
 
-    /**
-     * Default constructor
-     */
     public ReportCriteria() {
         this(new AvailableCriteria(), new UserSelectedCriteria());
     }
@@ -57,59 +53,47 @@ public class ReportCriteria implements Serializable {
      *
      * @return
      */
-    // TODO reduce complexity of method
     public DateRange getReportRange() {
-        DateRange reportRange;
-
-        reportRange = userSelectedCriteria.getReportRange();
+        DateRange reportRange = userSelectedCriteria.getReportRange();
 
         if (reportRange.getDateStart() == null || userSelectedCriteria.isInfiniteStartDate()) {
-            if (availableCriteria == null || availableCriteria.getReportRange() == null) {
-                reportRange.setDateStart(new Date());
-            } else {
+            if (!isEmptyAvailableReportRange() && availableCriteria.getReportRange().getDateStart() != null) {
                 reportRange.setDateStart(availableCriteria.getReportRange().getDateStart());
             }
         }
 
         if (reportRange.getDateEnd() == null || userSelectedCriteria.isInfiniteEndDate()) {
-            if (availableCriteria == null || availableCriteria.getReportRange() == null) {
-                reportRange.setDateEnd(new Date());
-            } else {
+            if (!isEmptyAvailableReportRange() && availableCriteria.getReportRange().getDateEnd() != null) {
                 reportRange.setDateEnd(availableCriteria.getReportRange().getDateEnd());
             }
         }
 
-
-        userSelectedCriteria.setReportRange(reportRange);
-
-        // if no timesheets were specified, use the current month as the range
+        // if still nothing is specified, default to the current month
         if (reportRange.isEmpty()) {
             reportRange = DateUtil.calendarToMonthRange(new GregorianCalendar());
         }
 
+        userSelectedCriteria.setReportRange(reportRange);
+
         return reportRange;
     }
 
-    public void sort() {
-//        Collections.
-
-//        getAvailableCriteria().getCustomers()
-//
-//        Collections.sort((reportCriteria.getAvailableCriteria()).getCustomers(), new CustomerComparator());
-//        Collections.sort((reportCriteria.getAvailableCriteria()).getProjects(), new ProjectComparator());
-
+    private boolean isEmptyAvailableReportRange() {
+        return availableCriteria == null || availableCriteria.getReportRange() == null || availableCriteria.getReportRange().isEmpty();
     }
 
-    /**
-     * @return the userSelectedCriteria
-     */
+    public void updateCustomerSort() {
+        availableCriteria.setCustomerSortOrderAndSort(userSelectedCriteria.getCustomerSort());
+    }
+
+    public void updateProjectSort() {
+        availableCriteria.setProjectSortOrderAndSort(userSelectedCriteria.getProjectSort());
+    }
+
     public UserSelectedCriteria getUserSelectedCriteria() {
         return userSelectedCriteria;
     }
 
-    /**
-     * @return the availableCriteria
-     */
     public AvailableCriteria getAvailableCriteria() {
         return availableCriteria;
     }
