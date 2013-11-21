@@ -210,6 +210,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         target.add(customers);
         target.add(projects);
 
+        // reapply the filter to the possible new contents of the dropdowns
         target.appendJavaScript(getCustomerFilterRegistrationScript());
         target.appendJavaScript(getProjectFilterRegistrationScript());
     }

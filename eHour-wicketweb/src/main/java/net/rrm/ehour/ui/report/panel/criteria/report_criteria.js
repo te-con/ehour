@@ -7,6 +7,8 @@ jQuery.fn.filterOn = function (filterInput) {
         });
         $(select).data('ops', options);
 
+        $(filterInput).unbind('keyup');
+
         $(filterInput).keyup(function () {
             var options = $(select).empty().data('ops');
             var filter = $(this).val().toLowerCase();
@@ -22,6 +24,8 @@ jQuery.fn.filterOn = function (filterInput) {
                 }
             });
         });
+
+        $(filterInput).keyup();
     });
 };
 
@@ -30,6 +34,6 @@ function toggleFilter(id) {
     return false;
 }
 
-function initFilter(id, filter) {
-    $(id).filterOn(filter);
+function initFilter(selectId, filterId) {
+    $(selectId).filterOn(filterId);
 }
