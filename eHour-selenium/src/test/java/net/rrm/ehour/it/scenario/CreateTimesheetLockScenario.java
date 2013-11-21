@@ -6,7 +6,7 @@ import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
-import static net.rrm.ehour.it.driver.TimesheetLockApplicationDriver.*;
+import static net.rrm.ehour.it.driver.TimesheetLockDriver.*;
 
 public class CreateTimesheetLockScenario extends AbstractScenario {
     @Test
