@@ -8,7 +8,7 @@ import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.util.DateUtil
 import java.util.{Calendar, GregorianCalendar}
 import java.util
-import net.rrm.ehour.domain.CustomerObjectMother
+import net.rrm.ehour.domain.{ProjectObjectMother, CustomerObjectMother}
 
 @RunWith(classOf[JUnitRunner])
 class ReportCriteriaTest extends FunSuite {
@@ -67,7 +67,7 @@ class ReportCriteriaTest extends FunSuite {
     assert(availCal.getTime == criteria.getReportRange.getDateEnd)
   }
 
-  test("should update the sorting in the available criteria with the one defined in userSelectedCriteria") {
+  test("should update the customer sorting in the available criteria with the one defined in userSelectedCriteria") {
     val userCriteria = new UserSelectedCriteria
     val customerA = CustomerObjectMother.createCustomer(1)
     customerA.setName("A")
@@ -90,5 +90,29 @@ class ReportCriteriaTest extends FunSuite {
     userCriteria.setCustomerSort(Sort.CODE)
     criteria.updateCustomerSort()
     assert(sortedCustomers.get(0).getName == "B")
+  }
+
+  test("should update the project sorting in the available criteria with the one defined in userSelectedCriteria") {
+    val userCriteria = new UserSelectedCriteria
+    val projectA = ProjectObjectMother.createProject(1)
+    projectA.setName("A")
+    projectA.setProjectCode("B")
+
+    val projectB = ProjectObjectMother.createProject(2)
+    projectB.setName("B")
+    projectB.setProjectCode("A")
+
+    availCriteria.setProjects(util.Arrays.asList(projectA, projectB))
+
+    val criteria = new ReportCriteria(availCriteria, userCriteria)
+
+    userCriteria.setProjectSort(Sort.NAME)
+    criteria.updateProjectSort()
+
+    assert(criteria.getAvailableCriteria.getProjects.get(0).getName == "A")
+
+    userCriteria.setProjectSort(Sort.CODE)
+    criteria.updateProjectSort()
+    assert(criteria.getAvailableCriteria.getProjects.get(0).getName == "B")
   }
 }

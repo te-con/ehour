@@ -64,10 +64,21 @@
 
                 <!-- PROJECT SELECTION -->
                 <div class="rightColumn">
-                    <b>
-                        <wicket:message key="filter.project"/>
-                    </b><br/>
-                    <select wicket:id="reportCriteria.userSelectedCriteria.projects" class="textInputSmall reportCriteriaDropdown"></select>
+                    <div class="foldIcon">
+                        <a href="#" onclick="return toggleFilter('#projectFilter')"><span class="ui-state-default ui-corner-all borderLess">
+                            <span class="ui-icon ui-icon-carat-2-n-s"></span></span>
+                        </a>
+                    </div>
+
+                    <b><wicket:message key="filter.project"/></b><br/>
+
+                    <div id="projectFilter" class="filterContainer">
+                        <input id="projectFilterInput" class="textInput searchInput floatLeft" type="text" placeholder="Filter..." />
+                        &nbsp;&nbsp;
+                        <wicket:message key="report.sortOn"/> <select wicket:id="projectSort" class="textInputSmall"></select><br/>
+                    </div>
+
+                    <select id="projectSelect" wicket:id="reportCriteria.userSelectedCriteria.projects" class="textInputSmall reportCriteriaDropdown"></select>
                     <br/>
 
                     <div class="toggleLabel">
@@ -127,10 +138,6 @@
             <br clear="all"/>
         </div>
     </wicket:fragment>
-
-        <script>
-            initFilter('#customerSelect', '#customerFilterInput');
-        </script>
 </wicket:panel>
 
 </body>

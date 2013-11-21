@@ -46,6 +46,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -89,9 +90,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private List<WebMarkupContainer> quickSelections;
     private ListMultipleChoice<UserDepartment> departments;
 
-    /**
-     * Constructor which sets up the basic borded form
-     */
     public ReportCriteriaPanel(String id, IModel<ReportCriteriaBackingBean> model) {
         super(id, model);
 
@@ -154,12 +152,30 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 new DomainObjectChoiceRenderer<Project>());
         projects.setMaxRows(MAX_CRITERIA_ROW);
         projects.setOutputMarkupId(true);
+        projects.setMarkupId("projectSelect");
         parent.add(projects);
 
         parent.add(createOnlyActiveCustomersAndProjectsCheckbox("reportCriteria.userSelectedCriteria.onlyActiveProjects"));
 
         AjaxCheckBox onlyBillableProjectsCheckbox = createOnlyBillableCheckbox("reportCriteria.userSelectedCriteria.onlyBillableProjects");
         parent.add(onlyBillableProjectsCheckbox);
+
+        parent.add(createProjectSort());
+    }
+
+    private DropDownChoice<Sort> createProjectSort() {
+        DropDownChoice<Sort> projectSort = new DropDownChoice<Sort>("projectSort", new PropertyModel<Sort>(getPanelModelObject(), "reportCriteria.userSelectedCriteria.projectSort"), Arrays.asList(Sort.values()), new SortRenderer());
+        projectSort.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                ReportCriteria reportCriteria = ReportCriteriaPanel.this.getBackingBeanFromModel().getReportCriteria();
+                reportCriteria.updateProjectSort();
+
+                target.add(projects);
+            }
+        });
+
+        return projectSort;
     }
 
     @SuppressWarnings("serial")
@@ -193,6 +209,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
         target.add(customers);
         target.add(projects);
+
+        target.appendJavaScript(getCustomerFilterRegistrationScript());
+        target.appendJavaScript(getProjectFilterRegistrationScript());
     }
 
 
@@ -417,5 +436,15 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptReferenceHeaderItem.forReference(CRITERIA_JS));
         response.render(CssReferenceHeaderItem.forReference(CRITERIA_CSS));
+        response.render(OnDomReadyHeaderItem.forScript(getCustomerFilterRegistrationScript()));
+        response.render(OnDomReadyHeaderItem.forScript(getProjectFilterRegistrationScript()));
+    }
+
+    private String getCustomerFilterRegistrationScript() {
+        return "initFilter('#customerSelect', '#customerFilterInput')";
+    }
+
+    private String getProjectFilterRegistrationScript() {
+        return "initFilter('#projectSelect', '#projectFilterInput')";
     }
 }

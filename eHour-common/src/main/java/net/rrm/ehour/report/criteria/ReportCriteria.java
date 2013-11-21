@@ -86,6 +86,10 @@ public class ReportCriteria implements Serializable {
         availableCriteria.setCustomerSortOrderAndSort(userSelectedCriteria.getCustomerSort());
     }
 
+    public void updateProjectSort() {
+        availableCriteria.setProjectSortOrderAndSort(userSelectedCriteria.getProjectSort());
+    }
+
     public UserSelectedCriteria getUserSelectedCriteria() {
         return userSelectedCriteria;
     }

@@ -853,7 +853,7 @@ hr {
 
 
 .floatRight {
-    float: right;
+    float: right !important;
 }
 
 .reportCriteriaDropdown {

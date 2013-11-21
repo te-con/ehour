@@ -37,6 +37,7 @@ import java.util.Map;
  */
 
 public class UserSelectedCriteria implements Serializable {
+
     public enum ReportType {
         INDIVIDUAL_USER,
         PM,
@@ -54,6 +55,7 @@ public class UserSelectedCriteria implements Serializable {
     private List<Project> projects;
     private List<Customer> customers;
     private Sort customerSort = Sort.NAME;
+    private Sort projectSort = Sort.NAME;
     private List<UserDepartment> userDepartments;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
@@ -79,6 +81,14 @@ public class UserSelectedCriteria implements Serializable {
 
     public void setCustomerSort(Sort customerSort) {
         this.customerSort = customerSort;
+    }
+
+    public Sort getProjectSort() {
+        return projectSort;
+    }
+
+    public void setProjectSort(Sort projectSort) {
+        this.projectSort = projectSort;
     }
 
     public void setUser(User user) {

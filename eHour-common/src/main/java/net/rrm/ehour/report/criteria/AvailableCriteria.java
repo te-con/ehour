@@ -47,7 +47,7 @@ public class AvailableCriteria implements Serializable {
     private List<UserDepartment> userDepartments;
 
     private Sort customerSort = Sort.NAME;
-    private Sort projectSort = Sort.CODE;
+    private Sort projectSort = Sort.NAME;
     private Sort userSort = Sort.CODE;
 
 
@@ -113,6 +113,15 @@ public class AvailableCriteria implements Serializable {
     public void setProjects(Collection<Project> projects) {
         this.projects.clear();
         this.projects.addAll(projects);
-        Collections.sort(this.projects, PROJECT_COMPARATOR);
+        sortProjects();
+    }
+
+    public void setProjectSortOrderAndSort(Sort sort) {
+        projectSort = sort;
+        sortProjects();
+    }
+
+    private void sortProjects() {
+        Collections.sort(this.projects, new ProjectComparator(projectSort));
     }
 }
