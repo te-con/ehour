@@ -31,7 +31,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
         super.setUp();
 
         if (!initialized) {
-            clearDatabase();
+            super.clearDatabase();
 
             loginAdmin();
             createReportUser();
