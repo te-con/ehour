@@ -54,7 +54,6 @@ public abstract class ProjectDriver {
             findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.active").click();
         }
 
-
         String cust = String.format("%s - %s", customer.code, customer.name);
         new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.customer")).selectByVisibleText(cust);
 

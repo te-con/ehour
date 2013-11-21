@@ -20,9 +20,8 @@ public class CreateAndEditProjectScenario extends AbstractScenario {
 
         showOnlyActiveProjects();
 
-        editProject("Custom");
+        editProject(ACTIVE_PROJECT.name);
 
-        assertProjectLoaded("Custom");
-
+        assertProjectLoaded(ACTIVE_PROJECT.name);
     }
 }
