@@ -90,7 +90,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
         entrySelectorPanel = new EntrySelectorPanel(PROJECT_SELECTOR_ID,
                 projectListHolder,
                 new ResourceModel("admin.project.hideInactive"));
-        greyBorder.add(entrySelectorPanel);
+        greyBorder.addOrReplace(entrySelectorPanel);
     }
 
     @SuppressWarnings("unchecked")
