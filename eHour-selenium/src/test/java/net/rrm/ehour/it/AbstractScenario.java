@@ -8,6 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractScenario {
@@ -44,9 +45,13 @@ public abstract class AbstractScenario {
             }
         });
 
-        DatabaseTruncater.truncate(dataSource);
+        clearDatabase();
 
         initialized = true;
+    }
+
+    protected void clearDatabase() throws SQLException {
+        DatabaseTruncater.truncate(dataSource);
     }
 
     @After

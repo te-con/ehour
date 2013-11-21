@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleep;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertEquals;
 
@@ -21,7 +22,6 @@ public abstract class ReportDriver {
 
     public static int countShownCustomers() {
         Select customers = new Select(findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.customers"));
-
         return customers.getOptions().size();
     }
 
@@ -29,6 +29,14 @@ public abstract class ReportDriver {
         WebElement check = findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.onlyActiveProjects");
 
         check.click();
+        sleep(500);
+    }
+
+    public static void toggleActiveCustomers() {
+        WebElement check = findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.onlyActiveCustomers");
+
+        check.click();
+        sleep(500);
     }
 
     public static void toggleCustomerFilters() {
