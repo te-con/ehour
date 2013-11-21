@@ -140,6 +140,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 reportCriteria.updateCustomerSort();
 
                 target.add(customers);
+                applyClientSideCustomerFilter(target);
             }
         });
 
@@ -172,10 +173,15 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 reportCriteria.updateProjectSort();
 
                 target.add(projects);
+                applyClientSideProjectFilter(target);
             }
         });
 
         return projectSort;
+    }
+
+    private void applyClientSideProjectFilter(AjaxRequestTarget target) {
+        target.appendJavaScript(getProjectFilterRegistrationScript());
     }
 
     @SuppressWarnings("serial")
@@ -211,8 +217,12 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         target.add(projects);
 
         // reapply the filter to the possible new contents of the dropdowns
+        applyClientSideCustomerFilter(target);
+        applyClientSideProjectFilter(target);
+    }
+
+    private void applyClientSideCustomerFilter(AjaxRequestTarget target) {
         target.appendJavaScript(getCustomerFilterRegistrationScript());
-        target.appendJavaScript(getProjectFilterRegistrationScript());
     }
 
     private String getCustomerFilterRegistrationScript() {

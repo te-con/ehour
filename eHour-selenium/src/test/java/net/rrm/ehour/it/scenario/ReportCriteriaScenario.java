@@ -19,6 +19,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
     private static ItCustomer anotherActiveCustomer;
 
     private static boolean initialized;
+    private static ItProject inactiveProject;
 
     @Override
     protected void clearDatabase() throws SQLException {
@@ -34,7 +35,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
             createReportUser();
             createActiveCustomer();
             createActiveProjectForActiveCustomer();
-            createInActiveProjectForActiveCustomer();
+            inactiveProject = createInActiveProjectForActiveCustomer();
 
             anotherActiveCustomer = createAnotherActiveCustomer();
             createInActiveProjectFor(anotherActiveCustomer);
@@ -84,4 +85,51 @@ public class ReportCriteriaScenario extends AbstractScenario {
         assertEquals(1, countShownCustomers());
     }
 
+    @Test
+    public void should_retain_customer_filter_after_modifying_sort_order() {
+        loadReportSection();
+
+        toggleActiveProjects();
+        assertEquals(2, countShownCustomers());
+
+        toggleCustomerFilters();
+
+        filterCustomers(anotherActiveCustomer.name.substring(0, 1));
+
+        assertEquals(1, countShownCustomers());
+
+        sortCustomersOnCode();
+
+        assertEquals(1, countShownCustomers());
+    }
+
+    @Test
+    public void filter_projects_should_still_work_after_reloading_project_list() {
+        loadReportSection();
+
+        toggleActiveProjects();
+        assertEquals(3, countShownProjects());
+
+        toggleProjectFilters();
+
+        filterProjects(inactiveProject.name.substring(0, 1));
+
+        assertEquals(2, countShownProjects());
+    }
+
+    @Test
+    public void should_retain_project_filter_after_modifying_sort_order() {
+        loadReportSection();
+
+        toggleActiveProjects();
+        assertEquals(3, countShownProjects());
+
+        toggleProjectFilters();
+
+        filterProjects(inactiveProject.name.substring(0, 1));
+
+        sortProjectsOnCode();
+
+        assertEquals(2, countShownProjects());
+    }
 }
