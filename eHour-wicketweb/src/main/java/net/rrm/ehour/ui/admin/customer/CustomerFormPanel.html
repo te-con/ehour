@@ -8,18 +8,18 @@
 <body>
 <wicket:panel>
 	<div wicket:id="border">
-		<form wicket:id="customerForm" style="margin: 0; padding: 0">
-			<table class="contentTable" style="padding: 0 10px 0 0">
+		<form wicket:id="customerForm" class="adminForm">
+			<table class="contentTable">
 				<tr>
 					<td valign="top"><wicket:message key="admin.customer.name" />:</td>
-					<td><input class="textInputSmall" wicket:id="customer.name" style="width: 15em" />
+					<td><input type="text" class="textInputSmall" wicket:id="customer.name" />
 						<span wicket:id="nameValidationError"></span>
 					</td>
 				</tr>
 				
 				<tr> 
 					<td valign="top"><wicket:message key="admin.customer.code" />:</td>
-					<td><input class="textInputSmall" wicket:id="customer.code" style="width: 15em" />
+					<td><input type="text" class="textInputSmall" wicket:id="customer.code" />
 						<span wicket:id="codeValidationError"></span>
 					</td>
 				</tr>
@@ -27,9 +27,8 @@
 				
 				<tr>
 					<td valign="top"><wicket:message key="admin.customer.description" />:</td>
-					<td><textarea name="comment" wicket:id="customer.description"
-							rows="3" style="width:20em"
-							wrap="virtual"></textarea>
+					<td><textarea class="textInputSmall" name="comment" wicket:id="customer.description"
+							rows="3" wrap="virtual"></textarea>
 
 					</td>
 				</tr>

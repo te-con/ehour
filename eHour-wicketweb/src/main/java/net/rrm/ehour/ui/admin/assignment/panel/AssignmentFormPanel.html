@@ -8,10 +8,10 @@
 <body>
 <wicket:panel>
 	<div wicket:id="border">
-		<form wicket:id="assignmentForm" style="margin: 0; padding: 0">
-			<wicket:container wicket:id="formComponents" />
+		<form wicket:id="assignmentForm" class="adminForm">
+            <table class="contentTable">
+    			<wicket:container wicket:id="formComponents" />
 			
-			<table class="contentTable" style="padding: 0 10px 0 0;">					
 				<tr>
 					<td colspan="2">
 						<br />
@@ -26,7 +26,7 @@
 						</a>
 					</td>
 					<td style="text-align: right">
-						<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+						<a class="button floatRight" onclick="this.blur();" wicket:id="submitButton" >
 							<span><wicket:message key="general.save" /></span></a>
 					</td>
 				</tr>

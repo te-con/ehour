@@ -9,14 +9,14 @@
 <wicket:panel>
 		<tr>
 			<td valign="top"><nobr><wicket:message key="admin.assignment.type" />:</nobr></td>
-			<td><select class="textInputSmall" style="width: 15em" wicket:id="projectAssignment.assignmentType"></select>
+			<td><select class="textInputSmall" wicket:id="projectAssignment.assignmentType"></select>
 				<span wicket:id="typeValidationError"></span>
 			</td>
 		</tr>
 		
  		<tr wicket:id="allottedRow">
  			<td valign="top"><wicket:message key="admin.assignment.timeAllotted" /> :</td>
- 			<td><input type="text" wicket:id="projectAssignment.allottedHours" style="width: 5em" class="textInputSmall" />
+ 			<td><input type="text" wicket:id="projectAssignment.allottedHours" class="textInputSmall numeric" />
  				<wicket:message key="hours" />
  				<span wicket:id="allottedHoursValidationError"></span>
  			</td>
@@ -24,7 +24,7 @@
  		
  		<tr wicket:id="overrunRow">
  			<td valign="top"><wicket:message key="admin.assignment.allowedOverrun" /> :</td>
- 			<td><input type="text" wicket:id="projectAssignment.allowedOverrun" style="width: 5em" class="textInputSmall" />
+ 			<td><input type="text" wicket:id="projectAssignment.allowedOverrun" class="textInputSmall numeric" />
  				<wicket:message key="hours" />
  				<span wicket:id="overrunHoursValidationError"></span>
  			</td>

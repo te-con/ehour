@@ -45,6 +45,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import java.util.List;
@@ -93,7 +94,13 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
         lastNameField.add(new ValidatingFormComponentAjaxBehavior());
         form.add(new AjaxFormComponentFeedbackIndicator("lastNameValidationError", lastNameField));
 
-        form.add(new EmailInputSnippet("email"));
+
+        // email
+        TextField<String> emailField = new TextField<String>("user.email");
+        emailField.add(EmailAddressValidator.getInstance());
+        emailField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(emailField);
+        form.add(new AjaxFormComponentFeedbackIndicator("emailValidationError", emailField));
 
         // password
         Label label = new Label("passwordEditLabel", new ResourceModel("admin.user.editPassword"));

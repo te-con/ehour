@@ -8,38 +8,39 @@
 <body>
 <wicket:panel>
     <div wicket:id="border">
-
-        <form wicket:id="userForm" style="margin: 0; padding: 0">
+        <form wicket:id="userForm" class="adminForm">
             <table class="contentTable" style="padding: 0 10px 0 0">
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.user.username"/>
-                        :
+                        <wicket:message key="admin.user.username"/> :
                     </td>
-                    <td><input class="textInputSmall" wicket:id="user.username" style="width: 15em"/>
+                    <td><input type="text" class="textInputSmall" wicket:id="user.username" />
                         <span wicket:id="userValidationError"></span>
                     </td>
                 </tr>
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.user.firstName"/>
-                        :
+                        <wicket:message key="admin.user.firstName"/> :
                     </td>
-                    <td><input class="textInputSmall" wicket:id="user.firstName" style="width: 15em"/>
+                    <td><input type="text"  class="textInputSmall" wicket:id="user.firstName" />
                     </td>
                 </tr>
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.user.lastName"/>
-                        :
+                        <wicket:message key="admin.user.lastName"/> :
                     </td>
-                    <td><input class="textInputSmall" wicket:id="user.lastName" style="width: 15em"/>
+                    <td><input type="text" class="textInputSmall" wicket:id="user.lastName" />
                         <span wicket:id="lastNameValidationError"></span>
                     </td>
                 </tr>
 
-                <span wicket:id="email"></span>
+                <tr>
+                    <td><wicket:message key="user.email" />:</td>
+                    <td><input type="text" class="textInputSmall" wicket:id="user.email" />
+                        <span wicket:id="emailValidationError"></span>
+                    </td>
+                </tr>
 
                 <tr>
                     <td colspan="2"><br/></td>
@@ -49,7 +50,6 @@
                 <wicket:enclosure child="passwordEditLabel">
                     <tr>
                         <td colspan="2" style="font-size: 0.75em">
-
                             <wicket:container wicket:id="passwordEditLabel"/>
                         </td>
                     </tr>
@@ -58,18 +58,16 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="user.password"/>
-                        :
+                        <wicket:message key="user.password"/> :
                     </td>
-                    <td><input type="password" class="textInputSmall" wicket:id="password" style="width: 15em"/></td>
-                </tr>
+                    <td><input type="password" class="textInputSmall" wicket:id="password"/></td> </tr>
 
                 <tr>
                     <td valign="top">
                         <wicket:message key="user.confirmpassword"/>
                         :
                     </td>
-                    <td><input type="password" class="textInputSmall" wicket:id="confirmPassword" style="width: 15em"/>
+                    <td><input type="password" class="textInputSmall" wicket:id="confirmPassword"/>
                         <span wicket:id="confirmPasswordValidationError"></span>
                     </td>
                 </tr>
@@ -84,7 +82,7 @@
                         <wicket:message key="admin.user.department"/>
                         :
                     </td>
-                    <td><select class="textInputSmall" style="width: 15em" wicket:id="user.userDepartment"></select>
+                    <td><select class="textInputSmall" wicket:id="user.userDepartment"></select>
                         <span wicket:id="departmentValidationError"></span>
                     </td>
                 </tr>
@@ -97,10 +95,9 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.user.roles"/>
-                        :
+                        <wicket:message key="admin.user.roles"/> :
                     </td>
-                    <td><select class="textInputSmall" style="width: 15em" wicket:id="user.userRoles"></select>
+                    <td><select class="textInputSmall" wicket:id="user.userRoles"></select>
                         <span wicket:id="rolesValidationError"></span>
                     </td>
                 </tr>
@@ -134,7 +131,7 @@
                         </a>
                     </td>
                     <td style="text-align: right">
-                        <a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton">
+                        <a class="button floatRight" onclick="this.blur();" wicket:id="submitButton">
                             <span><wicket:message key="general.save"/></span></a>
                     </td>
                 </tr>
@@ -142,8 +139,6 @@
             </table>
         </form>
     </div>
-
-
 </wicket:panel>
 
 </body>

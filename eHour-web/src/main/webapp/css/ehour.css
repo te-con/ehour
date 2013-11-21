@@ -851,7 +851,6 @@ hr {
     float: left;
 }
 
-
 .floatRight {
     float: right !important;
 }
@@ -861,3 +860,27 @@ hr {
     height: 180px;
     margin-bottom: 5px;
 }
+
+.adminForm {
+    margin: 0;
+    padding: 0;
+}
+
+.adminForm table {
+    padding: 0 10px 0 0;
+}
+
+.adminForm table td:first-child {
+    min-width: 10em;
+}
+
+.adminForm input[type=text], .adminForm input[type=password], .adminForm select, .adminForm textarea {
+    width: 20em;
+}
+
+.adminForm input[type=text].numeric {
+    width: 5em;
+}
+
+
+

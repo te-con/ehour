@@ -8,18 +8,18 @@
 <body>
 <wicket:panel>
 	<div wicket:id="border">
-		<form style="margin: 0; padding: 0" wicket:id="projectForm">
-			<table class="contentTable" style="padding: 0 10px 0 0">
+		<form wicket:id="projectForm" class="adminForm">
+			<table class="contentTable">
 				<tr>
 					<td valign="top"><wicket:message key="admin.project.name" />:</td>
-					<td><input class="textInputSmall" wicket:id="project.name" style="width: 15em" />
+					<td><input type="text" class="textInputSmall" wicket:id="project.name"/>
 						<span wicket:id="nameValidationError"></span>
 					</td>
 				</tr>
 				
 				<tr> 
 					<td valign="top"><wicket:message key="admin.project.code" />:</td>
-					<td><input class="textInputSmall" wicket:id="project.projectCode" style="width: 15em" />
+					<td><input type="text" class="textInputSmall" wicket:id="project.projectCode"/>
 						<span wicket:id="codeValidationError"></span>
 					</td>
 				</tr>
@@ -27,10 +27,9 @@
 
 				<tr>
 					<td valign="top"><wicket:message key="admin.project.customer" />:</td>
-					<td><select class="textInputSmall" style="width: 15em" wicket:id="project.customer"></select>
+					<td><select class="textInputSmall" wicket:id="project.customer"></select>
 						<!--  <a wicket:id="newCustomer">New customer</a>-->
 						<span wicket:id="customerValidationError"></span>
-						
 					</td>
 				</tr>
 
@@ -43,15 +42,13 @@
 
 				<tr>
 					<td valign="top"><wicket:message key="admin.project.projectManager" />:</td>
-					<td><select class="textInputSmall" style="width: 15em" wicket:id="project.projectManager"></select>
+					<td><select class="textInputSmall" wicket:id="project.projectManager"></select>
 					</td>
 				</tr>
 
 				<tr>
 					<td valign="top"><wicket:message key="admin.project.description" />:</td>
-					<td><textarea class="textInputSmall" name="comment" wicket:id="project.description"
-							rows="3" style="width:20em"
-							wrap="virtual"></textarea>
+					<td><textarea class="textInputSmall" name="comment" wicket:id="project.description" rows="3" wrap="virtual"></textarea>
 
 					</td>
 				</tr>		
@@ -64,7 +61,7 @@
 				
 				<tr> 
 					<td valign="top"><wicket:message key="admin.project.contact" />:</td>
-					<td><input class="textInputSmall" wicket:id="project.contact" style="width: 15em" />
+					<td><input type="text"  class="textInputSmall" wicket:id="project.contact" />
 					</td>
 				</tr>					
 
@@ -105,7 +102,7 @@
 						</a>
 					</td>
 					<td style="text-align: right">
-						<a class="button" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+						<a class="button floatRight" onclick="this.blur();" wicket:id="submitButton" >
 							<span><wicket:message key="general.save" /></span></a>
 					</td>
 				</tr>				

@@ -38,7 +38,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 
 	private void setUpPage(IModel<AssignmentAdminBackingBean> model)
 	{
-		Border greyBorder = new GreySquaredRoundedBorder("border", WebGeo.W_CONTENT_SMALL);
+		Border greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
 		add(greyBorder);
 		
 		final Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("assignmentForm", model);
