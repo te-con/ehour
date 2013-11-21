@@ -115,18 +115,36 @@
     <wicket:fragment wicket:id="userDepartmentCriteria">
         <div wicket:id="deptUserBorder">
             <div class="leftColumn">
-                <b>
-                    <wicket:message key="filter.department"/>
-                </b><br/>
-                <select wicket:id="reportCriteria.userSelectedCriteria.userDepartments" class="textInputSmall reportCriteriaDropdown"></select>
+                <div class="foldIcon">
+                    <a href="#" onclick="return toggleFilter('#departmentFilter')"><span class="ui-state-default ui-corner-all borderLess">
+                            <span class="ui-icon ui-icon-carat-2-n-s"></span></span>
+                    </a>
+                </div>
+
+                <b><wicket:message key="filter.department"/></b><br/>
+
+                <div id="departmentFilter" class="filterContainer">
+                    <input id="departmentFilterInput" class="textInput searchInput floatLeft" type="text" placeholder="Filter..." />
+                </div>
+
+                <select id="departmentSelect" wicket:id="reportCriteria.userSelectedCriteria.userDepartments" class="textInputSmall reportCriteriaDropdown"></select>
                 <br/>
             </div>
 
             <div class="rightColumn">
-                <b>
-                    <wicket:message key="filter.user"/>
-                </b><br/>
-                <select wicket:id="reportCriteria.userSelectedCriteria.users" class="textInputSmall reportCriteriaDropdown"></select>
+                <div class="foldIcon">
+                    <a href="#" onclick="return toggleFilter('#userFilter')"><span class="ui-state-default ui-corner-all borderLess">
+                            <span class="ui-icon ui-icon-carat-2-n-s"></span></span>
+                    </a>
+                </div>
+
+                <b><wicket:message key="filter.user"/> </b><br/>
+
+                <div id="userFilter" class="filterContainer">
+                    <input id="userFilterInput" class="textInput searchInput floatLeft" type="text" placeholder="Filter..." />
+                </div>
+
+                <select id="userSelect" wicket:id="reportCriteria.userSelectedCriteria.users" class="textInputSmall reportCriteriaDropdown"></select>
                 <br/>
 
                 <div class="toggleLabel">

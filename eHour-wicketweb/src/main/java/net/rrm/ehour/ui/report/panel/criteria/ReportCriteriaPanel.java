@@ -215,11 +215,20 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         target.appendJavaScript(getProjectFilterRegistrationScript());
     }
 
+    private String getCustomerFilterRegistrationScript() {
+        return "initFilter('#customerSelect', '#customerFilterInput')";
+    }
+
+    private String getProjectFilterRegistrationScript() {
+        return "initFilter('#projectSelect', '#projectFilterInput')";
+    }
 
     private void addUserSelection(WebMarkupContainer parent) {
         users = new ListMultipleChoice<User>("reportCriteria.userSelectedCriteria.users",
                 new PropertyModel<List<User>>(getDefaultModel(), "reportCriteria.availableCriteria.users"),
                 new DomainObjectChoiceRenderer<User>());
+        users.setMarkupId("userSelect");
+
         users.setOutputMarkupId(true);
         users.setMaxRows(MAX_CRITERIA_ROW);
         parent.add(users);
@@ -233,6 +242,10 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
                 target.add(users);
                 target.add(departments);
+
+                // reapply the filter to the possible new contents of the dropdowns
+                target.appendJavaScript(getDepartmentFilterRegistrationScript());
+                target.appendJavaScript(getUserFilterRegistrationScript());
             }
         };
 
@@ -246,6 +259,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userSelectedCriteria.userDepartments",
                 new PropertyModel<List<UserDepartment>>(getDefaultModel(), "reportCriteria.availableCriteria.userDepartments"),
                 new DomainObjectChoiceRenderer<UserDepartment>());
+        departments.setMarkupId("departmentSelect");
         departments.setMaxRows(MAX_CRITERIA_ROW);
         departments.setOutputMarkupId(true);
 
@@ -439,13 +453,17 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         response.render(CssReferenceHeaderItem.forReference(CRITERIA_CSS));
         response.render(OnDomReadyHeaderItem.forScript(getCustomerFilterRegistrationScript()));
         response.render(OnDomReadyHeaderItem.forScript(getProjectFilterRegistrationScript()));
+        response.render(OnDomReadyHeaderItem.forScript(getUserFilterRegistrationScript()));
+        response.render(OnDomReadyHeaderItem.forScript(getDepartmentFilterRegistrationScript()));
     }
 
-    private String getCustomerFilterRegistrationScript() {
-        return "initFilter('#customerSelect', '#customerFilterInput')";
+    private CharSequence getDepartmentFilterRegistrationScript() {
+        return "initFilter('#departmentSelect', '#departmentFilterInput')";
+
     }
 
-    private String getProjectFilterRegistrationScript() {
-        return "initFilter('#projectSelect', '#projectFilterInput')";
+    private CharSequence getUserFilterRegistrationScript() {
+        return "initFilter('#userSelect', '#userFilterInput')";
     }
+
 }

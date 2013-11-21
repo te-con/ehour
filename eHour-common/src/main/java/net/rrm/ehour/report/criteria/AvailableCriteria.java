@@ -48,8 +48,6 @@ public class AvailableCriteria implements Serializable {
 
     private Sort customerSort = Sort.NAME;
     private Sort projectSort = Sort.NAME;
-    private Sort userSort = Sort.CODE;
-
 
     public AvailableCriteria() {
     }
