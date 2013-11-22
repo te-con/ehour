@@ -28,7 +28,6 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
   @SpringBean
   protected var userService: UserService = _
 
-
   override def onInitialize() {
     super.onInitialize()
 
@@ -45,7 +44,12 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     border.add(new AjaxCheckBox("toggleAll", new Model[Boolean]()) {
       override def onUpdate(target: AjaxRequestTarget) {
-        val assignments = fetchUsers ++ fetchProjectAssignments(getPanelModelObject.getProject).sortWith((a, b) => a.user.compareTo(b.user) < 0)
+        val assignments =  if (getModelObject) {
+          (fetchUsers ++ fetchProjectAssignments(getPanelModelObject.getProject)).sortWith((a, b) => a.user.compareTo(b.user) < 0)
+        } else {
+          fetchProjectAssignments(getPanelModelObject.getProject)
+        }
+
         val view = createAssignmentListView(assignments)
         container.addOrReplace(view)
         target.add(container)
@@ -78,8 +82,12 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
   }
 
   def fetchProjectAssignments(project: Project): List[Assignment] = {
-    val projectAssignments = toScala(assignmentService.getProjectAssignments(project, true))
-    projectAssignments.map(a => Assignment(Some(a.getAssignmentId), a.getUser))
+    if (project.getProjectId == null) {
+      List()
+    } else {
+      val projectAssignments = toScala(assignmentService.getProjectAssignments(project, true))
+      projectAssignments.map(a => Assignment(Some(a.getAssignmentId), a.getUser))
+    }
   }
 
   override def renderHead(response: IHeaderResponse) {
