@@ -9,6 +9,7 @@ import org.mockito.Mockito._
 import net.rrm.ehour.report.criteria.UserSelectedCriteria
 import ReportFilterFixture._
 import net.rrm.ehour.report.criteria.UserSelectedCriteria.ReportType
+import net.rrm.ehour.util._
 
 @RunWith(classOf[JUnitRunner])
 class CustomerCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {

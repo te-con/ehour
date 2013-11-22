@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.project.service;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+
+import java.util.List;
 
 /**
  * Service for handling project assignments
@@ -37,7 +37,7 @@ public interface ProjectAssignmentService
 	 * @param dateRange
 	 * @return
 	 */
-	public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange);
+	List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange);
 	
 	/**
 	 * Get projects for user
@@ -45,20 +45,20 @@ public interface ProjectAssignmentService
 	 * @param hideInactive
 	 * @return
 	 */
-	public List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive);
+	List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive);
 
 	/**
 	 * Get project assignment and mark it as deletable or not
 	 * @param assignmentId
 	 * @return
 	 */
-	public ProjectAssignment getProjectAssignment(Integer assignmentId)  throws ObjectNotFoundException;
+	ProjectAssignment getProjectAssignment(Integer assignmentId)  throws ObjectNotFoundException;
 	
 	/**
 	 * Get project assignments for project
 	 * @param project
 	 */
-	public List<ProjectAssignment> getProjectAssignments(Project project, DateRange dateRange);
+	List<ProjectAssignment> getProjectAssignments(Project project, DateRange dateRange);
 	
 	/**
 	 * Get project assignments for project
@@ -66,11 +66,11 @@ public interface ProjectAssignmentService
 	 * @param hideInActive
 	 * @return
 	 */
-	public List<ProjectAssignment> getProjectAssignments(Project project, boolean hideInActive);
+	List<ProjectAssignment> getProjectAssignments(Project project, boolean hideInActive);
 	
 	/**
 	 * Get available project assignment types
 	 * @return
 	 */
-	public List<ProjectAssignmentType> getProjectAssignmentTypes();
+	List<ProjectAssignmentType> getProjectAssignmentTypes();
 }

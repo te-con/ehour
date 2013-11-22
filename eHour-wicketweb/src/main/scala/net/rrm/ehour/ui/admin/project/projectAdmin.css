@@ -1,0 +1,17 @@
+.project_users {
+
+}
+
+.project_users .row .active, .project_users .header .active {
+    width: 1em;
+    float: left;
+}
+
+.project_users .header .active {
+    border-bottom: 1px solid #6c87a1;
+}
+
+.project_users .name {
+    width: 1em;
+    float:left;
+}
