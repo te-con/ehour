@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.test;
 
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.FormTester;
@@ -28,16 +29,28 @@ import org.apache.wicket.util.tester.WicketTester;
  */
 
 public class StrictWicketTester extends WicketTester {
+
     public StrictWicketTester(WebApplication webApplication) {
         super(webApplication);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.apache.wicket.util.getTester().BaseWicketTester#newFormTester(java.lang.String, boolean)
-     */
     @Override
     public FormTester newFormTester(String path, boolean fillBlankString) {
         return new StrictFormTester(path, (Form<?>) getComponentFromLastRenderedPage(path), this, fillBlankString);
     }
+
+    public void clickAjaxCheckBoxToEnable(String path) {
+        modifyAjaxCheckBox(path, true);
+    }
+
+    public void disableAjaxCheckBox(String path) {
+        modifyAjaxCheckBox(path, false);
+    }
+
+    private void modifyAjaxCheckBox(String path, Boolean enable) {
+        AjaxCheckBox component = (AjaxCheckBox) getComponentFromLastRenderedPage(path);
+        getRequest().getPostParameters().setParameterValue(component.getInputName(), enable.toString());
+        executeAjaxEvent(component, "click");
+    }
+
 }
