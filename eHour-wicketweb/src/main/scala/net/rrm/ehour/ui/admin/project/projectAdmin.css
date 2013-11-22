@@ -3,15 +3,20 @@
 }
 
 .project_users .row .active, .project_users .header .active {
-    width: 1em;
+    width: 3em;
     float: left;
 }
 
-.project_users .header .active {
+.project_users .header .active, .project_users .header .name {
     border-bottom: 1px solid #6c87a1;
+    margin-bottom: 5px;
 }
 
-.project_users .name {
-    width: 1em;
+.project_users .name, .project_users .header .name {
+    width: 15em;
     float:left;
+}
+
+.project_users .row {
+    clear: both;
 }
