@@ -8,6 +8,7 @@ import net.rrm.ehour.report.criteria.UserSelectedCriteria
 import net.rrm.ehour.persistence.user.dao.UserDao
 import net.rrm.ehour.report.criteria.UserSelectedCriteria.ReportType
 import net.rrm.ehour.domain.{UserObjectMother, ProjectObjectMother, ProjectAssignmentObjectMother}
+import net.rrm.ehour.util._
 
 class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
   val dao = mock[UserDao]

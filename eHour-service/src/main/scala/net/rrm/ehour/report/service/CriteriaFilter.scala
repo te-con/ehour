@@ -8,7 +8,7 @@ import java.{util => ju}
 import org.springframework.stereotype.Service
 import net.rrm.ehour.persistence.user.dao.UserDao
 import scala.collection.convert.WrapAsScala
-
+import net.rrm.ehour.util._
 
 @Service
 class CustomerAndProjectCriteriaFilter @Autowired()(customerDao: CustomerDao) {
