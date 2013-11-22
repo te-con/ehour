@@ -34,14 +34,14 @@ public interface ProjectAssignmentDao  extends GenericDao<ProjectAssignment, Int
 	 * @param userId
 	 * @return
 	 */
-	public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId);
+	List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId);
 
     /**
 	 * Find (active) projects for user
 	 * @param userId
 	 * @return
 	 */
-	public List<ProjectAssignment> findProjectAssignmentsForUser(User user);
+	List<ProjectAssignment> findProjectAssignmentsForUser(User user);
 	
 	/**
 	 * Find (active) projects for user in date range
@@ -49,7 +49,7 @@ public interface ProjectAssignmentDao  extends GenericDao<ProjectAssignment, Int
 	 * @param range
 	 * @return
 	 */
-	public List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId, DateRange range);
+	List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId, DateRange range);
 	
 	/**
 	 * Find project assignments for project in range
@@ -57,7 +57,7 @@ public interface ProjectAssignmentDao  extends GenericDao<ProjectAssignment, Int
 	 * @param range
 	 * @return
 	 */
-	public List<ProjectAssignment> findProjectAssignmentsForProject(Project project, DateRange range);
+	List<ProjectAssignment> findProjectAssignmentsForProject(Project project, DateRange range);
 	
 	/**
 	 * Find project assignments for customer in date range
@@ -65,13 +65,13 @@ public interface ProjectAssignmentDao  extends GenericDao<ProjectAssignment, Int
 	 * @param range
 	 * @return
 	 */
-	public List<ProjectAssignment> findProjectAssignmentsForCustomer(Customer customer, DateRange range);
+	List<ProjectAssignment> findProjectAssignmentsForCustomer(Customer customer, DateRange range);
 	
 	/**
 	 * Find all project assignment types (should be in a seperate DAO theoratically)
 	 * @return
 	 */
-	public List<ProjectAssignmentType>	findProjectAssignmentTypes();
+	List<ProjectAssignmentType>	findProjectAssignmentTypes();
 	
 	/**
 	 * 
@@ -79,7 +79,7 @@ public interface ProjectAssignmentDao  extends GenericDao<ProjectAssignment, Int
 	 * @param onlyActive
 	 * @return
 	 */
-	public List<ProjectAssignment> findProjectAssignments(Project project);
+	List<ProjectAssignment> findProjectAssignments(Project project);
 	
-	public List<ProjectAssignment> findProjectAssignments(Project project, Boolean onlyActive);
+	List<ProjectAssignment> findProjectAssignments(Project project, Boolean onlyActive);
 }

@@ -1,9 +1,9 @@
-package net.rrm.ehour.report
+package net.rrm.ehour
 
 import java.{util => ju}
 import scala.collection.convert.{WrapAsJava, WrapAsScala}
 
-package object service {
+package object util {
   def toScala[T](xs: ju.List[T]): List[T] = WrapAsScala.asScalaBuffer(xs).toList
 
   def toScala[T](xs: ju.Set[T]): Set[T] = WrapAsScala.asScalaSet(xs).toSet

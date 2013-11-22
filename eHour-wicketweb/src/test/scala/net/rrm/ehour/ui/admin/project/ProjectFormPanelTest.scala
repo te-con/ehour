@@ -11,6 +11,7 @@ import net.rrm.ehour.customer.service.CustomerService
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
+// should be rewritten to Spec style
 @RunWith(classOf[JUnitRunner])
 class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter {
 

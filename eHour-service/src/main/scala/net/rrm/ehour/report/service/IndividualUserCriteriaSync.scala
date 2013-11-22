@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao
+import net.rrm.ehour.util._
+
 
 @Service
 class IndividualUserCriteriaSync @Autowired()(userDepartmentDAO: UserDepartmentDao, projectAssignmentDAO: ProjectAssignmentDao, reportAggregatedDAO: ReportAggregatedDao) {

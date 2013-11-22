@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+
+<body>
+<wicket:panel>
+    <div wicket:id="border">
+
+        <div class="usersFilter">
+            Show all <input type="checkbox" wicket:id="toggleAll"/>
+
+        </div>
+
+        <div class="project_users" wicket:id="assignmentContainer">
+            <div class="header">
+                <div class="active">Active</div>
+                <div class="name">Name</div>
+            </div>
+
+            <div class="row" wicket:id="assignments">
+                <div class="active"><input type="checkbox" wicket:id="active" /></div>
+                <div class="name" wicket:id="name" />
+            </div>
+        </div>
+    </div>
+</wicket:panel>
+
+</body>
+
+</html>

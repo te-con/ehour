@@ -6,6 +6,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.wicket.AjaxButton.Callback
 import org.apache.wicket.ajax.markup.html.{AjaxLink => WicketAjaxLink}
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
+import org.apache.wicket.markup.html.WebMarkupContainer
 
 
 class AjaxButton(id: String, form: Form[_], success: Callback, error: Callback = (a, f) => {}) extends WicketAjaxButton(id, form) {
@@ -30,4 +31,8 @@ class AjaxLink(id: String, success: LinkCallback) extends WicketAjaxLink(id){
 
 object AjaxLink {
   type LinkCallback = AjaxRequestTarget => Unit
+}
+
+class Container(id: String) extends WebMarkupContainer(id) {
+  setOutputMarkupId(true)
 }
