@@ -38,8 +38,8 @@ public abstract class UserManagementDriver {
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.firstName").sendKeys("Thies");
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.lastName").clear();
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.lastName").sendKeys(lastName);
-        findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_email_user.email").clear();
-        findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_email_user.email").sendKeys("thies@te-con.nl");
+        findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.email").clear();
+        findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.email").sendKeys("thies@te-con.nl");
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_password").clear();
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_password").sendKeys(user.password);
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_confirmPassword").clear();
