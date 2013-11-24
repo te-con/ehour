@@ -36,7 +36,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
       verify(assignmentService, never).getProjectAssignment(anyInt())
     }
 
-    "add unassigned users when toggle box is clicked" in {
+    "add unassigned users to the list when toggle box is clicked" in {
       when(userService.getActiveUsers).thenReturn(util.Arrays.asList(UserObjectMother.createUser()))
 
       val project = ProjectObjectMother.createProject(1)

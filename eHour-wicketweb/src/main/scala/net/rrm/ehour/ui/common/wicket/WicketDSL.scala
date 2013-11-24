@@ -7,6 +7,10 @@ import net.rrm.ehour.ui.common.wicket.AjaxButton.Callback
 import org.apache.wicket.ajax.markup.html.{AjaxLink => WicketAjaxLink}
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
 import org.apache.wicket.markup.html.WebMarkupContainer
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.{ComponentTag, MarkupStream}
+import org.apache.commons.lang.StringUtils
+import org.apache.wicket.util.convert.IConverter
 
 
 class AjaxButton(id: String, form: Form[_], success: Callback, error: Callback = (a, f) => {}) extends WicketAjaxButton(id, form) {
@@ -36,3 +40,13 @@ object AjaxLink {
 class Container(id: String) extends WebMarkupContainer(id) {
   setOutputMarkupId(true)
 }
+
+class AlwaysOnLabel[T <: java.io.Serializable](id: String, label: T, converter: Option[IConverter[T]] = None) extends Label(id, label) {
+  override def getConverter[T](`type`: Class[T]): IConverter[T] = converter match {
+    case Some(c) => c.asInstanceOf[IConverter[T]]
+    case None => super.getConverter(`type`)
+  }
+
+  override def onComponentTagBody(markupStream: MarkupStream, openTag: ComponentTag) = replaceComponentTagBody(markupStream, openTag, if (StringUtils.isBlank(getDefaultModelObjectAsString)) "&nbsp;" else getDefaultModelObjectAsString)
+}
+

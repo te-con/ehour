@@ -5,18 +5,19 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.model.{Model, IModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.ProjectAssignmentService
-import net.rrm.ehour.domain.{Project, User}
+import net.rrm.ehour.domain.{ProjectAssignment, Project}
 import net.rrm.ehour.util._
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox
 import org.apache.wicket.ajax.AjaxRequestTarget
 import java.lang.Boolean
 import org.apache.wicket.markup.head.{IHeaderResponse, CssHeaderItem}
 import org.apache.wicket.request.resource.CssResourceReference
 import net.rrm.ehour.user.service.UserService
-import java.{util => ju}
-import net.rrm.ehour.ui.common.wicket.Container
+import net.rrm.ehour.ui.common.wicket.{AlwaysOnLabel, Container}
+import net.rrm.ehour.ui.common.converter.DateConverter
+import scala.Some
+import java.util.Date
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
 
@@ -45,7 +46,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     border.add(new AjaxCheckBox("toggleAll", new Model[Boolean]()) {
       override def onUpdate(target: AjaxRequestTarget) {
         val assignments =  if (getModelObject) {
-          (fetchUsers ++ fetchProjectAssignments(getPanelModelObject.getProject)).sortWith((a, b) => a.user.compareTo(b.user) < 0)
+          (fetchUsers ++ fetchProjectAssignments(getPanelModelObject.getProject)).sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
         } else {
           fetchProjectAssignments(getPanelModelObject.getProject)
         }
@@ -58,35 +59,42 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
   }
 
 
-  def createAssignmentListView(assignments: List[Assignment]): ListView[Assignment] = {
-    new ListView[Assignment]("assignments", toJava(assignments)) {
+  def createAssignmentListView(assignments: List[ProjectAssignment]): ListView[ProjectAssignment] = {
+    new ListView[ProjectAssignment]("assignments", toJava(assignments)) {
       setOutputMarkupId(true)
 
-      override def populateItem(item: ListItem[Assignment]) {
+      override def populateItem(item: ListItem[ProjectAssignment]) {
         val assignment = item.getModelObject
 
-        item.add(new Label("name", assignment.user.getFullName))
+        item.add(new AlwaysOnLabel("name", assignment.getUser.getFullName))
 
         item.add(new AjaxCheckBox("active", new Model[Boolean]()) {
           override def onUpdate(target: AjaxRequestTarget) {
             ???
           }
         })
+
+        item.add(new AlwaysOnLabel[Date]("startDate", assignment.getDateStart, Some(new DateConverter())))
+        item.add(new AlwaysOnLabel("endDate", assignment.getDateEnd, Some(new DateConverter())))
+        item.add(new AlwaysOnLabel("rate", assignment.getHourlyRate))
       }
     }
   }
 
+
+
   def fetchUsers = {
+    val project = getPanelModelObject.getProject
+
     val users = toScala(userService.getActiveUsers)
-    users.map(u => Assignment(None, u))
+    users.map(new ProjectAssignment(_, project))
   }
 
-  def fetchProjectAssignments(project: Project): List[Assignment] = {
+  def fetchProjectAssignments(project: Project): List[ProjectAssignment] = {
     if (project.getProjectId == null) {
       List()
     } else {
-      val projectAssignments = toScala(assignmentService.getProjectAssignments(project, true))
-      projectAssignments.map(a => Assignment(Some(a.getAssignmentId), a.getUser))
+      toScala(assignmentService.getProjectAssignments(project, true))
     }
   }
 
@@ -94,5 +102,3 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     response.render(CssHeaderItem.forReference(Css))
   }
 }
-
-case class Assignment(id: Option[Int], user: User)

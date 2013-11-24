@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.common.report;
 import net.rrm.ehour.ui.common.converter.CurrencyConverter;
 import net.rrm.ehour.ui.common.converter.DateConverter;
 
-import static net.rrm.ehour.ui.common.converter.DateConverter.DateStyle.FULL_SHORT;
 import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.*;
 
 /**
@@ -29,7 +28,7 @@ import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.*;
 public enum ReportConfig {
     // constructors like these might be a bit over the top..
     // take note, the columnResourceKey is used for serie creation with trend charts (pardon my English, it's late.. or early in the morning)
-    DETAILED_REPORT(new ReportColumn("userReport.report.date", ColumnType.DATE, new DateConverter(FULL_SHORT, ""), VISIBLE),
+    DETAILED_REPORT(new ReportColumn("userReport.report.date", ColumnType.DATE, new DateConverter(), VISIBLE),
             new ReportColumn("userReport.report.customer"),
             new ReportColumn("userReport.report.project"),
             new ReportColumn("userReport.report.projectCode"),
@@ -62,7 +61,7 @@ public enum ReportConfig {
             new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
             new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 
-    AUDIT_REPORT(new ReportColumn("audit.report.column.date", ColumnType.DATE, new DateConverter(FULL_SHORT, ""), VISIBLE),
+    AUDIT_REPORT(new ReportColumn("audit.report.column.date", ColumnType.DATE, new DateConverter(), VISIBLE),
             new ReportColumn("audit.report.column.lastName"),
             new ReportColumn("audit.report.column.action"),
             new ReportColumn("audit.report.column.type"));
