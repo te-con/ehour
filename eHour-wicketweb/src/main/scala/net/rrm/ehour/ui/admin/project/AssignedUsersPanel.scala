@@ -17,7 +17,7 @@ import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.ui.common.wicket.{DateLabel, AlwaysOnLabel, Container}
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.markup.html.form.TextField
-import net.rrm.ehour.ui.common.panel.datepicker.DatePickerPanel
+import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
@@ -93,10 +93,10 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
             replacement.add(createNameLabel)
 
-            val dateStart = new DatePickerPanel("startDate", new PropertyModel[Date](itemModel, "dateStart"), new Model[Boolean](Boolean.FALSE))
-            replacement.add(dateStart)
+            val dateStart = new LocalizedDatePicker("startDate", new PropertyModel[Date](itemModel, "dateStart"))
+              replacement.add(dateStart)
 
-            val dateEnd = new DatePickerPanel("endDate", new PropertyModel[Date](itemModel, "dateEnd"), new Model[Boolean](Boolean.FALSE))
+            val dateEnd = new LocalizedDatePicker("endDate", new PropertyModel[Date](itemModel, "dateEnd"))
             replacement.add(dateEnd)
 
             replacement.add(new TextField("rate", new PropertyModel[Float](itemModel, "hourlyRate")))
