@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.admin.project
 
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
-import org.apache.wicket.model.{Model, IModel}
+import org.apache.wicket.model.{PropertyModel, Model, IModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.domain.{ProjectAssignment, Project}
@@ -14,10 +14,8 @@ import java.lang.Boolean
 import org.apache.wicket.markup.head.{IHeaderResponse, CssHeaderItem}
 import org.apache.wicket.request.resource.CssResourceReference
 import net.rrm.ehour.user.service.UserService
-import net.rrm.ehour.ui.common.wicket.{AlwaysOnLabel, Container}
-import net.rrm.ehour.ui.common.converter.DateConverter
-import scala.Some
-import java.util.Date
+import net.rrm.ehour.ui.common.wicket.{DateLabel, AlwaysOnLabel, Container}
+import org.apache.wicket.markup.html.panel.Fragment
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
 
@@ -64,19 +62,33 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
       setOutputMarkupId(true)
 
       override def populateItem(item: ListItem[ProjectAssignment]) {
-        val assignment = item.getModelObject
+        def createNameLabel =  new AlwaysOnLabel("name", new PropertyModel(item.getModel, "user.fullName"))
+        def createStartDateLabel = new DateLabel("startDate", new PropertyModel(item.getModel, "dateStart"))
+        def createEndDateLabel = new DateLabel("endDate", new PropertyModel(item.getModel, "dateEnd"))
 
-        item.add(new AlwaysOnLabel("name", assignment.getUser.getFullName))
+        val container = new Container("container")
+        item.add(container)
 
-        item.add(new AjaxCheckBox("active", new Model[Boolean]()) {
+        container.add(createNameLabel)
+
+        container.add(new AjaxCheckBox("active", new PropertyModel(item.getModel, "active")) {
           override def onUpdate(target: AjaxRequestTarget) {
-            ???
+            val replacement = new Fragment("container", "inputRow", getParent)
+            replacement.setOutputMarkupId(true)
+            replacement.add(createNameLabel)
+            replacement.add(createStartDateLabel)
+            replacement.add(createEndDateLabel)
+
+            item.addOrReplace(replacement)
+            target.add(replacement)
           }
         })
 
-        item.add(new AlwaysOnLabel[Date]("startDate", assignment.getDateStart, Some(new DateConverter())))
-        item.add(new AlwaysOnLabel("endDate", assignment.getDateEnd, Some(new DateConverter())))
-        item.add(new AlwaysOnLabel("rate", assignment.getHourlyRate))
+        container.add(createStartDateLabel)
+        container.add(createEndDateLabel)
+        container.add(new AlwaysOnLabel("rate", new PropertyModel(item.getModel, "hourlyRate")))
+
+        container.setOutputMarkupId(true)
       }
     }
   }
