@@ -9,7 +9,7 @@ import net.rrm.ehour.domain.{ProjectAssignment, Project}
 import net.rrm.ehour.util._
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox
-import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.ajax.{AjaxEventBehavior, AjaxRequestTarget}
 import java.lang.Boolean
 import org.apache.wicket.markup.head.{IHeaderResponse, CssHeaderItem}
 import org.apache.wicket.request.resource.CssResourceReference
@@ -78,10 +78,19 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
         container.add(createNameLabel)
 
-        container.add(new AjaxCheckBox("active", new PropertyModel(itemModel, "active")) {
-          override def onUpdate(target: AjaxRequestTarget) {
+        container.add(createStartDateLabel)
+        container.add(createEndDateLabel)
+        container.add(new AlwaysOnLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
+
+        container.add(new AjaxEventBehavior("onclick") {
+          def onEvent(target: AjaxRequestTarget) = {
             val replacement = new Fragment("container", "inputRow", Self)
             replacement.setOutputMarkupId(true)
+
+            replacement.add(new AjaxCheckBox("active", new PropertyModel[Boolean](itemModel, "active")) {
+              def onUpdate(target: AjaxRequestTarget) = ???
+            })
+
             replacement.add(createNameLabel)
 
             val dateStart = new DatePickerPanel("startDate", new PropertyModel[Date](itemModel, "dateStart"), new Model[Boolean](Boolean.FALSE))
@@ -97,12 +106,6 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
             target.add(replacement)
           }
         })
-
-//        container.add(new A)
-//
-        container.add(createStartDateLabel)
-        container.add(createEndDateLabel)
-        container.add(new AlwaysOnLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
 
         container.setOutputMarkupId(true)
       }

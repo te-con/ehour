@@ -33,7 +33,10 @@
     float:left;
 }
 
-
 .project_users .row {
     clear: both;
+}
+
+.project_users .container:hover {
+    background-color: #d1e5f9;
 }

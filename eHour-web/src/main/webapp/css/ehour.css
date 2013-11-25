@@ -882,5 +882,8 @@ hr {
     width: 5em;
 }
 
+.borderLess {
+    border: 0 !important;
+}
 
 

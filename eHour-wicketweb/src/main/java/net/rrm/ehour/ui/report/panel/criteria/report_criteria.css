@@ -16,10 +16,6 @@
     padding-right: 1.2em;
 }
 
-.borderLess {
-    border: 0 !important;
-}
-
 .filterContainer {
     display: none;
     margin-bottom: 5px
