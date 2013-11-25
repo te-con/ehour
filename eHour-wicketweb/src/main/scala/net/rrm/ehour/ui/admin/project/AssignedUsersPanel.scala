@@ -16,8 +16,13 @@ import org.apache.wicket.request.resource.CssResourceReference
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.ui.common.wicket.{DateLabel, AlwaysOnLabel, Container}
 import org.apache.wicket.markup.html.panel.Fragment
+import org.apache.wicket.markup.html.form.TextField
+import net.rrm.ehour.ui.common.panel.datepicker.DatePickerPanel
+import java.util.Date
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
+
+  val Self = this
 
   val Css = new CssResourceReference(classOf[AssignedUsersPanel], "projectAdmin.css")
 
@@ -62,31 +67,42 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
       setOutputMarkupId(true)
 
       override def populateItem(item: ListItem[ProjectAssignment]) {
-        def createNameLabel =  new AlwaysOnLabel("name", new PropertyModel(item.getModel, "user.fullName"))
-        def createStartDateLabel = new DateLabel("startDate", new PropertyModel(item.getModel, "dateStart"))
-        def createEndDateLabel = new DateLabel("endDate", new PropertyModel(item.getModel, "dateEnd"))
+        val itemModel = item.getModel
 
-        val container = new Container("container")
+        def createNameLabel =  new AlwaysOnLabel("name", new PropertyModel(itemModel, "user.fullName"))
+        def createStartDateLabel = new DateLabel("startDate", new PropertyModel(itemModel, "dateStart"))
+        def createEndDateLabel = new DateLabel("endDate", new PropertyModel(itemModel, "dateEnd"))
+
+        val container = new Fragment("container", "displayRow", Self)
         item.add(container)
 
         container.add(createNameLabel)
 
-        container.add(new AjaxCheckBox("active", new PropertyModel(item.getModel, "active")) {
+        container.add(new AjaxCheckBox("active", new PropertyModel(itemModel, "active")) {
           override def onUpdate(target: AjaxRequestTarget) {
-            val replacement = new Fragment("container", "inputRow", getParent)
+            val replacement = new Fragment("container", "inputRow", Self)
             replacement.setOutputMarkupId(true)
             replacement.add(createNameLabel)
-            replacement.add(createStartDateLabel)
-            replacement.add(createEndDateLabel)
+
+            val dateStart = new DatePickerPanel("startDate", new PropertyModel[Date](itemModel, "dateStart"), new Model[Boolean](Boolean.FALSE))
+            replacement.add(dateStart)
+
+            val dateEnd = new DatePickerPanel("endDate", new PropertyModel[Date](itemModel, "dateEnd"), new Model[Boolean](Boolean.FALSE))
+            replacement.add(dateEnd)
+
+            replacement.add(new TextField("rate", new PropertyModel[Float](itemModel, "hourlyRate")))
+            replacement.setOutputMarkupId(true)
 
             item.addOrReplace(replacement)
             target.add(replacement)
           }
         })
 
+//        container.add(new A)
+//
         container.add(createStartDateLabel)
         container.add(createEndDateLabel)
-        container.add(new AlwaysOnLabel("rate", new PropertyModel(item.getModel, "hourlyRate")))
+        container.add(new AlwaysOnLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
 
         container.setOutputMarkupId(true)
       }
