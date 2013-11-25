@@ -48,5 +48,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
       verify(userService).getActiveUsers
     }
+
+
   }
 }
