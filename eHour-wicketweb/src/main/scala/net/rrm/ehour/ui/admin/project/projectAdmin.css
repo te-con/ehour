@@ -19,8 +19,13 @@
 
 
 .project_users .date {
-    width: 5em;
+    width: 6em;
     float:left;
+}
+
+
+.project_users .dateInput {
+    width: 5em;
 }
 
 .project_users .hours {
@@ -33,6 +38,11 @@
     float:left;
 }
 
+.project_users .rateInput {
+    width: 4em;
+}
+
+
 .project_users .row {
     clear: both;
 }
@@ -40,3 +50,4 @@
 .project_users .container:hover {
     background-color: #d1e5f9;
 }
+
