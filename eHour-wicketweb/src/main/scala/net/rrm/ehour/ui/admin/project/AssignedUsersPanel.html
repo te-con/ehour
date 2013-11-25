@@ -25,26 +25,31 @@
             </div>
 
             <div class="row" wicket:id="assignments">
-                <span wicket:id="container">
-            <div class="active"><input type="checkbox" wicket:id="active"></div>
-            <div class="name" wicket:id="name"/>
-            <div class="date" wicket:id="startDate"/>
-            <div class="date" wicket:id="endDate"/>
-            <div class="rate" wicket:id="rate"/>
-                </span>
+                <span wicket:id="container"></span>
             </div>
         </div>
     </div>
 
     <wicket:fragment wicket:id="inputRow">
         <span>
-        <div class="active">V</div>
-        <div class="name" wicket:id="name"/>
-        <div class="date" wicket:id="startDate"/>
-        <div class="date" wicket:id="endDate"/>
-        <div class="rate"><input type="text" id="rate"/></div>
-            </span>
+            <div class="active">V</div>
+            <div class="name" wicket:id="name"/>
+            <div class="date" wicket:id="startDate"/>
+            <div class="date" wicket:id="endDate"/>
+            <div class="rate"><input type="text" id="rate" wicket:id="rate"/></div>
+        </span>
     </wicket:fragment>
+
+    <wicket:fragment wicket:id="displayRow">
+        <span>
+            <div class="active"><input type="checkbox" wicket:id="active"></div>
+            <div class="name" wicket:id="name"/>
+            <div class="date" wicket:id="startDate"/>
+            <div class="date" wicket:id="endDate"/>
+            <div class="rate" wicket:id="rate"/>
+        </span>
+    </wicket:fragment>
+
 </wicket:panel>
 
 </body>
