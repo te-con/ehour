@@ -42,6 +42,10 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
   protected var userService: UserService = _
 
   override def onInitialize() {
+    def joinWithDuplicates(notAssigned: List[ProjectAssignment],  assigned: List[ProjectAssignment]) = filter(notAssigned, assigned) ++ assigned
+
+    def filter(notAssigned: List[ProjectAssignment],  assigned: List[ProjectAssignment]) = notAssigned.filterNot(p => assigned.exists(a => a.getUser.equals(p.getUser)))
+
     super.onInitialize()
 
     val border = new GreyRoundedBorder("border")
@@ -49,7 +53,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     val project = getPanelModelObject.getProject
 
-    val assignments = fetchProjectAssignments(project)
+    val assignments = sort(fetchProjectAssignments(project))
 
     val container = new Container("assignmentContainer")
     border.addOrReplace(container)
@@ -57,11 +61,11 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     border.add(new AjaxCheckBox("toggleAll", new Model[Boolean]()) {
       override def onUpdate(target: AjaxRequestTarget) {
-        val assignments = if (getModelObject) {
-          (fetchUsers ++ fetchProjectAssignments(getPanelModelObject.getProject)).sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
-        } else {
+        val assignments = sort(if (getModelObject)
+          joinWithDuplicates(fetchUsers, fetchProjectAssignments(getPanelModelObject.getProject))
+        else
           fetchProjectAssignments(getPanelModelObject.getProject)
-        }
+        )
 
         val view = createAssignmentListView(assignments)
         container.addOrReplace(view)
@@ -69,6 +73,11 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
       }
     })
   }
+
+
+
+
+  private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
 
   import WicketDSL._
 
@@ -175,7 +184,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     val users = toScala(userService.getActiveUsers)
     users.map(u => {
-      val assignment: ProjectAssignment = new ProjectAssignment(u, project)
+      val assignment = new ProjectAssignment(u, project)
       assignment.setActive(true)
       assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE)
       assignment
