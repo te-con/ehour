@@ -26,10 +26,10 @@ import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -37,6 +37,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -100,12 +101,6 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
         return CustomerAdminBackingBean.createCustomerAdminBackingBean();
     }
 
-    /**
-     * Handle Ajax request
-     *
-     * @param target
-     * @param type   of ajax req
-     */
     @Override
     @SuppressWarnings("unchecked")
     public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
@@ -145,11 +140,10 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
     private Fragment getCustomerListHolder(List<Customer> customers) {
         Fragment fragment = new Fragment("itemListHolder", "itemListHolder", CustomerAdminPage.this);
 
-        customerListView = new ListView<Customer>("itemList", customers) {
+        customerListView = new EntrySelectorListView<Customer>("itemList", customers) {
             @Override
-            protected void populateItem(ListItem<Customer> item) {
+            protected void onPopulate(ListItem<Customer> item, IModel<Customer> itemModel) {
                 Customer customer = item.getModelObject();
-                final Integer customerId = customer.getCustomerId();
 
                 if (!customer.isActive()) {
                     item.add(AttributeModifier.append("class", "inactive"));
@@ -158,17 +152,14 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
                 item.add(new Label("name", customer.getName()));
                 item.add(new Label("code", customer.getCode()));
                 item.add(new Label("projects", customer.getProjects() == null ? 0 : customer.getProjects().size()));
+            }
 
-                item.add(new AjaxEventBehavior("onclick") {
-                    @Override
-                    protected void onEvent(AjaxRequestTarget target) {
-                        try {
-                            getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
-                            getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
-                        } catch (ObjectNotFoundException e) {
-                        }
-                    }
-                });
+            @Override
+            protected void onClick(ListItem<Customer> item, AjaxRequestTarget target) throws ObjectNotFoundException {
+                final Integer customerId = item.getModelObject().getCustomerId();
+
+                getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
+                getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
             }
         };
 
@@ -177,11 +168,6 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
         return fragment;
     }
 
-    /**
-     * Get customers from the backend
-     *
-     * @return
-     */
     private List<Customer> getCustomers() {
         List<Customer> customers = currentFilter != null && !currentFilter.isFilterToggle() ? customerService.getCustomers() : customerService.getCustomers(true);
         Collections.sort(customers, new CustomerComparator());

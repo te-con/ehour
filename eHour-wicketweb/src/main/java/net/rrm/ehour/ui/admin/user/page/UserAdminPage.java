@@ -31,12 +31,12 @@ import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -44,6 +44,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -93,37 +94,27 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserBackingBean> {
     private Fragment getUserListHolder(List<User> users) {
         Fragment fragment = new Fragment("itemListHolder", "itemListHolder", UserAdminPage.this);
 
-        userListView = new ListView<User>("itemList", users) {
-            private static final long serialVersionUID = 5334338761736798802L;
-
+        userListView = new EntrySelectorListView<User>("itemList", users) {
             @Override
-            protected void populateItem(ListItem<User> item) {
-                final User user = item.getModelObject();
+            protected void onPopulate(ListItem<User> item, IModel<User> itemModel) {
+                User user = item.getModelObject();
 
                 if (!user.isActive()) {
                     item.add(AttributeModifier.append("class", "inactive"));
                 }
 
-                final Integer userId = user.getUserId();
-
                 item.add(new Label("firstName", user.getFirstName()));
                 item.add(new Label("lastName", user.getLastName()));
                 item.add(new Label("userName", user.getUsername()));
+            }
 
-                item.add(new AjaxEventBehavior("onclick") {
-                    @Override
-                    protected void onEvent(AjaxRequestTarget target) {
-                        try {
-                            getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId), AdminAction.EDIT));
-                            getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
-                        } catch (ObjectNotFoundException e) {
-                            LOGGER.error(e);
-                        }
-                    }
-                });
+            @Override
+            protected void onClick(ListItem<User> item, AjaxRequestTarget target) throws ObjectNotFoundException {
+                final Integer userId = item.getModelObject().getUserId();
+                getTabbedPanel().setEditBackingBean(new UserBackingBean(userService.getUserAndCheckDeletability(userId), AdminAction.EDIT));
+                getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
             }
         };
-
         fragment.add(userListView);
         fragment.setOutputMarkupId(true);
 

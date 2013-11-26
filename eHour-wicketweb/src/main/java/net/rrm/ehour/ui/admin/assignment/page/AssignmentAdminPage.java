@@ -18,21 +18,23 @@ package net.rrm.ehour.ui.admin.assignment.page;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.assignment.panel.AssignmentPanel;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -79,9 +81,9 @@ public class AssignmentAdminPage extends AbstractAdminPage<Void> {
     private Fragment getUserListHolder(List<User> users) {
         Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentAdminPage.this);
 
-        ListView<User> userListView = new ListView<User>("itemList", users) {
+        ListView<User> userListView = new EntrySelectorListView<User>("itemList", users) {
             @Override
-            protected void populateItem(ListItem<User> item) {
+            protected void onPopulate(ListItem<User> item, IModel<User> itemModel) {
                 final User user = item.getModelObject();
 
                 if (!user.isActive()) {
@@ -91,13 +93,11 @@ public class AssignmentAdminPage extends AbstractAdminPage<Void> {
                 item.add(new Label("firstName", user.getFirstName()));
                 item.add(new Label("lastName", user.getLastName()));
                 item.add(new Label("assignments", user.getProjectAssignments().size()));
+            }
 
-                item.add(new AjaxEventBehavior("onclick") {
-                    @Override
-                    protected void onEvent(AjaxRequestTarget target) {
-                        replaceAssignmentPanel(target, user);
-                    }
-                });
+            @Override
+            protected void onClick(ListItem<User> item, AjaxRequestTarget target) throws ObjectNotFoundException {
+                replaceAssignmentPanel(target, item.getModelObject());
             }
         };
 

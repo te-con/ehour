@@ -24,11 +24,11 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -36,6 +36,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -58,10 +59,6 @@ public class DepartmentAdminPage extends AbstractTabbedAdminPage<DepartmentAdmin
 
     private EntrySelectorPanel entrySelectorPanel;
 
-
-    /**
-     * Default constructor
-     */
     public DepartmentAdminPage() {
         super(new ResourceModel("admin.dept.title"),
                 new ResourceModel("admin.dept.addDepartment"),
@@ -123,40 +120,26 @@ public class DepartmentAdminPage extends AbstractTabbedAdminPage<DepartmentAdmin
         return true;
     }
 
-
-    /**
-     * Get a the departmentListHolder fragment containing the listView
-     *
-     * @param users
-     * @return
-     */
     @SuppressWarnings("serial")
     private Fragment getDepartmentListHolder(List<UserDepartment> departments) {
         Fragment fragment = new Fragment("itemListHolder", "itemListHolder", DepartmentAdminPage.this);
 
-        deptListView = new ListView<UserDepartment>("itemList", departments) {
+        deptListView = new EntrySelectorListView<UserDepartment>("itemList", departments) {
             @Override
-            protected void populateItem(ListItem<UserDepartment> item) {
+            protected void onPopulate(ListItem<UserDepartment> item, IModel<UserDepartment> itemModel) {
                 UserDepartment dept = item.getModelObject();
-
 
                 item.add(new Label("name", dept.getName()));
                 item.add(new Label("code", dept.getCode()));
                 item.add(new Label("users", dept.getUsers() == null ? 0 : dept.getUsers().size()));
+            }
 
-                final Integer deptId = dept.getDepartmentId();
+            @Override
+            protected void onClick(ListItem<UserDepartment> item, AjaxRequestTarget target) throws ObjectNotFoundException {
+                final Integer deptId = item.getModelObject().getDepartmentId();
 
-
-                item.add(new AjaxEventBehavior("onclick") {
-                    @Override
-                    protected void onEvent(AjaxRequestTarget target) {
-                        try {
-                            getTabbedPanel().setEditBackingBean(new DepartmentAdminBackingBean(userService.getUserDepartment(deptId)));
-                            getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
-                        } catch (ObjectNotFoundException e) {
-                        }
-                    }
-                });
+                getTabbedPanel().setEditBackingBean(new DepartmentAdminBackingBean(userService.getUserDepartment(deptId)));
+                getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
             }
         };
 
