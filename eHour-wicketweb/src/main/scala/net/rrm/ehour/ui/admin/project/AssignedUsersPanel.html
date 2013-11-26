@@ -10,17 +10,17 @@
     <div wicket:id="border">
 
         <div class="usersFilter">
-            Show all <input type="checkbox" wicket:id="toggleAll"/>
+            <wicket:message key="admin.project.assignments.showAll" /> <input type="checkbox" wicket:id="toggleAll"/>
 
         </div>
 
         <div class="project_users" wicket:id="assignmentContainer">
             <div class="header">
-                <div class="active">Active</div>
-                <div class="name">Name</div>
-                <div class="date">Start</div>
-                <div class="date">End</div>
-                <div class="rate">Rate</div>
+                <div class="active"><wicket:message key="admin.project.assignments.active" /></div>
+                <div class="name"><wicket:message key="admin.project.assignments.user" /></div>
+                <div class="date"><wicket:message key="admin.assignment.startHeader" /></div>
+                <div class="date"><wicket:message key="admin.assignment.endHeader" /></div>
+                <div class="rate"><wicket:message key="admin.assignment.rateHeader" /></div>
                 <br/>
             </div>
 

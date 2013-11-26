@@ -55,7 +55,9 @@ class AlwaysOnLabel[T <: java.io.Serializable](id: String, label: IModel[T], con
   override def onComponentTagBody(markupStream: MarkupStream, openTag: ComponentTag) = replaceComponentTagBody(markupStream, openTag, if (StringUtils.isBlank(getDefaultModelObjectAsString)) "&nbsp;" else getDefaultModelObjectAsString)
 }
 
-class DateLabel(id: String, model: IModel[Date]) extends AlwaysOnLabel(id, model, Some(new DateConverter))
+class DateLabel(id: String, model: IModel[Date]) extends AlwaysOnLabel(id, model, Some(new DateConverter)) {
+  override def onComponentTagBody(markupStream: MarkupStream, openTag: ComponentTag): Unit = replaceComponentTagBody(markupStream, openTag, if (StringUtils.isBlank(getDefaultModelObjectAsString)) "&infin;" else getDefaultModelObjectAsString)
+}
 
 object WicketDSL {
   def ajaxClick(click: AjaxRequestTarget => Unit): Behavior = new AjaxEventBehavior("onclick") {

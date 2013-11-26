@@ -47,162 +47,145 @@ import java.util.Currency;
 import java.util.List;
 
 /**
- * List of existing assignments 
- **/
+ * List of existing assignments
+ */
 
 @SuppressWarnings("serial")
-public class AssignmentListPanel extends AbstractBasePanel<Void>
-{
-	private static final long serialVersionUID = -8798859357268916546L;
+public class AssignmentListPanel extends AbstractBasePanel<Void> {
+    private static final long serialVersionUID = -8798859357268916546L;
 
-	@SpringBean
-	private ProjectAssignmentService projectAssignmentService;
-	private	EhourConfig		config;
-	private ListView<ProjectAssignment> assignmentListView;
-	private User			user;
-	
-	/**
-	 * 
-	 * @param id
-	 */
-	public AssignmentListPanel(String id, User user)
-	{
-		super(id);
-		
-		config = EhourWebSession.getSession().getEhourConfig();
-	
-		setOutputMarkupId(true);
-	
-		Border greyBorder = new GreyRoundedBorder("border",
-				 							new StringResourceModel("admin.assignment.assignmentsFor", 
-				 											this, null, new Object[]{new Model<String>(user.getFullName())})
+    @SpringBean
+    private ProjectAssignmentService projectAssignmentService;
+    private EhourConfig config;
+    private ListView<ProjectAssignment> assignmentListView;
+    private User user;
+
+    /**
+     * @param id
+     */
+    public AssignmentListPanel(String id, User user) {
+        super(id);
+
+        config = EhourWebSession.getSession().getEhourConfig();
+
+        setOutputMarkupId(true);
+
+        Border greyBorder = new GreyRoundedBorder("border",
+                new StringResourceModel("admin.assignment.assignmentsFor",
+                        this, null, new Object[]{new Model<String>(user.getFullName())})
         );
-		add(greyBorder);
-		greyBorder.add(getProjectAssignmentLists(user));
-		
-		greyBorder.add(getActivateCheckbox());
-	}
+        add(greyBorder);
+        greyBorder.add(getProjectAssignmentLists(user));
 
-	/**
-	 * Update the list
-	 * @param user
-	 */
-	public void updateList(AjaxRequestTarget target, User user)
-	{
-		assignmentListView.setList(getProjectAssignments(user));
-		
-		target.add(this);
-	}
+        greyBorder.add(getActivateCheckbox());
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	private AjaxCheckBox getActivateCheckbox()
-	{
-		return new AjaxCheckBox("filterToggle", new Model<Boolean>(getEhourWebSession().getHideInactiveSelections()))
-		{
-			private static final long serialVersionUID = 2585047163449150793L;
+    /**
+     * Update the list
+     *
+     * @param user
+     */
+    public void updateList(AjaxRequestTarget target, User user) {
+        assignmentListView.setList(getProjectAssignments(user));
 
-			@Override
-			protected void onUpdate(AjaxRequestTarget target)
-			{
-            	getEhourWebSession().setHideInactiveSelections(Boolean.valueOf(getValue()));
-            	updateList(target, user);
-			}
-		};
-	}
-	
-	/**
-	 * Get listview for project assignments
-	 * @param user
-	 * @return
-	 */
-	private ListView<ProjectAssignment> getProjectAssignmentLists(User user)
-	{
-		this.user = user;
-		
-		assignmentListView = new ListView<ProjectAssignment>("assignments", getProjectAssignments(user))
-		{
-			@Override
-			protected void populateItem(ListItem<ProjectAssignment> item)
-			{
-				final ProjectAssignment assignment = item.getModelObject();
-				
-				AjaxLink<Void> link = new AjaxLink<Void>("itemLink")
-				{
-					@Override
-					public void onClick(AjaxRequestTarget target)
-					{
-						EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
-																													assignment));
-					}
-				};
+        target.add(this);
+    }
 
-				AjaxLink<Void> imgLink = new AjaxLink<Void>("imgLink")
-				{
-					@Override
-					public void onClick(AjaxRequestTarget target)
-					{
-						EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
-																													assignment));
-					}
-				};
+    /**
+     * @return
+     */
+    private AjaxCheckBox getActivateCheckbox() {
+        return new AjaxCheckBox("filterToggle", new Model<Boolean>(getEhourWebSession().getHideInactiveSelections())) {
+            private static final long serialVersionUID = 2585047163449150793L;
 
-				item.add(imgLink);
-				item.add(link);
-				link.add(new Label("project", assignment.getProject().getFullName()));				
-				item.add(new Label("customer", assignment.getProject().getCustomer().getFullName()));
-				
-				Label dateStart = new Label("dateStart", new DateModel(assignment.getDateStart(), config, DateModel.DATESTYLE_FULL_SHORT));
-				dateStart.setEscapeModelStrings(false);
-				item.add(dateStart);
-				
-				Label dateEnd = new Label("dateEnd", new DateModel(assignment.getDateEnd(), config, DateModel.DATESTYLE_FULL_SHORT));
-				dateEnd.setEscapeModelStrings(false);
-				item.add(dateEnd);
-				
-				item.add(new Label("assignmentType", 
-							new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
-				
-				item.add(new Label("role",
-									(StringUtils.isBlank(assignment.getRole()))
-										? "--"
-										: assignment.getRole()));
-				
-				item.add(new Label("currency",  Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
-				item.add(new Label("rate", new Model<Float>(assignment.getHourlyRate())));
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                getEhourWebSession().setHideInactiveSelections(Boolean.valueOf(getValue()));
+                updateList(target, user);
+            }
+        };
+    }
 
-			}
-		};
+    /**
+     * Get listview for project assignments
+     *
+     * @param user
+     * @return
+     */
+    private ListView<ProjectAssignment> getProjectAssignmentLists(User user) {
+        this.user = user;
 
-		return assignmentListView;
-	}	
-	
-	/**
-	 * Get project assignments for user
-	 * @param user
-	 * @return
-	 */
-	private List<ProjectAssignment> getProjectAssignments(User user)
-	{
-		List<ProjectAssignment> assignments = null;
-		
-		if (user.getUserId() != null)
-		{
-			assignments = projectAssignmentService.getProjectAssignmentsForUser(user, getEhourWebSession().getHideInactiveSelections());
-		}
-		
-		if (assignments != null)
-		{
-			Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
-			setVisible(true);
-		}
-		else
-		{
-			assignments = new ArrayList<ProjectAssignment>();
-		}
-		
-		return assignments;
-	}
+        assignmentListView = new ListView<ProjectAssignment>("assignments", getProjectAssignments(user)) {
+            @Override
+            protected void populateItem(ListItem<ProjectAssignment> item) {
+                final ProjectAssignment assignment = item.getModelObject();
+
+                AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+                                assignment));
+                    }
+                };
+
+                AjaxLink<Void> imgLink = new AjaxLink<Void>("imgLink") {
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+                                assignment));
+                    }
+                };
+
+                item.add(imgLink);
+                item.add(link);
+                link.add(new Label("project", assignment.getProject().getFullName()));
+                item.add(new Label("customer", assignment.getProject().getCustomer().getFullName()));
+
+                Label dateStart = new Label("dateStart", new DateModel(assignment.getDateStart(), config, DateModel.DATESTYLE_FULL_SHORT));
+                dateStart.setEscapeModelStrings(false);
+                item.add(dateStart);
+
+                Label dateEnd = new Label("dateEnd", new DateModel(assignment.getDateEnd(), config, DateModel.DATESTYLE_FULL_SHORT));
+                dateEnd.setEscapeModelStrings(false);
+                item.add(dateEnd);
+
+                item.add(new Label("assignmentType",
+                        new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
+
+                item.add(new Label("role",
+                        (StringUtils.isBlank(assignment.getRole()))
+                                ? "--"
+                                : assignment.getRole()));
+
+                item.add(new Label("currency", Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
+                item.add(new Label("rate", new Model<Float>(assignment.getHourlyRate())));
+
+            }
+        };
+
+        return assignmentListView;
+    }
+
+    /**
+     * Get project assignments for user
+     *
+     * @param user
+     * @return
+     */
+    private List<ProjectAssignment> getProjectAssignments(User user) {
+        List<ProjectAssignment> assignments = null;
+
+        if (user.getUserId() != null) {
+            assignments = projectAssignmentService.getProjectAssignmentsForUser(user, getEhourWebSession().getHideInactiveSelections());
+        }
+
+        if (assignments != null) {
+            Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
+            setVisible(true);
+        } else {
+            assignments = new ArrayList<ProjectAssignment>();
+        }
+
+        return assignments;
+    }
 }
