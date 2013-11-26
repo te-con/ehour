@@ -61,12 +61,18 @@ public interface ProjectAssignmentService
 	List<ProjectAssignment> getProjectAssignments(Project project, DateRange dateRange);
 	
 	/**
-	 * Get project assignments for project
+	 * Get all project assignments for project
 	 * @param project
-	 * @param hideInActive
 	 * @return
 	 */
-	List<ProjectAssignment> getProjectAssignments(Project project, boolean hideInActive);
+	List<ProjectAssignment> getProjectAssignments(Project project);
+
+    /**
+     * Get all active project assignments for project
+     * @param project
+     * @return
+     */
+    List<ProjectAssignment> getActiveProjectAssignments(Project project);
 	
 	/**
 	 * Get available project assignment types

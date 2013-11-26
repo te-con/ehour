@@ -79,7 +79,7 @@ public interface ProjectAssignmentDao  extends GenericDao<ProjectAssignment, Int
 	 * @param onlyActive
 	 * @return
 	 */
-	List<ProjectAssignment> findProjectAssignments(Project project);
+	List<ProjectAssignment> findAllProjectAssignmentsForProject(Project project);
 	
-	List<ProjectAssignment> findProjectAssignments(Project project, Boolean onlyActive);
+	List<ProjectAssignment> findAllActiveProjectAssignmentsForProject(Project project);
 }

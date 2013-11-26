@@ -20,7 +20,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
     "render" in {
       val project = ProjectObjectMother.createProject(1)
-      when(assignmentService.getProjectAssignments(project, true)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
+      when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
       tester.assertNoErrorMessage()
@@ -40,7 +40,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
       when(userService.getActiveUsers).thenReturn(util.Arrays.asList(UserObjectMother.createUser()))
 
       val project = ProjectObjectMother.createProject(1)
-      when(assignmentService.getProjectAssignments(project, true)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
+      when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
 

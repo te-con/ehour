@@ -19,6 +19,8 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.markup.html.form.TextField
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
+import org.apache.wicket.markup.html.WebMarkupContainer
+import org.apache.wicket.AttributeModifier
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
 
@@ -48,7 +50,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     border.add(new AjaxCheckBox("toggleAll", new Model[Boolean]()) {
       override def onUpdate(target: AjaxRequestTarget) {
-        val assignments =  if (getModelObject) {
+        val assignments = if (getModelObject) {
           (fetchUsers ++ fetchProjectAssignments(getPanelModelObject.getProject)).sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
         } else {
           fetchProjectAssignments(getPanelModelObject.getProject)
@@ -69,12 +71,23 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
       override def populateItem(item: ListItem[ProjectAssignment]) {
         val itemModel = item.getModel
 
-        def createNameLabel =  new AlwaysOnLabel("name", new PropertyModel(itemModel, "user.fullName"))
+        def createNameLabel = new AlwaysOnLabel("name", new PropertyModel(itemModel, "user.fullName"))
         def createStartDateLabel = new DateLabel("startDate", new PropertyModel(itemModel, "dateStart"))
         def createEndDateLabel = new DateLabel("endDate", new PropertyModel(itemModel, "dateEnd"))
 
         val container = new Fragment("container", "displayRow", Self)
         item.add(container)
+
+        val activeAssignment = new WebMarkupContainer("activeAssignment")
+
+        if (itemModel.getObject.isActive) {
+          activeAssignment.add(AttributeModifier.append("class", "ui-icon-bullet"))
+        } else {
+          activeAssignment.add(AttributeModifier.append("class", "ui-icon-radio-off"))
+        }
+
+
+        container.add(activeAssignment)
 
         container.add(createNameLabel)
 
@@ -94,7 +107,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
             replacement.add(createNameLabel)
 
             val dateStart = new LocalizedDatePicker("startDate", new PropertyModel[Date](itemModel, "dateStart"))
-              replacement.add(dateStart)
+            replacement.add(dateStart)
 
             val dateEnd = new LocalizedDatePicker("endDate", new PropertyModel[Date](itemModel, "dateEnd"))
             replacement.add(dateEnd)
@@ -113,7 +126,6 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
   }
 
 
-
   def fetchUsers = {
     val project = getPanelModelObject.getProject
 
@@ -125,7 +137,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     if (project.getProjectId == null) {
       List()
     } else {
-      toScala(assignmentService.getProjectAssignments(project, true))
+      toScala(assignmentService.getProjectAssignments(project))
     }
   }
 

@@ -36,148 +36,137 @@ import java.util.Date;
 import java.util.List;
 
 @Service("projectAssignmentService")
-public class ProjectAssignmentServiceImpl implements ProjectAssignmentService
-{
-	@Autowired
-	private	ProjectAssignmentDao	projectAssignmentDAO;
+public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
+    @Autowired
+    private ProjectAssignmentDao projectAssignmentDAO;
 
-	@Autowired
-	private	ProjectAssignmentStatusService	projectAssignmentStatusService;
-	
-	@Autowired
-	private	ReportAggregatedDao		reportAggregatedDAO;
+    @Autowired
+    private ProjectAssignmentStatusService projectAssignmentStatusService;
 
-	/**
-	 * Get active projects for user in date range 
-	 * @param userId
-	 * @param dateRange
-	 * @return
-	 */	
-	
-	public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange)
-	{
-		List<ProjectAssignment>	assignments;
-		List<ProjectAssignment>	validAssignments = new ArrayList<ProjectAssignment>();
-		
-		assignments = projectAssignmentDAO.findProjectAssignmentsForUser(userId, dateRange);
-		
-		for (ProjectAssignment assignment : assignments)
-		{
-			if (projectAssignmentStatusService.getAssignmentStatus(assignment, dateRange).isAssignmentBookable())
-			{
-				validAssignments.add(assignment);
-			}
-		}
-		
-		return validAssignments;
-	}
-	
+    @Autowired
+    private ReportAggregatedDao reportAggregatedDAO;
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getAllProjectsForUser(net.rrm.ehour.persistence.persistence.domain.User, boolean)
-	 */
-	public List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive)
-	{
-		List<ProjectAssignment>	results;
-		List<ProjectAssignment>	filteredResults;
+    /**
+     * Get active projects for user in date range
+     *
+     * @param userId
+     * @param dateRange
+     * @return
+     */
 
-		results = projectAssignmentDAO.findProjectAssignmentsForUser(user);
+    public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange) {
+        List<ProjectAssignment> assignments;
+        List<ProjectAssignment> validAssignments = new ArrayList<ProjectAssignment>();
 
-		if (hideInactive)
-		{
-			Date today = new Date();
-			
-			filteredResults = new ArrayList<ProjectAssignment>();
-			
-			for (ProjectAssignment projectAssignment : results)
-			{
-				if (projectAssignment.isActive() && 
-						(projectAssignment.getDateStart() == null || projectAssignment.getDateStart().before(today)) &&
-						(projectAssignment.getDateEnd() == null || projectAssignment.getDateEnd().after(today)))
-				{
-					filteredResults.add(projectAssignment);
-				}
-			}
-			
-			results = filteredResults;
-		}
-		
-		return results;
-	}	
-	
+        assignments = projectAssignmentDAO.findProjectAssignmentsForUser(userId, dateRange);
 
-	/**
-	 * Get project assignment on id
-	 * 
-	 */
-	public ProjectAssignment getProjectAssignment(Integer assignmentId) throws ObjectNotFoundException
-	{
-		ProjectAssignment 	assignment;
-		
-		assignment = projectAssignmentDAO.findById(assignmentId);
-		
-		if (assignment == null)
-		{
-			throw new ObjectNotFoundException("Assignment not found for id: " + assignmentId);
-		}
-		
-		List<Serializable>	ids = new ArrayList<Serializable>();
-		ids.add(assignmentId);
-		List<AssignmentAggregateReportElement>	aggregates;
-		
-		// call to report service needed but due to circular reference go straight to DAO
-		aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids);
-		assignment.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
-		
-		return assignment;
-	}
+        for (ProjectAssignment assignment : assignments) {
+            if (projectAssignmentStatusService.getAssignmentStatus(assignment, dateRange).isAssignmentBookable()) {
+                validAssignments.add(assignment);
+            }
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectAssignmentService#getProjectAssignments(net.rrm.ehour.persistence.persistence.project.domain.Project, net.rrm.ehour.persistence.persistence.data.DateRange)
-	 */
-	public List<ProjectAssignment> getProjectAssignments(Project project, DateRange range)
-	{
-		return projectAssignmentDAO.findProjectAssignmentsForProject(project, range);
-	}
+        return validAssignments;
+    }
 
-	public List<ProjectAssignment> getProjectAssignments(Project project, boolean hideInActive)
-	{
-		return projectAssignmentDAO.findProjectAssignments(project, hideInActive);
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectAssignmentService#getProjectAssignmentTypes()
-	 */
-	public List<ProjectAssignmentType> getProjectAssignmentTypes()
-	{
-		return projectAssignmentDAO.findProjectAssignmentTypes();
-	}
+    /*
+     * (non-Javadoc)
+     * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getAllProjectsForUser(net.rrm.ehour.persistence.persistence.domain.User, boolean)
+     */
+    public List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive) {
+        List<ProjectAssignment> results;
+        List<ProjectAssignment> filteredResults;
 
-	/**
-	 * 
-	 * @param dao
-	 */
-	public void setProjectAssignmentDAO(ProjectAssignmentDao dao)
-	{
-		this.projectAssignmentDAO = dao;
-	}
+        results = projectAssignmentDAO.findProjectAssignmentsForUser(user);
 
-	/**
-	 * @param projectAssignmentStatusService the projectAssignmentStatusService to set
-	 */
-	public void setProjectAssignmentStatusService(ProjectAssignmentStatusService projectAssignmentStatusService)
-	{
-		this.projectAssignmentStatusService = projectAssignmentStatusService;
-	}
+        if (hideInactive) {
+            Date today = new Date();
 
-	/**
-	 * @param reportAggregatedDAO the reportAggregatedDAO to set
-	 */
-	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
-	{
-		this.reportAggregatedDAO = reportAggregatedDAO;
-	}
+            filteredResults = new ArrayList<ProjectAssignment>();
+
+            for (ProjectAssignment projectAssignment : results) {
+                if (projectAssignment.isActive() &&
+                        (projectAssignment.getDateStart() == null || projectAssignment.getDateStart().before(today)) &&
+                        (projectAssignment.getDateEnd() == null || projectAssignment.getDateEnd().after(today))) {
+                    filteredResults.add(projectAssignment);
+                }
+            }
+
+            results = filteredResults;
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Get project assignment on id
+     */
+    public ProjectAssignment getProjectAssignment(Integer assignmentId) throws ObjectNotFoundException {
+        ProjectAssignment assignment;
+
+        assignment = projectAssignmentDAO.findById(assignmentId);
+
+        if (assignment == null) {
+            throw new ObjectNotFoundException("Assignment not found for id: " + assignmentId);
+        }
+
+        List<Serializable> ids = new ArrayList<Serializable>();
+        ids.add(assignmentId);
+        List<AssignmentAggregateReportElement> aggregates;
+
+        // call to report service needed but due to circular reference go straight to DAO
+        aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids);
+        assignment.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
+
+        return assignment;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see net.rrm.ehour.persistence.persistence.project.service.ProjectAssignmentService#getProjectAssignments(net.rrm.ehour.persistence.persistence.project.domain.Project, net.rrm.ehour.persistence.persistence.data.DateRange)
+     */
+    public List<ProjectAssignment> getProjectAssignments(Project project, DateRange range) {
+        return projectAssignmentDAO.findProjectAssignmentsForProject(project, range);
+    }
+
+    @Override
+    public List<ProjectAssignment> getProjectAssignments(Project project) {
+        return projectAssignmentDAO.findAllProjectAssignmentsForProject(project);
+    }
+
+    @Override
+    public List<ProjectAssignment> getActiveProjectAssignments(Project project) {
+        return projectAssignmentDAO.findAllActiveProjectAssignmentsForProject(project);
+    }
+
+    /*
+         * (non-Javadoc)
+         * @see net.rrm.ehour.persistence.persistence.project.service.ProjectAssignmentService#getProjectAssignmentTypes()
+         */
+    public List<ProjectAssignmentType> getProjectAssignmentTypes() {
+        return projectAssignmentDAO.findProjectAssignmentTypes();
+    }
+
+    /**
+     * @param dao
+     */
+    public void setProjectAssignmentDAO(ProjectAssignmentDao dao) {
+        this.projectAssignmentDAO = dao;
+    }
+
+    /**
+     * @param projectAssignmentStatusService the projectAssignmentStatusService to set
+     */
+    public void setProjectAssignmentStatusService(ProjectAssignmentStatusService projectAssignmentStatusService) {
+        this.projectAssignmentStatusService = projectAssignmentStatusService;
+    }
+
+    /**
+     * @param reportAggregatedDAO the reportAggregatedDAO to set
+     */
+    public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO) {
+        this.reportAggregatedDAO = reportAggregatedDAO;
+    }
 }
