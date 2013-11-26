@@ -119,15 +119,19 @@ public class ProjectAssignmentDaoHibernateImpl
         return results;
     }
 
-    public List<ProjectAssignment> findProjectAssignments(Project project) {
-        return findProjectAssignments(project, null);
+    public List<ProjectAssignment> findAllProjectAssignmentsForProject(Project project) {
+        return findProjectAssignmentsForProject(project, false);
+    }
+
+    public List<ProjectAssignment> findAllActiveProjectAssignmentsForProject(Project project) {
+        return findProjectAssignmentsForProject(project, true);
     }
 
     @SuppressWarnings("unchecked")
-    public List<ProjectAssignment> findProjectAssignments(Project project, Boolean onlyActive) {
+    private List<ProjectAssignment> findProjectAssignmentsForProject(Project project, Boolean onlyActive) {
         Criteria crit = getSession().createCriteria(ProjectAssignment.class);
 
-        if (onlyActive != null) {
+        if (onlyActive) {
             crit.add(Restrictions.eq("active", onlyActive));
         }
 
