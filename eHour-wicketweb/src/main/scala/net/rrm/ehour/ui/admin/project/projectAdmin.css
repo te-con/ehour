@@ -17,12 +17,10 @@
     float:left;
 }
 
-
 .project_users .date {
     width: 6em;
     float:left;
 }
-
 
 .project_users .dateInput {
     width: 5em;
@@ -42,6 +40,10 @@
     width: 4em;
 }
 
+.project_users .buttons {
+    width: 3em;
+    float:left;
+}
 
 .project_users .row {
     clear: both;
@@ -49,5 +51,9 @@
 
 .project_users .container:hover {
     background-color: #d1e5f9;
+}
+
+.project_users .clickable, .project_users .container:hover {
+    cursor: pointer;
 }
 

@@ -4,19 +4,19 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.model.{PropertyModel, Model, IModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.project.service.ProjectAssignmentService
+import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
 import net.rrm.ehour.domain.{ProjectAssignment, Project}
 import net.rrm.ehour.util._
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox
-import org.apache.wicket.ajax.{AjaxEventBehavior, AjaxRequestTarget}
+import org.apache.wicket.ajax.AjaxRequestTarget
 import java.lang.Boolean
 import org.apache.wicket.markup.head.{IHeaderResponse, CssHeaderItem}
 import org.apache.wicket.request.resource.CssResourceReference
 import net.rrm.ehour.user.service.UserService
-import net.rrm.ehour.ui.common.wicket.{DateLabel, AlwaysOnLabel, Container}
+import net.rrm.ehour.ui.common.wicket._
 import org.apache.wicket.markup.html.panel.Fragment
-import org.apache.wicket.markup.html.form.TextField
+import org.apache.wicket.markup.html.form.{Form, CheckBox, TextField}
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
 import org.apache.wicket.markup.html.WebMarkupContainer
@@ -30,6 +30,9 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
+
+  @SpringBean
+  protected var assignmentManagementService: ProjectAssignmentManagementService = _
 
   @SpringBean
   protected var userService: UserService = _
@@ -63,6 +66,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     })
   }
 
+  import WicketDSL._
 
   def createAssignmentListView(assignments: List[ProjectAssignment]): ListView[ProjectAssignment] = {
     new ListView[ProjectAssignment]("assignments", toJava(assignments)) {
@@ -72,55 +76,74 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
         val itemModel = item.getModel
 
         def createNameLabel = new AlwaysOnLabel("name", new PropertyModel(itemModel, "user.fullName"))
-        def createStartDateLabel = new DateLabel("startDate", new PropertyModel(itemModel, "dateStart"))
-        def createEndDateLabel = new DateLabel("endDate", new PropertyModel(itemModel, "dateEnd"))
 
-        val container = new Fragment("container", "displayRow", Self)
-        item.add(container)
-
-        val activeAssignment = new WebMarkupContainer("activeAssignment")
-
-        if (itemModel.getObject.isActive) {
-          activeAssignment.add(AttributeModifier.append("class", "ui-icon-bullet"))
-        } else {
-          activeAssignment.add(AttributeModifier.append("class", "ui-icon-radio-off"))
-        }
-
-
-        container.add(activeAssignment)
-
-        container.add(createNameLabel)
-
-        container.add(createStartDateLabel)
-        container.add(createEndDateLabel)
-        container.add(new AlwaysOnLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
-
-        container.add(new AjaxEventBehavior("onclick") {
-          def onEvent(target: AjaxRequestTarget) = {
-            val replacement = new Fragment("container", "inputRow", Self)
-            replacement.setOutputMarkupId(true)
-
-            replacement.add(new AjaxCheckBox("active", new PropertyModel[Boolean](itemModel, "active")) {
-              def onUpdate(target: AjaxRequestTarget) = ???
-            })
-
-            replacement.add(createNameLabel)
-
-            val dateStart = new LocalizedDatePicker("startDate", new PropertyModel[Date](itemModel, "dateStart"))
-            replacement.add(dateStart)
-
-            val dateEnd = new LocalizedDatePicker("endDate", new PropertyModel[Date](itemModel, "dateEnd"))
-            replacement.add(dateEnd)
-
-            replacement.add(new TextField("rate", new PropertyModel[Float](itemModel, "hourlyRate")))
-            replacement.setOutputMarkupId(true)
-
+        def createEditFragment: Fragment = {
+          def closeEditMode(target: AjaxRequestTarget) {
+            val replacement = createShowFragment
             item.addOrReplace(replacement)
             target.add(replacement)
           }
-        })
 
-        container.setOutputMarkupId(true)
+          val fragment = new Fragment("container", "inputRow", Self)
+          fragment.setOutputMarkupId(true)
+
+          val form = new Form[Unit]("editForm")
+          fragment.add(form)
+
+          form.add(new CheckBox("active", new PropertyModel[Boolean](itemModel, "active")))
+
+          form.add(createNameLabel)
+
+          val dateStart = new LocalizedDatePicker("startDate", new PropertyModel[Date](itemModel, "dateStart"))
+          form.add(dateStart)
+
+          val dateEnd = new LocalizedDatePicker("endDate", new PropertyModel[Date](itemModel, "dateEnd"))
+          form.add(dateEnd)
+
+          form.add(new TextField("rate", new PropertyModel[Float](itemModel, "hourlyRate")))
+
+          val submitButton = new WebMarkupContainer("submit")
+          submitButton.add(ajaxSubmit(form, {
+            (form, target) =>
+              assignmentManagementService.updateProjectAssignment(itemModel.getObject)
+              closeEditMode(target)
+          }))
+
+          form.add(submitButton)
+
+          val cancelButton = new WebMarkupContainer("cancel")
+          cancelButton.add(ajaxClick({ target => closeEditMode(target)}))
+          form.add(cancelButton)
+
+          fragment
+        }
+
+        def createShowFragment: Fragment = {
+          val container = new Fragment("container", "displayRow", Self)
+          container.setOutputMarkupId(true)
+
+          val activeAssignment = new WebMarkupContainer("activeAssignment")
+          activeAssignment.add(AttributeModifier.append("class", if (itemModel.getObject.isActive) "ui-icon-bullet" else "ui-icon-radio-off"))
+          container.add(activeAssignment)
+
+          container.add(createNameLabel)
+          container.add(new DateLabel("startDate", new PropertyModel(itemModel, "dateStart")))
+          container.add(new DateLabel("endDate", new PropertyModel(itemModel, "dateEnd")))
+          container.add(new AlwaysOnLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
+
+          container.add(ajaxClick({
+            target => {
+              val replacement = createEditFragment
+              item.addOrReplace(replacement)
+              target.add(replacement)
+            }
+          }))
+
+          container
+        }
+
+        val container = createShowFragment
+        item.add(container)
       }
     }
   }
