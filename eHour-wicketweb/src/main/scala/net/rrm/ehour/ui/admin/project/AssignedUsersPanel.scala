@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.admin.project
 
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
-import org.apache.wicket.model.{PropertyModel, Model, IModel}
+import org.apache.wicket.model.{StringResourceModel, PropertyModel, Model, IModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
 import net.rrm.ehour.domain.{ProjectAssignment, Project}
@@ -23,7 +23,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.AttributeModifier
 import net.rrm.ehour.ui.common.component.{AjaxFormComponentFeedbackIndicator, ValidatingFormComponentAjaxBehavior}
 import org.apache.wicket.validation.validator.RangeValidator
-import java.lang.{Float=>JFloat}
+import java.lang.{Float => JFloat}
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
@@ -127,7 +127,9 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           form.add(submitButton)
 
           val cancelButton = new WebMarkupContainer("cancel")
-          cancelButton.add(ajaxClick({ target => closeEditMode(target)}))
+          cancelButton.add(ajaxClick({
+            target => closeEditMode(target)
+          }))
           form.add(cancelButton)
 
           fragment
@@ -138,7 +140,12 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           container.setOutputMarkupId(true)
 
           val activeAssignment = new WebMarkupContainer("activeAssignment")
-          activeAssignment.add(AttributeModifier.append("class", if (itemModel.getObject.isActive) "ui-icon-bullet" else "ui-icon-radio-off"))
+          val assignment = itemModel.getObject
+          val (cssClass, title) = if (assignment.getPK == null) ("ui-icon-radio-on", "admin.projects.assignments.not_assigned")
+          else if (assignment.isActive) ("ui-icon-bullet", "admin.projects.assignments.assigned")
+          else ("ui-icon-radio-off", "admin.projects.assignments.assigned")
+          activeAssignment.add(AttributeModifier.append("class", cssClass))
+          activeAssignment.add(AttributeModifier.replace("title", new StringResourceModel(title, Self, null)))
           container.add(activeAssignment)
 
           container.add(createNameLabel)
@@ -163,12 +170,16 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     }
   }
 
-
   def fetchUsers = {
     val project = getPanelModelObject.getProject
 
     val users = toScala(userService.getActiveUsers)
-    users.map(new ProjectAssignment(_, project))
+    users.map(u => {
+      val assignment: ProjectAssignment = new ProjectAssignment(u, project)
+      assignment.setActive(true)
+      assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE)
+      assignment
+    })
   }
 
   def fetchProjectAssignments(project: Project): List[ProjectAssignment] = {

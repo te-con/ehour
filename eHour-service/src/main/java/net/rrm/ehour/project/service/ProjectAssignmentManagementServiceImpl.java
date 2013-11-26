@@ -116,6 +116,12 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     }
 
     @Transactional
+    public void storeNewProjectAssignment(ProjectAssignment assignment) {
+        projectAssignmentDAO.persist(assignment);
+    }
+
+
+    @Transactional
     public void updateProjectAssignment(ProjectAssignment assignment) {
         projectAssignmentDAO.persist(assignment);
     }
