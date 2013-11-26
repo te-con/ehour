@@ -838,6 +838,10 @@ hr {
     cursor: pointer;
 }
 
+.entrySelectorTable .selectedRow {
+    background-color: #d1e5f9;
+}
+
 .entrySelectorTable .inactive td {
     color: #6e9fcc !important;
 }
@@ -885,5 +889,3 @@ hr {
 .borderLess {
     border: 0 !important;
 }
-
-

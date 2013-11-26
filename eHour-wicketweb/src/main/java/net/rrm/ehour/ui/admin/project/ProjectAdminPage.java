@@ -26,11 +26,11 @@ import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -38,6 +38,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -152,38 +153,29 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
         return new ProjectAdminBackingBean(new Project());
     }
 
-
     @SuppressWarnings("serial")
     private Fragment createProjectListHolder(List<Project> projects) {
         Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdminPage.this);
         fragment.setOutputMarkupId(true);
 
-        projectListView = new ListView<Project>("itemList", projects) {
+        projectListView = new EntrySelectorListView<Project>("itemList", projects) {
             @Override
-            protected void populateItem(ListItem<Project> item) {
-                Project project = item.getModelObject();
+            protected void onPopulate(ListItem<Project> item, IModel<Project> itemModel) {
+                Project project = itemModel.getObject();
 
                 if (!project.isActive()) {
                     item.add(AttributeModifier.append("class", "inactive"));
                 }
 
-                final Integer projectId = project.getProjectId();
                 item.add(new Label("name", project.getName()));
                 item.add(new Label("code", project.getProjectCode()));
+            }
 
-
-                item.add(new AjaxEventBehavior("onclick") {
-                    @Override
-                    protected void onEvent(AjaxRequestTarget target) {
-                        try {
-                            getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)));
-                            getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
-                        } catch (ObjectNotFoundException e) {
-                            LOGGER.error(e);
-                        }
-                    }
-                });
-
+            @Override
+            protected void onClick(ListItem<Project> item, AjaxRequestTarget target) throws ObjectNotFoundException {
+                Integer projectId = item.getModelObject().getProjectId();
+                getTabbedPanel().setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)));
+                getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
             }
         };
 
