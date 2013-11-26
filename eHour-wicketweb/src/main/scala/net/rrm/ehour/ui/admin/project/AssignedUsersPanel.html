@@ -32,19 +32,26 @@
     </div>
 
     <wicket:fragment wicket:id="inputRow">
-        <div class="active"><input type="checkbox" wicket:id="active"/></div>
-        <div class="name" wicket:id="name"/>
-        <div class="date"><input class="dateInput" type="text" wicket:id="startDate"/></div>
-        <div class="date"><input class="dateInput" type="text" wicket:id="endDate"/></div>
-        <div class="rate"><input class="rateInput" type="text" id="rate" wicket:id="rate"/></div>
+        <form wicket:id="editForm">
+            <div class="active"><input type="checkbox" wicket:id="active"/></div>
+            <div class="name" wicket:id="name"/>
+            <div class="date"><input class="dateInput" type="text" wicket:id="startDate"/></div>
+            <div class="date"><input class="dateInput" type="text" wicket:id="endDate"/></div>
+            <div class="rate"><input class="rateInput" type="text" id="rate" wicket:id="rate"/></div>
+            <div class="buttons">
+                <span class="ui-state-default ui-corner-all borderLess clickable" wicket:id="submit"><span class="ui-icon ui-icon-check floatLeft"></span></span>
+                <span class="ui-state-default ui-corner-all borderLess clickable" wicket:id="cancel"><span class="ui-icon ui-icon-cancel floatLeft"></span></span>
+            </div>
+        </form>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="displayRow">
-        <div class="active"><span class="ui-state-default ui-corner-all borderLess"><span class="ui-icon" wicket:id="activeAssignment" title="ddw"></span></span></div>
+        <div class="active"><span class="ui-state-default ui-corner-all borderLess"><span class="ui-icon" wicket:id="activeAssignment"></span></span></div>
         <div class="name" wicket:id="name"/>
         <div class="date" wicket:id="startDate"/>
         <div class="date" wicket:id="endDate"/>
         <div class="rate" wicket:id="rate"/>
+        <div class="buttons">&nbsp;</div>
     </wicket:fragment>
 
 
