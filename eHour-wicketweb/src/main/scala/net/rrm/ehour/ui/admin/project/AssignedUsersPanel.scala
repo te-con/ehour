@@ -21,6 +21,10 @@ import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.AttributeModifier
+import net.rrm.ehour.ui.common.component.{AjaxFormComponentFeedbackIndicator, ValidatingFormComponentAjaxBehavior}
+import org.apache.wicket.validation.validator.RangeValidator
+import java.lang.{Float=>JFloat}
+import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
 
@@ -95,12 +99,23 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           form.add(createNameLabel)
 
           val dateStart = new LocalizedDatePicker("startDate", new PropertyModel[Date](itemModel, "dateStart"))
+          dateStart.add(new ValidatingFormComponentAjaxBehavior)
+          form.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart))
           form.add(dateStart)
 
           val dateEnd = new LocalizedDatePicker("endDate", new PropertyModel[Date](itemModel, "dateEnd"))
+          dateEnd.add(new ValidatingFormComponentAjaxBehavior)
+          form.add(new AjaxFormComponentFeedbackIndicator("dateEndValidationError", dateEnd))
           form.add(dateEnd)
 
-          form.add(new TextField("rate", new PropertyModel[Float](itemModel, "hourlyRate")))
+          val rate = new TextField("rate", new PropertyModel[JFloat](itemModel, "hourlyRate"), classOf[JFloat])
+          form.add(rate)
+
+          rate.add(new ValidatingFormComponentAjaxBehavior)
+          rate.add(RangeValidator.minimum[JFloat](0f))
+          form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", rate))
+
+          form.add(new DateOverlapValidator("dateStartDateEnd", dateStart, dateEnd))
 
           val submitButton = new WebMarkupContainer("submit")
           submitButton.add(ajaxSubmit(form, {

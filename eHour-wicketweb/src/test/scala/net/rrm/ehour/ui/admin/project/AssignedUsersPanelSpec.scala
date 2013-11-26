@@ -78,15 +78,34 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
       tester.executeAjaxEvent("id:border:border_body:assignmentContainer:assignments:0:container", "click")
 
       val formTester =tester.newFormTester("id:border:border_body:assignmentContainer:assignments:0:container:editForm")
-      formTester.setValue("rate", "5")
+      formTester.setValue("rate", "10")
 
       tester.executeAjaxEvent("id:border:border_body:assignmentContainer:assignments:0:container:editForm:submit", "click")
 
       tester.assertComponent("id:border:border_body:assignmentContainer:assignments:0:container:rate", classOf[AlwaysOnLabel[Float]])
 
+      assignment.getHourlyRate should be (10f)
+
       verify(projectAssignmentManagementService).updateProjectAssignment(any(classOf[ProjectAssignment]))
 
       tester.assertNoErrorMessage()
+    }
+
+    "click on an existing assignment, edit an invalid rate and click okay should give an error message" in {
+      val project = ProjectObjectMother.createProject(1)
+      val assignment = ProjectAssignmentObjectMother.createProjectAssignment(1)
+      when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(assignment)))
+
+      tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
+
+      tester.executeAjaxEvent("id:border:border_body:assignmentContainer:assignments:0:container", "click")
+
+      val formTester =tester.newFormTester("id:border:border_body:assignmentContainer:assignments:0:container:editForm")
+      formTester.setValue("rate", "xx")
+
+      tester.executeAjaxEvent("id:border:border_body:assignmentContainer:assignments:0:container:editForm:submit", "click")
+
+      tester.assertErrorMessages("rate.IConverter.Float")
     }
   }
 }
