@@ -20,6 +20,7 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectObjectMother;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.ui.admin.project.ProjectAdminPage;
@@ -38,6 +39,7 @@ public class ProjectAdminPageTest extends BaseSpringWebAppTester {
     private UserService userService;
     private CustomerService customerService;
     private ProjectAssignmentService projectAssignmentService;
+    private ProjectAssignmentManagementService assignmentManagementService;
 
     @Before
     public void before() throws Exception {
@@ -52,6 +54,9 @@ public class ProjectAdminPageTest extends BaseSpringWebAppTester {
 
         projectAssignmentService = createMock(ProjectAssignmentService.class);
         getMockContext().putBean(projectAssignmentService);
+
+        assignmentManagementService = createMock(ProjectAssignmentManagementService.class);
+        getMockContext().putBean(assignmentManagementService);
 
     }
 
