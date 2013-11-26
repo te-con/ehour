@@ -30,8 +30,6 @@ import javax.persistence.Table;
 
 /**
  * Project Assignment type
- *
- * TODO this can as well be an enum
  **/
 @Entity
 @Table(name = "PROJECT_ASSIGNMENT_TYPE")
@@ -59,17 +57,17 @@ public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignme
 	
 	public boolean isDateType()
 	{
-		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_DATE;
+		return assignmentTypeId == EhourConstants.ASSIGNMENT_DATE;
 	}
 
 	public boolean isFixedAllottedType()
 	{
-		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED;
+		return assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED;
 	}
 
 	public boolean isFlexAllottedType()
 	{
-		return assignmentTypeId.intValue() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX;
+		return assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX;
 	}
 	
 	public boolean isAllottedType()
