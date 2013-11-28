@@ -875,7 +875,7 @@ hr {
 }
 
 .adminForm table td:first-child {
-    min-width: 10em;
+    min-width: 18em;
 }
 
 .adminForm input[type=text], .adminForm input[type=password], .adminForm select, .adminForm textarea {
@@ -889,3 +889,4 @@ hr {
 .borderLess {
     border: 0 !important;
 }
+

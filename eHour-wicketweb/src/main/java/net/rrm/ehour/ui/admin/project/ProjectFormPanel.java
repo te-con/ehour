@@ -23,7 +23,6 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.sort.UserComparator;
-import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
@@ -33,11 +32,9 @@ import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -77,8 +74,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     }
 
     private void setUpPage(IModel<ProjectAdminBackingBean> model) {
-        Border border = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
-        add(border);
 
         Form<ProjectAdminBackingBean> form = new Form<ProjectAdminBackingBean>("projectForm", model);
         addFormComponents(form);
@@ -90,7 +85,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 
         FormUtil.setSubmitActions(formConfig);
 
-        border.add(form);
+        addOrReplace(form);
     }
 
     private void addFormComponents(Form<ProjectAdminBackingBean> form) {
