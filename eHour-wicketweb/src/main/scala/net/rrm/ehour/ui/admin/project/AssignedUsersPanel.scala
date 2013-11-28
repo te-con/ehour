@@ -1,17 +1,16 @@
 package net.rrm.ehour.ui.admin.project
 
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import org.apache.wicket.model.{StringResourceModel, PropertyModel, Model, IModel}
+import org.apache.wicket.model.{StringResourceModel, PropertyModel, IModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
 import net.rrm.ehour.domain.{ProjectAssignment, Project}
 import net.rrm.ehour.util._
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox
 import org.apache.wicket.ajax.AjaxRequestTarget
 import java.lang.Boolean
-import org.apache.wicket.markup.head.{IHeaderResponse, CssHeaderItem}
-import org.apache.wicket.request.resource.CssResourceReference
+import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse, CssHeaderItem}
+import org.apache.wicket.request.resource.{JavaScriptResourceReference, CssResourceReference}
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.ui.common.wicket._
 import org.apache.wicket.markup.html.panel.Fragment
@@ -24,12 +23,15 @@ import net.rrm.ehour.ui.common.component.{AjaxFormComponentFeedbackIndicator, Va
 import org.apache.wicket.validation.validator.RangeValidator
 import java.lang.{Float => JFloat}
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator
+import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
+
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
 
   val Self = this
 
   val Css = new CssResourceReference(classOf[AssignedUsersPanel], "projectAdmin.css")
+  val Js = new JavaScriptResourceReference(classOf[AssignedUsersPanel], "projectAdmin.js")
 
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
@@ -41,9 +43,9 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
   protected var userService: UserService = _
 
   override def onInitialize() {
-    def joinWithDuplicates(notAssigned: List[ProjectAssignment],  assigned: List[ProjectAssignment]) = filter(notAssigned, assigned) ++ assigned
+    def joinWithDuplicates(notAssigned: List[ProjectAssignment], assigned: List[ProjectAssignment]) = filter(notAssigned, assigned) ++ assigned
 
-    def filter(notAssigned: List[ProjectAssignment],  assigned: List[ProjectAssignment]) = notAssigned.filterNot(p => assigned.exists(a => a.getUser.equals(p.getUser)))
+    def filter(notAssigned: List[ProjectAssignment], assigned: List[ProjectAssignment]) = notAssigned.filterNot(p => assigned.exists(a => a.getUser.equals(p.getUser)))
 
     super.onInitialize()
 
@@ -56,19 +58,35 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     addOrReplace(container)
     container.addOrReplace(createAssignmentListView(assignments))
 
-    addOrReplace(new AjaxCheckBox("toggleAll", new Model[Boolean]()) {
-      override def onUpdate(target: AjaxRequestTarget) {
-        val assignments = sort(if (getModelObject)
-          joinWithDuplicates(fetchUsers, fetchProjectAssignments(getPanelModelObject.getProject))
-        else
-          fetchProjectAssignments(getPanelModelObject.getProject)
-        )
+    def callBack(fetchAssignments:(Project) => List[ProjectAssignment], showUsersVisibility: Boolean):LinkCallback =
+      target => {
+        val assignments = sort(fetchAssignments(getPanelModelObject.getProject))
 
         val view = createAssignmentListView(assignments)
         container.addOrReplace(view)
         target.add(container)
+        target.appendJavaScript(applyJsFilter)
+
+        val addUsersButton = Self.get("addUsers")
+        addUsersButton.setVisible(showUsersVisibility)
+        target.add(addUsersButton)
+
+        val hideUsersButton = Self.get("hideUsers")
+        hideUsersButton.setVisible(!showUsersVisibility)
+        target.add(hideUsersButton)
       }
-    })
+
+
+    val hideUsers = new AjaxLink("hideUsers", callBack(p => fetchProjectAssignments(p), showUsersVisibility = true))
+    addOrReplace(hideUsers)
+    hideUsers.setOutputMarkupId(true)
+    hideUsers.setOutputMarkupPlaceholderTag(true)
+    hideUsers.setVisible(false)
+
+    val addUsers = new AjaxLink("addUsers", callBack(p => joinWithDuplicates(fetchUsers, fetchProjectAssignments(p)), showUsersVisibility = false))
+    addOrReplace(addUsers)
+    addUsers.setOutputMarkupId(true)
+    addUsers.setOutputMarkupPlaceholderTag(true)
   }
 
   private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
@@ -195,5 +213,9 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
   override def renderHead(response: IHeaderResponse) {
     response.render(CssHeaderItem.forReference(Css))
+    response.render(JavaScriptHeaderItem.forReference(Js))
+    response.render(OnDomReadyHeaderItem.forScript(applyJsFilter))
   }
+
+  val applyJsFilter = "initFilter();"
 }
