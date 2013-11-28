@@ -9,7 +9,13 @@
 <wicket:panel>
 
     <div class="assignedContainer">
+        <div class="foldIcon">
+            <a href="#" onclick="return toggleFilter('#customerFilter')" id="customerFold"><span class="ui-state-default ui-corner-all borderLess">
+                            <span class="ui-icon ui-icon-carat-2-n-s"></span></span>
+            </a>
+        </div>
         <h4>Assigned users</h4>
+        <br />
 
         <div class="usersFilter">
             <wicket:message key="admin.project.assignments.showAll" /> <input type="checkbox" wicket:id="toggleAll"/>
