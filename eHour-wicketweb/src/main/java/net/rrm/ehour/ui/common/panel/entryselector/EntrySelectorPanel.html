@@ -12,10 +12,7 @@
 		<form onsubmit="return false;" wicket:id="filterForm" style="margin: 0; padding: 0">
             <p>
                 <span wicket:id="filterInputContainer">
-					<input class="textInput searchInput"
-                           wicket:id="listFilter"
-                           type="text"
-                            />
+					<input class="textInput searchInput" wicket:id="listFilter" type="text"/>
                     <br/>
 				</span>
 
@@ -39,7 +36,7 @@
 
     <script>
         $("#listFilter").keyup(function () {
-            filterList()
+            filterList();
         });
 
 

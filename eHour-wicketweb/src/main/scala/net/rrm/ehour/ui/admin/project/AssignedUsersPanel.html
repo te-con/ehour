@@ -9,18 +9,25 @@
 <wicket:panel>
 
     <div class="assignedContainer">
-        <div class="foldIcon">
-            <a href="#" onclick="return toggleFilter('#customerFilter')" id="customerFold"><span class="ui-state-default ui-corner-all borderLess">
-                            <span class="ui-icon ui-icon-carat-2-n-s"></span></span>
-            </a>
-        </div>
-        <h4>Assigned users</h4>
+        <h4><wicket:message key="admin.projects.assignments.header" /></h4>
         <br />
 
         <div class="usersFilter">
-            <wicket:message key="admin.project.assignments.showAll" /> <input type="checkbox" wicket:id="toggleAll"/>
+            <div class="filter floatLeft">
+                <input class="textInput searchInput" id="filterInput" type="text" placeholder="Filter..."/>
+            </div>
+
+            <div style="padding-right: 20px;">
+                <a class="button floatRight" onclick="this.blur();" wicket:id="addUsers">
+                    <span><wicket:message key="admin.project.assignments.addUsers" /></span></a>
+
+                <a class="button floatRight" onclick="this.blur();" wicket:id="hideUsers">
+                    <span><wicket:message key="admin.project.assignments.done" /></span></a>
+            </div>
 
         </div>
+
+        <br style="clear:both"/>
 
         <div class="project_users" wicket:id="assignmentContainer">
             <div class="header">
@@ -46,10 +53,10 @@
     <wicket:fragment wicket:id="inputRow">
         <form wicket:id="editForm">
             <div class="active"><input type="checkbox" wicket:id="active"/></div>
-            <div class="name" wicket:id="name"/>
-            <div class="date"><input class="dateInput" type="text" wicket:id="startDate"/></div>
-            <div class="date"><input class="dateInput" type="text" wicket:id="endDate"/></div>
-            <div class="rate"><input class="rateInput" type="text" id="rate" wicket:id="rate"/></div>
+            <div class="name filterable" wicket:id="name"/>
+            <div class="date filterable"><input class="dateInput" type="text" wicket:id="startDate"/></div>
+            <div class="date filterable"><input class="dateInput" type="text" wicket:id="endDate"/></div>
+            <div class="rate filterable"><input class="rateInput" type="text" id="rate" wicket:id="rate"/></div>
             <div class="buttons">
                 <span class="ui-state-default ui-corner-all borderLess clickable" wicket:id="submit"><span class="ui-icon ui-icon-check floatLeft"></span></span>
                 <span class="ui-state-default ui-corner-all borderLess clickable" wicket:id="cancel"><span class="ui-icon ui-icon-cancel floatLeft"></span></span>
@@ -64,10 +71,10 @@
 
     <wicket:fragment wicket:id="displayRow">
         <div class="active"><span class="ui-state-default ui-corner-all borderLess"><span class="ui-icon" wicket:id="activeAssignment"></span></span></div>
-        <div class="name" wicket:id="name"/>
-        <div class="date" wicket:id="startDate"/>
-        <div class="date" wicket:id="endDate"/>
-        <div class="rate" wicket:id="rate"/>
+        <div class="name filterable" wicket:id="name"/>
+        <div class="date filterable" wicket:id="startDate"/>
+        <div class="date filterable" wicket:id="endDate"/>
+        <div class="rate filterable" wicket:id="rate"/>
         <div class="buttons">&nbsp;</div>
     </wicket:fragment>
 
