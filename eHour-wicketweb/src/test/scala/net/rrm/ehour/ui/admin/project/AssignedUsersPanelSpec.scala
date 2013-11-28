@@ -40,14 +40,14 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
       verify(assignmentService, never).getProjectAssignment(anyInt())
     }
 
-    "add unassigned users to the list when toggle box to show all users is clicked" in {
+    "add unassigned users to the list when add users button clicked" in {
       when(userService.getActiveUsers).thenReturn(util.Arrays.asList(UserObjectMother.createUser()))
 
       val project = ProjectObjectMother.createProject(1)
       when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
-      tester.clickAjaxCheckBoxToEnable("id:toggleAll")
+      tester.executeAjaxEvent("id:addUsers", "click")
 
       verify(userService).getActiveUsers
     }
