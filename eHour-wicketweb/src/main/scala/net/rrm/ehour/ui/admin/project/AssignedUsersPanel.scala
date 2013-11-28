@@ -1,7 +1,6 @@
 package net.rrm.ehour.ui.admin.project
 
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.model.{StringResourceModel, PropertyModel, Model, IModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
@@ -48,18 +47,16 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     super.onInitialize()
 
-    val border = new GreyRoundedBorder("border")
-    addOrReplace(border)
-
     val project = getPanelModelObject.getProject
 
     val assignments = sort(fetchProjectAssignments(project))
 
+
     val container = new Container("assignmentContainer")
-    border.addOrReplace(container)
+    addOrReplace(container)
     container.addOrReplace(createAssignmentListView(assignments))
 
-    border.add(new AjaxCheckBox("toggleAll", new Model[Boolean]()) {
+    addOrReplace(new AjaxCheckBox("toggleAll", new Model[Boolean]()) {
       override def onUpdate(target: AjaxRequestTarget) {
         val assignments = sort(if (getModelObject)
           joinWithDuplicates(fetchUsers, fetchProjectAssignments(getPanelModelObject.getProject))
@@ -73,9 +70,6 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
       }
     })
   }
-
-
-
 
   private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
 

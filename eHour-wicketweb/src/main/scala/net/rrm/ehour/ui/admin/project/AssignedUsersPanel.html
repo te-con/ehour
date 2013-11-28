@@ -7,7 +7,9 @@
 
 <body>
 <wicket:panel>
-    <div wicket:id="border">
+
+    <div class="assignedContainer">
+        <h4>Assigned users</h4>
 
         <div class="usersFilter">
             <wicket:message key="admin.project.assignments.showAll" /> <input type="checkbox" wicket:id="toggleAll"/>
@@ -21,12 +23,16 @@
                 <div class="date"><wicket:message key="admin.assignment.startHeader" /></div>
                 <div class="date"><wicket:message key="admin.assignment.endHeader" /></div>
                 <div class="rate"><wicket:message key="admin.assignment.rateHeader" /></div>
+                <div class="buttons">&nbsp;</div>
+                <div class="scrollbar">&nbsp;</div>
                 <br/>
             </div>
 
-            <div class="row" wicket:id="assignments">
-                <span class="inline container" wicket:id="container"></span>
-                <br clear="both" />
+            <div class="rows">
+                <div class="row" wicket:id="assignments">
+                    <span class="inline container" wicket:id="container"></span>
+                    <br clear="both" />
+                </div>
             </div>
         </div>
     </div>

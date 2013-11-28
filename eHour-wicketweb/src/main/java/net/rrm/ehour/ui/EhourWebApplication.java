@@ -54,6 +54,7 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -104,6 +105,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         if (isInTestMode()) {
             LOGGER.info("*** Running in test mode ***");
             getDebugSettings().setOutputComponentPath(true);
+            getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
         }
 
     }

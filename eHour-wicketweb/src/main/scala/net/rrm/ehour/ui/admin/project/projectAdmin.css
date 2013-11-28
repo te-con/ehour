@@ -1,5 +1,6 @@
-.project_users {
-
+.project_users .rows {
+    max-height: 18em;
+    overflow: auto;
 }
 
 .project_users .header  {
@@ -45,6 +46,11 @@
     float:left;
 }
 
+.project_users .scrollbar {
+    width: 2em;
+    float:left;
+}
+
 .project_users .row {
     clear: both;
 }
@@ -62,4 +68,18 @@
     padding-right: 3em;
     text-align: right;
 }
+
+.assignedContainer {
+    margin: 15px 10px 0 10px;
+}
+
+.assignedContainer h4 {
+    line-height: 16px;
+    padding: 0;
+    margin: 0;
+    font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
+    color: #536e87;
+    border-top: 1px solid white;
+}
+
 
