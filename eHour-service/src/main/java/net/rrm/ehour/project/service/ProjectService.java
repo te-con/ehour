@@ -17,11 +17,13 @@
 package net.rrm.ehour.project.service;
 
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
 import java.util.List;
+import java.util.Queue;
 
 public interface ProjectService
 {
@@ -58,7 +60,9 @@ public interface ProjectService
 	 * @param project
 	 * @return
 	 */
-	Project persistProject(Project project);
+	Project updateProject(Project project, Queue<ProjectAssignment> assignmentsToMake);
+
+    Project createProject(Project project, Queue<ProjectAssignment> assignmentsToMake);
 
 	/**
 	 * Delete the project

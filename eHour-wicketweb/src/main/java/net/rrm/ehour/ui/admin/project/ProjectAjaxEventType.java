@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.admin.project;
 
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 
-public enum ProjectAjaxEventType implements AjaxEventType
-{
-	PROJECT_UPDATED,
-	PROJECT_DELETED
+public enum ProjectAjaxEventType implements AjaxEventType {
+    PROJECT_CREATED,
+    PROJECT_UPDATED,
+    PROJECT_DELETED
 }

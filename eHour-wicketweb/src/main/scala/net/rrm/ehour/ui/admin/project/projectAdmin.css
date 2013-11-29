@@ -24,13 +24,9 @@
 }
 
 .project_users .dateInput {
-    width: 5em;
+    width: 5em !important;
 }
 
-.project_users .hours {
-    width: 5em;
-    float:left;
-}
 
 .project_users .rate {
     width: 5em;
@@ -38,7 +34,7 @@
 }
 
 .project_users .rateInput {
-    width: 4em;
+    width: 4em !important;
 }
 
 .project_users .buttons {

@@ -17,89 +17,121 @@
 package net.rrm.ehour.project.service;
 
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
+import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProjectServiceTest {
-    private ProjectService projectService;
-    private ProjectDao projectDAO;
+    private ProjectServiceImpl projectService;
+    private ProjectDao projectDao;
     private UserService userService;
     private AggregateReportService aggregateReportService;
+    private ProjectAssignmentManagementService projectAssignmentManagementService;
 
     @Before
     public void setUp() {
-        projectService = new ProjectServiceImpl();
-
-        projectDAO = createMock(ProjectDao.class);
-        ((ProjectServiceImpl) projectService).setProjectDAO(projectDAO);
-
+        projectDao = createMock(ProjectDao.class);
         userService = createMock(UserService.class);
-        ((ProjectServiceImpl) projectService).setUserService(userService);
-
         aggregateReportService = createMock(AggregateReportService.class);
-        ((ProjectServiceImpl) projectService).setAggregateReportService(aggregateReportService);
+        projectAssignmentManagementService = createMock(ProjectAssignmentManagementService.class);
+
+        projectService = new ProjectServiceImpl(projectDao, projectAssignmentManagementService, aggregateReportService, userService);
     }
 
     @Test
-    public void testGetAllProjects() {
-        expect(projectDAO.findAllActive())
-                .andReturn(new ArrayList<Project>());
+    public void should_get_all_active_projects() {
+        expect(projectDao.findAllActive()).andReturn(new ArrayList<Project>());
 
-        replay(projectDAO);
+        replay(projectDao);
 
         projectService.getProjects(true);
 
-        verify(projectDAO);
+        verify(projectDao);
     }
 
     @Test
-    public void testGetAllProjectsInactive() {
-        expect(projectDAO.findAll())
-                .andReturn(new ArrayList<Project>());
+    public void should_get_all_projects() {
+        expect(projectDao.findAll()).andReturn(new ArrayList<Project>());
 
-        replay(projectDAO);
+        replay(projectDao);
 
         projectService.getProjects(false);
 
-        verify(projectDAO);
+        verify(projectDao);
     }
 
     @Test
-    public void testGetProject() throws ObjectNotFoundException {
-        expect(projectDAO.findById(1))
-                .andReturn(new Project());
+    public void should_get_project_on_id() throws ObjectNotFoundException {
+        expect(projectDao.findById(1)).andReturn(new Project());
 
-        replay(projectDAO);
+        replay(projectDao);
 
         projectService.getProject(1);
 
-        verify(projectDAO);
+        verify(projectDao);
     }
 
     @Test
-    public void testPersistProject() {
-        Project prj = new Project(1);
+    public void should_create_project_and_make_assignments() {
+        Project project = new Project(1);
 
-        expect(projectDAO.persist(prj))
-                .andReturn(prj);
+        expect(projectDao.persist(project)).andReturn(project);
+        expect(userService.validateProjectManagementRoles(null)).andReturn(null);
 
-        expect(userService.validateProjectManagementRoles(null))
-                .andReturn(null);
+        Capture<ProjectAssignment> captureArgument = new Capture<ProjectAssignment>();
+        projectAssignmentManagementService.updateProjectAssignment(capture(captureArgument));
 
-        replay(userService);
-        replay(projectDAO);
+        replay(userService, projectDao, projectAssignmentManagementService);
 
-        projectService.persistProject(prj);
+        ConcurrentLinkedDeque<ProjectAssignment> assignments = new ConcurrentLinkedDeque<ProjectAssignment>();
+        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        assignment.setProject(null);
+        assignments.add(assignment);
+
+        projectService.createProject(project, assignments);
 
         verify(userService);
-        verify(projectDAO);
+        verify(projectDao);
+        verify(projectAssignmentManagementService);
+
+        ProjectAssignment projectAssignment = captureArgument.getValue();
+        assertEquals(project, projectAssignment.getProject());
     }
+
+    @Test
+    public void should_update_project_and_make_assignments() {
+        Project project = new Project(1);
+
+        expect(projectDao.persist(project)).andReturn(project);
+        expect(userService.validateProjectManagementRoles(null)).andReturn(null);
+
+        Capture<ProjectAssignment> captureArgument = new Capture<ProjectAssignment>();
+        projectAssignmentManagementService.updateProjectAssignment(capture(captureArgument));
+
+        replay(userService, projectDao, projectAssignmentManagementService);
+
+        ConcurrentLinkedDeque<ProjectAssignment> assignments = new ConcurrentLinkedDeque<ProjectAssignment>();
+        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        assignment.setProject(project);
+        assignments.add(assignment);
+
+        projectService.createProject(project, assignments);
+
+        verify(userService);
+        verify(projectDao);
+        verify(projectAssignmentManagementService);
+    }
+
 }

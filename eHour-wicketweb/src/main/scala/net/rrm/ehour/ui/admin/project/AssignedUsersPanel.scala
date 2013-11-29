@@ -3,7 +3,7 @@ package net.rrm.ehour.ui.admin.project
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import org.apache.wicket.model.{StringResourceModel, PropertyModel, IModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
+import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.domain.{ProjectAssignment, Project}
 import net.rrm.ehour.util._
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
@@ -25,7 +25,6 @@ import java.lang.{Float => JFloat}
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
 
-
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
 
   val Self = this
@@ -35,9 +34,6 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
-
-  @SpringBean
-  protected var assignmentManagementService: ProjectAssignmentManagementService = _
 
   @SpringBean
   protected var userService: UserService = _
@@ -53,7 +49,6 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     val assignments = sort(fetchProjectAssignments(project))
 
-
     val container = new Container("assignmentContainer")
     addOrReplace(container)
     container.addOrReplace(createAssignmentListView(assignments))
@@ -67,13 +62,14 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
         target.add(container)
         target.appendJavaScript(applyJsFilter)
 
-        val addUsersButton = Self.get("addUsers")
-        addUsersButton.setVisible(showUsersVisibility)
-        target.add(addUsersButton)
+        def changeVisibility(buttonId: String, visibility: Boolean) {
+          val addUsersButton = Self.get(buttonId)
+          addUsersButton.setVisible(visibility)
+          target.add(addUsersButton)
+        }
 
-        val hideUsersButton = Self.get("hideUsers")
-        hideUsersButton.setVisible(!showUsersVisibility)
-        target.add(hideUsersButton)
+        changeVisibility("addUsers", showUsersVisibility)
+        changeVisibility("hideUsers", !showUsersVisibility)
       }
 
 
@@ -102,9 +98,9 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
         def createNameLabel = new AlwaysOnLabel("name", new PropertyModel(itemModel, "user.fullName"))
 
-        def createEditFragment: Fragment = {
+        def createEditFragment(): Fragment = {
           def closeEditMode(target: AjaxRequestTarget) {
-            val replacement = createShowFragment
+            val replacement = createShowFragment()
             item.addOrReplace(replacement)
             target.add(replacement)
           }
@@ -141,7 +137,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           val submitButton = new WebMarkupContainer("submit")
           submitButton.add(ajaxSubmit(form, {
             (form, target) =>
-              assignmentManagementService.updateProjectAssignment(itemModel.getObject)
+              getPanelModelObject.addAssignmentToCommit(itemModel.getObject)
               closeEditMode(target)
           }))
 
@@ -156,7 +152,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           fragment
         }
 
-        def createShowFragment: Fragment = {
+        def createShowFragment(): Fragment = {
           val container = new Fragment("container", "displayRow", Self)
           container.setOutputMarkupId(true)
 
@@ -176,7 +172,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
           container.add(ajaxClick({
             target => {
-              val replacement = createEditFragment
+              val replacement = createEditFragment()
               item.addOrReplace(replacement)
               target.add(replacement)
             }
@@ -185,7 +181,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           container
         }
 
-        val container = createShowFragment
+        val container = createShowFragment()
         item.add(container)
       }
     }

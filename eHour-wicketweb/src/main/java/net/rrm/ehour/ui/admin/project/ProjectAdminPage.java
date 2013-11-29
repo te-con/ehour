@@ -28,7 +28,6 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -53,8 +52,6 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.Fil
 
 public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackingBean> {
     private static final long serialVersionUID = 9196677804018589806L;
-
-    private static final Logger LOGGER = Logger.getLogger(ProjectAdminPage.class);
 
     private static final String PROJECT_SELECTOR_ID = "projectSelector";
 
@@ -100,6 +97,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
         AjaxEventType type = ajaxEvent.getEventType();
 
         if (type == ProjectAjaxEventType.PROJECT_UPDATED
+                || type == ProjectAjaxEventType.PROJECT_CREATED
                 || type == ProjectAjaxEventType.PROJECT_DELETED) {
             // update project list
             projectListView.setList(getProjects());
@@ -123,13 +121,12 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
-        return new ProjectAdminFormContainer(panelId,
-                new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
+        return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
     }
 
     @Override
     protected Panel getBaseEditPanel(String panelId) {
-        return new ProjectAdminFormContainer(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
+        return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
 
     }
 

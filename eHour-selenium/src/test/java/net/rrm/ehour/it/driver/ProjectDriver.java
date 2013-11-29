@@ -45,21 +45,21 @@ public abstract class ProjectDriver {
     private static void createProject(ItProject project, ItCustomer customer, boolean active) {
         loadProjectAdmin();
 
-        findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_project.name").clear();
-        findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_project.name").sendKeys(project.name);
-        findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_project.projectCode").clear();
-        findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_project.projectCode").sendKeys(project.code);
+        findElement("tabs_panel_projectForm_project.name").clear();
+        findElement("tabs_panel_projectForm_project.name").sendKeys(project.name);
+        findElement("tabs_panel_projectForm_project.projectCode").clear();
+        findElement("tabs_panel_projectForm_project.projectCode").sendKeys(project.code);
 
         if (!active) {
-            findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_project.active").click();
+            findElement("tabs_panel_projectForm_project.active").click();
         }
 
         String cust = String.format("%s - %s", customer.code, customer.name);
-        new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_project.customer")).selectByVisibleText(cust);
+        new Select(findElement("tabs_panel_projectForm_project.customer")).selectByVisibleText(cust);
 
-        findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_submitButton").click();
+        findElement("tabs_panel_projectForm_submitButton").click();
 
-        assertTrue(findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_serverMessage").getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
+        assertTrue(findElement("tabs_panel_projectForm_serverMessage").getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
     }
 
     public static void editProject(String projectName) {
@@ -77,7 +77,7 @@ public abstract class ProjectDriver {
     }
 
     public static void assertProjectLoaded(String projectName) {
-        String input = findElement("tabs_panel_border_greySquaredFrame_border__body_form_projectForm_project.name").getAttribute("value");
+        String input = findElement("tabs_panel_projectForm_project.name").getAttribute("value");
 
         assertEquals(projectName, input);
     }

@@ -17,7 +17,11 @@
 package net.rrm.ehour.ui.admin.project;
 
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Project admin backing bean
@@ -28,6 +32,15 @@ public class ProjectAdminBackingBean extends AdminBackingBeanImpl
     private	Project	project;
     private boolean assignExistingUsersToDefaultProjects = false;
 
+    private Queue<ProjectAssignment> assignmentsToCommit = new ConcurrentLinkedQueue<ProjectAssignment>();
+
+    public void addAssignmentToCommit(ProjectAssignment assignment) {
+        assignmentsToCommit.add(assignment);
+    }
+
+    public Queue<ProjectAssignment> getAssignmentsToCommit() {
+        return assignmentsToCommit;
+    }
 
     public ProjectAdminBackingBean(Project project)
     {
