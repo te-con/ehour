@@ -19,6 +19,8 @@ package net.rrm.ehour.ui.login.page;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.sysinfo.SysInfo;
+import net.rrm.ehour.sysinfo.SysInfoService;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.util.WebUtils;
@@ -55,6 +57,12 @@ public class LoginTest extends BaseSpringWebAppTester
 
 		MailService mailService = createMock(MailService.class);
 		getMockContext().putBean("mailService", mailService);
+
+        SysInfoService infoService = createMock(SysInfoService.class);
+        getMockContext().putBean(infoService);
+        expect(infoService.info()).andReturn(new SysInfo("a", "b", "c"));
+        expectLastCall().times(2);
+        replay(infoService);
 
 		expect(configService.getConfiguration())
 				.andReturn(new EhourConfigStub())
