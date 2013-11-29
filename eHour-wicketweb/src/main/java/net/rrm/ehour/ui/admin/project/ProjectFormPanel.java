@@ -52,12 +52,16 @@ import java.util.List;
 public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBackingBean> {
     @SpringBean
     private ProjectService projectService;
+
     @SpringBean
     private CustomerService customerService;
+
     @SpringBean
     private UserService userService;
 
     private static final long serialVersionUID = -8677950352090140144L;
+
+    private boolean editMode;
 
     public ProjectFormPanel(String id, IModel<ProjectAdminBackingBean> model) {
         super(id, model);
@@ -69,8 +73,9 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     protected void onInitialize() {
         super.onInitialize();
 
-        setUpPage(getPanelModel());
+        editMode = getPanelModelObject().getProject().getPK() != null;
 
+        setUpPage(getPanelModel());
     }
 
     private void setUpPage(IModel<ProjectAdminBackingBean> model) {
@@ -79,11 +84,18 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         addFormComponents(form);
 
         boolean deletable = model.getObject().getProject().isDeletable();
-        FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
+
+        ProjectAjaxEventType submitEventType = editMode ? ProjectAjaxEventType.PROJECT_UPDATED : ProjectAjaxEventType.PROJECT_CREATED;
+
+        FormConfig formConfig = FormConfig.forForm(form)
+                .withDelete(deletable)
+                .withSubmitTarget(this)
                 .withDeleteEventType(ProjectAjaxEventType.PROJECT_DELETED)
-                .withSubmitEventType(ProjectAjaxEventType.PROJECT_UPDATED);
+                .withSubmitEventType(submitEventType);
 
         FormUtil.setSubmitActions(formConfig);
+
+        form.add(new AssignedUsersPanel("assignedUsers", getPanelModel()));
 
         addOrReplace(form);
     }
@@ -96,7 +108,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         form.add(getProjectManager());
 
         form.add(new CheckBox("project.billable"));
-
     }
 
     private void addGeneralInfo(WebMarkupContainer parent) {
@@ -160,25 +171,24 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         ProjectAdminBackingBean projectBackingBean = (ProjectAdminBackingBean) backingBean;
 
         if (type == ProjectAjaxEventType.PROJECT_UPDATED) {
-            persistProject(projectBackingBean);
+            updateProject(projectBackingBean);
+        } else if (type == ProjectAjaxEventType.PROJECT_CREATED) {
+            createProject(projectBackingBean);
         } else if (type == ProjectAjaxEventType.PROJECT_DELETED) {
             deleteProject(projectBackingBean);
         }
         return true;
     }
 
-    /**
-     * Persist project
-     */
-    private void persistProject(ProjectAdminBackingBean backingBean) {
-        projectService.persistProject(backingBean.getProject());
+    private void createProject(ProjectAdminBackingBean backingBean) {
+        projectService.createProject(backingBean.getProject(), backingBean.getAssignmentsToCommit());
     }
 
-    /**
-     * Delete project
-     *
-     * @throws ParentChildConstraintException
-     */
+    private void updateProject(ProjectAdminBackingBean backingBean) {
+        projectService.updateProject(backingBean.getProject(), backingBean.getAssignmentsToCommit());
+    }
+
+
     private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException {
         projectService.deleteProject(backingBean.getProject().getProjectId());
     }
@@ -199,9 +209,8 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     }
 
     private List<User> getEligablePms() {
-        List<User> users;
 
-        users = userService.getUsersWithEmailSet();
+        List<User> users = userService.getUsersWithEmailSet();
 
         if (users != null) {
             Collections.sort(users, new UserComparator(false));

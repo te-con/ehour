@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Project service
@@ -43,22 +44,19 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
     private static final Logger LOGGER = Logger.getLogger(ProjectServiceImpl.class);
 
-    @Autowired
     private ProjectDao projectDAO;
 
-    @Autowired
     private ProjectAssignmentManagementService projectAssignmentManagementService;
 
-    @Autowired
     private AggregateReportService aggregateReportService;
 
-    @Autowired
     private UserService userService;
 
-    /**
-     * @param userService the userService to set
-     */
-    public void setUserService(UserService userService) {
+    @Autowired
+    public ProjectServiceImpl(ProjectDao projectDAO, ProjectAssignmentManagementService projectAssignmentManagementService, AggregateReportService aggregateReportService, UserService userService) {
+        this.projectDAO = projectDAO;
+        this.projectAssignmentManagementService = projectAssignmentManagementService;
+        this.aggregateReportService = aggregateReportService;
         this.userService = userService;
     }
 
@@ -67,10 +65,6 @@ public class ProjectServiceImpl implements ProjectService {
         return hideInactive ? projectDAO.findAllActive() : projectDAO.findAll();
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProject(java.lang.Integer)
-      */
     public Project getProject(Integer projectId) throws ObjectNotFoundException {
         Project project = projectDAO.findById(projectId);
 
@@ -81,10 +75,6 @@ public class ProjectServiceImpl implements ProjectService {
         return project;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
-      */
     public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException {
         Project project = getProject(projectId);
 
@@ -93,10 +83,6 @@ public class ProjectServiceImpl implements ProjectService {
         return project;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#setProjectDeletability(net.rrm.ehour.persistence.persistence.project.domain.Project)
-      */
     public void setProjectDeletability(Project project) {
         List<Integer> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
         List<AssignmentAggregateReportElement> aggregates = null;
@@ -108,28 +94,41 @@ public class ProjectServiceImpl implements ProjectService {
         project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#persistProject(net.rrm.ehour.persistence.persistence.project.domain.Project)
-      */
     @Transactional
     @Auditable(actionType = AuditActionType.CREATE)
-    public Project persistProject(Project project) {
+    public Project createProject(Project project, Queue<ProjectAssignment> assignmentsToMake) {
+        for (ProjectAssignment projectAssignment : assignmentsToMake) {
+            projectAssignment.setProject(project);
+        }
+
+        return updateProject(project, assignmentsToMake);
+    }
+
+    @Transactional
+    @Auditable(actionType = AuditActionType.UPDATE)
+    public Project updateProject(Project project, Queue<ProjectAssignment> assignmentsToMake) {
         projectDAO.persist(project);
 
-        userService.validateProjectManagementRoles(project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
+        validatePMRoles(project);
+        assignUsersToDefaultProject(project);
 
-        if (project.isDefaultProject() && project.isActive()) {
-            projectAssignmentManagementService.assignUsersToProjects(project);
+        for (ProjectAssignment projectAssignment : assignmentsToMake) {
+            projectAssignmentManagementService.updateProjectAssignment(projectAssignment);
         }
 
         return project;
     }
 
-    /*
-    * (non-Javadoc)
-    * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#deleteProject(java.lang.Integer)
-    */
+    private void assignUsersToDefaultProject(Project project) {
+        if (project.isDefaultProject() && project.isActive()) {
+            projectAssignmentManagementService.assignUsersToProjects(project);
+        }
+    }
+
+    private void validatePMRoles(Project project) {
+        userService.validateProjectManagementRoles(project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
+    }
+
     @Transactional
     @Auditable(actionType = AuditActionType.DELETE)
     public void deleteProject(Integer projectId) throws ParentChildConstraintException {
@@ -174,13 +173,5 @@ public class ProjectServiceImpl implements ProjectService {
 
     public List<Project> getProjectManagerProjects(User user) {
         return projectDAO.findActiveProjectsWhereUserIsPM(user);
-    }
-
-    public void setProjectDAO(ProjectDao dao) {
-        this.projectDAO = dao;
-    }
-
-    public void setAggregateReportService(AggregateReportService aggregateReportService) {
-        this.aggregateReportService = aggregateReportService;
     }
 }

@@ -27,7 +27,6 @@
             <tr>
                 <td valign="top"><wicket:message key="admin.project.customer" />:</td>
                 <td><select class="textInputSmall" wicket:id="project.customer"></select>
-                    <!--  <a wicket:id="newCustomer">New customer</a>-->
                     <span wicket:id="customerValidationError"></span>
                 </td>
             </tr>
@@ -87,12 +86,20 @@
                 <td><input type="checkbox" wicket:id="project.active" /></td>
             </tr>
 
+
+            <tr>
+                <td colspan="2">
+                    <wicket:container wicket:id="assignedUsers"/>
+                </td>
+            </tr>
+
             <tr>
                 <td colspan="2">
                     <br />
                     <span wicket:id="serverMessage"></span>
                 </td>
             </tr>
+
 
             <tr>
                 <td>
