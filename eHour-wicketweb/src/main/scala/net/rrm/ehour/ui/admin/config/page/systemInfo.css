@@ -1,0 +1,14 @@
+.sysinfo {
+    margin: 0 5px;
+}
+
+.sysinfo .row {
+    clear: both;
+    font-size: 0.8em
+}
+
+.sysinfo .row .label {
+    float: left;
+    width: 7em;
+}
+

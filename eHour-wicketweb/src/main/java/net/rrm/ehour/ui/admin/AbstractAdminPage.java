@@ -31,7 +31,6 @@ public abstract class AbstractAdminPage<T> extends AbstractBasePage<T> {
 
     public AbstractAdminPage(ResourceModel pageTitle) {
         this(pageTitle, null);
-
     }
 
     public AbstractAdminPage(ResourceModel pageTitle, IModel<T> model) {

@@ -279,4 +279,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     public void setVersion(String version) {
         this.version = version;
     }
+
+    public String geteHourHome() {
+        return eHourHome;
+    }
 }

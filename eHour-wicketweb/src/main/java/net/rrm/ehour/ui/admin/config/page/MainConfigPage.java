@@ -18,9 +18,9 @@ package net.rrm.ehour.ui.admin.config.page;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
-import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.admin.config.panel.ConfigTabPanel;
+import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -28,7 +28,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * Main config page
  */
-public class MainConfigPage extends AbstractAdminPage<Void> {
+public class MainConfigPage extends AbstractBasePage<Void> {
     private static final long serialVersionUID = 8613594529875207988L;
 
     @SpringBean
@@ -42,6 +42,7 @@ public class MainConfigPage extends AbstractAdminPage<Void> {
 
     private void setUpPage() {
         MainConfigBackingBean configBackingBean = new MainConfigBackingBean(getDbConfig());
+        add(new SystemInfoPanel("sysinfo"));
         add(new ConfigTabPanel("configTabs", new CompoundPropertyModel<MainConfigBackingBean>(configBackingBean)));
     }
 
