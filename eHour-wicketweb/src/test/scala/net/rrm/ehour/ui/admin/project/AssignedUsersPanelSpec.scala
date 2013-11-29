@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.admin.project
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{ProjectAssignment, UserObjectMother, ProjectAssignmentObjectMother, ProjectObjectMother}
-import org.apache.wicket.model.Model
+import org.apache.wicket.model.{IModel, Model}
 import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
 import net.rrm.ehour.user.service.UserService
 import org.mockito.Mockito._
@@ -10,12 +10,11 @@ import org.mockito.Matchers._
 import net.rrm.ehour.util._
 import java.util
 import net.rrm.ehour.ui.common.wicket.AlwaysOnLabel
+import org.apache.wicket.AttributeModifier
+import org.springframework.test.util.ReflectionTestUtils
 
 class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
   "Assigned Users panel" should {
-    val projectAssignmentManagementService = mock[ProjectAssignmentManagementService]
-    springTester.getMockContext.putBean(projectAssignmentManagementService)
-
     val assignmentService = mock[ProjectAssignmentService]
     springTester.getMockContext.putBean(assignmentService)
 
@@ -84,8 +83,6 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
       tester.assertComponent("id:assignmentContainer:assignments:0:container:rate", classOf[AlwaysOnLabel[Float]])
 
       assignment.getHourlyRate should be (10f)
-
-      verify(projectAssignmentManagementService).updateProjectAssignment(any(classOf[ProjectAssignment]))
 
       tester.assertNoErrorMessage()
     }

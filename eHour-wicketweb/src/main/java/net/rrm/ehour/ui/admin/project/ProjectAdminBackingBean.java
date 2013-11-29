@@ -25,35 +25,31 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Project admin backing bean
- **/
+ */
 
-public class ProjectAdminBackingBean extends AdminBackingBeanImpl
-{
-    private	Project	project;
+public class ProjectAdminBackingBean extends AdminBackingBeanImpl {
+    private Project project;
     private boolean assignExistingUsersToDefaultProjects = false;
 
     private Queue<ProjectAssignment> assignmentsToCommit = new ConcurrentLinkedQueue<ProjectAssignment>();
 
-    public void addAssignmentToCommit(ProjectAssignment assignment) {
-        assignmentsToCommit.add(assignment);
+    public ProjectAdminBackingBean(Project project) {
+        this.project = project;
     }
 
     public Queue<ProjectAssignment> getAssignmentsToCommit() {
         return assignmentsToCommit;
     }
 
-    public ProjectAdminBackingBean(Project project)
-    {
-        this.project = project;
+    public void addAssignmentToCommit(ProjectAssignment assignment) {
+        assignmentsToCommit.add(assignment);
     }
 
-    public Project getProject()
-    {
+    public Project getProject() {
         return project;
     }
 
-    public Project getDomainObject()
-    {
+    public Project getDomainObject() {
         return getProject();
     }
 

@@ -16,7 +16,6 @@ import net.rrm.ehour.ui.common.wicket._
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.markup.html.form.{Form, CheckBox, TextField}
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
-import java.util.Date
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.AttributeModifier
 import net.rrm.ehour.ui.common.component.{AjaxFormComponentFeedbackIndicator, ValidatingFormComponentAjaxBehavior}
@@ -24,6 +23,7 @@ import org.apache.wicket.validation.validator.RangeValidator
 import java.lang.{Float => JFloat}
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
+import java.{util => ju}
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
 
@@ -43,11 +43,9 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     def filter(notAssigned: List[ProjectAssignment], assigned: List[ProjectAssignment]) = notAssigned.filterNot(p => assigned.exists(a => a.getUser.equals(p.getUser)))
 
-    super.onInitialize()
-
     val project = getPanelModelObject.getProject
 
-    val assignments = sort(fetchProjectAssignments(project))
+    val assignments = sort(fetchProjectAssignmentsAndMergeWithModel(project))
 
     val container = new Container("assignmentContainer")
     addOrReplace(container)
@@ -73,16 +71,19 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
       }
 
 
-    val hideUsers = new AjaxLink("hideUsers", callBack(p => fetchProjectAssignments(p), showUsersVisibility = true))
+    val hideUsers = new AjaxLink("hideUsers", callBack(p => fetchProjectAssignmentsAndMergeWithModel(p), showUsersVisibility = true))
     addOrReplace(hideUsers)
     hideUsers.setOutputMarkupId(true)
     hideUsers.setOutputMarkupPlaceholderTag(true)
     hideUsers.setVisible(false)
 
-    val addUsers = new AjaxLink("addUsers", callBack(p => joinWithDuplicates(fetchUsers, fetchProjectAssignments(p)), showUsersVisibility = false))
+    val addUsers = new AjaxLink("addUsers", callBack(p => joinWithDuplicates(fetchUsers(p), fetchProjectAssignmentsAndMergeWithModel(p)), showUsersVisibility = false))
     addOrReplace(addUsers)
     addUsers.setOutputMarkupId(true)
     addUsers.setOutputMarkupPlaceholderTag(true)
+
+    super.onInitialize()
+
   }
 
   private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
@@ -115,12 +116,12 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
           form.add(createNameLabel)
 
-          val dateStart = new LocalizedDatePicker("startDate", new PropertyModel[Date](itemModel, "dateStart"))
+          val dateStart = new LocalizedDatePicker("startDate", new PropertyModel[ju.Date](itemModel, "dateStart"))
           dateStart.add(new ValidatingFormComponentAjaxBehavior)
           form.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart))
           form.add(dateStart)
 
-          val dateEnd = new LocalizedDatePicker("endDate", new PropertyModel[Date](itemModel, "dateEnd"))
+          val dateEnd = new LocalizedDatePicker("endDate", new PropertyModel[ju.Date](itemModel, "dateEnd"))
           dateEnd.add(new ValidatingFormComponentAjaxBehavior)
           form.add(new AjaxFormComponentFeedbackIndicator("dateEndValidationError", dateEnd))
           form.add(dateEnd)
@@ -137,7 +138,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           val submitButton = new WebMarkupContainer("submit")
           submitButton.add(ajaxSubmit(form, {
             (form, target) =>
-              getPanelModelObject.addAssignmentToCommit(itemModel.getObject)
+              Self.getPanelModelObject.addAssignmentToCommit(itemModel.getObject)
               closeEditMode(target)
           }))
 
@@ -187,9 +188,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     }
   }
 
-  def fetchUsers = {
-    val project = getPanelModelObject.getProject
-
+  def fetchUsers(project: Project) = {
     val users = toScala(userService.getActiveUsers)
     users.map(u => {
       val assignment = new ProjectAssignment(u, project)
@@ -199,12 +198,26 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     })
   }
 
-  def fetchProjectAssignments(project: Project): List[ProjectAssignment] = {
-    if (project.getProjectId == null) {
-      List()
-    } else {
-      toScala(assignmentService.getProjectAssignments(project))
+  def fetchProjectAssignmentsAndMergeWithModel(project: Project) = {
+    def fetchProjectAssignments: List[ProjectAssignment] = {
+      if (project.getProjectId == null) {
+        List()
+      } else {
+        toScala(assignmentService.getProjectAssignments(project))
+      }
     }
+
+    def joinAssignmentsWithModel(assignments: List[ProjectAssignment], assignmentsToProcess: ju.Queue[ProjectAssignment]) = {
+      val toProcess = toScala(assignmentsToProcess).toList
+
+      val isNewPredicate = (p:ProjectAssignment) => p.getPK == null
+      val newAssignments = toProcess.filter(isNewPredicate)
+      val updatedAssignments = toProcess.filterNot(isNewPredicate)
+
+      assignments.filterNot(p => updatedAssignments.exists(_.getPK.equals(p.getPK))) ++ newAssignments ++ updatedAssignments
+    }
+
+    joinAssignmentsWithModel(fetchProjectAssignments, getPanelModelObject.getAssignmentsToCommit)
   }
 
   override def renderHead(response: IHeaderResponse) {

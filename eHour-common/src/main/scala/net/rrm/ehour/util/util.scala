@@ -8,6 +8,8 @@ package object util {
 
   def toScala[T](xs: ju.Set[T]): Set[T] = WrapAsScala.asScalaSet(xs).toSet
 
+  def toScala[T](xs: ju.Queue[T]): Iterator[T] = WrapAsScala.asScalaIterator(xs.iterator())
+
   def toJava[T](xs: List[T]): ju.List[T] = WrapAsJava.bufferAsJavaList(xs.toBuffer)
 
   implicit def toSetJava[T](xs: Set[T]): ju.Set[T] = WrapAsJava.setAsJavaSet(xs)
