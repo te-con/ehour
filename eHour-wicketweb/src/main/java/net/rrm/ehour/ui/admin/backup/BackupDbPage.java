@@ -1,7 +1,6 @@
 package net.rrm.ehour.ui.admin.backup;
 
 import net.rrm.ehour.backup.service.ParseSession;
-import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.backup.restore.RestoreDbPanel;
 import net.rrm.ehour.ui.admin.backup.restore.ValidateRestorePanel;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -10,6 +9,8 @@ import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
+import net.rrm.ehour.ui.common.page.AbstractBasePage;
+import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -23,7 +24,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
 
 
-public class BackupDbPage extends AbstractAdminPage<Void> {
+public class BackupDbPage extends AbstractBasePage<Void> {
     private static final String ID_PARSE_STATUS = "parseStatus";
     private static final String ID_RESTORE_BORDER = "restoreBorder";
 
@@ -53,6 +54,8 @@ public class BackupDbPage extends AbstractAdminPage<Void> {
         restoreBorder.add(form);
 
         form.add(new PlaceholderPanel(ID_PARSE_STATUS));
+
+        add(new ContextualHelpPanel("help", "admin.export.help.header", "admin.export.help.body"));
     }
 
     private Form<Void> addUploadForm(String id) {

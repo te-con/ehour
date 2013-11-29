@@ -6,64 +6,81 @@
 
 <body>
 <wicket:extend>
-    <div wicket:id="frame">
+    <div class="mainColumn" style="width:100%;">
+        <div class="colmask leftmenu">
+            <div class="colright">
+                <div class="col1wrap">
+                    <div class="col1">
+                        <div class="ContentPanelLoc">
+                            <div wicket:id="frame">
 
-        <div wicket:id="backupBorder">
-            <table class="contentTable" width="95%">
-                <tr>
-                    <td>
-                        <wicket:message key="admin.export.content.export.header" /><br />
-                        <wicket:message key="admin.export.content.export.body" /><br />
-                    </td>
-                </tr>
+                                <div wicket:id="backupBorder">
+                                    <table class="contentTable" width="95%">
+                                        <tr>
+                                            <td>
+                                                <wicket:message key="admin.export.content.export.header" /><br />
+                                                <wicket:message key="admin.export.content.export.body" /><br />
+                                            </td>
+                                        </tr>
 
-                <tr>
-                    <td>
-                        <br/>
-                        <a class="bluebutton" onclick="this.blur();" wicket:id="backupLink">
-                            <span><wicket:message key="admin.export.button"/></span></a>
-                    </td>
+                                        <tr>
+                                            <td>
+                                                <br/>
+                                                <a class="bluebutton" onclick="this.blur();" wicket:id="backupLink">
+                                                    <span><wicket:message key="admin.export.button"/></span></a>
+                                            </td>
 
-                </tr>
-            </table>
-        </div>
+                                        </tr>
+                                    </table>
+                                </div>
 
-        <br/><br/>
+                                <br/><br/>
 
-        <div wicket:id="restoreBorder">
+                                <div wicket:id="restoreBorder">
 
-            <form wicket:id="form">
-                <table class="contentTable">
-                    <tr>
-                        <td colspan="2">
-                            <wicket:message key="admin.import.restore.body" /> <br />
-                            <wicket:message key="admin.import.restore.warning" /><br />
-                            <br />
-                            <wicket:message key="admin.import.label.backupFile" />:
-                            <input wicket:id="file" type="file" class="textInputSmall"/></td>
-                    </tr>
+                                    <form wicket:id="form">
+                                        <table class="contentTable">
+                                            <tr>
+                                                <td colspan="2">
+                                                    <wicket:message key="admin.import.restore.body" /> <br />
+                                                    <wicket:message key="admin.import.restore.warning" /><br />
+                                                    <br />
+                                                    <wicket:message key="admin.import.label.backupFile" />:
+                                                    <input wicket:id="file" type="file" class="textInputSmall"/></td>
+                                            </tr>
 
-                    <tr>
-                        <td colspan="2"><br/>
-                            <a class="bluebutton" onclick="this.blur();" wicket:id="ajaxSubmit">
-                                <span><wicket:message key="admin.import.button.validate" /></span></a>
-                        </td>
+                                            <tr>
+                                                <td colspan="2"><br/>
+                                                    <a class="bluebutton" onclick="this.blur();" wicket:id="ajaxSubmit">
+                                                        <span><wicket:message key="admin.import.button.validate" /></span></a>
+                                                </td>
 
-                    </tr>
+                                            </tr>
 
-                    <tr>
-                        <td colspan="2">
-                            <br />
-                            <span wicket:id="parseStatus"></span>
-                        </td>
-                    </tr>
-                </table>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <br />
+                                                    <span wicket:id="parseStatus"></span>
+                                                </td>
+                                            </tr>
+                                        </table>
 
-            </form>
+                                    </form>
 
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col2">
+                    <div class="ContextualHelp" wicket:id="help">hier wat tekst</div>
+                </div>
+            </div>
         </div>
     </div>
+
 </wicket:extend>
 </body>
 </html>
