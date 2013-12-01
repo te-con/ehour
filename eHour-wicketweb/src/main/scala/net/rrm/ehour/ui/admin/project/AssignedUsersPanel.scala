@@ -138,7 +138,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           val submitButton = new WebMarkupContainer("submit")
           submitButton.add(ajaxSubmit(form, {
             (form, target) =>
-              Self.getPanelModelObject.addAssignmentToCommit(itemModel.getObject)
+              Self.getPanelModelObject.addAssignmentToCommit(assignment)
               closeEditMode(target)
           }))
 
@@ -159,9 +159,18 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
           val activeAssignment = new WebMarkupContainer("activeAssignment")
           val assignment = itemModel.getObject
-          val (cssClass, title) = if (assignment.getPK == null) ("ui-icon-radio-on", "admin.projects.assignments.not_assigned")
-          else if (assignment.isActive) ("ui-icon-bullet", "admin.projects.assignments.assigned")
-          else ("ui-icon-radio-off", "admin.projects.assignments.assigned")
+
+          def isUnassigned = assignment.getPK == null
+          def isAssigned = !isUnassigned || getPanelModelObject.getAssignmentsToCommit.contains(assignment)
+          def isActive = assignment.isActive
+
+          val (cssClass, title) =
+            if (isAssigned) {
+              if (isActive) ("ui-icon-bullet", "admin.projects.assignments.assigned")
+              else ("ui-icon-radio-off", "admin.projects.assignments.inactive_assigned")
+            } else
+              ("ui-icon-radio-on", "admin.projects.assignments.not_assigned")
+
           activeAssignment.add(AttributeModifier.append("class", cssClass))
           activeAssignment.add(AttributeModifier.replace("title", new StringResourceModel(title, Self, null)))
           container.add(activeAssignment)
@@ -207,7 +216,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
       }
     }
 
-    def joinAssignmentsWithModel(assignments: List[ProjectAssignment], assignmentsToProcess: ju.Queue[ProjectAssignment]) = {
+    def joinAssignmentsWithModel(assignments: List[ProjectAssignment], assignmentsToProcess: ju.List[ProjectAssignment]) = {
       val toProcess = toScala(assignmentsToProcess).toList
 
       val isNewPredicate = (p:ProjectAssignment) => p.getPK == null

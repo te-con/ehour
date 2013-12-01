@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 
@@ -96,7 +97,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Auditable(actionType = AuditActionType.CREATE)
-    public Project createProject(Project project, Queue<ProjectAssignment> assignmentsToMake) {
+    @Override
+    public Project createProject(Project project, Collection<ProjectAssignment> assignmentsToMake) {
         for (ProjectAssignment projectAssignment : assignmentsToMake) {
             projectAssignment.setProject(project);
         }
@@ -106,7 +108,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
-    public Project updateProject(Project project, Queue<ProjectAssignment> assignmentsToMake) {
+    @Override
+    public Project updateProject(Project project, Collection<ProjectAssignment> assignmentsToMake) {
         projectDAO.persist(project);
 
         validatePMRoles(project);

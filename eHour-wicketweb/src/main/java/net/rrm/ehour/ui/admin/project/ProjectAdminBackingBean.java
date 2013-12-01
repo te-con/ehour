@@ -20,8 +20,10 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
 
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Project admin backing bean
@@ -31,18 +33,41 @@ public class ProjectAdminBackingBean extends AdminBackingBeanImpl {
     private Project project;
     private boolean assignExistingUsersToDefaultProjects = false;
 
-    private Queue<ProjectAssignment> assignmentsToCommit = new ConcurrentLinkedQueue<ProjectAssignment>();
+    private List<ProjectAssignment> assignmentsToCommit = new CopyOnWriteArrayList<ProjectAssignment>();
 
     public ProjectAdminBackingBean(Project project) {
         this.project = project;
     }
 
-    public Queue<ProjectAssignment> getAssignmentsToCommit() {
+    public List<ProjectAssignment> getAssignmentsToCommit() {
+
+
         return assignmentsToCommit;
     }
 
     public void addAssignmentToCommit(ProjectAssignment assignment) {
+        List<ProjectAssignment> filteredToCommits = filterOutPreviousCommitsForThisAssignments(assignment);
+        assignmentsToCommit = filteredToCommits;
         assignmentsToCommit.add(assignment);
+    }
+
+    private List<ProjectAssignment> filterOutPreviousCommitsForThisAssignments(ProjectAssignment assignment) {
+        List<ProjectAssignment> filteredToCommits = new CopyOnWriteArrayList<ProjectAssignment>();
+
+        for (ProjectAssignment projectAssignment : assignmentsToCommit) {
+            if (assignment.getPK() != null) {
+                if (!projectAssignment.getPK().equals(assignment.getPK())) {
+                    filteredToCommits.add(projectAssignment);
+                }
+            } else {
+                if (!(assignment.getUser().equals(projectAssignment.getUser()) &&
+                        assignment.getProject().equals(projectAssignment.getProject()))) {
+                    filteredToCommits.add(projectAssignment);
+
+                }
+            }
+        }
+        return filteredToCommits;
     }
 
     public Project getProject() {
