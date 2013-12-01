@@ -35,14 +35,14 @@
 	/>
 	
 	<cache name="query.ProjectAssignment"
-	    maxElementsInMemory="20"
+	    maxElementsInMemory="500"
 	    eternal="false"
 	    timeToLiveSeconds="600"
 	    overflowToDisk="false"
 	/>
 		
 	<cache name="query.User"
-	    maxElementsInMemory="20"
+	    maxElementsInMemory="100"
 	    eternal="false"
 	    timeToLiveSeconds="600"
 	    overflowToDisk="false"
@@ -56,14 +56,14 @@
 	/>	
 	
 	<cache name="query.Customer"
-	    maxElementsInMemory="20"
+	    maxElementsInMemory="50"
 	    eternal="false"
 	    timeToLiveSeconds="600"
 	    overflowToDisk="false"
 	/>
 	
 	<cache name="query.Project"
-	    maxElementsInMemory="20"
+	    maxElementsInMemory="300"
 	    eternal="false"
 	    timeToLiveSeconds="600"
 	    overflowToDisk="false"
