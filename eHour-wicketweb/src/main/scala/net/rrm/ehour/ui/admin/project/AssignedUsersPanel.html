@@ -13,8 +13,7 @@
         <br />
 
         <div class="usersFilter">
-            <div class="filter floatLeft">
-                <input class="textInput searchInput" id="filterInput" type="text" placeholder="Filter..."/>
+            <div class="filter floatLeft" wicket:id="filterContainer">
             </div>
 
             <div>
@@ -76,6 +75,14 @@
         <div class="date filterable" wicket:id="endDate"/>
         <div class="rate filterable" wicket:id="rate"/>
         <div class="buttons">&nbsp;</div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="filterInput">
+        <input class="textInput searchInput" id="filterInput" type="text" placeholder="Filter..." />
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="noAssignments">
+        <wicket:message key="admin.projects.assignments.none" />
     </wicket:fragment>
 
 

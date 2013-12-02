@@ -47,9 +47,13 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
     val assignments = sort(fetchProjectAssignmentsAndMergeWithModel(project))
 
+    addOrReplace(createFilterOrHide("filterContainer", !assignments.isEmpty))
+
     val container = new Container("assignmentContainer")
     addOrReplace(container)
     container.addOrReplace(createAssignmentListView(assignments))
+    container.setVisible(!assignments.isEmpty)
+    container.setOutputMarkupPlaceholderTag(true)
 
     def callBack(fetchAssignments:(Project) => List[ProjectAssignment], showUsersVisibility: Boolean):LinkCallback =
       target => {
@@ -57,6 +61,12 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
         val view = createAssignmentListView(assignments)
         container.addOrReplace(view)
+        container.setVisible(!assignments.isEmpty)
+
+        val filterOrHide = createFilterOrHide("filterContainer", !assignments.isEmpty)
+        Self.addOrReplace(filterOrHide)
+        target.add(filterOrHide)
+
         target.add(container)
         target.appendJavaScript(applyJsFilter)
 
@@ -83,14 +93,22 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     addUsers.setOutputMarkupPlaceholderTag(true)
 
     super.onInitialize()
-
   }
+
+  private def createFilterOrHide(id: String, show: Boolean) = {
+    val f = new Fragment(id, if (show) "filterInput" else "noAssignments", Self)
+    f.setOutputMarkupId(true)
+    f
+  }
+
 
   private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
 
   import WicketDSL._
 
   def createAssignmentListView(assignments: List[ProjectAssignment]): ListView[ProjectAssignment] = {
+    val ContainerId = "container"
+
     new ListView[ProjectAssignment]("assignments", toJava(assignments)) {
       setOutputMarkupId(true)
 
@@ -106,7 +124,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
             target.add(replacement)
           }
 
-          val fragment = new Fragment("container", "inputRow", Self)
+          val fragment = new Fragment(ContainerId, "inputRow", Self)
           fragment.setOutputMarkupId(true)
 
           val form = new Form[Unit]("editForm")
@@ -154,7 +172,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
         }
 
         def createShowFragment(): Fragment = {
-          val container = new Fragment("container", "displayRow", Self)
+          val container = new Fragment(ContainerId, "displayRow", Self)
           container.setOutputMarkupId(true)
 
           val activeAssignment = new WebMarkupContainer("activeAssignment")
