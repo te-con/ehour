@@ -138,7 +138,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           val submitButton = new WebMarkupContainer("submit")
           submitButton.add(ajaxSubmit(form, {
             (form, target) =>
-              Self.getPanelModelObject.addAssignmentToCommit(assignment)
+              Self.getPanelModelObject.addAssignmentToCommit(itemModel.getObject)
               closeEditMode(target)
           }))
 

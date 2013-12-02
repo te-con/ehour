@@ -3,35 +3,43 @@ package net.rrm.ehour.ui.admin.project
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import org.apache.wicket.model.CompoundPropertyModel
-import net.rrm.ehour.domain.ProjectObjectMother
+import net.rrm.ehour.domain.{ProjectAssignment, Project, ProjectObjectMother}
 import org.easymock.EasyMock._
-import net.rrm.ehour.project.service.ProjectService
+import net.rrm.ehour.project.service.{ProjectAssignmentService, ProjectService}
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.customer.service.CustomerService
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.mock.MockitoSugar
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+import com.google.common.collect.Lists
 
 // should be rewritten to Spec style
 @RunWith(classOf[JUnitRunner])
-class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter {
+class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter with MockitoSugar {
 
   val springTester = new BaseSpringWebAppTester()
 
   var projectService: ProjectService = _
   var userService: UserService = _
   var customerService: CustomerService = _
+  var assignmentService: ProjectAssignmentService = _
 
   before {
     springTester.setUp()
 
-    projectService = createMock(classOf[ProjectService])
+    projectService = mock[ProjectService]
     springTester.getMockContext.putBean("projectService", projectService)
 
-    userService = createMock(classOf[UserService])
+    userService = mock[UserService]
     springTester.getMockContext.putBean("userService", userService)
 
-    customerService = createMock(classOf[CustomerService])
+    customerService = mock[CustomerService]
     springTester.getMockContext.putBean("customerService", customerService)
+
+    assignmentService = mock[ProjectAssignmentService]
+    springTester.getMockContext.putBean(assignmentService)
   }
 
   after {
@@ -39,6 +47,8 @@ class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter {
   }
 
   test("should render projectFormPanel") {
+    when(assignmentService.getProjectAssignments(any(classOf[Project]))).thenReturn(Lists.newArrayList[ProjectAssignment]())
+
     startPanel(createModel())
 
     assertOkay()
