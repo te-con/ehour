@@ -28,7 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.Arrays;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
@@ -95,12 +95,10 @@ public class ProjectServiceTest {
 
         replay(userService, projectDao, projectAssignmentManagementService);
 
-        ConcurrentLinkedDeque<ProjectAssignment> assignments = new ConcurrentLinkedDeque<ProjectAssignment>();
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.setProject(null);
-        assignments.add(assignment);
 
-        projectService.createProject(project, assignments);
+        projectService.createProject(project, Arrays.asList(assignment));
 
         verify(userService);
         verify(projectDao);
@@ -122,12 +120,10 @@ public class ProjectServiceTest {
 
         replay(userService, projectDao, projectAssignmentManagementService);
 
-        ConcurrentLinkedDeque<ProjectAssignment> assignments = new ConcurrentLinkedDeque<ProjectAssignment>();
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.setProject(project);
-        assignments.add(assignment);
 
-        projectService.createProject(project, assignments);
+        projectService.createProject(project, Arrays.asList(assignment));
 
         verify(userService);
         verify(projectDao);
