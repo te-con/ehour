@@ -4,7 +4,6 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import org.apache.wicket.model.CompoundPropertyModel
 import net.rrm.ehour.domain.{ProjectAssignment, Project, ProjectObjectMother}
-import org.easymock.EasyMock._
 import net.rrm.ehour.project.service.{ProjectAssignmentService, ProjectService}
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.customer.service.CustomerService
@@ -47,7 +46,7 @@ class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter wi
   }
 
   test("should render projectFormPanel") {
-    when(assignmentService.getProjectAssignments(any(classOf[Project]))).thenReturn(Lists.newArrayList[ProjectAssignment]())
+    when(assignmentService.getProjectAssignmentsAndCheckDeletability(any(classOf[Project]))).thenReturn(Lists.newArrayList[ProjectAssignment]())
 
     startPanel(createModel())
 

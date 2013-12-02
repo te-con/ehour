@@ -3,8 +3,6 @@ package net.rrm.ehour.project.service;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 
 public interface ProjectAssignmentManagementService {
     /**
@@ -30,10 +28,9 @@ public interface ProjectAssignmentManagementService {
     /**
      * Delete project assignment
      *
-     * @param assignmentId
+     * @param assignment
      */
-    void deleteProjectAssignment(Integer assignmentId) throws ObjectNotFoundException, ParentChildConstraintException;
-
+    void deleteProjectAssignment(ProjectAssignment assignment);
 
     /**
      * Update project assignment

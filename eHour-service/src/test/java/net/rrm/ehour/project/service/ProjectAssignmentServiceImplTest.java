@@ -16,7 +16,11 @@
 
 package net.rrm.ehour.project.service;
 
+import com.google.common.collect.Lists;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
+import net.rrm.ehour.domain.ProjectObjectMother;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
@@ -27,29 +31,27 @@ import org.junit.Test;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class ProjectAssignmentServiceImplTest {
-    private ProjectAssignmentService projectAssignmentService;
+    private ProjectAssignmentServiceImpl projectAssignmentService;
     private ProjectAssignmentDao projectAssignmentDAO;
     private ReportAggregatedDao reportAggregatedDAO;
     private ProjectAssignmentStatusService statusService;
 
     @Before
     public void setUp() {
-        projectAssignmentService = new ProjectAssignmentServiceImpl();
-
         projectAssignmentDAO = createMock(ProjectAssignmentDao.class);
-        ((ProjectAssignmentServiceImpl) projectAssignmentService).setProjectAssignmentDAO(projectAssignmentDAO);
-
         reportAggregatedDAO = createMock(ReportAggregatedDao.class);
-        ((ProjectAssignmentServiceImpl) projectAssignmentService).setReportAggregatedDAO(reportAggregatedDAO);
-
         statusService = createMock(ProjectAssignmentStatusService.class);
-        ((ProjectAssignmentServiceImpl) projectAssignmentService).setProjectAssignmentStatusService(statusService);
+
+        projectAssignmentService = new ProjectAssignmentServiceImpl(projectAssignmentDAO, statusService, reportAggregatedDAO);
     }
 
     @Test
@@ -72,4 +74,28 @@ public class ProjectAssignmentServiceImplTest {
         verify(projectAssignmentDAO);
         verify(reportAggregatedDAO);
     }
+
+    @Test
+    public void should_find_project_assignments_for_project_and_check_deletability() throws ObjectNotFoundException {
+        Project project = ProjectObjectMother.createProject(1);
+
+        ProjectAssignment deleteableAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        ProjectAssignment nondeleteableAssignment = ProjectAssignmentObjectMother.createProjectAssignment(2);
+
+        expect(projectAssignmentDAO.findAllProjectAssignmentsForProject(project)).andReturn(Arrays.asList(deleteableAssignment, nondeleteableAssignment));
+
+        expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(Lists.newArrayList(deleteableAssignment.getPK(), nondeleteableAssignment.getPK())))
+                .andReturn(Lists.newArrayList(new AssignmentAggregateReportElement(nondeleteableAssignment, 5)));
+
+        replay(projectAssignmentDAO);
+        replay(reportAggregatedDAO);
+
+        List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignmentsAndCheckDeletability(project);
+        assertTrue(assignments.get(0).isDeletable());
+        assertFalse(assignments.get(1).isDeletable());
+
+        verify(projectAssignmentDAO);
+        verify(reportAggregatedDAO);
+    }
+
 }

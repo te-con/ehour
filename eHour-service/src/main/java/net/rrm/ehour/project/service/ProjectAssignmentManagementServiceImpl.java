@@ -2,8 +2,6 @@ package net.rrm.ehour.project.service;
 
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.domain.*;
-import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.user.service.UserService;
@@ -27,9 +25,6 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 
     @Autowired
     private ProjectAssignmentDao projectAssignmentDAO;
-
-    @Autowired
-    private ProjectAssignmentService projectAssignmentService;
 
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
@@ -105,29 +100,16 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 
     @Transactional
     @Auditable(actionType = AuditActionType.DELETE)
-    public void deleteProjectAssignment(Integer assignmentId) throws ParentChildConstraintException, ObjectNotFoundException {
-        ProjectAssignment pa = projectAssignmentService.getProjectAssignment(assignmentId);
-
-        if (pa.isDeletable()) {
-            projectAssignmentDAO.delete(pa);
-        } else {
-            throw new ParentChildConstraintException("Timesheet entries booked on assignment.");
-        }
+    public void deleteProjectAssignment(ProjectAssignment assignment) {
+        projectAssignmentDAO.delete(assignment);
     }
-
-    @Transactional
-    public void storeNewProjectAssignment(ProjectAssignment assignment) {
-        projectAssignmentDAO.persist(assignment);
-    }
-
 
     @Transactional
     public void updateProjectAssignment(ProjectAssignment assignment) {
         projectAssignmentDAO.persist(assignment);
     }
 
-
-    public void setProjectDAO(ProjectDao projectDAO) {
+ public void setProjectDAO(ProjectDao projectDAO) {
         this.projectDAO = projectDAO;
     }
 

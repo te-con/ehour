@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.project.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
@@ -36,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * Project service
@@ -103,13 +103,13 @@ public class ProjectServiceImpl implements ProjectService {
             projectAssignment.setProject(project);
         }
 
-        return updateProject(project, assignmentsToMake);
+        return updateProject(project, assignmentsToMake, Lists.<ProjectAssignment>newArrayList());
     }
 
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
     @Override
-    public Project updateProject(Project project, Collection<ProjectAssignment> assignmentsToMake) {
+    public Project updateProject(Project project, Collection<ProjectAssignment> assignmentsToMake, Collection<ProjectAssignment> assignmentsToDelete) {
         projectDAO.persist(project);
 
         validatePMRoles(project);
@@ -117,6 +117,10 @@ public class ProjectServiceImpl implements ProjectService {
 
         for (ProjectAssignment projectAssignment : assignmentsToMake) {
             projectAssignmentManagementService.updateProjectAssignment(projectAssignment);
+        }
+
+        for (ProjectAssignment projectAssignment : assignmentsToDelete) {
+            projectAssignmentManagementService.deleteProjectAssignment(projectAssignment);
         }
 
         return project;
@@ -155,11 +159,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private void deleteAnyAssignments(Project project) throws ParentChildConstraintException {
         for (ProjectAssignment assignment : project.getProjectAssignments()) {
-            try {
-                projectAssignmentManagementService.deleteProjectAssignment(assignment.getAssignmentId());
-            } catch (ObjectNotFoundException e) {
-                // safely ignore
-            }
+            projectAssignmentManagementService.deleteProjectAssignment(assignment);
         }
 
         project.getProjectAssignments().clear();
