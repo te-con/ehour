@@ -33,7 +33,7 @@ import java.util.Arrays;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
-public class ProjectServiceTest {
+public class ProjectServiceImplTest {
     private ProjectServiceImpl projectService;
     private ProjectDao projectDao;
     private UserService userService;

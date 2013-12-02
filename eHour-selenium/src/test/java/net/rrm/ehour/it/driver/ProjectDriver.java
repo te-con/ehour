@@ -6,7 +6,8 @@ import org.openqa.selenium.support.ui.Select;
 
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
-import static net.rrm.ehour.it.driver.CustomerManagementDriver.*;
+import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
+import static net.rrm.ehour.it.driver.CustomerManagementDriver.ItCustomer;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,10 +23,6 @@ public abstract class ProjectDriver {
 
     public static ItProject createActiveProjectForActiveCustomer() {
         return createActiveProjectFor(ACTIVE_CUSTOMER);
-    }
-
-    public static ItProject createActiveProjectForInActiveCustomer() {
-        return createActiveProjectFor(INACTIVE_CUSTOMER);
     }
 
     public static ItProject createActiveProjectFor(ItCustomer customer) {
@@ -57,6 +54,10 @@ public abstract class ProjectDriver {
         String cust = String.format("%s - %s", customer.code, customer.name);
         new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.customer")).selectByVisibleText(cust);
 
+        storeProject();
+    }
+
+    public static void storeProject() {
         findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_submitButton").click();
 
         assertTrue(findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_serverMessage").getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
@@ -80,6 +81,42 @@ public abstract class ProjectDriver {
         String input = findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.name").getAttribute("value");
 
         assertEquals(projectName, input);
+    }
+
+    public static void newAssignment() {
+        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_addUsers").click();
+        EhourApplicationDriver.sleep(500);
+    }
+
+    public static void editUser(int index) {
+        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container").click();
+        EhourApplicationDriver.sleep(500);
+    }
+
+    public static void setRateForUser(int index, String rate) {
+        String path = "tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_editForm_rate";
+        findElement(path).clear();
+        findElement(path).sendKeys(rate);
+    }
+
+    public static void submitAssignment(int index) {
+        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_editForm_submit").click();
+        EhourApplicationDriver.sleep(500);
+    }
+
+    public static void deleteAssignment(int index) {
+        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_editForm_delete").click();
+        EhourApplicationDriver.sleep(500);
+    }
+
+    public static void assertIsActiveAssignment(int index) {
+        WebElement webElement = findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_activeAssignment");
+        assertEquals("Assigned", webElement.getAttribute("title"));
+    }
+
+    public static void assertNoAssignments() {
+        WebElement element = findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_filterContainer");
+        assertEquals("no users have been assigned", element.getText());
     }
 
     public static class ItProject {

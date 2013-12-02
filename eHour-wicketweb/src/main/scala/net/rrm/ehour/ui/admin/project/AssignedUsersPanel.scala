@@ -39,10 +39,6 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
   protected var userService: UserService = _
 
   override def onInitialize() {
-    def joinWithDuplicates(notAssigned: List[ProjectAssignment], assigned: List[ProjectAssignment]) = filter(notAssigned, assigned) ++ assigned
-
-    def filter(notAssigned: List[ProjectAssignment], assigned: List[ProjectAssignment]) = notAssigned.filterNot(p => assigned.exists(a => a.getUser.equals(p.getUser)))
-
     val project = getPanelModelObject.getProject
 
     val assignments = sort(fetchProjectAssignmentsAndMergeWithModel(project))
@@ -55,7 +51,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     container.setVisible(!assignments.isEmpty)
     container.setOutputMarkupPlaceholderTag(true)
 
-    def callBack(fetchAssignments:(Project) => List[ProjectAssignment], showUsersVisibility: Boolean):LinkCallback =
+    def callBack(fetchAssignments: (Project) => List[ProjectAssignment], showUsersVisibility: Boolean): LinkCallback =
       target => {
         val assignments = sort(fetchAssignments(getPanelModelObject.getProject))
 
@@ -114,6 +110,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
 
       override def populateItem(item: ListItem[ProjectAssignment]) {
         val itemModel = item.getModel
+        item.setOutputMarkupId(true)
 
         def createNameLabel = new AlwaysOnLabel("name", new PropertyModel(itemModel, "user.fullName"))
 
@@ -156,7 +153,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           val submitButton = new WebMarkupContainer("submit")
           submitButton.add(ajaxSubmit(form, {
             (form, target) =>
-              Self.getPanelModelObject.addAssignmentToCommit(itemModel.getObject)
+              Self.getPanelModelObject.addAssignmentToQueue(itemModel.getObject)
               closeEditMode(target)
           }))
 
@@ -167,6 +164,16 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
             target => closeEditMode(target)
           }))
           form.add(cancelButton)
+
+          val deleteButton = new WebMarkupContainer("delete")
+          deleteButton.setVisible(itemModel.getObject.isDeletable)
+          deleteButton.add(ajaxClick({
+            target =>
+              Self.getPanelModelObject.deleteAssignment(itemModel.getObject)
+              item.setVisible(false)
+              target.add(item)
+          }))
+          form.add(deleteButton)
 
           fragment
         }
@@ -179,7 +186,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
           val assignment = itemModel.getObject
 
           def isUnassigned = assignment.getPK == null
-          def isAssigned = !isUnassigned || getPanelModelObject.getAssignmentsToCommit.contains(assignment)
+          def isAssigned = !isUnassigned || getPanelModelObject.getAssignmentsQueue.contains(assignment)
           def isActive = assignment.isActive
 
           val (cssClass, title) =
@@ -206,6 +213,8 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
             }
           }))
 
+          container.setVisible(!Self.getPanelModelObject.isDeleted(itemModel.getObject))
+
           container
         }
 
@@ -215,36 +224,27 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     }
   }
 
-  def fetchUsers(project: Project) = {
+  private def fetchUsers(project: Project) = {
     val users = toScala(userService.getActiveUsers)
     users.map(u => {
       val assignment = new ProjectAssignment(u, project)
       assignment.setActive(true)
       assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE)
+      assignment.setDeletable(true)
       assignment
     })
   }
 
-  def fetchProjectAssignmentsAndMergeWithModel(project: Project) = {
-    def fetchProjectAssignments: List[ProjectAssignment] = {
-      if (project.getProjectId == null) {
-        List()
-      } else {
-        toScala(assignmentService.getProjectAssignments(project))
-      }
-    }
+  private def fetchProjectAssignmentsAndMergeWithModel(project: Project) = {
+    val assignmentSource = if (project.getProjectId == null) List() else toScala(assignmentService.getProjectAssignmentsAndCheckDeletability(project))
 
-    def joinAssignmentsWithModel(assignments: List[ProjectAssignment], assignmentsToProcess: ju.List[ProjectAssignment]) = {
-      val toProcess = toScala(assignmentsToProcess).toList
+    getPanelModelObject.mergeOriginalAssignmentsWithQueue(assignmentSource)
+  }
 
-      val isNewPredicate = (p:ProjectAssignment) => p.getPK == null
-      val newAssignments = toProcess.filter(isNewPredicate)
-      val updatedAssignments = toProcess.filterNot(isNewPredicate)
+  private def joinWithDuplicates(notAssigned: List[ProjectAssignment], assigned: List[ProjectAssignment]) = {
+    def filter(notAssigned: List[ProjectAssignment], assigned: List[ProjectAssignment]) = notAssigned.filterNot(p => assigned.exists(a => a.getUser.equals(p.getUser)))
 
-      assignments.filterNot(p => updatedAssignments.exists(_.getPK.equals(p.getPK))) ++ newAssignments ++ updatedAssignments
-    }
-
-    joinAssignmentsWithModel(fetchProjectAssignments, getPanelModelObject.getAssignmentsToCommit)
+    filter(notAssigned, assigned) ++ assigned
   }
 
   override def renderHead(response: IHeaderResponse) {

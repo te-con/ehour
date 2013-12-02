@@ -1,17 +1,15 @@
 package net.rrm.ehour.ui.admin.project
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.domain.{ProjectAssignment, UserObjectMother, ProjectAssignmentObjectMother, ProjectObjectMother}
-import org.apache.wicket.model.{IModel, Model}
-import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
+import net.rrm.ehour.domain.{UserObjectMother, ProjectAssignmentObjectMother, ProjectObjectMother}
+import org.apache.wicket.model.Model
+import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.user.service.UserService
 import org.mockito.Mockito._
 import org.mockito.Matchers._
 import net.rrm.ehour.util._
 import java.util
 import net.rrm.ehour.ui.common.wicket.AlwaysOnLabel
-import org.apache.wicket.AttributeModifier
-import org.springframework.test.util.ReflectionTestUtils
 
 class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
   "Assigned Users panel" should {
@@ -23,7 +21,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
     "render" in {
       val project = ProjectObjectMother.createProject(1)
-      when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
+      when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
       tester.assertNoErrorMessage()
@@ -43,7 +41,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
       when(userService.getActiveUsers).thenReturn(util.Arrays.asList(UserObjectMother.createUser()))
 
       val project = ProjectObjectMother.createProject(1)
-      when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
+      when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
       tester.executeAjaxEvent("id:addUsers", "click")
@@ -53,7 +51,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
     "click on an existing assignment and clicking cancel should revert to display row" in {
       val project = ProjectObjectMother.createProject(1)
-      when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
+      when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
 
@@ -69,7 +67,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
       val project = ProjectObjectMother.createProject(1)
       val assignment = ProjectAssignmentObjectMother.createProjectAssignment(1)
       assignment.setHourlyRate(5f)
-      when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(assignment)))
+      when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(assignment)))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
 
@@ -90,7 +88,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
     "click on an existing assignment, edit an invalid rate and click okay should give an error message" in {
       val project = ProjectObjectMother.createProject(1)
       val assignment = ProjectAssignmentObjectMother.createProjectAssignment(1)
-      when(assignmentService.getProjectAssignments(project)).thenReturn(toJava(List(assignment)))
+      when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(assignment)))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
 

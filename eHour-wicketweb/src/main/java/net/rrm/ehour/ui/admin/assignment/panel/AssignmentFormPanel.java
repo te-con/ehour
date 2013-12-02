@@ -81,6 +81,6 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 	
 	private void deleteAssignment(AssignmentAdminBackingBean backingBean) throws ObjectNotFoundException, ParentChildConstraintException
 	{
-		projectAssignmentManagementService.deleteProjectAssignment(backingBean.getProjectAssignment().getAssignmentId());
+		projectAssignmentManagementService.deleteProjectAssignment(backingBean.getProjectAssignment());
 	}	
 }

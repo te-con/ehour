@@ -185,11 +185,11 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     }
 
     private void createProject(ProjectAdminBackingBean backingBean) {
-        projectService.createProject(backingBean.getProject(), backingBean.getAssignmentsToCommit());
+        projectService.createProject(backingBean.getProject(), backingBean.getAssignmentsQueue());
     }
 
     private void updateProject(ProjectAdminBackingBean backingBean) {
-        projectService.updateProject(backingBean.getProject(), backingBean.getAssignmentsToCommit());
+        projectService.updateProject(backingBean.getProject(), backingBean.getAssignmentsQueue(), backingBean.getRemovalQueue());
     }
 
 
