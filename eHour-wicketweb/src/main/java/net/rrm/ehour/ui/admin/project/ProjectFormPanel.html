@@ -1,120 +1,152 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
 <body>
 <wicket:panel>
-    <form wicket:id="projectForm" class="adminForm">
-        <table class="contentTable">
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.name" />:</td>
-                <td><input type="text" class="textInputSmall" wicket:id="project.name"/>
-                    <span wicket:id="nameValidationError"></span>
-                </td>
-            </tr>
+    <div wicket:id="border">
+        <form wicket:id="projectForm" class="adminForm">
+            <table class="contentTable">
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.name"/>
+                        :
+                    </td>
+                    <td><input type="text" class="textInputSmall" wicket:id="project.name"/>
+                        <span wicket:id="nameValidationError"></span>
+                    </td>
+                </tr>
 
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.code" />:</td>
-                <td><input type="text" class="textInputSmall" wicket:id="project.projectCode"/>
-                    <span wicket:id="codeValidationError"></span>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.customer" />:</td>
-                <td><select class="textInputSmall" wicket:id="project.customer"></select>
-                    <span wicket:id="customerValidationError"></span>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td colspan="2">
-                    <br />
-                </td>
-            </tr>
-
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.projectManager" />:</td>
-                <td><select class="textInputSmall" wicket:id="project.projectManager"></select>
-                </td>
-            </tr>
-
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.description" />:</td>
-                <td><textarea class="textInputSmall" name="comment" wicket:id="project.description" rows="3" wrap="virtual"></textarea>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2">
-                    <br />
-                </td>
-            </tr>
-
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.contact" />:</td>
-                <td><input type="text"  class="textInputSmall" wicket:id="project.contact" />
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2">
-                    <br />
-                </td>
-            </tr>
-
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.defaultProject" />:</td>
-                <td><input type="checkbox" wicket:id="project.defaultProject" />
-                (<wicket:message key="admin.project.defaultProjectHelp" />)
-                </td>
-            </tr>
-
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.billable" />:</td>
-                <td><input type="checkbox" wicket:id="project.billable" /></td>
-            </tr>
-
-            <tr>
-                <td valign="top"><wicket:message key="admin.project.active" />:</td>
-                <td><input type="checkbox" wicket:id="project.active" /></td>
-            </tr>
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.code"/>
+                        :
+                    </td>
+                    <td><input type="text" class="textInputSmall" wicket:id="project.projectCode"/>
+                        <span wicket:id="codeValidationError"></span>
+                    </td>
+                </tr>
 
 
-            <tr>
-                <td colspan="2">
-                    <wicket:container wicket:id="assignedUsers"/>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2">
-                    <br />
-                    <span wicket:id="serverMessage"></span>
-                </td>
-            </tr>
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.customer"/>
+                        :
+                    </td>
+                    <td><select class="textInputSmall" wicket:id="project.customer"></select>
+                        <span wicket:id="customerValidationError"></span>
+                    </td>
+                </tr>
 
 
-            <tr>
-                <td>
-                    <a class="button" wicket:id="deleteButton">
-                        <span><wicket:message key="general.delete" /></span>
-                    </a>
-                </td>
-                <td style="text-align: right">
-                    <a class="button floatRight" onclick="this.blur();" wicket:id="submitButton" >
-                        <span><wicket:message key="general.save" /></span></a>
-                </td>
-            </tr>
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                    </td>
+                </tr>
 
-        </table>
-    </form>
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.projectManager"/>
+                        :
+                    </td>
+                    <td><select class="textInputSmall" wicket:id="project.projectManager"></select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.description"/>
+                        :
+                    </td>
+                    <td><textarea class="textInputSmall" name="comment" wicket:id="project.description" rows="3"
+                                  wrap="virtual"></textarea>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.contact"/>
+                        :
+                    </td>
+                    <td><input type="text" class="textInputSmall" wicket:id="project.contact"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.defaultProject"/>
+                        :
+                    </td>
+                    <td><input type="checkbox" wicket:id="project.defaultProject"/>
+                        (
+                        <wicket:message key="admin.project.defaultProjectHelp"/>
+                        )
+                    </td>
+                </tr>
+
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.billable"/>
+                        :
+                    </td>
+                    <td><input type="checkbox" wicket:id="project.billable"/></td>
+                </tr>
+
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="admin.project.active"/>
+                        :
+                    </td>
+                    <td><input type="checkbox" wicket:id="project.active"/></td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="2">
+                        <wicket:container wicket:id="assignedUsers"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                        <span wicket:id="serverMessage"></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <a class="button" wicket:id="deleteButton">
+                            <span><wicket:message key="general.delete"/></span>
+                        </a>
+                    </td>
+                    <td style="text-align: right">
+                        <a class="button floatRight" onclick="this.blur();" wicket:id="submitButton">
+                            <span><wicket:message key="general.save"/></span></a>
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
 </wicket:panel>
 
 </body>
