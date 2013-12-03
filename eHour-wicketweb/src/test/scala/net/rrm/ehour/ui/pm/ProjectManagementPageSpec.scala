@@ -8,7 +8,6 @@ class ProjectManagementPageSpec extends AbstractSpringWebAppSpec {
     val service = mock[ProjectService]
     springTester.getMockContext.putBean(service)
 
-
     "render" in {
       tester.startPage(classOf[ProjectManagementPage])
       tester.assertNoErrorMessage()

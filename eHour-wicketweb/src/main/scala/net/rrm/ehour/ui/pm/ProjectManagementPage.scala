@@ -14,30 +14,39 @@ import java.{util => ju}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.ProjectService
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
+import net.rrm.ehour.ui.common.wicket.Container
 
 @AuthorizeInstantiation(Array(UserRole.ROLE_PROJECTMANAGER))
 class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
 
+  val ContainerId = "content"
+  val Self = this
+
   @SpringBean
   protected var projectService: ProjectService = _
-
 
   override def onInitialize()  {
     super.onInitialize()
 
-    val projects = projectService.getProjectManagerProjects(getEhourWebSession.getUser)
-    val projectListHolder = createProjectListHolder(projects)
-
     val greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"))
     addOrReplace(greyBorder)
 
-    val entrySelectorPanel = new EntrySelectorPanel("projectSelector", projectListHolder, new ResourceModel("admin.project.hideInactive"))
-    greyBorder.addOrReplace(entrySelectorPanel)
+    greyBorder.add(initializeProjectSelector())
+
+    addOrReplace(new Container(ContainerId))
+  }
+
+  def initializeProjectSelector() = {
+    val projects = projectService.getProjectManagerProjects(getEhourWebSession.getUser)
+    val projectListHolder = createProjectListHolder(projects)
+
+    new EntrySelectorPanel("projectSelector", projectListHolder, new ResourceModel("admin.project.hideInactive"))
   }
 
   private def createProjectListHolder(projects: ju.List[Project]): Fragment = {
     val fragment= new Fragment("itemListHolder", "itemListHolder", ProjectManagementPage.this)
     fragment.setOutputMarkupId(true)
+
     val projectListView = new EntrySelectorListView[Project]("itemList", projects) {
       protected def onPopulate(item: ListItem[Project], itemModel: IModel[Project]) {
         val project: Project = itemModel.getObject
@@ -49,11 +58,17 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
       }
 
       protected def onClick(item: ListItem[Project], target: AjaxRequestTarget) {
-        val projectId: Integer = item.getModelObject.getProjectId
+        val project = item.getModelObject
+
+        val projectInfoPanel = new ProjectManagementProjectInfoPanel(ContainerId, project)
+        projectInfoPanel.setOutputMarkupId(true)
+
+        Self.addOrReplace(projectInfoPanel)
+        target.add(projectInfoPanel)
       }
     }
-    fragment.add(projectListView)
-    return fragment
-  }
 
+    fragment.add(projectListView)
+    fragment
+  }
 }

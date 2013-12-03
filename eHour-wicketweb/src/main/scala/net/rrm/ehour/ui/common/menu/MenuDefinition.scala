@@ -3,7 +3,6 @@ package net.rrm.ehour.ui.common.menu
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage
 import net.rrm.ehour.ui.report.page.ReportPage
-import net.rrm.ehour.ui.pm.page.ProjectManagement
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage
 import net.rrm.ehour.ui.audit.page.AuditReportPage
 import java.util.{List => JList}
@@ -16,6 +15,7 @@ import java.util
 import net.rrm.ehour.ui.financial.lock.LockAdminPage
 import net.rrm.ehour.ui.admin.user.UserAdminPage
 import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage
+import net.rrm.ehour.ui.pm.ProjectManagementPage
 
 object MenuDefinition {
 
@@ -29,7 +29,7 @@ object MenuDefinition {
     val hoursDropdown = DropdownMenu("nav.hours.yourHours", util.Arrays.asList(enterHours, hoursOverview, monthExport))
 
     val report = LinkItem("nav.report", classOf[ReportPage])
-    val pm = LinkItem("nav.pm", classOf[ProjectManagement])
+    val pm = LinkItem("nav.pm", classOf[ProjectManagementPage])
 
     val lock = LinkItem("nav.lock", classOf[LockAdminPage])
 
