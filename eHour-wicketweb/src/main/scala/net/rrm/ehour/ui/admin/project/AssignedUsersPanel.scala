@@ -25,7 +25,8 @@ import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
 import java.{util => ju}
 
-class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
+class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation:Boolean) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
+  def this(id: String, model: IModel[ProjectAdminBackingBean]) = this(id, model, false)
 
   val Self = this
 
@@ -87,6 +88,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean]) ext
     addOrReplace(addUsers)
     addUsers.setOutputMarkupId(true)
     addUsers.setOutputMarkupPlaceholderTag(true)
+    addUsers.setVisible(!onlyDeactivation)
 
     super.onInitialize()
   }

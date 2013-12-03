@@ -15,6 +15,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.ProjectService
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.wicket.Container
+import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
+import org.apache.wicket.request.resource.CssResourceReference
 
 @AuthorizeInstantiation(Array(UserRole.ROLE_PROJECTMANAGER))
 class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
@@ -22,10 +24,13 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
   val ContainerId = "content"
   val Self = this
 
+  val Css = new CssResourceReference(classOf[ProjectManagementPage], "projectManagement.css")
+
+
   @SpringBean
   protected var projectService: ProjectService = _
 
-  override def onInitialize()  {
+  override def onInitialize() {
     super.onInitialize()
 
     val greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"))
@@ -44,7 +49,7 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
   }
 
   private def createProjectListHolder(projects: ju.List[Project]): Fragment = {
-    val fragment= new Fragment("itemListHolder", "itemListHolder", ProjectManagementPage.this)
+    val fragment = new Fragment("itemListHolder", "itemListHolder", ProjectManagementPage.this)
     fragment.setOutputMarkupId(true)
 
     val projectListView = new EntrySelectorListView[Project]("itemList", projects) {
@@ -70,5 +75,9 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
 
     fragment.add(projectListView)
     fragment
+  }
+
+  override def renderHead(response: IHeaderResponse) {
+    response.render(CssHeaderItem.forReference(Css))
   }
 }

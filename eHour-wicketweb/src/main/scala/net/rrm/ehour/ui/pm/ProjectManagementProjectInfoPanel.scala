@@ -14,6 +14,6 @@ class ProjectManagementProjectInfoPanel(id: String, project: Project) extends Ab
     addOrReplace(border)
 
     val adminBackingBean = new ProjectAdminBackingBean(project)
-    border.add(new AssignedUsersPanel("assignments", new Model(adminBackingBean)))
+    border.add(new AssignedUsersPanel("assignments", new Model(adminBackingBean), onlyDeactivation = true))
   }
 }
