@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage;
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage;
 import net.rrm.ehour.ui.admin.project.ProjectAdminPage;
-import net.rrm.ehour.ui.admin.user.page.UserAdminPage;
+import net.rrm.ehour.ui.admin.user.UserAdminPage;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;

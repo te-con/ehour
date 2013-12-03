@@ -32,6 +32,16 @@ public abstract class UserManagementDriver {
     public static void createUser(ItUser user, String lastName, String role) {
         loadUserAdmin();
 
+        fillUserForm(user, lastName, role);
+
+        submitUserForm();
+    }
+
+    public static void submitUserForm() {
+        findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_submitButton").click();
+    }
+
+    public static void fillUserForm(ItUser user, String lastName, String role) {
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.username").clear();
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.username").sendKeys(user.name);
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.firstName").clear();
@@ -46,8 +56,6 @@ public abstract class UserManagementDriver {
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_confirmPassword").sendKeys(user.password);
         new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.userDepartment")).selectByVisibleText("Internal");
         new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.userRoles")).selectByVisibleText(role);
-
-        findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_submitButton").click();
     }
 
     public static void editUser(String name) {
@@ -68,10 +76,6 @@ public abstract class UserManagementDriver {
         EhourApplicationDriver.sleep(500);
     }
 
-    public static void submitUserForm() {
-        findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_submitButton").click();
-    }
-
     public static void assertUserDataSaved() {
         assertUserServerMessage("Data saved");
     }
@@ -82,6 +86,10 @@ public abstract class UserManagementDriver {
 
     public static void setFormFieldTo(String field, String value) {
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user." + field).sendKeys(value);
+    }
+
+    public static void tickShowAssignments() {
+        findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_showAssignments").click();
     }
 
     public static class ItUser {

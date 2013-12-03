@@ -4,7 +4,6 @@ import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage
 import net.rrm.ehour.ui.report.page.ReportPage
 import net.rrm.ehour.ui.pm.page.ProjectManagement
-import net.rrm.ehour.ui.admin.user.page.UserAdminPage
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage
 import net.rrm.ehour.ui.audit.page.AuditReportPage
 import java.util.{List => JList}
@@ -16,6 +15,7 @@ import net.rrm.ehour.ui.admin.project.ProjectAdminPage
 import net.rrm.ehour.ui.admin.backup.BackupDbPage
 import java.util
 import net.rrm.ehour.ui.financial.lock.LockAdminPage
+import net.rrm.ehour.ui.admin.user.UserAdminPage
 
 object MenuDefinition {
 

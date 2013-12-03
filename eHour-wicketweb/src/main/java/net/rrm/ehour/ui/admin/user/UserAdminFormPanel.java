@@ -14,13 +14,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.user.panel;
+package net.rrm.ehour.ui.admin.user;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.ui.admin.user.dto.UserBackingBean;
-import net.rrm.ehour.ui.common.AdminAction;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
@@ -50,30 +49,36 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 import java.util.List;
 
+import static net.rrm.ehour.ui.admin.user.UserEditAjaxEventType.*;
+
 /**
  * User Form Panel for admin
  */
 
-public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingBean> {
+public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBackingBean> {
     private static final long serialVersionUID = -7427807216389657732L;
     protected static final String BORDER = "border";
     protected static final String FORM = "userForm";
+
+    private boolean editMode;
 
     @SpringBean
     private UserService userService;
 
     public UserAdminFormPanel(String id,
-                              CompoundPropertyModel<UserBackingBean> userModel,
+                              CompoundPropertyModel<UserAdminBackingBean> userModel,
                               List<UserRole> roles,
                               List<UserDepartment> departments) {
         super(id, userModel);
+
+        editMode = getPanelModelObject().getUser().getPK() != null;
 
         GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder(BORDER, WebGeo.AUTO);
         add(greyBorder);
 
         setOutputMarkupId(true);
 
-        final Form<UserBackingBean> form = new Form<UserBackingBean>(FORM, userModel);
+        final Form<UserAdminBackingBean> form = new Form<UserAdminBackingBean>(FORM, userModel);
 
         // username
         RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
@@ -104,7 +109,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 
         // password
         Label label = new Label("passwordEditLabel", new ResourceModel("admin.user.editPassword"));
-        label.setVisible(userModel.getObject().getAdminAction() == AdminAction.EDIT);
+        label.setVisible(userModel.getObject().isEditMode());
         form.add(label);
 
         PasswordFieldFactory.createOptionalPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
@@ -129,14 +134,20 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
         // active
         form.add(new CheckBox("user.active"));
 
+        // show assignments
+        CheckBox showAssignments = new CheckBox("showAssignments");
+        showAssignments.setVisible(!userModel.getObject().isEditMode());
+        form.add(showAssignments);
+
+
         // data save label
         form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 
         boolean deletable = userModel.getObject().getUser().isDeletable();
 
         FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
-                .withDeleteEventType(UserEditAjaxEventType.USER_DELETED)
-                .withSubmitEventType(UserEditAjaxEventType.USER_UPDATED);
+                .withDeleteEventType(USER_DELETED)
+                .withSubmitEventType(editMode ? USER_UPDATED : USER_CREATED);
 
 
         FormUtil.setSubmitActions(formConfig);
@@ -146,34 +157,37 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
 
     @Override
     protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
-        UserBackingBean userBackingBean = (UserBackingBean) backingBean;
+        UserAdminBackingBean userAdminBackingBean = (UserAdminBackingBean) backingBean;
+
+        boolean eventHandled;
 
         try {
-            if (type == UserEditAjaxEventType.USER_UPDATED) {
-                if (userBackingBean.getAdminAction() == AdminAction.NEW) {
-                    userService.newUser(userBackingBean.getUser(), userBackingBean.getUser().getPassword());
-                } else {
-                    userService.editUser(userBackingBean.getUser());
+            User user = userAdminBackingBean.getUser();
+            eventHandled = false;
 
-                    String password = userBackingBean.getUser().getPassword();
-                    if (StringUtils.isNotBlank(password)) {
-                        userService.changePassword(userBackingBean.getUser().getUsername(), password);
-                    }
+            if (type == USER_CREATED) {
+                userService.newUser(user, user.getPassword());
+            } else if (type == USER_UPDATED) {
+                userService.editUser(user);
+
+                String password = user.getPassword();
+                if (StringUtils.isNotBlank(password)) {
+                    userService.changePassword(user.getUsername(), password);
                 }
-            } else if (type == UserEditAjaxEventType.USER_DELETED) {
-                deleteUser(userBackingBean);
+            } else if (type == USER_DELETED) {
+                deleteUser(userAdminBackingBean);
             }
         } catch (ObjectNotUniqueException obnu) {
             backingBean.setServerMessage(obnu.getMessage());
             target.add(this);
-            return false;
+            eventHandled = true;
         }
 
-        return true;
+        return !eventHandled;
     }
 
-    private void deleteUser(UserBackingBean userBackingBean) {
-        userService.deleteUser(userBackingBean.getUser().getUserId());
+    private void deleteUser(UserAdminBackingBean userAdminBackingBean) {
+        userService.deleteUser(userAdminBackingBean.getUser().getUserId());
     }
 
     private class DuplicateUsernameValidator implements IValidator<String> {
@@ -182,7 +196,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserBackingB
         @Override
         public void validate(IValidatable<String> validatable) {
             String username = validatable.getValue();
-            String orgUsername = ((UserBackingBean) getDefaultModelObject()).getOriginalUsername();
+            String orgUsername = ((UserAdminBackingBean) getDefaultModelObject()).getOriginalUsername();
 
             if ((StringUtils.isNotBlank(orgUsername) && !username.equalsIgnoreCase(orgUsername) && userService.getUser(username) != null)) {
                 validatable.error(new ValidationError("admin.user.errorUsernameExists"));

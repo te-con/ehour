@@ -40,7 +40,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.ValidationError;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import static net.rrm.ehour.ui.admin.user.panel.UserEditAjaxEventType.PASSWORD_CHANGED;
+import static net.rrm.ehour.ui.admin.user.UserEditAjaxEventType.PASSWORD_CHANGED;
 import static net.rrm.ehour.ui.common.event.CommonAjaxEventType.SUBMIT_ERROR;
 
 /**

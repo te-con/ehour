@@ -110,12 +110,32 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.user.active"/>
-                        :
+                        <wicket:message key="admin.user.active"/> :
                     </td>
                     <td><input type="checkbox" wicket:id="user.active"/></td>
                 </tr>
 
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                    </td>
+                </tr>
+
+                <wicket:enclosure child="showAssignments">
+                    <tr>
+                        <td valign="top">
+                            <wicket:message key="admin.user.add.showAssignments"/>
+                        </td>
+                        <td><input type="checkbox" wicket:id="showAssignments"/></td>
+                    </tr>
+
+
+                    <tr>
+                        <td colspan="2">
+                            <br/>
+                        </td>
+                    </tr>
+                </wicket:enclosure>
 
                 <tr>
                     <td colspan="2">

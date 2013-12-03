@@ -16,13 +16,13 @@
 
 package net.rrm.ehour.ui.admin.assignment.page;
 
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.assignment.panel.AssignmentPanel;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
@@ -39,6 +39,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -49,6 +50,7 @@ import java.util.List;
 public class AssignmentAdminPage extends AbstractAdminPage<Void> {
     private static final long serialVersionUID = 566527529422873370L;
     private static final String USER_SELECTOR_ID = "userSelector";
+    public static final String ASSIGNMENT_PANEL_ID = "assignmentPanel";
 
     @SpringBean
     private UserService userService;
@@ -58,24 +60,24 @@ public class AssignmentAdminPage extends AbstractAdminPage<Void> {
     public AssignmentAdminPage() {
         super(new ResourceModel("admin.assignment.title"));
 
-        List<User> users;
-        users = getUsers();
-
-        Fragment userListHolder = getUserListHolder(users);
+        Fragment userListHolder = getUserListHolder(getUsers());
 
         GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.assignment.title"));
         add(grey);
 
         grey.add(new EntrySelectorPanel(USER_SELECTOR_ID, userListHolder));
 
-        assignmentPanel = new NoEntrySelectedPanel("assignmentPanel", true, new ResourceModel("admin.assignment.noEditEntrySelected"));
+        assignmentPanel = new NoEntrySelectedPanel(ASSIGNMENT_PANEL_ID, true, new ResourceModel("admin.assignment.noEditEntrySelected"));
 
         add(assignmentPanel);
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
-        return true;
+    public AssignmentAdminPage(User user) {
+        this();
+
+        assignmentPanel = new AssignmentPanel(ASSIGNMENT_PANEL_ID, user);
+
+        addOrReplace(assignmentPanel);
     }
 
     private Fragment getUserListHolder(List<User> users) {
@@ -92,7 +94,8 @@ public class AssignmentAdminPage extends AbstractAdminPage<Void> {
 
                 item.add(new Label("firstName", user.getFirstName()));
                 item.add(new Label("lastName", user.getLastName()));
-                item.add(new Label("assignments", user.getProjectAssignments().size()));
+                Set<ProjectAssignment> assignments = user.getProjectAssignments();
+                item.add(new Label("assignments", (assignments != null) ? assignments.size() : 0));
             }
 
             @Override
@@ -107,7 +110,7 @@ public class AssignmentAdminPage extends AbstractAdminPage<Void> {
     }
 
     private void replaceAssignmentPanel(AjaxRequestTarget target, User user) {
-        AssignmentPanel newAssignmentPanel = new AssignmentPanel("assignmentPanel", user);
+        AssignmentPanel newAssignmentPanel = new AssignmentPanel(ASSIGNMENT_PANEL_ID, user);
 
         assignmentPanel.replaceWith(newAssignmentPanel);
         target.add(newAssignmentPanel);

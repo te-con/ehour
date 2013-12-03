@@ -10,7 +10,7 @@ import static net.rrm.ehour.it.driver.ProjectDriver.*;
 import static net.rrm.ehour.it.driver.UserManagementDriver.createRegularUser;
 import static net.rrm.ehour.it.driver.UserManagementDriver.createUser;
 
-public class CreateAndEditProjectScenario extends AbstractScenario {
+public class ProjectAdminScenario extends AbstractScenario {
     @Test
     public void create_and_edit_project() {
         loginAdmin();

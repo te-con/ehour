@@ -14,34 +14,51 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.user.dto;
+package net.rrm.ehour.ui.admin.user;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.ui.common.AdminAction;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
 
 /**
  * Backing bean for users
  */
 
-public class UserBackingBean extends AdminBackingBeanImpl {
+public class UserAdminBackingBean extends AdminBackingBeanImpl {
     private static final long serialVersionUID = 2781902854421696575L;
-    private User user;
+    private final User user;
     private String originalUsername;
-    private final AdminAction adminAction;
+    private final boolean editMode;
 
-    public UserBackingBean(User user, AdminAction adminAction) {
-        this.user = user;
+    private boolean showAssignments;
 
-        this.adminAction = adminAction;
+    public UserAdminBackingBean(User user) {
+        this(user, true);
 
-        if (user != null) {
-            this.originalUsername = user.getUsername();
-        }
+        this.originalUsername = user.getUsername();
     }
 
-    public AdminAction getAdminAction() {
-        return adminAction;
+    public UserAdminBackingBean() {
+        this(new User(), false);
+
+        user.setActive(true);
+    }
+
+    public boolean isShowAssignments() {
+        return showAssignments;
+    }
+
+    public void setShowAssignments(boolean showAssignments) {
+        this.showAssignments = showAssignments;
+    }
+
+    private UserAdminBackingBean(User user, boolean editMode) {
+        this.editMode = editMode;
+        this.user = user;
+
+    }
+
+    public boolean isEditMode() {
+        return editMode;
     }
 
     public User getUser() {
@@ -52,13 +69,7 @@ public class UserBackingBean extends AdminBackingBeanImpl {
         return originalUsername;
     }
 
-    public void setOriginalUsername(String originalUsername) {
-        this.originalUsername = originalUsername;
-    }
-
     public User getDomainObject() {
         return getUser();
     }
-
-
 }
