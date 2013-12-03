@@ -243,8 +243,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         final ModalWindow modalWindow = new ModalWindow("dayWin");
         modalWindow.setResizable(false);
-        modalWindow.setInitialWidth(400);
-        modalWindow.setInitialHeight(225);
+        modalWindow.setInitialWidth(500);
+        modalWindow.setInitialHeight(325);
 
         modalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
 
