@@ -37,7 +37,7 @@
 
                 <tr>
                     <td><wicket:message key="user.email" />:</td>
-                    <td><input type="text" class="textInputSmall" wicket:id="user.email" />
+                    <td><input type="text" class="textInputSmall" wicket:id="user.email" autocomplete="off" />
                         <span wicket:id="emailValidationError"></span>
                     </td>
                 </tr>
@@ -60,14 +60,14 @@
                     <td valign="top">
                         <wicket:message key="user.password"/> :
                     </td>
-                    <td><input type="password" class="textInputSmall" wicket:id="password"/></td> </tr>
+                    <td><input type="password" class="textInputSmall" wicket:id="password" autocomplete="off"/></td> </tr>
 
                 <tr>
                     <td valign="top">
                         <wicket:message key="user.confirmpassword"/>
                         :
                     </td>
-                    <td><input type="password" class="textInputSmall" wicket:id="confirmPassword"/>
+                    <td><input type="password" class="textInputSmall" wicket:id="confirmPassword" autocomplete="off"/>
                         <span wicket:id="confirmPasswordValidationError"></span>
                     </td>
                 </tr>
