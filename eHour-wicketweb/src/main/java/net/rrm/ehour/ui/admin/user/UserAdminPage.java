@@ -23,7 +23,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.sort.UserComparator;
 import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
-import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdminPage;
+import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;

@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.ui.admin.assignment.page.AssignmentAdminPage;
+import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage;
 import net.rrm.ehour.ui.admin.backup.BackupDbPage;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage;

@@ -1,11 +1,11 @@
-package net.rrm.ehour.ui.admin.assignment.panel.form;
+package net.rrm.ehour.ui.admin.assignment.form;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.sort.ProjectComparator;
-import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
+import net.rrm.ehour.ui.admin.assignment.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEvent;

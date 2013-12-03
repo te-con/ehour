@@ -14,10 +14,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.assignment.panel.form;
+package net.rrm.ehour.ui.admin.assignment.form;
 
 
-import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
+import net.rrm.ehour.ui.admin.assignment.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;

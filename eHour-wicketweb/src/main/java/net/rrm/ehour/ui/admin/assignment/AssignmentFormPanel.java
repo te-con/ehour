@@ -1,11 +1,10 @@
-package net.rrm.ehour.ui.admin.assignment.panel;
+package net.rrm.ehour.ui.admin.assignment;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
-import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
-import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel;
-import net.rrm.ehour.ui.admin.assignment.panel.form.AssignmentFormComponentContainerPanel.DisplayOption;
+import net.rrm.ehour.ui.admin.assignment.form.AssignmentFormComponentContainerPanel;
+import net.rrm.ehour.ui.admin.assignment.form.AssignmentFormComponentContainerPanel.DisplayOption;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.event.AjaxEventType;

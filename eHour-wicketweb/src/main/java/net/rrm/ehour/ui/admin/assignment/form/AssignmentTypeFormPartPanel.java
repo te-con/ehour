@@ -14,11 +14,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.assignment.panel.form;
+package net.rrm.ehour.ui.admin.assignment.form;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.ui.admin.assignment.dto.AssignmentAdminBackingBean;
+import net.rrm.ehour.ui.admin.assignment.AssignmentAdminBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.DynamicAttributeModifier;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
