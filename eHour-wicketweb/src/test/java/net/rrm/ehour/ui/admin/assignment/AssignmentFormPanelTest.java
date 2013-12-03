@@ -1,12 +1,10 @@
-package net.rrm.ehour.ui.admin.assignment.panel;
+package net.rrm.ehour.ui.admin.assignment;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
-import net.rrm.ehour.ui.admin.assignment.AssignmentAdminBackingBean;
-import net.rrm.ehour.ui.admin.assignment.AssignmentFormPanel;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.junit.Before;
