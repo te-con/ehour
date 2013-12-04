@@ -3,10 +3,18 @@ package net.rrm.ehour.ui.pm
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.domain.Project
 import net.rrm.ehour.ui.admin.project.{AssignedUsersPanel, ProjectAdminBackingBean}
-import org.apache.wicket.model.Model
+import org.apache.wicket.model.{ResourceModel, Model}
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
+import net.rrm.ehour.ui.common.wicket.AjaxLink
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService
+import org.apache.wicket.spring.injection.annot.SpringBean
+import net.rrm.ehour.util._
+import org.apache.wicket.markup.html.basic.Label
 
 class ProjectManagementProjectInfoPanel(id: String, project: Project) extends AbstractBasePanel(id) {
+  @SpringBean
+  protected var assignmentMgmtService: ProjectAssignmentManagementService = _
+
   override def onInitialize() = {
     super.onInitialize()
 
@@ -14,6 +22,25 @@ class ProjectManagementProjectInfoPanel(id: String, project: Project) extends Ab
     addOrReplace(border)
 
     val adminBackingBean = new ProjectAdminBackingBean(project)
-    border.add(new AssignedUsersPanel("assignments", new Model(adminBackingBean), onlyDeactivation = true))
+    val assignedUsersPanel = new AssignedUsersPanel("assignments", new Model(adminBackingBean), onlyDeactivation = true)
+    border.add(assignedUsersPanel)
+
+    val placeholderLabel = new Label("serverMessage", "")
+    placeholderLabel.setOutputMarkupPlaceholderTag(true)
+    placeholderLabel.setOutputMarkupId(true)
+    placeholderLabel.setVisible(false)
+    border.add(placeholderLabel)
+
+    border.add(new AjaxLink("submitButton", target => {
+      toScala(assignedUsersPanel.getPanelModelObject.getAssignmentsQueue).map(assignmentMgmtService.updateProjectAssignment)
+      toScala(assignedUsersPanel.getPanelModelObject.getRemovalQueue).map(assignmentMgmtService.deleteProjectAssignment)
+      assignedUsersPanel.getPanelModelObject.clearQueue
+
+      val label = new Label("serverMessage", new ResourceModel("pm.admin.assignments.saved"))
+      placeholderLabel.setOutputMarkupId(true)
+      border.addOrReplace(label)
+
+      target.add(label)
+    }))
   }
 }

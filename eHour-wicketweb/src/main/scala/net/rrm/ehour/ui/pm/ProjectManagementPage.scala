@@ -26,7 +26,6 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
 
   val Css = new CssResourceReference(classOf[ProjectManagementPage], "projectManagement.css")
 
-
   @SpringBean
   protected var projectService: ProjectService = _
 

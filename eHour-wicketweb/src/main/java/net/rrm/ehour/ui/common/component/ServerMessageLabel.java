@@ -20,6 +20,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
 
 /**
@@ -32,7 +33,11 @@ public class ServerMessageLabel extends Label {
     private boolean overrideVisibility = false;
 
     public ServerMessageLabel(String id, String cssClass) {
-        super(id);
+        this(id, cssClass, null);
+    }
+
+        public ServerMessageLabel(String id, String cssClass, IModel<String> model) {
+        super(id, model);
         add(AttributeModifier.replace("class", cssClass));
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);

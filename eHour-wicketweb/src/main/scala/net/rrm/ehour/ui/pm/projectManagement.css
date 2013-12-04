@@ -9,3 +9,10 @@
     font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
 }
+
+.saved {
+    font: 0.9em Geneva, Arial, Helvetica, sans-serif;
+    color: red;
+    float:left;
+    margin-left: 10px;
+}
