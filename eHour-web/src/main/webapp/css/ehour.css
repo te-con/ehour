@@ -352,7 +352,7 @@ div.listScroll {
     overflow: auto;
     padding: 0;
     font: 1em Geneva, Arial, Helvetica, sans-serif;
-    max-width: 500px;
+    max-width: 450px;
     min-width: 400px;
 }
 
@@ -528,6 +528,7 @@ div.LoggedInAs a:link, div.LoggedInAs a:visited {
 
 .mainColumn {
     float: left;
+    min-width: 1150px;
 }
 
 .content {
@@ -537,7 +538,6 @@ div.LoggedInAs a:link, div.LoggedInAs a:visited {
 
 }
 
-/* from http://www.oscaralexander.com/tutorials/how-to-make-sexy-buttons-with-css.html */
 .clear {
     overflow: hidden;
     width: 100%;
@@ -551,7 +551,7 @@ a.button {
     font: normal 11px geneva, sans-serif;
     height: 20px;
     margin-right: 6px;
-    padding-right: 10px; /* sliding doors padding */
+    padding-right: 10px;
     text-decoration: none;
 }
 
@@ -567,12 +567,12 @@ a.button span {
 a.button:active {
     background-position: bottom right;
     color: #536e87;
-    outline: none; /* hide dotted outline in Firefox */
+    outline: none;
 }
 
 a.button:active span {
     background-position: bottom left;
-    padding: 5px 0 5px 10px; /* push text down 1px */
+    padding: 5px 0 5px 10px;
     cursor: pointer;
     letter-spacing: 1.5px;
 }
@@ -585,7 +585,7 @@ a.bluebutton {
     font: normal 11px geneva, sans-serif;
     height: 20px;
     margin-right: 6px;
-    padding-right: 10px; /* sliding doors padding */
+    padding-right: 10px;
     text-decoration: none;
 }
 
@@ -601,7 +601,7 @@ a.bluebutton span {
 a.bluebutton:active {
     background-position: bottom right;
     color: #536e87;
-    outline: none; /* hide dotted outline in Firefox */
+    outline: none;
 }
 
 a.bluebutton:active span {
