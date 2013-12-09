@@ -22,6 +22,7 @@ import org.apache.wicket.request.resource.CssResourceReference
 class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
 
   val ContainerId = "content"
+  val StatusId = "status"
   val Self = this
 
   val Css = new CssResourceReference(classOf[ProjectManagementPage], "projectManagement.css")
@@ -38,6 +39,7 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
     greyBorder.add(initializeProjectSelector())
 
     addOrReplace(new Container(ContainerId))
+    addOrReplace(new Container(StatusId))
   }
 
   def initializeProjectSelector() = {
@@ -66,9 +68,13 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
 
         val projectInfoPanel = new ProjectManagementProjectInfoPanel(ContainerId, project)
         projectInfoPanel.setOutputMarkupId(true)
-
         Self.addOrReplace(projectInfoPanel)
         target.add(projectInfoPanel)
+
+        val statusPanel = new ProjectManagementStatusPanel(StatusId, project)
+        statusPanel.setOutputMarkupId(true)
+        Self.addOrReplace(statusPanel)
+        target.add(statusPanel)
       }
     }
 
