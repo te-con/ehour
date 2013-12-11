@@ -28,7 +28,6 @@ class ProjectManagementStatusPanelSpec extends AbstractSpringWebAppSpec with Bef
       aggregates.add(aggregate)
       report.setAggregates(aggregates)
 
-
       when(aggregateReportService.getProjectManagerDetailedReport(project)).thenReturn(report)
       tester.startComponentInPage(new ProjectManagementStatusPanel("id", project))
       tester.assertNoErrorMessage()

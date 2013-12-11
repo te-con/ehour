@@ -20,7 +20,6 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -44,9 +43,6 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
         implements AggregateReportService {
     @Autowired
     private ReportAggregatedDao reportAggregatedDAO;
-
-    @Autowired
-    private MailService mailService;
 
     @Autowired
     private ProjectAssignmentService projectAssignmentService;
@@ -156,10 +152,6 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 
     public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO) {
         this.reportAggregatedDAO = reportAggregatedDAO;
-    }
-
-    public void setMailService(MailService mailService) {
-        this.mailService = mailService;
     }
 
     public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService) {

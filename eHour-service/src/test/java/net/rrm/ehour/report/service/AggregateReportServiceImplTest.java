@@ -18,7 +18,6 @@ package net.rrm.ehour.report.service;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
-import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
@@ -39,33 +38,29 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("unchecked")
-public class AggregateReportServiceTest {
-    private AggregateReportService aggregateReportService;
+public class AggregateReportServiceImplTest {
+    private AggregateReportServiceImpl aggregateReportService;
     private UserDao userDAO;
     private ProjectDao projectDAO;
     private ReportAggregatedDao reportAggregatedDAO;
     private ProjectAssignmentService assignmentService;
-    private MailService mailService;
 
     @Before
     public void setUp() {
         aggregateReportService = new AggregateReportServiceImpl();
 
         reportAggregatedDAO = createMock(ReportAggregatedDao.class);
-        ((AggregateReportServiceImpl) aggregateReportService).setReportAggregatedDAO(reportAggregatedDAO);
+        aggregateReportService.setReportAggregatedDAO(reportAggregatedDAO);
 
         userDAO = createMock(UserDao.class);
-        ((AggregateReportServiceImpl) aggregateReportService).setUserDAO(userDAO);
+        aggregateReportService.setUserDAO(userDAO);
 
         projectDAO = createMock(ProjectDao.class);
-        ((AggregateReportServiceImpl) aggregateReportService).setProjectDAO(projectDAO);
+        aggregateReportService.setProjectDAO(projectDAO);
 
         assignmentService = createMock(ProjectAssignmentService.class);
-        ((AggregateReportServiceImpl) aggregateReportService).setProjectAssignmentService(assignmentService);
-
-        mailService = createMock(MailService.class);
-        ((AggregateReportServiceImpl) aggregateReportService).setMailService(mailService);
-    }
+        aggregateReportService.setProjectAssignmentService(assignmentService);
+   }
 
     @Test
     public void testCreateProjectReportUserId() {
@@ -198,16 +193,12 @@ public class AggregateReportServiceTest {
 
         expect(assignmentService.getProjectAssignments(project, dr)).andReturn(assignments);
 
-        expect(mailService.getSentMailForAssignment(isA(Integer[].class))).andReturn(new ArrayList<MailLogAssignment>());
-
         replay(reportAggregatedDAO);
         replay(assignmentService);
-        replay(mailService);
 
         ProjectManagerReport report = aggregateReportService.getProjectManagerDetailedReport(project);
         verify(reportAggregatedDAO);
         verify(assignmentService);
-        verify(mailService);
 
         assertEquals(new Integer(1), report.getProject().getPK());
         assertEquals(16, report.getAggregates().size());
