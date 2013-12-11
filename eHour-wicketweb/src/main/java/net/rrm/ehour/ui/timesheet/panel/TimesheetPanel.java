@@ -42,7 +42,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -375,6 +374,7 @@ public class TimesheetPanel extends Panel implements Serializable {
             moveWeek(weekStart, delta);
         }
 
+/*
         @Override
         protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
             super.updateAjaxAttributes(attributes);
@@ -382,5 +382,6 @@ public class TimesheetPanel extends Panel implements Serializable {
             List<IAjaxCallListener> listeners = attributes.getAjaxCallListeners();
             listeners.add(new LoadingSpinnerDecorator());
         }
+*/
     }
 }

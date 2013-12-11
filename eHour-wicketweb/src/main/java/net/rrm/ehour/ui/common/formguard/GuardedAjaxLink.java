@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.common.formguard;
 
-import org.apache.wicket.Component;
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
@@ -19,13 +19,12 @@ public abstract class GuardedAjaxLink<T> extends AjaxLink<T> implements IHeaderC
         super.updateAjaxAttributes(attributes);
 
         List<IAjaxCallListener> listeners = attributes.getAjaxCallListeners();
-        listeners.add(new GuardFormListener());
-    }
 
-    private class GuardFormListener extends AjaxCallListener {
-        @Override
-        public CharSequence getSuccessHandler(Component component) {
-            return "guardForm();";
-        }
+        AjaxCallListener listener = new AjaxCallListener();
+        listener.onPrecondition("if (typeof window.ajaxGuard == 'function') return ajaxGuard(); else return true;");
+        listener.onSuccess("if (typeof window.guardForm == 'function') guardForm();");
+        listeners.add(listener);
+
+        listeners.add(new LoadingSpinnerDecorator());
     }
 }

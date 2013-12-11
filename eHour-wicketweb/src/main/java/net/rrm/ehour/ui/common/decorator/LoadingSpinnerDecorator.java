@@ -27,7 +27,7 @@ public class LoadingSpinnerDecorator extends AjaxCallListener {
     private static final long serialVersionUID = 1432993030793501257L;
 
     @Override
-    public CharSequence getBeforeHandler(Component component) {
+    public CharSequence getBeforeSendHandler(Component component) {
         return "showHideSpinner(true);";
     }
 
