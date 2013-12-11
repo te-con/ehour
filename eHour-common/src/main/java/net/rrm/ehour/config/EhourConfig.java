@@ -152,4 +152,11 @@ public interface EhourConfig {
      * @return
      */
     AuditType getAuditType();
+
+
+    /**
+     * Get rights a PM has
+     * @return
+     */
+    PmProjectMaintenance getPmProjectMaintenance();
 }
