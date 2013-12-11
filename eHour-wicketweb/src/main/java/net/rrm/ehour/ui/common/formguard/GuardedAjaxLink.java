@@ -20,9 +20,7 @@ public abstract class GuardedAjaxLink<T> extends AjaxLink<T> implements IHeaderC
 
         List<IAjaxCallListener> listeners = attributes.getAjaxCallListeners();
 
-        AjaxCallListener listener = new AjaxCallListener();
-        listener.onPrecondition("if (typeof window.ajaxGuard == 'function') return ajaxGuard(); else return true;");
-        listener.onSuccess("if (typeof window.guardForm == 'function') guardForm();");
+        AjaxCallListener listener = new GuardFormAjaxCallListener();
         listeners.add(listener);
 
         listeners.add(new LoadingSpinnerDecorator());

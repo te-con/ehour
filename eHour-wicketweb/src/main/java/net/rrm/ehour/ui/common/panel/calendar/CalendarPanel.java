@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.formguard.GuardFormAjaxCallListener;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.sidepanel.SidePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -32,6 +33,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -218,7 +220,7 @@ public class CalendarPanel extends SidePanel {
      *
      * @author Thies
      */
-    private class ChangeMonthLink extends AjaxLink {
+    private class ChangeMonthLink extends AjaxLink<Void> {
         private static final long serialVersionUID = 1L;
         private int monthChange;
 
@@ -281,7 +283,9 @@ public class CalendarPanel extends SidePanel {
         @Override
         protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
             super.updateAjaxAttributes(attributes);
-            attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+            List<IAjaxCallListener> listeners = attributes.getAjaxCallListeners();
+            listeners.add(new GuardFormAjaxCallListener());
+            listeners.add(new LoadingSpinnerDecorator());
         }
     }
 
