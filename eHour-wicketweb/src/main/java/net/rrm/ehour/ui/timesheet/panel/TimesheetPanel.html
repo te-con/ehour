@@ -90,7 +90,7 @@
 
 		<div wicket:id="commentsFrame">
 			<div class="timesheet">
-				<table class="timesheetCommentsTable" style="margin:0 padding:0" cellpadding="0" cellspacing="0">
+				<table class="timesheetCommentsTable" style="margin:0; padding:0" cellpadding="0" cellspacing="0">
 
 				<tr>
 					<td valign="top">
@@ -164,10 +164,15 @@
                 }
             });
 
-            $("#submit").click(function () {
+            var submitted = function () {
                 $('#timesheetForm').data('changed', false);
                 $(window).unbind("beforeunload");
-            });
+            };
+
+
+            $("#submit").click(submitted);
+            $("#submitButtonTop").click(submitted);
+
         }
 
         $(document).ready(function () {
