@@ -45,6 +45,7 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -58,6 +59,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
@@ -74,6 +76,9 @@ import java.util.List;
 
 public class TimesheetPanel extends Panel implements Serializable {
     private static final long serialVersionUID = 7704288648724599187L;
+
+    private static final JavaScriptResourceReference GUARDFORM_JS = new JavaScriptResourceReference(TimesheetPanel.class, "guardform.js");
+    private static final CssResourceReference TIMESHEET_CSS = new CssResourceReference(TimesheetPanel.class, "css/timesheetForm.css");
 
     private EhourConfig config;
     private WebComponent serverMsgLabel;
@@ -136,8 +141,8 @@ public class TimesheetPanel extends Panel implements Serializable {
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        super.renderHead(response);
-        response.render(CssHeaderItem.forReference(new CssResourceReference(TimesheetPanel.class, "css/timesheetForm.css")));
+        response.render(JavaScriptHeaderItem.forReference(GUARDFORM_JS));
+        response.render(CssHeaderItem.forReference(TIMESHEET_CSS));
     }
 
     /**
@@ -373,15 +378,5 @@ public class TimesheetPanel extends Panel implements Serializable {
         public void onClick(AjaxRequestTarget target) {
             moveWeek(weekStart, delta);
         }
-
-/*
-        @Override
-        protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-            super.updateAjaxAttributes(attributes);
-
-            List<IAjaxCallListener> listeners = attributes.getAjaxCallListeners();
-            listeners.add(new LoadingSpinnerDecorator());
-        }
-*/
     }
 }
