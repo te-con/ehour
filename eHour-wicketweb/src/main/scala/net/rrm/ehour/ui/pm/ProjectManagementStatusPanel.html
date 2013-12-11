@@ -9,6 +9,37 @@
 <wicket:panel>
     <div wicket:id="border">
         <div style="margin: 0 10px">
+            <table class="dataTable" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <th><wicket:message key="pmReport.user.user" /></th>
+                    <th><wicket:message key="pmReport.user.booked" /></th>
+                    <th><wicket:message key="pmReport.user.allotted" /></th>
+                    <th><wicket:message key="pmReport.user.overrun" /></th>
+                    <th><wicket:message key="pmReport.user.available" /></th>
+                    <th><wicket:message key="pmReport.user.percentageUsed" /></th>
+                </tr>
+                </thead>
+
+                <tfoot>
+                <tr class="totalRow">
+                    <td valign="top"><b>2,140</b></td>
+                </tr>
+                </tfoot>
+
+
+                <tbody>
+                <tr class="dataRow" wicket:id="report">
+                    <td wicket:id="user"></td>
+                    <td wicket:id="booked"></td>
+                    <td wicket:id="allotted"></td>
+                    <td wicket:id="overrun"></td>
+                    <td wicket:id="available"></td>
+                    <td wicket:id="percentageUsed"></td>
+                </tr>
+
+                </tbody>
+            </table>
 
         </div>
     </div>

@@ -175,12 +175,8 @@ public class AggregateReportServiceTest {
 
     @Test
     public void testGetProjectManagerReport() {
-        Project prj = new Project(1);
-        prj.setProjectCode("PRJ");
-        DateRange dr = new DateRange(new Date(), new Date());
-
-        expect(projectDAO.findById(1))
-                .andReturn(prj);
+        Project project = new Project(1);
+        project.setProjectCode("PRJ");
 
         List<AssignmentAggregateReportElement> elms = new ArrayList<AssignmentAggregateReportElement>();
 
@@ -193,23 +189,22 @@ public class AggregateReportServiceTest {
         expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(isA(List.class), isA(DateRange.class)))
                 .andReturn(elms);
 
+        DateRange dr = new DateRange(new Date(), new Date());
+        expect(reportAggregatedDAO.getMinMaxDateTimesheetEntry(project)).andReturn(dr);
+
         List<ProjectAssignment> assignments = new ArrayList<ProjectAssignment>();
 
         assignments.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
 
-        expect(assignmentService.getProjectAssignments(prj, dr))
-                .andReturn(assignments);
+        expect(assignmentService.getProjectAssignments(project, dr)).andReturn(assignments);
 
-        expect(mailService.getSentMailForAssignment(isA(Integer[].class)))
-                .andReturn(new ArrayList<MailLogAssignment>());
+        expect(mailService.getSentMailForAssignment(isA(Integer[].class))).andReturn(new ArrayList<MailLogAssignment>());
 
-        replay(projectDAO);
         replay(reportAggregatedDAO);
         replay(assignmentService);
         replay(mailService);
 
-        ProjectManagerReport report = aggregateReportService.getProjectManagerDetailedReport(dr, 1);
-        verify(projectDAO);
+        ProjectManagerReport report = aggregateReportService.getProjectManagerDetailedReport(project);
         verify(reportAggregatedDAO);
         verify(assignmentService);
         verify(mailService);

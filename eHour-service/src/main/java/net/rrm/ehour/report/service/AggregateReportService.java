@@ -16,16 +16,15 @@
 
 package net.rrm.ehour.report.service;
 
-import java.io.Serializable;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.report.reports.ProjectManagerDashboard;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+
+import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -61,8 +60,7 @@ public interface AggregateReportService
 	
 	/**
 	 * Get project manager report
-	 * @param reportCriteria
 	 * @return
 	 */
-	ProjectManagerReport getProjectManagerDetailedReport(DateRange reportRange, Integer projectId);
+	ProjectManagerReport getProjectManagerDetailedReport(Project project);
 }

@@ -129,7 +129,7 @@ public class ProjectManagement extends AbstractBasePage<ReportCriteria> {
         if (criteria.getUserSelectedCriteria().getProject() != null) {
             // only one can be there
             Project project = criteria.getUserSelectedCriteria().getProject();
-            reportData = aggregateReportService.getProjectManagerDetailedReport(reportRange, project.getPK());
+            reportData = aggregateReportService.getProjectManagerDetailedReport(project);
         }
 
         return reportData;

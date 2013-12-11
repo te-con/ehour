@@ -59,7 +59,7 @@ public class ProjectManagementTest extends BaseSpringWebAppTester {
         ProjectManagerReport report = new ProjectManagerReport();
         report.setProject(new Project(1));
         report.setReportRange(new DateRange(new Date(), new Date()));
-        expect(aggregateReportService.getProjectManagerDetailedReport(isA(DateRange.class), isA(Integer.class)))
+        expect(aggregateReportService.getProjectManagerDetailedReport(isA(Project.class)))
                 .andReturn(report)
                 .anyTimes();
 
