@@ -17,7 +17,6 @@
 package net.rrm.ehour.report.service;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
@@ -29,7 +28,6 @@ import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,13 +51,6 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     @Autowired
     private ProjectAssignmentService projectAssignmentService;
 
-    private static final Logger LOGGER = Logger.getLogger(AggregateReportServiceImpl.class);
-
-
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
-     */
     public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds) {
         return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
     }
@@ -153,13 +144,6 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
         }
 
         report.setAggregates(aggregates);
-
-        // get mail sent for this project
-        if (assignmentIds.size() > 0) {
-            List<MailLogAssignment> sentMail = mailService.getSentMailForAssignment(assignmentIds.toArray(new Integer[assignmentIds.size()]));
-            report.setSentMail(new TreeSet<MailLogAssignment>(sentMail));
-        }
-
         report.deriveTotals();
 
         return report;

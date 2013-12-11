@@ -17,7 +17,6 @@
 package net.rrm.ehour.report.reports;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
@@ -35,7 +34,6 @@ public class ProjectManagerReport implements Serializable {
     private Project project;
     private SortedSet<AssignmentAggregateReportElement> aggregates = new TreeSet<AssignmentAggregateReportElement>();
     private DateRange reportRange;
-    private SortedSet<MailLogAssignment> sentMail;
     private Float totalHoursBooked;
     private Float totalHoursAvailable;
 
@@ -90,20 +88,6 @@ public class ProjectManagerReport implements Serializable {
      */
     public void setProject(Project project) {
         this.project = project;
-    }
-
-    /**
-     * @return the sentMail
-     */
-    public SortedSet<MailLogAssignment> getSentMail() {
-        return sentMail;
-    }
-
-    /**
-     * @param sentMail the sentMail to set
-     */
-    public void setSentMail(SortedSet<MailLogAssignment> sentMail) {
-        this.sentMail = sentMail;
     }
 
     /**

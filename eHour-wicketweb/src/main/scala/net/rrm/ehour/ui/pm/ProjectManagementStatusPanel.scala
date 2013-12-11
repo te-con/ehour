@@ -10,9 +10,9 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.Model
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import com.google.common.collect.Lists
-import scala.Predef.String
 import org.apache.wicket.AttributeModifier
 import java.lang.{Float => JFloat}
+import scala.Predef.String
 
 class ProjectManagementStatusPanel(id: String, project: Project) extends AbstractBasePanel(id) {
   @SpringBean
@@ -62,5 +62,8 @@ class ProjectManagementStatusPanel(id: String, project: Project) extends Abstrac
         applyCssAndAdd(percentageUsed)
       }
     })
+
+    border.add(new Label("totalBooked", new Model[JFloat](pmReport.getTotalHoursBooked)))
+    border.add(new Label("totalAvailable", new Model[JFloat](pmReport.getTotalHoursAvailable)))
   }
 }
