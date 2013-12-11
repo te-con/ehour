@@ -44,11 +44,11 @@ public abstract class AbstractBasePanel<T> extends Panel
 	}
 
     @SuppressWarnings("unchecked")
-    protected final IModel<T> getPanelModel() {
+    public final IModel<T> getPanelModel() {
         return (IModel<T>)super.getDefaultModel();
     }
 
-    protected final T getPanelModelObject() {
+    public final T getPanelModelObject() {
         return getPanelModel().getObject();
     }
 

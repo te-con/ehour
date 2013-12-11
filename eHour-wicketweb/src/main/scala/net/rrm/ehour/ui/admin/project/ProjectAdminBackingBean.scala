@@ -20,9 +20,13 @@ class ProjectAdminBackingBean(private val project: Project) extends AdminBacking
 
   private var assignmentsQueue: ListBuffer[ProjectAssignment] = ListBuffer()
 
+  def clearQueue {
+    assignmentsQueue.clear()
+    assignmentRemovalQueue.clear()
+  }
+
   // assignments queue contains the modifications
   def getAssignmentsQueue: ju.List[ProjectAssignment] = WrapAsJava.bufferAsJavaList(assignmentsQueue)
-
 
   private def removeAssignmentFromQueue(assignment: ProjectAssignment): ListBuffer[ProjectAssignment] = assignmentsQueue.filterNot(p => equalsAssignment(assignment, p))
   private def equalsAssignment(needle: ProjectAssignment, fromStack: ProjectAssignment): Boolean = {

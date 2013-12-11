@@ -42,6 +42,12 @@ public abstract class ProjectDriver {
     private static void createProject(ItProject project, ItCustomer customer, boolean active) {
         loadProjectAdmin();
 
+        fillProjectForm(project, customer, active);
+
+        storeProject();
+    }
+
+    public static void fillProjectForm(ItProject project, ItCustomer customer, boolean active) {
         findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.name").clear();
         findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.name").sendKeys(project.name);
         findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.projectCode").clear();
@@ -53,8 +59,6 @@ public abstract class ProjectDriver {
 
         String cust = String.format("%s - %s", customer.code, customer.name);
         new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.customer")).selectByVisibleText(cust);
-
-        storeProject();
     }
 
     public static void storeProject() {
@@ -117,6 +121,10 @@ public abstract class ProjectDriver {
     public static void assertNoAssignments() {
         WebElement element = findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_filterContainer");
         assertEquals("no users have been assigned", element.getText());
+    }
+
+    public static void selectProjectManager(String name) {
+        new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.projectManager")).selectByVisibleText(name);
     }
 
     public static class ItProject {

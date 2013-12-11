@@ -40,6 +40,8 @@ public class EhourConfigCache implements EhourConfig, Serializable {
         cache.setInitialized(config.isInitialized());
         cache.setFirstDayOfWeek(config.getFirstDayOfWeek());
         cache.setAuditType(config.getAuditType());
+
+        cache.setPmProjectMaintenance(config.getPmProjectMaintenance());
     }
 
     @Override
@@ -141,5 +143,10 @@ public class EhourConfigCache implements EhourConfig, Serializable {
     @Override
     public AuditType getAuditType() {
         return cache.getAuditType();
+    }
+
+    @Override
+    public PmProjectMaintenance getPmProjectMaintenance() {
+        return cache.getPmProjectMaintenance();
     }
 }

@@ -36,10 +36,13 @@ import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
@@ -62,6 +65,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     private UserService userService;
 
     private static final long serialVersionUID = -8677950352090140144L;
+    private static final CssResourceReference CSS = new CssResourceReference(ProjectFormPanel.class, "projectFormPanel.css");
 
     private boolean editMode;
 
@@ -223,5 +227,10 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         }
 
         return users;
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(CssHeaderItem.forReference(CSS));
     }
 }
