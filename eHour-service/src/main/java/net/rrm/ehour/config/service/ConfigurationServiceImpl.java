@@ -222,6 +222,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 config.setAuditType(AuditType.fromString(value));
             } else if (key.equalsIgnoreCase((ConfigurationItem.VERSION.getDbField()))) {
                 config.setVersion(value);
+            } else if (key.equalsIgnoreCase(ConfigurationItem.PM_MAINTANCE.getDbField())) {
+                config.setPmProjectMaintenance(PmProjectMaintenance.valueOf(value));
+
             }
         }
 
