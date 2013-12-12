@@ -19,7 +19,7 @@ public enum ConfigurationItem {
     AUDIT_TYPE("auditType"),
     VERSION("version"),
     DONT_FORCE_LANGUAGE("dontForceLanguage"),
-    PM_MAINTANCE("pmMaintenance")
+    PM_PRIVILEGE("pmPrivilege")
     ;
     private String dbField;
 

@@ -25,32 +25,21 @@ import org.apache.wicket.model.IModel;
 
 import java.util.Arrays;
 
-
 /**
  * Created on May 5, 2009, 12:36:56 AM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class AuditConfigPanel extends AbstractConfigPanel
-{
-	private static final long serialVersionUID = -5212420452301193422L;
+public class AuditConfigPanel extends AbstractConfigPanel {
+    private static final long serialVersionUID = -5212420452301193422L;
 
 
-	public AuditConfigPanel(String id, IModel<MainConfigBackingBean> model)
-	{
-		super(id, model);
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.admin.config.panel.AbstractConfigPanel#addFormComponents(org.apache.wicket.markup.html.form.Form)
-	 */
-	@Override
-	protected void addFormComponents(Form<?> configForm)
-	{
-		final DropDownChoice<AuditType>	auditTypeDropDown;
-		
-		auditTypeDropDown = new DropDownChoice<AuditType>("config.auditType", Arrays.asList(AuditType.values()));
-		configForm.add(auditTypeDropDown);
-	}
+    public AuditConfigPanel(String id, IModel<MainConfigBackingBean> model) {
+        super(id, model);
+    }
+
+    @Override
+    protected void addFormComponents(Form<?> configForm) {
+        configForm.add(new DropDownChoice<AuditType>("config.auditType", Arrays.asList(AuditType.values())));
+    }
 }

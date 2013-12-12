@@ -18,7 +18,7 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.config.PmProjectMaintenance;
+import net.rrm.ehour.config.PmPrivilege;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
@@ -67,7 +67,7 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         form.add(weekStartsAt);
 
         // pm access rights
-        form.add(new DropDownChoice<PmProjectMaintenance>("config.pmProjectMaintenance", Arrays.asList(PmProjectMaintenance.values())));
+        form.add(new DropDownChoice<PmPrivilege>("config.pmPrivilege", Arrays.asList(PmPrivilege.values())));
 
     }
 

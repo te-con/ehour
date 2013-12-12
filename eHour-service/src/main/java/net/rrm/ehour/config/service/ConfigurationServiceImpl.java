@@ -222,8 +222,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 config.setAuditType(AuditType.fromString(value));
             } else if (key.equalsIgnoreCase((ConfigurationItem.VERSION.getDbField()))) {
                 config.setVersion(value);
-            } else if (key.equalsIgnoreCase(ConfigurationItem.PM_MAINTANCE.getDbField())) {
-                config.setPmProjectMaintenance(PmProjectMaintenance.valueOf(value));
+            } else if (key.equalsIgnoreCase(ConfigurationItem.PM_PRIVILEGE.getDbField())) {
+                config.setPmPrivilege(PmPrivilege.valueOf(value));
 
             }
         }
@@ -263,7 +263,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(ConfigurationItem.FIRST_DAY_OF_WEEK.getDbField(), config.getFirstDayOfWeek());
         persistConfig(ConfigurationItem.AUDIT_TYPE.getDbField(), getAuditType(config).getValue());
 
-        persistConfig(ConfigurationItem.PM_MAINTANCE.getDbField(), getPmProjectMaintenance(config).name());
+        persistConfig(ConfigurationItem.PM_PRIVILEGE.getDbField(), getPmPrivilege(config).name());
     }
 
     private AuditType getAuditType(EhourConfig config) {
@@ -274,11 +274,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         }
     }
 
-    private PmProjectMaintenance getPmProjectMaintenance(EhourConfig config) {
-        if (config.getPmProjectMaintenance() == null) {
-            return PmProjectMaintenance.FULL;
+    private PmPrivilege getPmPrivilege(EhourConfig config) {
+        if (config.getPmPrivilege() == null) {
+            return PmPrivilege.FULL;
         } else {
-            return config.getPmProjectMaintenance();
+            return config.getPmPrivilege();
         }
     }
 

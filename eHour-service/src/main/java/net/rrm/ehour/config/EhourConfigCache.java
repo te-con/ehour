@@ -41,7 +41,7 @@ public class EhourConfigCache implements EhourConfig, Serializable {
         cache.setFirstDayOfWeek(config.getFirstDayOfWeek());
         cache.setAuditType(config.getAuditType());
 
-        cache.setPmProjectMaintenance(config.getPmProjectMaintenance());
+        cache.setPmPrivilege(config.getPmPrivilege());
     }
 
     @Override
@@ -146,7 +146,7 @@ public class EhourConfigCache implements EhourConfig, Serializable {
     }
 
     @Override
-    public PmProjectMaintenance getPmProjectMaintenance() {
-        return cache.getPmProjectMaintenance();
+    public PmPrivilege getPmPrivilege() {
+        return cache.getPmPrivilege();
     }
 }

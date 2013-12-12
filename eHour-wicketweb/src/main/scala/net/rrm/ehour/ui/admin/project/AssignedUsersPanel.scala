@@ -168,7 +168,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
           form.add(cancelButton)
 
           val deleteButton = new WebMarkupContainer("delete")
-          deleteButton.setVisible(itemModel.getObject.isDeletable)
+          deleteButton.setVisible(!(onlyDeactivation || !itemModel.getObject.isDeletable))
           deleteButton.add(ajaxClick({
             target =>
               Self.getPanelModelObject.deleteAssignment(itemModel.getObject)

@@ -159,8 +159,8 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     }
 
     @Override
-    public PmProjectMaintenance getPmProjectMaintenance() {
-        String pmProjectMaintenance = this.getString("pmProjectMaintenance", "FULL");
-        return PmProjectMaintenance.valueOf(pmProjectMaintenance);
+    public PmPrivilege getPmPrivilege() {
+        String pmPrivilege = this.getString(ConfigurationItem.PM_PRIVILEGE.getDbField(), PmPrivilege.FULL.name());
+        return PmPrivilege.valueOf(pmPrivilege);
     }
 }
