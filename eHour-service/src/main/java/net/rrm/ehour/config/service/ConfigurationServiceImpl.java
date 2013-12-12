@@ -230,7 +230,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     @Override
     public List<Configuration> findAllConfiguration
-    () {
+            () {
         return configDAO.findAll();
     }
 
@@ -239,9 +239,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     */
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
-    public void persistConfiguration
-    (EhourConfig
-             config) {
+    public void persistConfiguration(EhourConfig config) {
         LOGGER.debug("Persisting config");
         persistConfig(ConfigurationItem.LOCALE_CURRENCY.getDbField(), LocaleUtil.toLanguageTag((config.getCurrency())));
 
@@ -261,6 +259,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(ConfigurationItem.INITIALIZED.getDbField(), config.isInitialized());
         persistConfig(ConfigurationItem.FIRST_DAY_OF_WEEK.getDbField(), config.getFirstDayOfWeek());
         persistConfig(ConfigurationItem.AUDIT_TYPE.getDbField(), getAuditType(config).getValue());
+
+        persistConfig(ConfigurationItem.PM_MAINTANCE.getDbField(), getPmProjectMaintenance(config).name());
     }
 
     private AuditType getAuditType(EhourConfig config) {
@@ -270,6 +270,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             return config.getAuditType();
         }
     }
+
+    private PmProjectMaintenance getPmProjectMaintenance(EhourConfig config) {
+        if (config.getPmProjectMaintenance() == null) {
+            return PmProjectMaintenance.FULL;
+        } else {
+            return config.getPmProjectMaintenance();
+        }
+    }
+
 
     private void persistConfig(String key, String value) {
         Configuration config = new Configuration();

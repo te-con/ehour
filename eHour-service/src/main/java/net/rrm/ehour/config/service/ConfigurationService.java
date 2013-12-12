@@ -26,37 +26,41 @@ import java.util.List;
 
 /**
  * Service for modifying the configuration
- **/
+ */
 @NonAuditable
-public interface ConfigurationService
-{
-	/**
-	 * Get all configuration items
-	 * @return
-	 */
-	public EhourConfigStub getConfiguration();
+public interface ConfigurationService {
+    /**
+     * Get all configuration items
+     *
+     * @return
+     */
+    EhourConfigStub getConfiguration();
 
     /**
      * Get all configuration items as a list
+     *
      * @return
      */
-    public List<Configuration> findAllConfiguration();
-	
-	/**
-	 * Persist all configuration items
-	 * @param config
-	 */
-	public void persistConfiguration(EhourConfig config);
-	
-	/**
-	 * Get configured logo for excel reports
-	 * @return
-	 */
-	public ImageLogo getExcelLogo();
-	
-	/**
-	 * Persist image logo
-	 * @param logo
-	 */
-	public void persistExcelLogo(ImageLogo logo);
+    List<Configuration> findAllConfiguration();
+
+    /**
+     * Persist all configuration items
+     *
+     * @param config
+     */
+    void persistConfiguration(EhourConfig config);
+
+    /**
+     * Get configured logo for excel reports
+     *
+     * @return
+     */
+    ImageLogo getExcelLogo();
+
+    /**
+     * Persist image logo
+     *
+     * @param logo
+     */
+    void persistExcelLogo(ImageLogo logo);
 }

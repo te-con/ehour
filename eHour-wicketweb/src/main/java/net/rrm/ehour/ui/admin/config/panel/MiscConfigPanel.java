@@ -18,6 +18,7 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.config.PmProjectMaintenance;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
@@ -28,78 +29,67 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created on Apr 21, 2009, 5:10:16 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class MiscConfigPanel extends AbstractConfigPanel
-{
-	private static final long serialVersionUID = 2158470911726912430L;
+public class MiscConfigPanel extends AbstractConfigPanel {
+    private static final long serialVersionUID = 2158470911726912430L;
 
-	/**
-	 * @param id
-	 * @param model
-	 */
-	public MiscConfigPanel(String id, IModel<MainConfigBackingBean> model)
-	{
-		super(id, model);
-	}
+    public MiscConfigPanel(String id, IModel<MainConfigBackingBean> model) {
+        super(id, model);
+    }
 
-	@Override
-	protected void addFormComponents(Form<?> form)
-	{
-		// show turnover checkbox
-		form.add(new CheckBox("config.showTurnover"));		
-		
-		final MainConfigBackingBean configBackingBean = (MainConfigBackingBean)getDefaultModelObject();
+    @Override
+    protected void addFormComponents(Form<?> form) {
+        // show turnover checkbox
+        form.add(new CheckBox("config.showTurnover"));
 
-		// working hours
-		TextField<Float> workHours = new TextField<Float>("config.completeDayHours", Float.class);
+        final MainConfigBackingBean configBackingBean = (MainConfigBackingBean) getDefaultModelObject();
+
+        // working hours
+        TextField<Float> workHours = new TextField<Float>("config.completeDayHours", Float.class);
         workHours.setLabel(new ResourceModel("admin.config.workHours"));
         workHours.add(new ValidatingFormComponentAjaxBehavior());
-		workHours.add(RangeValidator.minimum(0f));
-		workHours.add(RangeValidator.maximum(24f));
+        workHours.add(RangeValidator.minimum(0f));
+        workHours.add(RangeValidator.maximum(24f));
         workHours.setRequired(true);
         form.add(new AjaxFormComponentFeedbackIndicator("workHoursValidationError", workHours));
-		form.add(workHours);
-		
-		// weeks start at
-		
-		DropDownChoice<Date> weekStartsAt = new DropDownChoice<Date>("firstWeekStart",
-															DateUtil.createDateSequence(DateUtil.getDateRangeForWeek(new GregorianCalendar()), new EhourConfigStub()),
-															new WeekDayRenderer(configBackingBean.getLocaleLanguage()));
-		form.add(weekStartsAt);
-		
-	}
-	
-	private static final class WeekDayRenderer extends ChoiceRenderer<Date>
-	{
-		private static final long serialVersionUID = -2044803875511515992L;
-		SimpleDateFormat formatter;
-		
-		public WeekDayRenderer(Locale locale)
-		{
-			formatter = new SimpleDateFormat("EEEE", locale);
-		}
-    	@Override
-        public Object getDisplayValue(Date date)
-    	{
-    		return formatter.format(date);
-    	}
-    	
-    	@Override
-    	public String getIdValue(Date date, int index)
-    	{
-    		Calendar cal = new GregorianCalendar();
-    		cal.setTime(date);
-    		return Integer.toString(cal.get(Calendar.DAY_OF_WEEK));
-    	}    	
-	}	
+        form.add(workHours);
+
+        // weeks start at
+        DropDownChoice<Date> weekStartsAt = new DropDownChoice<Date>("firstWeekStart",
+                DateUtil.createDateSequence(DateUtil.getDateRangeForWeek(new GregorianCalendar()), new EhourConfigStub()),
+                new WeekDayRenderer(configBackingBean.getLocaleLanguage()));
+        form.add(weekStartsAt);
+
+        // pm access rights
+        form.add(new DropDownChoice<PmProjectMaintenance>("config.pmProjectMaintenance", Arrays.asList(PmProjectMaintenance.values())));
+
+    }
+
+    private static final class WeekDayRenderer extends ChoiceRenderer<Date> {
+        private static final long serialVersionUID = -2044803875511515992L;
+        SimpleDateFormat formatter;
+
+        public WeekDayRenderer(Locale locale) {
+            formatter = new SimpleDateFormat("EEEE", locale);
+        }
+
+        @Override
+        public Object getDisplayValue(Date date) {
+            return formatter.format(date);
+        }
+
+        @Override
+        public String getIdValue(Date date, int index) {
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(date);
+            return Integer.toString(cal.get(Calendar.DAY_OF_WEEK));
+        }
+    }
 
 }
