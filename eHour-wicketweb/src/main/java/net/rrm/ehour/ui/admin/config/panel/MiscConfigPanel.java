@@ -67,7 +67,7 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         form.add(weekStartsAt);
 
         // pm access rights
-        form.add(new DropDownChoice<PmPrivilege>("config.pmPrivilege", Arrays.asList(PmPrivilege.values())));
+        form.add(new DropDownChoice<PmPrivilege>("config.pmPrivilege", Arrays.asList(PmPrivilege.values()), new EnumChoiceRenderer<PmPrivilege>()));
 
     }
 
