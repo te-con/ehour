@@ -16,3 +16,39 @@
     float:left;
     margin-left: 10px;
 }
+
+.pm_users .rows {
+    max-height: 18em;
+    overflow: auto;
+}
+
+.pm_users .header  {
+    border-bottom: 1px solid #6c87a1;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.pm_users .footer  {
+    border-top: 1px solid #6c87a1;
+    padding-top: 5px;
+    font-weight: bold;
+}
+
+
+.pm_users .user {
+    width: 15em;
+    float: left;
+}
+
+.pm_users .booked, .pm_users .allotted, .pm_users .overrun, .pm_users .available, .pm_users .percentageUsed {
+    width: 7em;
+    float:left;
+}
+.pm_users .row {
+    clear: both;
+}
+
+.pm_users .container:hover {
+    background-color: #d1e5f9;
+}
+

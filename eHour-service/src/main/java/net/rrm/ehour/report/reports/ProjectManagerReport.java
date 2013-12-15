@@ -53,7 +53,7 @@ public class ProjectManagerReport implements Serializable {
                 hours += aggregate.getHours().floatValue();
 
                 if (aggregate.getProjectAssignment().getAssignmentType().isAllottedType()) {
-                    avail += aggregate.getProjectAssignment().getAllottedHours();
+                    avail += aggregate.getAvailableHours();
                 }
             }
         }
@@ -112,23 +112,10 @@ public class ProjectManagerReport implements Serializable {
     }
 
     /**
-     * @param totalHoursAvailable the totalHoursAvailable to set
-     */
-    public void setTotalHoursAvailable(Float totalHoursAvailable) {
-        this.totalHoursAvailable = totalHoursAvailable;
-    }
-
-    /**
      * @return the totalHoursBooked
      */
     public Float getTotalHoursBooked() {
         return totalHoursBooked;
     }
 
-    /**
-     * @param totalHoursBooked the totalHoursBooked to set
-     */
-    public void setTotalHoursBooked(Float totalHoursBooked) {
-        this.totalHoursBooked = totalHoursBooked;
-    }
 }

@@ -114,7 +114,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
         val itemModel = item.getModel
         item.setOutputMarkupId(true)
 
-        def createNameLabel = new AlwaysOnLabel("name", new PropertyModel(itemModel, "user.fullName"))
+        def createNameLabel = new NonEmptyLabel("name", new PropertyModel(itemModel, "user.fullName"))
 
         def createEditFragment(): Fragment = {
           def closeEditMode(target: AjaxRequestTarget) {
@@ -205,7 +205,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
           container.add(createNameLabel)
           container.add(new DateLabel("startDate", new PropertyModel(itemModel, "dateStart")))
           container.add(new DateLabel("endDate", new PropertyModel(itemModel, "dateEnd")))
-          container.add(new AlwaysOnLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
+          container.add(new NonEmptyLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
 
           container.add(ajaxClick({
             target => {

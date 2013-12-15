@@ -6,10 +6,11 @@
 .project_users .header  {
     border-bottom: 1px solid #6c87a1;
     margin-bottom: 5px;
+    font-weight: bold;
 }
 
 .project_users .active {
-    width: 3em;
+    width: 4em;
     float: left;
 }
 

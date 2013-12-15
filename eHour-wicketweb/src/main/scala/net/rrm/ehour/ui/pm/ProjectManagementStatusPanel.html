@@ -8,44 +8,43 @@
 
 <wicket:panel>
     <div wicket:id="border">
+        <div class="assignedContainer">
         <div style="margin: 0 10px">
-            <table class="dataTable" cellpadding="0" cellspacing="0">
-                <thead>
-                <tr>
-                    <th><wicket:message key="pmReport.user.user" /></th>
-                    <th><wicket:message key="pmReport.user.booked" /></th>
-                    <th><wicket:message key="pmReport.user.allotted" /></th>
-                    <th><wicket:message key="pmReport.user.overrun" /></th>
-                    <th><wicket:message key="pmReport.user.available" /></th>
-                    <th><wicket:message key="pmReport.user.percentageUsed" /></th>
-                </tr>
-                </thead>
 
-                <tfoot>
-                <tr class="totalRow">
-                    <td valign="top">&nbsp;</td>
-                    <td valign="top" wicket:id="totalBooked">&nbsp;</td>
-                    <td valign="top">&nbsp;</td>
-                    <td valign="top">&nbsp;</td>
-                    <td valign="top" wicket:id="totalAvailable">&nbsp;</td>
-                    <td valign="top">&nbsp;</td>
-                </tr>
-                </tfoot>
+            <div class="pm_users">
+                <div class="header">
+                    <div class="user"><wicket:message key="pmReport.user.user" /></div>
+                    <div class="booked"><wicket:message key="pmReport.user.booked" /></div>
+                    <div class="allotted"><wicket:message key="pmReport.user.allotted" /></div>
+                    <div class="overrun"><wicket:message key="pmReport.user.overrun" /></div>
+                    <div class="available"><wicket:message key="pmReport.user.available" /></div>
+                    <div class="percentageUsed"><wicket:message key="pmReport.user.percentageUsed" /></div>
+                    <br/>
+                </div>
 
+                <div class="rows">
+                    <div class="row" wicket:id="rows">
+                        <div class="user" wicket:id="user"/>
+                        <div class="booked" wicket:id="booked"/>
+                        <div class="allotted" wicket:id="allotted"></div>
+                        <div class="overrun" wicket:id="overrun"/>
+                        <div class="available" wicket:id="available"/>
+                        <div class="percentageUsed"><wicket:container wicket:id="percentageUsed"/>%</div>
+                        <br clear="both" />
+                    </div>
+                </div>
 
-                <tbody>
-                <tr class="dataRow" wicket:id="report">
-                    <td wicket:id="user"></td>
-                    <td wicket:id="booked"></td>
-                    <td wicket:id="allotted"></td>
-                    <td wicket:id="overrun"></td>
-                    <td wicket:id="available"></td>
-                    <td wicket:id="percentageUsed"></td>
-                </tr>
-
-                </tbody>
-            </table>
-
+                <div class="footer">
+                    <div class="user">&nbsp;</div>
+                    <div class="booked" wicket:id="totalBooked"/>
+                    <div class="allotted">&nbsp;</div>
+                    <div class="overrun">&nbsp;</div>
+                    <div class="available" wicket:id="totalAvailable"/>
+                    <div class="percentageUsed">&nbsp;</div>
+                    <br clear="both" />
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 </wicket:panel>
