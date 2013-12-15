@@ -158,5 +158,5 @@ public interface EhourConfig {
      * Get rights a PM has
      * @return
      */
-    PmProjectMaintenance getPmProjectMaintenance();
+    PmPrivilege getPmPrivilege();
 }

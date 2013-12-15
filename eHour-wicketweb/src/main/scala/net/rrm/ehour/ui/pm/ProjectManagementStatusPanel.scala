@@ -10,9 +10,9 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.model.Model
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import com.google.common.collect.Lists
-import org.apache.wicket.AttributeModifier
 import java.lang.{Float => JFloat}
 import scala.Predef.String
+import net.rrm.ehour.ui.common.wicket.NonEmptyLabel
 
 class ProjectManagementStatusPanel(id: String, project: Project) extends AbstractBasePanel(id) {
   @SpringBean
@@ -28,38 +28,27 @@ class ProjectManagementStatusPanel(id: String, project: Project) extends Abstrac
 
     val aggregates = Lists.newArrayList(pmReport.getAggregates)
 
-    border.add(new ListView[AssignmentAggregateReportElement]("report", aggregates) {
+    border.add(new ListView[AssignmentAggregateReportElement]("rows", aggregates) {
       def populateItem(item: ListItem[AssignmentAggregateReportElement]) {
-        def applyCssAndAdd(label: Label) {
-          if (item.getIndex == 0)
-            label.add(AttributeModifier.append("class", "firstRow"))
-          else if (item.getIndex % 2 != 0) {
-            item.add(AttributeModifier.append("class", "oddRow"))
-          }
-
-          item.add(label)
-        }
-
         val aggregate = item.getModelObject
 
-        val user = new Label("user", aggregate.getProjectAssignment.getUser.getFullName)
-        user.add(AttributeModifier.append("class", "firstColumn"))
-        applyCssAndAdd(user)
+        val user = new NonEmptyLabel("user", new Model[String](aggregate.getProjectAssignment.getUser.getFullName))
+        item.add(user)
 
-        val booked = new Label("booked", new Model[JFloat](JFloat.valueOf(aggregate.getHours.floatValue())))
-        applyCssAndAdd(booked)
+        val booked = new NonEmptyLabel("booked", new Model[JFloat](JFloat.valueOf(aggregate.getHours.floatValue())))
+        item.add(booked)
 
-        val allotted = new Label("allotted", new Model[JFloat](aggregate.getProjectAssignment.getAllottedHours))
-        applyCssAndAdd(allotted)
+        val allotted = new NonEmptyLabel("allotted", new Model[JFloat](aggregate.getProjectAssignment.getAllottedHours))
+        item.add(allotted)
 
-        val overrun: Label = new Label("overrun", new Model[JFloat](aggregate.getProjectAssignment.getAllowedOverrun))
-        applyCssAndAdd(overrun)
+        val overrun = new NonEmptyLabel("overrun", new Model[JFloat](aggregate.getProjectAssignment.getAllowedOverrun))
+        item.add(overrun)
 
-        val available: Label = new Label("available", new Model[JFloat](aggregate.getAvailableHours))
-        applyCssAndAdd(available)
+        val available = new NonEmptyLabel("available", new Model[JFloat](aggregate.getAvailableHours))
+        item.add(available)
 
-        val percentageUsed: Label = new Label("percentageUsed", new Model[JFloat](JFloat.valueOf(aggregate.getProgressPercentage)))
-        applyCssAndAdd(percentageUsed)
+        val percentageUsed = new NonEmptyLabel("percentageUsed", new Model[JFloat](JFloat.valueOf(aggregate.getProgressPercentage)))
+        item.add(percentageUsed)
       }
     })
 

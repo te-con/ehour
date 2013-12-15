@@ -47,7 +47,7 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     private int firstDayOfWeek = 1;
     private AuditType auditType;
     private String version;
-    private PmProjectMaintenance pmProjectMaintenance;
+    private PmPrivilege pmPrivilege;
 
     public TimeZone getTzAsTimeZone() {
         return EhourConfigUtil.getTzAsTimeZone(this);
@@ -256,12 +256,12 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     }
 
     @Override
-    public PmProjectMaintenance getPmProjectMaintenance() {
-        return pmProjectMaintenance;
+    public PmPrivilege getPmPrivilege() {
+        return pmPrivilege;
     }
 
-    public void setPmProjectMaintenance(PmProjectMaintenance pmProjectMaintenance) {
-        this.pmProjectMaintenance = pmProjectMaintenance;
+    public void setPmPrivilege(PmPrivilege pmPrivilege) {
+        this.pmPrivilege = pmPrivilege;
     }
 
     /**

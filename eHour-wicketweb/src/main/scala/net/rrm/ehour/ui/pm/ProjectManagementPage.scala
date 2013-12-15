@@ -17,6 +17,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.wicket.Container
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.apache.wicket.request.resource.CssResourceReference
+import net.rrm.ehour.config.PmPrivilege
 
 @AuthorizeInstantiation(Array(UserRole.ROLE_PROJECTMANAGER))
 class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
@@ -66,10 +67,12 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
       protected def onClick(item: ListItem[Project], target: AjaxRequestTarget) {
         val project = item.getModelObject
 
-        val projectInfoPanel = new ProjectManagementProjectInfoPanel(ContainerId, project)
-        projectInfoPanel.setOutputMarkupId(true)
-        Self.addOrReplace(projectInfoPanel)
-        target.add(projectInfoPanel)
+        if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
+          val projectInfoPanel = new ProjectManagementModifyPanel(ContainerId, project)
+          projectInfoPanel.setOutputMarkupId(true)
+          Self.addOrReplace(projectInfoPanel)
+          target.add(projectInfoPanel)
+        }
 
         val statusPanel = new ProjectManagementStatusPanel(StatusId, project)
         statusPanel.setOutputMarkupId(true)

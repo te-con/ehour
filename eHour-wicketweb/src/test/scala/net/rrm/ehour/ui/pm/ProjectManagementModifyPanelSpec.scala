@@ -8,7 +8,7 @@ import org.mockito.Mockito._
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util._
 
-class ProjectManagementProjectInfoPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
+class ProjectManagementModifyPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
   val assignmentService = mock[ProjectAssignmentService]
   val assignmentMgmtService = mock[ProjectAssignmentManagementService]
   val userService = mock[UserService]
@@ -26,7 +26,7 @@ class ProjectManagementProjectInfoPanelSpec extends AbstractSpringWebAppSpec wit
 
   "Project Management Project Info Panel" should {
     "render" in {
-      tester.startComponentInPage(new ProjectManagementProjectInfoPanel("id", ProjectObjectMother.createProject(1)))
+      tester.startComponentInPage(new ProjectManagementModifyPanel("id", ProjectObjectMother.createProject(1)))
       tester.assertNoErrorMessage()
     }
 
@@ -35,7 +35,7 @@ class ProjectManagementProjectInfoPanelSpec extends AbstractSpringWebAppSpec wit
       val assignment = ProjectAssignmentObjectMother.createProjectAssignment(1)
       when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(assignment)))
 
-      tester.startComponentInPage(new ProjectManagementProjectInfoPanel("id", project))
+      tester.startComponentInPage(new ProjectManagementModifyPanel("id", project))
 
       tester.executeAjaxEvent("id:border:border_body:assignments:assignmentContainer:assignments:0:container", "click")
 
@@ -55,7 +55,7 @@ class ProjectManagementProjectInfoPanelSpec extends AbstractSpringWebAppSpec wit
       assignment.setDeletable(true)
       when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(assignment)))
 
-      tester.startComponentInPage(new ProjectManagementProjectInfoPanel("id", project))
+      tester.startComponentInPage(new ProjectManagementModifyPanel("id", project))
 
       tester.executeAjaxEvent("id:border:border_body:assignments:assignmentContainer:assignments:0:container", "click")
       tester.executeAjaxEvent("id:border:border_body:assignments:assignmentContainer:assignments:0:container:editForm:delete", "click")

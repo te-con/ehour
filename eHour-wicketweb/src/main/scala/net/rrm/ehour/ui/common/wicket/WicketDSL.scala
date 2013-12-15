@@ -46,7 +46,7 @@ class Container(id: String) extends WebMarkupContainer(id) {
   setOutputMarkupId(true)
 }
 
-class AlwaysOnLabel[T <: java.io.Serializable](id: String, label: IModel[T], converter: Option[IConverter[T]] = None) extends Label(id, label) {
+class NonEmptyLabel[T <: java.io.Serializable](id: String, label: IModel[T], converter: Option[IConverter[T]] = None) extends Label(id, label) {
   override def getConverter[X](`type`: Class[X]): IConverter[X] = converter match {
     case Some(c) => c.asInstanceOf[IConverter[X]]
     case None => super.getConverter(`type`)
@@ -55,7 +55,7 @@ class AlwaysOnLabel[T <: java.io.Serializable](id: String, label: IModel[T], con
   override def onComponentTagBody(markupStream: MarkupStream, openTag: ComponentTag) = replaceComponentTagBody(markupStream, openTag, if (StringUtils.isBlank(getDefaultModelObjectAsString)) "&nbsp;" else getDefaultModelObjectAsString)
 }
 
-class DateLabel(id: String, model: IModel[Date]) extends AlwaysOnLabel(id, model, Some(new DateConverter)) {
+class DateLabel(id: String, model: IModel[Date]) extends NonEmptyLabel(id, model, Some(new DateConverter)) {
   override def onComponentTagBody(markupStream: MarkupStream, openTag: ComponentTag): Unit = replaceComponentTagBody(markupStream, openTag, if (StringUtils.isBlank(getDefaultModelObjectAsString)) "&infin;" else getDefaultModelObjectAsString)
 }
 

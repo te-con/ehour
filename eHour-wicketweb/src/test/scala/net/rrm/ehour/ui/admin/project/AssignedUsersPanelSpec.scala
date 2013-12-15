@@ -9,7 +9,7 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import net.rrm.ehour.util._
 import java.util
-import net.rrm.ehour.ui.common.wicket.AlwaysOnLabel
+import net.rrm.ehour.ui.common.wicket.NonEmptyLabel
 
 class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
   "Assigned Users panel" should {
@@ -59,7 +59,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
       tester.executeAjaxEvent("id:assignmentContainer:assignments:0:container:editForm:cancel", "click")
 
-      tester.assertComponent("id:assignmentContainer:assignments:0:container:rate", classOf[AlwaysOnLabel[Float]])
+      tester.assertComponent("id:assignmentContainer:assignments:0:container:rate", classOf[NonEmptyLabel[Float]])
       tester.assertNoErrorMessage()
     }
 
@@ -78,7 +78,7 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
       tester.executeAjaxEvent("id:assignmentContainer:assignments:0:container:editForm:submit", "click")
 
-      tester.assertComponent("id:assignmentContainer:assignments:0:container:rate", classOf[AlwaysOnLabel[Float]])
+      tester.assertComponent("id:assignmentContainer:assignments:0:container:rate", classOf[NonEmptyLabel[Float]])
 
       assignment.getHourlyRate should be (10f)
 
