@@ -16,16 +16,16 @@
 
 package net.rrm.ehour.persistence.timesheet.dao;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.persistence.dao.GenericDao;
 import net.rrm.ehour.timesheet.dto.BookedDay;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 public interface TimesheetDao extends GenericDao<TimesheetEntry, TimesheetEntryId>
 {
@@ -45,8 +45,16 @@ public interface TimesheetDao extends GenericDao<TimesheetEntry, TimesheetEntryI
 	 * @return
 	 */
 	public List<TimesheetEntry> getTimesheetEntriesInRange(ProjectAssignment assignment, DateRange dateRange);
-	
-	/**
+
+    /**
+     * Get timesheet entries within date range
+     *
+     * @param dateRange
+     * @return
+     */
+    public List<TimesheetEntry> getTimesheetEntriesInRange(DateRange dateRange);
+
+    /**
 	 * Get timesheet entries before date
 	 * @param userId
 	 * @param date
