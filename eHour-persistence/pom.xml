@@ -121,7 +121,6 @@
             <type>test-jar</type>
         </dependency>
 
-
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
@@ -138,11 +137,9 @@
             <scope>test</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
         </dependency>
-
     </dependencies>
 </project>
