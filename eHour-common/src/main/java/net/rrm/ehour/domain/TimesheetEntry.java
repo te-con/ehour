@@ -35,134 +35,110 @@ import java.util.Date;
 @Entity
 @Table(name = "TIMESHEET_ENTRY")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntry>
-{
-	private static final long serialVersionUID = 3258176976827482751L;
+public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntry> {
+    private static final long serialVersionUID = 3258176976827482751L;
 
     @Id
     @Valid
-	private TimesheetEntryId entryId;
+    private TimesheetEntryId entryId;
 
-	@Column(name = "HOURS")
-	private Float hours;
+    @Column(name = "HOURS")
+    private Float hours;
 
     @Column(name = "COMMENT", length = 2048)
-	private String comment;
+    private String comment;
 
     @Column(name = "UPDATE_DATE")
     @NotNull
-	private Date updateDate;
-	
-	/** full constructor */
-	public TimesheetEntry(TimesheetEntryId entryId, Float hours)
-	{
-		this.entryId = entryId;
-		this.hours = hours;
-	}
+    private Date updateDate;
 
-	/** default constructor */
-	public TimesheetEntry()
-	{
+    /**
+     * full constructor
+     */
+    public TimesheetEntry(TimesheetEntryId entryId, Float hours) {
+        this.entryId = entryId;
+        this.hours = hours;
     }
 
-	/** minimal constructor */
-	public TimesheetEntry(TimesheetEntryId entryId)
-	{
-		this.entryId = entryId;
-	}
+    /**
+     * default constructor
+     */
+    public TimesheetEntry() {
+    }
 
-	public boolean isEmptyEntry()
-	{
-		return getHours() == null || getHours().equals(0f);
-	}
-	
-	public TimesheetEntryId getEntryId()
-	{
-		return this.entryId;
-	}
+    /**
+     * minimal constructor
+     */
+    public TimesheetEntry(TimesheetEntryId entryId) {
+        this.entryId = entryId;
+    }
 
-	public void setEntryId(TimesheetEntryId entryId)
-	{
-		this.entryId = entryId;
-	}
+    public boolean isEmptyEntry() {
+        return getHours() == null || getHours().equals(0f);
+    }
 
-	public Float getHours()
-	{
-		return this.hours;
-	}
+    public TimesheetEntryId getEntryId() {
+        return this.entryId;
+    }
 
-	public void setHours(Float hours)
-	{
-		this.hours = hours;
-	}
+    public void setEntryId(TimesheetEntryId entryId) {
+        this.entryId = entryId;
+    }
+
+    public Float getHours() {
+        return this.hours;
+    }
+
+    public void setHours(Float hours) {
+        this.hours = hours;
+    }
 
 
-	@Override
-	public TimesheetEntryId getPK()
-	{
-		return entryId;
-	}
+    @Override
+    public TimesheetEntryId getPK() {
+        return entryId;
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(TimesheetEntry object)
-	{
-		return new CompareToBuilder()
-			.append(this.getEntryId(), object.getEntryId()).toComparison();
-	}
+    public int compareTo(TimesheetEntry object) {
+        return new CompareToBuilder()
+                .append(this.getEntryId(), object.getEntryId()).toComparison();
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString()
-	{
-		return new ToStringBuilder(this)
-				.append("hours", this.getHours())
-				.append("entryId", this.getEntryId())
-				.append("comment", this.getComment())
-				.append("updateDate", this.getUpdateDate())
-				.toString();
-	}
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("hours", this.getHours())
+                .append("entryId", this.getEntryId())
+                .append("comment", this.getComment())
+                .append("updateDate", this.getUpdateDate())
+                .toString();
+    }
 
-	public String getComment()
-	{
-		return comment;
-	}
+    public String getComment() {
+        return comment;
+    }
 
-	public void setComment(String comment)
-	{
-		this.comment = comment;
-	}
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
-	/**
-	 * @return the updateDate
-	 */
-	public Date getUpdateDate()
-	{
-		return updateDate;
-	}
+    public Date getUpdateDate() {
+        return updateDate;
+    }
 
-	/**
-	 * @param updateDate the updateDate to set
-	 */
-	public void setUpdateDate(Date updateDate)
-	{
-		this.updateDate = updateDate;
-	}
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof TimesheetEntry))
-			return false;
-		TimesheetEntry castOther = (TimesheetEntry) other;
-		return new EqualsBuilder().append(getEntryId(), castOther.getEntryId()).isEquals();
-	}
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof TimesheetEntry))
+            return false;
+        TimesheetEntry castOther = (TimesheetEntry) other;
+        return new EqualsBuilder().append(getEntryId(), castOther.getEntryId()).isEquals();
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(entryId).toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(entryId).toHashCode();
+    }
 }
