@@ -12,7 +12,10 @@ import java.{util => ju}
 import com.github.nscala_time.time.Imports._
 import com.github.nscala_time.time.TypeImports.DateTime
 import com.github.nscala_time.time.TypeImports.Interval
-import scala.collection.convert.WrapAsJava
+import scala.collection.convert.{WrapAsScala, WrapAsJava}
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
+import net.rrm.ehour.data.DateRange
+
 
 trait TimesheetLockService {
   def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet
@@ -24,6 +27,8 @@ trait TimesheetLockService {
   def find(id: Int): Option[LockedTimesheet]
 
   def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval]
+
+  def findAffected(startDate: Date, endDate: Date): Seq[AffectedUser]
 }
 
 object TimesheetLockService {
@@ -43,7 +48,7 @@ object TimesheetLockService {
 }
 
 @Service("timesheetLockService")
-class TimesheetLockServiceSpringImpl @Autowired()(repository: TimesheetLockDao) extends TimesheetLockService {
+class TimesheetLockServiceSpringImpl @Autowired()(repository: TimesheetLockDao, timesheetDao: TimesheetDao) extends TimesheetLockService {
 
   import TimesheetLockService.localDateToDate
 
@@ -100,6 +105,14 @@ class TimesheetLockServiceSpringImpl @Autowired()(repository: TimesheetLockDao) 
       case (xs) => xs
     }).reverse
   }
+
+  def findAffected(startDate: Date, endDate: Date): Seq[AffectedUser] = {
+   val x = WrapAsScala.asScalaBuffer(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate)))
+
+//    x.map(u => u.get
+
+    )
+  }
 }
 
 case class LockedTimesheet(id: Option[Int] = None, dateStart: LocalDate, dateEnd: LocalDate, name: Option[String] = None) {
@@ -120,4 +133,6 @@ object LockedTimesheet {
   // weird if because of nullpointer when unboxing getLockId: Integer = null to scala.Int primitive type
   def apply(timesheetLock: TimesheetLock): LockedTimesheet = LockedTimesheet(if (timesheetLock.getLockId == null) None else Some(timesheetLock.getLockId), timesheetLock.getDateStart, timesheetLock.getDateEnd, Option(timesheetLock.getName))
 }
+
+case class AffectedUser(name: String, hoursBooked: Float)
 
