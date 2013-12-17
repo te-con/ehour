@@ -36,8 +36,7 @@ import java.util.Set;
 @Entity
 @Table(name = "USERS")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class User extends DomainObject<Integer, User>
-{
+public class User extends DomainObject<Integer, User> {
     private static final long serialVersionUID = 2546435367535412269L;
 
     @Id
@@ -53,7 +52,7 @@ public class User extends DomainObject<Integer, User>
     @Column(name = "PASSWORD", nullable = false, length = 128)
     private String password;
 
-    @Column(name = "FIRST_NAME",  length = 64)
+    @Column(name = "FIRST_NAME", length = 64)
     private String firstName;
 
     @Column(name = "LAST_NAME", nullable = false, length = 64)
@@ -98,35 +97,29 @@ public class User extends DomainObject<Integer, User>
     /**
      * default constructor
      */
-    public User()
-    {
+    public User() {
     }
 
-    public User(UserDepartment userDepartment)
-    {
+    public User(UserDepartment userDepartment) {
         this.userDepartment = userDepartment;
     }
 
-    public User(Integer userId)
-    {
+    public User(Integer userId) {
         this.userId = userId;
     }
 
-    public User(String username, String password)
-    {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User(Integer userId, String firstName, String lastName)
-    {
+    public User(Integer userId, String firstName, String lastName) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment)
-    {
+    public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -137,31 +130,25 @@ public class User extends DomainObject<Integer, User>
         this.userDepartment = userDepartment;
     }
 
-    public void addUserRole(UserRole role)
-    {
-        if (userRoles == null)
-        {
+    public void addUserRole(UserRole role) {
+        if (userRoles == null) {
             userRoles = new HashSet<UserRole>();
         }
         userRoles.add(role);
     }
 
-    public String getFullName()
-    {
+    public String getFullName() {
         StringBuilder fullName = new StringBuilder();
 
-        if (!StringUtils.isBlank(lastName))
-        {
+        if (!StringUtils.isBlank(lastName)) {
             fullName.append(lastName);
 
-            if (!StringUtils.isBlank(firstName))
-            {
+            if (!StringUtils.isBlank(firstName)) {
                 fullName.append(", ");
             }
         }
 
-        if (!StringUtils.isBlank(firstName))
-        {
+        if (!StringUtils.isBlank(firstName)) {
             fullName.append(firstName);
         }
 
@@ -170,73 +157,59 @@ public class User extends DomainObject<Integer, User>
 
     // Property accessors
 
-    public Integer getUserId()
-    {
+    public Integer getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Integer userId)
-    {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public String getUsername()
-    {
+    public String getUsername() {
         return this.username;
     }
 
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword()
-    {
+    public String getPassword() {
         return this.password;
     }
 
-    public void setPassword(String password)
-    {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getFirstName()
-    {
+    public String getFirstName() {
         return this.firstName;
     }
 
-    public void setFirstName(String firstName)
-    {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName()
-    {
+    public String getLastName() {
         return this.lastName;
     }
 
-    public void setLastName(String lastName)
-    {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public Set<UserRole> getUserRoles()
-    {
+    public Set<UserRole> getUserRoles() {
         return this.userRoles;
     }
 
-    public void setUserRoles(Set<UserRole> userRoles)
-    {
+    public void setUserRoles(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
 
@@ -244,63 +217,54 @@ public class User extends DomainObject<Integer, User>
     /**
      * @return the active
      */
-    public boolean isActive()
-    {
+    public boolean isActive() {
         return active;
     }
 
     /**
      * @param active the active to set
      */
-    public void setActive(boolean active)
-    {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
     /**
      * @return the userDepartment
      */
-    public UserDepartment getUserDepartment()
-    {
+    public UserDepartment getUserDepartment() {
         return userDepartment;
     }
 
     /**
      * @param userDepartment the userDepartment to set
      */
-    public void setUserDepartment(UserDepartment userDepartment)
-    {
+    public void setUserDepartment(UserDepartment userDepartment) {
         this.userDepartment = userDepartment;
     }
 
     /**
      * @return the projectAssignments
      */
-    public Set<ProjectAssignment> getProjectAssignments()
-    {
+    public Set<ProjectAssignment> getProjectAssignments() {
         return projectAssignments;
     }
 
     /**
      * @param projectAssignments the projectAssignments to set
      */
-    public void setProjectAssignments(Set<ProjectAssignment> projectAssignments)
-    {
+    public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
         this.projectAssignments = projectAssignments;
     }
 
     /**
      * @return the inactiveProjectAssignments
      */
-    public Set<ProjectAssignment> getInactiveProjectAssignments()
-    {
+    public Set<ProjectAssignment> getInactiveProjectAssignments() {
         return inactiveProjectAssignments;
     }
 
-    public void addProjectAssignment(ProjectAssignment projectAssignment)
-    {
-        if (projectAssignments == null)
-        {
+    public void addProjectAssignment(ProjectAssignment projectAssignment) {
+        if (projectAssignments == null) {
             projectAssignments = new HashSet<ProjectAssignment>();
         }
 
@@ -310,21 +274,18 @@ public class User extends DomainObject<Integer, User>
     /**
      * @param inactiveProjectAssignments the inactiveProjectAssignments to set
      */
-    public void setInactiveProjectAssignments(Set<ProjectAssignment> inactiveProjectAssignments)
-    {
+    public void setInactiveProjectAssignments(Set<ProjectAssignment> inactiveProjectAssignments) {
         this.inactiveProjectAssignments = inactiveProjectAssignments;
     }
 
 
     @Override
-    public Integer getPK()
-    {
+    public Integer getPK() {
         return userId;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return new ToStringBuilder(this).append("userId", getUserId())
                 .append("username", getUsername())
                 .append("lastName", getLastName())
@@ -335,8 +296,7 @@ public class User extends DomainObject<Integer, User>
     /**
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public int compareTo(User object)
-    {
+    public int compareTo(User object) {
         return new CompareToBuilder()
                 .append(this.getLastName(), object.getLastName())
                 .append(this.getFirstName(), object.getFirstName())
@@ -348,65 +308,63 @@ public class User extends DomainObject<Integer, User>
     /**
      * @return the deletable
      */
-    public boolean isDeletable()
-    {
+    public boolean isDeletable() {
         return deletable;
     }
 
     /**
      * @param deletable the deletable to set
      */
-    public void setDeletable(boolean deletable)
-    {
+    public void setDeletable(boolean deletable) {
         this.deletable = deletable;
     }
 
     /**
      * @return the salt
      */
-    public Integer getSalt()
-    {
+    public Integer getSalt() {
         return salt;
     }
 
     /**
      * @param salt the salt to set
      */
-    public void setSalt(Integer salt)
-    {
+    public void setSalt(Integer salt) {
         this.salt = salt;
     }
 
     /**
      * @return the updatedPassword
      */
-    public String getUpdatedPassword()
-    {
+    public String getUpdatedPassword() {
         return updatedPassword;
     }
 
     /**
      * @param updatedPassword the updatedPassword to set
      */
-    public void setUpdatedPassword(String updatedPassword)
-    {
+    public void setUpdatedPassword(String updatedPassword) {
         this.updatedPassword = updatedPassword;
     }
 
     @Override
-    public boolean equals(final Object other)
-    {
-        if (!(other instanceof User))
-        {
+    public boolean equals(final Object other) {
+        if (!(other instanceof User)) {
             return false;
         }
+
         User castOther = (User) other;
-        return new EqualsBuilder().append(username, castOther.username).append(firstName, castOther.firstName).append(lastName, castOther.lastName).append(email, castOther.email).append(active, castOther.active).isEquals();
+        return new EqualsBuilder()
+                .append(username, castOther.username)
+                .append(firstName, castOther.firstName)
+                .append(lastName, castOther.lastName)
+                .append(email, castOther.email)
+                .append(active, castOther.active)
+                .isEquals();
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return new HashCodeBuilder().append(username).append(firstName).append(lastName).append(email).append(active).toHashCode();
     }
 }

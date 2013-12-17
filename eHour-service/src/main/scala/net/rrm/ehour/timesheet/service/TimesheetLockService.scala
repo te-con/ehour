@@ -3,19 +3,17 @@ package net.rrm.ehour.timesheet.service
 import org.springframework.stereotype.Service
 import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.springframework.beans.factory.annotation.Autowired
-import net.rrm.ehour.domain.TimesheetLock
+import net.rrm.ehour.domain.{TimesheetEntry, User, TimesheetLock}
 import scala.collection.JavaConversions._
 import java.util.{Locale, Date}
 import org.springframework.transaction.annotation.Transactional
-import net.rrm.ehour.util.DateUtil
 import java.{util => ju}
 import com.github.nscala_time.time.Imports._
 import com.github.nscala_time.time.TypeImports.DateTime
 import com.github.nscala_time.time.TypeImports.Interval
-import scala.collection.convert.{WrapAsScala, WrapAsJava}
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.data.DateRange
-
+import net.rrm.ehour.util._
 
 trait TimesheetLockService {
   def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet
@@ -28,7 +26,7 @@ trait TimesheetLockService {
 
   def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval]
 
-  def findAffected(startDate: Date, endDate: Date): Seq[AffectedUser]
+  def findAffectedUsers(startDate: Date, endDate: Date): Seq[AffectedUser]
 }
 
 object TimesheetLockService {
@@ -41,29 +39,29 @@ object TimesheetLockService {
       else
         l.reverse
 
-    WrapAsJava.asJavaCollection(xs.map(i => inc(i.start, i, Nil)).flatten)
+    toJava(xs.map(i => inc(i.start, i, Nil)).flatten)
   }
 
   implicit def localDateToDate(date: LocalDate): Date = date.toDate
 }
 
 @Service("timesheetLockService")
-class TimesheetLockServiceSpringImpl @Autowired()(repository: TimesheetLockDao, timesheetDao: TimesheetDao) extends TimesheetLockService {
+class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, timesheetDao: TimesheetDao) extends TimesheetLockService {
 
   import TimesheetLockService.localDateToDate
 
   @Transactional
-  override def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet = LockedTimesheet(repository.persist(new TimesheetLock(startDate, endDate)))
+  override def createNew(startDate: LocalDate, endDate: LocalDate): LockedTimesheet = LockedTimesheet(lockDao.persist(new TimesheetLock(startDate, endDate)))
 
   @Transactional
   override def updateExisting(id: Int, startDate: LocalDate, endDate: LocalDate, name: String) {
     val lock = new TimesheetLock(id, startDate, endDate, name)
-    repository.persist(lock)
+    lockDao.persist(lock)
   }
 
-  override def findAll(): List[LockedTimesheet] = TimesheetLockService.timesheetLockToLockedTimesheetList(repository.findAll())
+  override def findAll(): List[LockedTimesheet] = TimesheetLockService.timesheetLockToLockedTimesheetList(lockDao.findAll())
 
-  override def find(id: Int): Option[LockedTimesheet] = repository.findById(id) match {
+  override def find(id: Int): Option[LockedTimesheet] = lockDao.findById(id) match {
     case timesheet: TimesheetLock => Some(LockedTimesheet(timesheet))
     case null => None
   }
@@ -82,7 +80,7 @@ class TimesheetLockServiceSpringImpl @Autowired()(repository: TimesheetLockDao, 
     }
 
     val requestedInterval = new Interval(startDate, endDate)
-    val lockIntervals = repository.findMatchingLock(startDate, endDate).map(l => new Interval(l.getDateStart, l.getDateEnd)).toList
+    val lockIntervals = lockDao.findMatchingLock(startDate, endDate).map(l => new Interval(l.getDateStart, l.getDateEnd)).toList
 
     def intervalsThatOverlap = lockIntervals.map(i => requestedInterval overlap i match {
       case o: Interval => Some(o)
@@ -106,12 +104,14 @@ class TimesheetLockServiceSpringImpl @Autowired()(repository: TimesheetLockDao, 
     }).reverse
   }
 
-  def findAffected(startDate: Date, endDate: Date): Seq[AffectedUser] = {
-   val x = WrapAsScala.asScalaBuffer(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate)))
+  def findAffectedUsers(startDate: Date, endDate: Date): Seq[AffectedUser] = {
+   val xs = toScala(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate)))
 
-//    x.map(u => u.get
+    val entriesPerUser: Map[User, List[TimesheetEntry]] = xs.groupBy(_.getEntryId.getProjectAssignment.getUser)
 
-    )
+    (for ((k, v) <- entriesPerUser) yield {
+      AffectedUser(k, v.foldLeft(0f)((b, a) => b + a.getHours))
+    }).toSeq.sortWith((a,b) => a.user.compareTo(b.user) < 0)
   }
 }
 
@@ -134,5 +134,5 @@ object LockedTimesheet {
   def apply(timesheetLock: TimesheetLock): LockedTimesheet = LockedTimesheet(if (timesheetLock.getLockId == null) None else Some(timesheetLock.getLockId), timesheetLock.getDateStart, timesheetLock.getDateEnd, Option(timesheetLock.getName))
 }
 
-case class AffectedUser(name: String, hoursBooked: Float)
+case class AffectedUser(user: User, hoursBooked: Float)
 
