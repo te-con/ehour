@@ -9,9 +9,8 @@ import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.event.{Broadcast, IEvent}
 import org.apache.wicket.{Component, AttributeModifier}
-import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
-import net.rrm.ehour.ui.common.wicket.AjaxLink
 import org.apache.wicket.ajax.AjaxRequestTarget
+import net.rrm.ehour.ui.common.wicket.WicketDSL._
 
 class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
   @SpringBean
@@ -47,12 +46,15 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
         item.add(new Label("startDate", timesheet.dateStart.toString("MM/dd/YYYY")))
         item.add(new Label("endDate", timesheet.dateEnd.toString("MM/dd/YYYY")))
 
-        val linkCallback: LinkCallback = target => send(self.getParent, Broadcast.DEPTH, EditLockEvent(timesheet.id.get, target))
+        if (timesheet.id.isDefined) {
+          item.add(ajaxClick({
+            target => {
+              send(self.getParent, Broadcast.DEPTH, EditLockEvent(timesheet.id.get, target))
+            }
+          }))
+        }
 
-        val link = new AjaxLink("detailLink", linkCallback)
-        link.add(new Label("detailLinkLabel", timesheet.lockName))
-        link.setEnabled(timesheet.id.isDefined)
-        item.add(link)
+        item.add(new Label("detailLinkLabel", timesheet.lockName))
       }
     }
 
