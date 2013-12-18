@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
+
+<body>
+
+<wicket:panel>
+    <div wicket:id="border" class="left">
+        <div class="listScroll" id="listContents" style="width: 95%">
+            <table class="contentTable dataTable" cellpadding="0" cellspacing="0" style="width: 95%">
+                <tr>
+                    <th>Name</th>
+                    <th style="text-align: right">Booked hours</th>
+                </tr>
+
+                <tr class="dataRow" wicket:id="affectedUsers">
+                    <td wicket:id="user"></td>
+                    <td class="numeric" wicket:id="hours"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</wicket:panel>
+
+</body>
+
+</html>

@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.{ComponentTag, MarkupStream}
 import org.apache.commons.lang.StringUtils
 import org.apache.wicket.util.convert.IConverter
-import org.apache.wicket.model.IModel
+import org.apache.wicket.model.{Model => WModel, IModel}
 import java.util.Date
 import net.rrm.ehour.ui.common.converter.DateConverter
 import org.apache.wicket.behavior.Behavior
@@ -67,4 +67,9 @@ object WicketDSL {
   def ajaxSubmit(form: Form[Unit], submit: (Form[Unit], AjaxRequestTarget) => Unit): Behavior = new AjaxFormSubmitBehavior(form, "click") {
     override def onSubmit(target: AjaxRequestTarget) = submit(form, target)
   }
+
+  implicit def toModel[T <: java.io.Serializable](m: Model[T]) = new WModel[T](m.model)
 }
+
+case class Model[T](model: T)
+

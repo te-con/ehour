@@ -20,11 +20,6 @@ class ExistingLocksPanel(id: String) extends AbstractAjaxPanel[Unit](id) {
   val self = this
   setOutputMarkupId(true)
 
-  override def onInitialize() {
-    super.onInitialize()
-
-  }
-
   override def onBeforeRender() {
     super.onBeforeRender()
 
