@@ -9,6 +9,8 @@ import org.joda.time.LocalDate
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.scalatest.BeforeAndAfterAll
+import net.rrm.ehour.ui.common.wicket._
+import net.rrm.ehour.ui.common.wicket.WicketDSL._
 
 class LockDetailsPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
 
@@ -40,7 +42,7 @@ class LockDetailsPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterA
       formTester.setValue("startDate", "01/01/12")
       formTester.setValue("endDate", "01/01/13")
 
-      submitForm
+      submitForm()
 
       tester.assertNoInfoMessage()
       tester.assertNoErrorMessage()
@@ -71,17 +73,17 @@ class LockDetailsPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterA
 
       when(service.find(id)).thenReturn(Some(lockedTimesheet))
 
-      val panel = new LockDetailsPanel("testObject", new LockModel(Some(5), "name"))
+      val panel = new LockDetailsPanel("testObject", Model(new LockModel(Some(5), "name")))
 
       tester.startComponentInPage(panel)
 
-      submitForm
+      submitForm()
 
       verify(service).updateExisting(anyInt(), any(classOf[LocalDate]), any(classOf[LocalDate]), anyString)
     }
   }
 
-  def submitForm {
+  def submitForm() {
     tester.executeAjaxEvent(createPath("submit"), "onclick")
   }
 }

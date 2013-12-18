@@ -3,8 +3,10 @@ package net.rrm.ehour.ui.financial.lock
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.markup.html.form.{TextField, Form}
-import org.apache.wicket.model.{IModel, Model, PropertyModel}
-import net.rrm.ehour.ui.common.wicket.AjaxButton
+import org.apache.wicket.model.{IModel, PropertyModel}
+import net.rrm.ehour.ui.common.wicket._
+import net.rrm.ehour.ui.common.wicket.WicketDSL._
+
 import net.rrm.ehour.ui.common.wicket.AjaxButton._
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.timesheet.service.{LockedTimesheet, TimesheetLockService}
@@ -16,11 +18,13 @@ import net.rrm.ehour.ui.common.component.PlaceholderPanel
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.event.{IEvent, Broadcast}
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.Component
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
+import net.rrm.ehour.ui.common.event.Event
+import net.rrm.ehour.util.DateUtil
 
-class LockDetailsPanel(id: String, lockModel: LockModel) extends AbstractAjaxPanel[LockModel](id, new Model[LockModel](lockModel)) {
+class LockDetailsPanel(id: String, lockModel: IModel[LockModel]) extends AbstractAjaxPanel[LockModel](id, lockModel) {
   def this(id: String) {
-    this(id, new LockModel())
+    this(id, Model(LockModel.apply()))
   }
 
   @SpringBean
@@ -39,15 +43,29 @@ class LockDetailsPanel(id: String, lockModel: LockModel) extends AbstractAjaxPan
     val outerBorder = new GreyRoundedBorder(LockDetailsPanel.OuterBorderId, "Timesheet lock details")
     addOrReplace(outerBorder)
 
+    val affectedUsersPanel = new AffectedUsersPanel(LockDetailsPanel.AffectedUsersId, getPanelModel)
+    affectedUsersPanel.setOutputMarkupId(true)
+    outerBorder.addOrReplace(affectedUsersPanel)
+
     val form = new Form[Unit](LockDetailsPanel.FormId)
     outerBorder.add(form)
 
     form.add(new TextField("name", new PropertyModel[String](model, "name")))
 
     val startDate = new LocalizedDatePicker("startDate", new PropertyModel[Date](model, "startDate"))
+    startDate.add(new OnChangeAjaxBehavior {
+      def onUpdate(target: AjaxRequestTarget) {
+        target.add(affectedUsersPanel)
+      }
+    })
     form.add(startDate)
 
     val endDate = new LocalizedDatePicker("endDate", new PropertyModel[Date](model, "endDate"))
+    endDate.add(new OnChangeAjaxBehavior {
+      def onUpdate(target: AjaxRequestTarget) {
+        target.add(affectedUsersPanel)
+      }
+    })
     form.add(endDate)
 
     form.add(new PlaceholderPanel(LockDetailsPanel.SaveConfirmId))
@@ -57,8 +75,8 @@ class LockDetailsPanel(id: String, lockModel: LockModel) extends AbstractAjaxPan
         case Some(lockId) => lockService.updateExisting(lockId, model.startDate, model.endDate, model.name)
         case None => lockService.createNew(model.startDate, model.endDate)
       }
-      
-      val label = createNotificationLabel(new Model("Locked"))
+
+      val label = createNotificationLabel(Model("Locked"))
       form.addOrReplace(label)
       target.add(label)
 
@@ -67,6 +85,7 @@ class LockDetailsPanel(id: String, lockModel: LockModel) extends AbstractAjaxPan
 
     val submitButton = AjaxButton("submit", form, success)
     form.add(submitButton)
+
   }
 
 
@@ -97,6 +116,7 @@ object LockDetailsPanel {
   val OuterBorderId = "outerBorder"
   val FormId = "lockForm"
   val SaveConfirmId = "saveConfirm"
+  val AffectedUsersId = "affectedUsersPanel"
 }
 
 class LockModel(val id: Option[Int] = None, var name: String = "", var startDate: Date = new Date(), var endDate: Date = new Date()) extends Serializable
@@ -104,12 +124,11 @@ class LockModel(val id: Option[Int] = None, var name: String = "", var startDate
 object LockModel {
   def apply(lockedTimesheet: LockedTimesheet): LockModel = new LockModel(lockedTimesheet.id, lockedTimesheet.name.getOrElse(""), lockedTimesheet.dateStart.toDate, lockedTimesheet.dateStart.toDate)
 
-  def apply(): LockModel = new LockModel()
-}
-
-
-case class LockModifiedEvent(target: AjaxRequestTarget) {
-  def refresh(components: Component*) {
-    target.add(components: _*)
+  def apply(): LockModel = {
+    val month = DateUtil.getDateRangeForMonth(new Date())
+    new LockModel(startDate = month.getDateStart, endDate = month.getDateEnd)
   }
 }
+
+
+case class LockModifiedEvent(target: AjaxRequestTarget) extends Event(target)
