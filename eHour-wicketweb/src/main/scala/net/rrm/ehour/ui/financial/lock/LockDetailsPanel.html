@@ -9,22 +9,21 @@
 <wicket:panel>
     <div wicket:id="outerBorder">
         <div style="padding-left: 10px;float:left">
-            <form wicket:id="lockForm">
+            <form wicket:id="lockForm" class="leftColumn">
                 <div style="float: left;vertical-align: bottom;padding-left: 20px;margin: 0;">
-                    <div style="width: 10em;float:left">
+                    <div class="formLabel">
                         Lock timesheets between:
                     </div>
 
                     <div style="float:left;margin-bottom: 5px">
-
                         <input style="width: 5em; clear: both" type="text" wicket:id="startDate">
-                        and :
+                        and
                         <input style="width: 5em; clear: both" type="text" wicket:id="endDate">
                     </div>
                     <br clear="all">
 
-                    <div style="width: 10em;float:left">
-                        Name:
+                    <div class="formLabel">
+                        Lock name:
                     </div>
 
                     <div style="float:left;margin-bottom: 5px">
@@ -33,7 +32,7 @@
 
                     <br clear="all">
 
-                    <div style="width: 10em;float:left" wicket:id="saveConfirm">
+                    <div class="formLabel" wicket:id="saveConfirm">
                     </div>
 
                     <div style="margin-left: 15px;margin-right: 15px; padding-top: 10px">
