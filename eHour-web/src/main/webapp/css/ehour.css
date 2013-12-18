@@ -567,7 +567,7 @@ a.button span {
     display: block;
     line-height: 10px;
     padding: 4px 0 6px 10px;
-    cursor: pointer;
+
     letter-spacing: 1.5px;
 }
 
@@ -901,3 +901,7 @@ hr {
     padding-bottom: 10px;
 }
 
+.clickableTable .dataRow:hover {
+    background-color: #d1e5f9;
+    cursor: pointer;
+}
