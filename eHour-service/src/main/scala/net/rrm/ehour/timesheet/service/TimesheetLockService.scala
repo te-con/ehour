@@ -20,6 +20,8 @@ trait TimesheetLockService {
 
   def updateExisting(id: Int, startDate: LocalDate, endDate: LocalDate, name: String)
 
+  def deleteLock(id: Int)
+
   def findAll(): List[LockedTimesheet]
 
   def find(id: Int): Option[LockedTimesheet]
@@ -59,6 +61,11 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     lockDao.persist(lock)
   }
 
+  @Transactional
+  def deleteLock(id: Int) {
+    lockDao.delete(id)
+  }
+
   override def findAll(): List[LockedTimesheet] = TimesheetLockService.timesheetLockToLockedTimesheetList(lockDao.findAll())
 
   override def find(id: Int): Option[LockedTimesheet] = lockDao.findById(id) match {
@@ -90,9 +97,9 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     val overlaps = intervalsThatOverlap
 
 
-    def mergeIntervals(current: Interval, stack: Seq[Interval], merged: Seq[Interval]):  Seq[Interval] = {
+    def mergeIntervals(current: Interval, stack: Seq[Interval], merged: Seq[Interval]): Seq[Interval] = {
       stack match {
-        case (x  :: xs) if x.overlaps(current) || x.abuts(current) => mergeIntervals(new Interval(current.start, x.end), xs, merged)
+        case (x :: xs) if x.overlaps(current) || x.abuts(current) => mergeIntervals(new Interval(current.start, x.end), xs, merged)
         case (x :: xs) => mergeIntervals(x, xs, current +: merged)
         case Nil => current +: merged
       }
@@ -105,13 +112,13 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
   }
 
   def findAffectedUsers(startDate: Date, endDate: Date): Seq[AffectedUser] = {
-   val xs = toScala(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate)))
+    val xs = toScala(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate)))
 
     val entriesPerUser: Map[User, List[TimesheetEntry]] = xs.groupBy(_.getEntryId.getProjectAssignment.getUser)
 
     (for ((k, v) <- entriesPerUser) yield {
       AffectedUser(k, v.foldLeft(0f)((b, a) => b + a.getHours))
-    }).toSeq.sortWith((a,b) => a.user.compareTo(b.user) < 0)
+    }).toSeq.sortWith((a, b) => a.user.compareTo(b.user) < 0)
   }
 }
 

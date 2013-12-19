@@ -21,7 +21,6 @@ class LockAdminPage extends AbstractBasePage[String](new ResourceModel("op.lock.
   override def renderHead(response: IHeaderResponse) {
     response.render(CssHeaderItem.forReference(Css))
   }
-
 }
 
 object LockAdminPage {

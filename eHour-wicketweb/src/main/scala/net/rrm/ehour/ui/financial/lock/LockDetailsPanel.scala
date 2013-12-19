@@ -86,6 +86,19 @@ class LockDetailsPanel(id: String, lockModel: IModel[LockModel]) extends Abstrac
     val submitButton = AjaxButton("submit", form, success)
     form.add(submitButton)
 
+    val unlockButton = AjaxButton("unlock", form, (target, form) => {
+      lockService.deleteLock(getPanelModelObject.id.get)
+
+      send(self.getParent, Broadcast.BREADTH, LockModifiedEvent(target))
+
+      val replacement = new LockDetailsPanel(self.getId)
+      self.replaceWith(replacement)
+      target.add(replacement)
+    })
+
+    unlockButton.setVisible(getPanelModelObject.id.isDefined)
+    form.add(unlockButton)
+
   }
 
 
@@ -129,6 +142,5 @@ object LockModel {
     new LockModel(startDate = month.getDateStart, endDate = month.getDateEnd)
   }
 }
-
 
 case class LockModifiedEvent(target: AjaxRequestTarget) extends Event(target)
