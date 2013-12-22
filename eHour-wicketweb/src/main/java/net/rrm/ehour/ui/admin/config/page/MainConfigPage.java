@@ -18,9 +18,11 @@ package net.rrm.ehour.ui.admin.config.page;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.dto.MainConfigBackingBean;
 import net.rrm.ehour.ui.admin.config.panel.ConfigTabPanel;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -28,6 +30,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * Main config page
  */
+@AuthorizeInstantiation(UserRole.ROLE_ADMIN)
 public class MainConfigPage extends AbstractBasePage<Void> {
     private static final long serialVersionUID = 8613594529875207988L;
 
