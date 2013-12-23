@@ -55,9 +55,9 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         setUpPanel(itemListHolder);
     }
 
-
     public void refreshList(AjaxRequestTarget target) {
         target.add(blueBorder);
+        target.appendJavaScript("filterList();");
     }
 
     private void setUpPanel(WebMarkupContainer itemListHolder) {
