@@ -143,6 +143,10 @@ public class TimesheetPanel extends Panel implements Serializable {
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(GUARDFORM_JS));
         response.render(CssHeaderItem.forReference(TIMESHEET_CSS));
+
+
+        String msg = new ResourceModel("timesheet.dirtyForm").getObject();
+        response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = \"%s\";", msg), "msg"));
     }
 
     /**

@@ -1,5 +1,3 @@
-var WARNING_MSG = "You entered hours but you have not stored them yet. Please click 'store' before proceeding, otherwise your data may be lost.";
-
 function guardForm() {
     $('#timesheetForm :input').change(function () {
         $('#timesheetForm').data('changed', true);
