@@ -1,17 +1,17 @@
-function initFilter() {
-    var filter = $("#filterInput");
+function initAssignmentFilter() {
+    var filter = $("#filterAssignmentInput");
 
     $(filter).unbind('keyup');
 
     filter.keyup(function () {
-        filterList();
+        filterAssignmentList();
     });
 
     filter.keyup();
 }
 
-function filterList() {
-    var q = $.trim($("#filterInput").val()).toLowerCase();
+function filterAssignmentList() {
+    var q = $.trim($("#filterAssignmentInput").val()).toLowerCase();
 
     $(".project_users").find(".row").each(function (idx, element) {
         var row = $(element);

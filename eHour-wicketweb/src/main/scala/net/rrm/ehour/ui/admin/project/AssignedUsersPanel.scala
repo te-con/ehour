@@ -255,5 +255,5 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
     response.render(OnDomReadyHeaderItem.forScript(applyJsFilter))
   }
 
-  val applyJsFilter = "initFilter();"
+  val applyJsFilter = "initAssignmentFilter();"
 }
