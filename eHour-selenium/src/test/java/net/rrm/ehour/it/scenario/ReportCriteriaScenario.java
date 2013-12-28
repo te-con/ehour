@@ -58,11 +58,9 @@ public class ReportCriteriaScenario extends AbstractScenario {
     public void should_use_active_project_flags_and_customer_filter_to_manipulate_customer_criteria() {
         loadReportSection();
 
-        assertEquals(1, countShownCustomers());
+        assertEquals(2, countShownCustomers());
 
         toggleActiveProjects();
-
-        assertEquals(2, countShownCustomers());
 
         toggleCustomerFilters();
 
