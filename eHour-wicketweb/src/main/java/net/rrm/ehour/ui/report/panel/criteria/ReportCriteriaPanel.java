@@ -124,6 +124,17 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         customers.setMaxRows(MAX_CRITERIA_ROW);
 
         customers.setOutputMarkupId(true);
+
+        customers.add(new AjaxFormComponentUpdatingBehavior("click") {
+            private static final long serialVersionUID = -5588313671121851508L;
+
+            protected void onUpdate(AjaxRequestTarget target) {
+                // show only projects for selected customers
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
+                target.add(projects);
+            }
+        });
+
         parent.add(customers);
 
         parent.add(createOnlyActiveCustomersAndProjectsCheckbox("reportCriteria.userSelectedCriteria.onlyActiveCustomers"));
@@ -155,6 +166,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         projects.setOutputMarkupId(true);
         projects.setMarkupId("projectSelect");
         parent.add(projects);
+
 
         parent.add(createOnlyActiveCustomersAndProjectsCheckbox("reportCriteria.userSelectedCriteria.onlyActiveProjects"));
 

@@ -24,17 +24,29 @@ class CustomerCriteriaFilterSpec extends WordSpec with MockitoSugar with Matcher
 
       val criteria = new UserSelectedCriteria
       criteria.setOnlyActiveCustomers(false)
-      val (customers, projects) = subject.getAvailableCustomers(criteria)
+      val (customers, _) = subject.getAvailableCustomers(criteria)
 
       customers should have size 1
     }
 
     "find only active customers" in {
-      when(dao.findAllActive()).thenReturn(toJava(List(activeWithInactiveBillableCustomer, inactiveCustomer, billableCustomer)))
+      when(dao.findAllActive()).thenReturn(toJava(List(activeWithInactiveBillableCustomer, billableCustomer)))
 
-      val (customers, projects) = subject.getAvailableCustomers(new UserSelectedCriteria)
+      val (customers, _) = subject.getAvailableCustomers(new UserSelectedCriteria)
 
       customers should have size 2
+    }
+
+    "find only projects for selected customer" in {
+      when(dao.findAllActive()).thenReturn(toJava(List(activeWithInactiveBillableCustomer, inactiveCustomer, billableCustomer)))
+
+      val criteria = new UserSelectedCriteria
+      criteria.setCustomer(billableCustomer)
+
+      val (customers, projects) = subject.getAvailableCustomers(criteria)
+
+      customers should have size 3
+      projects should have size billableCustomer.getProjects.size()
     }
 
     "find only billable customers" in {
@@ -43,9 +55,9 @@ class CustomerCriteriaFilterSpec extends WordSpec with MockitoSugar with Matcher
       val criteria = new UserSelectedCriteria
       criteria.setOnlyBillableProjects(true)
       criteria.setOnlyActiveProjects(true)
-      val (customers, projects) = subject.getAvailableCustomers(criteria)
+      val (_, projects) = subject.getAvailableCustomers(criteria)
 
-      customers should be ('empty)
+      projects should be ('empty)
     }
 
     "find only customers which have this PM" in {

@@ -5,6 +5,7 @@ import net.rrm.ehour.domain.{UserDepartmentObjectMother, ProjectObjectMother, Us
 
 object ReportFilterFixture {
   val inactiveCustomer = CustomerObjectMother.createCustomer(1)
+  inactiveCustomer.setActive(false)
   val inactiveProject = inactiveCustomer.getProjects.iterator().next
   inactiveProject.setActive(false)
   inactiveProject.setBillable(false)

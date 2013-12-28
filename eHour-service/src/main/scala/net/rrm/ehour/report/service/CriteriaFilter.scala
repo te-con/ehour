@@ -14,7 +14,7 @@ import net.rrm.ehour.util._
 class CustomerAndProjectCriteriaFilter @Autowired()(customerDao: CustomerDao) {
   def getAvailableCustomers(userSelectedCriteria: UserSelectedCriteria): (ju.List[Customer], ju.List[Project]) = {
     def fetchCustomers(userSelectedCriteria: UserSelectedCriteria): List[Customer] =
-      if (userSelectedCriteria.isOnlyActiveCustomers) toScala(customerDao.findAllActive) else toScala(customerDao.findAll)
+      toScala(if (userSelectedCriteria.isOnlyActiveCustomers) customerDao.findAllActive else customerDao.findAll)
 
     def filterBillable(xs: List[Project]): List[Project] =
       if (userSelectedCriteria.isOnlyBillableProjects) xs.filter(ProjectPredicate.billablePredicate) else xs
@@ -26,13 +26,25 @@ class CustomerAndProjectCriteriaFilter @Autowired()(customerDao: CustomerDao) {
       if (userSelectedCriteria.isOnlyActiveProjects) xs.filter(ProjectPredicate.activePredicate) else xs
 
     val customers = fetchCustomers(userSelectedCriteria)
-    val projects = customers.flatMap(c => toScala(c.getProjects))
+
+    val filteredCustomers = if (userSelectedCriteria.getCustomers == null || userSelectedCriteria.getCustomers.isEmpty)
+                              customers
+                            else
+                              customers.filter(userSelectedCriteria.getCustomers.contains)
+
+    val projects = filteredCustomers.flatMap(c => toScala(c.getProjects))
     val billables = filterBillable(projects)
     val pm = filterPm(billables)
     val activeProjects = filterActive(pm).toSet.toList
-    val filteredCustomers = activeProjects.map(_.getCustomer).toSet.toList
 
-    (toJava(filteredCustomers), toJava(activeProjects))
+    if (userSelectedCriteria.isForPm) {
+      val customersForProjects = activeProjects.map(_.getCustomer).toSet.toList
+
+      (toJava(customersForProjects), toJava(activeProjects))
+
+    } else {
+      (toJava(customers), toJava(activeProjects))
+    }
   }
 }
 
