@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.report.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -71,8 +72,35 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
             if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
                 Tuple2<List<Customer>, List<Project>> available = customerAndProjectCriteriaFilter.getAvailableCustomers(userSelectedCriteria);
-                availCriteria.setCustomers(available._1());
-                availCriteria.setProjects(available._2());
+                List<Customer> updatedAvailableCustomers = available._1();
+                availCriteria.setCustomers(updatedAvailableCustomers);
+                List<Project> updatedAvailableProjects = available._2();
+                availCriteria.setProjects(updatedAvailableProjects);
+
+                List<Customer> updatedSelectedCustomers = Lists.newArrayList();
+
+                if (userSelectedCriteria.getCustomers() != null) {
+                    for (Customer updatedAvailableCustomer : updatedAvailableCustomers) {
+                        if (userSelectedCriteria.getCustomers().contains(updatedAvailableCustomer)) {
+                            updatedSelectedCustomers.add(updatedAvailableCustomer);
+                        }
+                    }
+                }
+
+                userSelectedCriteria.setCustomers(updatedSelectedCustomers);
+
+                List<Project> updatedSelectedProjects = Lists.newArrayList();
+
+                if (userSelectedCriteria.getCustomers() != null) {
+                    for (Project updatedAvailableProject : updatedAvailableProjects) {
+                        if (userSelectedCriteria.getCustomers().contains(updatedAvailableProject)) {
+                            updatedSelectedProjects.add(updatedAvailableProject);
+                        }
+                    }
+                }
+
+                userSelectedCriteria.setProjects(updatedSelectedProjects);
+
             }
 
             if (updateType == ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS ||

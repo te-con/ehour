@@ -125,19 +125,26 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         customers.setOutputMarkupId(true);
 
-        customers.add(new AjaxFormComponentUpdatingBehavior("click") {
+        customers.add(new AjaxFormComponentUpdatingBehavior("change") {
             private static final long serialVersionUID = -5588313671121851508L;
 
             protected void onUpdate(AjaxRequestTarget target) {
                 // show only projects for selected customers
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
-                target.add(projects);
+                updateProjects(target);
             }
         });
 
         parent.add(customers);
 
-        parent.add(createOnlyActiveCustomersAndProjectsCheckbox("reportCriteria.userSelectedCriteria.onlyActiveCustomers"));
+        AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveCustomers") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                updateCustomersAndProjects(target);
+            }
+        };
+        deactivateBox.setOutputMarkupId(true);
+        parent.add(deactivateBox);
 
         parent.add(createCustomerSort());
     }
@@ -168,10 +175,28 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         parent.add(projects);
 
 
-        parent.add(createOnlyActiveCustomersAndProjectsCheckbox("reportCriteria.userSelectedCriteria.onlyActiveProjects"));
+        AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveProjects") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
+                updateProjects(target);
+            }
+        };
 
-        AjaxCheckBox onlyBillableProjectsCheckbox = createOnlyBillableCheckbox("reportCriteria.userSelectedCriteria.onlyBillableProjects");
-        parent.add(onlyBillableProjectsCheckbox);
+        deactivateBox.setOutputMarkupId(true);
+
+        parent.add(deactivateBox);
+
+        AjaxCheckBox activeBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyBillableProjects", new PropertyModel<Boolean>(ReportCriteriaPanel.this.getDefaultModel(), "reportCriteria.userSelectedCriteria.onlyBillableProjects")) {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
+                updateProjects(target);
+            }
+        };
+
+        activeBox.setMarkupId("reportCriteria.userSelectedCriteria.onlyBillableProjects");
+        parent.add(activeBox);
 
         parent.add(createProjectSort());
     }
@@ -196,41 +221,24 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         target.appendJavaScript(getProjectFilterRegistrationScript());
     }
 
-    @SuppressWarnings("serial")
-    private AjaxCheckBox createOnlyActiveCustomersAndProjectsCheckbox(final String id) {
-        AjaxCheckBox deactivateBox = new AjaxCheckBox(id) {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                updateCustomersAndProjects(target);
-            }
-        };
-
-        deactivateBox.setOutputMarkupId(true);
-
-        return deactivateBox;
+    private void updateProjects(AjaxRequestTarget target) {
+        target.add(projects);
+        applyClientSideProjectFilter(target);
     }
 
-    @SuppressWarnings("serial")
-    private AjaxCheckBox createOnlyBillableCheckbox(String id) {
-        AjaxCheckBox activeBox = new AjaxCheckBox(id, new PropertyModel<Boolean>(getDefaultModel(), "reportCriteria.userSelectedCriteria.onlyBillableProjects")) {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                updateCustomersAndProjects(target);
-            }
-        };
-
-        activeBox.setMarkupId(id);
-        return activeBox;
+    private void updateCustomers(AjaxRequestTarget target) {
+        target.add(customers);
+        applyClientSideCustomerFilter(target);
     }
 
     private void updateCustomersAndProjects(AjaxRequestTarget target) {
         updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
         target.add(customers);
-        target.add(projects);
 
         // reapply the filter to the possible new contents of the dropdowns
         applyClientSideCustomerFilter(target);
-        applyClientSideProjectFilter(target);
+        updateProjects(target);
+        updateCustomers(target);
     }
 
     private void applyClientSideCustomerFilter(AjaxRequestTarget target) {
@@ -263,7 +271,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
                 target.add(users);
-                target.add(departments);
 
                 // reapply the filter to the possible new contents of the dropdowns
                 target.appendJavaScript(getDepartmentFilterRegistrationScript());
@@ -284,6 +291,17 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         departments.setMarkupId("departmentSelect");
         departments.setMaxRows(MAX_CRITERIA_ROW);
         departments.setOutputMarkupId(true);
+
+        // update projects when customer(s) selected
+        departments.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            private static final long serialVersionUID = 1L;
+
+            protected void onUpdate(AjaxRequestTarget target) {
+                // show only projects for selected customers
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
+                target.add(users);
+            }
+        });
 
         parent.add(departments);
     }
