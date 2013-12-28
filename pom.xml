@@ -59,7 +59,7 @@
     </developers>
     <properties>
         <spring.version>3.2.4.RELEASE</spring.version>
-        <wicket.version>6.11.0</wicket.version>
+        <wicket.version>6.12.0</wicket.version>
         <jetty.version>8.1.11.v20130520</jetty.version>
         <derbydb.version>10.8.2.2</derbydb.version>
         <aspectj.version>1.6.12</aspectj.version>
