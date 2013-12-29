@@ -217,7 +217,13 @@ public class UserServiceImpl implements UserService {
         dbUser.setLastName(user.getLastName());
         dbUser.setUserDepartment(user.getUserDepartment());
         dbUser.setUsername(user.getUsername());
+
+        boolean reAddPm = dbUser.getUserRoles().contains(UserRole.PROJECTMANAGER);
         dbUser.setUserRoles(user.getUserRoles());
+
+        if (reAddPm && !user.getUserRoles().contains(UserRole.PROJECTMANAGER)) {
+            dbUser.addUserRole(UserRole.PROJECTMANAGER);
+        }
 
         userDAO.persist(dbUser);
 
@@ -318,10 +324,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     /**
-    * Find user on id and add PM role
-    */
+     * Find user on id and add PM role
+     */
     private User getAndAddPmRole(Integer userId) throws ObjectNotUniqueException {
         User user = userDAO.findById(userId);
 
