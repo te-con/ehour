@@ -16,9 +16,14 @@ public abstract class ReportDriver {
         Driver.get(BASE_URL + "/eh/report");
     }
 
-    public static void assertCriteriaLoaded() {
-        assertEquals("Report criteria", findElement("reportContainer_tabs-container_tabs_0_link_title").getText());
+    public static void assertGlobalCriteriaLoaded() {
+        assertEquals("Global report", findElement("reportContainer_tabs-container_tabs_0_link_title").getText());
     }
+
+    public static void assertUserCriteriaLoaded() {
+        assertEquals("Edeling, Thies report", findElement("reportContainer_tabs-container_tabs_0_link_title").getText());
+    }
+
 
     public static int countShownCustomers() {
         Select customers = new Select(findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.customers"));

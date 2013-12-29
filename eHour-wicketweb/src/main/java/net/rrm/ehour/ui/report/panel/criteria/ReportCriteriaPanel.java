@@ -134,7 +134,15 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             final DropDownChoice<ReportType> choice = new DropDownChoice<ReportType>(id, new PropertyModel<ReportType>(criteria, "selectedReportType"), types, new IChoiceRenderer<ReportType>() {
                 @Override
                 public Object getDisplayValue(ReportType object) {
-                    return object.name();
+
+                    switch (object) {
+                        case REPORT:
+                            return new ResourceModel("report.useRole.global").wrapOnAssignment(ReportCriteriaPanel.this).getObject();
+                        case PM:
+                            return new ResourceModel("report.useRole.pm").wrapOnAssignment(ReportCriteriaPanel.this).getObject();
+                        default:
+                            return new ResourceModel("report.useRole.single").wrapOnAssignment(ReportCriteriaPanel.this).getObject();
+                    }
                 }
 
                 @Override

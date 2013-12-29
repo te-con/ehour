@@ -5,8 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
-import static net.rrm.ehour.it.driver.ReportDriver.assertCriteriaLoaded;
-import static net.rrm.ehour.it.driver.ReportDriver.loadReportSection;
+import static net.rrm.ehour.it.driver.ReportDriver.*;
 import static net.rrm.ehour.it.driver.TimesheetDriver.createUserAndAssign;
 import static net.rrm.ehour.it.driver.UserManagementDriver.createReportUser;
 
@@ -19,7 +18,8 @@ public class ReportScenario extends AbstractScenario {
 
         loadReportSection();
 
-        assertCriteriaLoaded();
+        assertUserCriteriaLoaded();
+        logout();
     }
 
     @Test
@@ -34,10 +34,10 @@ public class ReportScenario extends AbstractScenario {
         logout();
 
         loginReportUser();
+
         loadReportSection();
 
-        assertCriteriaLoaded();
-
+        assertGlobalCriteriaLoaded();
         logout();
     }
 }
