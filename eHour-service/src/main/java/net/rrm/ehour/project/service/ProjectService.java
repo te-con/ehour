@@ -60,9 +60,17 @@ public interface ProjectService
 	 * @param project
 	 * @return
 	 */
+    Project updateProject(Project project);
+
 	Project updateProject(Project project, Collection<ProjectAssignment> assignmentsToMake, Collection<ProjectAssignment> assignmentsToDelete);
 
     Project createProject(Project project, Collection<ProjectAssignment> assignmentsToMake);
+
+    /**
+     * Validate whether the PM role setup is correct for a project
+     * @param project
+     */
+    void validatePMRoles(Project project);
 
 	/**
 	 * Delete the project

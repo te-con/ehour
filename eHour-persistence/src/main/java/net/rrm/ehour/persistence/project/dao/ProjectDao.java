@@ -25,40 +25,50 @@ import java.util.List;
 
 /**
  * CRUD on project domain object
- * @author Thies
  *
+ * @author Thies
  */
 
-public interface ProjectDao extends GenericDao<Project, Integer>
-{
-	/**
-	 * Get all projects
-	 * @return
-	 */
-	public List<Project> findAll();
-	
-	/**
-	 * Get all active projects
-	 * @return
-	 */
-	public List<Project> findAllActive();
-	
-	/**
-	 * Get all active default projects
-	 * @return
-	 */
-	public List<Project> findDefaultProjects();
-	
-	/**
-	 * Get projects for customer respecting the active flag
-	 * @return
-	 */
-	public List<Project> findProjectForCustomers(List<Customer> customers, boolean onlyActive);
-	
-	/**
-	 * Find projects where user is projectmanager
-	 * @param user
-	 * @return
-	 */
-	public List<Project> findActiveProjectsWhereUserIsPM(User user);
+public interface ProjectDao extends GenericDao<Project, Integer> {
+    /**
+     * Get all projects
+     *
+     * @return
+     */
+    List<Project> findAll();
+
+    /**
+     * Get all active projects
+     *
+     * @return
+     */
+    List<Project> findAllActive();
+
+    /**
+     * Get all active default projects
+     *
+     * @return
+     */
+    List<Project> findDefaultProjects();
+
+    /**
+     * Get projects for customer respecting the active flag
+     *
+     * @return
+     */
+    List<Project> findProjectForCustomers(List<Customer> customers, boolean onlyActive);
+
+    /**
+     * Find projects where user is projectmanager
+     *
+     * @param user
+     * @return
+     */
+    List<Project> findActiveProjectsWhereUserIsPM(User user);
+
+    /**
+     * Find all projects which have a defined projectmanager
+     * @return
+     */
+    List<Project> findAllProjectsWithPmSet();
 }

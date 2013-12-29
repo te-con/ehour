@@ -53,7 +53,6 @@ public interface UserDao extends GenericDao<User, Integer>
 	
 	/**
 	 * Find users for departments with active flag
-	 * @param pattern
 	 * @param departments
 	 * @param onlyActive
 	 * @return

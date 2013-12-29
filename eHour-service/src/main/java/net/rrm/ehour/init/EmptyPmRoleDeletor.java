@@ -22,7 +22,7 @@ public class EmptyPmRoleDeletor {
 
     @PostConstruct
     public void cleanUpPmRoles() {
-        LOGGER.info("Cleaning up leftover Projectmanagement roles without project...");
+        LOGGER.info("Cleaning up users with ProjectManagement roles but without project...");
         userDao.deletePmWithoutProject();
     }
 }

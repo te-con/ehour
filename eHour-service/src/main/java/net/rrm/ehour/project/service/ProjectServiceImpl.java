@@ -94,7 +94,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
     }
-
     @Transactional
     @Auditable(actionType = AuditActionType.CREATE)
     @Override
@@ -106,14 +105,23 @@ public class ProjectServiceImpl implements ProjectService {
         return updateProject(project, assignmentsToMake, Lists.<ProjectAssignment>newArrayList());
     }
 
+
     @Transactional
-    @Auditable(actionType = AuditActionType.UPDATE)
     @Override
-    public Project updateProject(Project project, Collection<ProjectAssignment> assignmentsToMake, Collection<ProjectAssignment> assignmentsToDelete) {
+    public Project updateProject(Project project) {
         projectDAO.persist(project);
 
         validatePMRoles(project);
         assignUsersToDefaultProject(project);
+
+        return project;
+    }
+
+    @Transactional
+    @Auditable(actionType = AuditActionType.UPDATE)
+    @Override
+    public Project updateProject(Project project, Collection<ProjectAssignment> assignmentsToMake, Collection<ProjectAssignment> assignmentsToDelete) {
+        updateProject(project);
 
         for (ProjectAssignment projectAssignment : assignmentsToMake) {
             projectAssignmentManagementService.updateProjectAssignment(projectAssignment);
@@ -132,7 +140,9 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
-    private void validatePMRoles(Project project) {
+    @Override
+    @Transactional
+    public void validatePMRoles(Project project) {
         userService.validateProjectManagementRoles(project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
     }
 
