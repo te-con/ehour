@@ -19,37 +19,20 @@ package net.rrm.ehour.ui.common.model;
 import org.apache.wicket.model.ResourceModel;
 
 /**
- * Resource model which exposes its resource key 
- **/
+ * Resource model which exposes its resource key
+ */
 
-public class KeyResourceModel extends ResourceModel
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7897696537214857003L;
-	private	String	key;
-	
-	/**
-	 * Constructor
-	 * 
-	 * @param resourceKey
-	 *            key of the resource this model represents
-	 */
-	public KeyResourceModel(String resourceKey)
-	{
-		super(resourceKey);
-		
-		this.key = resourceKey;
-		
-		
-	}
+public class KeyResourceModel extends ResourceModel {
+    private static final long serialVersionUID = 7897696537214857003L;
+    private String key;
 
-	/**
-	 * @return the key
-	 */
-	public String getKey()
-	{
-		return key;
-	}
+    public KeyResourceModel(String resourceKey) {
+        super(resourceKey);
+
+        this.key = resourceKey;
+    }
+
+    public String getKey() {
+        return key;
+    }
 }

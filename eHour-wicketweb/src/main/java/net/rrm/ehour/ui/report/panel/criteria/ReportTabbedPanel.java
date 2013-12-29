@@ -70,16 +70,20 @@ public class ReportTabbedPanel extends AjaxTabbedPanel<ITab> {
     public void addTab(final ITab newTab) {
         final List<ITab> tabList = getTabs();
         boolean tabNotAdded = true;
-        final String key = ((KeyResourceModel) newTab.getTitle()).getKey();
+
+        final String key = (newTab.getTitle() instanceof KeyResourceModel) ? ((KeyResourceModel) newTab.getTitle()).getKey() : "";
+
         int tabIndex = 0;
 
         for (final ITab tab : tabList) {
-            if (((KeyResourceModel) tab.getTitle()).getKey().equals(key)) {
-                tabList.set(tabIndex, newTab);
-                this.setSelectedTab(tabIndex);
+            if (tab.getTitle() instanceof KeyResourceModel) {
+                if (((KeyResourceModel) tab.getTitle()).getKey().equals(key)) {
+                    tabList.set(tabIndex, newTab);
+                    this.setSelectedTab(tabIndex);
 
-                tabNotAdded = false;
-                break;
+                    tabNotAdded = false;
+                    break;
+                }
             }
 
             tabIndex++;

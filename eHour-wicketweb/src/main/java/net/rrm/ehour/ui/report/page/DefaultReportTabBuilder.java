@@ -42,12 +42,15 @@ public class DefaultReportTabBuilder implements ReportTabBuilder {
             }
         });
 
-        tabs.add(new AbstractTab(new KeyResourceModel("report.title.employee")) {
-            @Override
-            public Panel getPanel(String panelId) {
-                return getUserReportPanel(panelId, criteria);
-            }
-        });
+        if (!backingBean.getReportCriteria().getUserSelectedCriteria().isForIndividualUser()) {
+            tabs.add(new AbstractTab(new KeyResourceModel("report.title.employee")) {
+                @Override
+                public Panel getPanel(String panelId) {
+                    return getUserReportPanel(panelId, criteria);
+                }
+            });
+        }
+
 
         tabs.add(new AbstractTab(new KeyResourceModel("report.title.detailed")) {
             @Override

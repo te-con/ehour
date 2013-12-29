@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.report.page;
 
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
@@ -31,6 +32,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -56,6 +58,17 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
         reset();
     }
 
+    private IModel<String> getReportTitle(UserSelectedCriteria userSelectedCriteria) {
+        if (userSelectedCriteria.isForPm()) {
+            return new KeyResourceModel("report.criteria.title.pm");
+        } else if (userSelectedCriteria.isForGlobalReport()) {
+            return new KeyResourceModel("report.criteria.title.global");
+        } else {
+            return new StringResourceModel("report.criteria.title.user", this, null, getEhourWebSession().getUser().getFullName());
+        }
+
+    }
+
     private void reset() {
         final ReportCriteria reportCriteria = getReportCriteria();
         final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<ReportCriteriaBackingBean>(new ReportCriteriaBackingBean(reportCriteria));
@@ -63,7 +76,7 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
 
         List<ITab> tabList = new ArrayList<ITab>();
 
-        tabList.add(new AbstractTab(new KeyResourceModel("report.criteria.title")) {
+        tabList.add(new AbstractTab(getReportTitle(reportCriteria.getUserSelectedCriteria())) {
             private static final long serialVersionUID = 1L;
 
             @SuppressWarnings("unchecked")
