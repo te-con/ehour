@@ -91,9 +91,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
                 List<Project> updatedSelectedProjects = Lists.newArrayList();
 
-                if (userSelectedCriteria.getCustomers() != null) {
+                if (userSelectedCriteria.getProjects() != null) {
                     for (Project updatedAvailableProject : updatedAvailableProjects) {
-                        if (userSelectedCriteria.getCustomers().contains(updatedAvailableProject)) {
+                        if (userSelectedCriteria.getProjects().contains(updatedAvailableProject)) {
                             updatedSelectedProjects.add(updatedAvailableProject);
                         }
                     }
