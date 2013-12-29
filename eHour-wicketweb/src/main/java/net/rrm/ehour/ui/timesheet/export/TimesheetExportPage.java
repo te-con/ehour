@@ -97,9 +97,8 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     }
 
     @Override
-    protected void determineReportType(UserSelectedCriteria userSelectedCriteria) {
-        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
-        userSelectedCriteria.setUser(getEhourWebSession().getUser());
+    protected void determineDefaultReportType(UserSelectedCriteria userSelectedCriteria) {
+        userSelectedCriteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
     }
 
     public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {

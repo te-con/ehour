@@ -21,22 +21,25 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
+import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel.ReportTypeChangeEvent;
 
 @AuthorizeInstantiation(value = {UserRole.ROLE_CONSULTANT, UserRole.ROLE_REPORT, UserRole.ROLE_PROJECTMANAGER})
 public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
@@ -52,21 +55,21 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     }
 
     @Override
+    public void onEvent(IEvent<?> event) {
+        if (event.getPayload() instanceof ReportTypeChangeEvent) {
+            ReportTypeChangeEvent e = (ReportTypeChangeEvent)event.getPayload();
+
+            reset();
+
+            e.target.add(tabPanel);
+        }
+    }
+
+    @Override
     protected void onInitialize() {
         super.onInitialize();
 
         reset();
-    }
-
-    private IModel<String> getReportTitle(UserSelectedCriteria userSelectedCriteria) {
-        if (userSelectedCriteria.isForPm()) {
-            return new KeyResourceModel("report.criteria.title.pm");
-        } else if (userSelectedCriteria.isForGlobalReport()) {
-            return new KeyResourceModel("report.criteria.title.global");
-        } else {
-            return new StringResourceModel("report.criteria.title.user", this, null, getEhourWebSession().getUser().getFullName());
-        }
-
     }
 
     private void reset() {
@@ -88,6 +91,17 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
 
         tabPanel = new ReportTabbedPanel("reportContainer", tabList);
         addOrReplace(tabPanel);
+    }
+
+    private IModel<String> getReportTitle(UserSelectedCriteria userSelectedCriteria) {
+        if (userSelectedCriteria.isForPm()) {
+            return new KeyResourceModel("report.criteria.title.pm");
+        } else if (userSelectedCriteria.isForGlobalReport()) {
+            return new KeyResourceModel("report.criteria.title.global");
+        } else {
+            return new MessageResourceModel("report.criteria.title.user", this, getEhourWebSession().getUser().getFullName());
+        }
+
     }
 
     @Override

@@ -8,7 +8,6 @@ import net.rrm.ehour.persistence.customer.dao.CustomerDao
 import org.mockito.Mockito._
 import net.rrm.ehour.report.criteria.UserSelectedCriteria
 import ReportFilterFixture._
-import net.rrm.ehour.report.criteria.UserSelectedCriteria.ReportType
 import net.rrm.ehour.util._
 
 @RunWith(classOf[JUnitRunner])
@@ -64,9 +63,8 @@ class CustomerCriteriaFilterSpec extends WordSpec with MockitoSugar with Matcher
       when(dao.findAllActive()).thenReturn(toJava(List(billableCustomer, pmCustomer, otherPmCustomer)))
 
       val criteria = new UserSelectedCriteria
-      criteria.addReportType(ReportType.PM)
-      criteria.setPm(pm)
-      val (customers, projects) = subject.getAvailableCustomers(criteria)
+      criteria.setReportTypeToPM(pm)
+      val (customers, _) = subject.getAvailableCustomers(criteria)
 
       customers should have size 1
       customers.get(0) should be (pmCustomer)

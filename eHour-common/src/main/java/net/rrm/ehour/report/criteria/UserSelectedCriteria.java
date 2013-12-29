@@ -60,6 +60,7 @@ public class UserSelectedCriteria implements Serializable {
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
     private List<ReportType> reportTypes = Lists.newArrayList();
+    private ReportType selectedReportType;
     private Project project;
     private Map<Object, Object> customParameters = Maps.newHashMap();
     private User pm;
@@ -73,6 +74,28 @@ public class UserSelectedCriteria implements Serializable {
         infiniteEndDate = false;
 
         reportRange = DateUtil.getDateRangeForMonth(new GregorianCalendar());
+    }
+
+    public ReportType getSelectedReportType() {
+        return selectedReportType;
+    }
+
+    public void setSelectedReportType(ReportType selectedReportType) {
+        this.selectedReportType = selectedReportType;
+    }
+
+    public void setReportTypeToGlobal() {
+        setSelectedReportType(ReportType.REPORT);
+    }
+
+    public void setReportTypeToPM(User projectManager) {
+        setSelectedReportType(ReportType.PM);
+        setPm(projectManager);
+    }
+
+    public void setReportTypeToIndividualUser(User user) {
+        setSelectedReportType(ReportType.INDIVIDUAL_USER);
+        setUser(user);
     }
 
     public Sort getCustomerSort() {
@@ -91,7 +114,7 @@ public class UserSelectedCriteria implements Serializable {
         this.projectSort = projectSort;
     }
 
-    public void setUser(User user) {
+    private void setUser(User user) {
         if (users == null) {
             users = new ArrayList<User>();
         }
@@ -103,30 +126,21 @@ public class UserSelectedCriteria implements Serializable {
         return pm;
     }
 
-    public void setPm(User pm) {
+    private void setPm(User pm) {
         this.pm = pm;
     }
 
-    public List<ReportType> getReportTypes() {
-        return reportTypes;
-    }
-
-    public void addReportType(ReportType reportType) {
-        reportTypes.add(reportType);
-    }
-
     public boolean isForIndividualUser() {
-        return reportTypes.contains(ReportType.INDIVIDUAL_USER);
+        return selectedReportType == ReportType.INDIVIDUAL_USER;
     }
 
     public boolean isForPm() {
-        return reportTypes.contains(ReportType.PM);
+        return selectedReportType == ReportType.PM;
     }
 
     public boolean isForGlobalReport() {
-        return reportTypes.contains(ReportType.REPORT);
+        return selectedReportType == ReportType.REPORT;
     }
-
 
 
     @Override

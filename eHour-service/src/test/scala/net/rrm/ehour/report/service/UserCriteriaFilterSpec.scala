@@ -6,7 +6,6 @@ import org.mockito.Mockito._
 import net.rrm.ehour.report.service.ReportFilterFixture._
 import net.rrm.ehour.report.criteria.UserSelectedCriteria
 import net.rrm.ehour.persistence.user.dao.UserDao
-import net.rrm.ehour.report.criteria.UserSelectedCriteria.ReportType
 import net.rrm.ehour.domain.{UserObjectMother, ProjectObjectMother, ProjectAssignmentObjectMother}
 import net.rrm.ehour.util._
 
@@ -22,7 +21,7 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
 
       val criteria = new UserSelectedCriteria
       criteria.setOnlyActiveUsers(false)
-      val (departments, users) = subject.getAvailableUsers(criteria)
+      val (_, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
@@ -33,7 +32,7 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
       when(dao.findUsers(true)).thenReturn(toJava(List(pm)))
 
       val criteria = new UserSelectedCriteria
-      val (departments, users) = subject.getAvailableUsers(criteria)
+      val (_, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
@@ -46,7 +45,7 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
       val criteria = new UserSelectedCriteria
       criteria.setDepartments(toJava(List(department)))
       criteria.setOnlyActiveUsers(false)
-      val (departments, users) = subject.getAvailableUsers(criteria)
+      val (_, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
@@ -59,7 +58,7 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
       val criteria = new UserSelectedCriteria
       criteria.setDepartments(toJava(List(department)))
       criteria.setOnlyActiveUsers(true)
-      val (departments, users) = subject.getAvailableUsers(criteria)
+      val (_, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
@@ -83,10 +82,9 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
       when(dao.findUsers(true)).thenReturn(toJava(List(userNotAssigned, userAssigned)))
 
       val criteria = new UserSelectedCriteria
-      criteria.addReportType(ReportType.PM)
-      criteria.setPm(pm)
+      criteria.setReportTypeToPM(pm)
 
-      val (departments, users) = subject.getAvailableUsers(criteria)
+      val (_, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
       users.get(0) should be (userAssigned)

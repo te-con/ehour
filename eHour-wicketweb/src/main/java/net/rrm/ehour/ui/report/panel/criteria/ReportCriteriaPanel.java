@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.report.panel.criteria;
 
+import com.google.common.collect.Lists;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Customer;
@@ -26,6 +27,7 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.Sort;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -44,6 +46,7 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
@@ -52,6 +55,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
@@ -62,6 +66,8 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.*;
+
+import static net.rrm.ehour.report.criteria.UserSelectedCriteria.ReportType;
 
 /**
  * Base report criteria panel which adds the quick date selections
@@ -108,13 +114,87 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("customerProjectsBorder");
         form.add(blueBorder);
 
-        addCustomerSelection(model.getObject(), blueBorder);
+        ReportCriteriaBackingBean criteriaBackingBean = model.getObject();
+        addCustomerSelection(criteriaBackingBean, blueBorder);
         addProjectSelection(blueBorder);
 
-        boolean showDepartmentAndOtherUsers = getEhourWebSession().isWithReportRole() || getEhourWebSession().isWithPmRole();
+        UserSelectedCriteria userSelectedCriteria = criteriaBackingBean.getReportCriteria().getUserSelectedCriteria();
+        boolean showDepartmentAndOtherUsers = userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm();
         form.add(showDepartmentAndOtherUsers ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
 
         addSubmitButtons(form);
+
+        form.add(addReportTypeSelection("reportRole", userSelectedCriteria));
+    }
+
+    private WebMarkupContainer addReportTypeSelection(String id, final UserSelectedCriteria criteria) {
+        List<ReportType> types = determineReportRoleTypes();
+
+        if (types.size() > 1) {
+            final DropDownChoice<ReportType> choice = new DropDownChoice<ReportType>(id, new PropertyModel<ReportType>(criteria, "selectedReportType"), types, new IChoiceRenderer<ReportType>() {
+                @Override
+                public Object getDisplayValue(ReportType object) {
+                    return object.name();
+                }
+
+                @Override
+                public String getIdValue(ReportType object, int index) {
+                    return Integer.toString(index);
+                }
+            });
+
+            choice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+                @Override
+                protected void onUpdate(AjaxRequestTarget target) {
+                    ReportType type = choice.getModelObject();
+                    switch (type) {
+                        case REPORT:
+                            criteria.setReportTypeToGlobal();
+                            break;
+                        case PM:
+                            criteria.setReportTypeToPM(getEhourWebSession().getUser());
+                            break;
+                        case INDIVIDUAL_USER:
+                        default:
+                            criteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
+                            break;
+                    }
+
+                    send(getPage(), Broadcast.EXACT, new ReportTypeChangeEvent(target, type));
+                }
+            });
+
+            return choice;
+        } else {
+            return new WebMarkupContainer(id);
+        }
+    }
+
+    public static class ReportTypeChangeEvent {
+        public final AjaxRequestTarget target;
+        public final ReportType reportType;
+
+        public ReportTypeChangeEvent(AjaxRequestTarget target, ReportType reportType) {
+            this.target = target;
+            this.reportType = reportType;
+        }
+    }
+
+    private List<ReportType> determineReportRoleTypes() {
+        List<ReportType> types = Lists.newArrayList();
+
+        EhourWebSession session = getEhourWebSession();
+
+        if (session.isWithReportRole()) {
+            types.add(ReportType.REPORT);
+        }
+
+        if (session.isWithPmRole()) {
+            types.add(ReportType.PM);
+        }
+
+        types.add(ReportType.INDIVIDUAL_USER);
+        return types;
     }
 
     private void addCustomerSelection(ReportCriteriaBackingBean bean, WebMarkupContainer parent) {

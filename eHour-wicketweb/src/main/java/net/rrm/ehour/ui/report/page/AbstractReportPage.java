@@ -45,8 +45,6 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
     protected final ReportCriteria getReportCriteria() {
         UserSelectedCriteria userSelectedCriteria = getUserSelectedCriteria();
 
-        determineReportType(userSelectedCriteria);
-
         AvailableCriteria availableCriteria = new AvailableCriteria();
 
         ReportCriteria criteria = new ReportCriteria(availableCriteria, userSelectedCriteria);
@@ -55,10 +53,13 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
     }
 
     private UserSelectedCriteria getUserSelectedCriteria() {
-        UserSelectedCriteria userSelectedCriteria = EhourWebSession.getSession().getUserSelectedCriteria();
+        EhourWebSession session = getEhourWebSession();
+        UserSelectedCriteria userSelectedCriteria = session.getUserSelectedCriteria();
 
         if (userSelectedCriteria == null) {
             userSelectedCriteria = initUserCriteria();
+            session.setUserSelectedCriteria(userSelectedCriteria);
+
         }
 
         return userSelectedCriteria;
@@ -69,36 +70,22 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
 
         EhourWebSession session = getEhourWebSession();
         userSelectedCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(session.getEhourConfig())));
-        session.setUserSelectedCriteria(userSelectedCriteria);
+
+        determineDefaultReportType(userSelectedCriteria);
 
         return userSelectedCriteria;
     }
 
-    protected void determineReportType(UserSelectedCriteria userSelectedCriteria) {
+    protected void determineDefaultReportType(UserSelectedCriteria userSelectedCriteria) {
         if (getEhourWebSession().isWithReportRole()) {
-            userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
+            userSelectedCriteria.setReportTypeToGlobal();
         } else if (isReportForPm()) {
-            limitForPm(userSelectedCriteria);
+            userSelectedCriteria.setReportTypeToPM(getEhourWebSession().getUser());
         } else {
-            limitForIndividualUser(userSelectedCriteria);
+            userSelectedCriteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
         }
     }
-
-    private void limitForPm(UserSelectedCriteria userSelectedCriteria) {
-        boolean forPm = isReportForPm();
-
-        if (forPm) {
-            userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.PM);
-            userSelectedCriteria.setPm(getEhourWebSession().getUser());
-        }
-    }
-
     private boolean isReportForPm() {
         return getEhourWebSession().isWithPmRole();
-    }
-
-    private void limitForIndividualUser(UserSelectedCriteria userSelectedCriteria) {
-        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
-        userSelectedCriteria.setUser(getEhourWebSession().getUser());
     }
 }

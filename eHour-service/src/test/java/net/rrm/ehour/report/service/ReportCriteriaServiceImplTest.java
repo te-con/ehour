@@ -66,7 +66,7 @@ public class ReportCriteriaServiceImplTest {
     @Test
     public void should_sync_criteria_for_single_user() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
+        userSelectedCriteria.setSelectedReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
         userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
@@ -78,7 +78,7 @@ public class ReportCriteriaServiceImplTest {
     @Test
     public void should_sync_criteria_for_global_for_all_users() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
+        userSelectedCriteria.setSelectedReportType(UserSelectedCriteria.ReportType.REPORT);
         userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
@@ -93,7 +93,7 @@ public class ReportCriteriaServiceImplTest {
     @Test
     public void should_sync_criteria_for_global_for_all_customers() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.addReportType(UserSelectedCriteria.ReportType.REPORT);
+        userSelectedCriteria.setSelectedReportType(UserSelectedCriteria.ReportType.REPORT);
         userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
 
         Tuple2<List<Customer>, List<Project>> apply = new Tuple2<List<Customer>, List<Project>>(Lists.<Customer>newArrayList(), Lists.<Project>newArrayList());
