@@ -19,6 +19,7 @@ class SystemInfoPanel(id: String) extends AbstractBasePanel(id) {
     super.onInitialize()
 
     add(new Label("ehour.version", EhourWebApplication.get().getVersion))
+    add(new Label("ehour.build", EhourWebApplication.get().getBuild))
     add(new Label("ehour.home", EhourWebApplication.get().geteHourHome()))
 
     add(new Label("java.version", System.getProperty("java.runtime.version")))
