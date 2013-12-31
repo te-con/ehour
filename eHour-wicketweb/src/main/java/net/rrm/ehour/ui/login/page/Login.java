@@ -101,7 +101,7 @@ public class Login extends WebPage {
 
             String version = EhourWebApplication.get().getVersion();
 
-            if (version.contains("SNAPSHOT")) {
+            if (version != null && version.contains("SNAPSHOT")) {
                 version = version.substring(0, version.indexOf("-SNAPSHOT")) + " nightly";
             }
 
