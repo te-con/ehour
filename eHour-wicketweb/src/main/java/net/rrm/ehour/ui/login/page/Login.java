@@ -99,7 +99,13 @@ public class Login extends WebPage {
             add(demoMode);
             demoMode.setVisible(EhourWebSession.getSession().getEhourConfig().isInDemoMode());
 
-            add(new Label("version", ((EhourWebApplication) this.getApplication()).getVersion()));
+            String version = EhourWebApplication.get().getVersion();
+
+            if (version.contains("SNAPSHOT")) {
+                version = version.substring(0, version.indexOf("-SNAPSHOT")) + " nightly";
+            }
+
+            add(new Label("version", String.format("%s (%s)", version, EhourWebApplication.get().getBuild())));
         }
 
         @Override

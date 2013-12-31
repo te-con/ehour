@@ -10,6 +10,10 @@
     <packaging>jar</packaging>
     <name>eHour web layer (wicket)</name>
 
+    <properties>
+        <build>--</build>
+    </properties>
+
     <build>
         <resources>
             <resource>

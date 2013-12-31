@@ -82,6 +82,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     @Value("${ehour.disableAuth:false}")
     private Boolean disableAuth;
+    private String build;
 
     public void init() {
         if (!initialized) {
@@ -282,5 +283,13 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     public String geteHourHome() {
         return eHourHome;
+    }
+
+    public void setBuild(String build) {
+        this.build = build;
+    }
+
+    public String getBuild() {
+        return build;
     }
 }

@@ -8,6 +8,7 @@
 	<bean id="wicketApplication" class="net.rrm.ehour.ui.EhourWebApplication">
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="version" value="${project.version}"/>
+        <property name="build" value="${build}"/>
 	</bean>
 
     <context:component-scan base-package="net.rrm.ehour.ui" />
