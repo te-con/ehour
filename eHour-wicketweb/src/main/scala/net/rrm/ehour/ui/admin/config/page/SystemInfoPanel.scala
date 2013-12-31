@@ -5,13 +5,13 @@ import org.apache.wicket.markup.html.basic.Label
 import net.rrm.ehour.ui.EhourWebApplication
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.apache.wicket.request.resource.CssResourceReference
-import net.rrm.ehour.sysinfo.SysInfoService
+import net.rrm.ehour.sysinfo.SystemInfoService
 import org.apache.wicket.spring.injection.annot.SpringBean
 
 class SystemInfoPanel(id: String) extends AbstractBasePanel(id) {
 
   @SpringBean
-  protected var infoService: SysInfoService = _
+  protected var infoService: SystemInfoService = _
 
   val Css = new CssResourceReference(classOf[SystemInfoPanel], "systemInfo.css")
 

@@ -1,17 +1,17 @@
 package net.rrm.ehour.ui.admin.config.page
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.sysinfo.{SysInfo, SysInfoService}
+import net.rrm.ehour.sysinfo.{SystemInfo, SystemInfoService}
 import org.mockito.Mockito._
 
 
 class SystemInfoPanelSpec extends AbstractSpringWebAppSpec {
   "System Info Panel"  should {
-    val sysInfoService = mock[SysInfoService]
+    val sysInfoService = mock[SystemInfoService]
     springTester.getMockContext.putBean(sysInfoService)
 
     "render" in {
-      when(sysInfoService.info).thenReturn(SysInfo("mysql", "..", "jdbc.Driver"))
+      when(sysInfoService.info).thenReturn(SystemInfo("mysql", "..", "jdbc.Driver"))
 
       tester.startComponentInPage(new SystemInfoPanel("id"))
       tester.assertNoErrorMessage()

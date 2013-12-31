@@ -21,8 +21,8 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.sysinfo.SysInfo;
-import net.rrm.ehour.sysinfo.SysInfoService;
+import net.rrm.ehour.sysinfo.SystemInfo;
+import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.junit.After;
 import org.junit.Before;
@@ -50,9 +50,9 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
                 ConfigurationServiceImpl.class.getMethod("persistConfiguration", EhourConfig.class));
 		getMockContext().putBean("configService", configService);
 
-        SysInfoService infoService = createMock(SysInfoService.class);
+        SystemInfoService infoService = createMock(SystemInfoService.class);
         getMockContext().putBean(infoService);
-        expect(infoService.info()).andReturn(new SysInfo("a", "b", "c"));
+        expect(infoService.info()).andReturn(new SystemInfo("a", "b", "c"));
         replay(infoService);
 
         mailService = createMock(MailService.class);

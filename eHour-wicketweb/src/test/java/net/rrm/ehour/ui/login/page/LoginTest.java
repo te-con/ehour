@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.login.page;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.mail.service.MailService;
-import net.rrm.ehour.sysinfo.SysInfo;
-import net.rrm.ehour.sysinfo.SysInfoService;
+import net.rrm.ehour.sysinfo.SystemInfo;
+import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.util.WebUtils;
@@ -32,10 +32,9 @@ import static org.easymock.EasyMock.*;
 
 /**
  * Tests the login tests
- **/
+ */
 
-public class LoginTest extends BaseSpringWebAppTester
-{
+public class LoginTest extends BaseSpringWebAppTester {
     @Override
     protected Roles getRoles() {
         Roles authorizedRoles = new Roles();
@@ -44,39 +43,37 @@ public class LoginTest extends BaseSpringWebAppTester
         return authorizedRoles;
     }
 
-	@Test
-	public void shouldLoginPageRender()
-	{
+    @Test
+    public void shouldLoginPageRender() {
+        getTester().startPage(Login.class);
+        getTester().assertRenderedPage(Login.class);
+        getTester().assertNoErrorMessage();
 
-		getTester().startPage(Login.class);
-		getTester().assertRenderedPage(Login.class);
-		getTester().assertNoErrorMessage();
+        ConfigurationService configService = createMock(ConfigurationService.class);
+        getMockContext().putBean("configService", configService);
 
-		ConfigurationService configService = createMock(ConfigurationService.class);
-		getMockContext().putBean("configService", configService);
+        MailService mailService = createMock(MailService.class);
+        getMockContext().putBean("mailService", mailService);
 
-		MailService mailService = createMock(MailService.class);
-		getMockContext().putBean("mailService", mailService);
-
-        SysInfoService infoService = createMock(SysInfoService.class);
+        SystemInfoService infoService = createMock(SystemInfoService.class);
         getMockContext().putBean(infoService);
-        expect(infoService.info()).andReturn(new SysInfo("a", "b", "c"));
+        expect(infoService.info()).andReturn(new SystemInfo("a", "b", "c"));
         expectLastCall().times(2);
         replay(infoService);
 
-		expect(configService.getConfiguration())
-				.andReturn(new EhourConfigStub())
-				.anyTimes();
+        expect(configService.getConfiguration())
+                .andReturn(new EhourConfigStub())
+                .anyTimes();
 
-		replay(configService);
-		FormTester form = getTester().newFormTester("loginform");
-		form.setValue("username", "thies");
-		form.setValue("password", "Ttst");
+        replay(configService);
+        FormTester form = getTester().newFormTester("loginform");
+        form.setValue("username", "thies");
+        form.setValue("password", "Ttst");
 
-		form.submit();
-		verify(configService);
+        form.submit();
+        verify(configService);
 
-		getTester().assertNoErrorMessage();
-		getTester().assertRenderedPage(MainConfigPage.class);
-	}
+        getTester().assertNoErrorMessage();
+        getTester().assertRenderedPage(MainConfigPage.class);
+    }
 }
