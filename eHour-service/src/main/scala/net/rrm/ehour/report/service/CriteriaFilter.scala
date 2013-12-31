@@ -38,10 +38,10 @@ class CustomerAndProjectCriteriaFilter @Autowired()(customerDao: CustomerDao) {
     val activeProjects = filterActive(pm).toSet.toList
 
     if (userSelectedCriteria.isForPm) {
-      val customersForProjects = activeProjects.map(_.getCustomer).toSet.toList
+      val xs = filterActive(filterPm(customers.flatMap(c => toScala(c.getProjects))))
+      val customersForProjects = xs.map(_.getCustomer).toSet.toList
 
       (toJava(customersForProjects), toJava(activeProjects))
-
     } else {
       (toJava(customers), toJava(activeProjects))
     }
