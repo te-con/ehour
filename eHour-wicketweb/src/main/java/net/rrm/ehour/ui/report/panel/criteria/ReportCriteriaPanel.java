@@ -220,6 +220,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             protected void onUpdate(AjaxRequestTarget target) {
                 // show only projects for selected customers
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
+                updateCustomers(target);
                 updateProjects(target);
             }
         });
@@ -268,6 +269,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
+                updateCustomers(target);
                 updateProjects(target);
             }
         };

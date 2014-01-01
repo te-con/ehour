@@ -41,6 +41,7 @@ class CustomerCriteriaFilterSpec extends WordSpec with MockitoSugar with Matcher
 
       val criteria = new UserSelectedCriteria
       criteria.setCustomer(billableCustomer)
+      criteria.setOnlyActiveProjects(false)
 
       val (customers, projects) = subject.getAvailableCustomers(criteria)
 
@@ -68,6 +69,19 @@ class CustomerCriteriaFilterSpec extends WordSpec with MockitoSugar with Matcher
 
       customers should have size 1
       customers.get(0) should be (pmCustomer)
+    }
+
+    "default to show all when current customer selection is invalid" in {
+      when(dao.findAllActive()).thenReturn(toJava(List(billableCustomer, pmCustomer, inactiveCustomer)))
+
+      val criteria = new UserSelectedCriteria
+      criteria.setOnlyActiveProjects(true)
+      criteria.setCustomer(inactiveCustomer)
+
+      val (customers, projects) = subject.getAvailableCustomers(criteria)
+
+      customers should have size 2
+      projects should have size 2
     }
   }
 }
