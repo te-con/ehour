@@ -48,7 +48,9 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
+
          ]]>
     </sql-query>
     	
@@ -96,7 +98,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
          ]]>         
 	</sql-query>	
          
@@ -144,7 +147,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
          ]]>         
 	</sql-query>	
 	
@@ -193,7 +197,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
          ]]>         
 	</sql-query>	
 	
@@ -240,7 +245,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
          ]]>         
 	</sql-query>	
 	
