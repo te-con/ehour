@@ -10,6 +10,7 @@ jQuery.fn.filterOn = function (filterInput) {
         $(filterInput).unbind('keyup');
 
         $(filterInput).keyup(function () {
+            var selected = $(select).val();
             var options = $(select).empty().data('ops');
             var filter = $(this).val().toLowerCase();
 
@@ -18,9 +19,13 @@ jQuery.fn.filterOn = function (filterInput) {
 
                 var s = option.text.toLowerCase();
                 if (s.indexOf(filter) >= 0) {
-                    $(select).append(
-                        $('<option>').text(option.text).val(option.value)
-                    );
+                    var o = $('<option>').text(option.text).val(option.value);
+
+                    if ($.inArray(option.value, selected) > -1) {
+                        o.prop('selected', true);
+                    }
+
+                    $(select).append(o);
                 }
             });
         });

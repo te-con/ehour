@@ -205,8 +205,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         return types;
     }
 
-    private void addCustomerSelection(ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
+    private void addCustomerSelection(final ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
         customers = new ListMultipleChoice<Customer>("reportCriteria.userSelectedCriteria.customers",
+                new PropertyModel<Collection<Customer>>(bean, "reportCriteria.userSelectedCriteria.customers"),
                 new PropertyModel<List<Customer>>(bean, "reportCriteria.availableCriteria.customers"),
                 new DomainObjectChoiceRenderer<Customer>());
         customers.setMarkupId("customerSelect");
@@ -219,8 +220,15 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
             protected void onUpdate(AjaxRequestTarget target) {
                 // show only projects for selected customers
+                List<Customer> preCustomers = Lists.newArrayList(bean.getReportCriteria().getAvailableCriteria().getCustomers());
+
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
-                updateCustomers(target);
+
+                List<Customer> postCustomers = bean.getReportCriteria().getAvailableCriteria().getCustomers();
+
+                if (!preCustomers.containsAll(postCustomers)) {
+                    updateCustomers(target);
+                }
                 updateProjects(target);
             }
         });
@@ -244,7 +252,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         customerSort.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                ReportCriteria reportCriteria = ReportCriteriaPanel.this.getBackingBeanFromModel().getReportCriteria();
+                ReportCriteria reportCriteria = getPanelModelObject().getReportCriteria();
                 reportCriteria.updateCustomerSort();
 
                 target.add(customers);
@@ -263,7 +271,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         projects.setOutputMarkupId(true);
         projects.setMarkupId("projectSelect");
         parent.add(projects);
-
 
         AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveProjects") {
             @Override
@@ -297,7 +304,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         projectSort.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                ReportCriteria reportCriteria = ReportCriteriaPanel.this.getBackingBeanFromModel().getReportCriteria();
+                ReportCriteria reportCriteria = getPanelModelObject().getReportCriteria();
                 reportCriteria.updateProjectSort();
 
                 target.add(projects);
@@ -319,15 +326,13 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
     private void updateCustomers(AjaxRequestTarget target) {
         target.add(customers);
+
         applyClientSideCustomerFilter(target);
     }
 
     private void updateCustomersAndProjects(AjaxRequestTarget target) {
         updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
-        target.add(customers);
 
-        // reapply the filter to the possible new contents of the dropdowns
-        applyClientSideCustomerFilter(target);
         updateProjects(target);
         updateCustomers(target);
     }
@@ -409,14 +414,10 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void updateReportCriteria(ReportCriteriaUpdateType updateType) {
-        ReportCriteriaBackingBean backingBean = getBackingBeanFromModel();
+        ReportCriteriaBackingBean backingBean = getPanelModelObject();
 
         ReportCriteria reportCriteria = reportCriteriaService.syncUserReportCriteria(backingBean.getReportCriteria(), updateType);
-        backingBean.setReportCriteria(reportCriteria);
-    }
-
-    private ReportCriteriaBackingBean getBackingBeanFromModel() {
-        return (ReportCriteriaBackingBean) getDefaultModelObject();
+        backingBean.getReportCriteria().setAvailableCriteria(reportCriteria.getAvailableCriteria());
     }
 
     @SuppressWarnings("serial")

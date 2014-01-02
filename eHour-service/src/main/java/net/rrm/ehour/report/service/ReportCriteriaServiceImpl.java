@@ -87,6 +87,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                     }
                 }
 
+
                 userSelectedCriteria.setCustomers(updatedSelectedCustomers);
 
                 List<Project> updatedSelectedProjects = Lists.newArrayList();

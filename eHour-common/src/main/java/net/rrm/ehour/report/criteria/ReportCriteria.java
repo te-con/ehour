@@ -97,4 +97,8 @@ public class ReportCriteria implements Serializable {
     public AvailableCriteria getAvailableCriteria() {
         return availableCriteria;
     }
+
+    public void setAvailableCriteria(AvailableCriteria availableCriteria) {
+        this.availableCriteria = availableCriteria;
+    }
 }
