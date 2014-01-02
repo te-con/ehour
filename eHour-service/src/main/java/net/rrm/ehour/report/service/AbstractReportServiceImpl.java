@@ -16,15 +16,17 @@
 
 package net.rrm.ehour.report.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.report.reports.element.ProjectStructuredReportElement;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -34,12 +36,15 @@ import java.util.List;
  * with the usercriteria obj
  */
 
-public abstract class AbstractReportServiceImpl<RE extends ReportElement> {
+public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredReportElement> {
     @Autowired
     private UserDao userDAO;
 
     @Autowired
     private ProjectDao projectDAO;
+
+    @Autowired
+    private ProjectService projectService;
 
     /**
      * Get report data for criteria
@@ -48,24 +53,57 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement> {
      * @return
      */
     protected ReportData getReportData(ReportCriteria reportCriteria) {
-        UserSelectedCriteria userSelectedCriteria;
+        UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
+
+        DateRange reportRange = reportCriteria.getReportRange();
+
+        List<RE> allReportElements  = generateReport(userSelectedCriteria, reportRange);
+
+        if (userSelectedCriteria.isForPm()) {
+            List<ProjectStructuredReportElement> elem = evictNonPmReportElements(userSelectedCriteria, allReportElements);
+
+            return new ReportData(elem, reportRange);
+        } else {
+            return new ReportData(allReportElements, reportRange);
+        }
+    }
+
+    private List<ProjectStructuredReportElement> evictNonPmReportElements(UserSelectedCriteria userSelectedCriteria, List<RE> allReportElements) {
+        List<Integer> projectIds = fetchAllowedProjectIds(userSelectedCriteria);
+
+        List<ProjectStructuredReportElement> allowedElements = Lists.newArrayList();
+
+        for (ProjectStructuredReportElement reportElement : allReportElements) {
+            if (projectIds.contains(reportElement.getProjectId())) {
+                allowedElements.add(reportElement);
+            }
+        }
+        return allowedElements;
+    }
+
+    private List<Integer> fetchAllowedProjectIds(UserSelectedCriteria userSelectedCriteria) {
+        List<Project> allowedProjects = projectService.getProjectManagerProjects(userSelectedCriteria.getPm());
+
+        List<Integer> projectIds = Lists.newArrayList();
+
+        for (Project allowedProject : allowedProjects) {
+            projectIds.add(allowedProject.getProjectId());
+        }
+        return projectIds;
+    }
+
+
+    private List<RE> generateReport(UserSelectedCriteria userSelectedCriteria, DateRange reportRange) {
+        boolean noUserRestrictionProvided = userSelectedCriteria.isEmptyDepartments() && userSelectedCriteria.isEmptyUsers();
+        boolean noProjectRestrictionProvided = userSelectedCriteria.isEmptyCustomers() && userSelectedCriteria.isEmptyProjects();
+
         List<Project> projects = null;
         List<User> users = null;
-        boolean ignoreUsers;
-        boolean ignoreProjects;
-        DateRange reportRange;
 
-        userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
-
-        reportRange = reportCriteria.getReportRange();
-
-        ignoreUsers = userSelectedCriteria.isEmptyDepartments() && userSelectedCriteria.isEmptyUsers();
-        ignoreProjects = userSelectedCriteria.isEmptyCustomers() && userSelectedCriteria.isEmptyProjects();
-
-        if (!ignoreProjects || !ignoreUsers) {
-            if (ignoreProjects) {
+        if (!noProjectRestrictionProvided || !noUserRestrictionProvided) {
+            if (noProjectRestrictionProvided) {
                 users = getUsers(userSelectedCriteria);
-            } else if (ignoreUsers) {
+            } else if (noUserRestrictionProvided) {
                 projects = getProjects(userSelectedCriteria);
             } else {
                 users = getUsers(userSelectedCriteria);
@@ -73,7 +111,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement> {
             }
         }
 
-        return new ReportData(getReportElements(users, projects, reportRange), reportRange);
+        return getReportElements(users, projects, reportRange);
     }
 
     /**
@@ -123,8 +161,7 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement> {
 
         if (userSelectedCriteria.isEmptyUsers()) {
             if (!userSelectedCriteria.isEmptyDepartments()) {
-                users = userDAO.findUsersForDepartments(userSelectedCriteria.getDepartments(),
-                        userSelectedCriteria.isOnlyActiveUsers());
+                users = userDAO.findUsersForDepartments(userSelectedCriteria.getDepartments(), userSelectedCriteria.isOnlyActiveUsers());
             } else {
                 users = null;
             }
@@ -155,5 +192,9 @@ public abstract class AbstractReportServiceImpl<RE extends ReportElement> {
      */
     protected ProjectDao getProjectDAO() {
         return projectDAO;
+    }
+
+    public void setProjectService(ProjectService projectService) {
+        this.projectService = projectService;
     }
 }

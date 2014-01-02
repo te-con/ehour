@@ -20,9 +20,8 @@ import java.io.Serializable;
 
 /**
  * Report importer, represent a actual cell in the report
- **/
+ */
 
-public interface ReportElement extends Serializable
-{
-	
+public interface ReportElement extends Serializable {
+
 }

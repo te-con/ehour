@@ -33,32 +33,28 @@
 
 package net.rrm.ehour.ui.report;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.report.reports.element.ReportElement;
+
+import java.io.Serializable;
 
 /**
  * Created on Mar 12, 2009, 1:55:18 PM
- * 
+ *
  * @author Thies Edeling (thies@te-con.nl)
- * 
  */
-public class TreeReportElement implements ReportElement
-{
-	private static final long serialVersionUID = 7162514980734420038L;
+public class TreeReportElement implements ReportElement {
+    private static final long serialVersionUID = 7162514980734420038L;
 
-	private Serializable[] row;
+    private Serializable[] row;
 
-    public TreeReportElement(Serializable[] row)
-	{
-		this.row = row;
-	}
+    public TreeReportElement(Serializable[] row) {
+        this.row = row;
+    }
 
-	/**
-	 * @return the row
-	 */
-	public Serializable[] getRow()
-	{
-		return row;
-	}
+    /**
+     * @return the row
+     */
+    public Serializable[] getRow() {
+        return row;
+    }
 }

@@ -26,7 +26,7 @@ import java.util.Date;
  * Report importer for trend reports (more data so each importer is flattened)
  **/
 
-public class FlatReportElement implements ReportElement
+public class FlatReportElement implements ProjectStructuredReportElement
 {
 	private static final long serialVersionUID = -2146747873763924275L;
 	private	Integer	customerId;
@@ -80,6 +80,7 @@ public class FlatReportElement implements ReportElement
 	/**
 	 * @return the projectId
 	 */
+    @Override
 	public Integer getProjectId()
 	{
 		return projectId;

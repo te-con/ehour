@@ -16,15 +16,18 @@
 
 package net.rrm.ehour.report.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
 import org.junit.Before;
@@ -44,6 +47,7 @@ public class AggregateReportServiceImplTest {
     private ProjectDao projectDAO;
     private ReportAggregatedDao reportAggregatedDAO;
     private ProjectAssignmentService assignmentService;
+    private ProjectService projectService;
 
     @Before
     public void setUp() {
@@ -60,10 +64,13 @@ public class AggregateReportServiceImplTest {
 
         assignmentService = createMock(ProjectAssignmentService.class);
         aggregateReportService.setProjectAssignmentService(assignmentService);
-   }
+
+        projectService = createMock(ProjectService.class);
+        aggregateReportService.setProjectService(projectService);
+    }
 
     @Test
-    public void testCreateProjectReportUserId() {
+    public void should_create_report_for_single_user() {
         DateRange dr = new DateRange();
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
@@ -85,7 +92,7 @@ public class AggregateReportServiceImplTest {
     }
 
     @Test
-    public void testCreateProjectReportNoUserId() {
+    public void should_create_global_report() {
         DateRange dr = new DateRange();
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
@@ -103,7 +110,7 @@ public class AggregateReportServiceImplTest {
     }
 
     @Test
-    public void testCreateProjectReportNoUserIdDptId() {
+    public void should_create_report_for_department() {
         List<User> users = new ArrayList<User>();
         User user = new User(1);
         users.add(user);
@@ -136,7 +143,7 @@ public class AggregateReportServiceImplTest {
     }
 
     @Test
-    public void testCreateProjectReport() {
+    public void should_create_report_for_specific_project() {
         Customer cust = new Customer(1);
         List<Customer> customers = new ArrayList<Customer>();
         customers.add(cust);
@@ -169,7 +176,7 @@ public class AggregateReportServiceImplTest {
     }
 
     @Test
-    public void testGetProjectManagerReport() {
+    public void should_create_pm_detailed_report() {
         Project project = new Project(1);
         project.setProjectCode("PRJ");
 
@@ -202,7 +209,53 @@ public class AggregateReportServiceImplTest {
 
         assertEquals(new Integer(1), report.getProject().getPK());
         assertEquals(16, report.getAggregates().size());
+    }
 
+    @Test
+    public void should_create_pm_report() {
+        UserSelectedCriteria criteria = new UserSelectedCriteria();
+
+        User projectManager = new User(2);
+        criteria.setReportTypeToPM(projectManager);
+        Project pmProject = ProjectObjectMother.createProject(1);
+        expect(projectService.getProjectManagerProjects(projectManager)).andReturn(Lists.newArrayList(pmProject));
+
+        User user = new User(1);
+
+        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        assignment.getProject().setProjectId(1);
+        user.addProjectAssignment(assignment);
+
+        List<User> users = Lists.newArrayList(user);
+        List<UserDepartment> departments = Lists.newArrayList(new UserDepartment(2));
+
+        expect(userDAO.findUsersForDepartments(departments, true)).andReturn(users);
+        criteria.setDepartments(departments);
+
+        DateRange dateRange = new DateRange();
+        criteria.setReportRange(dateRange);
+
+        criteria.setOnlyActiveUsers(true);
+
+        ReportCriteria reportCriteria = new ReportCriteria(criteria);
+        List<AssignmentAggregateReportElement> elements = Lists.newArrayList();
+
+        AssignmentAggregateReportElement aggregate = AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1);
+        aggregate.getProjectAssignment().setProject(pmProject);
+        elements.add(aggregate);
+        elements.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
+        elements.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
+
+        expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class))).andReturn(elements);
+
+        replay(reportAggregatedDAO, userDAO, projectService);
+
+        ReportData reportData = aggregateReportService.getAggregateReportData(reportCriteria);
+        assertEquals(1, reportData.getReportElements().size());
+
+        verify(reportAggregatedDAO);
+        verify(userDAO);
+        verify(projectService);
     }
 }
 

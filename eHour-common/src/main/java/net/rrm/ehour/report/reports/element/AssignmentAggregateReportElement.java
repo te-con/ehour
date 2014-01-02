@@ -28,19 +28,16 @@ import java.util.Date;
  */
 
 public class AssignmentAggregateReportElement
-        implements Comparable<AssignmentAggregateReportElement>, ReportElement
-{
+        implements Comparable<AssignmentAggregateReportElement>, ProjectStructuredReportElement {
     private static final long serialVersionUID = -7175763322632066925L;
     private ProjectAssignment projectAssignment;
     private Number hours;
 
-    public AssignmentAggregateReportElement()
-    {
+    public AssignmentAggregateReportElement() {
 
     }
 
-    public AssignmentAggregateReportElement(ProjectAssignment projectAssignment, Number hours)
-    {
+    public AssignmentAggregateReportElement(ProjectAssignment projectAssignment, Number hours) {
         this.hours = hours;
         this.projectAssignment = projectAssignment;
     }
@@ -50,29 +47,25 @@ public class AssignmentAggregateReportElement
      * Get the progress (booked hours) in percentage of the allotted hours, leaving out the overrun
      * or for date ranges use the current date vs start & end date (if they're both null)
      */
-    public float getProgressPercentage()
-    {
+    public float getProgressPercentage() {
         float percentage = 0;
         float currentTime;
         float dateRangeLength;
 
-        if (projectAssignment == null)
-        {
+        if (projectAssignment == null) {
             return percentage;
         }
 
-        if (projectAssignment.getAssignmentType().isAllottedType())
-        {
+        if (projectAssignment.getAssignmentType().isAllottedType()) {
             if (hours != null &&
                     projectAssignment.getAllottedHours() != null &&
                     hours.floatValue() > 0 &&
-                    projectAssignment.getAllottedHours() > 0)
-            {
+                    projectAssignment.getAllottedHours() > 0) {
                 percentage = (hours.floatValue() / projectAssignment.getAllottedHours()) * 100;
             }
         } else if (projectAssignment.getAssignmentType().isDateType() &&
-                    projectAssignment.getDateStart() != null &&
-                    projectAssignment.getDateEnd() != null) {
+                projectAssignment.getDateStart() != null &&
+                projectAssignment.getDateEnd() != null) {
             currentTime = new Date().getTime() - projectAssignment.getDateStart().getTime();
 
             dateRangeLength = projectAssignment.getDateEnd().getTime() -
@@ -95,22 +88,18 @@ public class AssignmentAggregateReportElement
      *
      * @return
      */
-    public Float getAvailableHours()
-    {
+    public Float getAvailableHours() {
         Float available = null;
 
-        if (projectAssignment == null)
-        {
+        if (projectAssignment == null) {
             return available;
         }
 
-        if (projectAssignment.getAssignmentType().isFixedAllottedType())
-        {
+        if (projectAssignment.getAssignmentType().isFixedAllottedType()) {
             if (hours != null &&
                     projectAssignment.getAllottedHours() != null &&
                     hours.floatValue() > 0 &&
-                    projectAssignment.getAllottedHours() > 0)
-            {
+                    projectAssignment.getAllottedHours() > 0) {
                 available = projectAssignment.getAllottedHours() - hours.floatValue();
             }
         } else if (projectAssignment.getAssignmentType().isFlexAllottedType() && hours != null &&
@@ -126,63 +115,59 @@ public class AssignmentAggregateReportElement
         return available;
     }
 
-    public ProjectAssignment getProjectAssignment()
-    {
+    public ProjectAssignment getProjectAssignment() {
         return projectAssignment;
     }
 
-    public void setProjectAssignment(ProjectAssignment projectAssignment)
-    {
+    public void setProjectAssignment(ProjectAssignment projectAssignment) {
         this.projectAssignment = projectAssignment;
     }
 
-    public Number getTurnOver()
-    {
-        if (projectAssignment != null && projectAssignment.getHourlyRate() != null && hours != null)
-        {
+    public Number getTurnOver() {
+        if (projectAssignment != null && projectAssignment.getHourlyRate() != null && hours != null) {
             return hours.floatValue() * projectAssignment.getHourlyRate();
-        } else
-        {
+        } else {
             return 0;
         }
     }
 
-    public int compareTo(AssignmentAggregateReportElement pagO)
-    {
+    @Override
+    public int compareTo(AssignmentAggregateReportElement pagO) {
         return this.getProjectAssignment().compareTo(pagO.getProjectAssignment());
     }
 
-    public String toString()
-    {
+    @Override
+    public String toString() {
         return new ToStringBuilder(this)
                 .append("ProjectAssignment", projectAssignment)
                 .append("hours", hours)
                 .toString();
     }
 
-    public Number getHours()
-    {
+    public Number getHours() {
         return hours == null ? 0 : hours;
     }
 
-    public void setHours(Number hours)
-    {
+    public void setHours(Number hours) {
         this.hours = hours;
     }
 
-
-    public boolean equals(Object object)
-    {
-        if (!(object instanceof AssignmentAggregateReportElement))
-        {
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof AssignmentAggregateReportElement)) {
             return false;
         }
         AssignmentAggregateReportElement rhs = (AssignmentAggregateReportElement) object;
         return new EqualsBuilder().appendSuper(super.equals(object)).append(this.projectAssignment, rhs.projectAssignment).isEquals();
     }
 
-    public int hashCode()
-    {
+    @Override
+    public int hashCode() {
         return new HashCodeBuilder(259442803, 2067843191).appendSuper(super.hashCode()).append(this.projectAssignment).toHashCode();
+    }
+
+    @Override
+    public Integer getProjectId() {
+        return projectAssignment.getProject().getPK();
     }
 }
