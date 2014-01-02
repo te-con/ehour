@@ -32,7 +32,7 @@ public abstract class AbstractAjaxPanel<T> extends AbstractBasePanel<T> implemen
         super(id, model);
     }
 
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         return true;
     }
 }

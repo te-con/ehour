@@ -30,10 +30,6 @@ public class AjaxEvent implements Serializable {
     private AjaxEventType eventType;
     private AjaxRequestTarget target;
 
-    /**
-     * @param target
-     * @param eventType
-     */
     public AjaxEvent(AjaxEventType eventType) {
         this(eventType, null);
     }
@@ -43,10 +39,6 @@ public class AjaxEvent implements Serializable {
         this.target = target;
     }
 
-
-    /**
-     * @return the target
-     */
     public AjaxRequestTarget getTarget() {
         if (target != null) {
             return target;
@@ -55,9 +47,6 @@ public class AjaxEvent implements Serializable {
         }
     }
 
-    /**
-     * @return the eventType
-     */
     public AjaxEventType getEventType() {
         return eventType;
     }

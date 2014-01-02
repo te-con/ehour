@@ -124,7 +124,7 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean>
      */
     @Override
     @SuppressWarnings("unchecked")
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
         if (type == USER_CREATED) {

@@ -105,7 +105,7 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     }
 
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_UPDATED) {
             updateCriteria(ajaxEvent);
         } else if (ajaxEvent.getEventType() == ReportCriteriaAjaxEventType.CRITERIA_RESET) {

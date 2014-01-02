@@ -558,7 +558,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         return new QuickDropDownChoice<QuickQuarter>("quickQuarter", quarters, new QuickQuarterRenderer());
     }
 
-    public final boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public final Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         if (ajaxEvent.getEventType() == QuickDateAjaxEventType.DATE_CHANGED) {
             updateDates(ajaxEvent.getTarget());
             updateReportCriteria(ReportCriteriaUpdateType.UPDATE_ALL);

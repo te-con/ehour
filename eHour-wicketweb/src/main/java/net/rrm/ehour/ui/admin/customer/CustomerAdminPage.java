@@ -103,7 +103,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
         if (type == CustomerAjaxEventType.CUSTOMER_UPDATED

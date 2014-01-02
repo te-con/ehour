@@ -72,7 +72,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
         }
     }
 
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         return true;
     }
 

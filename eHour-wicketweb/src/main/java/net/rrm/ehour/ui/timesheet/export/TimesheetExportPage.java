@@ -101,7 +101,7 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
         userSelectedCriteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
     }
 
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         if (ajaxEvent.getEventType() == CalendarAjaxEventType.MONTH_CHANGE) {
             changeMonth(ajaxEvent);
         }

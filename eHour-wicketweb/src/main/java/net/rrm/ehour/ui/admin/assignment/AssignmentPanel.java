@@ -100,7 +100,7 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		AjaxEventType type = ajaxEvent.getEventType();
 
