@@ -102,7 +102,13 @@ public class Login extends WebPage {
             String version = EhourWebApplication.get().getVersion();
 
             if (version != null && version.contains("SNAPSHOT")) {
-                version = String.format("%s (b%s)", version.substring(0, version.indexOf("-SNAPSHOT")), EhourWebApplication.get().getBuild());
+                version = String.format("%s beta", version.substring(0, version.indexOf("-SNAPSHOT")));
+
+                add(new Label("build", String.format("build %s", EhourWebApplication.get().getBuild())));
+            } else {
+                Label build = new Label("build", "");
+                build.setVisible(false);
+                add(build);
             }
 
             add(new Label("version", version));
