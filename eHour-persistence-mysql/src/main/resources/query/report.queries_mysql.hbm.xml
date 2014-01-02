@@ -7,6 +7,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY.ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "assignmentId",
 		       CUST.CUSTOMER_ID AS "customerId",
@@ -54,6 +55,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY.ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "assignmentId",
 		       CUST.CUSTOMER_ID AS "customerId",
@@ -101,6 +103,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY.ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "assignmentId",
 		       CUST.CUSTOMER_ID AS "customerId",
@@ -148,6 +151,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY.ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "assignmentId",
 		       CUST.CUSTOMER_ID AS "customerId",
@@ -196,6 +200,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY.ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "assignmentId",
 		       CUST.CUSTOMER_ID AS "customerId",

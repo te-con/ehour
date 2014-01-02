@@ -16,11 +16,11 @@
 
 package net.rrm.ehour.persistence.report.dao;
 
-import java.io.Serializable;
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+
+import java.io.Serializable;
+import java.util.List;
 
 public interface DetailedReportDao
 {
@@ -43,7 +43,7 @@ public interface DetailedReportDao
 
 	/**
 	 * Get hours per day for projects
-	 * @param userIds
+	 * @param projectIds
 	 * @param dateRange
 	 * @return
 	 */

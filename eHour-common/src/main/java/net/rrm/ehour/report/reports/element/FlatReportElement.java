@@ -24,260 +24,253 @@ import java.util.Date;
 
 /**
  * Report importer for trend reports (more data so each importer is flattened)
- **/
+ */
 
-public class FlatReportElement implements ProjectStructuredReportElement
-{
-	private static final long serialVersionUID = -2146747873763924275L;
-	private	Integer	customerId;
-	private	String	customerName;
-	private	String	customerCode;
-	private	Number	totalHours = 0;
-	private	Number	totalTurnOver = 0;
-	private	String	entryDate;
-	private	Integer	userId;
-	private	String	userLastName;
-	private	String	userFirstName;
-	private	Integer	projectId;
-	private	String	projectName;
+public class FlatReportElement implements ProjectStructuredReportElement {
+    private static final long serialVersionUID = -2146747873763924275L;
+    private Integer customerId;
+    private String customerName;
+    private String customerCode;
+    private Number totalHours = 0;
+    private Number totalTurnOver = 0;
+    private Number rate = 0;
+    private String entryDate;
+    private Integer userId;
+    private String userLastName;
+    private String userFirstName;
+    private Integer projectId;
+    private String projectName;
     private String projectCode;
-	private	Integer	assignmentId;
-	private	String	assignmentDesc;
-	private Date	dayDate;
-	private String	comment;
-	private Integer	displayOrder;
-	private Number 	hours = 0;
-	
-	public FlatReportElement()
-	{
-	}
+    private Integer assignmentId;
+    private String assignmentDesc;
+    private Date dayDate;
+    private String comment;
+    private Integer displayOrder;
+    private Number hours = 0;
 
-    public Number getHours()
-    {
+    public FlatReportElement() {
+    }
+
+    public Number getRate() {
+        return rate;
+    }
+
+    public void setRate(Number rate) {
+        this.rate = rate;
+    }
+   public Number getHours() {
         return hours;
     }
 
-    public void setHours(Number hours)
-    {
+    public void setHours(Number hours) {
         this.hours = hours;
     }
 
 
-	/**
-	 * @return the customerName
-	 */
-	public String getCustomerName()
-	{
-		return customerName;
-	}
-	/**
-	 * @param customerName the customerName to set
-	 */
-	public void setCustomerName(String customerName)
-	{
-		this.customerName = customerName;
-	}
-	/**
-	 * @return the projectId
-	 */
+    /**
+     * @return the customerName
+     */
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    /**
+     * @param customerName the customerName to set
+     */
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    /**
+     * @return the projectId
+     */
     @Override
-	public Integer getProjectId()
-	{
-		return projectId;
-	}
-	/**
-	 * @param projectId the projectId to set
-	 */
-	public void setProjectId(Integer projectId)
-	{
-		this.projectId = projectId;
-	}
-	/**
-	 * @return the projectName
-	 */
-	public String getProjectName()
-	{
-		return projectName;
-	}
-	/**
-	 * @param projectName the projectName to set
-	 */
-	public void setProjectName(String projectName)
-	{
-		this.projectName = projectName;
-	}
-	/**
-	 * @return the totalHours
-	 */
-	public Number getTotalHours()
-	{
-		return totalHours;
-	}
-	/**
-	 * @param totalHours the totalHours to set
-	 */
-	public void setTotalHours(Number totalHours)
-	{
-		this.totalHours = totalHours;
-	}
-	/**
-	 * @return the totalTurnOver
-	 */
-	public Number getTotalTurnOver()
-	{
-		return totalTurnOver == null ? 0 : totalTurnOver;
-	}
-	/**
-	 * @param totalTurnOver the totalTurnOver to set
-	 */
-	public void setTotalTurnOver(Number totalTurnOver)
-	{
-		this.totalTurnOver = totalTurnOver;
-	}
-	/**
-	 * @return the userFirstName
-	 */
-	public String getUserFirstName()
-	{
-		return userFirstName;
-	}
-	/**
-	 * @param userFirstName the userFirstName to set
-	 */
-	public void setUserFirstName(String userFirstName)
-	{
-		this.userFirstName = userFirstName;
-	}
-	/**
-	 * @return the userId
-	 */
-	public Integer getUserId()
-	{
-		return userId;
-	}
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(Integer userId)
-	{
-		this.userId = userId;
-	}
-	/**
-	 * @return the userLastName
-	 */
-	public String getUserLastName()
-	{
-		return userLastName;
-	}
-	/**
-	 * @param userLastName the userLastName to set
-	 */
-	public void setUserLastName(String userLastName)
-	{
-		this.userLastName = userLastName;
-	}
-	/**
-	 * @return the entryDate
-	 */
-	public String getEntryDate()
-	{
-		return entryDate;
-	}
-	/**
-	 * @param entryDate the entryDate to set
-	 */
-	public void setEntryDate(String weekYear)
-	{
-		this.entryDate = weekYear;
-	}
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * @param projectId the projectId to set
+     */
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    /**
+     * @return the projectName
+     */
+    public String getProjectName() {
+        return projectName;
+    }
+
+    /**
+     * @param projectName the projectName to set
+     */
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    /**
+     * @return the totalHours
+     */
+    public Number getTotalHours() {
+        return totalHours;
+    }
+
+    /**
+     * @param totalHours the totalHours to set
+     */
+    public void setTotalHours(Number totalHours) {
+        this.totalHours = totalHours;
+    }
+
+    /**
+     * @return the totalTurnOver
+     */
+    public Number getTotalTurnOver() {
+        return totalTurnOver == null ? 0 : totalTurnOver;
+    }
+
+    /**
+     * @param totalTurnOver the totalTurnOver to set
+     */
+    public void setTotalTurnOver(Number totalTurnOver) {
+        this.totalTurnOver = totalTurnOver;
+    }
+
+    /**
+     * @return the userFirstName
+     */
+    public String getUserFirstName() {
+        return userFirstName;
+    }
+
+    /**
+     * @param userFirstName the userFirstName to set
+     */
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
+    }
+
+    /**
+     * @return the userId
+     */
+    public Integer getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId the userId to set
+     */
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * @return the userLastName
+     */
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    /**
+     * @param userLastName the userLastName to set
+     */
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
+    /**
+     * @return the entryDate
+     */
+    public String getEntryDate() {
+        return entryDate;
+    }
+
+    /**
+     * @param entryDate the entryDate to set
+     */
+    public void setEntryDate(String weekYear) {
+        this.entryDate = weekYear;
+    }
 
 
-	/**
-	 * @return the customerId
-	 */
-	public Integer getCustomerId()
-	{
-		return customerId;
-	}
+    /**
+     * @return the customerId
+     */
+    public Integer getCustomerId() {
+        return customerId;
+    }
 
 
-	/**
-	 * @param customerId the customerId to set
-	 */
-	public void setCustomerId(Integer customerId)
-	{
-		this.customerId = customerId;
-	}
+    /**
+     * @param customerId the customerId to set
+     */
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
 
 
-	/**
-	 * @return the customerCode
-	 */
-	public String getCustomerCode()
-	{
-		return customerCode;
-	}
+    /**
+     * @return the customerCode
+     */
+    public String getCustomerCode() {
+        return customerCode;
+    }
 
 
-	/**
-	 * @param customerCode the customerCode to set
-	 */
-	public void setCustomerCode(String customerCode)
-	{
-		this.customerCode = customerCode;
-	}
+    /**
+     * @param customerCode the customerCode to set
+     */
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode;
+    }
 
 
-	/**
-	 * @return the assignmentDesc
-	 */
-	public String getAssignmentDesc()
-	{
-		return assignmentDesc;
-	}
+    /**
+     * @return the assignmentDesc
+     */
+    public String getAssignmentDesc() {
+        return assignmentDesc;
+    }
 
 
-	/**
-	 * @param assignmentDesc the assignmentDesc to set
-	 */
-	public void setAssignmentDesc(String assignmentDesc)
-	{
-		this.assignmentDesc = assignmentDesc;
-	}
+    /**
+     * @param assignmentDesc the assignmentDesc to set
+     */
+    public void setAssignmentDesc(String assignmentDesc) {
+        this.assignmentDesc = assignmentDesc;
+    }
 
 
-	/**
-	 * @return the assignmentId
-	 */
-	public Integer getAssignmentId()
-	{
-		return assignmentId;
-	}
+    /**
+     * @return the assignmentId
+     */
+    public Integer getAssignmentId() {
+        return assignmentId;
+    }
 
 
-	/**
-	 * @param assignmentId the assignmentId to set
-	 */
-	public void setAssignmentId(Integer assignmentId)
-	{
-		this.assignmentId = assignmentId;
-	}
+    /**
+     * @param assignmentId the assignmentId to set
+     */
+    public void setAssignmentId(Integer assignmentId) {
+        this.assignmentId = assignmentId;
+    }
 
-	/**
-	 * @return the dayDate
-	 */
-	public Date getDayDate()
-	{
-		return dayDate;
-	}
+    /**
+     * @return the dayDate
+     */
+    public Date getDayDate() {
+        return dayDate;
+    }
 
-	/**
-	 * @param dayDate the dayDate to set
-	 */
-	public void setDayDate(Date dayDate)
-	{
-		this.dayDate = dayDate;
-	}
+    /**
+     * @param dayDate the dayDate to set
+     */
+    public void setDayDate(Date dayDate) {
+        this.dayDate = dayDate;
+    }
 
     public String getProjectCode() {
         return projectCode;
@@ -290,80 +283,72 @@ public class FlatReportElement implements ProjectStructuredReportElement
     /* (non-Javadoc)
       * @see java.lang.Object#toString()
       */
-	@Override
-	public String toString()
-	{
-		return new ToStringBuilder(this)
-					.append("date", dayDate)
-					.append("totalHours", totalHours)
-					.toString();
-	}
-	
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object)
-	{
-		if (!(object instanceof FlatReportElement))
-		{
-			return false;
-		}
-		
-		FlatReportElement rhs = (FlatReportElement) object;
-		return new EqualsBuilder()
-			.append(this.assignmentId, rhs.getAssignmentId())
-			.append(this.dayDate, rhs.getDayDate())
-			.append(this.entryDate, rhs.getEntryDate())
-			.append(this.totalHours, rhs.getTotalHours())
-			.append(this.totalTurnOver, rhs.getTotalTurnOver())
-			.append(this.displayOrder, rhs.getDisplayOrder())
-			.isEquals();
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("date", dayDate)
+                .append("totalHours", totalHours)
+                .toString();
+    }
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode()
-	{
-		return new HashCodeBuilder()
-				.append(this.assignmentId)
-				.append(this.dayDate)
-				.append(this.entryDate)
-				.append(this.totalHours)
-				.append(this.totalTurnOver)
-				.append(this.displayOrder)
-				.toHashCode();
-	}
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
+    public boolean equals(Object object) {
+        if (!(object instanceof FlatReportElement)) {
+            return false;
+        }
 
-	/**
-	 * @return the comment
-	 */
-	public String getComment()
-	{
-		return comment;
-	}
+        FlatReportElement rhs = (FlatReportElement) object;
+        return new EqualsBuilder()
+                .append(this.assignmentId, rhs.getAssignmentId())
+                .append(this.dayDate, rhs.getDayDate())
+                .append(this.entryDate, rhs.getEntryDate())
+                .append(this.totalHours, rhs.getTotalHours())
+                .append(this.totalTurnOver, rhs.getTotalTurnOver())
+                .append(this.displayOrder, rhs.getDisplayOrder())
+                .isEquals();
+    }
 
-	/**
-	 * @param comment the comment to set
-	 */
-	public void setComment(String comment)
-	{
-		this.comment = comment;
-	}
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(this.assignmentId)
+                .append(this.dayDate)
+                .append(this.entryDate)
+                .append(this.totalHours)
+                .append(this.totalTurnOver)
+                .append(this.displayOrder)
+                .toHashCode();
+    }
 
-	/**
-	 * @return the displayOrder
-	 */
-	public Integer getDisplayOrder()
-	{
-		return displayOrder;
-	}
+    /**
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
 
-	/**
-	 * @param displayOrder the displayOrder to set
-	 */
-	public void setDisplayOrder(Integer displayOrder)
-	{
-		this.displayOrder = displayOrder;
-	}
+    /**
+     * @param comment the comment to set
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * @return the displayOrder
+     */
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
+
+    /**
+     * @param displayOrder the displayOrder to set
+     */
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
 }
