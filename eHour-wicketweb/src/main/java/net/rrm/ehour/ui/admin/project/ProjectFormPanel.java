@@ -103,8 +103,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 
         FormUtil.setSubmitActions(formConfig);
 
-        form.add(new AssignedUsersPanel("assignedUsers", getPanelModel()));
-
         greyBorder.addOrReplace(form);
     }
 

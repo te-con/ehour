@@ -19,6 +19,8 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
     val userService = mock[UserService]
     springTester.getMockContext.putBean(userService)
 
+    def path(p: String) = s"id:border:greySquaredFrame:border_body:$p"
+
     "render" in {
       val project = ProjectObjectMother.createProject(1)
       when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
@@ -44,7 +46,8 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
       when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(ProjectAssignmentObjectMother.createProjectAssignment(1))))
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
-      tester.executeAjaxEvent("id:addUsers", "click")
+      tester.debugComponentTrees()
+      tester.executeAjaxEvent(path("addUsers"), "click")
 
       verify(userService).getActiveUsers
     }
@@ -55,11 +58,13 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
 
-      tester.executeAjaxEvent("id:assignmentContainer:assignments:0:container", "click")
+      tester.debugComponentTrees()
 
-      tester.executeAjaxEvent("id:assignmentContainer:assignments:0:container:editForm:cancel", "click")
+      tester.executeAjaxEvent(path("assignmentContainer:assignments:0:container"), "click")
 
-      tester.assertComponent("id:assignmentContainer:assignments:0:container:rate", classOf[NonEmptyLabel[Float]])
+      tester.executeAjaxEvent(path("assignmentContainer:assignments:0:container:editForm:cancel"), "click")
+
+      tester.assertComponent(path("assignmentContainer:assignments:0:container:rate"), classOf[NonEmptyLabel[Float]])
       tester.assertNoErrorMessage()
     }
 
@@ -71,14 +76,14 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
 
-      tester.executeAjaxEvent("id:assignmentContainer:assignments:0:container", "click")
+      tester.executeAjaxEvent(path("assignmentContainer:assignments:0:container"), "click")
 
-      val formTester =tester.newFormTester("id:assignmentContainer:assignments:0:container:editForm")
+      val formTester =tester.newFormTester(path("assignmentContainer:assignments:0:container:editForm"))
       formTester.setValue("rate", "10")
 
-      tester.executeAjaxEvent("id:assignmentContainer:assignments:0:container:editForm:submit", "click")
+      tester.executeAjaxEvent(path("assignmentContainer:assignments:0:container:editForm:submit"), "click")
 
-      tester.assertComponent("id:assignmentContainer:assignments:0:container:rate", classOf[NonEmptyLabel[Float]])
+      tester.assertComponent(path("assignmentContainer:assignments:0:container:rate"), classOf[NonEmptyLabel[Float]])
 
       assignment.getHourlyRate should be (10f)
 
@@ -92,12 +97,12 @@ class AssignedUsersPanelSpec extends AbstractSpringWebAppSpec {
 
       tester.startComponentInPage(new AssignedUsersPanel("id", new Model(new ProjectAdminBackingBean(project))))
 
-      tester.executeAjaxEvent("id:assignmentContainer:assignments:0:container", "click")
+      tester.executeAjaxEvent(path("assignmentContainer:assignments:0:container"), "click")
 
-      val formTester =tester.newFormTester("id:assignmentContainer:assignments:0:container:editForm")
+      val formTester =tester.newFormTester(path("assignmentContainer:assignments:0:container:editForm"))
       formTester.setValue("rate", "xx")
 
-      tester.executeAjaxEvent("id:assignmentContainer:assignments:0:container:editForm:submit", "click")
+      tester.executeAjaxEvent(path("assignmentContainer:assignments:0:container:editForm:submit"), "click")
 
       tester.assertErrorMessages("rate.IConverter.Float")
     }

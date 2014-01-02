@@ -121,13 +121,12 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
-        return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
+        return new ProjectFormContainer(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
     }
 
     @Override
     protected Panel getBaseEditPanel(String panelId) {
-        return new ProjectFormPanel(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
-
+        return new ProjectFormContainer(panelId, new CompoundPropertyModel<ProjectAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
     }
 
     @Override
