@@ -59,7 +59,7 @@ public class AuditReportPage extends AbstractAdminPage<String>
 	}
 
 	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == AuditReportCriteriaForm.Events.FORM_SUBMIT)
 		{

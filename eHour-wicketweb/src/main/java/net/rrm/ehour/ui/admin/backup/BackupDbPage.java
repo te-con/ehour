@@ -129,7 +129,7 @@ public class BackupDbPage extends AbstractBasePage<Void> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         boolean continueWithPropagating = true;
 
         if (ajaxEvent.getEventType() == BackupAjaxEventType.VALIDATED) {

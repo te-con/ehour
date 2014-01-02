@@ -13,7 +13,7 @@ public class AjaxEventHook implements AjaxEventListener
 {
 	public List<AjaxEvent> events = new ArrayList<AjaxEvent>();
 	
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		events.add(ajaxEvent);
 		return true;

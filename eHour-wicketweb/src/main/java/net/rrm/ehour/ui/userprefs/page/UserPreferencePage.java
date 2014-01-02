@@ -48,7 +48,7 @@ public class UserPreferencePage extends AbstractBasePage<Void>
 	}
 	
 	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		AjaxEventType type = ajaxEvent.getEventType();
 		

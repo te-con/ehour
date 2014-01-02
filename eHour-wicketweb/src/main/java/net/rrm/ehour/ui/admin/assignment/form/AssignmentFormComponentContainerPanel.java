@@ -83,7 +83,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 	}
 
 	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE)
 		{

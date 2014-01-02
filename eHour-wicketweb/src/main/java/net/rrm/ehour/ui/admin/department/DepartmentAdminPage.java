@@ -103,7 +103,7 @@ public class DepartmentAdminPage extends AbstractTabbedAdminPage<DepartmentAdmin
     }
 
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
         if (type == DepartmentAjaxEventType.DEPARTMENT_DELETED

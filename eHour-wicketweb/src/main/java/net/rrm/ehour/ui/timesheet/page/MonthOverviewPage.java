@@ -98,7 +98,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
      * @param target
      */
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
         AjaxRequestTarget target = ajaxEvent.getTarget();
 

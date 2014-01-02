@@ -29,5 +29,5 @@ public interface AjaxEventListener
 	 * @return true to proceed with other events or false to stop after this component
 	 * @since 0.7.2 (replacement of the ajaxRequestReceived methods)
 	 */
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent);
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent);
 }

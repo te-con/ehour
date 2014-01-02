@@ -52,7 +52,7 @@ public abstract class AbstractFormSubmittingPanel<T> extends AbstractAjaxPanel<T
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		if (ajaxEvent.getEventType() == CommonAjaxEventType.SUBMIT_ERROR)
 		{

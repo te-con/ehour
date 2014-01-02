@@ -93,7 +93,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
         if (type == ProjectAjaxEventType.PROJECT_UPDATED
