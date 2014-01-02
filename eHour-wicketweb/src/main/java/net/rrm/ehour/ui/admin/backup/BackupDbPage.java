@@ -1,6 +1,7 @@
 package net.rrm.ehour.ui.admin.backup;
 
 import net.rrm.ehour.backup.service.ParseSession;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.backup.restore.RestoreDbPanel;
 import net.rrm.ehour.ui.admin.backup.restore.ValidateRestorePanel;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -15,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -23,7 +25,7 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
 
-
+@AuthorizeInstantiation(UserRole.ROLE_ADMIN)
 public class BackupDbPage extends AbstractBasePage<Void> {
     private static final String ID_PARSE_STATUS = "parseStatus";
     private static final String ID_RESTORE_BORDER = "restoreBorder";
