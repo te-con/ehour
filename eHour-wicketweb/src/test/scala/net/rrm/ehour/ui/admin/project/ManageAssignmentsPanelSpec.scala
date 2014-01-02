@@ -9,7 +9,7 @@ import net.rrm.ehour.util._
 import org.apache.wicket.model.Model
 
 class ManageAssignmentsPanelSpec extends AbstractSpringWebAppSpec {
-  "Mange Assignments Panel" should {
+  "Manage Assignments Panel" should {
     val assignmentService = mockService[ProjectAssignmentService]
     mockService[UserService]
 
