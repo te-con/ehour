@@ -14,16 +14,12 @@ import org.apache.wicket.request.resource.{JavaScriptResourceReference, CssResou
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.ui.common.wicket._
 import org.apache.wicket.markup.html.panel.Fragment
-import org.apache.wicket.markup.html.form.{Form, CheckBox, TextField}
-import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
-import org.apache.wicket.markup.html.WebMarkupContainer
-import net.rrm.ehour.ui.common.component.{AjaxFormComponentFeedbackIndicator, ValidatingFormComponentAjaxBehavior}
-import org.apache.wicket.validation.validator.RangeValidator
 import java.lang.{Float => JFloat}
-import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
 import java.{util => ju}
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
+import org.apache.wicket.event.Broadcast
+import org.apache.wicket.Component
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation:Boolean) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
   def this(id: String, model: IModel[ProjectAdminBackingBean]) = this(id, model, false)
@@ -32,6 +28,8 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
 
   val Css = new CssResourceReference(classOf[AssignedUsersPanel], "assignedUsersPanel.css")
   val Js = new JavaScriptResourceReference(classOf[AssignedUsersPanel], "assignedUsersPanel.js")
+
+  setOutputMarkupId(true)
 
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
@@ -117,72 +115,6 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
         val itemModel = item.getModel
         item.setOutputMarkupId(true)
 
-        def createNameLabel = new NonEmptyLabel("name", new PropertyModel(itemModel, "user.fullName"))
-
-        def createEditFragment(): Fragment = {
-          def closeEditMode(target: AjaxRequestTarget) {
-            val replacement = createShowFragment()
-            item.addOrReplace(replacement)
-            target.add(replacement)
-          }
-
-          val fragment = new Fragment(ContainerId, "inputRow", Self)
-          fragment.setOutputMarkupId(true)
-
-          val form = new Form[Unit]("editForm")
-          fragment.add(form)
-
-          form.add(new CheckBox("active", new PropertyModel[Boolean](itemModel, "active")))
-
-          form.add(createNameLabel)
-
-          val dateStart = new LocalizedDatePicker("startDate", new PropertyModel[ju.Date](itemModel, "dateStart"))
-          dateStart.add(new ValidatingFormComponentAjaxBehavior)
-          form.add(new AjaxFormComponentFeedbackIndicator("dateStartValidationError", dateStart))
-          form.add(dateStart)
-
-          val dateEnd = new LocalizedDatePicker("endDate", new PropertyModel[ju.Date](itemModel, "dateEnd"))
-          dateEnd.add(new ValidatingFormComponentAjaxBehavior)
-          form.add(new AjaxFormComponentFeedbackIndicator("dateEndValidationError", dateEnd))
-          form.add(dateEnd)
-
-          val rate = new TextField("rate", new PropertyModel[JFloat](itemModel, "hourlyRate"), classOf[JFloat])
-          form.add(rate)
-
-          rate.add(new ValidatingFormComponentAjaxBehavior)
-          rate.add(RangeValidator.minimum[JFloat](0f))
-          form.add(new AjaxFormComponentFeedbackIndicator("rateValidationError", rate))
-
-          form.add(new DateOverlapValidator("dateStartDateEnd", dateStart, dateEnd))
-
-          val submitButton = new WebMarkupContainer("submit")
-          submitButton.add(ajaxSubmit(form, {
-            (form, target) =>
-              Self.getPanelModelObject.addAssignmentToQueue(itemModel.getObject)
-              closeEditMode(target)
-          }))
-
-          form.add(submitButton)
-
-          val cancelButton = new WebMarkupContainer("cancel")
-          cancelButton.add(ajaxClick({
-            target => closeEditMode(target)
-          }))
-          form.add(cancelButton)
-
-          val deleteButton = new WebMarkupContainer("delete")
-          deleteButton.setVisible(!(onlyDeactivation || !itemModel.getObject.isDeletable))
-          deleteButton.add(ajaxClick({
-            target =>
-              Self.getPanelModelObject.deleteAssignment(itemModel.getObject)
-              item.setVisible(false)
-              target.add(item)
-          }))
-          form.add(deleteButton)
-
-          fragment
-        }
-
         def createShowFragment(): Fragment = {
           val container = new Fragment(ContainerId, "displayRow", Self)
           container.setOutputMarkupId(true)
@@ -195,9 +127,7 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
 
           container.add(ajaxClick({
             target => {
-              val replacement = createEditFragment()
-              item.addOrReplace(replacement)
-              target.add(replacement)
+              send(Self.getParent, Broadcast.BREADTH, EditAssignmentEvent(itemModel.getObject, target))
             }
           }))
 
@@ -242,4 +172,10 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
   }
 
   val applyJsFilter = "initAssignmentFilter();"
+}
+
+case class EditAssignmentEvent(assignment: ProjectAssignment, target: AjaxRequestTarget) {
+  def refresh(components: Component*) {
+    target.add(components: _*)
+  }
 }
