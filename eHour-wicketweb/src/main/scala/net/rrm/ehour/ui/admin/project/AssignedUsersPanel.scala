@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.admin.project
 
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import org.apache.wicket.model.{StringResourceModel, PropertyModel, IModel}
+import org.apache.wicket.model.{PropertyModel, IModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.domain.{ProjectAssignment, Project}
@@ -17,21 +17,21 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.markup.html.form.{Form, CheckBox, TextField}
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import org.apache.wicket.markup.html.WebMarkupContainer
-import org.apache.wicket.AttributeModifier
 import net.rrm.ehour.ui.common.component.{AjaxFormComponentFeedbackIndicator, ValidatingFormComponentAjaxBehavior}
 import org.apache.wicket.validation.validator.RangeValidator
 import java.lang.{Float => JFloat}
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
 import java.{util => ju}
+import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 
 class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation:Boolean) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
   def this(id: String, model: IModel[ProjectAdminBackingBean]) = this(id, model, false)
 
   val Self = this
 
-  val Css = new CssResourceReference(classOf[AssignedUsersPanel], "projectAdmin.css")
-  val Js = new JavaScriptResourceReference(classOf[AssignedUsersPanel], "projectAdmin.js")
+  val Css = new CssResourceReference(classOf[AssignedUsersPanel], "assignedUsersPanel.css")
+  val Js = new JavaScriptResourceReference(classOf[AssignedUsersPanel], "assignedUsersPanel.js")
 
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
@@ -42,12 +42,15 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
   override def onInitialize() {
     val project = getPanelModelObject.getProject
 
+    val border = new GreyRoundedBorder("border")
+    addOrReplace(border)
+
     val assignments = sort(fetchProjectAssignmentsAndMergeWithModel(project))
 
-    addOrReplace(createFilterOrHide("filterContainer", !assignments.isEmpty))
+    border.addOrReplace(createFilterOrHide("filterContainer", !assignments.isEmpty))
 
     val container = new Container("assignmentContainer")
-    addOrReplace(container)
+    border.addOrReplace(container)
     container.addOrReplace(createAssignmentListView(assignments))
     container.setVisible(!assignments.isEmpty)
     container.setOutputMarkupPlaceholderTag(true)
@@ -61,16 +64,16 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
         container.setVisible(!assignments.isEmpty)
 
         val filterOrHide = createFilterOrHide("filterContainer", !assignments.isEmpty)
-        Self.addOrReplace(filterOrHide)
+        border.addOrReplace(filterOrHide)
         target.add(filterOrHide)
 
         target.add(container)
         target.appendJavaScript(applyJsFilter)
 
         def changeVisibility(buttonId: String, visibility: Boolean) {
-          val addUsersButton = Self.get(buttonId)
-          addUsersButton.setVisible(visibility)
-          target.add(addUsersButton)
+          val button = border.getBodyContainer.get(buttonId)
+          button.setVisible(visibility)
+          target.add(button)
         }
 
         changeVisibility("addUsers", showUsersVisibility)
@@ -79,13 +82,13 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
 
 
     val hideUsers = new AjaxLink("hideUsers", callBack(p => fetchProjectAssignmentsAndMergeWithModel(p), showUsersVisibility = true))
-    addOrReplace(hideUsers)
+    border.addOrReplace(hideUsers)
     hideUsers.setOutputMarkupId(true)
     hideUsers.setOutputMarkupPlaceholderTag(true)
     hideUsers.setVisible(false)
 
     val addUsers = new AjaxLink("addUsers", callBack(p => joinWithDuplicates(fetchUsers(p), fetchProjectAssignmentsAndMergeWithModel(p)), showUsersVisibility = false))
-    addOrReplace(addUsers)
+    border.addOrReplace(addUsers)
     addUsers.setOutputMarkupId(true)
     addUsers.setOutputMarkupPlaceholderTag(true)
     addUsers.setVisible(!onlyDeactivation)
@@ -184,25 +187,8 @@ class AssignedUsersPanel(id: String, model: IModel[ProjectAdminBackingBean], onl
           val container = new Fragment(ContainerId, "displayRow", Self)
           container.setOutputMarkupId(true)
 
-          val activeAssignment = new WebMarkupContainer("activeAssignment")
-          val assignment = itemModel.getObject
-
-          def isUnassigned = assignment.getPK == null
-          def isAssigned = !isUnassigned || getPanelModelObject.getAssignmentsQueue.contains(assignment)
-          def isActive = assignment.isActive
-
-          val (cssClass, title) =
-            if (isAssigned) {
-              if (isActive) ("ui-icon-bullet", "admin.projects.assignments.assigned")
-              else ("ui-icon-radio-off", "admin.projects.assignments.inactive_assigned")
-            } else
-              ("ui-icon-radio-on", "admin.projects.assignments.not_assigned")
-
-          activeAssignment.add(AttributeModifier.append("class", cssClass))
-          activeAssignment.add(AttributeModifier.replace("title", new StringResourceModel(title, Self, null)))
-          container.add(activeAssignment)
-
-          container.add(createNameLabel)
+          container.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "user.fullName")))
+          container.add(new NonEmptyLabel("role", new PropertyModel(itemModel, "role")))
           container.add(new DateLabel("startDate", new PropertyModel(itemModel, "dateStart")))
           container.add(new DateLabel("endDate", new PropertyModel(itemModel, "dateEnd")))
           container.add(new NonEmptyLabel("rate", new PropertyModel(itemModel, "hourlyRate")))

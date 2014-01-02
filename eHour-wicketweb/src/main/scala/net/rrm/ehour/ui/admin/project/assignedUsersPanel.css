@@ -9,13 +9,13 @@
     font-weight: bold;
 }
 
-.project_users .active {
-    width: 4em;
-    float: left;
-}
-
 .project_users .name {
     width: 15em;
+    float:left;
+}
+
+.project_users .role {
+    width: 7em;
     float:left;
 }
 
@@ -27,7 +27,6 @@
 .project_users .dateInput {
     width: 5em !important;
 }
-
 
 .project_users .rate {
     width: 4em;
@@ -74,6 +73,19 @@
 
 .filter {
     margin-bottom: 10px;
+}
+
+.assignedContainer {
+    margin: 20px 0 15px 0;
+}
+
+.assignedContainer h4 {
+    line-height: 16px;
+    padding: 0;
+    margin: 0;
+    font: bold 1.0em Geneva, Arial, Helvetica, sans-serif;
+    color: #536e87;
+    border-bottom: 1px solid white;
 }
 
 

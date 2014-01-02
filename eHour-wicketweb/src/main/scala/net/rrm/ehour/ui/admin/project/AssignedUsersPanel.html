@@ -8,73 +8,53 @@
 <body>
 <wicket:panel>
 
-    <div class="assignedContainer">
-        <h4><wicket:message key="admin.projects.assignments.header" /></h4>
-        <br />
+    <div wicket:id="border">
+        <div class="assignedContainer">
+            <h4><wicket:message key="admin.projects.assignments.header" /></h4>
+            <br />
 
-        <div class="usersFilter">
-            <div class="filter floatLeft" wicket:id="filterContainer"></div>
+            <div class="usersFilter">
+                <div class="filter floatLeft" wicket:id="filterContainer"></div>
 
-            <div>
-                <a class="button floatRight" onclick="this.blur();" wicket:id="addUsers">
-                    <span><wicket:message key="admin.project.assignments.addUsers" /></span></a>
+                <div>
+                    <a class="button floatRight" onclick="this.blur();" wicket:id="addUsers">
+                        <span><wicket:message key="admin.project.assignments.addUsers" /></span></a>
 
-                <a class="button floatRight" onclick="this.blur();" wicket:id="hideUsers">
-                    <span><wicket:message key="admin.project.assignments.done" /></span></a>
+                    <a class="button floatRight" onclick="this.blur();" wicket:id="hideUsers">
+                        <span><wicket:message key="admin.project.assignments.done" /></span></a>
+                </div>
+
             </div>
 
-        </div>
+            <br style="clear:both"/>
 
-        <br style="clear:both"/>
+            <div class="project_users" wicket:id="assignmentContainer">
+                <div class="header">
+                    <div class="name"><wicket:message key="admin.project.assignments.user" /></div>
+                    <div class="role">Rol</div>
+                    <div class="date"><wicket:message key="admin.project.assignments.start" /></div>
+                    <div class="date"><wicket:message key="admin.project.assignments.end" /></div>
+                    <div class="rate"><wicket:message key="admin.project.assignments.rate" /></div>
+                    <div class="scrollbar">&nbsp;</div>
+                    <br/>
+                </div>
 
-        <div class="project_users" wicket:id="assignmentContainer">
-            <div class="header">
-                <div class="active"><wicket:message key="admin.project.assignments.active" /></div>
-                <div class="name"><wicket:message key="admin.project.assignments.user" /></div>
-                <div class="date"><wicket:message key="admin.project.assignments.start" /></div>
-                <div class="date"><wicket:message key="admin.project.assignments.end" /></div>
-                <div class="rate"><wicket:message key="admin.project.assignments.rate" /></div>
-                <div class="buttons">&nbsp;</div>
-                <div class="scrollbar">&nbsp;</div>
-                <br/>
-            </div>
-
-            <div class="rows">
-                <div class="row" wicket:id="assignments">
-                    <span class="inline container" wicket:id="container"></span>
-                    <br clear="both" />
+                <div class="rows">
+                    <div class="row" wicket:id="assignments">
+                        <span class="inline container" wicket:id="container"></span>
+                        <br clear="both" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <wicket:fragment wicket:id="inputRow">
-        <form wicket:id="editForm">
-            <div class="active"><input type="checkbox" wicket:id="active"/></div>
-            <div class="name filterable" wicket:id="name"/>
-            <div class="date filterable"><input class="dateInput" type="text" wicket:id="startDate"/></div>
-            <div class="date filterable"><input class="dateInput" type="text" wicket:id="endDate"/></div>
-            <div class="rate filterable"><input class="rateInput" type="text" id="rate" wicket:id="rate"/></div>
-            <div class="buttons">
-                <span class="ui-state-default ui-corner-all borderLess clickable" wicket:id="submit"><span class="ui-icon ui-icon-check floatLeft"></span></span>
-                <span class="ui-state-default ui-corner-all borderLess clickable" wicket:id="cancel"><span class="ui-icon ui-icon-cancel floatLeft"></span></span>
-                <span class="ui-state-default ui-corner-all borderLess clickable" wicket:id="delete"><span class="ui-icon ui-icon-trash floatLeft"></span></span>
-            </div>
-            <div class="validationError">
-                <span wicket:id="dateStartValidationError"></span>
-                <span wicket:id="dateEndValidationError"></span>
-                <span wicket:id="rateValidationError"></span>
-            </div>
-        </form>
-    </wicket:fragment>
-
     <wicket:fragment wicket:id="displayRow">
-        <div class="active"><span class="ui-state-default ui-corner-all borderLess"><span class="ui-icon" wicket:id="activeAssignment"></span></span></div>
         <div class="name filterable" wicket:id="name"/>
+        <div class="role filterable" wicket:id="role"/>
         <div class="date filterable" wicket:id="startDate"/>
         <div class="date filterable" wicket:id="endDate"/>
         <div class="rate filterable" wicket:id="rate"/>
-        <div class="buttons">&nbsp;</div>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="filterInput">
