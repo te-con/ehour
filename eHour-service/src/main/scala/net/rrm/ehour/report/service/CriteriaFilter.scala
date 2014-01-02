@@ -83,10 +83,16 @@ private object ProjectPredicate {
 @Service
 class UserAndDepartmentCriteriaFilter @Autowired()(userDao: UserDao) {
   def getAvailableUsers(userSelectedCriteria: UserSelectedCriteria): (ju.List[UserDepartment], ju.List[User]) = {
-    val users = toScala(if (userSelectedCriteria.isEmptyDepartments)
-      userDao.findUsers(userSelectedCriteria.isOnlyActiveUsers)
+    val users = toScala(if (userSelectedCriteria.isOnlyActiveUsers)
+      userDao.findActiveUsers()
     else
-      userDao.findUsersForDepartments(userSelectedCriteria.getDepartments, userSelectedCriteria.isOnlyActiveUsers))
+      userDao.findAll())
+
+//
+//    val users = toScala(if (userSelectedCriteria.isEmptyDepartments)
+//      userDao.findUsers(userSelectedCriteria.isOnlyActiveUsers)
+//    else
+//      userDao.findUsersForDepartments(userSelectedCriteria.getDepartments, userSelectedCriteria.isOnlyActiveUsers))
 
     val filteredUsers = if (userSelectedCriteria.isForPm) {
       users.filter(u => {
@@ -99,6 +105,11 @@ class UserAndDepartmentCriteriaFilter @Autowired()(userDao: UserDao) {
 
     val departments = filteredUsers.map(_.getUserDepartment).toSet.toList
 
-    (toJava(departments), toJava(filteredUsers))
+    val xs = if (userSelectedCriteria.isEmptyDepartments)
+      filteredUsers
+    else
+     filteredUsers.filter(u => userSelectedCriteria.getDepartments.contains(u.getUserDepartment))
+
+    (toJava(departments), toJava(xs))
   }
 }

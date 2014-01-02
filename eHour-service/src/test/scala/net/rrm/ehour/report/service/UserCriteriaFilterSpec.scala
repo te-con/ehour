@@ -6,7 +6,7 @@ import org.mockito.Mockito._
 import net.rrm.ehour.report.service.ReportFilterFixture._
 import net.rrm.ehour.report.criteria.UserSelectedCriteria
 import net.rrm.ehour.persistence.user.dao.UserDao
-import net.rrm.ehour.domain.{UserObjectMother, ProjectObjectMother, ProjectAssignmentObjectMother}
+import net.rrm.ehour.domain.{UserDepartmentObjectMother, UserObjectMother, ProjectObjectMother, ProjectAssignmentObjectMother}
 import net.rrm.ehour.util._
 
 class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
@@ -17,7 +17,7 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
 
   "User Criteria Filter" must {
     "find all users when no departments are provided" in {
-      when(dao.findUsers(false)).thenReturn(toJava(List(pm)))
+      when(dao.findAll()).thenReturn(toJava(List(pm)))
 
       val criteria = new UserSelectedCriteria
       criteria.setOnlyActiveUsers(false)
@@ -25,35 +25,37 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
 
       users should have size 1
 
-      verify(dao).findUsers(false)
+      verify(dao).findAll()
     }
 
     "find all active users when no departments are provided" in {
-      when(dao.findUsers(true)).thenReturn(toJava(List(pm)))
+      when(dao.findActiveUsers()).thenReturn(toJava(List(pm)))
 
       val criteria = new UserSelectedCriteria
       val (_, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
-      verify(dao).findUsers(true)
+      verify(dao).findActiveUsers()
     }
 
     "find all users for given departments" in {
-      when(dao.findUsersForDepartments(toJava(List(department)), false)).thenReturn(toJava(List(pm)))
+      val userFromOtherDepartment =UserObjectMother.createUser(UserDepartmentObjectMother.createUserDepartment())
+      when(dao.findAll()).thenReturn(toJava(List(pm, userFromOtherDepartment)))
 
       val criteria = new UserSelectedCriteria
-      criteria.setDepartments(toJava(List(department)))
+      criteria.setDepartments(toJava(List(pm.getUserDepartment)))
       criteria.setOnlyActiveUsers(false)
       val (_, users) = subject.getAvailableUsers(criteria)
 
       users should have size 1
 
-      verify(dao).findUsersForDepartments(toJava(List(department)), false)
+      verify(dao).findAll()
     }
 
     "find all active users for given departments" in {
-      when(dao.findUsersForDepartments(toJava(List(department)), true)).thenReturn(toJava(List(pm)))
+      val userFromOtherDepartment =UserObjectMother.createUser(UserDepartmentObjectMother.createUserDepartment())
+      when(dao.findActiveUsers()).thenReturn(toJava(List(pm, userFromOtherDepartment)))
 
       val criteria = new UserSelectedCriteria
       criteria.setDepartments(toJava(List(department)))
@@ -62,7 +64,7 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
 
       users should have size 1
 
-      verify(dao).findUsersForDepartments(toJava(List(department)), true)
+      verify(dao).findActiveUsers()
     }
 
     "find all users who are assigned to a PM project" in {
@@ -79,7 +81,7 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
       val pmAssignment = ProjectAssignmentObjectMother.createProjectAssignment(userAssigned, projectPm)
       userAssigned.addProjectAssignment(pmAssignment)
 
-      when(dao.findUsers(true)).thenReturn(toJava(List(userNotAssigned, userAssigned)))
+      when(dao.findActiveUsers()).thenReturn(toJava(List(userNotAssigned, userAssigned)))
 
       val criteria = new UserSelectedCriteria
       criteria.setReportTypeToPM(pm)
