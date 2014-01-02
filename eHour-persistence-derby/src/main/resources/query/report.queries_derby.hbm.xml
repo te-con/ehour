@@ -48,7 +48,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
          ]]>
     </sql-query>
     	
@@ -96,7 +97,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
          ]]>         
 	</sql-query>	
          
@@ -144,7 +146,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
          ]]>         
 	</sql-query>	
 	
@@ -193,8 +196,9 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
-         ]]>         
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
+         ]]>
 	</sql-query>	
 	
     <sql-query name="Report.getHoursPerDay">
@@ -240,7 +244,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
          ]]>         
 	</sql-query>	
 	
