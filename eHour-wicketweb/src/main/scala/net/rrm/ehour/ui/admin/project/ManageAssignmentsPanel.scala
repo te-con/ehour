@@ -7,6 +7,7 @@ import org.apache.wicket.event.IEvent
 import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.admin.assignment.{AssignmentAjaxEventType, AssignmentAdminBackingBean, AssignmentFormPanel}
 import net.rrm.ehour.ui.common.event.AjaxEvent
+import net.rrm.ehour.ui.admin.assignment.form.AssignmentFormComponentContainerPanel.DisplayOption
 
 class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation:Boolean = false) extends AbstractAjaxPanel(id, model) {
   override def onInitialize() {
@@ -16,7 +17,6 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
     addOrReplace(createFormContainer)
   }
-
 
   def createFormContainer: Container = {
     new Container(ManageAssignmentsPanel.FORM_ID)
@@ -51,7 +51,8 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   }
 
   def editAssignment(event: EditAssignmentEvent) {
-    val formPanel = new AssignmentFormPanel(ManageAssignmentsPanel.FORM_ID, new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment)))
+    val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))
+    val formPanel = new AssignmentFormPanel(ManageAssignmentsPanel.FORM_ID, model, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON)
     formPanel.setOutputMarkupId(true)
     addOrReplace(formPanel)
     event.refresh(formPanel)

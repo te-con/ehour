@@ -19,67 +19,61 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentAdminBackingBean>
-{
-	private static final long serialVersionUID = 7704141227799017924L;
+public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentAdminBackingBean> {
+    private static final long serialVersionUID = 7704141227799017924L;
 
-	@SpringBean
-	private ProjectAssignmentManagementService projectAssignmentManagementService;
-	
-	public AssignmentFormPanel(String id, final IModel<AssignmentAdminBackingBean> model)
-	{
-		super(id, model);
+    @SpringBean
+    private ProjectAssignmentManagementService projectAssignmentManagementService;
 
-		setOutputMarkupId(true);
-		
-		setUpPage(model);
-	}
+    public AssignmentFormPanel(String id, final IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions) {
+        super(id, model);
 
-	private void setUpPage(IModel<AssignmentAdminBackingBean> model)
-	{
-		Border greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
-		add(greyBorder);
-		
-		final Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("assignmentForm", model);
-		greyBorder.add(form);
+        setOutputMarkupId(true);
 
-		// add submit form
+        setUpPage(model, displayOptions);
+    }
+
+    private void setUpPage(IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions) {
+        Border greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
+        add(greyBorder);
+
+        final Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("assignmentForm", model);
+        greyBorder.add(form);
+
+        // add submit form
         boolean deletable = ((AssignmentAdminBackingBean) getDefaultModelObject()).getProjectAssignment().isDeletable();
         FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(AssignmentAjaxEventType.ASSIGNMENT_DELETED)
                 .withSubmitEventType(AssignmentAjaxEventType.ASSIGNMENT_UPDATED);
 
-
         FormUtil.setSubmitActions(formConfig);
-		
-		form.add(new AssignmentFormComponentContainerPanel("formComponents", form, model, DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON));
-		
-		form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
-	}
-	
-	@Override
-	protected final boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception
-	{
-		AssignmentAdminBackingBean assignmentBackingBean = (AssignmentAdminBackingBean) backingBean;
-		
-		if (type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
-		{
-			persistAssignment(assignmentBackingBean);
-		}
-		else if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED)
-		{
-			deleteAssignment(assignmentBackingBean);
-		}
+
+        if (displayOptions.length == 0) {
+            displayOptions = new DisplayOption[]{DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON};
+        }
+
+        form.add(new AssignmentFormComponentContainerPanel("formComponents", form, model, displayOptions));
+
+        form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
+    }
+
+    @Override
+    protected final boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+        AssignmentAdminBackingBean assignmentBackingBean = (AssignmentAdminBackingBean) backingBean;
+
+        if (type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
+            persistAssignment(assignmentBackingBean);
+        } else if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED) {
+            deleteAssignment(assignmentBackingBean);
+        }
         return true;
     }
-	
-	private void persistAssignment(AssignmentAdminBackingBean backingBean)
-	{
-		projectAssignmentManagementService.assignUserToProject(backingBean.getProjectAssignmentForSave());
-	}
-	
-	private void deleteAssignment(AssignmentAdminBackingBean backingBean) throws ObjectNotFoundException, ParentChildConstraintException
-	{
-		projectAssignmentManagementService.deleteProjectAssignment(backingBean.getProjectAssignment());
-	}	
+
+    private void persistAssignment(AssignmentAdminBackingBean backingBean) {
+        projectAssignmentManagementService.assignUserToProject(backingBean.getProjectAssignmentForSave());
+    }
+
+    private void deleteAssignment(AssignmentAdminBackingBean backingBean) throws ObjectNotFoundException, ParentChildConstraintException {
+        projectAssignmentManagementService.deleteProjectAssignment(backingBean.getProjectAssignment());
+    }
 }
