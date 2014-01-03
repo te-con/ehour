@@ -164,6 +164,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
         };
 
         fragment.add(customerListView);
+        fragment.setOutputMarkupId(true);
 
         return fragment;
     }
