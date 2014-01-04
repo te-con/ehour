@@ -2,6 +2,7 @@ package net.rrm.ehour.ui.admin.project
 
 import org.apache.wicket.model.IModel
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
+import net.rrm.ehour.ui.admin.project.assign.ManageAssignmentsPanel
 
 class ProjectFormContainer(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel(id, model) {
   override def onInitialize() {

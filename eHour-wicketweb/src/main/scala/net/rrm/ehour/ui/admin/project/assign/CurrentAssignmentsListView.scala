@@ -29,14 +29,16 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
   override def onInitialize() {
     super.onInitialize()
 
-    val border = new GreyBlueRoundedBorder("border")
-    addOrReplace(border)
 
     val project = getPanelModelObject.getProject
 
-    val assignments = sort(toScala(fetchProjectAssignments(project)))
+    val assignments = sort(fetchProjectAssignments(project))
 
-    border.addOrReplace(createFilter("filterContainer", !assignments.isEmpty))
+    addOrReplace(createFilter("filterContainer", !assignments.isEmpty))
+
+    val border = new GreyBlueRoundedBorder("border")
+    addOrReplace(border)
+    border.addOrReplace(createAssignmentListView("assignments", assignments))
   }
 
   def createAssignmentListView(id: String, assignments: List[ProjectAssignment]): ListView[ProjectAssignment] = {
@@ -53,7 +55,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
 
         item.add(ajaxClick({
           target => {
-            send(Self.getParent, Broadcast.BREADTH, EditAssignmentEvent(itemModel.getObject, target))
+            send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
           }
         }))
 
@@ -70,7 +72,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
     f
   }
 
-  private def fetchProjectAssignments(project: Project) = assignmentService.getProjectAssignmentsAndCheckDeletability(project)
+  private def fetchProjectAssignments(project: Project) = if (project.getPK == null) List() else toScala(assignmentService.getProjectAssignmentsAndCheckDeletability(project))
 
   private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
 

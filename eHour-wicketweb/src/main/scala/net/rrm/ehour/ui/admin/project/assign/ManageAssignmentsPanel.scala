@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.admin.project
+package net.rrm.ehour.ui.admin.project.assign
 
 import org.apache.wicket.model.{ResourceModel, CompoundPropertyModel, IModel}
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel
@@ -8,15 +8,20 @@ import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.admin.assignment.{AssignmentAjaxEventType, AssignmentAdminBackingBean, AssignmentFormPanel}
 import net.rrm.ehour.ui.common.event.AjaxEvent
 import net.rrm.ehour.ui.admin.assignment.form.AssignmentFormComponentContainerPanel.DisplayOption
-import net.rrm.ehour.ui.admin.project.assign.{CurrentAssignmentsListView, EditAssignmentEvent}
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
+import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
+import org.apache.wicket.markup.html.border.Border
 
 class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation:Boolean = false) extends AbstractAjaxPanel(id, model) {
   def this(id: String, model: IModel[ProjectAdminBackingBean]) = this(id, model, false)
+
+  val BORDER_ID= "border"
+  val ASSIGNED_USER_ID = "assignedUserPanel"
+  val FORM_ID = "assignmentFormPanel"
 
   val Self = this
 
@@ -30,23 +35,32 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   override def onInitialize() {
     super.onInitialize()
 
-    val greyBorder = new GreyRoundedBorder("border", new ResourceModel("admin.dept.title"))
+    val greyBorder = new GreyRoundedBorder(BORDER_ID, new ResourceModel("admin.projects.assignments.header"))
     addOrReplace(greyBorder)
 
     greyBorder.add(createCurrentAssignmentsList)
     greyBorder.add(createFormContainer)
   }
 
-  def createFormContainer = new Container(ManageAssignmentsPanel.FORM_ID)
+  def createFormContainer = new Container(FORM_ID)
 
-  def createCurrentAssignmentsList = new CurrentAssignmentsListView("currentAssignments", model, onlyDeactivation)
+  def createCurrentAssignmentsList = new CurrentAssignmentsListView(ASSIGNED_USER_ID, model, onlyDeactivation)
 
   // Wicket 6 event system
-  override def onEvent(event: IEvent[_]): Unit = {
+  override def onEvent(event: IEvent[_]) {
     event.getPayload match {
       case event: EditAssignmentEvent => editAssignment(event)
       case _ =>
     }
+  }
+
+  def editAssignment(event: EditAssignmentEvent) {
+    val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))
+    val formPanel = new AssignmentFormPanel(FORM_ID, model, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON)
+    formPanel.setOutputMarkupId(true)
+    val x = Self.get(BORDER_ID).asInstanceOf[Border]
+    x.getBodyContainer.addOrReplace(formPanel)
+    event.refresh(formPanel)
   }
 
   // own legacy event system...
@@ -64,20 +78,8 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     true
   }
 
-  def editAssignment(event: EditAssignmentEvent) {
-    val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))
-    val formPanel = new AssignmentFormPanel(ManageAssignmentsPanel.FORM_ID, model, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON)
-    formPanel.setOutputMarkupId(true)
-    addOrReplace(formPanel)
-    event.refresh(formPanel)
-  }
-
   override def renderHead(response: IHeaderResponse) {
     response.render(CssHeaderItem.forReference(Css))
   }
 }
 
-object ManageAssignmentsPanel {
-  val ASSIGNED_USER_ID = "assignedUserPanel"
-  val FORM_ID = "assignmentFormPanel"
-}

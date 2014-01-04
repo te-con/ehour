@@ -23,14 +23,12 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
-import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
 
 public class ProjectServiceImplTest {
     private ProjectServiceImpl projectService;
@@ -83,16 +81,13 @@ public class ProjectServiceImplTest {
     }
 
     @Test
-    public void should_create_project_and_make_assignments() {
+    public void should_create_project() {
         Project project = new Project(1);
 
         expect(projectDao.persist(project)).andReturn(project);
         expect(userService.validateProjectManagementRoles(null)).andReturn(null);
 
-        Capture<ProjectAssignment> captureArgument = new Capture<ProjectAssignment>();
-        projectAssignmentManagementService.updateProjectAssignment(capture(captureArgument));
-
-        replay(userService, projectDao, projectAssignmentManagementService);
+        replay(userService, projectDao);
 
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.setProject(null);
@@ -101,23 +96,16 @@ public class ProjectServiceImplTest {
 
         verify(userService);
         verify(projectDao);
-        verify(projectAssignmentManagementService);
-
-        ProjectAssignment projectAssignment = captureArgument.getValue();
-        assertEquals(project, projectAssignment.getProject());
     }
 
     @Test
-    public void should_update_project_and_make_assignments() {
+    public void should_update_project() {
         Project project = new Project(1);
 
         expect(projectDao.persist(project)).andReturn(project);
         expect(userService.validateProjectManagementRoles(null)).andReturn(null);
 
-        Capture<ProjectAssignment> captureArgument = new Capture<ProjectAssignment>();
-        projectAssignmentManagementService.updateProjectAssignment(capture(captureArgument));
-
-        replay(userService, projectDao, projectAssignmentManagementService);
+        replay(userService, projectDao);
 
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.setProject(project);
@@ -126,7 +114,6 @@ public class ProjectServiceImplTest {
 
         verify(userService);
         verify(projectDao);
-        verify(projectAssignmentManagementService);
     }
 
 }
