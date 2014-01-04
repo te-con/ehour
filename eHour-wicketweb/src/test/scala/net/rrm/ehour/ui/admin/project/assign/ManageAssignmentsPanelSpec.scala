@@ -7,7 +7,7 @@ import net.rrm.ehour.domain.{ProjectAssignmentObjectMother, ProjectObjectMother}
 import org.mockito.Mockito._
 import net.rrm.ehour.util._
 import org.apache.wicket.model.Model
-import net.rrm.ehour.ui.admin.project.{ProjectAdminBackingBean, ManageAssignmentsPanel}
+import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
 
 class ManageAssignmentsPanelSpec extends AbstractSpringWebAppSpec {
   "Manage Assignments Panel" should {

@@ -7,7 +7,7 @@ trait SystemInfoService {
   def info: SystemInfo
 }
 
-@Service("sysInfoService")
+@Service
 class SystemInfoServiceImpl @Autowired()(@Value("${ehour.database}") databaseName: String, @Value("${ehour.database.url:none}") databaseUrl: String, @Value("${ehour.database.driver:none}") jdbcDriver: String) extends SystemInfoService {
   def info: SystemInfo = SystemInfo(databaseName, databaseUrl, jdbcDriver)
 }

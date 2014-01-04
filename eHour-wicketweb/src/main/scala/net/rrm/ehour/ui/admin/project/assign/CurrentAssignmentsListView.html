@@ -2,45 +2,51 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd"
+        xmlns="http://www.w3.org/1999/xhtml">
 
 <body>
 <wicket:panel>
 
-    <div wicket:id="border">
-        <div class="assignedContainer">
-            <h4><wicket:message key="admin.projects.assignments.header" /></h4>
-            <br />
+    <p style="margin-right: 16px">
 
-            <div class="usersFilter">
-                <div class="filter floatLeft" wicket:id="filterContainer"></div>
+    <div class="usersFilter">
+        <div class="filter floatLeft" wicket:id="filterContainer"></div>
 
-                <div>
-                    <a class="button floatRight" onclick="this.blur();" wicket:id="addUsers">
-                        <span><wicket:message key="admin.project.assignments.addUsers" /></span></a>
+        <div>
+            <!--
+                                <a class="button floatRight" onclick="this.blur();" wicket:id="addUsers">
+                                    <span><wicket:message key="admin.project.assignments.addUsers" /></span></a>
 
-                    <a class="button floatRight" onclick="this.blur();" wicket:id="hideUsers">
-                        <span><wicket:message key="admin.project.assignments.done" /></span></a>
+                                <a class="button floatRight" onclick="this.blur();" wicket:id="hideUsers">
+                                    <span><wicket:message key="admin.project.assignments.done" /></span></a>
+            -->
+        </div>
+    </div>
+    </p>
+
+    <div wicket:id="border" class="inline" style="padding-top: 0; margin-top: 10px">
+        <div class="project_users">
+            <div class="header">
+                <div class="name">
+                    <wicket:message key="admin.project.assignments.user"/>
                 </div>
-
+                <div class="role">Rol</div>
+                <div class="date">
+                    <wicket:message key="admin.project.assignments.start"/>
+                </div>
+                <div class="date">
+                    <wicket:message key="admin.project.assignments.end"/>
+                </div>
+                <div class="rate">
+                    <wicket:message key="admin.project.assignments.rate"/>
+                </div>
+                <div class="scrollbar">&nbsp;</div>
+                <br/>
             </div>
 
-            <br style="clear:both"/>
-
-            <div class="project_users" wicket:id="assignmentContainer">
-                <div class="header">
-                    <div class="name"><wicket:message key="admin.project.assignments.user" /></div>
-                    <div class="role">Rol</div>
-                    <div class="date"><wicket:message key="admin.project.assignments.start" /></div>
-                    <div class="date"><wicket:message key="admin.project.assignments.end" /></div>
-                    <div class="rate"><wicket:message key="admin.project.assignments.rate" /></div>
-                    <div class="scrollbar">&nbsp;</div>
-                    <br/>
-                </div>
-
-                <div class="rows">
-                    <div class="row" wicket:id="assignments">
+            <div class="rows">
+                <div class="row" wicket:id="assignments">
                         <span class="inline container">
                             <div class="name filterable" wicket:id="name"/>
                             <div class="role filterable" wicket:id="role"/>
@@ -48,19 +54,18 @@
                             <div class="date filterable" wicket:id="endDate"/>
                             <div class="rate filterable" wicket:id="rate"/>
                         </span>
-                        <br clear="both" />
-                    </div>
+                    <br clear="both"/>
                 </div>
             </div>
         </div>
     </div>
 
     <wicket:fragment wicket:id="filterInput">
-        <input class="textInput searchInput" id="filterAssignmentInput" type="text" placeholder="Filter..." />
+        <input class="textInput searchInput" id="filterAssignmentInput" type="text" placeholder="Filter..."/>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="noAssignments">
-        <wicket:message key="admin.projects.assignments.none" />
+        <wicket:message key="admin.projects.assignments.none"/>
     </wicket:fragment>
 </wicket:panel>
 
