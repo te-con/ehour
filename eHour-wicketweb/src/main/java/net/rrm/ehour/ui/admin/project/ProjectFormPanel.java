@@ -183,13 +183,12 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     }
 
     private void createProject(ProjectAdminBackingBean backingBean) {
-        projectService.createProject(backingBean.getProject(), backingBean.getAssignmentsQueue());
+        projectService.createProject(backingBean.getProject());
     }
 
     private void updateProject(ProjectAdminBackingBean backingBean) {
-        projectService.updateProject(backingBean.getProject(), backingBean.getAssignmentsQueue(), backingBean.getRemovalQueue());
+        projectService.updateProject(backingBean.getProject());
     }
-
 
     private void deleteProject(ProjectAdminBackingBean backingBean) throws ParentChildConstraintException {
         projectService.deleteProject(backingBean.getProject().getProjectId());

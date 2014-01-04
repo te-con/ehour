@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.project.service;
 
-import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
@@ -35,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -97,12 +95,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Auditable(actionType = AuditActionType.CREATE)
     @Override
-    public Project createProject(Project project, Collection<ProjectAssignment> assignmentsToMake) {
-        for (ProjectAssignment projectAssignment : assignmentsToMake) {
-            projectAssignment.setProject(project);
-        }
-
-        return updateProject(project, assignmentsToMake, Lists.<ProjectAssignment>newArrayList());
+    public Project createProject(Project project) {
+        return updateProject(project);
     }
 
 
@@ -113,23 +107,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         validatePMRoles(project);
         assignUsersToDefaultProject(project);
-
-        return project;
-    }
-
-    @Transactional
-    @Auditable(actionType = AuditActionType.UPDATE)
-    @Override
-    public Project updateProject(Project project, Collection<ProjectAssignment> assignmentsToMake, Collection<ProjectAssignment> assignmentsToDelete) {
-        updateProject(project);
-
-        for (ProjectAssignment projectAssignment : assignmentsToMake) {
-            projectAssignmentManagementService.updateProjectAssignment(projectAssignment);
-        }
-
-        for (ProjectAssignment projectAssignment : assignmentsToDelete) {
-            projectAssignmentManagementService.deleteProjectAssignment(projectAssignment);
-        }
 
         return project;
     }

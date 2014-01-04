@@ -2,13 +2,12 @@ package net.rrm.ehour.ui.pm
 
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.domain.Project
-import net.rrm.ehour.ui.admin.project.{AssignedUsersPanel, ProjectAdminBackingBean}
+import net.rrm.ehour.ui.admin.project.{ManageAssignmentsPanel, ProjectAdminBackingBean}
 import org.apache.wicket.model.{ResourceModel, Model}
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.wicket.AjaxLink
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService
 import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.util._
 import org.apache.wicket.markup.html.basic.Label
 import net.rrm.ehour.config.PmPrivilege
 
@@ -25,7 +24,7 @@ class ProjectManagementModifyPanel(id: String, project: Project) extends Abstrac
     val adminBackingBean = new ProjectAdminBackingBean(project)
     val privilege = getConfig.getPmPrivilege
 
-    val assignedUsersPanel = new AssignedUsersPanel("assignments", new Model(adminBackingBean), onlyDeactivation = privilege == PmPrivilege.DEACTIVATE_ONLY)
+    val assignedUsersPanel = new ManageAssignmentsPanel("assignments", new Model(adminBackingBean), onlyDeactivation = privilege == PmPrivilege.DEACTIVATE_ONLY)
     border.add(assignedUsersPanel)
 
     val placeholderLabel = new Label("serverMessage", "")
@@ -35,9 +34,11 @@ class ProjectManagementModifyPanel(id: String, project: Project) extends Abstrac
     border.add(placeholderLabel)
 
     border.add(new AjaxLink("submitButton", target => {
-      toScala(assignedUsersPanel.getPanelModelObject.getAssignmentsQueue).map(assignmentMgmtService.updateProjectAssignment)
-      toScala(assignedUsersPanel.getPanelModelObject.getRemovalQueue).map(assignmentMgmtService.deleteProjectAssignment)
-      assignedUsersPanel.getPanelModelObject.clearQueue
+//      toScala(assignedUsersPanel.getPanelModelObject.getAssignmentsQueue).map(assignmentMgmtService.updateProjectAssignment)
+//      toScala(assignedUsersPanel.getPanelModelObject.getRemovalQueue).map(assignmentMgmtService.deleteProjectAssignment)
+//      assignedUsersPanel.getPanelModelObject.clearQueue
+
+      // TODO use new panel
 
       val label = new Label("serverMessage", new ResourceModel("pm.admin.assignments.saved"))
       placeholderLabel.setOutputMarkupId(true)
