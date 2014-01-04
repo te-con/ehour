@@ -28,7 +28,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
@@ -98,7 +97,7 @@ public class ProjectServiceImplTest {
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.setProject(null);
 
-        projectService.createProject(project, Arrays.asList(assignment));
+        projectService.createProject(project);
 
         verify(userService);
         verify(projectDao);
@@ -123,7 +122,7 @@ public class ProjectServiceImplTest {
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.setProject(project);
 
-        projectService.createProject(project, Arrays.asList(assignment));
+        projectService.createProject(project);
 
         verify(userService);
         verify(projectDao);

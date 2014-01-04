@@ -17,12 +17,10 @@
 package net.rrm.ehour.project.service;
 
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ProjectService
@@ -62,9 +60,7 @@ public interface ProjectService
 	 */
     Project updateProject(Project project);
 
-	Project updateProject(Project project, Collection<ProjectAssignment> assignmentsToMake, Collection<ProjectAssignment> assignmentsToDelete);
-
-    Project createProject(Project project, Collection<ProjectAssignment> assignmentsToMake);
+    Project createProject(Project project);
 
     /**
      * Validate whether the PM role setup is correct for a project
