@@ -28,11 +28,7 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.model.ResourceModel;
-import org.springframework.util.Assert;
-
-import java.util.Collection;
 
 /**
  * Common form stuff
@@ -40,7 +36,7 @@ import java.util.Collection;
 @SuppressWarnings("serial")
 public class FormUtil
 {
-    public static <T> void setSubmitActions(final FormConfig formConfig)
+    public static void setSubmitActions(final FormConfig formConfig)
 	{
         final boolean inDemoMode = formConfig.getConfig().isInDemoMode();
 
