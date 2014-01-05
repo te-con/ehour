@@ -16,6 +16,7 @@ public abstract class ProjectDriver {
 
     public static final ItProject ACTIVE_PROJECT = new ItProject("ET", "ET");
     public static final ItProject INACTIVE_PROJECT = new ItProject("VPRO", "VPRO");
+    private static final String PREFIX_FORM = "tabs_panel_projectFormPanel_border_greySquaredFrame_border__body_projectForm_project";
 
     public static void loadProjectAdmin() {
         Driver.get(BASE_URL + "/eh/admin/project");
@@ -48,23 +49,23 @@ public abstract class ProjectDriver {
     }
 
     public static void fillProjectForm(ItProject project, ItCustomer customer, boolean active) {
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.name").clear();
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.name").sendKeys(project.name);
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.projectCode").clear();
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.projectCode").sendKeys(project.code);
+        findElement(PREFIX_FORM + ".name").clear();
+        findElement(PREFIX_FORM + ".name").sendKeys(project.name);
+        findElement(PREFIX_FORM + ".projectCode").clear();
+        findElement(PREFIX_FORM + ".projectCode").sendKeys(project.code);
 
         if (!active) {
-            findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.active").click();
+            findElement(PREFIX_FORM + ".active").click();
         }
 
         String cust = String.format("%s - %s", customer.code, customer.name);
-        new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.customer")).selectByVisibleText(cust);
+        new Select(findElement(PREFIX_FORM + ".customer")).selectByVisibleText(cust);
     }
 
     public static void storeProject() {
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_submitButton").click();
+        findElement("tabs_panel_projectFormPanel_border_greySquaredFrame_border__body_projectForm_submitButton").click();
 
-        assertTrue(findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_serverMessage").getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
+        assertTrue(findElement("tabs_panel_projectFormPanel_border_greySquaredFrame_border__body_projectForm_serverMessage").getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
     }
 
     public static void editProject(String projectName) {
@@ -82,7 +83,7 @@ public abstract class ProjectDriver {
     }
 
     public static void assertProjectLoaded(String projectName) {
-        String input = findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.name").getAttribute("value");
+        String input = findElement(PREFIX_FORM + ".name").getAttribute("value");
 
         assertEquals(projectName, input);
     }
@@ -124,7 +125,7 @@ public abstract class ProjectDriver {
     }
 
     public static void selectProjectManager(String name) {
-        new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_project.projectManager")).selectByVisibleText(name);
+        new Select(findElement(PREFIX_FORM + ".projectManager")).selectByVisibleText(name);
     }
 
     public static class ItProject {

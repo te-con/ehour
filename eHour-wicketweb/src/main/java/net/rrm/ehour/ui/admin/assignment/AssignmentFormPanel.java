@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.admin.assignment;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
@@ -28,6 +29,11 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 
     @SpringBean
     private ProjectAssignmentManagementService projectAssignmentManagementService;
+
+    public AssignmentFormPanel(String id, final IModel<AssignmentAdminBackingBean> model) {
+        this(id, model, Lists.<DisplayOption>newArrayList());
+    }
+
 
     public AssignmentFormPanel(String id, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
         super(id, model);
