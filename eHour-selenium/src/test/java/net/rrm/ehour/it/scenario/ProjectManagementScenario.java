@@ -2,6 +2,7 @@ package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.driver.CustomerManagementDriver;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.AssignmentAdminDriver.assignToProject;
@@ -23,6 +24,7 @@ public class ProjectManagementScenario  extends AbstractScenario {
     }
 
     @Test
+    @Ignore
     public void modify_assignment() {
         loginAdmin();
         loadUserAdmin();
