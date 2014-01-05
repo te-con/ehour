@@ -2,6 +2,7 @@ package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.driver.UserManagementDriver;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
@@ -29,6 +30,7 @@ public class ProjectAdminScenario extends AbstractScenario {
     }
 
     @Test
+    @Ignore
     public void create_and_assign_one_user_and_delete_it() {
         // setup users, csutomers and project
         loginAdmin();
