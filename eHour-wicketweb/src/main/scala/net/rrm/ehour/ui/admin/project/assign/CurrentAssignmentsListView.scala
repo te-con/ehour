@@ -19,7 +19,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 
-class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation: Boolean) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
+class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
   val Self = this
   val Js = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "assignmentsList.js")
 

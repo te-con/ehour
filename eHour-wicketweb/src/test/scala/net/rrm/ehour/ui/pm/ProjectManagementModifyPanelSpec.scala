@@ -50,11 +50,6 @@ class ProjectManagementModifyPanelSpec extends AbstractSpringWebAppSpec with Bef
 
       tester.executeAjaxEvent("id:border:border_body:assignments:border:border_body:assignmentFormPanel:border:greySquaredFrame:border_body:assignmentForm:submitButton", "onclick")
 
-//        formTester).submit()
-
-//      tester.executeAjaxEvent("id:border:border_body:submitButton", "click")
-//
-
       tester.assertNoErrorMessage();
       verify(assignmentMgmtService).assignUserToProject(assignment)
     }

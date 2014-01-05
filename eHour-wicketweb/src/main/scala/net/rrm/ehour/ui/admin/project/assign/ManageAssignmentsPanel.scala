@@ -45,7 +45,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   def createFormContainer = new Container(FORM_ID)
 
   def createCurrentAssignmentsList = {
-    val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(ASSIGNED_USER_ID, model, onlyDeactivation)
+    val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(ASSIGNED_USER_ID, model)
     view.setOutputMarkupId(true)
     view
 
