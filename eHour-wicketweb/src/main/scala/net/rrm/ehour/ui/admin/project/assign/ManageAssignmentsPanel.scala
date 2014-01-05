@@ -44,7 +44,12 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
   def createFormContainer = new Container(FORM_ID)
 
-  def createCurrentAssignmentsList = new CurrentAssignmentsListView(ASSIGNED_USER_ID, model, onlyDeactivation)
+  def createCurrentAssignmentsList = {
+    val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(ASSIGNED_USER_ID, model, onlyDeactivation)
+    view.setOutputMarkupId(true)
+    view
+
+  }
 
   // Wicket 6 event system
   override def onEvent(event: IEvent[_]) {
@@ -58,10 +63,11 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))
     val formPanel = new AssignmentFormPanel(FORM_ID, model, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON)
     formPanel.setOutputMarkupId(true)
-    val x = Self.get(BORDER_ID).asInstanceOf[Border]
-    x.getBodyContainer.addOrReplace(formPanel)
+    getBorderContainer.addOrReplace(formPanel)
     event.refresh(formPanel)
   }
+
+  private def getBorderContainer = Self.get(BORDER_ID).asInstanceOf[Border].getBodyContainer
 
   // own legacy event system...
   override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {
