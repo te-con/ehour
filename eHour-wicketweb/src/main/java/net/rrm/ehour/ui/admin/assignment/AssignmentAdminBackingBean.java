@@ -50,40 +50,34 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl {
         projectAssignment.setActive(true);
 
         return new AssignmentAdminBackingBean(projectAssignment);
-
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isShowAllottedHours()
-     */
+    public static AssignmentAdminBackingBean createAssignmentAdminBackingBean(Project project) {
+        ProjectAssignment projectAssignment = new ProjectAssignment();
+        projectAssignment.setProject(project);
+        projectAssignment.setActive(true);
+
+        return new AssignmentAdminBackingBean(projectAssignment);
+    }
+
+
+
     public boolean isShowAllottedHours() {
         return (projectAssignment.getAssignmentType() != null) && projectAssignment.getAssignmentType().isAllottedType();
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isNotifyPmEnabled()
-     */
     public boolean isNotifyPmEnabled() {
         return (projectAssignment.getProject() != null) && projectAssignment.getProject().getProjectManager() != null;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isShowOverrunHours()
-     */
     public boolean isShowOverrunHours() {
         return (projectAssignment.getAssignmentType() != null) && projectAssignment.getAssignmentType().isFlexAllottedType();
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjectAssignment()
-     */
     public ProjectAssignment getProjectAssignment() {
         return projectAssignment;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjectAssignmentForSave()
-     */
     public ProjectAssignment getProjectAssignmentForSave() {
         if (isInfiniteStartDate()) {
             projectAssignment.setDateStart(null);
@@ -97,73 +91,42 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl {
         return projectAssignment;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setProjectAssignment(net.rrm.ehour.persistence.persistence.domain.ProjectAssignment)
-     */
     public void setProjectAssignment(ProjectAssignment projectAssignment) {
         this.projectAssignment = projectAssignment;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getProjects()
-     */
     public List<Project> getProjects() {
         return projects;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setProjects(java.util.List)
-     */
     public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#getCustomer()
-     */
     public Customer getCustomer() {
         return customer;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setCustomer(net.rrm.ehour.persistence.persistence.domain.Customer)
-     */
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isInfiniteStartDate()
-     */
     public boolean isInfiniteStartDate() {
         return infiniteStartDate;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setInfiniteStartDate(boolean)
-     */
     public void setInfiniteStartDate(boolean infiniteStartDate) {
         this.infiniteStartDate = infiniteStartDate;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#isInfiniteEndDate()
-     */
     public boolean isInfiniteEndDate() {
         return infiniteEndDate;
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.admin.assignment.panel.dto.AssignmentAdminBackingBean#setInfiniteEndDate(boolean)
-     */
     public void setInfiniteEndDate(boolean infiniteEndDate) {
         this.infiniteEndDate = infiniteEndDate;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean#getDomainObject()
-     */
     public DomainObject<?, ?> getDomainObject() {
         return getProjectAssignment();
     }
