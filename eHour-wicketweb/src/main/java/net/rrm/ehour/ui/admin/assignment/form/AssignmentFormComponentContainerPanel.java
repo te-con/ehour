@@ -40,19 +40,23 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 	{
 		SHOW_PROJECT_SELECTION,
 		SHOW_SAVE_BUTTON,
-		SHOW_DELETE_BUTTON
+		SHOW_DELETE_BUTTON,
+        NO_BORDER
 	}
 
 	private static final long serialVersionUID = -85486044225123470L;
 
-	public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions)
-	{
-		super(id, model);
-
-		setUpPanel(form, model, Arrays.asList(displayOptions));
+    public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions) {
+		this(id, form, model, Arrays.asList(displayOptions));
 	}
 
-	/**
+    public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
+        super(id, model);
+
+        setUpPanel(form, model, displayOptions);
+    }
+
+    /**
 	 * Setup panel
 	 */
 	private void setUpPanel(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions)

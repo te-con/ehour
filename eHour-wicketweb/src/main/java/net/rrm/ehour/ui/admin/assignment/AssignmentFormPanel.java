@@ -14,18 +14,22 @@ import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.border.Border;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentAdminBackingBean> {
     private static final long serialVersionUID = 7704141227799017924L;
+    public static final String BORDER = "border";
 
     @SpringBean
     private ProjectAssignmentManagementService projectAssignmentManagementService;
 
-    public AssignmentFormPanel(String id, final IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions) {
+    public AssignmentFormPanel(String id, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
         super(id, model);
 
         setOutputMarkupId(true);
@@ -33,8 +37,16 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
         setUpPage(model, displayOptions);
     }
 
-    private void setUpPage(IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions) {
-        Border greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
+    private void setUpPage(IModel<AssignmentAdminBackingBean> model, List<DisplayOption> optionList) {
+
+        WebMarkupContainer greyBorder;
+
+        if (optionList.contains(DisplayOption.NO_BORDER)) {
+            greyBorder = new GreySquaredRoundedBorder(BORDER, WebGeo.AUTO);
+        } else {
+            greyBorder = new WebMarkupContainer(BORDER);
+        }
+
         add(greyBorder);
 
         final Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("assignmentForm", model);
@@ -48,11 +60,11 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 
         FormUtil.setSubmitActions(formConfig);
 
-        if (displayOptions.length == 0) {
-            displayOptions = new DisplayOption[]{DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON};
+        if (optionList.isEmpty()) {
+            optionList.addAll(Arrays.asList(DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON));
         }
 
-        form.add(new AssignmentFormComponentContainerPanel("formComponents", form, model, displayOptions));
+        form.add(new AssignmentFormComponentContainerPanel("formComponents", form, model, optionList));
 
         form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
     }
