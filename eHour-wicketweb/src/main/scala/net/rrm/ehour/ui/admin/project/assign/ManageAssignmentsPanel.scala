@@ -15,6 +15,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
 import org.apache.wicket.markup.html.border.Border
+import java.util
 
 class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation:Boolean = false) extends AbstractAjaxPanel(id, model) {
   def this(id: String, model: IModel[ProjectAdminBackingBean]) = this(id, model, false)
@@ -61,7 +62,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
   def editAssignment(event: EditAssignmentEvent) {
     val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))
-    val formPanel = new AssignmentFormPanel(FORM_ID, model, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON)
+    val formPanel = new AssignmentFormPanel(FORM_ID, model, util.Arrays.asList(DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON, DisplayOption.NO_BORDER))
     formPanel.setOutputMarkupId(true)
     getBorderContainer.addOrReplace(formPanel)
     event.refresh(formPanel)
