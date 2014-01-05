@@ -56,9 +56,28 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   override def onEvent(event: IEvent[_]) {
     event.getPayload match {
       case event: EditAssignmentEvent => editAssignment(event)
+      case event: NewAssignmentEvent => newAssignment(event)
       case _ =>
     }
   }
+
+  def newAssignment(event: NewAssignmentEvent) {
+/*
+    val bean = AssignmentAdminBackingBean.createAssignmentAdminBackingBean(getPanelModelObject.getDomainObject)
+
+    val model = new CompoundPropertyModel[AssignmentAdminBackingBean](bean)
+    val formPanel = new AssignmentFormPanel(FORM_ID, model, util.Arrays.asList(DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON, DisplayOption.NO_BORDER))
+    formPanel.setOutputMarkupId(true)
+    getBorderContainer.addOrReplace(formPanel)
+*/
+
+    val view = new NewAssignmentUserListView(ASSIGNED_USER_ID)
+    view.setOutputMarkupId(true)
+    getBorderContainer.addOrReplace(view)
+
+    event.refresh(view)
+  }
+
 
   def editAssignment(event: EditAssignmentEvent) {
     val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))

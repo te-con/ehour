@@ -9,6 +9,12 @@
     font-weight: bold;
 }
 
+.project_users .select {
+    width: 2em;
+    float:left;
+}
+
+
 .project_users .name {
     width: 15em;
     float:left;

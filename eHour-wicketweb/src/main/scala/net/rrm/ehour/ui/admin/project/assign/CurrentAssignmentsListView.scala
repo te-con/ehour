@@ -11,13 +11,14 @@ import java.lang.Boolean
 import net.rrm.ehour.util._
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import net.rrm.ehour.ui.common.wicket.{DateLabel, NonEmptyLabel}
-import org.apache.wicket.{Component, AttributeModifier}
+import net.rrm.ehour.ui.common.wicket.{Event, AjaxLink, DateLabel, NonEmptyLabel}
+import org.apache.wicket.AttributeModifier
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
 import org.apache.wicket.request.resource.JavaScriptResourceReference
+import net.rrm.ehour.ui.common.wicket.AjaxLink._
 
 class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
   val Self = this
@@ -29,7 +30,6 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
   override def onInitialize() {
     super.onInitialize()
 
-
     val project = getPanelModelObject.getProject
 
     val assignments = sort(fetchProjectAssignments(project))
@@ -39,6 +39,10 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
     val border = new GreyBlueRoundedBorder("border")
     addOrReplace(border)
     border.addOrReplace(createAssignmentListView("assignments", assignments))
+
+    val linkCallback: LinkCallback = target => send(this, Broadcast.BUBBLE, NewAssignmentEvent(target))
+
+    addOrReplace(new AjaxLink("addUsers", linkCallback))
   }
 
   def createAssignmentListView(id: String, assignments: List[ProjectAssignment]): ListView[ProjectAssignment] = {
@@ -59,7 +63,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
           }
         }))
 
-        if (itemModel.getObject.isActive) {
+        if (!itemModel.getObject.isActive) {
           item.add(AttributeModifier.append("style", "#6e9fcc !important"))
         }
       }
@@ -84,8 +88,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
   val applyJsFilter = "initAssignmentFilter();"
 }
 
-case class EditAssignmentEvent(assignment: ProjectAssignment, target: AjaxRequestTarget) {
-  def refresh(components: Component*) {
-    target.add(components: _*)
-  }
-}
+case class EditAssignmentEvent(assignment: ProjectAssignment, target: AjaxRequestTarget) extends Event(target)
+
+case class NewAssignmentEvent(target: AjaxRequestTarget) extends Event(target)
+
