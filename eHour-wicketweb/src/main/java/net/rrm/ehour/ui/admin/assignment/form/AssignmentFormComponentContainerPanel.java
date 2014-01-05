@@ -27,7 +27,6 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,10 +44,6 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 	}
 
 	private static final long serialVersionUID = -85486044225123470L;
-
-    public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, DisplayOption... displayOptions) {
-		this(id, form, model, Arrays.asList(displayOptions));
-	}
 
     public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
         super(id, model);
