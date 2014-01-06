@@ -14,8 +14,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox
 import org.apache.wicket.ajax.AjaxRequestTarget
 
 class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) {
-  val self = this
-
   @SpringBean
   var userService: UserService = _
 
@@ -36,7 +34,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
 
         val checkbox = new AjaxCheckBox("selected", new Model) {
           def onUpdate(target: AjaxRequestTarget) {
-            send(self, Broadcast.BUBBLE, if (getModelObject) UserSelectedEvent(item.getModelObject, target) else UserDeselectedEvent(item.getModelObject, target))
+            send(getPage, Broadcast.BREADTH, if (getModelObject) UserSelectedEvent(item.getModelObject, target) else UserDeselectedEvent(item.getModelObject, target))
           }
         }
         item.add(checkbox)
