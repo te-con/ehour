@@ -23,6 +23,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   val BORDER_ID= "border"
   val ASSIGNED_USER_ID = "assignedUserPanel"
   val FORM_ID = "assignmentFormPanel"
+  val AFFECTED_USER_ID = "affectedUser"
 
   val Self = this
 
@@ -40,8 +41,11 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     addOrReplace(greyBorder)
 
     greyBorder.add(createCurrentAssignmentsList)
+    greyBorder.add(createAffectedUserContainer)
     greyBorder.add(createFormContainer)
   }
+
+  def createAffectedUserContainer = new Container(AFFECTED_USER_ID)
 
   def createFormContainer = new Container(FORM_ID)
 
@@ -62,20 +66,21 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   }
 
   def newAssignment(event: NewAssignmentEvent) {
-/*
     val bean = AssignmentAdminBackingBean.createAssignmentAdminBackingBean(getPanelModelObject.getDomainObject)
 
     val model = new CompoundPropertyModel[AssignmentAdminBackingBean](bean)
     val formPanel = new AssignmentFormPanel(FORM_ID, model, util.Arrays.asList(DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON, DisplayOption.NO_BORDER))
     formPanel.setOutputMarkupId(true)
     getBorderContainer.addOrReplace(formPanel)
-*/
 
     val view = new NewAssignmentUserListView(ASSIGNED_USER_ID)
     view.setOutputMarkupId(true)
     getBorderContainer.addOrReplace(view)
 
-    event.refresh(view)
+    val affectedUsersPanel = new AffectedUsersPanel(AFFECTED_USER_ID)
+    getBorderContainer.addOrReplace(affectedUsersPanel)
+
+    event.refresh(view, formPanel, affectedUsersPanel)
   }
 
 
@@ -84,12 +89,18 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     val formPanel = new AssignmentFormPanel(FORM_ID, model, util.Arrays.asList(DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON, DisplayOption.NO_BORDER))
     formPanel.setOutputMarkupId(true)
     getBorderContainer.addOrReplace(formPanel)
-    event.refresh(formPanel)
+
+    val affectedUserLabel = new AffectedUserLabel(AFFECTED_USER_ID, event.assignment.getUser)
+    getBorderContainer.addOrReplace(affectedUserLabel)
+
+    event.refresh(formPanel, affectedUserLabel)
   }
 
   private def getBorderContainer = Self.get(BORDER_ID).asInstanceOf[Border].getBodyContainer
 
   // own legacy event system...
+
+  // TODO catch persist event and actually persist
   override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {
     if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED || ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_DELETED) {
       val replacement = createCurrentAssignmentsList
