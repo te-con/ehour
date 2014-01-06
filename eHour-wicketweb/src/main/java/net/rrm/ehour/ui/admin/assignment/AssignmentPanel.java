@@ -19,6 +19,8 @@ package net.rrm.ehour.ui.admin.assignment;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.exception.ParentChildConstraintException;
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -34,103 +36,113 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Assignment panel displaying the list and the tabbed form for adding/editing
- **/
+ */
 
 @SuppressWarnings("serial")
-public class AssignmentPanel extends AbstractFormSubmittingPanel<Void>
-{
-	private static final long serialVersionUID = -3721224427697057895L;
-	private	static final Logger LOGGER = Logger.getLogger(AssignmentPanel.class);
+public class AssignmentPanel extends AbstractFormSubmittingPanel<Void> {
+    private static final long serialVersionUID = -3721224427697057895L;
+    private static final Logger LOGGER = Logger.getLogger(AssignmentPanel.class);
 
-	@SpringBean
-	private	ProjectAssignmentService	assignmentService;
-	private AddEditTabbedPanel<AssignmentAdminBackingBean> tabbedPanel;
-	private	AssignmentListPanel			listPanel;
+    @SpringBean
+    private ProjectAssignmentService assignmentService;
+
+    @SpringBean
+    private ProjectAssignmentManagementService projectAssignmentManagementService;
 
 
-	public AssignmentPanel(String id,
-							final User user)
-	{
-		super(id);
+    private AddEditTabbedPanel<AssignmentAdminBackingBean> tabbedPanel;
+    private AssignmentListPanel listPanel;
 
-		setOutputMarkupId(true);
 
-		listPanel = new AssignmentListPanel("assignmentList", user);
-		add(listPanel);
+    public AssignmentPanel(String id,
+                           final User user) {
+        super(id);
 
-		tabbedPanel = new AddEditTabbedPanel<AssignmentAdminBackingBean>("assignmentTabs",
-												new ResourceModel("admin.assignment.newAssignment"),
-												new ResourceModel("admin.assignment.editAssignment"),
-												new ResourceModel("admin.assignment.noEditEntrySelected"))
-		{
+        setOutputMarkupId(true);
 
-			@Override
-			protected Panel getAddPanel(String panelId)
-			{
-				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel<AssignmentAdminBackingBean>(getAddBackingBean()));
-			}
+        listPanel = new AssignmentListPanel("assignmentList", user);
+        add(listPanel);
 
-			@Override
-			protected Panel getEditPanel(String panelId)
-			{
-				return new AssignmentFormPanel(panelId,
-												new CompoundPropertyModel<AssignmentAdminBackingBean>(getEditBackingBean()));
-			}
+        tabbedPanel = new AddEditTabbedPanel<AssignmentAdminBackingBean>("assignmentTabs",
+                new ResourceModel("admin.assignment.newAssignment"),
+                new ResourceModel("admin.assignment.editAssignment"),
+                new ResourceModel("admin.assignment.noEditEntrySelected")) {
 
-			@Override
-			protected AssignmentAdminBackingBean createAddBackingBean()
-			{
-				return AssignmentAdminBackingBean.createAssignmentAdminBackingBean(user);
-			}
+            @Override
+            protected Panel getAddPanel(String panelId) {
+                return new AssignmentFormPanel(panelId,
+                        new CompoundPropertyModel<AssignmentAdminBackingBean>(getAddBackingBean()));
+            }
 
-			@Override
-			protected AssignmentAdminBackingBean createEditBackingBean()
-			{
-				return AssignmentAdminBackingBean.createAssignmentAdminBackingBean(user);
-			}
-		};
+            @Override
+            protected Panel getEditPanel(String panelId) {
+                return new AssignmentFormPanel(panelId,
+                        new CompoundPropertyModel<AssignmentAdminBackingBean>(getEditBackingBean()));
+            }
 
-		add(tabbedPanel);
-	}
+            @Override
+            protected AssignmentAdminBackingBean createAddBackingBean() {
+                return AssignmentAdminBackingBean.createAssignmentAdminBackingBean(user);
+            }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.panel.noentry.AbstractAjaxAwareAdminPanel#ajaxEventReceived(net.rrm.ehour.persistence.persistence.ui.common.ajax.AjaxEvent)
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		AjaxEventType type = ajaxEvent.getEventType();
+            @Override
+            protected AssignmentAdminBackingBean createEditBackingBean() {
+                return AssignmentAdminBackingBean.createAssignmentAdminBackingBean(user);
+            }
+        };
 
-		if (type == AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE)
-		{
-			try
-			{
-				ProjectAssignment assignment = ((PayloadAjaxEvent<ProjectAssignment>)ajaxEvent).getPayload();
-				assignment = assignmentService.getProjectAssignment(assignment.getAssignmentId());
+        add(tabbedPanel);
+    }
 
-				tabbedPanel.setEditBackingBean(
-								new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
-				tabbedPanel.switchTabOnAjaxTarget(ajaxEvent.getTarget(), 1);
-			} catch (ObjectNotFoundException e)
-			{
+    @Override
+    @SuppressWarnings("unchecked")
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        AjaxEventType type = ajaxEvent.getEventType();
+
+        if (type == AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE) {
+            try {
+                ProjectAssignment assignment = ((PayloadAjaxEvent<ProjectAssignment>) ajaxEvent).getPayload();
+                assignment = assignmentService.getProjectAssignment(assignment.getAssignmentId());
+
+                tabbedPanel.setEditBackingBean(
+                        new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
+                tabbedPanel.switchTabOnAjaxTarget(ajaxEvent.getTarget(), 1);
+            } catch (ObjectNotFoundException e) {
                 LOGGER.error("While getting assignment", e);
-				return false;
-			}
-		}
+                return false;
+            }
+        }
 
-		if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED || type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
-		{
-			AssignmentAdminBackingBean	backingBean = (AssignmentAdminBackingBean)((PayloadAjaxEvent<AdminBackingBean>)ajaxEvent).getPayload();
-			ProjectAssignment assignment = backingBean.getProjectAssignmentForSave();
+        if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED || type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
+            AssignmentAdminBackingBean backingBean = (AssignmentAdminBackingBean) ((PayloadAjaxEvent<AdminBackingBean>) ajaxEvent).getPayload();
 
-			listPanel.updateList(ajaxEvent.getTarget(), assignment.getUser());
+            if (type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
+                persistAssignment(backingBean);
+            } else {
+                try {
+                    deleteAssignment(backingBean);
+                } catch (Exception e) {
+                    LOGGER.error("While deleting assignment", e);
+                }
+            }
 
-			tabbedPanel.succesfulSave(ajaxEvent.getTarget());
-		}
+            ProjectAssignment assignment = backingBean.getProjectAssignmentForSave();
 
-		return true;
-	}
+            listPanel.updateList(ajaxEvent.getTarget(), assignment.getUser());
+
+            tabbedPanel.succesfulSave(ajaxEvent.getTarget());
+        }
+
+
+        return true;
+    }
+
+
+    private void persistAssignment(AssignmentAdminBackingBean backingBean) {
+        projectAssignmentManagementService.assignUserToProject(backingBean.getProjectAssignmentForSave());
+    }
+
+    private void deleteAssignment(AssignmentAdminBackingBean backingBean) throws ObjectNotFoundException, ParentChildConstraintException {
+        projectAssignmentManagementService.deleteProjectAssignment(backingBean.getProjectAssignment());
+    }
 }

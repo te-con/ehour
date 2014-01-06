@@ -2,7 +2,6 @@ package net.rrm.ehour.ui.admin.assignment;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.ui.DummyUIDataGenerator;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
@@ -20,7 +19,6 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
     private AssignmentAdminBackingBean backingBean;
     private CustomerService customerService;
     private ProjectAssignmentService assignmentService;
-    private ProjectAssignmentManagementService managementService;
 
     @Before
     public void setup() {
@@ -30,16 +28,13 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
         assignmentService = createMock(ProjectAssignmentService.class);
         mockContext.putBean(assignmentService);
 
-        managementService = createMock(ProjectAssignmentManagementService.class);
-        mockContext.putBean(managementService);
-
         customerService = createMock(CustomerService.class);
         mockContext.putBean(customerService);
 
     }
 
     @Test
-    public void shouldRenderInitially() {
+    public void should_render() {
         expect(assignmentService.getProjectAssignmentTypes())
                 .andReturn(DummyUIDataGenerator.getProjectAssignmentTypes());
 
@@ -49,12 +44,12 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
         expect(customerService.getCustomers(true))
                 .andReturn(customers);
 
-        replay(customerService, assignmentService, managementService);
+        replay(customerService, assignmentService);
         startPanel();
 
         tester.assertNoErrorMessage();
 
-        verify(customerService, assignmentService, managementService);
+        verify(customerService, assignmentService);
     }
 
     private void startPanel() {
