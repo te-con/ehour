@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.admin.assignment;
 
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
+import net.rrm.ehour.util.EhourConstants;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl {
 
     public static AssignmentAdminBackingBean createAssignmentAdminBackingBean(Project project) {
         ProjectAssignment projectAssignment = new ProjectAssignment();
+        projectAssignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
         projectAssignment.setProject(project);
         projectAssignment.setActive(true);
 
