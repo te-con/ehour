@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.admin.project
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.project.service.{ProjectService, ProjectAssignmentService}
+import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectService, ProjectAssignmentService}
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.domain.{ProjectAssignmentObjectMother, ProjectObjectMother}
 import org.mockito.Mockito._
@@ -14,7 +14,8 @@ class ProjectFormContainerSpec extends AbstractSpringWebAppSpec {
     val assignmentService = mockService[ProjectAssignmentService]
     mockService[UserService]
     mockService[CustomerService]
-    val projectService = mockService[ProjectService]
+    mockService[ProjectService]
+    mockService[ProjectAssignmentManagementService]
 
     "render" in {
       val project = ProjectObjectMother.createProject(1)
