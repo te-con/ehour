@@ -23,8 +23,8 @@ import com.google.common.collect.Lists
 
 class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation: Boolean = false) extends AbstractAjaxPanel(id, model) {
   val BORDER_ID = "border"
-  val ASSIGNED_USER_ID = "assignedUserPanel"
-  val FORM_ID = "assignmentFormPanel"
+  val LIST_ID = "list"
+  val FORM_ID = "form"
   val AFFECTED_USER_ID = "affectedUser"
 
   val Self = this
@@ -55,7 +55,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   def createFormContainer = new Container(FORM_ID)
 
   def createCurrentAssignmentsList = {
-    val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(ASSIGNED_USER_ID, model)
+    val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(LIST_ID, model)
     view.setOutputMarkupId(true)
     view
 
@@ -93,7 +93,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
   def getAffectedUsersPanel = getBorderContainer.get(AFFECTED_USER_ID)
 
-  private  def initializeNewAssignment(event: NewAssignmentEvent) {
+  private def initializeNewAssignment(event: NewAssignmentEvent) {
     val bean = AssignmentAdminBackingBean.createAssignmentAdminBackingBean(getPanelModelObject.getDomainObject)
 
     def replaceFormPanel: AssignmentFormPanel = {
@@ -105,7 +105,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     }
 
     def replaceUserListPanel: NewAssignmentUserListView = {
-      val view = new NewAssignmentUserListView(ASSIGNED_USER_ID)
+      val view = new NewAssignmentUserListView(LIST_ID)
       view.setOutputMarkupId(true)
       getBorderContainer.addOrReplace(view)
       view
@@ -138,7 +138,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     event.refresh(replaceFormPanel, replaceAffectedUserPanel)
   }
 
-  private def getBorderContainer = Self.get(BORDER_ID).asInstanceOf[Border].getBodyContainer
+  private[assign] def getBorderContainer = Self.get(BORDER_ID).asInstanceOf[Border].getBodyContainer
 
   // own legacy event system...
   override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {

@@ -62,8 +62,6 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl {
         return new AssignmentAdminBackingBean(projectAssignment);
     }
 
-
-
     public boolean isShowAllottedHours() {
         return (projectAssignment.getAssignmentType() != null) && projectAssignment.getAssignmentType().isAllottedType();
     }
