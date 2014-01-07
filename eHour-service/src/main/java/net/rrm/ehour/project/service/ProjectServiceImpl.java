@@ -113,7 +113,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private void assignUsersToDefaultProject(Project project) {
         if (project.isDefaultProject() && project.isActive()) {
-            projectAssignmentManagementService.assignUsersToProjects(project);
+            projectAssignmentManagementService.assignAllUsersToProject(project);
         }
     }
 

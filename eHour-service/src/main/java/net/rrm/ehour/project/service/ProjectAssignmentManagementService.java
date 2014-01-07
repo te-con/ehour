@@ -4,6 +4,8 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 
+import java.util.List;
+
 public interface ProjectAssignmentManagementService {
     /**
      * Assign user to project
@@ -13,9 +15,17 @@ public interface ProjectAssignmentManagementService {
     ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment);
 
     /**
+     * Assign all users to the specified project
      * @param project
      */
-    void assignUsersToProjects(Project project);
+    void assignAllUsersToProject(Project project);
+
+    /**
+     * Assign the given uses using the specified assignment as a template
+     * @param users
+     * @param assignmentTemplate
+     */
+    void assignUsersToProjects(List<User> users, ProjectAssignment assignmentTemplate);
 
     /**
      * Assign user to default projects
