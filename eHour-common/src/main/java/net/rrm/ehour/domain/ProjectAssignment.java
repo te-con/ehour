@@ -32,8 +32,7 @@ import java.util.Date;
 @Entity
 @Table(name = "PROJECT_ASSIGNMENT")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
-{
+public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> {
     private static final long serialVersionUID = -2396783805401137165L;
 
     @Id
@@ -90,20 +89,17 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     /**
      * default constructor
      */
-    public ProjectAssignment()
-    {
+    public ProjectAssignment() {
     }
 
-    public ProjectAssignment(Integer assignmentId)
-    {
+    public ProjectAssignment(Integer assignmentId) {
         this.assignmentId = assignmentId;
     }
 
     /**
      * minimal constructor
      */
-    public ProjectAssignment(User user, Project project)
-    {
+    public ProjectAssignment(User user, Project project) {
         this.user = user;
         this.project = project;
     }
@@ -117,8 +113,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     /**
      * minimal constructor
      */
-    public ProjectAssignment(User user, Project project, Date dateStart, Date dateEnd)
-    {
+    public ProjectAssignment(User user, Project project, Date dateStart, Date dateEnd) {
         this.user = user;
         this.project = project;
         this.dateStart = dateStart;
@@ -128,8 +123,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     /**
      * full constructor
      */
-    public ProjectAssignment(User user, Project project, Float hourlyRate, Date dateStart, Date dateEnd, String description)
-    {
+    public ProjectAssignment(User user, Project project, Float hourlyRate, Date dateStart, Date dateEnd, String description) {
         this.user = user;
         this.project = project;
         this.hourlyRate = hourlyRate;
@@ -146,8 +140,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
      * @param user
      * @return
      */
-    public static ProjectAssignment createProjectAssignment(Project project, User user)
-    {
+    public static ProjectAssignment createProjectAssignment(Project project, User user) {
         ProjectAssignment assignment = new ProjectAssignment();
         assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
         assignment.setProject(project);
@@ -155,102 +148,106 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
         assignment.setActive(true);
 
         return assignment;
-
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.domain.DomainObject#getFullName()
-      */
+    /**
+     * Create a copy of the provided template assignment, replacing the user with the given user
+     * @param assignment
+     * @param user
+     * @return
+     */
+    public static ProjectAssignment createProjectAssignment(ProjectAssignment templateAssignment, User user) {
+        ProjectAssignment assignment = new ProjectAssignment();
+        assignment.setActive(templateAssignment.isActive());
+        assignment.setAllottedHours(templateAssignment.getAllottedHours());
+        assignment.setAllowedOverrun(templateAssignment.getAllowedOverrun());
+        assignment.setAssignmentType(templateAssignment.getAssignmentType());
+        assignment.setDateEnd(templateAssignment.getDateEnd());
+        assignment.setDateStart(templateAssignment.getDateStart());
+        assignment.setHourlyRate(templateAssignment.getHourlyRate());
+        assignment.setNotifyPm(templateAssignment.isNotifyPm());
+        assignment.setProject(templateAssignment.getProject());
+        assignment.setRole(templateAssignment.getRole());
+        assignment.setUser(user);
+
+        return assignment;
+    }
+
+    public boolean isNew() {
+        return getPK() == null;
+    }
 
     @Override
-    public String getFullName()
-    {
+    public String getFullName() {
         return getProject().getFullName();
     }
 
-    // Property accessors
 
-    public Integer getAssignmentId()
-    {
+    public Integer getAssignmentId() {
         return this.assignmentId;
     }
 
-    public void setAssignmentId(Integer assignmentId)
-    {
+    public void setAssignmentId(Integer assignmentId) {
         this.assignmentId = assignmentId;
     }
 
-    public User getUser()
-    {
+    public User getUser() {
         return this.user;
     }
 
-    public void setUser(User user)
-    {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Project getProject()
-    {
+    public Project getProject() {
         return this.project;
     }
 
-    public void setProject(Project project)
-    {
+    public void setProject(Project project) {
         this.project = project;
     }
 
-    public Float getHourlyRate()
-    {
+    public Float getHourlyRate() {
         return this.hourlyRate;
     }
 
-    public void setHourlyRate(Float hourlyRate)
-    {
+    public void setHourlyRate(Float hourlyRate) {
         this.hourlyRate = hourlyRate;
     }
 
-    public Date getDateStart()
-    {
+    public Date getDateStart() {
         return this.dateStart;
     }
 
 
-    public void setDateStart(Date dateStart)
-    {
+    public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd()
-    {
+    public Date getDateEnd() {
         return this.dateEnd;
     }
 
 
-    public void setDateEnd(Date dateEnd)
-    {
+    public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 
-    public String getRole()
-    {
+    public String getRole() {
         return this.role;
     }
 
-    public void setRole(String description)
-    {
+    public void setRole(String description) {
         this.role = description;
     }
 
 
-    public String toString()
-    {
+    public String toString() {
         return new ToStringBuilder(this).append("assignmentId", getAssignmentId())
                 .append("active", isActive())
                 .append("project", getProject())
                 .append("user", getUser())
-//										.append("type", getAssignmentType())		
+//										.append("type", getAssignmentType())
                 .append("dateStart", getDateStart())
                 .append("dateEnd", getDateEnd())
                 .toString();
@@ -259,14 +256,13 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     /**
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public int compareTo(ProjectAssignment object)
-    {
+    public int compareTo(ProjectAssignment object) {
         return new CompareToBuilder()
                 //sort by column order as displayed in ProjectOverviewPanel
                 .append(this.getProject().getCustomer().getName(), object.getProject().getCustomer().getName())
                 .append(this.getProject().getProjectCode(), object.getProject().getProjectCode())
                 .append(this.getProject().getName(), object.getProject().getName())
-                //here we should already have a sort. Anyway let's continue with some default comparison
+                        //here we should already have a sort. Anyway let's continue with some default comparison
                 .append(this.getProject(), object.getProject())
                 .append(this.getDateEnd(), object.getDateEnd())
                 .append(this.getDateStart(), object.getDateStart())
@@ -276,107 +272,92 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     }
 
 
-    public boolean isDeletable()
-    {
+    public boolean isDeletable() {
         return deletable;
     }
 
-    public void setDeletable(boolean deletable)
-    {
+    public void setDeletable(boolean deletable) {
         this.deletable = deletable;
     }
 
     /**
      * @return the active
      */
-    public boolean isActive()
-    {
+    public boolean isActive() {
         return active != null && active;
     }
 
     /**
      * @param active the active to set
      */
-    public void setActive(boolean active)
-    {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
     @Override
-    public Integer getPK()
-    {
+    public Integer getPK() {
         return assignmentId;
     }
 
     /**
      * @return the allottedHours
      */
-    public Float getAllottedHours()
-    {
+    public Float getAllottedHours() {
         return allottedHours;
     }
 
     /**
      * @param allottedHours the allottedHours to set
      */
-    public void setAllottedHours(Float allottedHours)
-    {
+    public void setAllottedHours(Float allottedHours) {
         this.allottedHours = allottedHours;
     }
 
     /**
      * @return the assignmentType
      */
-    public ProjectAssignmentType getAssignmentType()
-    {
+    public ProjectAssignmentType getAssignmentType() {
         return assignmentType;
     }
 
     /**
      * @param assignmentType the assignmentType to set
      */
-    public void setAssignmentType(ProjectAssignmentType assignmentType)
-    {
+    public void setAssignmentType(ProjectAssignmentType assignmentType) {
         this.assignmentType = assignmentType;
     }
 
     /**
      * @return the allowedOverrun
      */
-    public Float getAllowedOverrun()
-    {
+    public Float getAllowedOverrun() {
         return allowedOverrun;
     }
 
     /**
      * @param allowedOverrun the allowedOverrun to set
      */
-    public void setAllowedOverrun(Float allowedOverrun)
-    {
+    public void setAllowedOverrun(Float allowedOverrun) {
         this.allowedOverrun = allowedOverrun;
     }
 
     /**
      * @return the notifyPm
      */
-    public boolean isNotifyPm()
-    {
+    public boolean isNotifyPm() {
         return notifyPm;
     }
 
     /**
      * @param notifyPm the notifyPm to set
      */
-    public void setNotifyPm(boolean notifyPm)
-    {
+    public void setNotifyPm(boolean notifyPm) {
         this.notifyPm = notifyPm;
     }
 
     @Override
-    public boolean equals(final Object other)
-    {
-        if (!(other instanceof ProjectAssignment))
-        {
+    public boolean equals(final Object other) {
+        if (!(other instanceof ProjectAssignment)) {
             return false;
         }
         ProjectAssignment castOther = (ProjectAssignment) other;
@@ -395,8 +376,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment>
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return new HashCodeBuilder()
                 .append(user)
                 .append(project)

@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.admin.project.assign
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.project.service.ProjectAssignmentService
+import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.domain.{ProjectAssignmentObjectMother, ProjectObjectMother}
 import org.mockito.Mockito._
@@ -13,6 +13,8 @@ class ManageAssignmentsPanelSpec extends AbstractSpringWebAppSpec {
   "Manage Assignments Panel" should {
     val assignmentService = mockService[ProjectAssignmentService]
     mockService[UserService]
+
+    mockService[ProjectAssignmentManagementService]
 
     "render" in {
       val project = ProjectObjectMother.createProject(1)

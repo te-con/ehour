@@ -27,8 +27,8 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     private ProjectAssignmentDao projectAssignmentDAO;
 
     @Transactional
-    @Auditable(actionType = AuditActionType.UPDATE)
-    public void assignUsersToProjects(Project project) {
+    @Auditable(actionType = AuditActionType.CREATE)
+    public void assignAllUsersToProject(Project project) {
         List<User> users = userService.getUsers(UserRole.CONSULTANT);
 
         for (User user : users) {
@@ -38,6 +38,17 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
                 LOGGER.debug("Assigning user " + user + " to " + project);
                 assignUserToProject(assignment);
             }
+        }
+    }
+
+    @Override
+    @Transactional
+    @Auditable(actionType = AuditActionType.CREATE)
+    public void assignUsersToProjects(List<User> users, ProjectAssignment assignmentTemplate) {
+        for (User user : users) {
+            ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(assignmentTemplate, user);
+
+            projectAssignmentDAO.persist(assignment);
         }
     }
 
