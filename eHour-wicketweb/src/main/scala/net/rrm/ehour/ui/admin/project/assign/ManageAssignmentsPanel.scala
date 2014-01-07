@@ -22,8 +22,6 @@ import net.rrm.ehour.domain.User
 import com.google.common.collect.Lists
 
 class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation: Boolean = false) extends AbstractAjaxPanel(id, model) {
-  def this(id: String, model: IModel[ProjectAdminBackingBean]) = this(id, model, false)
-
   val BORDER_ID = "border"
   val ASSIGNED_USER_ID = "assignedUserPanel"
   val FORM_ID = "assignmentFormPanel"
@@ -152,7 +150,6 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       } else {
         assignmentManagementService.assignUserToProject(assignment)
       }
-
     }
 
     def deleteAssignment(backingBean: AssignmentAdminBackingBean) {
@@ -161,26 +158,26 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
     def replaceForm() {
       val container = createFormContainer
-      addOrReplace(container)
+      getBorderContainer.addOrReplace(container)
       ajaxEvent.getTarget.add(container)
     }
 
     def replaceAssignmentsPanel() {
       val replacement = createCurrentAssignmentsList
-      addOrReplace(replacement)
+      getBorderContainer.addOrReplace(replacement)
       ajaxEvent.getTarget.add(replacement)
     }
 
     if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED || ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_DELETED) {
       val backingBean = ajaxEvent.asInstanceOf[PayloadAjaxEvent[AdminBackingBean]].getPayload.asInstanceOf[AssignmentAdminBackingBean]
 
-      replaceAssignmentsPanel()
-      replaceForm()
-
       if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
         persistAssignment(backingBean)
       else
         deleteAssignment(backingBean)
+
+      replaceAssignmentsPanel()
+      replaceForm()
     }
 
     true
