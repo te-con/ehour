@@ -249,8 +249,9 @@ public class CalendarPanel extends SidePanel {
         @Override
         protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
             super.updateAjaxAttributes(attributes);
-
-            attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+            List<IAjaxCallListener> listeners = attributes.getAjaxCallListeners();
+            listeners.add(new GuardFormAjaxCallListener());
+            listeners.add(new LoadingSpinnerDecorator());
         }
     }
 
