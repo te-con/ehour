@@ -6,6 +6,8 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{Matchers, BeforeAndAfterEach, WordSpec}
 import scala.reflect.Manifest
+import org.apache.wicket.event.IEvent
+import org.mockito.Mockito._
 
 @RunWith(classOf[JUnitRunner])
 abstract class AbstractSpringWebAppSpec extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach  {
@@ -20,5 +22,12 @@ abstract class AbstractSpringWebAppSpec extends WordSpec with Matchers with Mock
     val mocked = mock[T]
     springTester.getMockContext.putBean(mocked)
     mocked
+  }
+
+  def mockEvent[T](event: T)(implicit manifest: Manifest[T]):IEvent[T] = {
+    val mockedEvent = mock[IEvent[T]]
+    when(mockedEvent.getPayload).thenReturn(event)
+
+    mockedEvent
   }
 }
