@@ -20,28 +20,32 @@
     </div>
     </p>
 
-    <div wicket:id="border" class="inline" style="padding-top: 0; margin-top: 10px">
-        <div class="project_users">
-            <div class="header">
-                <div class="name">
-                    <wicket:message key="admin.project.assignments.user"/>
-                </div>
-                <div class="role">Rol</div>
-                <div class="date">
-                    <wicket:message key="admin.project.assignments.start"/>
-                </div>
-                <div class="date">
-                    <wicket:message key="admin.project.assignments.end"/>
-                </div>
-                <div class="rate">
-                    <wicket:message key="admin.project.assignments.rate"/>
-                </div>
-                <div class="scrollbar">&nbsp;</div>
-                <br/>
-            </div>
+    <span wicket:id="assignments"/>
 
-            <div class="rows">
-                <div class="row" wicket:id="assignments">
+    <wicket:fragment wicket:id="assignmentFragment">
+        <div wicket:id="border" class="inline" style="padding-top: 0; margin-top: 10px">
+
+            <div class="project_users">
+                <div class="header">
+                    <div class="name">
+                        <wicket:message key="admin.project.assignments.user"/>
+                    </div>
+                    <div class="role">Rol</div>
+                    <div class="date">
+                        <wicket:message key="admin.project.assignments.start"/>
+                    </div>
+                    <div class="date">
+                        <wicket:message key="admin.project.assignments.end"/>
+                    </div>
+                    <div class="rate">
+                        <wicket:message key="admin.project.assignments.rate"/>
+                    </div>
+                    <div class="scrollbar">&nbsp;</div>
+                    <br/>
+                </div>
+
+                <div class="rows">
+                    <div class="row" wicket:id="assignments">
                         <span class="inline container">
                             <div class="name filterable" wicket:id="name"/>
                             <div class="role filterable" wicket:id="role"/>
@@ -49,11 +53,12 @@
                             <div class="date filterable" wicket:id="endDate"/>
                             <div class="rate filterable" wicket:id="rate"/>
                         </span>
-                    <br clear="both"/>
+                        <br clear="both"/>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </wicket:fragment>
 
     <wicket:fragment wicket:id="filterInput">
         <input class="textInput searchInput" id="filterAssignmentInput" type="text" placeholder="Filter..."/>

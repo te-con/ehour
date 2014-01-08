@@ -19,6 +19,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 import net.rrm.ehour.ui.common.wicket.AjaxLink._
+import org.apache.wicket.markup.html.WebMarkupContainer
 
 class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
   val Self = this
@@ -36,42 +37,52 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
 
     addOrReplace(createFilter("filterContainer", !assignments.isEmpty))
 
-    val border = new GreyBlueRoundedBorder("border")
-    addOrReplace(border)
-    border.addOrReplace(createAssignmentListView("assignments", assignments))
+    addOrReplace(createAssignmentListView("assignments", assignments))
 
     val linkCallback: LinkCallback = target => send(this, Broadcast.BUBBLE, NewAssignmentEvent(target))
 
     addOrReplace(new AjaxLink("addUsers", linkCallback))
   }
 
-  def createAssignmentListView(id: String, assignments: List[ProjectAssignment]): ListView[ProjectAssignment] = {
-    new ListView[ProjectAssignment](id, toJava(assignments)) {
-      override def populateItem(item: ListItem[ProjectAssignment]) {
-        val itemModel = item.getModel
+  def createAssignmentListView(id: String, assignments: List[ProjectAssignment]): Fragment = {
+    val component = if (assignments.isEmpty)
+      new Fragment(id, "noAssignments", this)
+    else {
+      val f = new Fragment(id, "assignmentFragment", this)
 
-        item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "user.fullName")))
-        item.add(new NonEmptyLabel("role", new PropertyModel(itemModel, "role")))
-        item.add(new DateLabel("startDate", new PropertyModel(itemModel, "dateStart")))
-        item.add(new DateLabel("endDate", new PropertyModel(itemModel, "dateEnd")))
-        item.add(new NonEmptyLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
+      val border = new GreyBlueRoundedBorder("border")
+      f.add(border)
 
+      border.add(new ListView[ProjectAssignment](id, toJava(assignments)) {
+        override def populateItem(item: ListItem[ProjectAssignment]) {
+          val itemModel = item.getModel
 
-        item.add(ajaxClick({
-          target => {
-            send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
+          item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "user.fullName")))
+          item.add(new NonEmptyLabel("role", new PropertyModel(itemModel, "role")))
+          item.add(new DateLabel("startDate", new PropertyModel(itemModel, "dateStart")))
+          item.add(new DateLabel("endDate", new PropertyModel(itemModel, "dateEnd")))
+          item.add(new NonEmptyLabel("rate", new PropertyModel(itemModel, "hourlyRate")))
+
+          item.add(ajaxClick({
+            target => {
+              send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
+            }
+          }))
+
+          if (!itemModel.getObject.isActive) {
+            item.add(AttributeModifier.append("style", "#6e9fcc !important"))
           }
-        }))
-
-        if (!itemModel.getObject.isActive) {
-          item.add(AttributeModifier.append("style", "#6e9fcc !important"))
         }
-      }
+      })
+      f
     }
+
+    component.setOutputMarkupId(true)
+    component
   }
 
   private def createFilter(id: String, show: Boolean) = {
-    val f = new Fragment(id, if (show) "filterInput" else "noAssignments", this)
+    val f = if (show) new Fragment(id, "filterInput", this) else new WebMarkupContainer(id)
     f.setOutputMarkupId(true)
     f
   }

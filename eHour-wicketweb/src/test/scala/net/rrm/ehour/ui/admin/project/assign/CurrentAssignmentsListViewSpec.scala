@@ -24,6 +24,7 @@ class CurrentAssignmentsListViewSpec  extends AbstractSpringWebAppSpec {
 
       tester.startComponentInPage(new CurrentAssignmentsListView("id", new Model(new ProjectAdminBackingBean(project))))
       tester.assertNoErrorMessage()
+      verify(assignmentService).getProjectAssignmentsAndCheckDeletability(project)
     }
 
     "render for new project" in {
