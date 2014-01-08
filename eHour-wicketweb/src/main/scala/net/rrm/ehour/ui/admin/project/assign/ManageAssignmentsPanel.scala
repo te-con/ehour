@@ -58,14 +58,13 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(LIST_ID, model)
     view.setOutputMarkupId(true)
     view
-
   }
 
   // Wicket 6 event system
   override def onEvent(event: IEvent[_]) {
     event.getPayload match {
-      case event: EditAssignmentEvent => initializeEditAssignment(event)
       case event: NewAssignmentEvent => initializeNewAssignment(event)
+      case event: EditAssignmentEvent => initializeEditAssignment(event)
       case event: UserSelectedEvent => userSelected(event)
       case event: UserDeselectedEvent => userDeselected(event)
       case _ =>
