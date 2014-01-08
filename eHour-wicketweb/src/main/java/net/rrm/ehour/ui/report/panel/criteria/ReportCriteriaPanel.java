@@ -174,7 +174,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
             return choice;
         } else {
-            return new WebMarkupContainer(id);
+            WebMarkupContainer container = new WebMarkupContainer(id);
+            container.setVisible(false);
+            return container;
         }
     }
 
