@@ -53,7 +53,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
       val border = new GreyBlueRoundedBorder("border")
       f.add(border)
 
-      border.add(new ListView[ProjectAssignment](id, toJava(assignments)) {
+      val assignmentList = new ListView[ProjectAssignment]("row", toJava(assignments)) {
         override def populateItem(item: ListItem[ProjectAssignment]) {
           val itemModel = item.getModel
 
@@ -65,6 +65,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
 
           item.add(ajaxClick({
             target => {
+              target.appendJavaScript("assignmentFilter.highlight('%s')" format (item.getMarkupId))
               send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
             }
           }))
@@ -72,8 +73,12 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
           if (!itemModel.getObject.isActive) {
             item.add(AttributeModifier.append("style", "#6e9fcc !important"))
           }
+
+          item.setOutputMarkupId(true)
         }
-      })
+      }
+
+      border.add(assignmentList)
       f
     }
 
@@ -96,7 +101,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
     response.render(OnDomReadyHeaderItem.forScript(applyJsFilter))
   }
 
-  val applyJsFilter = "initAssignmentFilter();"
+  val applyJsFilter = "assignmentFilter.initAssignmentFilter();"
 }
 
 case class EditAssignmentEvent(assignment: ProjectAssignment, target: AjaxRequestTarget) extends Event(target)

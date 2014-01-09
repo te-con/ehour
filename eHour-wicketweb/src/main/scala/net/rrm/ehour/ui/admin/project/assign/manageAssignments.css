@@ -60,11 +60,11 @@
     clear: both;
 }
 
-.project_users .container:hover {
+.project_users .selected, .project_users .row:hover {
     background-color: #d1e5f9;
 }
 
-.project_users .clickable, .project_users .container:hover {
+.project_users .row:hover, .project_users .clickable {
     cursor: pointer;
 }
 
