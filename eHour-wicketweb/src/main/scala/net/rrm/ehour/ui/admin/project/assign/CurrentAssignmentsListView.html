@@ -11,9 +11,7 @@
     <div class="usersFilter">
         <div class="p">
             <div class="filter floatLeft" wicket:id="filterContainer"></div>
-        </div>
 
-        <div>
             <a class="button floatRight" onclick="this.blur();" wicket:id="addUsers">
                 <span><wicket:message key="admin.project.assignments.addUsers"/></span></a>
         </div>
@@ -22,7 +20,7 @@
     <span wicket:id="assignments"/>
 
     <wicket:fragment wicket:id="assignmentFragment">
-        <div wicket:id="border" class="inline" style="padding-top: 0; margin-top: 10px">
+        <div wicket:id="border" class="inline">
 
             <div class="project_users">
                 <div class="header">
@@ -39,7 +37,6 @@
                     <div class="rate">
                         <wicket:message key="admin.project.assignments.rate"/>
                     </div>
-                    <div class="scrollbar">&nbsp;</div>
                     <br/>
                 </div>
 
