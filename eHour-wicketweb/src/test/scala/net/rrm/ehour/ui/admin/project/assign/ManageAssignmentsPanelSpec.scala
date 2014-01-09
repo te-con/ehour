@@ -50,7 +50,7 @@ class ManageAssignmentsPanelSpec extends AbstractSpringWebAppSpec {
       subject.onEvent(event)
 
       tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.FORM_ID), classOf[AssignmentFormPanel])
-      tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.AFFECTED_USER_ID), classOf[AffectedUserLabel])
+      tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.AFFECTED_USER_ID), classOf[AffectedUserPanel])
 
       tester.assertNoErrorMessage()
     }

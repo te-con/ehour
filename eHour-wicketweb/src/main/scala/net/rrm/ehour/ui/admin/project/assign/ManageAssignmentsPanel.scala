@@ -128,8 +128,8 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       getBorderContainer.addOrReplace(formPanel)
       formPanel
     }
-    def replaceAffectedUserPanel: AffectedUserLabel = {
-      val affectedUserLabel = new AffectedUserLabel(AFFECTED_USER_ID, event.assignment.getUser)
+    def replaceAffectedUserPanel: AffectedUserPanel = {
+      val affectedUserLabel = new AffectedUserPanel(AFFECTED_USER_ID, event.assignment.getUser)
       getBorderContainer.addOrReplace(affectedUserLabel)
       affectedUserLabel
     }
