@@ -1,10 +1,14 @@
+.project_users {
+    margin: 0 8px 0 8px;
+}
+
 .project_users .rows {
     max-height: 18em;
     overflow: auto;
 }
 
 .project_users .header  {
-    border-bottom: 1px solid #6c87a1;
+    border-bottom: 1px solid #ffffff;
     margin-bottom: 5px;
     font-weight: bold;
 }
@@ -13,7 +17,6 @@
     width: 2em;
     float:left;
 }
-
 
 .project_users .name {
     width: 15em;
