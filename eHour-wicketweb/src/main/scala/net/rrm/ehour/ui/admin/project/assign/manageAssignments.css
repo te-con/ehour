@@ -2,6 +2,7 @@
     margin: 0 8px 0 8px;
 }
 
+
 .project_users .rows {
     max-height: 18em;
     overflow: auto;
@@ -12,11 +13,6 @@
     margin-bottom: 5px;
     font-weight: bold;
     padding-bottom: 2px;
-}
-
-.project_users .select {
-    width: 2em;
-    float:left;
 }
 
 .project_users .name {

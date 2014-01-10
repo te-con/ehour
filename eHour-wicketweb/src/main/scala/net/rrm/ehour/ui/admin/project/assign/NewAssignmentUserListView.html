@@ -11,38 +11,52 @@
     <div class="usersFilter">
         <div class="p">
             <div class="filter floatLeft">
-                <input class="textInput searchInput" id="filterAssignmentInput" type="text" placeholder="Filter..."/>
+                <input class="textInput searchInput" id="filterUserInput" type="text" placeholder="Filter..."/>
             </div>
         </div>
     </div>
 
     <br clear="all"/>
 
+    <div class="floatLeft">
 
-    <div wicket:id="border" class="inline">
-        <div class="project_users">
-            <div class="header">
-                <div class="select">&nbsp;</div>
-
-                <div class="name">
-                    <wicket:message key="admin.project.assignments.user"/>
+        <div wicket:id="allBorder" class="inline">
+            <div class="project_users" id="allUsers">
+                <div class="header">
+                    <div class="name">
+                        <wicket:message key="admin.project.assignments.user"/>
+                    </div>
+                    <br/>
                 </div>
 
-                <div class="scrollbar">&nbsp;</div>
-                <br/>
-            </div>
-
-            <div class="rows">
-                <div class="row" wicket:id="users">
+                <div class="rows">
+                    <div class="row" wicket:id="users" style="width:17em">
                         <span class="inline container">
-                            <div class="select"><input type="checkbox" wicket:id="selected"/></div>
                             <div class="name filterable" wicket:id="name"/>
                         </span>
-                    <br clear="both"/>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="floatRight">
+        <div wicket:id="affectedBorder" class="inline">
+            <div class="project_users">
+                <div class="header">
+                    <div class="name">
+                        <wicket:message key="admin.project.assignments.user"/>
+                    </div>
+                    <br/>
+                </div>
+
+                <div class="rows">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br clear="all"/>
 </wicket:panel>
 
 </body>

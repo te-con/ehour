@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.project.assign
 
-import org.apache.wicket.model.{Model, PropertyModel}
+import org.apache.wicket.model.PropertyModel
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.user.service.UserService
@@ -9,11 +9,14 @@ import net.rrm.ehour.domain.User
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import net.rrm.ehour.ui.common.wicket.{Event, NonEmptyLabel}
-import org.apache.wicket.event.Broadcast
-import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox
 import org.apache.wicket.ajax.AjaxRequestTarget
+import net.rrm.ehour.ui.common.wicket.WicketDSL._
+import org.apache.wicket.request.resource.JavaScriptResourceReference
+import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
 
 class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) {
+  val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
+
   @SpringBean
   var userService: UserService = _
 
@@ -22,26 +25,47 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
 
     val users = userService.getActiveUsers
 
-    val border = new GreyBlueRoundedBorder("border")
-    addOrReplace(border)
-    border.addOrReplace(createAssignmentListView("users", users))
+    val allBorder = new GreyBlueRoundedBorder("allBorder")
+    addOrReplace(allBorder)
+    allBorder.addOrReplace(createAllUserView("users", users))
+
+    val affectedBorder = new GreyBlueRoundedBorder("affectedBorder")
+    addOrReplace(affectedBorder)
+//    affectedBorder.addOrReplace(createAssignmentListView("users", users))
+
   }
 
-  def createAssignmentListView(id: String, users: ju.List[User]): ListView[User] = {
+  def createAllUserView(id: String, users: ju.List[User]): ListView[User] = {
     new ListView[User](id, users) {
       override def populateItem(item: ListItem[User]) {
         val itemModel = item.getModel
 
-        val checkbox = new AjaxCheckBox("selected", new Model) {
-          def onUpdate(target: AjaxRequestTarget) {
-            send(getPage, Broadcast.BREADTH, if (getModelObject) UserSelectedEvent(item.getModelObject, target) else UserDeselectedEvent(item.getModelObject, target))
+        item.add(ajaxClick({
+          target => {
+            target.appendJavaScript("listFilter.highlight('%s')" format (item.getMarkupId))
+//            send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
           }
-        }
-        item.add(checkbox)
+        }))
+
+//        val checkbox = new AjaxCheckBox("selected", new Model) {
+//          def onUpdate(target: AjaxRequestTarget) {
+//            send(getPage, Broadcast.BREADTH, if (getModelObject) UserSelectedEvent(item.getModelObject, target) else UserDeselectedEvent(item.getModelObject, target))
+//          }
+//        }
+//        item.add(checkbox)
         item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "fullName")))
       }
     }
   }
+
+
+  override def renderHead(response: IHeaderResponse) {
+    response.render(JavaScriptHeaderItem.forReference(FilterJs))
+
+    response.render(OnDomReadyHeaderItem.forScript(applyJsFilter))
+  }
+
+  val applyJsFilter = "new ListFilter('#filterUserInput', '#allUsers');"
 }
 
 case class UserSelectedEvent(user: User, target: AjaxRequestTarget) extends Event(target)

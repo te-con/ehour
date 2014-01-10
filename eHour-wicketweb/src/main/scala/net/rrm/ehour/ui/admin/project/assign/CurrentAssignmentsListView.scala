@@ -23,7 +23,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer
 
 class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
   val Self = this
-  val Js = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "assignmentsList.js")
+  val HighlightJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listHighlight.js")
+  val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
 
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
@@ -65,7 +66,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
 
           item.add(ajaxClick({
             target => {
-              target.appendJavaScript("assignmentFilter.highlight('%s')" format (item.getMarkupId))
+              target.appendJavaScript("listHighlight.highlight('%s')" format item.getMarkupId)
               send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
             }
           }))
@@ -97,11 +98,13 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
   private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
 
   override def renderHead(response: IHeaderResponse) {
-    response.render(JavaScriptHeaderItem.forReference(Js))
+    response.render(JavaScriptHeaderItem.forReference(HighlightJs))
+    response.render(JavaScriptHeaderItem.forReference(FilterJs))
+
     response.render(OnDomReadyHeaderItem.forScript(applyJsFilter))
   }
 
-  val applyJsFilter = "assignmentFilter.initAssignmentFilter();"
+  val applyJsFilter = "new ListFilter('#filterAssignmentInput', '.project_users');"
 }
 
 case class EditAssignmentEvent(assignment: ProjectAssignment, target: AjaxRequestTarget) extends Event(target)
