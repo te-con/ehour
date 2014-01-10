@@ -66,7 +66,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
 
           item.add(ajaxClick({
             target => {
-              target.appendJavaScript("listHighlight.highlight('%s')" format item.getMarkupId)
+              target.appendJavaScript("listHighlight.selectAndDeselectRest('%s')" format item.getMarkupId)
               send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
             }
           }))

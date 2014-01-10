@@ -13,12 +13,17 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
+import org.apache.wicket.model.util.ListModel
+import com.google.common.collect.Lists
 
 class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) {
   val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
+  val HighlightJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listHighlight.js")
 
   @SpringBean
   var userService: UserService = _
+
+  val selectedUserModel = new ListModel[User](Lists.newArrayList())
 
   override def onInitialize() {
     super.onInitialize()
@@ -31,6 +36,8 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
 
     val affectedBorder = new GreyBlueRoundedBorder("affectedBorder")
     addOrReplace(affectedBorder)
+
+
 //    affectedBorder.addOrReplace(createAssignmentListView("users", users))
 
   }
@@ -42,7 +49,18 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
 
         item.add(ajaxClick({
           target => {
-            target.appendJavaScript("listFilter.highlight('%s')" format (item.getMarkupId))
+            val user = itemModel.getObject
+
+            val users = selectedUserModel.getObject
+            if (users.contains(user)) {
+              target.appendJavaScript("listHighlight.deselect('%s')" format item.getMarkupId)
+              users.remove(user)
+            } else {
+              target.appendJavaScript("listHighlight.select('%s')" format item.getMarkupId)
+              users.add(user)
+
+            }
+
 //            send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
           }
         }))
@@ -60,6 +78,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
 
 
   override def renderHead(response: IHeaderResponse) {
+    response.render(JavaScriptHeaderItem.forReference(HighlightJs))
     response.render(JavaScriptHeaderItem.forReference(FilterJs))
 
     response.render(OnDomReadyHeaderItem.forScript(applyJsFilter))

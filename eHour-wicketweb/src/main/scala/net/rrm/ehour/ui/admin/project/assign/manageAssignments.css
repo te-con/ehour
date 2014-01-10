@@ -4,7 +4,7 @@
 
 
 .project_users .rows {
-    max-height: 18em;
+    height: 15em;
     overflow: auto;
 }
 
@@ -18,6 +18,10 @@
 .project_users .name {
     width: 14em;
     float:left;
+}
+
+#allUsers .name,#affectedUsers .name {
+    width: 17em !important;
 }
 
 .project_users .role {
