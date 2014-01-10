@@ -15,15 +15,18 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
 import org.apache.wicket.model.util.ListModel
 import com.google.common.collect.Lists
+import org.apache.wicket.markup.html.border.Border
 
 class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) {
   val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
   val HighlightJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listHighlight.js")
 
+  val AffectedBorderId = "affectedBorder"
+  val AffectedUsersListId = "affectedUsers"
+
+
   @SpringBean
   var userService: UserService = _
-
-  val selectedUserModel = new ListModel[User](Lists.newArrayList())
 
   override def onInitialize() {
     super.onInitialize()
@@ -34,13 +37,16 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
     addOrReplace(allBorder)
     allBorder.addOrReplace(createAllUserView("users", users))
 
-    val affectedBorder = new GreyBlueRoundedBorder("affectedBorder")
+    val affectedBorder = new GreyBlueRoundedBorder(AffectedBorderId)
     addOrReplace(affectedBorder)
-
-
-//    affectedBorder.addOrReplace(createAssignmentListView("users", users))
-
+    affectedBorder.setOutputMarkupId(true)
+    affectedBorder.addOrReplace(createAffectedUserView(AffectedUsersListId, new ListModel[User](Lists.newArrayList())))
   }
+
+  private[assign] def affectedBorderContainer = affectedBorder.asInstanceOf[Border].getBodyContainer
+  def affectedBorder = get(AffectedBorderId)
+
+  def selectedAffectedUsers = affectedBorderContainer.get(AffectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
 
   def createAllUserView(id: String, users: ju.List[User]): ListView[User] = {
     new ListView[User](id, users) {
@@ -51,30 +57,59 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
           target => {
             val user = itemModel.getObject
 
-            val users = selectedUserModel.getObject
+            val users = selectedAffectedUsers.getObject
             if (users.contains(user)) {
               target.appendJavaScript("listHighlight.deselect('%s')" format item.getMarkupId)
               users.remove(user)
             } else {
               target.appendJavaScript("listHighlight.select('%s')" format item.getMarkupId)
               users.add(user)
-
             }
 
-//            send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
+            target.add(affectedBorder)
           }
         }))
 
-//        val checkbox = new AjaxCheckBox("selected", new Model) {
-//          def onUpdate(target: AjaxRequestTarget) {
-//            send(getPage, Broadcast.BREADTH, if (getModelObject) UserSelectedEvent(item.getModelObject, target) else UserDeselectedEvent(item.getModelObject, target))
-//          }
-//        }
-//        item.add(checkbox)
         item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "fullName")))
       }
     }
   }
+
+
+  def createAffectedUserView(id: String, users: ListModel[User]): ListView[User] = {
+    new ListView[User](id, users) {
+      override def populateItem(item: ListItem[User]) {
+        val itemModel = item.getModel
+
+//        item.add(ajaxClick({
+//          target => {
+//            val user = itemModel.getObject
+//
+//            val users = selectedUserModel.getObject
+//            if (users.contains(user)) {
+//              target.appendJavaScript("listHighlight.deselect('%s')" format item.getMarkupId)
+//              users.remove(user)
+//            } else {
+//              target.appendJavaScript("listHighlight.select('%s')" format item.getMarkupId)
+//              users.add(user)
+//
+//            }
+//
+//            //            send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
+//          }
+//        }))
+//
+//        //        val checkbox = new AjaxCheckBox("selected", new Model) {
+//        //          def onUpdate(target: AjaxRequestTarget) {
+//        //            send(getPage, Broadcast.BREADTH, if (getModelObject) UserSelectedEvent(item.getModelObject, target) else UserDeselectedEvent(item.getModelObject, target))
+//        //          }
+//        //        }
+//        //        item.add(checkbox)
+        item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "fullName")))
+      }
+    }
+  }
+
 
 
   override def renderHead(response: IHeaderResponse) {
