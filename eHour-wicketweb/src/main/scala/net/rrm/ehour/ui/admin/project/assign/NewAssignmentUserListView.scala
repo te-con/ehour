@@ -22,6 +22,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
 
   val AffectedContainerId = "affectedContainer"
   val AffectedUsersListId = "affectedUsers"
+  val AllUsersBorderId = "allBorder"
 
   val userToItemId: MMap[User, String] = MMap.empty
 
@@ -36,7 +37,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
     val users = userService.getActiveUsers
     ju.Collections.sort(users)
 
-    val allBorder = new GreyBlueRoundedBorder("allBorder")
+    val allBorder = new GreyBlueRoundedBorder(AllUsersBorderId)
     addOrReplace(allBorder)
     allBorder.addOrReplace(createAllUserView("users", users))
 
@@ -46,7 +47,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
     affectedContainer.addOrReplace(createAffectedUserView(AffectedUsersListId, new ListModel[User](Lists.newArrayList())))
   }
 
-  private def affectedContainer = get(AffectedContainerId)
+  private[assign] def affectedContainer = get(AffectedContainerId)
 
   def selectedAffectedUsers = affectedContainer.get(AffectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
 

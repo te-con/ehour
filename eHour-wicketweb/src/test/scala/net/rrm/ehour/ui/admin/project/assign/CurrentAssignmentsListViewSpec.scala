@@ -8,7 +8,7 @@ import net.rrm.ehour.util._
 import org.apache.wicket.model.Model
 import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
 
-class CurrentAssignmentsListViewSpec  extends AbstractSpringWebAppSpec {
+class CurrentAssignmentsListViewSpec extends AbstractSpringWebAppSpec {
   val assignmentService = mockService[ProjectAssignmentService]
 
   override def beforeEach() {
