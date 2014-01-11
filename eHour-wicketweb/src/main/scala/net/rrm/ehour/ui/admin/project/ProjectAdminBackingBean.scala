@@ -8,6 +8,8 @@ class ProjectAdminBackingBean(private val project: Project) extends AdminBacking
   val getProject: Project = project
   override def getDomainObject: Project = getProject
 
+  def isNew = project.getPK == null
+
   private var assignExistingUsersToDefaultProjects: Boolean = false
 
   def isAssignExistingUsersToDefaultProjects: Boolean = assignExistingUsersToDefaultProjects
