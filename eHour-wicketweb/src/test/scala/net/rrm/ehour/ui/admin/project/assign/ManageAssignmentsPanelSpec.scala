@@ -10,6 +10,7 @@ import org.apache.wicket.model.Model
 import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.admin.assignment.AssignmentFormPanel
+import net.rrm.ehour.ui.common.wicket.Container
 
 class ManageAssignmentsPanelSpec extends AbstractSpringWebAppSpec {
   "Manage Assignments Panel" should {
@@ -34,7 +35,7 @@ class ManageAssignmentsPanelSpec extends AbstractSpringWebAppSpec {
       subject.onEvent(event)
 
       tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.LIST_ID), classOf[NewAssignmentUserListView])
-      tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.AFFECTED_USER_ID), classOf[AffectedUsersPanel])
+      tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.AFFECTED_USER_ID), classOf[Container])
 
       tester.assertNoErrorMessage()
     }

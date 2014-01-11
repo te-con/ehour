@@ -64,32 +64,16 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     event.getPayload match {
       case event: NewAssignmentEvent => initializeNewAssignment(event)
       case event: EditAssignmentEvent => initializeEditAssignment(event)
-      case event: UserSelectedEvent => userSelected(event)
-      case event: UserDeselectedEvent => userDeselected(event)
       case _ =>
     }
   }
 
-  def userSelected(event: UserSelectedEvent) {
-    val users = getAffectedUsers
-
-    if (!users.contains(event.user))
-      users.add(event.user)
-
-    event.refresh(getAffectedUsersPanel)
-  }
-
-  def userDeselected(event: UserDeselectedEvent) {
-    getAffectedUsers.remove(event.user)
-    event.refresh(getAffectedUsersPanel)
-  }
-
-  def getAffectedUsers: ju.List[User] = getAffectedUsersPanel match {
-    case affected: AffectedUsersPanel => affected.getPanelModelObject
+  def selectedAffectedUsers: ju.List[User] = findListPanel match {
+    case newUserList: NewAssignmentUserListView => newUserList.selectedAffectedUsers.getObject
     case _ => Lists.newArrayList()
   }
 
-  def getAffectedUsersPanel = getBorderContainer.get(AFFECTED_USER_ID)
+  def findListPanel = getBorderContainer.get(LIST_ID)
 
   private def initializeNewAssignment(event: NewAssignmentEvent) {
     val bean = AssignmentAdminBackingBean.createAssignmentAdminBackingBean(getPanelModelObject.getDomainObject)
@@ -144,7 +128,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       val assignment = backingBean.getProjectAssignmentForSave
 
       if (assignment.isNew) {
-        assignmentManagementService.assignUsersToProjects(getAffectedUsers, assignment)
+        assignmentManagementService.assignUsersToProjects(selectedAffectedUsers, assignment)
       } else {
         assignmentManagementService.assignUserToProject(assignment)
       }

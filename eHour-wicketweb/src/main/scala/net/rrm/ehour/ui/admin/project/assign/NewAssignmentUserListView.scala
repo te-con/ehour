@@ -8,8 +8,7 @@ import java.{util => ju}
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import net.rrm.ehour.ui.common.wicket.{Container, Event, NonEmptyLabel}
-import org.apache.wicket.ajax.AjaxRequestTarget
+import net.rrm.ehour.ui.common.wicket.{Container, NonEmptyLabel}
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
@@ -49,7 +48,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
 
   private def affectedContainer = get(AffectedContainerId)
 
-  private def selectedAffectedUsers = affectedContainer.get(AffectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
+  def selectedAffectedUsers = affectedContainer.get(AffectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
 
   def createAllUserView(id: String, users: ju.List[User]): ListView[User] = {
     new ListView[User](id, users) {
@@ -118,6 +117,3 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
 
   val applyJsFilter = "new ListFilter('#filterUserInput', '#allUsers');"
 }
-
-case class UserSelectedEvent(user: User, target: AjaxRequestTarget) extends Event(target)
-case class UserDeselectedEvent(user: User, target: AjaxRequestTarget) extends Event(target)
