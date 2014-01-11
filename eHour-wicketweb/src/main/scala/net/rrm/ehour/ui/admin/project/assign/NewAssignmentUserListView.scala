@@ -21,7 +21,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
   val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
   val HighlightJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listHighlight.js")
 
-  val AffectedBorderId = "affectedBorder"
+  val AffectedContainerId = "affectedContainer"
   val AffectedUsersListId = "affectedUsers"
 
   val userToItemId: MMap[User, String] = MMap.empty
@@ -35,20 +35,21 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
     userToItemId.clear()
 
     val users = userService.getActiveUsers
+    ju.Collections.sort(users)
 
     val allBorder = new GreyBlueRoundedBorder("allBorder")
     addOrReplace(allBorder)
     allBorder.addOrReplace(createAllUserView("users", users))
 
-    val affectedBorder = new Container(AffectedBorderId)
-    addOrReplace(affectedBorder)
-    affectedBorder.setOutputMarkupId(true)
-    affectedBorder.addOrReplace(createAffectedUserView(AffectedUsersListId, new ListModel[User](Lists.newArrayList())))
+    val affectedContainer = new Container(AffectedContainerId)
+    addOrReplace(affectedContainer)
+    affectedContainer.setOutputMarkupId(true)
+    affectedContainer.addOrReplace(createAffectedUserView(AffectedUsersListId, new ListModel[User](Lists.newArrayList())))
   }
 
-  def affectedBorder = get(AffectedBorderId)
+  private def affectedContainer = get(AffectedContainerId)
 
-  def selectedAffectedUsers = affectedBorder.get(AffectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
+  private def selectedAffectedUsers = affectedContainer.get(AffectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
 
   def createAllUserView(id: String, users: ju.List[User]): ListView[User] = {
     new ListView[User](id, users) {
@@ -68,10 +69,13 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
             } else {
               target.appendJavaScript("listHighlight.select('%s')" format markupId)
               users.add(user)
+
+              ju.Collections.sort(users)
+
               userToItemId.put(user, markupId)
             }
 
-            target.add(affectedBorder)
+            target.add(affectedContainer)
           }
         }))
 
@@ -79,7 +83,6 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
       }
     }
   }
-
 
   def createAffectedUserView(id: String, users: ListModel[User]): ListView[User] = {
     new ListView[User](id, users) {
@@ -92,7 +95,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
             val user = itemModel.getObject
             users.remove(user)
 
-            target.add(affectedBorder)
+            target.add(affectedContainer)
 
             userToItemId.get(user) match {
               case Some(itemId) => target.appendJavaScript("listHighlight.deselect('%s')" format itemId)
@@ -100,34 +103,11 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
             }
           }
         }))
-//            val user = itemModel.getObject
-//
-//            val users = selectedUserModel.getObject
-//            if (users.contains(user)) {
-//              target.appendJavaScript("listHighlight.deselect('%s')" format item.getMarkupId)
-//              users.remove(user)
-//            } else {
-//              target.appendJavaScript("listHighlight.select('%s')" format item.getMarkupId)
-//              users.add(user)
-//
-//            }
-//
-//            //            send(Self, Broadcast.BUBBLE, EditAssignmentEvent(itemModel.getObject, target))
-//          }
-//        }))
-//
-//        //        val checkbox = new AjaxCheckBox("selected", new Model) {
-//        //          def onUpdate(target: AjaxRequestTarget) {
-//        //            send(getPage, Broadcast.BREADTH, if (getModelObject) UserSelectedEvent(item.getModelObject, target) else UserDeselectedEvent(item.getModelObject, target))
-//        //          }
-//        //        }
-//        //        item.add(checkbox)
+
         item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "fullName")))
       }
     }
   }
-
-
 
   override def renderHead(response: IHeaderResponse) {
     response.render(JavaScriptHeaderItem.forReference(HighlightJs))
