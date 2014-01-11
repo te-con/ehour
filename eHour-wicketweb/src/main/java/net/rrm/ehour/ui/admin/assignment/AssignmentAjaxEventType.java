@@ -20,11 +20,11 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 
 /**
  * Assignment ajax event type
- **/
+ */
 
-public enum AssignmentAjaxEventType implements AjaxEventType
-{
-	ASSIGNMENT_UPDATED,
-	ASSIGNMENT_DELETED,
-	ASSIGNMENT_LIST_CHANGE
+public enum AssignmentAjaxEventType implements AjaxEventType {
+    ASSIGNMENT_UPDATED,
+    ASSIGNMENT_DELETED,
+    ASSIGNMENT_LIST_CHANGE,
+    ASSIGNMENT_CANCELLED
 }

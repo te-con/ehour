@@ -80,7 +80,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
     def replaceFormPanel: AssignmentFormPanel = {
       val model = new CompoundPropertyModel[AssignmentAdminBackingBean](bean)
-      val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON, DisplayOption.NO_BORDER))
+      val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.NO_BORDER, DisplayOption.SHOW_CANCEL_BUTTON))
       formPanel.setOutputMarkupId(true)
       getBorderContainer.addOrReplace(formPanel)
       formPanel
@@ -93,20 +93,22 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       view
     }
 
-    def replaceAffectedUserPanel = {
-      val affectedUsersPanel = new Container(AFFECTED_USER_ID)
-      getBorderContainer.addOrReplace(affectedUsersPanel)
-      affectedUsersPanel
-    }
 
     event.refresh(replaceUserListPanel, replaceFormPanel, replaceAffectedUserPanel)
   }
+
+  def replaceAffectedUserPanel = {
+    val affectedUsersPanel = new Container(AFFECTED_USER_ID)
+    getBorderContainer.addOrReplace(affectedUsersPanel)
+    affectedUsersPanel
+  }
+
 
 
   private def initializeEditAssignment(event: EditAssignmentEvent) {
     def replaceFormPanel: AssignmentFormPanel = {
       val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))
-      val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON, DisplayOption.NO_BORDER))
+      val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.NO_BORDER))
       formPanel.setOutputMarkupId(true)
       getBorderContainer.addOrReplace(formPanel)
       formPanel
@@ -150,6 +152,12 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       ajaxEvent.getTarget.add(replacement)
     }
 
+    def showExistingAssignments() {
+      replaceAssignmentsPanel()
+      replaceForm()
+      ajaxEvent.getTarget.add(replaceAffectedUserPanel)
+    }
+
     if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED || ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_DELETED) {
       val backingBean = ajaxEvent.asInstanceOf[PayloadAjaxEvent[AdminBackingBean]].getPayload.asInstanceOf[AssignmentAdminBackingBean]
 
@@ -158,8 +166,9 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       else
         deleteAssignment(backingBean)
 
-      replaceAssignmentsPanel()
-      replaceForm()
+      showExistingAssignments()
+    } else if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_CANCELLED) {
+      showExistingAssignments()
     }
 
     true

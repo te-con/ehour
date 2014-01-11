@@ -31,19 +31,16 @@ import java.util.List;
 
 /**
  * Assignment form
- **/
+ */
 
-public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<AssignmentAdminBackingBean>
-{
-	public enum DisplayOption
-	{
-		SHOW_PROJECT_SELECTION,
-		SHOW_SAVE_BUTTON,
-		SHOW_DELETE_BUTTON,
+public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<AssignmentAdminBackingBean> {
+    public enum DisplayOption {
+        SHOW_PROJECT_SELECTION,
+        SHOW_CANCEL_BUTTON,
         NO_BORDER
-	}
+    }
 
-	private static final long serialVersionUID = -85486044225123470L;
+    private static final long serialVersionUID = -85486044225123470L;
 
     public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
         super(id, model);
@@ -51,46 +48,36 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
         setUpPanel(form, model, displayOptions);
     }
 
-    /**
-	 * Setup panel
-	 */
-	private void setUpPanel(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions)
-	{
-		// setup the customer & project dropdowns
-		add(createProjectSelection("projectSelection", model, displayOptions));
+    private void setUpPanel(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
+        // setup the customer & project dropdowns
+        add(createProjectSelection("projectSelection", model, displayOptions));
 
-		// Add rate & role
-		add(new AssignmentRateRoleFormPartPanel("rateRole", model));
+        // Add rate & role
+        add(new AssignmentRateRoleFormPartPanel("rateRole", model));
 
-		// Project duration form components
-		add(new AssignmentTypeFormPartPanel("assignmentType", model, form));
+        // Project duration form components
+        add(new AssignmentTypeFormPartPanel("assignmentType", model, form));
 
-		// active
-		add(new CheckBox("projectAssignment.active"));
-	}
+        // active
+        add(new CheckBox("projectAssignment.active"));
+    }
 
-	private WebMarkupContainer createProjectSelection(String id, IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions)
-	{
-		if (displayOptions.contains(DisplayOption.SHOW_PROJECT_SELECTION))
-		{
-			return new AssignmentProjectSelectionPanel(id, model);
-		}
-		else
-		{
-			return new PlaceholderPanel(id);
-		}
-	}
+    private WebMarkupContainer createProjectSelection(String id, IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
+        if (displayOptions.contains(DisplayOption.SHOW_PROJECT_SELECTION)) {
+            return new AssignmentProjectSelectionPanel(id, model);
+        } else {
+            return new PlaceholderPanel(id);
+        }
+    }
 
-	@Override
-	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE)
-		{
+    @Override
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
             EventPublisher.publishAjaxEventToParentChildren(this, ajaxEvent);
 
-			return false;
-		}
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

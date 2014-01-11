@@ -5,10 +5,16 @@ import net.rrm.ehour.ui.admin.assignment.form.AssignmentFormComponentContainerPa
 import net.rrm.ehour.ui.admin.assignment.form.AssignmentFormComponentContainerPanel.DisplayOption;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
@@ -33,6 +39,9 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
     }
 
     private void setUpPage(IModel<AssignmentAdminBackingBean> model, List<DisplayOption> optionList) {
+        if (optionList.isEmpty()) {
+            optionList.addAll(Arrays.asList(DisplayOption.SHOW_PROJECT_SELECTION));
+        }
 
         WebMarkupContainer greyBorder;
 
@@ -48,19 +57,37 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
         greyBorder.add(form);
 
         // add submit form
-        boolean deletable = ((AssignmentAdminBackingBean) getDefaultModelObject()).getProjectAssignment().isDeletable();
+        boolean deletable = getPanelModelObject().getProjectAssignment().isDeletable();
         FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(AssignmentAjaxEventType.ASSIGNMENT_DELETED)
                 .withSubmitEventType(AssignmentAjaxEventType.ASSIGNMENT_UPDATED);
 
         FormUtil.setSubmitActions(formConfig);
 
-        if (optionList.isEmpty()) {
-            optionList.addAll(Arrays.asList(DisplayOption.SHOW_PROJECT_SELECTION, DisplayOption.SHOW_SAVE_BUTTON, DisplayOption.SHOW_DELETE_BUTTON));
-        }
+        AjaxButton cancelButton = createCancelButton("cancelButton", optionList, form);
+        form.add(cancelButton);
 
         form.add(new AssignmentFormComponentContainerPanel("formComponents", form, model, optionList));
 
         form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
+    }
+
+    private AjaxButton createCancelButton(final String id, List<DisplayOption> optionList, final Form<AssignmentAdminBackingBean> form) {
+        AjaxButton cancelButton = new AjaxButton(id, form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                EventPublisher.publishAjaxEvent(AssignmentFormPanel.this, new AjaxEvent(AssignmentAjaxEventType.ASSIGNMENT_CANCELLED));
+            }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+            }
+        };
+
+        cancelButton.setVisible(optionList.contains(DisplayOption.SHOW_CANCEL_BUTTON));
+        return cancelButton;
     }
 }
