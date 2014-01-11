@@ -103,8 +103,6 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     affectedUsersPanel
   }
 
-
-
   private def initializeEditAssignment(event: EditAssignmentEvent) {
     def replaceFormPanel: AssignmentFormPanel = {
       val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))
