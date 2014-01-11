@@ -8,14 +8,14 @@ import java.{util => ju}
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import net.rrm.ehour.ui.common.wicket.{Event, NonEmptyLabel}
+import net.rrm.ehour.ui.common.wicket.{Container, Event, NonEmptyLabel}
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
 import org.apache.wicket.model.util.ListModel
 import com.google.common.collect.Lists
-import org.apache.wicket.markup.html.border.Border
+import collection.mutable.{Map => MMap}
 
 class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) {
   val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
@@ -24,6 +24,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
   val AffectedBorderId = "affectedBorder"
   val AffectedUsersListId = "affectedUsers"
 
+  val userToItemId: MMap[User, String] = MMap.empty
 
   @SpringBean
   var userService: UserService = _
@@ -31,22 +32,23 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
   override def onInitialize() {
     super.onInitialize()
 
+    userToItemId.clear()
+
     val users = userService.getActiveUsers
 
     val allBorder = new GreyBlueRoundedBorder("allBorder")
     addOrReplace(allBorder)
     allBorder.addOrReplace(createAllUserView("users", users))
 
-    val affectedBorder = new GreyBlueRoundedBorder(AffectedBorderId)
+    val affectedBorder = new Container(AffectedBorderId)
     addOrReplace(affectedBorder)
     affectedBorder.setOutputMarkupId(true)
     affectedBorder.addOrReplace(createAffectedUserView(AffectedUsersListId, new ListModel[User](Lists.newArrayList())))
   }
 
-  private[assign] def affectedBorderContainer = affectedBorder.asInstanceOf[Border].getBodyContainer
   def affectedBorder = get(AffectedBorderId)
 
-  def selectedAffectedUsers = affectedBorderContainer.get(AffectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
+  def selectedAffectedUsers = affectedBorder.get(AffectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
 
   def createAllUserView(id: String, users: ju.List[User]): ListView[User] = {
     new ListView[User](id, users) {
@@ -58,12 +60,15 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
             val user = itemModel.getObject
 
             val users = selectedAffectedUsers.getObject
+            val markupId = item.getMarkupId
+
             if (users.contains(user)) {
-              target.appendJavaScript("listHighlight.deselect('%s')" format item.getMarkupId)
+              target.appendJavaScript("listHighlight.deselect('%s')" format markupId)
               users.remove(user)
             } else {
-              target.appendJavaScript("listHighlight.select('%s')" format item.getMarkupId)
+              target.appendJavaScript("listHighlight.select('%s')" format markupId)
               users.add(user)
+              userToItemId.put(user, markupId)
             }
 
             target.add(affectedBorder)
@@ -81,8 +86,20 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
       override def populateItem(item: ListItem[User]) {
         val itemModel = item.getModel
 
-//        item.add(ajaxClick({
-//          target => {
+        item.add(ajaxClick({
+          target => {
+            val users = selectedAffectedUsers.getObject
+            val user = itemModel.getObject
+            users.remove(user)
+
+            target.add(affectedBorder)
+
+            userToItemId.get(user) match {
+              case Some(itemId) => target.appendJavaScript("listHighlight.deselect('%s')" format itemId)
+              case None =>
+            }
+          }
+        }))
 //            val user = itemModel.getObject
 //
 //            val users = selectedUserModel.getObject

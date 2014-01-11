@@ -1,78 +1,55 @@
-.project_users {
-    margin: 0 8px 0 8px;
+.userList {
+    width: 17.5em !important;
+    min-width: 17.5em !important;
+    max-width: 17.5em !important;
+    height: 15em !important;
 }
 
-
-.project_users .rows {
-    height: 15em;
-    overflow: auto;
-}
-
-.project_users .header  {
-    border-bottom: 1px solid #ffffff;
-    margin-bottom: 5px;
-    font-weight: bold;
-    padding-bottom: 2px;
-}
-
-.project_users .name {
-    width: 14em;
-    float:left;
-}
-
-#allUsers .name,#affectedUsers .name {
-    width: 17em !important;
-}
-
-.project_users .role {
-    width: 7em;
-    float:left;
-}
-
-.project_users .date {
-    width: 6em;
-    float:left;
-}
-
-.project_users .dateInput {
-    width: 5em !important;
-}
-
-.project_users .rate {
-    width: 4em;
-    float:left;
-}
-
-.project_users .rateInput {
-    width: 3em !important;
-}
-
-.project_users .buttons {
-    width: 4em;
-    float:left;
-}
-
-.project_users .scrollbar {
-    width: 2em;
-    float:left;
-}
-
-.project_users .row {
-    clear: both;
-}
-
-.project_users .selected, .project_users .row:hover {
+.userList .selected, .userList .row:hover, .assignmentList .selected, .assignmentList .row:hover {
     background-color: #d1e5f9;
 }
 
-.project_users .row:hover, .project_users .clickable {
+.userList .row:hover, .assignmentList .row:hover {
     cursor: pointer;
 }
 
-.project_users .validationError {
-    clear: both;
-    padding-right: 3em;
-    text-align: right;
+.assignmentList {
+    width: 38em !important;
+    min-width: 38em !important;
+    max-width: 38em !important;
+    height: 15em !important;
+}
+
+.assignmentList .name {
+    width: 14em;
+    float: left;
+}
+
+#allUsers .name, #affectedUsers .name {
+    width: 17em !important;
+}
+
+.assignmentList .role {
+    width: 6em;
+    float: left;
+}
+
+.assignmentList .date {
+    width: 6em;
+    float: left;
+}
+
+.assignmentList .dateInput {
+    width: 5em !important;
+}
+
+.assignmentList .rate {
+    width: 4em;
+    float: left;
+}
+
+.assignmentList .rateInput {
+    width: 3em !important;
 }
 
 .foldIcon {

@@ -22,36 +22,28 @@
     <wicket:fragment wicket:id="assignmentFragment">
         <div wicket:id="border" class="inline">
 
-            <div class="project_users">
-                <div class="header">
-                    <div class="name">
-                        <wicket:message key="admin.project.assignments.user"/>
-                    </div>
-                    <div class="role">Rol</div>
-                    <div class="date">
-                        <wicket:message key="admin.project.assignments.start"/>
-                    </div>
-                    <div class="date">
-                        <wicket:message key="admin.project.assignments.end"/>
-                    </div>
-                    <div class="rate">
-                        <wicket:message key="admin.project.assignments.rate"/>
-                    </div>
-                    <br/>
-                </div>
+            <div class="listScroll inline assignmentList">
+                <table class="entrySelectorTable">
+                    <thead>
+                    <tr>
+                        <th class="name"><wicket:message key="admin.project.assignments.user"/></th>
+                        <th class="role"><wicket:message key="admin.project.assignments.role"/></th>
+                        <th class="date"><wicket:message key="admin.project.assignments.start"/></th>
+                        <th class="date"><wicket:message key="admin.project.assignments.end"/></th>
+                        <th class="rate"><wicket:message key="admin.project.assignments.rate"/></th>
+                    </tr>
+                    </thead>
 
-                <div class="rows" id="assignmentList">
-                    <div class="row" wicket:id="row">
-                        <span class="inline">
-                            <div class="name filterable" wicket:id="name"/>
-                            <div class="role filterable" wicket:id="role"/>
-                            <div class="date filterable" wicket:id="startDate"/>
-                            <div class="date filterable" wicket:id="endDate"/>
-                            <div class="rate filterable" wicket:id="rate"/>
-                        </span>
-                        <br clear="both"/>
-                    </div>
-                </div>
+                    <tbody>
+                    <tr wicket:id="row" class="row rowSelector">
+                        <td class="name filterable" wicket:id="name"></td>
+                        <td class="role filterable" wicket:id="role"></td>
+                        <td class="date filterable" wicket:id="startDate"></td>
+                        <td class="date filterable" wicket:id="endDate"></td>
+                        <td class="rate filterable" wicket:id="rate"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </wicket:fragment>

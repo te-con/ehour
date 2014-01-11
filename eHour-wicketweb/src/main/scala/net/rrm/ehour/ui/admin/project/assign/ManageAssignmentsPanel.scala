@@ -17,7 +17,6 @@ import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
 import org.apache.wicket.markup.html.border.Border
 import java.{util => ju}
 import net.rrm.ehour.ui.common.model.AdminBackingBean
-import org.apache.wicket.model.util.ListModel
 import net.rrm.ehour.domain.User
 import com.google.common.collect.Lists
 
@@ -110,8 +109,8 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       view
     }
 
-    def replaceAffectedUserPanel: AffectedUsersPanel = {
-      val affectedUsersPanel = new AffectedUsersPanel(AFFECTED_USER_ID, new ListModel[User](Lists.newArrayList()))
+    def replaceAffectedUserPanel = {
+      val affectedUsersPanel = new Container(AFFECTED_USER_ID)
       getBorderContainer.addOrReplace(affectedUsersPanel)
       affectedUsersPanel
     }
@@ -137,7 +136,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     event.refresh(replaceFormPanel, replaceAffectedUserPanel)
   }
 
-  private[assign] def getBorderContainer = Self.get(BORDER_ID).asInstanceOf[Border].getBodyContainer
+  private[assign] def getBorderContainer = get(BORDER_ID).asInstanceOf[Border].getBodyContainer
 
   // own legacy event system...
   override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {

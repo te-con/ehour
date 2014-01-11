@@ -21,47 +21,51 @@
     <div class="floatLeft">
 
         <div wicket:id="allBorder" class="inline">
-            <div class="project_users" id="allUsers">
-                <div class="header">
-                    <div class="name">
-                        <wicket:message key="admin.project.assignments.user"/>
-                    </div>
-                    <br/>
-                </div>
+            <div class="listScroll inline userList" id="allUsers">
+                <table class="entrySelectorTable">
+                    <thead>
+                    <tr>
+                        <th>
+                            <wicket:message key="admin.project.assignments.user"/>
+                        </th>
+                    </tr>
+                    </thead>
 
-                <div class="rows">
-                    <div class="row" wicket:id="users" style="width:17em">
-                        <span class="inline container">
-                            <div class="name filterable" wicket:id="name"/>
-                        </span>
-                    </div>
-                </div>
+                    <tbody>
+                    <tr wicket:id="users" class="row">
+                        <td class="name filterable" wicket:id="name"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="floatRight">
-        <div wicket:id="affectedBorder" class="inline">
-            <div class="project_users" id="affectedUsers">
-                <div class="header">
-                    <div class="name">
-                        <wicket:message key="admin.project.assignments.user"/>
-                    </div>
-                    <br/>
-                </div>
 
-                <div class="rows">
-                    <div class="row" wicket:id="affectedUsers" style="width:17em">
-                        <span class="inline container">
-                            <div class="name filterable" wicket:id="name"/>
-                        </span>
-                    </div>
-                </div>
+    <div class="floatRight">
+        <div wicket:id="affectedBorder" class="inline" style="margin: 12px 0 0 8px;">
+            <div class="listScroll inline userList" id="affectedUsers">
+                <table class="entrySelectorTable">
+                    <thead>
+                    <tr>
+                        <th>
+                            <wicket:message key="admin.project.assignments.user"/>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr wicket:id="affectedUsers" class="row">
+                        <td class="name" wicket:id="name"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <br clear="all"/>
+    <br />
 </wicket:panel>
 
 </body>
