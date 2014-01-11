@@ -28,8 +28,7 @@
                     <tr>
                         <th class="name"><wicket:message key="admin.project.assignments.user"/></th>
                         <th class="role"><wicket:message key="admin.project.assignments.role"/></th>
-                        <th class="date"><wicket:message key="admin.project.assignments.start"/></th>
-                        <th class="date"><wicket:message key="admin.project.assignments.end"/></th>
+                        <th class="date"><wicket:message key="admin.project.assignments.date"/></th>
                         <th class="rate"><wicket:message key="admin.project.assignments.rate"/></th>
                     </tr>
                     </thead>
@@ -38,8 +37,7 @@
                     <tr wicket:id="row" class="row rowSelector">
                         <td class="name filterable" wicket:id="name"></td>
                         <td class="role filterable" wicket:id="role"></td>
-                        <td class="date filterable" wicket:id="startDate"></td>
-                        <td class="date filterable" wicket:id="endDate"></td>
+                        <td class="date filterable"><span wicket:id="startDate" /> - <span wicket:id="endDate" /></td>
                         <td class="rate filterable" wicket:id="rate"></td>
                     </tr>
                     </tbody>

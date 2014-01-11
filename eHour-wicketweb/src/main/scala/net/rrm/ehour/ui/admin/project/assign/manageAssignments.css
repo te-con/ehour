@@ -21,7 +21,7 @@
 }
 
 .assignmentList .name {
-    width: 14em;
+    width: 12em;
     float: left;
 }
 
@@ -30,26 +30,18 @@
 }
 
 .assignmentList .role {
-    width: 6em;
+    width: 8em;
     float: left;
 }
 
 .assignmentList .date {
-    width: 6em;
+    width: 10em;
     float: left;
-}
-
-.assignmentList .dateInput {
-    width: 5em !important;
 }
 
 .assignmentList .rate {
-    width: 4em;
+    width: 5em;
     float: left;
-}
-
-.assignmentList .rateInput {
-    width: 3em !important;
 }
 
 .foldIcon {
