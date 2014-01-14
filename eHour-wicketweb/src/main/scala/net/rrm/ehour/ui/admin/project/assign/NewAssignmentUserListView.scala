@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.project.assign
 
-import org.apache.wicket.model.PropertyModel
+import org.apache.wicket.model.{StringResourceModel, PropertyModel}
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.user.service.UserService
@@ -15,6 +15,9 @@ import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem
 import org.apache.wicket.model.util.ListModel
 import com.google.common.collect.Lists
 import collection.mutable.{Map => MMap}
+import org.apache.wicket.markup.html.WebMarkupContainer
+import com.googlecode.wicket.jquery.ui.widget.tooltip.TooltipBehavior
+import org.apache.wicket.AttributeModifier
 
 class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) {
   val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
@@ -45,6 +48,11 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
     addOrReplace(affectedContainer)
     affectedContainer.setOutputMarkupId(true)
     affectedContainer.addOrReplace(createAffectedUserView(AffectedUsersListId, new ListModel[User](Lists.newArrayList())))
+
+    val help = new WebMarkupContainer("help")
+    help.add(new TooltipBehavior())
+    help.add(AttributeModifier.replace("title", new StringResourceModel("admin.projects.assignments.add.help", null)))
+    addOrReplace(help)
   }
 
   private[assign] def affectedContainer = get(AffectedContainerId)
@@ -114,6 +122,8 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
     response.render(JavaScriptHeaderItem.forReference(FilterJs))
 
     response.render(OnDomReadyHeaderItem.forScript(applyJsFilter))
+    response.render(OnDomReadyHeaderItem.forScript("$( document ).tooltip();"))
+
   }
 
   val applyJsFilter = "new ListFilter('#filterUserInput', '#allUsers');"
