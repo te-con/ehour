@@ -7,13 +7,31 @@
 
 <body>
 <wicket:extend>
-
-    <div class="mainColumn content" style="width:95%">
-        <div wicket:id="existingLocks"></div>
-        <br/>
-
-        <div wicket:id="lockDetails"></div>
+    <div class="floatLeft" wicket:id="entrySelectorFrame" id="entrySelector">
+        <wicket:container wicket:id="lockSelector"></wicket:container>
     </div>
+
+    <wicket:fragment wicket:id="itemListHolder">
+
+        <table class="entrySelectorTable">
+
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start date</th>
+                <th>End date</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr wicket:id="itemList" class="filterRow">
+                <td wicket:id="detailLinkLabel"></td>
+                <td wicket:id="startDate"></td>
+                <td wicket:id="endDate"></td>
+            </tr>
+            </tbody>
+        </table>
+    </wicket:fragment>
 </wicket:extend>
 </body>
 </html>

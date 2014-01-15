@@ -18,27 +18,18 @@ package net.rrm.ehour.ui.common.model;
 
 /**
  * Admin backing bean impl
- **/
+ */
 
-public abstract class AdminBackingBeanImpl implements AdminBackingBean
-{
-	private static final long serialVersionUID = 1L;
-	
-	private String	serverMessage;
+public abstract class AdminBackingBeanImpl implements AdminBackingBean {
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @return the serverMessage
-	 */
-	public String getServerMessage()
-	{
-		return serverMessage;
-	}
+    private String serverMessage;
 
-	/**
-	 * @param serverMessage the serverMessage to set
-	 */
-	public void setServerMessage(String serverMessage)
-	{
-		this.serverMessage = serverMessage;
-	}
+    public String getServerMessage() {
+        return serverMessage;
+    }
+
+    public void setServerMessage(String serverMessage) {
+        this.serverMessage = serverMessage;
+    }
 }
