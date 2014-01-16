@@ -18,9 +18,9 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new ResourceModel("op.lock.admin.title"),
-  new ResourceModel("admin.project.addProject"),
-  new ResourceModel("admin.project.editProject"),
-  new ResourceModel("admin.project.noEditEntrySelected")
+  new ResourceModel("op.lock.admin.addLock.header"),
+  new ResourceModel("op.lock.admin.editLock.header"),
+  new ResourceModel("op.lock.admin.lock.noEditEntrySelected")
 ) {
 
   val SelectorId = "lockSelector"
@@ -32,8 +32,7 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   override def onInitialize() {
     super.onInitialize()
 
-
-    val greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"))
+    val greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("op.lock.admin.list.header"))
     addOrReplace(greyBorder)
 
     val timesheetLocks = lockService.findAll()
