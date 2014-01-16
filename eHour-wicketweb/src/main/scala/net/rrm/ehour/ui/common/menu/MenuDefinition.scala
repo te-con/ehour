@@ -31,20 +31,19 @@ object MenuDefinition {
     val report = LinkItem("nav.report", classOf[ReportPage])
     val pm = LinkItem("nav.pm", classOf[ProjectManagementPage])
 
-    val lock = LinkItem("nav.lock", classOf[LockAdminPage])
-
     val deptAdmin = LinkItem("nav.admin.departments", classOf[DepartmentAdminPage])
     val userAdmin = LinkItem("nav.admin.users", classOf[UserAdminPage])
     val customerAdmin = LinkItem("nav.admin.customers", classOf[CustomerAdminPage])
     val projectAdmin = LinkItem("nav.admin.projects", classOf[ProjectAdminPage])
     val assignmentAdmin = LinkItem("nav.admin.assignments", classOf[AssignmentAdminPage])
-    val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(deptAdmin, userAdmin, customerAdmin, projectAdmin, assignmentAdmin))
+    val lockAdmin = LinkItem("nav.admin.lock", classOf[LockAdminPage])
+    val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(deptAdmin, userAdmin, customerAdmin, projectAdmin, assignmentAdmin, lockAdmin))
 
     val mainConfig = LinkItem("nav.admin.config", classOf[MainConfigPage])
     val auditReport = LinkItem("nav.admin.audit", classOf[AuditReportPage])
     val export = LinkItem("nav.admin.export", classOf[BackupDbPage])
     val systemDropdown = DropdownMenu("nav.admin", util.Arrays.asList(mainConfig, auditReport, export))
 
-    util.Arrays.asList(hoursDropdown, report, pm, lock, manageDropdown, systemDropdown)
+    util.Arrays.asList(hoursDropdown, report, pm, manageDropdown, systemDropdown)
   }
 }
