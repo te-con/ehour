@@ -120,11 +120,15 @@ public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> exten
         if (payload instanceof EntrySelectorPanel.FilterChangedEvent) {
             EntrySelectorPanel.FilterChangedEvent filterChangedEvent = (EntrySelectorPanel.FilterChangedEvent) payload;
 
-            filterChangedEvent.refresh(onFilterChanged(filterChangedEvent));
+            Component component = onFilterChanged(filterChangedEvent);
+
+            if (component != null) {
+                filterChangedEvent.refresh(component);
+            }
         }
     }
 
     protected Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent) {
-
+        return null;
     }
 }
