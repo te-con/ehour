@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
  * Backing bean for customer administration
  **/
 
-public class CustomerAdminBackingBean extends AdminBackingBeanImpl
+public class CustomerAdminBackingBean extends AdminBackingBeanImpl<Customer>
 {
 	private static final long serialVersionUID = 343538274642620123L;
 	private	Customer	customer;
@@ -98,10 +98,7 @@ public class CustomerAdminBackingBean extends AdminBackingBeanImpl
 		this.originalCustomerCode = originalCustomerCode;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean#getDomainObject()
-	 */
+    @Override
 	public Customer getDomainObject()
 	{
 		return getCustomer();

@@ -157,7 +157,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     }
 
     if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED || ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_DELETED) {
-      val backingBean = ajaxEvent.asInstanceOf[PayloadAjaxEvent[AdminBackingBean]].getPayload.asInstanceOf[AssignmentAdminBackingBean]
+      val backingBean = ajaxEvent.asInstanceOf[PayloadAjaxEvent[AdminBackingBean[_]]].getPayload.asInstanceOf[AssignmentAdminBackingBean]
 
       if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED)
         persistAssignment(backingBean)

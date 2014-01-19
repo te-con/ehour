@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
  * Backing bean for users
  */
 
-public class UserAdminBackingBean extends AdminBackingBeanImpl {
+public class UserAdminBackingBean extends AdminBackingBeanImpl<User> {
     private static final long serialVersionUID = 2781902854421696575L;
     private final User user;
     private String originalUsername;
@@ -69,6 +69,7 @@ public class UserAdminBackingBean extends AdminBackingBeanImpl {
         return originalUsername;
     }
 
+    @Override
     public User getDomainObject() {
         return getUser();
     }

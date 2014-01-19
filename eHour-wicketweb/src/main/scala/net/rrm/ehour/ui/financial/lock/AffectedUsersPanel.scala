@@ -1,15 +1,7 @@
 package net.rrm.ehour.ui.financial.lock
 
-import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel
-import org.apache.wicket.model.IModel
-import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.timesheet.service.{AffectedUser, TimesheetLockService}
-import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import net.rrm.ehour.util._
-import org.apache.wicket.markup.html.basic.Label
-import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 
-class AffectedUsersPanel(id: String, lockModel: IModel[LockModel]) extends AbstractAjaxPanel[LockModel](id, lockModel) {
+class AffectedUsersPanel(id: String/*, lockModel: IModel[LockModel]*/) /*extends AbstractAjaxPanel[LockModel](id, lockModel) {
   @SpringBean
   protected var lockService: TimesheetLockService = _
 
@@ -42,3 +34,4 @@ object AffectedUsersPanel {
 
   
   
+*/

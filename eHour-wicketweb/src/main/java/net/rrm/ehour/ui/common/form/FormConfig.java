@@ -15,8 +15,8 @@ public class FormConfig implements Serializable {
     private AjaxEventType submitEventType;
     private AjaxEventType deleteEventType;
     private AjaxEventType errorEventType;
-    private  EhourConfig config;
-    
+    private EhourConfig config;
+
     private MarkupContainer submitTarget;
 
     public FormConfig() {

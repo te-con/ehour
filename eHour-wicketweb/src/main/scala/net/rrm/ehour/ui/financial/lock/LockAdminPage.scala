@@ -8,7 +8,7 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.FilterChan
 import org.apache.wicket.Component
 import org.apache.wicket.markup.html.panel.{Fragment, Panel}
 import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.timesheet.service.{LockedTimesheet, TimesheetLockService}
+import net.rrm.ehour.timesheet.service.TimesheetLockService
 import org.apache.wicket.markup.html.basic.Label
 import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorPanel, EntrySelectorListView}
 import org.apache.wicket.markup.html.list.ListItem
@@ -39,26 +39,25 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
     val projectListHolder: Fragment = createLockListHolder(timesheetLocks)
     val entrySelectorPanel = new EntrySelectorPanel(SelectorId, projectListHolder)
 
-
     greyBorder.addOrReplace(entrySelectorPanel)
   }
 
 
-  private def createLockListHolder(locks: List[LockedTimesheet]): Fragment = {
+  private def createLockListHolder(locks: List[TimesheetLock]): Fragment = {
     val fragment = new Fragment("itemListHolder", "itemListHolder", this)
     fragment.setOutputMarkupId(true)
     implicit val locale = getEhourWebSession.getEhourConfig.getFormattingLocale
 
-    val view = new EntrySelectorListView[LockedTimesheet]("itemList", toJava(locks)) {
-      protected def onPopulate(item: ListItem[LockedTimesheet], itemModel: IModel[LockedTimesheet]) {
+    val view = new EntrySelectorListView[TimesheetLock]("itemList", toJava(locks)) {
+      protected def onPopulate(item: ListItem[TimesheetLock], itemModel: IModel[TimesheetLock]) {
         val lock = itemModel.getObject
 
-        item.add(new Label("detailLinkLabel", lock.lockName))
-        item.add(new Label("startDate", lock.dateStart.toString("MM/dd/YYYY")))
-        item.add(new Label("endDate", lock.dateEnd.toString("MM/dd/YYYY")))
+        item.add(new Label("detailLinkLabel", lock.getName))
+        item.add(new Label("startDate", lock.getDateStart.toString(/*"MM/dd/YYYY"*/)))
+        item.add(new Label("endDate", lock.getDateEnd.toString(/*"MM/dd/YYYY"*/)))
       }
 
-      protected def onClick(item: ListItem[LockedTimesheet], target: AjaxRequestTarget) {
+      protected def onClick(item: ListItem[TimesheetLock], target: AjaxRequestTarget) {
         //        val projectId: Integer = item.getModelObject.getProjectId
         //        getTabbedPanel.setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)))
         //        getTabbedPanel.switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT)

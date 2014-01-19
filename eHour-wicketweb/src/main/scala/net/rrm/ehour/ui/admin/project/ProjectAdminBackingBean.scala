@@ -4,7 +4,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl
 import net.rrm.ehour.domain.Project
 import java.{util => ju}
 
-class ProjectAdminBackingBean(private val project: Project) extends AdminBackingBeanImpl {
+class ProjectAdminBackingBean(private val project: Project) extends AdminBackingBeanImpl[Project] {
   val getProject: Project = project
   override def getDomainObject: Project = getProject
 

@@ -16,6 +16,30 @@ import java.util.Date
 import net.rrm.ehour.ui.common.converter.DateConverter
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.ui.common.decorator.{LoadingSpinnerDecorator, DemoDecorator}
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
+
+case class NonDemoAjaxButton(id: String, form: Form[_], success: AjaxButton.Callback, error: AjaxButton.Callback = (a, f) => {}) extends WicketAjaxButton(id, form) {
+  private def inDemoMode = EhourWebSession.getSession.getEhourConfig.isInDemoMode
+
+  override def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
+    if (!inDemoMode) {
+      success(target, form)
+    }
+  }
+
+  protected override def updateAjaxAttributes(attributes: AjaxRequestAttributes) {
+    super.updateAjaxAttributes(attributes)
+    attributes.getAjaxCallListeners.add(if (inDemoMode) new DemoDecorator else new LoadingSpinnerDecorator)
+  }
+
+  override def onError(target: AjaxRequestTarget, form: Form[_]) {
+    target.add(form)
+
+    error(target, form)
+  }
+}
 
 
 case class AjaxButton(id: String, form: Form[_], success: Callback, error: Callback = (a, f) => {}) extends WicketAjaxButton(id, form) {
@@ -29,13 +53,36 @@ case class AjaxButton(id: String, form: Form[_], success: Callback, error: Callb
 }
 
 object AjaxButton {
-  type Callback =  (AjaxRequestTarget, Form[_]) => Unit
+  type Callback = (AjaxRequestTarget, Form[_]) => Unit
 }
 
-class AjaxLink(id: String, success: LinkCallback) extends WicketAjaxLink(id){
+
+case class NonDemoAjaxLink(id: String, success: LinkCallback) extends WicketAjaxLink(id) {
+  private def inDemoMode = EhourWebSession.getSession.getEhourConfig.isInDemoMode
+
+
+  override def onClick(target: AjaxRequestTarget) {
+    if (!inDemoMode) {
+      success(target)
+    }
+  }
+
+  protected override def updateAjaxAttributes(attributes: AjaxRequestAttributes) {
+    attributes.getAjaxCallListeners.add(if (inDemoMode) new DemoDecorator else new LoadingSpinnerDecorator)
+  }
+}
+
+
+class AjaxLink(id: String, success: LinkCallback) extends WicketAjaxLink(id) {
   override def onClick(target: AjaxRequestTarget) {
     success(target)
   }
+
+  protected override def updateAjaxAttributes(attributes: AjaxRequestAttributes) {
+    super.updateAjaxAttributes(attributes)
+    attributes.getAjaxCallListeners.add(new LoadingSpinnerDecorator)
+  }
+
 }
 
 object AjaxLink {

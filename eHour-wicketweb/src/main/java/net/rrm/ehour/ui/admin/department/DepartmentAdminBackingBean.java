@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
  * Department backing bean 
  **/
 
-public class DepartmentAdminBackingBean extends AdminBackingBeanImpl
+public class DepartmentAdminBackingBean extends AdminBackingBeanImpl<UserDepartment>
 {
 	private static final long serialVersionUID = -4095608816724112187L;
 	private UserDepartment	department;
@@ -48,11 +48,8 @@ public class DepartmentAdminBackingBean extends AdminBackingBeanImpl
 	{
 		this.department = department;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.common.model.AdminBackingBean#getDomainObject()
-	 */
+
+    @Override
 	public UserDepartment getDomainObject()
 	{
 		return getDepartment();

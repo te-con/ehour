@@ -20,7 +20,7 @@ package net.rrm.ehour.ui.common.model;
  * Admin backing bean impl
  */
 
-public abstract class AdminBackingBeanImpl implements AdminBackingBean {
+public abstract class AdminBackingBeanImpl<T> implements AdminBackingBean<T> {
     private static final long serialVersionUID = 1L;
 
     private String serverMessage;
