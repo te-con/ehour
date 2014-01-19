@@ -8,11 +8,10 @@ import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
 import net.rrm.ehour.ui.common.component.{JavaScriptConfirmation, PlaceholderPanel}
 import net.rrm.ehour.ui.common.wicket.AjaxButton._
-import net.rrm.ehour.ui.common.wicket.{NonDemoAjaxButton, NonDemoAjaxLink}
+import net.rrm.ehour.ui.common.wicket.{Event, NonDemoAjaxButton, NonDemoAjaxLink}
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.ajax.AjaxRequestTarget
-import net.rrm.ehour.ui.common.event.Event
 import net.rrm.ehour.ui.common.util.WebGeo
 
 class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends AbstractFormSubmittingPanel[LockAdminBackingBean](id, model) {
@@ -53,7 +52,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
       val event = if (modelObject.isNew) LockAddedEvent(getPanelModelObject, target) else LockModifiedEvent(getPanelModelObject, target)
 
-      send(getParent, Broadcast.BREADTH, event)
+      send(getPage, Broadcast.BREADTH, event)
     }
 
     val submitButton = NonDemoAjaxButton("submit", form, success)
@@ -87,8 +86,8 @@ object LockFormPanel {
   val AffectedUsersId = "affectedUsersPanel"
 }
 
-case class LockAddedEvent(bean: LockAdminBackingBean, target: AjaxRequestTarget) extends Event(target)
+case class LockAddedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
 
-case class LockModifiedEvent(bean: LockAdminBackingBean, target: AjaxRequestTarget) extends Event(target)
+case class LockModifiedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
 
-case class LockDeletedEvent(bean: LockAdminBackingBean, target: AjaxRequestTarget) extends Event(target)
+case class LockDeletedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)

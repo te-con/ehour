@@ -14,6 +14,8 @@ import net.rrm.ehour.util._
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.event.IEvent
+import org.apache.wicket.markup.html.border.Border
+import net.rrm.ehour.ui.common.wicket.Event
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new ResourceModel("op.lock.admin.title"),
@@ -23,6 +25,11 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
 ) {
 
   val SelectorId = "lockSelector"
+  val BorderId = "entrySelectorFrame"
+
+  val self = this
+
+  var view:EntrySelectorListView[TimesheetLock] = _
 
   @SpringBean
   protected var lockService: TimesheetLockService = _
@@ -30,12 +37,12 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   override def onInitialize() {
     super.onInitialize()
 
-    val greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("op.lock.admin.list.header"))
+    val greyBorder = new GreyRoundedBorder(BorderId, new ResourceModel("op.lock.admin.list.header"))
     addOrReplace(greyBorder)
 
     val timesheetLocks = lockService.findAll()
-    val projectListHolder: Fragment = createLockListHolder(timesheetLocks)
-    val entrySelectorPanel = new EntrySelectorPanel(SelectorId, projectListHolder)
+    val existingLocksComponent = createLockListHolder(timesheetLocks)
+    val entrySelectorPanel = new EntrySelectorPanel(SelectorId, existingLocksComponent)
 
     greyBorder.addOrReplace(entrySelectorPanel)
   }
@@ -45,7 +52,7 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
     fragment.setOutputMarkupId(true)
     implicit val locale = getEhourWebSession.getEhourConfig.getFormattingLocale
 
-    val view = new EntrySelectorListView[TimesheetLock]("itemList", toJava(locks)) {
+    view = new EntrySelectorListView[TimesheetLock]("itemList", toJava(locks)) {
       protected def onPopulate(item: ListItem[TimesheetLock], itemModel: IModel[TimesheetLock]) {
         val lock = itemModel.getObject
 
@@ -64,19 +71,30 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
     fragment
   }
 
+  private def getBorderContainer = get(BorderId).asInstanceOf[Border].getBodyContainer
+
   override def onEvent(event: IEvent[_]) {
+    def update[T <: Event](event: T) = {
+      view.setList(toJava(lockService.findAll()))
+      getBorderContainer.get(SelectorId).asInstanceOf[EntrySelectorPanel].refreshList(event.target)
+      getTabbedPanel.succesfulSave(event.target)
+    }
+
     event.getPayload match {
       case event: LockAddedEvent => {
         val lock = event.bean.getDomainObject
         lockService.createNew(lock.getDateStart, lock.getDateEnd)
+        update(event)
       }
       case event: LockModifiedEvent => {
         val lock = event.bean.getDomainObject
         lockService.updateExisting(lock.getLockId, lock.getDateStart, lock.getDateEnd, lock.getName)
+        update(event)
       }
       case event: LockDeletedEvent => {
         val lock = event.bean.getDomainObject
         lockService.deleteLock(lock.getLockId)
+        update(event)
       }
       case _ =>
     }

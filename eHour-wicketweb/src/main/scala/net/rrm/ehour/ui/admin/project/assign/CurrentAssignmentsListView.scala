@@ -107,7 +107,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
   val applyJsFilter = "new ListFilter('#filterAssignmentInput', '.assignmentList');"
 }
 
-case class EditAssignmentEvent(assignment: ProjectAssignment, target: AjaxRequestTarget) extends Event(target)
+case class EditAssignmentEvent(assignment: ProjectAssignment, override val target: AjaxRequestTarget) extends Event(target)
 
-case class NewAssignmentEvent(target: AjaxRequestTarget) extends Event(target)
+case class NewAssignmentEvent(override val target: AjaxRequestTarget) extends Event(target)
 
