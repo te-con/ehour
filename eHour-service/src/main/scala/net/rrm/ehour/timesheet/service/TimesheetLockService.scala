@@ -16,9 +16,9 @@ import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.util._
 
 trait TimesheetLockService {
-  def createNew(startDate: LocalDate, endDate: LocalDate): TimesheetLock
+  def createNew(startDate: Date, endDate: Date): TimesheetLock
 
-  def updateExisting(id: Int, startDate: LocalDate, endDate: LocalDate, name: String)
+  def updateExisting(id: Int, startDate: Date, endDate: Date, name: String)
 
   def deleteLock(id: Int)
 
@@ -43,20 +43,16 @@ object TimesheetLockService {
 
     toJava(xs.map(i => inc(i.start, i, Nil)).flatten)
   }
-
-  implicit def localDateToDate(date: LocalDate): Date = date.toDate
 }
 
 @Service("timesheetLockService")
 class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, timesheetDao: TimesheetDao) extends TimesheetLockService {
 
-  import TimesheetLockService.localDateToDate
+  @Transactional
+  override def createNew(startDate: Date, endDate: Date): TimesheetLock = lockDao.persist(new TimesheetLock(startDate, endDate))
 
   @Transactional
-  override def createNew(startDate: LocalDate, endDate: LocalDate): TimesheetLock = lockDao.persist(new TimesheetLock(startDate, endDate))
-
-  @Transactional
-  override def updateExisting(id: Int, startDate: LocalDate, endDate: LocalDate, name: String) {
+  override def updateExisting(id: Int, startDate: Date, endDate: Date, name: String) {
     val lock = new TimesheetLock(id, startDate, endDate, name)
     lockDao.persist(lock)
   }

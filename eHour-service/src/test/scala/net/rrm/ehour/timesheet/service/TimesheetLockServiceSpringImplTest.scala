@@ -36,9 +36,9 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
     "create a new lock" in {
       when(lockDao.persist(any(classOf[TimesheetLock]))).thenReturn(lock)
 
-      val timesheet = service.createNew(startDate, endDate)
+      val timesheet = service.createNew(startDate.toDate, endDate.toDate)
 
-      timesheet.getDateStart should be(startDate)
+      timesheet.getDateStart should be(startDate.toDate)
     }
 
     "find all" in {
@@ -49,8 +49,8 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       val lockedTimesheets: List[TimesheetLock] = service.findAll()
 
       lockedTimesheets.length should be(2)
-      lockedTimesheets(0).getDateStart should be(startDate)
-      lockedTimesheets(1).getDateStart should be(startDate.plusDays(1))
+      lockedTimesheets(0).getDateStart should be(startDate.toDate)
+      lockedTimesheets(1).getDateStart should be(startDate.plusDays(1).toDate)
     }
 
     "find on id and return some timesheet" in {

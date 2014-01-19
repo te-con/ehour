@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.list.ListItem
 import net.rrm.ehour.util._
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
+import org.apache.wicket.event.IEvent
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new ResourceModel("op.lock.admin.title"),
@@ -28,7 +29,6 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   @SpringBean
   protected var lockService: TimesheetLockService = _
 
-
   override def onInitialize() {
     super.onInitialize()
 
@@ -41,7 +41,6 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
 
     greyBorder.addOrReplace(entrySelectorPanel)
   }
-
 
   private def createLockListHolder(locks: List[TimesheetLock]): Fragment = {
     val fragment = new Fragment("itemListHolder", "itemListHolder", this)
@@ -67,6 +66,23 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
     fragment
   }
 
+  override def onEvent(event: IEvent[_]) {
+    event.getPayload match {
+      case event: LockAddedEvent => {
+        val lock = event.bean.getDomainObject
+        lockService.createNew(lock.getDateStart, lock.getDateEnd)
+      }
+      case event: LockModifiedEvent => {
+        val lock = event.bean.getDomainObject
+        lockService.updateExisting(lock.getLockId, lock.getDateStart, lock.getDateEnd, lock.getName)
+      }
+      case event: LockDeletedEvent => {
+        val lock = event.bean.getDomainObject
+        lockService.deleteLock(lock.getLockId)
+      }
+      case _ =>
+    }
+  }
 
   protected def getNewAddBaseBackingBean: LockAdminBackingBean = new LockAdminBackingBean(new TimesheetLock())
 
