@@ -4,8 +4,6 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import net.rrm.ehour.domain.{TimesheetLock, UserRole}
 import org.apache.wicket.model.{IModel, ResourceModel}
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.FilterChangedEvent
-import org.apache.wicket.Component
 import org.apache.wicket.markup.html.panel.{Fragment, Panel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.timesheet.service.TimesheetLockService
@@ -91,8 +89,6 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   protected def getBaseAddPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getAddBackingBean)
 
   protected def getBaseEditPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getAddBackingBean)
-
-  protected def onFilterChanged(filterChangedEvent: FilterChangedEvent): Component = ???
 }
 
 

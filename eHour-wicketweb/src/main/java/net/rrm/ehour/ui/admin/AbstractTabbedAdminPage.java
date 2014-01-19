@@ -124,5 +124,7 @@ public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> exten
         }
     }
 
-    protected abstract Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent);
+    protected Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent) {
+
+    }
 }

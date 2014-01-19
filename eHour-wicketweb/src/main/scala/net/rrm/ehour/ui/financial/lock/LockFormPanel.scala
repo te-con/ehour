@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.financial.lock
 
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel
 import org.apache.wicket.model.{Model, ResourceModel, PropertyModel, IModel}
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder
+import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder
 import org.apache.wicket.markup.html.form.{TextField, Form}
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
@@ -13,13 +13,14 @@ import org.apache.wicket.event.Broadcast
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.event.Event
+import net.rrm.ehour.ui.common.util.WebGeo
 
 class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends AbstractFormSubmittingPanel[LockAdminBackingBean](id, model) {
   override def onInitialize() {
     super.onInitialize()
 
     val modelObject: LockAdminBackingBean = getPanelModelObject
-    val outerBorder = new GreyRoundedBorder(LockFormPanel.OuterBorderId, "Timesheet lock details")
+    val outerBorder = new GreySquaredRoundedBorder(LockFormPanel.OuterBorderId, WebGeo.AUTO)
     addOrReplace(outerBorder)
 
     val form = new Form[Unit](LockFormPanel.FormId)
@@ -59,8 +60,6 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     form.add(submitButton)
 
     val unlockButton = NonDemoAjaxLink("unlock", (target) => {
-      //      lockService.deleteLock(getPanelModelObject.id.get)
-      //
       send(getParent, Broadcast.BREADTH, LockDeletedEvent(getPanelModelObject, target))
       //
       //      val replacement = new LockDetailsPanel(self.getId)
