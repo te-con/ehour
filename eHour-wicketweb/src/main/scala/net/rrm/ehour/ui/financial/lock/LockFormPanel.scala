@@ -62,15 +62,11 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
       send(getPage, Broadcast.BREADTH, event)
     }
 
-    val submitButton = NonDemoAjaxButton("submit", form, success)
+    val submitButton = NonDemoAjaxButton(LockFormPanel.SubmitId, form, success)
     form.add(submitButton)
 
-    val unlockButton = NonDemoAjaxLink("unlock", (target) => {
+    val unlockButton = NonDemoAjaxLink(LockFormPanel.UnlockId, (target) => {
       send(getParent, Broadcast.BREADTH, LockDeletedEvent(getPanelModelObject, target))
-      //
-      //      val replacement = new LockDetailsPanel(self.getId)
-      //      self.replaceWith(replacement)
-      //      target.add(replacement)
     })
 
     unlockButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("general.deleteConfirmation")))
@@ -91,6 +87,9 @@ object LockFormPanel {
   val FormId = "lockForm"
   val SaveConfirmId = "saveConfirm"
   val AffectedUsersId = "affectedUsersPanel"
+  val SubmitId = "submit"
+  val UnlockId = "unlock"
+
 }
 
 case class LockAddedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)

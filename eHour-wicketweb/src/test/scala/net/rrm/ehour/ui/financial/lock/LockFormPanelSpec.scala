@@ -15,8 +15,7 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
     def createPanel = new LockFormPanel("id", new Model(new LockAdminBackingBean(new TimesheetLock())))
 
-    def submitForm() { tester.executeAjaxEvent(createPath("submit"), "onclick")
-    }
+    def submitForm() { tester.executeAjaxEvent(createPath(LockFormPanel.SubmitId), "onclick") }
 
     "render" in {
       tester.startComponentInPage(createPanel)
@@ -62,35 +61,35 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
       val lockAddedEvent = tester.findEvent(classOf[LockAddedEvent])
       lockAddedEvent.isPresent should be (false)
     }
-//
-//    "show details of an event when Edit Event is received" in {
-//      val id = 5
-//
-//      when(service.find(id)).thenReturn(Some(LockedTimesheet(Some(id), new LocalDate(), new LocalDate(), Some("name"))))
-//
-//      val panel = tester.startComponentInPage(classOf[LockDetailsPanel])
-//
-//      panel.send(tester.getLastRenderedPage, Broadcast.DEPTH, new EditLockEvent(id, mock[AjaxRequestTarget]))
-//
-//      val model = panel.getDefaultModelObject.asInstanceOf[LockModel]
-//      model.name should be ("name")
-//    }
-//
-//    "update an existing lock" in {
-//      val id = 5
-//
-//      val lockedTimesheet = LockedTimesheet(Some(id), new LocalDate(), new LocalDate(), Some("name"))
-//
-//      when(service.find(id)).thenReturn(Some(lockedTimesheet))
-//
-//      val panel = new LockDetailsPanel("testObject", Model(new LockModel(Some(5), "name")))
-//
-//      tester.startComponentInPage(panel)
-//
-//      submitForm()
-//
-//      verify(service).updateExisting(anyInt(), any(classOf[LocalDate]), any(classOf[LocalDate]), anyString)
-//    }
-  }
 
+    "update an existing lock" in {
+      val id = 5
+
+      val panel = createPanel
+      val lockAdminBackingBean = panel.getPanelModelObject
+      lockAdminBackingBean.getLock.setLockId(id)
+
+      tester.startComponentInPage(panel)
+
+      submitForm()
+
+      val lockModifiedEvent = tester.findEvent(classOf[LockModifiedEvent])
+      lockModifiedEvent.isPresent should be (true)
+    }
+
+    "unlock an existing lock" in {
+      val id = 5
+
+      val panel = createPanel
+      val lockAdminBackingBean = panel.getPanelModelObject
+      lockAdminBackingBean.getLock.setLockId(id)
+
+      tester.startComponentInPage(panel)
+
+      tester.executeAjaxEvent(createPath(LockFormPanel.UnlockId), "onclick")
+
+      val expectedEvent = tester.findEvent(classOf[LockDeletedEvent])
+      expectedEvent.isPresent should be (true)
+    }
+  }
 }
