@@ -15,6 +15,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.event.IEvent
 import net.rrm.ehour.ui.common.wicket.Event
+import net.rrm.ehour.ui.common.model.DateModel
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new ResourceModel("op.lock.admin.title"),
@@ -49,15 +50,18 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   private def createLockListHolder(locks: List[TimesheetLock]): Fragment = {
     val fragment = new Fragment("itemListHolder", "itemListHolder", this)
     fragment.setOutputMarkupId(true)
-    implicit val locale = getEhourWebSession.getEhourConfig.getFormattingLocale
+    val ehourConfig = getEhourWebSession.getEhourConfig
+    implicit val locale = ehourConfig.getFormattingLocale
+
+
 
     view = new EntrySelectorListView[TimesheetLock]("itemList", toJava(locks)) {
       protected def onPopulate(item: ListItem[TimesheetLock], itemModel: IModel[TimesheetLock]) {
         val lock = itemModel.getObject
 
         item.add(new Label("detailLinkLabel", lock.getName))
-        item.add(new Label("startDate", lock.getDateStart.toString(/*"MM/dd/YYYY"*/)))
-        item.add(new Label("endDate", lock.getDateEnd.toString(/*"MM/dd/YYYY"*/)))
+        item.add(new Label("startDate", new DateModel(lock.getDateStart, ehourConfig, DateModel.DATESTYLE_FULL)))
+        item.add(new Label("endDate", new DateModel(lock.getDateEnd, ehourConfig, DateModel.DATESTYLE_FULL)))
       }
 
       protected def onClick(item: ListItem[TimesheetLock], target: AjaxRequestTarget) {

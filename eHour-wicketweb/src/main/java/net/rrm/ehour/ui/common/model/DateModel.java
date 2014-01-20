@@ -45,7 +45,8 @@ public class DateModel implements IModel
 	public static final int	DATESTYLE_WEEK= 7;
 	public static final int	DATESTYLE_DAYONLY_LONG = 8;
 	public static final int	DATESTYLE_DATE_TIME = 9;
-	
+    public static final int	DATESTYLE_FULL = 10;
+
 	private String nullString = "&infin;";
 	
 	private static final long serialVersionUID = 431440606497572025L;
@@ -184,6 +185,9 @@ public class DateModel implements IModel
 			case DATESTYLE_DATE_TIME:
 				dateFormatter = new TimesheetLongFormatter("dd MMM yy HH:mm:ss", locale, false);
 				break;
+            case DATESTYLE_FULL:
+                dateFormatter = new TimesheetLongFormatter("dd MMM yy", locale, false);
+                break;
 			case DATESTYLE_LONG:
 			default:
 				dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT, locale);
