@@ -16,6 +16,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.event.IEvent
 import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.ui.common.model.DateModel
+import net.rrm.ehour.ui.common.component.AddEditTabbedPanel
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new ResourceModel("op.lock.admin.title"),
@@ -29,7 +30,7 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
 
   val self = this
 
-  var view:EntrySelectorListView[TimesheetLock] = _
+  var view: EntrySelectorListView[TimesheetLock] = _
 
   @SpringBean
   protected var lockService: TimesheetLockService = _
@@ -63,9 +64,15 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
       }
 
       protected def onClick(item: ListItem[TimesheetLock], target: AjaxRequestTarget) {
-        //        val projectId: Integer = item.getModelObject.getProjectId
-        //        getTabbedPanel.setEditBackingBean(new ProjectAdminBackingBean(projectService.getProjectAndCheckDeletability(projectId)))
-        //        getTabbedPanel.switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT)
+        val id = item.getModelObject.getLockId
+
+        lockService.find(id) match {
+          case Some(lock) => {
+            getTabbedPanel.setEditBackingBean(new LockAdminBackingBean(lock))
+            getTabbedPanel.switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT)
+          }
+          case None => getTabbedPanel.switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_ADD)
+        }
       }
     }
     fragment.add(view)

@@ -32,7 +32,17 @@ class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
       tester.assertNoInfoMessage()
     }
 
-    "handle lock added event" in {
+    "edit first entry" in {
+      lock.setLockId(5)
+      tester.startPage(classOf[LockAdminPage])
+
+      tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:lockSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder", "click")
+
+      tester.assertNoErrorMessage()
+      tester.assertNoInfoMessage()
+    }
+
+    "persist lock after added event" in {
       val page = tester.startPage(classOf[LockAdminPage])
 
       val bean = new LockAdminBackingBean(lock)
@@ -47,7 +57,7 @@ class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
       tester.assertNoErrorMessage()
     }
 
-    "handle lock edit event" in {
+    "update lock after edit event" in {
       val page = tester.startPage(classOf[LockAdminPage])
 
       val bean = new LockAdminBackingBean(lock)
@@ -63,7 +73,7 @@ class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
       tester.assertNoErrorMessage()
     }
 
-    "handle lock unlocked event" in {
+    "remove lock after unlocked event" in {
       val page = tester.startPage(classOf[LockAdminPage])
 
       val bean = new LockAdminBackingBean(lock)
