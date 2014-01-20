@@ -16,11 +16,18 @@
 
 package net.rrm.ehour.ui.test;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+import org.apache.wicket.Component;
+import org.apache.wicket.IEventDispatcher;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+
+import java.util.List;
 
 /**
  * WicketTester with some enhancements:
@@ -30,8 +37,13 @@ import org.apache.wicket.util.tester.WicketTester;
 
 public class StrictWicketTester extends WicketTester {
 
+    private final EventInterceptor interceptor;
+
     public StrictWicketTester(WebApplication webApplication) {
         super(webApplication);
+
+        interceptor = new EventInterceptor();
+        webApplication.getFrameworkSettings().add(interceptor);
     }
 
     @Override
@@ -51,6 +63,42 @@ public class StrictWicketTester extends WicketTester {
         AjaxCheckBox component = (AjaxCheckBox) getComponentFromLastRenderedPage(path);
         getRequest().getPostParameters().setParameterValue(component.getInputName(), enable.toString());
         executeAjaxEvent(component, "click");
+    }
+
+    public Optional<EventInterceptor.InterceptedEvent> findEvent(Class payloadClass) {
+        return interceptor.findEvent(payloadClass);
+    }
+
+    public static class EventInterceptor implements IEventDispatcher {
+
+        private List<InterceptedEvent> interceptedEvents = Lists.newArrayList();
+
+        @Override
+        public void dispatchEvent(Object sink, IEvent<?> event, Component component) {
+            interceptedEvents.add(new InterceptedEvent(sink, event, component));
+        }
+
+        public Optional<InterceptedEvent> findEvent(Class payloadClass) {
+            for (InterceptedEvent interceptedEvent : interceptedEvents) {
+                if (interceptedEvent.event.getPayload().getClass().equals(payloadClass)) {
+                    return Optional.of(interceptedEvent);
+                }
+            }
+
+            return Optional.absent();
+        }
+
+        public static class InterceptedEvent {
+            public final Object sink;
+            public final IEvent<?> event;
+            public final Component component;
+
+            public InterceptedEvent(Object sink, IEvent<?> event, Component component) {
+                this.sink = sink;
+                this.event = event;
+                this.component = component;
+            }
+        }
     }
 
 }

@@ -14,7 +14,6 @@ import net.rrm.ehour.util._
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.event.IEvent
-import org.apache.wicket.markup.html.border.Border
 import net.rrm.ehour.ui.common.wicket.Event
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
@@ -70,8 +69,6 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
     fragment.add(view)
     fragment
   }
-
-  private def getBorderContainer = get(BorderId).asInstanceOf[Border].getBodyContainer
 
   override def onEvent(event: IEvent[_]) {
     def update[T <: Event](event: T) = {

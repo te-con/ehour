@@ -81,5 +81,4 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
     protected TestEhourWebApplication getWebApp() {
         return webApp;
     }
-
 }

@@ -6,13 +6,14 @@ import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder
 import org.apache.wicket.markup.html.form.{TextField, Form}
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
-import net.rrm.ehour.ui.common.component.{JavaScriptConfirmation, PlaceholderPanel}
+import net.rrm.ehour.ui.common.component.{AjaxFormComponentFeedbackIndicator, ValidatingFormComponentAjaxBehavior, JavaScriptConfirmation, PlaceholderPanel}
 import net.rrm.ehour.ui.common.wicket.AjaxButton._
 import net.rrm.ehour.ui.common.wicket.{Event, NonDemoAjaxButton, NonDemoAjaxLink}
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.util.WebGeo
+import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 
 class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends AbstractFormSubmittingPanel[LockAdminBackingBean](id, model) {
   override def onInitialize() {
@@ -34,6 +35,8 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     //      }
     //    })
     form.add(startDate)
+    startDate.add(new ValidatingFormComponentAjaxBehavior)
+    form.add(new AjaxFormComponentFeedbackIndicator("startDateValidationError", startDate))
 
     val endDate = new LocalizedDatePicker("endDate", new PropertyModel[Date](model, "lock.dateEnd"))
     //    endDate.add(new OnChangeAjaxBehavior {
@@ -42,6 +45,10 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     //      }
     //    })
     form.add(endDate)
+    endDate.add(new ValidatingFormComponentAjaxBehavior)
+    form.add(new AjaxFormComponentFeedbackIndicator("endDateValidationError", endDate))
+
+    form.add(new DateOverlapValidator("dateStartDateEnd", startDate, endDate))
 
     form.add(new PlaceholderPanel(LockFormPanel.SaveConfirmId))
 
