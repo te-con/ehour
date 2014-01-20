@@ -53,8 +53,6 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
     val ehourConfig = getEhourWebSession.getEhourConfig
     implicit val locale = ehourConfig.getFormattingLocale
 
-
-
     view = new EntrySelectorListView[TimesheetLock]("itemList", toJava(locks)) {
       protected def onPopulate(item: ListItem[TimesheetLock], itemModel: IModel[TimesheetLock]) {
         val lock = itemModel.getObject
@@ -84,15 +82,15 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
     event.getPayload match {
       case event: LockAddedEvent => {
         val lock = event.bean.getDomainObject
-        lockService.createNew(lock.getDateStart, lock.getDateEnd)
+        lockService.createNew(Option.apply(lock.getName), lock.getDateStart, lock.getDateEnd)
         update(event)
       }
-      case event: LockModifiedEvent => {
+      case event: LockEditedEvent => {
         val lock = event.bean.getDomainObject
         lockService.updateExisting(lock.getLockId, lock.getDateStart, lock.getDateEnd, lock.getName)
         update(event)
       }
-      case event: LockDeletedEvent => {
+      case event: UnlockedEvent => {
         val lock = event.bean.getDomainObject
         lockService.deleteLock(lock.getLockId)
         update(event)

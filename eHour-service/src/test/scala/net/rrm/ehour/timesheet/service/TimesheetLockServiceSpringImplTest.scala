@@ -36,7 +36,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
     "create a new lock" in {
       when(lockDao.persist(any(classOf[TimesheetLock]))).thenReturn(lock)
 
-      val timesheet = service.createNew(startDate.toDate, endDate.toDate)
+      val timesheet = service.createNew(None, startDate.toDate, endDate.toDate)
 
       timesheet.getDateStart should be(startDate.toDate)
     }

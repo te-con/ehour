@@ -16,7 +16,7 @@ import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.util._
 
 trait TimesheetLockService {
-  def createNew(startDate: Date, endDate: Date): TimesheetLock
+  def createNew(name: Option[String] = None, startDate: Date, endDate: Date): TimesheetLock
 
   def updateExisting(id: Int, startDate: Date, endDate: Date, name: String)
 
@@ -49,7 +49,11 @@ object TimesheetLockService {
 class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, timesheetDao: TimesheetDao) extends TimesheetLockService {
 
   @Transactional
-  override def createNew(startDate: Date, endDate: Date): TimesheetLock = lockDao.persist(new TimesheetLock(startDate, endDate))
+  override def createNew(name: Option[String] = None, startDate: Date, endDate: Date): TimesheetLock = lockDao.persist(name match {
+    case Some(n) => new TimesheetLock(startDate, endDate, n)
+    case None => new TimesheetLock(startDate, endDate)
+  })
+
 
   @Transactional
   override def updateExisting(id: Int, startDate: Date, endDate: Date, name: String) {

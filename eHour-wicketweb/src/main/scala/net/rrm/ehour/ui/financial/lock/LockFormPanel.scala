@@ -57,7 +57,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
       form.addOrReplace(label)
       target.add(label)
 
-      val event = if (modelObject.isNew) LockAddedEvent(getPanelModelObject, target) else LockModifiedEvent(getPanelModelObject, target)
+      val event = if (modelObject.isNew) LockAddedEvent(getPanelModelObject, target) else LockEditedEvent(getPanelModelObject, target)
 
       send(getPage, Broadcast.BREADTH, event)
     }
@@ -66,7 +66,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     form.add(submitButton)
 
     val unlockButton = NonDemoAjaxLink(LockFormPanel.UnlockId, (target) => {
-      send(getParent, Broadcast.BREADTH, LockDeletedEvent(getPanelModelObject, target))
+      send(getParent, Broadcast.BREADTH, UnlockedEvent(getPanelModelObject, target))
     })
 
     unlockButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("general.deleteConfirmation")))
@@ -94,6 +94,6 @@ object LockFormPanel {
 
 case class LockAddedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
 
-case class LockModifiedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
+case class LockEditedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
 
-case class LockDeletedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
+case class UnlockedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)

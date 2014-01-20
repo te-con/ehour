@@ -73,7 +73,7 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
       submitForm()
 
-      val lockModifiedEvent = tester.findEvent(classOf[LockModifiedEvent])
+      val lockModifiedEvent = tester.findEvent(classOf[LockEditedEvent])
       lockModifiedEvent.isPresent should be (true)
     }
 
@@ -88,7 +88,7 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
       tester.executeAjaxEvent(createPath(LockFormPanel.UnlockId), "onclick")
 
-      val expectedEvent = tester.findEvent(classOf[LockDeletedEvent])
+      val expectedEvent = tester.findEvent(classOf[UnlockedEvent])
       expectedEvent.isPresent should be (true)
     }
   }
