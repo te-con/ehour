@@ -76,7 +76,7 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   override def onEvent(event: IEvent[_]) {
     def update[T <: Event](event: T) = {
       view.setList(toJava(lockService.findAll()))
-      getBorderContainer.get(SelectorId).asInstanceOf[EntrySelectorPanel].refreshList(event.target)
+      event.refresh(view.getParent)
       getTabbedPanel.succesfulSave(event.target)
     }
 
