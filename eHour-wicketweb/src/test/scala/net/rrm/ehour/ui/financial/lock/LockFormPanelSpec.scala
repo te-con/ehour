@@ -1,7 +1,6 @@
 package net.rrm.ehour.ui.financial.lock
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.domain.TimesheetLock
 import org.apache.wicket.model.Model
 
 import net.rrm.ehour.ui.financial.lock.LockFormPanel._
@@ -13,7 +12,7 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
   "Lock Form Panel" should {
 
-    def createPanel = new LockFormPanel("id", new Model(new LockAdminBackingBean(new TimesheetLock())))
+    def createPanel = new LockFormPanel("id", new Model(LockAdminBackingBeanObjectMother.create))
 
     def submitForm() { tester.executeAjaxEvent(createPath(LockFormPanel.SubmitId), "onclick") }
 
@@ -73,6 +72,8 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
       submitForm()
 
+      tester.assertNoErrorMessage()
+      tester.assertNoInfoMessage()
       val lockModifiedEvent = tester.findEvent(classOf[LockEditedEvent])
       lockModifiedEvent.isPresent should be (true)
     }

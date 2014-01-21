@@ -57,7 +57,8 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
       form.addOrReplace(label)
       target.add(label)
 
-      val event = if (modelObject.isNew) LockAddedEvent(getPanelModelObject, target) else LockEditedEvent(getPanelModelObject, target)
+      val event = if (modelObject.isNew)
+        LockAddedEvent(getPanelModelObject, target) else LockEditedEvent(getPanelModelObject, target)
 
       send(getPage, Broadcast.BREADTH, event)
     }

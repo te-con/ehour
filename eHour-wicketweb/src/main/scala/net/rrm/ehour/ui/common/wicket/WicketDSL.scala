@@ -118,5 +118,5 @@ object WicketDSL {
   implicit def toModel[T <: java.io.Serializable](m: Model[T]) = new WModel[T](m.model)
 }
 
-case class Model[T](model: T)
+case class Model[T <: java.io.Serializable](model: T) extends WModel[T](model)
 

@@ -4,8 +4,6 @@ import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.timesheet.service.TimesheetLockService
 import org.mockito.Mockito._
 import org.mockito.Matchers._
-import net.rrm.ehour.domain.TimesheetLock
-import java.util.Date
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.Component
@@ -15,13 +13,13 @@ class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
   "Lock Admin Page" should {
     val service = mockService[TimesheetLockService]
 
-    val lock = new TimesheetLock()
-    lock.setDateStart(new Date())
-    lock.setDateEnd(new Date)
+    val bean = LockAdminBackingBeanObjectMother.create
+    val lock = bean.lock
 
     when(service.findAll()).thenReturn(List(lock))
 
     before {
+      lock.setLockId(null)
       reset(service)
     }
 
@@ -37,7 +35,6 @@ class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
       tester.startPage(classOf[LockAdminPage])
 
       tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:lockSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder", "click")
-
       tester.assertNoErrorMessage()
       tester.assertNoInfoMessage()
     }
@@ -45,7 +42,6 @@ class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
     "persist lock after added event" in {
       val page = tester.startPage(classOf[LockAdminPage])
 
-      val bean = new LockAdminBackingBean(lock)
       val target = mock[AjaxRequestTarget]
 
       page.send(page, Broadcast.DEPTH, LockAddedEvent(bean, target))
@@ -60,7 +56,6 @@ class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
     "update lock after edit event" in {
       val page = tester.startPage(classOf[LockAdminPage])
 
-      val bean = new LockAdminBackingBean(lock)
       lock.setLockId(5)
       val target = mock[AjaxRequestTarget]
 
@@ -76,7 +71,6 @@ class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
     "remove lock after unlocked event" in {
       val page = tester.startPage(classOf[LockAdminPage])
 
-      val bean = new LockAdminBackingBean(lock)
       lock.setLockId(5)
       val target = mock[AjaxRequestTarget]
 

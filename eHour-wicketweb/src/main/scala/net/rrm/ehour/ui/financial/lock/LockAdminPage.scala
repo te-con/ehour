@@ -67,10 +67,9 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
         val id = item.getModelObject.getLockId
 
         lockService.find(id) match {
-          case Some(lock) => {
+          case Some(lock) =>
             getTabbedPanel.setEditBackingBean(new LockAdminBackingBean(lock))
             getTabbedPanel.switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT)
-          }
           case None => getTabbedPanel.switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_ADD)
         }
       }
@@ -87,21 +86,18 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
     }
 
     event.getPayload match {
-      case event: LockAddedEvent => {
+      case event: LockAddedEvent =>
         val lock = event.bean.getDomainObject
         lockService.createNew(Option.apply(lock.getName), lock.getDateStart, lock.getDateEnd)
         update(event)
-      }
-      case event: LockEditedEvent => {
+      case event: LockEditedEvent =>
         val lock = event.bean.getDomainObject
         lockService.updateExisting(lock.getLockId, lock.getDateStart, lock.getDateEnd, lock.getName)
         update(event)
-      }
-      case event: UnlockedEvent => {
+      case event: UnlockedEvent =>
         val lock = event.bean.getDomainObject
         lockService.deleteLock(lock.getLockId)
         update(event)
-      }
       case _ =>
     }
   }

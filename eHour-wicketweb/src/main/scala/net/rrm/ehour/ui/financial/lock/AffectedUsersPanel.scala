@@ -1,7 +1,15 @@
 package net.rrm.ehour.ui.financial.lock
 
+import org.apache.wicket.model.IModel
+import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel
+import org.apache.wicket.spring.injection.annot.SpringBean
+import net.rrm.ehour.timesheet.service.{AffectedUser, TimesheetLockService}
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
+import org.apache.wicket.markup.html.list.{ListItem, ListView}
+import org.apache.wicket.markup.html.basic.Label
+import net.rrm.ehour.util._
 
-class AffectedUsersPanel(id: String/*, lockModel: IModel[LockModel]*/) /*extends AbstractAjaxPanel[LockModel](id, lockModel) {
+class AffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]) extends AbstractAjaxPanel[LockAdminBackingBean](id, lockModel) {
   @SpringBean
   protected var lockService: TimesheetLockService = _
 
@@ -12,7 +20,8 @@ class AffectedUsersPanel(id: String/*, lockModel: IModel[LockModel]*/) /*extends
     blueBorder.setOutputMarkupId(true)
     addOrReplace(blueBorder)
 
-    val affectedUsers = lockService.findAffectedUsers(lockModel.getObject.startDate, lockModel.getObject.endDate)
+    val domainObject = getPanelModelObject.getDomainObject
+    val affectedUsers = lockService.findAffectedUsers(domainObject.getDateStart, domainObject.getDateEnd)
 
     val repeater = new ListView[AffectedUser](AffectedUsersPanel.AffectedUsersId, toJava(affectedUsers)) {
       def populateItem(item: ListItem[AffectedUser]) {
@@ -31,7 +40,3 @@ object AffectedUsersPanel {
   val AffectedUsersId = "affectedUsers"
   val BorderId = "border"
 }
-
-  
-  
-*/

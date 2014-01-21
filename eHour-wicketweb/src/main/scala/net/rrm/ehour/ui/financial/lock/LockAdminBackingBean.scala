@@ -8,6 +8,6 @@ class LockAdminBackingBean(val lock: TimesheetLock) extends AdminBackingBeanImpl
 
   def getLock = lock
 
-  val isNew = lock.getPK == null
+  def isNew = lock.getPK == null
 
 }
