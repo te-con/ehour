@@ -112,7 +112,7 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
 
   protected def getBaseAddPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getAddBackingBean)
 
-  protected def getBaseEditPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getAddBackingBean)
+  protected def getBaseEditPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getEditBackingBean)
 }
 
 
