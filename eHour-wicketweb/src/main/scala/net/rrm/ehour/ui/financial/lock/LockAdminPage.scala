@@ -17,6 +17,8 @@ import org.apache.wicket.event.IEvent
 import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.ui.common.model.DateModel
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel
+import org.apache.wicket.request.resource.CssResourceReference
+import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new ResourceModel("op.lock.admin.title"),
@@ -24,6 +26,8 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   new ResourceModel("op.lock.admin.editLock.header"),
   new ResourceModel("op.lock.admin.lock.noEditEntrySelected")
 ) {
+
+  val Css = new CssResourceReference(classOf[LockAdminPage], "timesheetlocks.css")
 
   val SelectorId = "lockSelector"
   val BorderId = "entrySelectorFrame"
@@ -109,6 +113,10 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   protected def getBaseAddPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getAddBackingBean)
 
   protected def getBaseEditPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getEditBackingBean)
+
+  override def renderHead(response: IHeaderResponse) {
+    response.render(CssHeaderItem.forReference(Css))
+  }
 }
 
 

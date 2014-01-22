@@ -3,7 +3,7 @@ package net.rrm.ehour.timesheet.service
 import org.springframework.stereotype.Service
 import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.springframework.beans.factory.annotation.Autowired
-import net.rrm.ehour.domain.{TimesheetEntry, User, TimesheetLock}
+import net.rrm.ehour.domain.{Project, TimesheetEntry, User, TimesheetLock}
 import scala.collection.JavaConversions._
 import java.util.Date
 import org.springframework.transaction.annotation.Transactional
@@ -117,33 +117,21 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     val entriesPerUser: Map[User, List[TimesheetEntry]] = xs.groupBy(_.getEntryId.getProjectAssignment.getUser)
 
     (for ((k, v) <- entriesPerUser) yield {
-      AffectedUser(k, v.foldLeft(0f)((b, a) => b + a.getHours))
+
+      val byProject: Map[Project, List[TimesheetEntry]] = v.groupBy(_.getPK.getProjectAssignment.getProject)
+
+      val aggregatedProjects: Map[Project, Float] = for ((p, xs) <- byProject) yield {
+        (p, xs.foldLeft(0f)(_ + _.getHours))
+      }
+
+      AffectedUser(k, aggregatedProjects)
     }).toSeq.sortWith((a, b) => a.user.compareTo(b.user) < 0)
   }
 }
 
-/*
-case class LockedTimesheet(id: Option[Int] = None, var dateStart: LocalDate, dateEnd: LocalDate, name: Option[String] = None) extends TimesheetLock {
-  def lockName(implicit locale: Locale): String = name match {
-    case Some(n) => n
-    case _ => {
-      val start = DateUtil.formatDate(dateStart, locale)
-      val end = DateUtil.formatDate(dateEnd, locale)
+case class AffectedUser(user: User = null, projects: Map[Project, Float] = Map()) {
+  def getJavaProjects = toJava(projects.toList)
 
-      s"$start - $end"
-    }
-  }
+  def hoursBooked = projects.foldLeft(0f)(_ + _._2)
 }
-
-object LockedTimesheet {
-  implicit def dateToLocalDate(date: Date): LocalDate = LocalDate.fromDateFields(date)
-
-  // weird if because of nullpointer when unboxing getLockId: Integer = null to scala.Int primitive type
-  def apply(timesheetLock: TimesheetLock): LockedTimesheet = LockedTimesheet(if (timesheetLock.getLockId == null) None else Some(timesheetLock.getLockId), timesheetLock.getDateStart, timesheetLock.getDateEnd, Option(timesheetLock.getName))
-
-  def apply(): LockedTimesheet = LockedTimesheet(dateStart = new DateTime().withDayOfMonth(1).toLocalDate, dateEnd = new DateTime().plusMonths(1).minusDays(1).toLocalDate)
-}
-*/
-
-case class AffectedUser(user: User, hoursBooked: Float)
 

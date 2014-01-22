@@ -9,7 +9,7 @@ class LockFormContainer (id: String, bean: LockAdminBackingBean) extends Abstrac
     super.onInitialize()
 
     add(new LockFormPanel("lockFormPanel", getPanelModel))
-    add(new AffectedUsersPanel("affectedUsersPanel", getPanelModel))
+    add(new LockAffectedUsersPanel("affectedUsersPanel", getPanelModel))
   }
 
   override def onEvent(event: IEvent[_]) {

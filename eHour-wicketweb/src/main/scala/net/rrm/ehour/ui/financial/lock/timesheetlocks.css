@@ -6,3 +6,7 @@
 .leftColumn {
     width: 500px;
 }
+
+.affectedUsersList {
+    width: 38em !important;
+}

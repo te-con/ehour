@@ -7,7 +7,7 @@ import net.rrm.ehour.domain.UserObjectMother
 import org.mockito.Mockito._
 import net.rrm.ehour.ui.common.wicket.Model
 
-class AffectedUsersPanelSpec extends AbstractSpringWebAppSpec {
+class LockAffectedUsersPanelSpec extends AbstractSpringWebAppSpec {
   "Affected Users Panel" should {
     val service = mock[TimesheetLockService]
     springTester.getMockContext.putBean(service)
@@ -16,9 +16,9 @@ class AffectedUsersPanelSpec extends AbstractSpringWebAppSpec {
       val bean = LockAdminBackingBeanObjectMother.create
       val lock = bean.lock
 
-      when(service.findAffectedUsers(lock.getDateStart, lock.getDateEnd)).thenReturn(List(AffectedUser(UserObjectMother.createUser(), 12)))
+      when(service.findAffectedUsers(lock.getDateStart, lock.getDateEnd)).thenReturn(List(AffectedUser(UserObjectMother.createUser(), Map())))
 
-      tester.startComponentInPage(new AffectedUsersPanel("id", Model(bean)))
+      tester.startComponentInPage(new LockAffectedUsersPanel("id", Model(bean)))
       tester.assertNoErrorMessage()
     }
   }
