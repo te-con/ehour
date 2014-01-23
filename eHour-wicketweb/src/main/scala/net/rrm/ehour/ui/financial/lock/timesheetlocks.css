@@ -8,5 +8,11 @@
 }
 
 .affectedUsersList {
-    width: 38em !important;
+    width: 37.5em !important;
+    max-width: 37.5em !important;
 }
+
+.projectHeader th {
+    border-bottom: 1px solid #b3c0cb;
+}
+

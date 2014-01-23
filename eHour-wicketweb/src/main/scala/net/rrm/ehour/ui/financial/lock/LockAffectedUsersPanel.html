@@ -14,14 +14,14 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th style="text-align: right">Booked hours in this period</th>
+                        <th class="alignRight">Hours</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    <tr class="row" wicket:id="affectedUsers">
+                    <tr class="filterRow" wicket:id="affectedUsers">
                         <td wicket:id="user"></td>
-                        <td class="numeric" wicket:id="hours"></td>
+                        <td class="alignRight" wicket:id="hours"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -29,31 +29,26 @@
         </div>
 
         <div class="adminForm" style="margin-top: 20px" wicket:id="projectContainer">
-            <wicket:enclosure child="projectsFor">
-                <h3 wicket:id="projectsFor"></h3>
+            <table class="contentTable" style="width:92%;margin-left: 1em">
+                <thead>
+                <tr class="projectHeader">
+                    <th>
+                        Project
+                    </th>
+                    <th class="alignRight">
+                        Hours
+                    </th>
+                </tr>
+                </thead>
 
-                <br />
-                <table class="contentTable">
-                    <thead>
-                    <tr>
-                        <th>
-                            Project
-                        </th>
-                        <th>
-                            Hours
-                        </th>
-                    </tr>
-                    </thead>
+                <tbody>
+                <tr class="row" wicket:id="projects">
+                    <td wicket:id="project">341</td>
+                    <td wicket:id="hours" class="alignRight">123</td>
+                </tr>
 
-                    <tbody>
-                    <tr wicket:id="projects">
-                        <td wicket:id="project">341</td>
-                        <td wicket:id="hours">123</td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            </wicket:enclosure>
+                </tbody>
+            </table>
         </div>
 
     </div>

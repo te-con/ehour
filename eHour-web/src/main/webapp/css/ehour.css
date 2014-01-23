@@ -379,7 +379,7 @@ div.listScroll {
     margin: 0;
     font: bold 0.9em/ 1em Geneva, Arial, Helvetica, sans-serif;
     text-align: left;
-    color: #233e55;
+    color: #3b556d;
 }
 
 .contentTable td {
@@ -856,6 +856,10 @@ hr {
 .entrySelectorTable .numeric {
     text-align: right;
     padding-right: 2em;
+}
+
+.alignRight {
+    text-align: right !important;
 }
 
 .floatLeft {
