@@ -28,27 +28,32 @@
             </div>
         </div>
 
-        <div class="adminForm" wicket:id="projectContainer">
-            <table class="contentTable">
-                <thead>
-                <tr>
-                    <th>
-                        Project
-                    </th>
-                    <th>
-                        Hours
-                    </th>
-                </tr>
-                </thead>
+        <div class="adminForm" style="margin-top: 20px" wicket:id="projectContainer">
+            <wicket:enclosure child="projectsFor">
+                <h3 wicket:id="projectsFor"></h3>
 
-                <tbody>
-                <tr wicket:id="projects">
-                    <td wicket:id="project">341</td>
-                    <td wicket:id="hours">123</td>
-                </tr>
+                <br />
+                <table class="contentTable">
+                    <thead>
+                    <tr>
+                        <th>
+                            Project
+                        </th>
+                        <th>
+                            Hours
+                        </th>
+                    </tr>
+                    </thead>
 
-                </tbody>
-            </table>
+                    <tbody>
+                    <tr wicket:id="projects">
+                        <td wicket:id="project">341</td>
+                        <td wicket:id="hours">123</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </wicket:enclosure>
         </div>
 
     </div>

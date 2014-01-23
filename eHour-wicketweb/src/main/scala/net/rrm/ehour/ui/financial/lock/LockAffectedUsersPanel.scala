@@ -70,6 +70,11 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
     val container = new Container("projectContainer")
     container.add(repeater)
 
+    val projectsForLabel = new Label("projectsFor", new PropertyModel(model, "user.fullName")) {
+      override def isVisible: Boolean = model.getObject.user != null
+    }
+    container.add(projectsForLabel)
+
     container
   }
 }

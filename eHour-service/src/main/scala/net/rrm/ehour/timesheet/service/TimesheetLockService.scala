@@ -132,6 +132,8 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
 case class AffectedUser(user: User = null, projects: Map[Project, Float] = Map()) {
   def getJavaProjects = toJava(projects.toList)
 
+  def getUser = user
+
   def hoursBooked = projects.foldLeft(0f)(_ + _._2)
 }
 
