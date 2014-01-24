@@ -14,6 +14,9 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.ajax.AjaxRequestTarget
 import net.rrm.ehour.ui.common.util.WebGeo
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
 
 class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends AbstractFormSubmittingPanel[LockAdminBackingBean](id, model) {
   override def onInitialize() {
@@ -29,21 +32,23 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     form.add(new TextField("name", new PropertyModel[String](model, "lock.name")))
 
     val startDate = new LocalizedDatePicker("startDate", new PropertyModel[Date](model, "lock.dateStart"))
-    //    startDate.add(new OnChangeAjaxBehavior {
-    //      def onUpdate(target: AjaxRequestTarget) {
-    //        target.add(affectedUsersPanel)
-    //      }
-    //    })
+    def onChangeAjaxBehavior: OnChangeAjaxBehavior = new OnChangeAjaxBehavior {
+      override def onUpdate(target: AjaxRequestTarget) {
+        send(getPage, Broadcast.BREADTH, DateChangeEvent(getPanelModelObject, target))
+      }
+
+      protected override def updateAjaxAttributes(attributes: AjaxRequestAttributes) {
+        super.updateAjaxAttributes(attributes)
+        attributes.getAjaxCallListeners.add(new LoadingSpinnerDecorator)
+      }
+    }
+    startDate.add(onChangeAjaxBehavior)
     form.add(startDate)
     startDate.add(new ValidatingFormComponentAjaxBehavior)
     form.add(new AjaxFormComponentFeedbackIndicator("startDateValidationError", startDate))
 
     val endDate = new LocalizedDatePicker("endDate", new PropertyModel[Date](model, "lock.dateEnd"))
-    //    endDate.add(new OnChangeAjaxBehavior {
-    //      def onUpdate(target: AjaxRequestTarget) {
-    //        target.add(affectedUsersPanel)
-    //      }
-    //    })
+    endDate.add(onChangeAjaxBehavior)
     form.add(endDate)
     endDate.add(new ValidatingFormComponentAjaxBehavior)
     form.add(new AjaxFormComponentFeedbackIndicator("endDateValidationError", endDate))
@@ -98,3 +103,5 @@ case class LockAddedEvent(bean: LockAdminBackingBean, override val target: AjaxR
 case class LockEditedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
 
 case class UnlockedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
+
+case class DateChangeEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)

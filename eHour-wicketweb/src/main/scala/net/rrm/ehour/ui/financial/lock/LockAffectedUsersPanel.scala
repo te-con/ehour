@@ -22,6 +22,8 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
 
   val HighlightJs = new JavaScriptResourceReference(classOf[LockAffectedUsersPanel], "affectedUsers.js")
 
+  setOutputMarkupId(true)
+
   val self = this
 
   override def onBeforeRender(): Unit = {
