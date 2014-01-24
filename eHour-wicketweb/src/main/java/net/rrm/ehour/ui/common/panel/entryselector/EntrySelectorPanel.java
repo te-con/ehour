@@ -23,12 +23,16 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 /**
  * Selector with autocompletion filter
@@ -39,6 +43,8 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     private boolean includeCheckboxToggle = false;
     private GreyBlueRoundedBorder blueBorder;
     private static final long serialVersionUID = -7928428437664050056L;
+
+    private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
 
     public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder) {
         this(id, itemListHolder, null);
@@ -58,6 +64,13 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     public void refreshList(AjaxRequestTarget target) {
         target.add(blueBorder);
         target.appendJavaScript("filterList();");
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(JavaScriptHeaderItem.forReference(JS));
+
+        response.render(OnDomReadyHeaderItem.forScript("new EntrySelector('#listFilter', '.entrySelectorTable');"));
     }
 
     private void setUpPanel(WebMarkupContainer itemListHolder) {
