@@ -16,8 +16,6 @@ import java.util.Date
 import net.rrm.ehour.ui.common.converter.DateConverter
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior
-import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator
-import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.decorator.{LoadingSpinnerDecorator, DemoDecorator}
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
@@ -84,12 +82,6 @@ class AjaxLink(id: String, success: LinkCallback) extends WicketAjaxLink(id) {
     super.updateAjaxAttributes(attributes)
     attributes.getAjaxCallListeners.add(new LoadingSpinnerDecorator)
   }
-
-  protected override def updateAjaxAttributes(attributes: AjaxRequestAttributes) {
-    super.updateAjaxAttributes(attributes)
-    attributes.getAjaxCallListeners.add(new LoadingSpinnerDecorator)
-  }
-
 }
 
 object AjaxLink {
