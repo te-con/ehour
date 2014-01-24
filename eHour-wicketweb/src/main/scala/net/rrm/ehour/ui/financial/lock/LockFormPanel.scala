@@ -6,9 +6,9 @@ import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder
 import org.apache.wicket.markup.html.form.{TextField, Form}
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
 import java.util.Date
-import net.rrm.ehour.ui.common.component.{AjaxFormComponentFeedbackIndicator, ValidatingFormComponentAjaxBehavior, JavaScriptConfirmation, PlaceholderPanel}
+import net.rrm.ehour.ui.common.component._
 import net.rrm.ehour.ui.common.wicket.AjaxButton._
-import net.rrm.ehour.ui.common.wicket.{Event, NonDemoAjaxButton, NonDemoAjaxLink}
+import net.rrm.ehour.ui.common.wicket.Event
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -17,6 +17,8 @@ import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
+import net.rrm.ehour.ui.common.wicket.NonDemoAjaxLink
+import net.rrm.ehour.ui.common.wicket.NonDemoAjaxButton
 
 class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends AbstractFormSubmittingPanel[LockAdminBackingBean](id, model) {
   override def onInitialize() {
@@ -55,8 +57,8 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
     form.add(new DateOverlapValidator("dateStartDateEnd", startDate, endDate))
 
-    form.add(new PlaceholderPanel(LockFormPanel.SaveConfirmId))
-
+    form.add(new ServerMessageLabel(LockFormPanel.ServerMessageId, "formValidationError", new PropertyModel[String](model, "serverMessage")))
+    
     val success: Callback = (target, form) => {
       val label = createNotificationLabel(new Model("Locked"))
       form.addOrReplace(label)
@@ -82,7 +84,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
   }
 
   def createNotificationLabel(model: IModel[String]): Label = {
-    val label = new Label(LockFormPanel.SaveConfirmId, model)
+    val label = new Label(LockFormPanel.ServerMessageId, model)
     label.setOutputMarkupId(true)
     label
   }
@@ -91,7 +93,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 object LockFormPanel {
   val OuterBorderId = "outerBorder"
   val FormId = "lockForm"
-  val SaveConfirmId = "saveConfirm"
+  val ServerMessageId = "serverMessage"
   val AffectedUsersId = "affectedUsersPanel"
   val SubmitId = "submit"
   val UnlockId = "unlock"
