@@ -13,12 +13,11 @@
             <table class="contentTable">
                 <tr>
                     <td valign="top">
-                        Lock timesheets between
-                        :
+                        <wicket:message key="op.lock.admin.form.chooseDate.label" /> :
                     </td>
                     <td>
                         <input style="width: 5em; clear: both" type="text" wicket:id="startDate">
-                        and
+                        <wicket:message key="op.lock.admin.form.and.label" />
                         <input style="width: 5em; clear: both" type="text" wicket:id="endDate">
                         <br />
                         <span wicket:id="startDateValidationError"></span>
@@ -27,7 +26,7 @@
                 </tr>
                 <tr>
                     <td valign="top">
-                        Lock name:
+                        <wicket:message key="op.lock.admin.name.label" />:
                     </td>
                     <td>
                         <input type="text" wicket:id="name">
@@ -35,16 +34,20 @@
                 </tr>
 
                 <tr>
+                    <td colspan="2"><br /></td>
+                </tr>
+
+                <tr>
                     <td>
                         <a class="button floatLeft" onclick="this.blur();" wicket:id="unlock">
-                            <span>Unlock</span>
+                            <span><wicket:message key="op.lock.admin.form.unlock.button" /></span>
                         </a>
 
                         <span wicket:id="saveConfirm"></span>
                     </td>
                     <td style="text-align: right">
                         <a class="button floatRight" onclick="this.blur();" wicket:id="submit">
-                            <span>Lock</span>
+                            <span><wicket:message key="op.lock.admin.form.lock.button" /></span>
                         </a>
                     </td>
                 </tr>
