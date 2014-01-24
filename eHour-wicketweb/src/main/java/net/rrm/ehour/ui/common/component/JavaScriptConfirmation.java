@@ -31,11 +31,11 @@ public class JavaScriptConfirmation extends AttributeModifier {
     }
 
     protected String newValue(final String currentValue, final String replacementValue) {
-        String result = "if (confirm('" + replacementValue + "')) { ";
+        StringBuilder result = new StringBuilder("if (confirm('" + replacementValue + "')) { ");
 
         if (currentValue != null) {
-            result = result + currentValue + "; } else { return false; }";
+            result = result.append(currentValue).append("; } else { return false; }");
         }
-        return result;
+        return result.toString();
     }
 }
