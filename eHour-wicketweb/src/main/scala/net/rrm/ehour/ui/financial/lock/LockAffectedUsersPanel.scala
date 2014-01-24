@@ -13,10 +13,14 @@ import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import net.rrm.ehour.timesheet.service.AffectedUser
 import scala.Float
 import net.rrm.ehour.ui.common.wicket.{Model, Container}
+import org.apache.wicket.request.resource.JavaScriptResourceReference
+import org.apache.wicket.markup.head.{JavaScriptHeaderItem, IHeaderResponse}
 
 class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]) extends AbstractAjaxPanel[LockAdminBackingBean](id, lockModel) {
   @SpringBean
   protected var lockService: TimesheetLockService = _
+
+  val HighlightJs = new JavaScriptResourceReference(classOf[LockAffectedUsersPanel], "affectedUsers.js")
 
   val self = this
 
@@ -49,6 +53,7 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
           target => {
             affectedUserDetailsModel.setObject(affectedUser)
             target.add(details)
+            target.appendJavaScript("listHighlight.selectAndDeselectRest('%s')" format item.getMarkupId)
           }
         }))
       }
@@ -74,6 +79,10 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
     container.add(repeater)
 
     container
+  }
+
+  override def renderHead(response: IHeaderResponse) {
+    response.render(JavaScriptHeaderItem.forReference(HighlightJs))
   }
 }
 

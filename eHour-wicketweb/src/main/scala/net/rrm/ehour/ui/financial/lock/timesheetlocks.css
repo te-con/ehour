@@ -12,6 +12,10 @@
     max-width: 37.5em !important;
 }
 
+.selected {
+    background-color: #d1e5f9;
+}
+
 .projectHeader th {
     border-bottom: 1px solid #b3c0cb;
 }
