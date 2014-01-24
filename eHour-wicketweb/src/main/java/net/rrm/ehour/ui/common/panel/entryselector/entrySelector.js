@@ -17,7 +17,7 @@ function EntrySelector(filterInputSelector, targetListSelector) {
         filter.keyup();
 
         widths = fetchInitialWidth();
-        refresh();
+        this.refresh();
     }
 
     function filterList() {
@@ -53,7 +53,7 @@ function EntrySelector(filterInputSelector, targetListSelector) {
         return widths;
     }
 
-    function refresh() {
+    this.refresh = function() {
         staticTableWidth();
         filterList();
     }
