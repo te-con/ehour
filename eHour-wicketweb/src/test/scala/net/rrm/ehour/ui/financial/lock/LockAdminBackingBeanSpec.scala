@@ -3,7 +3,10 @@ package net.rrm.ehour.ui.financial.lock
 import org.scalatest.{Matchers, WordSpec}
 import org.joda.time.DateTime
 import java.util.Locale
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class LockAdminBackingBeanSpec extends WordSpec with Matchers {
   "Lock Admin Backing Bean" should {
     "set week number as name when there are less than 7 days between start and end" in {
