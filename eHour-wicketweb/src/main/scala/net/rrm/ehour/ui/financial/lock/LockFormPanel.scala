@@ -19,8 +19,11 @@ import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
 import net.rrm.ehour.ui.common.wicket.NonDemoAjaxLink
 import net.rrm.ehour.ui.common.wicket.NonDemoAjaxButton
+import net.rrm.ehour.ui.common.session.EhourWebSession
 
 class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends AbstractFormSubmittingPanel[LockAdminBackingBean](id, model) {
+  val self = this
+
   override def onInitialize() {
     super.onInitialize()
 
@@ -31,12 +34,18 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     val form = new Form[Unit](LockFormPanel.FormId)
     outerBorder.add(form)
 
-    form.add(new TextField("name", new PropertyModel[String](model, "lock.name")))
+    val nameInputField = new TextField("name", new PropertyModel[String](model, "lock.name"))
+    nameInputField.setOutputMarkupId(true)
+    form.add(nameInputField)
 
     val startDate = new LocalizedDatePicker("startDate", new PropertyModel[Date](model, "lock.dateStart"))
     def onChangeAjaxBehavior: OnChangeAjaxBehavior = new OnChangeAjaxBehavior {
       override def onUpdate(target: AjaxRequestTarget) {
         send(getPage, Broadcast.BREADTH, DateChangeEvent(getPanelModelObject, target))
+
+        val bean = self.getPanelModelObject
+        bean.updateName(EhourWebSession.getSession.getEhourConfig.getFormattingLocale)
+        target.add(nameInputField)
       }
 
       protected override def updateAjaxAttributes(attributes: AjaxRequestAttributes) {
@@ -58,14 +67,15 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     form.add(new DateOverlapValidator("dateStartDateEnd", startDate, endDate))
 
     form.add(new ServerMessageLabel(LockFormPanel.ServerMessageId, "formValidationError", new PropertyModel[String](model, "serverMessage")))
-    
+
     val success: Callback = (target, form) => {
       val label = createNotificationLabel(new Model("Locked"))
       form.addOrReplace(label)
       target.add(label)
 
       val event = if (modelObject.isNew)
-        LockAddedEvent(getPanelModelObject, target) else LockEditedEvent(getPanelModelObject, target)
+        LockAddedEvent(getPanelModelObject, target)
+      else LockEditedEvent(getPanelModelObject, target)
 
       send(getPage, Broadcast.BREADTH, event)
     }
@@ -97,7 +107,6 @@ object LockFormPanel {
   val AffectedUsersId = "affectedUsersPanel"
   val SubmitId = "submit"
   val UnlockId = "unlock"
-
 }
 
 case class LockAddedEvent(bean: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)

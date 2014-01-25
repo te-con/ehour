@@ -36,7 +36,7 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
       tester.assertNoInfoMessage()
       tester.assertNoErrorMessage()
 
-      val confirm = tester.getComponentFromLastRenderedPage(createPath("saveConfirm"))
+      val confirm = tester.getComponentFromLastRenderedPage(createPath("serverMessage"))
       confirm.getDefaultModelObject should be("Locked")
 
       val lockAddedEvent = tester.findEvent(classOf[LockAddedEvent])

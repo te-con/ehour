@@ -14,6 +14,7 @@ import com.github.nscala_time.time.TypeImports.Interval
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.util._
+import org.joda.time.Days
 
 trait TimesheetLockService {
   def createNew(name: Option[String] = None, startDate: Date, endDate: Date): TimesheetLock
@@ -64,6 +65,19 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
   @Transactional
   def deleteLock(id: Int) {
     lockDao.delete(id)
+  }
+
+  private[service] def determineName(startDate: Date, endDate: Date):String = {
+    val start = new DateTime(startDate)
+    val end = new DateTime(endDate)
+
+    val days = Days.daysBetween(start, end).getDays
+    days / 7 match {
+      case 1 => "Week %s" format DateTimeFormat.forPattern("w, yyyy").print(start)
+      case 4 | 5 => DateTimeFormat.forPattern("MMMM, yyyy").print(start)
+      case 11 | 12 | 13 => "Quarter %d, %d" format ((start.getMonthOfYear / 3) + 1, start.getYear)
+      case _ => "%s - %s" format (DateTimeFormat.forPattern("dd MM yyyy").print(start), DateTimeFormat.forPattern("dd MM yyyy").print(end))
+    }
   }
 
   override def findAll(): List[TimesheetLock] = toScala(lockDao.findAll())

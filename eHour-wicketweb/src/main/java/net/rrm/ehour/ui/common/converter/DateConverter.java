@@ -13,7 +13,6 @@ public class DateConverter implements IConverter<Date> {
     private static final long serialVersionUID = -5004560809428503944L;
     private final SimpleDateFormat format;
 
-
     public DateConverter() {
         Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
 

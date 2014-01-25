@@ -17,11 +17,8 @@
 package net.rrm.ehour.ui.common.component;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.time.Duration;
 
 /**
  * ServerMessage label which disappears after 5 seconds and is not visible when no content is provided
@@ -36,20 +33,25 @@ public class ServerMessageLabel extends Label {
         this(id, cssClass, null);
     }
 
-        public ServerMessageLabel(String id, String cssClass, IModel<String> model) {
+    public ServerMessageLabel(String id, String cssClass, IModel<String> model) {
         super(id, model);
         add(AttributeModifier.replace("class", cssClass));
         setOutputMarkupId(true);
         setOutputMarkupPlaceholderTag(true);
 
-        if (isVisible()) {
-            add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(3)) {
-                @Override
-                protected void onPostProcessTarget(AjaxRequestTarget target) {
-                    overrideVisibility = true;
-                }
-            });
-        }
+//        if (isVisible()) {
+//            add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(3)) {
+//                @Override
+//                protected void onPostProcessTarget(AjaxRequestTarget target) {
+//                    overrideVisibility = true;
+//
+//                    ServerMessageLabel.this.setEnabled(false);
+//
+//
+//                        target.add(ServerMessageLabel.this);
+//                }
+//            });
+//        }
     }
 
     public boolean isVisible() {

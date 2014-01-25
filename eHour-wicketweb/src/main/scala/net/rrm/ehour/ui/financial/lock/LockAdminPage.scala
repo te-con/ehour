@@ -20,6 +20,7 @@ import net.rrm.ehour.ui.common.component.AddEditTabbedPanel
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.joda.time.DateTime
+import net.rrm.ehour.ui.common.session.EhourWebSession
 
 @AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new ResourceModel("op.lock.admin.title"),
@@ -110,7 +111,7 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   protected def getNewAddBaseBackingBean: LockAdminBackingBean = {
     val start = new DateTime().withDayOfMonth(1).toDate
     val end = new DateTime().withDayOfMonth(1).plusMonths(1).minusDays(1).toDate
-    new LockAdminBackingBean(new TimesheetLock(start, end))
+    new LockAdminBackingBean(new TimesheetLock(start, end)).updateName(EhourWebSession.getSession.getEhourConfig.getFormattingLocale)
   }
 
   protected def getNewEditBaseBackingBean: LockAdminBackingBean = new LockAdminBackingBean(new TimesheetLock())
