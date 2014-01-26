@@ -30,7 +30,7 @@ object LockAdminBackingBean {
     days / 7 match {
       case 0 | 1 => "Week %s" format DateTimeFormat.forPattern("w, yyyy").withLocale(formattingLocale).print(start)
       case 3 | 4 | 5 => DateTimeFormat.forPattern("MMMM, yyyy").withLocale(formattingLocale).print(start)
-      case 11 | 12 | 13 => "Quarter %d, %d" format((start.getMonthOfYear / 3) + 1, start.getYear)
+      case 11 | 12 | 13 => "Q%d, %d" format((start.getMonthOfYear / 3) + 1, start.getYear)
       case _ =>
         val formatter = new SimpleDateFormat(DateUtil.getPatternForDateLocale(formattingLocale), formattingLocale)
         "%s - %s" format(formatter.format(startDate), formatter.format(endDate))

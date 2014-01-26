@@ -34,7 +34,7 @@ class LockAdminBackingBeanSpec extends WordSpec with Matchers {
       val start = new DateTime(2014, 4, 1, 0, 0)
       val end = start.plusWeeks(13)
 
-      LockAdminBackingBean.determineName(start.toDate, end.toDate, Locale.US) should be("Quarter 2, 2014")
+      LockAdminBackingBean.determineName(start.toDate, end.toDate, Locale.US) should be("Q2, 2014")
     }
   }
 }
