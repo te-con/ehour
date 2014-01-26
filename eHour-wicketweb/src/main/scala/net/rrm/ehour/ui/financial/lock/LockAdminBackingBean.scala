@@ -28,8 +28,8 @@ object LockAdminBackingBean {
 
     val days = Days.daysBetween(start, end).getDays
     days / 7 match {
-      case 0 | 1 => "Week %s" format DateTimeFormat.forPattern("w, yyyy").print(start)
-      case 3 | 4 | 5 => DateTimeFormat.forPattern("MMMM, yyyy").print(start)
+      case 0 | 1 => "Week %s" format DateTimeFormat.forPattern("w, yyyy").withLocale(formattingLocale).print(start)
+      case 3 | 4 | 5 => DateTimeFormat.forPattern("MMMM, yyyy").withLocale(formattingLocale).print(start)
       case 11 | 12 | 13 => "Quarter %d, %d" format((start.getMonthOfYear / 3) + 1, start.getYear)
       case _ =>
         val formatter = new SimpleDateFormat(DateUtil.getPatternForDateLocale(formattingLocale), formattingLocale)
