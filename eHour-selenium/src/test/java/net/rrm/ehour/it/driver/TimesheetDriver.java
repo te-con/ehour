@@ -1,5 +1,9 @@
 package net.rrm.ehour.it.driver;
 
+import net.rrm.ehour.it.AbstractScenario;
+
+import java.util.concurrent.TimeUnit;
+
 import static net.rrm.ehour.it.driver.AssignmentAdminDriver.assignToProject;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
@@ -25,6 +29,28 @@ public abstract class TimesheetDriver {
 
     public static void amIOnTheOverviewPage() {
         assertTrue(findElement("contentContainer_projectOverview_greyBorder_title").getText().contains("Aggregated hours"));
+    }
+
+    public static boolean isBookingHoursPossible(int day) {
+        try {
+            AbstractScenario.Driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+            findElement("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_blueFrame_blueFrame__body_customers_0_rows_0_day" + day + "_day");
+            return true;
+        } catch (org.openqa.selenium.NoSuchElementException nse) {
+            return false;
+        }
+        finally {
+            AbstractScenario.Driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        }
+
+
+    }
+
+    // this can only navigate backwards
+    public static void navigateToMonth(String month) {
+        while (!findElement("sidePanel_calendarFrame_currentMonth").getText().equals(month)) {
+            findElement("sidePanel_calendarFrame_previousMonthLink").click();
+        }
     }
 
     public static void clickInWeek(int week) {

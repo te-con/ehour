@@ -14,6 +14,8 @@ public class TimesheetLockDriver {
     }
 
     public static void newLock(LocalDate startDate, LocalDate endDate) {
+        navigateToAdminLocks();
+
         WebElement startDateElement = Driver.findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_startDate"));
         startDateElement.clear();
         startDateElement.sendKeys(startDate.toString("MM/dd/YY"));
@@ -22,6 +24,8 @@ public class TimesheetLockDriver {
         endDateElement.sendKeys(endDate.toString("MM/dd/YY"));
 
         Driver.findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_submit")).click();
+
+        EhourApplicationDriver.sleep(1000);
     }
 
     public static void assertServerMessage(String msg) {
