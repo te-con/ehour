@@ -63,14 +63,14 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
     public void refreshList(AjaxRequestTarget target) {
         target.add(blueBorder);
-        target.appendJavaScript("filterList();");
+        target.appendJavaScript("window.entrySelector.refresh();");
     }
 
     @Override
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(JS));
 
-        response.render(OnDomReadyHeaderItem.forScript("new EntrySelector('#listFilter', '.entrySelectorTable');"));
+        response.render(OnDomReadyHeaderItem.forScript("window.entrySelector = new EntrySelector('#listFilter', '.entrySelectorTable');"));
     }
 
     private void setUpPanel(WebMarkupContainer itemListHolder) {
