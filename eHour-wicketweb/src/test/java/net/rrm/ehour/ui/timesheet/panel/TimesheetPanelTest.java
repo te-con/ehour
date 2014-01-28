@@ -282,13 +282,8 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startAndReplayWithLockedDays(Arrays.asList(lockedDay));
 
-        tester.debugComponentTrees();
-
-        Component day2Lock = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:day2Label:lock");
-        assertNotEquals("", day2Lock.getDefaultModelObjectAsString());
-
-        Component day1Lock = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:day1Label:lock");
-        assertEquals("", day1Lock.getDefaultModelObjectAsString());
+        String path = TIMESHEET_PATH + ":blueFrame_body:day2Label:lock:lockedContainer";
+        tester.assertVisible(path);
 
         tester.assertNoErrorMessage();
     }
