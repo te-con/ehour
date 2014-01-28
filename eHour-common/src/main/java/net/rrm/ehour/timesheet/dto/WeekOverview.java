@@ -24,7 +24,10 @@ import net.rrm.ehour.domain.User;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Value object for timesheet entries of a week and corresponding comments
@@ -41,7 +44,7 @@ public class WeekOverview implements Serializable {
     private List<ProjectAssignment> projectAssignments;
     private DateRange weekRange;
     private User user;
-    private Collection<Date> lockedDays;
+    private List<Date> lockedDays;
 
     public WeekOverview(List<TimesheetEntry> timesheetEntries, List<ProjectAssignment> projectAssignments) {
         this.timesheetEntries = timesheetEntries;
@@ -50,7 +53,7 @@ public class WeekOverview implements Serializable {
         assignmentMap = mergeUnbookedAssignments(createAssignmentMap());
     }
 
-    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, Collection<Date> lockedDates) {
+    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, List<Date> lockedDates) {
         this(timesheetEntries, projectAssignments);
         this.comment = comment;
         this.weekRange = weekRange;
@@ -113,7 +116,7 @@ public class WeekOverview implements Serializable {
         return user;
     }
 
-    public Collection<Date> getLockedDays() {
+    public List<Date> getLockedDays() {
         return lockedDays;
     }
 }

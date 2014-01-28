@@ -31,6 +31,7 @@ import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.formguard.GuardedAjaxLink;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.FormHighlighter;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
@@ -53,7 +54,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -63,7 +63,6 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -74,7 +73,7 @@ import java.util.List;
  * The main panel - timesheet form
  */
 
-public class TimesheetPanel extends Panel implements Serializable {
+public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     private static final long serialVersionUID = 7704288648724599187L;
 
     private static final JavaScriptResourceReference GUARDFORM_JS = new JavaScriptResourceReference(TimesheetPanel.class, "guardform.js");
@@ -282,10 +281,18 @@ public class TimesheetPanel extends Panel implements Serializable {
      * Add date labels (sun/mon etc)
      */
     private void addDateLabels(WebMarkupContainer parent) {
+        Timesheet timesheet = getPanelModelObject();
+
         for (int i = 1, j = 0; i <= 7; i++, j++) {
-            Label label = new Label("day" + i + "Label", new DateModel(new PropertyModel<Date>(getDefaultModelObject(), "dateSequence[" + j + "]"), config, DateModel.DATESTYLE_TIMESHEET_DAYLONG));
-            label.setEscapeModelStrings(false);
-            parent.add(label);
+            String id = "day" + i + "Label";
+
+            Fragment headerFragment = new Fragment(id, "dayHeader", TimesheetPanel.this);
+
+            PropertyModel<Date> model = new PropertyModel<Date>(getDefaultModelObject(), "dateSequence[" + j + "]");
+            headerFragment.add(new Label("weekDay", new DateModel(model, config, DateModel.DATESTYLE_TIMESHEET_DAYONLY)));
+            headerFragment.add(new Label("day", new DateModel(model, config, DateModel.DATESTYLE_DAYONLY)));
+            headerFragment.add(new Label("lock", timesheet.isLocked(j) ? "L" : ""));
+            parent.add(headerFragment);
         }
     }
 
