@@ -51,7 +51,6 @@ public class TimesheetFactory {
 
         Timesheet timesheet = new Timesheet();
         timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
-
         List<TimesheetRow> timesheetRows = createTimesheetRows(weekOverview.getAssignmentMap(), timesheetDates, weekOverview.getProjectAssignments(), timesheet);
 
         timesheet.setCustomers(structureRowsPerCustomer(timesheetRows));
@@ -61,6 +60,8 @@ public class TimesheetFactory {
 
         timesheet.setComment(weekOverview.getComment());
         timesheet.setUser(weekOverview.getUser());
+
+        timesheet.setLockedDays(weekOverview.getLockedDays());
 
         return timesheet;
     }

@@ -35,7 +35,7 @@ trait TimesheetLockService {
 object TimesheetLockService {
   def timesheetLockToLockedTimesheetList(xs: ju.List[TimesheetLock]): List[TimesheetLock] = toScala(xs)
 
-  def intervalToJavaList(xs: Seq[Interval]): ju.Collection[Date] = {
+  def intervalToJavaList(xs: Seq[Interval]): ju.List[Date] = {
     def inc(d: DateTime, i: Interval, l: List[Date]): List[Date] =
       if (d.isBefore(i.getEnd) || d.isEqual(i.getEnd))
         inc(d.plusDays(1), i, d.toDate :: l)
