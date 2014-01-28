@@ -282,7 +282,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startAndReplayWithLockedDays(Arrays.asList(lockedDay));
 
-        String path = TIMESHEET_PATH + ":blueFrame_body:day2Label:lock:lockedContainer";
+        String path = TIMESHEET_PATH + ":blueFrame:blueFrame_body:day2Label:lock:lockedContainer";
         tester.assertVisible(path);
 
         tester.assertNoErrorMessage();
