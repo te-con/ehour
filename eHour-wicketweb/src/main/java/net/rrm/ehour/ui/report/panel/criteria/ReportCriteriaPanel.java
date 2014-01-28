@@ -474,13 +474,17 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         quickSelections = new ArrayList<WebMarkupContainer>();
 
-        quickSelections.add(getQuickWeek());
-        quickSelections.add(getQuickMonth());
-        quickSelections.add(getQuickQuarter());
+        quickSelections.add(createQuickWeek());
+        quickSelections.add(createQuickMonth());
+        quickSelections.add(createQuickQuarter());
 
         for (WebMarkupContainer cont : quickSelections) {
             form.add(cont);
         }
+    }
+
+    private void createLockedPeriodRanges() {
+
     }
 
     private DatePicker createDatePicker(String id, IModel<Date> model) {
@@ -500,7 +504,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         return datePicker;
     }
 
-    private WebMarkupContainer getQuickWeek() {
+    private WebMarkupContainer createQuickWeek() {
         List<QuickWeek> weeks = new ArrayList<QuickWeek>();
         Calendar currentDate = new GregorianCalendar();
         int currentWeek = -AMOUNT_OF_QUICKWEEKS;
@@ -523,7 +527,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     /**
      * Add quick month selection
      */
-    private WebMarkupContainer getQuickMonth() {
+    private WebMarkupContainer createQuickMonth() {
         List<QuickMonth> months = new ArrayList<QuickMonth>();
         Calendar currentDate = new GregorianCalendar();
         int currentMonth = -AMOUNT_OF_QUICKMONTHS;
@@ -542,7 +546,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
 
-    private WebMarkupContainer getQuickQuarter() {
+    private WebMarkupContainer createQuickQuarter() {
         List<QuickQuarter> quarters = new ArrayList<QuickQuarter>();
         Calendar currentDate = new GregorianCalendar();
         int currentQuarter = -AMOUNT_OF_QUICKQUARTERS;
@@ -563,9 +567,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     public final Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         if (ajaxEvent.getEventType() == QuickDateAjaxEventType.DATE_CHANGED) {
             updateDates(ajaxEvent.getTarget());
-            updateReportCriteria(ReportCriteriaUpdateType.UPDATE_ALL);
-            ajaxEvent.getTarget().add(customers);
-            ajaxEvent.getTarget().add(projects);
         }
 
         return true;
