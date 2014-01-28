@@ -37,9 +37,11 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
         }
         case DropdownMenu(title, menuItems) => {
           val fragment = new Fragment("item", "linkItems", TreeBasedMenu.this)
-         item.add(fragment)
+          item.add(fragment)
 
-          fragment.add(new Label("title", new ResourceModel(title)))
+          val titleLink = createLink("dropdown", menuItems.get(0))
+          titleLink.add(new Label("title", new ResourceModel(title)))
+          fragment.add(titleLink)
 
           fragment.add(new ListView[LinkItem]("subItems", menuItems) {
             def populateItem(item: ListItem[LinkItem]) {
@@ -58,12 +60,20 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
 
   private def createLinkFragment(id: String, linkItem: LinkItem) = {
     val fragment = new Fragment(id, "linkItem", TreeBasedMenu.this)
-    fragment.add(createLink("menuLink", linkItem))
+    fragment.add(createLinkForItem("menuLink", linkItem))
     fragment
   }
 
-  private def createLink(id: String, linkItem: LinkItem) = {
-    val link = new Link[Void]("menuLink") {
+  private def createLinkForItem(id: String, linkItem: LinkItem) = {
+    val link = createLink("menuLink", linkItem)
+
+    link.add(new Label("menuLinkText", new ResourceModel(linkItem.menuTitle)))
+
+    link
+  }
+
+  private def createLink(id: String, linkItem: LinkItem): Link[Void] =
+    new Link[Void](id) {
       def onClick() {
         if (linkItem.pageParameters.isDefined) {
           setResponsePage(linkItem.responsePageClass, linkItem.pageParameters.get)
@@ -72,10 +82,5 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
         }
       }
     }
-
-    link.add(new Label("menuLinkText", new ResourceModel(linkItem.menuTitle)))
-
-    link
-  }
 }
 
