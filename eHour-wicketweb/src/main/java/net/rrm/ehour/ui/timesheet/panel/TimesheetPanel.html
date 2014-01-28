@@ -157,7 +157,18 @@
             <br />
             <div class="lockSpace">&nbsp;</div>
             <div class="day" wicket:id="day">5</div>
-            <div class="lockSpace" wicket:id="lock">&nbsp;</div>
+            <wicket:container wicket:id="lock"></wicket:container>
+        </div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="unlockedDay">
+        <div class="lockSpace">&nbsp;</div>
+    </wicket:fragment>
+
+
+    <wicket:fragment wicket:id="lockedDay">
+        <div class="lockSpace ui-state-default" title="This day is locked" wicket:id="lockedContainer">
+            <span class="ui-icon ui-icon-locked" />
         </div>
     </wicket:fragment>
 </wicket:panel>

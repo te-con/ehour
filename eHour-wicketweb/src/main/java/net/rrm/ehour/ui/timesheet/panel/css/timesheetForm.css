@@ -288,6 +288,9 @@ div.wicket-modal div.w_content_3 {
     width: 20%;
     min-width: 10px;
     float: left;
+    border: 0 !important;
+    background: transparent !important;
+    min-height: 1px;
 }
 
 .weekColumnRow .day {

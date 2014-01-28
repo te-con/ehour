@@ -291,7 +291,20 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             PropertyModel<Date> model = new PropertyModel<Date>(getDefaultModelObject(), "dateSequence[" + j + "]");
             headerFragment.add(new Label("weekDay", new DateModel(model, config, DateModel.DATESTYLE_TIMESHEET_DAYONLY)));
             headerFragment.add(new Label("day", new DateModel(model, config, DateModel.DATESTYLE_DAYONLY)));
-            headerFragment.add(new Label("lock", timesheet.isLocked(j) ? "L" : ""));
+
+            Fragment lockFragment;
+            if (timesheet.isLocked(j)) {
+                lockFragment = new Fragment("lock", "lockedDay", this);
+
+                WebMarkupContainer container = new WebMarkupContainer("lockedContainer");
+                container.add(AttributeModifier.replace("title", new MessageResourceModel("timesheet.daylocked", TimesheetPanel.this)));
+
+                lockFragment.add(container);
+            } else {
+                lockFragment = new Fragment("lock", "unlockedDay", this);
+            }
+
+            headerFragment.add(lockFragment);
             parent.add(headerFragment);
         }
     }
