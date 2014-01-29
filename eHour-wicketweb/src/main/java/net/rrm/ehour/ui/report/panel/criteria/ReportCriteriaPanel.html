@@ -27,21 +27,22 @@
                     <wicket:message key="quickDates"/>:
                 </div>
 
-                <select class="textInputSmall" wicket:id="quickWeek"></select>
-                <select class="textInputSmall" wicket:id="quickMonth"></select>
-                <select class="textInputSmall" wicket:id="quickQuarter"></select>
+                <div class="dateInputLoc">
+                    <select class="textInputSmall" wicket:id="quickWeek"></select>
+                    <select class="textInputSmall" wicket:id="quickMonth"></select>
+                    <select class="textInputSmall" wicket:id="quickQuarter"></select>
+                </div>
 
                 <br clear="all"/>
 
                 <wicket:enclosure child="lockedDate">
                     <div class="dateCriteria">
-                        By locked period:
+                        <wicket:message key="report.criteria.lock"/>:
                     </div>
 
-
-                    <select class="textInputSmall" wicket:id="lockedDate">
-                        <option>Period 1</option>
-                    </select>
+                    <div class="dateInputLoc">
+                        <select class="textInputSmall" wicket:id="lockedDate"> </select>
+                    </div>
 
                     <br clear="all"/>
                 </wicket:enclosure>
