@@ -66,7 +66,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
     public AssignmentListPanel(String id, User user) {
         super(id);
 
-        config = EhourWebSession.getSession().getEhourConfig();
+        config = EhourWebSession.getEhourConfig();
 
         setOutputMarkupId(true);
 

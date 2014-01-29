@@ -100,8 +100,8 @@ public class EhourWebSession extends AuthenticatedWebSession {
      *
      * @return
      */
-    public EhourConfig getEhourConfig() {
-        return ehourConfig;
+    public static EhourConfig getEhourConfig() {
+        return EhourWebSession.getSession().ehourConfig;
     }
 
     public Calendar getNavCalendar() {

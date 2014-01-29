@@ -63,8 +63,7 @@ public class MonthOverviewPanel extends Panel {
 
         setOutputMarkupId(true);
 
-        EhourWebSession session = (EhourWebSession) getSession();
-        EhourConfig config = session.getEhourConfig();
+        EhourConfig config = EhourWebSession.getEhourConfig();
 
         this.timesheetOverview = timesheetOverview;
         thisMonth = overviewForMonth.get(Calendar.MONTH);
@@ -91,7 +90,7 @@ public class MonthOverviewPanel extends Panel {
         greyBorder.add(blueBorder);
         add(greyBorder);
 
-        addDayLabels(blueBorder, session.getEhourConfig());
+        addDayLabels(blueBorder, config);
 
         createMonthCalendar(blueBorder);
     }

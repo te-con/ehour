@@ -76,7 +76,7 @@ public class CalendarPanel extends SidePanel {
 
         setOutputMarkupId(true);
 
-        config = EhourWebSession.getSession().getEhourConfig();
+        config = EhourWebSession.getEhourConfig();
 
         this.user = user;
         fireWeekClicks = allowWeekClicks;
@@ -94,7 +94,7 @@ public class CalendarPanel extends SidePanel {
         List<CalendarWeek> weeks = calendarWeekFactory.createWeeks(config.getFirstDayOfWeek(), user.getUserId(), ((GregorianCalendar) month.clone()));
 
         // set month label
-        parent.add(new Label("currentMonth", new DateModel(month, ((EhourWebSession) getSession()).getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
+        parent.add(new Label("currentMonth", new DateModel(month, EhourWebSession.getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
 
         // previous & next month links
         parent.add(createPreviousMonthLink("previousMonthLink"));

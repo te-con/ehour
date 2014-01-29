@@ -90,7 +90,7 @@ public class TreeReportDataPanel extends Panel {
             reportContent.add(HtmlUtil.getInvisibleLink("excelLink"));
         }
 
-        reportContent.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getSession().getEhourConfig()));
+        reportContent.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getEhourConfig()));
         addHeaderColumns(reportContent);
         addReportData(reportModel, reportContent);
         addGrandTotal(reportModel, reportContent);

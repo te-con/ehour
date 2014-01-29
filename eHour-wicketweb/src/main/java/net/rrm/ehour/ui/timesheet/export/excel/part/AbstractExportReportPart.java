@@ -56,7 +56,7 @@ public abstract class AbstractExportReportPart
 	
 	private void init()
 	{
-		config = EhourWebSession.getSession().getEhourConfig();
+		config = EhourWebSession.getEhourConfig();
 		Locale locale = config.getFormattingLocale();
 		formatter = new SimpleDateFormat("dd MMM yy", locale);
 	}

@@ -97,7 +97,7 @@ public class Login extends WebPage {
             // layout is off when feedback panel uses its space
             Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
             add(demoMode);
-            demoMode.setVisible(EhourWebSession.getSession().getEhourConfig().isInDemoMode());
+            demoMode.setVisible(EhourWebSession.getEhourConfig().isInDemoMode());
 
             String version = EhourWebApplication.get().getVersion();
 

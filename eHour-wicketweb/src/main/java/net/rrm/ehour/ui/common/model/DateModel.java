@@ -149,7 +149,7 @@ public class DateModel implements IModel
 	 */
 	private void initFormatter(int dateStyle)
 	{
-		initFormatter(EhourWebSession.getSession().getEhourConfig().getFormattingLocale(), dateStyle);
+		initFormatter(EhourWebSession.getEhourConfig().getFormattingLocale(), dateStyle);
 	}
 	
 	/**

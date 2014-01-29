@@ -22,7 +22,7 @@ public class LocalizedDatePicker extends DatePicker {
     }
 
     private static String getPattern() {
-        Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
+        Locale locale = EhourWebSession.getEhourConfig().getFormattingLocale();
 
         Locale localeToUse = isSupported(getLanguageTag(locale)) ? locale : Locale.US;
 
@@ -30,7 +30,7 @@ public class LocalizedDatePicker extends DatePicker {
     }
 
     public static Options getOptions() {
-        Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
+        Locale locale = EhourWebSession.getEhourConfig().getFormattingLocale();
         String languageTag = getLanguageTag(locale);
 
         return isSupported(languageTag) ? new Options("option", String.format("$.datepicker.regional['%s']", languageTag)) : new Options();
@@ -40,7 +40,7 @@ public class LocalizedDatePicker extends DatePicker {
     public void renderHead(HtmlHeaderContainer container) {
         super.renderHead(container);
 
-        Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
+        Locale locale = EhourWebSession.getEhourConfig().getFormattingLocale();
         String languageTag = getLanguageTag(locale);
 
         if (isSupported(languageTag)) {

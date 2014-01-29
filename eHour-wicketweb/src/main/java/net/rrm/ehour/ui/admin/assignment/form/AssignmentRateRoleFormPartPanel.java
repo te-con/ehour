@@ -40,7 +40,7 @@ public class AssignmentRateRoleFormPartPanel extends Panel {
     public AssignmentRateRoleFormPartPanel(String id, IModel<AssignmentAdminBackingBean> model) {
         super(id, model);
 
-        EhourConfig config = ((EhourWebSession) getSession()).getEhourConfig();
+        EhourConfig config = EhourWebSession.getEhourConfig();
 
         // add role
         TextField<String> role = new TextField<String>("projectAssignment.role");

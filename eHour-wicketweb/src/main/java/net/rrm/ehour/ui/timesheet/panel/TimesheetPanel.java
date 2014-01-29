@@ -86,10 +86,9 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     public TimesheetPanel(String id, User user, Calendar forWeek) {
         super(id);
 
-        EhourWebSession session = EhourWebSession.getSession();
         GrandTotal grandTotals;
 
-        config = session.getEhourConfig();
+        config = EhourWebSession.getEhourConfig();
 
         this.setOutputMarkupId(true);
 
@@ -313,7 +312,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
      * Move to next week after succesfull form submit or week navigation
      */
     private void moveWeek(Date onScreenDate, int weekDiff) {
-        EhourWebSession session = (EhourWebSession) getSession();
+        EhourWebSession session = EhourWebSession.getSession();
         Calendar cal = DateUtil.getCalendar(config);
 
         cal.setTime(onScreenDate);

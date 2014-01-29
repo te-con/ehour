@@ -14,7 +14,7 @@ public class DateConverter implements IConverter<Date> {
     private final SimpleDateFormat format;
 
     public DateConverter() {
-        Locale locale = EhourWebSession.getSession().getEhourConfig().getFormattingLocale();
+        Locale locale = EhourWebSession.getEhourConfig().getFormattingLocale();
 
         format = new SimpleDateFormat(DateUtil.getPatternForDateLocale(locale), locale);
     }

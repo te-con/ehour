@@ -90,7 +90,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
     private WebMarkupContainer getPagingDataView(IModel<ReportCriteria> model) {
         final WebMarkupContainer dataContainer = new WebMarkupContainer("dataContainer");
         dataContainer.setOutputMarkupId(true);
-        final EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+        final EhourConfig config = EhourWebSession.getEhourConfig();
 
 
         List<IColumn<Audit, Date>> columns = new ArrayList<IColumn<Audit, Date>>();

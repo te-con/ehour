@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.report.panel.criteria.quick;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import org.apache.wicket.Session;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -62,7 +61,7 @@ public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
 		}
 		else
 		{
-			EhourConfig config = ((EhourWebSession)Session.get()).getEhourConfig();
+			EhourConfig config = EhourWebSession.getEhourConfig();
 			
 			SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getFormattingLocale());
 			value = format.format(quickMonth.getPeriodStart());

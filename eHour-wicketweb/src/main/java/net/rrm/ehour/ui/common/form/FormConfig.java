@@ -81,6 +81,6 @@ public class FormConfig implements Serializable {
     }
 
     public EhourConfig getConfig() {
-        return config == null ? EhourWebSession.getSession().getEhourConfig() : config;
+        return config == null ? EhourWebSession.getEhourConfig() : config;
     }
 }

@@ -532,7 +532,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         Calendar currentDate = new GregorianCalendar();
         int currentWeek = -AMOUNT_OF_QUICKWEEKS;
 
-        EhourConfig config = EhourWebSession.getSession().getEhourConfig();
+        EhourConfig config = EhourWebSession.getEhourConfig();
 
         currentDate.setFirstDayOfWeek(config.getFirstDayOfWeek());
         currentDate.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());

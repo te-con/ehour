@@ -56,7 +56,7 @@ public enum CellStyle {
         }
 
         private void init(HSSFWorkbook workbook) {
-            Locale currencyLocale = EhourWebSession.getSession().getEhourConfig().getCurrency();
+            Locale currencyLocale = EhourWebSession.getEhourConfig().getCurrency();
             Currency currency = Currency.getInstance(currencyLocale);
             String currencySymbol = currency.getSymbol(currencyLocale);
 

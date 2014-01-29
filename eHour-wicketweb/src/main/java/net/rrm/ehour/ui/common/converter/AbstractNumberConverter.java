@@ -52,6 +52,6 @@ public abstract class AbstractNumberConverter<C> implements IConverter<C>
 	
 	private EhourConfig getConfig()
 	{
-		return EhourWebSession.getSession().getEhourConfig();
+		return EhourWebSession.getEhourConfig();
 	}
 }

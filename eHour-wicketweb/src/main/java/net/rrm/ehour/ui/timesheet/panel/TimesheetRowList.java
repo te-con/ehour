@@ -75,7 +75,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         this.grandTotals = grandTotals;
         this.form = form;
 
-        config = EhourWebSession.getSession().getEhourConfig();
+        config = EhourWebSession.getEhourConfig();
     }
 
     @Override
