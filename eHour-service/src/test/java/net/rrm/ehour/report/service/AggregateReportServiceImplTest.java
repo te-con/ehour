@@ -30,8 +30,11 @@ import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElementMother;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
+import scala.collection.convert.WrapAsScala$;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +51,7 @@ public class AggregateReportServiceImplTest {
     private ReportAggregatedDao reportAggregatedDAO;
     private ProjectAssignmentService assignmentService;
     private ProjectService projectService;
+    private TimesheetLockService timesheetLockService;
 
     @Before
     public void setUp() {
@@ -67,6 +71,13 @@ public class AggregateReportServiceImplTest {
 
         projectService = createMock(ProjectService.class);
         aggregateReportService.setProjectService(projectService);
+
+        timesheetLockService = createMock(TimesheetLockService.class);
+        aggregateReportService.setLockService(timesheetLockService);
+
+        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
+                .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
+        replay(timesheetLockService);
     }
 
     @Test

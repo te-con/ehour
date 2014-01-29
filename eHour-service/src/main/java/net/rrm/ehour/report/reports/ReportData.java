@@ -16,42 +16,44 @@
 
 package net.rrm.ehour.report.reports;
 
-import java.io.Serializable;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.element.ReportElement;
 
-/**
- * Data holder for aggregate reports
- **/
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
-public class ReportData implements Serializable
-{
-	private static final long serialVersionUID = -6344570520998830487L;
-	
-	private List<? extends ReportElement>		reportElements;
-	private DateRange reportRange;
-	
-	public ReportData(List<? extends ReportElement> reportElements, DateRange reportRange)
-	{
-		this.reportElements = reportElements;
-		this.reportRange = reportRange;
-	}
-	
-	/**
-	 * @return the reportRange
-	 */
-	public DateRange getReportRange()
-	{
-		return reportRange;
-	}
-	
-	/**
-	 * @return the reportElements
-	 */
-	public List<? extends ReportElement> getReportElements()
-	{
-		return reportElements;
-	}
+/**
+ * Data holder for reports
+ */
+
+public class ReportData implements Serializable {
+    private static final long serialVersionUID = -6344570520998830487L;
+
+    private List<Date> lockedDays;
+    private List<? extends ReportElement> reportElements;
+    private DateRange reportRange;
+
+    public ReportData(List<? extends ReportElement> reportElements, DateRange reportRange) {
+        this(Lists.<Date>newArrayList(), reportElements, reportRange);
+    }
+
+    public ReportData(List<Date> lockedDays, List<? extends ReportElement> reportElements, DateRange reportRange) {
+        this.lockedDays = lockedDays;
+        this.reportElements = reportElements;
+        this.reportRange = reportRange;
+    }
+
+    public List<Date> getLockedDays() {
+        return lockedDays;
+    }
+
+    public DateRange getReportRange() {
+        return reportRange;
+    }
+
+    public List<? extends ReportElement> getReportElements() {
+        return reportElements;
+    }
 }

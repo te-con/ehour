@@ -13,7 +13,7 @@ class HighChartContainer(id: String, reportModel: IModel[ReportData], generateCh
 
   override def renderHead(response: IHeaderResponse) {
     val session = EhourWebSession.getSession
-    val config = session.getEhourConfig
+    val config = EhourWebSession.getEhourConfig
 
     val chart = generateChart(ChartContext(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config.getCurrencySymbol, session.isWithReportRole))
     val javascript = "new Highcharts.Chart({%s});\n" format chart

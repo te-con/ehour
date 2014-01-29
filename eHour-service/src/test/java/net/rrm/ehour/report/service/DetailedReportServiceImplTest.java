@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.report.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -23,10 +24,14 @@ import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
+import scala.collection.convert.WrapAsScala$;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
@@ -50,6 +55,13 @@ public class DetailedReportServiceImplTest {
 
         userSelectedCriteria = new UserSelectedCriteria();
         reportCriteria = new ReportCriteria(userSelectedCriteria);
+
+        TimesheetLockService timesheetLockService = createMock(TimesheetLockService.class);
+        detailedReportService.setLockService(timesheetLockService);
+
+        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
+                .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
+        replay(timesheetLockService);
     }
 
     @Test

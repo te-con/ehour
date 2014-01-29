@@ -44,7 +44,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
         send(getPage, Broadcast.BREADTH, DateChangeEvent(getPanelModelObject, target))
 
         val bean = self.getPanelModelObject
-        bean.updateName(EhourWebSession.getSession.getEhourConfig.getFormattingLocale)
+        bean.updateName(EhourWebSession.getEhourConfig.getFormattingLocale)
         target.add(nameInputField)
       }
 

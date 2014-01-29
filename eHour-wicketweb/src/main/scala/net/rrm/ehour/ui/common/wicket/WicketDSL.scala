@@ -21,7 +21,7 @@ import net.rrm.ehour.ui.common.decorator.{LoadingSpinnerDecorator, DemoDecorator
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
 
 case class NonDemoAjaxButton(id: String, form: Form[_], success: AjaxButton.Callback, error: AjaxButton.Callback = (a, f) => {}) extends WicketAjaxButton(id, form) {
-  private def inDemoMode = EhourWebSession.getSession.getEhourConfig.isInDemoMode
+  private def inDemoMode = EhourWebSession.getEhourConfig.isInDemoMode
 
   override def onSubmit(target: AjaxRequestTarget, form: Form[_]) {
     if (!inDemoMode) {
@@ -58,7 +58,7 @@ object AjaxButton {
 
 
 case class NonDemoAjaxLink(id: String, success: LinkCallback) extends WicketAjaxLink(id) {
-  private def inDemoMode = EhourWebSession.getSession.getEhourConfig.isInDemoMode
+  private def inDemoMode = EhourWebSession.getEhourConfig.isInDemoMode
 
 
   override def onClick(target: AjaxRequestTarget) {

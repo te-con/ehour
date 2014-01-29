@@ -57,7 +57,7 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   private def createLockListHolder(locks: List[TimesheetLock]): Fragment = {
     val fragment = new Fragment("itemListHolder", "itemListHolder", this)
     fragment.setOutputMarkupId(true)
-    val ehourConfig = getEhourWebSession.getEhourConfig
+    val ehourConfig = EhourWebSession.getEhourConfig
     implicit val locale = ehourConfig.getFormattingLocale
 
     view = new EntrySelectorListView[TimesheetLock]("itemList", toJava(locks)) {
@@ -111,7 +111,7 @@ class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new Re
   protected def getNewAddBaseBackingBean: LockAdminBackingBean = {
     val start = new DateTime().withDayOfMonth(1).toDate
     val end = new DateTime().withDayOfMonth(1).plusMonths(1).minusDays(1).toDate
-    new LockAdminBackingBean(new TimesheetLock(start, end)).updateName(EhourWebSession.getSession.getEhourConfig.getFormattingLocale)
+    new LockAdminBackingBean(new TimesheetLock(start, end)).updateName(EhourWebSession.getEhourConfig.getFormattingLocale)
   }
 
   protected def getNewEditBaseBackingBean: LockAdminBackingBean = new LockAdminBackingBean(new TimesheetLock())

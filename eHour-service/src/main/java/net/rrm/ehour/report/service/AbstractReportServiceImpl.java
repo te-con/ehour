@@ -27,8 +27,13 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ProjectStructuredReportElement;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import net.rrm.ehour.timesheet.service.TimesheetLockService$;
+import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
+import scala.collection.Seq;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +51,9 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private TimesheetLockService lockService;
+
     /**
      * Get report data for criteria
      *
@@ -57,14 +65,16 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
         DateRange reportRange = reportCriteria.getReportRange();
 
+        Seq<Interval> lockedDatesAsIntervals = lockService.findLockedDatesInRange(reportRange.getDateStart(), reportRange.getDateEnd());
+        List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);
+
         List<RE> allReportElements  = generateReport(userSelectedCriteria, reportRange);
 
         if (userSelectedCriteria.isForPm()) {
             List<ProjectStructuredReportElement> elem = evictNonPmReportElements(userSelectedCriteria, allReportElements);
-
-            return new ReportData(elem, reportRange);
+            return new ReportData(lockedDates, elem, reportRange);
         } else {
-            return new ReportData(allReportElements, reportRange);
+            return new ReportData(lockedDates, allReportElements, reportRange);
         }
     }
 
@@ -196,5 +206,9 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
     public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    public void setLockService(TimesheetLockService lockService) {
+        this.lockService = lockService;
     }
 }
