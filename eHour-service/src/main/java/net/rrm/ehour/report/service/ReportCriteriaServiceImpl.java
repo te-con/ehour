@@ -18,18 +18,17 @@ package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.NonAuditable;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import scala.Tuple2;
+import scala.collection.convert.WrapAsJava$;
 
 import java.util.List;
 
@@ -46,6 +45,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private UserAndDepartmentCriteriaFilter userAndDepartmentCriteriaFilter;
 
     private IndividualUserCriteriaSync individualUserCriteriaSync;
+    private TimesheetLockService lockService;
 
     protected ReportCriteriaServiceImpl() {
     }
@@ -54,11 +54,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     public ReportCriteriaServiceImpl(ReportAggregatedDao reportAggregatedDAO,
                                      CustomerAndProjectCriteriaFilter customerAndProjectCriteriaFilter,
                                      UserAndDepartmentCriteriaFilter userAndDepartmentCriteriaFilter,
-                                     IndividualUserCriteriaSync individualUserCriteriaSync) {
+                                     IndividualUserCriteriaSync individualUserCriteriaSync,
+                                     TimesheetLockService lockService) {
         this.reportAggregatedDAO = reportAggregatedDAO;
         this.customerAndProjectCriteriaFilter = customerAndProjectCriteriaFilter;
         this.userAndDepartmentCriteriaFilter = userAndDepartmentCriteriaFilter;
         this.individualUserCriteriaSync = individualUserCriteriaSync;
+        this.lockService = lockService;
     }
 
     /**
@@ -67,6 +69,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     public ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdateType updateType) {
         UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
         AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
+
+        List<TimesheetLock> timesheetLocks = Lists.newArrayList(WrapAsJava$.MODULE$.asJavaCollection(lockService.findAll()));
+        availCriteria.setTimesheetLocks(timesheetLocks);
 
         if (userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm()) {
             if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS ||

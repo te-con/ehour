@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.report.panel.criteria;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.TimesheetLock;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonth;
@@ -25,6 +26,7 @@ import net.rrm.ehour.ui.report.panel.criteria.quick.QuickQuarter;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickWeek;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Backing bean for report criteria
@@ -37,6 +39,7 @@ public class ReportCriteriaBackingBean implements Serializable {
     private QuickWeek quickWeek;
     private QuickMonth quickMonth;
     private QuickQuarter quickQuarter;
+    private TimesheetLock reportForLock;
 
     public ReportCriteriaBackingBean(ReportCriteria reportCriteria) {
         this.reportCriteria = reportCriteria;
@@ -49,6 +52,7 @@ public class ReportCriteriaBackingBean implements Serializable {
     public void setQuickWeek(QuickWeek quickWeek) {
         quickQuarter = null;
         quickMonth = null;
+        reportForLock = null;
 
         this.quickWeek = quickWeek;
 
@@ -56,16 +60,20 @@ public class ReportCriteriaBackingBean implements Serializable {
     }
 
     private void setReportRangeForQuickie(QuickPeriod period) {
+        if (period != null) {
+            setReportRange(period.getPeriodStart(), period.getPeriodEnd());
+        }
+    }
+
+    private void setReportRange(Date start, Date end) {
         UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
 
         if (userSelectedCriteria.getReportRange() == null) {
             userSelectedCriteria.setReportRange(new DateRange());
         }
 
-        if (period != null) {
-            userSelectedCriteria.getReportRange().setDateStart(period.getPeriodStart());
-            userSelectedCriteria.getReportRange().setDateEnd(period.getPeriodEnd());
-        }
+        userSelectedCriteria.getReportRange().setDateStart(start);
+        userSelectedCriteria.getReportRange().setDateEnd(end);
     }
 
     public ReportCriteria getReportCriteria() {
@@ -79,6 +87,7 @@ public class ReportCriteriaBackingBean implements Serializable {
     public void setQuickMonth(QuickMonth quickMonth) {
         quickWeek = null;
         quickQuarter = null;
+        reportForLock = null;
         this.quickMonth = quickMonth;
         setReportRangeForQuickie(quickMonth);
     }
@@ -90,6 +99,7 @@ public class ReportCriteriaBackingBean implements Serializable {
     public void setQuickQuarter(QuickQuarter quickQuarter) {
         quickWeek = null;
         quickMonth = null;
+        reportForLock = null;
         this.quickQuarter = quickQuarter;
         setReportRangeForQuickie(quickQuarter);
     }
@@ -98,4 +108,19 @@ public class ReportCriteriaBackingBean implements Serializable {
         this.reportCriteria = reportCriteria;
     }
 
+    public TimesheetLock getReportForLock() {
+        return reportForLock;
+    }
+
+    public void setReportForLock(TimesheetLock reportForLock) {
+        this.reportForLock = reportForLock;
+
+        quickWeek = null;
+        quickMonth = null;
+        quickQuarter = null;
+
+        if (reportForLock != null) {
+            setReportRange(reportForLock.getDateStart(), reportForLock.getDateEnd());
+        }
+    }
 }

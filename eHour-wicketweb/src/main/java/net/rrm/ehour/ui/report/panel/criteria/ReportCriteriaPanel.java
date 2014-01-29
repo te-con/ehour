@@ -20,10 +20,7 @@ package net.rrm.ehour.ui.report.panel.criteria;
 import com.google.common.collect.Lists;
 import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.Sort;
@@ -40,6 +37,7 @@ import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;
 import net.rrm.ehour.ui.common.renderers.DomainObjectChoiceRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
+import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.ui.report.panel.criteria.quick.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
@@ -47,6 +45,7 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
@@ -96,6 +95,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private ListMultipleChoice<User> users;
     private List<WebMarkupContainer> quickSelections;
     private ListMultipleChoice<UserDepartment> departments;
+    private WebMarkupContainer lockedDateSelection;
 
     public ReportCriteriaPanel(String id, IModel<ReportCriteriaBackingBean> model) {
         super(id, model);
@@ -481,9 +481,34 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         for (WebMarkupContainer cont : quickSelections) {
             form.add(cont);
         }
+
+        lockedDateSelection = createLockedPeriodRangeDropdown("lockedDate");
+        form.add(lockedDateSelection);
     }
 
-    private void createLockedPeriodRanges() {
+    private WebMarkupContainer createLockedPeriodRangeDropdown(String id) {
+        ReportCriteriaBackingBean panelModelObject = getPanelModelObject();
+
+        List<TimesheetLock> locks = panelModelObject.getReportCriteria().getAvailableCriteria().getTimesheetLocks();
+
+        if (locks == null || locks.isEmpty()) {
+            Container placeholder = new Container(id);
+            placeholder.setVisible(false);
+            return placeholder;
+        }
+        return new DateDropDownChoice<TimesheetLock>(id, new PropertyModel<TimesheetLock>(getPanelModel(), "reportForLock"),
+                locks,
+                new IChoiceRenderer<TimesheetLock>() {
+                    @Override
+                    public Object getDisplayValue(TimesheetLock object) {
+                        return object.getName();
+                    }
+
+                    @Override
+                    public String getIdValue(TimesheetLock object, int index) {
+                        return Integer.toString(index);
+                    }
+                });
 
     }
 
@@ -496,8 +521,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                AjaxEvent event = new AjaxEvent(QuickDateAjaxEventType.DATE_CHANGED);
-                EventPublisher.publishAjaxEvent(ReportCriteriaPanel.this, event);
             }
         });
 
@@ -509,7 +532,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         Calendar currentDate = new GregorianCalendar();
         int currentWeek = -AMOUNT_OF_QUICKWEEKS;
 
-        EhourConfig config = ((EhourWebSession) getSession()).getEhourConfig();
+        EhourConfig config = EhourWebSession.getSession().getEhourConfig();
 
         currentDate.setFirstDayOfWeek(config.getFirstDayOfWeek());
         currentDate.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
@@ -521,7 +544,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             currentDate.add(Calendar.WEEK_OF_YEAR, 1);
         }
 
-        return new QuickDropDownChoice<QuickWeek>("quickWeek", weeks, new QuickWeekRenderer(config));
+        return new DateDropDownChoice<QuickWeek>("quickWeek", weeks, new QuickWeekRenderer(config));
     }
 
     /**
@@ -542,7 +565,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             currentDate.add(Calendar.MONTH, 1);
         }
 
-        return new QuickDropDownChoice<QuickMonth>("quickMonth", months, new QuickMonthRenderer());
+        return new DateDropDownChoice<QuickMonth>("quickMonth", months, new QuickMonthRenderer());
     }
 
 
@@ -561,20 +584,22 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             currentDate.add(Calendar.MONTH, AMOUNT_OF_QUICKQUARTERS);
         }
 
-        return new QuickDropDownChoice<QuickQuarter>("quickQuarter", quarters, new QuickQuarterRenderer());
+        return new DateDropDownChoice<QuickQuarter>("quickQuarter", quarters, new QuickQuarterRenderer());
     }
 
-    public final Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
-        if (ajaxEvent.getEventType() == QuickDateAjaxEventType.DATE_CHANGED) {
-            updateDates(ajaxEvent.getTarget());
-        }
+    @Override
+    public void onEvent(IEvent<?> event) {
+        Object payload = event.getPayload();
 
-        return true;
+        if (payload instanceof DateDropDownChoice.DateChangedPayload) {
+            updateDates(((DateDropDownChoice.DateChangedPayload)payload).getTarget());
+        }
     }
 
     private void updateDates(AjaxRequestTarget target) {
         target.add(startDatePicker);
         target.add(endDatePicker);
+        target.add(lockedDateSelection);
 
         for (WebMarkupContainer cont : quickSelections) {
             target.add(cont);

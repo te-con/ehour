@@ -18,10 +18,7 @@ package net.rrm.ehour.report.criteria;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.sort.ProjectComparator;
 import net.rrm.ehour.sort.UserComparator;
@@ -38,13 +35,14 @@ import java.util.List;
 
 public class AvailableCriteria implements Serializable {
     private static final long serialVersionUID = -6687214845760958691L;
-    private static final ProjectComparator PROJECT_COMPARATOR = new ProjectComparator();
     private static final UserComparator USER_COMPARATOR = new UserComparator(false);
     private DateRange reportRange;
     private List<Customer> customers = Lists.newArrayList();
     private List<Project> projects = Lists.newArrayList();
     private List<User> users = Lists.newArrayList();
     private List<UserDepartment> userDepartments;
+
+    private List<TimesheetLock> timesheetLocks = Lists.newArrayList();
 
     private Sort customerSort = Sort.NAME;
     private Sort projectSort = Sort.NAME;
@@ -57,6 +55,14 @@ public class AvailableCriteria implements Serializable {
         this.projects = projects;
         this.users = users;
         this.userDepartments = userDepartments;
+    }
+
+    public List<TimesheetLock> getTimesheetLocks() {
+        return timesheetLocks;
+    }
+
+    public void setTimesheetLocks(List<TimesheetLock> timesheetLocks) {
+        this.timesheetLocks = timesheetLocks;
     }
 
     public List<UserDepartment> getUserDepartments() {

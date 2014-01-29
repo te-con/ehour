@@ -11,6 +11,8 @@ import net.rrm.ehour.domain._
 import java.{util => ju}
 import scala.collection.convert.WrapAsJava
 import scala.collection.mutable
+import com.google.common.collect.Lists
+import java.util.Date
 
 
 class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
@@ -35,9 +37,18 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     val criteria = new ReportCriteria(availableCriteria, new UserSelectedCriteria)
     val model = new CompoundPropertyModel[ReportCriteriaBackingBean](new ReportCriteriaBackingBean(criteria))
 
-    "render" in {
+    "render without locks available" in {
       tester.startComponentInPage(new ReportCriteriaPanel("testObject", model))
       tester.assertNoErrorMessage()
+    }
+
+    "render with locks available" in {
+      availableCriteria.setTimesheetLocks(Lists.newArrayList(new TimesheetLock(new Date(), new Date(), "period")))
+
+      tester.startComponentInPage(new ReportCriteriaPanel("testObject", model))
+      tester.assertNoErrorMessage()
+
+      tester.debugComponentTrees()
     }
 
     "EHO-352: tick only Billable projects should not throw an exception" in {

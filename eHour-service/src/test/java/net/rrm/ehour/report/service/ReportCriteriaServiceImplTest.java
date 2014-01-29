@@ -17,21 +17,20 @@
 package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import scala.Tuple2;
+import scala.collection.immutable.List$;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,9 +57,14 @@ public class ReportCriteriaServiceImplTest {
     @Mock
     private IndividualUserCriteriaSync individualUserCriteriaSync;
 
+    @Mock
+    private TimesheetLockService timesheetLockService;
+
     @Before
     public void setup() {
-        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO, customerAndProjectCriteriaFilter, userAndDepartmentCriteriaFilter, individualUserCriteriaSync);
+        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO, customerAndProjectCriteriaFilter, userAndDepartmentCriteriaFilter, individualUserCriteriaSync, timesheetLockService);
+
+        when(timesheetLockService.findAll()).thenReturn(List$.MODULE$.<TimesheetLock>empty());
     }
 
     @Test
