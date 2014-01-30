@@ -29,6 +29,7 @@ import java.util.Date;
 public class FlatReportElement implements ProjectStructuredReportElement {
     private static final long serialVersionUID = -2146747873763924275L;
     private Integer customerId;
+    private Boolean locked;
     private String customerName;
     private String customerCode;
     private Number totalHours = 0;
@@ -47,8 +48,14 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private String comment;
     private Integer displayOrder;
     private Number hours = 0;
+    private LockableDate lockableDate;
 
-    public FlatReportElement() {
+    public LockableDate getLockableDate() {
+        return lockableDate;
+    }
+
+    public void setLockableDate(LockableDate lockableDate) {
+        this.lockableDate = lockableDate;
     }
 
     public Number getRate() {
@@ -58,7 +65,8 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     public void setRate(Number rate) {
         this.rate = rate;
     }
-   public Number getHours() {
+
+    public Number getHours() {
         return hours;
     }
 
@@ -343,6 +351,14 @@ public class FlatReportElement implements ProjectStructuredReportElement {
      */
     public Integer getDisplayOrder() {
         return displayOrder;
+    }
+
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
     }
 
     /**

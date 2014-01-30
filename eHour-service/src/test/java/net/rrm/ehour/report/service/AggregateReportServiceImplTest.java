@@ -46,8 +46,8 @@ import static org.junit.Assert.assertEquals;
 @SuppressWarnings("unchecked")
 public class AggregateReportServiceImplTest {
     private AggregateReportServiceImpl aggregateReportService;
-    private UserDao userDAO;
-    private ProjectDao projectDAO;
+    private UserDao userDao;
+    private ProjectDao projectDao;
     private ReportAggregatedDao reportAggregatedDAO;
     private ProjectAssignmentService assignmentService;
     private ProjectService projectService;
@@ -55,25 +55,14 @@ public class AggregateReportServiceImplTest {
 
     @Before
     public void setUp() {
-        aggregateReportService = new AggregateReportServiceImpl();
-
         reportAggregatedDAO = createMock(ReportAggregatedDao.class);
-        aggregateReportService.setReportAggregatedDAO(reportAggregatedDAO);
-
-        userDAO = createMock(UserDao.class);
-        aggregateReportService.setUserDAO(userDAO);
-
-        projectDAO = createMock(ProjectDao.class);
-        aggregateReportService.setProjectDAO(projectDAO);
-
         assignmentService = createMock(ProjectAssignmentService.class);
-        aggregateReportService.setProjectAssignmentService(assignmentService);
-
+        projectDao = createMock(ProjectDao.class);
+        userDao = createMock(UserDao.class);
         projectService = createMock(ProjectService.class);
-        aggregateReportService.setProjectService(projectService);
-
         timesheetLockService = createMock(TimesheetLockService.class);
-        aggregateReportService.setLockService(timesheetLockService);
+
+        aggregateReportService = new AggregateReportServiceImpl(reportAggregatedDAO, assignmentService, userDao, projectDao, projectService, timesheetLockService);
 
         expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
                 .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
@@ -144,13 +133,13 @@ public class AggregateReportServiceImplTest {
         expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
                 .andReturn(pags);
 
-        expect(userDAO.findUsersForDepartments(l, true)).andReturn(users);
+        expect(userDao.findUsersForDepartments(l, true)).andReturn(users);
 
         replay(reportAggregatedDAO);
-        replay(userDAO);
+        replay(userDao);
         aggregateReportService.getAggregateReportData(rc);
         verify(reportAggregatedDAO);
-        verify(userDAO);
+        verify(userDao);
     }
 
     @Test
@@ -176,14 +165,14 @@ public class AggregateReportServiceImplTest {
 
         expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(isA(List.class), isA(DateRange.class)))
                 .andReturn(pags);
-        expect(projectDAO.findProjectForCustomers(customers, true)).andReturn(prjs);
+        expect(projectDao.findProjectForCustomers(customers, true)).andReturn(prjs);
 
         replay(reportAggregatedDAO);
-        replay(projectDAO);
+        replay(projectDao);
 
         aggregateReportService.getAggregateReportData(rc);
         verify(reportAggregatedDAO);
-        verify(projectDAO);
+        verify(projectDao);
     }
 
     @Test
@@ -240,7 +229,7 @@ public class AggregateReportServiceImplTest {
         List<User> users = Lists.newArrayList(user);
         List<UserDepartment> departments = Lists.newArrayList(new UserDepartment(2));
 
-        expect(userDAO.findUsersForDepartments(departments, true)).andReturn(users);
+        expect(userDao.findUsersForDepartments(departments, true)).andReturn(users);
         criteria.setDepartments(departments);
 
         DateRange dateRange = new DateRange();
@@ -259,13 +248,13 @@ public class AggregateReportServiceImplTest {
 
         expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class))).andReturn(elements);
 
-        replay(reportAggregatedDAO, userDAO, projectService);
+        replay(reportAggregatedDAO, userDao, projectService);
 
         ReportData reportData = aggregateReportService.getAggregateReportData(reportCriteria);
         assertEquals(1, reportData.getReportElements().size());
 
         verify(reportAggregatedDAO);
-        verify(userDAO);
+        verify(userDao);
         verify(projectService);
     }
 }

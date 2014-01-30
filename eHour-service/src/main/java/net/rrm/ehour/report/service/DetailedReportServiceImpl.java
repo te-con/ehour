@@ -19,24 +19,37 @@ package net.rrm.ehour.report.service;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.reports.element.LockableDate;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.util.EhourUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Report service for detailed reports implementation
  */
 @Service("detailedReportService")
-public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatReportElement>
-        implements DetailedReportService {
-    @Autowired
+public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatReportElement> implements DetailedReportService {
     private DetailedReportDao detailedReportDAO;
+
+    DetailedReportServiceImpl() {
+    }
+
+    @Autowired
+    public DetailedReportServiceImpl(DetailedReportDao detailedReportDAO, UserDao userDao, ProjectDao projectDao, ProjectService projectService, TimesheetLockService lockService) {
+        super(userDao, projectDao, projectService, lockService);
+        this.detailedReportDAO = detailedReportDAO;
+    }
 
     public ReportData getDetailedReportData(ReportCriteria reportCriteria) {
         return getReportData(reportCriteria);
@@ -45,7 +58,19 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
     @Override
     protected List<FlatReportElement> getReportElements(List<User> users,
                                                         List<Project> projects,
+                                                        List<Date> lockedDates,
                                                         DateRange reportRange) {
+        List<FlatReportElement> elements = getElements(users, projects, reportRange);
+
+        for (FlatReportElement element : elements) {
+            Date date = element.getDayDate();
+            element.setLockableDate(new LockableDate(date, lockedDates.contains(date)));
+        }
+
+        return elements;
+    }
+
+    private List<FlatReportElement> getElements(List<User> users, List<Project> projects, DateRange reportRange) {
         List<FlatReportElement> elements;
 
         if (users == null && projects == null) {
@@ -59,11 +84,6 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
                     EhourUtil.getIdsFromDomainObjects(users),
                     reportRange);
         }
-
         return elements;
-    }
-
-    public void setDetailedReportDAO(DetailedReportDao detailedReportDAO) {
-        this.detailedReportDAO = detailedReportDAO;
     }
 }

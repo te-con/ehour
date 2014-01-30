@@ -20,45 +20,58 @@ import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 import scala.collection.convert.WrapAsScala$;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * DetailedReportServiceImplTest
  */
 @SuppressWarnings({"unchecked"})
 public class DetailedReportServiceImplTest {
-    private DetailedReportDao detailedReportDAO;
+    private DetailedReportDao detailedReportDao;
     private DetailedReportServiceImpl detailedReportService;
     private ReportCriteria reportCriteria;
     private UserSelectedCriteria userSelectedCriteria;
+    private UserDao userDao;
+    private TimesheetLockService timesheetLockService;
 
     @Before
     public void setUp() throws Exception {
-        detailedReportService = new DetailedReportServiceImpl();
-
-        detailedReportDAO = createMock(DetailedReportDao.class);
-        detailedReportService.setDetailedReportDAO(detailedReportDAO);
+        detailedReportDao = createMock(DetailedReportDao.class);
+        ProjectDao projectDao = createMock(ProjectDao.class);
+        userDao = createMock(UserDao.class);
+        ProjectService projectService = createMock(ProjectService.class);
 
         userSelectedCriteria = new UserSelectedCriteria();
         reportCriteria = new ReportCriteria(userSelectedCriteria);
 
-        TimesheetLockService timesheetLockService = createMock(TimesheetLockService.class);
-        detailedReportService.setLockService(timesheetLockService);
+        timesheetLockService = createMock(TimesheetLockService.class);
 
+        detailedReportService = new DetailedReportServiceImpl(detailedReportDao, userDao, projectDao, projectService, timesheetLockService);
+    }
+
+    private void provideNoLocks() {
         expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
                 .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
         replay(timesheetLockService);
@@ -66,52 +79,100 @@ public class DetailedReportServiceImplTest {
 
     @Test
     public void testGetDetailedReportAll() {
-        expect(detailedReportDAO.getHoursPerDay(reportCriteria.getReportRange())).andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDAO);
+        provideNoLocks();
+
+        provideNoData();
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDAO);
+        verify(detailedReportDao);
+    }
+
+    private void provideNoData() {
+        expect(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDao);
     }
 
     @Test
     public void testGetDetailedReportDataUsersOnly() {
-        List<User> l = new ArrayList<User>();
-        l.add(new User(1));
-        userSelectedCriteria.setUsers(l);
+        provideNoLocks();
+        singleUserSelected();
 
-        expect(detailedReportDAO.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class)))
-                .andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDAO);
+        expect(detailedReportDao.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class))).andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDao);
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDAO);
+        verify(detailedReportDao);
     }
 
     @Test
     public void testGetDetailedReportDataProjectsOnly() {
-        List<Project> l = new ArrayList<Project>();
-        l.add(new Project(1));
-        userSelectedCriteria.setProjects(l);
+        provideNoLocks();
 
-        expect(detailedReportDAO.getHoursPerDayForProjects(isA(List.class), isA(DateRange.class)))
-                .andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDAO);
+        singleProjectSelected();
+
+        expect(detailedReportDao.getHoursPerDayForProjects(isA(List.class), isA(DateRange.class))).andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDao);
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDAO);
+        verify(detailedReportDao);
     }
 
     @Test
     public void testGetDetailedReportDataProjectsAndUsers() {
-        List<Project> l = new ArrayList<Project>();
-        l.add(new Project(1));
-        userSelectedCriteria.setProjects(l);
+        provideNoLocks();
+        singleProjectSelected();
+        singleUserSelected();
 
-        List<User> u = new ArrayList<User>();
-        u.add(new User(1));
-        userSelectedCriteria.setUsers(u);
-
-        expect(detailedReportDAO.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
+        expect(detailedReportDao.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
                 .andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDAO);
+        replay(detailedReportDao);
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDAO);
+        verify(detailedReportDao);
     }
+
+    private void singleUserSelected() {
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
+    }
+
+    @Test
+    public void testGetDetailedReportDataProjectsAndUsersOnDepartments() {
+        provideNoLocks();
+        singleProjectSelected();
+        List<UserDepartment> departments = Arrays.asList(new UserDepartment(1));
+        userSelectedCriteria.setDepartments(departments);
+
+        expect(userDao.findUsersForDepartments(departments, true)).andReturn(Arrays.asList(new User(1)));
+
+        expect(detailedReportDao.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
+                .andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDao, userDao);
+        detailedReportService.getDetailedReportData(reportCriteria);
+        verify(detailedReportDao, userDao);
+    }
+
+    private void singleProjectSelected() {
+        userSelectedCriteria.setProjects(Arrays.asList(new Project(1)));
+    }
+
+    @Test
+    public void testGetDetailedReportDataWithLockedDays() {
+        DateTime dateTime = new DateTime(reportCriteria.getReportRange().getDateStart());
+        Interval interval = new Interval(dateTime, dateTime);
+
+        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
+                .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.newArrayList(interval)));
+        replay(timesheetLockService);
+
+        FlatReportElement reportElement = new FlatReportElement();
+        reportElement.setDayDate(dateTime.toDate());
+
+        expect(detailedReportDao.getHoursPerDay(isA(DateRange.class)))
+                .andReturn(Arrays.asList(reportElement));
+        replay(detailedReportDao, userDao);
+
+        ReportData reportData = detailedReportService.getDetailedReportData(reportCriteria);
+
+        FlatReportElement flat = (FlatReportElement) reportData.getReportElements().get(0);
+        assertTrue(flat.getLockableDate().isLocked());
+
+        verify(detailedReportDao, userDao, timesheetLockService);
+    }
+
 }

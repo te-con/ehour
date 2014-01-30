@@ -30,7 +30,6 @@ import net.rrm.ehour.report.reports.element.ProjectStructuredReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.timesheet.service.TimesheetLockService$;
 import org.joda.time.Interval;
-import org.springframework.beans.factory.annotation.Autowired;
 import scala.collection.Seq;
 
 import java.util.Date;
@@ -42,17 +41,23 @@ import java.util.List;
  */
 
 public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredReportElement> {
-    @Autowired
     private UserDao userDAO;
 
-    @Autowired
     private ProjectDao projectDAO;
 
-    @Autowired
     private ProjectService projectService;
 
-    @Autowired
     private TimesheetLockService lockService;
+
+    AbstractReportServiceImpl() {
+    }
+
+    protected AbstractReportServiceImpl(UserDao userDAO, ProjectDao projectDAO, ProjectService projectService, TimesheetLockService lockService) {
+        this.userDAO = userDAO;
+        this.projectDAO = projectDAO;
+        this.projectService = projectService;
+        this.lockService = lockService;
+    }
 
     /**
      * Get report data for criteria
@@ -68,7 +73,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         Seq<Interval> lockedDatesAsIntervals = lockService.findLockedDatesInRange(reportRange.getDateStart(), reportRange.getDateEnd());
         List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);
 
-        List<RE> allReportElements  = generateReport(userSelectedCriteria, reportRange);
+        List<RE> allReportElements  = generateReport(userSelectedCriteria, lockedDates, reportRange);
 
         if (userSelectedCriteria.isForPm()) {
             List<ProjectStructuredReportElement> elem = evictNonPmReportElements(userSelectedCriteria, allReportElements);
@@ -103,7 +108,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
     }
 
 
-    private List<RE> generateReport(UserSelectedCriteria userSelectedCriteria, DateRange reportRange) {
+    private List<RE> generateReport(UserSelectedCriteria userSelectedCriteria, List<Date> lockedDates, DateRange reportRange) {
         boolean noUserRestrictionProvided = userSelectedCriteria.isEmptyDepartments() && userSelectedCriteria.isEmptyUsers();
         boolean noProjectRestrictionProvided = userSelectedCriteria.isEmptyCustomers() && userSelectedCriteria.isEmptyProjects();
 
@@ -121,7 +126,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
             }
         }
 
-        return getReportElements(users, projects, reportRange);
+        return getReportElements(users, projects, lockedDates, reportRange);
     }
 
     /**
@@ -134,6 +139,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
      */
     protected abstract List<RE> getReportElements(List<User> users,
                                                   List<Project> projects,
+                                                  List<Date> lockedDates,
                                                   DateRange reportRange);
 
     /**
@@ -180,35 +186,5 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         }
 
         return users;
-    }
-
-
-    /**
-     * @param userDAO the userDAO to set
-     */
-    public void setUserDAO(UserDao userDAO) {
-        this.userDAO = userDAO;
-    }
-
-    /**
-     * @param projectDAO the projectDAO to set
-     */
-    public void setProjectDAO(ProjectDao projectDAO) {
-        this.projectDAO = projectDAO;
-    }
-
-    /**
-     * @return the projectDAO
-     */
-    protected ProjectDao getProjectDAO() {
-        return projectDAO;
-    }
-
-    public void setProjectService(ProjectService projectService) {
-        this.projectService = projectService;
-    }
-
-    public void setLockService(TimesheetLockService lockService) {
-        this.lockService = lockService;
     }
 }

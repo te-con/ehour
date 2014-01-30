@@ -20,12 +20,16 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,13 +43,21 @@ import java.util.*;
  * @author Thies
  */
 @Service("aggregateReportService")
-public class AggregateReportServiceImpl extends AbstractReportServiceImpl<AssignmentAggregateReportElement>
-        implements AggregateReportService {
-    @Autowired
+public class AggregateReportServiceImpl extends AbstractReportServiceImpl<AssignmentAggregateReportElement> implements AggregateReportService {
     private ReportAggregatedDao reportAggregatedDAO;
 
-    @Autowired
     private ProjectAssignmentService projectAssignmentService;
+
+    AggregateReportServiceImpl() {
+        super();
+    }
+
+    @Autowired
+    public AggregateReportServiceImpl(ReportAggregatedDao reportAggregatedDAO, ProjectAssignmentService projectAssignmentService, UserDao userDao, ProjectDao projectDao, ProjectService projectService, TimesheetLockService lockService) {
+        super(userDao, projectDao, projectService, lockService);
+        this.reportAggregatedDAO = reportAggregatedDAO;
+        this.projectAssignmentService = projectAssignmentService;
+    }
 
     public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds) {
         return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
@@ -69,22 +81,12 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     }
 
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.report.service.AggregateReportService#getAggregateReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-     */
     public ReportData getAggregateReportData(ReportCriteria criteria) {
         return getReportData(criteria);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.persistence.persistence.data.DateRange)
-     */
     @Override
-    protected List<AssignmentAggregateReportElement> getReportElements(List<User> users,
-                                                                       List<Project> projects,
-                                                                       DateRange reportRange) {
+    protected List<AssignmentAggregateReportElement> getReportElements(List<User> users, List<Project> projects, List<Date> lockedDates, DateRange reportRange) {
         List<AssignmentAggregateReportElement> aggregates = new ArrayList<AssignmentAggregateReportElement>();
 
         if (users == null && projects == null) {
@@ -149,13 +151,4 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
         DateRange minMaxRange = reportAggregatedDAO.getMinMaxDateTimesheetEntry(project);
         return new DateRange(minMaxRange.getDateStart(), minMaxRange.getDateEnd());
     }
-
-    public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO) {
-        this.reportAggregatedDAO = reportAggregatedDAO;
-    }
-
-    public void setProjectAssignmentService(ProjectAssignmentService projectAssignmentService) {
-        this.projectAssignmentService = projectAssignmentService;
-    }
-
 }
