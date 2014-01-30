@@ -24,7 +24,6 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
-import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
@@ -61,14 +60,13 @@ public class DetailedReportServiceImplTest {
         detailedReportDao = createMock(DetailedReportDao.class);
         ProjectDao projectDao = createMock(ProjectDao.class);
         userDao = createMock(UserDao.class);
-        ProjectService projectService = createMock(ProjectService.class);
 
         userSelectedCriteria = new UserSelectedCriteria();
         reportCriteria = new ReportCriteria(userSelectedCriteria);
 
         timesheetLockService = createMock(TimesheetLockService.class);
 
-        detailedReportService = new DetailedReportServiceImpl(detailedReportDao, userDao, projectDao, projectService, timesheetLockService);
+        detailedReportService = new DetailedReportServiceImpl(detailedReportDao, userDao, projectDao, timesheetLockService);
     }
 
     private void provideNoLocks() {

@@ -22,7 +22,6 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
-import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
@@ -45,17 +44,14 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
     private ProjectDao projectDAO;
 
-    private ProjectService projectService;
-
     private TimesheetLockService lockService;
 
     AbstractReportServiceImpl() {
     }
 
-    protected AbstractReportServiceImpl(UserDao userDAO, ProjectDao projectDAO, ProjectService projectService, TimesheetLockService lockService) {
+    protected AbstractReportServiceImpl(UserDao userDAO, ProjectDao projectDAO, TimesheetLockService lockService) {
         this.userDAO = userDAO;
         this.projectDAO = projectDAO;
-        this.projectService = projectService;
         this.lockService = lockService;
     }
 
@@ -97,7 +93,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
     }
 
     private List<Integer> fetchAllowedProjectIds(UserSelectedCriteria userSelectedCriteria) {
-        List<Project> allowedProjects = projectService.getProjectManagerProjects(userSelectedCriteria.getPm());
+        List<Project> allowedProjects = projectDAO.findActiveProjectsWhereUserIsPM(userSelectedCriteria.getPm());
 
         List<Integer> projectIds = Lists.newArrayList();
 

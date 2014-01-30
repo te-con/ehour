@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.common.report;
 
 import net.rrm.ehour.ui.common.converter.CurrencyConverter;
 import net.rrm.ehour.ui.common.converter.DateConverter;
+import net.rrm.ehour.ui.common.converter.LockableDateConverter;
 
 import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.*;
 
@@ -28,7 +29,7 @@ import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.*;
 public enum ReportConfig {
     // constructors like these might be a bit over the top..
     // take note, the columnResourceKey is used for serie creation with trend charts (pardon my English, it's late.. or early in the morning)
-    DETAILED_REPORT(new ReportColumn("userReport.report.date", ColumnType.DATE, new DateConverter(), VISIBLE),
+    DETAILED_REPORT(new ReportColumn("userReport.report.date", ColumnType.DATE, new LockableDateConverter(), VISIBLE),
             new ReportColumn("userReport.report.customer"),
             new ReportColumn("userReport.report.project"),
             new ReportColumn("userReport.report.projectCode"),

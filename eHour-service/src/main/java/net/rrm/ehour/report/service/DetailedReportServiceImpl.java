@@ -22,7 +22,6 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
-import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
@@ -46,8 +45,8 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
     }
 
     @Autowired
-    public DetailedReportServiceImpl(DetailedReportDao detailedReportDAO, UserDao userDao, ProjectDao projectDao, ProjectService projectService, TimesheetLockService lockService) {
-        super(userDao, projectDao, projectService, lockService);
+    public DetailedReportServiceImpl(DetailedReportDao detailedReportDAO, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService) {
+        super(userDao, projectDao, lockService);
         this.detailedReportDAO = detailedReportDAO;
     }
 

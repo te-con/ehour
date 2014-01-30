@@ -92,6 +92,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
     }
+
     @Transactional
     @Auditable(actionType = AuditActionType.CREATE)
     @Override
