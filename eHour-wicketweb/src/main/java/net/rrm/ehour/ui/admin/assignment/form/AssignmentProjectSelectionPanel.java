@@ -1,8 +1,10 @@
 package net.rrm.ehour.ui.admin.assignment.form;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.project.service.ProjectService;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.sort.ProjectComparator;
 import net.rrm.ehour.ui.admin.assignment.AssignmentAdminBackingBean;
@@ -21,7 +23,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class AssignmentProjectSelectionPanel extends Panel {
 
     @SpringBean
     private CustomerService customerService;
+
+    @SpringBean
+    private ProjectService projectService;
 
     public AssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model) {
         super(id);
@@ -56,21 +60,25 @@ public class AssignmentProjectSelectionPanel extends Panel {
             public List<Project> getObject() {
                 // need to re-get it, project set is lazy
                 Customer selectedCustomer = model.getObject().getCustomer();
-                Customer customer = null;
+                Customer customer;
+
+                List<Project> projects;
 
                 if (selectedCustomer != null) {
                     customer = customerService.getCustomer(selectedCustomer.getCustomerId());
-                }
 
-                if (customer == null || customer.getProjects() == null || customer.getProjects().size() == 0) {
-                    return (List<Project>) Collections.EMPTY_LIST;
+                    if (customer == null || customer.getProjects() == null || customer.getProjects().size() == 0) {
+                        projects = Lists.newArrayList();
+                    } else {
+                        projects = Lists.newArrayList(customer.getActiveProjects());
+                    }
                 } else {
-                    List<Project> projects = new ArrayList<Project>(customer.getActiveProjects());
-
-                    Collections.sort(projects, new ProjectComparator());
-
-                    return projects;
+                    projects = projectService.getProjects(true);
                 }
+
+                Collections.sort(projects, new ProjectComparator());
+
+                return projects;
             }
         };
 
@@ -83,8 +91,6 @@ public class AssignmentProjectSelectionPanel extends Panel {
         projectChoice.add(new ValidatingFormComponentAjaxBehavior());
         add(projectChoice);
         add(new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice));
-
-        customerChoice.add(new ValidatingFormComponentAjaxBehavior());
 
         // make project update automatically when customers changed
         customerChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
@@ -107,11 +113,9 @@ public class AssignmentProjectSelectionPanel extends Panel {
 
     private DropDownChoice<Customer> createCustomerDropdown(List<Customer> customers) {
         DropDownChoice<Customer> customerChoice = new DropDownChoice<Customer>("customer", customers, new ChoiceRenderer<Customer>("fullName"));
-        customerChoice.setRequired(true);
         customerChoice.setNullValid(false);
         customerChoice.setLabel(new ResourceModel("admin.assignment.customer"));
         add(customerChoice);
-        add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerChoice));
         return customerChoice;
     }
 }
