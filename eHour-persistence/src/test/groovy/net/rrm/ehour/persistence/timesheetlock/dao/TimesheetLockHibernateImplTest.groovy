@@ -51,6 +51,12 @@ class TimesheetLockHibernateImplTest extends AbstractAnnotationDaoTest {
         assertTrue(locks.isEmpty())
     }
 
+    @Test
+    void shouldFindMatchingOverlap() {
+        def start = new DateTime(2013, 12, 31, 0, 0, 0, 0)
+        def end = new DateTime(2014, 1, 31, 23, 59, 59, 0)
+        def locks = timesheetLockDao.findMatchingLock(start.toDate(), end.toDate())
 
-
+        assertEquals(2, locks[0].lockId)
+    }
 }

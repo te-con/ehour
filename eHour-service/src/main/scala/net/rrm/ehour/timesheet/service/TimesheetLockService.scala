@@ -100,9 +100,9 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
       overlapsAtStart orElse overlapsAtEnd
     }
 
-    val requestedInterval = new Interval(startDate, endDate)
     val lockIntervals = lockDao.findMatchingLock(startDate, endDate).map(l => new Interval(l.getDateStart, l.getDateEnd)).toList
 
+    val requestedInterval = new Interval(startDate, endDate)
     def intervalsThatOverlap = lockIntervals.map(i => requestedInterval overlap i match {
       case o: Interval => Some(o)
       case null => overlapsAtEdges(i, requestedInterval)

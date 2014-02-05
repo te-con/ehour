@@ -35,6 +35,6 @@ public class LockableDateConverter implements IConverter<LockableDate> {
 
     @Override
     public String convertToString(LockableDate date, Locale locale) {
-        return date == null ? "" : String.format("%s %s", format.format(date.getDate()), date.isLocked() ? "(L)" : "");
+        return date == null ? "" : String.format("%s %s", format.format(date.getDate()), /*date.isLocked() ? "(L)" : */"");
     }
 }

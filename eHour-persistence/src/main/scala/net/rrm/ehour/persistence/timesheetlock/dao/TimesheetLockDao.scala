@@ -13,8 +13,8 @@ trait TimesheetLockDao extends GenericDao[TimesheetLock, Integer] {
 @Repository("timesheetLockDao")
 class TimesheetLockHibernateImpl extends AbstractGenericDaoHibernateImpl[TimesheetLock, Integer](classOf[TimesheetLock]) with TimesheetLockDao {
   def findMatchingLock(start: Date, end: Date): JList[TimesheetLock] = {
-    val keys = Array[String]("start", "end")
-    val params = Array[AnyRef](start, end)
+    val keys = Array[String]("startDate", "endDate")
+    val params = Array[AnyRef](new Date(), end)
 
     getHibernateTemplate.findByNamedQueryAndNamedParam("TimesheetLock.getLocksMatchingDate", keys, params).asInstanceOf[JList[TimesheetLock]]
   }
