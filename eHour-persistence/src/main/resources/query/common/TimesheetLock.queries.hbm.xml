@@ -4,9 +4,7 @@
 <hibernate-mapping>
     <query name="TimesheetLock.getLocksMatchingDate">
         <![CDATA[FROM TimesheetLock lock
-                 WHERE (lock.dateStart <= :startDate AND
-                       lock.dateEnd >= :startDate) OR
-                       (lock.dateStart <= :endDate AND
-                       lock.dateEnd >= :endDate)
+                 WHERE :startDate <= lock.dateEnd AND
+                       :endDate >= lock.dateStart
         ]]></query>
 </hibernate-mapping>

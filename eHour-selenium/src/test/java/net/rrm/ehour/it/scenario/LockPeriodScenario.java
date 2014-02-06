@@ -1,6 +1,7 @@
 package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class LockPeriodScenario extends AbstractScenario {
     public void should_not_be_able_to_enter_hours_in_locked_period() {
         loginAdmin();
 
-        newLock(new LocalDate(2013, 12, 1), new LocalDate(2013, 12, 31));
+        newLock(new LocalDate(2013, DateTimeConstants.DECEMBER, 1), new LocalDate(2013, DateTimeConstants.DECEMBER, 31));
 
         createUserAndAssign();
 
