@@ -901,6 +901,10 @@ hr {
     border: 0 !important;
 }
 
+.bgTransparent {
+    background: transparent !important;
+}
+
 .nav {
     padding-bottom: 10px;
 }
