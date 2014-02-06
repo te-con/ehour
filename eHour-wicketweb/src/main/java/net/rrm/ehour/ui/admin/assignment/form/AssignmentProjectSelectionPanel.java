@@ -13,11 +13,12 @@ import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.event.EventPublisher;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.markup.html.form.AbstractChoice;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -26,7 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.Collections;
 import java.util.List;
 
-public class AssignmentProjectSelectionPanel extends Panel {
+public abstract class AssignmentProjectSelectionPanel extends AbstractBasePanel<AssignmentAdminBackingBean> {
     private static final long serialVersionUID = 5513770467507708949L;
 
     public enum EntrySelectorAjaxEventType implements AjaxEventType {
@@ -40,18 +41,18 @@ public class AssignmentProjectSelectionPanel extends Panel {
     private ProjectService projectService;
 
     public AssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model) {
-        super(id);
+        super(id, model);
 
-        addCustomerAndProjectChoices(model);
+        addCustomerAndProjectChoices();
     }
 
     @SuppressWarnings("serial")
-    private void addCustomerAndProjectChoices(final IModel<AssignmentAdminBackingBean> model) {
+    private void addCustomerAndProjectChoices() {
         List<Customer> customers = customerService.getCustomers(true);
         Collections.sort(customers, new CustomerComparator());
 
         // customer
-        DropDownChoice<Customer> customerChoice = createCustomerDropdown(customers);
+        final DropDownChoice<Customer> customerChoice = createCustomerDropdown(customers);
 
         // project model
         IModel<List<Project>> projectChoices = new AbstractReadOnlyModel<List<Project>>() {
@@ -59,7 +60,7 @@ public class AssignmentProjectSelectionPanel extends Panel {
             @Override
             public List<Project> getObject() {
                 // need to re-get it, project set is lazy
-                Customer selectedCustomer = model.getObject().getCustomer();
+                Customer selectedCustomer = getPanelModelObject().getCustomer();
                 Customer customer;
 
                 List<Project> projects;
@@ -83,38 +84,44 @@ public class AssignmentProjectSelectionPanel extends Panel {
         };
 
         // project
-        final DropDownChoice<Project> projectChoice = new DropDownChoice<Project>("projectAssignment.project", projectChoices, new ChoiceRenderer<Project>("fullName"));
+        final AbstractChoice<?, Project> projectChoice = createProjectChoiceDropDown(projectChoices, "projectAssignment.project");
         projectChoice.setRequired(true);
         projectChoice.setOutputMarkupId(true);
-        projectChoice.setNullValid(false);
         projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
         projectChoice.add(new ValidatingFormComponentAjaxBehavior());
         add(projectChoice);
         add(new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice));
 
         // make project update automatically when customers changed
-        customerChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        customerChoice.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 target.add(projectChoice);
             }
         });
 
-        projectChoice.add(new ValidatingFormComponentAjaxBehavior());
-
-        // update any components that showed interest
-        projectChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        projectChoice.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                AjaxEvent ajaxEvent = new AjaxEvent(EntrySelectorAjaxEventType.PROJECT_CHANGE);
+                getPanelModelObject().setCustomer(getPanelModelObject().getProjectAssignment().getProject().getCustomer());
 
+                target.add(customerChoice);
+
+                AjaxEvent ajaxEvent = new AjaxEvent(EntrySelectorAjaxEventType.PROJECT_CHANGE);
                 EventPublisher.publishAjaxEvent(AssignmentProjectSelectionPanel.this, ajaxEvent);
             }
         });
+
+        projectChoice.add(new ValidatingFormComponentAjaxBehavior());
     }
+
+    protected abstract AbstractChoice<?, Project> createProjectChoiceDropDown(IModel<List<Project>> projectChoices, String id);
 
     private DropDownChoice<Customer> createCustomerDropdown(List<Customer> customers) {
         DropDownChoice<Customer> customerChoice = new DropDownChoice<Customer>("customer", customers, new ChoiceRenderer<Customer>("fullName"));
-        customerChoice.setNullValid(false);
         customerChoice.setLabel(new ResourceModel("admin.assignment.customer"));
+        customerChoice.setOutputMarkupId(true);
+        customerChoice.setNullValid(true);
         add(customerChoice);
         return customerChoice;
     }

@@ -32,7 +32,7 @@ import java.util.List;
 public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssignment> {
     private static final long serialVersionUID = 487430742116953930L;
     private ProjectAssignment projectAssignment;
-    private List<Project> projects;
+    private List<Project> selectedProjects;
     private Customer customer;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
@@ -98,14 +98,6 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
         this.projectAssignment = projectAssignment;
     }
 
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
-
     public Customer getCustomer() {
         return customer;
     }
@@ -133,4 +125,13 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
     public ProjectAssignment getDomainObject() {
         return getProjectAssignment();
     }
+
+    public List<Project> getSelectedProjects() {
+        return selectedProjects;
+    }
+
+    public void setSelectedProjects(List<Project> selectedProjects) {
+        this.selectedProjects = selectedProjects;
+    }
+
 }

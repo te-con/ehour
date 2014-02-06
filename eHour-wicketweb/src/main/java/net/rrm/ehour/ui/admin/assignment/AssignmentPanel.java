@@ -133,10 +133,8 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void> {
             tabbedPanel.succesfulSave(ajaxEvent.getTarget());
         }
 
-
         return true;
     }
-
 
     private void persistAssignment(AssignmentAdminBackingBean backingBean) {
         projectAssignmentManagementService.assignUserToProject(backingBean.getProjectAssignmentForSave());
