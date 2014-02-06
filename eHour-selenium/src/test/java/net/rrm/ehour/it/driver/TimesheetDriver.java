@@ -7,8 +7,7 @@ import java.util.concurrent.TimeUnit;
 import static net.rrm.ehour.it.driver.AssignmentAdminDriver.assignToProject;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.logout;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.ProjectDriver.ACTIVE_PROJECT;
 import static net.rrm.ehour.it.driver.ProjectDriver.createActiveProjectForActiveCustomer;
@@ -50,6 +49,7 @@ public abstract class TimesheetDriver {
     public static void navigateToMonth(String month) {
         while (!findElement("sidePanel_calendarFrame_currentMonth").getText().equals(month)) {
             findElement("sidePanel_calendarFrame_previousMonthLink").click();
+            sleep(500);
         }
     }
 
