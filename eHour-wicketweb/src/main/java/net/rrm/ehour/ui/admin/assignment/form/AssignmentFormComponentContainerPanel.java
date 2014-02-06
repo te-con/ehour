@@ -64,7 +64,11 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 
     private WebMarkupContainer createProjectSelection(String id, IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
         if (displayOptions.contains(DisplayOption.SHOW_PROJECT_SELECTION)) {
-            return new AssignmentProjectSelectionPanel(id, model);
+            if (model.getObject().getProjectAssignment().isNew()) {
+                return new CreateAssignmentProjectSelectionPanel(id, model);
+            } else {
+                return new EditAssignmentProjectSelectionPanel(id, model);
+            }
         } else {
             return new PlaceholderPanel(id);
         }
