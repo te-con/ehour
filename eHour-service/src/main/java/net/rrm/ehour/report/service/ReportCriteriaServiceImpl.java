@@ -32,6 +32,8 @@ import scala.collection.convert.WrapAsJava$;
 
 import java.util.List;
 
+import static net.rrm.ehour.report.criteria.ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS;
+
 /**
  * Report Criteria services
  */
@@ -74,39 +76,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         availCriteria.setTimesheetLocks(timesheetLocks);
 
         if (userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm()) {
-            if (updateType == ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS ||
+            if (updateType == UPDATE_CUSTOMERS_AND_PROJECTS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
                 Tuple2<List<Customer>, List<Project>> available = customerAndProjectCriteriaFilter.getAvailableCustomers(userSelectedCriteria);
+
                 List<Customer> updatedAvailableCustomers = available._1();
                 availCriteria.setCustomers(updatedAvailableCustomers);
+                preserveSelectedCustomers(userSelectedCriteria, updatedAvailableCustomers);
+
                 List<Project> updatedAvailableProjects = available._2();
                 availCriteria.setProjects(updatedAvailableProjects);
-
-                List<Customer> updatedSelectedCustomers = Lists.newArrayList();
-
-                if (userSelectedCriteria.getCustomers() != null) {
-                    for (Customer updatedAvailableCustomer : updatedAvailableCustomers) {
-                        if (userSelectedCriteria.getCustomers().contains(updatedAvailableCustomer)) {
-                            updatedSelectedCustomers.add(updatedAvailableCustomer);
-                        }
-                    }
-                }
-
-
-                userSelectedCriteria.setCustomers(updatedSelectedCustomers);
-
-                List<Project> updatedSelectedProjects = Lists.newArrayList();
-
-                if (userSelectedCriteria.getProjects() != null) {
-                    for (Project updatedAvailableProject : updatedAvailableProjects) {
-                        if (userSelectedCriteria.getProjects().contains(updatedAvailableProject)) {
-                            updatedSelectedProjects.add(updatedAvailableProject);
-                        }
-                    }
-                }
-
-                userSelectedCriteria.setProjects(updatedSelectedProjects);
-
+                preserveSelectedProjects(userSelectedCriteria, updatedAvailableProjects);
             }
 
             if (updateType == ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS ||
@@ -126,5 +106,33 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         }
 
         return reportCriteria;
+    }
+
+    private void preserveSelectedProjects(UserSelectedCriteria userSelectedCriteria, List<Project> updatedAvailableProjects) {
+        List<Project> updatedSelectedProjects = Lists.newArrayList();
+
+        if (userSelectedCriteria.getProjects() != null) {
+            for (Project updatedAvailableProject : updatedAvailableProjects) {
+                if (userSelectedCriteria.getProjects().contains(updatedAvailableProject)) {
+                    updatedSelectedProjects.add(updatedAvailableProject);
+                }
+            }
+        }
+
+        userSelectedCriteria.setProjects(updatedSelectedProjects);
+    }
+
+    private void preserveSelectedCustomers(UserSelectedCriteria userSelectedCriteria, List<Customer> updatedAvailableCustomers) {
+        List<Customer> updatedSelectedCustomers = Lists.newArrayList();
+
+        if (userSelectedCriteria.getCustomers() != null) {
+            for (Customer updatedAvailableCustomer : updatedAvailableCustomers) {
+                if (userSelectedCriteria.getCustomers().contains(updatedAvailableCustomer)) {
+                    updatedSelectedCustomers.add(updatedAvailableCustomer);
+                }
+            }
+        }
+
+        userSelectedCriteria.setCustomers(updatedSelectedCustomers);
     }
 }

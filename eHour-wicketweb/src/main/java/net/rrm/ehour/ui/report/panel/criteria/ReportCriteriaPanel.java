@@ -42,6 +42,7 @@ import net.rrm.ehour.ui.report.panel.criteria.quick.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.event.Broadcast;
@@ -84,6 +85,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     public static final int AMOUNT_OF_QUICKWEEKS = 8;
     public static final int AMOUNT_OF_QUICKMONTHS = 6;
     public static final int AMOUNT_OF_QUICKQUARTERS = 3;
+    private static final String CUSTOMER_FILTER_INPUT_ID = "#customerFilterInput";
 
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
@@ -246,7 +248,25 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         deactivateBox.setOutputMarkupId(true);
         parent.add(deactivateBox);
 
-        parent.add(createCustomerSort());
+        final DropDownChoice<Sort> customerSort = createCustomerSort();
+        parent.add(customerSort);
+
+        parent.add(new AjaxLink<Void>("clearCustomer") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bean.getReportCriteria().getUserSelectedCriteria().getCustomers().clear();
+
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
+
+                updateCustomers(target);
+                updateProjects(target);
+
+                target.appendJavaScript(getCustomerFilterClearScript());
+
+                customerSort.setModelObject(Sort.values()[0]);
+                target.add(customerSort);
+            }
+        });
     }
 
     private DropDownChoice<Sort> createCustomerSort() {
@@ -262,6 +282,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             }
         });
 
+        customerSort.setOutputMarkupId(true);
+
         return customerSort;
     }
 
@@ -272,6 +294,14 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         projects.setMaxRows(MAX_CRITERIA_ROW);
         projects.setOutputMarkupId(true);
         projects.setMarkupId("projectSelect");
+
+        projects.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+
+            }
+        });
+
         parent.add(projects);
 
         AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveProjects") {
@@ -343,8 +373,12 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         target.appendJavaScript(getCustomerFilterRegistrationScript());
     }
 
+    private String getCustomerFilterClearScript() {
+        return String.format("clearFilter('%s');", CUSTOMER_FILTER_INPUT_ID);
+    }
+
     private String getCustomerFilterRegistrationScript() {
-        return "initFilter('#customerSelect', '#customerFilterInput')";
+        return String.format("initFilter('#customerSelect', '%s')",  CUSTOMER_FILTER_INPUT_ID);
     }
 
     private String getProjectFilterRegistrationScript() {
@@ -592,7 +626,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         Object payload = event.getPayload();
 
         if (payload instanceof DateDropDownChoice.DateChangedPayload) {
-            updateDates(((DateDropDownChoice.DateChangedPayload)payload).getTarget());
+            updateDates(((DateDropDownChoice.DateChangedPayload) payload).getTarget());
         }
     }
 

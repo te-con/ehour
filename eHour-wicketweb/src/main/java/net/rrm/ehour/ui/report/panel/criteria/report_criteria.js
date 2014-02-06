@@ -1,4 +1,4 @@
-jQuery.fn.filterOn = function (filterInput) {
+jQuery.fn.filterOn = function (filterId) {
     return this.each(function () {
         var select = this;
         var options = [];
@@ -7,9 +7,9 @@ jQuery.fn.filterOn = function (filterInput) {
         });
         $(select).data('ops', options);
 
-        $(filterInput).unbind('keyup');
+        $(filterId).unbind('keyup');
 
-        $(filterInput).keyup(function () {
+        $(filterId).keyup(function () {
             var selected = $(select).val();
             var options = $(select).empty().data('ops');
             var filter = $(this).val().toLowerCase();
@@ -30,7 +30,7 @@ jQuery.fn.filterOn = function (filterInput) {
             });
         });
 
-        $(filterInput).keyup();
+        $(filterId).keyup();
     });
 };
 
@@ -41,4 +41,9 @@ function toggleFilter(id) {
 
 function initFilter(selectId, filterId) {
     $(selectId).filterOn(filterId);
+}
+
+function clearFilter(filterId) {
+    $(filterId).val('');
+    $(filterId).keyup();
 }

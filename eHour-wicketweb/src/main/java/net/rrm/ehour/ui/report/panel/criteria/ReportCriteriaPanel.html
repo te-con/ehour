@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" >
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:wicket="http://ehour.nl">
+<html xmlns:wicket="http://ehour.nl"
+      xmlns="http://www.w3.org/1999/xhtml">
 
 <body>
 <wicket:panel>
@@ -67,8 +67,15 @@
                 <!-- CUSTOMER SELECTION -->
                 <div class="leftColumn">
                     <div class="foldIcon">
-                        <a href="#" onclick="return toggleFilter('#customerFilter')" id="customerFold"><span class="ui-state-default ui-corner-all borderLess">
-                            <span class="ui-icon ui-icon-carat-2-n-s"></span></span>
+                        <a wicket:id="clearCustomer">
+                            <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent">
+                                <span class="ui-icon ui-icon-trash"></span>
+                            </span>
+                        </a>
+                        <a href="#" onclick="return toggleFilter('#customerFilter')" id="customerFold">
+                            <span class="ui-state-default ui-corner-all borderLess bgTransparent">
+                                <span class="ui-icon ui-icon-grip-solid-horizontal"></span>
+                            </span>
                         </a>
                     </div>
                     <b><wicket:message key="filter.customer"/></b>
