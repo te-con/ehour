@@ -98,8 +98,16 @@
                 <!-- PROJECT SELECTION -->
                 <div class="rightColumn">
                     <div class="foldIcon">
-                        <a href="#" onclick="return toggleFilter('#projectFilter')" id="projectFold"><span class="ui-state-default ui-corner-all borderLess">
-                            <span class="ui-icon ui-icon-carat-2-n-s"></span></span>
+                        <a wicket:id="clearProject">
+                            <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent">
+                                <span class="ui-icon ui-icon-trash"></span>
+                            </span>
+                        </a>
+
+                        <a href="#" onclick="return toggleFilter('#projectFilter')" id="projectFold">
+                            <span class="ui-state-default ui-corner-all borderLess bgTransparent">
+                                <span class="ui-icon ui-icon-grip-solid-horizontal"></span>
+                            </span>
                         </a>
                     </div>
 

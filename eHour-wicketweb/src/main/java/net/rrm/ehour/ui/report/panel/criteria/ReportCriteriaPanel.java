@@ -86,6 +86,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     public static final int AMOUNT_OF_QUICKMONTHS = 6;
     public static final int AMOUNT_OF_QUICKQUARTERS = 3;
     private static final String CUSTOMER_FILTER_INPUT_ID = "#customerFilterInput";
+    private static final String PROJECT_FILTER_INPUT_ID = "#projectFilterInput";
 
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
@@ -118,7 +119,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         ReportCriteriaBackingBean criteriaBackingBean = model.getObject();
         addCustomerSelection(criteriaBackingBean, blueBorder);
-        addProjectSelection(blueBorder);
+        addProjectSelection(criteriaBackingBean, blueBorder);
 
         UserSelectedCriteria userSelectedCriteria = criteriaBackingBean.getReportCriteria().getUserSelectedCriteria();
         boolean showDepartmentAndOtherUsers = userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm();
@@ -239,7 +240,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         parent.add(customers);
 
-        AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveCustomers") {
+        final AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveCustomers") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateCustomersAndProjects(target);
@@ -255,6 +256,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             @Override
             public void onClick(AjaxRequestTarget target) {
                 bean.getReportCriteria().getUserSelectedCriteria().getCustomers().clear();
+                bean.getReportCriteria().getUserSelectedCriteria().setOnlyActiveCustomers(true);
 
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
 
@@ -265,6 +267,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
                 customerSort.setModelObject(Sort.values()[0]);
                 target.add(customerSort);
+
+                target.add(deactivateBox);
             }
         });
     }
@@ -287,9 +291,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         return customerSort;
     }
 
-    private void addProjectSelection(WebMarkupContainer parent) {
+    private void addProjectSelection(final ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
         projects = new ListMultipleChoice<Project>("reportCriteria.userSelectedCriteria.projects",
-                new PropertyModel<List<Project>>(getDefaultModel(), "reportCriteria.availableCriteria.projects"),
+                new PropertyModel<List<Project>>(bean, "reportCriteria.availableCriteria.projects"),
                 new DomainObjectChoiceRenderer<Project>());
         projects.setMaxRows(MAX_CRITERIA_ROW);
         projects.setOutputMarkupId(true);
@@ -304,7 +308,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         parent.add(projects);
 
-        AjaxCheckBox deactivateBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveProjects") {
+        final AjaxCheckBox onlyActiveCheckbox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyActiveProjects") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
@@ -312,12 +316,10 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 updateProjects(target);
             }
         };
+        onlyActiveCheckbox.setOutputMarkupId(true);
+        parent.add(onlyActiveCheckbox);
 
-        deactivateBox.setOutputMarkupId(true);
-
-        parent.add(deactivateBox);
-
-        AjaxCheckBox activeBox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyBillableProjects", new PropertyModel<Boolean>(ReportCriteriaPanel.this.getDefaultModel(), "reportCriteria.userSelectedCriteria.onlyBillableProjects")) {
+        final AjaxCheckBox billableCheckbox = new AjaxCheckBox("reportCriteria.userSelectedCriteria.onlyBillableProjects", new PropertyModel<Boolean>(ReportCriteriaPanel.this.getDefaultModel(), "reportCriteria.userSelectedCriteria.onlyBillableProjects")) {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
@@ -325,10 +327,35 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             }
         };
 
-        activeBox.setMarkupId("reportCriteria.userSelectedCriteria.onlyBillableProjects");
-        parent.add(activeBox);
+        billableCheckbox.setMarkupId("reportCriteria.userSelectedCriteria.onlyBillableProjects");
+        billableCheckbox.setOutputMarkupId(true);
+        parent.add(billableCheckbox);
 
-        parent.add(createProjectSort());
+        final DropDownChoice<Sort> projectSort = createProjectSort();
+        parent.add(projectSort);
+
+        parent.add(new AjaxLink<Void>("clearProject") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bean.getReportCriteria().getUserSelectedCriteria().getProjects().clear();
+                bean.getReportCriteria().getUserSelectedCriteria().setOnlyBillableProjects(false);
+                bean.getReportCriteria().getUserSelectedCriteria().setOnlyActiveProjects(true);
+
+
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
+
+                updateCustomers(target);
+                updateProjects(target);
+
+                target.appendJavaScript(getProjectFilterClearScript());
+
+                projectSort.setModelObject(Sort.values()[0]);
+                target.add(projectSort);
+                target.add(billableCheckbox);
+                target.add(onlyActiveCheckbox);
+
+            }
+        });
     }
 
     private DropDownChoice<Sort> createProjectSort() {
@@ -343,6 +370,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 applyClientSideProjectFilter(target);
             }
         });
+
+        projectSort.setOutputMarkupId(true);
 
         return projectSort;
     }
@@ -378,11 +407,15 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private String getCustomerFilterRegistrationScript() {
-        return String.format("initFilter('#customerSelect', '%s')",  CUSTOMER_FILTER_INPUT_ID);
+        return String.format("initFilter('#customerSelect', '%s')", CUSTOMER_FILTER_INPUT_ID);
+    }
+
+    private String getProjectFilterClearScript() {
+        return String.format("clearFilter('%s');", PROJECT_FILTER_INPUT_ID);
     }
 
     private String getProjectFilterRegistrationScript() {
-        return "initFilter('#projectSelect', '#projectFilterInput')";
+        return String.format("initFilter('#projectSelect', '%s')", PROJECT_FILTER_INPUT_ID);
     }
 
     private void addUserSelection(WebMarkupContainer parent) {
