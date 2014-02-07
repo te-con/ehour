@@ -54,8 +54,8 @@ public class UserSelectedCriteria implements Serializable {
     private List<User> users;
     private List<Project> projects;
     private List<Customer> customers;
-    private Sort customerSort = Sort.NAME;
-    private Sort projectSort = Sort.NAME;
+    private Sort customerSort;
+    private Sort projectSort;
     private List<UserDepartment> userDepartments;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
@@ -66,14 +66,39 @@ public class UserSelectedCriteria implements Serializable {
     private User pm;
 
     public UserSelectedCriteria() {
-        onlyActiveProjects = true;
-        onlyActiveCustomers = true;
-        onlyActiveUsers = true;
+        resetCustomerSelection();
+        resetProjectSelection();
+
+        resetUserDepartmentSelection();
+        resetUserSelection();
 
         infiniteStartDate = false;
         infiniteEndDate = false;
 
         reportRange = DateUtil.getDateRangeForMonth(new GregorianCalendar());
+    }
+
+    public final void resetCustomerSelection() {
+        onlyActiveCustomers = true;
+        customerSort = Sort.NAME;
+        customers = Lists.newArrayList();
+    }
+
+    public final void resetProjectSelection() {
+        onlyActiveProjects = true;
+        onlyBillableProjects = false;
+        projectSort = Sort.NAME;
+        projects = Lists.newArrayList();
+    }
+
+    public final void resetUserDepartmentSelection() {
+        userDepartments = Lists.newArrayList();
+    }
+
+    public final void resetUserSelection() {
+        onlyActiveUsers = true;
+
+        users = Lists.newArrayList();
     }
 
     public ReportType getSelectedReportType() {
