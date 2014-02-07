@@ -9,7 +9,7 @@ import org.apache.wicket.model.IModel;
 
 import java.util.List;
 
-public class EditAssignmentProjectSelectionPanel extends AssignmentProjectSelectionPanel {
+public class EditAssignmentProjectSelectionPanel extends AbstractAssignmentProjectSelectionPanel {
     public EditAssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model) {
         super(id, model);
     }

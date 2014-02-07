@@ -64,7 +64,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 
     private WebMarkupContainer createProjectSelection(String id, IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
         if (displayOptions.contains(DisplayOption.SHOW_PROJECT_SELECTION)) {
-            if (model.getObject().getProjectAssignment().isNew()) {
+            if (model.getObject().isNewAssignment()) {
                 return new CreateAssignmentProjectSelectionPanel(id, model);
             } else {
                 return new EditAssignmentProjectSelectionPanel(id, model);
@@ -76,7 +76,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 
     @Override
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
-        if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
+        if (ajaxEvent.getEventType() == AbstractAssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
             EventPublisher.publishAjaxEventToParentChildren(this, ajaxEvent);
 
             return false;

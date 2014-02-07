@@ -162,7 +162,7 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 
     @Override
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
-        if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
+        if (ajaxEvent.getEventType() == AbstractAssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
             AjaxRequestTarget target = ajaxEvent.getTarget();
 
             for (Component notifiableComponent : notifiableComponents) {

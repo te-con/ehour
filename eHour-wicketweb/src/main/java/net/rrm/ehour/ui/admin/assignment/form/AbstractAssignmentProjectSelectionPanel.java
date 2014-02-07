@@ -27,7 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AssignmentProjectSelectionPanel extends AbstractBasePanel<AssignmentAdminBackingBean> {
+public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBasePanel<AssignmentAdminBackingBean> {
     private static final long serialVersionUID = 5513770467507708949L;
 
     public enum EntrySelectorAjaxEventType implements AjaxEventType {
@@ -40,7 +40,7 @@ public abstract class AssignmentProjectSelectionPanel extends AbstractBasePanel<
     @SpringBean
     private ProjectService projectService;
 
-    public AssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model) {
+    public AbstractAssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model) {
         super(id, model);
 
         addCustomerAndProjectChoices();
@@ -103,12 +103,12 @@ public abstract class AssignmentProjectSelectionPanel extends AbstractBasePanel<
         projectChoice.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                getPanelModelObject().setCustomer(getPanelModelObject().getProjectAssignment().getProject().getCustomer());
+                getPanelModelObject().updateCustomerBasedOnSelectedProject();
 
                 target.add(customerChoice);
 
                 AjaxEvent ajaxEvent = new AjaxEvent(EntrySelectorAjaxEventType.PROJECT_CHANGE);
-                EventPublisher.publishAjaxEvent(AssignmentProjectSelectionPanel.this, ajaxEvent);
+                EventPublisher.publishAjaxEvent(AbstractAssignmentProjectSelectionPanel.this, ajaxEvent);
             }
         });
 

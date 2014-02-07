@@ -65,6 +65,23 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
         return new AssignmentAdminBackingBean(projectAssignment);
     }
 
+    public void updateCustomerBasedOnSelectedProject() {
+        if (!isNewAssignment()) {
+            setCustomer(getProjectAssignment().getProject().getCustomer());
+        } else {
+            int selectedProjectsSize = selectedProjects.size();
+            if (selectedProjectsSize == 1) {
+                setCustomer(selectedProjects.get(0).getCustomer());
+            } else {
+                setCustomer(null);
+            }
+        }
+    }
+
+    public boolean isNewAssignment() {
+        return getProjectAssignment().isNew();
+    }
+
     public boolean isShowAllottedHours() {
         return (projectAssignment.getAssignmentType() != null) && projectAssignment.getAssignmentType().isAllottedType();
     }
