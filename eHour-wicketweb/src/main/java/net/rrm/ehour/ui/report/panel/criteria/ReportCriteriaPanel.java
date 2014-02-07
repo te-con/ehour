@@ -87,6 +87,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     public static final int AMOUNT_OF_QUICKQUARTERS = 3;
     private static final String CUSTOMER_FILTER_INPUT_ID = "#customerFilterInput";
     private static final String PROJECT_FILTER_INPUT_ID = "#projectFilterInput";
+    private static final String DEPARTMENT_FILTER_INPUT_ID = "#departmentFilterInput";
+    private static final String USER_FILTER_INPUT_ID = "#userFilterInput";
 
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
@@ -123,7 +125,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         UserSelectedCriteria userSelectedCriteria = criteriaBackingBean.getReportCriteria().getUserSelectedCriteria();
         boolean showDepartmentAndOtherUsers = userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm();
-        form.add(showDepartmentAndOtherUsers ? addDepartmentsAndUsers(ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
+        form.add(showDepartmentAndOtherUsers ? addDepartmentsAndUsers(criteriaBackingBean, ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
 
         addSubmitButtons(form);
 
@@ -255,8 +257,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         parent.add(new AjaxLink<Void>("clearCustomer") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                bean.getReportCriteria().getUserSelectedCriteria().getCustomers().clear();
-                bean.getReportCriteria().getUserSelectedCriteria().setOnlyActiveCustomers(true);
+                bean.getReportCriteria().getUserSelectedCriteria().resetCustomerSelection();
 
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
 
@@ -265,9 +266,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
                 target.appendJavaScript(getCustomerFilterClearScript());
 
-                customerSort.setModelObject(Sort.values()[0]);
                 target.add(customerSort);
-
                 target.add(deactivateBox);
             }
         });
@@ -337,10 +336,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         parent.add(new AjaxLink<Void>("clearProject") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                bean.getReportCriteria().getUserSelectedCriteria().getProjects().clear();
-                bean.getReportCriteria().getUserSelectedCriteria().setOnlyBillableProjects(false);
-                bean.getReportCriteria().getUserSelectedCriteria().setOnlyActiveProjects(true);
-
+                bean.getReportCriteria().getUserSelectedCriteria().resetProjectSelection();
 
                 updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
 
@@ -349,11 +345,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
                 target.appendJavaScript(getProjectFilterClearScript());
 
-                projectSort.setModelObject(Sort.values()[0]);
                 target.add(projectSort);
                 target.add(billableCheckbox);
                 target.add(onlyActiveCheckbox);
-
             }
         });
     }
@@ -376,21 +370,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         return projectSort;
     }
 
-    private void applyClientSideProjectFilter(AjaxRequestTarget target) {
-        target.appendJavaScript(getProjectFilterRegistrationScript());
-    }
-
-    private void updateProjects(AjaxRequestTarget target) {
-        target.add(projects);
-        applyClientSideProjectFilter(target);
-    }
-
-    private void updateCustomers(AjaxRequestTarget target) {
-        target.add(customers);
-
-        applyClientSideCustomerFilter(target);
-    }
-
     private void updateCustomersAndProjects(AjaxRequestTarget target) {
         updateReportCriteria(ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
 
@@ -398,32 +377,29 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         updateCustomers(target);
     }
 
+    private void updateProjects(AjaxRequestTarget target) {
+        target.add(projects);
+        applyClientSideProjectFilter(target);
+    }
+
+    private void applyClientSideProjectFilter(AjaxRequestTarget target) {
+        target.appendJavaScript(getProjectFilterRegistrationScript());
+    }
+
+    private void updateCustomers(AjaxRequestTarget target) {
+        target.add(customers);
+        applyClientSideCustomerFilter(target);
+    }
+
     private void applyClientSideCustomerFilter(AjaxRequestTarget target) {
         target.appendJavaScript(getCustomerFilterRegistrationScript());
     }
 
-    private String getCustomerFilterClearScript() {
-        return String.format("clearFilter('%s');", CUSTOMER_FILTER_INPUT_ID);
-    }
-
-    private String getCustomerFilterRegistrationScript() {
-        return String.format("initFilter('#customerSelect', '%s')", CUSTOMER_FILTER_INPUT_ID);
-    }
-
-    private String getProjectFilterClearScript() {
-        return String.format("clearFilter('%s');", PROJECT_FILTER_INPUT_ID);
-    }
-
-    private String getProjectFilterRegistrationScript() {
-        return String.format("initFilter('#projectSelect', '%s')", PROJECT_FILTER_INPUT_ID);
-    }
-
-    private void addUserSelection(WebMarkupContainer parent) {
+    private void addUserSelection(final ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
         users = new ListMultipleChoice<User>("reportCriteria.userSelectedCriteria.users",
                 new PropertyModel<List<User>>(getDefaultModel(), "reportCriteria.availableCriteria.users"),
                 new DomainObjectChoiceRenderer<User>());
         users.setMarkupId("userSelect");
-
         users.setOutputMarkupId(true);
         users.setMaxRows(MAX_CRITERIA_ROW);
         parent.add(users);
@@ -446,9 +422,53 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         Label filterToggleText = new Label("onlyActiveUsersLabel", new ResourceModel("report.onlyActiveUsers"));
         parent.add(filterToggleText);
+
+        parent.add(new AjaxLink<Void>("clearUser") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bean.getReportCriteria().getUserSelectedCriteria().resetUserSelection();
+
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
+
+                updateUsers(target);
+                updateDepartments(target);
+
+                target.appendJavaScript(getUserFilterClearScript());
+            }
+        });
     }
 
-    private void addUserDepartmentSelection(WebMarkupContainer parent) {
+    private void updateDepartments(AjaxRequestTarget target) {
+        target.add(departments);
+        applyClientSideDepartmentFilter(target);
+    }
+
+    private void applyClientSideDepartmentFilter(AjaxRequestTarget target) {
+        target.appendJavaScript(getDepartmentFilterRegistrationScript());
+    }
+
+    private void updateUsers(AjaxRequestTarget target) {
+        target.add(users);
+        applyClientSideUserFilter(target);
+    }
+
+    private void applyClientSideUserFilter(AjaxRequestTarget target) {
+        target.appendJavaScript(getUserFilterRegistrationScript());
+    }
+
+    private Fragment addDepartmentsAndUsers(ReportCriteriaBackingBean bean, String id) {
+        Fragment fragment = new Fragment(id, "userDepartmentCriteria", this);
+
+        GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("deptUserBorder");
+        fragment.add(blueBorder);
+
+        addUserDepartmentSelection(bean, blueBorder);
+        addUserSelection(bean, blueBorder);
+
+        return fragment;
+    }
+
+    private void addUserDepartmentSelection(final ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
         departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userSelectedCriteria.userDepartments",
                 new PropertyModel<List<UserDepartment>>(getDefaultModel(), "reportCriteria.availableCriteria.userDepartments"),
                 new DomainObjectChoiceRenderer<UserDepartment>());
@@ -457,7 +477,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         departments.setOutputMarkupId(true);
 
         // update projects when customer(s) selected
-        departments.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+        departments.add(new AjaxFormComponentUpdatingBehavior("change") {
             private static final long serialVersionUID = 1L;
 
             protected void onUpdate(AjaxRequestTarget target) {
@@ -468,18 +488,20 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         });
 
         parent.add(departments);
-    }
 
-    private Fragment addDepartmentsAndUsers(String id) {
-        Fragment fragment = new Fragment(id, "userDepartmentCriteria", this);
+        parent.add(new AjaxLink<Void>("clearDepartment") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bean.getReportCriteria().getUserSelectedCriteria().resetUserDepartmentSelection();
 
-        GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("deptUserBorder");
-        fragment.add(blueBorder);
+                updateReportCriteria(ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
 
-        addUserDepartmentSelection(blueBorder);
-        addUserSelection(blueBorder);
+                updateUsers(target);
+                updateDepartments(target);
 
-        return fragment;
+                target.appendJavaScript(getDepartmentFilterClearScript());
+            }
+        });
     }
 
     private void updateReportCriteria(ReportCriteriaUpdateType updateType) {
@@ -679,17 +701,43 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         response.render(CssReferenceHeaderItem.forReference(CRITERIA_CSS));
         response.render(OnDomReadyHeaderItem.forScript(getCustomerFilterRegistrationScript()));
         response.render(OnDomReadyHeaderItem.forScript(getProjectFilterRegistrationScript()));
-        response.render(OnDomReadyHeaderItem.forScript(getUserFilterRegistrationScript()));
         response.render(OnDomReadyHeaderItem.forScript(getDepartmentFilterRegistrationScript()));
+        response.render(OnDomReadyHeaderItem.forScript(getUserFilterRegistrationScript()));
+    }
+
+    private String getCustomerFilterRegistrationScript() {
+        return String.format("initFilter('#customerSelect', '%s')", CUSTOMER_FILTER_INPUT_ID);
+    }
+
+    private String getProjectFilterRegistrationScript() {
+        return String.format("initFilter('#projectSelect', '%s')", PROJECT_FILTER_INPUT_ID);
     }
 
     private CharSequence getDepartmentFilterRegistrationScript() {
-        return "initFilter('#departmentSelect', '#departmentFilterInput')";
-
+        return String.format("initFilter('#departmentSelect', '%s')", DEPARTMENT_FILTER_INPUT_ID);
     }
 
     private CharSequence getUserFilterRegistrationScript() {
-        return "initFilter('#userSelect', '#userFilterInput')";
+        return String.format("initFilter('#userSelect', '%s')", USER_FILTER_INPUT_ID);
     }
 
+    private String getCustomerFilterClearScript() {
+        return getFilterClearScript(CUSTOMER_FILTER_INPUT_ID);
+    }
+
+    private String getProjectFilterClearScript() {
+        return getFilterClearScript(PROJECT_FILTER_INPUT_ID);
+    }
+
+    private String getDepartmentFilterClearScript() {
+        return getFilterClearScript(DEPARTMENT_FILTER_INPUT_ID);
+    }
+
+    private String getUserFilterClearScript() {
+        return getFilterClearScript(USER_FILTER_INPUT_ID);
+    }
+
+    private String getFilterClearScript(String inputId) {
+        return String.format("clearFilter('%s');", inputId);
+    }
 }
