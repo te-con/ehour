@@ -40,10 +40,10 @@ public abstract class ProjectManagementDriver {
 
     public static void makeFirstAssignmentInActive() {
         findElement("content_border_border__body_assignments_assignmentContainer_assignments_0_container").click();
-        sleep(500);
+        sleep();
         findElement("content_border_border__body_assignments_assignmentContainer_assignments_0_container_editForm_active").click();
         findElement("content_border_border__body_assignments_assignmentContainer_assignments_0_container_editForm_submit").click();
-        sleep(500);
+        sleep();
     }
 
     public static void submit() {

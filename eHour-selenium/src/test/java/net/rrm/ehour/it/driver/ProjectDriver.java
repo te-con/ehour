@@ -8,6 +8,7 @@ import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ItCustomer;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleep;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -74,12 +75,12 @@ public abstract class ProjectDriver {
         listFilter.sendKeys(projectName);
 
         findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_0").click();
-        EhourApplicationDriver.sleep(500);
+        sleep();
     }
 
     public static void showOnlyActiveProjects() {
         findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_filterForm_filterToggle").click();
-        EhourApplicationDriver.sleep(500);
+        sleep();
     }
 
     public static void assertProjectLoaded(String projectName) {
@@ -90,12 +91,12 @@ public abstract class ProjectDriver {
 
     public static void newAssignment() {
         findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_addUsers").click();
-        EhourApplicationDriver.sleep(500);
+        sleep();
     }
 
     public static void editUser(int index) {
         findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container").click();
-        EhourApplicationDriver.sleep(500);
+        sleep();
     }
 
     public static void setRateForUser(int index, String rate) {
@@ -106,12 +107,12 @@ public abstract class ProjectDriver {
 
     public static void submitAssignment(int index) {
         findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_editForm_submit").click();
-        EhourApplicationDriver.sleep(500);
+        sleep();
     }
 
     public static void deleteAssignment(int index) {
         findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_editForm_delete").click();
-        EhourApplicationDriver.sleep(500);
+        sleep();
     }
 
     public static void assertIsActiveAssignment(int index) {

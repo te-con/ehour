@@ -38,7 +38,7 @@ public class EhourApplicationDriver {
         Driver.manage().deleteAllCookies();
     }
 
-    public static void sleep(int millis) {
+    public static void sleepFor(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
@@ -47,6 +47,6 @@ public class EhourApplicationDriver {
     }
 
     public static void sleep() {
-        sleep(1250);
+        sleepFor(1250);
     }
 }

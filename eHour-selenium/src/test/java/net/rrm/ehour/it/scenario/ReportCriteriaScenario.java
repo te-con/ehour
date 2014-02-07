@@ -132,4 +132,30 @@ public class ReportCriteriaScenario extends AbstractScenario {
 
         assertEquals(2, countShownProjects());
     }
+
+    @Test
+    public void should_clear_customer_filter() {
+        loadReportSection();
+
+        toggleCustomerFilters();
+
+        filterCustomers("bullshit");
+
+        clearCustomerCriterium();
+
+        assertEquals(1, countShownCustomers());
+    }
+
+    @Test
+    public void should_clear_project_filter() {
+        loadReportSection();
+
+        toggleProjectFilters();
+
+        filterProjects("bullshit");
+
+        clearProjectCriterium();
+
+        assertEquals(1, countShownProjects());
+    }
 }

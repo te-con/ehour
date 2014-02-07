@@ -49,7 +49,7 @@ public abstract class TimesheetDriver {
     public static void navigateToMonth(String month) {
         while (!findElement("sidePanel_calendarFrame_currentMonth").getText().equals(month)) {
             findElement("sidePanel_calendarFrame_previousMonthLink").click();
-            sleep(500);
+            sleep();
         }
     }
 
