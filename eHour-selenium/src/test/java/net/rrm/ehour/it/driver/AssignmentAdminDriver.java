@@ -19,12 +19,12 @@ public abstract class AssignmentAdminDriver {
         filterAssignmentUsers(user.name);
 
         findElement("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_0").click();
-        sleep(500);
+        sleep();
 
         WebElement cust = findElement("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_formComponents_projectSelection_customer");
         new Select(cust).selectByVisibleText(customer.code + " - " + customer.name);
 
-        sleep(500);
+        sleep();
 
         WebElement projectElement = findElement("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_formComponents_projectSelection_projectAssignment.project");
         new Select(projectElement).selectByVisibleText(project.code + " - " + project.name);
