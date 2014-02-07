@@ -18,7 +18,7 @@ public class LockPeriodScenario extends AbstractScenario {
     public void should_create_lock() {
         loginAdmin();
 
-        newLock(new LocalDate(), new LocalDate());
+        newLock(new LocalDate(2013, DateTimeConstants.DECEMBER, 1), new LocalDate(2013, DateTimeConstants.DECEMBER, 31));
 
         assertServerMessage("Data saved");
     }

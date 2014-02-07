@@ -23,17 +23,27 @@ class LockAdminBackingBean(val lock: TimesheetLock) extends AdminBackingBeanImpl
 
 object LockAdminBackingBean {
   def determineName(startDate: Date, endDate: Date, formattingLocale: Locale): String = {
-    val start = new DateTime(startDate)
-    val end = new DateTime(endDate)
+    def formatForMonth(date: Date): String = DateTimeFormat.forPattern("MMMM, yyyy").withLocale(formattingLocale).print(new DateTime(date))
 
-    val days = Days.daysBetween(start, end).getDays
-    days / 7 match {
-      case 0 | 1 => "Week %s" format DateTimeFormat.forPattern("w, yyyy").withLocale(formattingLocale).print(start)
-      case 3 | 4 | 5 => DateTimeFormat.forPattern("MMMM, yyyy").withLocale(formattingLocale).print(start)
-      case 11 | 12 | 13 => "Q%d, %d" format((start.getMonthOfYear / 3) + 1, start.getYear)
-      case _ =>
-        val formatter = new SimpleDateFormat(DateUtil.getPatternForDateLocale(formattingLocale), formattingLocale)
-        "%s - %s" format(formatter.format(startDate), formatter.format(endDate))
+    if (startDate == null && endDate == null) {
+      ""
+    } else if (startDate == null) {
+      formatForMonth(endDate)
+    } else if (endDate == null) {
+      formatForMonth(startDate)
+    } else {
+      val start = new DateTime(startDate)
+      val end = new DateTime(endDate)
+
+      val days = Days.daysBetween(start, end).getDays
+      days / 7 match {
+        case 0 | 1 => "Week %s" format DateTimeFormat.forPattern("w, yyyy").withLocale(formattingLocale).print(start)
+        case 3 | 4 | 5 => formatForMonth(startDate)
+        case 11 | 12 | 13 => "Q%d, %d" format((start.getMonthOfYear / 3) + 1, start.getYear)
+        case _ =>
+          val formatter = new SimpleDateFormat(DateUtil.getPatternForDateLocale(formattingLocale), formattingLocale)
+          "%s - %s" format(formatter.format(startDate), formatter.format(endDate))
+      }
     }
   }
 }
