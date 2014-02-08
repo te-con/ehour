@@ -16,26 +16,24 @@
 
 package net.rrm.ehour.ui.common.component;
 
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.model.ResourceModel;
 
 /**
  * Javascript confirmation dialog
  */
 
-public class JavaScriptConfirmation extends AttributeModifier {
-    private static final long serialVersionUID = -4438660782434392618L;
+public class JavaScriptConfirmation extends AjaxCallListener {
 
-    public JavaScriptConfirmation(String event, IModel<String> msg) {
-        super(event, msg);
+    private final ResourceModel msgModel;
+
+    public JavaScriptConfirmation(ResourceModel msgModel) {
+        this.msgModel = msgModel;
     }
 
-    protected String newValue(final String currentValue, final String replacementValue) {
-        StringBuilder result = new StringBuilder("if (confirm('" + replacementValue + "')) { ");
-
-        if (currentValue != null) {
-            result = result.append(currentValue).append("; } else { return false; }");
-        }
-        return result.toString();
+    @Override
+    public CharSequence getPrecondition(Component component) {
+        return String.format("return confirm('%s');", msgModel.getObject());
     }
 }

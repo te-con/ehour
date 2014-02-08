@@ -18,7 +18,8 @@ import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.decorator.{LoadingSpinnerDecorator, DemoDecorator}
-import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
+import org.apache.wicket.ajax.attributes.{AjaxCallListener, AjaxRequestAttributes}
+import scala.collection.convert.WrapAsJava
 
 case class NonDemoAjaxButton(id: String, form: Form[_], success: AjaxButton.Callback, error: AjaxButton.Callback = (a, f) => {}) extends WicketAjaxButton(id, form) {
   private def inDemoMode = EhourWebSession.getEhourConfig.isInDemoMode
@@ -57,9 +58,8 @@ object AjaxButton {
 }
 
 
-case class NonDemoAjaxLink(id: String, success: LinkCallback) extends WicketAjaxLink(id) {
+case class NonDemoAjaxLink(id: String, success: LinkCallback, ajaxCallListeners: List[AjaxCallListener] = List()) extends WicketAjaxLink(id) {
   private def inDemoMode = EhourWebSession.getEhourConfig.isInDemoMode
-
 
   override def onClick(target: AjaxRequestTarget) {
     if (!inDemoMode) {
@@ -69,6 +69,7 @@ case class NonDemoAjaxLink(id: String, success: LinkCallback) extends WicketAjax
 
   protected override def updateAjaxAttributes(attributes: AjaxRequestAttributes) {
     attributes.getAjaxCallListeners.add(if (inDemoMode) new DemoDecorator else new LoadingSpinnerDecorator)
+    attributes.getAjaxCallListeners.addAll(WrapAsJava.asJavaCollection(ajaxCallListeners))
   }
 }
 

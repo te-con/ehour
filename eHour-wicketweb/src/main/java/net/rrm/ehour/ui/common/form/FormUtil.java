@@ -25,33 +25,31 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.ResourceModel;
 
+import java.util.List;
+
 /**
  * Common form stuff
- **/
+ */
 @SuppressWarnings("serial")
-public class FormUtil
-{
-    public static void setSubmitActions(final FormConfig formConfig)
-	{
+public class FormUtil {
+    public static void setSubmitActions(final FormConfig formConfig) {
         final boolean inDemoMode = formConfig.getConfig().isInDemoMode();
 
-		AjaxButton submitButton = new AjaxButton("submitButton", formConfig.getForm())
-		{
-			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
-			{
-                if (!inDemoMode)
-				{
-					AdminBackingBean backingBean = (AdminBackingBean) formConfig.getForm().getDefaultModelObject();
-					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(formConfig.getSubmitEventType(), backingBean);
+        AjaxButton submitButton = new AjaxButton("submitButton", formConfig.getForm()) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                if (!inDemoMode) {
+                    AdminBackingBean backingBean = (AdminBackingBean) formConfig.getForm().getDefaultModelObject();
+                    PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(formConfig.getSubmitEventType(), backingBean);
 
-					EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), ajaxEvent);
-				}
+                    EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), ajaxEvent);
+                }
             }
 
             @Override
@@ -61,47 +59,48 @@ public class FormUtil
                 attributes.getAjaxCallListeners().add(inDemoMode ? new DemoDecorator() : new LoadingSpinnerDecorator());
             }
 
-			@Override
-            protected void onError(AjaxRequestTarget target, Form<?> form)
-			{
-				target.add(form);
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.add(form);
 
-				if (formConfig.getErrorEventType() != null)
-				{
-					AjaxEvent errorEvent = new AjaxEvent(formConfig.getErrorEventType());
-					EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), errorEvent);
-				}
+                if (formConfig.getErrorEventType() != null) {
+                    AjaxEvent errorEvent = new AjaxEvent(formConfig.getErrorEventType());
+                    EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), errorEvent);
+                }
             }
         };
 
         submitButton.setModel(new ResourceModel("general.save"));
-		// default submit
-		formConfig.getForm().add(submitButton);
+        // default submit
+        formConfig.getForm().add(submitButton);
 
-		AjaxLink<Void> deleteButton = new AjaxLink<Void>("deleteButton")
-        {
-			@Override
-            public void onClick(AjaxRequestTarget target)
-			{
-				if (!inDemoMode)
-				{
+        AjaxLink<Void> deleteButton = new AjaxLink<Void>("deleteButton") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                if (!inDemoMode) {
                     AdminBackingBean backingBean = (AdminBackingBean) formConfig.getForm().getDefaultModelObject();
-					PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(formConfig.getDeleteEventType(), backingBean);
+                    PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(formConfig.getDeleteEventType(), backingBean);
 
-					EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), ajaxEvent);
-				}
+                    EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), ajaxEvent);
+                }
             }
 
             @Override
             protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
                 super.updateAjaxAttributes(attributes);
 
-                attributes.getAjaxCallListeners().add(inDemoMode ? new DemoDecorator() : new LoadingSpinnerDecorator());
+                List<IAjaxCallListener> callListeners = attributes.getAjaxCallListeners();
+
+                if (inDemoMode) {
+                    callListeners.add(new DemoDecorator());
+                } else {
+                    callListeners.add(new JavaScriptConfirmation(new ResourceModel("general.deleteConfirmation")));
+                    callListeners.add(new LoadingSpinnerDecorator());
+                }
             }
         };
 
-        deleteButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("general.deleteConfirmation")));
         deleteButton.setVisible(formConfig.isIncludeDelete());
         formConfig.getForm().add(deleteButton);
-	}
+    }
 }

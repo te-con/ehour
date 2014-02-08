@@ -85,9 +85,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
     val unlockButton = NonDemoAjaxLink(LockFormPanel.UnlockId, (target) => {
       send(getPage, Broadcast.BREADTH, UnlockedEvent(getPanelModelObject, target))
-    })
-
-    unlockButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("general.deleteConfirmation")))
+    }, List(new JavaScriptConfirmation(new ResourceModel("general.deleteConfirmation"))))
 
     unlockButton.setVisible(!getPanelModelObject.isNew)
     form.add(unlockButton)

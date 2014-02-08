@@ -43,6 +43,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -223,9 +224,17 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 // reset doesn't error
             }
-        };
 
-        resetButton.add(new JavaScriptConfirmation("onclick", new ResourceModel("timesheet.confirmReset")));
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                List<IAjaxCallListener> callListeners = attributes.getAjaxCallListeners();
+
+                callListeners.add(new JavaScriptConfirmation(new ResourceModel("timesheet.confirmReset")));
+                callListeners.add(new LoadingSpinnerDecorator());
+            }
+        };
 
         resetButton.setDefaultFormProcessing(false);
         parent.add(resetButton);
