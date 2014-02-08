@@ -111,29 +111,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
 
 
     /**
-     * minimal constructor
-     */
-    public ProjectAssignment(User user, Project project, Date dateStart, Date dateEnd) {
-        this.user = user;
-        this.project = project;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-    }
-
-    /**
-     * full constructor
-     */
-    public ProjectAssignment(User user, Project project, Float hourlyRate, Date dateStart, Date dateEnd, String description) {
-        this.user = user;
-        this.project = project;
-        this.hourlyRate = hourlyRate;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.role = description;
-    }
-
-
-    /**
      * Create a project assignment with default values (date assignment, no start/end date, active)s
      *
      * @param project
@@ -157,6 +134,26 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
      * @return
      */
     public static ProjectAssignment createProjectAssignment(ProjectAssignment templateAssignment, User user) {
+        ProjectAssignment assignment = createProjectAssignment(templateAssignment);
+        assignment.setUser(user);
+
+        return assignment;
+    }
+
+    /**
+     * Create a copy of the provided template assignment, replacing the project with the given project
+     * @param assignment
+     * @param project
+     * @return
+     */
+    public static ProjectAssignment createProjectAssignment(ProjectAssignment templateAssignment, Project project) {
+        ProjectAssignment assignment = createProjectAssignment(templateAssignment);
+        assignment.setProject(project);
+
+        return assignment;
+    }
+
+    private static ProjectAssignment createProjectAssignment(ProjectAssignment templateAssignment) {
         ProjectAssignment assignment = new ProjectAssignment();
         assignment.setActive(templateAssignment.isActive());
         assignment.setAllottedHours(templateAssignment.getAllottedHours());
@@ -168,8 +165,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         assignment.setNotifyPm(templateAssignment.isNotifyPm());
         assignment.setProject(templateAssignment.getProject());
         assignment.setRole(templateAssignment.getRole());
-        assignment.setUser(user);
-
+        assignment.setUser(templateAssignment.getUser());
         return assignment;
     }
 

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.admin.assignment;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -82,6 +83,34 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
         return getProjectAssignment().isNew();
     }
 
+    public List<ProjectAssignment> getProjectAssignmentsForSave() {
+        correctDatesInAssignment();
+
+        List<ProjectAssignment> assignments = Lists.newArrayList();
+        for (Project selectedProject : selectedProjects) {
+            assignments.add(ProjectAssignment.createProjectAssignment(projectAssignment, selectedProject));
+        }
+
+        return assignments;
+    }
+
+    public ProjectAssignment getProjectAssignmentForSave() {
+        correctDatesInAssignment();
+        return projectAssignment;
+    }
+
+    private void correctDatesInAssignment() {
+        if (isInfiniteStartDate()) {
+            projectAssignment.setDateStart(null);
+        }
+
+
+        if (isInfiniteEndDate()) {
+            projectAssignment.setDateEnd(null);
+        }
+    }
+
+
     public boolean isShowAllottedHours() {
         return (projectAssignment.getAssignmentType() != null) && projectAssignment.getAssignmentType().isAllottedType();
     }
@@ -95,19 +124,6 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
     }
 
     public ProjectAssignment getProjectAssignment() {
-        return projectAssignment;
-    }
-
-    public ProjectAssignment getProjectAssignmentForSave() {
-        if (isInfiniteStartDate()) {
-            projectAssignment.setDateStart(null);
-        }
-
-
-        if (isInfiniteEndDate()) {
-            projectAssignment.setDateEnd(null);
-        }
-
         return projectAssignment;
     }
 
