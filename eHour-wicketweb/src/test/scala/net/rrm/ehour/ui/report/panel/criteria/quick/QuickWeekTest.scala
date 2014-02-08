@@ -4,10 +4,10 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import net.rrm.ehour.config.EhourConfigStub
 import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
-import java.util.{Date, Calendar}
+import java.util.Calendar
+import org.joda.time.LocalDate
 
 @RunWith(classOf[JUnitRunner])
-@SuppressWarnings(Array("deprecation"))
 class QuickWeekTest extends FunSuite with BeforeAndAfter with Matchers {
   var cal: Calendar = _
   var config: EhourConfigStub = _
@@ -26,15 +26,7 @@ class QuickWeekTest extends FunSuite with BeforeAndAfter with Matchers {
       endCal.set(2012, Calendar.DECEMBER, 23)
     val qw = new QuickWeek(cal, config)
 
-    IsTheSameDay(startCal.getTime, qw.getPeriodStart)
-    IsTheSameDay(endCal.getTime, qw.getPeriodEnd)
-  }
-  
-  private def IsTheSameDay(expected: Date,  toCheck: Date) {
-    toCheck should have (
-      'day (expected.getDay),
-      'month (expected.getMonth),
-      'year (expected.getYear)
-    )
+    new LocalDate(qw.getPeriodStart) should equal(new LocalDate(startCal.getTime))
+    new LocalDate(qw.getPeriodEnd) should equal(new LocalDate(endCal.getTime))
   }
 }
