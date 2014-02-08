@@ -39,6 +39,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
  */
 
 public class EntrySelectorPanel extends AbstractBasePanel<Void> {
+    private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private IModel<String> checkBoxPrefixText;
     private boolean includeCheckboxToggle = false;
     private GreyBlueRoundedBorder blueBorder;
@@ -63,7 +64,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
     public void refreshList(AjaxRequestTarget target) {
         target.add(blueBorder);
-        target.appendJavaScript("window.entrySelector.refresh();");
+        target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
                 callbackAfterFilter(target, filter);
 
-                target.appendJavaScript("refresh();");
+                target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
             }
         };
 
