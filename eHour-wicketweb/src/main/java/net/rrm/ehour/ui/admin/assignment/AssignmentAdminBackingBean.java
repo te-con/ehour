@@ -68,7 +68,7 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
 
     public void updateCustomerBasedOnSelectedProject() {
         if (!isNewAssignment()) {
-            setCustomer(getProjectAssignment().getProject().getCustomer());
+                setCustomer(getProjectAssignment().getProject().getCustomer());
         } else {
             int selectedProjectsSize = selectedProjects.size();
             if (selectedProjectsSize == 1) {

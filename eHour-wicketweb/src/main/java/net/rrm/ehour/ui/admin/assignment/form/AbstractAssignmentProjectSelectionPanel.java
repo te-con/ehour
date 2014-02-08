@@ -48,8 +48,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
 
     @SuppressWarnings("serial")
     private void addCustomerAndProjectChoices() {
-        List<Customer> customers = customerService.getCustomers(true);
-        Collections.sort(customers, new CustomerComparator());
+        List<Customer> customers = getCustomers();
 
         // customer
         final DropDownChoice<Customer> customerChoice = createCustomerDropdown(customers);
@@ -113,6 +112,22 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
         });
 
         projectChoice.add(new ValidatingFormComponentAjaxBehavior());
+    }
+
+    private List<Customer> getCustomers() {
+        List<Customer> customers = customerService.getCustomers(true);
+
+        List<Customer> customersWithActiveProjects = Lists.newArrayList();
+
+        for (Customer customer : customers) {
+            if (customer.getActiveProjects().size() > 0) {
+                customersWithActiveProjects.add(customer);
+            }
+        }
+
+        Collections.sort(customersWithActiveProjects, new CustomerComparator());
+
+        return customersWithActiveProjects;
     }
 
     protected abstract AbstractChoice<?, Project> createProjectChoiceDropDown(IModel<List<Project>> projectChoices, String id);
