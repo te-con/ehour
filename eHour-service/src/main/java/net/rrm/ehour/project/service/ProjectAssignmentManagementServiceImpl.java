@@ -36,7 +36,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 
             if (!isAlreadyAssigned(assignment, user.getProjectAssignments())) {
                 LOGGER.debug("Assigning user " + user + " to " + project);
-                assignUserToProject(assignment);
+                persist(assignment);
             }
         }
     }
@@ -57,7 +57,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
      */
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
-    public ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment) {
+    public ProjectAssignment persist(ProjectAssignment projectAssignment) {
         projectAssignmentDAO.persist(projectAssignment);
 
         return projectAssignment;
@@ -113,11 +113,6 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     @Auditable(actionType = AuditActionType.DELETE)
     public void deleteProjectAssignment(ProjectAssignment assignment) {
         projectAssignmentDAO.delete(assignment);
-    }
-
-    @Transactional
-    public void updateProjectAssignment(ProjectAssignment assignment) {
-        projectAssignmentDAO.persist(assignment);
     }
 
  public void setProjectDAO(ProjectDao projectDAO) {

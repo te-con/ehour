@@ -110,6 +110,10 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
         }
     }
 
+    public User getUser() {
+        return projectAssignment.getUser();
+    }
+
 
     public boolean isShowAllottedHours() {
         return (projectAssignment.getAssignmentType() != null) && projectAssignment.getAssignmentType().isAllottedType();
@@ -130,6 +134,7 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
     public void setProjectAssignment(ProjectAssignment projectAssignment) {
         this.projectAssignment = projectAssignment;
     }
+
 
     public Customer getCustomer() {
         return customer;

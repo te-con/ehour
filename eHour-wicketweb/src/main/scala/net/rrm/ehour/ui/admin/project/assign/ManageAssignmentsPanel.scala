@@ -127,10 +127,10 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     def persistAssignment(backingBean: AssignmentAdminBackingBean) {
       val assignment = backingBean.getProjectAssignmentForSave
 
-      if (assignment.isNew) {
+      if (backingBean.isNewAssignment) {
         assignmentManagementService.assignUsersToProjects(selectedAffectedUsers, assignment)
       } else {
-        assignmentManagementService.assignUserToProject(assignment)
+        assignmentManagementService.persist(assignment)
       }
     }
 

@@ -12,7 +12,7 @@ public interface ProjectAssignmentManagementService {
      *
      * @param projectAssignment
      */
-    ProjectAssignment assignUserToProject(ProjectAssignment projectAssignment);
+    ProjectAssignment persist(ProjectAssignment projectAssignment);
 
     /**
      * Assign all users to the specified project
@@ -41,11 +41,4 @@ public interface ProjectAssignmentManagementService {
      * @param assignment
      */
     void deleteProjectAssignment(ProjectAssignment assignment);
-
-    /**
-     * Update project assignment
-     *
-     * @param assignment
-     */
-    void updateProjectAssignment(ProjectAssignment assignment);
 }

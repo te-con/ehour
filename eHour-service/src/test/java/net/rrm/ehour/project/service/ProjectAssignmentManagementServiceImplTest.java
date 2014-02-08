@@ -40,7 +40,7 @@ public class ProjectAssignmentManagementServiceImplTest {
     @Test
     public void shouldAssignUserToProject() throws ProjectAlreadyAssignedException {
         ProjectAssignment projectAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-        service.assignUserToProject(projectAssignment);
+        service.persist(projectAssignment);
 
         verify(projectAssignmentDao).persist(projectAssignment);
     }

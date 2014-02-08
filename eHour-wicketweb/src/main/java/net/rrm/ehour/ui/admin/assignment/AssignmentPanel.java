@@ -34,6 +34,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.List;
+
 /**
  * Assignment panel displaying the list and the tabbed form for adding/editing
  */
@@ -95,49 +97,61 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
-        if (type == AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE) {
-            try {
-                ProjectAssignment assignment = ((PayloadAjaxEvent<ProjectAssignment>) ajaxEvent).getPayload();
-                assignment = assignmentService.getProjectAssignment(assignment.getAssignmentId());
-
-                tabbedPanel.setEditBackingBean(
-                        new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
-                tabbedPanel.switchTabOnAjaxTarget(ajaxEvent.getTarget(), 1);
-            } catch (ObjectNotFoundException e) {
-                LOGGER.error("While getting assignment", e);
-                return false;
-            }
-        }
-
-        if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED || type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
-            AssignmentAdminBackingBean backingBean = (AssignmentAdminBackingBean) ((PayloadAjaxEvent<AdminBackingBean>) ajaxEvent).getPayload();
-
-            if (type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
-                persistAssignment(backingBean);
-            } else {
-                try {
-                    deleteAssignment(backingBean);
-                } catch (Exception e) {
-                    LOGGER.error("While deleting assignment", e);
-                }
-            }
-
-            ProjectAssignment assignment = backingBean.getProjectAssignmentForSave();
-
-            listPanel.updateList(ajaxEvent.getTarget(), assignment.getUser());
-
-            tabbedPanel.succesfulSave(ajaxEvent.getTarget());
+        if (type == AssignmentAjaxEventType.ASSIGNMENT_EDIT) {
+            if (editAssignment(ajaxEvent)) return false;
+        } else if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED || type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
+            modifyAssignment(ajaxEvent, type);
         }
 
         return true;
     }
 
+    @SuppressWarnings("unchecked")
+    private boolean editAssignment(AjaxEvent ajaxEvent) {
+        try {
+            ProjectAssignment assignment = ((PayloadAjaxEvent<ProjectAssignment>) ajaxEvent).getPayload();
+
+            tabbedPanel.setEditBackingBean(new AssignmentAdminBackingBean(assignmentService.getProjectAssignment(assignment.getAssignmentId())));
+            tabbedPanel.switchTabOnAjaxTarget(ajaxEvent.getTarget(), AddEditTabbedPanel.TABPOS_EDIT);
+        } catch (ObjectNotFoundException e) {
+            LOGGER.error("While getting assignment", e);
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void modifyAssignment(AjaxEvent ajaxEvent, AjaxEventType type) {
+        AssignmentAdminBackingBean backingBean = (AssignmentAdminBackingBean) ((PayloadAjaxEvent<AdminBackingBean>) ajaxEvent).getPayload();
+
+        if (type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
+            persistAssignment(backingBean);
+        } else {
+            try {
+                deleteAssignment(backingBean);
+            } catch (Exception e) {
+                LOGGER.error("While deleting assignment", e);
+            }
+        }
+
+        listPanel.updateList(ajaxEvent.getTarget(), backingBean.getUser());
+
+        tabbedPanel.succesfulSave(ajaxEvent.getTarget());
+    }
+
     private void persistAssignment(AssignmentAdminBackingBean backingBean) {
-        projectAssignmentManagementService.assignUserToProject(backingBean.getProjectAssignmentForSave());
+        if (backingBean.isNewAssignment()) {
+            List<ProjectAssignment> projectAssignmentsForSave = backingBean.getProjectAssignmentsForSave();
+
+            for (ProjectAssignment projectAssignment : projectAssignmentsForSave) {
+                projectAssignmentManagementService.persist(projectAssignment);
+            }
+        } else {
+            projectAssignmentManagementService.persist(backingBean.getProjectAssignmentForSave());
+        }
     }
 
     private void deleteAssignment(AssignmentAdminBackingBean backingBean) throws ObjectNotFoundException, ParentChildConstraintException {

@@ -123,7 +123,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
                 AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_EDIT,
                                 assignment));
                     }
                 };
@@ -131,7 +131,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
                 AjaxLink<Void> imgLink = new AjaxLink<Void>("imgLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_LIST_CHANGE,
+                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_EDIT,
                                 assignment));
                     }
                 };
