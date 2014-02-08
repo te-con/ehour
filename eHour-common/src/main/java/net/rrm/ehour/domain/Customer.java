@@ -168,9 +168,11 @@ public class Customer extends DomainObject<Integer, Customer> {
     public Set<Project> getActiveProjects() {
         Set<Project> activeProjects = new HashSet<Project>();
 
-        for (Project project : getProjects()) {
-            if (project.isActive()) {
-                activeProjects.add(project);
+        if (getProjects() != null) {
+            for (Project project : getProjects()) {
+                if (project.isActive()) {
+                    activeProjects.add(project);
+                }
             }
         }
 
