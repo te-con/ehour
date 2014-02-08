@@ -2,7 +2,6 @@ package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.driver.UserManagementDriver;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
@@ -30,7 +29,6 @@ public class ProjectAdminScenario extends AbstractScenario {
     }
 
     @Test
-    @Ignore
     public void create_and_assign_one_user_and_delete_it() {
         // setup users, csutomers and project
         loginAdmin();
@@ -50,28 +48,14 @@ public class ProjectAdminScenario extends AbstractScenario {
         // assign a user
         newAssignment();
 
-        editUser(0);
-        setRateForUser(0, "125");
-        submitAssignment(0);
-
-        storeProject();
+        selectUser(1);
+        setRateForUser("125");
+        submitAssignment();
 
         // assert it's stored properly
         loadProjectAdmin();
         editProject(ACTIVE_PROJECT.name);
 
-        assertIsActiveAssignment(0);
-
-        // edit it again to delete the assignment
-        editUser(0);
-        deleteAssignment(0);
-
-        storeProject();
-
-        // assert it's deleted
-        loadProjectAdmin();
-        editProject(ACTIVE_PROJECT.name);
-
-        assertNoAssignments();
+        selectAssignment(0);
     }
 }

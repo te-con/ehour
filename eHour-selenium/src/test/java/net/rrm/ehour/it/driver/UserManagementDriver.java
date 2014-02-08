@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleep;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleepFor;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 
@@ -40,6 +41,7 @@ public abstract class UserManagementDriver {
 
     public static void submitUserForm() {
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_submitButton").click();
+        sleep();
     }
 
     public static void fillUserForm(ItUser user, String lastName, String role) {

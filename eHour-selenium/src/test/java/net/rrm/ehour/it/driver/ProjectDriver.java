@@ -90,39 +90,42 @@ public abstract class ProjectDriver {
     }
 
     public static void newAssignment() {
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_addUsers").click();
+        findElement("tabs_panel_assignedUserPanel_border_border__body_list_addUsers").click();
         sleep();
     }
 
-    public static void editUser(int index) {
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container").click();
+    public static void selectUser(int index) {
+        findElement("tabs_panel_assignedUserPanel_border_border__body_list_allBorder_allBorder__body_users_" + index + "_name").click();
         sleep();
     }
 
-    public static void setRateForUser(int index, String rate) {
-        String path = "tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_editForm_rate";
+    public static void setRateForUser(String rate) {
+        String path = "tabs_panel_assignedUserPanel_border_border__body_form_border_assignmentForm_formComponents_rateRole_projectAssignment.hourlyRate";
         findElement(path).clear();
         findElement(path).sendKeys(rate);
     }
 
-    public static void submitAssignment(int index) {
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_editForm_submit").click();
+    public static void submitAssignment() {
+        findElement("tabs_panel_assignedUserPanel_border_border__body_form_border_assignmentForm_submitButton").click();
         sleep();
     }
 
-    public static void deleteAssignment(int index) {
-        findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_editForm_delete").click();
+    public static void deleteAssignment() {
+        findElement("tabs_panel_assignedUserPanel_border_border__body_form_border_assignmentForm_deleteButton").click();
+        sleep();
+        Driver.switchTo().alert().accept();
         sleep();
     }
 
-    public static void assertIsActiveAssignment(int index) {
-        WebElement webElement = findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_assignmentContainer_assignments_" + index + "_container_activeAssignment");
-        assertEquals("Assigned", webElement.getAttribute("title"));
+    public static void selectAssignment(int index) {
+        findElement("tabs_panel_assignedUserPanel_border_border__body_list_assignments_border_border__body_row_" + index + "_name").click();
     }
 
     public static void assertNoAssignments() {
-        WebElement element = findElement("tabs_panel_border_greySquaredFrame_border__body_projectForm_assignedUsers_filterContainer");
-        assertEquals("no users have been assigned", element.getText());
+        WebElement element = findElement("tabs_panel_assignedUserPanel_border_border__body_list_assignments");
+        assertEquals("<div class=\"p\">\n" +
+                "            er zijn nog geen gebruikers toegewezen\n" +
+                "        </div>", element.getText());
     }
 
     public static void selectProjectManager(String name) {
