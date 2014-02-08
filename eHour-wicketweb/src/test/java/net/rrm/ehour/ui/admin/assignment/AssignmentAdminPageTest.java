@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.admin.assignment;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
@@ -28,54 +28,53 @@ import net.rrm.ehour.user.service.UserService;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
 
 
-public class AssignmentAdminPageTest extends BaseSpringWebAppTester
-{
-	/**
-	 * Test render
-	 */
-	@Test
-	public void shouldRender()
-	{
-		UserService userService = createMock(UserService.class);
-		getMockContext().putBean("userService", userService);
+public class AssignmentAdminPageTest extends BaseSpringWebAppTester {
+    /**
+     * Test render
+     */
+    @Test
+    public void shouldRender() {
+        UserService userService = createMock(UserService.class);
+        getMockContext().putBean("userService", userService);
 
-		ProjectService projectService = createMock(ProjectService.class);
-		getMockContext().putBean("projectService", projectService);
-		
-		CustomerService customerService = createMock(CustomerService.class);
-		getMockContext().putBean("customerService", customerService);
+        ProjectService projectService = createMock(ProjectService.class);
+        getMockContext().putBean("projectService", projectService);
 
-		ProjectAssignmentService assignmentService = createMock(ProjectAssignmentService.class);
-		getMockContext().putBean("assignmentService", assignmentService);
+        CustomerService customerService = createMock(CustomerService.class);
+        getMockContext().putBean("customerService", customerService);
 
-		expect(assignmentService.getProjectAssignmentTypes())
-				.andReturn(new ArrayList<ProjectAssignmentType>());
-		
-		replay(assignmentService);
-		
-		Customer cust = new Customer(22);
-		List<Customer>	custs = new ArrayList<Customer>();
-		custs.add(cust);
-		
-		expect(customerService.getCustomers(true))
-				.andReturn(custs);
-		
-		replay(customerService);
-		
-		expect(userService.getUsers(UserRole.CONSULTANT))
-				.andReturn(new ArrayList<User>());
+        ProjectAssignmentService assignmentService = createMock(ProjectAssignmentService.class);
+        getMockContext().putBean("assignmentService", assignmentService);
 
-		replay(userService);
-		
-		getTester().startPage(AssignmentAdminPage.class);
-		getTester().assertRenderedPage(AssignmentAdminPage.class);
-		getTester().assertNoErrorMessage();
-		
-		verify(userService);
-	}
+        expect(assignmentService.getProjectAssignmentTypes())
+                .andReturn(new ArrayList<ProjectAssignmentType>());
+
+        replay(assignmentService);
+
+        Customer cust = new Customer(22);
+        List<Customer> custs = new ArrayList<Customer>();
+        custs.add(cust);
+
+        expect(customerService.getCustomers(true))
+                .andReturn(custs);
+
+        replay(customerService);
+
+        expect(userService.getUsers(UserRole.CONSULTANT))
+                .andReturn(Arrays.asList(UserObjectMother.createUser()));
+
+        replay(userService);
+
+        getTester().startPage(AssignmentAdminPage.class);
+        getTester().assertRenderedPage(AssignmentAdminPage.class);
+        getTester().assertNoErrorMessage();
+
+        verify(userService);
+    }
 }
