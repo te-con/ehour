@@ -584,6 +584,10 @@ a.button:active span {
     letter-spacing: 1.5px;
 }
 
+a.button span:hover {
+    cursor: pointer;
+}
+
 a.bluebutton {
     background: transparent url('../img/blue_button_a.gif') no-repeat scroll top right;
     color: #536e87;
