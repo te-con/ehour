@@ -68,12 +68,12 @@
                 <div class="leftColumn">
                     <div class="foldIcon">
                         <a wicket:id="clearCustomer">
-                            <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent">
+                            <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
                                 <span class="ui-icon ui-icon-trash"></span>
                             </span>
                         </a>
                         <a href="#" onclick="return toggleFilter('#customerFilter')" id="customerFold">
-                            <span class="ui-state-default ui-corner-all borderLess bgTransparent">
+                            <span class="ui-state-default ui-corner-all borderLess bgTransparent" wicket:message="title:report.criteria.options.tooltip">
                                 <span class="ui-icon ui-icon-grip-solid-horizontal"></span>
                             </span>
                         </a>
@@ -99,13 +99,13 @@
                 <div class="rightColumn">
                     <div class="foldIcon">
                         <a wicket:id="clearProject">
-                            <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent">
+                            <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
                                 <span class="ui-icon ui-icon-trash"></span>
                             </span>
                         </a>
 
                         <a href="#" onclick="return toggleFilter('#projectFilter')" id="projectFold">
-                            <span class="ui-state-default ui-corner-all borderLess bgTransparent">
+                            <span class="ui-state-default ui-corner-all borderLess bgTransparent" wicket:message="title:report.criteria.options.tooltip">
                                 <span class="ui-icon ui-icon-grip-solid-horizontal"></span>
                             </span>
                         </a>
@@ -158,12 +158,12 @@
             <div class="leftColumn">
                 <div class="foldIcon">
                     <a wicket:id="clearDepartment">
-                        <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent">
+                        <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
                             <span class="ui-icon ui-icon-trash"></span>
                         </span>
                     </a>
 
-                    <a href="#" onclick="return toggleFilter('#departmentFilter')">
+                    <a href="#" onclick="return toggleFilter('#departmentFilter')"  wicket:message="title:report.criteria.options.tooltip">
                         <span class="ui-state-default ui-corner-all borderLess bgTransparent">
                             <span class="ui-icon ui-icon-grip-solid-horizontal"></span>
                         </span>
@@ -183,14 +183,14 @@
             <div class="rightColumn">
                 <div class="foldIcon">
                     <a wicket:id="clearUser">
-                        <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent">
+                        <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
                             <span class="ui-icon ui-icon-trash"></span>
                         </span>
                     </a>
 
                     <a href="#" onclick="return toggleFilter('#userFilter')">
-                        <span class="ui-state-default ui-corner-all borderLess">
-                            <span class="ui-icon ui-icon-carat-2-n-s"></span>
+                        <span class="ui-state-default ui-corner-all borderLess" wicket:message="title:report.criteria.options.tooltip">
+                            <span class="ui-icon ui-icon-grip-solid-horizontal"></span>
                         </span>
                     </a>
                 </div>
