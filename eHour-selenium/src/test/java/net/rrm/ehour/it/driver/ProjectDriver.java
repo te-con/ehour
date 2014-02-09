@@ -41,7 +41,7 @@ public abstract class ProjectDriver {
         return INACTIVE_PROJECT;
     }
 
-    private static void createProject(ItProject project, ItCustomer customer, boolean active) {
+    public static void createProject(ItProject project, ItCustomer customer, boolean active) {
         loadProjectAdmin();
 
         fillProjectForm(project, customer, active);
