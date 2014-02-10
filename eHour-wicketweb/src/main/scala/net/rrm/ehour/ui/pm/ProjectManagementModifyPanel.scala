@@ -10,7 +10,7 @@ import net.rrm.ehour.project.service.ProjectAssignmentManagementService
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.markup.html.basic.Label
 import net.rrm.ehour.config.PmPrivilege
-import net.rrm.ehour.ui.admin.project.assign.ManageAssignmentsPanel
+import net.rrm.ehour.ui.admin.project.assign.{ManagementPanelConfig, ManageAssignmentsPanel}
 
 class ProjectManagementModifyPanel(id: String, project: Project) extends AbstractBasePanel(id) {
   @SpringBean
@@ -25,7 +25,8 @@ class ProjectManagementModifyPanel(id: String, project: Project) extends Abstrac
     val adminBackingBean = new ProjectAdminBackingBean(project)
     val privilege = getConfig.getPmPrivilege
 
-    val assignedUsersPanel = new ManageAssignmentsPanel("assignments", new Model(adminBackingBean), onlyDeactivation = privilege == PmPrivilege.DEACTIVATE_ONLY)
+    val panelConfig = ManagementPanelConfig(onlyDeactivation = privilege == PmPrivilege.DEACTIVATE_ONLY, borderless = true)
+    val assignedUsersPanel = new ManageAssignmentsPanel("assignments", new Model(adminBackingBean), panelConfig)
     border.add(assignedUsersPanel)
 
     val placeholderLabel = new Label("serverMessage", "")

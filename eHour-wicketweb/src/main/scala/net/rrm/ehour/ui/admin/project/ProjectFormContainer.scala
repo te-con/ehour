@@ -16,6 +16,6 @@ class ProjectFormContainer(id: String, model: IModel[ProjectAdminBackingBean]) e
     if (model.getObject.isNew)
       addOrReplace(new Container(AssignedPanelId))
     else
-      addOrReplace(new ManageAssignmentsPanel(AssignedPanelId, model, onlyDeactivation = false))
+      addOrReplace(new ManageAssignmentsPanel(AssignedPanelId, model))
   }
 }

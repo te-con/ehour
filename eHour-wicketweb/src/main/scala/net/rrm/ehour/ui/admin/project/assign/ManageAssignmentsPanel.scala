@@ -19,8 +19,9 @@ import java.{util => ju}
 import net.rrm.ehour.ui.common.model.AdminBackingBean
 import net.rrm.ehour.domain.User
 import com.google.common.collect.Lists
+import org.apache.wicket.MarkupContainer
 
-class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivation: Boolean = false) extends AbstractAjaxPanel(id, model) {
+class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean], panelConfig: ManagementPanelConfig = ManagementPanelConfig(onlyDeactivation = false, borderless = false)) extends AbstractAjaxPanel(id, model) {
   val BORDER_ID = "border"
   val LIST_ID = "list"
   val FORM_ID = "form"
@@ -41,7 +42,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   override def onInitialize() {
     super.onInitialize()
 
-    val greyBorder = new GreyRoundedBorder(BORDER_ID, new ResourceModel("admin.projects.assignments.header"))
+    val greyBorder = if (panelConfig.borderless) new Container(BORDER_ID) else new GreyRoundedBorder(BORDER_ID, new ResourceModel("admin.projects.assignments.header"))
     addOrReplace(greyBorder)
 
     greyBorder.add(createCurrentAssignmentsList)
@@ -93,7 +94,6 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       view
     }
 
-
     event.refresh(replaceUserListPanel, replaceFormPanel, replaceAffectedUserPanel)
   }
 
@@ -120,7 +120,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     event.refresh(replaceFormPanel, replaceAffectedUserPanel)
   }
 
-  private[assign] def getBorderContainer = get(BORDER_ID).asInstanceOf[Border].getBodyContainer
+  private[assign] def getBorderContainer:MarkupContainer = if (panelConfig.borderless) get(BORDER_ID).asInstanceOf[Container] else get(BORDER_ID).asInstanceOf[Border].getBodyContainer
 
   // own legacy event system...
   override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {
@@ -176,4 +176,6 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     response.render(CssHeaderItem.forReference(Css))
   }
 }
+
+case class ManagementPanelConfig(onlyDeactivation: Boolean = false, borderless: Boolean = false)
 
