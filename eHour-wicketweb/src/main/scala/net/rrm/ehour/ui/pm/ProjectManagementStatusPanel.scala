@@ -14,6 +14,7 @@ import java.lang.{Float => JFloat}
 import scala.Predef.String
 import net.rrm.ehour.ui.common.wicket.NonEmptyLabel
 import com.google.common.base.Optional
+import java.util.{Comparator, Collections}
 
 class ProjectManagementStatusPanel(id: String, project: Project) extends AbstractBasePanel(id) {
   @SpringBean
@@ -28,6 +29,10 @@ class ProjectManagementStatusPanel(id: String, project: Project) extends Abstrac
     addOrReplace(border)
 
     val aggregates = Lists.newArrayList(pmReport.getAggregates)
+    Collections.sort(aggregates, new Comparator[AssignmentAggregateReportElement]{
+      override def compare(o1: AssignmentAggregateReportElement, o2: AssignmentAggregateReportElement): Int = o1.getProjectAssignment.getUser.compareTo(o2.getProjectAssignment.getUser)
+    })
+
 
     border.add(new ListView[AssignmentAggregateReportElement]("rows", aggregates) {
       def populateItem(item: ListItem[AssignmentAggregateReportElement]) {
@@ -36,14 +41,11 @@ class ProjectManagementStatusPanel(id: String, project: Project) extends Abstrac
         val user = new NonEmptyLabel("user", new Model[String](aggregate.getProjectAssignment.getUser.getFullName))
         item.add(user)
 
+        val role = new NonEmptyLabel("role", new Model[String](aggregate.getProjectAssignment.getRole))
+        item.add(role)
+
         val booked = new NonEmptyLabel("booked", new Model[JFloat](JFloat.valueOf(aggregate.getHours.floatValue())))
         item.add(booked)
-
-        val allotted = new NonEmptyLabel("allotted", new Model[JFloat](aggregate.getProjectAssignment.getAllottedHours))
-        item.add(allotted)
-
-        val overrun = new NonEmptyLabel("overrun", new Model[JFloat](aggregate.getProjectAssignment.getAllowedOverrun))
-        item.add(overrun)
 
         val converter = new OptionalFloatConverter()
         val available = new NonEmptyLabel("available", new Model[Optional[JFloat]](aggregate.getAvailableHours), Some(converter))

@@ -14,9 +14,8 @@
             <div class="pm_users">
                 <div class="header">
                     <div class="user"><wicket:message key="pmReport.user.user" /></div>
+                    <div class="role"><wicket:message key="pmReport.user.role" /></div>
                     <div class="booked" wicket:message="title:pmReport.user.booked.tooltip"><wicket:message key="pmReport.user.booked" /></div>
-                    <div class="allotted" wicket:message="title:pmReport.user.allotted.tooltip"><wicket:message key="pmReport.user.allotted" /></div>
-                    <div class="overrun" wicket:message="title:pmReport.user.overrun.tooltip"><wicket:message key="pmReport.user.overrun" /></div>
                     <div class="available" wicket:message="title:pmReport.user.available.tooltip"><wicket:message key="pmReport.user.available" /></div>
                     <div class="percentageUsed" wicket:message="title:pmReport.user.percentageUsed.tooltip"><wicket:message key="pmReport.user.percentageUsed" /></div>
                     <br/>
@@ -25,9 +24,8 @@
                 <div class="rows">
                     <div class="row" wicket:id="rows">
                         <div class="user" wicket:id="user"/>
+                        <div class="role" wicket:id="role"/>
                         <div class="booked" wicket:id="booked"/>
-                        <div class="allotted" wicket:id="allotted"></div>
-                        <div class="overrun" wicket:id="overrun"/>
                         <div class="available" wicket:id="available"/>
                         <div class="percentageUsed" wicket:id="percentageUsed" />
                         <br clear="both" />
@@ -36,9 +34,8 @@
 
                 <div class="footer">
                     <div class="user">&nbsp;</div>
+                    <div class="role">&nbsp;</div>
                     <div class="booked" wicket:id="totalBooked"/>
-                    <div class="allotted">&nbsp;</div>
-                    <div class="overrun">&nbsp;</div>
                     <div class="available" wicket:id="totalAvailable"/>
                     <div class="percentageUsed">&nbsp;</div>
                     <br clear="both" />
