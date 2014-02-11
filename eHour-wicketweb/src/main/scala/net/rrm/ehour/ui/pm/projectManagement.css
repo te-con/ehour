@@ -41,9 +41,10 @@
 }
 
 .pm_users .booked, .pm_users .allotted, .pm_users .overrun, .pm_users .available, .pm_users .percentageUsed {
-    width: 7em;
+    width: 5em;
     float:left;
 }
+
 .pm_users .row {
     clear: both;
 }
