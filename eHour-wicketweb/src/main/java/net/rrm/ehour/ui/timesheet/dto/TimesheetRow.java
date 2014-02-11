@@ -92,14 +92,13 @@ public class TimesheetRow implements Serializable
 	public String getStatus()
 	{
         if (assignmentStatus != null && assignmentStatus.getAggregate() != null && assignmentStatus.getAggregate().getAvailableHours() != null
-                && assignmentStatus.getAggregate().getAvailableHours() < 0) {
-            AvailableHours hours = new AvailableHours((int) (getAssignmentStatus().getAggregate().getAvailableHours() * -1));
+                && assignmentStatus.getAggregate().getAvailableHours().or(0f) < 0) {
+            AvailableHours hours = new AvailableHours((int) (getAssignmentStatus().getAggregate().getAvailableHours().or(0f) * -1));
 
             Localizer localizer = Application.get().getResourceSettings().getLocalizer();
 
             return localizer.getString("timesheet.errorNoHours", null, new Model<AvailableHours>(hours));
         }
-
 
         return "<br />";
     }

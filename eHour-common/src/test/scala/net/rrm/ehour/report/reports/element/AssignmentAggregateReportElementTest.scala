@@ -11,7 +11,7 @@ import java.util.{Calendar, GregorianCalendar}
 class AssignmentAggregateReportElementTest extends FunSuite {
   test("should initialize") {
     val element = new AssignmentAggregateReportElement()
-    0 == element.getProgressPercentage
+    !element.getProgressPercentage.isPresent
     null == element.getAvailableHours
     0 == element.getTurnOver.floatValue()
   }
@@ -21,7 +21,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED)
     assignment.setAllottedHours(20)
 
-    assert(50 == new AssignmentAggregateReportElement(assignment, 10).getProgressPercentage)
+    assert(50 == new AssignmentAggregateReportElement(assignment, 10).getProgressPercentage.get())
   }
 
   test("should get 50% progress for allotted flex") {
@@ -31,7 +31,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAllowedOverrun(10)
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
-    assert(50 == e.getProgressPercentage)
+    assert(50 == e.getProgressPercentage.get)
   }
 
   test("should calculate available hours for allotted flex") {
@@ -41,7 +41,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAllowedOverrun(10)
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
-    assert(20 == e.getAvailableHours.toInt)
+    assert(20 == e.getAvailableHours.get().toInt)
   }
 
   test("should calculate available hours for allotted fixed") {
@@ -49,7 +49,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED)
     assignment.setAllottedHours(20)
 
-    assert(10 == new AssignmentAggregateReportElement(assignment, 10).getAvailableHours.toInt)
+    assert(10 == new AssignmentAggregateReportElement(assignment, 10).getAvailableHours.get.toInt)
   }
 
   test("should get 50% progress for date assignment when we're in the middle") {
@@ -64,7 +64,7 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     assignment.setDateEnd(now.getTime)
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
-    assert(50 == e.getProgressPercentage)
+    assert(50 == e.getProgressPercentage.get)
   }
 
   test("should get turnover") {

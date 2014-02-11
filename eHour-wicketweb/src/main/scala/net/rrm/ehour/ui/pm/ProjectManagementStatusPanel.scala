@@ -13,6 +13,7 @@ import com.google.common.collect.Lists
 import java.lang.{Float => JFloat}
 import scala.Predef.String
 import net.rrm.ehour.ui.common.wicket.NonEmptyLabel
+import com.google.common.base.Optional
 
 class ProjectManagementStatusPanel(id: String, project: Project) extends AbstractBasePanel(id) {
   @SpringBean
@@ -44,10 +45,11 @@ class ProjectManagementStatusPanel(id: String, project: Project) extends Abstrac
         val overrun = new NonEmptyLabel("overrun", new Model[JFloat](aggregate.getProjectAssignment.getAllowedOverrun))
         item.add(overrun)
 
-        val available = new NonEmptyLabel("available", new Model[JFloat](aggregate.getAvailableHours))
+        val converter = new OptionalFloatConverter()
+        val available = new NonEmptyLabel("available", new Model[Optional[JFloat]](aggregate.getAvailableHours), Some(converter))
         item.add(available)
 
-        val percentageUsed = new NonEmptyLabel("percentageUsed", new Model[JFloat](JFloat.valueOf(aggregate.getProgressPercentage)))
+        val percentageUsed = new NonEmptyLabel("percentageUsed", new Model[Optional[JFloat]](aggregate.getProgressPercentage), Some(converter))
         item.add(percentageUsed)
       }
     })
@@ -56,3 +58,4 @@ class ProjectManagementStatusPanel(id: String, project: Project) extends Abstrac
     border.add(new Label("totalAvailable", new Model[JFloat](pmReport.getTotalHoursAvailable)))
   }
 }
+

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.report.reports.element;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.domain.ProjectAssignment;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -47,13 +48,13 @@ public class AssignmentAggregateReportElement
      * Get the progress (booked hours) in percentage of the allotted hours, leaving out the overrun
      * or for date ranges use the current date vs start & end date (if they're both null)
      */
-    public float getProgressPercentage() {
-        float percentage = 0;
+    public Optional<Float> getProgressPercentage() {
+        Optional<Float> percentage = Optional.absent();
         float currentTime;
         float dateRangeLength;
 
         if (projectAssignment == null) {
-            return percentage;
+            return Optional.absent();
         }
 
         if (projectAssignment.getAssignmentType().isAllottedType()) {
@@ -61,7 +62,8 @@ public class AssignmentAggregateReportElement
                     projectAssignment.getAllottedHours() != null &&
                     hours.floatValue() > 0 &&
                     projectAssignment.getAllottedHours() > 0) {
-                percentage = (hours.floatValue() / projectAssignment.getAllottedHours()) * 100;
+                percentage = Optional.of((hours.floatValue() / projectAssignment.getAllottedHours()) * 100);
+
             }
         } else if (projectAssignment.getAssignmentType().isDateType() &&
                 projectAssignment.getDateStart() != null &&
@@ -71,12 +73,12 @@ public class AssignmentAggregateReportElement
             dateRangeLength = projectAssignment.getDateEnd().getTime() -
                     projectAssignment.getDateStart().getTime();
 
-            percentage = (currentTime / dateRangeLength) * 100;
+            percentage = Optional.of((currentTime / dateRangeLength) * 100);
 
             // if percentage is above 100 for daterange the user can't book anymore hours
             // so don't display more than 100%
-            if (percentage > 100) {
-                percentage = 100;
+            if (percentage.get() > 100) {
+                percentage = Optional.of(100f);
             }
         }
 
@@ -88,31 +90,27 @@ public class AssignmentAggregateReportElement
      *
      * @return
      */
-    public Float getAvailableHours() {
-        Float available = 0f;
-
-        if (projectAssignment == null) {
-            return available;
-        }
-
-        if (projectAssignment.getAssignmentType().isFixedAllottedType()) {
-            if (hours != null &&
+    public Optional<Float> getAvailableHours() {
+        if (projectAssignment != null) {
+            if (projectAssignment.getAssignmentType().isFixedAllottedType()) {
+                if (hours != null &&
+                        projectAssignment.getAllottedHours() != null &&
+                        hours.floatValue() > 0 &&
+                        projectAssignment.getAllottedHours() > 0) {
+                    return Optional.of(projectAssignment.getAllottedHours() - hours.floatValue());
+                }
+            } else if (projectAssignment.getAssignmentType().isFlexAllottedType() && hours != null &&
                     projectAssignment.getAllottedHours() != null &&
                     hours.floatValue() > 0 &&
                     projectAssignment.getAllottedHours() > 0) {
-                available = projectAssignment.getAllottedHours() - hours.floatValue();
-            }
-        } else if (projectAssignment.getAssignmentType().isFlexAllottedType() && hours != null &&
-                projectAssignment.getAllottedHours() != null &&
-                hours.floatValue() > 0 &&
-                projectAssignment.getAllottedHours() > 0) {
 
-            available = (projectAssignment.getAllottedHours() +
-                    ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun() : 0))
-                    - hours.floatValue();
+                return Optional.of((projectAssignment.getAllottedHours() +
+                        ((projectAssignment.getAllowedOverrun() != null) ? projectAssignment.getAllowedOverrun() : 0))
+                        - hours.floatValue());
+            }
         }
 
-        return available;
+        return Optional.absent();
     }
 
     public ProjectAssignment getProjectAssignment() {

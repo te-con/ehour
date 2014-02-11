@@ -51,10 +51,7 @@ public class ProjectManagerReport implements Serializable {
                 }
 
                 hours += aggregate.getHours().floatValue();
-
-                if (aggregate.getProjectAssignment().getAssignmentType().isAllottedType()) {
-                    avail += aggregate.getAvailableHours();
-                }
+                avail += aggregate.getAvailableHours().or(0f);
             }
         }
 

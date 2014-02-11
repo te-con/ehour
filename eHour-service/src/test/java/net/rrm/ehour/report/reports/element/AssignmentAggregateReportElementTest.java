@@ -16,20 +16,15 @@
 
 package net.rrm.ehour.report.reports.element;
 
-import static org.junit.Assert.assertEquals;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.ProjectAssignmentType;
+import net.rrm.ehour.util.EhourConstants;
+import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.util.EhourConstants;
-
-import org.junit.Test;
-
-/**
- * TODO 
- **/
+import static org.junit.Assert.assertEquals;
 
 public class AssignmentAggregateReportElementTest
 {
@@ -48,7 +43,7 @@ public class AssignmentAggregateReportElementTest
 		ele.setHours(96f);
 		ele.setProjectAssignment(assignment);
 		
-		assertEquals(96, ele.getProgressPercentage(), 0f);
+		assertEquals(96, ele.getProgressPercentage().get(), 0f);
 	}
 
 	@Test
@@ -69,7 +64,7 @@ public class AssignmentAggregateReportElementTest
 		AssignmentAggregateReportElement ele = new AssignmentAggregateReportElement();
 		ele.setProjectAssignment(assignment);
 		
-		assertEquals(50, ele.getProgressPercentage(), 2f);
+		assertEquals(50, ele.getProgressPercentage().get(), 2f);
 	}
 	
 
@@ -87,7 +82,7 @@ public class AssignmentAggregateReportElementTest
 		ele.setHours(96f);
 		ele.setProjectAssignment(assignment);
 		
-		assertEquals(4, ele.getAvailableHours(), 0f);
+		assertEquals(4, ele.getAvailableHours().get(), 0f);
 	}
 	
 
@@ -107,7 +102,7 @@ public class AssignmentAggregateReportElementTest
 		ele.setHours(113f);
 		ele.setProjectAssignment(assignment);
 		
-		assertEquals(27, ele.getAvailableHours(), 0f);
+		assertEquals(27, ele.getAvailableHours().get(), 0f);
 	}	
 
 }
