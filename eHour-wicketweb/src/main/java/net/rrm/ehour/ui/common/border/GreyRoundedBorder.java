@@ -105,7 +105,5 @@ public class GreyRoundedBorder extends Border
 		}
 
         addToBorder(excelLink);
-		
-//		greyFrame.add(getBodyContainer());
 	}
 }
