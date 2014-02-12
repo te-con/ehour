@@ -40,7 +40,7 @@
 }
 
 .pm_users .role {
-    width: 13em;
+    width: 11em;
     float: left;
 }
 
@@ -48,6 +48,10 @@
     width: 5em;
     float:left;
     text-align: right;
+}
+
+.pm_users .percentageUsed {
+    width: 4em !important;
 }
 
 .pm_users .row {
