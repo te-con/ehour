@@ -20,8 +20,8 @@ class ProjectManagementStatusPanel(id: String, project: Project) extends Abstrac
   @SpringBean
   var aggregateReportService: AggregateReportService = _
 
-  override def onInitialize() {
-    super.onInitialize()
+  override def onBeforeRender() {
+    super.onBeforeRender()
 
     val pmReport = aggregateReportService.getProjectManagerDetailedReport(project)
 

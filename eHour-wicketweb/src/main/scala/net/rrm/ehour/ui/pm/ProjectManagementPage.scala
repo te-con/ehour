@@ -18,6 +18,9 @@ import net.rrm.ehour.ui.common.wicket.Container
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.apache.wicket.request.resource.CssResourceReference
 import net.rrm.ehour.config.PmPrivilege
+import net.rrm.ehour.ui.common.event.AjaxEvent
+import java.lang.Boolean
+import net.rrm.ehour.ui.admin.assignment.AssignmentAjaxEventType
 
 @AuthorizeInstantiation(Array(UserRole.ROLE_PROJECTMANAGER))
 class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
@@ -30,6 +33,15 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
 
   @SpringBean
   protected var projectService: ProjectService = _
+
+
+  override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {
+    if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED || ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_DELETED) {
+      ajaxEvent.getTarget.add(get(StatusId))
+    }
+
+    true
+  }
 
   override def onInitialize() {
     super.onInitialize()
