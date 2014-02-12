@@ -21,7 +21,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference
 import net.rrm.ehour.ui.common.wicket.AjaxLink._
 import org.apache.wicket.markup.html.WebMarkupContainer
 
-class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean]) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
+class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivate: Boolean = false) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
   val Self = this
   val HighlightJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listHighlight.js")
   val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
@@ -41,8 +41,9 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
     addOrReplace(createAssignmentListView("assignments", assignments))
 
     val linkCallback: LinkCallback = target => send(this, Broadcast.BUBBLE, NewAssignmentEvent(target))
-
-    addOrReplace(new AjaxLink("addUsers", linkCallback))
+    val link = new AjaxLink("addUsers", linkCallback)
+    link.setVisible(!onlyDeactivate)
+    addOrReplace(link)
   }
 
   def createAssignmentListView(id: String, assignments: List[ProjectAssignment]): Fragment = {

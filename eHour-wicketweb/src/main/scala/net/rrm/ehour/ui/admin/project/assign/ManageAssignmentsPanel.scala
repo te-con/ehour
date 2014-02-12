@@ -55,7 +55,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   def createFormContainer = new Container(FORM_ID)
 
   def createCurrentAssignmentsList = {
-    val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(LIST_ID, model)
+    val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(LIST_ID, model, panelConfig.onlyDeactivation)
     view.setOutputMarkupId(true)
     view
   }
@@ -95,7 +95,6 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
     event.refresh(replaceUserListPanel, replaceFormPanel, replaceAffectedUserPanel)
   }
-
 
   def createAssignmentFormPanel(model: CompoundPropertyModel[AssignmentAdminBackingBean]): AssignmentFormPanel = {
     val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.NO_BORDER, DisplayOption.SHOW_CANCEL_BUTTON))
