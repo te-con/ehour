@@ -81,8 +81,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
     def replaceFormPanel: AssignmentFormPanel = {
       val model = new CompoundPropertyModel[AssignmentAdminBackingBean](bean)
-      val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.NO_BORDER, DisplayOption.SHOW_CANCEL_BUTTON))
-      formPanel.setOutputMarkupId(true)
+      val formPanel = createAssignmentFormPanel(model)
       getBorderContainer.addOrReplace(formPanel)
       formPanel
     }
@@ -97,6 +96,13 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
     event.refresh(replaceUserListPanel, replaceFormPanel, replaceAffectedUserPanel)
   }
 
+
+  def createAssignmentFormPanel(model: CompoundPropertyModel[AssignmentAdminBackingBean]): AssignmentFormPanel = {
+    val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.NO_BORDER, DisplayOption.SHOW_CANCEL_BUTTON))
+    formPanel.setOutputMarkupId(true)
+    formPanel
+  }
+
   def replaceAffectedUserPanel = {
     val affectedUsersPanel = new Container(AFFECTED_USER_ID)
     getBorderContainer.addOrReplace(affectedUsersPanel)
@@ -106,8 +112,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   private def initializeEditAssignment(event: EditAssignmentEvent) {
     def replaceFormPanel: AssignmentFormPanel = {
       val model = new CompoundPropertyModel[AssignmentAdminBackingBean](new AssignmentAdminBackingBean(event.assignment))
-      val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.NO_BORDER))
-      formPanel.setOutputMarkupId(true)
+      val formPanel = createAssignmentFormPanel(model)
       getBorderContainer.addOrReplace(formPanel)
       formPanel
     }
