@@ -43,7 +43,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private String projectName;
     private String projectCode;
     private Integer assignmentId;
-    private String assignmentDesc;
+    private String role;
     private Date dayDate;
     private String comment;
     private Integer displayOrder;
@@ -236,18 +236,18 @@ public class FlatReportElement implements ProjectStructuredReportElement {
 
 
     /**
-     * @return the assignmentDesc
+     * @return the role
      */
-    public String getAssignmentDesc() {
-        return assignmentDesc;
+    public String getRole() {
+        return role;
     }
 
 
     /**
-     * @param assignmentDesc the assignmentDesc to set
+     * @param role the role to set
      */
-    public void setAssignmentDesc(String assignmentDesc) {
-        this.assignmentDesc = assignmentDesc;
+    public void setRole(String role) {
+        this.role = role;
     }
 
 
@@ -288,9 +288,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         this.projectCode = projectCode;
     }
 
-    /* (non-Javadoc)
-      * @see java.lang.Object#toString()
-      */
     @Override
     public String toString() {
         return new ToStringBuilder(this)

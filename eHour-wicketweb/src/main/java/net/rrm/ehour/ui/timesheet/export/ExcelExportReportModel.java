@@ -53,7 +53,7 @@ public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> 
         ProjectAssignment pa = new ProjectAssignment();
 
         pa.setAssignmentId(aggregate.getAssignmentId());
-        pa.setRole(aggregate.getAssignmentDesc());
+        pa.setRole(aggregate.getRole());
 
         Project prj = new Project();
         prj.setName(aggregate.getProjectName());

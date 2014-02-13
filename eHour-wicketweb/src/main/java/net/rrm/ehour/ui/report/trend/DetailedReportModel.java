@@ -99,7 +99,9 @@ public class DetailedReportModel extends TreeReportModel
                         return new FlatProjectCodeNode(flatElement);
 	                case 4:
 	                	return new FlatUserNode(flatElement);
-	                case 5:
+                    case 5:
+                        return new FlatRoleNode(flatElement);
+	                case 6:
 	                	return new FlatEntryEndNode(flatElement);
 	            }
 	
