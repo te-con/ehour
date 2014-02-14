@@ -568,6 +568,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         quickSelections.add(createQuickQuarter());
 
         for (WebMarkupContainer cont : quickSelections) {
+            cont.setOutputMarkupId(true);
             form.add(cont);
         }
 
@@ -610,6 +611,12 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
+                ReportCriteriaBackingBean backingBean = ReportCriteriaPanel.this.getPanelModelObject();
+                backingBean.resetQuickSelections();
+
+                for (WebMarkupContainer cont : quickSelections) {
+                    target.add(cont);
+                }
             }
         });
 

@@ -104,6 +104,12 @@ public class ReportCriteriaBackingBean implements Serializable {
         setReportRangeForQuickie(quickQuarter);
     }
 
+    public void resetQuickSelections() {
+        quickWeek = null;
+        quickMonth = null;
+        quickQuarter = null;
+    }
+
     public void setReportCriteria(ReportCriteria reportCriteria) {
         this.reportCriteria = reportCriteria;
     }
