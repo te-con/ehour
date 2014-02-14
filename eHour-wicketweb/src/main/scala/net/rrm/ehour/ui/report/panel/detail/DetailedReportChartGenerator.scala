@@ -18,7 +18,7 @@ object DetailedReportChartGenerator {
 
 
   def generateHourBasedDetailedChart(chartContext: ChartContext): String = {
-    val highChart = generateDetailedChart(chartContext.reportData, _.getTotalHours.floatValue())
+    val highChart = generateDetailedChart(chartContext.reportData, f => if (f.getTotalHours == null) 0 else f.getTotalHours.floatValue())
 
     highChart.copy(yAxis = axis("Hours"), title = title("Hours booked on customers per day"), tooltip = tooltip("hours")).build(chartContext.renderToId)
   }
@@ -72,7 +72,7 @@ object DetailedReportChartGenerator {
         val id = e.getCustomerId.toInt
         val nameMap2 = nameMap + (id -> e.getCustomerName)
 
-        val item = DateFloatValue(new DateTime(e.getDayDate), f(e))
+        val item = DateFloatValue(new DateTime(e.getDayDate), if (f == null) 0 else f(e))
 
         val d = (item :: dataMap.getOrElse(id, List()).reverse).reverse
 
