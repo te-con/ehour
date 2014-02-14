@@ -66,8 +66,7 @@ public abstract class TreeReportModel extends AbstractReportModel
         return new TreeReportData(matrix, reportCriteria.getReportRange(), reportData);
     }
     
-    protected void sort(ReportData reportData, ReportCriteria reportCriteria) {
-    }
+    protected abstract void sort(ReportData reportData, ReportCriteria reportCriteria);
 
 	private ReportData getValidReportData(ReportCriteria reportCriteria)
 	{

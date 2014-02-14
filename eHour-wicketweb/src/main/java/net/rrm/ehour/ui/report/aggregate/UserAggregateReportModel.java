@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.report.aggregate;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
@@ -26,21 +27,30 @@ import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class UserAggregateReportModel extends AbstractAggregateReportModel {
     private static final long serialVersionUID = 2883703894793044411L;
 
-    /**
-     * @param reportData
-     */
     public UserAggregateReportModel(ReportCriteria reportCriteria) {
         super(reportCriteria, ReportConfig.AGGREGATE_USER);
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.ui.report.aggregate.AggregateReport#getReportNodeFactory()
-      */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void sort(ReportData reportData, ReportCriteria reportCriteria) {
+        List<AssignmentAggregateReportElement> reportElements = (List<AssignmentAggregateReportElement>) reportData.getReportElements();
+
+        Collections.sort(reportElements, new Comparator<AssignmentAggregateReportElement>() {
+            @Override
+            public int compare(AssignmentAggregateReportElement o1, AssignmentAggregateReportElement o2) {
+                return o1.getProjectAssignment().getUser().compareTo(o2.getProjectAssignment().getUser());
+            }
+        });
+    }
+
     @Override
     public ReportNodeFactory<AssignmentAggregateReportElement> getReportNodeFactory() {
         return new ReportNodeFactory<AssignmentAggregateReportElement>() {
@@ -59,7 +69,7 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
             }
 
             /**
-             * Only needed for the root node, customer
+             * Only needed for the root node, user
              * @param aggregate
              * @return
              */

@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.report.aggregate;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.AbstractAggregateReportModel;
@@ -27,6 +28,9 @@ import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class CustomerAggregateReportModel extends AbstractAggregateReportModel
 {
@@ -37,10 +41,19 @@ public class CustomerAggregateReportModel extends AbstractAggregateReportModel
 		super(reportCriteria, ReportConfig.AGGREGATE_CUSTOMER);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#getReportNodeFactory()
-	 */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void sort(ReportData reportData, ReportCriteria reportCriteria) {
+        List<AssignmentAggregateReportElement> reportElements = (List<AssignmentAggregateReportElement>) reportData.getReportElements();
+
+        Collections.sort(reportElements, new Comparator<AssignmentAggregateReportElement>() {
+            @Override
+            public int compare(AssignmentAggregateReportElement o1, AssignmentAggregateReportElement o2) {
+                return o1.getProjectAssignment().getProject().getCustomer().compareTo(o2.getProjectAssignment().getProject().getCustomer());
+            }
+        });
+    }
+
 	@Override
     public ReportNodeFactory<AssignmentAggregateReportElement> getReportNodeFactory()
     {
