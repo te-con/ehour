@@ -74,15 +74,16 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
         private static final long serialVersionUID = 8534482324216994500L;
 
         private UserNode(AssignmentAggregateReportElement aggregate) {
-            super(aggregate.getProjectAssignment().getUser().getPK());
-            this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName()};
+            super(aggregate.getProjectAssignment().getPK());
+            this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName(),
+                    aggregate.getProjectAssignment().getRole()};
         }
 
         @Override
         protected Serializable getElementId(ReportElement element) {
             AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement) element;
 
-            return aggregate.getProjectAssignment().getUser().getPK();
+            return aggregate.getProjectAssignment().getPK();
         }
     }
 

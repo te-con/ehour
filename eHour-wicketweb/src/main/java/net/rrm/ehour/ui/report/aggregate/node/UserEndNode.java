@@ -16,11 +16,11 @@
 
 package net.rrm.ehour.ui.report.aggregate.node;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.node.ReportNode;
+
+import java.io.Serializable;
 
 /**
  * End node displaying user's full name, hours and turnover 
@@ -34,11 +34,12 @@ public class UserEndNode extends ReportNode
 
     public UserEndNode(AssignmentAggregateReportElement aggregate)
     {
-        super(aggregate.getProjectAssignment().getUser().getPK());
+        super(aggregate.getProjectAssignment().getPK());
         hours = aggregate.getHours();
         turnOver = aggregate.getTurnOver();
 
         this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName(),
+                                                aggregate.getProjectAssignment().getRole(),
                                                 aggregate.getProjectAssignment().getHourlyRate(),
                                                 aggregate.getHours(),
                                                 aggregate.getTurnOver()};
@@ -48,7 +49,7 @@ public class UserEndNode extends ReportNode
     protected Serializable getElementId(ReportElement element)
     {
     	AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
-        return aggregate.getProjectAssignment().getUser().getPK();
+        return aggregate.getProjectAssignment().getPK();
     }
 
 
