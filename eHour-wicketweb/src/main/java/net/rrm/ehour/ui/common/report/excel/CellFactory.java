@@ -16,11 +16,14 @@
 
 package net.rrm.ehour.ui.common.report.excel;
 
+import net.rrm.ehour.report.reports.element.LockableDate;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.wicket.model.IModel;
+
+import java.util.Date;
 
 /**
  * Created on Mar 25, 2009, 6:45:57 AM
@@ -51,6 +54,10 @@ public class CellFactory {
             cell.setCellValue((Float) value);
         } else if (value instanceof Number) {
             cell.setCellValue(((Number) value).doubleValue());
+        } else if (value instanceof Date) {
+            cell.setCellValue((Date)value);
+        } else if (value instanceof LockableDate) {
+            cell.setCellValue(((LockableDate) value).getDate());
         } else {
             cell.setCellValue(new HSSFRichTextString(value.toString()));
         }

@@ -19,4 +19,5 @@ public class LockableDate implements Serializable {
     public Boolean isLocked() {
         return locked;
     }
+
 }
