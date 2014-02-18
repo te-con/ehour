@@ -247,6 +247,30 @@
 				ENTRY.COMMENT,
 				PAG.HOURLY_RATE
          ]]>         
-	</sql-query>	
+	</sql-query>
+
+    <sql-query name="Report.getAssignmentsWithoutBookings">
+        <![CDATA[
+		SELECT PAG.HOURLY_RATE AS "rate",
+		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       PAG.PROJECT_ID AS "projectId",
+		       PAG.USER_ID AS "userId",
+		       USR.FIRST_NAME AS "userFirstName",
+		       USR.LAST_NAME AS "userLastName",
+		       PAG.ROLE AS "role",
+		       PRJ.PROJECT_ID AS "projectId",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       PRJ.NAME AS "projectName"
+		FROM PROJECT_ASSIGNMENT PAG
+		LEFT JOIN PROJECT PRJ ON PAG.PROJECT_ID = PRJ.PROJECT_ID
+		LEFT JOIN CUSTOMER CUST ON CUST.CUSTOMER_ID = PRJ.CUSTOMER_ID
+		LEFT JOIN USERS USR ON PAG.USER_ID = USR.USER_ID
+		WHERE PAG.ASSIGNMENT_ID NOT IN (SELECT ENTRY.ASSIGNMENT_ID FROM TIMESHEET_ENTRY ENTRY WHERE (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd))
+         ]]>
+    </sql-query>
 	
 </hibernate-mapping>

@@ -64,4 +64,6 @@ public interface DetailedReportDao
 	 */
 	List<FlatReportElement> getHoursPerDay(DateRange dateRange);
 
+    @SuppressWarnings("unchecked")
+    List<FlatReportElement> getAssignmentsWithoutBookings(DateRange dateRange);
 }
