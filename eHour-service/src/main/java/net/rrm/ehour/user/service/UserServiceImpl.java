@@ -32,7 +32,7 @@ import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.IDeleteTimesheetEntry;
 import net.rrm.ehour.util.DateUtil;
-import net.rrm.ehour.util.EhourUtil;
+import net.rrm.ehour.util.DomainUtil;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,8 +105,8 @@ public class UserServiceImpl implements UserService {
             // bummer, we need to check if the user booked any hours on the assignments
             List<Integer> assignmentIds = new ArrayList<Integer>();
 
-            assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
-            assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getInactiveProjectAssignments()));
+            assignmentIds.addAll(DomainUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
+            assignmentIds.addAll(DomainUtil.getIdsFromDomainObjects(user.getInactiveProjectAssignments()));
 
             List<AssignmentAggregateReportElement> aggregates = aggregateReportService.getHoursPerAssignment(assignmentIds);
 

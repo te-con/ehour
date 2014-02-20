@@ -33,12 +33,13 @@ public class FlatLockableDateNode extends ReportNode {
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 
     public FlatLockableDateNode(FlatReportElement element) {
-        super(formatter.format(element.getDayDate()));
+        super(element.isEmptyEntry() ? 0 : formatter.format(element.getDayDate()));
         this.columnValues = new LockableDate[]{element.getLockableDate()};
     }
 
     @Override
     protected Serializable getElementId(ReportElement element) {
-        return formatter.format(((FlatReportElement) element).getDayDate());
+        FlatReportElement flatReportElement = (FlatReportElement) element;
+        return flatReportElement.isEmptyEntry() ? 0 :  formatter.format(flatReportElement.getDayDate());
     }
 }

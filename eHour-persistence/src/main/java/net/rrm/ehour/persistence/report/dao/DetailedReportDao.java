@@ -64,6 +64,10 @@ public interface DetailedReportDao
 	 */
 	List<FlatReportElement> getHoursPerDay(DateRange dateRange);
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Get assignments without bookings for a particular range
+     * @param dateRange
+     * @return
+     */
     List<FlatReportElement> getAssignmentsWithoutBookings(DateRange dateRange);
 }

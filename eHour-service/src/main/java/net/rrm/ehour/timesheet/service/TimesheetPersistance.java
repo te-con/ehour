@@ -28,8 +28,8 @@ import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
+import net.rrm.ehour.util.DomainUtil;
 import net.rrm.ehour.util.EhourConstants;
-import net.rrm.ehour.util.EhourUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         timesheetCommentDAO.deleteCommentsForUser(user.getUserId());
 
         if (user.getProjectAssignments() != null && user.getProjectAssignments().size() > 0) {
-            timesheetDAO.deleteTimesheetEntries(EhourUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
+            timesheetDAO.deleteTimesheetEntries(DomainUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
         }
     }
 

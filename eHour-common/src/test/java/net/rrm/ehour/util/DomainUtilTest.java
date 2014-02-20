@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class EhourUtilTest {
+public class DomainUtilTest {
     @Test
     public void testGetPKsFromDomainObjects() {
         List<Project> projectIds = new ArrayList<Project>();
@@ -34,7 +34,7 @@ public class EhourUtilTest {
         projectIds.add(new Project(3));
         projectIds.add(new Project(4));
 
-        List<Integer> ints = EhourUtil.getIdsFromDomainObjects(projectIds);
+        List<Integer> ints = DomainUtil.getIdsFromDomainObjects(projectIds);
 
         assertEquals(4, ints.size());
     }

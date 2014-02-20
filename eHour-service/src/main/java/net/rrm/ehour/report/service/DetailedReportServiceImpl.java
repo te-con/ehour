@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.report.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -27,7 +28,7 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.LockableDate;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
-import net.rrm.ehour.util.EhourUtil;
+import net.rrm.ehour.util.DomainUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,29 +60,47 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
                                                         List<Project> projects,
                                                         List<Date> lockedDates,
                                                         DateRange reportRange) {
-        List<FlatReportElement> elements = getElements(users, projects, reportRange);
+        List<Integer> userIds = DomainUtil.getIdsFromDomainObjects(users);
+        List<Integer> projectIds = DomainUtil.getIdsFromDomainObjects(projects);
+
+        List<FlatReportElement> elements = getElements(userIds, projectIds, reportRange);
 
         for (FlatReportElement element : elements) {
             Date date = element.getDayDate();
             element.setLockableDate(new LockableDate(date, lockedDates.contains(date)));
         }
 
-        return elements;
+        List<FlatReportElement> assignmentsWithoutBookings = detailedReportDAO.getAssignmentsWithoutBookings(reportRange);
+
+        List<FlatReportElement> filterAssignmentsWithoutBookings = Lists.newArrayList();
+
+        for (FlatReportElement assignmentsWithoutBooking : assignmentsWithoutBookings) {
+            boolean passedUserFilter = userIds == null || userIds.contains(assignmentsWithoutBooking.getUserId());
+            boolean passedProjectFilter = projectIds == null || projectIds.contains(assignmentsWithoutBooking.getProjectId());
+
+            if (passedUserFilter && passedProjectFilter) {
+                assignmentsWithoutBooking.setEmptyEntry(true);
+
+                filterAssignmentsWithoutBookings.add(assignmentsWithoutBooking);
+            }
+        }
+
+        filterAssignmentsWithoutBookings.addAll(elements);
+
+        return filterAssignmentsWithoutBookings;
     }
 
-    private List<FlatReportElement> getElements(List<User> users, List<Project> projects, DateRange reportRange) {
+    private List<FlatReportElement> getElements(List<Integer> userIds, List<Integer> projectIds, DateRange reportRange) {
         List<FlatReportElement> elements;
 
-        if (users == null && projects == null) {
+        if (userIds == null && projectIds == null) {
             elements = detailedReportDAO.getHoursPerDay(reportRange);
-        } else if (projects == null) {
-            elements = detailedReportDAO.getHoursPerDayForUsers(EhourUtil.getIdsFromDomainObjects(users), reportRange);
-        } else if (users == null) {
-            elements = detailedReportDAO.getHoursPerDayForProjects(EhourUtil.getIdsFromDomainObjects(projects), reportRange);
+        } else if (projectIds == null) {
+            elements = detailedReportDAO.getHoursPerDayForUsers(userIds, reportRange);
+        } else if (userIds == null) {
+            elements = detailedReportDAO.getHoursPerDayForProjects(projectIds, reportRange);
         } else {
-            elements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(EhourUtil.getIdsFromDomainObjects(projects),
-                    EhourUtil.getIdsFromDomainObjects(users),
-                    reportRange);
+            elements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(projectIds, userIds, reportRange);
         }
         return elements;
     }

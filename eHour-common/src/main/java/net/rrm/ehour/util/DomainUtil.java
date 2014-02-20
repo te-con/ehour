@@ -16,33 +16,31 @@
 
 package net.rrm.ehour.util;
 
+import net.rrm.ehour.domain.DomainObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.rrm.ehour.domain.DomainObject;
+public class DomainUtil {
+    /**
+     * Get a list of primary keys of out a list of domain objects
+     *
+     * @param projects
+     * @return
+     */
+    public static <PK extends Serializable> List<PK> getIdsFromDomainObjects(Collection<? extends DomainObject<PK, ?>> domainObjects) {
+        if (domainObjects == null) {
+            return null;
+        }
 
-/**
- * Ehour util 
- **/
+        List<PK> pks = new ArrayList<PK>();
 
-public class EhourUtil
-{
-	/**
-	 * Get a list of primary keys of out a list of domain objects
-	 * @param projects
-	 * @return
-	 */
-	public static<PK extends Serializable> List<PK> getIdsFromDomainObjects(Collection<? extends DomainObject<PK, ?>> domainObjects)
-	{
-		List<PK> pks = new ArrayList<PK>();
-		
-		for (DomainObject<PK, ?> domainObject : domainObjects)
-		{
-			pks.add(domainObject.getPK());
-		}
-		
-		return pks;
-	}
+        for (DomainObject<PK, ?> domainObject : domainObjects) {
+            pks.add(domainObject.getPK());
+        }
+
+        return pks;
+    }
 }

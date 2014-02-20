@@ -28,7 +28,7 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourUtil;
+import net.rrm.ehour.util.DomainUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,7 +83,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public void setProjectDeletability(Project project) {
-        List<Integer> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
+        List<Integer> ids = DomainUtil.getIdsFromDomainObjects(project.getProjectAssignments());
         List<AssignmentAggregateReportElement> aggregates = null;
 
         if (ids != null && ids.size() > 0) {

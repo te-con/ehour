@@ -64,7 +64,14 @@ public class DetailedReportModel extends TreeReportModel
         Collections.sort(reportElements, new Comparator<FlatReportElement>() {
             @Override
             public int compare(FlatReportElement o1, FlatReportElement o2) {
-                return o1.getDayDate().compareTo(o2.getDayDate());
+
+                if (o1.getDayDate() == null) {
+                    return -1;
+                } else if (o2.getDayDate() == null) {
+                    return 1;
+                } else {
+                    return o1.getDayDate().compareTo(o2.getDayDate());
+                }
             }
         });
     }

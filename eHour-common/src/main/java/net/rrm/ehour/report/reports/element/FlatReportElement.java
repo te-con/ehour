@@ -49,6 +49,15 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private Integer displayOrder;
     private Number hours = 0;
     private LockableDate lockableDate;
+    private Boolean emptyEntry;
+
+    public Boolean isEmptyEntry() {
+        return emptyEntry == null ? false : emptyEntry;
+    }
+
+    public void setEmptyEntry(Boolean emptyEntry) {
+        this.emptyEntry = emptyEntry;
+    }
 
     public LockableDate getLockableDate() {
         return lockableDate;
@@ -61,6 +70,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     public Number getRate() {
         return rate;
     }
+
 
     public void setRate(Number rate) {
         this.rate = rate;
