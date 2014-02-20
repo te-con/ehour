@@ -19,6 +19,7 @@ package net.rrm.ehour.report.service;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectObjectMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
@@ -29,6 +30,7 @@ import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import org.easymock.Capture;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Before;
@@ -41,6 +43,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -54,11 +57,12 @@ public class DetailedReportServiceImplTest {
     private UserSelectedCriteria userSelectedCriteria;
     private UserDao userDao;
     private TimesheetLockService timesheetLockService;
+    private ProjectDao projectDao;
 
     @Before
     public void setUp() throws Exception {
         detailedReportDao = createMock(DetailedReportDao.class);
-        ProjectDao projectDao = createMock(ProjectDao.class);
+        projectDao = createMock(ProjectDao.class);
         userDao = createMock(UserDao.class);
 
         userSelectedCriteria = new UserSelectedCriteria();
@@ -76,12 +80,17 @@ public class DetailedReportServiceImplTest {
     }
 
     @Test
-    public void testGetDetailedReportAll() {
+    public void should_get_all() {
         provideNoLocks();
 
+        provideNoAssignmentsWithoutBookings();
         provideNoData();
         detailedReportService.getDetailedReportData(reportCriteria);
         verify(detailedReportDao);
+    }
+
+    private void provideNoAssignmentsWithoutBookings() {
+        expect(detailedReportDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).andReturn(Lists.<FlatReportElement>newArrayList());
     }
 
     private void provideNoData() {
@@ -90,8 +99,9 @@ public class DetailedReportServiceImplTest {
     }
 
     @Test
-    public void testGetDetailedReportDataUsersOnly() {
+    public void should_filter_on_user() {
         provideNoLocks();
+        provideNoAssignmentsWithoutBookings();
         singleUserSelected();
 
         expect(detailedReportDao.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class))).andReturn(new ArrayList<FlatReportElement>());
@@ -101,8 +111,9 @@ public class DetailedReportServiceImplTest {
     }
 
     @Test
-    public void testGetDetailedReportDataProjectsOnly() {
+    public void should_filter_on_project() {
         provideNoLocks();
+        provideNoAssignmentsWithoutBookings();
 
         singleProjectSelected();
 
@@ -113,8 +124,9 @@ public class DetailedReportServiceImplTest {
     }
 
     @Test
-    public void testGetDetailedReportDataProjectsAndUsers() {
+    public void should_filter_on_project_and_user() {
         provideNoLocks();
+        provideNoAssignmentsWithoutBookings();
         singleProjectSelected();
         singleUserSelected();
 
@@ -130,8 +142,9 @@ public class DetailedReportServiceImplTest {
     }
 
     @Test
-    public void testGetDetailedReportDataProjectsAndUsersOnDepartments() {
+    public void should_filter_on_user_department() {
         provideNoLocks();
+        provideNoAssignmentsWithoutBookings();
         singleProjectSelected();
         List<UserDepartment> departments = Arrays.asList(new UserDepartment(1));
         userSelectedCriteria.setDepartments(departments);
@@ -150,7 +163,7 @@ public class DetailedReportServiceImplTest {
     }
 
     @Test
-    public void testGetDetailedReportDataWithLockedDays() {
+    public void should_add_locked_days_to_detailed_report() {
         DateTime dateTime = new DateTime(reportCriteria.getReportRange().getDateStart());
         Interval interval = new Interval(dateTime, dateTime);
 
@@ -163,6 +176,9 @@ public class DetailedReportServiceImplTest {
 
         expect(detailedReportDao.getHoursPerDay(isA(DateRange.class)))
                 .andReturn(Arrays.asList(reportElement));
+
+        provideNoAssignmentsWithoutBookings();
+
         replay(detailedReportDao, userDao);
 
         ReportData reportData = detailedReportService.getDetailedReportData(reportCriteria);
@@ -173,4 +189,31 @@ public class DetailedReportServiceImplTest {
         verify(detailedReportDao, userDao, timesheetLockService);
     }
 
+    @Test
+    public void should_only_include_billable_without_customer_or_project_selection() {
+        provideNoLocks();
+        provideNoAssignmentsWithoutBookings();
+
+        userSelectedCriteria.setOnlyBillableProjects(true);
+
+        Project billableProject = ProjectObjectMother.createProject(1);
+        billableProject.setBillable(true);
+
+        Project notBillableProject = ProjectObjectMother.createProject(2);
+        notBillableProject.setBillable(false);
+
+        expect(projectDao.findAllActive()).andReturn(Arrays.asList(billableProject, notBillableProject));
+
+        Capture<List<Integer>> projectIdListCapture = new Capture<List<Integer>>();
+        expect(detailedReportDao.getHoursPerDayForProjects(capture(projectIdListCapture), isA(DateRange.class)))
+                .andReturn(new ArrayList<FlatReportElement>());
+        replay(detailedReportDao, projectDao);
+
+        detailedReportService.getDetailedReportData(reportCriteria);
+
+        assertEquals(1, projectIdListCapture.getValue().size());
+        assertEquals(billableProject.getPK(), projectIdListCapture.getValue().get(0));
+
+        verify(detailedReportDao);
+    }
 }

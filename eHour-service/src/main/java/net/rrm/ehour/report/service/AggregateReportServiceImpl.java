@@ -79,7 +79,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
         return assignmentAggregateReportElements;
     }
 
-
+    @Override
     public ReportData getAggregateReportData(ReportCriteria criteria) {
         return getReportData(criteria);
     }

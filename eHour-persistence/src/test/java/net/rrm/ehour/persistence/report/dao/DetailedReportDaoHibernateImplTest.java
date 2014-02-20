@@ -112,6 +112,6 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
 
         List<FlatReportElement> results = detailedReportDao.getAssignmentsWithoutBookings(dateRange);
 
-        assertEquals(7, results.size());
+        assertEquals(4, results.size());
     }
 }

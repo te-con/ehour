@@ -69,7 +69,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         Seq<Interval> lockedDatesAsIntervals = lockService.findLockedDatesInRange(reportRange.getDateStart(), reportRange.getDateEnd());
         List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);
 
-        List<RE> allReportElements  = generateReport(userSelectedCriteria, lockedDates, reportRange);
+        List<RE> allReportElements = generateReport(userSelectedCriteria, lockedDates, reportRange);
 
         if (userSelectedCriteria.isForPm()) {
             List<ProjectStructuredReportElement> elem = evictNonPmReportElements(userSelectedCriteria, allReportElements);
@@ -122,6 +122,10 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
             }
         }
 
+        if (userSelectedCriteria.isOnlyBillableProjects() && projects == null) {
+            projects = getBillableProjects(userSelectedCriteria);
+        }
+
         return getReportElements(users, projects, lockedDates, reportRange);
     }
 
@@ -144,7 +148,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
      * @param userSelectedCriteria
      * @return
      */
-    protected List<Project> getProjects(UserSelectedCriteria userSelectedCriteria) {
+    private List<Project> getProjects(UserSelectedCriteria userSelectedCriteria) {
         List<Project> projects;
 
         // No projects selected by the user, use any given customer limitation
@@ -162,13 +166,31 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         return projects;
     }
 
+    private List<Project> getBillableProjects(UserSelectedCriteria criteria) {
+        List<Project> projects = criteria.isOnlyActiveProjects() ? projectDAO.findAllActive() : projectDAO.findAll();
+
+        List<Project> filteredProjects = Lists.newArrayList();
+
+        for (Project project : projects) {
+            boolean billableFilter = project.isBillable();
+            boolean customerFilter = !criteria.isOnlyActiveCustomers() || project.getCustomer().isActive();
+
+            if (billableFilter && customerFilter) {
+                filteredProjects.add(project);
+            }
+        }
+
+        return filteredProjects;
+    }
+
+
     /**
      * Get users based on selected departments
      *
      * @param userSelectedCriteria
      * @return
      */
-    protected List<User> getUsers(UserSelectedCriteria userSelectedCriteria) {
+    private List<User> getUsers(UserSelectedCriteria userSelectedCriteria) {
         List<User> users;
 
         if (userSelectedCriteria.isEmptyUsers()) {
