@@ -40,15 +40,15 @@ import java.util.List;
  */
 @Service("detailedReportService")
 public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatReportElement> implements DetailedReportService {
-    private DetailedReportDao detailedReportDAO;
+    private DetailedReportDao detailedReportDao;
 
     DetailedReportServiceImpl() {
     }
 
     @Autowired
-    public DetailedReportServiceImpl(DetailedReportDao detailedReportDAO, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService) {
+    public DetailedReportServiceImpl(DetailedReportDao detailedReportDao, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService) {
         super(userDao, projectDao, lockService);
-        this.detailedReportDAO = detailedReportDAO;
+        this.detailedReportDao = detailedReportDao;
     }
 
     public ReportData getDetailedReportData(ReportCriteria reportCriteria) {
@@ -70,7 +70,15 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
             element.setLockableDate(new LockableDate(date, lockedDates.contains(date)));
         }
 
-        List<FlatReportElement> assignmentsWithoutBookings = detailedReportDAO.getAssignmentsWithoutBookings(reportRange);
+        List<FlatReportElement> filterAssignmentsWithoutBookings = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
+
+        filterAssignmentsWithoutBookings.addAll(elements);
+
+        return filterAssignmentsWithoutBookings;
+    }
+
+    private List<FlatReportElement> getAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
+        List<FlatReportElement> assignmentsWithoutBookings = detailedReportDao.getAssignmentsWithoutBookings(reportRange);
 
         List<FlatReportElement> filterAssignmentsWithoutBookings = Lists.newArrayList();
 
@@ -84,9 +92,6 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
                 filterAssignmentsWithoutBookings.add(assignmentsWithoutBooking);
             }
         }
-
-        filterAssignmentsWithoutBookings.addAll(elements);
-
         return filterAssignmentsWithoutBookings;
     }
 
@@ -94,13 +99,13 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
         List<FlatReportElement> elements;
 
         if (userIds == null && projectIds == null) {
-            elements = detailedReportDAO.getHoursPerDay(reportRange);
+            elements = detailedReportDao.getHoursPerDay(reportRange);
         } else if (projectIds == null) {
-            elements = detailedReportDAO.getHoursPerDayForUsers(userIds, reportRange);
+            elements = detailedReportDao.getHoursPerDayForUsers(userIds, reportRange);
         } else if (userIds == null) {
-            elements = detailedReportDAO.getHoursPerDayForProjects(projectIds, reportRange);
+            elements = detailedReportDao.getHoursPerDayForProjects(projectIds, reportRange);
         } else {
-            elements = detailedReportDAO.getHoursPerDayForProjectsAndUsers(projectIds, userIds, reportRange);
+            elements = detailedReportDao.getHoursPerDayForProjectsAndUsers(projectIds, userIds, reportRange);
         }
         return elements;
     }
