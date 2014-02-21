@@ -18,15 +18,17 @@
 
                 <span wicket:enclosure="filterToggle">
 
-                <label wicket:for="filterToggle"><span
+                <label wicket:for="filterToggle" style="margin-left: 0.2em"><span
                         wicket:id="filterToggleText"></span></label>&nbsp;&nbsp;&nbsp;<input class="borderLess"
                                                                                              wicket:id="filterToggle"
                                                                                              type="checkbox"/>
                     </span>
             </p>
         </form>
+
+        <br clear="all" style="line-height: 0.2em"/>
 	
-		<div wicket:id="blueBorder" class="inline" style="padding-top: 0; margin-top: 10px">
+		<div wicket:id="blueBorder" class="inline" style="padding-top: 0; margin-top: 10px;">
             <div class="listScroll inline" id="listContents">
                 <span wicket:id="itemListHolder"></span>
             </div>
