@@ -21,7 +21,7 @@ import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import net.rrm.ehour.ui.report.trend.DetailedReportModel;
-import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.basic.Label;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,8 +52,7 @@ public class DetailedReportPanelTest extends BaseSpringWebAppTester {
 
         tester.startComponentInPage(new DetailedReportPanel("id", detailedReport));
 
-        Component date = tester.getComponentFromLastRenderedPage("id:frame:reportTable:blueFrame:blueFrame_body:reportContent:reportData:1:cell:2");
-        System.out.println(date.getDefaultModelObjectAsString());
+        tester.assertComponent("id:frame:reportTable:blueFrame:blueFrame_body:reportData:cell:2", Label.class);
 
         tester.assertNoErrorMessage();
 
