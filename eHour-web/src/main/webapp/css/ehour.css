@@ -567,7 +567,6 @@ a.button span {
     display: block;
     line-height: 10px;
     padding: 4px 0 6px 10px;
-
     letter-spacing: 1.5px;
 }
 
@@ -842,6 +841,7 @@ hr {
 
 .entrySelectorTable  th {
     border-bottom: 1px solid #f9f9f9;
+    text-align: left !important;
 }
 
 .entrySelectorTable .filterRow:hover {

@@ -28,8 +28,7 @@ import java.util.Date;
  * ReportElement for aggregate reports
  */
 
-public class AssignmentAggregateReportElement
-        implements Comparable<AssignmentAggregateReportElement>, ProjectStructuredReportElement {
+public class AssignmentAggregateReportElement implements Comparable<AssignmentAggregateReportElement>, ProjectStructuredReportElement {
     private static final long serialVersionUID = -7175763322632066925L;
     private ProjectAssignment projectAssignment;
     private Number hours;
