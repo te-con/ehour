@@ -20,55 +20,50 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-public abstract class QuickPeriod  implements Serializable
-{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -245086949586026553L;
-	private Date	periodStart;
-	private Date	periodEnd;
-	private	int		periodIndex;
-	/**
-	 * @return the periodStart
-	 */
-	public Date getPeriodStart()
-	{
-		return periodStart;
-	}
-	/**
-	 * @return the periodEnd
-	 */
-	public Date getPeriodEnd()
-	{
-		return periodEnd;
-	}
-	/**
-	 * @return the periodIndex
-	 */
-	public int getPeriodIndex()
-	{
-		return periodIndex;
-	}
-	/**
-	 * @param periodStart the periodStart to set
-	 */
-	public void setPeriodStart(Date periodStart)
-	{
-		this.periodStart = periodStart;
-	}
-	/**
-	 * @param periodEnd the periodEnd to set
-	 */
-	public void setPeriodEnd(Date periodEnd)
-	{
-		this.periodEnd = periodEnd;
-	}
-	/**
-	 * @param periodIndex the periodIndex to set
-	 */
-	public void setPeriodIndex(int periodIndex)
-	{
-		this.periodIndex = periodIndex;
-	}
+public abstract class QuickPeriod implements Serializable {
+    private static final long serialVersionUID = -245086949586026553L;
+
+    private Date periodStart;
+    private Date periodEnd;
+
+    private int periodIndex;
+
+    public Date getPeriodStart() {
+        return periodStart;
+    }
+
+    public Date getPeriodEnd() {
+        return periodEnd;
+    }
+
+    public int getPeriodIndex() {
+        return periodIndex;
+    }
+
+    public void setPeriodStart(Date periodStart) {
+        this.periodStart = periodStart;
+    }
+
+    public void setPeriodEnd(Date periodEnd) {
+        this.periodEnd = periodEnd;
+    }
+
+    public void setPeriodIndex(int periodIndex) {
+        this.periodIndex = periodIndex;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        QuickPeriod that = (QuickPeriod) o;
+
+        return periodIndex == that.periodIndex;
+    }
+
+    @Override
+    public int hashCode() {
+        return periodIndex;
+    }
 }
