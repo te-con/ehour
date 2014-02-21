@@ -29,7 +29,9 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
 
     val treeReportData = reportModel.getReportData.asInstanceOf[TreeReportData]
     val rawData = treeReportData.getRawReportData
-    frame.add(new HighChartContainer("chart", new Model(rawData), DetailedReportChartGenerator.generateHourBasedDetailedChart))
+    val chartContainer = new HighChartContainer("chart", new Model(rawData), DetailedReportChartGenerator.generateHourBasedDetailedChart)
+    chartContainer.setVisible(!treeReportData.isEmpty)
+    frame.add(chartContainer)
 
     val radioButton = (id: String, generateChart: (ChartContext) => String) => {
       new AjaxBehaviorComponent(id, "onclick", (target: AjaxRequestTarget) => {

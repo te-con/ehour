@@ -1,44 +1,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd"
+      xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <body>
 
 <wicket:panel>
     <div wicket:id="blueFrame" style="clear:both;">
-        <div wicket:id="reportContent" class="reportContent">
-            <div>
-                <div class="criteriaDate" wicket:id="reportHeader">
-                </div>
+        <div class="reportContent">
+            <div wicket:id="reportHeader" class="criteriaDate"></div>
 
-                <div style="width:100%;text-align: right;height:22px"><a wicket:id="excelLink" title="Export to Excel"><img src="img/download.png" border="0"/></a></div>
-
-                <table class="dataTable" cellpadding="0" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <th wicket:id="columnHeaders"></th>
-                    </tr>
-                    </thead>
-
-                    <tfoot>
-                    <tr class="totalRow">
-                        <td wicket:id="cell" valign="top"><b>2,140</b></td>
-                    </tr>
-                    </tfoot>
-
-                    <tbody>
-                    <tr class="dataRow" wicket:id="reportData">
-                        <td wicket:id="cell" valign="top"></td>
-                    </tr>
-                    </tbody>
-
-                </table>
-
-                <span wicket:id="navigator">[dataview navigator]</span>
-
-            </div>
+            <span wicket:id="reportData"></span>
         </div>
     </div>
 
@@ -46,6 +19,40 @@
         <a wicket:id="link"><wicket:container wicket:id="linkLabel"></wicket:container></a>
     </wicket:fragment>
 
+
+    <wicket:fragment wicket:id="noData">
+        <br clear="all" />
+        <h4 style="padding-left: 2em"><wicket:message key="report.noData"/></h4>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="reportTable">
+        <div style="width:100%;text-align: right;height:22px">
+            <a wicket:id="excelLink" title="Export to Excel"><img src="img/download.png" border="0"/></a>
+        </div>
+
+        <table class="dataTable" cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+                <th wicket:id="columnHeaders"></th>
+            </tr>
+            </thead>
+
+            <tfoot>
+            <tr class="totalRow">
+                <td wicket:id="cell" valign="top"><b>2,140</b></td>
+            </tr>
+            </tfoot>
+
+            <tbody>
+            <tr class="dataRow" wicket:id="reportData">
+                <td wicket:id="cell" valign="top"></td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <span wicket:id="navigator">[dataview navigator]</span>
+    </wicket:fragment>
 </wicket:panel>
 
 </body>

@@ -45,6 +45,10 @@ public class ReportData implements Serializable {
         this.reportRange = reportRange;
     }
 
+    public boolean isEmpty() {
+        return getReportElements().isEmpty();
+    }
+
     public List<Date> getLockedDays() {
         return lockedDays;
     }

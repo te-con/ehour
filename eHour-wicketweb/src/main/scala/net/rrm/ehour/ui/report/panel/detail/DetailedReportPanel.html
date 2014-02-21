@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd"
+      xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 
 <wicket:head>
@@ -12,21 +12,22 @@
 <body>
 
 <wicket:panel>
-	<div wicket:id="frame">
-		<span wicket:id="reportTable"></span>
-		<br />
+    <div wicket:id="frame">
+        <span wicket:id="reportTable"></span>
+        <br/>
 
         <div class="reportContent">
             <div style="padding-right: 50px">
-                <div id="buttons" style="padding: 0 0 5px" wicket:id="typeSelector">
-                    <input type="radio" wicket:id="turnover" name="chartType" /><label for="turnover">Turnover</label>
-                    <input type="radio" wicket:id="time" checked  name="chartType" /><label for="time">Time</label>
-                </div>
-                <div wicket:id="chart">
-                </div>
+                <wicket:enclosure child="chart">
+                    <div id="buttons" style="padding: 0 0 5px" wicket:id="typeSelector">
+                        <input type="radio" wicket:id="turnover" name="chartType"/><label for="turnover">Turnover</label>
+                        <input type="radio" wicket:id="time" checked name="chartType"/><label for="time">Time</label>
+                    </div>
+                    <div wicket:id="chart"></div>
+                </wicket:enclosure>
             </div>
         </div>
-	</div>
+    </div>
 
     <script>
         $("#buttons").buttonset();

@@ -16,16 +16,22 @@ abstract class AggregateReportPanel(id: String, reportModel: TreeReportModel, re
   setDefaultModel(reportModel)
   setOutputMarkupId(true)
 
+  val ReportTableId = "reportTable"
+
   protected override def onBeforeRender() {
 
     val greyBorder = new WebMarkupContainer("frame")
     addOrReplace(greyBorder)
 
     val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
-    greyBorder.add(new TreeReportDataPanel("reportTable", reportModel, reportConfig, excelReport))
+
+    greyBorder.add(new TreeReportDataPanel(ReportTableId, reportModel, reportConfig, excelReport))
 
     val reportData: ReportData = reportModel.getReportData
-    greyBorder.add(addCharts(reportData, greyBorder))
+    val chartPanel = addCharts(reportData, greyBorder)
+    chartPanel.setVisible(!reportData.isEmpty)
+
+    greyBorder.add(chartPanel)
 
     super.onBeforeRender()
   }

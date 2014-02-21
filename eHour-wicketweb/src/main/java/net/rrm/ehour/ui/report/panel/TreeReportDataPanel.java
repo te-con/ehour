@@ -60,14 +60,14 @@ import java.util.List;
 public class TreeReportDataPanel extends Panel {
     private static final long serialVersionUID = -6757047600645464803L;
     private static final AttributeModifier CSS_ALIGN_RIGHT = AttributeModifier.replace("style", "text-align: right;");
+    private static final String REPORT_CONTENT_ID = "reportData";
 
     private final ReportConfig reportConfig;
 
     public TreeReportDataPanel(String id,
                                TreeReportModel reportModel,
                                ReportConfig reportConfig,
-                               final ExcelReport excelReport
-    ) {
+                               final ExcelReport excelReport) {
         super(id);
 
         this.reportConfig = reportConfig;
@@ -75,9 +75,16 @@ public class TreeReportDataPanel extends Panel {
         Border blueBorder = new BlueTabRoundedBorder("blueFrame");
         add(blueBorder);
 
-        WebMarkupContainer reportContent = new WebMarkupContainer("reportContent");
+        blueBorder.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getEhourConfig()));
+
+        boolean isEmptyReport = reportModel.getReportData().isEmpty();
+        WebMarkupContainer reportContent = (isEmptyReport) ? new Fragment(REPORT_CONTENT_ID, "noData", this) : createReport(REPORT_CONTENT_ID, reportModel, excelReport);
         reportContent.setOutputMarkupId(true);
         blueBorder.add(reportContent);
+    }
+
+    private Fragment createReport(String id, final TreeReportModel reportModel, final ExcelReport excelReport) {
+        Fragment reportContent = new Fragment(id, "reportTable", this);
 
         if (excelReport != null) {
             reportContent.add(new ExcelLink("excelLink", reportModel.getReportCriteria()) {
@@ -90,32 +97,34 @@ public class TreeReportDataPanel extends Panel {
             reportContent.add(HtmlUtil.getInvisibleLink("excelLink"));
         }
 
-        reportContent.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getEhourConfig()));
-        addHeaderColumns(reportContent);
+
+        reportContent.add(addHeaderColumns("columnHeaders"));
         addReportData(reportModel, reportContent);
-        addGrandTotal(reportModel, reportContent);
+        reportContent.add(addGrandTotal("cell", reportModel));
+
+        return reportContent;
     }
 
-    private void addGrandTotal(TreeReportModel reportModel, WebMarkupContainer parent) {
-        RepeatingView totalView = new RepeatingView("cell");
+    private RepeatingView addGrandTotal(String id, TreeReportModel reportModel) {
+        RepeatingView totalView = new RepeatingView(id);
 
         // add cells
         for (ReportColumn column : reportConfig.getReportColumns()) {
             if (column.isVisible()) {
                 Label label;
 
-                String id = totalView.newChildId();
+                String childId = totalView.newChildId();
 
                 switch (column.getColumnType()) {
                     case HOUR:
-                        label = new Label(id, new Model<Float>(reportModel.getTotalHours()));
+                        label = new Label(childId, new Model<Float>(reportModel.getTotalHours()));
                         break;
                     case TURNOVER:
-                        label = new CurrencyLabel(id, reportModel.getTotalTurnover());
+                        label = new CurrencyLabel(childId, reportModel.getTotalTurnover());
                         label.setEscapeModelStrings(false);
                         break;
                     default:
-                        label = HtmlUtil.getNbspLabel(id);
+                        label = HtmlUtil.getNbspLabel(childId);
                         break;
                 }
 
@@ -128,7 +137,7 @@ public class TreeReportDataPanel extends Panel {
             }
         }
 
-        parent.add(totalView);
+        return totalView;
     }
 
     /**
@@ -164,8 +173,8 @@ public class TreeReportDataPanel extends Panel {
     }
 
 
-    private void addHeaderColumns(WebMarkupContainer parent) {
-        RepeatingView columnHeaders = new RepeatingView("columnHeaders");
+    private RepeatingView addHeaderColumns(String id) {
+        RepeatingView columnHeaders = new RepeatingView(id);
 
         for (ReportColumn reportColumn : reportConfig.getReportColumns()) {
             Label columnHeader = new Label(columnHeaders.newChildId(), new ResourceModel(reportColumn.getColumnHeaderResourceKey()));
@@ -177,7 +186,7 @@ public class TreeReportDataPanel extends Panel {
             }
         }
 
-        parent.add(columnHeaders);
+        return columnHeaders;
     }
 
     private Optional<String> addColumnTypeStyling(ColumnType columnType) {
