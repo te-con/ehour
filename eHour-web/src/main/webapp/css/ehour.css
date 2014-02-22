@@ -715,6 +715,10 @@ hr {
     border-top: 1px solid #a1bcd7;
 }
 
+.dataTable tr.emptyRow td {
+    color: #769cbf !important;
+}
+
 .dataTable tr.oddRow {
     background-color: #fefeff
 }
@@ -762,6 +766,10 @@ hr {
     text-decoration: underline;
 }
 
+.dataTable tbody tr:hover {
+    background-color: #d1e5f9;
+}
+
 .dataTable tr.dataRow a:active {
     text-decoration: none
 }
@@ -793,10 +801,6 @@ hr {
 
 .dataTable tr.customerRow td.lastChild {
     border: 0;
-}
-
-.dataTable tr:hover {
-    background-color: #d1e5f9;
 }
 
 .dataTable th {

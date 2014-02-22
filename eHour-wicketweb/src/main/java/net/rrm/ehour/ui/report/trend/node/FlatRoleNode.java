@@ -30,7 +30,7 @@ public class FlatRoleNode extends ReportNode {
     private static final long serialVersionUID = 7854152602780377915L;
 
     public FlatRoleNode(FlatReportElement element) {
-        super(element.getAssignmentId());
+        super(element.getAssignmentId(), element.isEmptyEntry());
         this.columnValues = new String[]{element.getRole()};
     }
 

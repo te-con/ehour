@@ -47,13 +47,22 @@ public class TreeReportElement implements ReportElement {
 
     private Serializable[] row;
 
+    private boolean empty;
+
     public TreeReportElement(Serializable[] row) {
-        this.row = row;
+        this(row, false);
     }
 
-    /**
-     * @return the row
-     */
+    public TreeReportElement(Serializable[] row, boolean empty) {
+        this.row = row;
+        this.empty = empty;
+    }
+
+
+    public boolean isEmpty() {
+        return empty;
+    }
+
     public Serializable[] getRow() {
         return row;
     }

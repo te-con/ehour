@@ -27,79 +27,79 @@ import java.util.List;
  * Tree structure of abstract nodes for reporting purposes.
  * Each node can have multiple reportnode children, for example customer -> projects -> users
  */
-public abstract class ReportNode implements Serializable
-{
-	private static final long serialVersionUID = 8722465589611086312L;
+public abstract class ReportNode implements Serializable {
+    private static final long serialVersionUID = 8722465589611086312L;
 
-    protected Serializable[]    columnValues;
-    private List<ReportNode>    reportNodes = new ArrayList<ReportNode>();
-    private final Serializable      id;
+    protected Serializable[] columnValues;
+    private List<ReportNode> reportNodes = new ArrayList<ReportNode>();
+    private final Serializable id;
+    private final boolean empty;
 
     protected ReportNode(Serializable id) {
+        this(id, false);
+    }
+
+    protected ReportNode(Serializable id, boolean empty) {
         this.id = id;
+        this.empty = empty;
+    }
+
+    public boolean isEmpty() {
+        return empty;
     }
 
     /**
      * Create node matrix flattening the whole tree.
      */
-    public List<TreeReportElement> getNodeMatrix(int matrixWidth)
-    {
-    	List<TreeReportElement> matrix = new ArrayList<TreeReportElement>();
-    	
-    	createNodeMatrix(0, new Serializable[matrixWidth], matrix);
-    	
-    	return matrix;
+    public List<TreeReportElement> getNodeMatrix(int matrixWidth) {
+        List<TreeReportElement> matrix = new ArrayList<TreeReportElement>();
+
+        createNodeMatrix(0, new Serializable[matrixWidth], matrix);
+
+        return matrix;
     }
-    
-    private Serializable[] createNodeMatrix(int currentColumn, Serializable[] columns, List<TreeReportElement> matrix)
-    {
-    	if (isLeaf())
-    	{
-    		Serializable[] returnCols = columns.clone();
-    		
-    		setMatrixColumns(columns, currentColumn);
-    		
-    		matrix.add(new TreeReportElement(columns));
-    		return returnCols;
-    	}
-    	else
-    	{
-    		currentColumn = setMatrixColumns(columns, currentColumn);
-    		
-    		for (ReportNode reportNode : reportNodes)
-			{
-    			columns = reportNode.createNodeMatrix(currentColumn, columns, matrix);
-			}
-    	}
-    	
-    	return columns;
+
+    private Serializable[] createNodeMatrix(int currentColumn, Serializable[] columns, List<TreeReportElement> matrix) {
+        if (isLeaf()) {
+            Serializable[] returnCols = columns.clone();
+
+            setMatrixColumns(columns, currentColumn);
+
+            matrix.add(new TreeReportElement(columns, isEmpty()));
+            return returnCols;
+        } else {
+            currentColumn = setMatrixColumns(columns, currentColumn);
+
+            for (ReportNode reportNode : reportNodes) {
+                columns = reportNode.createNodeMatrix(currentColumn, columns, matrix);
+            }
+        }
+
+        return columns;
     }
 
     /**
-     * 
      * @param columns
      * @param currentColumn
      */
-    private int setMatrixColumns(Serializable[] columns, int currentColumn)
-    {
-    	for (Serializable columnValue : columnValues)
-		{
-        	columns[currentColumn++] = columnValue;
-		}    	
-    	
-    	return currentColumn;
+    private int setMatrixColumns(Serializable[] columns, int currentColumn) {
+        for (Serializable columnValue : columnValues) {
+            columns[currentColumn++] = columnValue;
+        }
+
+        return currentColumn;
     }
-    
-    
+
+
     /**
      * Process aggregate
+     *
      * @param aggregate
      * @return
      */
     public boolean processElement(ReportElement reportElement,
-                                    int hierarchyLevel,
-                                    ReportNodeFactory nodeFactory)
-    {
+                                  int hierarchyLevel,
+                                  ReportNodeFactory nodeFactory) {
         boolean processed = false;
 
         // first check if we need to add the aggregate to his node
@@ -122,25 +122,22 @@ public abstract class ReportNode implements Serializable
 
     /**
      * Is the aggregate processed by the childnodes?
+     *
      * @param element
      * @return
      */
     private boolean processChildNodes(ReportElement element,
                                       int hierarchyLevel,
-                                      ReportNodeFactory nodeFactory)
-    {
+                                      ReportNodeFactory nodeFactory) {
         boolean processed = false;
 
-        for (ReportNode node : reportNodes)
-        {
-        	// if the children are last nodes don't bother checking
-        	if (node.isLeaf())
-        	{
-        		break;
-        	}
-        	
-            if (node.processElement(element, hierarchyLevel, nodeFactory))
-            {
+        for (ReportNode node : reportNodes) {
+            // if the children are last nodes don't bother checking
+            if (node.isLeaf()) {
+                break;
+            }
+
+            if (node.processElement(element, hierarchyLevel, nodeFactory)) {
                 processed = true;
                 break;
             }
@@ -151,6 +148,7 @@ public abstract class ReportNode implements Serializable
 
     /**
      * Get id for importer
+     *
      * @param element
      * @return
      */
@@ -158,38 +156,36 @@ public abstract class ReportNode implements Serializable
 
     /**
      * Process aggregate for this value? Only process aggregates that got the same id
+     *
      * @param aggregate
      * @param forId
      * @return
      */
-    private boolean shouldProcessElement(ReportElement reportElement)
-    {
+    private boolean shouldProcessElement(ReportElement reportElement) {
         return getId().equals(getElementId(reportElement));
     }
 
     /**
      * Is last node in the hierarchy ? Override for leaf
+     *
      * @return
      */
-    protected boolean isLeaf()
-    {
+    protected boolean isLeaf() {
         return false;
     }
 
     /**
      * Get hours
+     *
      * @return
      */
-    public Number getHours()
-    {
+    public Number getHours() {
         float totalHours = 0;
 
-        for (ReportNode reportNode : reportNodes)
-        {
+        for (ReportNode reportNode : reportNodes) {
             Number hours = reportNode.getHours();
 
-            if (hours != null)
-            {
+            if (hours != null) {
                 totalHours += hours.floatValue();
             }
         }
@@ -199,18 +195,16 @@ public abstract class ReportNode implements Serializable
 
     /**
      * Get turnover
+     *
      * @return
      */
-    public Number getTurnover()
-    {
+    public Number getTurnover() {
         float totalTurnover = 0;
 
-        for (ReportNode reportNode : reportNodes)
-        {
+        for (ReportNode reportNode : reportNodes) {
             Number turnOver = reportNode.getTurnover();
 
-            if (turnOver != null)
-            {
+            if (turnOver != null) {
                 totalTurnover += turnOver.floatValue();
             }
         }
@@ -219,11 +213,9 @@ public abstract class ReportNode implements Serializable
     }
 
     /**
-     *
      * @return
      */
-    public Serializable getId()
-    {
+    public Serializable getId() {
         return id;
     }
 

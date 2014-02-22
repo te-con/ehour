@@ -166,7 +166,7 @@ public class TreeReportDataPanel extends Panel {
 
         DataView<TreeReportElement> dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
         dataView.setOutputMarkupId(true);
-        dataView.setItemsPerPage(20);
+        dataView.setItemsPerPage(25);
 
         parent.add(new HoverPagingNavigator("navigator", dataView));
         parent.add(dataView);
@@ -212,9 +212,12 @@ public class TreeReportDataPanel extends Panel {
 
         @Override
         protected void populateItem(Item<TreeReportElement> item) {
-            internalGetItemCount();
             RepeatingView cells = new RepeatingView("cell");
             TreeReportElement row = item.getModelObject();
+
+            if (row.isEmpty()) {
+                item.add(AttributeModifier.append("class", "emptyRow"));
+            }
 
             List<Serializable> thisCellValues = new ArrayList<Serializable>();
 

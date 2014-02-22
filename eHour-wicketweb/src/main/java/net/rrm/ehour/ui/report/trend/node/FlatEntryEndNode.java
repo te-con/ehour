@@ -32,7 +32,7 @@ public class FlatEntryEndNode extends ReportNode {
     private Number turnOver;
 
     public FlatEntryEndNode(FlatReportElement element) {
-        super(element.getDisplayOrder());
+        super(element.getDisplayOrder(), element.isEmptyEntry());
         hours = element.getTotalHours();
         turnOver = element.getTotalTurnOver();
 

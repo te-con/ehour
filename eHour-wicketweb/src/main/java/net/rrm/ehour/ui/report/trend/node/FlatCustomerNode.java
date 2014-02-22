@@ -30,7 +30,7 @@ public class FlatCustomerNode extends ReportNode {
     private static final long serialVersionUID = 7854152602780377915L;
 
     public FlatCustomerNode(FlatReportElement element) {
-        super(element.getCustomerId());
+        super(element.getCustomerId(), element.isEmptyEntry());
         this.columnValues = new String[]{element.getCustomerName()};
     }
 

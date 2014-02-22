@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * ReportBuilder
  * Converts a collection of report elements to a hierarchical reportNode tree.
- * The
  *
  * @author Thies
  */
