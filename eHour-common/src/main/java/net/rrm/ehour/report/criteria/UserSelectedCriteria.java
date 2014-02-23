@@ -64,6 +64,7 @@ public class UserSelectedCriteria implements Serializable {
     private Project project;
     private Map<Object, Object> customParameters = Maps.newHashMap();
     private User pm;
+    private boolean showZeroBookings = false;
 
     public UserSelectedCriteria() {
         resetCustomerSelection();
@@ -412,5 +413,13 @@ public class UserSelectedCriteria implements Serializable {
 
     public void setOnlyBillableProjects(boolean onlyBillableProjects) {
         this.onlyBillableProjects = onlyBillableProjects;
+    }
+
+    public boolean isShowZeroBookings() {
+        return showZeroBookings;
+    }
+
+    public void setShowZeroBookings(boolean showZeroBookings) {
+        this.showZeroBookings = showZeroBookings;
     }
 }

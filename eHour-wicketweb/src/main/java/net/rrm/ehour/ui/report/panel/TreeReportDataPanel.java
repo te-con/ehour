@@ -20,25 +20,30 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.report.*;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
+import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
 import net.rrm.ehour.ui.report.TreeReportElement;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -57,7 +62,7 @@ import java.util.List;
  * Aggregate report data panel
  */
 
-public class TreeReportDataPanel extends Panel {
+public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     private static final long serialVersionUID = -6757047600645464803L;
     private static final AttributeModifier CSS_ALIGN_RIGHT = AttributeModifier.replace("style", "text-align: right;");
     private static final String REPORT_CONTENT_ID = "reportData";
@@ -68,7 +73,9 @@ public class TreeReportDataPanel extends Panel {
                                TreeReportModel reportModel,
                                ReportConfig reportConfig,
                                final ExcelReport excelReport) {
-        super(id);
+        super(id, reportModel);
+
+        setOutputMarkupId(true);
 
         this.reportConfig = reportConfig;
 
@@ -86,23 +93,61 @@ public class TreeReportDataPanel extends Panel {
     private Fragment createReport(String id, final TreeReportModel reportModel, final ExcelReport excelReport) {
         Fragment reportContent = new Fragment(id, "reportTable", this);
 
-        if (excelReport != null) {
-            reportContent.add(new ExcelLink("excelLink", reportModel.getReportCriteria()) {
-                @Override
-                protected ExcelReport createReportBuilder() {
-                    return excelReport;
-                }
-            });
-        } else {
-            reportContent.add(HtmlUtil.getInvisibleLink("excelLink"));
-        }
+        reportContent.add(createExcelLink(reportModel, excelReport));
 
+        WebMarkupContainer optionsFilter = new WebMarkupContainer("optionsToggle");
+        optionsFilter.setVisible(reportConfig.isShowZeroBookings());
+        reportContent.add(optionsFilter);
+
+        if (reportConfig.isShowZeroBookings()) {
+            Fragment fragment = new Fragment("reportOptionsPlaceholder", "reportOptions", this);
+            fragment.setOutputMarkupId(true);
+
+            final Label label = new Label("toggleLabel", "Show");
+            label.setOutputMarkupId(true);
+
+            AjaxLink link = new AjaxLink("toggleShowZeroBookings") {
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    label.setDefaultModelObject("hey");
+                    target.add(label);
+
+                    reportModel.getReportCriteria().getUserSelectedCriteria().setShowZeroBookings(true);
+                    reportModel.detach();
+
+                    TreeReportDataPanel replacement = new TreeReportDataPanel(TreeReportDataPanel.this.getId(), reportModel, reportConfig, excelReport);
+                    TreeReportDataPanel.this.getParent().addOrReplace(replacement);
+                    target.add(replacement);
+                }
+            };
+
+            link.add(label);
+
+            fragment.add(link);
+
+            reportContent.add(fragment);
+        } else {
+            reportContent.add(new Container("reportOptionsPlaceholder"));
+        }
 
         reportContent.add(addHeaderColumns("columnHeaders"));
         addReportData(reportModel, reportContent);
         reportContent.add(addGrandTotal("cell", reportModel));
 
         return reportContent;
+    }
+
+    private Component createExcelLink(final TreeReportModel reportModel, final ExcelReport excelReport) {
+        if (excelReport != null) {
+            return new ExcelLink("excelLink", reportModel.getReportCriteria()) {
+                @Override
+                protected ExcelReport createReportBuilder() {
+                    return excelReport;
+                }
+            };
+        } else {
+            return HtmlUtil.getInvisibleLink("excelLink");
+        }
     }
 
     private RepeatingView addGrandTotal(String id, TreeReportModel reportModel) {

@@ -16,19 +16,42 @@
     </div>
 
     <wicket:fragment wicket:id="linkFragment">
-        <a wicket:id="link"><wicket:container wicket:id="linkLabel"></wicket:container></a>
+        <a wicket:id="link">
+            <wicket:container wicket:id="linkLabel"></wicket:container>
+        </a>
     </wicket:fragment>
 
 
     <wicket:fragment wicket:id="noData">
-        <br clear="all" />
-        <h4 style="padding-left: 2em"><wicket:message key="report.noData"/></h4>
+        <br clear="all"/>
+        <h4 style="padding-left: 2em">
+            <wicket:message key="report.noData"/>
+        </h4>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="reportOptions">
+        <div id="reportOptions" class="filterContainer">
+            <a class="floatLeft" wicket:id="toggleShowZeroBookings"><span wicket:id="toggleLabel"></span></a>
+        </div>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="reportTable">
         <div style="width:100%;text-align: right;height:22px">
-            <a wicket:id="excelLink" title="Export to Excel"><img src="img/download.png" border="0"/></a>
+            <a wicket:id="excelLink" class="floatRight" style="margin-right: 1em">
+                <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
+                    <span class="ui-icon ui-icon-disk"></span>
+                </span>
+            </a>
+            <span wicket:id="optionsToggle">
+                <a href="#" onclick="return toggleFilter('#reportOptions')" id="optionsFold" class="floatRight">
+                    <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
+                        <span class="ui-icon ui-icon-wrench"></span>
+                    </span>
+                </a>
+            </span>
         </div>
+
+        <div wicket:id="reportOptionsPlaceholder"></div>
 
         <table class="dataTable" cellpadding="0" cellspacing="0">
             <thead>
@@ -51,7 +74,14 @@
 
         </table>
 
-        <span wicket:id="navigator">[dataview navigator]</span>
+        <div>
+            <span class="floatLeft"><a href="#">Include projects assignments without any hours booked</a></span>
+
+            <div class="floatLeft" style="width:100%;text-align: right;" wicket:id="navigator">[dataview navigator]
+            </div>
+        </div>
+
+        <br clear="both">
     </wicket:fragment>
 </wicket:panel>
 

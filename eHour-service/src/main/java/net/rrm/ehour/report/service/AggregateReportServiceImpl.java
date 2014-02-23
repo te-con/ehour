@@ -85,7 +85,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     }
 
     @Override
-    protected List<AssignmentAggregateReportElement> getReportElements(List<User> users, List<Project> projects, List<Date> lockedDates, DateRange reportRange) {
+    protected List<AssignmentAggregateReportElement> getReportElements(List<User> users, List<Project> projects, List<Date> lockedDates, DateRange reportRange, boolean showZeroBookings) {
         List<AssignmentAggregateReportElement> aggregates = new ArrayList<AssignmentAggregateReportElement>();
 
         if (users == null && projects == null) {

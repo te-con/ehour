@@ -23,29 +23,26 @@ import org.apache.wicket.model.IModel;
 
 /**
  * Base Panel
- **/
+ */
 
-public abstract class AbstractBasePanel<T> extends Panel
-{
-	private static final long serialVersionUID = 8437967307064528806L;
+public abstract class AbstractBasePanel<T> extends Panel {
+    private static final long serialVersionUID = 8437967307064528806L;
 
-	public AbstractBasePanel(String id)
-	{
-		super(id);
-	}
+    public AbstractBasePanel(String id) {
+        super(id);
+    }
 
-	public AbstractBasePanel(String id, IModel<T> model)
-	{
-		super(id, model);
-	}
-	protected final EhourWebSession getEhourWebSession()
-	{
-		return EhourWebSession.getSession();
-	}
+    public AbstractBasePanel(String id, IModel<T> model) {
+        super(id, model);
+    }
+
+    protected final EhourWebSession getEhourWebSession() {
+        return EhourWebSession.getSession();
+    }
 
     @SuppressWarnings("unchecked")
     public final IModel<T> getPanelModel() {
-        return (IModel<T>)super.getDefaultModel();
+        return (IModel<T>) super.getDefaultModel();
     }
 
     public final T getPanelModelObject() {
@@ -56,8 +53,7 @@ public abstract class AbstractBasePanel<T> extends Panel
         getPanelModel().setObject(object);
     }
 
-    protected final EhourConfig getConfig()
-	{
-		return getEhourWebSession().getEhourConfig();
-	}	
+    protected final EhourConfig getConfig() {
+        return getEhourWebSession().getEhourConfig();
+    }
 }

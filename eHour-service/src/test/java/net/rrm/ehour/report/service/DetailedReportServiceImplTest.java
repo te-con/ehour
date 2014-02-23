@@ -66,6 +66,8 @@ public class DetailedReportServiceImplTest {
         userDao = createMock(UserDao.class);
 
         userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setShowZeroBookings(true);
+
         reportCriteria = new ReportCriteria(userSelectedCriteria);
 
         timesheetLockService = createMock(TimesheetLockService.class);
@@ -82,8 +84,8 @@ public class DetailedReportServiceImplTest {
     @Test
     public void should_get_all() {
         provideNoLocks();
-
         provideNoAssignmentsWithoutBookings();
+
         provideNoData();
         detailedReportService.getDetailedReportData(reportCriteria);
         verify(detailedReportDao);
@@ -101,8 +103,8 @@ public class DetailedReportServiceImplTest {
     @Test
     public void should_filter_on_user() {
         provideNoLocks();
-        provideNoAssignmentsWithoutBookings();
         singleUserSelected();
+        provideNoAssignmentsWithoutBookings();
 
         expect(detailedReportDao.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class))).andReturn(new ArrayList<FlatReportElement>());
         replay(detailedReportDao);
@@ -114,7 +116,6 @@ public class DetailedReportServiceImplTest {
     public void should_filter_on_project() {
         provideNoLocks();
         provideNoAssignmentsWithoutBookings();
-
         singleProjectSelected();
 
         expect(detailedReportDao.getHoursPerDayForProjects(isA(List.class), isA(DateRange.class))).andReturn(new ArrayList<FlatReportElement>());
@@ -126,9 +127,9 @@ public class DetailedReportServiceImplTest {
     @Test
     public void should_filter_on_project_and_user() {
         provideNoLocks();
-        provideNoAssignmentsWithoutBookings();
         singleProjectSelected();
         singleUserSelected();
+        provideNoAssignmentsWithoutBookings();
 
         expect(detailedReportDao.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
                 .andReturn(new ArrayList<FlatReportElement>());
@@ -166,6 +167,7 @@ public class DetailedReportServiceImplTest {
     public void should_add_locked_days_to_detailed_report() {
         DateTime dateTime = new DateTime(reportCriteria.getReportRange().getDateStart());
         Interval interval = new Interval(dateTime, dateTime);
+        provideNoAssignmentsWithoutBookings();
 
         expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
                 .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.newArrayList(interval)));
@@ -176,8 +178,6 @@ public class DetailedReportServiceImplTest {
 
         expect(detailedReportDao.getHoursPerDay(isA(DateRange.class)))
                 .andReturn(Arrays.asList(reportElement));
-
-        provideNoAssignmentsWithoutBookings();
 
         replay(detailedReportDao, userDao);
 

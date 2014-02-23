@@ -59,7 +59,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
     protected List<FlatReportElement> getReportElements(List<User> users,
                                                         List<Project> projects,
                                                         List<Date> lockedDates,
-                                                        DateRange reportRange) {
+                                                        DateRange reportRange, boolean showZeroBookings) {
         List<Integer> userIds = DomainUtil.getIdsFromDomainObjects(users);
         List<Integer> projectIds = DomainUtil.getIdsFromDomainObjects(projects);
 
@@ -70,11 +70,15 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
             element.setLockableDate(new LockableDate(date, lockedDates.contains(date)));
         }
 
-        List<FlatReportElement> filterAssignmentsWithoutBookings = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
+        if (showZeroBookings) {
+            List<FlatReportElement> filterAssignmentsWithoutBookings = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
 
-        filterAssignmentsWithoutBookings.addAll(elements);
+            filterAssignmentsWithoutBookings.addAll(elements);
 
-        return filterAssignmentsWithoutBookings;
+            return filterAssignmentsWithoutBookings;
+        } else {
+            return elements;
+        }
     }
 
     private List<FlatReportElement> getAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
