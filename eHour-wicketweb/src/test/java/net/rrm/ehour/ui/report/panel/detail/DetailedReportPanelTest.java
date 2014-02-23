@@ -45,14 +45,17 @@ public class DetailedReportPanelTest extends BaseSpringWebAppTester {
     public void shouldRenderPanel() {
         expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
                 .andReturn(DetailedReportDataObjectMother.getFlatReportData());
+        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
+                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
 
         replay(detailedReportService);
 
         final DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
 
         tester.startComponentInPage(new DetailedReportPanel("id", detailedReport));
+        tester.debugComponentTrees();
 
-        tester.assertComponent("id:frame:reportTable:blueFrame:blueFrame_body:reportData:cell:2", Label.class);
+        tester.assertComponent("id:frame:reportTable:blueFrame:blueFrame_body:reportData:reportTableContainer:cell:2", Label.class);
 
         tester.assertNoErrorMessage();
 

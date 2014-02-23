@@ -30,8 +30,8 @@
     </wicket:fragment>
 
     <wicket:fragment wicket:id="reportOptions">
-        <div id="reportOptions" class="filterContainer">
-            <a class="floatLeft" wicket:id="toggleShowZeroBookings"><span wicket:id="toggleLabel"></span></a>
+        <div id="reportOptions" class="filterContainer" style="margin-left: 5px;margin-bottom: 15px">
+            <wicket:message key="report.criteria.zerobookings" />: <input wicket:id="toggleShowZeroBookings" type="checkbox" />
         </div>
     </wicket:fragment>
 
@@ -53,32 +53,28 @@
 
         <div wicket:id="reportOptionsPlaceholder"></div>
 
-        <table class="dataTable" cellpadding="0" cellspacing="0">
-            <thead>
-            <tr>
-                <th wicket:id="columnHeaders"></th>
-            </tr>
-            </thead>
+        <div wicket:id="reportTableContainer">
+            <table class="dataTable" cellpadding="0" cellspacing="0">
+                <thead>
+                <tr>
+                    <th wicket:id="columnHeaders"></th>
+                </tr>
+                </thead>
 
-            <tfoot>
-            <tr class="totalRow">
-                <td wicket:id="cell" valign="top"><b>2,140</b></td>
-            </tr>
-            </tfoot>
+                <tfoot>
+                <tr class="totalRow">
+                    <td wicket:id="cell" valign="top"><b>2,140</b></td>
+                </tr>
+                </tfoot>
 
-            <tbody>
-            <tr class="dataRow" wicket:id="reportData">
-                <td wicket:id="cell" valign="top"></td>
-            </tr>
-            </tbody>
+                <tbody>
+                <tr class="dataRow" wicket:id="reportData">
+                    <td wicket:id="cell" valign="top"></td>
+                </tr>
+                </tbody>
+            </table>
 
-        </table>
-
-        <div>
-            <span class="floatLeft"><a href="#">Include projects assignments without any hours booked</a></span>
-
-            <div class="floatLeft" style="width:100%;text-align: right;" wicket:id="navigator">[dataview navigator]
-            </div>
+            <div class="floatLeft" style="width:100%;text-align: right;" wicket:id="navigator">[dataview navigator]</div>
         </div>
 
         <br clear="both">

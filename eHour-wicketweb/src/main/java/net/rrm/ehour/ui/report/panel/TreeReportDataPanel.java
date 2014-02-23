@@ -20,6 +20,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.BlueTabRoundedBorder;
 import net.rrm.ehour.ui.common.component.CurrencyLabel;
@@ -38,7 +39,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -49,6 +50,7 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -66,14 +68,20 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     private static final long serialVersionUID = -6757047600645464803L;
     private static final AttributeModifier CSS_ALIGN_RIGHT = AttributeModifier.replace("style", "text-align: right;");
     private static final String REPORT_CONTENT_ID = "reportData";
+    private static final String REPORT_DATA_ID = "reportData";
+    private static final String NAVIGATOR_ID = "navigator";
 
     private final ReportConfig reportConfig;
+    private Container reportTableContainer;
+    private UserSelectedCriteria criteria;
 
     public TreeReportDataPanel(String id,
                                TreeReportModel reportModel,
                                ReportConfig reportConfig,
                                final ExcelReport excelReport) {
         super(id, reportModel);
+
+        criteria = reportModel.getReportCriteria().getUserSelectedCriteria();
 
         setOutputMarkupId(true);
 
@@ -85,56 +93,55 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         blueBorder.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getEhourConfig()));
 
         boolean isEmptyReport = reportModel.getReportData().isEmpty();
-        WebMarkupContainer reportContent = (isEmptyReport) ? new Fragment(REPORT_CONTENT_ID, "noData", this) : createReport(REPORT_CONTENT_ID, reportModel, excelReport);
-        reportContent.setOutputMarkupId(true);
+        WebMarkupContainer reportContent = createReportContent(reportModel, excelReport, isEmptyReport, REPORT_CONTENT_ID);
         blueBorder.add(reportContent);
     }
 
-    private Fragment createReport(String id, final TreeReportModel reportModel, final ExcelReport excelReport) {
-        Fragment reportContent = new Fragment(id, "reportTable", this);
+    private WebMarkupContainer createReportContent(TreeReportModel reportModel, ExcelReport excelReport, boolean isEmptyReport, String id) {
+        WebMarkupContainer reportContent = (isEmptyReport) ? new Fragment(id, "noData", this) : createReport(REPORT_CONTENT_ID, reportModel, excelReport);
+        reportContent.setOutputMarkupId(true);
+        return reportContent;
+    }
 
-        reportContent.add(createExcelLink(reportModel, excelReport));
+    private Fragment createReport(String id, final TreeReportModel reportModel, final ExcelReport excelReport) {
+        final Fragment reportTable = new Fragment(id, "reportTable", this);
+
+        reportTable.add(createExcelLink(reportModel, excelReport));
 
         WebMarkupContainer optionsFilter = new WebMarkupContainer("optionsToggle");
         optionsFilter.setVisible(reportConfig.isShowZeroBookings());
-        reportContent.add(optionsFilter);
+        reportTable.add(optionsFilter);
 
         if (reportConfig.isShowZeroBookings()) {
             Fragment fragment = new Fragment("reportOptionsPlaceholder", "reportOptions", this);
             fragment.setOutputMarkupId(true);
 
-            final Label label = new Label("toggleLabel", "Show");
-            label.setOutputMarkupId(true);
-
-            AjaxLink link = new AjaxLink("toggleShowZeroBookings") {
+            AjaxCheckBox bookingCheckbox = new AjaxCheckBox("toggleShowZeroBookings", new PropertyModel<Boolean>(criteria, "showZeroBookings")) {
                 @Override
-                public void onClick(AjaxRequestTarget target) {
-                    label.setDefaultModelObject("hey");
-                    target.add(label);
-
-                    reportModel.getReportCriteria().getUserSelectedCriteria().setShowZeroBookings(true);
+                protected void onUpdate(AjaxRequestTarget target) {
                     reportModel.detach();
 
-                    TreeReportDataPanel replacement = new TreeReportDataPanel(TreeReportDataPanel.this.getId(), reportModel, reportConfig, excelReport);
-                    TreeReportDataPanel.this.getParent().addOrReplace(replacement);
-                    target.add(replacement);
+                    addReportData(reportModel, reportTableContainer);
+
+                    target.add(reportTableContainer);
                 }
             };
 
-            link.add(label);
+            fragment.add(bookingCheckbox);
 
-            fragment.add(link);
-
-            reportContent.add(fragment);
+            reportTable.add(fragment);
         } else {
-            reportContent.add(new Container("reportOptionsPlaceholder"));
+            reportTable.add(new Container("reportOptionsPlaceholder"));
         }
 
-        reportContent.add(addHeaderColumns("columnHeaders"));
-        addReportData(reportModel, reportContent);
-        reportContent.add(addGrandTotal("cell", reportModel));
+        reportTableContainer = new Container("reportTableContainer");
+        reportTable.add(reportTableContainer);
 
-        return reportContent;
+        reportTableContainer.add(addHeaderColumns("columnHeaders"));
+        addReportData(reportModel, reportTableContainer);
+        reportTableContainer.add(addGrandTotal("cell", reportModel));
+
+        return reportTable;
     }
 
     private Component createExcelLink(final TreeReportModel reportModel, final ExcelReport excelReport) {
@@ -209,12 +216,12 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     private void addReportData(TreeReportModel reportModel, WebMarkupContainer parent) {
         List<TreeReportElement> elements = (List<TreeReportElement>) reportModel.getReportData().getReportElements();
 
-        DataView<TreeReportElement> dataView = new TreeReportDataView("reportData", new TreeReportDataProvider(elements));
+        DataView<TreeReportElement> dataView = new TreeReportDataView(REPORT_DATA_ID, new TreeReportDataProvider(elements));
         dataView.setOutputMarkupId(true);
         dataView.setItemsPerPage(25);
 
-        parent.add(new HoverPagingNavigator("navigator", dataView));
-        parent.add(dataView);
+        parent.addOrReplace(new HoverPagingNavigator(NAVIGATOR_ID, dataView));
+        parent.addOrReplace(dataView);
     }
 
 
@@ -243,7 +250,6 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
             return Optional.absent();
         }
     }
-
 
     private class TreeReportDataView extends DataView<TreeReportElement> {
         private static final long serialVersionUID = 1L;
