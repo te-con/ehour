@@ -2,22 +2,25 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd"
+        xmlns="http://www.w3.org/1999/xhtml">
 
 <body>
 <wicket:extend>
     <div class="Calendar" wicket:id="calendarFrame">
 
-        <div class="CalendarHeader">
-            <div class="PreviousMonth">
-                <a href="#" wicket:id="previousMonthLink"><img wicket:id="previousMonthImg" src="img/left.gif" border="0"/></a>
-            </div>
+        <div class="clearfix">
+            <div class="CalendarHeader">
+                <div class="PreviousMonth">
+                    <a href="#" wicket:id="previousMonthLink"><img wicket:id="previousMonthImg" src="img/left.gif"
+                                                                   border="0"/></a>
+                </div>
 
-            <div class="CurrentMonth" wicket:id="currentMonth"></div>
+                <div class="CurrentMonth" wicket:id="currentMonth"></div>
 
-            <div class="NextMonth">
-                <a href="#" wicket:id="nextMonthLink"><img wicket:id="nextMonthImg" src="img/right.gif" border="0"/></a>
+                <div class="NextMonth">
+                    <a href="#" wicket:id="nextMonthLink"><img wicket:id="nextMonthImg" src="img/right.gif" border="0"/></a>
+                </div>
             </div>
         </div>
 

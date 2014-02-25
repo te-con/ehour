@@ -1,6 +1,6 @@
 div.SidePanel {
     background: url(img/gradient_blue.gif) top left repeat-x;
-    width: 230px;
+    width: 231px;
 }
 
 div.SidePanelFrameLeftTop {
@@ -28,7 +28,7 @@ div.SidePanelFrameLeftBottom {
 }
 
 div.Calendar {
-    width: 216px;
+    width: 231px;
     padding: 0 7px 0 7px;
     margin: 0;
 }
@@ -55,7 +55,7 @@ div.Calendar div.CalendarHeader div.PreviousMonth {
 div.Calendar div.CalendarHeader div.CurrentMonth {
     text-align: center;
     color: #536e87;
-	width: 146px;
+	width: 147px;
     padding-top: 1px;
     font: bold 1em Arial, Geneva, Helvetica, sans-serif;
     float: left;
@@ -81,7 +81,7 @@ div.Calendar div.CalendarHeader div.CurrentMonth {
 
 .Calendar .CalendarWeek div {
     float: left;
-    width: 30px;
+    width: 31px;
     text-align: center;
     height: 1.6em;
     line-height: 1.6em;
