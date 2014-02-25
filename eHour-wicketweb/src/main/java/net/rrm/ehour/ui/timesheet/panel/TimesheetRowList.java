@@ -255,6 +255,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         final AjaxLink<Void> commentLink = new AjaxLink<Void>("commentLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
+                target.prependJavaScript("Wicket.Window.unloadConfirmation = false;");
                 modalWindow.show(target);
             }
 
