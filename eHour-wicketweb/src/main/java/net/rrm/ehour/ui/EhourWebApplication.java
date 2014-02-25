@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui;
 
+import de.agilecoders.wicket.core.Bootstrap;
+import de.agilecoders.wicket.core.settings.BootstrapSettings;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage;
 import net.rrm.ehour.ui.admin.backup.BackupDbPage;
@@ -101,6 +103,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             getRequestCycleListeners().add(new PageRequestHandlerTracker());
 
             initialized = true;
+
+            BootstrapSettings settings = new BootstrapSettings();
+            Bootstrap.install(this, settings);
+
         }
 
         if (isInTestMode()) {

@@ -1,11 +1,9 @@
-body {
-    color: white;
-}
-
 .loginContainer {
+    color: white;
     width: 680px;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto;
+    font: 1em Geneva, Arial, Helvetica, sans-serif;
 }
 
 .wideGreyFrame {
@@ -16,7 +14,7 @@ body {
     padding: 0 0 0 15px;
     float: left;
     text-align: right;
-    font: 0.9em Geneva, Arial, Helvetica, sans-serif;
+    font: 1em Geneva, Arial, Helvetica, sans-serif;
 }
 
 div.BackFrame {

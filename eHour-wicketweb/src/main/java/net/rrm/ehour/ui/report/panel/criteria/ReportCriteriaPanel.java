@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.report.panel.criteria;
 
 import com.google.common.collect.Lists;
-import com.googlecode.wicket.jquery.ui.form.datepicker.DatePicker;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -93,8 +92,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
 
-    private DatePicker startDatePicker;
-    private DatePicker endDatePicker;
+    private LocalizedDatePicker startDatePicker;
+    private LocalizedDatePicker endDatePicker;
     private ListMultipleChoice<Project> projects;
     private ListMultipleChoice<Customer> customers;
     private ListMultipleChoice<User> users;
@@ -602,8 +601,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
     }
 
-    private DatePicker createDatePicker(String id, IModel<Date> model) {
-        DatePicker datePicker = new LocalizedDatePicker(id, model);
+    private LocalizedDatePicker createDatePicker(String id, IModel<Date> model) {
+        LocalizedDatePicker datePicker = new LocalizedDatePicker(id, model);
 
         datePicker.setOutputMarkupId(true);
         datePicker.add(new AjaxFormComponentUpdatingBehavior("onchange") {
