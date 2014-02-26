@@ -843,7 +843,7 @@ hr {
     padding-top: 5px;
 }
 
-.entrySelectorTable  th {
+.entrySelectorTable th {
     border-bottom: 1px solid #f9f9f9;
     text-align: left !important;
 }
@@ -876,12 +876,6 @@ hr {
 
 .floatRight {
     float: right !important;
-}
-
-.reportCriteriaDropdown {
-    width: 95%;
-    height: 180px;
-    margin-bottom: 5px;
 }
 
 .adminForm {
@@ -951,3 +945,8 @@ hr {
 .hidden {
     display: none;
 }
+
+h3 {
+    font-size: inherit !important;
+}
+
