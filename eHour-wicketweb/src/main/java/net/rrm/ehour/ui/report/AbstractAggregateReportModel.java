@@ -21,41 +21,32 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.common.util.WebUtils;
-
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Created on Mar 12, 2009, 10:21:18 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public abstract class AbstractAggregateReportModel extends TreeReportModel
-{
-	private static final long serialVersionUID = -7459442244875136235L;
-	@SpringBean
-	private AggregateReportService aggregateReportService;
-	
-	public AbstractAggregateReportModel(ReportCriteria reportCriteria, ReportConfig reportConfig)
-	{
-		super(reportCriteria, reportConfig);
-	}
+public abstract class AbstractAggregateReportModel extends TreeReportModel {
+    private static final long serialVersionUID = -7459442244875136235L;
+    @SpringBean
+    private AggregateReportService aggregateReportService;
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.TreeReport#fetchReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-	 */
-	@Override
-	protected final ReportData fetchReportData(ReportCriteria reportCriteria)
-	{
-		return getAggregateReportService().getAggregateReportData(reportCriteria);
-	}
+    public AbstractAggregateReportModel(ReportCriteria reportCriteria, ReportConfig reportConfig) {
+        super(reportCriteria, reportConfig);
+    }
 
-	private AggregateReportService getAggregateReportService()
-	{
-		if (aggregateReportService == null)
-		{
-			WebUtils.springInjection(this);
-		}
-		
-		return aggregateReportService;
-	}
+    @Override
+    protected final ReportData fetchReportData(ReportCriteria reportCriteria) {
+        return getAggregateReportService().getAggregateReportData(reportCriteria);
+    }
+
+    private AggregateReportService getAggregateReportService() {
+        if (aggregateReportService == null) {
+            WebUtils.springInjection(this);
+        }
+
+        return aggregateReportService;
+    }
 }

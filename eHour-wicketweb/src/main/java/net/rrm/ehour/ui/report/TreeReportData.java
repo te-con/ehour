@@ -16,33 +16,30 @@
 
 package net.rrm.ehour.ui.report;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
 
+import java.util.List;
+
 /**
  * Created on Mar 17, 2009, 11:55:00 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class TreeReportData extends ReportData
-{
-	private static final long serialVersionUID = -8826568609798407812L;
+public class TreeReportData extends ReportData {
+    private static final long serialVersionUID = -8826568609798407812L;
 
-	private ReportData rawReportData;
-	
-	public TreeReportData(List<? extends ReportElement> reportElements, DateRange reportRange, ReportData rawReportData)
-	{
-		super(reportElements, reportRange);
-		
-		this.rawReportData = rawReportData;
-	}
+    private ReportData rawReportData;
 
-	public ReportData getRawReportData()
-	{
-		return rawReportData;
-	}
+    public TreeReportData(List<? extends ReportElement> reportElements, DateRange reportRange, ReportData rawReportData) {
+        super(reportElements, reportRange);
+
+        this.rawReportData = rawReportData;
+    }
+
+    public ReportData getRawReportData() {
+        return rawReportData;
+    }
 
 }
