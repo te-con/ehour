@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.report.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -29,6 +30,7 @@ import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import net.rrm.ehour.util.DomainUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,23 +54,18 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     }
 
     @Autowired
-    public AggregateReportServiceImpl(ReportAggregatedDao reportAggregatedDAO, ProjectAssignmentService projectAssignmentService, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService) {
-        super(userDao, projectDao, lockService);
+    public AggregateReportServiceImpl(ProjectAssignmentService projectAssignmentService, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
+        super(userDao, projectDao, lockService, reportAggregatedDAO);
         this.reportAggregatedDAO = reportAggregatedDAO;
         this.projectAssignmentService = projectAssignmentService;
     }
 
+    @Override
     public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds) {
         return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
     }
 
-    /**
-     * Get the booked hours per project assignment for a date range
-     *
-     * @param userId
-     * @param
-     * @return
-     */
+    @Override
     public List<AssignmentAggregateReportElement> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange) {
         List<AssignmentAggregateReportElement> assignmentAggregateReportElements;
 
@@ -86,6 +83,32 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 
     @Override
     protected List<AssignmentAggregateReportElement> getReportElements(List<User> users, List<Project> projects, List<Date> lockedDates, DateRange reportRange, boolean showZeroBookings) {
+        List<AssignmentAggregateReportElement> aggregates = findAggregates(users, projects, reportRange);
+
+        List<AssignmentAggregateReportElement> noBookings = findAssignmentsWithoutBookings(users, projects, reportRange, showZeroBookings);
+
+        noBookings.addAll(aggregates);
+
+        return noBookings;
+    }
+
+    private List<AssignmentAggregateReportElement> findAssignmentsWithoutBookings(List<User> users, List<Project> projects, DateRange reportRange, boolean showZeroBookings) {
+        List<AssignmentAggregateReportElement> elements = Lists.newArrayList();
+
+        if (showZeroBookings) {
+            List<Integer> userIds = DomainUtil.getIdsFromDomainObjects(users);
+            List<Integer> projectIds = DomainUtil.getIdsFromDomainObjects(projects);
+
+            List<ProjectAssignment> filterAssignmentsWithoutBookings = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
+
+            for (ProjectAssignment filterAssignmentsWithoutBooking : filterAssignmentsWithoutBookings) {
+                elements.add(new AssignmentAggregateReportElement(filterAssignmentsWithoutBooking));
+            }
+        }
+        return elements;
+    }
+
+    private List<AssignmentAggregateReportElement> findAggregates(List<User> users, List<Project> projects, DateRange reportRange) {
         List<AssignmentAggregateReportElement> aggregates = new ArrayList<AssignmentAggregateReportElement>();
 
         if (users == null && projects == null) {
@@ -103,9 +126,9 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
                 aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, projects, reportRange);
             }
         }
-
         return aggregates;
     }
+
 
     @Override
     public ProjectManagerReport getProjectManagerDetailedReport(Project project) {

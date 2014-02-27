@@ -29,38 +29,40 @@ import java.util.List;
 
 /**
  * Provides reporting services on timesheets. * @author Thies
- *
  */
 
-public interface AggregateReportService
-{
+public interface AggregateReportService {
 
-	/**
-	 * Get the booked hours per project assignment for a date range
-	 * @param userId
-	 * @param calendar
-	 * @return List with projectReport objects
-	 */
+    /**
+     * Get the booked hours per project assignment for a date range
+     *
+     * @param userId
+     * @param calendar
+     * @return List with projectReport objects
+     */
 
-	List<AssignmentAggregateReportElement> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
-	
-	/**
-	 * Get all booked hours for assignments
-	 * @param projectAssignmentIds
-	 * @return
-	 */
-	List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds);
-	
-	/**
-	 * Get aggregate report data
-	 * @param criteria
-	 * @return
-	 */
-	ReportData getAggregateReportData(ReportCriteria criteria);
-	
-	/**
-	 * Get project manager report
-	 * @return
-	 */
-	ProjectManagerReport getProjectManagerDetailedReport(Project project);
+    List<AssignmentAggregateReportElement> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
+
+    /**
+     * Get all booked hours for assignments
+     *
+     * @param projectAssignmentIds
+     * @return
+     */
+    List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds);
+
+    /**
+     * Get aggregate report data
+     *
+     * @param criteria
+     * @return
+     */
+    ReportData getAggregateReportData(ReportCriteria criteria);
+
+    /**
+     * Get project manager report
+     *
+     * @return
+     */
+    ProjectManagerReport getProjectManagerDetailedReport(Project project);
 }

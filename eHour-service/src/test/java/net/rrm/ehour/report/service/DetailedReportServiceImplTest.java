@@ -18,12 +18,10 @@ package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectObjectMother;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
@@ -58,6 +56,7 @@ public class DetailedReportServiceImplTest {
     private UserDao userDao;
     private TimesheetLockService timesheetLockService;
     private ProjectDao projectDao;
+    private ReportAggregatedDao reportAggregatedDao;
 
     @Before
     public void setUp() throws Exception {
@@ -72,7 +71,9 @@ public class DetailedReportServiceImplTest {
 
         timesheetLockService = createMock(TimesheetLockService.class);
 
-        detailedReportService = new DetailedReportServiceImpl(detailedReportDao, userDao, projectDao, timesheetLockService);
+        reportAggregatedDao = createMock(ReportAggregatedDao.class);
+
+        detailedReportService = new DetailedReportServiceImpl(userDao, projectDao, timesheetLockService, detailedReportDao, reportAggregatedDao);
     }
 
     private void provideNoLocks() {
@@ -92,7 +93,8 @@ public class DetailedReportServiceImplTest {
     }
 
     private void provideNoAssignmentsWithoutBookings() {
-        expect(detailedReportDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).andReturn(Lists.<FlatReportElement>newArrayList());
+        expect(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).andReturn(Lists.<ProjectAssignment>newArrayList());
+        replay(reportAggregatedDao);
     }
 
     private void provideNoData() {

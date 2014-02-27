@@ -18,10 +18,13 @@ package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
@@ -46,8 +49,8 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
     }
 
     @Autowired
-    public DetailedReportServiceImpl(DetailedReportDao detailedReportDao, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService) {
-        super(userDao, projectDao, lockService);
+    public DetailedReportServiceImpl(UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, DetailedReportDao detailedReportDao, ReportAggregatedDao reportAggregatedDAO) {
+        super(userDao, projectDao, lockService, reportAggregatedDAO);
         this.detailedReportDao = detailedReportDao;
     }
 
@@ -59,7 +62,8 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
     protected List<FlatReportElement> getReportElements(List<User> users,
                                                         List<Project> projects,
                                                         List<Date> lockedDates,
-                                                        DateRange reportRange, boolean showZeroBookings) {
+                                                        DateRange reportRange,
+                                                        boolean showZeroBookings) {
         List<Integer> userIds = DomainUtil.getIdsFromDomainObjects(users);
         List<Integer> projectIds = DomainUtil.getIdsFromDomainObjects(projects);
 
@@ -71,7 +75,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
         }
 
         if (showZeroBookings) {
-            List<FlatReportElement> filterAssignmentsWithoutBookings = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
+            List<FlatReportElement> filterAssignmentsWithoutBookings = getElementsWithoutBookings(reportRange, userIds, projectIds);
 
             filterAssignmentsWithoutBookings.addAll(elements);
 
@@ -81,22 +85,37 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
         }
     }
 
-    private List<FlatReportElement> getAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
-        List<FlatReportElement> assignmentsWithoutBookings = detailedReportDao.getAssignmentsWithoutBookings(reportRange);
+    private List<FlatReportElement> getElementsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
+        List<ProjectAssignment> assignments = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
 
-        List<FlatReportElement> filterAssignmentsWithoutBookings = Lists.newArrayList();
+        List<FlatReportElement> elements = Lists.newArrayList();
 
-        for (FlatReportElement assignmentsWithoutBooking : assignmentsWithoutBookings) {
-            boolean passedUserFilter = userIds == null || userIds.contains(assignmentsWithoutBooking.getUserId());
-            boolean passedProjectFilter = projectIds == null || projectIds.contains(assignmentsWithoutBooking.getProjectId());
+        for (ProjectAssignment assignment : assignments) {
+            FlatReportElement element = new FlatReportElement();
+            element.setAssignmentId(assignment.getAssignmentId());
+            element.setRole(assignment.getRole());
 
-            if (passedUserFilter && passedProjectFilter) {
-                assignmentsWithoutBooking.setEmptyEntry(true);
+            Project project = assignment.getProject();
+            Customer customer = project.getCustomer();
 
-                filterAssignmentsWithoutBookings.add(assignmentsWithoutBooking);
-            }
+            element.setCustomerCode(customer.getCode());
+            element.setCustomerId(customer.getCustomerId());
+            element.setCustomerName(customer.getName());
+
+            element.setEmptyEntry(true);
+            element.setProjectCode(project.getProjectCode());
+            element.setProjectId(project.getProjectId());
+            element.setProjectName(project.getName());
+
+            element.setRate(assignment.getHourlyRate());
+
+            element.setUserFirstName(assignment.getUser().getFirstName());
+            element.setUserLastName(assignment.getUser().getLastName());
+
+            elements.add(element);
         }
-        return filterAssignmentsWithoutBookings;
+
+        return elements;
     }
 
     private List<FlatReportElement> getElements(List<Integer> userIds, List<Integer> projectIds, DateRange reportRange) {

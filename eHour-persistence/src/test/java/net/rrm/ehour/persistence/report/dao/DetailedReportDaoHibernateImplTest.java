@@ -35,6 +35,9 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     @Autowired
     private DetailedReportDao detailedReportDao;
 
+    @Autowired
+    private ReportAggregatedDao reportAggregatedDAO;
+
     public DetailedReportDaoHibernateImplTest() {
         super("dataset-detailedreport.xml");
     }
@@ -103,15 +106,5 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
         List<FlatReportElement> results = detailedReportDao.getHoursPerDay(dateRange);
 
         assertEquals(12, results.size());
-    }
-
-    @Test
-    public void shouldGetAssignmentsWithoutBookings() {
-        DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
-                new Date(2008 - 1900, 1, 3));
-
-        List<FlatReportElement> results = detailedReportDao.getAssignmentsWithoutBookings(dateRange);
-
-        assertEquals(4, results.size());
     }
 }

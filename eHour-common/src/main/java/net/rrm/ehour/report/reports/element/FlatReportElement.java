@@ -51,6 +51,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private LockableDate lockableDate;
     private Boolean emptyEntry;
 
+    @Override
     public Boolean isEmptyEntry() {
         return emptyEntry == null ? false : emptyEntry;
     }
