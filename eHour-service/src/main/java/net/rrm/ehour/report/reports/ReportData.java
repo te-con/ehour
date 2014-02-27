@@ -49,6 +49,7 @@ public class ReportData implements Serializable {
         return getReportElements().isEmpty();
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public List<Date> getLockedDays() {
         return lockedDays;
     }

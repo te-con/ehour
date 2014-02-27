@@ -16,56 +16,42 @@
 
 package net.rrm.ehour.ui.report;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
- * DataProvider for tree report nodes, not the most efficient memory-wise 
- **/
+ * DataProvider for tree report nodes, not the most efficient memory-wise
+ */
 
-public class TreeReportDataProvider implements IDataProvider<TreeReportElement>
-{
-	private static final long serialVersionUID = 4346207207281976523L;
+public class TreeReportDataProvider implements IDataProvider<TreeReportElement> {
+    private static final long serialVersionUID = 4346207207281976523L;
 
-	private List<TreeReportElement> nodes;
-	
-	/**
-	 * 
-	 * @param nodes
-	 */
-	public TreeReportDataProvider(List<TreeReportElement> nodes)
-	{
-		this.nodes = nodes;
-	}
+    private List<TreeReportElement> nodes;
 
-    /*
-     * (non-Javadoc)
-     * @see org.apache.wicket.markup.repeater.data.IDataProvider#model(java.lang.Object)
-     */
-	public IModel<TreeReportElement> model(TreeReportElement object)
-	{
-		return new Model<TreeReportElement>(object);
-	}
+    public TreeReportDataProvider(List<TreeReportElement> nodes) {
+        this.nodes = nodes;
+    }
+
+    @Override
+    public IModel<TreeReportElement> model(TreeReportElement object) {
+        return new Model<TreeReportElement>(object);
+    }
 
     @Override
     public Iterator<? extends TreeReportElement> iterator(long first, long count) {
-        return nodes.subList((int)first, (int)(first + count)).iterator();
+        return nodes.subList((int) first, (int) (first + count)).iterator();
     }
 
-    /*
-         * (non-Javadoc)
-         * @see org.apache.wicket.markup.repeater.data.IDataProvider#size()
-         */
-	public long size()
-	{
-		return nodes.size();
-	}
+    @Override
+    public long size() {
+        return nodes.size();
+    }
 
-	public void detach()
-	{
-	}
+    @Override
+    public void detach() {
+    }
 }

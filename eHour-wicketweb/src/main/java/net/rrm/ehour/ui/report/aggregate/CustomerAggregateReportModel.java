@@ -32,14 +32,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class CustomerAggregateReportModel extends AbstractAggregateReportModel
-{
-	private static final long serialVersionUID = -3221674649410450972L;
+public class CustomerAggregateReportModel extends AbstractAggregateReportModel {
+    private static final long serialVersionUID = -3221674649410450972L;
 
-	public CustomerAggregateReportModel(ReportCriteria reportCriteria)
-	{
-		super(reportCriteria, ReportConfig.AGGREGATE_CUSTOMER);
-	}
+    public CustomerAggregateReportModel(ReportCriteria reportCriteria) {
+        super(reportCriteria, ReportConfig.AGGREGATE_CUSTOMER);
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -54,36 +52,31 @@ public class CustomerAggregateReportModel extends AbstractAggregateReportModel
         });
     }
 
-	@Override
-    public ReportNodeFactory<AssignmentAggregateReportElement> getReportNodeFactory()
-    {
-    	return new ReportNodeFactory<AssignmentAggregateReportElement>()
-	    {
-	        @Override
-	        public ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel)
-	        {
-	            switch (hierarchyLevel)
-	            {
-	                case 0:
-	                	return (aggregate != null) ? new CustomerNode(aggregate) : null;
-	                case 1:
-	                    return new ProjectNode(aggregate);
-	                case 2:
-	                    return new UserEndNode(aggregate);
-	            }
-	
-	            throw new RuntimeException("Hierarchy level too deep");
-	        }
-	
-	        /**
-	         * Only needed for the root node, customer
-	         * @param aggregate
-	         * @return
-	         */
-	        public Serializable getElementId(AssignmentAggregateReportElement aggregate)
-	        {
-	            return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
-	        }
-	    };
+    @Override
+    public ReportNodeFactory<AssignmentAggregateReportElement> getReportNodeFactory() {
+        return new ReportNodeFactory<AssignmentAggregateReportElement>() {
+            @Override
+            public ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel) {
+                switch (hierarchyLevel) {
+                    case 0:
+                        return (aggregate != null) ? new CustomerNode(aggregate) : null;
+                    case 1:
+                        return new ProjectNode(aggregate);
+                    case 2:
+                        return new UserEndNode(aggregate);
+                }
+
+                throw new RuntimeException("Hierarchy level too deep");
+            }
+
+            /**
+             * Only needed for the root node, customer
+             * @param aggregate
+             * @return
+             */
+            public Serializable getElementId(AssignmentAggregateReportElement aggregate) {
+                return aggregate.getProjectAssignment().getProject().getCustomer().getPK();
+            }
+        };
     }
 }

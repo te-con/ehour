@@ -51,13 +51,6 @@ public class ReportBuilder {
         return reportNodes;
     }
 
-    /**
-     * Process report importer
-     *
-     * @param element
-     * @param factory
-     * @return
-     */
     private boolean processElement(ReportElement element, ReportNodeFactory factory, List<ReportNode> reportNodes) {
         boolean processed = false;
 
@@ -71,6 +64,4 @@ public class ReportBuilder {
 
         return processed;
     }
-
-
 }

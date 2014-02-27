@@ -29,105 +29,76 @@ import java.util.List;
 
 import static org.springframework.util.Assert.notNull;
 
-public abstract class TreeReportModel extends AbstractReportModel
-{
-	private static final long serialVersionUID = -3717854276306653784L;
+public abstract class TreeReportModel extends AbstractReportModel {
+    private static final long serialVersionUID = -3717854276306653784L;
 
-	private float totalHours;
-	private float totalTurnover;
-	
-	private ReportConfig reportConfig;
-	
-	/**
-	 * Default constructor which doesn't initialize the report
-	 */
-	public TreeReportModel(ReportCriteria reportCriteria, ReportConfig reportConfig)
-	{
-		super(reportCriteria);
+    private float totalHours;
+    private float totalTurnover;
 
-		this.reportConfig = reportConfig;
-	}
+    private ReportConfig reportConfig;
 
-	
-	@Override
-	protected ReportData getReportData(ReportCriteria reportCriteria)
-	{
-		ReportData reportData = getValidReportData(reportCriteria);
+    public TreeReportModel(ReportCriteria reportCriteria, ReportConfig reportConfig) {
+        super(reportCriteria);
+
+        this.reportConfig = reportConfig;
+    }
+
+    @Override
+    protected ReportData getReportData(ReportCriteria reportCriteria) {
+        ReportData reportData = getValidReportData(reportCriteria);
 
         sort(reportData, reportCriteria);
-		
-		// flatten the original reportData into a matrix representing the whole report
+
+        // flatten the original reportData into a matrix representing the whole report
         ReportBuilder reportBuilder = new ReportBuilder();
         List<ReportNode> rootNodes = reportBuilder.createReport(reportData, getReportNodeFactory());
-        
+
         List<TreeReportElement> matrix = createMatrix(rootNodes, reportConfig.getReportColumns().length);
-        calcTotals(rootNodes);
-        
+        deriveTotals(rootNodes);
+
         return new TreeReportData(matrix, reportCriteria.getReportRange(), reportData);
     }
-    
+
     protected abstract void sort(ReportData reportData, ReportCriteria reportCriteria);
 
-	private ReportData getValidReportData(ReportCriteria reportCriteria)
-	{
-		ReportData reportData = fetchReportData(reportCriteria);
-		
-		notNull(reportData);
-		notNull(reportData.getReportElements());
+    private ReportData getValidReportData(ReportCriteria reportCriteria) {
+        ReportData reportData = fetchReportData(reportCriteria);
 
-		return reportData;
-	}
-	
+        notNull(reportData);
+        notNull(reportData.getReportElements());
+
+        return reportData;
+    }
+
     protected abstract ReportData fetchReportData(ReportCriteria reportCriteria);
-    
-    /**
-     * Calculate total turnover & hours booked
-     * @param rootNodes
-     */
-    private void calcTotals(List<ReportNode> rootNodes)
-    {
-    	for (ReportNode reportNode : rootNodes)
-		{
-    		totalTurnover += reportNode.getTurnover().floatValue();
-			totalHours += reportNode.getHours().floatValue();
-		}
+
+    private void deriveTotals(List<ReportNode> rootNodes) {
+        for (ReportNode reportNode : rootNodes) {
+            totalTurnover += reportNode.getTurnover().floatValue();
+            totalHours += reportNode.getHours().floatValue();
+        }
     }
-    /**
-     * 
-     * @param rootNodes
-     * @param matrixWidth
-     */
-    private List<TreeReportElement> createMatrix(List<ReportNode> rootNodes, int matrixWidth)
-    {
-    	List<TreeReportElement> reportMatrix = new ArrayList<TreeReportElement>();
-    	
-    	for (ReportNode reportNode : rootNodes)
-		{
-    		reportMatrix.addAll(reportNode.getNodeMatrix(matrixWidth));
-		}
-    	
-    	return reportMatrix;
+
+    private List<TreeReportElement> createMatrix(List<ReportNode> rootNodes, int matrixWidth) {
+        List<TreeReportElement> reportMatrix = new ArrayList<TreeReportElement>();
+
+        for (ReportNode reportNode : rootNodes) {
+            reportMatrix.addAll(reportNode.getNodeMatrix(matrixWidth));
+        }
+
+        return reportMatrix;
     }
-    
+
     /**
      * Get node factory
-     * @return
      */
     protected abstract ReportNodeFactory<?> getReportNodeFactory();
 
-	/**
-	 * @return the totalHours
-	 */
-	public float getTotalHours()
-	{
-		return totalHours;
-	}
+    public float getTotalHours() {
+        return totalHours;
+    }
 
-	/**
-	 * @return the totalTurnover
-	 */
-	public float getTotalTurnover()
-	{
-		return totalTurnover;
-	}
+    public float getTotalTurnover() {
+        return totalTurnover;
+    }
 }

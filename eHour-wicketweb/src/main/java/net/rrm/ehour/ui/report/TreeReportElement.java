@@ -58,7 +58,6 @@ public class TreeReportElement implements ReportElement {
         this.empty = empty;
     }
 
-
     public boolean isEmpty() {
         return empty;
     }
