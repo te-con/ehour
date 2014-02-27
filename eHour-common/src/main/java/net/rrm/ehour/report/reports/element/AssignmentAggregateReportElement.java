@@ -32,9 +32,9 @@ public class AssignmentAggregateReportElement implements Comparable<AssignmentAg
     private static final long serialVersionUID = -7175763322632066925L;
     private ProjectAssignment projectAssignment;
     private Number hours;
+    private Boolean emptyEntry;
 
     public AssignmentAggregateReportElement() {
-
     }
 
     public AssignmentAggregateReportElement(ProjectAssignment projectAssignment, Number hours) {
@@ -42,6 +42,15 @@ public class AssignmentAggregateReportElement implements Comparable<AssignmentAg
         this.projectAssignment = projectAssignment;
     }
 
+    public AssignmentAggregateReportElement(ProjectAssignment projectAssignment) {
+        this.emptyEntry = true;
+        this.projectAssignment = projectAssignment;
+    }
+
+    @Override
+    public Boolean isEmptyEntry() {
+        return emptyEntry == null ? false : emptyEntry;
+    }
 
     /**
      * Get the progress (booked hours) in percentage of the allotted hours, leaving out the overrun

@@ -71,8 +71,7 @@
                 GROUP BY entry.entryId.projectAssignment.assignmentId                
         ]]>
 	</query>
-                       
-        
+
     <query name="Report.getMinMaxTimesheetEntryDate">
         SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
 		FROM TimesheetEntry entry
@@ -88,5 +87,19 @@
         SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
 		FROM TimesheetEntry entry
         WHERE entry.entryId.projectAssignment.project = :project
-	</query> 
+	</query>
+
+    <query name="Report.getAssignmentsWithoutBookings">
+        <![CDATA[FROM ProjectAssignment pa
+        WHERE pa NOT IN (SELECT entry.entryId.projectAssignment
+                         FROM TimesheetEntry entry
+                         WHERE entry.entryId.entryDate >= :dateStart AND
+                               entry.entryId.entryDate <= :dateEnd)
+              AND pa.active is true AND
+                  pa.project.active is true AND
+                  pa.project.customer.active is true AND
+                  (pa.dateStart IS NULL OR pa.dateStart < :dateEnd) AND
+                  (pa.dateEnd IS NULL or pa.dateEnd > :dateStart)]]>
+    </query>
+
 </hibernate-mapping>

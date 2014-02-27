@@ -19,8 +19,10 @@ package net.rrm.ehour.report.service;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
@@ -45,14 +47,16 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
     private ProjectDao projectDAO;
 
     private TimesheetLockService lockService;
+    protected ReportAggregatedDao reportAggregatedDao;
 
     AbstractReportServiceImpl() {
     }
 
-    protected AbstractReportServiceImpl(UserDao userDAO, ProjectDao projectDAO, TimesheetLockService lockService) {
+    protected AbstractReportServiceImpl(UserDao userDAO, ProjectDao projectDAO, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDao) {
         this.userDAO = userDAO;
         this.projectDAO = projectDAO;
         this.lockService = lockService;
+        this.reportAggregatedDao = reportAggregatedDao;
     }
 
     /**
@@ -113,11 +117,11 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
         if (!noProjectRestrictionProvided || !noUserRestrictionProvided) {
             if (noProjectRestrictionProvided) {
-                users = getUsers(userSelectedCriteria);
+                users = getUsersForSelectedDepartments(userSelectedCriteria);
             } else if (noUserRestrictionProvided) {
                 projects = getProjects(userSelectedCriteria);
             } else {
-                users = getUsers(userSelectedCriteria);
+                users = getUsersForSelectedDepartments(userSelectedCriteria);
                 projects = getProjects(userSelectedCriteria);
             }
         }
@@ -192,7 +196,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
      * @param userSelectedCriteria
      * @return
      */
-    private List<User> getUsers(UserSelectedCriteria userSelectedCriteria) {
+    private List<User> getUsersForSelectedDepartments(UserSelectedCriteria userSelectedCriteria) {
         List<User> users;
 
         if (userSelectedCriteria.isEmptyUsers()) {
@@ -206,5 +210,21 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         }
 
         return users;
+    }
+
+    protected List<ProjectAssignment> getAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
+        List<ProjectAssignment> assignmentsWithoutBookings = reportAggregatedDao.getAssignmentsWithoutBookings(reportRange);
+
+        List<ProjectAssignment> filteredAssignmentsWithoutBookings = Lists.newArrayList();
+
+        for (ProjectAssignment assignmentsWithoutBooking : assignmentsWithoutBookings) {
+            boolean passedUserFilter = userIds == null || userIds.contains(assignmentsWithoutBooking.getUser().getUserId());
+            boolean passedProjectFilter = projectIds == null || projectIds.contains(assignmentsWithoutBooking.getProject().getProjectId());
+
+            if (passedUserFilter && passedProjectFilter) {
+                filteredAssignmentsWithoutBookings.add(assignmentsWithoutBooking);
+            }
+        }
+        return filteredAssignmentsWithoutBookings;
     }
 }

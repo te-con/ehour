@@ -17,173 +17,138 @@
 package net.rrm.ehour.persistence.report.dao;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.util.DomainUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-@SuppressWarnings({ "deprecation" })
-public class ReportAggregatedDaoTest extends AbstractAnnotationDaoTest
-{
-	@Autowired
-	private ReportAggregatedDao reportAggregatedDAO;
+@SuppressWarnings({"deprecation"})
+public class ReportAggregatedDaoTest extends AbstractAnnotationDaoTest {
+    private static final Date OCT_1_2006 = new Date(2006 - 1900, 10 - 1, 1);
+    private static final Date OCT_4_2006 = new Date(2006 - 1900, 10 - 1, 4);
+    private static final DateRange OCT_1_TO_4 = new DateRange(OCT_1_2006, OCT_4_2006);
+    private static final Date OCT_2_2006 = new Date(2006 - 1900, 10 - 1, 2);
+    private static final Date OCT_2_2006_EOF = new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59);
 
-	public ReportAggregatedDaoTest()
-	{
-		super("dataset-reportaggregated.xml");
-	}
-	
-	@Test
-	public void shouldGetMinMaxDateTimesheetEntry()
-	{
-		// ms accuracy rocks..
-		Date endDate = new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59);
-		endDate = new Date(endDate.getTime() + 999);
-		DateRange range = reportAggregatedDAO.getMinMaxDateTimesheetEntry();
-		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
-		assertEquals(endDate, range.getDateEnd());
+    @Autowired
+    private ReportAggregatedDao reportAggregatedDAO;
 
-	}
+    public ReportAggregatedDaoTest() {
+        super("dataset-reportaggregated.xml");
+    }
 
-	@Test
-	public void shouldGetMinMaxDateTimesheetEntryForUser()
-	{
-		DateRange range = reportAggregatedDAO.getMinMaxDateTimesheetEntry(new User(1));
-		Date endDate = new Date(2007 - 1900, 2 - 1, 2, 23, 59, 59);
-		endDate = new Date(endDate.getTime() + 999);
+    @Test
+    public void shouldGetMinMaxDateTimesheetEntry() {
+        Date endDate = new Date(OCT_2_2006_EOF.getTime() + 999);
+        DateRange range = reportAggregatedDAO.getMinMaxDateTimesheetEntry();
 
-		assertEquals(new Date(2006 - 1900, 10 - 1, 2), range.getDateStart());
-		assertEquals(endDate, range.getDateEnd());
-	}
+        assertEquals(OCT_2_2006, range.getDateStart());
+        assertEquals(endDate, range.getDateEnd());
+    }
 
-	/**
-	 * 
-	 *
-	 */
-	@Test
-	public void shouldGetCumulatedHoursPerAssignmentForUserAndDate()
-	{
-		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated?
-																				// hmm
-																				// ;)
-				new Date(2007 - 1900, 10, 30));
+    @Test
+    public void shouldGetMinMaxDateTimesheetEntryForUser() {
+        DateRange range = reportAggregatedDAO.getMinMaxDateTimesheetEntry(new User(1));
+        Date endDate = new Date(OCT_2_2006_EOF.getTime() + 999);
 
-		List<User> ids = new ArrayList<User>();
-		ids.add(new User(1));
+        assertEquals(OCT_2_2006, range.getDateStart());
+        assertEquals(endDate, range.getDateEnd());
+    }
 
-		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(ids, dateRange);
+    @Test
+    public void shouldGetCumulatedHoursPerAssignmentForUserAndDate() {
+        DateRange dateRange = new DateRange(OCT_1_2006, new Date(2007 - 1900, 10, 30));
 
-		// test if collection is properly initialized
-		AssignmentAggregateReportElement rep = results.get(0);
-		assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
+        List<User> users = Arrays.asList(UserObjectMother.createUser());
 
-		rep = results.get(0);
-		assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
+        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, dateRange);
 
-		assertEquals(3, results.size());
-	}
+        // test if collection is properly initialized
+        AssignmentAggregateReportElement rep = results.get(0);
+        assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
 
-	/**
-	 * 
-	 *
-	 */
-	@Test
-	public void shouldGetCumulatedHoursPerAssignmentForUser()
-	{
-		List<User> ids = new ArrayList<User>();
-		ids.add(new User(1));
-		ids.add(new User(2));
+        rep = results.get(0);
+        assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
 
-		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(ids);
+        assertEquals(3, results.size());
+    }
 
-		// test if collection is properly initialized
-		AssignmentAggregateReportElement rep = results.get(0);
-		assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
+    @Test
+    public void shouldGetCumulatedHoursPerAssignmentForUser() {
+        List<User> users = Arrays.asList(UserObjectMother.createUser(), new User(2));
 
-		assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
+        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users);
 
-		assertEquals(5, results.size());
-	}
+        // test if collection is properly initialized
+        AssignmentAggregateReportElement rep = results.get(0);
+        assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
 
-	/**
-	 * 
-	 *
-	 */
-	@Test
-	public void shouldGetCumulatedHoursPerAssignmentForUserProject()
-	{
-		List<User> ids = new ArrayList<User>();
-		ids.add(new User(1));
-		List<Project> pids = new ArrayList<Project>();
-		pids.add(new Project(1));
+        assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
 
-		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(ids, pids);
+        assertEquals(5, results.size());
+    }
 
-		// test if collection is properly initialized
-		AssignmentAggregateReportElement rep = results.get(0);
-		assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
+    @Test
+    public void shouldGetCumulatedHoursPerAssignmentForUserProject() {
+        List<User> users = Arrays.asList(UserObjectMother.createUser());
+        List<Project> projects = Arrays.asList(ProjectObjectMother.createProject(1));
 
-		assertEquals(2, results.size());
-	}
+        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, projects);
 
-	/**
-	 * 
-	 *
-	 */
-	@Test
-	public void shouldGetCumulatedHoursPerAssignmentForUserProjectDate()
-	{
-		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated?
-																				// hmm
-																				// ;)
-				new Date(2006 - 1900, 10 - 1, 4));
-		List<User> ids = new ArrayList<User>();
-		ids.add(new User(1));
-		List<Project> pids = new ArrayList<Project>();
-		pids.add(new Project(1));
-		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(ids, pids, dateRange);
+        // test if collection is properly initialized
+        AssignmentAggregateReportElement rep = results.get(0);
+        assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
 
-		// test if collection is properly initialized
-		AssignmentAggregateReportElement rep = results.get(0);
-		assertEquals(14f, rep.getHours().floatValue(), 0.1);
+        assertEquals(2, results.size());
+    }
 
-		assertEquals(2, results.size());
-	}
+    @Test
+    public void shouldGetCumulatedHoursPerAssignmentForUserProjectDate() {
+        DateRange dateRange = OCT_1_TO_4;
+        List<User> users = Arrays.asList(UserObjectMother.createUser());
+        List<Project> projects = Arrays.asList(ProjectObjectMother.createProject(1));
 
-	@Test
-	public void shouldGetCumulatedHoursPerAssignment()
-	{
-		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated?
-																				// hmm
-																				// ;)
-				new Date(2006 - 1900, 10 - 1, 4));
+        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, projects, dateRange);
 
-		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignment(dateRange);
+        AssignmentAggregateReportElement rep = results.get(0);
+        assertEquals(14f, rep.getHours().floatValue(), 0.1);
 
-		assertEquals(3, results.size());
-	}
+        assertEquals(2, results.size());
+    }
 
-	@Test
-	public void shouldGetCumulatedHoursPerAssignmentForProjects()
-	{
-		DateRange dateRange = new DateRange(new Date(2006 - 1900, 10 - 1, 1), // deprecated?
-																				// hmm
-																				// ;)
-				new Date(2006 - 1900, 10 - 1, 4));
-		List<Project> pids = new ArrayList<Project>();
-		pids.add(new Project(1));
+    @Test
+    public void shouldGetCumulatedHoursPerAssignment() {
+        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignment(OCT_1_TO_4);
 
-		List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(pids, dateRange);
+        assertEquals(3, results.size());
+    }
 
-		assertEquals(2, results.size());
-	}
+    @Test
+    public void shouldGetCumulatedHoursPerAssignmentForProjects() {
+        List<Project> projects = Arrays.asList(ProjectObjectMother.createProject(1));
 
+        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, OCT_1_TO_4);
+
+        assertEquals(2, results.size());
+    }
+
+    @Test
+    public void shouldGetAssignmentsWithoutHours() {
+        List<ProjectAssignment> assignments = reportAggregatedDAO.getAssignmentsWithoutBookings(OCT_1_TO_4);
+
+        List<Integer> assignmentIds = DomainUtil.getIdsFromDomainObjects(assignments);
+        Collections.sort(assignmentIds);
+
+        assertArrayEquals(new Integer[]{3, 6, 10}, assignmentIds.toArray());
+    }
 }

@@ -21,15 +21,15 @@ import net.rrm.ehour.report.reports.ReportData;
 
 /**
  * Report service for detailed reports
- **/
+ */
 
-public interface DetailedReportService
-{
-	/**
-	 * Get report data for customer 
-	 * @param customer
-	 * @param dateRange
-	 * @return
-	 */
-	ReportData getDetailedReportData(ReportCriteria criteria);
+public interface DetailedReportService {
+    /**
+     * Get report data for customer
+     *
+     * @param customer
+     * @param dateRange
+     * @return
+     */
+    ReportData getDetailedReportData(ReportCriteria criteria);
 }

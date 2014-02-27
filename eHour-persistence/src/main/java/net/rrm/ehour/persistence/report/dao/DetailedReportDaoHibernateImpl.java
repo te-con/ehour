@@ -96,18 +96,4 @@ public class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHiberna
 
         return query.list();
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<FlatReportElement> getAssignmentsWithoutBookings(DateRange dateRange) {
-        Session session = this.getSession();
-
-        Query query = session.getNamedQuery("Report.getAssignmentsWithoutBookings")
-                .setDate("dateStart", dateRange.getDateStart())
-                .setDate("dateEnd", dateRange.getDateEnd())
-                .setResultTransformer(Transformers.aliasToBean(FlatReportElement.class));
-
-        return query.list();
-    }
-
 }

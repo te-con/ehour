@@ -49,7 +49,6 @@ public class AggregateReportServiceImplTest {
     private ProjectDao projectDao;
     private ReportAggregatedDao reportAggregatedDao;
     private ProjectAssignmentService assignmentService;
-    private TimesheetLockService timesheetLockService;
 
     @Before
     public void setUp() {
@@ -57,9 +56,9 @@ public class AggregateReportServiceImplTest {
         assignmentService = createMock(ProjectAssignmentService.class);
         projectDao = createMock(ProjectDao.class);
         userDao = createMock(UserDao.class);
-        timesheetLockService = createMock(TimesheetLockService.class);
+        TimesheetLockService timesheetLockService = createMock(TimesheetLockService.class);
 
-        aggregateReportService = new AggregateReportServiceImpl(reportAggregatedDao, assignmentService, userDao, projectDao, timesheetLockService);
+        aggregateReportService = new AggregateReportServiceImpl(assignmentService, userDao, projectDao, timesheetLockService, reportAggregatedDao);
 
         expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
                 .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));

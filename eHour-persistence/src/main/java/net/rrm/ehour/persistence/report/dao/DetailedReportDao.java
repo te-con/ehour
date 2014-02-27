@@ -22,52 +22,49 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
 import java.io.Serializable;
 import java.util.List;
 
-public interface DetailedReportDao
-{
-	
-	/**
-	 * Get hours per day for assignments
-	 * @param assignmentId
-	 * @param dateRange
-	 * @return
-	 */
-	List<FlatReportElement> getHoursPerDayForAssignment(List<? extends Serializable> assignmentId, DateRange dateRange);
-
-	/**
-	 * Get hours per day for users
-	 * @param userIds
-	 * @param dateRange
-	 * @return
-	 */
-	List<FlatReportElement> getHoursPerDayForUsers(List<? extends Serializable> userIds, DateRange dateRange);
-
-	/**
-	 * Get hours per day for projects
-	 * @param projectIds
-	 * @param dateRange
-	 * @return
-	 */
-	List<FlatReportElement> getHoursPerDayForProjects(List<? extends Serializable> projectIds, DateRange dateRange);
-
-	/**
-	 * Get hours per day for projects & users
-	 * @param userIds
-	 * @param dateRange
-	 * @return
-	 */
-	List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<? extends Serializable> projectIds, List<? extends Serializable> userIds, DateRange dateRange);
-
-	/**
-	 * Get hours per day
-	 * @param dateRange
-	 * @return
-	 */
-	List<FlatReportElement> getHoursPerDay(DateRange dateRange);
+public interface DetailedReportDao {
 
     /**
-     * Get assignments without bookings for a particular range
+     * Get hours per day for assignments
+     *
+     * @param assignmentId
      * @param dateRange
      * @return
      */
-    List<FlatReportElement> getAssignmentsWithoutBookings(DateRange dateRange);
+    List<FlatReportElement> getHoursPerDayForAssignment(List<? extends Serializable> assignmentId, DateRange dateRange);
+
+    /**
+     * Get hours per day for users
+     *
+     * @param userIds
+     * @param dateRange
+     * @return
+     */
+    List<FlatReportElement> getHoursPerDayForUsers(List<? extends Serializable> userIds, DateRange dateRange);
+
+    /**
+     * Get hours per day for projects
+     *
+     * @param projectIds
+     * @param dateRange
+     * @return
+     */
+    List<FlatReportElement> getHoursPerDayForProjects(List<? extends Serializable> projectIds, DateRange dateRange);
+
+    /**
+     * Get hours per day for projects & users
+     *
+     * @param userIds
+     * @param dateRange
+     * @return
+     */
+    List<FlatReportElement> getHoursPerDayForProjectsAndUsers(List<? extends Serializable> projectIds, List<? extends Serializable> userIds, DateRange dateRange);
+
+    /**
+     * Get hours per day
+     *
+     * @param dateRange
+     * @return
+     */
+    List<FlatReportElement> getHoursPerDay(DateRange dateRange);
 }
