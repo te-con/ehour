@@ -38,15 +38,13 @@
     <wicket:fragment wicket:id="reportTable">
         <div style="width:100%;text-align: right;height:22px">
             <a wicket:id="excelLink" class="floatRight" style="margin-right: 1em">
-                <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
-                    <span class="ui-icon ui-icon-disk"></span>
+                <span class="floatLeft" wicket:message="title:general.excel">
+                    <i class="fa fa-download"></i>
                 </span>
             </a>
             <span wicket:id="optionsToggle">
                 <a href="#" onclick="return toggleFilter('#reportOptions')" id="optionsFold" class="floatRight">
-                    <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
-                        <span class="ui-icon ui-icon-wrench"></span>
-                    </span>
+                    <i class="fa fa-wrench icon"></i>
                 </a>
             </span>
         </div>

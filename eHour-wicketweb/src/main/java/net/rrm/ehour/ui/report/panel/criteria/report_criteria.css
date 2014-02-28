@@ -12,8 +12,8 @@
 
 .foldIcon {
     float: right;
-    width: 52px;
-    padding-right: 20px;
+    width: 4em;
+    padding-right: 1em;
 }
 
 .filterContainer {
@@ -45,7 +45,7 @@
 }
 
 .dateInput {
-    width: 5em;
+    width: 6em;
     clear: both
 }
 
@@ -67,4 +67,13 @@
     height: 180px !important;
     margin-right: 20px;
     margin-bottom: 5px;
+}
+
+.icon {
+    color: #3d6c94;
+    margin-left: 0.5em;
+}
+
+.icon:hover {
+    color: white;
 }
