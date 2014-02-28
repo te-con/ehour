@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ExportElements;
-import net.rrm.ehour.backup.service.ParserUtil;
+import net.rrm.ehour.backup.domain.ParserUtil;
 import net.rrm.ehour.domain.Configuration;
 
 import javax.xml.namespace.QName;
