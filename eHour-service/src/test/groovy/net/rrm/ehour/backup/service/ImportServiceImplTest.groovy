@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service
 
+import net.rrm.ehour.backup.domain.ParseSession
 import net.rrm.ehour.backup.service.restore.ConfigurationParserDao
 import net.rrm.ehour.backup.service.restore.DomainObjectParserDaoValidatorImpl
 import net.rrm.ehour.backup.service.restore.UserRoleParserDaoValidatorImpl

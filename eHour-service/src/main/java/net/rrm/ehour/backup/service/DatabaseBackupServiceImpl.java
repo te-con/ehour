@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service;
 
+import net.rrm.ehour.backup.domain.ExportElements;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.Configuration;

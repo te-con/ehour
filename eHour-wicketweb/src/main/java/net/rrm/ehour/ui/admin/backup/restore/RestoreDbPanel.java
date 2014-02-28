@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.backup.restore;
 
-import net.rrm.ehour.backup.service.ParseSession;
+import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.RestoreService;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.markup.html.basic.Label;

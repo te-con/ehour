@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.service.restore
 
-import net.rrm.ehour.backup.service.ImportException
-import net.rrm.ehour.backup.service.ParseSession
+import net.rrm.ehour.backup.domain.ImportException
+import net.rrm.ehour.backup.domain.ParseSession
 import net.rrm.ehour.config.ConfigurationItem
 import net.rrm.ehour.domain.Configuration
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao

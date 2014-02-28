@@ -1,4 +1,4 @@
-package net.rrm.ehour.backup.service;
+package net.rrm.ehour.backup.domain;
 
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
 
