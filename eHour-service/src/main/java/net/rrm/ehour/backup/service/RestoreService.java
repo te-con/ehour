@@ -1,5 +1,7 @@
 package net.rrm.ehour.backup.service;
 
+import net.rrm.ehour.backup.domain.ParseSession;
+
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: Nov 13, 2010 - 5:33:50 PM
@@ -16,7 +18,7 @@ public interface RestoreService {
      * Import database
      *
      * @param session
-     * @throws ImportException
+     * @throws net.rrm.ehour.backup.domain.ImportException
      */
     ParseSession importDatabase(ParseSession session);
 }

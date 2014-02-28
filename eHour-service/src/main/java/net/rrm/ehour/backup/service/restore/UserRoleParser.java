@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
-import net.rrm.ehour.backup.service.ParseSession;
+import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.ParserUtil;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;

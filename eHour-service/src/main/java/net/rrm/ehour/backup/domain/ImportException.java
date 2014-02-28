@@ -1,4 +1,4 @@
-package net.rrm.ehour.backup.service;
+package net.rrm.ehour.backup.domain;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)

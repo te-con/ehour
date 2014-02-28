@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.backup;
 
-import net.rrm.ehour.backup.service.ParseSession;
+import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.backup.restore.RestoreDbPanel;
 import net.rrm.ehour.ui.admin.backup.restore.ValidateRestorePanel;

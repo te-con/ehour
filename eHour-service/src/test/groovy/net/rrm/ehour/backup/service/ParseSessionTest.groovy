@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service
 
+import net.rrm.ehour.backup.domain.ParseSession
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType
 import org.junit.Before
 import org.junit.Test
