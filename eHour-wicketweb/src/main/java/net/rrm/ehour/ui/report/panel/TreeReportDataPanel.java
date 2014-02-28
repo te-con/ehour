@@ -116,6 +116,8 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
             Fragment fragment = new Fragment("reportOptionsPlaceholder", "reportOptions", this);
             fragment.setOutputMarkupId(true);
 
+            fragment.add(new Label("zeroBookingsLabel", new ResourceModel(reportConfig.getZeroBookingsMessageKey())));
+
             AjaxCheckBox bookingCheckbox = new AjaxCheckBox("toggleShowZeroBookings", new PropertyModel<Boolean>(criteria, "showZeroBookings")) {
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
