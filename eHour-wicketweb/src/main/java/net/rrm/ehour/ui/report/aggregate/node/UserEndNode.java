@@ -23,51 +23,44 @@ import net.rrm.ehour.ui.report.node.ReportNode;
 import java.io.Serializable;
 
 /**
- * End node displaying user's full name, hours and turnover 
- **/
+ * End node displaying user's full name, hours and turnover
+ */
 
-public class UserEndNode extends ReportNode
-{
-	private static final long serialVersionUID = 3861923371702158088L;
-	private Number   hours;
-    private Number   turnOver;
+public class UserEndNode extends ReportNode {
+    private static final long serialVersionUID = 3861923371702158088L;
+    private Number hours;
+    private Number turnOver;
 
-    public UserEndNode(AssignmentAggregateReportElement aggregate)
-    {
-        super(aggregate.getProjectAssignment().getPK());
+    public UserEndNode(AssignmentAggregateReportElement aggregate) {
+        super(aggregate.getProjectAssignment().getPK(), aggregate.isEmptyEntry());
         hours = aggregate.getHours();
         turnOver = aggregate.getTurnOver();
 
         this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName(),
-                                                aggregate.getProjectAssignment().getRole(),
-                                                aggregate.getProjectAssignment().getHourlyRate(),
-                                                aggregate.getHours(),
-                                                aggregate.getTurnOver()};
+                aggregate.getProjectAssignment().getRole(),
+                aggregate.getProjectAssignment().getHourlyRate(),
+                aggregate.getHours(),
+                aggregate.getTurnOver()};
     }
 
     @Override
-    protected Serializable getElementId(ReportElement element)
-    {
-    	AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement)element;
+    protected Serializable getElementId(ReportElement element) {
+        AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement) element;
         return aggregate.getProjectAssignment().getPK();
     }
 
-
     @Override
-    public Number getHours()
-    {
-        return hours; 
+    public Number getHours() {
+        return hours;
     }
 
     @Override
-    public Number getTurnover()
-    {
+    public Number getTurnover() {
         return turnOver;
     }
 
     @Override
-    protected boolean isLeaf()
-    {
+    protected boolean isLeaf() {
         return true;
     }
 }

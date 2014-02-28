@@ -30,7 +30,7 @@ public class CustomerNode extends ReportNode {
     private static final long serialVersionUID = -356525734449023397L;
 
     public CustomerNode(AssignmentAggregateReportElement aggregate) {
-        super(aggregate.getProjectAssignment().getProject().getCustomer().getPK());
+        super(aggregate.getProjectAssignment().getProject().getCustomer().getPK(), aggregate.isEmptyEntry());
 
         if (aggregate.getProjectAssignment() != null) {
             this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
