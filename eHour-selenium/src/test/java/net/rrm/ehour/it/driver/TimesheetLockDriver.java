@@ -19,10 +19,11 @@ public class TimesheetLockDriver {
 
         WebElement startDateElement = Driver.findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_startDate"));
         startDateElement.clear();
-        startDateElement.sendKeys(startDate.toString("MM/dd/YY"));
+        startDateElement.sendKeys(startDate.toString("MM/dd/YYYY"));
+
         WebElement endDateElement = Driver.findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_endDate"));
         endDateElement.clear();
-        endDateElement.sendKeys(endDate.toString("MM/dd/YY"));
+        endDateElement.sendKeys(endDate.toString("MM/dd/YYYY"));
 
         Driver.findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_submit")).click();
 

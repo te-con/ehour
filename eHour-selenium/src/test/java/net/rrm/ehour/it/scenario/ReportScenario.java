@@ -1,7 +1,6 @@
 package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
@@ -20,11 +19,6 @@ public class ReportScenario extends AbstractScenario {
 
         assertUserCriteriaLoaded();
         logout();
-    }
-
-    @Test
-    @Ignore
-    public void should_access_report_as_pm() {
     }
 
     @Test
