@@ -1,4 +1,4 @@
-package net.rrm.ehour.backup.service;
+package net.rrm.ehour.backup.domain;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;

@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.backup.service.ParserUtil;
+import net.rrm.ehour.backup.domain.ParserUtil;
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
 import org.apache.commons.lang.StringUtils;
