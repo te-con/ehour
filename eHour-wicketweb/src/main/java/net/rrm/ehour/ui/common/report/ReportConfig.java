@@ -29,7 +29,7 @@ import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.*;
 public enum ReportConfig {
     // constructors like these might be a bit over the top..
     // take note, the columnResourceKey is used for serie creation with trend charts (pardon my English, it's late.. or early in the morning)
-    DETAILED_REPORT(true, new ReportColumn("userReport.report.date", ColumnType.DATE, new LockableDateConverter(), VISIBLE),
+    DETAILED_REPORT(ReportType.SHOW_ZERO_BOOKINGS, new ReportColumn("userReport.report.date", ColumnType.DATE, new LockableDateConverter(), VISIBLE),
             new ReportColumn("userReport.report.customer"),
             new ReportColumn("userReport.report.project"),
             new ReportColumn("userReport.report.projectCode"),
@@ -40,7 +40,7 @@ public enum ReportConfig {
             new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
             new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 
-    AGGREGATE_CUSTOMER(new ReportColumn("userReport.report.customer"),
+    AGGREGATE_CUSTOMER(ReportType.SHOW_ZERO_BOOKINGS, new ReportColumn("userReport.report.customer"),
             new ReportColumn("userReport.report.project"),
             new ReportColumn("userReport.report.projectCode"),
             new ReportColumn("userReport.report.user"),
@@ -49,7 +49,7 @@ public enum ReportConfig {
             new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
             new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 
-    AGGREGATE_PROJECT(new ReportColumn("userReport.report.project"),
+    AGGREGATE_PROJECT(ReportType.SHOW_ZERO_BOOKINGS, new ReportColumn("userReport.report.project"),
             new ReportColumn("userReport.report.projectCode"),
             new ReportColumn("userReport.report.customer"),
             new ReportColumn("userReport.report.user"),
@@ -58,7 +58,7 @@ public enum ReportConfig {
             new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
             new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
 
-    AGGREGATE_USER(new ReportColumn("userReport.report.user"),
+    AGGREGATE_USER(ReportType.SHOW_ZERO_BOOKINGS, new ReportColumn("userReport.report.user"),
             new ReportColumn("userReport.report.role"),
             new ReportColumn("userReport.report.customer"),
             new ReportColumn("userReport.report.project"),
@@ -76,12 +76,12 @@ public enum ReportConfig {
     private Boolean showZeroBookings;
 
     private ReportConfig(ReportColumn... reportColumns) {
-        this(false, reportColumns);
+        this(ReportType.NO_ZERO_BOOKINGS, reportColumns);
     }
 
-    private ReportConfig(Boolean zeroBookings, ReportColumn... reportColumns) {
+    private ReportConfig(ReportType zeroBookings, ReportColumn... reportColumns) {
         this.reportColumns = reportColumns;
-        this.showZeroBookings = zeroBookings;
+        this.showZeroBookings = zeroBookings == ReportType.SHOW_ZERO_BOOKINGS;
     }
 
     public ReportColumn[] getReportColumns() {
@@ -91,4 +91,9 @@ public enum ReportConfig {
     public Boolean isShowZeroBookings() {
         return showZeroBookings;
     }
+}
+
+enum ReportType {
+    SHOW_ZERO_BOOKINGS,
+    NO_ZERO_BOOKINGS
 }

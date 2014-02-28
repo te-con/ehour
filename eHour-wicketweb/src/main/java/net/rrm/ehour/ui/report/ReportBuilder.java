@@ -37,6 +37,7 @@ public class ReportBuilder {
     /**
      * Create report
      */
+    @SuppressWarnings("unchecked")
     public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory) {
         List<ReportNode> reportNodes = new ArrayList<ReportNode>();
 

@@ -27,6 +27,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElementBuilder;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import org.easymock.Capture;
 import org.joda.time.DateTime;
@@ -98,7 +99,7 @@ public class DetailedReportServiceImplTest {
     }
 
     private void provideNoData() {
-        expect(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).andReturn(new ArrayList<FlatReportElement>());
+        expect(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).andReturn(Arrays.asList(createFlatReportElement()));
         replay(detailedReportDao);
     }
 
@@ -108,10 +109,15 @@ public class DetailedReportServiceImplTest {
         singleUserSelected();
         provideNoAssignmentsWithoutBookings();
 
-        expect(detailedReportDao.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class))).andReturn(new ArrayList<FlatReportElement>());
+        expect(detailedReportDao.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class))).andReturn(Arrays.asList(createFlatReportElement()));
         replay(detailedReportDao);
         detailedReportService.getDetailedReportData(reportCriteria);
         verify(detailedReportDao);
+    }
+
+    private FlatReportElement createFlatReportElement() {
+        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        return FlatReportElementBuilder.buildFlatReportElement(assignment);
     }
 
     @Test
@@ -218,4 +224,32 @@ public class DetailedReportServiceImplTest {
 
         verify(detailedReportDao);
     }
+
+    @Test
+    public void should_provide_assignments_without_bookings() {
+        provideNoLocks();
+
+        expect(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).andReturn(Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1)));
+        replay(reportAggregatedDao);
+
+        userSelectedCriteria.setShowZeroBookings(true);
+
+        Project billableProject = ProjectObjectMother.createProject(1);
+        billableProject.setBillable(true);
+
+        Project notBillableProject = ProjectObjectMother.createProject(2);
+        notBillableProject.setBillable(false);
+
+        expect(projectDao.findAllActive()).andReturn(Arrays.asList(billableProject, notBillableProject));
+
+        expect(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).andReturn(Arrays.asList(createFlatReportElement()));
+        replay(detailedReportDao, projectDao);
+
+        ReportData reportData = detailedReportService.getDetailedReportData(reportCriteria);
+        FlatReportElement element = (FlatReportElement) reportData.getReportElements().get(0);
+        assertTrue(element.isEmptyEntry());
+
+        verify(detailedReportDao, reportAggregatedDao);
+    }
+
 }
