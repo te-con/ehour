@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.project.assign
 
-import org.apache.wicket.model.{StringResourceModel, PropertyModel}
+import org.apache.wicket.model.{ResourceModel, PropertyModel}
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.user.service.UserService
@@ -16,8 +16,7 @@ import org.apache.wicket.model.util.ListModel
 import com.google.common.collect.Lists
 import collection.mutable.{Map => MMap}
 import org.apache.wicket.markup.html.WebMarkupContainer
-import com.googlecode.wicket.jquery.ui.widget.tooltip.TooltipBehavior
-import org.apache.wicket.AttributeModifier
+import de.agilecoders.wicket.core.markup.html.bootstrap.components.TooltipBehavior
 
 class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) {
   val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
@@ -50,8 +49,7 @@ class NewAssignmentUserListView(id: String) extends AbstractBasePanel[Unit](id) 
     affectedContainer.addOrReplace(createAffectedUserView(AffectedUsersListId, new ListModel[User](Lists.newArrayList())))
 
     val help = new WebMarkupContainer("help")
-    help.add(new TooltipBehavior())
-    help.add(AttributeModifier.replace("title", new StringResourceModel("admin.projects.assignments.add.help", null)))
+    help.add(new TooltipBehavior(new ResourceModel("admin.projects.assignments.add.help")))
     addOrReplace(help)
   }
 
