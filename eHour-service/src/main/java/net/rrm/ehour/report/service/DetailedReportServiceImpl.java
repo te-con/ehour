@@ -18,7 +18,6 @@ package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
@@ -29,6 +28,7 @@ import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.reports.element.FlatReportElementBuilder;
 import net.rrm.ehour.report.reports.element.LockableDate;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.util.DomainUtil;
@@ -91,28 +91,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
         List<FlatReportElement> elements = Lists.newArrayList();
 
         for (ProjectAssignment assignment : assignments) {
-            FlatReportElement element = new FlatReportElement();
-            element.setAssignmentId(assignment.getAssignmentId());
-            element.setRole(assignment.getRole());
-
-            Project project = assignment.getProject();
-            Customer customer = project.getCustomer();
-
-            element.setCustomerCode(customer.getCode());
-            element.setCustomerId(customer.getCustomerId());
-            element.setCustomerName(customer.getName());
-
-            element.setEmptyEntry(true);
-            element.setProjectCode(project.getProjectCode());
-            element.setProjectId(project.getProjectId());
-            element.setProjectName(project.getName());
-
-            element.setRate(assignment.getHourlyRate());
-
-            element.setUserFirstName(assignment.getUser().getFirstName());
-            element.setUserLastName(assignment.getUser().getLastName());
-
-            elements.add(element);
+            elements.add(FlatReportElementBuilder.buildFlatReportElement(assignment));
         }
 
         return elements;
