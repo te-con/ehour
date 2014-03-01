@@ -21,7 +21,8 @@
 
                 var nameE = $("#prjN" + prjId);
                 var codeC = $("#prjC" + prjId);
-                textE.text((remain >= nameE.width()) ? nameE.text() : codeC.text());
+                var nameWidth = nameE.width();
+                textE.text((remain >= nameWidth) ? nameE.text() : codeC.text());
             });
         }
     </script>
