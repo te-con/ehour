@@ -49,7 +49,7 @@
 
 						<wicket:container wicket:id="rows">
 							<tr class="projectRow">
-								<td class="fold"><a wicket:id="bookWholeWeek"><img wicket:id="bookImg" src="img/check_all_off.png" border="0" /></a></td>
+								<td class="fold"><div class="timesheetTableRowHeight"><a wicket:id="bookWholeWeek"><img wicket:id="bookImg" src="img/check_all_off.png" border="0" /></a></div></td>
 								<td class="projectCode" wicket:id="projectCode">projectCode</td>
 								<td class="project"><span wicket:id="project"></span>
                                     <span wicket:id="role" style="font-size: 0.7em"></span>
@@ -93,13 +93,9 @@
 				<table class="timesheetCommentsTable" style="margin:0; padding:0" cellpadding="0" cellspacing="0">
 
 				<tr>
-					<td valign="top">
-						<wicket:message key="timesheet.comments" />:
-					</td>
-
-					<td align="right" colspan="2">
-						<textarea name="comment" wicket:id="commentsArea"
-									rows="3" style="width: 400px" class="timesheetTextarea"
+					<td colspan="3">
+						<textarea wicket:message="placeholder:timesheet.comments" name="comment" wicket:id="commentsArea"
+									rows="3" style="width: 100%" class="timesheetTextarea"
 									wrap="virtual"></textarea>
 					</td>
 				</tr>

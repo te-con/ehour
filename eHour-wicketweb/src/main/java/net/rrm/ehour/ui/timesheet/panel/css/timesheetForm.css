@@ -229,7 +229,7 @@ td.lockeddaynocomment {
     font: 1em/1.5em Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     background-color: white;
-    width: 3em;
+    width: 4em;
     text-align: right;
 }
 
@@ -243,6 +243,10 @@ td.lockeddaynocomment {
     margin: 5px 0 0 0;
     padding: 0 23px 0 0;
     text-align: right;
+}
+
+.timesheetTableRowHeight {
+    min-height: 22px;
 }
 
 .timesheetCommentsTable {
