@@ -16,20 +16,16 @@
 
 package net.rrm.ehour.ui.common.page;
 
-import com.google.common.base.Optional;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.component.navigation.NavigationPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.update.UpdateService;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import net.rrm.ehour.ui.common.update.LatestVersionLinkPanel;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Base layout of all pages, adds header panel
@@ -38,9 +34,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventListener {
     private static final long serialVersionUID = 7090746921483608658L;
     public static final String NEW_VERSION_ID = "newVersion";
-
-    @SpringBean
-    private UpdateService updateService;
 
     public AbstractBasePage(ResourceModel pageTitle) {
         super();
@@ -57,19 +50,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     private void setupPage(ResourceModel pageTitle) {
         add(new NavigationPanel("mainNav"));
         add(new Label("pageTitle", pageTitle));
-        addLatestVersionBlock(NEW_VERSION_ID);
-    }
-
-    private void addLatestVersionBlock(String id) {
-        if (updateService.isLatestVersion()) {
-            add(new WebMarkupContainer(id));
-        } else {
-            Optional<String> latestVersionNumber = updateService.getLatestVersionNumber();
-
-            Fragment newVersionFragment = new Fragment(id, "newVersionFragment", this);
-            newVersionFragment.add(new Label("latestVersion", latestVersionNumber.or("unknown")));
-            add(newVersionFragment);
-        }
+        add(new LatestVersionLinkPanel(NEW_VERSION_ID));
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
@@ -85,7 +66,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     }
 
     protected EhourConfig getConfig() {
-        return getEhourWebSession().getEhourConfig();
+        return EhourWebSession.getEhourConfig();
     }
 
     @SuppressWarnings({"unchecked"})
