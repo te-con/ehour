@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.common.component;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
-import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Javascript confirmation dialog
@@ -26,14 +26,18 @@ import org.apache.wicket.model.ResourceModel;
 
 public class JavaScriptConfirmation extends AjaxCallListener {
 
-    private final ResourceModel msgModel;
+    private final IModel<String> msgModel;
 
-    public JavaScriptConfirmation(ResourceModel msgModel) {
+    public JavaScriptConfirmation(IModel<String> msgModel) {
         this.msgModel = msgModel;
     }
 
     @Override
     public CharSequence getPrecondition(Component component) {
-        return String.format("return confirm('%s');", msgModel.getObject());
+        String object = msgModel.getObject();
+
+        String escaped = object.replace("'", "\\\'");
+
+        return String.format("return confirm('%s');", escaped);
     }
 }
