@@ -143,9 +143,10 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         response.render(JavaScriptHeaderItem.forReference(GUARDFORM_JS));
         response.render(CssHeaderItem.forReference(TIMESHEET_CSS));
 
-
         String msg = new ResourceModel("timesheet.dirtyForm").getObject();
-        response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = \"%s\";", msg), "msg"));
+        String escapedMsg = msg.replace("'", "\\\'");
+
+        response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
     }
 
     /**
