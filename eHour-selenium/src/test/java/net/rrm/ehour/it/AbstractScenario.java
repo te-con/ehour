@@ -37,11 +37,7 @@ public abstract class AbstractScenario {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                try {
-                    Driver.quit();
-                } catch (Exception e) {
-                    //
-                }
+            	quitBrowser();
             }
         });
 
@@ -56,6 +52,12 @@ public abstract class AbstractScenario {
 
     @After
     public void quitBrowser() {
-        Driver.quit();
+    	if (Driver != null) {
+            try {
+                Driver.quit();
+            } catch (Exception e) {
+                //
+            }
+    	}
     }
 }
