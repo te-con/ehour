@@ -47,7 +47,7 @@ public abstract class TreeReportModel extends AbstractReportModel {
     protected ReportData getReportData(ReportCriteria reportCriteria) {
         ReportData reportData = getValidReportData(reportCriteria);
 
-        sort(reportData, reportCriteria);
+        preprocess(reportData, reportCriteria);
 
         // flatten the original reportData into a matrix representing the whole report
         ReportBuilder reportBuilder = new ReportBuilder();
@@ -59,7 +59,7 @@ public abstract class TreeReportModel extends AbstractReportModel {
         return new TreeReportData(matrix, reportCriteria.getReportRange(), reportData);
     }
 
-    protected abstract void sort(ReportData reportData, ReportCriteria reportCriteria);
+    protected abstract void preprocess(ReportData reportData, ReportCriteria reportCriteria);
 
     private ReportData getValidReportData(ReportCriteria reportCriteria) {
         ReportData reportData = fetchReportData(reportCriteria);
