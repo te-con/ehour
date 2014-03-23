@@ -47,7 +47,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private Date dayDate;
     private String comment;
     private Integer displayOrder;
-    private Number hours = 0;
     private LockableDate lockableDate;
     private Boolean emptyEntry;
 
@@ -76,15 +75,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     public void setRate(Number rate) {
         this.rate = rate;
     }
-
-    public Number getHours() {
-        return hours;
-    }
-
-    public void setHours(Number hours) {
-        this.hours = hours;
-    }
-
 
     /**
      * @return the customerName
