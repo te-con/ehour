@@ -35,30 +35,27 @@ import java.util.List;
 
 /**
  * Detailed report
- **/
+ */
 
-public class DetailedReportModel extends TreeReportModel
-{
-	private static final long serialVersionUID = -21703820501429504L;
-	
-	@SpringBean(name = "detailedReportService")
-	private DetailedReportService detailedReportService;
+public class DetailedReportModel extends TreeReportModel {
+    private static final long serialVersionUID = -21703820501429504L;
 
-	public DetailedReportModel(ReportCriteria reportCriteria)
-	{
-		super(reportCriteria, ReportConfig.DETAILED_REPORT);
-	}
+    @SpringBean(name = "detailedReportService")
+    private DetailedReportService detailedReportService;
+
+    public DetailedReportModel(ReportCriteria reportCriteria) {
+        super(reportCriteria, ReportConfig.DETAILED_REPORT);
+    }
 
 
     @Override
-	protected ReportData fetchReportData(ReportCriteria reportCriteria)
-	{
-		return getDetailedReportService().getDetailedReportData(reportCriteria);
-	}
+    protected ReportData fetchReportData(ReportCriteria reportCriteria) {
+        return getDetailedReportService().getDetailedReportData(reportCriteria);
+    }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void sort(ReportData reportData, ReportCriteria reportCriteria) {
+    protected void preprocess(ReportData reportData, ReportCriteria reportCriteria) {
         List<FlatReportElement> reportElements = (List<FlatReportElement>) reportData.getReportElements();
 
         Collections.sort(reportElements, new Comparator<FlatReportElement>() {
@@ -76,54 +73,47 @@ public class DetailedReportModel extends TreeReportModel
         });
     }
 
-    private DetailedReportService getDetailedReportService()
-	{
-		if (detailedReportService == null)
-		{
-			WebUtils.springInjection(this);
-		}
-		
-		return detailedReportService;
-	}
-	
-	@Override
-	public ReportNodeFactory<FlatReportElement> getReportNodeFactory()
-	{
-    	return new ReportNodeFactory<FlatReportElement>()
-	    {
-	        @Override
-	        public ReportNode createReportNode(FlatReportElement flatElement, int hierarchyLevel)
-	        {
-	            switch (hierarchyLevel)
-	            {
-	                case 0:
+    private DetailedReportService getDetailedReportService() {
+        if (detailedReportService == null) {
+            WebUtils.springInjection(this);
+        }
+
+        return detailedReportService;
+    }
+
+    @Override
+    public ReportNodeFactory<FlatReportElement> getReportNodeFactory() {
+        return new ReportNodeFactory<FlatReportElement>() {
+            @Override
+            public ReportNode createReportNode(FlatReportElement flatElement, int hierarchyLevel) {
+                switch (hierarchyLevel) {
+                    case 0:
                         return new FlatLockableDateNode(flatElement);
                     case 1:
-	                	return new FlatCustomerNode(flatElement);
-	                case 2:
-	                    return new FlatProjectNode(flatElement);
+                        return new FlatCustomerNode(flatElement);
+                    case 2:
+                        return new FlatProjectNode(flatElement);
                     case 3:
                         return new FlatProjectCodeNode(flatElement);
-	                case 4:
-	                	return new FlatUserNode(flatElement);
+                    case 4:
+                        return new FlatUserNode(flatElement);
                     case 5:
                         return new FlatRoleNode(flatElement);
-	                case 6:
-	                	return new FlatEntryEndNode(flatElement);
-	            }
-	
-	            throw new RuntimeException("Hierarchy level too deep");
-	        }
-	
-	        /**
-	         * Only needed for the root node, customer
-	         * @param aggregate
-	         * @return
-	         */
-	        public Serializable getElementId(FlatReportElement flatElement)
-	        {
-	            return flatElement.getCustomerId();
-	        }
-	    };	
+                    case 6:
+                        return new FlatEntryEndNode(flatElement);
+                }
+
+                throw new RuntimeException("Hierarchy level too deep");
+            }
+
+            /**
+             * Only needed for the root node, customer
+             * @param aggregate
+             * @return
+             */
+            public Serializable getElementId(FlatReportElement flatElement) {
+                return flatElement.getCustomerId();
+            }
+        };
     }
 }
