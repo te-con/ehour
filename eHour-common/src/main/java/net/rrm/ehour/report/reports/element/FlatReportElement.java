@@ -50,6 +50,35 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private LockableDate lockableDate;
     private Boolean emptyEntry;
 
+    public FlatReportElement() {
+    }
+
+    public FlatReportElement(FlatReportElement clone) {
+        customerId = clone.customerId;
+        locked = clone.locked;
+        customerName = clone.customerName;
+        customerCode = clone.customerCode;
+        totalHours = clone.totalHours;
+        totalTurnOver = clone.totalTurnOver;
+        rate = clone.rate;
+        entryDate = clone.entryDate;
+        userId = clone.userId;
+        userLastName = clone.userLastName;
+        userFirstName = clone.userFirstName;
+        projectId = clone.projectId;
+        projectName = clone.projectName;
+        projectCode = clone.projectCode;
+        assignmentId = clone.assignmentId;
+        role = clone.role;
+        dayDate = clone.dayDate;
+        comment = clone.comment;
+        displayOrder = clone.displayOrder;
+        lockableDate = clone.lockableDate;
+        emptyEntry = clone.emptyEntry;
+    }
+
+
+
     @Override
     public Boolean isEmptyEntry() {
         return emptyEntry == null ? false : emptyEntry;
