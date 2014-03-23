@@ -31,6 +31,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,6 +59,17 @@ public class DetailedReportModel extends TreeReportModel {
     protected void preprocess(ReportData reportData, ReportCriteria reportCriteria) {
         List<FlatReportElement> reportElements = (List<FlatReportElement>) reportData.getReportElements();
 
+        for (FlatReportElement reportElement : reportElements) {
+            Integer assignmentId = reportElement.getAssignmentId();
+            Date date = reportElement.getDayDate();
+
+
+        }
+
+        sortOnDate(reportElements);
+    }
+
+    private void sortOnDate(List<FlatReportElement> reportElements) {
         Collections.sort(reportElements, new Comparator<FlatReportElement>() {
             @Override
             public int compare(FlatReportElement o1, FlatReportElement o2) {

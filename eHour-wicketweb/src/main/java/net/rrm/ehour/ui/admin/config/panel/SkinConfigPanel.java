@@ -167,8 +167,7 @@ public class SkinConfigPanel extends AbstractConfigPanel {
             element.setProjectName("Project #1");
             element.setProjectCode("PRJ");
             element.setDayDate(date);
-            element.setHours(Math.random() * 8);
-            element.setTotalHours(element.getHours());
+            element.setTotalHours(Math.random() * 8);
 
             return element;
         }

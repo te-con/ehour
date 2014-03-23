@@ -43,7 +43,6 @@ public class DetailedReportDataObjectMother
 			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 31));
 			fre.setDisplayOrder(1);
 			fre.setEntryDate("492007");
-			fre.setHours(5);
 			fre.setTotalHours(5);
             fre.setTotalTurnOver(15);
 			fre.setProjectId(1);
@@ -63,7 +62,6 @@ public class DetailedReportDataObjectMother
 			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 30));
 			fre.setDisplayOrder(1);
 			fre.setEntryDate("492007");
-			fre.setHours(6);
 			fre.setTotalHours(6);
             fre.setTotalTurnOver(16);
 			fre.setProjectId(1);
@@ -84,7 +82,6 @@ public class DetailedReportDataObjectMother
 			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 29));
 			fre.setDisplayOrder(1);
 			fre.setEntryDate("492007");
-			fre.setHours(7);
 			fre.setTotalHours(7);
             fre.setTotalTurnOver(17);
 			fre.setProjectId(1);
@@ -105,7 +102,6 @@ public class DetailedReportDataObjectMother
 			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 28));
 			fre.setDisplayOrder(2);
 			fre.setEntryDate("492007");
-			fre.setHours(8);
 			fre.setTotalHours(8);
             fre.setTotalTurnOver(18);
 			fre.setProjectId(1);
@@ -126,7 +122,6 @@ public class DetailedReportDataObjectMother
             fre.setDayDate(new Date(2007 - 1900, 12 - 1, 28));
             fre.setDisplayOrder(2);
             fre.setEntryDate("492007");
-            fre.setHours(8.25);
             fre.setTotalHours(8.25);
             fre.setTotalTurnOver(18);
             fre.setProjectId(2);
@@ -141,7 +136,7 @@ public class DetailedReportDataObjectMother
 
 	public static ReportData getFlatReportData()
 	{
-        return new ReportData(DetailedReportDataObjectMother.getFlatReportElements(), new DateRange(new Date(2007 - 1900, 12 - 1, 27), new Date(2008 - 1900, 1 -1 , 1)));
+        return new ReportData(DetailedReportDataObjectMother.getFlatReportElements(), new DateRange(new Date(2007 - 1900, 12 - 1, 27), new Date(2008 - 1900, 0, 1)));
 	}
 
 	public static ReportCriteria getReportCriteria()
