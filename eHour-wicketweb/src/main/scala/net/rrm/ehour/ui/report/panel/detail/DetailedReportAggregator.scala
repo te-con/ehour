@@ -1,23 +1,32 @@
 package net.rrm.ehour.ui.report.panel.detail
 
-import java.{util => ju}
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import org.joda.time.LocalDate
+import java.util.Date
 
 
 object DetailedReportAggregator {
-  def aggregate(elements: List[FlatReportElement]): List[FlatReportElement] = {
+  val ByMonth = (date: Date) => new LocalDate(date.getTime).withDayOfMonth(1).toString("yyyyMM")
+  val ByWeek = (date: Date) => new LocalDate(date.getTime).toString("yyyyww")
+  val ByQuarter = (date: Date) => {
+    val localDate = new LocalDate(date.getTime)
+    val quarter = (localDate.getMonthOfYear - 1) / 3
+    val year = localDate.getYear
+
+    s"$year$quarter"
+  }
+
+  def aggregate(elements: List[FlatReportElement], f: (Date) => String): List[FlatReportElement] = {
     def sum(accumulator: Map[AggregateKey, Float], xs: List[FlatReportElement]): Map[AggregateKey, Float] = {
       if (xs.isEmpty) {
         accumulator
       } else {
         val element = xs.head
-        val key = AggregateKey(element)
+        val key = AggregateKey(element, f)
 
         val v = accumulator.getOrElse(key, 0f) + element.getTotalHours.floatValue()
 
-        val newAccumulator: Map[AggregateKey, Float] = accumulator + (key -> v)
-        sum(newAccumulator, xs.tail)
+        sum(accumulator + (key -> v), xs.tail)
       }
     }
 
@@ -34,18 +43,17 @@ object DetailedReportAggregator {
   }
 }
 
-case class AggregateKey(aggregatedOn: LocalDate, baseElement: FlatReportElement) {
+private case class AggregateKey(aggregatedOn: String, baseElement: FlatReportElement) {
   override def equals(other: Any) = other match {
     case that: AggregateKey => that.aggregatedOn == aggregatedOn && baseElement.getAssignmentId.equals(that.baseElement.getAssignmentId)
     case _ => false
   }
 }
 
-object AggregateKey {
-  def apply(e: FlatReportElement): AggregateKey = {
+private object AggregateKey {
+  def apply(e: FlatReportElement, f: (Date) => String): AggregateKey = {
     val date = e.getDayDate
-    val thisMonth = new LocalDate(date.getTime).withDayOfMonth(1)
 
-    AggregateKey(thisMonth, e)
+    AggregateKey(f(date), e)
   }
 }
