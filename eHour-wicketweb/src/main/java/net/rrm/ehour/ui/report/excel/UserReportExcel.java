@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.report.excel;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
+import net.rrm.ehour.ui.common.report.AggregatedReportConfig;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.aggregate.UserAggregateReportModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -30,7 +30,7 @@ public class UserReportExcel extends AbstractExcelReport {
     private static final UserReportExcel INSTANCE = new UserReportExcel();
 
     private UserReportExcel() {
-        super(ReportConfig.AGGREGATE_USER);
+        super(AggregatedReportConfig.AGGREGATE_USER);
     }
 
     @Override

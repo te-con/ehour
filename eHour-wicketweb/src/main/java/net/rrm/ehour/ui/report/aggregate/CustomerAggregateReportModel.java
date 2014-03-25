@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.report.aggregate;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.report.AggregatedReportConfig;
 import net.rrm.ehour.ui.report.AbstractAggregateReportModel;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
@@ -36,7 +36,7 @@ public class CustomerAggregateReportModel extends AbstractAggregateReportModel {
     private static final long serialVersionUID = -3221674649410450972L;
 
     public CustomerAggregateReportModel(ReportCriteria reportCriteria) {
-        super(reportCriteria, ReportConfig.AGGREGATE_CUSTOMER);
+        super(reportCriteria, AggregatedReportConfig.AGGREGATE_CUSTOMER);
     }
 
     @SuppressWarnings("unchecked")

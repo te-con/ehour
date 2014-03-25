@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.report.panel
 package detail
 
 
-import net.rrm.ehour.ui.common.report.ReportConfig
+import net.rrm.ehour.ui.common.report.DetailedReportConfig
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel
 import net.rrm.ehour.ui.report.trend.DetailedReportModel
 import net.rrm.ehour.ui.chart.HighChartContainer
@@ -25,7 +25,7 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
     addOrReplace(frame)
 
     val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
-    frame.add(new TreeReportDataPanel("reportTable", report, ReportConfig.DETAILED_REPORT, DetailedReportExcel.getInstance()))
+    frame.add(new TreeReportDataPanel("reportTable", report, DetailedReportConfig.DETAILED_REPORT, DetailedReportExcel.getInstance()))
 
     val treeReportData = reportModel.getReportData.asInstanceOf[TreeReportData]
     val rawData = treeReportData.getRawReportData
