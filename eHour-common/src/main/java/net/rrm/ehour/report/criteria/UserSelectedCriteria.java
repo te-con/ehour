@@ -59,12 +59,12 @@ public class UserSelectedCriteria implements Serializable {
     private List<UserDepartment> userDepartments;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
-    private List<ReportType> reportTypes = Lists.newArrayList();
     private ReportType selectedReportType;
     private Project project;
     private Map<Object, Object> customParameters = Maps.newHashMap();
     private User pm;
     private boolean showZeroBookings = false;
+    private AggregateBy aggregateBy = AggregateBy.MONTH;
 
     public UserSelectedCriteria() {
         resetCustomerSelection();
@@ -421,5 +421,13 @@ public class UserSelectedCriteria implements Serializable {
 
     public void setShowZeroBookings(boolean showZeroBookings) {
         this.showZeroBookings = showZeroBookings;
+    }
+
+    public AggregateBy getAggregateBy() {
+        return aggregateBy;
+    }
+
+    public void setAggregateBy(AggregateBy aggregateBy) {
+        this.aggregateBy = aggregateBy;
     }
 }

@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.report.trend;
 
+import com.google.common.collect.Maps;
+import net.rrm.ehour.report.criteria.AggregateBy;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
@@ -25,14 +27,13 @@ import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
+import net.rrm.ehour.ui.report.panel.detail.DetailedReportAggregator;
 import net.rrm.ehour.ui.report.trend.node.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import scala.Function1;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Detailed report
@@ -40,6 +41,15 @@ import java.util.List;
 
 public class DetailedReportModel extends TreeReportModel {
     private static final long serialVersionUID = -21703820501429504L;
+
+    private static final Map<AggregateBy, Function1<Date, String>> AGGREGATE_MAP = Maps.newHashMap();
+
+    static {
+        AGGREGATE_MAP.put(AggregateBy.WEEK, DetailedReportAggregator.ByWeek());
+        AGGREGATE_MAP.put(AggregateBy.MONTH, DetailedReportAggregator.ByMonth());
+        AGGREGATE_MAP.put(AggregateBy.QUARTER, DetailedReportAggregator.ByQuarter());
+        AGGREGATE_MAP.put(AggregateBy.YEAR, DetailedReportAggregator.ByYear());
+    }
 
     @SpringBean(name = "detailedReportService")
     private DetailedReportService detailedReportService;
@@ -56,17 +66,23 @@ public class DetailedReportModel extends TreeReportModel {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void preprocess(ReportData reportData, ReportCriteria reportCriteria) {
-        List<FlatReportElement> reportElements = (List<FlatReportElement>) reportData.getReportElements();
+    protected ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
+        AggregateBy aggregateBy = reportCriteria.getUserSelectedCriteria().getAggregateBy();
 
-        for (FlatReportElement reportElement : reportElements) {
-            Integer assignmentId = reportElement.getAssignmentId();
-            Date date = reportElement.getDayDate();
+        List<FlatReportElement> elements;
+        List<FlatReportElement> originalElements = (List<FlatReportElement>) reportData.getReportElements();
 
+        if (AGGREGATE_MAP.containsKey(aggregateBy)) {
+            Function1<Date, String> aggregateFunction = AGGREGATE_MAP.get(aggregateBy);
 
+            elements = DetailedReportAggregator.aggregate(originalElements, aggregateFunction);
+        } else {
+            elements = originalElements;
         }
 
-        sortOnDate(reportElements);
+        sortOnDate(elements);
+
+        return new ReportData(reportData.getLockedDays(), elements, reportData.getReportRange());
     }
 
     private void sortOnDate(List<FlatReportElement> reportElements) {

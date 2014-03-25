@@ -1,8 +1,10 @@
 package net.rrm.ehour.ui.report.panel.detail
 
+import java.{util => ju}
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import org.joda.time.LocalDate
 import java.util.Date
+import scala.collection.convert.{WrapAsJava, WrapAsScala}
 
 
 object DetailedReportAggregator {
@@ -17,6 +19,10 @@ object DetailedReportAggregator {
   }
   val ByYear= (date: Date) => new LocalDate(date.getTime).toString("yyyy")
 
+  def aggregate(elements: ju.List[FlatReportElement], f: (Date) => String): ju  .List[FlatReportElement] = {
+    WrapAsJava.bufferAsJavaList(aggregate(WrapAsScala.asScalaBuffer(elements).toList, f).toBuffer)
+  }
+
   def aggregate(elements: List[FlatReportElement], f: (Date) => String): List[FlatReportElement] = {
     def sum(accumulator: Map[AggregateKey, Float], xs: List[FlatReportElement]): Map[AggregateKey, Float] = {
       if (xs.isEmpty) {
@@ -24,6 +30,8 @@ object DetailedReportAggregator {
       } else {
         val element = xs.head
         val key = AggregateKey(element, f)
+
+        Console.println(s"$key.")
 
         val v = accumulator.getOrElse(key, 0f) + element.getTotalHours.floatValue()
 
@@ -37,7 +45,7 @@ object DetailedReportAggregator {
       case (k, v) =>
         val clone = new FlatReportElement(k.baseElement)
         clone.setTotalHours(v)
-        clone.setTotalTurnOver(v * clone.getRate.floatValue())
+        clone.setTotalTurnOver(v * (if (clone.getRate != null) clone.getRate.floatValue() else 0))
         clone.setComment("")
         clone
     }).toList
@@ -46,7 +54,8 @@ object DetailedReportAggregator {
 
 private case class AggregateKey(aggregatedOn: String, baseElement: FlatReportElement) {
   override def equals(other: Any) = other match {
-    case that: AggregateKey => that.aggregatedOn == aggregatedOn && baseElement.getAssignmentId.equals(that.baseElement.getAssignmentId)
+    case that: AggregateKey => that.aggregatedOn == aggregatedOn &&
+      baseElement.getAssignmentId.equals(that.baseElement.getAssignmentId)
     case _ => false
   }
 }

@@ -97,6 +97,7 @@ public abstract class ReportNode implements Serializable {
      * @param aggregate
      * @return
      */
+    @SuppressWarnings("unchecked")
     public boolean processElement(ReportElement reportElement,
                                   int hierarchyLevel,
                                   ReportNodeFactory nodeFactory) {

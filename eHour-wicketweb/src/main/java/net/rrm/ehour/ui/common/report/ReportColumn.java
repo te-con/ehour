@@ -66,12 +66,11 @@ public class ReportColumn implements Serializable {
         boolean isVisibleAndAuthorized = true;
 
         if (displayTypes.contains(DisplayType.IS_RATE_RELATED)) {
-            EhourWebSession session = EhourWebSession.getSession();
 
-            boolean showTurnover = session.getEhourConfig().isShowTurnover();
+            boolean showTurnover = EhourWebSession.getEhourConfig().isShowTurnover();
 
             if (!showTurnover) {
-                isVisibleAndAuthorized = session.isWithReportRole();
+                isVisibleAndAuthorized = EhourWebSession.getSession().isWithReportRole();
             }
         }
 

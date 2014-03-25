@@ -48,7 +48,7 @@ public class ProjectAggregateReportModel extends AbstractAggregateReportModel {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void preprocess(ReportData reportData, ReportCriteria reportCriteria) {
+    protected ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
         List<AssignmentAggregateReportElement> reportElements = (List<AssignmentAggregateReportElement>) reportData.getReportElements();
 
         Collections.sort(reportElements, new Comparator<AssignmentAggregateReportElement>() {
@@ -57,6 +57,8 @@ public class ProjectAggregateReportModel extends AbstractAggregateReportModel {
                 return o1.getProjectAssignment().getProject().compareTo(o2.getProjectAssignment().getProject());
             }
         });
+
+        return new ReportData(reportData.getLockedDays(), reportElements, reportData.getReportRange());
     }
 
     @Override

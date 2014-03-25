@@ -47,19 +47,21 @@ public abstract class TreeReportModel extends AbstractReportModel {
     protected ReportData getReportData(ReportCriteria reportCriteria) {
         ReportData reportData = getValidReportData(reportCriteria);
 
-        preprocess(reportData, reportCriteria);
+        ReportData processedReportData = preprocess(reportData, reportCriteria);
 
         // flatten the original reportData into a matrix representing the whole report
         ReportBuilder reportBuilder = new ReportBuilder();
-        List<ReportNode> rootNodes = reportBuilder.createReport(reportData, getReportNodeFactory());
+        List<ReportNode> rootNodes = reportBuilder.createReport(processedReportData, getReportNodeFactory());
 
         List<TreeReportElement> matrix = createMatrix(rootNodes, reportConfig.getReportColumns().length);
         deriveTotals(rootNodes);
 
-        return new TreeReportData(matrix, reportCriteria.getReportRange(), reportData);
+        return new TreeReportData(matrix, reportCriteria.getReportRange(), processedReportData);
     }
 
-    protected abstract void preprocess(ReportData reportData, ReportCriteria reportCriteria);
+    protected ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
+        return reportData;
+    }
 
     private ReportData getValidReportData(ReportCriteria reportCriteria) {
         ReportData reportData = fetchReportData(reportCriteria);
