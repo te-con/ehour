@@ -19,6 +19,16 @@ class DetailedReportAggregatorTest extends WordSpec with Matchers {
       aggregate should be('empty)
     }
 
+    "by month: aggregate 2 bookings on 1 assignment without rate in 1 month into 1 aggregated element" in {
+      val element = buildElement(1, baseDate, 10)
+      element.setRate(null)
+      val data = List(element, buildElement(1, baseDate.plusWeeks(3), 5))
+
+      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByMonth)
+
+      aggregate.size should be(1)
+      aggregate.head.getTotalHours should be(15)
+    }
     "by month: aggregate 2 bookings on 1 assignment in 1 month into 1 aggregated element" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusWeeks(3), 5))
 
