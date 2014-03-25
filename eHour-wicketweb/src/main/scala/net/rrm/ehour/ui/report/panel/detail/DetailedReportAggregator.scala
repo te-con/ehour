@@ -6,7 +6,7 @@ import java.util.Date
 
 
 object DetailedReportAggregator {
-  val ByMonth = (date: Date) => new LocalDate(date.getTime).withDayOfMonth(1).toString("yyyyMM")
+  val ByMonth = (date: Date) => new LocalDate(date.getTime).toString("yyyyMM")
   val ByWeek = (date: Date) => new LocalDate(date.getTime).toString("yyyyww")
   val ByQuarter = (date: Date) => {
     val localDate = new LocalDate(date.getTime)
@@ -15,6 +15,7 @@ object DetailedReportAggregator {
 
     s"$year$quarter"
   }
+  val ByYear= (date: Date) => new LocalDate(date.getTime).toString("yyyy")
 
   def aggregate(elements: List[FlatReportElement], f: (Date) => String): List[FlatReportElement] = {
     def sum(accumulator: Map[AggregateKey, Float], xs: List[FlatReportElement]): Map[AggregateKey, Float] = {

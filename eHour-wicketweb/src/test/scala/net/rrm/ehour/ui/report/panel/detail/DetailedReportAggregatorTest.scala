@@ -3,7 +3,10 @@ package net.rrm.ehour.ui.report.panel.detail
 import org.scalatest.{Matchers, WordSpec}
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import org.joda.time.LocalDate
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class DetailedReportAggregatorTest extends WordSpec with Matchers {
   "Detailed Report Aggregator" should {
     val baseDate = new LocalDate(2014, 1, 1)
@@ -68,7 +71,6 @@ class DetailedReportAggregatorTest extends WordSpec with Matchers {
       aggregate.size should be(2)
     }
 
-
     "by quarter: aggregate 2 bookings on 1 assignment in 1 quarter into 1 aggregated element" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(1), 5))
 
@@ -91,6 +93,33 @@ class DetailedReportAggregatorTest extends WordSpec with Matchers {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(3), 5))
 
       val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByQuarter)
+
+      aggregate.size should be(2)
+    }
+
+
+    "by year: aggregate 2 bookings on 1 assignment in 1 year into 1 aggregated element" in {
+      val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(4), 5))
+
+      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByYear)
+
+      aggregate.size should be(1)
+      aggregate.head.getTotalHours should be(15)
+    }
+
+    "by year: aggregate 2 bookings on 1 assignment in 1 year into 1 aggregated element and leave the other assignment alone" in {
+      val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(4), 5),
+        buildElement(2, baseDate, 10))
+
+      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByYear)
+
+      aggregate.size should be(2)
+    }
+
+    "by year: do not aggregate 2 bookings when they're in different years" in {
+      val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusYears(1), 5))
+
+      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByYear)
 
       aggregate.size should be(2)
     }
