@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.audit.panel;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.audit.report.AuditReport;
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
+import net.rrm.ehour.ui.common.report.AggregatedReportConfig;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.report.ReportConfig;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -34,7 +34,7 @@ public class AuditReportExcel extends AbstractExcelReport
 	
 	public AuditReportExcel()
 	{
-		super(ReportConfig.AUDIT_REPORT);
+		super(AggregatedReportConfig.AUDIT_REPORT);
 	}
 	
 	@Override

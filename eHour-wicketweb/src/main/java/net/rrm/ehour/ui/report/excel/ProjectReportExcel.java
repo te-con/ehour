@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.report.excel;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
+import net.rrm.ehour.ui.common.report.AggregatedReportConfig;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReportModel;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
@@ -33,7 +33,7 @@ public class ProjectReportExcel extends AbstractExcelReport {
     private static final ProjectReportExcel INSTANCE = new ProjectReportExcel();
 
     private ProjectReportExcel() {
-        super(ReportConfig.AGGREGATE_PROJECT);
+        super(AggregatedReportConfig.AGGREGATE_PROJECT);
     }
 
     @Override

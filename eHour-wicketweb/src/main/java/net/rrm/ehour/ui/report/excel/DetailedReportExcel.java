@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.report.excel;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
+import net.rrm.ehour.ui.common.report.DetailedReportConfig;
 import net.rrm.ehour.ui.common.report.Report;
-import net.rrm.ehour.ui.common.report.ReportConfig;
 import net.rrm.ehour.ui.report.trend.DetailedReportModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -32,7 +32,7 @@ public class DetailedReportExcel extends AbstractExcelReport
 
 	private DetailedReportExcel()
 	{
-		super(ReportConfig.DETAILED_REPORT);
+		super(DetailedReportConfig.DETAILED_REPORT);
 	}
 
     @Override

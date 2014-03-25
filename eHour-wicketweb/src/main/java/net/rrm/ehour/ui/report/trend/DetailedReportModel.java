@@ -22,7 +22,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.ui.common.report.ReportConfig;
+import net.rrm.ehour.ui.common.report.DetailedReportConfig;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import net.rrm.ehour.ui.report.node.ReportNode;
@@ -55,7 +55,7 @@ public class DetailedReportModel extends TreeReportModel {
     private DetailedReportService detailedReportService;
 
     public DetailedReportModel(ReportCriteria reportCriteria) {
-        super(reportCriteria, ReportConfig.DETAILED_REPORT);
+        super(reportCriteria, DetailedReportConfig.DETAILED_REPORT);
     }
 
 
