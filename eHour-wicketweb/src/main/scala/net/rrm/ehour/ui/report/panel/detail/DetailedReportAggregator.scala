@@ -31,8 +31,6 @@ object DetailedReportAggregator {
         val element = xs.head
         val key = AggregateKey(element, f)
 
-        Console.println(s"$key.")
-
         val v = accumulator.getOrElse(key, 0f) + element.getTotalHours.floatValue()
 
         sum(accumulator + (key -> v), xs.tail)

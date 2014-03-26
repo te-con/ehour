@@ -33,7 +33,7 @@ import java.util.List;
  */
 
 public class ReportColumn implements Serializable {
-    public enum DisplayType {VISIBLE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN, IS_RATE_RELATED}
+    public enum DisplayType {HIDDEN, VISIBLE, ALLOW_DUPLICATES, CHART_SERIES_COLUMN, IS_RATE_RELATED}
 
     private static final long serialVersionUID = -6736366461333244457L;
 
@@ -59,7 +59,7 @@ public class ReportColumn implements Serializable {
     }
 
     public boolean isVisible() {
-        if (!displayTypes.contains(DisplayType.VISIBLE)) {
+        if (displayTypes.contains(DisplayType.HIDDEN) || !displayTypes.contains(DisplayType.VISIBLE)) {
             return false;
         }
 
