@@ -55,7 +55,7 @@ public class DetailedReportModel extends TreeReportModel {
     private DetailedReportService detailedReportService;
 
     public DetailedReportModel(ReportCriteria reportCriteria) {
-        super(reportCriteria, DetailedReportConfig.DETAILED_REPORT);
+        super(reportCriteria, DetailedReportConfig.DETAILED_REPORT_BY_DAY);
     }
 
 

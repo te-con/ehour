@@ -14,18 +14,25 @@ import net.rrm.ehour.ui.common.component.AjaxBehaviorComponent
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.report.excel.DetailedReportExcel
 import aggregate.ChartContext
+import net.rrm.ehour.report.criteria.AggregateBy
 
 class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
 
   setDefaultModel(report)
   setOutputMarkupId(true)
 
+  val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
+              AggregateBy.MONTH -> DetailedReportConfig.DETAILED_REPORT_BY_MONTH)
+
+
   protected override def onBeforeRender() {
     val frame = new WebMarkupContainer("frame")
     addOrReplace(frame)
 
+    val reportConfig = AggregateToConfigMap.getOrElse(report.getReportCriteria.getUserSelectedCriteria.getAggregateBy, DetailedReportConfig.DETAILED_REPORT_BY_DAY)
+
     val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
-    frame.add(new TreeReportDataPanel("reportTable", report, DetailedReportConfig.DETAILED_REPORT, DetailedReportExcel.getInstance()))
+    frame.add(new TreeReportDataPanel("reportTable", report, reportConfig, DetailedReportExcel.getInstance()))
 
     val treeReportData = reportModel.getReportData.asInstanceOf[TreeReportData]
     val rawData = treeReportData.getRawReportData

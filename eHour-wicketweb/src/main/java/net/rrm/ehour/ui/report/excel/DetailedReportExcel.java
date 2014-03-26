@@ -32,7 +32,7 @@ public class DetailedReportExcel extends AbstractExcelReport
 
 	private DetailedReportExcel()
 	{
-		super(DetailedReportConfig.DETAILED_REPORT);
+		super(DetailedReportConfig.DETAILED_REPORT_BY_DAY);
 	}
 
     @Override
