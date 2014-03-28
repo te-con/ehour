@@ -22,6 +22,7 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
   setOutputMarkupId(true)
 
   val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
+              AggregateBy.WEEK-> DetailedReportConfig.DETAILED_REPORT_BY_WEEK,
               AggregateBy.MONTH -> DetailedReportConfig.DETAILED_REPORT_BY_MONTH)
 
 
