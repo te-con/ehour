@@ -36,12 +36,12 @@ object DetailedReportChartGenerator {
 
     val reportRange = reportData.getReportRange
 
-    val (categoryDataMap, categoryNameMap) = buildCategoryMap(elements, f)
+    val (dateValueMap, customerNameMap) = buildCustomerAndValueMap(elements, f)
 
-    val series = (for (category <- categoryDataMap.keySet) yield {
-      val values = categoryDataMap.get(category).get
+    val series = (for (category <- dateValueMap.keySet) yield {
+      val values = dateValueMap.get(category).get
 
-      SparseDateSeries(name = categoryNameMap.get(category), data = values, dateStart = new DateTime(reportRange.getDateStart), dateEnd = new DateTime(reportRange.getDateEnd))
+      SparseDateSeries(name = customerNameMap.get(category), data = values, dateStart = new DateTime(reportRange.getDateStart), dateEnd = new DateTime(reportRange.getDateEnd))
     }).toList
 
     val chart = new Chart(defaultSeriesType = SeriesType.column, zoomType = ZoomType.x)
@@ -51,7 +51,7 @@ object DetailedReportChartGenerator {
     // for performance reasons, disable shadows when there's a lot of data
     val isBigDataSet = (series.length * seriesLength) > 150
 
-    val plotOptions = PlotOptions(PlotOptionsSeries(shadow = !isBigDataSet, pointStart = Some(new DateTime(reportRange.getDateStart)), pointInterval = Some(PointInterval.DAY)), column = PlotOptionsColumn(pointWidth = 10))
+    val plotOptions = PlotOptions(PlotOptionsSeries(shadow = !isBigDataSet, pointStart = Some(new DateTime(reportRange.getDateStart)), pointInterval = Some(PointInterval.WEEK)), column = PlotOptionsColumn(pointWidth = 10))
     new HighChart(chart = chart,
       xAxis = Seq(Axis(axisType = AxisType.datetime, maxZoom = 3)),
       series = series,
@@ -59,24 +59,25 @@ object DetailedReportChartGenerator {
     )
   }
 
-  private def buildCategoryMap(elements: Seq[FlatReportElement], f: FlatReportElement => Float) = {
+  private def buildCustomerAndValueMap(elements: Seq[FlatReportElement], f: FlatReportElement => Float) = {
 
     type NameMap = Map[Int, String]
     type DataMap = Map[Int, List[DateFloatValue]]
 
-    def add(es: Seq[FlatReportElement], nameMap: NameMap = Map(), dataMap: DataMap = Map()): (DataMap, NameMap) = {
+    def add(es: Seq[FlatReportElement], customerIdToNameMap: NameMap = Map(), dateValueMap: DataMap = Map()): (DataMap, NameMap) = {
       if (es.isEmpty) {
-        (dataMap, nameMap)
+        (dateValueMap, customerIdToNameMap)
       } else {
-        val e = es.head
-        val id = e.getCustomerId.toInt
-        val nameMap2 = nameMap + (id -> e.getCustomerName)
+        val element = es.head
+        val customerId = element.getCustomerId.toInt
+        
+        val updatedCustomerIdToNameMap = customerIdToNameMap + (customerId -> element.getCustomerName)
 
-        val item = DateFloatValue(new DateTime(e.getDayDate), if (f == null) 0 else f(e))
+        val dateValue = DateFloatValue(new DateTime(element.getDayDate), if (f == null) 0 else f(element))
 
-        val d = (item :: dataMap.getOrElse(id, List()).reverse).reverse
+        val d = (dateValue :: dateValueMap.getOrElse(customerId, List()).reverse).reverse
 
-        add(es.tail, nameMap2, dataMap + (id -> d))
+        add(es.tail, updatedCustomerIdToNameMap, dateValueMap + (customerId -> d))
       }
     }
 

@@ -64,7 +64,7 @@ public class UserSelectedCriteria implements Serializable {
     private Map<Object, Object> customParameters = Maps.newHashMap();
     private User pm;
     private boolean showZeroBookings = false;
-    private AggregateBy aggregateBy = AggregateBy.MONTH;
+    private AggregateBy aggregateBy = AggregateBy.WEEK;
 
     public UserSelectedCriteria() {
         resetCustomerSelection();
