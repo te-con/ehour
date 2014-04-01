@@ -7,8 +7,7 @@
 	<bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
 		<sec:filter-chain-map path-type="ant">
 			<sec:filter-chain pattern="/eh/**"
-				filters="
-	           securityContextPersistenceFilter" />
+				filters="securityContextPersistenceFilter" />
 		</sec:filter-chain-map>
 	</bean>
 

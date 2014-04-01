@@ -53,7 +53,7 @@ object DetailedReportChartGenerator {
 
     val plotOptions = PlotOptions(PlotOptionsSeries(shadow = !isBigDataSet, pointStart = Some(new DateTime(reportRange.getDateStart)), pointInterval = Some(PointInterval.WEEK)), column = PlotOptionsColumn(pointWidth = 10))
     new HighChart(chart = chart,
-      xAxis = Seq(Axis(axisType = AxisType.datetime, maxZoom = 3)),
+      xAxis = Seq(Axis(axisType = AxisType.linear, maxZoom = 3)),
       series = series,
       plotOptions = plotOptions
     )

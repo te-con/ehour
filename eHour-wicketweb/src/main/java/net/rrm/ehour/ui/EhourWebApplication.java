@@ -35,6 +35,7 @@ import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.pm.ProjectManagementPage;
 import net.rrm.ehour.ui.report.page.ReportPage;
+import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource;
 import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
@@ -53,6 +54,8 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
@@ -93,6 +96,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
             getMarkupSettings().setStripWicketTags(true);
             mountPages();
+            mountResources();
+
             getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
             setupSecurity();
 
@@ -114,7 +119,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private boolean isInTestMode() {
         return Boolean.parseBoolean(System.getProperty("EHOUR_TEST", "false"));
     }
-
 
     private void setUACHeaderPriority() {
         final Comparator<? super ResourceAggregator.RecordedHeaderItem> defaultHeaderComparator = getResourceSettings().getHeaderItemComparator();
@@ -186,6 +190,18 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/backup", BackupDbPage.class);
 
         mountPage("/op/lock", LockAdminPage.class);
+    }
+
+    private void mountResources() {
+        mountResource("/rest/report", new ResourceReference("restReference") {
+
+            DetailedReportRESTResource resource = new DetailedReportRESTResource();
+
+            @Override
+            public IResource getResource() {
+                return resource;
+            }
+        });
     }
 
     protected void springInjection() {
