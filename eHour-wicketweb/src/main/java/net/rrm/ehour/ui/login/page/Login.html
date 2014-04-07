@@ -1,103 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
 
+<html class="no-js">
+<!--<![endif]-->
 
-<wicket:head>
-    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 
-
-    <title wicket:id="pageTitle">eHour</title>
-    <link rel="stylesheet" type="text/css" href="css/ehour.css"/>
-    <link rel="stylesheet" type="text/css" href="css/ehourLogin.css"/>
-</wicket:head>
+    <title>eHour Login</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="css/flatstrap/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+    </style>
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    <style type="text/css">
+body{padding-top:40px;padding-bottom:40px;background-color:#f5f5f5}.form-signin{max-width:330px;padding:20px;margin:0 auto;background-color:#fff;border:1px solid #e5e5e5;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-box-shadow:0 1px 2px rgba(0,0,0,.05);-moz-box-shadow:0 1px 2px rgba(0,0,0,.05);box-shadow:0 1px 2px rgba(0,0,0,.05)}.form-signin,.form-signin .form-signin-heading{margin-bottom:10px}.form-signin .form-control{position:relative;height:auto;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:10px;font-size:16px}.form-signin .form-control:focus{z-index:2}.form-signin input[type=email]{margin-bottom:-1px;border-bottom-right-radius:0;border-bottom-left-radius:0}.form-signin input[type=password]{margin-bottom:10px;border-top-left-radius:0;border-top-right-radius:0}
+    </style>
+</head>
 
 <body>
-
-<form wicket:id="loginform" style="padding-top: 100px;">
-    <div class="GreyFrameContainer loginContainer">
-        <h3>&nbsp;</h3>
-
-        <div class="GreyFrameBody wideGreyFrame">
-            <div class="GreyBlueFrameHorizontal">
-                <div class="GreyBlueLeftTop">
-                    <div class="GreyBlueRightTop">
-                        &nbsp;
-                    </div>
-                </div>
-
-                <div style="padding: 10px">
-                    <br />
-                    <div class="logoContainer">
-                        <img src="img/ehour_grey.gif"/><br/>
-
-                        <div style="padding-right: 6px" wicket:id="version">0.8.0</div>
-                        <div style="padding-right: 6px;font-size:70%" wicket:id="build">489</div>
-                    </div>
-
-                    <div style="float: left;padding: 7px 23px 0 9px">
-                        <img src="img/grey_frame/pixel_grey.gif" height="70" width="1"/>
-                    </div>
-
-                    <div style="margin: 0; padding: 30px 0 0 0">
-                        <table cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td style="padding-right:5px">
-                                    <wicket:message key="login.login.username"/>
-                                </td>
-                                <td><input size="23" autocomplete="off"
-                                           onfocus='this.setAttribute("autocomplete", "on");'
-                                           onblur='this.setAttribute("autocomplete", "off");' wicket:id="username"
-                                           type="text"/></td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td style="padding-right:5px">
-                                    <wicket:message key="login.login.password"/>
-                                </td>
-                                <td><input size="23" wicket:id="password" type="password"/></td>
-                                <td style="padding-left:10px">
-                                    <button class="submitButton" type="submit">
-                                        <wicket:message key="login.login.submit"/>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="3">
-                                    <div wicket:id="feedback" class="error"></div>
-                                    <div wicket:id="demoMode" class="error"></div>
-                                </td>
-                            </tr>
-                        </table>
-
-                    </div>
-                </div>
-
-
-                <br/>
-
-
-                <div class="GreyBlueLeftBottom">
-                    <div class="GreyBlueRightBottom">
-                        &nbsp;
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="GreyFrameFooter">
-            <p/>
-        </div>
-    </div>
-</form>
-
-
-
+    <div class="container">
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Please Login</h2><input autofocus=
+            "" class="form-control" placeholder="Username" required="" type=
+            "email"> <input class="form-control" placeholder="Password"
+            required="" type="password"> <button class=
+            "btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
+    </div><!-- /container -->
 </body>
 </html>
-
-    
