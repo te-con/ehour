@@ -49,11 +49,7 @@ public abstract class AbstractBasePanel<T> extends Panel {
         return getPanelModel().getObject();
     }
 
-    protected final void setPanelModelObject(T object) {
-        getPanelModel().setObject(object);
-    }
-
     protected final EhourConfig getConfig() {
-        return getEhourWebSession().getEhourConfig();
+        return EhourWebSession.getEhourConfig();
     }
 }

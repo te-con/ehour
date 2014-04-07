@@ -60,7 +60,7 @@ public class HibernateConfiguration {
         hibernateProperties.put("use_outer_join", "true");
         hibernateProperties.put("hibernate.cache.region.factory_class", "net.sf.ehcache.hibernate.EhCacheRegionFactory");
         hibernateProperties.put("hibernate.cache.use_second_level_cache", caching);
-        hibernateProperties.put("net.sf.ehcache.configurationResourceName", "ehcache.xml");
+        hibernateProperties.put("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
         hibernateProperties.put("hibernate.cache.use_query_cache", caching);
         hibernateProperties.put("hibernate.hbm2ddl.auto", configProperties.get("hibernate.hbm2ddl.auto"));
 

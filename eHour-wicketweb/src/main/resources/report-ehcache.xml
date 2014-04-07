@@ -1,0 +1,13 @@
+<ehcache updateCheck="false">
+    <defaultCache maxElementsInMemory="500"
+                  eternal="false"
+                  timeToIdleSeconds="0"
+                  timeToLiveSeconds="3600"
+                  overflowToDisk="false"
+                  diskPersistent="false"
+            />
+
+    <cache name="reportCache"
+           maxEntriesLocalHeap="500"
+            />
+</ehcache>
