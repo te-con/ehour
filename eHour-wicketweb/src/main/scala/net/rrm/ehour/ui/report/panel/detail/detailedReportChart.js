@@ -23,7 +23,7 @@ function DetailedReportChart(cacheKey, id) {
             ]
         };
 
-        $.getJSON('/eh/rest/report/detailed/hour', function (data) {
+        $.getJSON('/eh/rest/report/detailed/hour/' + cacheKey, function (data) {
             options.series[0].data = data;
             $('#' + id).highcharts(options);
         });
