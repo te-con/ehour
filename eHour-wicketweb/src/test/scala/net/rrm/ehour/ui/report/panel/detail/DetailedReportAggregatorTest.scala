@@ -1,13 +1,14 @@
 package net.rrm.ehour.ui.report.panel.detail
 
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.WordSpec
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import org.joda.time.LocalDate
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import net.rrm.ehour.AbstractSpec
 
 @RunWith(classOf[JUnitRunner])
-class DetailedReportAggregatorTest extends WordSpec with Matchers {
+class DetailedReportAggregatorTest extends AbstractSpec {
   "Detailed Report Aggregator" should {
     val baseDate = new LocalDate(2014, 1, 1)
 
