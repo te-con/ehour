@@ -12,7 +12,10 @@ class HighChart3Container(id: String, cacheKey: String) extends Panel(id) with I
 
   override def renderHead(response: IHeaderResponse) {
     response.render(JavaScriptHeaderItem.forReference(JS))
-    response.render(new OnLoadHeaderItem(s"window.chart = new DetailedReportChart('$cacheKey');"))
+
+    val markupId = getMarkupId
+
+    response.render(new OnLoadHeaderItem(s"window.chart = new DetailedReportChart('$cacheKey', '$markupId');"))
 
     response.render(new OnLoadHeaderItem("window.chart.init();"))
   }
