@@ -24,7 +24,7 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
   setOutputMarkupId(true)
 
   @SpringBean
-  protected var reportCacheService: ReportCacheService = _
+  var reportCacheService: ReportCacheService = _
 
   val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
               AggregateBy.WEEK-> DetailedReportConfig.DETAILED_REPORT_BY_WEEK,

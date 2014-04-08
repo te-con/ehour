@@ -8,7 +8,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference
 class HighChart3Container(id: String, cacheKey: String) extends Panel(id) with IHeaderContributor {
   setOutputMarkupId(true)
 
-  private val JS = new JavaScriptResourceReference(classOf[HighChart3Container], "detaileReportChart.js")
+  private val JS = new JavaScriptResourceReference(classOf[HighChart3Container], "detailedReportChart.js")
 
   override def renderHead(response: IHeaderResponse) {
     response.render(JavaScriptHeaderItem.forReference(JS))
