@@ -4,6 +4,10 @@ import org.wicketstuff.rest.resource.gson.GsonRestResource
 import org.wicketstuff.rest.annotations.MethodMapping
 
 class DetailedReportRESTResource extends GsonRestResource{
-  @MethodMapping("/report")
-  def findReport: String = "hai"
+  @MethodMapping("/hour")
+  def findReport: String = {
+    Console.println("Fefe")
+
+    "hai"
+  }
 }

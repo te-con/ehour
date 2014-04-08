@@ -193,7 +193,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     }
 
     private void mountResources() {
-        mountResource("/rest/report", new ResourceReference("restReference") {
+        mountResource("/rest/report/detailed", new ResourceReference("restReference") {
 
             DetailedReportRESTResource resource = new DetailedReportRESTResource();
 
