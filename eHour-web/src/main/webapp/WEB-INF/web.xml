@@ -13,6 +13,7 @@
             classpath:context-scanner.xml
             classpath:context-service.xml
             classpath:context-security.xml
+            classpath:context-cache.xml
             classpath:context-wicket.xml
             classpath:context-versioncheck.xml
         </param-value>

@@ -5,10 +5,10 @@
        default-lazy-init="true">
 
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="ehcache"/>
+        <property name="cacheManager" ref="reportEhcache"/>
     </bean>
 
-    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    <bean id="reportEhcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="classpath:report-ehcache.xml"/>
         <property name="shared" value="true"/>
     </bean>

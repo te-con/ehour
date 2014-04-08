@@ -7,8 +7,9 @@ import org.springframework.cache.ehcache.EhCacheCacheManager
 import java.util.UUID
 
 @Service
-class ReportCacheService @Autowired()(cacheManager: EhCacheCacheManager) {
-  val cache = cacheManager.getCache("reportCache")
+class ReportCacheService @Autowired() (cacheManager: EhCacheCacheManager) {
+
+  def cache = cacheManager.getCache("reportCache")
 
   def storeReportData(reportData: ReportData): String = {
     val key = UUID.randomUUID().toString
