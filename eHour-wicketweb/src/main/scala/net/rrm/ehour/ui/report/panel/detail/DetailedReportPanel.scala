@@ -15,11 +15,16 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.report.excel.DetailedReportExcel
 import aggregate.ChartContext
 import net.rrm.ehour.report.criteria.AggregateBy
+import org.apache.wicket.spring.injection.annot.SpringBean
+import net.rrm.ehour.ui.report.cache.ReportCacheService
 
 class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
 
   setDefaultModel(report)
   setOutputMarkupId(true)
+
+  @SpringBean
+  protected var reportCacheService: ReportCacheService = _
 
   val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
               AggregateBy.WEEK-> DetailedReportConfig.DETAILED_REPORT_BY_WEEK,
@@ -37,7 +42,10 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
 
     val treeReportData = reportModel.getReportData.asInstanceOf[TreeReportData]
     val rawData = treeReportData.getRawReportData
-    val chartContainer = new HighChartContainer("chart", new Model(rawData), DetailedReportChartGenerator.generateHourBasedDetailedChart)
+    val cacheKey = reportCacheService.storeReportData(rawData)
+
+//    val chartContainer = new HighChartContainer("chart", new Model(rawData), DetailedReportChartGenerator.generateHourBasedDetailedChart)
+    val chartContainer = new HighChart3Container("chart", cacheKey)
     chartContainer.setVisible(!treeReportData.isEmpty)
     frame.add(chartContainer)
 
