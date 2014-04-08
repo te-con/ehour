@@ -6,7 +6,7 @@ import org.springframework.cache.ehcache.{EhCacheCache, EhCacheCacheManager}
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother
 import net.sf.ehcache.CacheManager
 
-class ReportCacheServiceSpec extends AbstractSpec {
+class ReportCacheServiceEhCacheImplSpec extends AbstractSpec {
   val cacheManager = mock[EhCacheCacheManager]
   var cacheService:ReportCacheService = _
 
@@ -16,7 +16,7 @@ class ReportCacheServiceSpec extends AbstractSpec {
 
     when(cacheManager.getCache("reportCache")).thenReturn(new EhCacheCache(instance.getCache("reportCache")))
 
-    cacheService = new ReportCacheService(cacheManager)
+    cacheService = new ReportCacheServiceEhCacheImpl(cacheManager)
   }
 
   "Report Cache Service" should {

@@ -12,5 +12,7 @@
         <property name="build" value="${build}"/>
 	</bean>
 
+    <context:annotation-config/>
+
     <context:component-scan base-package="net.rrm.ehour.ui" />
 </beans>
