@@ -1,12 +1,29 @@
 package net.rrm.ehour.ui.report.panel.detail
 
-import net.rrm.ehour.AbstractSpec
+import net.rrm.ehour.AbstractSpringWebAppSpec
+import net.rrm.ehour.ui.report.cache.ReportCacheService
+import org.mockito.Mockito._
+import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother
 
-class DetailedReportRESTResourceSpec extends AbstractSpec {
+class DetailedReportRESTResourceSpec extends AbstractSpringWebAppSpec {
   "Detailed Report REST resource" should {
-    "generate data on cache key" in {
+    val cacheService = mockService[ReportCacheService]
 
+     before {
+      reset(cacheService)
+
+       when(cacheService.retrieveReportData("123")).thenReturn(Some(DetailedReportDataObjectMother.getFlatReportData))
+     }
+
+    "properly serialize date value values" in {
+      tester.getRequest.setMethod("GET")
+      tester.executeUrl("./rest/report/detailed/hour/123")
+
+      val response = tester.getLastResponseAsString
+
+      Console.println(response)
+
+      response should not include "{}"
     }
   }
-
 }

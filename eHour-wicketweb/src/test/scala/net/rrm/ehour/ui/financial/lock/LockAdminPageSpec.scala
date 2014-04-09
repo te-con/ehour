@@ -9,7 +9,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.Component
 import org.scalatest.BeforeAndAfter
 
-class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter  {
+class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
   "Lock Admin Page" should {
     val service = mockService[TimesheetLockService]
 

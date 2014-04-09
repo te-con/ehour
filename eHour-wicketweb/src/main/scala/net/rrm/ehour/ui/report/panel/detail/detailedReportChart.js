@@ -4,17 +4,41 @@ function DetailedReportChart(cacheKey, id) {
 
         var options = {
             chart: {
-                type: 'bar'
+                type: 'bar',
+                defaultSeriesType: 'column',
+                zoomType: 'x'
             },
             title: {
-                text: 'Fruit Consumption'
+                text: 'Hours booked on customers per day'
             },
-            xAxis: {
-                categories: ['Apples', 'Bananas', 'Oranges']
+            plotOptions: {
+                series: {
+                    shadow: true,
+                    pointStart: Date.UTC(2007, 11, 27),
+                    pointInterval: 604800000
+                },
+                column: {
+                    stacking: "normal",
+                    pointWidth: 10
+                }
             },
+            xAxis: [
+                {
+                    type: "linear",
+                    maxZoom: 3
+                }
+            ],
             yAxis: {
                 title: {
-                    text: 'Fruit eaten'
+                    text: 'Hours'
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                formatter: function () {
+                    return new Date(this.x).toLocaleDateString() + '<br />' + this.series.name + ': ' + this.y.toLocaleString() + ' hours'
                 }
             },
             series: [
@@ -29,3 +53,5 @@ function DetailedReportChart(cacheKey, id) {
         });
     }
 }
+
+
