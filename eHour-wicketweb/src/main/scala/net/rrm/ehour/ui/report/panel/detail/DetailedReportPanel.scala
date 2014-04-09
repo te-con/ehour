@@ -60,8 +60,8 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
     val typeSelector = new WebMarkupContainer("typeSelector")
     frame.add(typeSelector)
 
-    typeSelector.add(radioButton("turnover", DetailedReportChartGenerator.generateTurnoverBasedDetailedChart))
-    typeSelector.add(radioButton("time", DetailedReportChartGenerator.generateHourBasedDetailedChart))
+//    typeSelector.add(radioButton("turnover", DetailedReportChartGenerator.generateTurnoverBasedDetailedChart))
+//    typeSelector.add(radioButton("time", DetailedReportChartGenerator.generateHourBasedDetailedChart))
 
     typeSelector.setVisible(getEhourWebSession.isWithReportRole)
 

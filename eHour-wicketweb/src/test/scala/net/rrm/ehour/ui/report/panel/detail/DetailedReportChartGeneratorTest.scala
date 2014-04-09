@@ -4,7 +4,6 @@ import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import net.rrm.ehour.ui.report.panel.aggregate.ChartContext
 
 @RunWith(classOf[JUnitRunner])
 class DetailedReportChartGeneratorTest extends FunSuite with Matchers with BeforeAndAfter {
@@ -12,10 +11,11 @@ class DetailedReportChartGeneratorTest extends FunSuite with Matchers with Befor
   val reportData = DetailedReportDataObjectMother.getFlatReportData
 
   before {
-    chart = DetailedReportChartGenerator.generateHourBasedDetailedChart(ChartContext("container", reportData, "$", withTurnover = true))
+//    chart = DetailedReportChartGenerator.generateHourBasedDetailedChart(ChartContext("container", reportData, "$", withTurnover = true))
   }
 
   test("should have series type of column with zoomtype") {
+    Console.println(chart)
     chart should include( """chart:{"renderTo":"container","defaultSeriesType":"column","zoomType":"x"}""")
   }
 

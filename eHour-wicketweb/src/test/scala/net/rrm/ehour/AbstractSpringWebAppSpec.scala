@@ -4,8 +4,9 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import scala.reflect.Manifest
 import org.apache.wicket.event.IEvent
 import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfter
 
-abstract class AbstractSpringWebAppSpec extends AbstractSpec {
+abstract class AbstractSpringWebAppSpec extends AbstractSpec with BeforeAndAfter {
   val springTester = new BaseSpringWebAppTester
   def tester = springTester.getTester
 

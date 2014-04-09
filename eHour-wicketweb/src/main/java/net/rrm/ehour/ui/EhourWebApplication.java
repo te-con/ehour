@@ -36,6 +36,7 @@ import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.pm.ProjectManagementPage;
 import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource;
+import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource$;
 import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
@@ -195,7 +196,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private void mountResources() {
         mountResource("/rest/report/detailed", new ResourceReference("restReference") {
 
-            DetailedReportRESTResource resource = new DetailedReportRESTResource();
+            DetailedReportRESTResource resource = DetailedReportRESTResource$.MODULE$.apply();
 
             @Override
             public IResource getResource() {
