@@ -48,7 +48,7 @@ function DetailedReportChart(cacheKey, id) {
         };
 
         $.getJSON('/eh/rest/report/detailed/hour/' + cacheKey, function (data) {
-            options.series[0].data = data;
+            options.series = data;
             $('#' + id).highcharts(options);
         });
     }
