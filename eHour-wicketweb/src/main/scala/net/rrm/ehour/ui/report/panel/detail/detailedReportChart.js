@@ -4,7 +4,6 @@ function DetailedReportChart(cacheKey, id) {
 
         var options = {
             chart: {
-                type: 'bar',
                 defaultSeriesType: 'column',
                 zoomType: 'x'
             },
@@ -13,9 +12,9 @@ function DetailedReportChart(cacheKey, id) {
             },
             plotOptions: {
                 series: {
-                    shadow: true,
+                    shadow: false,
                     pointStart: Date.UTC(2007, 11, 27),
-                    pointInterval: 604800000
+                    pointInterval: 86400000
                 },
                 column: {
                     stacking: "normal",
@@ -24,7 +23,7 @@ function DetailedReportChart(cacheKey, id) {
             },
             xAxis: [
                 {
-                    type: "linear",
+                    type: "datetime",
                     maxZoom: 3
                 }
             ],
@@ -42,7 +41,6 @@ function DetailedReportChart(cacheKey, id) {
                 }
             },
             series: [
-                {},
                 {}
             ]
         };

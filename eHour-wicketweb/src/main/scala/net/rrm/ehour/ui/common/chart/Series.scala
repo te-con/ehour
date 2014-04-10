@@ -22,13 +22,13 @@ sealed abstract class AbstractSeries[T] {
 
 case class Series[T](name: String = "",
                      data: Iterable[T],
-                     yAxis: Int) extends AbstractSeries[T]
+                     yAxis: Option[Int] = None) extends AbstractSeries[T]
 
 case class SparseDateSeries(name: String = "",
                             data: Seq[DateFloatValue],
                             dateStart: DateTime,
                             dateEnd: DateTime,
-                            yAxis: Int = 0) extends AbstractSeries[DateFloatValue] {
+                            yAxis: Option[Int] = None) extends AbstractSeries[DateFloatValue] {
   override def preProcess(): Series[Float] = {
     val groupedByDate = data groupBy (_.date)
 
