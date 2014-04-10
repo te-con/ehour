@@ -52,3 +52,9 @@ case class SparseDateSeries(name: String = "",
   }
 }
 
+object PointInterval {
+  val DAY = 24 * 3600 * 1000
+  val WEEK = 7 * DAY
+  val YEAR = 365 * DAY
+}
+

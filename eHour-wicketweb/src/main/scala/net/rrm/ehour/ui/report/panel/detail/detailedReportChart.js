@@ -12,9 +12,9 @@ function DetailedReportChart(cacheKey, id) {
             },
             plotOptions: {
                 series: {
-                    shadow: false,
-                    pointStart: Date.UTC(2007, 11, 27),
-                    pointInterval: 86400000
+                    shadow: false
+//                    pointStart: Date.UTC(2013,9, 1),
+//                    pointInterval: 86400000
                 },
                 column: {
                     stacking: "normal",
@@ -35,6 +35,7 @@ function DetailedReportChart(cacheKey, id) {
             credits: {
                 enabled: false
             },
+
             tooltip: {
                 formatter: function () {
                     return new Date(this.x).toLocaleDateString() + '<br />' + this.series.name + ': ' + this.y.toLocaleString() + ' hours'
@@ -45,8 +46,13 @@ function DetailedReportChart(cacheKey, id) {
             ]
         };
 
+        console.log(cacheKey);
+
         $.getJSON('/eh/rest/report/detailed/hour/' + cacheKey, function (data) {
-            options.series = data;
+            options.plotOptions.series.pointStart = data.pointStart;
+            options.plotOptions.series.pointInterval = data.pointInterval;
+            options.series = data.series;
+            console.log(options.plotOptions.series.pointStart);
             $('#' + id).highcharts(options);
         });
     }
