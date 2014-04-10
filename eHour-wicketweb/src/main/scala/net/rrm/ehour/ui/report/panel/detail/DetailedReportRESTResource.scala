@@ -6,39 +6,42 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.ui.report.cache.ReportCacheService
 import net.rrm.ehour.ui.common.util.WebUtils
 import net.rrm.ehour.util._
-import java.util
-import com.google.gson._
-import java.lang.reflect.Type
-import org.joda.time.DateTime
-import net.rrm.ehour.ui.common.chart.SparseDateSeries
+import net.rrm.ehour.ui.common.chart.{PointInterval, GsonSerializer, SparseDateSeries}
 import scala.Some
 import scala.collection.convert.WrapAsJava
+import org.apache.log4j.Logger
+import java.util
+import org.joda.time.DateTime
 
 object DetailedReportRESTResource {
-  def apply: DetailedReportRESTResource = {
-    val gson = new GsonBuilder()
-      .registerTypeAdapter(classOf[DateTime], new DateTimeSerializer)
-      .create()
-    new DetailedReportRESTResource(new GsonSerialDeserial(gson))
-  }
+  def apply: DetailedReportRESTResource = new DetailedReportRESTResource(new GsonSerialDeserial(GsonSerializer.create))
+
+  private final val LOG = Logger.getLogger(classOf[DetailedReportRESTResource])
 }
+
 
 class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRestResource(serializer) {
   @SpringBean
   var reportCacheService: ReportCacheService = _
 
   @MethodMapping("/hour/{cacheKey}")
-  def findReport(cacheKey: String): util.List[JSparseDateSeries] = {
-    Console.println("they're hitting me!")
+  def findReport(cacheKey: String): DetailedReportResponse = {
     cacheService.retrieveReportData(cacheKey) match {
       case Some(data) =>
+        val reportRange = data.getReportRange
         val unprocessedSeries = DetailedReportChartGenerator.generateHourBasedDetailedChartData(data)
-        toJava(unprocessedSeries.map(JSparseDateSeries(_)))
+
+        DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
+                               pointInterval = PointInterval.WEEK,
+                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
       case None =>
-        Console.println(s"no data found for key $cacheKey")
+
+        DetailedReportRESTResource.LOG.warn(s"no data found for key $cacheKey")
 
         throw new IllegalArgumentException(s"no data found for key $cacheKey")
     }
+
+
   }
 
   private def cacheService = {
@@ -48,11 +51,9 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
   }
 }
 
-class DateTimeSerializer extends JsonSerializer[DateTime] {
-  override def serialize(d: DateTime, typeOfSrc: Type, context: JsonSerializationContext): JsonElement = new JsonPrimitive("Date.UTC(%d,%d, %d)" format(d.getYear, d.getMonthOfYear - 1, d.getDayOfMonth))
-}
-
-import java.util
+case class DetailedReportResponse(pointStart: DateTime,
+                                  pointInterval: Long,
+                                  series: util.List[JSparseDateSeries])
 
 case class JSparseDateSeries(name: String,
                              data: util.List[Float],
