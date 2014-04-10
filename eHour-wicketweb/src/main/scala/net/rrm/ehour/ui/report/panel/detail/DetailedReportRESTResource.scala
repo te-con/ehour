@@ -17,8 +17,8 @@ import scala.collection.convert.WrapAsJava
 object DetailedReportRESTResource {
   def apply: DetailedReportRESTResource = {
     val gson = new GsonBuilder()
-        .registerTypeAdapter(classOf[DateTime], new DateTimeSerializer)
-        .create()
+      .registerTypeAdapter(classOf[DateTime], new DateTimeSerializer)
+      .create()
     new DetailedReportRESTResource(new GsonSerialDeserial(gson))
   }
 }
@@ -53,14 +53,18 @@ class DateTimeSerializer extends JsonSerializer[DateTime] {
 }
 
 import java.util
+
 case class JSparseDateSeries(name: String,
                              data: util.List[Float],
-                             yAxis: Int)
+                             yAxis: Integer = null)
 
 object JSparseDateSeries {
   def apply(series: SparseDateSeries): JSparseDateSeries = {
     val processedSeries = series.preProcess()
 
-    JSparseDateSeries(processedSeries.name, WrapAsJava.bufferAsJavaList(processedSeries.data.toBuffer), processedSeries.yAxis)
+    processedSeries.yAxis match {
+      case Some(axis) => JSparseDateSeries(processedSeries.name, WrapAsJava.bufferAsJavaList(processedSeries.data.toBuffer), axis)
+      case None => JSparseDateSeries(processedSeries.name, WrapAsJava.bufferAsJavaList(processedSeries.data.toBuffer))
+    }
   }
 }
