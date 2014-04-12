@@ -66,7 +66,7 @@ public abstract class AbstractScenario {
         IDatabaseConnection connection = new DatabaseConnection(con);
 
         FlatXmlDataSet additionalDataSet = new FlatXmlDataSetBuilder().build(new File("src/test/resources/datasets/" + dataSetFileName));
-        DatabaseOperation.CLEAN_INSERT.execute(connection, additionalDataSet);
+        DatabaseOperation.INSERT.execute(connection, additionalDataSet);
     }
 
     protected final void updatePassword(String username, String password) throws SQLException {
