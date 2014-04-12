@@ -38,8 +38,7 @@ import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
@@ -50,7 +49,6 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -112,29 +110,8 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         optionsFilter.setVisible(reportConfig.isShowZeroBookings());
         reportTable.add(optionsFilter);
 
-        if (reportConfig.isShowZeroBookings()) {
-            Fragment fragment = new Fragment("reportOptionsPlaceholder", "reportOptions", this);
-            fragment.setOutputMarkupId(true);
-
-            fragment.add(new Label("zeroBookingsLabel", new ResourceModel(reportConfig.getZeroBookingsMessageKey())));
-
-            AjaxCheckBox bookingCheckbox = new AjaxCheckBox("toggleShowZeroBookings", new PropertyModel<Boolean>(criteria, "showZeroBookings")) {
-                @Override
-                protected void onUpdate(AjaxRequestTarget target) {
-                    reportModel.detach();
-
-                    addReportData(reportModel, reportTableContainer);
-
-                    target.add(reportTableContainer);
-                }
-            };
-
-            fragment.add(bookingCheckbox);
-
-            reportTable.add(fragment);
-        } else {
-            reportTable.add(new Container("reportOptionsPlaceholder"));
-        }
+        reportTable.add(createZeroBookingSelector("reportOptionsPlaceholder"));
+        reportTable.add(createAdditionalOptions("additionalOptions"));
 
         reportTableContainer = new Container("reportTableContainer");
         reportTable.add(reportTableContainer);
@@ -145,6 +122,31 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
         return reportTable;
     }
+
+    private WebMarkupContainer createZeroBookingSelector(String id) {
+        if (reportConfig.isShowZeroBookings()) {
+            return new ZeroBookingSelector(id, reportConfig, criteria);
+        } else {
+            return new Container(id);
+        }
+    }
+
+    protected WebMarkupContainer createAdditionalOptions(String id) {
+        return new Container(id);
+    }
+
+    @Override
+    public void onEvent(IEvent<?> event) {
+        if (event.getPayload() instanceof ZeroBookingSelectionChangedEvent) {
+            TreeReportModel model = (TreeReportModel)getPanelModel();
+            model.detach();
+
+            addReportData(model, reportTableContainer);
+
+            ((ZeroBookingSelectionChangedEvent) event.getPayload()).target().add(reportTableContainer);
+        }
+    }
+
 
     private Component createExcelLink(final TreeReportModel reportModel, final ExcelReport excelReport) {
         if (excelReport != null) {
@@ -194,28 +196,19 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         return totalView;
     }
 
-    /**
-     * Get report header label
-     *
-     * @param reportRange
-     * @param config
-     * @return
-     */
     private Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config) {
         Label reportHeaderLabel = new Label(id, new StringResourceModel("report.header",
                 this, null,
                 new Object[]{new DateModel(reportRange.getDateStart(), config),
-                        new DateModel(reportRange.getDateEnd(), config)}));
+                        new DateModel(reportRange.getDateEnd(), config)}
+        ));
         reportHeaderLabel.setEscapeModelStrings(false);
 
         return reportHeaderLabel;
     }
 
-    /**
-     * Get root node rows & cells
-     */
     @SuppressWarnings("unchecked")
-    private void addReportData(TreeReportModel reportModel, WebMarkupContainer parent) {
+    protected final void addReportData(TreeReportModel reportModel, WebMarkupContainer parent) {
         List<TreeReportElement> elements = (List<TreeReportElement>) reportModel.getReportData().getReportElements();
 
         DataView<TreeReportElement> dataView = new TreeReportDataView(REPORT_DATA_ID, new TreeReportDataProvider(elements));

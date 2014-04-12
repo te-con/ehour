@@ -1,7 +1,6 @@
 package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
@@ -23,15 +22,23 @@ public class ReportScenario extends AbstractScenario {
     }
 
     @Test
-    @Ignore
-    public void should_access_report_as_pm() {
-    }
-
-    @Test
     public void should_access_report_as_global() {
         loginAdmin();
         createReportUser();
         logout();
+
+        loginReportUser();
+
+        loadReportSection();
+
+        assertGlobalCriteriaLoaded();
+        logout();
+    }
+
+    @Test
+    public void should_show_zero_bookings_in_the_detailed_report() throws Exception {
+        preloadDatabase("report_scenario.dbunit.xml");
+        updatePassword("report", "a");
 
         loginReportUser();
 

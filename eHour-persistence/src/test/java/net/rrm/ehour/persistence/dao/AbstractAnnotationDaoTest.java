@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -23,48 +24,41 @@ import java.sql.Connection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test-context-props.xml",
-                                   "classpath:test-context-datasource.xml",
-                                   "classpath:context-dbconnectivity.xml",
-                                   "classpath:test-context-scanner-repository.xml"})
+        "classpath:test-context-datasource.xml",
+        "classpath:context-dbconnectivity.xml",
+        "classpath:test-context-scanner-repository.xml"})
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
-public abstract class AbstractAnnotationDaoTest
-{
+@DirtiesContext
+public abstract class AbstractAnnotationDaoTest {
     @Autowired
     private DataSource eHourDataSource;
 
     private static FlatXmlDataSet userDataSet;
     private String[] additionalDataSetFileNames = new String[0];
 
-    static
-    {
-        try
-        {
+    static {
+        try {
             userDataSet = new FlatXmlDataSetBuilder().build(new File("src/test/resources/datasets/dataset-users.xml"));
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public AbstractAnnotationDaoTest()
-    {
+    public AbstractAnnotationDaoTest() {
     }
 
-    public AbstractAnnotationDaoTest(String dataSetFileNames)
-    {
+    public AbstractAnnotationDaoTest(String dataSetFileNames) {
         this(new String[]{dataSetFileNames});
     }
 
-    public AbstractAnnotationDaoTest(String[] dataSetFileNames)
-    {
+    public AbstractAnnotationDaoTest(String[] dataSetFileNames) {
         this.additionalDataSetFileNames = dataSetFileNames;
     }
 
 
     @Before
-    public final void setUpDatabase() throws Exception
-    {
+    public final void setUpDatabase() throws Exception {
         DerbyDbValidator validator = new DerbyDbValidator(PersistenceConfig.DB_VERSION, eHourDataSource);
         validator.checkDatabaseState();
 
@@ -73,8 +67,7 @@ public abstract class AbstractAnnotationDaoTest
 
         DatabaseOperation.CLEAN_INSERT.execute(connection, userDataSet);
 
-        for (String dataSetFileName : additionalDataSetFileNames)
-        {
+        for (String dataSetFileName : additionalDataSetFileNames) {
             FlatXmlDataSet additionalDataSet = new FlatXmlDataSetBuilder().build(new File("src/test/resources/datasets/" + dataSetFileName));
             DatabaseOperation.CLEAN_INSERT.execute(connection, additionalDataSet);
         }
