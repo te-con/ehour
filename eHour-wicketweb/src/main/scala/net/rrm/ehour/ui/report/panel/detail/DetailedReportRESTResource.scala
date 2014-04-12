@@ -12,6 +12,7 @@ import scala.collection.convert.WrapAsJava
 import org.apache.log4j.Logger
 import java.util
 import org.joda.time.DateTime
+import net.rrm.ehour.ui.common.session.EhourWebSession
 
 object DetailedReportRESTResource {
   def apply: DetailedReportRESTResource = new DetailedReportRESTResource(new GsonSerialDeserial(GsonSerializer.create))
@@ -25,23 +26,39 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
   var reportCacheService: ReportCacheService = _
 
   @MethodMapping("/hour/{cacheKey}")
-  def findReport(cacheKey: String): DetailedReportResponse = {
+  def getHourlyData(cacheKey: String): DetailedReportResponse = {
     cacheService.retrieveReportData(cacheKey) match {
       case Some(data) =>
         val reportRange = data.getReportRange
         val unprocessedSeries = DetailedReportChartGenerator.generateHourBasedDetailedChartData(data)
 
         DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
-                               pointInterval = PointInterval.WEEK,
+                               pointInterval = PointInterval.DAY,
+                               title = "Hours booked on customers per day",
+                               yAxis = "Hours",
                                series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
       case None =>
-
         DetailedReportRESTResource.LOG.warn(s"no data found for key $cacheKey")
-
         throw new IllegalArgumentException(s"no data found for key $cacheKey")
     }
+  }
 
+  @MethodMapping("/turnover/{cacheKey}")
+  def getTurnoverData(cacheKey: String): DetailedReportResponse = {
+    cacheService.retrieveReportData(cacheKey) match {
+      case Some(data) =>
+        val reportRange = data.getReportRange
+        val unprocessedSeries = DetailedReportChartGenerator.generateTurnoverBasedDetailedChartData(data)
 
+        DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
+                              pointInterval = PointInterval.DAY,
+                              title = "Turnover booked on customers per day",
+                              yAxis = "Turnover",
+                              series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
+      case None =>
+        DetailedReportRESTResource.LOG.warn(s"no data found for key $cacheKey")
+        throw new IllegalArgumentException(s"no data found for key $cacheKey")
+    }
   }
 
   private def cacheService = {
@@ -53,7 +70,10 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 
 case class DetailedReportResponse(pointStart: DateTime,
                                   pointInterval: Long,
-                                  series: util.List[JSparseDateSeries])
+                                  title: String,
+                                  yAxis: String,
+                                  series: util.List[JSparseDateSeries],
+                                  hasReportRole: Boolean = EhourWebSession.getSession.isWithReportRole)
 
 case class JSparseDateSeries(name: String,
                              data: util.List[Float],
