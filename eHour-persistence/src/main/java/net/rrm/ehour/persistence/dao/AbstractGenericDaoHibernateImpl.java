@@ -158,25 +158,5 @@ public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?,
 	{
 		return getHibernateTemplate().merge(domobj);
 	}
-	
-	/**
-	 * Convert pattern to sql pattern prefixing and suffixing with %
-	 * @param pattern
-	 * @return
-	 */
-	protected String patternToSqlPattern(String pattern)
-	{
-		if (pattern != null && !pattern.trim().equals(""))
-		{
-			pattern = pattern.toLowerCase();
-			pattern = "%" + pattern + "%";
-		}
-		else
-		{
-			pattern = "%";
-		}
-		
-		return pattern;
-	}
 
 }
