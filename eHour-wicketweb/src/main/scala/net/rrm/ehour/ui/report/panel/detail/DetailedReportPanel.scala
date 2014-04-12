@@ -44,26 +44,9 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
     val rawData = treeReportData.getRawReportData
     val cacheKey = reportCacheService.storeReportData(rawData)
 
-//    val chartContainer = new HighChartContainer("chart", new Model(rawData), DetailedReportChartGenerator.generateHourBasedDetailedChart)
-    val chartContainer = new HighChart3Container("chart", cacheKey)
+    val chartContainer = new DetailedReportChartContainer("chart", cacheKey)
     chartContainer.setVisible(!treeReportData.isEmpty)
     frame.add(chartContainer)
-
-    val radioButton = (id: String, generateChart: (ChartContext) => String) => {
-      new AjaxBehaviorComponent(id, "onclick", (target: AjaxRequestTarget) => {
-        val chart = new HighChartContainer("chart", new Model(rawData), generateChart)
-        frame.addOrReplace(chart)
-        target.add(chart)
-      })
-    }
-
-    val typeSelector = new WebMarkupContainer("typeSelector")
-    frame.add(typeSelector)
-
-//    typeSelector.add(radioButton("turnover", DetailedReportChartGenerator.generateTurnoverBasedDetailedChart))
-//    typeSelector.add(radioButton("time", DetailedReportChartGenerator.generateHourBasedDetailedChart))
-
-    typeSelector.setVisible(getEhourWebSession.isWithReportRole)
 
     super.onBeforeRender()
   }
