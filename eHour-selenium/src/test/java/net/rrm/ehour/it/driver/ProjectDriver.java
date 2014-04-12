@@ -110,22 +110,8 @@ public abstract class ProjectDriver {
         sleep();
     }
 
-    public static void deleteAssignment() {
-        findElement("tabs_panel_assignedUserPanel_border_border__body_form_border_assignmentForm_deleteButton").click();
-        sleep();
-        Driver.switchTo().alert().accept();
-        sleep();
-    }
-
     public static void selectAssignment(int index) {
         findElement("tabs_panel_assignedUserPanel_border_border__body_list_assignments_border_border__body_row_" + index + "_name").click();
-    }
-
-    public static void assertNoAssignments() {
-        WebElement element = findElement("tabs_panel_assignedUserPanel_border_border__body_list_assignments");
-        assertEquals("<div class=\"p\">\n" +
-                "            er zijn nog geen gebruikers toegewezen\n" +
-                "        </div>", element.getText());
     }
 
     public static void selectProjectManager(String name) {

@@ -1,5 +1,6 @@
 package net.rrm.ehour.it.driver;
 
+import com.thoughtworks.selenium.SeleneseTestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -9,6 +10,7 @@ import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleepFor;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public abstract class ReportDriver {
@@ -88,6 +90,38 @@ public abstract class ReportDriver {
 
     public static void clearProjectCriterium() {
         findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_clearProject").click();
+        sleep();
+    }
+
+    public static void createReport() {
+        findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_createReport").click();
+        sleepFor(750);
+    }
+
+    public static void setStartDate(String startDate) {
+        WebElement element = findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_reportCriteria.userSelectedCriteria.reportRange.dateStart");
+        element.clear();
+        element.sendKeys(startDate);
+    }
+
+    public static void setEndDate(String endDate) {
+        WebElement element = findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_reportCriteria.userSelectedCriteria.reportRange.dateEnd");
+        element.clear();
+        element.sendKeys(endDate);
+    }
+
+    public static void navigateToDetails() {
+        String txt = findElement("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportHeader").getText();
+        sleep();
+        assertTrue(txt.startsWith("Report period"));
+    }
+
+    public static void toggleOptions() {
+        Driver.findElementById("optionsFold").click();
+    }
+
+    public static void clickZeroBookings() {
+        findElement("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportData_reportOptionsPlaceholder_toggleShowZeroBookings").click();
         sleep();
     }
 

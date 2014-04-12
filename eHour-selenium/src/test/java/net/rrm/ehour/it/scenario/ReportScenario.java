@@ -4,9 +4,11 @@ import net.rrm.ehour.it.AbstractScenario;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
+import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.ReportDriver.*;
 import static net.rrm.ehour.it.driver.TimesheetDriver.createUserAndAssign;
 import static net.rrm.ehour.it.driver.UserManagementDriver.createReportUser;
+import static org.junit.Assert.assertEquals;
 
 public class ReportScenario extends AbstractScenario {
     @Test
@@ -44,7 +46,19 @@ public class ReportScenario extends AbstractScenario {
 
         loadReportSection();
 
-        assertGlobalCriteriaLoaded();
+        setStartDate("1/1/2013");
+        setEndDate("1/1/2014");
+
+        createReport();
+
+        navigateToDetails();
+
+        toggleOptions();
+
+        clickZeroBookings();
+
+        assertEquals("0", findElement("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportData_reportTableContainer_reportData_3_cell_6").getText());
+
         logout();
     }
 }
