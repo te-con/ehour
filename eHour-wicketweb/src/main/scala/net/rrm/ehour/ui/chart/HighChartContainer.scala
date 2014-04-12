@@ -18,8 +18,6 @@ class HighChartContainer(id: String, reportModel: IModel[ReportData], generateCh
     val chart = generateChart(ChartContext(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config.getCurrencySymbol, session.isWithReportRole))
     val javascript = "new Highcharts.Chart({%s});\n" format chart
 
-    Console.println(javascript)
-
     response.render(new OnLoadHeaderItem(javascript))
   }
 }

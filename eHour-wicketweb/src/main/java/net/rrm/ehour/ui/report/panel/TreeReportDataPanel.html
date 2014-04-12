@@ -29,12 +29,6 @@
         </h4>
     </wicket:fragment>
 
-    <wicket:fragment wicket:id="reportOptions">
-        <div id="reportOptions" class="filterContainer" style="margin-left: 5px;margin-bottom: 15px">
-            <wicket:container wicket:id="zeroBookingsLabel" />:<input wicket:id="toggleShowZeroBookings" type="checkbox" style="margin-left:1em"/>
-        </div>
-    </wicket:fragment>
-
     <wicket:fragment wicket:id="reportTable">
         <div style="width:100%;text-align: right;height:22px">
             <a wicket:id="excelLink" class="floatRight" style="margin-right: 1em">
@@ -51,7 +45,9 @@
             </span>
         </div>
 
-        <div wicket:id="reportOptionsPlaceholder"></div>
+        <div id="reportOptions" class="filterContainer" style="margin-left: 5px;margin-bottom: 15px">
+            <div wicket:id="reportOptionsPlaceholder"></div>
+        </div>
 
         <div wicket:id="reportTableContainer">
             <table class="dataTable" cellpadding="0" cellspacing="0">

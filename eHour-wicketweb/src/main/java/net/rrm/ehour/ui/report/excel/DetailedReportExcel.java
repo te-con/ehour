@@ -24,16 +24,14 @@ import net.rrm.ehour.ui.report.trend.DetailedReportModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-public class DetailedReportExcel extends AbstractExcelReport
-{
-	private static final long serialVersionUID = 7211392869328367507L;
+public class DetailedReportExcel extends AbstractExcelReport {
+    private static final long serialVersionUID = 7211392869328367507L;
 
     private static final DetailedReportExcel INSTANCE = new DetailedReportExcel();
 
-	private DetailedReportExcel()
-	{
-		super(DetailedReportConfig.DETAILED_REPORT_BY_DAY);
-	}
+    private DetailedReportExcel() {
+        super(DetailedReportConfig.DETAILED_REPORT_BY_DAY);
+    }
 
     @Override
     protected Report createReport(ReportCriteria reportCriteria) {
@@ -41,19 +39,16 @@ public class DetailedReportExcel extends AbstractExcelReport
     }
 
     @Override
-	protected IModel<String> getExcelReportName()
-	{
-		return new ResourceModel("report.title.detailed");
-	}
+    protected IModel<String> getExcelReportName() {
+        return new ResourceModel("report.title.detailed");
+    }
 
-	@Override
-	protected IModel<String> getHeaderReportName()
-	{
-		return new ResourceModel("report.title.detailed");
-	}
+    @Override
+    protected IModel<String> getHeaderReportName() {
+        return new ResourceModel("report.title.detailed");
+    }
 
-	public static DetailedReportExcel getInstance()
-	{
-		return INSTANCE;
-	}
+    public static DetailedReportExcel getInstance() {
+        return INSTANCE;
+    }
 }

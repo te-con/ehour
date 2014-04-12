@@ -1,13 +1,24 @@
 package net.rrm.ehour.it;
 
 import net.rrm.ehour.EhourServer;
+import net.rrm.ehour.config.PersistenceConfig;
+import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.operation.DatabaseOperation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import javax.sql.DataSource;
+import java.io.File;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +48,7 @@ public abstract class AbstractScenario {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-            	quitBrowser();
+                quitBrowser();
             }
         });
 
@@ -50,14 +61,34 @@ public abstract class AbstractScenario {
         DatabaseTruncater.truncate(dataSource);
     }
 
+    protected final void preloadDatabase(String dataSetFileName) throws Exception {
+        Connection con = DataSourceUtils.getConnection(dataSource);
+        IDatabaseConnection connection = new DatabaseConnection(con);
+
+        FlatXmlDataSet additionalDataSet = new FlatXmlDataSetBuilder().build(new File("src/test/resources/datasets/" + dataSetFileName));
+        DatabaseOperation.CLEAN_INSERT.execute(connection, additionalDataSet);
+    }
+
+    protected final void updatePassword(String username, String password) throws SQLException {
+        ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder(1);
+        int salt = (int) (Math.random() * 10000);
+
+        String encodedPassword = passwordEncoder.encodePassword(password, salt);
+
+        Connection connection = dataSource.getConnection();
+        String sql = String.format("UPDATE USERS SET PASSWORD = '%s', SALT = %d WHERE USERNAME = '%s'", encodedPassword, salt, username);
+
+        connection.createStatement().execute(sql);
+    }
+
     @After
     public void quitBrowser() {
-    	if (Driver != null) {
+        if (Driver != null) {
             try {
                 Driver.quit();
             } catch (Exception e) {
                 //
             }
-    	}
+        }
     }
 }
