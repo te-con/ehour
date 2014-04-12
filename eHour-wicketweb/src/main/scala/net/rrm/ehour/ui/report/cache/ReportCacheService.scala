@@ -15,7 +15,6 @@ trait ReportCacheService {
 @Service
 class ReportCacheServiceEhCacheImpl @Autowired() (cacheManager: EhCacheCacheManager) extends ReportCacheService {
 
-  cacheManager.getCacheManager.addCache("reportCache")
   val cache = cacheManager.getCache("reportCache")
 
   override def storeReportData(reportData: ReportData): String = {
