@@ -7,6 +7,7 @@
     <bean id="reportEhcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="classpath:report-ehcache.xml"/>
         <property name="shared" value="true"/>
+        <property name="cacheManagerName" value="reportCache"/>
     </bean>
 
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
