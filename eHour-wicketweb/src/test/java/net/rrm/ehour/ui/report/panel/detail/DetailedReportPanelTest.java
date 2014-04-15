@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.report.panel.detail;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
+import net.rrm.ehour.ui.report.cache.ReportCacheService;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import net.rrm.ehour.ui.report.trend.DetailedReportModel;
 import org.apache.wicket.markup.html.basic.Label;
@@ -38,6 +39,9 @@ public class DetailedReportPanelTest extends BaseSpringWebAppTester {
     public void setup() {
         detailedReportService = createMock(DetailedReportService.class);
         getMockContext().putBean("detailedReportService", detailedReportService);
+
+        ReportCacheService reportCacheService = createMock(ReportCacheService.class);
+        getMockContext().putBean("reportCacheService", reportCacheService);
     }
 
     @Test

@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.report.panel
 package detail
 
-import net.rrm.ehour.ui.common.report.DetailedReportConfig
+import net.rrm.ehour.ui.common.report.{ReportConfig, DetailedReportConfig}
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel
 import net.rrm.ehour.ui.report.trend.DetailedReportModel
 import org.apache.wicket.model.PropertyModel
@@ -14,6 +14,17 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.ui.report.cache.ReportCacheService
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.form.DropDownChoice
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.event.Broadcast
+import net.rrm.ehour.ui.common.wicket.Event
+
+object DetailedReportPanel {
+  val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
+    AggregateBy.WEEK -> DetailedReportConfig.DETAILED_REPORT_BY_WEEK,
+    AggregateBy.MONTH -> DetailedReportConfig.DETAILED_REPORT_BY_MONTH)
+
+}
 
 class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
 
@@ -23,16 +34,12 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
   @SpringBean
   var reportCacheService: ReportCacheService = _
 
-  val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
-    AggregateBy.WEEK -> DetailedReportConfig.DETAILED_REPORT_BY_WEEK,
-    AggregateBy.MONTH -> DetailedReportConfig.DETAILED_REPORT_BY_MONTH)
-
 
   protected override def onBeforeRender() {
     val frame = new WebMarkupContainer("frame")
     addOrReplace(frame)
 
-    val reportConfig = AggregateToConfigMap.getOrElse(report.getReportCriteria.getUserSelectedCriteria.getAggregateBy, DetailedReportConfig.DETAILED_REPORT_BY_DAY)
+    val reportConfig = DetailedReportPanel.AggregateToConfigMap.getOrElse(report.getReportCriteria.getUserSelectedCriteria.getAggregateBy, DetailedReportConfig.DETAILED_REPORT_BY_DAY)
 
     val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
     frame.add(new TreeReportDataPanel("reportTable", report, reportConfig, DetailedReportExcel.getInstance()) {
@@ -54,12 +61,25 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
 import net.rrm.ehour.util._
 
 class AggregateByDatePanel(id: String, criteria: UserSelectedCriteria) extends Panel(id) {
+  val Self = this
+
   override def onInitialize() {
     super.onInitialize()
 
     val options = toJava(AggregateBy.values().toList)
 
     val aggregateSelect = new DropDownChoice[AggregateBy]("aggregateBy", new PropertyModel[AggregateBy](criteria, "aggregateBy"), options)
+
+    aggregateSelect.add(new AjaxFormComponentUpdatingBehavior("change") {
+      override def onUpdate(target: AjaxRequestTarget) {
+        val aggregateBy = aggregateSelect.getModelObject
+
+        send(Self, Broadcast.BUBBLE, new AggregateByChangedEvent(target, DetailedReportPanel.AggregateToConfigMap(aggregateBy)))
+      }
+    })
+
     addOrReplace(aggregateSelect)
   }
 }
+
+case class AggregateByChangedEvent(t: AjaxRequestTarget, reportConfig: ReportConfig) extends Event(t)
