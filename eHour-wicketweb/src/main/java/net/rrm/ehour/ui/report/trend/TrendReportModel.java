@@ -33,8 +33,7 @@ import static org.springframework.util.Assert.notNull;
  * Base trend report
  */
 
-public abstract class TrendReportModel<RK extends Comparable<?>> extends AbstractReportModel
-{
+public abstract class TrendReportModel<RK extends Comparable<?>> extends AbstractReportModel {
     private static final long serialVersionUID = -8062083697181324496L;
 
     private static final Logger LOGGER = Logger.getLogger(TrendReportModel.class);
@@ -43,14 +42,12 @@ public abstract class TrendReportModel<RK extends Comparable<?>> extends Abstrac
     /**
      * @param criteria
      */
-    public TrendReportModel(ReportCriteria criteria)
-    {
+    public TrendReportModel(ReportCriteria criteria) {
         super(criteria);
     }
 
     @Override
-    protected ReportData getReportData(ReportCriteria reportCriteria)
-    {
+    protected ReportData getReportData(ReportCriteria reportCriteria) {
         Map<Date, FlatReportElement> rowAggregates;
         Date aggregateDate;
         RK rowKey;
@@ -59,17 +56,14 @@ public abstract class TrendReportModel<RK extends Comparable<?>> extends Abstrac
 
         rowMap = new TreeMap<RK, Map<Date, FlatReportElement>>(getRKComparator());
 
-        for (ReportElement element : aggregateData.getReportElements())
-        {
+        for (ReportElement element : aggregateData.getReportElements()) {
             FlatReportElement aggregate = (FlatReportElement) element;
 
             rowKey = getRowKey(aggregate);
 
-            if (rowMap.containsKey(rowKey))
-            {
+            if (rowMap.containsKey(rowKey)) {
                 rowAggregates = rowMap.get(rowKey);
-            } else
-            {
+            } else {
                 rowAggregates = new HashMap<Date, FlatReportElement>();
             }
 
@@ -84,8 +78,7 @@ public abstract class TrendReportModel<RK extends Comparable<?>> extends Abstrac
         return aggregateData;
     }
 
-    private ReportData getValidReportData(ReportCriteria reportCriteria)
-    {
+    private ReportData getValidReportData(ReportCriteria reportCriteria) {
         ReportData reportData = fetchReportData(reportCriteria);
 
         notNull(reportData);
@@ -101,21 +94,17 @@ public abstract class TrendReportModel<RK extends Comparable<?>> extends Abstrac
      *
      * @return
      */
-    public float getGrandTotalHours()
-    {
+    public float getGrandTotalHours() {
         float total = 0;
         Map<Date, FlatReportElement> aggMap;
 
-        for (RK key : rowMap.keySet())
-        {
+        for (RK key : rowMap.keySet()) {
             aggMap = rowMap.get(key);
 
-            for (Map.Entry<Date, FlatReportElement> entry : aggMap.entrySet())
-            {
+            for (Map.Entry<Date, FlatReportElement> entry : aggMap.entrySet()) {
                 Number n = entry.getValue().getTotalHours();
 
-                if (n != null)
-                {
+                if (n != null) {
                     total += n.floatValue();
                 }
             }
@@ -129,29 +118,23 @@ public abstract class TrendReportModel<RK extends Comparable<?>> extends Abstrac
      *
      * @return
      */
-    public SortedMap<RK, Map<Date, FlatReportElement>> getValues()
-    {
-        if (rowMap == null)
-        {
+    public SortedMap<RK, Map<Date, FlatReportElement>> getValues() {
+        if (rowMap == null) {
             lazyInitRowMap();
         }
         return rowMap;
     }
 
-    private void lazyInitRowMap()
-    {
+    private void lazyInitRowMap() {
         load();
     }
 
-    private Date getValidAggregateDate(FlatReportElement aggregate)
-    {
+    private Date getValidAggregateDate(FlatReportElement aggregate) {
         Date date;
 
-        try
-        {
+        try {
             date = getAggregateDate(aggregate);
-        } catch (ParseException e)
-        {
+        } catch (ParseException e) {
             LOGGER.warn("failed to parse date of " + aggregate, e);
             date = new Date();
         }
@@ -164,8 +147,7 @@ public abstract class TrendReportModel<RK extends Comparable<?>> extends Abstrac
       * @see org.apache.wicket.model.LoadableDetachableModel#onDetach()
       */
     @Override
-    protected void onDetach()
-    {
+    protected void onDetach() {
         rowMap = null;
     }
 

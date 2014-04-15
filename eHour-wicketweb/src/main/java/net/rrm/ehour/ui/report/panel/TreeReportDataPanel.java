@@ -34,6 +34,7 @@ import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
 import net.rrm.ehour.ui.report.TreeReportElement;
 import net.rrm.ehour.ui.report.TreeReportModel;
+import net.rrm.ehour.ui.report.panel.detail.AggregateByChangedEvent;
 import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
@@ -68,16 +69,19 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     private static final String REPORT_CONTENT_ID = "reportData";
     private static final String REPORT_DATA_ID = "reportData";
     private static final String NAVIGATOR_ID = "navigator";
+    private final ExcelReport excelReport;
 
-    private final ReportConfig reportConfig;
+    private ReportConfig reportConfig;
     private Container reportTableContainer;
     private UserSelectedCriteria criteria;
+    private final Border blueBorder;
 
     public TreeReportDataPanel(String id,
                                TreeReportModel reportModel,
                                ReportConfig reportConfig,
-                               final ExcelReport excelReport) {
+                               ExcelReport excelReport) {
         super(id, reportModel);
+        this.excelReport = excelReport;
 
         criteria = reportModel.getReportCriteria().getUserSelectedCriteria();
 
@@ -85,18 +89,20 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
         this.reportConfig = reportConfig;
 
-        Border blueBorder = new BlueTabRoundedBorder("blueFrame");
+        blueBorder = new BlueTabRoundedBorder("blueFrame");
         add(blueBorder);
 
         blueBorder.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getEhourConfig()));
 
-        boolean isEmptyReport = reportModel.getReportData().isEmpty();
-        WebMarkupContainer reportContent = createReportContent(reportModel, excelReport, isEmptyReport, REPORT_CONTENT_ID);
+        WebMarkupContainer reportContent = createReportContent(reportModel, excelReport, REPORT_CONTENT_ID);
         blueBorder.add(reportContent);
     }
 
-    private WebMarkupContainer createReportContent(TreeReportModel reportModel, ExcelReport excelReport, boolean isEmptyReport, String id) {
-        WebMarkupContainer reportContent = (isEmptyReport) ? new Fragment(id, "noData", this) : createReport(REPORT_CONTENT_ID, reportModel, excelReport);
+
+
+    private WebMarkupContainer createReportContent(TreeReportModel reportModel, ExcelReport excelReport, String id) {
+        boolean emptyReport = reportModel.getReportData().isEmpty();
+        WebMarkupContainer reportContent = emptyReport ? new Fragment(id, "noData", this) : createReport(REPORT_CONTENT_ID, reportModel, excelReport);
         reportContent.setOutputMarkupId(true);
         return reportContent;
     }
@@ -138,12 +144,20 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     @Override
     public void onEvent(IEvent<?> event) {
         if (event.getPayload() instanceof ZeroBookingSelectionChangedEvent) {
-            TreeReportModel model = (TreeReportModel)getPanelModel();
+            TreeReportModel model = (TreeReportModel) getPanelModel();
             model.detach();
 
             addReportData(model, reportTableContainer);
 
             ((ZeroBookingSelectionChangedEvent) event.getPayload()).target().add(reportTableContainer);
+        } else if (event.getPayload() instanceof AggregateByChangedEvent) {
+            AggregateByChangedEvent aggregateByChangedEvent = (AggregateByChangedEvent) event.getPayload();
+
+            reportConfig = aggregateByChangedEvent.reportConfig();
+
+            WebMarkupContainer reportContent = createReportContent((TreeReportModel)getPanelModel(), excelReport, REPORT_CONTENT_ID);
+            blueBorder.addOrReplace(reportContent);
+            aggregateByChangedEvent.target().add(reportContent);
         }
     }
 
@@ -208,7 +222,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     }
 
     @SuppressWarnings("unchecked")
-    protected final void addReportData(TreeReportModel reportModel, WebMarkupContainer parent) {
+    private void addReportData(TreeReportModel reportModel, WebMarkupContainer parent) {
         List<TreeReportElement> elements = (List<TreeReportElement>) reportModel.getReportData().getReportElements();
 
         DataView<TreeReportElement> dataView = new TreeReportDataView(REPORT_DATA_ID, new TreeReportDataProvider(elements));
