@@ -70,7 +70,7 @@ public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
     public void produceExcelReport() throws IOException {
         List<FlatReportElement> elements = SkinConfigPanel.TimesheetExportDummyDataGenerator.createMonthData(getConfig());
 
-        ReportData data = new ReportData(elements, SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
+        ReportData data = new ReportData(elements, SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth(), new UserSelectedCriteria());
 
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
         userSelectedCriteria.getCustomParameters().put(TimesheetExportParameter.INCL_SIGN_OFF.name(), Boolean.TRUE);
@@ -91,7 +91,7 @@ public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
     public void produceForEmptyMonth() throws IOException {
         List<FlatReportElement> elements = new ArrayList<FlatReportElement>();
 
-        ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()));
+        ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()), new UserSelectedCriteria());
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
         userSelectedCriteria.setReportRange(SkinConfigPanel.TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
         ReportCriteria criteria = new ReportCriteria(userSelectedCriteria);
@@ -108,7 +108,7 @@ public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
 
     @SuppressWarnings("unused")
     private void writeByteData(byte[] excelData) throws IOException {
-        File outfile = new File("d:\\test.xls");
+        File outfile = new File("/tmp/test.xls");
         FileOutputStream fos = new FileOutputStream(outfile);
         fos.write(excelData);
         fos.close();

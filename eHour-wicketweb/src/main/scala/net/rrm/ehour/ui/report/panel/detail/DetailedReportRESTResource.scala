@@ -6,13 +6,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.ui.report.cache.ReportCacheService
 import net.rrm.ehour.ui.common.util.WebUtils
 import net.rrm.ehour.util._
-import net.rrm.ehour.ui.common.chart.{PointInterval, GsonSerializer, SparseDateSeries}
+import net.rrm.ehour.ui.common.chart.{GsonSerializer, SparseDateSeries}
 import scala.Some
 import scala.collection.convert.WrapAsJava
 import org.apache.log4j.Logger
 import java.util
 import org.joda.time.DateTime
 import net.rrm.ehour.ui.common.session.EhourWebSession
+import org.apache.wicket.model.StringResourceModel
 
 object DetailedReportRESTResource {
   def apply: DetailedReportRESTResource = new DetailedReportRESTResource(new GsonSerialDeserial(GsonSerializer.create))
@@ -27,14 +28,20 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 
   @MethodMapping("/hour/{cacheKey}")
   def getHourlyData(cacheKey: String): DetailedReportResponse = {
+
+
+
     cacheService.retrieveReportData(cacheKey) match {
       case Some(data) =>
+        val aggregateBy = data.getCriteria.getAggregateBy
         val reportRange = data.getReportRange
         val unprocessedSeries = DetailedReportChartGenerator.generateHourBasedDetailedChartData(data)
 
+        val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
+
         DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
-                               pointInterval = PointInterval.DAY,
-                               title = "Hours booked on customers per day",
+                               pointInterval = aggregateBy.interval,
+                               title = "Hours booked on customers per " + model.getString,
                                yAxis = "Hours",
                                series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
       case None =>
@@ -47,12 +54,15 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
   def getTurnoverData(cacheKey: String): DetailedReportResponse = {
     cacheService.retrieveReportData(cacheKey) match {
       case Some(data) =>
+        val aggregateBy = data.getCriteria.getAggregateBy
         val reportRange = data.getReportRange
         val unprocessedSeries = DetailedReportChartGenerator.generateTurnoverBasedDetailedChartData(data)
 
+        val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
+
         DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
-                              pointInterval = PointInterval.DAY,
-                              title = "Turnover booked on customers per day",
+                              pointInterval = aggregateBy.interval,
+                              title = "Turnover booked on customers per " + model.getString,
                               yAxis = "Turnover",
                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
       case None =>

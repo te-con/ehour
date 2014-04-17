@@ -8,6 +8,7 @@ import java.util.Calendar
 import scala.collection.convert.WrapAsJava
 import scala.collection.mutable
 import com.google.common.collect.Lists
+import net.rrm.ehour.report.criteria.UserSelectedCriteria
 
 object AggregateReportDataObjectMother {
   def generateReportData: ReportData = {
@@ -32,7 +33,8 @@ object AggregateReportDataObjectMother {
     val reportElementE = new AssignmentAggregateReportElement(new ProjectAssignment(userT, projectE, 35), 10)
     val reportElementF = new AssignmentAggregateReportElement(new ProjectAssignment(userT, projectB, 35), 10)
 
-    new ReportData(Lists.newArrayList(), WrapAsJava.bufferAsJavaList(mutable.Buffer(reportElementA, reportElementB, reportElementC, reportElementD, reportElementE, reportElementF)), DateUtil.getDateRangeForMonth(Calendar.getInstance()))
+    val elements = mutable.Buffer(reportElementA, reportElementB, reportElementC, reportElementD, reportElementE, reportElementF)
+    new ReportData(Lists.newArrayList(), WrapAsJava.bufferAsJavaList(elements), DateUtil.getDateRangeForMonth(Calendar.getInstance()), new UserSelectedCriteria())
   }
 
   def getAssignmentAggregateReportElements = {
@@ -52,5 +54,5 @@ object AggregateReportDataObjectMother {
     WrapAsJava.bufferAsJavaList(mutable.Buffer(pagE, pagD, pagB, pagC, pagA, pagF))
   }
 
-  def getAssignmentReportData: ReportData = new ReportData(Lists.newArrayList(), getAssignmentAggregateReportElements, new DateRange)
+  def getAssignmentReportData: ReportData = new ReportData(Lists.newArrayList(), getAssignmentAggregateReportElements, new DateRange, new UserSelectedCriteria())
 }

@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.report;
 
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ReportElement;
 
@@ -32,8 +33,8 @@ public class TreeReportData extends ReportData {
 
     private ReportData rawReportData;
 
-    public TreeReportData(List<? extends ReportElement> reportElements, DateRange reportRange, ReportData rawReportData) {
-        super(reportElements, reportRange);
+    public TreeReportData(List<? extends ReportElement> reportElements, DateRange reportRange, ReportData rawReportData, UserSelectedCriteria criteria) {
+        super(reportElements, reportRange, criteria);
 
         this.rawReportData = rawReportData;
     }

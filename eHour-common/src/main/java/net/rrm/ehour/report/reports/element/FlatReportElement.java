@@ -225,13 +225,9 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         return entryDate;
     }
 
-    /**
-     * @param entryDate the entryDate to set
-     */
     public void setEntryDate(String weekYear) {
         this.entryDate = weekYear;
     }
-
 
     /**
      * @return the customerId
@@ -321,6 +317,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .append("assignmentId", assignmentId)
                 .append("date", dayDate)
                 .append("totalHours", totalHours)
                 .toString();
