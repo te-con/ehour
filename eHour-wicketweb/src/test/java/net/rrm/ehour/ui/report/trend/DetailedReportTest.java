@@ -27,34 +27,25 @@ import org.junit.Test;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Test of detailed report 
- **/
-public class DetailedReportTest extends BaseSpringWebAppTester
-{
-	private DetailedReportService detailedReportService;
-	
-	@Before
-	public void setup() throws Exception
-	{
-		detailedReportService = createMock(DetailedReportService.class);
-		getMockContext().putBean("detailedReportService", detailedReportService);
-	}
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Test
-	public void testCreateDetailedReport()
-	{
-		expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-			.andReturn(DetailedReportDataObjectMother.getFlatReportData());
-		
-		replay(detailedReportService);
-		
-		DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
-		assertEquals(5, detailedReport.getReportData().getReportElements().size());
+public class DetailedReportTest extends BaseSpringWebAppTester {
+    private DetailedReportService detailedReportService;
 
-		verify(detailedReportService);
-	}
+    @Before
+    public void setup() throws Exception {
+        detailedReportService = createMock(DetailedReportService.class);
+        getMockContext().putBean("detailedReportService", detailedReportService);
+    }
+
+    @Test
+    public void testCreateDetailedReport() {
+        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
+                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
+
+        replay(detailedReportService);
+
+        DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
+        assertEquals(4, detailedReport.getReportData().getReportElements().size());
+
+        verify(detailedReportService);
+    }
 }
