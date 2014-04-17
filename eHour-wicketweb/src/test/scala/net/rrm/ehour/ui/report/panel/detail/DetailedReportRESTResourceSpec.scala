@@ -21,8 +21,6 @@ class DetailedReportRESTResourceSpec extends AbstractSpringWebAppSpec {
 
       val response = tester.getLastResponseAsString
 
-      Console.println(response)
-
       response should not include "{}"
     }
   }

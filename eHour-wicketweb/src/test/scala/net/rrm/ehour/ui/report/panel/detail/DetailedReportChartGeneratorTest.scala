@@ -15,7 +15,6 @@ class DetailedReportChartGeneratorTest extends FunSuite with Matchers with Befor
   }
 
   test("should have series type of column with zoomtype") {
-    Console.println(chart)
     chart should include( """chart:{"renderTo":"container","defaultSeriesType":"column","zoomType":"x"}""")
   }
 

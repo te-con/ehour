@@ -14,7 +14,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "aggregate 0 bookings to nothing" in {
       val data = List()
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByMonth)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByMonth())
 
       aggregate should be('empty)
     }
@@ -24,7 +24,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
       element.setRate(null)
       val data = List(element, buildElement(1, baseDate.plusWeeks(3), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByMonth)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByMonth())
 
       aggregate.size should be(1)
       aggregate.head.getTotalHours should be(15)
@@ -32,7 +32,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "by month: aggregate 2 bookings on 1 assignment in 1 month into 1 aggregated element" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusWeeks(3), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByMonth)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByMonth())
 
       aggregate.size should be(1)
       aggregate.head.getTotalHours should be(15)
@@ -42,7 +42,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusWeeks(3), 5),
         buildElement(2, baseDate, 10))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByMonth)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByMonth())
 
       aggregate.size should be(2)
     }
@@ -50,7 +50,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "by month: do not aggregate 2 bookings when they're in different months" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(1), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByMonth)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByMonth())
 
       aggregate.size should be(2)
     }
@@ -58,7 +58,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "by week: aggregate 2 bookings on 1 assignment in 1 week into 1 aggregated element" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusDays(1), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByWeek)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByWeek())
 
       aggregate.size should be(1)
       aggregate.head.getTotalHours should be(15)
@@ -68,7 +68,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusDays(1), 5),
         buildElement(2, baseDate, 10))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByWeek)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByWeek())
 
       aggregate.size should be(2)
     }
@@ -76,7 +76,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "by week: do not aggregate 2 bookings when they're in different weeks" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusWeeks(2), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByWeek)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByWeek())
 
       aggregate.size should be(2)
     }
@@ -84,7 +84,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "by quarter: aggregate 2 bookings on 1 assignment in 1 quarter into 1 aggregated element" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(1), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByQuarter)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByQuarter())
 
       aggregate.size should be(1)
       aggregate.head.getTotalHours should be(15)
@@ -94,7 +94,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(2), 5),
         buildElement(2, baseDate, 10))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByQuarter)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByQuarter())
 
       aggregate.size should be(2)
     }
@@ -102,7 +102,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "by quarter: do not aggregate 2 bookings when they're in different quarters" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(3), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByQuarter)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByQuarter())
 
       aggregate.size should be(2)
     }
@@ -111,7 +111,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "by year: aggregate 2 bookings on 1 assignment in 1 year into 1 aggregated element" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(4), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByYear)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByYear())
 
       aggregate.size should be(1)
       aggregate.head.getTotalHours should be(15)
@@ -121,7 +121,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusMonths(4), 5),
         buildElement(2, baseDate, 10))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByYear)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByYear())
 
       aggregate.size should be(2)
     }
@@ -129,7 +129,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     "by year: do not aggregate 2 bookings when they're in different years" in {
       val data = List(buildElement(1, baseDate, 10), buildElement(1, baseDate.plusYears(1), 5))
 
-      val aggregate = DetailedReportAggregator.aggregate(data, DetailedReportAggregator.ByYear)
+      val aggregate = DetailedReportAggregator.aggregate(data, new ByYear())
 
       aggregate.size should be(2)
     }

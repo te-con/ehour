@@ -8,29 +8,53 @@ import scala.collection.convert.{WrapAsJava, WrapAsScala}
 import org.apache.commons.lang.builder.HashCodeBuilder
 
 
-object DetailedReportAggregator {
-  val ByMonth = (date: Date) => new LocalDate(date.getTime).toString("yyyyMM")
-  val ByWeek = (date: Date) => new LocalDate(date.getTime).toString("yyyyww")
-  val ByQuarter = (date: Date) => {
+trait AggregateConverter {
+  def toDate(date: Date): Date
+  def toString(date: Date): String
+}
+
+class ByWeek extends AggregateConverter {
+  override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyyww")
+  override def toDate(date: Date): Date = new LocalDate(date.getTime).withDayOfWeek(1).toDate
+}
+
+class ByMonth extends AggregateConverter {
+  override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyyMM")
+  override def toDate(date: Date): Date = new LocalDate(date.getTime).withDayOfMonth(1).toDate
+}
+
+class ByQuarter extends AggregateConverter {
+  override def toString(date: Date): String = {
     val localDate = new LocalDate(date.getTime)
     val quarter = (localDate.getMonthOfYear - 1) / 3
     val year = localDate.getYear
 
     s"$year$quarter"
   }
-  val ByYear= (date: Date) => new LocalDate(date.getTime).toString("yyyy")
+  override def toDate(date: Date): Date = {
+    val localDate = new LocalDate(date.getTime)
+    val firstMonth = localDate.getMonthOfYear / 3
+    new LocalDate(localDate.getYear, firstMonth, 1).toDate
+  }
+}
 
-  def aggregate(elements: ju.List[FlatReportElement], f: (Date) => String): ju  .List[FlatReportElement] = {
-    WrapAsJava.bufferAsJavaList(aggregate(WrapAsScala.asScalaBuffer(elements).toList, f).toBuffer)
+class ByYear extends AggregateConverter {
+  override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyy")
+  override def toDate(date: Date): Date = new LocalDate(date.getTime).withMonthOfYear(1).withDayOfMonth(1).toDate
+}
+
+object DetailedReportAggregator {
+  def aggregate(elements: ju.List[FlatReportElement], converter: AggregateConverter): ju  .List[FlatReportElement] = {
+    WrapAsJava.bufferAsJavaList(aggregate(WrapAsScala.asScalaBuffer(elements).toList, converter).toBuffer)
   }
 
-  def aggregate(elements: List[FlatReportElement], f: (Date) => String): List[FlatReportElement] = {
+  def aggregate(elements: List[FlatReportElement], converter: AggregateConverter): List[FlatReportElement] = {
     def sum(accumulator: Map[AggregateKey, Float], xs: List[FlatReportElement]): Map[AggregateKey, Float] = {
       if (xs.isEmpty) {
         accumulator
       } else {
         val element = xs.head
-        val key = AggregateKey(element, f)
+        val key = AggregateKey(element, converter)
 
         val v = accumulator.getOrElse(key, 0f) + element.getTotalHours.floatValue()
 
@@ -43,6 +67,7 @@ object DetailedReportAggregator {
     (aggregated map {
       case (k, v) =>
         val clone = new FlatReportElement(k.baseElement)
+        clone.setDayDate(converter.toDate(k.baseElement.getDayDate))
         clone.setTotalHours(v)
         clone.setTotalTurnOver(v * (if (clone.getRate != null) clone.getRate.floatValue() else 0))
         clone.setComment("")
@@ -64,9 +89,9 @@ private case class AggregateKey(aggregatedOn: String, baseElement: FlatReportEle
 }
 
 private object AggregateKey {
-  def apply(e: FlatReportElement, f: (Date) => String): AggregateKey = {
+  def apply(e: FlatReportElement, converter: AggregateConverter): AggregateKey = {
     val date = e.getDayDate
 
-    AggregateKey(f(date), e)
+    AggregateKey(converter.toString(date), e)
   }
 }
