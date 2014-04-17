@@ -34,7 +34,7 @@ class ByQuarter extends AggregateConverter {
   override def toDate(date: Date): Date = {
     val localDate = new LocalDate(date.getTime)
     val firstMonth = localDate.getMonthOfYear / 3
-    new LocalDate(localDate.getYear, firstMonth, 1).toDate
+    new LocalDate(localDate.getYear, (firstMonth * 3) + 1, 1).toDate
   }
 }
 
