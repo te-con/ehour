@@ -180,7 +180,7 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
 
         agg.add(pag);
 
-        data = new ReportData(agg, reportCriteria.getReportRange());
+        data = new ReportData(agg, reportCriteria.getReportRange(), reportCriteria.getUserSelectedCriteria());
     }
 
     private class MockReportTabBuilder implements ReportTabBuilder {

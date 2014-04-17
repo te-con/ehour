@@ -62,7 +62,7 @@ public class AuditReport extends AbstractReportModel
 		
 		List<Audit> audit = auditService.findAudits((AuditReportRequest) userSelectedCriteria);
 		
-		return new ReportData(convert(audit), reportCriteria.getReportRange());
+		return new ReportData(convert(audit), reportCriteria.getReportRange(), userSelectedCriteria);
 	}
 	
 	

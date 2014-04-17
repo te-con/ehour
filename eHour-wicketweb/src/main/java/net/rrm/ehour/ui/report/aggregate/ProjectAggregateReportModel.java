@@ -58,7 +58,7 @@ public class ProjectAggregateReportModel extends AbstractAggregateReportModel {
             }
         });
 
-        return new ReportData(reportData.getLockedDays(), reportElements, reportData.getReportRange());
+        return new ReportData(reportData.getLockedDays(), reportElements, reportData.getReportRange(), reportCriteria.getUserSelectedCriteria());
     }
 
     @Override

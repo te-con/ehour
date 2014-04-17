@@ -82,7 +82,7 @@ public class DetailedReportModel extends TreeReportModel {
 
         sortOnDate(elements);
 
-        return new ReportData(reportData.getLockedDays(), elements, reportData.getReportRange());
+        return new ReportData(reportData.getLockedDays(), elements, reportData.getReportRange(), reportCriteria.getUserSelectedCriteria());
     }
 
     private void sortOnDate(List<FlatReportElement> reportElements) {
@@ -136,8 +136,6 @@ public class DetailedReportModel extends TreeReportModel {
 
             /**
              * Only needed for the root node, customer
-             * @param aggregate
-             * @return
              */
             public Serializable getElementId(FlatReportElement flatElement) {
                 return flatElement.getCustomerId();

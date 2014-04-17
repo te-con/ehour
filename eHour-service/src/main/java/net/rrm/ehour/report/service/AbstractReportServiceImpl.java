@@ -59,13 +59,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         this.reportAggregatedDao = reportAggregatedDao;
     }
 
-    /**
-     * Get report data for criteria
-     *
-     * @param reportCriteria
-     * @return
-     */
-    protected ReportData getReportData(ReportCriteria reportCriteria) {
+    ReportData getReportData(ReportCriteria reportCriteria) {
         UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
 
         DateRange reportRange = reportCriteria.getReportRange();
@@ -77,9 +71,9 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
         if (userSelectedCriteria.isForPm()) {
             List<ProjectStructuredReportElement> elem = evictNonPmReportElements(userSelectedCriteria, allReportElements);
-            return new ReportData(lockedDates, elem, reportRange);
+            return new ReportData(lockedDates, elem, reportRange, userSelectedCriteria);
         } else {
-            return new ReportData(lockedDates, allReportElements, reportRange);
+            return new ReportData(lockedDates, allReportElements, reportRange, userSelectedCriteria);
         }
     }
 
@@ -135,13 +129,6 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
     /**
      * Get the actual data
-     *
-     *
-     * @param users
-     * @param projects
-     * @param reportRange
-     * @param showZeroBookings
-     * @return
      */
     protected abstract List<RE> getReportElements(List<User> users,
                                                   List<Project> projects,
@@ -150,9 +137,6 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
     /**
      * Get project id's based on selected customers
-     *
-     * @param userSelectedCriteria
-     * @return
      */
     private List<Project> getProjects(UserSelectedCriteria userSelectedCriteria) {
         List<Project> projects;
@@ -189,13 +173,6 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         return filteredProjects;
     }
 
-
-    /**
-     * Get users based on selected departments
-     *
-     * @param userSelectedCriteria
-     * @return
-     */
     private List<User> getUsersForSelectedDepartments(UserSelectedCriteria userSelectedCriteria) {
         List<User> users;
 

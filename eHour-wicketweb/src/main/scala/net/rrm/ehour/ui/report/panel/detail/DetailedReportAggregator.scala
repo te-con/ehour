@@ -5,6 +5,7 @@ import net.rrm.ehour.report.reports.element.FlatReportElement
 import org.joda.time.LocalDate
 import java.util.Date
 import scala.collection.convert.{WrapAsJava, WrapAsScala}
+import org.apache.commons.lang.builder.HashCodeBuilder
 
 
 object DetailedReportAggregator {
@@ -51,9 +52,13 @@ object DetailedReportAggregator {
 }
 
 private case class AggregateKey(aggregatedOn: String, baseElement: FlatReportElement) {
+  override def hashCode() = new HashCodeBuilder().append(aggregatedOn, baseElement.getAssignmentId).toHashCode
+
   override def equals(other: Any) = other match {
-    case that: AggregateKey => that.aggregatedOn == aggregatedOn &&
-      baseElement.getAssignmentId.equals(that.baseElement.getAssignmentId)
+    case that: AggregateKey =>
+      val id = baseElement.getAssignmentId
+      val otherId = that.baseElement.getAssignmentId
+      that.aggregatedOn.equals(aggregatedOn) && id.equals(otherId)
     case _ => false
   }
 }

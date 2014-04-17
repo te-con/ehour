@@ -27,90 +27,88 @@ import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings({"deprecation"})
-public class DetailedReportDataObjectMother
-{
-	public static List<FlatReportElement> getFlatReportElements()
-	{
-		List<FlatReportElement> els = new ArrayList<FlatReportElement>();
+public class DetailedReportDataObjectMother {
+    public static List<FlatReportElement> getFlatReportElements() {
+        List<FlatReportElement> els = new ArrayList<FlatReportElement>();
 
-		{
-			FlatReportElement fre = new FlatReportElement();
-			fre.setAssignmentId(1);
-			fre.setComment("ja hallo");
-			fre.setCustomerCode("AA");
-			fre.setCustomerId(1);
-			fre.setCustomerName("A Company");
-			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 31));
-			fre.setDisplayOrder(1);
-			fre.setEntryDate("492007");
-			fre.setTotalHours(5);
+        {
+            FlatReportElement fre = new FlatReportElement();
+            fre.setAssignmentId(1);
+            fre.setComment("ja hallo");
+            fre.setCustomerCode("AA");
+            fre.setCustomerId(1);
+            fre.setCustomerName("A Company");
+            fre.setDayDate(new Date(2007 - 1900, 12 - 1, 31));
+            fre.setDisplayOrder(1);
+            fre.setEntryDate("492007");
+            fre.setTotalHours(5);
             fre.setTotalTurnOver(15);
-			fre.setProjectId(1);
-			fre.setProjectName("PRJ");
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
             fre.setProjectCode("PRJ");
-			fre.setUserId(5);
-			els.add(fre);
-		}
+            fre.setUserId(5);
+            els.add(fre);
+        }
 
-		{
-			FlatReportElement fre = new FlatReportElement();
-			fre.setAssignmentId(1);
-			fre.setComment("ja hallo");
-			fre.setCustomerCode("AA");
-			fre.setCustomerId(1);
-			fre.setCustomerName("A Company");
-			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 30));
-			fre.setDisplayOrder(1);
-			fre.setEntryDate("492007");
-			fre.setTotalHours(6);
+        {
+            FlatReportElement fre = new FlatReportElement();
+            fre.setAssignmentId(1);
+            fre.setComment("ja hallo");
+            fre.setCustomerCode("AA");
+            fre.setCustomerId(1);
+            fre.setCustomerName("A Company");
+            fre.setDayDate(new Date(2007 - 1900, 12 - 1, 30));
+            fre.setDisplayOrder(1);
+            fre.setEntryDate("492007");
+            fre.setTotalHours(6);
             fre.setTotalTurnOver(16);
-			fre.setProjectId(1);
-			fre.setProjectName("PRJ");
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
             fre.setProjectCode("PRJ");
 
             fre.setUserId(5);
-			els.add(fre);
-		}
+            els.add(fre);
+        }
 
-		{
-			FlatReportElement fre = new FlatReportElement();
-			fre.setAssignmentId(2);
-			fre.setComment("ja hallo");
-			fre.setCustomerCode("AA");
-			fre.setCustomerId(1);
-			fre.setCustomerName("A Company");
-			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 29));
-			fre.setDisplayOrder(1);
-			fre.setEntryDate("492007");
-			fre.setTotalHours(7);
+        {
+            FlatReportElement fre = new FlatReportElement();
+            fre.setAssignmentId(2);
+            fre.setComment("ja hallo");
+            fre.setCustomerCode("AA");
+            fre.setCustomerId(1);
+            fre.setCustomerName("A Company");
+            fre.setDayDate(new Date(2007 - 1900, 12 - 1, 29));
+            fre.setDisplayOrder(1);
+            fre.setEntryDate("492007");
+            fre.setTotalHours(7);
             fre.setTotalTurnOver(17);
-			fre.setProjectId(1);
-			fre.setProjectName("PRJ");
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
             fre.setProjectCode("PRJ");
 
             fre.setUserId(6);
-			els.add(fre);
-		}
+            els.add(fre);
+        }
 
-		{
-			FlatReportElement fre = new FlatReportElement();
-			fre.setAssignmentId(2);
-			fre.setComment("ja hallo");
-			fre.setCustomerCode("AA");
-			fre.setCustomerId(1);
-			fre.setCustomerName("A Company");
-			fre.setDayDate(new Date(2007 - 1900, 12 - 1, 28));
-			fre.setDisplayOrder(2);
-			fre.setEntryDate("492007");
-			fre.setTotalHours(8);
+        {
+            FlatReportElement fre = new FlatReportElement();
+            fre.setAssignmentId(2);
+            fre.setComment("ja hallo");
+            fre.setCustomerCode("AA");
+            fre.setCustomerId(1);
+            fre.setCustomerName("A Company");
+            fre.setDayDate(new Date(2007 - 1900, 12 - 1, 28));
+            fre.setDisplayOrder(2);
+            fre.setEntryDate("492007");
+            fre.setTotalHours(8);
             fre.setTotalTurnOver(18);
-			fre.setProjectId(1);
-			fre.setProjectName("PRJ");
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
             fre.setProjectCode("PRJ");
 
             fre.setUserId(6);
-			els.add(fre);
-		}
+            els.add(fre);
+        }
 
         {
             FlatReportElement fre = new FlatReportElement();
@@ -131,19 +129,18 @@ public class DetailedReportDataObjectMother
             fre.setUserId(6);
             els.add(fre);
         }
-		return els;
-	}
+        return els;
+    }
 
-	public static ReportData getFlatReportData()
-	{
-        return new ReportData(DetailedReportDataObjectMother.getFlatReportElements(), new DateRange(new Date(2007 - 1900, 12 - 1, 27), new Date(2008 - 1900, 0, 1)));
-	}
+    public static ReportData getFlatReportData() {
+        DateRange date = new DateRange(new Date(2007 - 1900, 12 - 1, 27), new Date(2008 - 1900, 0, 1));
+        return new ReportData(DetailedReportDataObjectMother.getFlatReportElements(), date, new UserSelectedCriteria());
+    }
 
-	public static ReportCriteria getReportCriteria()
-	{
-		UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-		userSelectedCriteria.setReportRange(new DateRange(new Date(), new Date()));
+    public static ReportCriteria getReportCriteria() {
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setReportRange(new DateRange(new Date(), new Date()));
 
         return new ReportCriteria(userSelectedCriteria);
-	}
+    }
 }
