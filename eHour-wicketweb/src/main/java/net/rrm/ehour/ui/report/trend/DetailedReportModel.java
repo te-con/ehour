@@ -27,13 +27,15 @@ import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.TreeReportModel;
 import net.rrm.ehour.ui.report.node.ReportNode;
 import net.rrm.ehour.ui.report.node.ReportNodeFactory;
-import net.rrm.ehour.ui.report.panel.detail.DetailedReportAggregator;
+import net.rrm.ehour.ui.report.panel.detail.*;
 import net.rrm.ehour.ui.report.trend.node.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import scala.Function1;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Detailed report
@@ -42,13 +44,13 @@ import java.util.*;
 public class DetailedReportModel extends TreeReportModel {
     private static final long serialVersionUID = -21703820501429504L;
 
-    private static final Map<AggregateBy, Function1<Date, String>> AGGREGATE_MAP = Maps.newHashMap();
+    private static final Map<AggregateBy, AggregateConverter> AGGREGATE_MAP = Maps.newHashMap();
 
     static {
-        AGGREGATE_MAP.put(AggregateBy.WEEK, DetailedReportAggregator.ByWeek());
-        AGGREGATE_MAP.put(AggregateBy.MONTH, DetailedReportAggregator.ByMonth());
-        AGGREGATE_MAP.put(AggregateBy.QUARTER, DetailedReportAggregator.ByQuarter());
-        AGGREGATE_MAP.put(AggregateBy.YEAR, DetailedReportAggregator.ByYear());
+        AGGREGATE_MAP.put(AggregateBy.WEEK, new ByWeek());
+        AGGREGATE_MAP.put(AggregateBy.MONTH, new ByMonth());
+        AGGREGATE_MAP.put(AggregateBy.QUARTER, new ByQuarter());
+        AGGREGATE_MAP.put(AggregateBy.YEAR, new ByYear());
     }
 
     @SpringBean(name = "detailedReportService")
@@ -73,7 +75,7 @@ public class DetailedReportModel extends TreeReportModel {
         List<FlatReportElement> originalElements = (List<FlatReportElement>) reportData.getReportElements();
 
         if (AGGREGATE_MAP.containsKey(aggregateBy)) {
-            Function1<Date, String> aggregateFunction = AGGREGATE_MAP.get(aggregateBy);
+            AggregateConverter aggregateFunction = AGGREGATE_MAP.get(aggregateBy);
 
             elements = DetailedReportAggregator.aggregate(originalElements, aggregateFunction);
         } else {
