@@ -9,7 +9,7 @@ import net.rrm.ehour.AbstractSpec
 @RunWith(classOf[JUnitRunner])
 class DetailedReportAggregatorSpec extends AbstractSpec {
   "Detailed Report Aggregator" should {
-    val baseDate = new LocalDate(2013, 10, 27)
+    val baseDate = new LocalDate(2014, 1, 1)
 
     "aggregate 0 bookings to nothing" in {
       val data = List()
