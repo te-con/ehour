@@ -13,6 +13,12 @@ trait AggregateConverter {
   def toString(date: Date): String
 }
 
+class ByDay extends AggregateConverter {
+  override def toDate(date: Date): Date = date
+
+  override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyyMMdd")
+}
+
 class ByWeek extends AggregateConverter {
   override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyyww")
   override def toDate(date: Date): Date = new LocalDate(date.getTime).withDayOfWeek(1).toDate
@@ -24,18 +30,21 @@ class ByMonth extends AggregateConverter {
 }
 
 class ByQuarter extends AggregateConverter {
+  private def quarter(month: Int) = month / 3 + (if ((month % 3) > 0) 1 else 0)
+
   override def toString(date: Date): String = {
     val localDate = new LocalDate(date.getTime)
     val month = localDate.getMonthOfYear
-    val quarter =  month / 3 + (if ((month % 3) > 0) 1 else 0)
+    val q = quarter(month)
+
     val year = localDate.getYear
 
-    s"$year$quarter"
+    s"$year$q"
   }
   override def toDate(date: Date): Date = {
     val localDate = new LocalDate(date.getTime)
-    val firstMonth = localDate.getMonthOfYear / 3
-    new LocalDate(localDate.getYear, (firstMonth + 1) * 3, 1).toDate
+    val q = quarter(localDate.getMonthOfYear)
+    new LocalDate(localDate.getYear, ((q - 1) * 3) + 1, 1).toDate
   }
 }
 

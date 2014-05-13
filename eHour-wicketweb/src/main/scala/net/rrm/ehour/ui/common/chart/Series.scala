@@ -28,7 +28,8 @@ case class SparseDateSeries(name: String = "",
                             data: Seq[DateFloatValue],
                             dateStart: DateTime,
                             dateEnd: DateTime,
-                            yAxis: Option[Int] = None) extends AbstractSeries[DateFloatValue] {
+                            yAxis: Option[Int] = None,
+                            dateIncrease: DateTime => DateTime = _.plusDays(1)) extends AbstractSeries[DateFloatValue] {
   override def preProcess(): Series[Float] = {
     val groupedByDate = data groupBy (_.date)
 
@@ -42,7 +43,7 @@ case class SparseDateSeries(name: String = "",
       if (date isAfter dateEnd) {
         paddedSeries.reverse
       } else {
-        padSeriesData(date.plusDays(1), dateMappedValues.getOrElse(date, 0f) :: paddedSeries)
+        padSeriesData(dateIncrease(date), dateMappedValues.getOrElse(date, 0f) :: paddedSeries)
       }
     }
 
@@ -51,6 +52,3 @@ case class SparseDateSeries(name: String = "",
     Series[Float](name, paddedSeriesData, yAxis)
   }
 }
-
-
-
