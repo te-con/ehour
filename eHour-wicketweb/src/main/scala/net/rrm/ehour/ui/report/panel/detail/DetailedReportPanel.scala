@@ -77,9 +77,11 @@ class AggregateByDatePanel(id: String, criteria: UserSelectedCriteria) extends P
       override def onUpdate(target: AjaxRequestTarget) {
         val aggregateBy = aggregateSelect.getModelObject
 
-        send(Self, Broadcast.BUBBLE, new AggregateByChangedEvent(target, DetailedReportPanel.AggregateToConfigMap(aggregateBy)))
+        send(Self.getPage, Broadcast.DEPTH, new AggregateByChangedEvent(target, DetailedReportPanel.AggregateToConfigMap(aggregateBy)))
       }
     })
+
+
 
     addOrReplace(aggregateSelect)
   }
