@@ -98,8 +98,6 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         blueBorder.add(reportContent);
     }
 
-
-
     private WebMarkupContainer createReportContent(TreeReportModel reportModel, ExcelReport excelReport, String id) {
         boolean emptyReport = reportModel.getReportData().isEmpty();
         WebMarkupContainer reportContent = emptyReport ? new Fragment(id, "noData", this) : createReport(REPORT_CONTENT_ID, reportModel, excelReport);
@@ -119,14 +117,20 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         reportTable.add(createZeroBookingSelector("reportOptionsPlaceholder"));
         reportTable.add(createAdditionalOptions("additionalOptions"));
 
-        reportTableContainer = new Container("reportTableContainer");
+        reportTableContainer = createReportTableContainer(reportModel);
         reportTable.add(reportTableContainer);
+
+        return reportTable;
+    }
+
+    private Container createReportTableContainer(TreeReportModel reportModel) {
+        Container reportTableContainer = new Container("reportTableContainer");
 
         reportTableContainer.add(addHeaderColumns("columnHeaders"));
         addReportData(reportModel, reportTableContainer);
         reportTableContainer.add(addGrandTotal("cell", reportModel));
 
-        return reportTable;
+        return reportTableContainer;
     }
 
     private WebMarkupContainer createZeroBookingSelector(String id) {
@@ -155,9 +159,13 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
             reportConfig = aggregateByChangedEvent.reportConfig();
 
-            WebMarkupContainer reportContent = createReportContent((TreeReportModel)getPanelModel(), excelReport, REPORT_CONTENT_ID);
-            blueBorder.addOrReplace(reportContent);
-            aggregateByChangedEvent.target().add(reportContent);
+            if (reportTableContainer != null) {
+                Container container = createReportTableContainer((TreeReportModel) getPanelModel());
+
+                reportTableContainer.replaceWith(container);
+                reportTableContainer = container;
+                aggregateByChangedEvent.target().add(reportTableContainer);
+            }
         }
     }
 
