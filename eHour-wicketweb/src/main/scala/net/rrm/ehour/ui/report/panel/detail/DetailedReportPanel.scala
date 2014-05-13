@@ -16,9 +16,10 @@ import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.markup.html.form.DropDownChoice
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.event.Broadcast
+import org.apache.wicket.event.{IEvent, Broadcast}
 import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer
+import net.rrm.ehour.report.reports.ReportData
 
 object DetailedReportPanel {
   val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
@@ -29,6 +30,7 @@ object DetailedReportPanel {
 }
 
 class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
+  val Self = this
 
   setDefaultModel(report)
   setOutputMarkupId(true)
@@ -42,20 +44,38 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
 
     val reportConfig = DetailedReportPanel.AggregateToConfigMap.getOrElse(report.getReportCriteria.getUserSelectedCriteria.getAggregateBy, DetailedReportConfig.DETAILED_REPORT_BY_DAY)
 
-    val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
     frame.add(new TreeReportDataPanel("reportTable", report, reportConfig, DetailedReportExcel.getInstance()) {
       protected override def createAdditionalOptions(id: String): WebMarkupContainer = new AggregateByDatePanel(id, report.getReportCriteria.getUserSelectedCriteria)
     })
 
-    val treeReportData = reportModel.getReportData.asInstanceOf[TreeReportData]
-    val rawData = treeReportData.getRawReportData
-    val cacheKey = reportCacheService.storeReportData(rawData)
+    val reportData: ReportData = recalculateReportData()
+    val cacheKey = storeReportData(reportData)
 
     val chartContainer = new DetailedReportChartContainer("chart", cacheKey)
-    chartContainer.setVisible(!treeReportData.isEmpty)
+    chartContainer.setVisible(!reportData.isEmpty)
     frame.add(chartContainer)
 
     super.onBeforeRender()
+  }
+
+  private def recalculateReportData():ReportData = {
+    val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
+    val treeReportData = reportModel.getReportData.asInstanceOf[TreeReportData]
+    treeReportData.getRawReportData
+  }
+
+  private def storeReportData(data: ReportData) = reportCacheService.storeReportData(data)
+
+  override def onEvent(event: IEvent[_]) = {
+    event.getPayload match {
+      case aggregateByChangedEvent: AggregateByChangedEvent =>
+        val cacheKey = storeReportData(recalculateReportData())
+
+        val reportDataEvent = new UpdateReportDataEvent(aggregateByChangedEvent.target, cacheKey, aggregateByChangedEvent.reportConfig)
+
+        send(Self, Broadcast.BREADTH, reportDataEvent)
+      case _ =>
+    }
   }
 }
 
@@ -80,8 +100,6 @@ class AggregateByDatePanel(id: String, criteria: UserSelectedCriteria) extends P
         send(Self.getPage, Broadcast.DEPTH, new AggregateByChangedEvent(target, DetailedReportPanel.AggregateToConfigMap(aggregateBy)))
       }
     })
-
-
 
     addOrReplace(aggregateSelect)
   }

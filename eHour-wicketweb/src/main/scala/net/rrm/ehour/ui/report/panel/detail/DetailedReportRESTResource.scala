@@ -28,9 +28,6 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 
   @MethodMapping("/hour/{cacheKey}")
   def getHourlyData(cacheKey: String): DetailedReportResponse = {
-
-
-
     cacheService.retrieveReportData(cacheKey) match {
       case Some(data) =>
         val aggregateBy = data.getCriteria.getAggregateBy
