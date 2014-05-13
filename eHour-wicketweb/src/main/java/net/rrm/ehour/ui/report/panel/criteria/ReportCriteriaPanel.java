@@ -586,7 +586,8 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             placeholder.setVisible(false);
             return placeholder;
         }
-        return new DateDropDownChoice<TimesheetLock>(id, new PropertyModel<TimesheetLock>(getPanelModel(), "reportForLock"),
+
+        DateDropDownChoice<TimesheetLock> lockedDateDropDown = new DateDropDownChoice<TimesheetLock>(id, new PropertyModel<TimesheetLock>(getPanelModel(), "reportForLock"),
                 locks,
                 new IChoiceRenderer<TimesheetLock>() {
                     @Override
@@ -598,7 +599,11 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                     public String getIdValue(TimesheetLock object, int index) {
                         return Integer.toString(index);
                     }
-                });
+                }
+        );
+
+        lockedDateDropDown.setOutputMarkupId(true);
+        return lockedDateDropDown;
 
     }
 
@@ -695,10 +700,13 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private void updateDates(AjaxRequestTarget target) {
         target.add(startDatePicker);
         target.add(endDatePicker);
-        target.add(lockedDateSelection);
 
-        for (WebMarkupContainer cont : quickSelections) {
-            target.add(cont);
+        if (lockedDateSelection.isVisibleInHierarchy()) {
+            target.add(lockedDateSelection);
+        }
+
+        for (WebMarkupContainer quickSelection : quickSelections) {
+            target.add(quickSelection);
         }
     }
 

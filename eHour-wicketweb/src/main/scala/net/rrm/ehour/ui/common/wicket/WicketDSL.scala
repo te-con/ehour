@@ -90,7 +90,7 @@ object AjaxLink {
 }
 
 class Container(id: String) extends WebMarkupContainer(id) {
-  setOutputMarkupId(true)
+  setOutputMarkupPlaceholderTag(true)
 }
 
 class NonEmptyLabel[T <: java.io.Serializable](id: String, label: IModel[T], converter: Option[IConverter[T]] = None) extends Label(id, label) {
