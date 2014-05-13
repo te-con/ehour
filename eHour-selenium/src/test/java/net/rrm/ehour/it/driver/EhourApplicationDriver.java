@@ -47,6 +47,6 @@ public class EhourApplicationDriver {
     }
 
     public static void sleep() {
-        sleepFor(1250);
+        sleepFor(1500);
     }
 }
