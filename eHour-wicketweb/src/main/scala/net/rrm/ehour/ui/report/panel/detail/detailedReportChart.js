@@ -56,7 +56,8 @@ function DetailedReportChart(cacheKey, id) {
         });
     }
 
-    this.update = function() {
+    this.update = function(updatedCacheKey) {
+        cacheKey = updatedCacheKey;
         updateChart(options, 'hour');
     };
 

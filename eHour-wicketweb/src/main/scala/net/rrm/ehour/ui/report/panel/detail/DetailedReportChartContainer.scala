@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.IHeaderContributor
 import org.apache.wicket.markup.head.{JavaScriptHeaderItem, OnLoadHeaderItem, IHeaderResponse}
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.event.IEvent
+import net.rrm.ehour.ui.report.panel.UpdateReportDataEvent
 
 class DetailedReportChartContainer(id: String, cacheKey: String) extends Panel(id) with IHeaderContributor {
   setOutputMarkupId(true)
@@ -21,7 +22,10 @@ class DetailedReportChartContainer(id: String, cacheKey: String) extends Panel(i
 
   override def onEvent(event: IEvent[_]) {
     event.getPayload match {
-      case aggregateByChangedEvent: AggregateByChangedEvent => aggregateByChangedEvent.target.appendJavaScript("window.chart.update();")
+      case event: UpdateReportDataEvent => {
+        val cacheKey = event.getCacheKey
+        event.target.appendJavaScript(s"window.chart.update('$cacheKey');")
+      }
       case _ =>
     }
   }

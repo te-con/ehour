@@ -34,7 +34,6 @@ import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.ui.report.TreeReportDataProvider;
 import net.rrm.ehour.ui.report.TreeReportElement;
 import net.rrm.ehour.ui.report.TreeReportModel;
-import net.rrm.ehour.ui.report.panel.detail.AggregateByChangedEvent;
 import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
@@ -154,10 +153,10 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
             addReportData(model, reportTableContainer);
 
             ((ZeroBookingSelectionChangedEvent) event.getPayload()).target().add(reportTableContainer);
-        } else if (event.getPayload() instanceof AggregateByChangedEvent) {
-            AggregateByChangedEvent aggregateByChangedEvent = (AggregateByChangedEvent) event.getPayload();
+        } else if (event.getPayload() instanceof UpdateReportDataEvent) {
+            UpdateReportDataEvent aggregateByChangedEvent = (UpdateReportDataEvent) event.getPayload();
 
-            reportConfig = aggregateByChangedEvent.reportConfig();
+            reportConfig = aggregateByChangedEvent.getReportConfig();
 
             if (reportTableContainer != null) {
                 Container container = createReportTableContainer((TreeReportModel) getPanelModel());
