@@ -18,6 +18,7 @@ import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
 import net.rrm.ehour.ui.common.wicket.Event
+import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer
 
 object DetailedReportPanel {
   val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
@@ -68,7 +69,9 @@ class AggregateByDatePanel(id: String, criteria: UserSelectedCriteria) extends P
 
     val options = toJava(AggregateBy.values().toList)
 
-    val aggregateSelect = new DropDownChoice[AggregateBy]("aggregateBy", new PropertyModel[AggregateBy](criteria, "aggregateBy"), options)
+    val aggregateSelect = new DropDownChoice[AggregateBy]("aggregateBy", new PropertyModel[AggregateBy](criteria, "aggregateBy"), options, new LocalizedResourceRenderer[AggregateBy]() {
+      override protected def getResourceKey(o: AggregateBy): String = "userReport.report." + o.name.toLowerCase
+    })
 
     aggregateSelect.add(new AjaxFormComponentUpdatingBehavior("change") {
       override def onUpdate(target: AjaxRequestTarget) {
