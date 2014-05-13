@@ -75,6 +75,9 @@ public abstract class TreeReportModel extends AbstractReportModel {
     protected abstract ReportData fetchReportData(ReportCriteria reportCriteria);
 
     private void deriveTotals(List<ReportNode> rootNodes) {
+        totalTurnover = 0;
+        totalHours = 0;
+
         for (ReportNode reportNode : rootNodes) {
             totalTurnover += reportNode.getTurnover().floatValue();
             totalHours += reportNode.getHours().floatValue();
