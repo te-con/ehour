@@ -42,8 +42,9 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
                                yAxis = "Hours",
                                series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
       case None =>
-        DetailedReportRESTResource.LOG.warn(s"no data found for key $cacheKey")
-        throw new IllegalArgumentException(s"no data found for key $cacheKey")
+        val errorMsg = s"no data found for key $cacheKey"
+        DetailedReportRESTResource.LOG.warn(errorMsg)
+        throw new IllegalArgumentException(errorMsg)
     }
   }
 
@@ -63,8 +64,9 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
                               yAxis = "Turnover",
                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
       case None =>
-        DetailedReportRESTResource.LOG.warn(s"no data found for key $cacheKey")
-        throw new IllegalArgumentException(s"no data found for key $cacheKey")
+        val errorMsg = s"no data found for key $cacheKey"
+        DetailedReportRESTResource.LOG.warn(errorMsg)
+        throw new IllegalArgumentException(errorMsg)
     }
   }
 

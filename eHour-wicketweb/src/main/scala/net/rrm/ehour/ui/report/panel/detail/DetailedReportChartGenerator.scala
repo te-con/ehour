@@ -8,6 +8,7 @@ import org.joda.time.DateTime
 import scala.collection.convert.WrapAsScala
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.ui.common.chart.{DateFloatValue, SparseDateSeries}
+import net.rrm.ehour.report.criteria.AggregateBy
 
 object DetailedReportChartGenerator {
   def generateHourBasedDetailedChartData(reportData: ReportData): List[SparseDateSeries] = {
@@ -27,10 +28,25 @@ object DetailedReportChartGenerator {
 
     val (dateValueMap, customerNameMap) = buildCustomerAndValueMap(elements, f)
 
+    type f = DateTime => DateTime
+
+    val (dateIncreaseMethod: (DateTime => DateTime), converter: AggregateConverter) = reportData.getCriteria.getAggregateBy match {
+      case AggregateBy.WEEK=> ((d: DateTime) => d.plusWeeks(1), new ByWeek)
+      case AggregateBy.MONTH => ((d: DateTime) => d.plusMonths(1), new ByMonth)
+      case AggregateBy.QUARTER => ((d: DateTime) => d.plusMonths(3), new ByQuarter)
+      case AggregateBy.YEAR=> ((d: DateTime) => d.plusYears(1), new ByYear)
+      case _ => ((d: DateTime) => d.plusDays(1), new ByDay)
+    }
+
     (for (category <- dateValueMap.keySet) yield {
       val values = dateValueMap.get(category).get
 
-      SparseDateSeries(name = customerNameMap.getOrElse(category, ""), data = values, dateStart = new DateTime(reportRange.getDateStart), dateEnd = new DateTime(reportRange.getDateEnd))
+      SparseDateSeries(name = customerNameMap.getOrElse(category, ""),
+                       data = values,
+                       dateStart = new DateTime(converter.toDate(reportRange.getDateStart)),
+                       dateEnd = new DateTime(converter.toDate(reportRange.getDateEnd)),
+                       yAxis = None,
+                       dateIncrease = dateIncreaseMethod)
     }).toList
   }
 
