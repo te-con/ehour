@@ -26,7 +26,8 @@ class ByMonth extends AggregateConverter {
 class ByQuarter extends AggregateConverter {
   override def toString(date: Date): String = {
     val localDate = new LocalDate(date.getTime)
-    val quarter = (localDate.getMonthOfYear - 1) / 3
+    val month = localDate.getMonthOfYear
+    val quarter =  month / 3 + (if ((month % 3) > 0) 1 else 0)
     val year = localDate.getYear
 
     s"$year$quarter"
@@ -34,7 +35,7 @@ class ByQuarter extends AggregateConverter {
   override def toDate(date: Date): Date = {
     val localDate = new LocalDate(date.getTime)
     val firstMonth = localDate.getMonthOfYear / 3
-    new LocalDate(localDate.getYear, (firstMonth * 3) + 1, 1).toDate
+    new LocalDate(localDate.getYear, (firstMonth + 1) * 3, 1).toDate
   }
 }
 

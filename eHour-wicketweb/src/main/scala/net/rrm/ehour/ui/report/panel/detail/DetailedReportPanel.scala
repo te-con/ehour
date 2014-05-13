@@ -22,8 +22,8 @@ import net.rrm.ehour.ui.common.wicket.Event
 object DetailedReportPanel {
   val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
     AggregateBy.WEEK -> DetailedReportConfig.DETAILED_REPORT_BY_WEEK,
-    AggregateBy.MONTH -> DetailedReportConfig.DETAILED_REPORT_BY_MONTH)
-
+    AggregateBy.MONTH -> DetailedReportConfig.DETAILED_REPORT_BY_MONTH,
+    AggregateBy.QUARTER -> DetailedReportConfig.DETAILED_REPORT_BY_QUARTER)
 }
 
 class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
