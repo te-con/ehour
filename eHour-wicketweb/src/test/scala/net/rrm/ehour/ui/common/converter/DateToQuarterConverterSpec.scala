@@ -19,7 +19,6 @@ class DateToQuarterConverterSpec extends AbstractSpec {
 
       string should be("Q3")
     }
-
   }
 }
 
