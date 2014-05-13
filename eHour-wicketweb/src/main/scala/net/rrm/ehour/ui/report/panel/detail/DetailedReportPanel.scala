@@ -23,7 +23,8 @@ object DetailedReportPanel {
   val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
     AggregateBy.WEEK -> DetailedReportConfig.DETAILED_REPORT_BY_WEEK,
     AggregateBy.MONTH -> DetailedReportConfig.DETAILED_REPORT_BY_MONTH,
-    AggregateBy.QUARTER -> DetailedReportConfig.DETAILED_REPORT_BY_QUARTER)
+    AggregateBy.QUARTER -> DetailedReportConfig.DETAILED_REPORT_BY_QUARTER,
+    AggregateBy.YEAR -> DetailedReportConfig.DETAILED_REPORT_BY_YEAR)
 }
 
 class DetailedReportPanel(id: String, report: DetailedReportModel) extends AbstractBasePanel[DetailedReportModel](id) {
@@ -33,7 +34,6 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
 
   @SpringBean
   var reportCacheService: ReportCacheService = _
-
 
   protected override def onBeforeRender() {
     val frame = new WebMarkupContainer("frame")

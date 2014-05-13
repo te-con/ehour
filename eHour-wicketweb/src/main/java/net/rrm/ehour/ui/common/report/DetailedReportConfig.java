@@ -50,6 +50,17 @@ public enum DetailedReportConfig implements ReportConfig {
             new ReportColumn("userReport.report.comment", ColumnType.COMMENT, HIDDEN),
             new ReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED),
             new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
+            new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED)),
+    DETAILED_REPORT_BY_YEAR(ReportType.SHOW_ZERO_BOOKINGS, "report.criteria.zerobookings.detailed",
+            new ReportColumn("userReport.report.year", ColumnType.STRING, new DateToYearConverter(), VISIBLE),
+            new ReportColumn("userReport.report.customer"),
+            new ReportColumn("userReport.report.project"),
+            new ReportColumn("userReport.report.projectCode"),
+            new ReportColumn("userReport.report.user"),
+            new ReportColumn("userReport.report.role"),
+            new ReportColumn("userReport.report.comment", ColumnType.COMMENT, HIDDEN),
+            new ReportColumn("userReport.report.rate", ColumnType.RATE, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED),
+            new ReportColumn("userReport.report.hours", ColumnType.HOUR, VISIBLE, ALLOW_DUPLICATES),
             new ReportColumn("userReport.report.turnover", ColumnType.TURNOVER, CurrencyConverter.getInstance(), VISIBLE, ALLOW_DUPLICATES, IS_RATE_RELATED));
 
 
