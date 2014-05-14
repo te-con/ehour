@@ -36,11 +36,20 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 
         val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
 
+        val formatter = aggregateBy.name().charAt(0) match {
+          case 'D' => "%D"
+          case 'W' => new StringResourceModel("userReport.report.week", null).getString +  " %W"
+          case 'M' => "%M"
+          case 'Q' => "Q%Q"
+          case 'Y' => "%Y"
+        }
+
         DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
                                pointInterval = aggregateBy.interval,
-                               title = "Hours booked on customers per " + model.getString,
+                               title = "Hours booked on customers per " + model.getString.toLowerCase,
                                yAxis = "Hours",
-                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
+                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))),
+                               xAxisFormat = formatter)
       case None =>
         val errorMsg = s"no data found for key $cacheKey"
         DetailedReportRESTResource.LOG.warn(errorMsg)
@@ -60,7 +69,7 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 
         DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
                               pointInterval = aggregateBy.interval,
-                              title = "Turnover booked on customers per " + model.getString,
+                              title = "Turnover booked on customers per " + model.getString.toLowerCase,
                               yAxis = "Turnover",
                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
       case None =>
@@ -82,7 +91,8 @@ case class DetailedReportResponse(pointStart: DateTime,
                                   title: String,
                                   yAxis: String,
                                   series: util.List[JSparseDateSeries],
-                                  hasReportRole: Boolean = EhourWebSession.getSession.isWithReportRole)
+                                  hasReportRole: Boolean = EhourWebSession.getSession.isWithReportRole,
+                                  xAxisFormat: String = "'{value: %D}'")
 
 case class JSparseDateSeries(name: String,
                              data: util.List[Float],
