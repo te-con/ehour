@@ -39,11 +39,11 @@ public class EhourApplicationDriver {
     }
 
     public static void sleepFor(int millis) {
-        try {
+/*        try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static void sleep() {
