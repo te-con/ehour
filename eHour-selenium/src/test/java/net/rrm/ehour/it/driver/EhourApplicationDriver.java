@@ -37,16 +37,4 @@ public class EhourApplicationDriver {
         Driver.get(BASE_URL + "/eh/logout");
         Driver.manage().deleteAllCookies();
     }
-
-    public static void sleepFor(int millis) {
-/*        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    public static void sleep() {
-        sleepFor(1500);
-    }
 }

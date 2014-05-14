@@ -4,7 +4,8 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.logout;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.ProjectDriver.*;
 import static net.rrm.ehour.it.driver.UserManagementDriver.createRegularUser;
@@ -40,10 +41,8 @@ public abstract class ProjectManagementDriver {
 
     public static void makeFirstAssignmentInActive() {
         findElement("content_border_border__body_assignments_assignmentContainer_assignments_0_container").click();
-        sleep();
         findElement("content_border_border__body_assignments_assignmentContainer_assignments_0_container_editForm_active").click();
         findElement("content_border_border__body_assignments_assignmentContainer_assignments_0_container_editForm_submit").click();
-        sleep();
     }
 
     public static void submit() {

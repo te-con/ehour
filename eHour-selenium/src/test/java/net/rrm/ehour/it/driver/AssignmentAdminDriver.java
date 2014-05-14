@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.Select;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ItCustomer;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleep;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.ProjectDriver.ItProject;
 import static net.rrm.ehour.it.driver.UserManagementDriver.ItUser;
@@ -41,7 +40,6 @@ public abstract class AssignmentAdminDriver {
 
     private static void clickFirstUser() {
         findElement("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_0").click();
-        sleep();
     }
 
     public static void assignToProject(ItUser user, ItCustomer customer, ItProject project) {
@@ -54,8 +52,6 @@ public abstract class AssignmentAdminDriver {
         WebElement cust = findElement("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_formComponents_projectSelection_customer");
         new Select(cust).selectByVisibleText(customer.code + " - " + customer.name);
 
-        sleep();
-
         WebElement projectElement = findElement("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_formComponents_projectSelection_projectAssignment.project");
         new Select(projectElement).selectByVisibleText(project.code + " - " + project.name);
         selectDateAndSetRate();
@@ -64,7 +60,6 @@ public abstract class AssignmentAdminDriver {
 
     private static void submit() {
         findElement("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_submitButton").click();
-        sleep();
     }
 
     private static void selectDateAndSetRate() {
