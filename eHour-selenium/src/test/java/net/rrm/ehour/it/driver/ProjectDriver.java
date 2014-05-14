@@ -8,7 +8,6 @@ import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ItCustomer;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleep;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -75,12 +74,10 @@ public abstract class ProjectDriver {
         listFilter.sendKeys(projectName);
 
         findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_0").click();
-        sleep();
     }
 
     public static void showOnlyActiveProjects() {
         findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_filterForm_filterToggle").click();
-        sleep();
     }
 
     public static void assertProjectLoaded(String projectName) {
@@ -91,12 +88,10 @@ public abstract class ProjectDriver {
 
     public static void newAssignment() {
         findElement("tabs_panel_assignedUserPanel_border_border__body_list_addUsers").click();
-        sleep();
     }
 
     public static void selectUser(int index) {
         findElement("tabs_panel_assignedUserPanel_border_border__body_list_allBorder_allBorder__body_users_" + index + "_name").click();
-        sleep();
     }
 
     public static void setRateForUser(String rate) {
@@ -107,7 +102,6 @@ public abstract class ProjectDriver {
 
     public static void submitAssignment() {
         findElement("tabs_panel_assignedUserPanel_border_border__body_form_border_assignmentForm_submitButton").click();
-        sleep();
     }
 
     public static void selectAssignment(int index) {

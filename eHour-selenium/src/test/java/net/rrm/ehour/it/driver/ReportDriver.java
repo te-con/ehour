@@ -1,13 +1,11 @@
 package net.rrm.ehour.it.driver;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleepFor;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -41,24 +39,17 @@ public abstract class ReportDriver {
         WebElement check = findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.onlyActiveProjects");
 
         check.click();
-        sleep();
-    }
-
-    private static void sleep() {
-        sleepFor(500);
     }
 
     public static void toggleActiveCustomers() {
         WebElement check = findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.onlyActiveCustomers");
 
         check.click();
-        sleep();
     }
 
     public static void sortCustomersOnCode() {
         Select order = new Select(findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_customerSort"));
         order.selectByVisibleText("Code");
-        sleep();
     }
 
     public static void toggleCustomerFilters() {
@@ -80,22 +71,18 @@ public abstract class ReportDriver {
     public static void sortProjectsOnCode() {
         Select order = new Select(findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_projectSort"));
         order.selectByVisibleText("Code");
-        sleep();
     }
 
     public static void clearCustomerCriterium() {
         findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_clearCustomer").click();
-        sleep();
     }
 
     public static void clearProjectCriterium() {
         findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_clearProject").click();
-        sleep();
     }
 
     public static void createReport() {
         findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_createReport").click();
-        sleepFor(750);
     }
 
     public static void setStartDate(String startDate) {
@@ -112,7 +99,6 @@ public abstract class ReportDriver {
 
     public static void navigateToDetails() {
         String txt = findElement("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportHeader").getText();
-        sleep();
         assertTrue(txt.startsWith("Report period"));
     }
 
@@ -122,7 +108,6 @@ public abstract class ReportDriver {
 
     public static void clickZeroBookings() {
         findElement("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportData_reportOptionsPlaceholder_toggleShowZeroBookings").click();
-        sleep();
     }
 
 }

@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.sleepFor;
 
 public class TimesheetLockDriver {
     public static void navigateToAdminLocks() {
@@ -25,8 +24,6 @@ public class TimesheetLockDriver {
         endDateElement.sendKeys(endDate.toString("MM/dd/YY"));
 
         Driver.findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_submit")).click();
-
-        sleepFor(1000);
     }
 
     public static void assertServerMessage(String msg) {

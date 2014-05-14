@@ -7,7 +7,8 @@ import java.util.concurrent.TimeUnit;
 import static net.rrm.ehour.it.driver.AssignmentAdminDriver.assignToProject;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
-import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
+import static net.rrm.ehour.it.driver.EhourApplicationDriver.logout;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.ProjectDriver.ACTIVE_PROJECT;
 import static net.rrm.ehour.it.driver.ProjectDriver.createActiveProjectForActiveCustomer;
@@ -49,13 +50,11 @@ public abstract class TimesheetDriver {
     public static void navigateToMonth(String month) {
         while (!findElement("sidePanel_calendarFrame_currentMonth").getText().equals(month)) {
             findElement("sidePanel_calendarFrame_previousMonthLink").click();
-            sleep();
         }
     }
 
     public static void clickInWeek(int week) {
         findElement("sidePanel_calendarFrame_weeks_" + week).click();
-        EhourApplicationDriver.sleep();
     }
 
     public static void bookHours(int day, Float hours) {
@@ -69,7 +68,6 @@ public abstract class TimesheetDriver {
 
         findElement(base + "_dayWin_content_submit").click();
 
-        EhourApplicationDriver.sleep();
     }
 
     public static String openDayCommentModal(int day) {
@@ -77,7 +75,6 @@ public abstract class TimesheetDriver {
 
         findElement(base + "_commentLink").click();
 
-        EhourApplicationDriver.sleep();
         return base;
     }
 
@@ -85,14 +82,10 @@ public abstract class TimesheetDriver {
         String path = String.format("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_blueFrame_blueFrame__body_customers_0_rows_0_day%d_dayWin_content_cancel", day);
 
         findElement(path).click();
-
-        EhourApplicationDriver.sleep();
     }
 
     public static void submitTimesheet() {
         findElement("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_commentsFrame_commentsFrame__body_submitButton").click();
-
-        EhourApplicationDriver.sleep();
     }
 
     public static String getServerMessage() {
