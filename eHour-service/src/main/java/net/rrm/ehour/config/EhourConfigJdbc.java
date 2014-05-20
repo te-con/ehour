@@ -18,6 +18,8 @@ package net.rrm.ehour.config;
 
 import net.rrm.ehour.domain.AuditType;
 import org.apache.commons.configuration.DatabaseConfiguration;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +45,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     public EhourConfigJdbc(DataSource datasource) {
         super(datasource, "CONFIGURATION", "config_key", "config_value");
 
-        LOG.info("Configuration loaded from database");
+        LOG.info("Configuration loaded from database: " + toString());
     }
 
     public TimeZone getTzAsTimeZone() {
@@ -55,7 +57,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     }
 
     public boolean isShowTurnover() {
-        return this.getBoolean("showTurnOver", true);
+        return this.getBoolean("showTurnOver", false);
     }
 
     public String getTimeZone() {
@@ -162,5 +164,14 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     public PmPrivilege getPmPrivilege() {
         String pmPrivilege = this.getString(ConfigurationItem.PM_PRIVILEGE.getDbField(), PmPrivilege.FULL.name());
         return PmPrivilege.valueOf(pmPrivilege);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("completeDayHours", getCompleteDayHours())
+                .append("isShowTurnover", isShowTurnover())
+                .append("currencySymbol", getCurrencySymbol())
+                .append("currencyCode", getCurrencyCode()).toString();
     }
 }

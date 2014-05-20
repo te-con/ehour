@@ -31,7 +31,7 @@ public class HibernateConfiguration {
     @Value("${ehour.database}")
     private String databaseName;
 
-    @Value("${ehour.db.cache:true}")
+    @Value("${ehour.db.cache:false}")
     private String caching;
 
     private static final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
