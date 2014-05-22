@@ -1,4 +1,10 @@
 function DetailedReportChart(cacheKey, id) {
+    Date.prototype.getMonthName = function() {
+        var monthNames = [ "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December" ];
+        return monthNames[this.getMonth()];
+    };
+
     Highcharts.dateFormats = {
         D: function (timestamp) {
             var date = new Date(timestamp);
@@ -16,9 +22,8 @@ function DetailedReportChart(cacheKey, id) {
         },
         M: function (timestamp) {
             var date = new Date(timestamp);
-            var month = date.getMonth() + 1;
 
-            return month;
+            return date.getMonthName();
 
         },
         Q: function (timestamp) {
@@ -33,7 +38,7 @@ function DetailedReportChart(cacheKey, id) {
             var date = new Date(timestamp);
             return date.getFullYear();
         }
-    }
+    };
 
     var options = {
         chart: {
@@ -87,6 +92,11 @@ function DetailedReportChart(cacheKey, id) {
             options.yAxis.title.text = data.yAxis;
             options.series = data.series;
             options.xAxis[0].labels.format = '{value: ' +  data.xAxisFormat + '}';
+/*
+            options.tooltip.formatter = function () {
+                return new Date(this.x).toLocaleDateString() + '<br />' + this.series.name + ': ' + this.y.toLocaleString() + ' hours'
+            };
+*/
 
             $('#' + id).highcharts(options);
 
