@@ -11,9 +11,10 @@ import scala.Some
 import scala.collection.convert.WrapAsJava
 import org.apache.log4j.Logger
 import java.util
-import org.joda.time.DateTime
+import org.joda.time.{DateTimeConstants, DateTime}
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import org.apache.wicket.model.StringResourceModel
+import net.rrm.ehour.report.criteria.AggregateBy
 
 object DetailedReportRESTResource {
   def apply: DetailedReportRESTResource = new DetailedReportRESTResource(new GsonSerialDeserial(GsonSerializer.create))
@@ -36,6 +37,16 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 
         val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
 
+        val startDate = aggregateBy match {
+          case AggregateBy.WEEK =>
+            val start = new DateTime(reportRange.getDateStart)
+            start.withDayOfWeek(DateTimeConstants.MONDAY)
+          case _ => new DateTime(reportRange.getDateStart)
+        }
+
+
+/*
+
         val formatter = aggregateBy.name().charAt(0) match {
           case 'D' => "%D"
           case 'W' => new StringResourceModel("userReport.report.week", null).getString +  " %W"
@@ -43,13 +54,13 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
           case 'Q' => "Q%Q"
           case 'Y' => "%Y"
         }
+*/
 
-        DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
-                               pointInterval = aggregateBy.interval,
+        DetailedReportResponse(pointStart = startDate,
+                              `type` = aggregateBy.name().charAt(0).toUpper,
                                title = "Hours booked on customers per " + model.getString.toLowerCase,
                                yAxis = "Hours",
-                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))),
-                               xAxisFormat = formatter)
+                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
       case None =>
         val errorMsg = s"no data found for key $cacheKey"
         DetailedReportRESTResource.LOG.warn(errorMsg)
@@ -68,7 +79,7 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
         val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
 
         DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
-                              pointInterval = aggregateBy.interval,
+                              `type` = aggregateBy.name().charAt(0).toUpper,
                               title = "Turnover booked on customers per " + model.getString.toLowerCase,
                               yAxis = "Turnover",
                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
@@ -87,12 +98,11 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 }
 
 case class DetailedReportResponse(pointStart: DateTime,
-                                  pointInterval: Long,
+                                  `type`: Char,
                                   title: String,
                                   yAxis: String,
                                   series: util.List[JSparseDateSeries],
-                                  hasReportRole: Boolean = EhourWebSession.getSession.isWithReportRole,
-                                  xAxisFormat: String = "'{value: %D}'")
+                                  hasReportRole: Boolean = EhourWebSession.getSession.isWithReportRole)
 
 case class JSparseDateSeries(name: String,
                              data: util.List[Float],
