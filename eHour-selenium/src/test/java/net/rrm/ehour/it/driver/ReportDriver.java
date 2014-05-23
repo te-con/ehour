@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
+import static net.rrm.ehour.it.driver.ItUtil.*;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -53,11 +54,11 @@ public abstract class ReportDriver {
     }
 
     public static void toggleCustomerFilters() {
-        Driver.findElement(By.id("customerFold")).click();
+        findElement(By.id("customerFold")).click();
     }
 
     public static void filterCustomers(String filter) {
-        Driver.findElement(By.id("customerFilterInput")).sendKeys(filter);
+        findElement(By.id("customerFilterInput")).sendKeys(filter);
     }
 
     public static void toggleProjectFilters() {
@@ -65,7 +66,7 @@ public abstract class ReportDriver {
     }
 
     public static void filterProjects(String filter) {
-        Driver.findElement(By.id("projectFilterInput")).sendKeys(filter);
+        findElement(By.id("projectFilterInput")).sendKeys(filter);
     }
 
     public static void sortProjectsOnCode() {

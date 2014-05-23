@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
+import static net.rrm.ehour.it.driver.ItUtil.*;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 
 public abstract class UserManagementDriver {
@@ -59,7 +60,7 @@ public abstract class UserManagementDriver {
     }
 
     public static void editUser(String name) {
-        WebElement listFilter = Driver.findElement(By.id("listFilter"));
+        WebElement listFilter = findElement(By.id("listFilter"));
         listFilter.clear();
         listFilter.sendKeys(name);
 

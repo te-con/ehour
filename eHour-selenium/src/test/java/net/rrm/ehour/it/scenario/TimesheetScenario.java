@@ -2,9 +2,11 @@ package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.WicketBy;
+import net.rrm.ehour.it.driver.ItUtil;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginRegularUser;
+import static net.rrm.ehour.it.driver.ItUtil.*;
 import static net.rrm.ehour.it.driver.TimesheetDriver.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -34,7 +36,7 @@ public class TimesheetScenario extends AbstractScenario {
         cancelDayCommentModal(2);
 
         String base = openDayCommentModal(2);// now this should be filled by the previous booking
-        assertEquals(comment, Driver.findElement(WicketBy.wicketPath(base + "_dayWin_content_comment")).getText());
+        assertEquals(comment, findElement(WicketBy.wicketPath(base + "_dayWin_content_comment")).getText());
     }
 
     private void book8Hours() {

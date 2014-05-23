@@ -1,6 +1,7 @@
 package net.rrm.ehour.it.driver;
 
 import net.rrm.ehour.it.WicketBy;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,5 +14,12 @@ public abstract class ItUtil {
         (new WebDriverWait(Driver, 30)).until(ExpectedConditions.presenceOfElementLocated(WicketBy.wicketPath(path)));
 
         return Driver.findElement(WicketBy.wicketPath(path));
+    }
+
+    public static WebElement findElement(By by) {
+
+        (new WebDriverWait(Driver, 30)).until(ExpectedConditions.presenceOfElementLocated(by));
+
+        return Driver.findElement(by);
     }
 }
