@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
+import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 import static org.junit.Assert.assertTrue;
 
@@ -25,12 +26,12 @@ public class EhourApplicationDriver {
         Driver.manage().deleteAllCookies();
 
         Driver.get(BASE_URL + "/eh/login");
-        Driver.findElement(WicketBy.wicketPath("loginform_username")).clear();
-        Driver.findElement(WicketBy.wicketPath("loginform_username")).sendKeys(user.name);
-        Driver.findElement(WicketBy.wicketPath("loginform_password")).sendKeys(user.password);
-        Driver.findElement(By.cssSelector("button.submitButton")).click();
+        findElement(WicketBy.wicketPath("loginform_username")).clear();
+        findElement(WicketBy.wicketPath("loginform_username")).sendKeys(user.name);
+        findElement(WicketBy.wicketPath("loginform_password")).sendKeys(user.password);
+        findElement(By.cssSelector("button.submitButton")).click();
 
-        assertTrue(Driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Logged in as[\\s\\S]*$"));
+        assertTrue(findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Logged in as[\\s\\S]*$"));
     }
 
     public static void logout() {

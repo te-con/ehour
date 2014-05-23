@@ -69,7 +69,7 @@ public abstract class ProjectDriver {
     }
 
     public static void editProject(String projectName) {
-        WebElement listFilter = Driver.findElement(By.id("listFilter"));
+        WebElement listFilter = findElement(By.id("listFilter"));
         listFilter.clear();
         listFilter.sendKeys(projectName);
 
