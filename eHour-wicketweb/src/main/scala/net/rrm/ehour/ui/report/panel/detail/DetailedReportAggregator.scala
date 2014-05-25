@@ -6,51 +6,47 @@ import org.joda.time.LocalDate
 import java.util.Date
 import scala.collection.convert.{WrapAsJava, WrapAsScala}
 import org.apache.commons.lang.builder.HashCodeBuilder
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.util.DateUtil
 
-
-trait AggregateConverter {
+sealed trait AggregateConverter {
   def toDate(date: Date): Date
   def toString(date: Date): String
 }
 
 class ByDay extends AggregateConverter {
   override def toDate(date: Date): Date = date
-
   override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyyMMdd")
 }
 
 class ByWeek extends AggregateConverter {
   override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyyww")
-  override def toDate(date: Date): Date = new LocalDate(date.getTime).withDayOfWeek(1).toDate
+  override def toDate(date: Date): Date = {
+    implicit val weekStart = DateUtil.fromCalendarToJodaTimeDayInWeek(EhourWebSession.getEhourConfig.getFirstDayOfWeek)
+    DateCalculator.toWeekStart(date).toDate
+  }
 }
 
 class ByMonth extends AggregateConverter {
   override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyyMM")
-  override def toDate(date: Date): Date = new LocalDate(date.getTime).withDayOfMonth(1).toDate
+  override def toDate(date: Date): Date = DateCalculator.toMonthStart(date).toDate
 }
 
 class ByQuarter extends AggregateConverter {
-  private def quarter(month: Int) = month / 3 + (if ((month % 3) > 0) 1 else 0)
-
   override def toString(date: Date): String = {
     val localDate = new LocalDate(date.getTime)
     val month = localDate.getMonthOfYear
-    val q = quarter(month)
-
+    val q = DateCalculator.inQuarter(month)
     val year = localDate.getYear
 
     s"$year$q"
   }
-  override def toDate(date: Date): Date = {
-    val localDate = new LocalDate(date.getTime)
-    val q = quarter(localDate.getMonthOfYear)
-    new LocalDate(localDate.getYear, ((q - 1) * 3) + 1, 1).toDate
-  }
+  override def toDate(date: Date): Date = DateCalculator.toQuarterStart(date).toDate
 }
 
 class ByYear extends AggregateConverter {
   override def toString(date: Date): String = new LocalDate(date.getTime).toString("yyyy")
-  override def toDate(date: Date): Date = new LocalDate(date.getTime).withMonthOfYear(1).withDayOfMonth(1).toDate
+  override def toDate(date: Date): Date = DateCalculator.toYearStart(date).toDate
 }
 
 object DetailedReportAggregator {
