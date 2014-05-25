@@ -42,9 +42,6 @@ public class DateUtil {
      * Get week number for date but compensate with configured first day of week.
      * Week officially starts on monday but when it's configured to start on sunday we have to compensate
      * because the day falls in the previous week.
-     *
-     * @param date
-     * @param configuredFirstDayOfWeek
      */
     public static int getWeekNumberForDate(Date date, int configuredFirstDayOfWeek) {
         DateTime dateTime = new DateTime(date);

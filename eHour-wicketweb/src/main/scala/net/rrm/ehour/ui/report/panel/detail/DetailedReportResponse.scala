@@ -1,0 +1,42 @@
+package net.rrm.ehour.ui.report.panel.detail
+
+import org.joda.time.{DateTimeZone, LocalDate, DateTime}
+import java.util
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.report.criteria.AggregateBy
+import java.util.Date
+
+case class DetailedReportResponse(pointStart: DateTime,
+                                  `type`: Char,
+                                  title: String,
+                                  yAxis: String,
+                                  series: util.List[JSparseDateSeries],
+                                  hasReportRole: Boolean = EhourWebSession.getSession.isWithReportRole)
+
+object DetailedReportResponse {
+  def apply(aggregateBy: AggregateBy,
+            startDate: Date,
+            aggregateByLabel: String,
+            yAxis: String,
+            series: util.List[JSparseDateSeries],
+            hasReportRole: Boolean)
+           (implicit weekStartsAt: Int):DetailedReportResponse = {
+    val calculatedStartDate = calculateStartDate(aggregateBy, startDate)
+
+    DetailedReportResponse(pointStart = calculatedStartDate.toDateTimeAtStartOfDay(DateTimeZone.UTC),
+      `type` = aggregateBy.name().charAt(0).toUpper,
+      title = s"Hours booked on customers per $aggregateByLabel",
+      yAxis = "Hours",
+      series = series,
+      hasReportRole = hasReportRole)
+  }
+
+  private def calculateStartDate(aggregateBy: AggregateBy, date: Date)(implicit weekStartsAt: Int): LocalDate =
+    aggregateBy match {
+      case AggregateBy.WEEK => DateCalculator.toWeekStart(date)
+      case AggregateBy.MONTH => DateCalculator.toMonthStart(date)
+      case AggregateBy.QUARTER => DateCalculator.toQuarterStart(date)
+      case AggregateBy.YEAR => DateCalculator.toYearStart(date)
+      case _ => new LocalDate(date)
+    }
+}

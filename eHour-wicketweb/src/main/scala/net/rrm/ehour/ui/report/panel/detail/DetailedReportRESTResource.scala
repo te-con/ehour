@@ -11,10 +11,11 @@ import scala.Some
 import scala.collection.convert.WrapAsJava
 import org.apache.log4j.Logger
 import java.util
-import org.joda.time.{DateTimeConstants, DateTime}
-import net.rrm.ehour.ui.common.session.EhourWebSession
+import org.joda.time.{LocalDate, DateTimeZone, DateTimeConstants}
 import org.apache.wicket.model.StringResourceModel
 import net.rrm.ehour.report.criteria.AggregateBy
+import net.rrm.ehour.data.DateRange
+import net.rrm.ehour.ui.common.session.EhourWebSession
 
 object DetailedReportRESTResource {
   def apply: DetailedReportRESTResource = new DetailedReportRESTResource(new GsonSerialDeserial(GsonSerializer.create))
@@ -22,10 +23,12 @@ object DetailedReportRESTResource {
   private final val LOG = Logger.getLogger(classOf[DetailedReportRESTResource])
 }
 
-
 class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRestResource(serializer) {
   @SpringBean
   var reportCacheService: ReportCacheService = _
+
+  implicit def weekStartsAt = DateUtil.fromCalendarToJodaTimeDayInWeek(EhourWebSession.getEhourConfig.getFirstDayOfWeek)
+
 
   @MethodMapping("/hour/{cacheKey}")
   def getHourlyData(cacheKey: String): DetailedReportResponse = {
@@ -37,36 +40,19 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 
         val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
 
-        val startDate = aggregateBy match {
-          case AggregateBy.WEEK =>
-            val start = new DateTime(reportRange.getDateStart)
-            start.withDayOfWeek(DateTimeConstants.MONDAY)
-          case _ => new DateTime(reportRange.getDateStart)
-        }
-
-
-/*
-
-        val formatter = aggregateBy.name().charAt(0) match {
-          case 'D' => "%D"
-          case 'W' => new StringResourceModel("userReport.report.week", null).getString +  " %W"
-          case 'M' => "%M"
-          case 'Q' => "Q%Q"
-          case 'Y' => "%Y"
-        }
-*/
-
-        DetailedReportResponse(pointStart = startDate,
-                              `type` = aggregateBy.name().charAt(0).toUpper,
-                               title = "Hours booked on customers per " + model.getString.toLowerCase,
-                               yAxis = "Hours",
-                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
+        DetailedReportResponse(aggregateBy = aggregateBy,
+                                startDate = reportRange.getDateStart,
+                                aggregateByLabel =  model.getString.toLowerCase,
+                                yAxis = "Hours",
+                                series = toJava(unprocessedSeries.map(JSparseDateSeries(_))),
+                                hasReportRole =  EhourWebSession.getSession.isWithReportRole)
       case None =>
         val errorMsg = s"no data found for key $cacheKey"
         DetailedReportRESTResource.LOG.warn(errorMsg)
         throw new IllegalArgumentException(errorMsg)
     }
   }
+
 
   @MethodMapping("/turnover/{cacheKey}")
   def getTurnoverData(cacheKey: String): DetailedReportResponse = {
@@ -78,11 +64,12 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
 
         val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
 
-        DetailedReportResponse(pointStart = new DateTime(reportRange.getDateStart),
-                              `type` = aggregateBy.name().charAt(0).toUpper,
-                              title = "Turnover booked on customers per " + model.getString.toLowerCase,
+        DetailedReportResponse(aggregateBy = aggregateBy,
+                              startDate = reportRange.getDateStart,
+                              aggregateByLabel = model.getString.toLowerCase,
                               yAxis = "Turnover",
-                              series = toJava(unprocessedSeries.map(JSparseDateSeries(_))))
+                              series = toJava(unprocessedSeries.map(JSparseDateSeries(_))),
+                              hasReportRole =  EhourWebSession.getSession.isWithReportRole)
       case None =>
         val errorMsg = s"no data found for key $cacheKey"
         DetailedReportRESTResource.LOG.warn(errorMsg)
@@ -96,13 +83,6 @@ class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRes
     reportCacheService
   }
 }
-
-case class DetailedReportResponse(pointStart: DateTime,
-                                  `type`: Char,
-                                  title: String,
-                                  yAxis: String,
-                                  series: util.List[JSparseDateSeries],
-                                  hasReportRole: Boolean = EhourWebSession.getSession.isWithReportRole)
 
 case class JSparseDateSeries(name: String,
                              data: util.List[Float],
