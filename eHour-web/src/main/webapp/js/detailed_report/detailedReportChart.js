@@ -21,12 +21,10 @@ function DetailedReportChart(cacheKey, id) {
         },
         W: function (timestamp) {
             var date = new Date(timestamp);
-
-            return "Week " + date.getWeekNumber() + " " + date.getFullYear();
+            return "Week " + date.getWeekNumber() + "<br>" + date.getFullYear();
         },
         M: function (timestamp) {
             var date = new Date(timestamp);
-
             return date.getMonthName() + " " + date.getFullYear();
 
         },
@@ -34,7 +32,7 @@ function DetailedReportChart(cacheKey, id) {
             var date = new Date(timestamp);
             var month = date.getMonth() + 1;
 
-            var quarter = Math.floor(month / 3) + (((month % 3) > 0) ? 1 : 0);
+            var quarter = "Q" + Math.floor(month / 3) + (((month % 3) > 0) ? 1 : 0);
 
             return quarter;
         },
@@ -90,44 +88,63 @@ function DetailedReportChart(cacheKey, id) {
 
     function updateChart(options, operation) {
         $.getJSON('/eh/rest/report/detailed/' + operation + '/' + cacheKey, function (data) {
+            var dateParts = data.pointStart.split('-');
+
+            var startYear = parseInt(dateParts[0]);
+            var startMonth = parseInt(dateParts[1] - 1);
+
+            var pointStart = Date.UTC(startYear, startMonth, parseInt(dateParts[2]));
+
             switch (data.type) {
                 case 'D':
                     options.plotOptions.series.pointInterval = 24 * 3600 * 1000;
+                    options.plotOptions.series.pointStart = pointStart;
                     options.xAxis[0].labels.format = '{value: %D}';
-                    options.series = data.series;
                     break;
                 case 'W':
                     options.plotOptions.series.pointInterval = 7 * 24 * 3600 * 1000;
+                    options.plotOptions.series.pointStart = pointStart;
                     options.xAxis[0].labels.format = '{value: %W}';
-                    options.series = data.series;
 
                     break;
                 case 'M':
-                    var start = new Date(data.pointStart);
-
-                    var year = start.getYear();
-                    var startMonth = start.getMonth();
-
                     for (var s = 0; s < data.series.length; s++) {
                         for (var i = 0; i < data.series[s].data.length; i++) {
-                            data.series[s].data[i] = [Date.UTC(year, startMonth + i, 1), data.series[s].data[i]];
+                            data.series[s].data[i] = [Date.UTC(startYear, startMonth + i, 1), data.series[s].data[i]];
                         }
                     }
 
-                    options.series = data.series;
                     options.plotOptions.series.pointInterval = undefined;
                     options.xAxis[0].labels.format = '{value: %M}';
+
+                    break;
+                case 'Q':
+                    for (var s = 0; s < data.series.length; s++) {
+                        for (var i = 0; i < data.series[s].data.length; i++) {
+                            data.series[s].data[i] = [Date.UTC(startYear, startMonth + (i * 3), 1), data.series[s].data[i]];
+                        }
+                    }
+
+                    options.plotOptions.series.pointInterval = undefined;
+                    options.xAxis[0].labels.format = '{value: %Q}';
+
+                    break;
+                case 'Y':
+                    for (var s = 0; s < data.series.length; s++) {
+                        for (var i = 0; i < data.series[s].data.length; i++) {
+                            data.series[s].data[i] = [Date.UTC(startYear + i, 0, 1), data.series[s].data[i]];
+                        }
+                    }
+
+                    options.plotOptions.series.pointInterval = undefined;
+                    options.xAxis[0].labels.format = '{value: %Y}';
+
+                    break;
             }
 
-            options.plotOptions.series.pointStart = data.pointStart;
             options.title.text = data.title;
             options.yAxis.title.text = data.yAxis;
             options.series = data.series;
-/*
-            options.tooltip.formatter = function () {
-                return new Date(this.x).toLocaleDateString() + '<br />' + this.series.name + ': ' + this.y.toLocaleString() + ' hours'
-            };
-*/
 
             $('#' + id).highcharts(options);
 
