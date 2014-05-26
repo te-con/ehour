@@ -3,6 +3,7 @@ package net.rrm.ehour.it.driver;
 import net.rrm.ehour.it.WicketBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -14,7 +15,7 @@ public abstract class ItUtil {
     }
 
     public static WebElement findElement(By by) {
-        (new WebDriverWait(Driver, 30)).until(ExpectedConditions.presenceOfElementLocated(by));
+        waitUntil(ExpectedConditions.presenceOfElementLocated(by));
 
         return Driver.findElement(by);
     }
@@ -24,7 +25,18 @@ public abstract class ItUtil {
     }
 
     public static void waitForValue(By by, String expectedValue) {
-        (new WebDriverWait(Driver, 30)).until(ExpectedConditions.textToBePresentInElementValue(by, expectedValue));
+        waitUntil(ExpectedConditions.textToBePresentInElementValue(by, expectedValue));
     }
 
+    public static void waitUntil(ExpectedCondition<?> condition) {
+        (new WebDriverWait(Driver, 30)).until(condition);
+    }
+
+    public static void sleep() { // aweful, I know
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+
+        }
+    }
 }

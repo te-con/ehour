@@ -139,7 +139,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
 
         toggleCustomerFilters();
 
-        filterCustomers("bullshit");
+        filterCustomers("none");
 
         clearCustomerCriterium();
 
@@ -152,7 +152,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
 
         toggleProjectFilters();
 
-        filterProjects("bullshit");
+        filterProjects("none");
 
         clearProjectCriterium();
 

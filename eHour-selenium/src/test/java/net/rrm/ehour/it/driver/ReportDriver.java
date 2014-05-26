@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.Select;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.ItUtil.*;
-import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -24,7 +23,6 @@ public abstract class ReportDriver {
     public static void assertUserCriteriaLoaded() {
         assertEquals("Edeling, Thies report", findElement("reportContainer_tabs-container_tabs_0_link_title").getText());
     }
-
 
     public static int countShownCustomers() {
         Select customers = new Select(findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.customers"));
@@ -76,10 +74,16 @@ public abstract class ReportDriver {
 
     public static void clearCustomerCriterium() {
         findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_clearCustomer").click();
+        sleep();
+
+        waitUntil(CommonExpectedConditions.expectClearedDropdown("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.customers"));
     }
 
     public static void clearProjectCriterium() {
         findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_clearProject").click();
+        sleep();
+
+        waitUntil(CommonExpectedConditions.expectClearedDropdown("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.projects"));
     }
 
     public static void createReport() {
