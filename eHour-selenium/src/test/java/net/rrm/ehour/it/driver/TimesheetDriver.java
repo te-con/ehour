@@ -2,19 +2,21 @@ package net.rrm.ehour.it.driver;
 
 import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.WicketBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.concurrent.TimeUnit;
 
+import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.AssignmentAdminDriver.assignToProject;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.logout;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
+import static net.rrm.ehour.it.driver.ItUtil.waitUntil;
 import static net.rrm.ehour.it.driver.ProjectDriver.ACTIVE_PROJECT;
 import static net.rrm.ehour.it.driver.ProjectDriver.createActiveProjectForActiveCustomer;
 import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 import static org.junit.Assert.assertTrue;
-import static net.rrm.ehour.it.AbstractScenario.Driver;
 
 public abstract class TimesheetDriver {
     public static void createUserAndAssign() {
@@ -93,7 +95,7 @@ public abstract class TimesheetDriver {
         findElement("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_commentsFrame_commentsFrame__body_submitButton").click();
     }
 
-    public static String getServerMessage() {
-        return findElement("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_commentsFrame_commentsFrame__body_serverMessage").getText();
+    public static void assertServerMessage(String expectedMessage) {
+        waitUntil(ExpectedConditions.textToBePresentInElementLocated(WicketBy.wicketPath("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_commentsFrame_commentsFrame__body_serverMessage"), expectedMessage));
     }
 }

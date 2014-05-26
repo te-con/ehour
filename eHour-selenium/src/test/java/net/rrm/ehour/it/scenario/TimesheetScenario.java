@@ -2,14 +2,12 @@ package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.WicketBy;
-import net.rrm.ehour.it.driver.ItUtil;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginRegularUser;
-import static net.rrm.ehour.it.driver.ItUtil.*;
+import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.TimesheetDriver.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class TimesheetScenario extends AbstractScenario {
     @Test
@@ -32,6 +30,7 @@ public class TimesheetScenario extends AbstractScenario {
         clickInWeek(1);
         String comment = "this is a comment";
         addDayComment(2, comment);
+
         openDayCommentModal(2);
         cancelDayCommentModal(2);
 
@@ -48,6 +47,6 @@ public class TimesheetScenario extends AbstractScenario {
 
         submitTimesheet();
 
-        assertTrue(getServerMessage().startsWith("8 hours booked"));
+        assertServerMessage("8 hours booked");
     }
 }
