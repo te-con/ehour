@@ -14,9 +14,17 @@ public abstract class ItUtil {
     }
 
     public static WebElement findElement(By by) {
-
         (new WebDriverWait(Driver, 30)).until(ExpectedConditions.presenceOfElementLocated(by));
 
         return Driver.findElement(by);
     }
+
+    public static void waitForValue(String path, String expectedValue) {
+        waitForValue(WicketBy.wicketPath(path), expectedValue);
+    }
+
+    public static void waitForValue(By by, String expectedValue) {
+        (new WebDriverWait(Driver, 30)).until(ExpectedConditions.textToBePresentInElementValue(by, expectedValue));
+    }
+
 }
