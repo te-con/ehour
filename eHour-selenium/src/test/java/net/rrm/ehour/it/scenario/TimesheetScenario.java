@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginRegularUser;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
+import static net.rrm.ehour.it.driver.ItUtil.sleep;
 import static net.rrm.ehour.it.driver.TimesheetDriver.*;
 import static org.junit.Assert.assertEquals;
 
@@ -30,6 +31,7 @@ public class TimesheetScenario extends AbstractScenario {
         clickInWeek(1);
         String comment = "this is a comment";
         addDayComment(2, comment);
+        sleep();
 
         openDayCommentModal(2);
         cancelDayCommentModal(2);
