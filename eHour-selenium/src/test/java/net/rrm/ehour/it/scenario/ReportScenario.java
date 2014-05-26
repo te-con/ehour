@@ -1,14 +1,15 @@
 package net.rrm.ehour.it.scenario;
 
 import net.rrm.ehour.it.AbstractScenario;
+import net.rrm.ehour.it.WicketBy;
 import org.junit.Test;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
-import static net.rrm.ehour.it.driver.ItUtil.findElement;
+import static net.rrm.ehour.it.driver.ItUtil.waitUntil;
 import static net.rrm.ehour.it.driver.ReportDriver.*;
 import static net.rrm.ehour.it.driver.TimesheetDriver.createUserAndAssign;
 import static net.rrm.ehour.it.driver.UserManagementDriver.createReportUser;
-import static org.junit.Assert.assertEquals;
 
 public class ReportScenario extends AbstractScenario {
     @Test
@@ -57,7 +58,7 @@ public class ReportScenario extends AbstractScenario {
 
         clickZeroBookings();
 
-        assertEquals("0", findElement("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportData_reportTableContainer_reportData_3_cell_6").getText());
+        waitUntil(ExpectedConditions.textToBePresentInElementLocated(WicketBy.wicketPath("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportData_reportTableContainer_reportData_3_cell_6"), "0"));
 
         logout();
     }
