@@ -93,7 +93,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
   def createNotificationLabel(model: IModel[String]): Label = {
     val label = new Label(LockFormPanel.ServerMessageId, model)
-    label.setOutputMarkupId(true)
+    label.setOutputMarkupPlaceholderTag(true)
     label
   }
 }

@@ -1,11 +1,11 @@
 package net.rrm.ehour.it.driver;
 
 import net.rrm.ehour.it.AbstractScenario;
+import net.rrm.ehour.it.WicketBy;
 
 import java.util.concurrent.TimeUnit;
 
 import static net.rrm.ehour.it.driver.AssignmentAdminDriver.assignToProject;
-import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.logout;
@@ -14,6 +14,7 @@ import static net.rrm.ehour.it.driver.ProjectDriver.ACTIVE_PROJECT;
 import static net.rrm.ehour.it.driver.ProjectDriver.createActiveProjectForActiveCustomer;
 import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 import static org.junit.Assert.assertTrue;
+import static net.rrm.ehour.it.AbstractScenario.Driver;
 
 public abstract class TimesheetDriver {
     public static void createUserAndAssign() {
@@ -22,7 +23,7 @@ public abstract class TimesheetDriver {
         createRegularUser();
         createActiveCustomer();
         createActiveProjectForActiveCustomer();
-        assignToProject(REGULAR_USER, ACTIVE_CUSTOMER, ACTIVE_PROJECT);
+        assignToProject(REGULAR_USER, ACTIVE_PROJECT);
 
         logout();
     }
@@ -34,7 +35,7 @@ public abstract class TimesheetDriver {
     public static boolean isBookingHoursPossible(int day) {
         try {
             AbstractScenario.Driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            findElement("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_blueFrame_blueFrame__body_customers_0_rows_0_day" + day + "_day");
+            Driver.findElement(WicketBy.wicketPath("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_blueFrame_blueFrame__body_customers_0_rows_0_day" + day + "_day"));
             return true;
         } catch (org.openqa.selenium.NoSuchElementException nse) {
             return false;
@@ -50,6 +51,11 @@ public abstract class TimesheetDriver {
     public static void navigateToMonth(String month) {
         while (!findElement("sidePanel_calendarFrame_currentMonth").getText().equals(month)) {
             findElement("sidePanel_calendarFrame_previousMonthLink").click();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -67,7 +73,6 @@ public abstract class TimesheetDriver {
         findElement(base + "_dayWin_content_comment").sendKeys(comment);
 
         findElement(base + "_dayWin_content_submit").click();
-
     }
 
     public static String openDayCommentModal(int day) {

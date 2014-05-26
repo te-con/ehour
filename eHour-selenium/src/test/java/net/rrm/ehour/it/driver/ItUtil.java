@@ -10,10 +10,7 @@ import static net.rrm.ehour.it.AbstractScenario.Driver;
 
 public abstract class ItUtil {
     public static WebElement findElement(String path) {
-
-        (new WebDriverWait(Driver, 30)).until(ExpectedConditions.presenceOfElementLocated(WicketBy.wicketPath(path)));
-
-        return Driver.findElement(WicketBy.wicketPath(path));
+        return findElement(WicketBy.wicketPath(path));
     }
 
     public static WebElement findElement(By by) {

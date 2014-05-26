@@ -6,7 +6,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.rrm.ehour.it.driver.AssignmentAdminDriver.assignToProject;
-import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.createActiveCustomer;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
 import static net.rrm.ehour.it.driver.ProjectDriver.*;
@@ -40,7 +39,7 @@ public class ProjectManagementScenario  extends AbstractScenario {
         selectProjectManager("Anton, Thies");
         storeProject();
 
-        assignToProject(REGULAR_USER, ACTIVE_CUSTOMER, ACTIVE_PROJECT);
+        assignToProject(REGULAR_USER, ACTIVE_PROJECT);
 
         logout();
 

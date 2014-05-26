@@ -8,6 +8,7 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.ItUtil.*;
+import static org.junit.Assert.assertTrue;
 
 public class TimesheetLockDriver {
     public static void navigateToAdminLocks() {
@@ -25,6 +26,8 @@ public class TimesheetLockDriver {
         endDateElement.sendKeys(endDate.toString("MM/dd/YY"));
 
         findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_submit")).click();
+
+        assertTrue(findElement("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_serverMessage").getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
     }
 
     public static void assertServerMessage(String msg) {

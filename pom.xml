@@ -37,7 +37,7 @@
     </issueManagement>
     <ciManagement>
         <system>bamboo</system>
-        <url>http://dev.ehour.nl/bamboo/</url>
+        <url>http://ci.te-con.nl/</url>
         <notifiers>
             <notifier>
                 <configuration>

@@ -1,13 +1,12 @@
 package net.rrm.ehour.it.driver;
 
+import net.rrm.ehour.it.WicketBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
-import static net.rrm.ehour.it.driver.CustomerManagementDriver.ItCustomer;
-import static net.rrm.ehour.it.driver.ItUtil.*;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.ProjectDriver.ItProject;
 import static net.rrm.ehour.it.driver.UserManagementDriver.ItUser;
@@ -42,18 +41,16 @@ public abstract class AssignmentAdminDriver {
         findElement("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_0").click();
     }
 
-    public static void assignToProject(ItUser user, ItCustomer customer, ItProject project) {
+    public static void assignToProject(ItUser user, ItProject project) {
         navigateToAssignmentAdmin();
 
         filterAssignmentUsers(user.name);
 
         clickFirstUser();
 
-        WebElement cust = findElement("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_formComponents_projectSelection_customer");
-        new Select(cust).selectByVisibleText(customer.code + " - " + customer.name);
-
-        WebElement projectElement = findElement("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_formComponents_projectSelection_projectAssignment.project");
-        new Select(projectElement).selectByVisibleText(project.code + " - " + project.name);
+        WebElement projectElement = Driver.findElement(WicketBy.wicketPath("assignmentPanel_assignmentTabs_panel_border_greySquaredFrame_border__body_assignmentForm_formComponents_projectSelection_projectAssignment.project"));
+        Select select = new Select(projectElement);
+        select.selectByVisibleText(project.code + " - " + project.name);
         selectDateAndSetRate();
         submit();
     }
