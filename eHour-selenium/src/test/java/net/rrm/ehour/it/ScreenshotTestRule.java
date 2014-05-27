@@ -1,16 +1,14 @@
 package net.rrm.ehour.it;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
-@SuppressWarnings("deprecation")
 class ScreenshotTestRule implements MethodRule {
     private final RemoteWebDriver driver;
 
@@ -32,8 +30,11 @@ class ScreenshotTestRule implements MethodRule {
 
             public void captureScreenshot(String fileName) {
                 try {
-                    File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                    FileUtils.copyFile(screenshot, new File("target/screenshot-" + fileName + ".png"));
+                    new File("target/surefire-reports/").mkdirs();
+
+                    FileOutputStream out = new FileOutputStream("target/surefire-reports/screenshot-" + fileName + ".png");
+                    out.write(driver.getScreenshotAs(OutputType.BYTES));
+                    out.close();
                 } catch (Exception e) {
                     // No need to crash the tests if the screenshot fails
                 }
