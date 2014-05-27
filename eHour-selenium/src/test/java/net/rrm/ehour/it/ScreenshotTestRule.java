@@ -36,7 +36,7 @@ class ScreenshotTestRule implements MethodRule {
                     out.write(driver.getScreenshotAs(OutputType.BYTES));
                     out.close();
                 } catch (Exception e) {
-                    // No need to crash the tests if the screenshot fails
+                    e.printStackTrace();
                 }
             }
         };

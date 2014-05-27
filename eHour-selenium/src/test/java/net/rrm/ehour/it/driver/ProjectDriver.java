@@ -8,8 +8,7 @@ import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ACTIVE_CUSTOMER;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.ItCustomer;
-import static net.rrm.ehour.it.driver.ItUtil.findElement;
-import static net.rrm.ehour.it.driver.ItUtil.waitForValue;
+import static net.rrm.ehour.it.driver.ItUtil.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -75,7 +74,7 @@ public abstract class ProjectDriver {
         listFilter.sendKeys(projectName);
 
         findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_0").click();
-
+        sleep();
         waitForValue("tabs_panel_projectFormPanel_border_greySquaredFrame_border__body_projectForm_project.name", projectName);
     }
 
