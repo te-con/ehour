@@ -133,7 +133,8 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
     protected abstract List<RE> getReportElements(List<User> users,
                                                   List<Project> projects,
                                                   List<Date> lockedDates,
-                                                  DateRange reportRange, boolean showZeroBookings);
+                                                  DateRange reportRange,
+                                                  boolean showZeroBookings);
 
     /**
      * Get project id's based on selected customers

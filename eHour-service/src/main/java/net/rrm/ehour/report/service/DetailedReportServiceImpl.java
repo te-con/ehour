@@ -75,17 +75,17 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
         }
 
         if (showZeroBookings) {
-            List<FlatReportElement> filterAssignmentsWithoutBookings = getElementsWithoutBookings(reportRange, userIds, projectIds);
+            List<FlatReportElement> reportElementsForAssignmentsWithoutBookings = getReportElementsForAssignmentsWithoutBookings(reportRange, userIds, projectIds);
 
-            filterAssignmentsWithoutBookings.addAll(elements);
+            reportElementsForAssignmentsWithoutBookings.addAll(elements);
 
-            return filterAssignmentsWithoutBookings;
+            return reportElementsForAssignmentsWithoutBookings;
         } else {
             return elements;
         }
     }
 
-    private List<FlatReportElement> getElementsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
+    private List<FlatReportElement> getReportElementsForAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
         List<ProjectAssignment> assignments = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
 
         List<FlatReportElement> elements = Lists.newArrayList();
