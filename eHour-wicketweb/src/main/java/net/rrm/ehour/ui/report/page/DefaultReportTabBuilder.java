@@ -51,7 +51,6 @@ public class DefaultReportTabBuilder implements ReportTabBuilder {
             });
         }
 
-
         tabs.add(new AbstractTab(new KeyResourceModel("report.title.detailed")) {
             @Override
             public Panel getPanel(String panelId) {
