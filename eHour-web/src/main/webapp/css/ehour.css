@@ -935,7 +935,7 @@ hr {
     background-color:#eeeeee;
 }
 
-.hoverNavigator em {
+.navigator .page em {
     color: #3b556d;
     font-weight: bold;
     font-style: normal !important;
