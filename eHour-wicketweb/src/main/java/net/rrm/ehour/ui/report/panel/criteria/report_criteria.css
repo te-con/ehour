@@ -20,6 +20,17 @@
     margin-bottom: 5px
 }
 
+.filterContainer .value {
+    float: left;
+    width: 6em;
+    text-align: right;
+    padding-right: 1em;
+}
+
+.filterContainer .row {
+    clear: both;
+}
+
 .toggleLabel {
     width: 40%;
     float: left;
