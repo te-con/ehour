@@ -917,29 +917,29 @@ hr {
 .navigator {
     margin: 0;
     padding: 0 5px 0 5px;
-    /*font:0.9em Geneva,Arial,Helvetica,sans-serif;*/
+    color: #496987;
+    font:0.9em Geneva,Arial,Helvetica,sans-serif;
 }
 
 .navigator .hoverNavigator {
-    border: 1px solid #f1f1f1;
-    background-color: #c5ddfa;
-    width: 2em;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    width: 1.5em;
     text-align: center;
-    /*font-size: 10px;*/
 }
 
-.navigator .pageLabel {
-    color: #536E87;
-}
 
 .hoverNavigator:hover {
-    background-color: #d2ebff;
+    border: 1px solid #bbbbbb;
+    border-radius: 3px;
+    background-color:#eeeeee;
 }
 
 .hoverNavigator em {
-    color: white;
+    color: #3b556d;
+    font-weight: bold;
+    font-style: normal !important;
 }
-
 .hidden {
     display: none;
 }

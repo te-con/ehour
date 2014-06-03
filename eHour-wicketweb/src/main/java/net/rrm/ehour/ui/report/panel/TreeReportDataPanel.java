@@ -39,6 +39,7 @@ import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -66,55 +67,77 @@ import java.util.List;
 public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     private static final long serialVersionUID = -6757047600645464803L;
     private static final AttributeModifier CSS_ALIGN_RIGHT = AttributeModifier.replace("style", "text-align: right;");
-    private static final String REPORT_CONTENT_ID = "reportData";
+    private static final String REPORT_CONTENT_ID = "reportContent";
     private static final String REPORT_TABLE_ID = "reportTable";
     private static final String NAVIGATOR_ID = "navigator";
 
     private ReportConfig reportConfig;
-    private Container reportTableContainer;
     private UserSelectedCriteria criteria;
+    private WebMarkupContainer reportDataContainer;
+    private HoverPagingNavigator pagingNavigator;
+    private Container reportFrameContainer;
 
     public TreeReportDataPanel(String id,
                                TreeReportModel reportModel,
                                ReportConfig reportConfig,
                                ExcelReport excelReport) {
         super(id, reportModel);
-
-        criteria = reportModel.getReportCriteria().getUserSelectedCriteria();
-
         setOutputMarkupId(true);
 
         this.reportConfig = reportConfig;
+        criteria = reportModel.getReportCriteria().getUserSelectedCriteria();
 
-        Border greyFrame = new GreyReportBorder("greyFrame");
-        add(greyFrame);
+        Border outerFrame = new GreyReportBorder("greyFrame");
+        add(outerFrame);
 
-        greyFrame.add(getReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getEhourConfig()));
+        outerFrame.add(createReportHeaderLabel("reportHeader", reportModel.getReportRange(), EhourWebSession.getEhourConfig()));
+        outerFrame.add(createReportContent(REPORT_CONTENT_ID, reportModel, excelReport));
+    }
 
-        WebMarkupContainer reportContent = createReportContent(REPORT_CONTENT_ID, reportModel, excelReport);
-        greyFrame.add(reportContent);
+    // Report period: 10/1/13 - 12/31/13  label
+    private Label createReportHeaderLabel(String id, DateRange reportRange, EhourConfig config) {
+        Label reportHeaderLabel = new Label(id, new StringResourceModel("report.header",
+                this, null,
+                new Object[]{new DateModel(reportRange.getDateStart(), config),
+                        new DateModel(reportRange.getDateEnd(), config)}
+        ));
+        reportHeaderLabel.setEscapeModelStrings(false);
+
+        return reportHeaderLabel;
     }
 
     private WebMarkupContainer createReportContent(String id, TreeReportModel reportModel, ExcelReport excelReport) {
         boolean emptyReport = reportModel.getReportData().isEmpty();
-        WebMarkupContainer reportContent = emptyReport ? new Fragment(id, "noData", this) : createReport(id, reportModel, excelReport);
+
+        WebMarkupContainer reportContent = emptyReport ? noDataReport(id) : withDataReport(id, reportModel, excelReport);
         reportContent.setOutputMarkupId(true);
+
         return reportContent;
     }
 
-    private Fragment createReport(String id, final TreeReportModel reportModel, final ExcelReport excelReport) {
-        final Fragment reportFragment = new Fragment(id, "reportFragment", this);
+    private Fragment noDataReport(String id) {
+        return new Fragment(id, "noData", this);
+    }
 
-        reportFragment.add(createExcelLink(reportModel, excelReport));
+    private Fragment withDataReport(String id, final TreeReportModel reportModel, final ExcelReport excelReport) {
+        Fragment fragment = new Fragment(id, "withDataReport", this);
+
+        fragment.add(createExcelLink(reportModel, excelReport));
 
         WebMarkupContainer optionsFilter = new WebMarkupContainer("optionsToggle");
         optionsFilter.setVisible(reportConfig.isShowZeroBookings());
-        reportFragment.add(optionsFilter);
+        fragment.add(optionsFilter);
 
-        reportFragment.add(createZeroBookingSelector("reportOptionsPlaceholder"));
-        reportFragment.add(createAdditionalOptions("additionalOptions"));
+        fragment.add(createZeroBookingSelector("reportOptionsPlaceholder"));
+        fragment.add(createAdditionalOptions("additionalOptions"));
 
-        Border blueFrame = new GreyBlueRoundedBorder("blueFrame") {
+        createReportTableContainer(reportModel, fragment);
+
+        return fragment;
+    }
+
+    private void createReportTableContainer(TreeReportModel reportModel, MarkupContainer parent) {
+        Border reportFrame = new GreyBlueRoundedBorder("reportFrame") {
             @Override
             protected WebMarkupContainer createComponent() {
                 WebMarkupContainer frame = super.createComponent();
@@ -124,22 +147,19 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
             }
         };
 
-        reportFragment.add(blueFrame);
+        reportFrameContainer = new Container("reportFrameContainer");
+        reportFrame.add(reportFrameContainer);
 
-        reportTableContainer = createReportTableContainer(reportModel);
-        blueFrame.add(reportTableContainer);
+        reportFrameContainer.add(addHeaderColumns("columnHeaders"));
 
-        return reportFragment;
-    }
+        DataView<TreeReportElement> dataView = createDataView(reportModel);
+        reportFrameContainer.add(dataView);
+        reportFrameContainer.add(addGrandTotal("cell", reportModel));
 
-    private Container createReportTableContainer(TreeReportModel reportModel) {
-        Container reportTableContainer = new Container("reportTableContainer");
-
-        reportTableContainer.add(addHeaderColumns("columnHeaders"));
-        addReportData(reportModel, reportTableContainer);
-        reportTableContainer.add(addGrandTotal("cell", reportModel));
-
-        return reportTableContainer;
+        pagingNavigator = new HoverPagingNavigator(NAVIGATOR_ID, dataView);
+        pagingNavigator.setOutputMarkupId(true);
+        parent.add(pagingNavigator);
+        parent.add(reportFrame);
     }
 
     private WebMarkupContainer createZeroBookingSelector(String id) {
@@ -157,27 +177,38 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     @Override
     public void onEvent(IEvent<?> event) {
         if (event.getPayload() instanceof ZeroBookingSelectionChangedEvent) {
-            TreeReportModel model = (TreeReportModel) getPanelModel();
-            model.detach();
-
-            addReportData(model, reportTableContainer);
-
-            ((ZeroBookingSelectionChangedEvent) event.getPayload()).target().add(reportTableContainer);
+            updateDataTableForZeroBookingSelectionChange(event);
         } else if (event.getPayload() instanceof UpdateReportDataEvent) {
-            UpdateReportDataEvent aggregateByChangedEvent = (UpdateReportDataEvent) event.getPayload();
-
-            reportConfig = aggregateByChangedEvent.getReportConfig();
-
-            if (reportTableContainer != null) {
-                Container container = createReportTableContainer((TreeReportModel) getPanelModel());
-
-                reportTableContainer.replaceWith(container);
-                reportTableContainer = container;
-                aggregateByChangedEvent.target().add(reportTableContainer);
-            }
+            updateReport(event);
         }
     }
 
+    private void updateReport(IEvent<?> event) {
+        UpdateReportDataEvent aggregateByChangedEvent = (UpdateReportDataEvent) event.getPayload();
+
+        reportConfig = aggregateByChangedEvent.getReportConfig();
+
+        if (reportDataContainer != null) {
+            createReportTableContainer((TreeReportModel) getPanelModel(), pagingNavigator.getParent());
+            aggregateByChangedEvent.target().add(pagingNavigator.getParent());
+        }
+    }
+
+    private void updateDataTableForZeroBookingSelectionChange(IEvent<?> event) {
+        TreeReportModel model = (TreeReportModel) getPanelModel();
+        model.detach();
+
+        DataView<TreeReportElement> dataView = createDataView(model);
+        reportFrameContainer.addOrReplace(dataView);
+
+        HoverPagingNavigator nav = new HoverPagingNavigator(NAVIGATOR_ID, dataView);
+        nav.setOutputMarkupId(true);
+        pagingNavigator.replaceWith(nav);
+        pagingNavigator = nav;
+
+        ZeroBookingSelectionChangedEvent payload = (ZeroBookingSelectionChangedEvent) event.getPayload();
+        payload.target().add(reportFrameContainer, nav);
+    }
 
     private Component createExcelLink(final TreeReportModel reportModel, final ExcelReport excelReport) {
         if (excelReport != null) {
@@ -227,27 +258,15 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         return totalView;
     }
 
-    private Label getReportHeaderLabel(String id, DateRange reportRange, EhourConfig config) {
-        Label reportHeaderLabel = new Label(id, new StringResourceModel("report.header",
-                this, null,
-                new Object[]{new DateModel(reportRange.getDateStart(), config),
-                        new DateModel(reportRange.getDateEnd(), config)}
-        ));
-        reportHeaderLabel.setEscapeModelStrings(false);
-
-        return reportHeaderLabel;
-    }
-
     @SuppressWarnings("unchecked")
-    private void addReportData(TreeReportModel reportModel, WebMarkupContainer parent) {
+    private DataView<TreeReportElement> createDataView(TreeReportModel reportModel) {
         List<TreeReportElement> elements = (List<TreeReportElement>) reportModel.getReportData().getReportElements();
 
         DataView<TreeReportElement> dataView = new TreeReportDataView(REPORT_TABLE_ID, new TreeReportDataProvider(elements));
         dataView.setOutputMarkupId(true);
         dataView.setItemsPerPage(25);
 
-        parent.addOrReplace(new HoverPagingNavigator(NAVIGATOR_ID, dataView));
-        parent.addOrReplace(dataView);
+        return dataView;
     }
 
 

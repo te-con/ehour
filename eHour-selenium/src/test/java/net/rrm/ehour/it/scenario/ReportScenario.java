@@ -39,7 +39,7 @@ public class ReportScenario extends AbstractScenario {
     }
 
     @Test
-    public void should_show_zero_bookings_in_the_detailed_report() throws Exception {
+    public void should_show_zero_bookings() throws Exception {
         preloadDatabase("report_scenario.dbunit.xml");
         updatePassword("report", "a");
 
@@ -52,13 +52,11 @@ public class ReportScenario extends AbstractScenario {
 
         createReport();
 
-        navigateToDetails();
-
         toggleOptions();
 
         clickZeroBookings();
 
-        waitUntil(ExpectedConditions.textToBePresentInElementLocated(WicketBy.wicketPath("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportData_reportTableContainer_reportData_3_cell_6"), "0"));
+        waitUntil(ExpectedConditions.textToBePresentInElementLocated(WicketBy.wicketPath("reportContainer_panel_frame_reportTable_greyFrame_greyFrame__body_reportData_blueFrame_blueFrame__body_reportTable_3_cell_6"), "0"));
 
         logout();
     }

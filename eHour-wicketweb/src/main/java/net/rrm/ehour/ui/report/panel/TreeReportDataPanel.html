@@ -11,7 +11,7 @@
         <div class="reportContent">
             <div wicket:id="reportHeader" class="criteriaDate"></div>
 
-            <span wicket:id="reportData"></span>
+            <span wicket:id="reportContent"></span>
         </div>
     </div>
 
@@ -22,14 +22,14 @@
     </wicket:fragment>
 
 
-    <wicket:fragment wicket:id="noData">
+    <wicket:fragment wicket:id="noDataReport">
         <br clear="all"/>
         <h4 style="padding-left: 2em">
             <wicket:message key="report.noData"/>
         </h4>
     </wicket:fragment>
 
-    <wicket:fragment wicket:id="reportFragment">
+    <wicket:fragment wicket:id="withDataReport">
         <div style="width:100%;text-align: right;height:22px">
             <a wicket:id="excelLink" class="floatRight" style="margin-right: 1em">
                 <span class="ui-state-default ui-corner-all borderLess floatLeft bgTransparent" wicket:message="title:report.criteria.clear.tooltip">
@@ -50,8 +50,8 @@
             <div wicket:id="additionalOptions"></div>
         </div>
 
-        <div wicket:id="blueFrame">
-            <div wicket:id="reportTableContainer">
+        <div wicket:id="reportFrame">
+            <span wicket:id="reportFrameContainer">
                 <table class="dataTable" cellpadding="0" cellspacing="0">
                     <thead>
                     <tr>
@@ -71,14 +71,12 @@
                     </tr>
                     </tbody>
                 </table>
-
-                <div class="floatLeft" style="width:100%;text-align: right;" wicket:id="navigator">[dataview navigator]</div>
-
-                <br style="clear:both;">
-            </div>
+            </span>
         </div>
 
-        <br clear="both">
+        <div class="floatRight" style="text-align: right;padding-right:10px;" wicket:id="navigator">[dataview navigator]</div>
+
+        <br clear="all">
     </wicket:fragment>
 </wicket:panel>
 

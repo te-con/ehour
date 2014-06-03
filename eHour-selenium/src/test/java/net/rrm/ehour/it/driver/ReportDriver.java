@@ -103,16 +103,20 @@ public abstract class ReportDriver {
     }
 
     public static void navigateToDetails() {
-        String txt = findElement("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportHeader").getText();
+        findElement("reportContainer_tabs-container_tabs_4_link").click();
+
+        String txt = findElement("reportContainer_panel_frame_reportTable_greyFrame_greyFrame__body_reportHeader").getText();
         assertTrue(txt.startsWith("Report period"));
+
+        sleep();
     }
 
     public static void toggleOptions() {
-        Driver.findElementById("optionsFold").click();
+        findElement(By.id("optionsFold")).click();
     }
 
     public static void clickZeroBookings() {
-        findElement("reportContainer_panel_frame_reportTable_blueFrame_blueFrame__body_reportData_reportOptionsPlaceholder_toggleShowZeroBookings").click();
+        findElement("reportContainer_panel_frame_reportTable_greyFrame_greyFrame__body_reportData_reportOptionsPlaceholder_toggleShowZeroBookings").click();
     }
 
 }
