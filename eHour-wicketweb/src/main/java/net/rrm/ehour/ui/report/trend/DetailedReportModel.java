@@ -60,7 +60,6 @@ public class DetailedReportModel extends TreeReportModel {
         super(reportCriteria, DetailedReportConfig.DETAILED_REPORT_BY_DAY);
     }
 
-
     @Override
     protected ReportData fetchReportData(ReportCriteria reportCriteria) {
         return getDetailedReportService().getDetailedReportData(reportCriteria);

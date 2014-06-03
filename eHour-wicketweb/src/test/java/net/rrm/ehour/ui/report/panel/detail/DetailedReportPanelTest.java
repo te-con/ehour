@@ -54,14 +54,12 @@ public class DetailedReportPanelTest extends BaseSpringWebAppTester {
 
         replay(detailedReportService);
 
-        final DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
+        DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
 
         tester.startComponentInPage(new DetailedReportPanel("id", detailedReport));
 
         tester.assertComponent("id:frame:reportTable:greyFrame:greyFrame_body:reportContent:reportFrame:reportFrame_body:reportFrameContainer:cell:2", Label.class);
 
         tester.assertNoErrorMessage();
-
-        verify(detailedReportService);
     }
 }
