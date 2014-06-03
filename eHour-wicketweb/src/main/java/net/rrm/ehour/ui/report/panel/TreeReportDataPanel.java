@@ -73,7 +73,6 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
     private ReportConfig reportConfig;
     private UserSelectedCriteria criteria;
-    private WebMarkupContainer reportDataContainer;
     private HoverPagingNavigator pagingNavigator;
     private Container reportFrameContainer;
 
@@ -154,8 +153,8 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
         pagingNavigator = new HoverPagingNavigator(NAVIGATOR_ID, dataView);
         pagingNavigator.setOutputMarkupId(true);
-        parent.add(pagingNavigator);
-        parent.add(reportFrame);
+        parent.addOrReplace(pagingNavigator);
+        parent.addOrReplace(reportFrame);
     }
 
     private WebMarkupContainer createZeroBookingSelector(String id) {
@@ -184,7 +183,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
         reportConfig = aggregateByChangedEvent.getReportConfig();
 
-        if (reportDataContainer != null) {
+        if (pagingNavigator != null) {
             createReportTableContainer((TreeReportModel) getPanelModel(), pagingNavigator.getParent());
             aggregateByChangedEvent.target().add(pagingNavigator.getParent());
         }
