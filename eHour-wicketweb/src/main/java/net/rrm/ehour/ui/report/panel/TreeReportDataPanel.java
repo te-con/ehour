@@ -124,10 +124,6 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
         fragment.add(createExcelLink(reportModel, excelReport));
 
-        WebMarkupContainer optionsFilter = new WebMarkupContainer("optionsToggle");
-        optionsFilter.setVisible(reportConfig.isShowZeroBookings());
-        fragment.add(optionsFilter);
-
         fragment.add(createZeroBookingSelector("reportOptionsPlaceholder"));
         fragment.add(createAdditionalOptions("additionalOptions"));
 
