@@ -87,6 +87,7 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     private CompoundPropertyModel<ReportCriteria> createModelForMonth(Calendar forMonth) {
         ReportCriteria reportCriteria = getReportCriteria();
 
+        reportCriteria.getUserSelectedCriteria().setSelectedReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
         reportCriteria.getUserSelectedCriteria().setReportRange(DateUtil.getDateRangeForMonth(forMonth));
 
         if (reportCriteria.getUserSelectedCriteria().getProjects() == null) {
@@ -99,6 +100,11 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     @Override
     protected void determineDefaultReportType(UserSelectedCriteria userSelectedCriteria) {
         userSelectedCriteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
+    }
+
+    @Override
+    protected UserSelectedCriteria getUserSelectedCriteria() {
+        return initUserCriteria();
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {

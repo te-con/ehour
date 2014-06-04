@@ -61,7 +61,6 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
     private Form<ReportCriteria> createCriteriaPanel(String id, IModel<ReportCriteria> model) {
         SelectionForm form = new SelectionForm(id, model);
 
-
         ReportCriteria criteria = (ReportCriteria) getDefaultModelObject();
         List<Project> allProjects = criteria.getAvailableCriteria().getProjects();
         billableProjects = new Projects();

@@ -36,7 +36,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
 
-    protected static final Logger logger = Logger.getLogger(AbstractReportPage.class);
+    protected static final Logger LOGGER = Logger.getLogger(AbstractReportPage.class);
 
     public AbstractReportPage(ResourceModel pageTitle) {
         super(pageTitle, null);
@@ -52,24 +52,22 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
         return reportCriteriaService.syncUserReportCriteria(criteria, ReportCriteriaUpdateType.UPDATE_ALL);
     }
 
-    private UserSelectedCriteria getUserSelectedCriteria() {
+    protected UserSelectedCriteria getUserSelectedCriteria() {
         EhourWebSession session = getEhourWebSession();
         UserSelectedCriteria userSelectedCriteria = session.getUserSelectedCriteria();
 
         if (userSelectedCriteria == null) {
             userSelectedCriteria = initUserCriteria();
             session.setUserSelectedCriteria(userSelectedCriteria);
-
         }
 
         return userSelectedCriteria;
     }
 
-    private UserSelectedCriteria initUserCriteria() {
+    protected UserSelectedCriteria initUserCriteria() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
 
-        EhourWebSession session = getEhourWebSession();
-        userSelectedCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(session.getEhourConfig())));
+        userSelectedCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getEhourConfig())));
 
         determineDefaultReportType(userSelectedCriteria);
 

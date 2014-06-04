@@ -50,8 +50,6 @@ public class ReportCriteria implements Serializable {
 
     /**
      * Get report range, use the available criteria if the user didn't supply any (yet)
-     *
-     * @return
      */
     public DateRange getReportRange() {
         DateRange reportRange = userSelectedCriteria.getReportRange();
