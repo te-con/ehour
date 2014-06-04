@@ -107,6 +107,13 @@ public class EhourServer {
             dbcpDataSource.setUsername(config.getDataBaseUsername());
             dbcpDataSource.setPassword(config.getDataBasePassword());
 
+            dbcpDataSource.setMaxActive(100);
+            dbcpDataSource.setMaxIdle(30);
+            dbcpDataSource.setValidationQuery("SELECT 1");
+            dbcpDataSource.setTestOnBorrow(true);
+            dbcpDataSource.setTestWhileIdle(true);
+            dbcpDataSource.setPoolPreparedStatements(true);
+
             dataSource = dbcpDataSource;
         }
         return dataSource;

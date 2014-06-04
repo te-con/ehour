@@ -42,10 +42,5 @@
             <name>testWhileIdle</name>
             <value>true</value>
         </parameter>
-
-        <parameter>
-            <name>minEvictableIdleTimeMillis</name>
-            <value>60000</value>
-        </parameter>
     </ResourceParams>
 </Context>			
