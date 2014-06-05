@@ -44,7 +44,7 @@ class GroupableDropDownChoice[T](id: String, model: IModel[T], choices: IModel[_
 
         if (currentOptGroupLabel != null) {
           val start = buffer.indexOf(OptionOpenHtml)
-          buffer.insert(start, s"<optgroup label=\"$currentOptGroupLabel\">")
+          buffer.insert(start, s"<optgroup label='$currentOptGroupLabel'>")
         }
       }
 
