@@ -2,14 +2,17 @@
 <html lang="en-US">
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="refresh" content="0;url=eh/">
-        <script type="text/javascript">
-            window.location.href = "eh/"
-        </script>
+        <meta http-equiv="refresh" content="2; url=eh/login/" /> 
+	<script type="text/javascript"> 
+	window.location.replace("/eh/login"); 
+	setTimeout(function(){ 
+	window.location.reload(1); 
+	}, 3000);; 
+	</script>
         <title>eHour timesheet management - www.ehour.nl</title>
     </head>
     <body>
         <a href="http://www.ehour.nl/">eHour</a> Timesheet management<br /><br />
-	    Not forwarded automatically to the login page ? <a href="eh/">Follow this link</a>.
+	    Not forwarded automatically to the login page ? <a href="eh/login">Follow this link</a>.
     </body>
 </html>
