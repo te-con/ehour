@@ -61,12 +61,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getProjects() {
-        return projectDAO.findAllActive();
+        return projectDAO.findAll();
     }
 
     @Override
     public List<Project> getActiveProjects() {
-        return projectDAO.findAll();
+        return projectDAO.findAllActive();
     }
 
     public Project getProject(Integer projectId) throws ObjectNotFoundException {
