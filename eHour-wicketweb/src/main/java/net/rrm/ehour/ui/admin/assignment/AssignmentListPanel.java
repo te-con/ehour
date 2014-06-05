@@ -60,9 +60,6 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
     private ListView<ProjectAssignment> assignmentListView;
     private User user;
 
-    /**
-     * @param id
-     */
     public AssignmentListPanel(String id, User user) {
         super(id);
 
@@ -80,20 +77,12 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
         greyBorder.add(getActivateCheckbox());
     }
 
-    /**
-     * Update the list
-     *
-     * @param user
-     */
     public void updateList(AjaxRequestTarget target, User user) {
         assignmentListView.setList(getProjectAssignments(user));
 
         target.add(this);
     }
 
-    /**
-     * @return
-     */
     private AjaxCheckBox getActivateCheckbox() {
         return new AjaxCheckBox("filterToggle", new Model<Boolean>(getEhourWebSession().getHideInactiveSelections())) {
             private static final long serialVersionUID = 2585047163449150793L;

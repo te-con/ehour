@@ -148,10 +148,6 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
         private static final long serialVersionUID = 1181184585571474550L;
         private FormComponent<String>[] components;
 
-        /**
-         * @param passwordField
-         * @param confirmField
-         */
         @SuppressWarnings("unchecked")
         public UniqueCustomerValidator(FormComponent<String> customerName, FormComponent<String> customerCode) {
             components = new FormComponent[]{customerName, customerCode};

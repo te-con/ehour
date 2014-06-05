@@ -50,7 +50,7 @@ import java.util.List;
 
 public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListener {
     private static final long serialVersionUID = 1L;
-    private Component[] notifiableComponents;
+    private Component[] listeners;
 
     @SpringBean
     private ProjectAssignmentService projectAssignmentService;
@@ -147,7 +147,7 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
             }
         });
 
-        notifiableComponents = new Component[]{notifyPm, notifyDisabled};
+        listeners = new Component[]{notifyPm, notifyDisabled};
     }
 
     private void addDates(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model) {
@@ -165,7 +165,7 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
         if (ajaxEvent.getEventType() == AbstractAssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
             AjaxRequestTarget target = ajaxEvent.getTarget();
 
-            for (Component notifiableComponent : notifiableComponents) {
+            for (Component notifiableComponent : listeners) {
                 target.add(notifiableComponent);
             }
         }

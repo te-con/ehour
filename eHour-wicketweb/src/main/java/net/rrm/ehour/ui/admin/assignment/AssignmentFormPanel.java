@@ -43,13 +43,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
             optionList.addAll(Arrays.asList(DisplayOption.SHOW_PROJECT_SELECTION));
         }
 
-        WebMarkupContainer greyBorder;
-
-        if (optionList.contains(DisplayOption.NO_BORDER)) {
-            greyBorder = new WebMarkupContainer(BORDER);
-        } else {
-            greyBorder = new GreySquaredRoundedBorder(BORDER, WebGeo.AUTO);
-        }
+        WebMarkupContainer greyBorder = optionList.contains(DisplayOption.NO_BORDER) ? new WebMarkupContainer(BORDER) : new GreySquaredRoundedBorder(BORDER, WebGeo.AUTO);
 
         add(greyBorder);
 
