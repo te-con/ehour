@@ -61,7 +61,7 @@ public class AssignmentAdminPageTest extends BaseSpringWebAppTester {
         List<Customer> custs = new ArrayList<Customer>();
         custs.add(cust);
 
-        expect(customerService.getCustomers(true))
+        expect(customerService.getActiveCustomers())
                 .andReturn(custs);
 
         replay(customerService);

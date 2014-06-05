@@ -79,20 +79,22 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getCustomerAndCheckDeletability(Integer customerId) {
         Customer customer = customerDAO.findById(customerId);
 
-        if (customer.getProjects() != null && customer.getProjects().size() > 0) {
-            boolean deletable = false;
-
-            customer.setDeletable(deletable);
-        } else {
-            customer.setDeletable(true);
-        }
+        boolean canDelete = !(customer.getProjects() != null && customer.getProjects().size() > 0);
+        customer.setDeletable(canDelete);
 
         return customer;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<Customer> getCustomers() {
         return customerDAO.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Customer> getActiveCustomers() {
+        return customerDAO.findAllActive();
     }
 
     @Transactional
@@ -106,11 +108,6 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return customer;
-    }
-
-    @Transactional(readOnly = true)
-    public List<Customer> getCustomers(boolean hideInactive) {
-        return (hideInactive) ? customerDAO.findAllActive() : customerDAO.findAll();
     }
 
     public void setCustomerDAO(CustomerDao customerDAO) {

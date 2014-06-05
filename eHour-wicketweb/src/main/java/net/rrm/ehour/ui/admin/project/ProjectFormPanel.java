@@ -198,7 +198,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
      * Get customers for customer dropdown
      */
     private List<Customer> getCustomers() {
-        List<Customer> customers = customerService.getCustomers(true);
+        List<Customer> customers = customerService.getActiveCustomers();
 
         if (customers != null) {
             Collections.sort(customers, new CustomerComparator());

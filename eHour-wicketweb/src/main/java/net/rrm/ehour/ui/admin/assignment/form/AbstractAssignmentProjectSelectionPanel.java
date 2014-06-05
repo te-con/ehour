@@ -111,7 +111,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
     }
 
     private List<Customer> getCustomers() {
-        List<Customer> customers = customerService.getCustomers(true);
+        List<Customer> customers = customerService.getActiveCustomers();
 
         List<Customer> customersWithActiveProjects = Lists.newArrayList();
 

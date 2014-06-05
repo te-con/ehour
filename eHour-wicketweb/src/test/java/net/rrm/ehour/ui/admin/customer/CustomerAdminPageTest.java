@@ -41,7 +41,7 @@ public class CustomerAdminPageTest extends BaseSpringWebAppTester
 		CustomerService customerService = createMock(CustomerService.class);
 		getMockContext().putBean("customerService", customerService);
 		
-		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
+		expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
 
 		replay(customerService);
 		
@@ -60,7 +60,7 @@ public class CustomerAdminPageTest extends BaseSpringWebAppTester
 //		CustomerService customerService = createMock(CustomerService.class);
 //		getMockContext().putBean("customerService", customerService);
 //		
-//		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
+//		expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
 //
 //		replay(customerService);
 //		

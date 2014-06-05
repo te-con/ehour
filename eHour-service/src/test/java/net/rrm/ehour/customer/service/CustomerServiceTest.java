@@ -127,7 +127,7 @@ public class CustomerServiceTest
 		
 		replay(customerDAO);
 		
-		customerService.getCustomers(true);
+		customerService.getActiveCustomers();
 		
 		verify(customerDAO);
 	}

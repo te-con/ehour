@@ -61,7 +61,7 @@ public class ProjectAdminPageTest extends BaseSpringWebAppTester {
 
     @Test
     public void shouldRender() {
-        expect(customerService.getCustomers(true))
+        expect(customerService.getActiveCustomers())
                 .andReturn(new ArrayList<Customer>());
 
         expect(userService.getUsersWithEmailSet())

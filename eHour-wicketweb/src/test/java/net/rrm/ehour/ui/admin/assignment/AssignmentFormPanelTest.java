@@ -47,7 +47,7 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
         List<Customer> customers = new ArrayList<Customer>();
         customers.add(DummyUIDataGenerator.getCustomer(1));
 
-        expect(customerService.getCustomers(true)).andReturn(customers);
+        expect(customerService.getActiveCustomers()).andReturn(customers);
 
         expect(projectService.getProjects(true)).andReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
         expectLastCall().anyTimes();
