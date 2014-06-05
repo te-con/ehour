@@ -2,5 +2,6 @@ package net.rrm.ehour.report.criteria;
 
 public enum Sort {
     NAME,
-    CODE
+    CODE,
+    PARENT_NAME_FIRST
 }

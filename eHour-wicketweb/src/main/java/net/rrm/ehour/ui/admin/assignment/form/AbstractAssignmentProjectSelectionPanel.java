@@ -5,6 +5,7 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.project.service.ProjectService;
+import net.rrm.ehour.report.criteria.Sort;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.sort.ProjectComparator;
 import net.rrm.ehour.ui.admin.assignment.AssignmentAdminBackingBean;
@@ -76,7 +77,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
                     projects = projectService.getActiveProjects();
                 }
 
-                Collections.sort(projects, new ProjectComparator());
+                Collections.sort(projects, new ProjectComparator(Sort.PARENT_NAME_FIRST));
 
                 return projects;
             }
