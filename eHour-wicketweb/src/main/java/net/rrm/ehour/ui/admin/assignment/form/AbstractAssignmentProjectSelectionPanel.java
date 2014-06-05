@@ -102,10 +102,6 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
         projectChoice.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                getPanelModelObject().updateCustomerBasedOnSelectedProject();
-
-                target.add(customerChoice);
-
                 AjaxEvent ajaxEvent = new AjaxEvent(EntrySelectorAjaxEventType.PROJECT_CHANGE);
                 EventPublisher.publishAjaxEvent(AbstractAssignmentProjectSelectionPanel.this, ajaxEvent);
             }
