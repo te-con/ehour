@@ -181,7 +181,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     }
 
     private List<Project> getProjects() {
-        List<Project> projects = projectService.getProjects(currentFilter == null || currentFilter.isFilterToggle());
+        List<Project> projects = currentFilter == null || currentFilter.isFilterToggle() ? projectService.getActiveProjects() : projectService.getProjects();
 
         Collections.sort(projects, new ProjectComparator());
 

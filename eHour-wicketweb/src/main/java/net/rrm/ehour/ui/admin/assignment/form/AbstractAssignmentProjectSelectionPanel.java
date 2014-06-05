@@ -73,7 +73,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
                         projects = Lists.newArrayList(customer.getActiveProjects());
                     }
                 } else {
-                    projects = projectService.getProjects(true);
+                    projects = projectService.getActiveProjects();
                 }
 
                 Collections.sort(projects, new ProjectComparator());

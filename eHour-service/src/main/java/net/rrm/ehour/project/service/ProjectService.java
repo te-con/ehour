@@ -26,11 +26,14 @@ import java.util.List;
 public interface ProjectService
 {
 	/**
-	 * Get all (active) projects
-	 * @param hideInactive
-	 * @return
+	 * Get all (active & inactive) projects
 	 */
-	List<Project> getProjects(boolean hideInactive);
+	List<Project> getProjects();
+
+
+    /** Get all active projects
+     */
+    List<Project> getActiveProjects();
 	
 	/**
 	 * Get project

@@ -60,8 +60,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getProjects(boolean hideInactive) {
-        return hideInactive ? projectDAO.findAllActive() : projectDAO.findAll();
+    public List<Project> getProjects() {
+        return projectDAO.findAllActive();
+    }
+
+    @Override
+    public List<Project> getActiveProjects() {
+        return projectDAO.findAll();
     }
 
     public Project getProject(Integer projectId) throws ObjectNotFoundException {

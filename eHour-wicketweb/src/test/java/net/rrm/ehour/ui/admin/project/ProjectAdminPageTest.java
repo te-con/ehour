@@ -67,7 +67,7 @@ public class ProjectAdminPageTest extends BaseSpringWebAppTester {
         expect(userService.getUsersWithEmailSet())
                 .andReturn(new ArrayList<User>());
 
-        expect(projectService.getProjects(true))
+        expect(projectService.getActiveProjects())
                 .andReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
 
         replay(projectService, userService, customerService);

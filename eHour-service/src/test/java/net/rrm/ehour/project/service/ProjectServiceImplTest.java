@@ -53,7 +53,7 @@ public class ProjectServiceImplTest {
 
         replay(projectDao);
 
-        projectService.getProjects(true);
+        projectService.getActiveProjects();
 
         verify(projectDao);
     }
@@ -64,7 +64,7 @@ public class ProjectServiceImplTest {
 
         replay(projectDao);
 
-        projectService.getProjects(false);
+        projectService.getProjects();
 
         verify(projectDao);
     }

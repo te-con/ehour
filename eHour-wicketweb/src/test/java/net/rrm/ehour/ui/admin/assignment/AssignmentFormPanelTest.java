@@ -49,7 +49,7 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
 
         expect(customerService.getActiveCustomers()).andReturn(customers);
 
-        expect(projectService.getProjects(true)).andReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
+        expect(projectService.getActiveProjects()).andReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
         expectLastCall().anyTimes();
 
         replay(customerService, assignmentService, projectService);

@@ -79,5 +79,4 @@ public interface CustomerService {
      * @return
      */
     public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException;
-
 }
