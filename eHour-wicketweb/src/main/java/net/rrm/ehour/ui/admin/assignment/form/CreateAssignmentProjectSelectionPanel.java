@@ -17,7 +17,7 @@ public class CreateAssignmentProjectSelectionPanel extends AbstractAssignmentPro
     }
 
     @Override
-    protected AbstractChoice<?, Project> createProjectChoiceDropDown(IModel<List<Project>> projectChoices, String id) {
+    protected AbstractChoice<?, Project> createProjectChoiceDropDown(String id, IModel<List<Project>> projectChoices) {
         return new ListMultipleChoice<Project>(id, new PropertyModel<Collection<Project>>(getDefaultModel(), "selectedProjects"), projectChoices, new ChoiceRenderer<Project>("fullName"));
     }
 

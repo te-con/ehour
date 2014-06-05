@@ -83,8 +83,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
             }
         };
 
-        // project
-        final AbstractChoice<?, Project> projectChoice = createProjectChoiceDropDown(projectChoices, "projectAssignment.project");
+        final AbstractChoice<?, Project> projectChoice = createProjectChoiceDropDown("projectAssignment.project", projectChoices);
         projectChoice.setRequired(true);
         projectChoice.setOutputMarkupId(true);
         projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
@@ -127,7 +126,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
         return customersWithActiveProjects;
     }
 
-    protected abstract AbstractChoice<?, Project> createProjectChoiceDropDown(IModel<List<Project>> projectChoices, String id);
+    protected abstract AbstractChoice<?, Project> createProjectChoiceDropDown(String id, IModel<List<Project>> projectChoices);
 
     private DropDownChoice<Customer> createCustomerDropdown(List<Customer> customers) {
         DropDownChoice<Customer> customerChoice = new DropDownChoice<Customer>("customer", customers, new ChoiceRenderer<Customer>("fullName"));
