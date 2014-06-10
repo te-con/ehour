@@ -1,6 +1,7 @@
 package net.rrm.ehour.ui.admin.assignment.form;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -9,8 +10,7 @@ import net.rrm.ehour.report.criteria.Sort;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.sort.ProjectComparator;
 import net.rrm.ehour.ui.admin.assignment.AssignmentAdminBackingBean;
-import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
-import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.component.*;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.event.EventPublisher;
@@ -22,13 +22,16 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBasePanel<AssignmentAdminBackingBean> {
+public class AssignmentProjectSelectionPanel extends AbstractBasePanel<AssignmentAdminBackingBean> {
     private static final long serialVersionUID = 5513770467507708949L;
     private AjaxFormComponentFeedbackIndicator projectValidationErrorIndicator;
 
@@ -42,7 +45,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
     @SpringBean
     private ProjectService projectService;
 
-    public AbstractAssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model) {
+    public AssignmentProjectSelectionPanel(String id, IModel<AssignmentAdminBackingBean> model) {
         super(id, model);
 
         addCustomerAndProjectChoices();
@@ -98,7 +101,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
 
                 final AbstractChoice<?, Project> updatedProjectChoice = createProjectChoice(projectChoices);
 
-                AbstractAssignmentProjectSelectionPanel.this.addOrReplace(updatedProjectChoice);
+                AssignmentProjectSelectionPanel.this.addOrReplace(updatedProjectChoice);
                 target.add(updatedProjectChoice);
 
                 projectValidationErrorIndicator.setIndicatorFor(updatedProjectChoice);
@@ -107,7 +110,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
     }
 
     private AbstractChoice<?, Project> createProjectChoice(IModel<List<Project>> projectChoices) {
-        final AbstractChoice<?, Project> projectChoice = createProjectChoiceDropDown("projectAssignment.project", projectChoices);
+        final AbstractChoice<?, Project> projectChoice = createProjectChoiceDropDown("projectAssignment.project", projectChoices, new ProjectRenderer(createProjectToCustomerMap(projectChoices)));
         projectChoice.setRequired(true);
         projectChoice.setOutputMarkupId(true);
         projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
@@ -117,7 +120,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 AjaxEvent ajaxEvent = new AjaxEvent(EntrySelectorAjaxEventType.PROJECT_CHANGE);
-                EventPublisher.publishAjaxEvent(AbstractAssignmentProjectSelectionPanel.this, ajaxEvent);
+                EventPublisher.publishAjaxEvent(AssignmentProjectSelectionPanel.this, ajaxEvent);
             }
         });
 
@@ -142,7 +145,17 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
         return customersWithActiveProjects;
     }
 
-    protected abstract AbstractChoice<?, Project> createProjectChoiceDropDown(String id, IModel<List<Project>> projectChoices);
+    protected AbstractChoice<?, Project> createProjectChoiceDropDown(String id, IModel<List<Project>> projectChoices, OptGroupRendererMap<Project> renderer) {
+        if (getPanelModelObject().isNewAssignment()) {
+            PropertyModel<Collection<Project>> selectedProjects = new PropertyModel<Collection<Project>>(getDefaultModel(), "selectedProjects");
+
+            return new GroupableListMultipleChoice<Project>(id, selectedProjects, projectChoices, renderer);
+        } else {
+            IModel<Project> projectModel = new PropertyModel<Project>(getDefaultModel(), "projectAssignment.project");
+
+            return new GroupableDropDownChoice<Project>(id, projectModel, projectChoices, renderer);
+        }
+    }
 
     private DropDownChoice<Customer> createCustomerDropdown(List<Customer> customers) {
         DropDownChoice<Customer> customerChoice = new DropDownChoice<Customer>("customer", customers, new ChoiceRenderer<Customer>("fullName"));
@@ -151,5 +164,32 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
         customerChoice.setNullValid(true);
         add(customerChoice);
         return customerChoice;
+    }
+
+    private Map<Project, String> createProjectToCustomerMap(IModel<List<Project>> projectChoices) {
+        List<Project> projects = projectChoices.getObject();
+
+        Map<Project, String> projectToCustomerMap = Maps.newHashMap();
+
+        for (Project project : projects) {
+            projectToCustomerMap.put(project, project.getCustomer().getFullName());
+        }
+        return projectToCustomerMap;
+    }
+
+    static class ProjectRenderer extends OptGroupRendererMap<Project> {
+        public ProjectRenderer(Map<Project, String> projectToCustomerMap) {
+            super(projectToCustomerMap);
+        }
+
+        @Override
+        public Object getDisplayValue(Project project) {
+            return project.getFullName();
+        }
+
+        @Override
+        public String getIdValue(Project project, int index) {
+            return Integer.toString(project.getProjectId());
+        }
     }
 }

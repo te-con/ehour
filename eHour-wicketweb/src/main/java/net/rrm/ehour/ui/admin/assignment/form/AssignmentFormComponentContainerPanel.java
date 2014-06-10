@@ -29,10 +29,6 @@ import org.apache.wicket.model.IModel;
 
 import java.util.List;
 
-/**
- * Assignment form
- */
-
 public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<AssignmentAdminBackingBean> {
     public enum DisplayOption {
         SHOW_PROJECT_SELECTION,
@@ -64,11 +60,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 
     private WebMarkupContainer createProjectSelection(String id, IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
         if (displayOptions.contains(DisplayOption.SHOW_PROJECT_SELECTION)) {
-            if (model.getObject().isNewAssignment()) {
-                return new CreateAssignmentProjectSelectionPanel(id, model);
-            } else {
-                return new EditAssignmentProjectSelectionPanel(id, model);
-            }
+            return new AssignmentProjectSelectionPanel(id, model);
         } else {
             return new PlaceholderPanel(id);
         }
@@ -76,7 +68,7 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
 
     @Override
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
-        if (ajaxEvent.getEventType() == AbstractAssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
+        if (ajaxEvent.getEventType() == AssignmentProjectSelectionPanel.EntrySelectorAjaxEventType.PROJECT_CHANGE) {
             EventPublisher.publishAjaxEventToParentChildren(this, ajaxEvent);
 
             return false;
