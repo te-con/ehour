@@ -29,7 +29,7 @@ import java.util.List;
 
 public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackIndicator {
     private static final long serialVersionUID = 7840885174109746055L;
-    private final Component indicatorFor;
+    private Component indicatorFor;
 
     public AjaxFormComponentFeedbackIndicator(String id, final Component indicatorFor) {
         super(id);
@@ -48,6 +48,10 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
                 return collect.size() > 0 ? collect.get(0).getMessage() : "";
             }
         }));
+    }
+
+    public void setIndicatorFor(Component indicatorFor) {
+        this.indicatorFor = indicatorFor;
     }
 
     public boolean isIndicatingFor(Component other) {

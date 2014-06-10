@@ -30,6 +30,7 @@ import java.util.List;
 
 public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBasePanel<AssignmentAdminBackingBean> {
     private static final long serialVersionUID = 5513770467507708949L;
+    private AjaxFormComponentFeedbackIndicator projectValidationErrorIndicator;
 
     public enum EntrySelectorAjaxEventType implements AjaxEventType {
         PROJECT_CHANGE
@@ -55,7 +56,7 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
         final DropDownChoice<Customer> customerChoice = createCustomerDropdown(customers);
 
         // project model
-        IModel<List<Project>> projectChoices = new AbstractReadOnlyModel<List<Project>>() {
+        final IModel<List<Project>> projectChoices = new AbstractReadOnlyModel<List<Project>>() {
             @SuppressWarnings("unchecked")
             @Override
             public List<Project> getObject() {
@@ -83,21 +84,34 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
             }
         };
 
-        final AbstractChoice<?, Project> projectChoice = createProjectChoiceDropDown("projectAssignment.project", projectChoices);
-        projectChoice.setRequired(true);
-        projectChoice.setOutputMarkupId(true);
-        projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
-        projectChoice.add(new ValidatingFormComponentAjaxBehavior());
+        final AbstractChoice<?, Project> projectChoice = createProjectChoice(projectChoices);
         add(projectChoice);
-        add(new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice));
+        projectValidationErrorIndicator = new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice);
+        projectValidationErrorIndicator.setOutputMarkupId(true);
+        add(projectValidationErrorIndicator);
+
 
         // make project update automatically when customers changed
         customerChoice.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                target.add(projectChoice);
+
+                final AbstractChoice<?, Project> updatedProjectChoice = createProjectChoice(projectChoices);
+
+                AbstractAssignmentProjectSelectionPanel.this.addOrReplace(updatedProjectChoice);
+                target.add(updatedProjectChoice);
+
+                projectValidationErrorIndicator.setIndicatorFor(updatedProjectChoice);
             }
         });
+    }
+
+    private AbstractChoice<?, Project> createProjectChoice(IModel<List<Project>> projectChoices) {
+        final AbstractChoice<?, Project> projectChoice = createProjectChoiceDropDown("projectAssignment.project", projectChoices);
+        projectChoice.setRequired(true);
+        projectChoice.setOutputMarkupId(true);
+        projectChoice.setLabel(new ResourceModel("admin.assignment.project"));
+        projectChoice.add(new ValidatingFormComponentAjaxBehavior());
 
         projectChoice.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
@@ -108,6 +122,8 @@ public abstract class AbstractAssignmentProjectSelectionPanel extends AbstractBa
         });
 
         projectChoice.add(new ValidatingFormComponentAjaxBehavior());
+
+        return projectChoice;
     }
 
     private List<Customer> getCustomers() {
