@@ -38,23 +38,23 @@ class ProjectComparatorSpec extends AbstractSpec {
       comparator.compare(p1, p2) should equal(1)
     }
 
-    "compare on customer name first and then project name" in {
-      val comparator = new ProjectComparator(Sort.PARENT_NAME_FIRST)
+    "compare on customer code first and then project code" in {
+      val comparator = new ProjectComparator(Sort.PARENT_CODE_FIRST)
 
       val c1 = CustomerObjectMother.createCustomer()
-      c1.setName("A")
+      c1.setCode("A")
 
       val c2 = CustomerObjectMother.createCustomer()
-      c2.setName("B")
+      c2.setCode("B")
 
       val p1 = new Project(1, c2)
-      p1.setName("bb")
+      p1.setProjectCode("bb")
 
       val p2 = new Project(2, c2)
-      p2.setName("aa")
+      p2.setProjectCode("aa")
 
       val p3 = new Project(3, c1)
-      p3.setName("c")
+      p3.setProjectCode("c")
 
       val projects = util.Arrays.asList(p1, p2, p3)
 

@@ -81,7 +81,7 @@ public class AssignmentProjectSelectionPanel extends AbstractBasePanel<Assignmen
                     projects = projectService.getActiveProjects();
                 }
 
-                Collections.sort(projects, new ProjectComparator(Sort.PARENT_NAME_FIRST));
+                Collections.sort(projects, new ProjectComparator(Sort.PARENT_CODE_FIRST));
 
                 return projects;
             }
@@ -145,7 +145,7 @@ public class AssignmentProjectSelectionPanel extends AbstractBasePanel<Assignmen
         return customersWithActiveProjects;
     }
 
-    protected AbstractChoice<?, Project> createProjectChoiceDropDown(String id, IModel<List<Project>> projectChoices, OptGroupRendererMap<Project> renderer) {
+    private AbstractChoice<?, Project> createProjectChoiceDropDown(String id, IModel<List<Project>> projectChoices, OptGroupRendererMap<Project> renderer) {
         if (getPanelModelObject().isNewAssignment()) {
             PropertyModel<Collection<Project>> selectedProjects = new PropertyModel<Collection<Project>>(getDefaultModel(), "selectedProjects");
 

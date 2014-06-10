@@ -45,8 +45,8 @@ public class ProjectComparator implements Comparator<Project>, Serializable {
         switch (sort) {
             case CODE:
                 return compareOnProjectCode(o1, o2);
-            case PARENT_NAME_FIRST:
-                return compareOnCustomerAndThenProjectName(o1, o2);
+            case PARENT_CODE_FIRST:
+                return compareOnCustomerCodeAndThenProjectCode(o1, o2);
             case NAME:
             default:
                 return compareOnName(o1, o2);
@@ -57,17 +57,17 @@ public class ProjectComparator implements Comparator<Project>, Serializable {
         return o1.getProjectCode().compareToIgnoreCase(o2.getProjectCode());
     }
 
-    private int compareOnCustomerAndThenProjectName(Project o1, Project o2) {
+    private int compareOnCustomerCodeAndThenProjectCode(Project o1, Project o2) {
         Customer customer1 = o1.getCustomer();
         Customer customer2 = o2.getCustomer();
 
         if (customerComparator == null) {
-            customerComparator = new CustomerComparator(Sort.NAME);
+            customerComparator = new CustomerComparator(Sort.CODE);
         }
 
         int customerCompare = customerComparator.compare(customer1, customer2);
 
-        return customerCompare == 0 ? compareOnName(o1, o2) : customerCompare;
+        return customerCompare == 0 ? compareOnProjectCode(o1, o2) : customerCompare;
     }
 
     private int compareOnName(Project o1, Project o2) {
