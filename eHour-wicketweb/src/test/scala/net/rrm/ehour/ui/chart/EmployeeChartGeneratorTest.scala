@@ -26,13 +26,13 @@ class EmployeeChartGeneratorTest extends FunSuite with Matchers with BeforeAndAf
   }
 
   test("should have two y axises with hours and formatted turnover") {
-    chart should include("""yAxis:[{"title":{"text":"Hours"},"opposite":true},{"title":{"text":"""")
+    chart should include("""yAxis:[{"title":{"text":"Hours"}},{"title":{"text":"""")
 
-    chart should include(""""},"labels":{"formatter":function() { return this.value.toLocaleString();}}}]""")
+    chart should include("""},"labels":{"formatter":function() { return this.value.toLocaleString();}},"opposite":true}]""")
   }
 
   test("should have series with booked hours") {
-    chart should include("""series:[{"name":"Booked hours","data":[22.0,42.0],"yAxis":0}""")
+    chart should include("""series:[{"name":"Hours","data":[22.0,42.0],"yAxis":0}""")
   }
 
   test("should have series with turnover") {
