@@ -944,3 +944,6 @@ hr {
     display: none;
 }
 
+.excelLink:hover {
+   color: #5190c5;
+}

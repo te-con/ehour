@@ -30,10 +30,13 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.markup.head.CssReferenceHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ import static net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel.ReportT
 @AuthorizeInstantiation(value = {UserRole.ROLE_CONSULTANT, UserRole.ROLE_REPORT, UserRole.ROLE_PROJECTMANAGER})
 public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     private static final long serialVersionUID = 6614404841734599622L;
+    private static final CssResourceReference REPORT_CSS = new CssResourceReference(ReportPage.class, "report.css");
 
     private ReportTabbedPanel tabPanel;
 
@@ -71,6 +75,11 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
 
         reset();
     }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(CssReferenceHeaderItem.forReference(REPORT_CSS));
+   }
 
     private void reset() {
         final ReportCriteria reportCriteria = getReportCriteria();

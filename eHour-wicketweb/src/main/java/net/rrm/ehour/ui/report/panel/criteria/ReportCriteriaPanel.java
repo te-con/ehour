@@ -47,7 +47,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -61,7 +60,6 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -78,7 +76,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
     private static final int MAX_CRITERIA_ROW = 6;
     private static final JavaScriptResourceReference CRITERIA_JS = new JavaScriptResourceReference(ReportCriteriaPanel.class, "report_criteria.js");
-    private static final CssResourceReference CRITERIA_CSS = new CssResourceReference(ReportCriteriaPanel.class, "report_criteria.css");
 
     private static final String ID_USERDEPT_PLACEHOLDER = "userDepartmentPlaceholder";
 
@@ -713,7 +710,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     @Override
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptReferenceHeaderItem.forReference(CRITERIA_JS));
-        response.render(CssReferenceHeaderItem.forReference(CRITERIA_CSS));
         response.render(OnDomReadyHeaderItem.forScript(getCustomerFilterRegistrationScript()));
         response.render(OnDomReadyHeaderItem.forScript(getProjectFilterRegistrationScript()));
         response.render(OnDomReadyHeaderItem.forScript(getDepartmentFilterRegistrationScript()));
