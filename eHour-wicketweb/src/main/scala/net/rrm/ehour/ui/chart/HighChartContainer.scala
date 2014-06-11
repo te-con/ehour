@@ -15,7 +15,9 @@ class HighChartContainer(id: String, reportModel: IModel[ReportData], generateCh
     val session = EhourWebSession.getSession
     val config = EhourWebSession.getEhourConfig
 
-    val chart = generateChart(ChartContext(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config.getCurrencySymbol, session.isWithReportRole))
+    val showTurnover = config.isShowTurnover || session.isWithReportRole
+
+    val chart = generateChart(ChartContext(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config.getCurrencySymbol, withTurnover = showTurnover))
     val javascript = "new Highcharts.Chart({%s});\n" format chart
 
     response.render(new OnLoadHeaderItem(javascript))
