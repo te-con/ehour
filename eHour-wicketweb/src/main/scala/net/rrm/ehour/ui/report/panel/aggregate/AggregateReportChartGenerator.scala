@@ -29,7 +29,7 @@ object AggregateReportChartGenerator {
     val categoryData = extractCategoryData(elements, findCategory)
 
     val categories = categoryData map (_._1)
-    val hourSeries = Series(name = "Booked hours", data = categoryData map (_._2), yAxis = 0)
+    val hourSeries = Series(name = "Hours", data = categoryData map (_._2), yAxis = 0)
     val legend = Labels(formatter = JavascriptFunction("function() { return this.value.toLocaleString();}"))
 
     // not winning a beauty contest with this..
@@ -40,12 +40,14 @@ object AggregateReportChartGenerator {
       List(hourSeries)
     })
 
-    val yAxis: Option[Seq[Axis]] = Some(if (chartContext.withTurnover) {
-      Seq(Axis(title = Title(text = "Hours"), opposite = true), Axis(title = Title(text = chartContext.currencySymbol), labels = legend))
-    } else {
-      Seq(Axis(title = Title(text = "Hours"), opposite = true))
-    })
+    val hourAxis = Axis(title = Title(text = "Hours"))
 
+    val yAxis: Option[Seq[Axis]] = Some(if (chartContext.withTurnover) {
+      val turnOverAxis = Axis(title = Title(text = chartContext.currencySymbol), labels = legend, opposite = true)
+      Seq(hourAxis, turnOverAxis)
+    } else {
+      Seq(hourAxis)
+    })
 
     val chartTitleText = if (chartContext.withTurnover) chartTitle + " and turnover" else chartTitle
 
@@ -57,7 +59,7 @@ object AggregateReportChartGenerator {
       yAxis = yAxis,
       series = series,
       title = Title(text = chartTitleText),
-      tooltip = Tooltip(shared = true, formatter = Some(JavascriptFunction("""function() { var s = '<b>'+ this.x +'</b>'; $.each(this.points, function(i, point) { s += '<br/>'+ point.series.name +': ' + point.y.toLocaleString(); }); return s; }"""))),
+      tooltip = Tooltip(shared = true, formatter = Some(JavascriptFunction("""function() { var s = '<b>'+ this.x +'</b>'; $.each(this.points.reverse(), function(i, point) { s += '<br/>'+ point.series.name +': ' + point.y.toLocaleString(); }); return s; }"""))),
       plotOptions = PlotOptions(PlotOptionsSeries(shadow = false))
     ).build(chartContext.renderToId)
   }
