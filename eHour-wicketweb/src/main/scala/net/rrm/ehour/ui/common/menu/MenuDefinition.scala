@@ -1,21 +1,23 @@
 package net.rrm.ehour.ui.common.menu
 
-import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
-import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage
-import net.rrm.ehour.ui.report.page.ReportPage
-import net.rrm.ehour.ui.admin.config.page.MainConfigPage
-import net.rrm.ehour.ui.audit.page.AuditReportPage
-import java.util.{List => JList}
-import org.apache.wicket.request.mapper.parameter.PageParameters
-import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
-import net.rrm.ehour.ui.admin.customer.CustomerAdminPage
-import net.rrm.ehour.ui.admin.project.ProjectAdminPage
-import net.rrm.ehour.ui.admin.backup.BackupDbPage
 import java.util
-import net.rrm.ehour.ui.financial.lock.LockAdminPage
-import net.rrm.ehour.ui.admin.user.UserAdminPage
+import java.util.{List => JList}
+
 import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage
+import net.rrm.ehour.ui.admin.backup.BackupDbPage
+import net.rrm.ehour.ui.admin.config.page.MainConfigPage
+import net.rrm.ehour.ui.admin.customer.CustomerAdminPage
+import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
+import net.rrm.ehour.ui.admin.impersonate.ImpersonatePage
+import net.rrm.ehour.ui.admin.project.ProjectAdminPage
+import net.rrm.ehour.ui.admin.user.UserAdminPage
+import net.rrm.ehour.ui.audit.page.AuditReportPage
+import net.rrm.ehour.ui.financial.lock.LockAdminPage
 import net.rrm.ehour.ui.pm.ProjectManagementPage
+import net.rrm.ehour.ui.report.page.ReportPage
+import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage
+import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
+import org.apache.wicket.request.mapper.parameter.PageParameters
 
 object MenuDefinition {
 
@@ -37,7 +39,8 @@ object MenuDefinition {
     val projectAdmin = LinkItem("nav.admin.projects", classOf[ProjectAdminPage])
     val assignmentAdmin = LinkItem("nav.admin.assignments", classOf[AssignmentAdminPage])
     val lockAdmin = LinkItem("nav.admin.lock", classOf[LockAdminPage])
-    val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(deptAdmin, userAdmin, customerAdmin, projectAdmin, assignmentAdmin, lockAdmin))
+    val impersonate = LinkItem("nav.admin.impersonate", classOf[ImpersonatePage])
+    val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(deptAdmin, userAdmin, customerAdmin, projectAdmin, assignmentAdmin, lockAdmin, impersonate))
 
     val mainConfig = LinkItem("nav.admin.config", classOf[MainConfigPage])
     val auditReport = LinkItem("nav.admin.audit", classOf[AuditReportPage])

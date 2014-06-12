@@ -22,6 +22,7 @@ import net.rrm.ehour.ui.admin.backup.BackupDbPage;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage;
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage;
+import net.rrm.ehour.ui.admin.impersonate.ImpersonatePage;
 import net.rrm.ehour.ui.admin.project.ProjectAdminPage;
 import net.rrm.ehour.ui.admin.user.UserAdminPage;
 import net.rrm.ehour.ui.audit.page.AuditReportPage;
@@ -191,6 +192,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/backup", BackupDbPage.class);
 
         mountPage("/op/lock", LockAdminPage.class);
+
+        mountPage("/admin/impersonate", ImpersonatePage.class);
     }
 
     private void mountResources() {
