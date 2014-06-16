@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common.session;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigCache;
@@ -46,6 +47,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Ehour Web session
@@ -61,11 +63,12 @@ public class EhourWebSession extends AuthenticatedWebSession {
     private AuditService auditService;
     private Calendar navCalendar;
     private UserSelectedCriteria userSelectedCriteria;
-    private Boolean hideInactiveSelections = Boolean.TRUE;
+    private Boolean hideInactiveSelections = true;
+
+    private Optional<AuthUser> impersonatingAuthUser = Optional.absent();
 
     private static final Logger LOGGER = Logger.getLogger(EhourWebSession.class);
 
-    private static final long serialVersionUID = 93189812483240412L;
 
     public EhourWebSession(Request req) {
         super(req);
@@ -95,11 +98,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
         this.hideInactiveSelections = hideInactiveSelections;
     }
 
-    /**
-     * Get ehour config
-     *
-     * @return
-     */
     public static EhourConfig getEhourConfig() {
         return EhourWebSession.getSession().ehourConfig;
     }
@@ -112,29 +110,29 @@ public class EhourWebSession extends AuthenticatedWebSession {
         return (Calendar) navCalendar.clone();
     }
 
-    /**
-     * @param navCalendar the navCalendar to set
-     */
     public void setNavCalendar(Calendar navCalendar) {
         this.navCalendar = navCalendar;
     }
 
     /**
-     * Get logged in user id
-     *
-     * @return
+     * Get authenticated user
      */
     public AuthUser getAuthUser() {
-        AuthUser user = null;
+        AuthUser authUser = null;
 
         if (isSignedIn()) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (impersonatingAuthUser.isPresent()) {
+                authUser = impersonatingAuthUser.get();
+            } else {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (authentication != null) {
-                user = (AuthUser) authentication.getPrincipal();
+                if (authentication != null) {
+                    authUser = (AuthUser) authentication.getPrincipal();
+                }
             }
         }
-        return user;
+
+        return authUser;
     }
 
     public User getUser() {
@@ -191,36 +189,49 @@ public class EhourWebSession extends AuthenticatedWebSession {
         }
     }
 
-    /*
-      * (non-Javadoc)
-      * @see org.apache.wicket.authentication.AuthenticatedWebSession#getRoles()
-      */
     @Override
     public Roles getRoles() {
         if (isSignedIn()) {
-            Roles roles = new Roles();
-            // Retrieve the granted authorities from the current authentication. These correspond one on
-            // one with user roles.
+            if (impersonatingAuthUser.isPresent()) {
+                Roles roles = new Roles();
 
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                Set<UserRole> userRoles = getAuthUser().getUser().getUserRoles();
 
-            if (auth != null) {
-                Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-
-                for (GrantedAuthority grantedAuthority : authorities) {
-                    roles.add(grantedAuthority.getAuthority());
-                }
-
-                if (roles.size() == 0) {
-                    LOGGER.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
+                for (UserRole userRole : userRoles) {
+                    roles.add(userRole.getRole());
                 }
 
                 return roles;
-            } else {
-                LOGGER.warn("User is signed in but authentication is not set!");
             }
+
+            return getRolesForSignedInUser();
         }
         return null;
+    }
+
+    private Roles getRolesForSignedInUser() {
+        // Retrieve the granted authorities from the current authentication. These correspond one on
+        // one with user roles.
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null) {
+            Roles roles = new Roles();
+
+            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+            for (GrantedAuthority grantedAuthority : authorities) {
+                roles.add(grantedAuthority.getAuthority());
+            }
+
+            if (roles.size() == 0) {
+                LOGGER.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
+            }
+
+            return roles;
+        } else {
+            LOGGER.warn("User is signed in but authentication is not set!");
+            return null;
+        }
     }
 
     public boolean isWithReportRole() {
@@ -229,6 +240,9 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     public boolean isWithPmRole() {
         return hasRole(UserRole.ROLE_PROJECTMANAGER);
+    }
+    public boolean isAdmin() {
+        return hasRole(UserRole.ROLE_ADMIN);
     }
 
     private boolean hasRole(String role) {
@@ -254,30 +268,33 @@ public class EhourWebSession extends AuthenticatedWebSession {
                 .setUserFullName(((user != null) ? user.getUser().getFullName() : "N/A"))
                 .setDate(new Date())
                 .setSuccess(Boolean.TRUE));
+        Session.get().replaceSession();
     }
+
+    public void impersonateUser(User userToImpersonate) throws UnauthorizedToImpersonateException {
+        if (!isAdmin()) {
+            throw new UnauthorizedToImpersonateException();
+        }
+
+        impersonatingAuthUser = Optional.of(new AuthUser(userToImpersonate));
+    }
+
 
     private void setAuthentication(Authentication authentication) {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    /**
-     * @return the current session
-     */
     public static EhourWebSession getSession() {
         return (EhourWebSession) Session.get();
     }
 
-    /**
-     * @return the userSelectedCriteria
-     */
     public UserSelectedCriteria getUserSelectedCriteria() {
         return userSelectedCriteria;
     }
 
-    /**
-     * @param userSelectedCriteria the userSelectedCriteria to set
-     */
     public void setUserSelectedCriteria(UserSelectedCriteria userSelectedCriteria) {
         this.userSelectedCriteria = userSelectedCriteria;
     }
+
+    private static final long serialVersionUID = 93189812483240412L;
 }

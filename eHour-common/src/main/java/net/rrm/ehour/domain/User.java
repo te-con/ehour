@@ -130,11 +130,13 @@ public class User extends DomainObject<Integer, User> {
         this.userDepartment = userDepartment;
     }
 
-    public void addUserRole(UserRole role) {
+    public User addUserRole(UserRole role) {
         if (userRoles == null) {
             userRoles = new HashSet<UserRole>();
         }
         userRoles.add(role);
+
+        return this;
     }
 
     public String getFullName() {
