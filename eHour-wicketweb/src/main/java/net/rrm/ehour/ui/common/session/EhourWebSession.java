@@ -278,6 +278,10 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
         impersonatingAuthUser = Optional.of(new AuthUser(userToImpersonate));
 
+        logAndAuditImpersonation();
+    }
+
+    private void logAndAuditImpersonation() {
         AuthUser user = getAuthUser();
 
         StringBuilder auditMsg = new StringBuilder((user != null) ? user.getUser().getFullName() : "N/A");
@@ -295,6 +299,12 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     public void stopImpersonating() {
+        logAndAuditStopImpersonation();
+
+        impersonatingAuthUser = Optional.absent();
+    }
+
+    private void logAndAuditStopImpersonation() {
         AuthUser user = getAuthUser();
 
         StringBuilder auditMsg = new StringBuilder((user != null) ? user.getUser().getFullName() : "N/A");
@@ -309,8 +319,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
                 .setUserFullName(auditMsg.toString())
                 .setDate(new Date())
                 .setSuccess(true));
-
-        impersonatingAuthUser = Optional.absent();
     }
 
     private void setAuthentication(Authentication authentication) {
