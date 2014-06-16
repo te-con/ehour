@@ -32,8 +32,8 @@ import org.apache.wicket.model.ResourceModel;
 
 @SuppressWarnings("serial")
 @AuthorizeInstantiation(UserRole.ROLE_ADMIN)
-public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> extends AbstractAdminPage<BB> {
-    private AddEditTabbedPanel<BB> tabbedPanel;
+public abstract class AbstractTabbedAdminPage<T extends AdminBackingBean> extends AbstractAdminPage<T> {
+    private AddEditTabbedPanel<T> tabbedPanel;
 
     public AbstractTabbedAdminPage(ResourceModel pageTitle,
                                    ResourceModel addTabTitle,
@@ -41,7 +41,7 @@ public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> exten
                                    ResourceModel noEntrySelectedText) {
         super(pageTitle);
 
-        tabbedPanel = new AddEditTabbedPanel<BB>("tabs", addTabTitle, editTabTitle, noEntrySelectedText) {
+        tabbedPanel = new AddEditTabbedPanel<T>("tabs", addTabTitle, editTabTitle, noEntrySelectedText) {
             @Override
             protected Panel getAddPanel(String panelId) {
                 return getBaseAddPanel(panelId);
@@ -53,12 +53,12 @@ public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> exten
             }
 
             @Override
-            protected BB createAddBackingBean() {
+            protected T createAddBackingBean() {
                 return getNewAddBaseBackingBean();
             }
 
             @Override
-            protected BB createEditBackingBean() {
+            protected T createEditBackingBean() {
                 return getNewEditBaseBackingBean();
             }
 
@@ -80,14 +80,14 @@ public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> exten
      *
      * @return
      */
-    protected abstract BB getNewAddBaseBackingBean();
+    protected abstract T getNewAddBaseBackingBean();
 
     /**
      * Get the backing bean for the edit panel
      *
      * @return
      */
-    protected abstract BB getNewEditBaseBackingBean();
+    protected abstract T getNewEditBaseBackingBean();
 
     /**
      * Get the panel for the add tab
@@ -108,7 +108,7 @@ public abstract class AbstractTabbedAdminPage<BB extends AdminBackingBean> exten
     /**
      * @return the tabbedPanel
      */
-    public AddEditTabbedPanel<BB> getTabbedPanel() {
+    public AddEditTabbedPanel<T> getTabbedPanel() {
         return tabbedPanel;
     }
 

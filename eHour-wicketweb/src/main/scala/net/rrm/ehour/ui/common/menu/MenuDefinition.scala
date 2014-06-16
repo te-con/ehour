@@ -8,7 +8,7 @@ import net.rrm.ehour.ui.admin.backup.BackupDbPage
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage
 import net.rrm.ehour.ui.admin.customer.CustomerAdminPage
 import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
-import net.rrm.ehour.ui.admin.impersonate.ImpersonatePage
+import net.rrm.ehour.ui.admin.impersonate.ImpersonateUserPage
 import net.rrm.ehour.ui.admin.project.ProjectAdminPage
 import net.rrm.ehour.ui.admin.user.UserAdminPage
 import net.rrm.ehour.ui.audit.page.AuditReportPage
@@ -39,7 +39,7 @@ object MenuDefinition {
     val projectAdmin = LinkItem("nav.admin.projects", classOf[ProjectAdminPage])
     val assignmentAdmin = LinkItem("nav.admin.assignments", classOf[AssignmentAdminPage])
     val lockAdmin = LinkItem("nav.admin.lock", classOf[LockAdminPage])
-    val impersonate = LinkItem("nav.admin.impersonate", classOf[ImpersonatePage])
+    val impersonate = LinkItem("nav.admin.impersonate", classOf[ImpersonateUserPage])
     val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(deptAdmin, userAdmin, customerAdmin, projectAdmin, assignmentAdmin, lockAdmin, impersonate))
 
     val mainConfig = LinkItem("nav.admin.config", classOf[MainConfigPage])

@@ -27,15 +27,15 @@ import org.apache.wicket.model.ResourceModel;
  * AjaxTabbedPanel that passes the index to a pre process method
  **/
 @SuppressWarnings({"serial"})
-public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends MultiTabbedPanel
+public abstract class AddEditTabbedPanel<T extends AdminBackingBean> extends MultiTabbedPanel
 {
 	private static final long serialVersionUID = -2437819961082840272L;
 
 	public static final int TABPOS_ADD = 0;
 	public static final int TABPOS_EDIT = 1;
 	
-	private BB	addBackingBean;
-	private BB	editBackingBean;
+	private T addBackingBean;
+	private T editBackingBean;
 	private	ResourceModel		addTabTitle;
 	private	ResourceModel		editTabTitle;
 	private ResourceModel 		noEntrySelectedText;
@@ -205,7 +205,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * Get the backing bean for the add panel
 	 * @return
 	 */
-	protected abstract BB createAddBackingBean();
+	protected abstract T createAddBackingBean();
 	
 	
 	/**
@@ -219,7 +219,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * 
 	 * @return
 	 */
-	public BB getAddBackingBean()
+	public T getAddBackingBean()
 	{
 		return addBackingBean;
 	}	
@@ -228,7 +228,7 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * 
 	 * @return
 	 */
-	public BB getEditBackingBean()
+	public T getEditBackingBean()
 	{
 		return editBackingBean;
 	}	
@@ -237,12 +237,12 @@ public abstract class AddEditTabbedPanel<BB extends AdminBackingBean> extends Mu
 	 * Get the backing bean for the edit panel
 	 * @return
 	 */
-	protected abstract BB createEditBackingBean();
+	protected abstract T createEditBackingBean();
 
 	/**
 	 * @param editBackingBean the editBackingBean to set
 	 */
-	public void setEditBackingBean(BB editBackingBean)
+	public void setEditBackingBean(T editBackingBean)
 	{
 		this.editBackingBean = editBackingBean;
 	}
