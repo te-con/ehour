@@ -277,12 +277,41 @@ public class EhourWebSession extends AuthenticatedWebSession {
         }
 
         impersonatingAuthUser = Optional.of(new AuthUser(userToImpersonate));
+
+        AuthUser user = getAuthUser();
+
+        StringBuilder auditMsg = new StringBuilder((user != null) ? user.getUser().getFullName() : "N/A");
+        auditMsg.append(" started impersonating as ");
+        auditMsg.append(impersonatingAuthUser.get().getUser().getFullName());
+
+        LOGGER.info(auditMsg.toString());
+
+        auditService.doAudit(new Audit()
+                .setAuditActionType(AuditActionType.IMPERSONATE)
+                .setUser(((user != null) ? user.getUser() : null))
+                .setUserFullName(auditMsg.toString())
+                .setDate(new Date())
+                .setSuccess(true));
     }
 
     public void stopImpersonating() {
+        AuthUser user = getAuthUser();
+
+        StringBuilder auditMsg = new StringBuilder((user != null) ? user.getUser().getFullName() : "N/A");
+        auditMsg.append(" stopped impersonating as ");
+        auditMsg.append(impersonatingAuthUser.get().getUser().getFullName());
+
+        LOGGER.info(auditMsg.toString());
+
+        auditService.doAudit(new Audit()
+                .setAuditActionType(AuditActionType.STOP_IMPERSONATE)
+                .setUser(((user != null) ? user.getUser() : null))
+                .setUserFullName(auditMsg.toString())
+                .setDate(new Date())
+                .setSuccess(true));
+
         impersonatingAuthUser = Optional.absent();
     }
-
 
     private void setAuthentication(Authentication authentication) {
         SecurityContextHolder.getContext().setAuthentication(authentication);

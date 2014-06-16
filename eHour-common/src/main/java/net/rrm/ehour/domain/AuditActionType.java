@@ -26,6 +26,8 @@ public enum AuditActionType
 	READ("READ", AuditType.READ), 
 	UPDATE("UPDATE", AuditType.WRITE), 
 	DELETE("DELETE", AuditType.WRITE),
+    IMPERSONATE("IMPERSONATE", AuditType.WRITE),
+    STOP_IMPERSONATE("IMPERSONATE STOPPED", AuditType.WRITE),
 	LOGIN("LOGIN", AuditType.READ),
 	LOGOUT("LOGOUT", AuditType.READ);
 
