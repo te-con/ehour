@@ -57,5 +57,23 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
 
       session.getRoles should contain(ROLE_CONSULTANT)
     }
+
+    "return to the original user when impersonating is stopped" in {
+      val session = new EhourWebSession(req) {
+        override def authenticate(username: String, password: String): Boolean = true
+
+        override def isAdmin: Boolean = true
+      }
+
+      ThreadContext.setSession(session)
+
+      session.signIn("a", "b")
+
+      session.impersonateUser(User)
+
+      session.stopImpersonating()
+
+      AuthUtil.getUser should not be User
+    }
   }
 }

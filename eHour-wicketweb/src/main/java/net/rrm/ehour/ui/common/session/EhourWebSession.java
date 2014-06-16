@@ -279,6 +279,10 @@ public class EhourWebSession extends AuthenticatedWebSession {
         impersonatingAuthUser = Optional.of(new AuthUser(userToImpersonate));
     }
 
+    public void stopImpersonating() {
+        impersonatingAuthUser = Optional.absent();
+    }
+
 
     private void setAuthentication(Authentication authentication) {
         SecurityContextHolder.getContext().setAuthentication(authentication);
