@@ -9,6 +9,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.ITEM_LIST_HOLDER_ID
 import net.rrm.ehour.ui.common.panel.entryselector._
+import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -69,22 +70,16 @@ class UserSelectionPanel(id: String) extends AbstractBasePanel[UserAdminBackingB
   }
 
   override def onEvent(event: IEvent[_]) {
+    def refresh(event: Event) {
+      val component = container.get("itemList")
+      component.asInstanceOf[EntrySelectorListView[User]].setList(users)
+
+      event.refresh(container)
+    }
+
     event.getPayload match {
-      case event: EntryListUpdatedEvent => {
-
-        val component = container.get("itemList")
-        component.asInstanceOf[EntrySelectorListView[User]].setList(users)
-
-        event.refresh(container)
-
-      }
-    // TODO join with previous case
-      case event: InactiveFilterChangedEvent => {
-        val component = container.get("itemList")
-        component.asInstanceOf[EntrySelectorListView[User]].setList(users)
-
-        event.refresh(container)
-      }
+      case event: EntryListUpdatedEvent => refresh(event)
+      case event: InactiveFilterChangedEvent => refresh(event)
     }
   }
 

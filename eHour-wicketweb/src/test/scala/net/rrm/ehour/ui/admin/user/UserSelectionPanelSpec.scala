@@ -4,10 +4,12 @@ import java.util
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.User
-import net.rrm.ehour.ui.common.panel.entryselector.EntryListUpdatedEvent
+import net.rrm.ehour.ui.common.panel.entryselector.{EntryListUpdatedEvent, HideInactiveFilter, InactiveFilterChangedEvent}
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.list.ListItem
+import org.apache.wicket.markup.html.panel.Fragment
+import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
 
@@ -33,14 +35,29 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
 
       val component = tester.startComponentInPage(classOf[UserSelectionPanel])
 
-      tester.debugComponentTrees()
-
       val target = mock[AjaxRequestTarget]
       val event = mockEvent(EntryListUpdatedEvent(target))
 
       component.onEvent(event)
 
       tester.assertNoErrorMessage()
+
+      verify(target).add(isA(classOf[Fragment]))
+    }
+
+    "handle inactive filter event" in {
+      when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
+
+      val component = tester.startComponentInPage(classOf[UserSelectionPanel])
+
+      val target = mock[AjaxRequestTarget]
+      val event = mockEvent(InactiveFilterChangedEvent(new HideInactiveFilter(), target))
+
+      component.onEvent(event)
+
+      tester.assertNoErrorMessage()
+
+      verify(target).add(isA(classOf[Fragment]))
     }
   }
 }

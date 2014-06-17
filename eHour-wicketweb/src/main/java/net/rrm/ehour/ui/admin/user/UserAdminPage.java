@@ -85,6 +85,7 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean>
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
+        AjaxRequestTarget target = ajaxEvent.getTarget();
         if (type == UserEditAjaxEventType.USER_CREATED) {
             PayloadAjaxEvent<AdminBackingBean> payloadAjaxEvent = (PayloadAjaxEvent<AdminBackingBean>) ajaxEvent;
 
@@ -95,13 +96,19 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean>
                 return false;
 
             } else {
-                return updateUserList(ajaxEvent.getTarget());
+                updateEntryList(target);
+                succesfulSave(target);
+
+                return false;
             }
         } else if (type == UserEditAjaxEventType.USER_UPDATED
                 || type == UserEditAjaxEventType.USER_DELETED) {
-            return updateUserList(ajaxEvent.getTarget());
+            updateEntryList(target);
+            succesfulSave(target);
+
+            return updateUserList(target);
         } else if (type == UserEditAjaxEventType.PASSWORD_CHANGED) {
-            getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
+            succesfulSave(target);
             return false;
         }
 
@@ -109,11 +116,19 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean>
     }
 
     private boolean updateUserList(AjaxRequestTarget target) {
-        send(this, Broadcast.DEPTH, new EntryListUpdatedEvent(target));
+        updateEntryList(target);
 
-        getTabbedPanel().succesfulSave(target);
+        succesfulSave(target);
 
         return false;
+    }
+
+    private void updateEntryList(AjaxRequestTarget target) {
+        send(this, Broadcast.DEPTH, new EntryListUpdatedEvent(target));
+    }
+
+    private void succesfulSave(AjaxRequestTarget target) {
+        getTabbedPanel().succesfulSave(target);
     }
 
     @Override
