@@ -16,16 +16,19 @@
 
 package net.rrm.ehour.ui.admin.user;
 
-import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.sort.UserDepartmentComparator;
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import org.apache.wicket.markup.html.panel.Fragment;
+import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
+import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent;
+import net.rrm.ehour.user.service.UserService;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,8 +36,9 @@ import java.util.List;
 /**
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel
  */
-
-public class UserAdminPage extends AbstractUserAdminPage {
+public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean> {
+    @SpringBean
+    private UserService userService;
 
     private List<UserRole> roles;
     private List<UserDepartment> departments;
@@ -46,21 +50,25 @@ public class UserAdminPage extends AbstractUserAdminPage {
                 new ResourceModel("admin.user.addUser"),
                 new ResourceModel("admin.user.editUser"),
                 new ResourceModel("admin.user.noEditEntrySelected"));
-
-        List<User> users;
-        users = getUsers();
-
-        Fragment userListHolder = getUserListHolder(users);
-
-        GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame",
-                new ResourceModel("admin.user.title")
-        );
-        add(greyBorder);
-
-        selectorPanel = new EntrySelectorPanel("userSelector", userListHolder, new ResourceModel("admin.user.hideInactive"));
-        greyBorder.add(selectorPanel);
+        add(new UserSelectionPanel("userSelection"));
     }
 
+    @Override
+    public void onEvent(IEvent<?> event) {
+        Object payload = event.getPayload();
+
+        if (payload instanceof EntrySelectedEvent) {
+            EntrySelectedEvent entrySelectedEvent = (EntrySelectedEvent) payload;
+            Integer userId = entrySelectedEvent.userId();
+
+            try {
+                getTabbedPanel().setEditBackingBean(new UserAdminBackingBean(userService.getUserAndCheckDeletability(userId)));
+                getTabbedPanel().switchTabOnAjaxTarget(entrySelectedEvent.target(), AddEditTabbedPanel.TABPOS_EDIT);
+            } catch (ObjectNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
@@ -72,9 +80,7 @@ public class UserAdminPage extends AbstractUserAdminPage {
 
     @Override
     protected UserAdminBackingBean getNewAddBaseBackingBean() {
-        UserAdminBackingBean userBean;
-
-        userBean = new UserAdminBackingBean();
+        UserAdminBackingBean userBean = new UserAdminBackingBean();
         userBean.getUser().setActive(true);
 
         return userBean;

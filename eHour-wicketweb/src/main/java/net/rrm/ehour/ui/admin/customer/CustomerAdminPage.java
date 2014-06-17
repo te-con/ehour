@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.FilterChangedEvent;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -121,8 +122,8 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
     }
 
     @Override
-    protected Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent) {
-        currentFilter = filterChangedEvent.getFilter();
+    protected Component onFilterChanged(FilterChangedEvent filterChangedEvent) {
+        currentFilter = filterChangedEvent.filter();
 
         List<Customer> customers = getCustomers();
         customerListView.setList(customers);
@@ -132,9 +133,6 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
 
     /**
      * Get a the customerListHolder fragment containing the listView
-     *
-     * @param users
-     * @return
      */
     @SuppressWarnings("serial")
     private Fragment getCustomerListHolder(List<Customer> customers) {

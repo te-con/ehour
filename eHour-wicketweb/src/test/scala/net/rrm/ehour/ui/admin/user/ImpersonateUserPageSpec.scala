@@ -6,7 +6,7 @@ import net.rrm.ehour.user.service.UserService
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
 
-class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec  with BeforeAndAfter {
+class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
   "Impersonate User Page" should {
     val service = mockService[UserService]
 

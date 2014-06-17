@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.admin;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.FilterChangedEvent;
 import org.apache.wicket.Component;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.event.IEvent;
@@ -77,31 +77,21 @@ public abstract class AbstractTabbedAdminPage<T extends AdminBackingBean> extend
 
     /**
      * Get the backing bean for the add panel
-     *
-     * @return
      */
     protected abstract T getNewAddBaseBackingBean();
 
     /**
      * Get the backing bean for the edit panel
-     *
-     * @return
      */
     protected abstract T getNewEditBaseBackingBean();
 
     /**
      * Get the panel for the add tab
-     *
-     * @param panelId
-     * @return
      */
     protected abstract Panel getBaseAddPanel(String panelId);
 
     /**
      * Get the panel for the edit tab
-     *
-     * @param panelId
-     * @return
      */
     protected abstract Panel getBaseEditPanel(String panelId);
 
@@ -112,13 +102,12 @@ public abstract class AbstractTabbedAdminPage<T extends AdminBackingBean> extend
         return tabbedPanel;
     }
 
-
     @Override
     public void onEvent(IEvent<?> event) {
         Object payload = event.getPayload();
 
-        if (payload instanceof EntrySelectorPanel.FilterChangedEvent) {
-            EntrySelectorPanel.FilterChangedEvent filterChangedEvent = (EntrySelectorPanel.FilterChangedEvent) payload;
+        if (payload instanceof FilterChangedEvent) {
+            FilterChangedEvent filterChangedEvent = (FilterChangedEvent) payload;
 
             Component component = onFilterChanged(filterChangedEvent);
 
@@ -128,7 +117,7 @@ public abstract class AbstractTabbedAdminPage<T extends AdminBackingBean> extend
         }
     }
 
-    protected Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent) {
+    protected Component onFilterChanged(FilterChangedEvent filterChangedEvent) {
         return null;
     }
 }

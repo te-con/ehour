@@ -26,6 +26,7 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.FilterChangedEvent;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Component;
@@ -88,7 +89,7 @@ public class DepartmentAdminPage extends AbstractTabbedAdminPage<DepartmentAdmin
     }
 
     @Override
-    protected Component onFilterChanged(EntrySelectorPanel.FilterChangedEvent filterChangedEvent) {
+    protected Component onFilterChanged(FilterChangedEvent filterChangedEvent) {
         throw new IllegalArgumentException("Not supported");
     }
 

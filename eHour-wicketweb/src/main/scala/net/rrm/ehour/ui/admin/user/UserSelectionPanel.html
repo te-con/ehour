@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+
+<body>
+<wicket:panel>
+
+    <span wicket:id="border" class="floatLeft" >
+
+        <div class="floatLeft" wicket:id="entrySelectorFrame" id="entrySelector">
+
+        </div>
+    </span>
+
+
+    <wicket:fragment wicket:id="userSelection">
+
+        <table class="entrySelectorTable">
+            <thead>
+            <tr>
+                <th>
+                    <wicket:message key="admin.user.lastName"/>
+                </th>
+                <th>
+                    <wicket:message key="admin.user.firstName"/>
+                </th>
+                <th>
+                    <wicket:message key="admin.user.username"/>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr wicket:id="itemList" class="filterRow">
+                <td wicket:id="lastName"></td>
+                <td wicket:id="firstName"></td>
+                <td wicket:id="userName"></td>
+            </tr>
+            </tbody>
+        </table>
+    </wicket:fragment>
+</wicket:panel>
+
+
+</body>
+</html>

@@ -28,39 +28,34 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 
-public class UserAdminPageTest extends BaseSpringWebAppTester
-{
-	/**
-	 * Test render
-	 */
-	@Test
-	public void testUserAdminRender()
-	{
-		UserService userService = createMock(UserService.class);
-		getMockContext().putBean("userService", userService);
-		
-		List<User>	users = new ArrayList<User>();
-		User user = new User();
-		user.setFirstName("thies");
-		user.setUserId(1);
-		user.setLastName("Edeling");
-		users.add(user);
-		
-		expect(userService.getActiveUsers())
-			.andReturn(users);
+public class UserAdminPageTest extends BaseSpringWebAppTester {
+    @Test
+    public void should_render() {
+        UserService userService = createMock(UserService.class);
+        getMockContext().putBean("userService", userService);
 
-		expect(userService.getUserRoles())
-				.andReturn(new ArrayList<UserRole>());
+        List<User> users = new ArrayList<User>();
+        User user = new User();
+        user.setFirstName("thies");
+        user.setUserId(1);
+        user.setLastName("Edeling");
+        users.add(user);
 
-		expect(userService.getUserDepartments())
-			.andReturn(new ArrayList<UserDepartment>());
+        expect(userService.getActiveUsers())
+                .andReturn(users);
 
-		replay(userService);
-		
-		getTester().startPage(UserAdminPage.class);
-		getTester().assertRenderedPage(UserAdminPage.class);
-		getTester().assertNoErrorMessage();
-		
-		verify(userService);
-	}
+        expect(userService.getUserRoles())
+                .andReturn(new ArrayList<UserRole>());
+
+        expect(userService.getUserDepartments())
+                .andReturn(new ArrayList<UserDepartment>());
+
+        replay(userService);
+
+        getTester().startPage(UserAdminPage.class);
+        getTester().assertRenderedPage(UserAdminPage.class);
+        getTester().assertNoErrorMessage();
+
+        verify(userService);
+    }
 }

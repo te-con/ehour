@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.FilterChangedEvent;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -43,8 +44,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Collections;
 import java.util.List;
-
-import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.FilterChangedEvent;
 
 /**
  * Project admin page
@@ -111,7 +110,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
 
     @Override
     protected Component onFilterChanged(FilterChangedEvent filterChangedEvent) {
-        currentFilter = filterChangedEvent.getFilter();
+        currentFilter = filterChangedEvent.filter();
 
         List<Project> projects = getProjects();
         projectListView.setList(projects);
@@ -151,7 +150,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
 
     @SuppressWarnings("serial")
     private Fragment createProjectListHolder(List<Project> projects) {
-        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", ProjectAdminPage.this);
+        Fragment fragment = new Fragment(EntrySelectorPanel.ITEM_LIST_HOLDER_ID, "itemListHolder", ProjectAdminPage.this);
         fragment.setOutputMarkupId(true);
 
         projectListView = new EntrySelectorListView<Project>("itemList", projects) {

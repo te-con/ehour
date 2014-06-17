@@ -63,7 +63,7 @@ public class UserServiceImplTest {
 
         replay(userDAO);
 
-        userService.getUsers(true);
+        userService.getActiveUsers();
 
         verify(userDAO);
     }

@@ -172,8 +172,8 @@ public class UserServiceImpl implements UserService {
         return userDepartment;
     }
 
-    public List<User> getUsers(boolean inclInactive) {
-        return userDAO.findUsers(inclInactive);
+    public List<User> getUsers() {
+        return userDAO.findUsers(false);
     }
 
     public List<User> getActiveUsers() {

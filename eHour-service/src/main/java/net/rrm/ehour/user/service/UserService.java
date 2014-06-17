@@ -46,8 +46,10 @@ public interface UserService {
 
     void changePassword(String username, String newUnencryptedPassword);
 
-    List<User> getUsers(boolean inclInactive);
+    // get all users, active and inactive
+    List<User> getUsers();
 
+    // get all active users
     List<User> getActiveUsers();
 
     /**

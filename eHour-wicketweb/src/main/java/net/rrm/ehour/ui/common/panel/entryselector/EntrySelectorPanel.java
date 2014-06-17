@@ -19,10 +19,10 @@ package net.rrm.ehour.ui.common.panel.entryselector;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -39,13 +39,15 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
  */
 
 public class EntrySelectorPanel extends AbstractBasePanel<Void> {
+    public static final String ITEM_LIST_HOLDER_ID = "itemListHolder";
+
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
+    private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
+
     private IModel<String> checkBoxPrefixText;
     private boolean includeCheckboxToggle = false;
     private GreyBlueRoundedBorder blueBorder;
-    private static final long serialVersionUID = -7928428437664050056L;
 
-    private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
 
     public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder) {
         this(id, itemListHolder, null);
@@ -62,6 +64,17 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         setUpPanel(itemListHolder);
     }
 
+    @Override
+    public void onEvent(IEvent<?> event) {
+        Object payload = event.getPayload();
+
+        if (payload instanceof EntryListUpdatedEvent) {
+            EntryListUpdatedEvent entryListUpdatedEvent = (EntryListUpdatedEvent) payload;
+
+            refreshList(entryListUpdatedEvent.target());
+        }
+    }
+
     public void refreshList(AjaxRequestTarget target) {
         target.add(blueBorder);
         target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
@@ -70,7 +83,6 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     @Override
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(JS));
-
         response.render(OnDomReadyHeaderItem.forScript("window.entrySelector = new EntrySelector('#listFilter', '.entrySelectorTable');"));
     }
 
@@ -141,21 +153,6 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         send(getPage(), Broadcast.DEPTH, new FilterChangedEvent(filter, target));
     }
 
-    public static class FilterChangedEvent {
-        private final EntrySelectorFilter filter;
-        private final AjaxRequestTarget target;
-
-        public FilterChangedEvent(EntrySelectorFilter filter, AjaxRequestTarget target) {
-            this.filter = filter;
-            this.target = target;
-        }
-
-        public EntrySelectorFilter getFilter() {
-            return filter;
-        }
-
-        public void refresh(Component... components) {
-            target.add(components);
-        }
-    }
+    private static final long serialVersionUID = -7928428437664050056L;
 }
+
