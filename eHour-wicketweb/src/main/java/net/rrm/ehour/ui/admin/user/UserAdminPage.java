@@ -21,9 +21,17 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
+import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
+import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
+import net.rrm.ehour.ui.common.model.AdminBackingBean;
+import net.rrm.ehour.ui.common.panel.entryselector.EntryListUpdatedEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent;
 import net.rrm.ehour.user.service.UserService;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -50,6 +58,7 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean>
                 new ResourceModel("admin.user.addUser"),
                 new ResourceModel("admin.user.editUser"),
                 new ResourceModel("admin.user.noEditEntrySelected"));
+
         add(new UserSelectionPanel("userSelection"));
     }
 
@@ -65,9 +74,46 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean>
                 getTabbedPanel().setEditBackingBean(new UserAdminBackingBean(userService.getUserAndCheckDeletability(userId)));
                 getTabbedPanel().switchTabOnAjaxTarget(entrySelectedEvent.target(), AddEditTabbedPanel.TABPOS_EDIT);
             } catch (ObjectNotFoundException e) {
+                // TODO deal with it
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        AjaxEventType type = ajaxEvent.getEventType();
+
+        if (type == UserEditAjaxEventType.USER_CREATED) {
+            PayloadAjaxEvent<AdminBackingBean> payloadAjaxEvent = (PayloadAjaxEvent<AdminBackingBean>) ajaxEvent;
+
+            UserAdminBackingBean bean = (UserAdminBackingBean) payloadAjaxEvent.getPayload();
+
+            if (bean.isShowAssignments()) {
+                setResponsePage(new AssignmentAdminPage(bean.getUser()));
+                return false;
+
+            } else {
+                return updateUserList(ajaxEvent.getTarget());
+            }
+        } else if (type == UserEditAjaxEventType.USER_UPDATED
+                || type == UserEditAjaxEventType.USER_DELETED) {
+            return updateUserList(ajaxEvent.getTarget());
+        } else if (type == UserEditAjaxEventType.PASSWORD_CHANGED) {
+            getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean updateUserList(AjaxRequestTarget target) {
+        send(this, Broadcast.DEPTH, new EntryListUpdatedEvent(target));
+
+        getTabbedPanel().succesfulSave(target);
+
+        return false;
     }
 
     @Override

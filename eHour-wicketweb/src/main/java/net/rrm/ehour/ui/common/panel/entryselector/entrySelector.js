@@ -56,7 +56,7 @@ function EntrySelector(filterInputSelector, targetListSelector) {
     this.refresh = function() {
         staticTableWidth();
         filterList();
-    }
+    };
 
     function staticTableWidth() {
         $(targetList, 'tr:first th').each(function (idx) {

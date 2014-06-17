@@ -145,8 +145,9 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
 
         boolean deletable = userModel.getObject().getUser().isDeletable();
 
-        FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
+        FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable)
                 .withDeleteEventType(USER_DELETED)
+                .withSubmitTarget(this)
                 .withSubmitEventType(editMode ? USER_UPDATED : USER_CREATED);
 
 

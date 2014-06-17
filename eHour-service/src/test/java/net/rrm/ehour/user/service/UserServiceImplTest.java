@@ -59,7 +59,7 @@ public class UserServiceImplTest {
 
     @Test
     public void shouldGetActiveUsers() {
-        expect(userDAO.findUsers(true)).andReturn(new ArrayList<User>());
+        expect(userDAO.findActiveUsers()).andReturn(new ArrayList<User>());
 
         replay(userDAO);
 

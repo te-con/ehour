@@ -25,10 +25,10 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.common.panel.entryselector.FilterChangedEvent;
+import net.rrm.ehour.ui.common.panel.entryselector.HideInactiveFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -58,7 +58,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
     @SpringBean
     private CustomerService customerService;
     private ListView<Customer> customerListView;
-    private EntrySelectorFilter currentFilter;
+    private HideInactiveFilter currentFilter;
 
     public CustomerAdminPage() {
         super(new ResourceModel("admin.customer.title"),
@@ -122,8 +122,8 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
     }
 
     @Override
-    protected Component onFilterChanged(FilterChangedEvent filterChangedEvent) {
-        currentFilter = filterChangedEvent.filter();
+    protected Component onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent) {
+        currentFilter = inactiveFilterChangedEvent.hideInactiveFilter();
 
         List<Customer> customers = getCustomers();
         customerListView.setList(customers);
@@ -168,7 +168,7 @@ public class CustomerAdminPage extends AbstractTabbedAdminPage<CustomerAdminBack
     }
 
     private List<Customer> getCustomers() {
-        List<Customer> customers = currentFilter != null && !currentFilter.isFilterToggle() ? customerService.getCustomers() : customerService.getActiveCustomers();
+        List<Customer> customers = currentFilter != null && !currentFilter.isHideInactive() ? customerService.getCustomers() : customerService.getActiveCustomers();
         Collections.sort(customers, new CustomerComparator());
 
         return customers;

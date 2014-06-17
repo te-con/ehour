@@ -3,7 +3,7 @@ package net.rrm.ehour.ui.admin.user;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.sort.UserComparator;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.HideInactiveFilter;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
@@ -16,7 +16,7 @@ public abstract class AbstractUserAdminPage extends AbstractTabbedAdminPage<User
     @SpringBean
     protected UserService userService;
 
-    private EntrySelectorFilter currentFilter;
+    private HideInactiveFilter currentFilter;
 
     public AbstractUserAdminPage(ResourceModel pageTitle, ResourceModel addTabTitle, ResourceModel editTabTitle, ResourceModel noEntrySelectedText) {
         super(pageTitle, addTabTitle, editTabTitle, noEntrySelectedText);
@@ -31,7 +31,7 @@ public abstract class AbstractUserAdminPage extends AbstractTabbedAdminPage<User
 //    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
 //        AjaxEventType type = ajaxEvent.getEventType();
 //
-//        if (type == USER_CREATED) {
+//        if (type == UserEditAjaxEventType.USER_CREATED) {
 //            PayloadAjaxEvent<AdminBackingBean> payloadAjaxEvent = (PayloadAjaxEvent<AdminBackingBean>) ajaxEvent;
 //
 //            UserAdminBackingBean bean = (UserAdminBackingBean) payloadAjaxEvent.getPayload();
@@ -43,15 +43,15 @@ public abstract class AbstractUserAdminPage extends AbstractTabbedAdminPage<User
 //            } else {
 //                return updateUserList(ajaxEvent);
 //            }
-//        } else if (type == USER_UPDATED
-//                || type == USER_DELETED
-//                || type == PASSWORD_CHANGED) {
+//        } else if (type == UserEditAjaxEventType.USER_UPDATED
+//                || type == UserEditAjaxEventType.USER_DELETED
+//                || type == UserEditAjaxEventType.PASSWORD_CHANGED) {
 //            return updateUserList(ajaxEvent);
 //        }
 //
 //        return true;
 //    }
-
+//
 //    private boolean updateUserList(AjaxEvent ajaxEvent) {
 //        List<User> users = getUsers();
 //        userListView.setList(users);
@@ -75,7 +75,7 @@ public abstract class AbstractUserAdminPage extends AbstractTabbedAdminPage<User
 //    }
 
     protected List<User> getUsers() {
-        List<User> users = currentFilter == null || currentFilter.isFilterToggle() ? userService.getActiveUsers() : userService.getUsers();
+        List<User> users = currentFilter == null || currentFilter.isHideInactive() ? userService.getActiveUsers() : userService.getUsers();
 
         Collections.sort(users, new UserComparator(false));
 

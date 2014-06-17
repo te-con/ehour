@@ -25,10 +25,10 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.common.panel.entryselector.FilterChangedEvent;
+import net.rrm.ehour.ui.common.panel.entryselector.HideInactiveFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -60,7 +60,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     @SpringBean
     private ProjectService projectService;
 
-    private EntrySelectorFilter currentFilter = new EntrySelectorFilter();
+    private HideInactiveFilter currentFilter = new HideInactiveFilter();
     private ListView<Project> projectListView;
     private final GreyRoundedBorder greyBorder;
 
@@ -73,7 +73,6 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
 
         greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"));
         add(greyBorder);
-
     }
 
     @Override
@@ -109,8 +108,8 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     }
 
     @Override
-    protected Component onFilterChanged(FilterChangedEvent filterChangedEvent) {
-        currentFilter = filterChangedEvent.filter();
+    protected Component onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent) {
+        currentFilter = inactiveFilterChangedEvent.hideInactiveFilter();
 
         List<Project> projects = getProjects();
         projectListView.setList(projects);
@@ -180,7 +179,7 @@ public class ProjectAdminPage extends AbstractTabbedAdminPage<ProjectAdminBackin
     }
 
     private List<Project> getProjects() {
-        List<Project> projects = currentFilter == null || currentFilter.isFilterToggle() ? projectService.getActiveProjects() : projectService.getProjects();
+        List<Project> projects = currentFilter == null || currentFilter.isHideInactive() ? projectService.getActiveProjects() : projectService.getProjects();
 
         Collections.sort(projects, new ProjectComparator());
 

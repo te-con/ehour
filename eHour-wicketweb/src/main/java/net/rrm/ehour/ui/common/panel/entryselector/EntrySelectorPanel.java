@@ -44,8 +44,8 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
 
-    private IModel<String> checkBoxPrefixText;
-    private boolean includeCheckboxToggle = false;
+    private IModel<String> hideInactiveCheckboxPrefix;
+    private boolean showHideInactiveCheckbox = false;
     private GreyBlueRoundedBorder blueBorder;
 
 
@@ -57,19 +57,19 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         super(id);
 
         if (checkboxPrefix != null) {
-            this.checkBoxPrefixText = checkboxPrefix;
-            includeCheckboxToggle = true;
+            this.hideInactiveCheckboxPrefix = checkboxPrefix;
+            showHideInactiveCheckbox = true;
         }
 
         setUpPanel(itemListHolder);
     }
 
     @Override
-    public void onEvent(IEvent<?> event) {
-        Object payload = event.getPayload();
+    public void onEvent(IEvent<?> eventWrapper) {
+        Object event = eventWrapper.getPayload();
 
-        if (payload instanceof EntryListUpdatedEvent) {
-            EntryListUpdatedEvent entryListUpdatedEvent = (EntryListUpdatedEvent) payload;
+        if (event instanceof EntryListUpdatedEvent) {
+            EntryListUpdatedEvent entryListUpdatedEvent = (EntryListUpdatedEvent) event;
 
             refreshList(entryListUpdatedEvent.target());
         }
@@ -103,22 +103,19 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         blueBorder.setOutputMarkupId(true);
         selectorFrame.add(blueBorder);
 
-        selectorFrame.add(getFilterForm());
+        selectorFrame.add(createForm());
 
         add(selectorFrame);
 
         blueBorder.add(itemListHolder);
     }
 
-    private Form<Void> getFilterForm() {
-        final EntrySelectorFilter filter = new EntrySelectorFilter();
-        filter.setFilterToggle(getEhourWebSession().getHideInactiveSelections());
-
-        Form<Void> filterForm = new Form<Void>("filterForm");
+    private Form<Void> createForm() {
+        Form<Void> form = new Form<Void>("filterForm");
 
         WebMarkupContainer filterInputContainer = new WebMarkupContainer("filterInputContainer");
         add(filterInputContainer);
-        filterForm.add(filterInputContainer);
+        form.add(filterInputContainer);
 
         WebMarkupContainer listFilter = new WebMarkupContainer("listFilter");
         listFilter.setMarkupId("listFilter");
@@ -126,31 +123,28 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         listFilter.add(AttributeModifier.replace("placeholder", new ResourceModel("report.filter").getObject()));
         filterInputContainer.add(listFilter);
 
-
-        final AjaxCheckBox deactivateBox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(filter, "filterToggle")) {
+        final HideInactiveFilter hideInactiveFilter = new HideInactiveFilter();
+        hideInactiveFilter.setHideInactive(getEhourWebSession().getHideInactiveSelections());
+        final AjaxCheckBox hideInactiveCheckbox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(hideInactiveFilter, "hideInactive")) {
             private static final long serialVersionUID = 2585047163449150793L;
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                getEhourWebSession().setHideInactiveSelections(filter.isFilterToggle());
+                getEhourWebSession().setHideInactiveSelections(hideInactiveFilter.isHideInactive());
 
-                callbackAfterFilter(target, filter);
+                send(getPage(), Broadcast.DEPTH, new InactiveFilterChangedEvent(hideInactiveFilter, target));
 
                 target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
             }
         };
 
-        deactivateBox.setVisible(includeCheckboxToggle);
-        filterForm.add(deactivateBox);
+        hideInactiveCheckbox.setVisible(showHideInactiveCheckbox);
+        form.add(hideInactiveCheckbox);
 
-        Label filterToggleText = new Label("filterToggleText", checkBoxPrefixText);
-        filterForm.add(filterToggleText);
+        Label filterToggleText = new Label("filterToggleText", hideInactiveCheckboxPrefix);
+        form.add(filterToggleText);
 
-        return filterForm;
-    }
-
-    private void callbackAfterFilter(AjaxRequestTarget target, EntrySelectorFilter filter) {
-        send(getPage(), Broadcast.DEPTH, new FilterChangedEvent(filter, target));
+        return form;
     }
 
     private static final long serialVersionUID = -7928428437664050056L;

@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.admin;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
-import net.rrm.ehour.ui.common.panel.entryselector.FilterChangedEvent;
+import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import org.apache.wicket.Component;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.event.IEvent;
@@ -106,18 +106,18 @@ public abstract class AbstractTabbedAdminPage<T extends AdminBackingBean> extend
     public void onEvent(IEvent<?> event) {
         Object payload = event.getPayload();
 
-        if (payload instanceof FilterChangedEvent) {
-            FilterChangedEvent filterChangedEvent = (FilterChangedEvent) payload;
+        if (payload instanceof InactiveFilterChangedEvent) {
+            InactiveFilterChangedEvent inactiveFilterChangedEvent = (InactiveFilterChangedEvent) payload;
 
-            Component component = onFilterChanged(filterChangedEvent);
+            Component component = onFilterChanged(inactiveFilterChangedEvent);
 
             if (component != null) {
-                filterChangedEvent.refresh(component);
+                inactiveFilterChangedEvent.refresh(component);
             }
         }
     }
 
-    protected Component onFilterChanged(FilterChangedEvent filterChangedEvent) {
+    protected Component onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent) {
         return null;
     }
 }

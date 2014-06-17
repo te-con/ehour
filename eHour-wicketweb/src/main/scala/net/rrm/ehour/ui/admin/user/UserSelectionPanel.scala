@@ -7,11 +7,12 @@ import net.rrm.ehour.domain.User
 import net.rrm.ehour.sort.UserComparator
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectedEvent, EntrySelectorFilter, EntrySelectorListView, EntrySelectorPanel}
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.ITEM_LIST_HOLDER_ID
+import net.rrm.ehour.ui.common.panel.entryselector._
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.event.Broadcast
+import org.apache.wicket.event.{Broadcast, IEvent}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.list.ListItem
 import org.apache.wicket.markup.html.panel.Fragment
@@ -20,6 +21,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 
 class UserSelectionPanel(id: String) extends AbstractBasePanel[UserAdminBackingBean](id) {
   val Self = this
+
+  val hideInactiveFilter = new HideInactiveFilter()
+
+  var container: Fragment = _
 
   @SpringBean
   protected var userService: UserService = _
@@ -30,18 +35,13 @@ class UserSelectionPanel(id: String) extends AbstractBasePanel[UserAdminBackingB
     val greyBorder = new GreyRoundedBorder("border", new ResourceModel("admin.user.title"))
     addOrReplace(greyBorder)
 
-    val container = createListView()
-
+    container = createListView()
     val selectorPanel = new EntrySelectorPanel("entrySelectorFrame", container, new ResourceModel("admin.user.hideInactive"))
 
     greyBorder.add(selectorPanel)
   }
 
   def createListView() = {
-    val currentFilter = new EntrySelectorFilter()
-
-    val users = getUsers(currentFilter)
-
     val userListView = new EntrySelectorListView[User]("itemList", users) {
       protected def onPopulate(item: ListItem[User], itemModel: IModel[User]) {
         val user = item.getModelObject
@@ -56,21 +56,40 @@ class UserSelectionPanel(id: String) extends AbstractBasePanel[UserAdminBackingB
       }
 
       protected def onClick(item: ListItem[User], target: AjaxRequestTarget) {
-        val userId: Integer = item.getModelObject.getUserId
+        val userId = item.getModelObject.getUserId
 
         send(Self.getPage, Broadcast.DEPTH, EntrySelectedEvent(userId, target))
-        //                getTabbedPanel.setEditBackingBean(new UserAdminBackingBean(userService.getUserAndCheckDeletability(userId)))
-        //                getTabbedPanel.switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT)
       }
     }
 
-    val listHolder = new Fragment(EntrySelectorPanel.ITEM_LIST_HOLDER_ID, "userSelection", UserSelectionPanel.this)
-    listHolder.add(userListView)
-    listHolder
+    val fragment = new Fragment(ITEM_LIST_HOLDER_ID, "userSelection", UserSelectionPanel.this)
+    fragment.add(userListView)
+    fragment.setOutputMarkupId(true)
+    fragment
   }
 
-  private def getUsers(currentFilter: EntrySelectorFilter): util.List[User] = {
-    val users: util.List[User] = if (currentFilter == null || currentFilter.isFilterToggle) userService.getActiveUsers else userService.getUsers
+  override def onEvent(event: IEvent[_]) {
+    event.getPayload match {
+      case event: EntryListUpdatedEvent => {
+
+        val component = container.get("itemList")
+        component.asInstanceOf[EntrySelectorListView[User]].setList(users)
+
+        event.refresh(container)
+
+      }
+    // TODO join with previous case
+      case event: InactiveFilterChangedEvent => {
+        val component = container.get("itemList")
+        component.asInstanceOf[EntrySelectorListView[User]].setList(users)
+
+        event.refresh(container)
+      }
+    }
+  }
+
+  private def users: util.List[User] = {
+    val users: util.List[User] = if (hideInactiveFilter.isHideInactive) userService.getActiveUsers else userService.getUsers
     Collections.sort(users, new UserComparator(false))
     users
   }

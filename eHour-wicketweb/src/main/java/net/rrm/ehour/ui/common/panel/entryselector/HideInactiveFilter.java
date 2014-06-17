@@ -22,18 +22,18 @@ import java.io.Serializable;
  * Value object for entry selection
  **/
 
-public class EntrySelectorFilter implements Serializable
+public class HideInactiveFilter implements Serializable
 {
 	private static final long serialVersionUID = -7713534314686523511L;
-	private	boolean filterToggle = true;
+	private	boolean hideInactive = true;
 
-	public boolean isFilterToggle()
+	public boolean isHideInactive()
 	{
-		return filterToggle;
+		return hideInactive;
 	}
 	
-	public void setFilterToggle(boolean filterToggle)
+	public void setHideInactive(boolean hideInactive)
 	{
-		this.filterToggle = filterToggle;
+		this.hideInactive = hideInactive;
 	}
 }

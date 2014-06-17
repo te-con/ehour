@@ -5,6 +5,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 
 case class EntryListUpdatedEvent(override val target: AjaxRequestTarget) extends Event(target)
 
-case class FilterChangedEvent(filter: EntrySelectorFilter, override val target: AjaxRequestTarget) extends Event(target)
+case class InactiveFilterChangedEvent(hideInactiveFilter: HideInactiveFilter, override val target: AjaxRequestTarget) extends Event(target)
 
 case class EntrySelectedEvent(userId: Integer, override val target: AjaxRequestTarget) extends Event(target)
