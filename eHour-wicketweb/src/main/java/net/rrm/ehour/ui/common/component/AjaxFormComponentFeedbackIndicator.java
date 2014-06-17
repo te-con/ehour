@@ -51,6 +51,8 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
     }
 
     public void setIndicatorFor(Component indicatorFor) {
+        super.setIndicatorFor(indicatorFor);
+
         this.indicatorFor = indicatorFor;
     }
 
