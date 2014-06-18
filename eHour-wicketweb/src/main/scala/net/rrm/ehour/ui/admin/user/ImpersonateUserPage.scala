@@ -22,7 +22,7 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
   val ContentId = "content"
 
   val frame = new GreyRoundedBorder(FrameId, new ResourceModel("admin.export.title"))
-  val border = new GreyBlueRoundedBorder(BorderId)
+  val border = new GreyBlueRoundedBorder(BorderId).setOutputMarkupId(true).asInstanceOf[GreyBlueRoundedBorder]
 
   @SpringBean
   protected var userService: UserService = _
@@ -38,7 +38,10 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
 
   override def onEvent(wrappedEvent: IEvent[_]) {
     wrappedEvent.getPayload match {
-      case event: EntrySelectedEvent => border.addOrReplace(createUserSelectedFragment(ContentId, event.userId))
+      case event: EntrySelectedEvent => {
+        border.addOrReplace(createUserSelectedFragment(ContentId, event.userId))
+        event.refresh(border)
+      }
       case _ =>
     }
   }
@@ -59,9 +62,12 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
       val homepageForRole = AuthUtil.getHomepageForRole(roles)
       setResponsePage(homepageForRole)
     }
+
     val link = new AjaxLink("impersonateLink", linkCallback)
-    f.add(link)
     link.add(new Label("name", user.getFullName))
+    f.add(link)
+
+    f
   }
 }
 

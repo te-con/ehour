@@ -47,6 +47,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
       tester.assertNoInfoMessage()
 
       verify(service).getUser(1)
+      verify(target).add(any())
     }
 
     "impersonate user" in {
@@ -64,7 +65,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
       val page = tester.getLastRenderedPage
       page.send(page, Broadcast.DEPTH, EntrySelectedEvent(1, target))
 
-      tester.clickLink("frame:frame_body:border:border_body:impersonateLink")
+      tester.clickLink("frame:frame_body:border:border_body:content:impersonateLink")
 
       EhourWebSession.getSession shouldBe 'impersonating
     }

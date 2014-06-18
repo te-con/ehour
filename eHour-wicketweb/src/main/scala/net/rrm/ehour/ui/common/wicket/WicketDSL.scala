@@ -1,24 +1,26 @@
 package net.rrm.ehour.ui.common.wicket
 
-import org.apache.wicket.ajax.markup.html.form.{AjaxButton => WicketAjaxButton}
-import org.apache.wicket.markup.html.form.Form
-import org.apache.wicket.ajax.{AjaxEventBehavior, AjaxRequestTarget}
+import java.util.Date
+
+import net.rrm.ehour.ui.common.converter.DateConverter
+import net.rrm.ehour.ui.common.decorator.{DemoDecorator, LoadingSpinnerDecorator}
+import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.wicket.AjaxButton.Callback
-import org.apache.wicket.ajax.markup.html.{AjaxLink => WicketAjaxLink}
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
+import org.apache.commons.lang.StringUtils
+import org.apache.wicket.ajax.attributes.{AjaxCallListener, AjaxRequestAttributes}
+import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior
+import org.apache.wicket.ajax.markup.html.form.{AjaxButton => WicketAjaxButton}
+import org.apache.wicket.ajax.markup.html.{AjaxLink => WicketAjaxLink}
+import org.apache.wicket.ajax.{AjaxEventBehavior, AjaxRequestTarget}
+import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.form.Form
 import org.apache.wicket.markup.{ComponentTag, MarkupStream}
-import org.apache.commons.lang.StringUtils
+import org.apache.wicket.model.{IModel, Model => WModel}
 import org.apache.wicket.util.convert.IConverter
-import org.apache.wicket.model.{Model => WModel, IModel}
-import java.util.Date
-import net.rrm.ehour.ui.common.converter.DateConverter
-import org.apache.wicket.behavior.Behavior
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior
-import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.ui.common.decorator.{LoadingSpinnerDecorator, DemoDecorator}
-import org.apache.wicket.ajax.attributes.{AjaxCallListener, AjaxRequestAttributes}
+
 import scala.collection.convert.WrapAsJava
 
 case class NonDemoAjaxButton(id: String, form: Form[_], success: AjaxButton.Callback, error: AjaxButton.Callback = (a, f) => {}) extends WicketAjaxButton(id, form) {
@@ -72,7 +74,6 @@ case class NonDemoAjaxLink(id: String, success: LinkCallback, ajaxCallListeners:
     attributes.getAjaxCallListeners.addAll(WrapAsJava.asJavaCollection(ajaxCallListeners))
   }
 }
-
 
 class AjaxLink(id: String, success: LinkCallback) extends WicketAjaxLink(id) {
   override def onClick(target: AjaxRequestTarget) {

@@ -70,20 +70,9 @@ public class UserServiceImpl implements UserService {
     public User getUser(Integer userId) throws ObjectNotFoundException {
         User user = userDAO.findById(userId);
         Set<ProjectAssignment> inactiveAssignments = new HashSet<ProjectAssignment>();
-        Date currentDate = new Date();
 
         if (user != null && user.getProjectAssignments() != null) {
-            for (ProjectAssignment assignment : user.getProjectAssignments()) {
-                DateRange assignmentRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
-
-                if ((!DateUtil.isDateWithinRange(currentDate, assignmentRange)) ||
-                        (assignment.getProject() == null || !assignment.getProject().isActive())) {
-                    inactiveAssignments.add(assignment);
-                }
-            }
-
-            user.getProjectAssignments().removeAll(inactiveAssignments);
-            user.setInactiveProjectAssignments(inactiveAssignments);
+            splitActiveAndInactiveAssignments(user, inactiveAssignments);
         } else {
             throw new ObjectNotFoundException("User not found");
         }
@@ -91,10 +80,22 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUserAndCheckDeletability(java.lang.Integer)
-      */
+    private void splitActiveAndInactiveAssignments(User user, Set<ProjectAssignment> inactiveAssignments) {
+        Date currentDate = new Date();
+
+        for (ProjectAssignment assignment : user.getProjectAssignments()) {
+            DateRange assignmentRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
+
+            if ((!DateUtil.isDateWithinRange(currentDate, assignmentRange)) ||
+                    (assignment.getProject() == null || !assignment.getProject().isActive())) {
+                inactiveAssignments.add(assignment);
+            }
+        }
+
+        user.getProjectAssignments().removeAll(inactiveAssignments);
+        user.setInactiveProjectAssignments(inactiveAssignments);
+    }
+
     public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException {
         User user = getUser(userId);
 
@@ -118,10 +119,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getUser(java.lang.String)
-      */
     public User getUser(String username) {
         return userDAO.findByUsername(username);
     }

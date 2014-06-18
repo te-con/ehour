@@ -59,7 +59,7 @@ class UserSelectionPanel(id: String) extends AbstractBasePanel[UserAdminBackingB
       protected def onClick(item: ListItem[User], target: AjaxRequestTarget) {
         val userId = item.getModelObject.getUserId
 
-        send(Self.getPage, Broadcast.DEPTH, EntrySelectedEvent(userId, target))
+        send(Self.getPage, Broadcast.BREADTH, EntrySelectedEvent(userId, target))
       }
     }
 
