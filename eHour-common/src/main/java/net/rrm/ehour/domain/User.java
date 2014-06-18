@@ -72,9 +72,9 @@ public class User extends DomainObject<Integer, User> {
     private String updatedPassword;
 
     @ManyToMany(targetEntity = UserRole.class,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.EAGER
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
             )
+    @Basic(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_TO_USERROLE",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE"))
@@ -85,7 +85,7 @@ public class User extends DomainObject<Integer, User> {
     @NotNull
     private UserDepartment userDepartment;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<ProjectAssignment> projectAssignments;
 
     @Transient

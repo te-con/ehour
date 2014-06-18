@@ -25,138 +25,107 @@ import java.util.List;
 
 /**
  * GenericDAO interface for CRUD on domain objects
- **/
+ */
 
 @Repository
-public abstract class AbstractGenericDaoHibernateImpl <T extends DomainObject<?, ?>, PK extends Serializable>
-	extends AbstractAnnotationDaoHibernateImpl
-	implements GenericDao<T, PK>
-{
-	private Class<T>	type;
+public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, ?>, PK extends Serializable>
+        extends AbstractAnnotationDaoHibernateImpl
+        implements GenericDao<T, PK> {
+    private Class<T> type;
 
-	/**
-	 * 1.5 aware dao's
-	 * @param type
-	 */
-	public AbstractGenericDaoHibernateImpl(Class<T> type)
-	{
-		super();
-		
-		this.type = type;
-	}
+    public AbstractGenericDaoHibernateImpl(Class<T> type) {
+        super();
 
-	/**
-	 * 
-	 * @param queryName
-	 * @param param
-	 * @param value
-	 * @param isCaching
-	 * @param cachingRegion
-	 * @return
-	 */
-	public List<T> findByNamedQueryAndNamedParam(final String queryName, 
-												final String param, 
-												final Object value,
-												final boolean isCaching,
-												final String cachingRegion)
-	{
-		return findByNamedQueryAndNamedParam(queryName, new String[]{param}, new Object[]{value}, isCaching, cachingRegion);
-	}
-	
-	/**
-	 * Find named query optionally with caching enabled
-	 * @param queryName
-	 * @param paramNames
-	 * @param values
-	 * @param isCaching
-	 * @param cachingRegion
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public List<T> findByNamedQueryAndNamedParam(final String queryName, 
-												final String[] paramNames, 
-												final Object[] values,
-												boolean isCaching,
-												final String cachingRegion)
-	{
-		if (!isCaching)
-		{
-			return (List<T>)getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, paramNames, values);
-		}
-		else
-		{
-			HibernateTemplate template = new HibernateTemplate(getHibernateTemplate().getSessionFactory())
-			{
-				@Override
-				public boolean isCacheQueries()
-				{
-					return true;
-				}
-				
-				public String getQueryCacheRegion()
-				{
-					return cachingRegion;
-				}
-			};
-			
-			return template.findByNamedQueryAndNamedParam(queryName, paramNames, values);
-		}
-	}
-	
-	/**
-	 * Find all domain objects
-	 */
-	public List<T> findAll()
-	{
-		return getHibernateTemplate().loadAll(type);
-	}
-	
-	/**
-	 * Delete domain object
-	 * @param domObj
-	 */
-	public void delete(T domObj)
-	{
-		getHibernateTemplate().delete(domObj);
-	}
-	
-	/**
-	 * 
-	 */
-	public void delete(PK id)
-	{
-		T dom = findById(id);
-		delete(dom);
-	}
-	
-	/**
-	 * Persist domain object
-	 * @param domObj
-	 * @return
-	 */
-	public T persist(T domObj)
-	{
-		getHibernateTemplate().saveOrUpdate(domObj);
-		return domObj;
-	}	
-	
-	/**
-	 * Find by ID
-	 * @param id
-	 * @return
-	 */
-	public T findById(PK id)
-	{
-		return getHibernateTemplate().get(type, id);
-	}	
-	
-	/**
-	 * Merge
-	 * @param domobj
-	 */
-	public T merge(T domobj)
-	{
-		return getHibernateTemplate().merge(domobj);
-	}
+        this.type = type;
+    }
+
+    public List<T> findByNamedQueryAndNamedParam(final String queryName,
+                                                 final String param,
+                                                 final Object value,
+                                                 final boolean isCaching,
+                                                 final String cachingRegion) {
+        return findByNamedQueryAndNamedParam(queryName, new String[]{param}, new Object[]{value}, isCaching, cachingRegion);
+    }
+
+    /**
+     * Find named query optionally with caching enabled
+     */
+    @SuppressWarnings("unchecked")
+    public List<T> findByNamedQueryAndNamedParam(final String queryName,
+                                                 final String[] paramNames,
+                                                 final Object[] values,
+                                                 boolean isCaching,
+                                                 final String cachingRegion) {
+        if (!isCaching) {
+            return (List<T>) getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, paramNames, values);
+        } else {
+            HibernateTemplate template = new HibernateTemplate(getHibernateTemplate().getSessionFactory()) {
+                @Override
+                public boolean isCacheQueries() {
+                    return true;
+                }
+
+                public String getQueryCacheRegion() {
+                    return cachingRegion;
+                }
+            };
+
+            return template.findByNamedQueryAndNamedParam(queryName, paramNames, values);
+        }
+    }
+
+    /**
+     * Find all domain objects
+     */
+    public List<T> findAll() {
+        return getHibernateTemplate().loadAll(type);
+    }
+
+    /**
+     * Delete domain object
+     *
+     * @param domObj
+     */
+    public void delete(T domObj) {
+        getHibernateTemplate().delete(domObj);
+    }
+
+    /**
+     *
+     */
+    public void delete(PK id) {
+        T dom = findById(id);
+        delete(dom);
+    }
+
+    /**
+     * Persist domain object
+     *
+     * @param domObj
+     * @return
+     */
+    public T persist(T domObj) {
+        getHibernateTemplate().saveOrUpdate(domObj);
+        return domObj;
+    }
+
+    /**
+     * Find by ID
+     *
+     * @param id
+     * @return
+     */
+    public T findById(PK id) {
+        return getHibernateTemplate().get(type, id);
+    }
+
+    /**
+     * Merge
+     *
+     * @param domobj
+     */
+    public T merge(T domobj) {
+        return getHibernateTemplate().merge(domobj);
+    }
 
 }

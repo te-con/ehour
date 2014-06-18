@@ -30,37 +30,36 @@ public interface GenericDao <T extends DomainObject<?, ?>, PK extends Serializab
 	 * Find all domain objects
 	 * @return
 	 */
-	public List<T> findAll();
+	List<T> findAll();
 	
 	/**
 	 * Delete domain object
 	 * @param domObj
 	 */
-	public void delete(T domObj);
+	void delete(T domObj);
 	
 	/**
 	 * Delete on primary key
 	 * @param pk
 	 */
-	public void delete(PK pk);
+	void delete(PK pk);
 	
 	/**
 	 * Persist domain object
 	 * @param domObj
 	 * @return
 	 */
-	public T persist(T domObj);
+	T persist(T domObj);
 	
 	/**
 	 * Find by primary key
 	 * @param id
 	 * @return
 	 */
-	public T findById(PK id);
-	
+	T findById(PK id);
+
 	/**
 	 * Merge the domain object
 	 */
-	public T merge(T domoj);
-
+	T merge(T domoj);
 }

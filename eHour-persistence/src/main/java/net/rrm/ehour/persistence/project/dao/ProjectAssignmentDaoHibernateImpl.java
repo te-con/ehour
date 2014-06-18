@@ -132,7 +132,7 @@ public class ProjectAssignmentDaoHibernateImpl
         Criteria crit = getSession().createCriteria(ProjectAssignment.class);
 
         if (onlyActive) {
-            crit.add(Restrictions.eq("active", onlyActive));
+            crit.add(Restrictions.eq("active", true));
         }
 
         crit.add(Restrictions.eq("project", project));
