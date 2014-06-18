@@ -51,6 +51,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
         });
     }
 
+
     @SuppressWarnings("serial")
     @Override
     public Session newSession(final Request request, final Response response) {

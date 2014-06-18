@@ -80,6 +80,7 @@ class UserSelectionPanel(id: String) extends AbstractBasePanel[UserAdminBackingB
     event.getPayload match {
       case event: EntryListUpdatedEvent => refresh(event)
       case event: InactiveFilterChangedEvent => refresh(event)
+      case _ =>
     }
   }
 

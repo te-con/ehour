@@ -7,37 +7,41 @@
 
 <body>
 <wicket:extend>
-    <div class="floatLeft" wicket:id="entrySelectorFrame">
-        <span wicket:id="userSelector"></span>
+    <div class="mainColumn" style="width:100%;">
+        <div class="colmask leftmenu">
+            <div class="colright">
+                <div class="col1wrap">
+                    <div class="col1">
+                        <div class="ContentPanelLoc">
+                            <div wicket:id="frame">
+
+                                <div wicket:id="border">
+                                    <span wicket:id="content"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col2">
+                    <div class="ContextualHelp" wicket:id="userSelection"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <wicket:fragment wicket:id="itemListHolder">
-        <table class="entrySelectorTable">
-
-            <thead>
-            <tr>
-                <th>
-                    <wicket:message key="admin.user.lastName"/>
-                </th>
-                <th>
-                    <wicket:message key="admin.user.firstName"/>
-                </th>
-                <th>
-                    <wicket:message key="admin.user.username"/>
-                </th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr wicket:id="itemList" class="filterRow">
-                <td wicket:id="lastName"></td>
-                <td wicket:id="firstName"></td>
-                <td wicket:id="userName"></td>
-            </tr>
-            </tbody>
-        </table>
-
+    <wicket:fragment wicket:id="noUserSelected">
+        To be able to enter eHour as a different user, please first select a user.
     </wicket:fragment>
+
+    <wicket:fragment wicket:id="alreadyImpersonating">
+        TODO
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="userSelected">
+        Are you sure you want to impersonate <a wicket:id="impersonateLink"><wicket:container wicket:id="name" /></a> ?
+    </wicket:fragment>
+
 </wicket:extend>
 </body>
 </html>

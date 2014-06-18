@@ -304,6 +304,10 @@ public class EhourWebSession extends AuthenticatedWebSession {
         impersonatingAuthUser = Optional.absent();
     }
 
+    public boolean isImpersonating() {
+        return impersonatingAuthUser.isPresent();
+    }
+
     private void logAndAuditStopImpersonation() {
         AuthUser user = getAuthUser();
 

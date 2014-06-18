@@ -1,22 +1,68 @@
-package net.rrm.ehour.ui.admin.impersonate
+package net.rrm.ehour.ui.admin.user
 
-import net.rrm.ehour.domain.UserRole
-import net.rrm.ehour.ui.admin.user.{AbstractUserAdminPage, ImpersonateUserPanel, UserAdminBackingBean}
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation
-import org.apache.wicket.markup.html.panel.Panel
-import org.apache.wicket.model.{Model, ResourceModel}
+import net.rrm.ehour.ui.admin.AbstractAdminPage
+import net.rrm.ehour.ui.common.border.{GreyBlueRoundedBorder, GreyRoundedBorder}
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.ui.common.util.AuthUtil
+import net.rrm.ehour.ui.common.wicket.AjaxLink
+import net.rrm.ehour.ui.common.wicket.AjaxLink._
+import net.rrm.ehour.user.service.UserService
+import org.apache.wicket.event.IEvent
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.panel.Fragment
+import org.apache.wicket.model.ResourceModel
+import org.apache.wicket.spring.injection.annot.SpringBean
 
-@AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
-class ImpersonateUserPage extends AbstractUserAdminPage(new ResourceModel("admin.impersonate.title"), new ResourceModel("admin.user.addUser"), new ResourceModel("admin.user.editUser"), new ResourceModel("admin.user.noEditEntrySelected")) {
+class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.impersonate.title")) {
   val Self = this
 
-  override protected def getBaseAddPanel(panelId: String): Panel = new ImpersonateUserPanel(panelId, new Model(getTabbedPanel.getAddBackingBean))
+  val BorderId = "border"
+  val FrameId = "frame"
+  val ContentId = "content"
 
-  override protected def getNewAddBaseBackingBean = new UserAdminBackingBean()
+  val frame = new GreyRoundedBorder(FrameId, new ResourceModel("admin.export.title"))
+  val border = new GreyBlueRoundedBorder(BorderId)
 
-  override protected def getNewEditBaseBackingBean: UserAdminBackingBean = new UserAdminBackingBean()
+  @SpringBean
+  protected var userService: UserService = _
 
-  override protected def getBaseEditPanel(panelId: String): Panel = ???
+  override def onInitialize() {
+    super.onInitialize()
+
+    add(new UserSelectionPanel("userSelection"))
+    add(frame)
+    frame.add(border)
+    border.add(createNoUserSelectedFragment(ContentId))
+  }
+
+  override def onEvent(wrappedEvent: IEvent[_]) {
+    wrappedEvent.getPayload match {
+      case event: EntrySelectedEvent => border.addOrReplace(createUserSelectedFragment(ContentId, event.userId))
+      case _ =>
+    }
+  }
+
+  private def createNoUserSelectedFragment(id: String) = new Fragment(id, "noUserSelected", Self).setOutputMarkupId(true)
+
+  private def createUserSelectedFragment(id: String, userId: Integer) = {
+    val user = userService.getUser(userId)
+
+    val f = new Fragment(id, "userSelected", Self)
+    f.setOutputMarkupId(true)
+
+    val linkCallback: LinkCallback = target => {
+      val session = EhourWebSession.getSession
+      session.impersonateUser(user)
+      val roles = session.getRoles
+
+      val homepageForRole = AuthUtil.getHomepageForRole(roles)
+      setResponsePage(homepageForRole)
+    }
+    val link = new AjaxLink("impersonateLink", linkCallback)
+    f.add(link)
+    link.add(new Label("name", user.getFullName))
+  }
 }
 
 
