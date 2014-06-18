@@ -7,26 +7,11 @@
 
 <body>
 <wicket:extend>
-    <div class="mainColumn" style="width:100%;">
-        <div class="colmask leftmenu">
-            <div class="colright">
-                <div class="col1wrap">
-                    <div class="col1">
-                        <div class="ContentPanelLoc">
-                            <div wicket:id="frame">
-
-                                <div wicket:id="border">
-                                    <span wicket:id="content"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col2">
-                    <div class="ContextualHelp" wicket:id="userSelection"></div>
-                </div>
-            </div>
+    <div class="floatLeft" wicket:id="userSelection">
+    </div>
+    <div class="floatLeft" wicket:id="frame">
+        <div wicket:id="border">
+            <span wicket:id="content"></span>
         </div>
     </div>
 
@@ -39,7 +24,7 @@
     </wicket:fragment>
 
     <wicket:fragment wicket:id="userSelected">
-        Are you sure you want to impersonate <a wicket:id="impersonateLink"><span wicket:id="name" /></a> ?
+        Are you sure you want to impersonate <a wicket:id="impersonateLink"><span wicket:id="name"/></a> ?
     </wicket:fragment>
 
 </wicket:extend>
