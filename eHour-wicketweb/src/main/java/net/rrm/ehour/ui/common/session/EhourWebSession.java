@@ -276,15 +276,15 @@ public class EhourWebSession extends AuthenticatedWebSession {
             throw new UnauthorizedToImpersonateException();
         }
 
+        User originalUser = getUser();
+
         impersonatingAuthUser = Optional.of(new AuthUser(userToImpersonate));
 
-        logAndAuditImpersonation();
+        logAndAuditImpersonation(originalUser);
     }
 
-    private void logAndAuditImpersonation() {
-        AuthUser user = getAuthUser();
-
-        StringBuilder auditMsg = new StringBuilder((user != null) ? user.getUser().getFullName() : "N/A");
+    private void logAndAuditImpersonation(User originalUser) {
+        StringBuilder auditMsg = new StringBuilder((originalUser != null) ? originalUser.getFullName() : "N/A");
         auditMsg.append(" started impersonating as ");
         auditMsg.append(impersonatingAuthUser.get().getUser().getFullName());
 
@@ -292,14 +292,19 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
         auditService.doAudit(new Audit()
                 .setAuditActionType(AuditActionType.IMPERSONATE)
-                .setUser(((user != null) ? user.getUser() : null))
+                .setUser(originalUser)
                 .setUserFullName(auditMsg.toString())
                 .setDate(new Date())
                 .setSuccess(true));
     }
 
     public void stopImpersonating() {
-        logAndAuditStopImpersonation();
+        User impUser = impersonatingAuthUser.get().getUser();
+
+        impersonatingAuthUser = Optional.absent();
+
+        User originalUser = getUser();
+        logAndAuditStopImpersonation(originalUser, impUser);
 
         impersonatingAuthUser = Optional.absent();
     }
@@ -308,18 +313,16 @@ public class EhourWebSession extends AuthenticatedWebSession {
         return impersonatingAuthUser.isPresent();
     }
 
-    private void logAndAuditStopImpersonation() {
-        AuthUser user = getAuthUser();
-
-        StringBuilder auditMsg = new StringBuilder((user != null) ? user.getUser().getFullName() : "N/A");
+    private void logAndAuditStopImpersonation(User originalUser, User impUser) {
+        StringBuilder auditMsg = new StringBuilder((originalUser != null) ? originalUser.getFullName() : "N/A");
         auditMsg.append(" stopped impersonating as ");
-        auditMsg.append(impersonatingAuthUser.get().getUser().getFullName());
+        auditMsg.append(impUser.getFullName());
 
         LOGGER.info(auditMsg.toString());
 
         auditService.doAudit(new Audit()
                 .setAuditActionType(AuditActionType.STOP_IMPERSONATE)
-                .setUser(((user != null) ? user.getUser() : null))
+                .setUser(originalUser)
                 .setUserFullName(auditMsg.toString())
                 .setDate(new Date())
                 .setSuccess(true));
