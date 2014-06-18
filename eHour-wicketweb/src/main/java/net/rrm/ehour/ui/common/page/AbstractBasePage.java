@@ -22,13 +22,8 @@ import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.header.HeaderPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.update.LatestVersionLinkPanel;
-import net.rrm.ehour.ui.common.util.AuthUtil;
-import org.apache.wicket.Component;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -54,29 +49,9 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     }
 
     private void setupPage(ResourceModel pageTitle) {
-        add(createImpersonatingPanel(IMPERSONATE_ID));
         add(new HeaderPanel("mainNav"));
         add(new Label("pageTitle", pageTitle));
         add(new LatestVersionLinkPanel(NEW_VERSION_ID));
-    }
-
-    private Component createImpersonatingPanel(String id) {
-        if (EhourWebSession.getSession().isImpersonating()) {
-            Fragment fragment = new Fragment(id, "impersonating", this);
-
-            fragment.add(new Link("stop") {
-                @Override
-                public void onClick() {
-                    EhourWebSession session = EhourWebSession.getSession();
-                    session.stopImpersonating();
-                    setResponsePage(AuthUtil.getHomepageForRole(session.getRoles()));
-                }
-            });
-
-            return fragment;
-        } else {
-            return new WebMarkupContainer(id).setVisible(false);
-        }
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
