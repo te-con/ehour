@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.common.page;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
-import net.rrm.ehour.ui.common.header.NavigationPanel;
+import net.rrm.ehour.ui.common.header.HeaderPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.update.LatestVersionLinkPanel;
 import net.rrm.ehour.ui.common.util.AuthUtil;
@@ -55,7 +55,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
 
     private void setupPage(ResourceModel pageTitle) {
         add(createImpersonatingPanel(IMPERSONATE_ID));
-        add(new NavigationPanel("mainNav"));
+        add(new HeaderPanel("mainNav"));
         add(new Label("pageTitle", pageTitle));
         add(new LatestVersionLinkPanel(NEW_VERSION_ID));
     }

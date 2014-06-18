@@ -29,8 +29,6 @@
 	<body>
 		<div class="nav" wicket:id='mainNav'/>
 
-        <div class="impersonateNotification" wicket:id="impersonate" />
-
 		<wicket:child />
 
         <span wicket:id='newVersion'> </span>
@@ -40,13 +38,6 @@
                 <a wicket:id="link" target='_blank'>eHour</a> version <span wicket:id="latestVersion"></span> is available.
             </div>
         </wicket:fragment>
-
-        <wicket:fragment wicket:id="impersonating">
-            <div class="newVersion">
-                You are impersonating user xxxx, <a wicket:id="stop">stop impersonating</a>
-            </div>
-        </wicket:fragment>
-
     </body>
 </html>
 
