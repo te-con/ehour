@@ -49,12 +49,12 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
   private def createNoUserSelectedFragment(id: String) = new Fragment(id, "noUserSelected", Self).setOutputMarkupId(true)
 
   private def createUserSelectedFragment(id: String, userId: Integer) = {
-    val user = userService.getUser(userId)
 
     val f = new Fragment(id, "userSelected", Self)
     f.setOutputMarkupId(true)
 
     val linkCallback: LinkCallback = target => {
+      val user = userService.getUser(userId)
       val session = EhourWebSession.getSession
       session.impersonateUser(user)
       val roles = session.getRoles
@@ -64,6 +64,7 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
     }
 
     val link = new AjaxLink("impersonateLink", linkCallback)
+    val user = userService.getUser(userId)
     link.add(new Label("name", user.getFullName))
     f.add(link)
 
