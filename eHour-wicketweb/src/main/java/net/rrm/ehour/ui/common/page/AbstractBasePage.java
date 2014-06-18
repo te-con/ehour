@@ -17,9 +17,9 @@
 package net.rrm.ehour.ui.common.page;
 
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.ui.common.component.navigation.NavigationPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
+import net.rrm.ehour.ui.common.header.NavigationPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.update.LatestVersionLinkPanel;
 import net.rrm.ehour.ui.common.util.AuthUtil;

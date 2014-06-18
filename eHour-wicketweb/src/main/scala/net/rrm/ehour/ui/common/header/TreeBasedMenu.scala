@@ -1,16 +1,18 @@
-package net.rrm.ehour.ui.common.menu
+package net.rrm.ehour.ui.common.header
 
-import org.apache.wicket.markup.html.WebPage
-import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.panel.{Fragment, Panel}
-import org.apache.wicket.markup.html.link.Link
-import org.apache.wicket.model.ResourceModel
 import java.util.{List => JList}
+
 import net.rrm.ehour.ui.common.util.AuthUtil
+import org.apache.wicket.markup.html.WebPage
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.link.Link
+import org.apache.wicket.markup.html.list.{ListItem, ListView}
+import org.apache.wicket.markup.html.panel.{Fragment, Panel}
+import org.apache.wicket.model.ResourceModel
 import org.apache.wicket.request.mapper.parameter.PageParameters
-import scala.language.existentials
+
 import scala.collection.convert.WrapAsScala
+import scala.language.existentials
 
 sealed abstract class MenuItem {
   def isVisibleForLoggedInUser: Boolean

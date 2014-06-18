@@ -1,7 +1,6 @@
-package net.rrm.ehour.ui.common.menu
+package net.rrm.ehour.ui.common.header;
 
 import java.util
-import java.util.{List => JList}
 
 import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage
 import net.rrm.ehour.ui.admin.backup.BackupDbPage
@@ -20,7 +19,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 
 object MenuDefinition {
 
-  def createMenuDefinition:JList[_ <: MenuItem] = {
+  def createMenuDefinition:util.List[_ <: MenuItem] = {
     val params = new PageParameters()
     params.add(MonthOverviewPage.PARAM_OPEN, MonthOverviewPage.OpenPanel.TIMESHEET)
 
