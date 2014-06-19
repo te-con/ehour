@@ -37,6 +37,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import scala.Option;
 
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +60,7 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean>
                 new ResourceModel("admin.user.editUser"),
                 new ResourceModel("admin.user.noEditEntrySelected"));
 
-        add(new UserSelectionPanel("userSelection"));
+        add(new UserSelectionPanel("userSelection", Option.apply("admin.user.title")));
     }
 
     @Override

@@ -20,7 +20,7 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.{IModel, ResourceModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class UserSelectionPanel(id: String) extends AbstractBasePanel[UserAdminBackingBean](id) {
+class UserSelectionPanel(id: String, titleResourceKey: Option[String]) extends AbstractBasePanel[UserAdminBackingBean](id) {
   val Self = this
 
   val hideInactiveFilter = new HideInactiveFilter()
@@ -33,7 +33,11 @@ class UserSelectionPanel(id: String) extends AbstractBasePanel[UserAdminBackingB
   override def onInitialize() {
     super.onInitialize()
 
-    val greyBorder = new GreyRoundedBorder("border", new ResourceModel("admin.user.title"))
+    val greyBorder = titleResourceKey match {
+      case Some(resourceKey) => new GreyRoundedBorder("border", new ResourceModel(resourceKey))
+      case None => new GreyRoundedBorder("border")
+    }
+
     addOrReplace(greyBorder)
 
     container = createListView()

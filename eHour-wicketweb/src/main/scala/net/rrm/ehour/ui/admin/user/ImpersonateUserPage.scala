@@ -21,7 +21,7 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
   val FrameId = "frame"
   val ContentId = "content"
 
-  val frame = new GreyRoundedBorder(FrameId, new ResourceModel("admin.export.title"))
+  val frame = new GreyRoundedBorder(FrameId, new ResourceModel("admin.impersonate.title"))
   val border = new GreyBlueRoundedBorder(BorderId).setOutputMarkupId(true).asInstanceOf[GreyBlueRoundedBorder]
 
   @SpringBean
@@ -30,7 +30,7 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
   override def onInitialize() {
     super.onInitialize()
 
-    add(new UserSelectionPanel("userSelection"))
+    add(new UserSelectionPanel("userSelection", None))
     add(frame)
     frame.add(border)
     border.add(createNoUserSelectedFragment(ContentId))
@@ -64,9 +64,11 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
     }
 
     val link = new AjaxLink("impersonateLink", linkCallback)
-    val user = userService.getUser(userId)
-    link.add(new Label("name", user.getFullName))
     f.add(link)
+
+    val user = userService.getUser(userId)
+    f.add(new Label("name", user.getFullName))
+    f.add(new Label("name2", user.getFullName))
 
     f
   }
