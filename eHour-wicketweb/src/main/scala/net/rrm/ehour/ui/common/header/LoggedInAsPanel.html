@@ -18,8 +18,8 @@
 
     <wicket:fragment wicket:id="impersonating">
         <div class="impersonatingNotification">
-            <i class="fa fa-exclamation-triangle"></i> You are temporarily signed in as <span wicket:id="name"></span>,
-            <a wicket:id="stop">click here</a> to return to your own account
+            <i class="fa fa-exclamation-triangle"></i> <wicket:message key="admin.impersonate.notification.signedinas"/> <span wicket:id="name"></span>,
+            <a wicket:id="stop"><wicket message:key="admin.impersonate.notification.button" /></a> <wicket message:key="admin.impersonate.notification.buttontext" />
         </div>
     </wicket:fragment>
 
