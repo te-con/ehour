@@ -24,16 +24,16 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
     "render" in {
       when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
 
-      tester.startComponentInPage(classOf[UserSelectionPanel])
+      startPanel()
       tester.assertNoErrorMessage()
 
-      tester.assertComponent("testObject:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", classOf[ListItem[_]])
+      tester.assertComponent("id:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", classOf[ListItem[_]])
     }
 
     "handle updated list event" in {
       when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
 
-      val component = tester.startComponentInPage(classOf[UserSelectionPanel])
+      val component = startPanel()
 
       val target = mock[AjaxRequestTarget]
       val event = mockEvent(EntryListUpdatedEvent(target))
@@ -48,7 +48,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
     "handle inactive filter event" in {
       when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
 
-      val component = tester.startComponentInPage(classOf[UserSelectionPanel])
+      val component = startPanel()
 
       val target = mock[AjaxRequestTarget]
       val event = mockEvent(InactiveFilterChangedEvent(new HideInactiveFilter(), target))
@@ -60,4 +60,6 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
       verify(target).add(isA(classOf[Fragment]))
     }
   }
+
+  def startPanel() = tester.startComponentInPage(new UserSelectionPanel("id", None))
 }
