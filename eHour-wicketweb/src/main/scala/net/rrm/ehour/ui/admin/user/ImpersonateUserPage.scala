@@ -33,20 +33,25 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
     add(new UserSelectionPanel("userSelection", None))
     add(frame)
     frame.add(border)
-    border.add(createNoUserSelectedFragment(ContentId))
+
+    border.add(if (getEhourWebSession.isImpersonating)
+      createAlreadyImpersonatingFragment(ContentId)
+    else
+      createNoUserSelectedFragment(ContentId))
   }
 
   override def onEvent(wrappedEvent: IEvent[_]) {
     wrappedEvent.getPayload match {
-      case event: EntrySelectedEvent => {
-        border.addOrReplace(createUserSelectedFragment(ContentId, event.userId))
-        event.refresh(border)
-      }
+      case event: EntrySelectedEvent if !getEhourWebSession.isImpersonating =>
+          border.addOrReplace(createUserSelectedFragment(ContentId, event.userId))
+          event.refresh(border)
       case _ =>
     }
   }
 
   private def createNoUserSelectedFragment(id: String) = new Fragment(id, "noUserSelected", Self).setOutputMarkupId(true)
+
+  private def createAlreadyImpersonatingFragment(id: String) = new Fragment(id, "alreadyImpersonating", Self).setOutputMarkupId(true)
 
   private def createUserSelectedFragment(id: String, userId: Integer) = {
 

@@ -17,11 +17,14 @@ import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
 
 class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
+  val PathToImpersonateLink = "frame:frame_body:border:border_body:content:impersonateLink"
+
   "Impersonate User Page" should {
     val service = mockService[UserService]
+    val timesheetService = mockService[IOverviewTimesheet]
 
     before {
-      reset(service)
+      reset(service, timesheetService)
       when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
     }
 
@@ -53,7 +56,6 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     "impersonate user" in {
       val user = UserObjectMother.createUser
 
-      val timesheetService = mockService[IOverviewTimesheet]
       when(timesheetService.getTimesheetOverview(any[User], any[Calendar])).thenReturn(new TimesheetOverview)
 
       when(service.getUser(1)).thenReturn(user)
@@ -65,9 +67,32 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
       val page = tester.getLastRenderedPage
       page.send(page, Broadcast.DEPTH, EntrySelectedEvent(1, target))
 
-      tester.clickLink("frame:frame_body:border:border_body:content:impersonateLink")
+      tester.clickLink(PathToImpersonateLink)
 
       EhourWebSession.getSession shouldBe 'impersonating
+    }
+
+    "cannot impersonate user when user is already impersonating" in {
+      val user = UserObjectMother.createUser
+
+      when(timesheetService.getTimesheetOverview(any[User], any[Calendar])).thenReturn(new TimesheetOverview)
+
+      when(service.getUser(1)).thenReturn(user)
+
+      tester.startPage(classOf[ImpersonateUserPage])
+
+      val target = mock[AjaxRequestTarget]
+
+      val page = tester.getLastRenderedPage
+      page.send(page, Broadcast.DEPTH, EntrySelectedEvent(1, target))
+
+      tester.clickLink(PathToImpersonateLink)
+
+      tester.startPage(classOf[ImpersonateUserPage])
+      val page2 = tester.getLastRenderedPage
+      page2.send(page2, Broadcast.DEPTH, EntrySelectedEvent(1, target))
+
+      tester.getLastRenderedPage.get(PathToImpersonateLink) should be(null)
     }
   }
 }
