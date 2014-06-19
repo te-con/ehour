@@ -69,7 +69,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     private static final Logger LOGGER = Logger.getLogger(EhourWebSession.class);
 
-
     public EhourWebSession(Request req) {
         super(req);
 
@@ -280,6 +279,8 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
         impersonatingAuthUser = Optional.of(new AuthUser(userToImpersonate));
 
+        clearUserSelectedReportCriteria();
+
         logAndAuditImpersonation(originalUser);
     }
 
@@ -307,6 +308,12 @@ public class EhourWebSession extends AuthenticatedWebSession {
         logAndAuditStopImpersonation(originalUser, impUser);
 
         impersonatingAuthUser = Optional.absent();
+
+        clearUserSelectedReportCriteria();
+    }
+
+    private void clearUserSelectedReportCriteria() {
+        userSelectedCriteria = null;
     }
 
     public boolean isImpersonating() {

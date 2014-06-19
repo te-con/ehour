@@ -5,6 +5,7 @@ import java.util.Locale
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.domain.UserRole._
+import net.rrm.ehour.report.criteria.UserSelectedCriteria
 import net.rrm.ehour.ui.common.util.AuthUtil
 import org.apache.wicket.ThreadContext
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
@@ -50,12 +51,16 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
 
       session.signIn("a", "b")
 
+      session.setUserSelectedCriteria(new UserSelectedCriteria)
+
       session.impersonateUser(User)
 
       val user = AuthUtil.getUser
       user should be(User)
 
       session.getRoles should contain(ROLE_CONSULTANT)
+      session.getUserSelectedCriteria should be(null)
+
     }
 
     "return to the original user when impersonating is stopped" in {
@@ -71,9 +76,12 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
 
       session.impersonateUser(User)
 
+      session.setUserSelectedCriteria(new UserSelectedCriteria)
+
       session.stopImpersonating()
 
       AuthUtil.getUser should not be User
+      session.getUserSelectedCriteria should be(null)
     }
   }
 }
