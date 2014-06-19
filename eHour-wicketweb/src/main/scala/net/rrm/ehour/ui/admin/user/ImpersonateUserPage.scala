@@ -68,9 +68,6 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
 
     val user = userService.getUser(userId)
     f.add(new Label("name", user.getFullName))
-    val label = new Label("name2", user.getFullName)
-    label.setRenderBodyOnly(true)
-    link.add(label)
 
     f
   }

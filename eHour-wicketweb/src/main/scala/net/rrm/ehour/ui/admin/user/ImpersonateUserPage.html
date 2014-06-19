@@ -11,7 +11,7 @@
     </div>
     <div class="floatLeft" wicket:id="frame">
         <div wicket:id="border">
-            <span wicket:id="content"></span>
+            <div wicket:id="content" style="width:550px"></div>
         </div>
     </div>
 
@@ -19,12 +19,10 @@
         <table class="contentTable" width="95%">
             <tbody><tr>
                 <td>
-                    By temporarily signing in as a different user you are able to take any action in the UI as that user.<br />
-                    This allows you to update their hours when the user self is not able to, export their timesheet, etcera.
-                    <br /><br />
-                    To temporarily sign in as a different user, select a user in the list on the left first.
-
-                </td>
+                    <wicket:message key="admin.impersonate.intro.line1" />
+                    <wicket:message key="admin.impersonate.intro.line2" /><br /><br/>
+                    <wicket:message key="admin.impersonate.intro.line3" /><br />
+                 </td>
             </tr>
             </tbody>
         </table>
@@ -39,11 +37,12 @@
         <table class="contentTable" width="95%">
             <tbody><tr>
                 <td>
-                    Are you sure you want to temporarily sign in as <span wicket:id="name"/> ? You can always drop back to your own account.
+                    <wicket:message key="admin.impersonate.intro.line1" />
+                    <wicket:message key="admin.impersonate.intro.line2" /><br /><br/>
+                    <wicket:message key="admin.impersonate.confirm.line1" /> <strong><span wicket:id="name"/></strong> ? <wicket:message key="admin.impersonate.confirm.line2" />
                     <br /><br />
-            <a class="bluebutton" onclick="this.blur();" wicket:id="impersonateLink">
-                <span>Temporarily sign in as <span wicket:id="name2"/> </span></a>
-
+                    <a class="bluebutton" onclick="this.blur();" wicket:id="impersonateLink">
+                        <span><wicket:message key="admin.impersonate.button"/></span></a>
                 </td>
             </tr>
             </tbody>
