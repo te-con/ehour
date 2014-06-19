@@ -36,6 +36,9 @@ class LoggedInAsPanel(id: String) extends AbstractBasePanel(id) {
           setResponsePage(AuthUtil.getHomepageForRole(session.getRoles))
         }
       })
+
+      fragment.add(new Label("name", EhourWebSession.getSession.getUser.getFullName))
+
       fragment
     }
     else {

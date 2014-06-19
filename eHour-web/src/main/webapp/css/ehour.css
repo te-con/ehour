@@ -947,3 +947,15 @@ hr {
 .excelLink:hover {
    color: #5190c5;
 }
+
+.impersonatingNotification {
+    background: #bed9f5;
+    padding: 8px 0;
+    text-align: center;
+    color: #536e87;
+    font-size: 0.9em
+}
+
+.impersonatingNotification .fa {
+    color: white;
+}

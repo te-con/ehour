@@ -17,8 +17,9 @@
     </div>
 
     <wicket:fragment wicket:id="impersonating">
-        <div>
-            You are impersonating user xxxx, <a wicket:id="stop">stop impersonating</a>
+        <div class="impersonatingNotification">
+            <i class="fa fa-exclamation-triangle"></i> You are temporarily signed in as <span wicket:id="name"></span>,
+            <a wicket:id="stop">click here</a> to return to your own account
         </div>
     </wicket:fragment>
 
