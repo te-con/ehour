@@ -147,8 +147,6 @@ public class AuditAspect {
             auditService.doAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));
         }
 
-//		LOGGER.debug("exiting audit");
-
         return returnObject;
     }
 

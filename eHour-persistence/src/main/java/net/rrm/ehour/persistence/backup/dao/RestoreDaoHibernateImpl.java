@@ -3,7 +3,7 @@ package net.rrm.ehour.persistence.backup.dao;
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernateImpl;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
