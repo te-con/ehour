@@ -140,12 +140,9 @@ public class ProjectAssignmentDaoHibernateImpl
         return crit.list();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.project.dao.ProjectAssignmentDAO#findProjectAssignmentTypes()
-     */
+    @SuppressWarnings("unchecked")
     public List<ProjectAssignmentType> findProjectAssignmentTypes() {
-        return getHibernateTemplate().loadAll(ProjectAssignmentType.class);
+        return (List<ProjectAssignmentType>)getSession().createCriteria(ProjectAssignmentType.class).list();
     }
 
     /*

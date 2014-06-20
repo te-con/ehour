@@ -36,9 +36,6 @@ import java.util.List;
 public class TimesheetDaoHibernateImpl
         extends AbstractGenericDaoHibernateImpl<TimesheetEntry, TimesheetEntryId>
         implements TimesheetDao {
-    /**
-     * @todo fix this a bit better
-     */
     public TimesheetDaoHibernateImpl() {
         super(TimesheetEntry.class);
     }
@@ -61,7 +58,7 @@ public class TimesheetDaoHibernateImpl
         Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), assignment};
         String hql = "Timesheet.getEntriesBetweenDateForAssignment";
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, keys, params);
+        return findByNamedQueryAndNamedParam(hql, keys, params);
     }
 
     @Override
@@ -71,7 +68,7 @@ public class TimesheetDaoHibernateImpl
         Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd()};
         String hql = "Timesheet.getEntriesBetweenDate";
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, keys, params);
+        return findByNamedQueryAndNamedParam(hql, keys, params);
     }
 
 
@@ -86,12 +83,6 @@ public class TimesheetDaoHibernateImpl
         return getSheetOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedDaysInRangeForUserId");
     }
 
-    /**
-     * @param userId
-     * @param range
-     * @param hql
-     * @return
-     */
     @SuppressWarnings("unchecked")
     private <T> List<T> getSheetOnUserIdAndRange(Integer userId, DateRange dateRange, String hql) {
         String[] keys = new String[]{"dateStart", "dateEnd", "userId"};
@@ -100,10 +91,6 @@ public class TimesheetDaoHibernateImpl
         return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, keys, params);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.timesheet.dao.TimesheetDAO#getLatestTimesheetEntryForAssignment(java.lang.Integer)
-     */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public TimesheetEntry getLatestTimesheetEntryForAssignment(final Integer assignmentId) {
         return (TimesheetEntry) getHibernateTemplate().executeWithNativeSession(

@@ -1,10 +1,10 @@
 package net.rrm.ehour.persistence.timesheetlock.dao
 
-import net.rrm.ehour.persistence.dao.{AbstractGenericDaoHibernateImpl, GenericDao}
+import java.util.{Date, List => JList}
+
 import net.rrm.ehour.domain.TimesheetLock
+import net.rrm.ehour.persistence.dao.{AbstractGenericDaoHibernateImpl, GenericDao}
 import org.springframework.stereotype.Repository
-import java.util.Date
-import java.util.{List => JList}
 
 trait TimesheetLockDao extends GenericDao[TimesheetLock, Integer] {
   def findMatchingLock(start: Date, end: Date): JList[TimesheetLock]
@@ -16,6 +16,6 @@ class TimesheetLockHibernateImpl extends AbstractGenericDaoHibernateImpl[Timeshe
     val keys = Array[String]("startDate", "endDate")
     val params = Array[AnyRef](start, end)
 
-    getHibernateTemplate.findByNamedQueryAndNamedParam("TimesheetLock.getLocksMatchingDate", keys, params).asInstanceOf[JList[TimesheetLock]]
+    findByNamedQueryAndNamedParam("TimesheetLock.getLocksMatchingDate", keys, params).asInstanceOf[JList[TimesheetLock]]
   }
 }

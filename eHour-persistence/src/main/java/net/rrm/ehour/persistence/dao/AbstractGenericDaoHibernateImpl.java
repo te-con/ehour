@@ -17,7 +17,8 @@
 package net.rrm.ehour.persistence.dao;
 
 import net.rrm.ehour.domain.DomainObject;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -29,7 +30,7 @@ import java.util.List;
 
 @Repository
 public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, ?>, PK extends Serializable>
-        extends AbstractAnnotationDaoHibernateImpl
+        extends AbstractAnnotationDaoHibernate4Impl
         implements GenericDao<T, PK> {
     private Class<T> type;
 
@@ -47,6 +48,13 @@ public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, 
         return findByNamedQueryAndNamedParam(queryName, new String[]{param}, new Object[]{value}, isCaching, cachingRegion);
     }
 
+
+    public List<T> findByNamedQueryAndNamedParam(final String queryName,
+                                                 final String[] paramNames,
+                                                 final Object[] values) {
+        return findByNamedQueryAndNamedParam(queryName, paramNames, values, false, "");
+    }
+
     /**
      * Find named query optionally with caching enabled
      */
@@ -56,38 +64,34 @@ public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, 
                                                  final Object[] values,
                                                  boolean isCaching,
                                                  final String cachingRegion) {
-        if (!isCaching) {
-            return (List<T>) getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, paramNames, values);
-        } else {
-            HibernateTemplate template = new HibernateTemplate(getHibernateTemplate().getSessionFactory()) {
-                @Override
-                public boolean isCacheQueries() {
-                    return true;
-                }
+        Query query = getSession().getNamedQuery(queryName);
 
-                public String getQueryCacheRegion() {
-                    return cachingRegion;
-                }
-            };
-
-            return template.findByNamedQueryAndNamedParam(queryName, paramNames, values);
+        for (int i = 0; i < values.length; i++) {
+            query.setParameter(paramNames[i], values[i]);
         }
+
+        if (isCaching) {
+            query.setCacheable(true);
+            query.setCacheRegion(cachingRegion);
+        }
+
+        return (List<T>)query.list();
     }
 
     /**
      * Find all domain objects
      */
+    @SuppressWarnings("unchecked")
     public List<T> findAll() {
-        return getHibernateTemplate().loadAll(type);
+        Criteria criteria = getSession().createCriteria(type);
+        return (List<T>)criteria.list();
     }
 
     /**
      * Delete domain object
-     *
-     * @param domObj
      */
     public void delete(T domObj) {
-        getHibernateTemplate().delete(domObj);
+        getSession().delete(domObj);
     }
 
     /**
@@ -105,7 +109,7 @@ public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, 
      * @return
      */
     public T persist(T domObj) {
-        getHibernateTemplate().saveOrUpdate(domObj);
+        getSession().saveOrUpdate(domObj);
         return domObj;
     }
 
@@ -115,8 +119,9 @@ public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, 
      * @param id
      * @return
      */
+    @SuppressWarnings("unchecked")
     public T findById(PK id) {
-        return getHibernateTemplate().get(type, id);
+        return (T) getSession().load(type, id);
     }
 
     /**
@@ -124,8 +129,8 @@ public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, 
      *
      * @param domobj
      */
+    @SuppressWarnings("unchecked")
     public T merge(T domobj) {
-        return getHibernateTemplate().merge(domobj);
+        return (T) getSession().merge(domobj);
     }
-
 }

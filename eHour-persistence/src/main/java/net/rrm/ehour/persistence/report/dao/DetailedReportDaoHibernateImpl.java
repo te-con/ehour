@@ -17,7 +17,7 @@
 package net.rrm.ehour.persistence.report.dao;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernateImpl;
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernate4Impl;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -31,7 +31,7 @@ import java.util.List;
  * PerMonth DAO impl using sql-queries
  */
 @Repository("detailedReportDao")
-public class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHibernateImpl implements DetailedReportDao {
+public class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl implements DetailedReportDao {
     @SuppressWarnings("unchecked")
     public List<FlatReportElement> getHoursPerDayForAssignment(List<? extends Serializable> assignmentIds, DateRange dateRange) {
         Session session = this.getSession();

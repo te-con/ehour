@@ -20,7 +20,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernateImpl;
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernate4Impl;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import org.springframework.stereotype.Repository;
 
@@ -34,7 +34,7 @@ import java.util.List;
  */
 @Repository("reportAggregatedDao")
 @SuppressWarnings("unchecked")
-public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHibernateImpl implements ReportAggregatedDao {
+public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl implements ReportAggregatedDao {
     @Override
     public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users, DateRange dateRange) {
         String[] keys = new String[]{"dateStart", "dateEnd", "users"};

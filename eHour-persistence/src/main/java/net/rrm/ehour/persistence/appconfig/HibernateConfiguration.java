@@ -12,9 +12,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
-import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -47,7 +46,7 @@ public class HibernateConfiguration {
 
         LOGGER.info("Using database type: " + databaseName);
 
-        AnnotationSessionFactoryBean factoryBean = new AnnotationSessionFactoryBean();
+        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
 
         List<Resource> resources = getMappingResources(configProperties);
@@ -98,21 +97,11 @@ public class HibernateConfiguration {
         return new HibernateTransactionManager(getSessionFactory());
     }
 
-    public
     @Bean
-    HibernateTemplate getHibernateTemplate() throws Exception {
-        return new HibernateTemplate(getSessionFactory());
-    }
-
-    public
-    @Bean
-    JdbcTemplate getJdbcTemplate() throws Exception {
+    public JdbcTemplate getJdbcTemplate() throws Exception {
         return new JdbcTemplate(dataSource);
     }
 
-    /**
-     * @param databaseName the databaseName to set
-     */
     void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
     }

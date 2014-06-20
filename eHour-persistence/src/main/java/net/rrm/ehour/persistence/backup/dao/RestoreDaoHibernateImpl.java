@@ -2,7 +2,7 @@ package net.rrm.ehour.persistence.backup.dao;
 
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernateImpl;
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernate4Impl;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -13,33 +13,29 @@ import java.io.Serializable;
  *         Created on: Nov 19, 2010 - 12:09:19 AM
  */
 @Repository("importDao")
-public class RestoreDaoHibernateImpl extends AbstractAnnotationDaoHibernateImpl implements RestoreDao
-{
+public class RestoreDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl implements RestoreDao {
     @Override
-    public <T extends DomainObject<?, ?>> Serializable persist(T object)
-    {
-        getHibernateTemplate().persist(object);
+    public <T extends DomainObject<?, ?>> Serializable persist(T object) {
+        getSession().persist(object);
 
         return object.getPK();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T, PK extends Serializable> T find(PK primaryKey, Class<T> type)
-    {
-        return getHibernateTemplate().get(type, primaryKey);
+    public <T, PK extends Serializable> T find(PK primaryKey, Class<T> type) {
+        return (T) getSession().get(type, primaryKey);
     }
 
     public void flush() {
-        Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+        Session session = getSession();
         session.flush();
         session.clear();
     }
 
     @Override
-    public <T> void delete(Class<T> type)
-    {
-        if (type == User.class)
-        {
+    public <T> void delete(Class<T> type) {
+        if (type == User.class) {
             getSession().createSQLQuery("DELETE FROM USER_TO_USERROLE").executeUpdate();
         }
 
