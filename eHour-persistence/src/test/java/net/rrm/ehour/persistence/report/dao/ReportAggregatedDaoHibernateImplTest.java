@@ -33,7 +33,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings({"deprecation"})
-public class ReportAggregatedDaoTest extends AbstractAnnotationDaoTest {
+public class ReportAggregatedDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     private static final Date OCT_1_2006 = new Date(2006 - 1900, 10 - 1, 1);
     private static final Date OCT_4_2006 = new Date(2006 - 1900, 10 - 1, 4);
     private static final DateRange OCT_1_TO_4 = new DateRange(OCT_1_2006, OCT_4_2006);
@@ -43,7 +43,7 @@ public class ReportAggregatedDaoTest extends AbstractAnnotationDaoTest {
     @Autowired
     private ReportAggregatedDao reportAggregatedDAO;
 
-    public ReportAggregatedDaoTest() {
+    public ReportAggregatedDaoHibernateImplTest() {
         super("dataset-reportaggregated.xml");
     }
 

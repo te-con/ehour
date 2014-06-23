@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
  *         Date: 12/6/10 11:47 PM
  */
 @Component("userRoleParserDao")
-public class UserRoleParserDaoPersistImpl implements UserRoleParserDao
-{
+public class UserRoleParserDaoPersistImpl implements UserRoleParserDao {
     @Autowired
     private UserDao userDao;
 
@@ -21,20 +20,17 @@ public class UserRoleParserDaoPersistImpl implements UserRoleParserDao
     private UserRoleDao userRoleDao;
 
     @Override
-    public UserRole findUserRole(String role)
-    {
+    public UserRole findUserRole(String role) {
         return userRoleDao.findById(role);
     }
 
     @Override
-    public User findUser(Integer userId)
-    {
+    public User findUser(Integer userId) {
         return userDao.findById(userId);
     }
 
     @Override
-    public void persistUser(User user)
-    {
+    public void persistUser(User user) {
         userDao.persist(user);
     }
 }

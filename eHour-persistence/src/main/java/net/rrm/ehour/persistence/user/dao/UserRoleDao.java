@@ -21,8 +21,7 @@ import net.rrm.ehour.persistence.dao.GenericDao;
 
 /**
  * CRUD on UserRole domain object
- **/
+ */
 
-public interface UserRoleDao  extends GenericDao<UserRole, String>
-{
+public interface UserRoleDao extends GenericDao<UserRole, String> {
 }

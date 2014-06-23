@@ -78,9 +78,16 @@ public class TimesheetDaoHibernateImpl
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public TimesheetEntry getLatestTimesheetEntryForAssignment(final Integer assignmentId) {
-        Query queryObject = getSession().getNamedQuery("Timesheet.getLatestEntryForAssignmentId");
-        queryObject.setInteger("assignmentId", assignmentId);
-        return (TimesheetEntry) queryObject.uniqueResult();
+        Query query = getSession().getNamedQuery("Timesheet.getLatestEntryForAssignmentId");
+        query.setInteger("assignmentId", assignmentId);
+
+        List results = query.list();
+
+        if (results.size() > 0) {
+            return (TimesheetEntry) results.get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override

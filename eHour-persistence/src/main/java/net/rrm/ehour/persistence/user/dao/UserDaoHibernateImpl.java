@@ -62,7 +62,7 @@ public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, 
                 "User.findForDepartment";
 
         paramKeys = new String[]{"departments"};
-        paramValues = new Object[]{departments.toArray()};
+        paramValues = new Object[]{departments};
 
         return findByNamedQueryAndNamedParam(hql, paramKeys, paramValues, CACHEREGION);
     }

@@ -27,6 +27,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
     @Override
     public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users, DateRange dateRange) {
         String[] keys = new String[]{"dateStart", "dateEnd", "users"};
-        Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), users.toArray()};
+        Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), users};
 
         return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsers", keys, params);
     }
@@ -62,7 +63,7 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
     @Override
     public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users, List<Project> projects) {
         String[] keys = new String[]{"users", "projects"};
-        Object[] params = new Object[]{users.toArray(), projects.toArray()};
+        Object[] params = new Object[]{users, projects};
 
         return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUsersAndProjects", keys, params);
     }
@@ -72,7 +73,7 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
                                                                                          List<Project> projects,
                                                                                          DateRange dateRange) {
         String[] keys = new String[]{"dateStart", "dateEnd", "users", "projects"};
-        Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), users.toArray(), projects.toArray()};
+        Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), users, projects};
 
         return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects", keys, params);
     }
@@ -95,7 +96,7 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
     @Override
     public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForProjects(List<Project> projects, DateRange dateRange) {
         String[] keys = new String[]{"dateStart", "dateEnd", "projects"};
-        Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), projects.toArray()};
+        Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), projects};
 
         return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForProjects", keys, params);
     }
@@ -135,7 +136,11 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
         Query query = getSession().getNamedQuery(queryName);
 
         for (int i = 0; i < values.length; i++) {
-            query.setParameter(paramNames[i], values[i]);
+            if (values[i] instanceof Collection) {
+                query.setParameterList(paramNames[i], (Collection) values[i]);
+            } else {
+                query.setParameter(paramNames[i], values[i]);
+            }
         }
 
         return executeQuery(query);

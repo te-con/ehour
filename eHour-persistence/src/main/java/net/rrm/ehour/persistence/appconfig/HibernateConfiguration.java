@@ -8,19 +8,24 @@ import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-@org.springframework.context.annotation.Configuration
+@Configuration
+@EnableTransactionManagement
 public class HibernateConfiguration {
     @Autowired
     private DataSource dataSource;
@@ -60,10 +65,11 @@ public class HibernateConfiguration {
         properties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
         properties.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
         properties.setProperty(AvailableSettings.HBM2DDL_AUTO, (String) configProperties.get("hibernate.hbm2ddl.auto"));
-        properties.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+//        properties.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "org.springframework.orm.hibernate4.SpringSessionContext");
 
         sessionFactoryBean.setHibernateProperties(properties);
         sessionFactoryBean.afterPropertiesSet();
+
         return sessionFactoryBean.getObject();
     }
 
@@ -91,9 +97,18 @@ public class HibernateConfiguration {
         return Lists.asList(dbQueryResource, queryResources);
     }
 
-    @Bean(name = "transactionManager")
-    public HibernateTransactionManager getTransactionManager() throws Exception {
-        return new HibernateTransactionManager(getSessionFactory());
+    @Bean
+    public PlatformTransactionManager txManager() {
+        try {
+            return new HibernateTransactionManager(getSessionFactory());
+        } catch (Exception e) {
+            throw new RuntimeException("Screwed", e);
+        }
+    }
+
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+        return new PersistenceExceptionTranslationPostProcessor();
     }
 
     @Bean

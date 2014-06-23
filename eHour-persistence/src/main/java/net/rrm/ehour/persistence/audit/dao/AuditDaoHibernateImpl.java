@@ -26,6 +26,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit
 
     @SuppressWarnings("unchecked")
     @Override
+    @Transactional()
     public List<Audit> findAudits(AuditReportRequest request) {
         Criteria criteria = buildCriteria(request);
         criteria.addOrder(Order.asc("date"));
@@ -55,6 +57,8 @@ public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit
         return criteria.list();
     }
 
+    @Transactional
+    @Override
     public Number count(AuditReportRequest request) {
         Criteria criteria = buildCriteria(request);
         criteria.setProjection(Projections.rowCount());

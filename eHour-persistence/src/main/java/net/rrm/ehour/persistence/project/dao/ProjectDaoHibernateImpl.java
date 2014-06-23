@@ -51,7 +51,7 @@ public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Pro
     public List<Project> findProjectForCustomers(List<Customer> customers, boolean onlyActive) {
         String hqlName = onlyActive ? "Project.findActiveProjectsForCustomers" : "Project.findAllProjectsForCustomers";
 
-        return findByNamedQueryAndNamedParam(hqlName, "customers", customers.toArray(), CACHEREGION);
+        return findByNamedQueryAndNamedParam(hqlName, "customers", customers, CACHEREGION);
     }
 
     @Override

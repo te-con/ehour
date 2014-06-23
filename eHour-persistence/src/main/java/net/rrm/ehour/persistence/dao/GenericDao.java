@@ -22,44 +22,49 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * GenericDAO interface for CRUD on domain objects **/
+ * GenericDAO interface for CRUD on domain objects *
+ */
 
-public interface GenericDao <T extends DomainObject<?, ?>, PK extends Serializable>
-{
-	/**
-	 * Find all domain objects
-	 * @return
-	 */
-	List<T> findAll();
-	
-	/**
-	 * Delete domain object
-	 * @param domObj
-	 */
-	void delete(T domObj);
-	
-	/**
-	 * Delete on primary key
-	 * @param pk
-	 */
-	void delete(PK pk);
-	
-	/**
-	 * Persist domain object
-	 * @param domObj
-	 * @return
-	 */
-	T persist(T domObj);
-	
-	/**
-	 * Find by primary key
-	 * @param id
-	 * @return
-	 */
-	T findById(PK id);
+public interface GenericDao<T extends DomainObject<?, ?>, PK extends Serializable> {
+    /**
+     * Find all domain objects
+     *
+     * @return
+     */
+    List<T> findAll();
 
-	/**
-	 * Merge the domain object
-	 */
-	T merge(T domoj);
+    /**
+     * Delete domain object
+     *
+     * @param domObj
+     */
+    void delete(T domObj);
+
+    /**
+     * Delete on primary key
+     *
+     * @param pk
+     */
+    void delete(PK pk);
+
+    /**
+     * Persist domain object
+     *
+     * @param domObj
+     * @return
+     */
+    T persist(T domObj);
+
+    /**
+     * Find by primary key
+     *
+     * @param id
+     * @return
+     */
+    T findById(PK id);
+
+    /**
+     * Merge the domain object
+     */
+    T merge(T domoj);
 }

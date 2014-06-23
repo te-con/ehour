@@ -21,8 +21,10 @@ import net.rrm.ehour.domain.DomainObject;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,6 +32,7 @@ import java.util.List;
  */
 
 @Repository
+@Transactional
 public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, ?>, PK extends Serializable>
         extends AbstractAnnotationDaoHibernate4Impl
         implements GenericDao<T, PK> {
@@ -68,7 +71,11 @@ public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, 
         Query query = getSession().getNamedQuery(queryName);
 
         for (int i = 0; i < values.length; i++) {
-            query.setParameter(paramNames[i], values[i]);
+            if (values[i] instanceof Collection) {
+                query.setParameterList(paramNames[i], (Collection) values[i]);
+            } else {
+                query.setParameter(paramNames[i], values[i]);
+            }
         }
 
         if (cachingRegion.isPresent()) {
@@ -106,7 +113,7 @@ public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, 
     @Override
     @SuppressWarnings("unchecked")
     public T findById(PK id) {
-        return (T) getSession().load(type, id);
+        return (T) getSession().get(type, id);
     }
 
     @Override

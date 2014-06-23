@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals
 class AuditDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     @Autowired
     private AuditDao auditDAO;
+
     private AuditReportRequest request;
 
     public AuditDaoHibernateImplTest() {

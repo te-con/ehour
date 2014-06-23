@@ -29,112 +29,102 @@ import javax.validation.Valid;
 @Entity
 @Table(name = "TIMESHEET_COMMENT")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TimesheetComment extends DomainObject<TimesheetCommentId, TimesheetComment>
-{
-	private static final long serialVersionUID = 7067367393719500506L;
+public class TimesheetComment extends DomainObject<TimesheetCommentId, TimesheetComment> {
+    private static final long serialVersionUID = 7067367393719500506L;
 
     @Id
     @Valid
-	private TimesheetCommentId	commentId;
+    private TimesheetCommentId commentId;
 
     @Column(name = "COMMENT", length = 2048)
-	private	String				comment;
+    private String comment;
 
     @Transient
-	private Boolean				newComment = Boolean.FALSE;
-	
-	/**
-	 * @return the newComment
-	 */
-	public Boolean getNewComment()
-	{
-		return newComment;
-	}
+    private Boolean newComment = Boolean.FALSE;
 
-	/**
-	 * @param newComment the newComment to set
-	 */
-	public void setNewComment(Boolean newComment)
-	{
-		this.newComment = newComment;
-	}
+    /**
+     * @return the newComment
+     */
+    public Boolean getNewComment() {
+        return newComment;
+    }
 
-	public TimesheetComment()
-	{
-		
-	}
-	
-	public TimesheetComment(TimesheetCommentId id, String comment)
-	{
-		setComment(comment);
-		setCommentId(id);
-	}
-	/**
-	 * @return the comment
-	 */
-	public String getComment()
-	{
-		return comment;
-	}
-	/**
-	 * @param comment the comment to set
-	 */
-	public final void setComment(String comment)
-	{
-		this.comment = comment;
-	}
-	/**
-	 * @return the commentId
-	 */
-	public TimesheetCommentId getCommentId()
-	{
-		return commentId;
-	}
-	/**
-	 * @param commentId the commentId to set
-	 */
-	public final void setCommentId(TimesheetCommentId commentId)
-	{
-		this.commentId = commentId;
-	}
-	
-	public String toString()
-	{
-		return new ToStringBuilder(this).append("commentId", getCommentId())
-										.append("comment", getComment()).toString();
-	}
+    /**
+     * @param newComment the newComment to set
+     */
+    public void setNewComment(Boolean newComment) {
+        this.newComment = newComment;
+    }
+
+    public TimesheetComment() {
+
+    }
+
+    public TimesheetComment(TimesheetCommentId id, String comment) {
+        setComment(comment);
+        setCommentId(id);
+    }
+
+    /**
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     * @param comment the comment to set
+     */
+    public final void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * @return the commentId
+     */
+    public TimesheetCommentId getCommentId() {
+        return commentId;
+    }
+
+    /**
+     * @param commentId the commentId to set
+     */
+    public final void setCommentId(TimesheetCommentId commentId) {
+        this.commentId = commentId;
+    }
+
+    public String toString() {
+        return new ToStringBuilder(this).append("commentId", getCommentId())
+                .append("comment", getComment()).toString();
+    }
 
 
-	@Override
-	public TimesheetCommentId getPK()
-	{
-		return commentId;
-	}
+    @Override
+    public TimesheetCommentId getPK() {
+        return commentId;
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(TimesheetComment object)
-	{
-		return new CompareToBuilder()
-			.append(this.getComment(), object.getComment())
-			.append(this.getCommentId(), object.getCommentId()).toComparison();
-	}
+    /**
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public int compareTo(TimesheetComment object) {
+        return new CompareToBuilder()
+                .append(this.getComment(), object.getComment())
+                .append(this.getCommentId(), object.getCommentId()).toComparison();
+    }
 
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof TimesheetComment))
-			return false;
-		TimesheetComment castOther = (TimesheetComment) other;
-		return new EqualsBuilder().append(commentId, castOther.commentId).append(comment, castOther.comment).append(newComment, castOther.newComment).isEquals();
-	}
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof TimesheetComment))
+            return false;
+        TimesheetComment castOther = (TimesheetComment) other;
+        return new EqualsBuilder().append(commentId, castOther.commentId).append(comment, castOther.comment).append(newComment, castOther.newComment).isEquals();
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(commentId).append(comment).append(newComment).toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(commentId).append(comment).append(newComment).toHashCode();
+    }
 
 
 }

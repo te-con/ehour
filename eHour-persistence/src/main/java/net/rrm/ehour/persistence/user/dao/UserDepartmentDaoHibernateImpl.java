@@ -24,25 +24,21 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("userDepartmentDao")
-public class UserDepartmentDaoHibernateImpl 
-	extends AbstractGenericDaoHibernateImpl<UserDepartment, Integer> implements UserDepartmentDao
-{
+public class UserDepartmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<UserDepartment, Integer> implements UserDepartmentDao {
     private static final Optional<String> CACHEREGION = Optional.of("query.Department");
 
-    public UserDepartmentDaoHibernateImpl()
-	{
-		super(UserDepartment.class);
-	}
+    public UserDepartmentDaoHibernateImpl() {
+        super(UserDepartment.class);
+    }
 
-	public UserDepartment findOnNameAndCode(String name, String code)
-	{
-		List<UserDepartment> results;
+    public UserDepartment findOnNameAndCode(String name, String code) {
+        List<UserDepartment> results;
 
-		String[] keys = new String[]{"name", "code"};
-		Object[] params = new Object[]{name.toLowerCase(), code.toLowerCase()}; 
-		
-		results = findByNamedQueryAndNamedParam("UserDepartment.findByNameAndCode", keys, params, CACHEREGION);
-		
-		return (results.size() > 0) ? results.get(0) : null;
-	}	
+        String[] keys = new String[]{"name", "code"};
+        Object[] params = new Object[]{name.toLowerCase(), code.toLowerCase()};
+
+        results = findByNamedQueryAndNamedParam("UserDepartment.findByNameAndCode", keys, params, CACHEREGION);
+
+        return (results.size() > 0) ? results.get(0) : null;
+    }
 }

@@ -9,6 +9,7 @@ import net.rrm.ehour.project.service.ProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -32,18 +33,19 @@ public class MissingPmRoleValidator {
     private UserDao userDao;
 
     @PostConstruct
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void init() {
-        List<Project> projectsWithPmSet = projectDao.findAllProjectsWithPmSet();
-
         LOGGER.info("Finding and fixing users who are PM but don't have PM role (EHO-381)");
 
-        for (Project project : projectsWithPmSet) {
-            User manager = project.getProjectManager();
+        List<Project> projectsWithPmSet = projectDao.findAllProjectsWithPmSet();
 
-            boolean hasPmRole = manager.getUserRoles().contains(UserRole.PROJECTMANAGER);
+        for (Project project : projectsWithPmSet) {
+            User pm = project.getProjectManager();
+
+            boolean hasPmRole = pm.getUserRoles().contains(UserRole.PROJECTMANAGER);
 
             if (!hasPmRole) {
-                LOGGER.warn(String.format("%s (%s) does not have PM role but is PM for %s. Adding PM role.", manager.getFullName(), manager.getPK(), project.getFullName()));
+                LOGGER.warn(String.format("%s (%s) does not have PM role but is PM for %s. Adding PM role.", pm.getFullName(), pm.getPK(), project.getFullName()));
                 projectService.validatePMRoles(project);
             }
         }
