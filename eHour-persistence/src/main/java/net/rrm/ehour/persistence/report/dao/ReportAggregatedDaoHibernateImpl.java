@@ -22,9 +22,11 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernate4Impl;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,25 +37,26 @@ import java.util.List;
 @Repository("reportAggregatedDao")
 @SuppressWarnings("unchecked")
 public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl implements ReportAggregatedDao {
+    private static final String CACHEREGION = "query.Report";
+
     @Override
     public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users, DateRange dateRange) {
         String[] keys = new String[]{"dateStart", "dateEnd", "users"};
         Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), users.toArray()};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsers"
-                , keys, params);
+        return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsers", keys, params);
     }
 
     @Override
     public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForUsers(List<User> users) {
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUsers"
-                , "users", users.toArray());
+        return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUsers", "users", users);
     }
 
     @Override
     public DateRange getMinMaxDateTimesheetEntry() {
-        List<DateRange> results = getHibernateTemplate().findByNamedQuery("Report.getMinMaxTimesheetEntryDate");
-        return results.get(0);
+        List<DateRange> results = getSession().getNamedQuery("Report.getMinMaxTimesheetEntryDate").list();
+
+        return results.size() > 0 ? results.get(0) : new DateRange();
     }
 
     @Override
@@ -61,8 +64,7 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
         String[] keys = new String[]{"users", "projects"};
         Object[] params = new Object[]{users.toArray(), projects.toArray()};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUsersAndProjects"
-                , keys, params);
+        return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForUsersAndProjects", keys, params);
     }
 
     @Override
@@ -72,14 +74,14 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
         String[] keys = new String[]{"dateStart", "dateEnd", "users", "projects"};
         Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), users.toArray(), projects.toArray()};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects", keys, params);
+        return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects", keys, params);
     }
 
     @Override
     public DateRange getMinMaxDateTimesheetEntry(User user) {
-        List<DateRange> results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getMinMaxTimesheetEntryDateForUser"
-                , "user", user);
-        return results.get(0);
+        List<DateRange> results = findByNamedQueryAndNamedParam("Report.getMinMaxTimesheetEntryDateForUser", "user", Arrays.asList(user));
+
+        return results.size() > 0 ? results.get(0) : new DateRange();
     }
 
     @Override
@@ -87,8 +89,7 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
         String[] keys = new String[]{"dateStart", "dateEnd"};
         Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd()};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignment"
-                , keys, params);
+        return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignment", keys, params);
     }
 
     @Override
@@ -96,31 +97,27 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
         String[] keys = new String[]{"dateStart", "dateEnd", "projects"};
         Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), projects.toArray()};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForProjects"
-                , keys, params);
+        return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentOnDateForProjects", keys, params);
     }
 
     @Override
     public AssignmentAggregateReportElement getCumulatedHoursForAssignment(ProjectAssignment projectAssignment) {
-        List<AssignmentAggregateReportElement> results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursForAssignment",
-                "assignment",
-                projectAssignment);
+        List<AssignmentAggregateReportElement> results = findByNamedQueryAndNamedParam("Report.getCumulatedHoursForAssignment",
+                new String[]{"assignment"},
+                new Object[]{projectAssignment});
 
         return (results != null && results.size() > 0) ? results.get(0) : null;
     }
 
     @Override
     public List<AssignmentAggregateReportElement> getCumulatedHoursPerAssignmentForAssignments(List<? extends Serializable> projectAssignmentIds) {
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForAssignmentIds"
-                , "assignmentIds", projectAssignmentIds.toArray());
+        return findByNamedQueryAndNamedParam("Report.getCumulatedHoursPerAssignmentForAssignmentIds", "assignmentIds", projectAssignmentIds);
     }
 
     @Override
     public DateRange getMinMaxDateTimesheetEntry(Project project) {
-        List<DateRange> results = getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getMinMaxTimesheetEntryDateForProject"
-                , "project",
-                project);
-        return results.get(0);
+        List<DateRange> results = findByNamedQueryAndNamedParam("Report.getMinMaxTimesheetEntryDateForProject", "project", Arrays.asList(project));
+        return (results != null && results.size() > 0) ? results.get(0) : new DateRange();
     }
 
     @Override
@@ -128,6 +125,37 @@ public class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHiber
         String[] keys = new String[]{"dateStart", "dateEnd"};
         Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd()};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Report.getAssignmentsWithoutBookings", keys, params);
+        return findByNamedQueryAndNamedParam("Report.getAssignmentsWithoutBookings", keys, params);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <C> List<C> findByNamedQueryAndNamedParam(final String queryName,
+                                                      final String[] paramNames,
+                                                      final Object[] values) {
+        Query query = getSession().getNamedQuery(queryName);
+
+        for (int i = 0; i < values.length; i++) {
+            query.setParameter(paramNames[i], values[i]);
+        }
+
+        return executeQuery(query);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <C> List<C> findByNamedQueryAndNamedParam(final String queryName,
+                                                      final String paramName,
+                                                      final List<?> values) {
+        Query query = getSession().getNamedQuery(queryName);
+
+        query.setParameterList(paramName, values);
+
+        return executeQuery(query);
+    }
+
+    private <C> List<C> executeQuery(Query query) {
+        query.setCacheable(true);
+        query.setCacheRegion(CACHEREGION);
+
+        return (List<C>) query.list();
     }
 }

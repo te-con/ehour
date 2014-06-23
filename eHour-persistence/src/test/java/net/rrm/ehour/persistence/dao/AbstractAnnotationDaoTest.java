@@ -72,5 +72,4 @@ public abstract class AbstractAnnotationDaoTest {
             DatabaseOperation.CLEAN_INSERT.execute(connection, additionalDataSet);
         }
     }
-
 }

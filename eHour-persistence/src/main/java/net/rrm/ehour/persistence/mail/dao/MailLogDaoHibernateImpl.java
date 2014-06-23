@@ -16,30 +16,27 @@
 
 package net.rrm.ehour.persistence.mail.dao;
 
-import java.util.List;
-
+import com.google.common.base.Optional;
 import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
-
 import org.springframework.stereotype.Repository;
 
-/**
- * DAO for MailLog db operations 
- **/
-@Repository("mailLogDao")
-public class MailLogDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<MailLog, Integer>  implements MailLogDao
-{
-	public MailLogDaoHibernateImpl()
-	{
-		super(MailLog.class);
-	}
+import java.util.List;
 
-	@SuppressWarnings("unchecked")
-	public List<MailLogAssignment> findMailLogOnAssignmentIds(Integer[] projectAssignmentIds)
-	{
-		return getHibernateTemplate().findByNamedQueryAndNamedParam("MailLogAssignment.findOnAssignmentIds",
-																		"assignmentIds", projectAssignmentIds);
-	}
+/**
+ * DAO for MailLog db operations
+ */
+@Repository("mailLogDao")
+public class MailLogDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<MailLog, Integer> implements MailLogDao {
+    public MailLogDaoHibernateImpl() {
+        super(MailLog.class);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<MailLogAssignment> findMailLogOnAssignmentIds(Integer[] projectAssignmentIds) {
+        return findByNamedQueryAndNamedParam("MailLogAssignment.findOnAssignmentIds", new String[]{"assignmentIds"}, projectAssignmentIds, Optional.<String>absent());
+    }
 
 }

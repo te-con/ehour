@@ -68,6 +68,13 @@
 	    eternal="false"
 	    timeToLiveSeconds="600"
 	    overflowToDisk="false"
-	/>	
-		
+	/>
+
+    <cache name="query.Report"
+           maxElementsInMemory="300"
+           eternal="false"
+           timeToLiveSeconds="600"
+           overflowToDisk="false"
+            />
+
 </ehcache>

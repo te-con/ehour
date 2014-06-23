@@ -1,28 +1,28 @@
 package net.rrm.ehour.persistence.appconfig;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.domain.DomainObjects;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-@Configuration
+@org.springframework.context.annotation.Configuration
 public class HibernateConfiguration {
     @Autowired
     private DataSource dataSource;
@@ -38,35 +38,43 @@ public class HibernateConfiguration {
 
     @Bean(name = "sessionFactory")
     public SessionFactory getSessionFactory() throws Exception {
-        setDefaultCachingType();
-
-        validateCachingAttribute();
+        validateAndSetCaching();
 
         Properties configProperties = EhourHomeUtil.loadDatabaseProperties(databaseName);
 
         LOGGER.info("Using database type: " + databaseName);
 
-        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
-        factoryBean.setDataSource(dataSource);
-
+        Configuration configuration = new Configuration();
         List<Resource> resources = getMappingResources(configProperties);
-        factoryBean.setMappingLocations(resources.toArray(new Resource[resources.size()]));
-        factoryBean.setAnnotatedClasses(DomainObjects.DOMAIN_OBJECTS);
+        for (Resource resource : resources) {
+            configuration.addInputStream(resource.getInputStream());
+        }
 
-        Properties hibernateProperties = new Properties();
-        hibernateProperties.put("hibernate.dialect", configProperties.get("hibernate.dialect"));
-        hibernateProperties.put("show_sql", "false");
-        hibernateProperties.put("use_outer_join", "true");
-        hibernateProperties.put("hibernate.cache.region.factory_class", "net.sf.ehcache.hibernate.EhCacheRegionFactory");
-        hibernateProperties.put("hibernate.cache.use_second_level_cache", caching);
-        hibernateProperties.put("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
-        hibernateProperties.put("hibernate.cache.use_query_cache", caching);
-        hibernateProperties.put("hibernate.hbm2ddl.auto", configProperties.get("hibernate.hbm2ddl.auto"));
+        Class[] domainObjects = DomainObjects.DOMAIN_OBJECTS;
 
-        factoryBean.setHibernateProperties(hibernateProperties);
-        factoryBean.afterPropertiesSet();
+        for (Class domainObject : domainObjects) {
+            configuration.addAnnotatedClass(domainObject);
+        }
 
-        return factoryBean.getObject();
+        configuration.setProperty(AvailableSettings.DIALECT, (String) configProperties.get("hibernate.dialect"));
+        configuration.setProperty(AvailableSettings.SHOW_SQL, "false");
+        configuration.setProperty("use_outer_join", "true");
+        configuration.setProperty(AvailableSettings.CACHE_REGION_FACTORY, "org.hibernate.cache.ehcache.EhCacheRegionFactory");
+        configuration.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, caching);
+        configuration.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
+        configuration.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
+        configuration.setProperty(AvailableSettings.HBM2DDL_AUTO, (String) configProperties.get("hibernate.hbm2ddl.auto"));
+        configuration.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+        configuration.getProperties().put(AvailableSettings.DATASOURCE, dataSource);
+
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        return configuration.buildSessionFactory(builder.build());
+    }
+
+    private void validateAndSetCaching() {
+        setDefaultCachingType();
+
+        validateCachingAttribute();
     }
 
     private void validateCachingAttribute() {
@@ -82,14 +90,9 @@ public class HibernateConfiguration {
     }
 
     private List<Resource> getMappingResources(Properties configProperties) throws IOException {
-        List<Resource> resources = new ArrayList<Resource>();
-
         Resource[] queryResources = resolver.getResources("classpath:query/common/*.hbm.xml");
-        resources.addAll(Arrays.asList(queryResources));
-
         ClassPathResource dbQueryResource = new ClassPathResource("query/" + configProperties.getProperty("reportquery.filename"));
-        resources.add(dbQueryResource);
-        return resources;
+        return Lists.asList(dbQueryResource, queryResources);
     }
 
     @Bean(name = "transactionManager")

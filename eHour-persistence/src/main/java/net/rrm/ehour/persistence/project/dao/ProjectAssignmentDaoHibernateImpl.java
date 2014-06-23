@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.persistence.project.dao;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
@@ -32,19 +33,13 @@ import java.util.List;
 public class ProjectAssignmentDaoHibernateImpl
         extends AbstractGenericDaoHibernateImpl<ProjectAssignment, Integer>
         implements ProjectAssignmentDao {
-    protected static final String CACHEREGION = "query.ProjectAssignment";
+    private static final Optional<String> CACHEREGION = Optional.of("query.ProjectAssignment");
 
     public ProjectAssignmentDaoHibernateImpl() {
         super(ProjectAssignment.class);
     }
 
-    /**
-     * Find (active) projects for user in date range
-     *
-     * @param userId
-     * @param range
-     * @return
-     */
+    @Override
     public List<ProjectAssignment> findProjectAssignmentsForUser(Integer userId, DateRange range) {
         List<ProjectAssignment> results;
 
@@ -54,21 +49,13 @@ public class ProjectAssignmentDaoHibernateImpl
         results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUserInRange"
                 , keys
                 , params
-                , true
                 , CACHEREGION);
 
 
         return results;
     }
 
-
-    /**
-     * Find assigned (active) projects for user
-     *
-     * @param projectId
-     * @param userId
-     * @return
-     */
+    @Override
     public List<ProjectAssignment> findProjectAssignmentForUser(Integer projectId, Integer userId) {
         String[] keys = new String[]{"projectId", "userId"};
         Integer[] params = new Integer[]{projectId, userId};
@@ -77,34 +64,24 @@ public class ProjectAssignmentDaoHibernateImpl
         results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUserForProject"
                 , keys
                 , params
-                , true
                 , CACHEREGION);
 
         return results;
     }
 
-    /**
-     * Find (active) projects for user
-     *
-     * @param userId
-     * @return
-     */
+    @Override
     public List<ProjectAssignment> findProjectAssignmentsForUser(User user) {
         List<ProjectAssignment> results;
 
         results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUser"
                 , "user"
                 , user
-                , true
                 , CACHEREGION);
 
         return results;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.project.dao.ProjectAssignmentDAO#findProjectAssignmentsForProject(net.rrm.ehour.persistence.persistence.project.domain.Project, net.rrm.ehour.persistence.persistence.data.DateRange)
-     */
+    @Override
     public List<ProjectAssignment> findProjectAssignmentsForProject(Project project, DateRange range) {
         List<ProjectAssignment> results;
         String[] keys = new String[]{"dateStart", "dateEnd", "project"};
@@ -113,16 +90,17 @@ public class ProjectAssignmentDaoHibernateImpl
         results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForProjectInRange"
                 , keys
                 , params
-                , true
                 , CACHEREGION);
 
         return results;
     }
 
+    @Override
     public List<ProjectAssignment> findAllProjectAssignmentsForProject(Project project) {
         return findProjectAssignmentsForProject(project, false);
     }
 
+    @Override
     public List<ProjectAssignment> findAllActiveProjectAssignmentsForProject(Project project) {
         return findProjectAssignmentsForProject(project, true);
     }
@@ -140,15 +118,13 @@ public class ProjectAssignmentDaoHibernateImpl
         return crit.list();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<ProjectAssignmentType> findProjectAssignmentTypes() {
         return (List<ProjectAssignmentType>)getSession().createCriteria(ProjectAssignmentType.class).list();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.project.dao.ProjectAssignmentDAO#findProjectAssignmentsForCustomer(net.rrm.ehour.persistence.persistence.customer.domain.Customer, net.rrm.ehour.persistence.persistence.data.DateRange)
-     */
+    @Override
     public List<ProjectAssignment> findProjectAssignmentsForCustomer(Customer customer, DateRange range) {
         List<ProjectAssignment> results;
         String[] keys = new String[]{"dateStart", "dateEnd", "customer"};
@@ -157,7 +133,6 @@ public class ProjectAssignmentDaoHibernateImpl
         results = findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForCustomerInRange"
                 , keys
                 , params
-                , true
                 , CACHEREGION);
 
         return results;

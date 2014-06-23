@@ -30,22 +30,19 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("auditDao")
-public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit, Number>  implements AuditDao
-{
-	public AuditDaoHibernateImpl()
-	{
-		super(Audit.class);
-	}
+public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit, Number> implements AuditDao {
+    public AuditDaoHibernateImpl() {
+        super(Audit.class);
+    }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     @Override
-    public List<Audit> findAudits(AuditReportRequest request)
-	{
-		Criteria criteria = buildCriteria(request);
-		criteria.addOrder(Order.asc("date"));
-		
-		return criteria.list();
-	}
+    public List<Audit> findAudits(AuditReportRequest request) {
+        Criteria criteria = buildCriteria(request);
+        criteria.addOrder(Order.asc("date"));
+
+        return criteria.list();
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -58,39 +55,33 @@ public class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Audit
         return criteria.list();
     }
 
-    public Number count(AuditReportRequest request)
-	{
-		Criteria criteria = buildCriteria(request);
-		criteria.setProjection(Projections.rowCount());
+    public Number count(AuditReportRequest request) {
+        Criteria criteria = buildCriteria(request);
+        criteria.setProjection(Projections.rowCount());
 
-		return (Number)criteria.uniqueResult();
-	}
-	
-	private Criteria buildCriteria(AuditReportRequest request)
-	{
-		Criteria criteria = getSession().createCriteria(Audit.class);
+        return (Number) criteria.uniqueResult();
+    }
 
-		if (!StringUtils.isBlank(request.getAction()))
-		{
-			criteria.add(Restrictions.like("action", "%" + request.getAction().toLowerCase() + "%").ignoreCase());
-		}
+    private Criteria buildCriteria(AuditReportRequest request) {
+        Criteria criteria = getSession().createCriteria(Audit.class);
 
-		if (!StringUtils.isBlank(request.getName()))
-		{
-			criteria.add(Restrictions.like("userFullName", "%" + request.getName().toLowerCase() + "%").ignoreCase());
-		}
+        if (!StringUtils.isBlank(request.getAction())) {
+            criteria.add(Restrictions.like("action", "%" + request.getAction().toLowerCase() + "%").ignoreCase());
+        }
+
+        if (!StringUtils.isBlank(request.getName())) {
+            criteria.add(Restrictions.like("userFullName", "%" + request.getName().toLowerCase() + "%").ignoreCase());
+        }
 
         DateRange reportRange = request.getReportRange();
-        if (!request.isInfiniteStartDate() && reportRange.getDateStart() != null)
-		{
-			criteria.add(Restrictions.ge("date", reportRange.getDateStart()));
-		}
+        if (!request.isInfiniteStartDate() && reportRange.getDateStart() != null) {
+            criteria.add(Restrictions.ge("date", reportRange.getDateStart()));
+        }
 
-		if (!request.isInfiniteEndDate() && reportRange.getDateEnd() != null)
-		{
-			criteria.add(Restrictions.le("date", reportRange.getDateEnd()));
-		}
+        if (!request.isInfiniteEndDate() && reportRange.getDateEnd() != null) {
+            criteria.add(Restrictions.le("date", reportRange.getDateEnd()));
+        }
 
-		return criteria;
-	}
+        return criteria;
+    }
 }

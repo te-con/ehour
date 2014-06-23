@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.persistence.project.dao;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -28,42 +29,34 @@ import java.util.List;
 
 @Repository("projectDao")
 public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Project, Integer> implements ProjectDao {
-    protected static final String CACHEREGION = "query.Project";
+    protected static final Optional<String> CACHEREGION = Optional.of("query.Project");
 
     public ProjectDaoHibernateImpl() {
         super(Project.class);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<Project> findAllActive() {
-        return getHibernateTemplate().findByNamedQuery("Project.findAllActive");
+        return findByNamedQuery("Project.findAllActive", CACHEREGION);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<Project> findDefaultProjects() {
-        return getHibernateTemplate().findByNamedQuery("Project.findAllActiveDefault");
+        return findByNamedQuery("Project.findAllActiveDefault", CACHEREGION);
     }
 
-    /**
-     * Get projects for customer respecting the active flag
-     */
+    @Override
     public List<Project> findProjectForCustomers(List<Customer> customers, boolean onlyActive) {
         String hqlName = onlyActive ? "Project.findActiveProjectsForCustomers" : "Project.findAllProjectsForCustomers";
 
-        List<Project> results = findByNamedQueryAndNamedParam(hqlName,
-                "customers",
-                customers.toArray(),
-                true,
-                CACHEREGION);
-
-        return results;
+        return findByNamedQueryAndNamedParam(hqlName, "customers", customers.toArray(), CACHEREGION);
     }
 
     @Override
     public List<Project> findActiveProjectsWhereUserIsPM(User user) {
-        return findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM",
-                "user", user,
-                true, CACHEREGION);
+        return findByNamedQueryAndNamedParam("Project.findActiveProjectsWhereUserIsPM", "user", user, CACHEREGION);
     }
 
     @SuppressWarnings("unchecked")
@@ -72,6 +65,6 @@ public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Pro
         Criteria criteria = getSession().createCriteria(Project.class);
         criteria.add(Restrictions.isNotNull("projectManager"));
 
-        return (List<Project>)criteria.list();
+        return (List<Project>) criteria.list();
     }
 }

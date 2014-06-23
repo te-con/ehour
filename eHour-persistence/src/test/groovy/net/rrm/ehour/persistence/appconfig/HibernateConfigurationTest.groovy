@@ -1,18 +1,13 @@
 package net.rrm.ehour.persistence.appconfig
 
+import net.rrm.ehour.persistence.datasource.DerbyDataSourceFactory
 import org.hibernate.SessionFactory
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import org.springframework.test.annotation.DirtiesContext
 
 import javax.sql.DataSource
-import java.sql.Connection
-import java.sql.DatabaseMetaData
 
 import static org.junit.Assert.assertNotNull
-import static org.mockito.Mockito.when
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -20,20 +15,13 @@ import static org.mockito.Mockito.when
  */
 
 class HibernateConfigurationTest {
-    @Mock
     private DataSource dataSource
-
-    @Mock
-    private Connection connection
-
-    @Mock
-    private DatabaseMetaData metaData
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks this
-        when(dataSource.connection).thenReturn connection
-        when(connection.metaData).thenReturn metaData
+        def sourceFactory = new DerbyDataSourceFactory()
+
+        dataSource = sourceFactory.createDataSource("memory:db")
     }
 
     @Test
@@ -41,7 +29,6 @@ class HibernateConfigurationTest {
         def db = createSessionFactoryForDb("derby")
         assertNotNull(db);
         db.close()
-
     }
 
     @Test(expected = IllegalArgumentException)

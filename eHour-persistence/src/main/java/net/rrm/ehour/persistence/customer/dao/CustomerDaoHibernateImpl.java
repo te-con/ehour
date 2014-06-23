@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.persistence.customer.dao;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
 import org.springframework.stereotype.Repository;
@@ -23,46 +24,30 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Customer DAO 
- **/
+ * Customer DAO
+ */
 
 @Repository("customerDao")
-public class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Customer, Integer> implements CustomerDao
-{
-	private static final String	CACHEREGION = "query.Customer";
+public class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Customer, Integer> implements CustomerDao {
+    private static final Optional<String> CACHEREGION = Optional.of("query.Customer");
 
-	public CustomerDaoHibernateImpl()
-	{
-		super(Customer.class);
-	}
+    public CustomerDaoHibernateImpl() {
+        super(Customer.class);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.customer.dao.CustomerDAO#findOnNameAndCode(java.lang.String, java.lang.String)
-	 */
-	public Customer findOnNameAndCode(String name, String code)
-	{
-		String[]	keys = new String[]{"name", "code"};
-		String[]	params = new String[]{name.toLowerCase(), code.toLowerCase()};
-		List<Customer>		results;
-		
-		results = findByNamedQueryAndNamedParam("Customer.findByNameAndCode"
-				, keys
-				, params
-				, true
-				, CACHEREGION);			
-		
-		if (results != null && results.size() > 0)
-		{
-			return results.get(0);
-		}
-		
-		return null;
-	}
+    @Override
+    public Customer findOnNameAndCode(String name, String code) {
+        String[] keys = new String[]{"name", "code"};
+        String[] params = new String[]{name.toLowerCase(), code.toLowerCase()};
 
-	public List<Customer> findAllActive()
-	{
-		return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", true, false, CACHEREGION);
-	}
+        List<Customer> results = findByNamedQueryAndNamedParam("Customer.findByNameAndCode", keys, params, CACHEREGION);
+
+        return results != null && results.size() > 0 ? results.get(0) : null;
+    }
+
+    @Override
+    public List<Customer> findAllActive() {
+        return findByNamedQueryAndNamedParam("Customer.findAllWithActive", "active", true, CACHEREGION);
+    }
 
 }

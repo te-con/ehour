@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.persistence.dao;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.domain.DomainObject;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -32,6 +33,8 @@ import java.util.List;
 public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, ?>, PK extends Serializable>
         extends AbstractAnnotationDaoHibernate4Impl
         implements GenericDao<T, PK> {
+    private static final Optional<String> NONE = Optional.absent();
+
     private Class<T> type;
 
     public AbstractGenericDaoHibernateImpl(Class<T> type) {
@@ -40,95 +43,73 @@ public abstract class AbstractGenericDaoHibernateImpl<T extends DomainObject<?, 
         this.type = type;
     }
 
-    public List<T> findByNamedQueryAndNamedParam(final String queryName,
-                                                 final String param,
-                                                 final Object value,
-                                                 final boolean isCaching,
-                                                 final String cachingRegion) {
-        return findByNamedQueryAndNamedParam(queryName, new String[]{param}, new Object[]{value}, isCaching, cachingRegion);
+    protected List<T> findByNamedQuery(final String queryName, final Optional<String> cachingRegion) {
+        return findByNamedQueryAndNamedParam(queryName, new String[0], new Object[0], cachingRegion);
     }
 
-
-    public List<T> findByNamedQueryAndNamedParam(final String queryName,
-                                                 final String[] paramNames,
-                                                 final Object[] values) {
-        return findByNamedQueryAndNamedParam(queryName, paramNames, values, false, "");
+    protected List<T> findByNamedQueryAndNamedParam(final String queryName,
+                                                    final String param,
+                                                    final Object value,
+                                                    final Optional<String> cachingRegion) {
+        return findByNamedQueryAndNamedParam(queryName, new String[]{param}, new Object[]{value}, cachingRegion);
     }
 
-    /**
-     * Find named query optionally with caching enabled
-     */
+    protected List<T> findByNamedQueryAndNamedParam(final String queryName,
+                                                    final String[] paramNames,
+                                                    final Object[] values) {
+        return findByNamedQueryAndNamedParam(queryName, paramNames, values, NONE);
+    }
+
     @SuppressWarnings("unchecked")
-    public List<T> findByNamedQueryAndNamedParam(final String queryName,
-                                                 final String[] paramNames,
-                                                 final Object[] values,
-                                                 boolean isCaching,
-                                                 final String cachingRegion) {
+    protected <C> List<C> findByNamedQueryAndNamedParam(final String queryName,
+                                                        final String[] paramNames,
+                                                        final Object[] values,
+                                                        final Optional<String> cachingRegion) {
         Query query = getSession().getNamedQuery(queryName);
 
         for (int i = 0; i < values.length; i++) {
             query.setParameter(paramNames[i], values[i]);
         }
 
-        if (isCaching) {
+        if (cachingRegion.isPresent()) {
             query.setCacheable(true);
-            query.setCacheRegion(cachingRegion);
+            query.setCacheRegion(cachingRegion.get());
         }
 
-        return (List<T>)query.list();
+        return (List<C>) query.list();
     }
 
-    /**
-     * Find all domain objects
-     */
+    @Override
     @SuppressWarnings("unchecked")
     public List<T> findAll() {
         Criteria criteria = getSession().createCriteria(type);
-        return (List<T>)criteria.list();
+        return (List<T>) criteria.list();
     }
 
-    /**
-     * Delete domain object
-     */
+    @Override
     public void delete(T domObj) {
         getSession().delete(domObj);
     }
 
-    /**
-     *
-     */
+    @Override
     public void delete(PK id) {
         T dom = findById(id);
         delete(dom);
     }
 
-    /**
-     * Persist domain object
-     *
-     * @param domObj
-     * @return
-     */
+    @Override
     public T persist(T domObj) {
         getSession().saveOrUpdate(domObj);
         return domObj;
     }
 
-    /**
-     * Find by ID
-     *
-     * @param id
-     * @return
-     */
+    @Override
     @SuppressWarnings("unchecked")
     public T findById(PK id) {
         return (T) getSession().load(type, id);
     }
 
-    /**
-     * Merge
-     *
-     * @param domobj
-     */
+    @Override
     @SuppressWarnings("unchecked")
     public T merge(T domobj) {
         return (T) getSession().merge(domobj);

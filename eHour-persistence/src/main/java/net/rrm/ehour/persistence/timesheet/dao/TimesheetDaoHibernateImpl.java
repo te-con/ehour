@@ -16,16 +16,14 @@
 
 package net.rrm.ehour.persistence.timesheet.dao;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
 import net.rrm.ehour.timesheet.dto.BookedDay;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -40,18 +38,12 @@ public class TimesheetDaoHibernateImpl
         super(TimesheetEntry.class);
     }
 
-    /**
-     * Get timesheet entries within date range for a user
-     *
-     * @param userId
-     * @param dateStart
-     * @param dateEnd
-     * @return List with TimesheetEntry domain objects
-     */
+    @Override
     public List<TimesheetEntry> getTimesheetEntriesInRange(Integer userId, DateRange dateRange) {
-        return getSheetOnUserIdAndRange(userId, dateRange, "Timesheet.getEntriesBetweenDateForUserId");
+        return applyConstraintsAndExecute(userId, dateRange, "Timesheet.getEntriesBetweenDateForUserId", TimesheetEntry.class);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<TimesheetEntry> getTimesheetEntriesInRange(ProjectAssignment assignment, DateRange dateRange) {
         String[] keys = new String[]{"dateStart", "dateEnd", "assignment"};
@@ -71,77 +63,48 @@ public class TimesheetDaoHibernateImpl
         return findByNamedQueryAndNamedParam(hql, keys, params);
     }
 
-
-    /**
-     * Get  hours per day for a date range
-     *
-     * @param userId
-     * @param dateRange
-     * @return List with key values -> key = date, value = hours booked
-     */
+    @Override
     public List<BookedDay> getBookedHoursperDayInRange(Integer userId, DateRange dateRange) {
-        return getSheetOnUserIdAndRange(userId, dateRange, "Timesheet.getBookedDaysInRangeForUserId");
+        return applyConstraintsAndExecute(userId, dateRange, "Timesheet.getBookedDaysInRangeForUserId", BookedDay.class);
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> List<T> getSheetOnUserIdAndRange(Integer userId, DateRange dateRange, String hql) {
+    private <T> List<T> applyConstraintsAndExecute(Integer userId, DateRange dateRange, String hql, Class<T> clazz) {
         String[] keys = new String[]{"dateStart", "dateEnd", "userId"};
         Object[] params = new Object[]{dateRange.getDateStart(), dateRange.getDateEnd(), userId};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam(hql, keys, params);
+        return findByNamedQueryAndNamedParam(hql, keys, params, Optional.<String>absent());
     }
 
+    @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public TimesheetEntry getLatestTimesheetEntryForAssignment(final Integer assignmentId) {
-        return (TimesheetEntry) getHibernateTemplate().executeWithNativeSession(
-                new HibernateCallback() {
-                    public Object doInHibernate(Session session) throws HibernateException {
-                        List<TimesheetEntry> results;
-
-                        Query queryObject = session.getNamedQuery("Timesheet.getLatestEntryForAssignmentId");
-
-                        queryObject.setInteger("assignmentId", assignmentId);
-                        queryObject.setMaxResults(1);
-                        results = (List<TimesheetEntry>) queryObject.list();
-
-                        return ((results != null && results.size() > 0) ? results.get(0) : null);
-                    }
-                });
+        Query queryObject = getSession().getNamedQuery("Timesheet.getLatestEntryForAssignmentId");
+        queryObject.setInteger("assignmentId", assignmentId);
+        return (TimesheetEntry) queryObject.uniqueResult();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.timesheet.dao.TimesheetDAO#deleteTimesheetEntries(java.util.List)
-     */
+    @Override
     public int deleteTimesheetEntries(List<? extends Serializable> assignmentIds) {
-        Session session = getSession();
-        Query query = session.getNamedQuery("Timesheet.deleteOnAssignmentIds");
+        Query query = getSession().getNamedQuery("Timesheet.deleteOnAssignmentIds");
         query.setParameterList("assignmentIds", assignmentIds);
-
         return query.executeUpdate();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.timesheet.dao.TimesheetDAO#getTimesheetEntriesAfter(java.lang.Integer, java.util.Date)
-     */
+    @Override
     @SuppressWarnings("unchecked")
     public List<TimesheetEntry> getTimesheetEntriesAfter(ProjectAssignment assignment, Date date) {
         String[] keys = new String[]{"date", "assignment"};
         Object[] params = new Object[]{date, assignment};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesAfterDateForAssignment", keys, params);
+        return findByNamedQueryAndNamedParam("Timesheet.getEntriesAfterDateForAssignment", keys, params);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.timesheet.dao.TimesheetDAO#getTimesheetEntriesBefore(java.lang.Integer, java.util.Date)
-     */
+    @Override
     @SuppressWarnings("unchecked")
     public List<TimesheetEntry> getTimesheetEntriesBefore(ProjectAssignment assignment, Date date) {
         String[] keys = new String[]{"date", "assignment"};
         Object[] params = new Object[]{date, assignment};
 
-        return getHibernateTemplate().findByNamedQueryAndNamedParam("Timesheet.getEntriesBeforeDateForAssignment", keys, params);
+        return findByNamedQueryAndNamedParam("Timesheet.getEntriesBeforeDateForAssignment", keys, params);
     }
 }

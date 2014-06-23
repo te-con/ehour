@@ -16,20 +16,20 @@
 
 package net.rrm.ehour.persistence.user.dao;
 
-import java.util.List;
-
+import com.google.common.base.Optional;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
-
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("userDepartmentDao")
 public class UserDepartmentDaoHibernateImpl 
 	extends AbstractGenericDaoHibernateImpl<UserDepartment, Integer> implements UserDepartmentDao
 {
-	private static final String CACHEREGION = "query.Department";
-	
-	public UserDepartmentDaoHibernateImpl()
+    private static final Optional<String> CACHEREGION = Optional.of("query.Department");
+
+    public UserDepartmentDaoHibernateImpl()
 	{
 		super(UserDepartment.class);
 	}
@@ -41,7 +41,7 @@ public class UserDepartmentDaoHibernateImpl
 		String[] keys = new String[]{"name", "code"};
 		Object[] params = new Object[]{name.toLowerCase(), code.toLowerCase()}; 
 		
-		results = findByNamedQueryAndNamedParam("UserDepartment.findByNameAndCode", keys, params, true, CACHEREGION);		
+		results = findByNamedQueryAndNamedParam("UserDepartment.findByNameAndCode", keys, params, CACHEREGION);
 		
 		return (results.size() > 0) ? results.get(0) : null;
 	}	

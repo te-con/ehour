@@ -16,22 +16,22 @@
 
 package net.rrm.ehour.persistence.mail.dao;
 
-import java.util.List;
-
 import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.persistence.dao.GenericDao;
 
-/**
- * DAO for MailLog db operations 
- **/
+import java.util.List;
 
-public interface MailLogDao  extends GenericDao<MailLog, Integer>
-{
-	/**
-	 * Get mail log on project assignment id's
-	 * @param projectAssignmentId
-	 * @return
-	 */
-	public List<MailLogAssignment> findMailLogOnAssignmentIds(Integer[] projectAssignmentId);	
+/**
+ * DAO for MailLog db operations
+ */
+
+public interface MailLogDao extends GenericDao<MailLog, Integer> {
+    /**
+     * Get mail log on project assignment id's
+     *
+     * @param projectAssignmentId
+     * @return
+     */
+    public List<MailLogAssignment> findMailLogOnAssignmentIds(Integer[] projectAssignmentId);
 }

@@ -19,7 +19,6 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "role",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
@@ -69,7 +68,6 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "role",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
@@ -118,7 +116,6 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "role",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
@@ -167,7 +164,6 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "role",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
@@ -217,7 +213,6 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "role",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"

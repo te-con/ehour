@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.persistence.user.dao;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
@@ -26,27 +27,27 @@ import java.util.List;
 
 @Repository("userDao")
 public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, Integer> implements UserDao {
-    private static final String CACHEREGION = "query.User";
+    private static final Optional<String> CACHEREGION = Optional.of("query.User");
 
     public UserDaoHibernateImpl() {
         super(User.class);
     }
 
+    @Override
     public User findByUsername(String username) {
-        List<User> l = findByNamedQueryAndNamedParam("User.findByUsername", "username", username, true, CACHEREGION);
+        List<User> l = findByNamedQueryAndNamedParam("User.findByUsername", "username", username, CACHEREGION);
 
         return l.size() > 0 ? l.get(0) : null;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<User> findUsers(boolean onlyActive) {
-        return onlyActive ? getHibernateTemplate().findByNamedQuery("User.findActiveUsers") : getHibernateTemplate().loadAll(User.class);
+        return onlyActive ? findByNamedQuery("User.findActiveUsers", CACHEREGION) : findAll();
     }
 
-    /**
-     *
-     */
     @SuppressWarnings("unchecked")
+    @Override
     public List<User> findActiveUsers() {
         return findUsers(true);
     }
@@ -63,14 +64,16 @@ public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, 
         paramKeys = new String[]{"departments"};
         paramValues = new Object[]{departments.toArray()};
 
-        return findByNamedQueryAndNamedParam(hql, paramKeys, paramValues, true, CACHEREGION);
+        return findByNamedQueryAndNamedParam(hql, paramKeys, paramValues, CACHEREGION);
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public List<User> findAllActiveUsersWithEmailSet() {
-        return getHibernateTemplate().findByNamedQuery("User.findAllActiveUsersWithEmailSet");
+        return findByNamedQuery("User.findAllActiveUsersWithEmailSet", CACHEREGION);
     }
 
+    @Override
     public void deletePmWithoutProject() {
         Query q = getSession().getNamedQuery("User.deletePMsWithoutProject");
         q.executeUpdate();
