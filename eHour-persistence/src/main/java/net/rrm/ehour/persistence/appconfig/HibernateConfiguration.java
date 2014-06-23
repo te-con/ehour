@@ -2,12 +2,9 @@ package net.rrm.ehour.persistence.appconfig;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.domain.DomainObjects;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -44,31 +42,29 @@ public class HibernateConfiguration {
 
         LOGGER.info("Using database type: " + databaseName);
 
-        Configuration configuration = new Configuration();
-        List<Resource> resources = getMappingResources(configProperties);
-        for (Resource resource : resources) {
-            configuration.addInputStream(resource.getInputStream());
-        }
+        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+        sessionFactoryBean.setDataSource(dataSource);
 
-        Class[] domainObjects = DomainObjects.DOMAIN_OBJECTS;
+        List<Resource> mappingResources = getMappingResources(configProperties);
+        sessionFactoryBean.setMappingLocations(mappingResources.toArray(new Resource[mappingResources.size()]));
 
-        for (Class domainObject : domainObjects) {
-            configuration.addAnnotatedClass(domainObject);
-        }
+        sessionFactoryBean.setPackagesToScan("net.rrm.ehour.domain");
 
-        configuration.setProperty(AvailableSettings.DIALECT, (String) configProperties.get("hibernate.dialect"));
-        configuration.setProperty(AvailableSettings.SHOW_SQL, "false");
-        configuration.setProperty("use_outer_join", "true");
-        configuration.setProperty(AvailableSettings.CACHE_REGION_FACTORY, "org.hibernate.cache.ehcache.EhCacheRegionFactory");
-        configuration.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, caching);
-        configuration.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
-        configuration.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
-        configuration.setProperty(AvailableSettings.HBM2DDL_AUTO, (String) configProperties.get("hibernate.hbm2ddl.auto"));
-        configuration.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-        configuration.getProperties().put(AvailableSettings.DATASOURCE, dataSource);
+        Properties properties = new Properties();
 
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-        return configuration.buildSessionFactory(builder.build());
+        properties.setProperty(AvailableSettings.DIALECT, (String) configProperties.get("hibernate.dialect"));
+        properties.setProperty(AvailableSettings.SHOW_SQL, "false");
+        properties.setProperty("use_outer_join", "true");
+        properties.setProperty(AvailableSettings.CACHE_REGION_FACTORY, "org.hibernate.cache.ehcache.EhCacheRegionFactory");
+        properties.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, caching);
+        properties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
+        properties.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
+        properties.setProperty(AvailableSettings.HBM2DDL_AUTO, (String) configProperties.get("hibernate.hbm2ddl.auto"));
+        properties.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+
+        sessionFactoryBean.setHibernateProperties(properties);
+        sessionFactoryBean.afterPropertiesSet();
+        return sessionFactoryBean.getObject();
     }
 
     private void validateAndSetCaching() {
