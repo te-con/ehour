@@ -37,11 +37,9 @@ import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -123,13 +121,11 @@ public class CalendarPanel extends SidePanel {
 
     private AjaxLink<Void> createNextMonthLink(String id) {
         AjaxLink<Void> nextMonthLink = new ChangeMonthLink(id, 1);
-        nextMonthLink.add(new Image("nextMonthImg", new PackageResourceReference(CalendarPanel.class, "arrow_right.gif")));
         return nextMonthLink;
     }
 
     private AjaxLink<Void> createPreviousMonthLink(String id) {
         AjaxLink<Void> previousMonthLink = new ChangeMonthLink(id, -1);
-        previousMonthLink.add(new Image("previousMonthImg", new PackageResourceReference(CalendarPanel.class, "arrow_left.gif")));
         return previousMonthLink;
     }
 
