@@ -94,7 +94,7 @@ public class ExportReportBody extends AbstractExportReportPart {
         for (FlatReportElement flatReportElement : elements) {
             HSSFRow row = getSheet().createRow(rowNumber);
 
-            if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() > 0.0) {
+            if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() >= 0.0) {
                 createDateCell(date, row, isBorder);
                 createProjectCell(flatReportElement.getProjectName(), row, isBorder);
                 createProjectCodeCell(flatReportElement.getProjectCode(), row, isBorder);
