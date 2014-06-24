@@ -74,7 +74,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     }
 
     public boolean isEmptyEntry() {
-        return getHours() == null || getHours().equals(0f);
+        return getHours() == null;
     }
 
     public TimesheetEntryId getEntryId() {
