@@ -177,7 +177,7 @@ div.MonthAggregateTable div.TotalRow
 	border-right-width: 0;
 }
 
-.MonthOverviewTable hourContentTable td
+.MonthOverviewTable .hourContentTable td
 {
 	border: 0;
 }
@@ -206,4 +206,41 @@ div.MonthAggregateTable div.TotalRow
 	font-weight: bold;
 	float: 	right;
 	margin: 0 2px 0 0;
+}
+
+.MonthAggregateTable .customer {
+    width: 23%;
+}
+
+.MonthAggregateTable .projectCode {
+    width: 15%;
+}
+
+.MonthAggregateTable .project {
+    width: 20%;
+}
+
+.MonthAggregateTable .rate {
+    width: 10%;
+}
+
+.MonthAggregateTable .bookedHours {
+    width: 8%;
+}
+
+.MonthAggregateTable .turnover {
+    width: 15%;
+}
+
+.TotalRow .bookedHours {
+    margin-top:2px;
+}
+
+.TotalRow .turnover {
+    margin-top:2px;
+}
+
+
+.AggregateHeader .header {
+    margin-top: 0;
 }
