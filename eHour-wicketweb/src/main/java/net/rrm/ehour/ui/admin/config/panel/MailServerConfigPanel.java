@@ -25,6 +25,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
@@ -55,6 +56,7 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
         form.add(new AjaxFormComponentFeedbackIndicator("mailFromError", mailFrom));
 
         // smtp server, port, username, pass
+
         TextField<String> mailSmtp = new RequiredTextField<String>("config.mailSmtp");
         mailSmtp.setLabel(new ResourceModel("admin.config.mailSmtp"));
         mailSmtp.add(new ValidatingFormComponentAjaxBehavior());
@@ -73,7 +75,8 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
         smtpUsername.setLabel(new ResourceModel("admin.config.smtpUsername"));
         form.add(smtpUsername);
 
-        TextField<String> smtpPassword = new TextField<String>("config.smtpPassword");
+        TextField<String> smtpPassword = new PasswordTextField("config.smtpPassword");
+        smtpPassword.setRequired(false);
         smtpPassword.setLabel(new ResourceModel("admin.config.smtpPassword"));
         form.add(smtpPassword);
         addTestMailSettingsButton(form);

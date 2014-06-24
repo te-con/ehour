@@ -29,41 +29,39 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created on Apr 22, 2009, 4:19:23 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
 @SuppressWarnings("serial")
-public class MailServerConfigPanelTest extends AbstractMainConfigTest
-{
-	@Test
-	public void shouldSubmit()
-	{
-		getConfigService().persistConfiguration(getConfigStub());
-		replay(getConfigService());
-		
-		getMailService().mailTestMessage(getConfigStub());
-		replay(getMailService());
-		
-		startPage();
-		
-		tester.assertComponent(FORM_PATH, Form.class);
+public class MailServerConfigPanelTest extends AbstractMainConfigTest {
+    @Test
+    public void shouldSubmit() {
+        getConfigService().persistConfiguration(getConfigStub());
+        replay(getConfigService());
 
-		tester.clickLink("configTabs:tabs-container:tabs:2:link", true);
-		
-		FormTester miscFormTester = tester.newFormTester(FORM_PATH);
-		
-		miscFormTester.setValue("config.mailFrom", "thies@thies.net");
-		miscFormTester.setValue("config.mailSmtp", "localhost");
-		miscFormTester.setValue("config.smtpPort", "25");
+        getMailService().mailTestMessage(getConfigStub());
+        replay(getMailService());
 
-		tester.executeAjaxEvent(FORM_PATH + ":testMail", "onclick");
-		
-		verify(getMailService());
-		
-		tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick");
-		
-		assertEquals("thies@thies.net", getConfigStub().getMailFrom());
-		assertEquals("localhost", getConfigStub().getMailSmtp());
-		assertEquals("25", getConfigStub().getSmtpPort());
-	}
+        startPage();
+
+        tester.assertComponent(FORM_PATH, Form.class);
+
+        tester.clickLink("configTabs:tabs-container:tabs:2:link", true);
+
+        FormTester miscFormTester = tester.newFormTester(FORM_PATH);
+
+        miscFormTester.setValue("config.mailFrom", "thies@thies.net");
+        miscFormTester.setValue("config.mailSmtp", "localhost");
+        miscFormTester.setValue("config.smtpPort", "25");
+
+        tester.executeAjaxEvent(FORM_PATH + ":testMail", "onclick");
+
+        verify(getMailService());
+
+        tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick");
+
+        assertEquals("thies@thies.net", getConfigStub().getMailFrom());
+        assertEquals("localhost", getConfigStub().getMailSmtp());
+        assertEquals("25", getConfigStub().getSmtpPort());
+    }
 }
