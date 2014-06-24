@@ -31,7 +31,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
@@ -195,9 +194,6 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
      */
     @SuppressWarnings("serial")
     private Component createFoldLink(final Component original) {
-        // set relative URL to image and set id
-        final ContextImage originalImage = createFoldImage(false);
-
         AjaxLink<String> foldLink = new AjaxLink<String>(ID_FOLD_LINK) {
             @Override
             public void onClick(AjaxRequestTarget target) {
@@ -206,23 +202,23 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 original.setVisible(!isVisible);
                 target.add(original);
 
-                ContextImage img = createFoldImage(!isVisible);
+                WebMarkupContainer img = createFoldImage(!isVisible);
                 this.get(ID_FOLD_IMG).replaceWith(img);
                 target.add(img);
             }
         };
 
+        final WebMarkupContainer originalImage = createFoldImage(false);
         foldLink.add(originalImage);
         return foldLink;
     }
 
-    private ContextImage createFoldImage(boolean up) {
-        String upStr = "img/icon_" + (up ? "up_" : "down_");
+    private WebMarkupContainer createFoldImage(boolean up) {
+        WebMarkupContainer foldImg = new WebMarkupContainer("foldImg");
+        foldImg.add(AttributeModifier.replace("class", up ? "fa fa-angle-up" : "fa fa-angle-down"));
+        foldImg.setOutputMarkupId(true);
 
-        ContextImage img = new ContextImage(ID_FOLD_IMG, new Model<String>(upStr + "off.gif"));
-        img.setOutputMarkupId(true);
-
-        return img;
+        return foldImg;
     }
 
     private Component createProjectSummaryRow(String id, UserProjectStatus projectStatus) {
