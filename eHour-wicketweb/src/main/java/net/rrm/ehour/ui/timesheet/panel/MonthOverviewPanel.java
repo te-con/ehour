@@ -26,12 +26,10 @@ import net.rrm.ehour.ui.common.component.sort.TimesheetEntryComparator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -73,18 +71,8 @@ public class MonthOverviewPanel extends Panel {
         DateUtil.dayOfWeekFix(overviewFor);
         overviewFor.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
 
-        Link<String> printLink = new Link<String>("printLink") {
-            @Override
-            public void onClick() {
-                setResponsePage(new TimesheetExportPage(overviewForMonth));
-            }
-        };
-
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("greyFrame",
-                new ResourceModel("monthoverview.overview"),
-                true,
-                printLink, null
-        );
+                new ResourceModel("monthoverview.overview"));
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
 
         greyBorder.add(blueBorder);

@@ -16,94 +16,47 @@
 
 package net.rrm.ehour.ui.common.border;
 
-import net.rrm.ehour.ui.common.util.HtmlUtil;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
  * CSS in ehour.css as it's very common
- **/
+ */
 
-public class GreyRoundedBorder extends Border
-{
-	private static final long serialVersionUID = 7184643596615028876L;
+public class GreyRoundedBorder extends Border {
+    private static final long serialVersionUID = 7184643596615028876L;
 
     /**
-	 * Default border. No title, links and default width 
-	 * @param id
-	 */
-	public GreyRoundedBorder(String id)
-	{
-		this(id, new Model<String>(), null, null);
-	}
+     * Default border. No title with default width
+     */
+    public GreyRoundedBorder(String id) {
+        this(id, new Model<String>());
+    }
 
 
-	/**
-	 * No title but with print & excel link
-	 * @param id
-	 * @param printLink
-	 * @param excelLink
-	 */
-	public GreyRoundedBorder(String id, Link<Void> printLink, Link<Void> excelLink)
-	{
-		this(id, new Model<String>(), false, printLink, excelLink);
-	}
-	
-	/**
-	 * Title, without the links 
-	 * @param id
-	 * @param title
-	 */
-	public GreyRoundedBorder(String id, String title)
-	{
-		this(id, new Model<String>(title));
-	}
-	
-	/**
-	 * Title, without the links
-	 * @param id
-	 * @param title
-	 */
-	public GreyRoundedBorder(String id, IModel<String> title)
-	{
-		this(id, title, null, null);
-	}
-	
-	/**
-	 * Title and print & excel links
-	 * @param id
-	 * @param title
-	 * @param printLink
-	 * @param excelLink
-	 */
-	public GreyRoundedBorder(String id, IModel<String> title, Link<Void> printLink, Link<Void> excelLink)
-	{
-		this(id, title, true, printLink, excelLink);
-	}
-	
-	public GreyRoundedBorder(String id, IModel<String> title, boolean showTitle, Link<?> printLink, Link<?> excelLink)
-	{
-		super(id);
+    /**
+     * With title
+     */
+    public GreyRoundedBorder(String id, String title) {
+        this(id, new Model<String>(title));
+    }
 
-		Label	label = new Label("greyTabTitle", title);
-		addToBorder(label);
-		label.setVisible(showTitle);
-		
-		if (printLink == null)
-		{
-			printLink = HtmlUtil.getInvisibleLink("printLink");
-		}
 
-        addToBorder(printLink);
-		
-		if (excelLink == null)
-		{
-			excelLink = HtmlUtil.getInvisibleLink("excelLink");
-		}
+    /**
+     * With title model
+     */
+    public GreyRoundedBorder(String id, IModel<String> title) {
+        this(id, title, true);
+    }
 
-        addToBorder(excelLink);
-	}
+    public GreyRoundedBorder(String id, IModel<String> title, boolean showTitle) {
+        super(id);
+
+        Label label = new Label("greyTabTitle", title);
+        addToBorder(label);
+        label.setVisible(showTitle);
+
+    }
 }

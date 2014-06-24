@@ -92,11 +92,6 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
         addOrReplaceContentContainer(contentContainer);
     }
 
-    /**
-     * Handle Ajax request
-     *
-     * @param target
-     */
     @Override
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
