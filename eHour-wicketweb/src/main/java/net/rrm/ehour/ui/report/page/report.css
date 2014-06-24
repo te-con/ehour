@@ -75,3 +75,7 @@
 .fa-wrench {
     margin-left: 2px;
 }
+
+.fa:hover {
+    color: #5190c5;
+}
