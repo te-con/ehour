@@ -1,25 +1,26 @@
 package net.rrm.ehour.ui.admin.project.assign
 
-import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
-import net.rrm.ehour.domain.{ProjectAssignment, Project}
-import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.project.service.ProjectAssignmentService
-import org.apache.wicket.model.{PropertyModel, IModel}
-import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
 import java.lang.Boolean
-import net.rrm.ehour.util._
-import org.apache.wicket.markup.html.panel.Fragment
-import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import net.rrm.ehour.ui.common.wicket.{Event, AjaxLink, DateLabel, NonEmptyLabel}
-import org.apache.wicket.AttributeModifier
-import net.rrm.ehour.ui.common.wicket.WicketDSL._
-import org.apache.wicket.event.Broadcast
-import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, JavaScriptHeaderItem, IHeaderResponse}
-import org.apache.wicket.request.resource.JavaScriptResourceReference
+
+import net.rrm.ehour.domain.{Project, ProjectAssignment}
+import net.rrm.ehour.project.service.ProjectAssignmentService
+import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.wicket.AjaxLink._
+import net.rrm.ehour.ui.common.wicket.WicketDSL._
+import net.rrm.ehour.ui.common.wicket.{AjaxLink, DateLabel, Event, NonEmptyLabel}
+import net.rrm.ehour.util._
+import org.apache.wicket.AttributeModifier
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.event.Broadcast
+import org.apache.wicket.markup.head.{IHeaderResponse, JavaScriptHeaderItem, OnDomReadyHeaderItem}
 import org.apache.wicket.markup.html.WebMarkupContainer
+import org.apache.wicket.markup.html.list.{ListItem, ListView}
+import org.apache.wicket.markup.html.panel.Fragment
+import org.apache.wicket.model.{IModel, PropertyModel}
+import org.apache.wicket.request.resource.JavaScriptResourceReference
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivate: Boolean = false) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
   val Self = this
@@ -36,7 +37,7 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
 
     val assignments = sort(fetchProjectAssignments(project))
 
-    addOrReplace(createFilter("filterContainer", !assignments.isEmpty))
+    addOrReplace(createFilter("filterContainer", assignments.nonEmpty))
 
     addOrReplace(createAssignmentListView("assignments", assignments))
 

@@ -124,7 +124,10 @@ public class TimesheetFactory {
                                                    Timesheet timesheet) {
         List<TimesheetRow> timesheetRows = new ArrayList<TimesheetRow>();
         Calendar firstDate = DateUtil.getCalendar(config);
-        firstDate.setTime(timesheetDates.get(0).date);
+
+        if (timesheetDates.size() > 0) {
+            firstDate.setTime(timesheetDates.get(0).date);
+        }
 
         for (ProjectAssignment assignment : assignmentMap.keySet()) {
             TimesheetRow timesheetRow = new TimesheetRow(config);

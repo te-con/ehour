@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.timesheet.dto;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetComment;
@@ -51,6 +52,8 @@ public class WeekOverview implements Serializable {
         this.projectAssignments = projectAssignments;
 
         assignmentMap = mergeUnbookedAssignments(createAssignmentMap());
+        weekRange = new DateRange();
+        lockedDays = Lists.newArrayList();
     }
 
     public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, List<Date> lockedDates) {

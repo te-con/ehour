@@ -3,10 +3,11 @@ package net.rrm.ehour.ui.admin.user
 import java.util
 import java.util.Calendar
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
-import net.rrm.ehour.timesheet.dto.TimesheetOverview
-import net.rrm.ehour.timesheet.service.IOverviewTimesheet
+import net.rrm.ehour.timesheet.dto.WeekOverview
+import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet}
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.user.service.UserService
@@ -21,10 +22,12 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
 
   "Impersonate User Page" should {
     val service = mockService[UserService]
-    val timesheetService = mockService[IOverviewTimesheet]
+    val overviewTimesheet = mockService[IOverviewTimesheet]
+
+    mockService[IPersistTimesheet]
 
     before {
-      reset(service, timesheetService)
+      reset(service, overviewTimesheet)
       when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
     }
 
@@ -54,11 +57,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     }
 
     "impersonate user" in {
-      val user = UserObjectMother.createUser
-
-      when(timesheetService.getTimesheetOverview(any[User], any[Calendar])).thenReturn(new TimesheetOverview)
-
-      when(service.getUser(1)).thenReturn(user)
+      prep(service, overviewTimesheet)
 
       tester.startPage(classOf[ImpersonateUserPage])
 
@@ -73,11 +72,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     }
 
     "cannot impersonate user when user is already impersonating" in {
-      val user = UserObjectMother.createUser
-
-      when(timesheetService.getTimesheetOverview(any[User], any[Calendar])).thenReturn(new TimesheetOverview)
-
-      when(service.getUser(1)).thenReturn(user)
+      prep(service, overviewTimesheet)
 
       tester.startPage(classOf[ImpersonateUserPage])
 
@@ -94,5 +89,13 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
 
       tester.getLastRenderedPage.get(PathToImpersonateLink) should be(null)
     }
+  }
+
+  def prep(service: UserService, overviewTimesheet: IOverviewTimesheet) {
+    val user = UserObjectMother.createUser
+
+    when(overviewTimesheet.getWeekOverview(any[User], any[Calendar])).thenReturn(new WeekOverview(Lists.newArrayList(), Lists.newArrayList()))
+
+    when(service.getUser(1)).thenReturn(user)
   }
 }
