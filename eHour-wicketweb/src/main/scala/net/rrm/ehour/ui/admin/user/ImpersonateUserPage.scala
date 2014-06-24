@@ -4,7 +4,7 @@ import net.rrm.ehour.ui.admin.AbstractAdminPage
 import net.rrm.ehour.ui.common.border.{GreyBlueRoundedBorder, GreyRoundedBorder}
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent
 import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.ui.common.util.AuthUtil
+import net.rrm.ehour.ui.common.util.AuthUtil._
 import net.rrm.ehour.ui.common.wicket.AjaxLink
 import net.rrm.ehour.ui.common.wicket.AjaxLink._
 import net.rrm.ehour.user.service.UserService
@@ -64,8 +64,8 @@ class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.imp
       session.impersonateUser(user)
       val roles = session.getRoles
 
-      val homepageForRole = AuthUtil.getHomepageForRole(roles)
-      setResponsePage(homepageForRole)
+      val homepage = getHomepageForRole(roles)
+      setResponsePage(homepage.homePage, homepage.parameters)
     }
 
     val link = new AjaxLink("impersonateLink", linkCallback)

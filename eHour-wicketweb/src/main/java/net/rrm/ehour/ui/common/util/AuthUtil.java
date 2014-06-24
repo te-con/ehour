@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common.util;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -25,6 +26,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  * Common stuff for auth
@@ -97,19 +99,38 @@ public class AuthUtil {
         return authorized;
     }
 
-    public static Class<? extends Page> getHomepageForRole(Roles roles) {
-        Class<? extends Page> homepage;
+    private static final Homepage UserHomepage;
+    private static final Homepage AdminHomepage = new Homepage(MainConfigPage.class, Optional.<PageParameters>absent());
+    private static final Homepage ReportHomepage = new Homepage(ReportPage.class, Optional.<PageParameters>absent());
 
+    static {
+        PageParameters parameters = new PageParameters();
+        parameters.add(MonthOverviewPage.PARAM_OPEN, MonthOverviewPage.OpenPanel.TIMESHEET);
+
+        UserHomepage = new Homepage(MonthOverviewPage.class, Optional.of(parameters));
+    }
+
+    public static Homepage getHomepageForRole(Roles roles) {
         if (roles.contains(WebUtils.ROLE_CONSULTANT)) {
-            homepage = MonthOverviewPage.class;
+            return UserHomepage;
         } else if (roles.contains(WebUtils.ROLE_ADMIN)) {
-            homepage = MainConfigPage.class;
+            return AdminHomepage;
         } else if (roles.contains(WebUtils.ROLE_REPORT)) {
-            homepage = ReportPage.class;
+            return ReportHomepage;
         } else {
-            homepage = MonthOverviewPage.class;
+            return UserHomepage;
         }
+    }
 
-        return homepage;
+    public static class Homepage {
+        public final Class<? extends Page> homePage;
+        public final PageParameters parameters;
+
+        public Homepage(Class<? extends Page> homePage, Optional<PageParameters> parameters) {
+            this.homePage = homePage;
+            this.parameters = parameters.or(new PageParameters());
+        }
     }
 }
+
+

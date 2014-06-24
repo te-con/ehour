@@ -3,6 +3,7 @@ package net.rrm.ehour.ui.common.header
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.util.AuthUtil
+import net.rrm.ehour.ui.common.util.AuthUtil._
 import net.rrm.ehour.ui.login.page.Logout
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage
 import org.apache.wicket.markup.html.WebMarkupContainer
@@ -33,7 +34,9 @@ class LoggedInAsPanel(id: String) extends AbstractBasePanel(id) {
         def onClick() {
           val session = EhourWebSession.getSession
           session.stopImpersonating()
-          setResponsePage(AuthUtil.getHomepageForRole(session.getRoles))
+
+          val homepage = getHomepageForRole(session.getRoles)
+          setResponsePage(homepage.homePage, homepage.parameters)
         }
       })
 

@@ -9,7 +9,8 @@ class HeaderPanel(id: String) extends AbstractBasePanel(id) {
   override def onInitialize(): Unit = {
     super.onInitialize()
 
-    add(new BookmarkablePageLink("homeLink", AuthUtil.getHomepageForRole(EhourWebSession.getSession.getRoles)))
+    val homepage = AuthUtil.getHomepageForRole(EhourWebSession.getSession.getRoles)
+    add(new BookmarkablePageLink("homeLink", homepage.homePage, homepage.parameters))
     add(createNav("nav"))
     add(new LoggedInAsPanel("loggedInAs"))
   }
