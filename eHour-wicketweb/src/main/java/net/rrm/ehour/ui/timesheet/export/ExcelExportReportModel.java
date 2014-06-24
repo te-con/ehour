@@ -45,9 +45,6 @@ public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> 
 
     private static final long serialVersionUID = 6099016674849151669L;
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.web.report.reports.TimelineReport#getRowKey(net.rrm.ehour.persistence.persistence.report.reports.FlatProjectAssignmentAggregate)
-     */
     @Override
     protected ProjectAssignment getRowKey(FlatReportElement aggregate) {
         ProjectAssignment pa = new ProjectAssignment();
@@ -74,17 +71,11 @@ public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> 
         return aggregate.getDayDate();
     }
 
-    /**
-     * Row key comparator
-     */
     @Override
     protected Comparator<ProjectAssignment> getRKComparator() {
         return new ProjectAssignmentComparator();
     }
 
-    /* (non-Javadoc)
-     * @see net.rrm.ehour.persistence.persistence.ui.report.trend.TrendReportModel#fetchReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-     */
     @Override
     protected ReportData fetchReportData(ReportCriteria reportCriteria) {
         return getDetailedReportService().getDetailedReportData(reportCriteria);

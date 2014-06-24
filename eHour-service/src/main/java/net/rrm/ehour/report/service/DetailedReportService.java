@@ -26,10 +26,6 @@ import net.rrm.ehour.report.reports.ReportData;
 public interface DetailedReportService {
     /**
      * Get report data for customer
-     *
-     * @param customer
-     * @param dateRange
-     * @return
      */
     ReportData getDetailedReportData(ReportCriteria criteria);
 }

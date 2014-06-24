@@ -78,7 +78,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
 
         for (Map.Entry<ProjectAssignment, List<TimesheetEntry>> entry : timesheetRows.entrySet()) {
             try {
-                getSpringProxy().validateAndPersist(entry.getKey(), entry.getValue(), weekRange);
+                getTimesheetPersister().validateAndPersist(entry.getKey(), entry.getValue(), weekRange);
             } catch (OverBudgetException e) {
                 errorStatusses.add(e.getStatus());
             }
@@ -91,7 +91,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         return errorStatusses;
     }
 
-    private IPersistTimesheet getSpringProxy() {
+    private IPersistTimesheet getTimesheetPersister() {
         return context.getBean(IPersistTimesheet.class);
     }
 
