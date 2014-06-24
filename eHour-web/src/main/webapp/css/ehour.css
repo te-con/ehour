@@ -959,3 +959,7 @@ hr {
 .impersonatingNotification .fa {
     color: white;
 }
+
+.fa:hover {
+    color: #5190c5;
+}

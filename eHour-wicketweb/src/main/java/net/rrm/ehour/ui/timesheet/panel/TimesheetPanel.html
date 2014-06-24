@@ -49,8 +49,8 @@
 
 						<wicket:container wicket:id="rows">
 							<tr class="projectRow">
-								<td class="fold"><a wicket:id="bookWholeWeek"><img wicket:id="bookImg" src="img/check_all_off.png" border="0" /></a></td>
-								<td class="projectCode" wicket:id="projectCode">projectCode</td>
+								<td class="fold"><a wicket:id="bookWholeWeek" wicket:message="title:timesheet.bookall"><i class="fa fa-check-circle bookAll"></i></a></td>
+                                <td class="projectCode" wicket:id="projectCode">projectCode</td>
 								<td class="project"><span wicket:id="project"></span>
                                     <span wicket:id="role" style="font-size: 0.7em"></span>
 										<span class="statusMsg" wicket:id="status"></span>
@@ -130,9 +130,9 @@
 
    	<wicket:fragment wicket:id="title">
    		<h1>
-	   		<a wicket:id="previousWeek"><img src="img/icon_left.gif" border="0" /></a>
+	   		<a wicket:id="previousWeek" class="previousWeek" wicket:message="title:timesheet.previousWeek"><i class="fa fa-angle-left"></i></a>
 	   		<wicket:container wicket:id="titleLabel"></wicket:container>
-	   		<a wicket:id="nextWeek"><img src="img/icon_right.gif" border="0" /></a>
+	   		<a wicket:id="nextWeek" class="nextWeek" wicket:message="title:timesheet.nextWeek"><i class="fa fa-angle-right"></i></a>
    		</h1>
 	</wicket:fragment>
 
@@ -168,7 +168,7 @@
 
     <wicket:fragment wicket:id="lockedDay">
         <div class="lockSpace ui-state-default" title="This day is locked" wicket:id="lockedContainer">
-            <span class="ui-icon ui-icon-locked" />
+            <i class="fa fa-lock"></i>
         </div>
     </wicket:fragment>
 </wicket:panel>

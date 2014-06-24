@@ -52,10 +52,6 @@ div.Calendar div.CalendarHeader div.PreviousMonth {
     left: 5px;
 }
 
-.PreviousMonth .fa:hover, .NextMonth .fa:hover {
-    color: #5190c5;
-}
-
 div.Calendar div.CalendarHeader div.CurrentMonth {
     text-align: center;
     color: #536e87;

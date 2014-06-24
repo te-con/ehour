@@ -105,9 +105,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             }
         };
 
-        ContextImage img = new ContextImage("bookImg", new Model<String>("img/check_all_off.png"));
-        projectLink.add(img);
-
         return projectLink;
     }
 
