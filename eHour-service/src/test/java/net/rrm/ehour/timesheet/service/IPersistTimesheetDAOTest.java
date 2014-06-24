@@ -94,7 +94,7 @@ public class IPersistTimesheetDAOTest {
             idDel.setProjectAssignment(assignment);
             idDel.setEntryDate(dateB);
             entryDel.setEntryId(idDel);
-            entryDel.setHours(0f);
+            entryDel.setHours(null);
             newEntries.add(entryDel);
         }
 
