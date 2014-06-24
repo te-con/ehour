@@ -52,7 +52,7 @@ public class WeekOverview implements Serializable {
         this.projectAssignments = projectAssignments;
 
         assignmentMap = mergeUnbookedAssignments(createAssignmentMap());
-        weekRange = new DateRange();
+        weekRange = new DateRange(new Date(), new Date());
         lockedDays = Lists.newArrayList();
     }
 

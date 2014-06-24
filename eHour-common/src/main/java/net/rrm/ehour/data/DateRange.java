@@ -36,8 +36,6 @@ public class DateRange implements Serializable {
     private Date dateEnd;
 
     public DateRange() {
-        dateStart = new Date();
-        dateEnd = new Date();
     }
 
     public DateRange(Date dateStart, Date dateEnd) {
