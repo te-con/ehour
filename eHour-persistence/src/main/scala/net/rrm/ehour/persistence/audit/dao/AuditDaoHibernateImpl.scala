@@ -14,14 +14,14 @@ import org.springframework.stereotype.Repository
 @Repository("auditDao")
 class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Audit, Number](classOf[Audit]) with AuditDao {
 
-  @SuppressWarnings(Array("unchecked")) def findAudits(request: AuditReportRequest): util.List[Audit] = {
+  override def findAudits(request: AuditReportRequest): util.List[Audit] = {
     val criteria = buildCriteria(request)
     criteria.addOrder(Order.asc("date"))
 
     ExponentialBackoffRetryPolicy.retry(criteria.list).asInstanceOf[util.List[Audit]]
   }
 
-  @SuppressWarnings(Array("unchecked")) def findAudits(request: AuditReportRequest, offset: Int, max: Int): util.List[Audit] = {
+  override def findAudits(request: AuditReportRequest, offset: Int, max: Int): util.List[Audit] = {
     val criteria: Criteria = buildCriteria(request)
     criteria.setFirstResult(offset)
     criteria.setMaxResults(max)
@@ -30,7 +30,7 @@ class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Audit, Numbe
     ExponentialBackoffRetryPolicy.retry(criteria.list).asInstanceOf[util.List[Audit]]
   }
 
-  def count(request: AuditReportRequest): Number = {
+  override def count(request: AuditReportRequest): Number = {
     val criteria: Criteria = buildCriteria(request)
     criteria.setProjection(Projections.rowCount)
 
