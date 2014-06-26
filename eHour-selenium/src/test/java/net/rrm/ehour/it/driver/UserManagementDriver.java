@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.Select;
 import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
-import static net.rrm.ehour.it.driver.ItUtil.*;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
 
 public abstract class UserManagementDriver {
@@ -64,7 +63,7 @@ public abstract class UserManagementDriver {
         listFilter.clear();
         listFilter.sendKeys(name);
 
-        findElement("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_1").click();
+        findElement("userSelection_border_border__body_entrySelectorFrame_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_1").click();
     }
 
     public static void loadUserAdmin() {
@@ -72,7 +71,7 @@ public abstract class UserManagementDriver {
     }
 
     public static void showOnlyActiveUsers() {
-        findElement("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_filterForm_filterToggle").click();
+        findElement("userSelection_border_border__body_entrySelectorFrame_entrySelectorFrame_filterForm_filterToggle").click();
     }
 
     public static void assertUserDataSaved() {

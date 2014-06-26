@@ -52,8 +52,6 @@ public class ReportScenario extends AbstractScenario {
 
         createReport();
 
-        toggleOptions();
-
         clickZeroBookings();
 
         waitUntil(ExpectedConditions.textToBePresentInElementLocated(WicketBy.wicketPath("reportContainer_panel_frame_reportTable_greyFrame_greyFrame__body_reportData_blueFrame_blueFrame__body_reportTable_3_cell_6"), "0"));

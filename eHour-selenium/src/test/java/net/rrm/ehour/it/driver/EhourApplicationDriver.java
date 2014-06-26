@@ -31,7 +31,7 @@ public class EhourApplicationDriver {
         findElement(WicketBy.wicketPath("loginform_password")).sendKeys(user.password);
         findElement(By.cssSelector("button.submitButton")).click();
 
-        assertTrue(findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Logged in as[\\s\\S]*$"));
+        assertTrue(findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Signed in as[\\s\\S]*$"));
     }
 
     public static void logout() {

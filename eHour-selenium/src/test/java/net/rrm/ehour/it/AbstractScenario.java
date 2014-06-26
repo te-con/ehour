@@ -1,8 +1,6 @@
 package net.rrm.ehour.it;
 
 import net.rrm.ehour.EhourServer;
-import net.rrm.ehour.config.PersistenceConfig;
-import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -41,7 +39,7 @@ public abstract class AbstractScenario {
         }
 
         Driver = new FirefoxDriver();
-        Driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        Driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         screenshotTestRule = new ScreenshotTestRule(Driver);
 

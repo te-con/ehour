@@ -49,6 +49,6 @@ public class UserAdminScenario extends AbstractScenario {
         fillUserForm(new ItUser("thies2", "a"), "Edeling2", "User");
         submitUserForm();
 
-        assertTrue(ItUtil.findElement("entrySelectorFrame_greyTabTitle").getText().startsWith("User"));
+        assertTrue(ItUtil.findElement("userSelection_border_greyTabTitle").getText().startsWith("User"));
     }
 }
