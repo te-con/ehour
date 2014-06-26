@@ -16,64 +16,54 @@
 
 package net.rrm.ehour.audit.service;
 
-import java.util.List;
-
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.persistence.audit.dao.AuditDao;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author thies
- *
  */
 @Service("auditService")
-public class AuditServiceImpl implements AuditService
-{
-	private AuditDao	auditDAO;
-	
-	@Autowired
-	public AuditServiceImpl(AuditDao auditDao)
-	{
-		this.auditDAO = auditDao;
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#persistAudit(net.rrm.ehour.persistence.persistence.domain.Audit)
-	 */
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	@NonAuditable
-	public void doAudit(final Audit audit)
-	{
-		auditDAO.persist(audit);
-	}
+public class AuditServiceImpl implements AuditService {
+    private AuditDao auditDAO;
+
+    @Autowired
+    public AuditServiceImpl(AuditDao auditDao) {
+        this.auditDAO = auditDao;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @NonAuditable
+    public void doAudit(final Audit audit) {
+        auditDAO.persist(audit);
+    }
 
     @Override
     @NonAuditable
+    @Transactional(readOnly = true)
     public List<Audit> findAudits(AuditReportRequest request, Integer offset, Integer max) {
         return auditDAO.findAudits(request, offset, max);
     }
 
-	@NonAuditable
-	public List<Audit> findAudits(AuditReportRequest request)
-	{
-		return auditDAO.findAudits(request);
-	}	
+    @Override
+    @NonAuditable
+    @Transactional(readOnly = true)
+    public List<Audit> findAudits(AuditReportRequest request) {
+        return auditDAO.findAudits(request);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.audit.service.AuditService#getAuditCount(net.rrm.ehour.persistence.persistence.audit.service.dto.AuditReportRequest)
-	 */
-	@NonAuditable
-	public Number getAuditCount(AuditReportRequest request)
-	{
-		Number number = auditDAO.count(request);
-		
-		return (number == null) ? 0 : number;
-	}
+    @NonAuditable
+    @Transactional(readOnly = true)
+    public Number getAuditCount(AuditReportRequest request) {
+        Number number = auditDAO.count(request);
+
+        return (number == null) ? 0 : number;
+    }
 }
