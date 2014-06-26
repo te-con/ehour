@@ -21,7 +21,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
-import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
+import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateScalaImpl;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
@@ -32,7 +32,7 @@ import java.util.List;
 
 @Repository("timesheetDAO")
 public class TimesheetDaoHibernateImpl
-        extends AbstractGenericDaoHibernateImpl<TimesheetEntry, TimesheetEntryId>
+        extends AbstractGenericDaoHibernateScalaImpl<TimesheetEntry, TimesheetEntryId>
         implements TimesheetDao {
     public TimesheetDaoHibernateImpl() {
         super(TimesheetEntry.class);

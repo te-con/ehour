@@ -44,7 +44,7 @@ class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     void shouldDelete() {
-        projectAssignmentDAO.delete(2);
+        projectAssignmentDAO.deleteOnId(2);
 
         def pa = projectAssignmentDAO.findById(new Integer(2));
         assertNull(pa);

@@ -10,12 +10,12 @@ import static org.junit.Assert.assertEquals
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 16, 2010 - 4:48:38 PM
  */
-class MailLogDaoHibernateImplTest extends AbstractAnnotationDaoTest
+class MailLogDaoAssignmentHibernateImplTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
-	private MailLogDao mailLogDao
+	private MailLogAssignmentDao mailLogAssignmentDao
 
-	MailLogDaoHibernateImplTest()
+    MailLogDaoAssignmentHibernateImplTest()
 	{
 		super("dataset-maillog.xml")
 	}
@@ -23,7 +23,7 @@ class MailLogDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	@Test
 	final void shouldFindMailLogOnAssignmentId()
 	{
-		def mla = mailLogDao.findMailLogOnAssignmentIds([2] as Integer[])
+		def mla = mailLogAssignmentDao.findMailLogOnAssignmentIds([2] as Integer[])
 
 		assertEquals(1, mla.size())
 		assertEquals(9, mla[0].mailLogId)

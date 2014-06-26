@@ -18,8 +18,7 @@ package net.rrm.ehour.persistence.timesheet.dao;
 
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
-import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
-
+import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateScalaImpl;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -29,7 +28,7 @@ import org.springframework.stereotype.Repository;
  **/
 @Repository("timesheetCommentDao")
 public class TimesheetCommentDaoHibernateImpl 
-			extends AbstractGenericDaoHibernateImpl<TimesheetComment, TimesheetCommentId>
+			extends AbstractGenericDaoHibernateScalaImpl<TimesheetComment, TimesheetCommentId>
 			implements TimesheetCommentDao
 {
 	public TimesheetCommentDaoHibernateImpl()

@@ -19,7 +19,7 @@ package net.rrm.ehour.persistence.project.dao;
 import com.google.common.base.Optional;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
-import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
+import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateScalaImpl;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Repository("projectAssignmentDao")
 public class ProjectAssignmentDaoHibernateImpl
-        extends AbstractGenericDaoHibernateImpl<ProjectAssignment, Integer>
+        extends AbstractGenericDaoHibernateScalaImpl<ProjectAssignment, Integer>
         implements ProjectAssignmentDao {
     private static final Optional<String> CACHEREGION = Optional.of("query.ProjectAssignment");
 

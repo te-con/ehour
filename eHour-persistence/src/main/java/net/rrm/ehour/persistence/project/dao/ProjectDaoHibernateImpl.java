@@ -20,7 +20,7 @@ import com.google.common.base.Optional;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
+import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateScalaImpl;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository("projectDao")
-public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Project, Integer> implements ProjectDao {
+public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateScalaImpl<Project, Integer> implements ProjectDao {
     protected static final Optional<String> CACHEREGION = Optional.of("query.Project");
 
     public ProjectDaoHibernateImpl() {

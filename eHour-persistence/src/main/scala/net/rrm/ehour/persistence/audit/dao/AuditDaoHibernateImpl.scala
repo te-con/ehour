@@ -4,7 +4,7 @@ import java.util
 
 import net.rrm.ehour.data.{AuditReportRequest, DateRange}
 import net.rrm.ehour.domain.Audit
-import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
+import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateScalaImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import org.apache.commons.lang.StringUtils
 import org.hibernate.Criteria
@@ -12,7 +12,7 @@ import org.hibernate.criterion.{Order, Projections, Restrictions}
 import org.springframework.stereotype.Repository
 
 @Repository("auditDao")
-class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Audit, Number](classOf[Audit]) with AuditDao {
+class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateScalaImpl[Number, Audit](classOf[Audit]) with AuditDao {
 
   override def findAudits(request: AuditReportRequest): util.List[Audit] = {
     val criteria = buildCriteria(request)

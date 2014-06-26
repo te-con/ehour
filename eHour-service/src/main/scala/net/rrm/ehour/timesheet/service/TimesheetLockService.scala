@@ -1,20 +1,21 @@
 package net.rrm.ehour.timesheet.service
 
-import org.springframework.stereotype.Service
-import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
-import org.springframework.beans.factory.annotation.Autowired
-import net.rrm.ehour.domain.{Project, TimesheetEntry, User, TimesheetLock}
-import scala.collection.JavaConversions._
 import java.util.Date
-import org.springframework.transaction.annotation.Transactional
 import java.{util => ju}
+
 import com.github.nscala_time.time.Imports._
-import com.github.nscala_time.time.TypeImports.DateTime
-import com.github.nscala_time.time.TypeImports.Interval
-import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
+import com.github.nscala_time.time.TypeImports.{DateTime, Interval}
 import net.rrm.ehour.data.DateRange
+import net.rrm.ehour.domain.{Project, TimesheetEntry, TimesheetLock, User}
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
+import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import net.rrm.ehour.util._
 import org.joda.time.Days
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+import scala.collection.JavaConversions._
 
 trait TimesheetLockService {
   def createNew(name: Option[String] = None, startDate: Date, endDate: Date): TimesheetLock
@@ -64,7 +65,7 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
 
   @Transactional
   def deleteLock(id: Int) {
-    lockDao.delete(id)
+    lockDao.deleteOnId(id)
   }
 
   private[service] def determineName(startDate: Date, endDate: Date):String = {

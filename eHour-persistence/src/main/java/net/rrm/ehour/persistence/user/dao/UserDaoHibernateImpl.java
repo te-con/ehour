@@ -19,14 +19,14 @@ package net.rrm.ehour.persistence.user.dao;
 import com.google.common.base.Optional;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
+import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateScalaImpl;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository("userDao")
-public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<User, Integer> implements UserDao {
+public class UserDaoHibernateImpl extends AbstractGenericDaoHibernateScalaImpl<User, Integer> implements UserDao {
     private static final Optional<String> CACHEREGION = Optional.of("query.User");
 
     public UserDaoHibernateImpl() {

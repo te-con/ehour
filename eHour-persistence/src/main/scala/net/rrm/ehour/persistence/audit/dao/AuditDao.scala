@@ -6,7 +6,7 @@ import net.rrm.ehour.data.AuditReportRequest
 import net.rrm.ehour.domain.Audit
 import net.rrm.ehour.persistence.dao.GenericDao
 
-trait AuditDao extends GenericDao[Audit, Number] {
+trait AuditDao extends GenericDao[Number, Audit] {
   /**
    * Find audit for request
    */

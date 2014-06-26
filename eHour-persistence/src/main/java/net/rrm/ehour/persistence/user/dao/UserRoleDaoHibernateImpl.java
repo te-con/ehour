@@ -17,12 +17,11 @@
 package net.rrm.ehour.persistence.user.dao;
 
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
-
+import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateScalaImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository("userRoleDao")
-public class UserRoleDaoHibernateImpl  extends AbstractGenericDaoHibernateImpl<UserRole, String> implements UserRoleDao
+public class UserRoleDaoHibernateImpl  extends AbstractGenericDaoHibernateScalaImpl<UserRole, String> implements UserRoleDao
 {
 	public UserRoleDaoHibernateImpl()
 	{

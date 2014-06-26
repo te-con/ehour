@@ -1,12 +1,12 @@
 package net.rrm.ehour.persistence.user.dao
 
 import net.rrm.ehour.domain.UserDepartmentObjectMother
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 14, 2010 - 11:46:46 PM
  */
-import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -20,7 +20,7 @@ class UserDepartmentDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldDelete()
   {
-    userDepartmentDao.delete(20);
+    userDepartmentDao.deleteOnId(20);
 
     def dept = userDepartmentDao.findById(20);
     assertNull(dept);

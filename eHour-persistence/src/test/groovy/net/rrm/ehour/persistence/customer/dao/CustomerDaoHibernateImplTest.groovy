@@ -22,7 +22,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	@Test
 	void "should delete customer on id"()
 	{
-		customerDao.delete 2
+		customerDao.deleteOnId 2
 
 		customerDao.findById(2) == null
 

@@ -25,7 +25,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldDelete()
   {
-    projectDAO.delete 20
+    projectDAO.deleteOnId 20
 
     def project = projectDAO.findById(20);
     assertNull(project);
