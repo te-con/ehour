@@ -22,6 +22,7 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -64,6 +65,7 @@ public class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Pro
     public List<Project> findAllProjectsWithPmSet() {
         Criteria criteria = getSession().createCriteria(Project.class);
         criteria.add(Restrictions.isNotNull("projectManager"));
+        criteria.setFetchMode("projectManager.userRoles", FetchMode.JOIN);
 
         return (List<Project>) criteria.list();
     }

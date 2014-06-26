@@ -72,7 +72,7 @@ public class User extends DomainObject<Integer, User> {
     private String updatedPassword;
 
     @ManyToMany(targetEntity = UserRole.class,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
             )
     @JoinTable(name = "USER_TO_USERROLE",
             joinColumns = @JoinColumn(name = "USER_ID"),
