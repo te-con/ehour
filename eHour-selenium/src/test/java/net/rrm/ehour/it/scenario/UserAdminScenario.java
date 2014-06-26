@@ -22,9 +22,11 @@ public class UserAdminScenario extends AbstractScenario {
         loadUserAdmin();
         showOnlyActiveUsers();
         editUser(lastName);
+        ItUtil.sleep();
 
         setFormFieldTo("username", "thies3");
         submitUserForm();
+
 
         assertUserDataSaved();
     }
