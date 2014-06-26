@@ -8,6 +8,7 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
+import static net.rrm.ehour.it.driver.ItUtil.waitForValue;
 
 public abstract class UserManagementDriver {
 
@@ -84,6 +85,10 @@ public abstract class UserManagementDriver {
 
     public static void setFormFieldTo(String field, String value) {
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user." + field).sendKeys(value);
+    }
+
+    public static void waitForUsernameToBe(String username) {
+        waitForValue("tabs_panel_border_greySquaredFrame_border__body_userForm_user.username", username);
     }
 
     public static void tickShowAssignments() {
