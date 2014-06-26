@@ -151,8 +151,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         reportFrameContainer.add(dataView);
         reportFrameContainer.add(addGrandTotal("cell", reportModel));
 
-        pagingNavigator = new HoverPagingNavigator(NAVIGATOR_ID, dataView);
-        pagingNavigator.setOutputMarkupId(true);
+        pagingNavigator = createNav(dataView);
         parent.addOrReplace(pagingNavigator);
         parent.addOrReplace(reportFrame);
     }
@@ -196,13 +195,18 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         DataView<TreeReportElement> dataView = createDataView(model);
         reportFrameContainer.addOrReplace(dataView);
 
-        HoverPagingNavigator nav = new HoverPagingNavigator(NAVIGATOR_ID, dataView);
-        nav.setOutputMarkupId(true);
+        HoverPagingNavigator nav = createNav(dataView);
         pagingNavigator.replaceWith(nav);
         pagingNavigator = nav;
 
         ZeroBookingSelectionChangedEvent payload = (ZeroBookingSelectionChangedEvent) event.getPayload();
         payload.target().add(reportFrameContainer, nav);
+    }
+
+    private HoverPagingNavigator createNav(DataView<TreeReportElement> dataView) {
+        HoverPagingNavigator nav = new HoverPagingNavigator(NAVIGATOR_ID, dataView);
+        nav.setOutputMarkupPlaceholderTag(true);
+        return nav;
     }
 
     private Component createExcelLink(final TreeReportModel reportModel, final ExcelReport excelReport) {

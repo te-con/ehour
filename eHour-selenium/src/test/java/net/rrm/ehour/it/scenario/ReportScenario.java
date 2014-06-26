@@ -54,7 +54,7 @@ public class ReportScenario extends AbstractScenario {
 
         clickZeroBookings();
 
-        waitUntil(ExpectedConditions.textToBePresentInElementLocated(WicketBy.wicketPath("reportContainer_panel_frame_reportTable_greyFrame_greyFrame__body_reportData_blueFrame_blueFrame__body_reportTable_3_cell_6"), "0"));
+        waitUntil(ExpectedConditions.textToBePresentInElementLocated(WicketBy.wicketPath("reportContainer_panel_frame_reportTable_greyFrame_greyFrame__body_reportContent_reportFrame_reportFrame__body_reportFrameContainer_reportTable_3_cell_6"), "0"));
 
         logout();
     }
