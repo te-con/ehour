@@ -34,6 +34,11 @@ public abstract class TimesheetDriver {
         assertTrue(findElement("contentContainer_projectOverview_greyBorder_title").getText().contains("Aggregated hours"));
     }
 
+    public static void amIOnTheTimesheet() {
+        assertTrue(findElement("contentContainer_timesheetFrame_title") != null);
+    }
+
+
     public static boolean isBookingHoursPossible(int day) {
         try {
             AbstractScenario.Driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
