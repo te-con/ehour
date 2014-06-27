@@ -8,7 +8,7 @@ trait GenericDao[PK <: io.Serializable, T <: DomainObject[PK, _]] {
   /**
    * Find all domain objects
    */
-  def findAll: util.List[T]
+  def findAll(): util.List[T]
 
   /**
    * Delete domain object

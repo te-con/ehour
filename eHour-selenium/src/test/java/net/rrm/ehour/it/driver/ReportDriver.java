@@ -38,6 +38,8 @@ public abstract class ReportDriver {
         WebElement check = findElement("reportContainer_panel_border_greySquaredFrame_border__body_criteriaForm_customerProjectsBorder_customerProjectsBorder__body_reportCriteria.userSelectedCriteria.onlyActiveProjects");
 
         check.click();
+
+        sleep();
     }
 
     public static void toggleActiveCustomers() {

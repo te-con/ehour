@@ -51,7 +51,7 @@ public class DomainObjectParser {
         this.keyCache = keyCache;
     }
 
-    public <T extends DomainObject<?, ?>> List<T> parse(Class<T> clazz, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
+    public <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parse(Class<T> clazz, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
         Map<String, FieldDefinition> fieldMap = createFieldMap(clazz);
         this.status = status;
 
@@ -61,7 +61,7 @@ public class DomainObjectParser {
     /**
      * Parse domain object with reader pointing on the table name tag
      */
-    private <T extends DomainObject<?, ?>> List<T> parseDomainObjects(Class<T> clazz, Map<String, FieldDefinition> fieldMap, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException {
+    private <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parseDomainObjects(Class<T> clazz, Map<String, FieldDefinition> fieldMap, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException {
         List<T> domainObjects = new ArrayList<T>();
 
         while (reader.hasNext()) {
@@ -82,7 +82,7 @@ public class DomainObjectParser {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends DomainObject<?, ?>> T parseDomainObject(Class<T> clazz, Map<String, FieldDefinition> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException {
+    private <PK extends Serializable, T extends DomainObject<PK, ?>> T parseDomainObject(Class<T> clazz, Map<String, FieldDefinition> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException {
         T domainObject = clazz.newInstance();
 
         Map<Class<?>, Object> embeddables = new HashMap<Class<?>, Object>();
@@ -118,7 +118,7 @@ public class DomainObjectParser {
 
         boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);
 
-        Serializable originalKey = domainObject.getPK();
+        PK originalKey = domainObject.getPK();
 
         resetId(fieldMap, domainObject);
 

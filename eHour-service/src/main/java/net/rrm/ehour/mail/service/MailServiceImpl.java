@@ -22,15 +22,16 @@ import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.domain.MailType;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.mail.callbacks.AssignmentMsgCallback;
+import net.rrm.ehour.mail.callbacks.MailTaskCallback;
 import net.rrm.ehour.mail.dto.AssignmentPMMessage;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
-import net.rrm.ehour.persistence.mail.dao.MailLogDao;
+import net.rrm.ehour.persistence.mail.dao.MailLogAssignmentDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -49,33 +50,29 @@ import java.util.Properties;
  */
 @NonAuditable
 @Service("mailService")
-public class MailServiceImpl implements MailService
-{
+public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
 
-    @Autowired
-    private MailLogDao mailLogDAO;
+    private MailLogAssignmentDao mailLogAssignmentDao;
 
     private TaskExecutor taskExecutor;
 
-    @Autowired
     private ConfigurationService configurationService;
 
-    @Autowired
-    private AssignmentMsgCallback assignmentMsgCallback;
+    private MailTaskCallback mailTaskCallback;
 
     @Autowired
-    public MailServiceImpl(TaskExecutor taskExecutor)
-    {
+    public MailServiceImpl(MailLogAssignmentDao mailLogAssignmentDao,
+                           TaskExecutor taskExecutor,
+                           ConfigurationService configurationService,
+                           @Qualifier("assignmentMsgCallback") MailTaskCallback mailTaskCallback) {
+        this.mailLogAssignmentDao = mailLogAssignmentDao;
         this.taskExecutor = taskExecutor;
+        this.configurationService = configurationService;
+        this.mailTaskCallback = mailTaskCallback;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#mailTestMessage(net.rrm.ehour.persistence.persistence.config.EhourConfig)
-      */
-    public void mailTestMessage(EhourConfig config)
-    {
+    public void mailTestMessage(EhourConfig config) {
         String subject = "eHour test message";
         String body = "You successfully configured eHour's mail settings.";
 
@@ -98,12 +95,7 @@ public class MailServiceImpl implements MailService
         taskExecutor.execute(mailTask);
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#mailPMFixedAllottedReached(net.rrm.ehour.persistence.persistence.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.persistence.persistence.user.domain.User)
-      */
-    public void mailPMFixedAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
-    {
+    public void mailPMFixedAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user) {
         String subject;
         StringBuilder body = new StringBuilder();
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
@@ -149,20 +141,13 @@ public class MailServiceImpl implements MailService
                 user);
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.persistence.persistence.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.persistence.persistence.user.domain.User)
-      */
-    public void mailPMFlexOverrunReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
-    {
+    public void mailPMFlexOverrunReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user) {
         String subject;
         StringBuffer body = new StringBuffer();
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
         // TODO use templates
-
-        // and no, stringbuffers aren't faster anymore..
         subject = "eHour: All allotted and overrun hours used for project "
                 + assignmentAggregate.getProjectAssignment().getProject().getFullName()
                 + " by "
@@ -207,12 +192,7 @@ public class MailServiceImpl implements MailService
                 user);
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#mailPMFlexOverrunReached(net.rrm.ehour.persistence.persistence.report.reports.ProjectAssignmentAggregate, java.util.Date, net.rrm.ehour.persistence.persistence.user.domain.User)
-      */
-    public void mailPMFlexAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user)
-    {
+    public void mailPMFlexAllottedReached(AssignmentAggregateReportElement assignmentAggregate, Date bookDate, User user) {
         String subject;
         StringBuilder body = new StringBuilder();
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
@@ -267,14 +247,12 @@ public class MailServiceImpl implements MailService
      */
     private void mailPMAggregateMessage(AssignmentAggregateReportElement assignmentAggregate,
                                         String subject,
-                                        String mailBody, int mailTypeId, Date bookDate, User user)
-    {
+                                        String mailBody, int mailTypeId, Date bookDate, User user) {
         SimpleMailMessage msg;
         AssignmentPMMessage asgMsg;
         MailTask mailTask;
 
-        if (!isAssignmentMailAlreadySent(assignmentAggregate, mailTypeId))
-        {
+        if (!isAssignmentMailAlreadySent(assignmentAggregate, mailTypeId)) {
             EhourConfig config = configurationService.getConfiguration();
 
             asgMsg = new AssignmentPMMessage();
@@ -288,26 +266,20 @@ public class MailServiceImpl implements MailService
             asgMsg.setBookDate(bookDate);
             asgMsg.setAggregate(assignmentAggregate);
             asgMsg.setMailType(new MailType(mailTypeId));
-            asgMsg.setCallBack(assignmentMsgCallback);
+            asgMsg.setCallBack(mailTaskCallback);
 
             mailTask = new MailTask(asgMsg, createMailSender(config));
             taskExecutor.execute(mailTask);
         }
     }
 
-    /**
-     * @return
-     */
-    private boolean isAssignmentMailAlreadySent(AssignmentAggregateReportElement aggregate, int mailTypeId)
-    {
-        List<MailLogAssignment> mlaList = mailLogDAO.findMailLogOnAssignmentIds(new Integer[]{aggregate.getProjectAssignment().getAssignmentId()});
+    private boolean isAssignmentMailAlreadySent(AssignmentAggregateReportElement aggregate, int mailTypeId) {
+        List<MailLogAssignment> mlaList = mailLogAssignmentDao.findMailLogOnAssignmentIds(new Integer[]{aggregate.getProjectAssignment().getAssignmentId()});
         boolean alreadySent = false;
 
-        for (MailLogAssignment mailLog : mlaList)
-        {
+        for (MailLogAssignment mailLog : mlaList) {
             if ((mailLog.getMailType().getMailTypeId() == mailTypeId)
-                    && mailLog.getSuccess())
-            {
+                    && mailLog.getSuccess()) {
                 alreadySent = true;
                 LOGGER.info("Mail was already sent for assignment " + aggregate.getProjectAssignment().getAssignmentId() + ", not sending again");
                 break;
@@ -322,13 +294,11 @@ public class MailServiceImpl implements MailService
      *
      * @author Thies
      */
-    static class MailTask implements Runnable
-    {
+    static class MailTask implements Runnable {
         private MailTaskMessage mailTaskMessage;
         private MailSender javaMailSender;
 
-        public MailTask(MailTaskMessage mailTaskMessage, MailSender mailSender)
-        {
+        public MailTask(MailTaskMessage mailTaskMessage, MailSender mailSender) {
             this.mailTaskMessage = mailTaskMessage;
             javaMailSender = mailSender;
         }
@@ -337,64 +307,44 @@ public class MailServiceImpl implements MailService
         /**
          *
          */
-        public void run()
-        {
+        public void run() {
             SimpleMailMessage msg = mailTaskMessage.getMailMessage();
 
             msg.setTo(mailTaskMessage.getToUser().getEmail());
-            try
-            {
+            try {
                 LOGGER.debug("Sending email to " + msg.getTo()[0] + " using " + ((JavaMailSenderImpl) javaMailSender).getHost());
                 javaMailSender.send(msg);
 
-                if (mailTaskMessage.getCallback() != null)
-                {
+                if (mailTaskMessage.getCallback() != null) {
                     mailTaskMessage.getCallback().mailTaskSuccess(mailTaskMessage);
                 }
-            } catch (MailException me)
-            {
+            } catch (MailException me) {
                 LOGGER.info("Failed to e-mail to " + msg.getTo()[0] + ": " + me.getMessage());
                 mailTaskMessage.getCallback().mailTaskFailure(mailTaskMessage, me);
             }
         }
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.mail.service.MailService#getSentMailForAssignment(java.lang.Integer[])
-      */
-    public List<MailLogAssignment> getSentMailForAssignment(Integer[] assignmentIds)
-    {
-        return mailLogDAO.findMailLogOnAssignmentIds(assignmentIds);
+    public List<MailLogAssignment> getSentMailForAssignment(Integer[] assignmentIds) {
+        return mailLogAssignmentDao.findMailLogOnAssignmentIds(assignmentIds);
     }
 
-    /**
-     * Create mail sender
-     *
-     * @param config
-     * @return
-     */
-    private MailSender createMailSender(EhourConfig config)
-    {
+    private MailSender createMailSender(EhourConfig config) {
         MailSender mailSender = new JavaMailSenderImpl();
         ((JavaMailSenderImpl) mailSender).setHost(config.getMailSmtp());
 
-        if (!StringUtils.isBlank(config.getSmtpPort()))
-        {
-            try
-            {
+        if (!StringUtils.isBlank(config.getSmtpPort())) {
+            try {
                 int port = Float.valueOf(config.getSmtpPort()).intValue();
                 ((JavaMailSenderImpl) mailSender).setPort(port);
-            } catch (NumberFormatException nfe)
-            {
+            } catch (NumberFormatException nfe) {
                 LOGGER.error("Using default port 25, couldn't parse configured port " + config.getSmtpPort());
             }
         }
 
 
         if (!StringUtils.isBlank(config.getSmtpUsername())
-                && !StringUtils.isBlank(config.getSmtpPassword()))
-        {
+                && !StringUtils.isBlank(config.getSmtpPassword())) {
             LOGGER.debug("Using SMTP authentication");
 
             Properties prop = new Properties();
@@ -406,21 +356,5 @@ public class MailServiceImpl implements MailService
         }
 
         return mailSender;
-    }
-
-    /**
-     * @param mailLogDAO the mailLogDAO to set
-     */
-    public void setMailLogDAO(MailLogDao mailLogDAO)
-    {
-        this.mailLogDAO = mailLogDAO;
-    }
-
-    /**
-     * @param configurationService the configurationService to set
-     */
-    public void setConfigurationService(ConfigurationService configurationService)
-    {
-        this.configurationService = configurationService;
     }
 }

@@ -12,20 +12,17 @@ import java.io.Serializable;
  *         Created on: 12/6/10 - 4:05 PM
  */
 @Component("domainObjectParserDao")
-public class DomainObjectParserDaoPersistImpl implements DomainObjectParserDao
-{
+public class DomainObjectParserDaoPersistImpl implements DomainObjectParserDao {
     @Autowired
     private RestoreDao restoreDao;
 
     @Override
-    public <T extends DomainObject<?, ?>> Serializable persist(T object)
-    {
+    public <T extends DomainObject<?, ?>> Serializable persist(T object) {
         return restoreDao.persist(object);
     }
 
     @Override
-    public <T extends Serializable> T find(Serializable primaryKey, Class<T> type)
-    {
+    public <T extends Serializable> T find(Serializable primaryKey, Class<T> type) {
         return restoreDao.find(primaryKey, type);
     }
 }

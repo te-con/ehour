@@ -4,7 +4,7 @@ import java.util
 
 import net.rrm.ehour.data.{AuditReportRequest, DateRange}
 import net.rrm.ehour.domain.Audit
-import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateScalaImpl
+import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import org.apache.commons.lang.StringUtils
 import org.hibernate.Criteria
@@ -12,7 +12,7 @@ import org.hibernate.criterion.{Order, Projections, Restrictions}
 import org.springframework.stereotype.Repository
 
 @Repository("auditDao")
-class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateScalaImpl[Number, Audit](classOf[Audit]) with AuditDao {
+class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Number, Audit](classOf[Audit]) with AuditDao {
 
   override def findAudits(request: AuditReportRequest): util.List[Audit] = {
     val criteria = buildCriteria(request)
@@ -31,14 +31,14 @@ class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateScalaImpl[Number,
   }
 
   override def count(request: AuditReportRequest): Number = {
-    val criteria: Criteria = buildCriteria(request)
+    val criteria = buildCriteria(request)
     criteria.setProjection(Projections.rowCount)
 
     ExponentialBackoffRetryPolicy.retry(criteria.uniqueResult).asInstanceOf[Number]
   }
 
   private def buildCriteria(request: AuditReportRequest): Criteria = {
-    val criteria: Criteria = getSession.createCriteria(classOf[Audit])
+    val criteria = getSession.createCriteria(classOf[Audit])
     if (!StringUtils.isBlank(request.getAction)) {
       criteria.add(Restrictions.like("action", "%" + request.getAction.toLowerCase + "%").ignoreCase)
     }

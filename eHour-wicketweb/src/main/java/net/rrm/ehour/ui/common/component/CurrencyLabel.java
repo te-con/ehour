@@ -17,6 +17,7 @@ public class CurrencyLabel extends Label {
         super(id, new Model<Float>(value));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <Currency> IConverter<Currency> getConverter(Class<Currency> type) {
         return (IConverter<Currency>) CurrencyConverter.getInstance();

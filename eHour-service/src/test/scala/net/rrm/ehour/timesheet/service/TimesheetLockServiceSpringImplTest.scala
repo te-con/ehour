@@ -1,20 +1,20 @@
 package net.rrm.ehour.timesheet.service
 
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-import org.scalatest.mock.MockitoSugar
-import org.mockito.Mockito._
-import org.mockito.Matchers._
-import org.scalatest._
+import java.util.Date
+import java.{util => ju}
+
+import com.github.nscala_time.time.Imports._
+import net.rrm.ehour.data.DateRange
+import net.rrm.ehour.domain.{TimesheetEntryObjectMother, TimesheetLock}
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.joda.time.LocalDate
-import net.rrm.ehour.domain.{TimesheetEntryObjectMother, TimesheetLock}
-import java.{util => ju}
-import com.github.nscala_time.time.Imports._
-import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
-import java.util.Date
-import net.rrm.ehour.data.DateRange
+import org.junit.runner.RunWith
+import org.mockito.Mockito._
+import org.scalatest._
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.mock.MockitoSugar
 
 @RunWith(classOf[JUnitRunner])
 class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
@@ -34,8 +34,6 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
 
   "Timesheet Lock Service" should {
     "create a new lock" in {
-      when(lockDao.persist(any(classOf[TimesheetLock]))).thenReturn(lock)
-
       val timesheet = service.createNew(None, startDate.toDate, endDate.toDate)
 
       timesheet.getDateStart should be(startDate.toDate)

@@ -25,7 +25,6 @@ import javax.sql.DataSource;
 import java.io.File;
 import java.sql.Connection;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class})
 @ContextConfiguration(locations = {"classpath:test-context-props.xml",

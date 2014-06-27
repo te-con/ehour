@@ -26,9 +26,6 @@ import java.util.List;
 public class DomainUtil {
     /**
      * Get a list of primary keys of out a list of domain objects
-     *
-     * @param projects
-     * @return
      */
     public static <PK extends Serializable> List<PK> getIdsFromDomainObjects(Collection<? extends DomainObject<PK, ?>> domainObjects) {
         if (domainObjects == null) {

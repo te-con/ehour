@@ -9,12 +9,12 @@ trait CustomerDao extends GenericDao[Integer, Customer] {
   /**
    * Find all Customers, active and inactive
    **/
-  def findAll: util.List[Customer]
+  def findAll(): util.List[Customer]
 
   /**
    * Find all active customers
    */
-  def findAllActive: util.List[Customer]
+  def findAllActive(): util.List[Customer]
 
   /**
    * Find customer on name and code

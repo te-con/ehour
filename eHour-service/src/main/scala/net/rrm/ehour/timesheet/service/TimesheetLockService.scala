@@ -51,10 +51,16 @@ object TimesheetLockService {
 class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, timesheetDao: TimesheetDao) extends TimesheetLockService {
 
   @Transactional
-  override def createNew(name: Option[String] = None, startDate: Date, endDate: Date): TimesheetLock = lockDao.persist(name match {
-    case Some(n) => new TimesheetLock(startDate, endDate, n)
-    case None => new TimesheetLock(startDate, endDate)
-  })
+  override def createNew(name: Option[String] = None, startDate: Date, endDate: Date): TimesheetLock = {
+    val lock = name match {
+      case Some(n) => new TimesheetLock(startDate, endDate, n)
+      case None => new TimesheetLock(startDate, endDate)
+    }
+
+    lockDao.persist(lock)
+
+    lock
+  }
 
 
   @Transactional

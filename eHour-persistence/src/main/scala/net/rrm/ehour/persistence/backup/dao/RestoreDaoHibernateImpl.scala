@@ -1,5 +1,6 @@
 package net.rrm.ehour.persistence.backup.dao
 
+import java.io
 import java.io.Serializable
 
 import net.rrm.ehour.domain.{DomainObject, User}
@@ -15,9 +16,9 @@ import org.springframework.stereotype.Repository
  */
 @Repository("importDao")
 class RestoreDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl with RestoreDao {
-  override def persist[T <: DomainObject[PK, _], PK <: Serializable](obj: T): PK = {
+  override def persist[T <: DomainObject[_, _]](obj: T): io.Serializable = {
     ExponentialBackoffRetryPolicy.retry(() => getSession.persist(obj))
-    obj.getPK
+    obj.getPK.asInstanceOf[io.Serializable]
   }
 
   override def find[T, PK <: Serializable](primaryKey: PK, obj: Class[T]): T = getSession.get(obj, primaryKey).asInstanceOf[T]

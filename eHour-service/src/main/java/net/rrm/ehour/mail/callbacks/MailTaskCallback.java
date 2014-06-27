@@ -16,58 +16,48 @@
 
 package net.rrm.ehour.mail.callbacks;
 
-import java.util.Date;
-
 import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.mail.dto.MailTaskMessage;
 import net.rrm.ehour.persistence.mail.dao.MailLogDao;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * Mail task callback
- **/
+ */
 @Component
-public abstract class MailTaskCallback
-{
-	@Autowired
-	protected MailLogDao	mailLogDAO;
-	
-	/**
-	 * Handle success
-	 *
-	 */
-	public abstract void mailTaskSuccess(MailTaskMessage mailTaskMessage);
-	
-	/**
-	 * Handle failure
-	 * @param me
-	 */
-	public abstract void mailTaskFailure(MailTaskMessage mailTaskMessage, MailException me);
+public abstract class MailTaskCallback {
+    @Autowired
+    protected MailLogDao mailLogDAO;
 
-	/**
-	 * @param mailLogDAO the mailLogDAO to set
-	 */
-	public void setMailLogDAO(MailLogDao mailLogDAO)
-	{
-		this.mailLogDAO = mailLogDAO;
-	}
-	
-	/**
-	 * Store mail message. Use mailLog and enrich it with standard props of msg
-	 * @param msg
-	 * @param mailLog
-	 */
-	protected void persistMailMessage(MailTaskMessage msg, boolean success, String resultMsg, MailLog mailLog)
-	{
-		mailLog.setMailType(msg.getMailType());
-		mailLog.setTimestamp(new Date());
-		mailLog.setToUser(msg.getToUser());
-		mailLog.setSuccess(success);
-		mailLog.setResultMsg(resultMsg);
-		
-		mailLogDAO.persist(mailLog);
-	}
+    /**
+     * Handle success
+     */
+    public abstract void mailTaskSuccess(MailTaskMessage mailTaskMessage);
+
+    /**
+     * Handle failure
+     *
+     * @param me
+     */
+    public abstract void mailTaskFailure(MailTaskMessage mailTaskMessage, MailException me);
+
+    /**
+     * Store mail message. Use mailLog and enrich it with standard props of msg
+     *
+     * @param msg
+     * @param mailLog
+     */
+    protected void persistMailMessage(MailTaskMessage msg, boolean success, String resultMsg, MailLog mailLog) {
+        mailLog.setMailType(msg.getMailType());
+        mailLog.setTimestamp(new Date());
+        mailLog.setToUser(msg.getToUser());
+        mailLog.setSuccess(success);
+        mailLog.setResultMsg(resultMsg);
+
+        mailLogDAO.persist(mailLog);
+    }
 }
