@@ -15,14 +15,14 @@ import org.wicketstuff.rest.resource.gson.{GsonRestResource, GsonSerialDeserial}
 
 import scala.collection.convert.WrapAsJava
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings(Array("deprecation"))
 object DetailedReportRESTResource {
   def apply: DetailedReportRESTResource = new DetailedReportRESTResource(new GsonSerialDeserial(GsonSerializer.create))
 
   private final val LOG = Logger.getLogger(classOf[DetailedReportRESTResource])
 }
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings(Array("deprecation"))
 class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRestResource(serializer) {
   @SpringBean
   var reportCacheService: ReportCacheService = _
