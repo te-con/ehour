@@ -1,28 +1,28 @@
 package net.rrm.ehour.ui.report.panel.detail
 
-import org.wicketstuff.rest.resource.gson.{GsonSerialDeserial, GsonRestResource}
-import org.wicketstuff.rest.annotations.MethodMapping
-import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.ui.report.cache.ReportCacheService
-import net.rrm.ehour.ui.common.util.WebUtils
-import net.rrm.ehour.util._
-import net.rrm.ehour.ui.common.chart.{GsonSerializer, SparseDateSeries}
-import scala.Some
-import scala.collection.convert.WrapAsJava
-import org.apache.log4j.Logger
 import java.util
-import org.joda.time.{LocalDate, DateTimeZone, DateTimeConstants}
-import org.apache.wicket.model.StringResourceModel
-import net.rrm.ehour.report.criteria.AggregateBy
-import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.ui.common.session.EhourWebSession
 
+import net.rrm.ehour.ui.common.chart.{GsonSerializer, SparseDateSeries}
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.ui.common.util.WebUtils
+import net.rrm.ehour.ui.report.cache.ReportCacheService
+import net.rrm.ehour.util._
+import org.apache.log4j.Logger
+import org.apache.wicket.model.StringResourceModel
+import org.apache.wicket.spring.injection.annot.SpringBean
+import org.wicketstuff.rest.annotations.MethodMapping
+import org.wicketstuff.rest.resource.gson.{GsonRestResource, GsonSerialDeserial}
+
+import scala.collection.convert.WrapAsJava
+
+@SuppressWarnings("deprecation")
 object DetailedReportRESTResource {
   def apply: DetailedReportRESTResource = new DetailedReportRESTResource(new GsonSerialDeserial(GsonSerializer.create))
 
   private final val LOG = Logger.getLogger(classOf[DetailedReportRESTResource])
 }
 
+@SuppressWarnings("deprecation")
 class DetailedReportRESTResource(serializer: GsonSerialDeserial) extends GsonRestResource(serializer) {
   @SpringBean
   var reportCacheService: ReportCacheService = _
