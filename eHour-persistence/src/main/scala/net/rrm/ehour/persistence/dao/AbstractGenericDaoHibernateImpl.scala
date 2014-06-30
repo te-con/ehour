@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional
 abstract class AbstractGenericDaoHibernateImpl[PK <: io.Serializable, T <: DomainObject[PK, _]](entityType: Class[T])
   extends AbstractAnnotationDaoHibernate4Impl with GenericDao[PK, T] {
 
-  implicit def retryOperation[A](operation: () => A): A = ExponentialBackoffRetryPolicy retry operation
-
   @Transactional(readOnly = true)
   protected def findByNamedQuery(queryName: String, cachingRegion: Option[String]): util.List[T] = {
     findByNamedQueryAndNamedParametersOrCache(queryName, List[String](), List[AnyRef](), cachingRegion)

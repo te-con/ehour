@@ -22,7 +22,6 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,9 +34,6 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     @Autowired
     private DetailedReportDao detailedReportDao;
 
-    @Autowired
-    private ReportAggregatedDao reportAggregatedDAO;
-
     public DetailedReportDaoHibernateImplTest() {
         super("dataset-detailedreport.xml");
     }
@@ -46,7 +42,7 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     public void shouldGetHoursPerDayForAssignment() {
         DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
                 new Date(2008 - 1900, 1, 3));
-        List<Serializable> projectIds = new ArrayList<Serializable>();
+        List<Integer> projectIds = new ArrayList<Integer>();
         projectIds.add(1);
         List<FlatReportElement> results = detailedReportDao.getHoursPerDayForAssignment(projectIds, dateRange);
 
@@ -59,7 +55,7 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     public void shouldGetHoursPerDayForUsers() {
         DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
                 new Date(2008 - 1900, 1, 3));
-        List<Serializable> userIds = new ArrayList<Serializable>();
+        List<Integer> userIds = new ArrayList<Integer>();
         userIds.add(1);
         List<FlatReportElement> results = detailedReportDao.getHoursPerDayForUsers(userIds, dateRange);
 
@@ -72,7 +68,7 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     public void shouldGetHoursPerDayForProjects() {
         DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
                 new Date(2008 - 1900, 1, 3));
-        List<Serializable> projectIds = new ArrayList<Serializable>();
+        List<Integer> projectIds = new ArrayList<Integer>();
         projectIds.add(2);
         List<FlatReportElement> results = detailedReportDao.getHoursPerDayForProjects(projectIds, dateRange);
 
@@ -86,9 +82,9 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     public void shouldGetHoursPerDayForProjectsAndUsers() {
         DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
                 new Date(2008 - 1900, 1, 3));
-        List<Serializable> projectIds = new ArrayList<Serializable>();
+        List<Integer> projectIds = new ArrayList<Integer>();
         projectIds.add(2);
-        List<Serializable> userIds = new ArrayList<Serializable>();
+        List<Integer> userIds = new ArrayList<Integer>();
         userIds.add(1);
 
         List<FlatReportElement> results = detailedReportDao.getHoursPerDayForProjectsAndUsers(projectIds, userIds, dateRange);
