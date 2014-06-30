@@ -12,6 +12,5 @@ class AbstractAnnotationDaoHibernate4Impl {
 
   implicit def retryOperation[A](operation: () => A): A = ExponentialBackoffRetryPolicy retry operation
 
-  final protected def getSession: Session = sessionFactory.getCurrentSession
-
+  final def getSession: Session = sessionFactory.getCurrentSession
 }

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
@@ -36,7 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import scala.collection.Seq;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -105,7 +105,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      * @return
      */
     private SortedSet<UserProjectStatus> getProjectStatus(Integer userId, DateRange monthRange) {
-        List<Serializable> assignmentIds = new ArrayList<Serializable>();
+        List<Integer> assignmentIds = Lists.newArrayList();
         SortedSet<UserProjectStatus> userProjectStatus = new TreeSet<UserProjectStatus>();
         Map<Integer, AssignmentAggregateReportElement> originalAggregates = new HashMap<Integer, AssignmentAggregateReportElement>();
 

@@ -23,7 +23,6 @@ import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
-import java.io.Serializable;
 import java.util.List;
 
 
@@ -49,7 +48,7 @@ public interface AggregateReportService {
      * @param projectAssignmentIds
      * @return
      */
-    List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds);
+    List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds);
 
     /**
      * Get aggregate report data

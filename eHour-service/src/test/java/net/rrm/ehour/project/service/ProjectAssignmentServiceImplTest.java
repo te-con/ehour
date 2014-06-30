@@ -29,7 +29,6 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,7 +59,7 @@ public class ProjectAssignmentServiceImplTest {
 
         expect(projectAssignmentDAO.findById(1)).andReturn(pa);
 
-        List<Serializable> ids = new ArrayList<Serializable>();
+        List<Integer> ids = Lists.newArrayList();
         ids.add(1);
 
         expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids))

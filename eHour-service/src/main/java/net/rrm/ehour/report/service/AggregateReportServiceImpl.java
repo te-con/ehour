@@ -35,7 +35,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -61,7 +60,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     }
 
     @Override
-    public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<? extends Serializable> projectAssignmentIds) {
+    public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds) {
         return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
     }
 
