@@ -69,6 +69,9 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         // pm access rights
         form.add(new DropDownChoice<PmPrivilege>("config.pmPrivilege", Arrays.asList(PmPrivilege.values()), new EnumChoiceRenderer<PmPrivilege>()));
 
+        // split admin role
+        form.add(new CheckBox("config.splitAdminRole"));
+
     }
 
     private static final class WeekDayRenderer extends ChoiceRenderer<Date> {

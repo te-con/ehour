@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    
-<html 
-	xmlns="http://www.w3.org/1999/xhtml" 
+
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
 	<body>
@@ -11,7 +11,7 @@
 				<td><wicket:message key="admin.config.showTurnover" />:</td>
 				<td><input type="checkbox" wicket:id="config.showTurnover" /></td>
 			</tr>
-		
+
 			<tr>
 				<td valign="top"><wicket:message key="admin.config.workHours" />:</td>
 				<td><input class="textInputSmall" wicket:id="config.completeDayHours" style="width: 5em" />
@@ -24,10 +24,15 @@
 				<td><select style="width: 15em" class="textInputSmall" wicket:id="firstWeekStart"></select></td>
 			</tr>
 
-            <td valign="top"><wicket:message key="admin.config.pmprivileges" />:</td>
-            <td><select style="width: 15em" class="textInputSmall" wicket:id="config.pmPrivilege"></select></td>
+            <tr>
+                <td valign="top"><wicket:message key="admin.config.pmprivileges" />:</td>
+                <td><select style="width: 15em" class="textInputSmall" wicket:id="config.pmPrivilege"></select></td>
+            </tr>
 
-
+            <tr>
+                <td valign="top"><wicket:message key="admin.config.splitAdminRole"/></td>
+                <td><input type="checkbox" wicket:id="config.splitAdminRole" /></td>
+            </tr>
         </wicket:extend>
 	</body>
 </html>

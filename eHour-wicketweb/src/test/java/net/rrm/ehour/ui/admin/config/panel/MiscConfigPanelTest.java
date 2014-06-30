@@ -25,32 +25,35 @@ import org.junit.Test;
 
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created on Apr 22, 2009, 4:20:02 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
 @SuppressWarnings("serial")
-public class MiscConfigPanelTest extends AbstractMainConfigTest
-{
-	@Test
-	public void shouldSubmit()
-	{
-		getConfigService().persistConfiguration(getConfigStub());
-		
-		replay(getConfigService());
-		
-		startPage();
-		
-		tester.assertComponent(FORM_PATH, Form.class);
-		
-		FormTester miscFormTester = tester.newFormTester(FORM_PATH);
-		
-		miscFormTester.setValue("config.completeDayHours", "4");
-		
-		tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick");
-		
-		assertEquals(4f, getConfigStub().getCompleteDayHours(), 0.001);
-	}
+public class MiscConfigPanelTest extends AbstractMainConfigTest {
+    @Test
+    public void shouldSubmit() {
+        getConfigService().persistConfiguration(getConfigStub());
+
+        replay(getConfigService());
+
+        startPage();
+
+        tester.assertComponent(FORM_PATH, Form.class);
+
+        FormTester miscFormTester = tester.newFormTester(FORM_PATH);
+
+        miscFormTester.setValue("config.completeDayHours", "4");
+        miscFormTester.setValue("config.splitAdminRole", "true");
+
+        tester.executeAjaxEvent(FORM_PATH + ":submitButton", "onclick");
+
+        assertEquals(4f, getConfigStub().getCompleteDayHours(), 0.001);
+        assertTrue(getConfigStub().isSplitAdminRole());
+
+        tester.assertNoErrorMessage();
+    }
 }
