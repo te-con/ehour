@@ -264,7 +264,7 @@ CREATE TABLE USER_ROLE (
 -- Dumping data for table USER_ROLE
 --
 
-INSERT INTO USER_ROLE VALUES ('ROLE_ADMIN','Administrator'),('ROLE_CONSULTANT','Consultant'),('ROLE_PROJECTMANAGER','PM'),('ROLE_REPORT','Report role');
+INSERT INTO USER_ROLE VALUES ('ROLE_ADMIN','Administrator'),('ROLE_CONSULTANT','Consultant'),('ROLE_PROJECTMANAGER','PM'),('ROLE_REPORT','Report role'),('ROLE_MANAGER','Manager');
 
 --
 -- Table structure for table USER_TO_USERROLE
