@@ -33,7 +33,7 @@ import org.apache.wicket.model.ResourceModel;
 /**
  * User preference page 
  **/
-@AuthorizeInstantiation({UserRole.ROLE_CONSULTANT, UserRole.ROLE_ADMIN, UserRole.ROLE_REPORT})
+@AuthorizeInstantiation({UserRole.ROLE_USER, UserRole.ROLE_ADMIN, UserRole.ROLE_REPORT})
 public class UserPreferencePage extends AbstractBasePage<Void>
 {
 	public UserPreferencePage() throws ObjectNotFoundException

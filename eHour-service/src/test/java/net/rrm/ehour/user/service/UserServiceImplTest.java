@@ -141,16 +141,16 @@ public class UserServiceImplTest {
 
     @Test
     public void testGetUserRole() {
-        expect(userRoleDAO.findById(UserRole.ROLE_CONSULTANT))
-                .andReturn(UserRole.CONSULTANT);
+        expect(userRoleDAO.findById(UserRole.ROLE_USER))
+                .andReturn(UserRole.USER);
 
         replay(userRoleDAO);
 
-        UserRole ur = userService.getUserRole(UserRole.ROLE_CONSULTANT);
+        UserRole ur = userService.getUserRole(UserRole.ROLE_USER);
 
         verify(userRoleDAO);
 
-        assertEquals(UserRole.ROLE_CONSULTANT, ur.getRole());
+        assertEquals(UserRole.ROLE_USER, ur.getRole());
     }
 
     @Test

@@ -43,7 +43,7 @@ public class DevelopmentWebSession extends EhourWebSession {
     private Roles createDefaultAuthorizedRoles() {
         authorizedRoles = new Roles();
         authorizedRoles.add(UserRole.ROLE_PROJECTMANAGER);
-        authorizedRoles.add(UserRole.ROLE_CONSULTANT);
+        authorizedRoles.add(UserRole.ROLE_USER);
         authorizedRoles.add(UserRole.ROLE_ADMIN);
         authorizedRoles.add(UserRole.ROLE_REPORT);
 

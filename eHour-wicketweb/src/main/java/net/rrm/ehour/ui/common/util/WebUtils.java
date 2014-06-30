@@ -97,7 +97,7 @@ public class WebUtils {
     public static String getResourceKeyForUserRole(UserRole role) {
         String key = null;
 
-        if (role.getRole().equals(UserRole.ROLE_CONSULTANT)) {
+        if (role.getRole().equals(UserRole.ROLE_USER)) {
             key = "role.ROLE_CONSULTANT";
         } else if (role.getRole().equals(UserRole.ROLE_REPORT)) {
             key = "role.ROLE_REPORT";

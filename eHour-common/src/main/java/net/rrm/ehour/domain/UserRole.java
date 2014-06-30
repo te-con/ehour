@@ -33,24 +33,23 @@ import java.util.Map;
 @Entity
 @Table(name = "USER_ROLE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class UserRole extends DomainObject<String, UserRole> implements GrantedAuthority
-{
-	private static final long serialVersionUID = 3806904191272349157L;
+public class UserRole extends DomainObject<String, UserRole> implements GrantedAuthority {
+    private static final long serialVersionUID = 3806904191272349157L;
 
-	public static final String	ROLE_CONSULTANT = "ROLE_CONSULTANT";
-	public static final String	ROLE_REPORT = "ROLE_REPORT";
-	public static final String	ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
-	public static final String	ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_USER = "ROLE_CONSULTANT";
+    public static final String ROLE_REPORT = "ROLE_REPORT";
+    public static final String ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
-	public static final UserRole CONSULTANT = new UserRole(ROLE_CONSULTANT, "Consultant");
-	public static final UserRole REPORT = new UserRole(ROLE_REPORT, "Report Role");
-	public static final UserRole PROJECTMANAGER = new UserRole(ROLE_PROJECTMANAGER, "PM");
-	public static final UserRole ADMIN = new UserRole(ROLE_ADMIN, "Administrator");
+    public static final UserRole USER = new UserRole(ROLE_USER, "Consultant");
+    public static final UserRole REPORT = new UserRole(ROLE_REPORT, "Report Role");
+    public static final UserRole PROJECTMANAGER = new UserRole(ROLE_PROJECTMANAGER, "PM");
+    public static final UserRole ADMIN = new UserRole(ROLE_ADMIN, "Administrator");
 
     public static final Map<String, UserRole> ROLES = new HashMap<String, UserRole>();
 
     static {
-        ROLES.put(ROLE_CONSULTANT, CONSULTANT);
+        ROLES.put(ROLE_USER, USER);
         ROLES.put(ROLE_REPORT, REPORT);
         ROLES.put(ROLE_PROJECTMANAGER, PROJECTMANAGER);
         ROLES.put(ROLE_ADMIN, ADMIN);
@@ -59,85 +58,72 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
     @Id
     @Column(name = "ROLE", length = 128)
     @NotNull
-	private String 	role;
+    private String role;
 
     @NotNull
     @Column(name = "NAME", length = 128, nullable = false)
-    private String	roleName;
+    private String roleName;
 
-	public UserRole()
-	{
-	}
-
-	public UserRole(String role, String roleName)
-	{
-		this.role = role;
-		this.roleName = roleName;
-		
-	}
-
-	public String getRoleName()
-	{
-		return roleName;
-	}
-
-	public String getRole()
-	{
-		return role;
-	}
-
-	public String getAuthority()
-	{
-		return role;
-	}
-	
-    public String toString()
-    {
-    	return role;
+    public UserRole() {
     }
 
-	@Override
-	public String getPK()
-	{
-		return role;
-	}
+    public UserRole(String role, String roleName) {
+        this.role = role;
+        this.roleName = roleName;
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(UserRole object)
-	{
-		return new CompareToBuilder()
-			.append(this.getRole(), object.getRole())
-			.append(this.getRoleName(), object.getRoleName()).toComparison();
-	}
-	
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getAuthority() {
+        return role;
+    }
+
+    public String toString() {
+        return role;
+    }
+
+    @Override
+    public String getPK() {
+        return role;
+    }
+
     /**
-     * 
+     * @see java.lang.Comparable#compareTo(Object)
      */
-	@Override
-    public int hashCode()
-    {
-    	return new HashCodeBuilder().append(getRole()).toHashCode();
-    }	
+    public int compareTo(UserRole object) {
+        return new CompareToBuilder()
+                .append(this.getRole(), object.getRole())
+                .append(this.getRoleName(), object.getRoleName()).toComparison();
+    }
 
-	/**
-	 * 
-	 */
-	@Override
-    public boolean equals(Object obj)
-    {
-    	boolean isEqual = false;
-    	
-        if (obj instanceof String)
-        {
+    /**
+     *
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getRole()).toHashCode();
+    }
+
+    /**
+     *
+     */
+    @Override
+    public boolean equals(Object obj) {
+        boolean isEqual = false;
+
+        if (obj instanceof String) {
             isEqual = obj.equals(this.getRole());
-        }
-        else if (obj instanceof UserRole)
-        {
-        	isEqual = ((UserRole)obj).getRole().equals(this.getRole());
+        } else if (obj instanceof UserRole) {
+            isEqual = ((UserRole) obj).getRole().equals(this.getRole());
         }
 
         return isEqual;
-    }	
+    }
 }

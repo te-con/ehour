@@ -35,7 +35,7 @@ public interface EhourConfig {
     float getCompleteDayHours();
 
     /**
-     * Show turnover to consultants
+     * Show turnover to users
      *
      * @return
      */

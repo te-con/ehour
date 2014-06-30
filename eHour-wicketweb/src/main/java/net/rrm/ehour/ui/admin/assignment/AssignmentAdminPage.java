@@ -118,6 +118,6 @@ public class AssignmentAdminPage extends AbstractAdminPage<Void> {
     }
 
     private List<User> getUsers() {
-        return userService.getUsers(UserRole.CONSULTANT);
+        return userService.getUsers(UserRole.USER);
     }
 }

@@ -43,7 +43,7 @@ import java.util.Calendar;
 /**
  * Print month page
  */
-@AuthorizeInstantiation(UserRole.ROLE_CONSULTANT)
+@AuthorizeInstantiation(UserRole.ROLE_USER)
 public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> implements AjaxEventListener {
     private static final long serialVersionUID = 1891959724639181159L;
 

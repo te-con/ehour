@@ -24,13 +24,13 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
   }
 
   "Ehour Web Session should" should {
-    val User = new User("thies", "password").addUserRole(CONSULTANT)
+    val User = new User("thies", "password").addUserRole(USER)
 
     "do not allow non-admin users to impersonate" in {
       val session = new EhourWebSession(req) {
         override def authenticate(username: String, password: String): Boolean = true
 
-        override def getRoles: Roles = new Roles(s"$ROLE_CONSULTANT,$ROLE_REPORT,$ROLE_PROJECTMANAGER")
+        override def getRoles: Roles = new Roles(s"$ROLE_USER,$ROLE_REPORT,$ROLE_PROJECTMANAGER")
       }
 
       session.signIn("a", "b")
@@ -58,7 +58,7 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
       val user = AuthUtil.getUser
       user should be(User)
 
-      session.getRoles should contain(ROLE_CONSULTANT)
+      session.getRoles should contain(ROLE_USER)
       session.getUserSelectedCriteria should be(null)
 
     }

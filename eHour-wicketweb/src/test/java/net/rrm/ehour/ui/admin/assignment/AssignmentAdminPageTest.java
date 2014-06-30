@@ -66,7 +66,7 @@ public class AssignmentAdminPageTest extends BaseSpringWebAppTester {
 
         replay(customerService);
 
-        expect(userService.getUsers(UserRole.CONSULTANT))
+        expect(userService.getUsers(UserRole.USER))
                 .andReturn(Arrays.asList(UserObjectMother.createUser()));
 
         replay(userService);

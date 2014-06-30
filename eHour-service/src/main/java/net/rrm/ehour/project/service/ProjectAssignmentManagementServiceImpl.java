@@ -29,7 +29,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     @Transactional
     @Auditable(actionType = AuditActionType.CREATE)
     public void assignAllUsersToProject(Project project) {
-        List<User> users = userService.getUsers(UserRole.CONSULTANT);
+        List<User> users = userService.getUsers(UserRole.USER);
 
         for (User user : users) {
             ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(project, user);

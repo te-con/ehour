@@ -35,7 +35,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 
-@AuthorizeInstantiation(UserRole.ROLE_CONSULTANT)
+@AuthorizeInstantiation(UserRole.ROLE_USER)
 public class MonthOverviewPage extends AbstractBasePage<Void> {
     private static final long serialVersionUID = -6873845464139697303L;
     private static final String ID_CONTENT_CONTAINER = "contentContainer";

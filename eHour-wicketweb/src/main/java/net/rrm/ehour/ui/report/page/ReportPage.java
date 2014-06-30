@@ -44,7 +44,7 @@ import java.util.List;
 
 import static net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel.ReportTypeChangeEvent;
 
-@AuthorizeInstantiation(value = {UserRole.ROLE_CONSULTANT, UserRole.ROLE_REPORT, UserRole.ROLE_PROJECTMANAGER})
+@AuthorizeInstantiation(value = {UserRole.ROLE_USER, UserRole.ROLE_REPORT, UserRole.ROLE_PROJECTMANAGER})
 public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     private static final long serialVersionUID = 6614404841734599622L;
     private static final CssResourceReference REPORT_CSS = new CssResourceReference(ReportPage.class, "report.css");
