@@ -20,7 +20,7 @@ class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
     val keys = List("name", "code")
     val params = List(name.toLowerCase, code.toLowerCase)
 
-    val op = () => findByNamedQueryAndNamedParametersOrCache("Customer.findByNameAndCode", keys, params, CacheRegion)
+    val op = () => findByNamedQueryAndNamedParams("Customer.findByNameAndCode", keys, params, CacheRegion)
 
     val results = ExponentialBackoffRetryPolicy.retry(op)
 

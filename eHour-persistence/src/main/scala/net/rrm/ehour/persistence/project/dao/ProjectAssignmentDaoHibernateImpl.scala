@@ -19,13 +19,13 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
   override def findProjectAssignmentsForUser(userId: Integer, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "userId")
     val params = List(range.getDateStart, range.getDateEnd, userId)
-    () => findByNamedQueryAndNamedParametersOrCache[ProjectAssignment]("ProjectAssignment.findProjectAssignmentsForUserInRange", keys, params, CacheRegion)
+    () => findByNamedQueryAndNamedParams("ProjectAssignment.findProjectAssignmentsForUserInRange", keys, params, CacheRegion)
   }
 
   override def findProjectAssignmentForUser(projectId: Integer, userId: Integer): util.List[ProjectAssignment] = {
     val keys = List("projectId", "userId")
     val params  = List(projectId, userId)
-    val op = () => findByNamedQueryAndNamedParametersOrCache[ProjectAssignment]("ProjectAssignment.findProjectAssignmentsForUserForProject", keys, params, CacheRegion)
+    val op = () => findByNamedQueryAndNamedParams("ProjectAssignment.findProjectAssignmentsForUserForProject", keys, params, CacheRegion)
     ExponentialBackoffRetryPolicy.retry(op)
   }
 
@@ -35,7 +35,7 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
   override def findProjectAssignmentsForProject(project: Project, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "project")
     val params = List(range.getDateStart, range.getDateEnd, project)
-    () => findByNamedQueryAndNamedParametersOrCache[ProjectAssignment]("ProjectAssignment.findProjectAssignmentsForProjectInRange", keys, params, CacheRegion)
+    () => findByNamedQueryAndNamedParams("ProjectAssignment.findProjectAssignmentsForProjectInRange", keys, params, CacheRegion)
   }
 
   override def findAllProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment] = findProjectAssignmentsForProject(project, onlyActive = false)
@@ -60,6 +60,6 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
   override def findProjectAssignmentsForCustomer(customer: Customer, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "customer")
     val params = List(range.getDateStart, range.getDateEnd, customer)
-    () => findByNamedQueryAndNamedParametersOrCache[ProjectAssignment]("ProjectAssignment.findProjectAssignmentsForCustomerInRange", keys, params, CacheRegion)
+    () => findByNamedQueryAndNamedParams("ProjectAssignment.findProjectAssignmentsForCustomerInRange", keys, params, CacheRegion)
   }
 }

@@ -18,13 +18,13 @@ class TimesheetDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Timeshee
   override def getTimesheetEntriesInRange(assignment: ProjectAssignment, dateRange: DateRange): util.List[TimesheetEntry] = {
     val keys = List("dateStart", "dateEnd", "assignment")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd, assignment)
-    () => findByNamedQueryAndNamedParameters("Timesheet.getEntriesBetweenDateForAssignment", keys, params)
+    () => findByNamedQueryAndNamedParams("Timesheet.getEntriesBetweenDateForAssignment", keys, params)
   }
 
   override def getTimesheetEntriesInRange(dateRange: DateRange): util.List[TimesheetEntry] = {
     val keys = List("dateStart", "dateEnd")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd)
-    () => findByNamedQueryAndNamedParameters("Timesheet.getEntriesBetweenDate", keys, params)
+    () => findByNamedQueryAndNamedParams("Timesheet.getEntriesBetweenDate", keys, params)
   }
 
   override def getBookedHoursperDayInRange(userId: Integer, dateRange: DateRange): util.List[BookedDay] =
@@ -33,7 +33,7 @@ class TimesheetDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Timeshee
   private def applyConstraintsAndExecute[T](userId: Integer, dateRange: DateRange, hql: String, clazz: Class[T]): util.List[T] = {
     val keys = List("dateStart", "dateEnd", "userId")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd, userId)
-    () => findByNamedQueryAndNamedParameters(hql, keys, params).asInstanceOf[util.List[T]]
+    () => findByNamedQueryAndNamedParams(hql, keys, params).asInstanceOf[util.List[T]]
   }
 
   override def getLatestTimesheetEntryForAssignment(assignmentId: Integer): TimesheetEntry = {
@@ -54,12 +54,12 @@ class TimesheetDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Timeshee
   override def getTimesheetEntriesAfter(assignment: ProjectAssignment, date: Date): util.List[TimesheetEntry] = {
     val keys = List("date", "assignment")
     val params = List(date, assignment)
-    () => findByNamedQueryAndNamedParameters("Timesheet.getEntriesAfterDateForAssignment", keys, params)
+    () => findByNamedQueryAndNamedParams("Timesheet.getEntriesAfterDateForAssignment", keys, params)
   }
 
   override def getTimesheetEntriesBefore(assignment: ProjectAssignment, date: Date): util.List[TimesheetEntry] = {
     val keys = List("date", "assignment")
     val params = List(date, assignment)
-    () => findByNamedQueryAndNamedParameters("Timesheet.getEntriesBeforeDateForAssignment", keys, params)
+    () => findByNamedQueryAndNamedParams("Timesheet.getEntriesBeforeDateForAssignment", keys, params)
   }
 }

@@ -11,16 +11,13 @@ trait SingleTypedFindByName[T] {
   def getSession: Session
 
   def findByNamedQuery(queryName: String, cachingRegion: Option[String] = None): util.List[T] =
-    findByNamedQueryAndNamedParametersOrCache(queryName, List[String](), List[AnyRef](), cachingRegion)
+    findByNamedQueryAndNamedParams(queryName, List[String](), List[AnyRef](), cachingRegion)
 
   def findByNamedQueryAndNamedParam(queryName: String, param: String, value: AnyRef, cachingRegion: Option[String] = None): util.List[T] =
-    findByNamedQueryAndNamedParametersOrCache[T](queryName, List(param), List(value), cachingRegion)
-
-  def findByNamedQueryAndNamedParameters(queryName: String, paramNames: List[String], values: List[AnyRef]): util.List[T] =
-    findByNamedQueryAndNamedParametersOrCache(queryName, paramNames, values, None)
+    findByNamedQueryAndNamedParams(queryName, List(param), List(value), cachingRegion)
 
   import scala.collection.JavaConversions._
-  def findByNamedQueryAndNamedParametersOrCache[A](queryName: String, paramNames: List[String], paramValues: List[AnyRef], cachingRegion: Option[String] = None): util.List[A] = {
+  def findByNamedQueryAndNamedParams(queryName: String, paramNames: List[String], paramValues: List[AnyRef],  cachingRegion: Option[String] = None): util.List[T] = {
     val query = getSession.getNamedQuery(queryName)
 
     paramNames.zip(paramValues).foreach { case (name, value) =>
@@ -38,7 +35,7 @@ trait SingleTypedFindByName[T] {
       case None =>
     }
 
-    val operation = () => query.list.asInstanceOf[util.List[A]]
+    val operation = () => query.list.asInstanceOf[util.List[T]]
 
     ExponentialBackoffRetryPolicy retry operation
   }
