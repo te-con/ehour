@@ -9,11 +9,11 @@ object ExponentialBackoffRetryPolicy {
   private final val MaxAttempts = 5
   private final val Log = Logger.getLogger(ExponentialBackoffRetryPolicy.getClass)
 
-  def retry[T](op: () => T, maxAttempts:Int = MaxAttempts) = {
+  def retry[T](op: => T, maxAttempts:Int = MaxAttempts) = {
     def execOrWait(waitTimes: Seq[Int], lastException: Option[HibernateException]): T = {
       if (waitTimes.nonEmpty) {
         try {
-          op()
+          op
         } catch {
           case e: HibernateException =>
             val waitTime = waitTimes.head

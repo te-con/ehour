@@ -16,6 +16,6 @@ class TimesheetLockHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer
     val keys = List("startDate", "endDate")
     val params = List(start, end)
 
-    findByNamedQueryAndNamedParams("TimesheetLock.getLocksMatchingDate", keys, params)
+    findByNamedQuery("TimesheetLock.getLocksMatchingDate", keys, params)
   }
 }

@@ -18,7 +18,7 @@ class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Number, Audi
     val criteria = buildCriteria(request)
     criteria.addOrder(Order.asc("date"))
 
-    ExponentialBackoffRetryPolicy.retry(criteria.list).asInstanceOf[util.List[Audit]]
+    ExponentialBackoffRetryPolicy.retry(criteria.list.asInstanceOf[util.List[Audit]])
   }
 
   override def findAudits(request: AuditReportRequest, offset: Int, max: Int): util.List[Audit] = {
@@ -27,7 +27,7 @@ class AuditDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Number, Audi
     criteria.setMaxResults(max)
     criteria.addOrder(Order.asc("date"))
 
-    ExponentialBackoffRetryPolicy.retry(criteria.list).asInstanceOf[util.List[Audit]]
+    ExponentialBackoffRetryPolicy.retry(criteria.list.asInstanceOf[util.List[Audit]])
   }
 
   override def count(request: AuditReportRequest): Number = {

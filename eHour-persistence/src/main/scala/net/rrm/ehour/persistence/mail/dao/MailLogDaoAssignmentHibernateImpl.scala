@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository
 @Repository("mailLogAssignmentDao")
 class MailLogDaoAssignmentHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, MailLogAssignment](classOf[MailLogAssignment]) with MailLogAssignmentDao {
   override def findMailLogOnAssignmentIds(projectAssignmentIds: Array[Integer]): util.List[MailLogAssignment] =
-    () => findByNamedQueryAndNamedParams("MailLogAssignment.findOnAssignmentIds", List("assignmentIds"), projectAssignmentIds.toList)
+    findByNamedQuery("MailLogAssignment.findOnAssignmentIds", List("assignmentIds"), projectAssignmentIds.toList)
 }

@@ -11,30 +11,28 @@ import org.springframework.stereotype.Repository
   private final val CacheRegion = Some("query.User")
 
   override def findByUsername(username: String): User = {
-    val operation = () => findByNamedQueryAndNamedParam("User.findByUsername", "username", username, CacheRegion)
-
-    val results = ExponentialBackoffRetryPolicy retry operation
+    val results = ExponentialBackoffRetryPolicy retry findByNamedQuery("User.findByUsername", "username", username, CacheRegion)
 
     if (results.size > 0) results.get(0) else null
   }
 
   override def findUsers(onlyActive: Boolean): util.List[User] = {
     if (onlyActive)
-      () => findByNamedQuery("User.findActiveUsers", CacheRegion)
+      findByNamedQuery("User.findActiveUsers", CacheRegion)
     else
-      findAll
+      findAll()
   }
 
   override def findActiveUsers(): util.List[User] = findUsers(onlyActive = true)
 
   override def findUsersForDepartments(departments: util.List[UserDepartment], onlyActive: Boolean): util.List[User] = {
     val hql = if (onlyActive) "User.findActiveForDepartment" else "User.findForDepartment"
-    () => findByNamedQueryAndNamedParam(hql, "departments", departments, CacheRegion)
+    findByNamedQuery(hql, "departments", departments, CacheRegion)
   }
 
-  override def findAllActiveUsersWithEmailSet(): util.List[User] = () => findByNamedQuery("User.findAllActiveUsersWithEmailSet", CacheRegion)
+  override def findAllActiveUsersWithEmailSet(): util.List[User] = findByNamedQuery("User.findAllActiveUsersWithEmailSet", CacheRegion)
 
   override def deletePmWithoutProject() {
-    () => getSession.getNamedQuery("User.deletePMsWithoutProject").executeUpdate
+    ExponentialBackoffRetryPolicy retry getSession.getNamedQuery("User.deletePMsWithoutProject").executeUpdate
   }
 }

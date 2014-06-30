@@ -19,6 +19,7 @@ import java.util
 
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernate4Impl
+import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import org.hibernate.transform.Transformers
 import org.springframework.stereotype.Repository
@@ -35,13 +36,13 @@ class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl
       .setDate("dateEnd", dateRange.getDateEnd)
       .setParameterList("assignmentId", assignmentIds)
       .setResultTransformer(Transformers.aliasToBean(classOf[FlatReportElement]))
-    () => query.list.asInstanceOf[util.List[FlatReportElement]]
+    ExponentialBackoffRetryPolicy retry query.list.asInstanceOf[util.List[FlatReportElement]]
   }
 
   override def getHoursPerDayForUsers(userIds: util.List[Integer], dateRange: DateRange): util.List[FlatReportElement] = {
     val session = this.getSession
     val query = session.getNamedQuery("Report.getHoursPerDayForUsers").setDate("dateStart", dateRange.getDateStart).setDate("dateEnd", dateRange.getDateEnd).setParameterList("userIds", userIds).setResultTransformer(Transformers.aliasToBean(classOf[FlatReportElement]))
-    () => query.list.asInstanceOf[util.List[FlatReportElement]]
+    ExponentialBackoffRetryPolicy retry query.list.asInstanceOf[util.List[FlatReportElement]]
   }
 
   override def getHoursPerDayForProjects(projectIds: util.List[Integer], dateRange: DateRange): util.List[FlatReportElement] = {
@@ -51,7 +52,7 @@ class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl
       .setDate("dateEnd", dateRange.getDateEnd)
       .setParameterList("projectIds", projectIds)
       .setResultTransformer(Transformers.aliasToBean(classOf[FlatReportElement]))
-    () => query.list.asInstanceOf[util.List[FlatReportElement]]
+    ExponentialBackoffRetryPolicy retry query.list.asInstanceOf[util.List[FlatReportElement]]
   }
 
   override def getHoursPerDayForProjectsAndUsers(projectIds: util.List[Integer], userIds: util.List[Integer], dateRange: DateRange): util.List[FlatReportElement] = {
@@ -62,7 +63,7 @@ class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl
       .setParameterList("projectIds", projectIds)
       .setParameterList("userIds", userIds)
       .setResultTransformer(Transformers.aliasToBean(classOf[FlatReportElement]))
-    () => query.list.asInstanceOf[util.List[FlatReportElement]]
+    ExponentialBackoffRetryPolicy retry query.list.asInstanceOf[util.List[FlatReportElement]]
   }
 
   override def getHoursPerDay(dateRange: DateRange): util.List[FlatReportElement] = {
@@ -71,7 +72,7 @@ class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl
       .setDate("dateStart", dateRange.getDateStart)
       .setDate("dateEnd", dateRange.getDateEnd)
       .setResultTransformer(Transformers.aliasToBean(classOf[FlatReportElement]))
-    () => query.list.asInstanceOf[util.List[FlatReportElement]]
+    ExponentialBackoffRetryPolicy retry query.list.asInstanceOf[util.List[FlatReportElement]]
   }
 }
 

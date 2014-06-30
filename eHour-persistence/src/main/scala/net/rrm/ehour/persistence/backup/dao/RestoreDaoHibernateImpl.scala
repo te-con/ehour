@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository
 @Repository("importDao")
 class RestoreDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl with RestoreDao {
   override def persist[T <: DomainObject[_, _]](obj: T): io.Serializable = {
-    ExponentialBackoffRetryPolicy.retry(() => getSession.persist(obj))
+    ExponentialBackoffRetryPolicy.retry(getSession.persist(obj))
     obj.getPK.asInstanceOf[io.Serializable]
   }
 
@@ -32,7 +32,6 @@ class RestoreDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl with R
   override def delete[T](obj: Class[T]) {
     if (obj eq classOf[User]) {
       ExponentialBackoffRetryPolicy.retry(getSession.createSQLQuery("DELETE FROM USER_TO_USERROLE").executeUpdate)
-
     }
 
     ExponentialBackoffRetryPolicy.retry(getSession.createQuery("DELETE FROM " + obj.getName).executeUpdate)

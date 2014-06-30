@@ -12,14 +12,8 @@ class BackupDaoJdbcImpl extends BackupDao {
   @Autowired
   var jdbcTemplate: JdbcTemplate = _
 
-  override def findForType(entityType: BackupEntityType): util.List[util.Map[String, Object]] = {
-    ExponentialBackoffRetryPolicy retry (() => find("SELECT * FROM " + entityType.name))
-  }
-
-  private def find(sql: String): util.List[util.Map[String, Object]] = {
-    ExponentialBackoffRetryPolicy retry (() => jdbcTemplate.queryForList(sql))
-  }
-
+  override def findForType(entityType: BackupEntityType): util.List[util.Map[String, Object]] =
+    ExponentialBackoffRetryPolicy retry jdbcTemplate.queryForList("SELECT * FROM " + entityType.name)
 }
 
 

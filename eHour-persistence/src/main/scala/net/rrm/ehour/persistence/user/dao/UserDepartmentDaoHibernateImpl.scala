@@ -12,9 +12,7 @@ class UserDepartmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Int
   override def findOnNameAndCode(name: String, code: String): UserDepartment = {
     val keys = List("name", "code")
     val params = List(name.toLowerCase, code.toLowerCase)
-    val operation = ()=> findByNamedQueryAndNamedParams("UserDepartment.findByNameAndCode", keys, params, CacheRegion)
-
-    val results = ExponentialBackoffRetryPolicy retry operation
+    val results = ExponentialBackoffRetryPolicy retry findByNamedQuery("UserDepartment.findByNameAndCode", keys, params, CacheRegion)
 
     if (results.size > 0) results.get(0) else null
   }

@@ -13,16 +13,16 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Repository
 abstract class AbstractGenericDaoHibernateImpl[PK <: io.Serializable, T <: DomainObject[PK, _]](entityType: Class[T])
-  extends AbstractAnnotationDaoHibernate4Impl with GenericDao[PK, T] with SingleTypedFindByName[T] {
+  extends AbstractAnnotationDaoHibernate4Impl with GenericDao[PK, T] with SingleTypedFindByNamedQuery[T] {
   @Transactional(readOnly = true)
   override def findAll(): util.List[T] = {
     val criteria: Criteria = getSession.createCriteria(entityType)
-    () => criteria.list.asInstanceOf[util.List[T]]
+    ExponentialBackoffRetryPolicy retry criteria.list.asInstanceOf[util.List[T]]
   }
 
   @Transactional
   override def delete(domObj: T) {
-    ExponentialBackoffRetryPolicy retry (() => getSession.delete(domObj))
+    ExponentialBackoffRetryPolicy retry getSession.delete(domObj)
   }
 
   @Transactional
@@ -33,13 +33,13 @@ abstract class AbstractGenericDaoHibernateImpl[PK <: io.Serializable, T <: Domai
 
   @Transactional
   override def persist(domObj: T): T = {
-    ExponentialBackoffRetryPolicy retry (() => getSession.saveOrUpdate(domObj))
+    ExponentialBackoffRetryPolicy retry getSession.saveOrUpdate(domObj)
     domObj
   }
 
   @Transactional(readOnly = true)
-  override def findById(id: PK): T = () => getSession.get(entityType, id).asInstanceOf[T]
+  override def findById(id: PK): T = ExponentialBackoffRetryPolicy retry getSession.get(entityType, id).asInstanceOf[T]
 
   @Transactional
-  override def merge(domobj: T): T = () => getSession.merge(domobj).asInstanceOf[T]
+  override def merge(domobj: T): T = ExponentialBackoffRetryPolicy retry getSession.merge(domobj).asInstanceOf[T]
 }

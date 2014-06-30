@@ -19,23 +19,22 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
   override def findProjectAssignmentsForUser(userId: Integer, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "userId")
     val params = List(range.getDateStart, range.getDateEnd, userId)
-    () => findByNamedQueryAndNamedParams("ProjectAssignment.findProjectAssignmentsForUserInRange", keys, params, CacheRegion)
+    findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUserInRange", keys, params, CacheRegion)
   }
 
   override def findProjectAssignmentForUser(projectId: Integer, userId: Integer): util.List[ProjectAssignment] = {
     val keys = List("projectId", "userId")
     val params  = List(projectId, userId)
-    val op = () => findByNamedQueryAndNamedParams("ProjectAssignment.findProjectAssignmentsForUserForProject", keys, params, CacheRegion)
-    ExponentialBackoffRetryPolicy.retry(op)
+    findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUserForProject", keys, params, CacheRegion)
   }
 
   override def findProjectAssignmentsForUser(user: User): util.List[ProjectAssignment] =
-    () => findByNamedQueryAndNamedParam("ProjectAssignment.findProjectAssignmentsForUser", "user", user, CacheRegion)
+    findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUser", "user", user, CacheRegion)
 
   override def findProjectAssignmentsForProject(project: Project, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "project")
     val params = List(range.getDateStart, range.getDateEnd, project)
-    () => findByNamedQueryAndNamedParams("ProjectAssignment.findProjectAssignmentsForProjectInRange", keys, params, CacheRegion)
+    findByNamedQuery("ProjectAssignment.findProjectAssignmentsForProjectInRange", keys, params, CacheRegion)
   }
 
   override def findAllProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment] = findProjectAssignmentsForProject(project, onlyActive = false)
@@ -51,15 +50,15 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
 
     crit.add(Restrictions.eq("project", project))
 
-    () => crit.list.asInstanceOf[util.List[ProjectAssignment]]
+    ExponentialBackoffRetryPolicy retry crit.list.asInstanceOf[util.List[ProjectAssignment]]
   }
 
   override def findProjectAssignmentTypes(): util.List[ProjectAssignmentType] =
-    () => getSession.createCriteria(classOf[ProjectAssignmentType]).list.asInstanceOf[util.List[ProjectAssignmentType]]
+    ExponentialBackoffRetryPolicy retry getSession.createCriteria(classOf[ProjectAssignmentType]).list.asInstanceOf[util.List[ProjectAssignmentType]]
 
   override def findProjectAssignmentsForCustomer(customer: Customer, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "customer")
     val params = List(range.getDateStart, range.getDateEnd, customer)
-    () => findByNamedQueryAndNamedParams("ProjectAssignment.findProjectAssignmentsForCustomerInRange", keys, params, CacheRegion)
+    findByNamedQuery("ProjectAssignment.findProjectAssignmentsForCustomerInRange", keys, params, CacheRegion)
   }
 }

@@ -2,6 +2,7 @@ package net.rrm.ehour.persistence.timesheet.dao
 
 import net.rrm.ehour.domain.{TimesheetComment, TimesheetCommentId}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
+import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import org.springframework.stereotype.Repository
 
 /**
@@ -14,6 +15,6 @@ class TimesheetCommentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[T
     val query = session.getNamedQuery("TimesheetComment.deleteUserId")
     query.setParameter("userId", userId)
 
-    () => query.executeUpdate
+    ExponentialBackoffRetryPolicy retry query.executeUpdate
   }
 }

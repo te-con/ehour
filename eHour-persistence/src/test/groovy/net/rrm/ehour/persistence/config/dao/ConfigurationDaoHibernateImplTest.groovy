@@ -11,19 +11,17 @@ import static org.junit.Assert.assertNotNull
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 16, 2010 - 12:08:04 AM
  */
-class ConfigurationDaoHibernateImplTest extends AbstractAnnotationDaoTest
-{
-	@Autowired
-	private ConfigurationDao dao;
+class ConfigurationDaoHibernateImplTest extends AbstractAnnotationDaoTest {
+    @Autowired
+    private ConfigurationDao dao;
 
-	@Test
-	void shouldSaveNewConfig()
-	{
-		Configuration config = new Configuration(configKey: "test", configValue: "tester")
-		
-		dao.persist config
+    @Test
+    void shouldSaveNewConfig() {
+        Configuration config = new Configuration(configKey: "test", configValue: "tester")
 
-		def configuration = dao.findById("test")
-		assertNotNull(configuration)
-	}
+        dao.persist config
+
+        def configuration = dao.findById("test")
+        assertNotNull(configuration)
+    }
 }
