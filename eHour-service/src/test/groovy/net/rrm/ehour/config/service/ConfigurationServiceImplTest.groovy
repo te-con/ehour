@@ -21,81 +21,77 @@ import static org.mockito.Mockito.when
  * @author thies (thies@te-con.nl)
  * Date: 1/12/11 9:55 PM
  */
-class ConfigurationServiceImplTest
-{
-  ConfigurationServiceImpl configurationService
+class ConfigurationServiceImplTest {
+    ConfigurationServiceImpl configurationService
 
-  @Mock
-  ConfigurationDao configDAO;
+    @Mock
+    ConfigurationDao configDAO;
 
-  @Mock
-  BinaryConfigurationDao binaryConfigDao;
+    @Mock
+    BinaryConfigurationDao binaryConfigDao;
 
-  @Before
-  void setUp()
-  {
-    EhourHomeUtil.setEhourHome("src/test/resources")
+    @Before
+    void setUp() {
+        EhourHomeUtil.setEhourHome("src/test/resources")
 
-    configurationService = new ConfigurationServiceImpl();
+        configurationService = new ConfigurationServiceImpl();
 
-    MockitoAnnotations.initMocks this
+        MockitoAnnotations.initMocks this
 
-    configurationService.setConfigDAO(configDAO);
-    configurationService.setBinConfigDAO(binaryConfigDao);
+        configurationService.setConfigDAO(configDAO);
+        configurationService.setBinConfigDAO(binaryConfigDao);
 
-    def discovery = new TranslationDiscovery()
-    discovery.translations = ["en", "nl"]
+        def discovery = new TranslationDiscovery()
+        discovery.translations = ["en", "nl"]
 
-    configurationService.translationDiscovery = discovery
+        configurationService.translationDiscovery = discovery
 
-  }
+    }
 
-  @Test
-  void shouldReturnDefaultExcelLogo()
-  {
-    when(binaryConfigDao.findById("excelHeaderLogo")).thenReturn(null)
+    @Test
+    void shouldReturnDefaultExcelLogo() {
+        when(binaryConfigDao.findById("excelHeaderLogo")).thenReturn(null)
 
-    ImageLogo logo = configurationService.getExcelLogo()
+        ImageLogo logo = configurationService.getExcelLogo()
 
-    assert logo.imageData.length > 1
-  }
+        assert logo.imageData.length > 1
+    }
 
-  @Test
-  void shouldGetConfiguration()
-  {
-    def configs = [new Configuration("availableTranslations", "en,nl"),
-                  new Configuration("completeDayHours", "8"),
-                  new Configuration("localeCurrency", "nlNl"),
-                  new Configuration("localeLanguage", "nlNl"),
-                  new Configuration("localeCountry", "nlNl"),
-                  new Configuration("showTurnOver", "true"),
-                  new Configuration("timeZone", "CET"),
-                  new Configuration("mailFrom", "ik@jij.net"),
-                  new Configuration("mailSmtp", "localhost"),
-                  new Configuration("demoMode", "false")]
+    @Test
+    void shouldGetConfiguration() {
+        def configs = [new Configuration("availableTranslations", "en,nl"),
+                       new Configuration("completeDayHours", "8"),
+                       new Configuration("localeCurrency", "nlNl"),
+                       new Configuration("localeLanguage", "nlNl"),
+                       new Configuration("localeCountry", "nlNl"),
+                       new Configuration("showTurnOver", "true"),
+                       new Configuration("timeZone", "CET"),
+                       new Configuration("mailFrom", "ik@jij.net"),
+                       new Configuration("mailSmtp", "localhost"),
+                       new Configuration("demoMode", "false"),
+                       new Configuration("splitAdminRole", "true")]
 
-    when(configDAO.findAll()).thenReturn(configs)
+        when(configDAO.findAll()).thenReturn(configs)
 
-    def configuration = configurationService.getConfiguration()
+        def configuration = configurationService.getConfiguration()
 
-    assert configuration.showTurnover
-  }
+        assert configuration.isShowTurnover()
+        assert configuration.isSplitAdminRole()
+    }
 
-  @Test
-  void shouldPersistConfiguration()
-  {
-    def stub = new EhourConfigStub(completeDayHours: 8, localeFormatting: LocaleUtil.forLanguageTag("en-US"), dontForceLanguage: true,
-                                  showTurnover: true, mailFrom: "re", mailSmtp: "ee", auditType: AuditType.WRITE)
-    when(configDAO.persist(anyObject())).thenReturn(null)
+    @Test
+    void shouldPersistConfiguration() {
+        def stub = new EhourConfigStub(completeDayHours: 8, localeFormatting: LocaleUtil.forLanguageTag("en-US"), dontForceLanguage: true,
+                showTurnover: true, mailFrom: "re", mailSmtp: "ee", auditType: AuditType.WRITE)
+        when(configDAO.persist(anyObject())).thenReturn(null)
 
-    configurationService.persistConfiguration(stub)
-  }
+        configurationService.persistConfiguration(stub)
+    }
 
-  @Test
-  void shouldGetDefaultLogo()
-  {
-    def logo = configurationService.excelLogo
-    assert logo != null
-    assert logo.imageData.length > 2
-  }
+    @Test
+    void shouldGetDefaultLogo() {
+        def logo = configurationService.excelLogo
+        assert logo != null
+        assert logo.imageData.length > 2
+    }
 }

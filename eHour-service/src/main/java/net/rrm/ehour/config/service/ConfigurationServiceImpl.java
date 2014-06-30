@@ -216,7 +216,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 config.setVersion(value);
             } else if (key.equalsIgnoreCase(ConfigurationItem.PM_PRIVILEGE.getDbField())) {
                 config.setPmPrivilege(PmPrivilege.valueOf(value));
-
+            } else if (key.equalsIgnoreCase(ConfigurationItem.SPLIT_ADMIN_ROLE.getDbField())) {
+                config.setSplitAdminRole(Boolean.parseBoolean(value));
             }
         }
 
@@ -256,6 +257,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(ConfigurationItem.AUDIT_TYPE.getDbField(), getAuditType(config).getValue());
 
         persistConfig(ConfigurationItem.PM_PRIVILEGE.getDbField(), getPmPrivilege(config).name());
+
+
+        persistConfig(ConfigurationItem.SPLIT_ADMIN_ROLE.getDbField(), config.isSplitAdminRole());
     }
 
     private AuditType getAuditType(EhourConfig config) {
@@ -291,18 +295,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(key, Float.toString(value));
     }
 
-    /**
-     * @param configDAO the configDAO to set
-     */
     public void setConfigDAO(ConfigurationDao configDAO) {
         this.configDAO = configDAO;
     }
 
-    /**
-     * @param binConfigDAO the binConfigDAO to set
-     */
-    public void setBinConfigDAO(BinaryConfigurationDao binConfigDAO) {
-        this.binConfigDAO = binConfigDAO;
+    public void setBinConfigDAO(BinaryConfigurationDao binaryConfigDAO) {
+        this.binConfigDAO = binaryConfigDAO;
     }
 
     public void setTranslationDiscovery(TranslationDiscovery translationDiscovery) {
