@@ -83,10 +83,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configDAO.persist(logoHeight);
     }
 
-
-    /* (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#getLogo()
-      */
     @NonAuditable
     @Transactional
     public ImageLogo getExcelLogo() {
@@ -170,10 +166,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         return bytes;
     }
 
-
-    /* (non-Javadoc)
-    * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#getConfiguration()
-    */
     @Transactional
     @NonAuditable
     public EhourConfigStub getConfiguration() {

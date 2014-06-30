@@ -29,6 +29,8 @@ import java.util.Currency;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static net.rrm.ehour.config.ConfigurationItem.*;
+
 /**
  * Config from database
  */
@@ -48,25 +50,29 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
         LOG.info("Configuration loaded from database: " + toString());
     }
 
+    @Override
     public TimeZone getTzAsTimeZone() {
         return EhourConfigUtil.getTzAsTimeZone(this);
     }
 
+    @Override
     public float getCompleteDayHours() {
-        return this.getFloat("completeDayHours", 8);
+        return this.getFloat(COMPLETE_DAY_HOURS.getDbField(), 8);
     }
 
+    @Override
     public boolean isShowTurnover() {
-        return this.getBoolean("showTurnOver", false);
+        return this.getBoolean(SHOW_TURNOVER.getDbField(), false);
     }
 
+    @Override
     public String getTimeZone() {
         return this.getString("timezone");
     }
 
     @Override
     public Locale getCurrency() {
-        return LocaleUtil.currencyForLanguageTag(getString("localeCurrency", "nl-NL"));
+        return LocaleUtil.currencyForLanguageTag(getString(LOCALE_CURRENCY.getDbField(), "nl-NL"));
     }
 
     @Override
@@ -79,24 +85,28 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
         return Currency.getInstance(getCurrency()).getCurrencyCode();
     }
 
+    @Override
     public String[] getAvailableTranslations() {
         if (availableTranslations == null) {
-            availableTranslations = getString("availableTranslations", "en,nl").split(",");
+            availableTranslations = getString(AVAILABLE_TRANSLATIONS.getDbField(), "en,nl").split(",");
         }
 
         return availableTranslations;
     }
 
+    @Override
     public String getMailFrom() {
-        return this.getString("mailFrom", "devnull@devnull.com");
+        return this.getString(MAIL_FROM.getDbField(), "devnull@devnull.com");
     }
 
+    @Override
     public String getMailSmtp() {
-        return this.getString("mailSmtp", "127.0.0.1");
+        return this.getString(MAIL_SMTP.getDbField(), "127.0.0.1");
     }
 
+    @Override
     public Locale getFormattingLocale() {
-        String formattingLocale = this.getString("localeCountry", "en_US");
+        String formattingLocale = this.getString(LOCALE_COUNTRY.getDbField(), "en_US");
 
         if (!formattingLocale.contains("-")) {
             return new Locale(formattingLocale, formattingLocale);
@@ -107,7 +117,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
     @Override
     public Locale getLanguageLocale() {
-        String formattingLocale = this.getString("localeLanguage", "en_US");
+        String formattingLocale = this.getString(LOCALE_LANGUAGE.getDbField(), "en_US");
 
         if (!formattingLocale.contains("-")) {
             return new Locale(formattingLocale, formattingLocale);
@@ -116,45 +126,53 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
         }
     }
 
+    @Override
     public boolean isInDemoMode() {
         if (demoMode == null) {
-            demoMode = this.getBoolean("demoMode", false);
+            demoMode = this.getBoolean(DEMO_MODE.getDbField(), false);
         }
 
         return demoMode;
     }
 
+    @Override
     public boolean isDontForceLanguage() {
-        return this.getBoolean("dontForceLanguage", false);
+        return this.getBoolean(DONT_FORCE_LANGUAGE.getDbField(), false);
     }
 
+    @Override
     public boolean isInitialized() {
         if (initialized == null) {
-            initialized = this.getBoolean("initialized", true);
+            initialized = this.getBoolean(INITIALIZED.getDbField(), true);
         }
 
         return initialized;
     }
 
+    @Override
     public String getSmtpPassword() {
-        return this.getString("smtpUsername");
+        return this.getString(MAIL_SMTP_USERNAME.getDbField());
     }
 
+    @Override
     public String getSmtpUsername() {
-        return this.getString("smtpPassword");
+        return this.getString(MAIL_SMTP_PASSWORD.getDbField());
     }
 
+    @Override
     public String getSmtpPort() {
-        return this.getString("smtpPort", "25");
+        return this.getString(MAIL_SMTP_PORT.getDbField(), "25");
     }
 
+    @Override
     public int getFirstDayOfWeek() {
-        return (int) this.getFloat("firstDayOfWeek", 1);
+        return (int) this.getFloat(FIRST_DAY_OF_WEEK.getDbField(), 1);
     }
 
+    @Override
     public AuditType getAuditType() {
         if (auditType == null) {
-            auditType = AuditType.fromString(this.getString("auditType", "WRITE"));
+            auditType = AuditType.fromString(this.getString(AUDIT_TYPE.getDbField(), "WRITE"));
         }
 
         return auditType;
@@ -162,8 +180,13 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
     @Override
     public PmPrivilege getPmPrivilege() {
-        String pmPrivilege = this.getString(ConfigurationItem.PM_PRIVILEGE.getDbField(), PmPrivilege.FULL.name());
+        String pmPrivilege = this.getString(PM_PRIVILEGE.getDbField(), PmPrivilege.FULL.name());
         return PmPrivilege.valueOf(pmPrivilege);
+    }
+
+    @Override
+    public boolean isSplitAdminRole() {
+        return this.getBoolean(SPLIT_ADMIN_ROLE.getDbField(), false);
     }
 
     @Override

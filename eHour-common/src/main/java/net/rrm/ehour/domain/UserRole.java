@@ -94,26 +94,18 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
         return role;
     }
 
-    /**
-     * @see java.lang.Comparable#compareTo(Object)
-     */
+    @Override
     public int compareTo(UserRole object) {
         return new CompareToBuilder()
                 .append(this.getRole(), object.getRole())
                 .append(this.getRoleName(), object.getRoleName()).toComparison();
     }
 
-    /**
-     *
-     */
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getRole()).toHashCode();
     }
 
-    /**
-     *
-     */
     @Override
     public boolean equals(Object obj) {
         boolean isEqual = false;

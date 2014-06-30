@@ -29,22 +29,16 @@ import java.util.TimeZone;
 public interface EhourConfig {
     /**
      * Get the amount of hours needed before a day is booked as complete
-     *
-     * @return
      */
     float getCompleteDayHours();
 
     /**
      * Show turnover to users
-     *
-     * @return
      */
     boolean isShowTurnover();
 
     /**
      * Get configured timezone
-     *
-     * @return
      */
     String getTimeZone();
 
@@ -53,21 +47,16 @@ public interface EhourConfig {
 
     /**
      * Get locale based on language and country
-     *
-     * @return
      */
     Locale getFormattingLocale();
 
     /**
      * Get locale for the language
-     * @return
      */
     Locale getLanguageLocale();
 
     /**
      * Get configured currency
-     *
-     * @return
      */
     Locale getCurrency();
 
@@ -77,65 +66,47 @@ public interface EhourConfig {
 
     /**
      * Get available translations
-     *
-     * @return
      */
     String[] getAvailableTranslations();
 
     /**
      * Get from address for e-mail sending
-     *
-     * @return
      */
     String getMailFrom();
 
     /**
      * Get SMTP server for e-mail sending
-     *
-     * @return
      */
     String getMailSmtp();
 
 
     /**
      * Get the smtp username in case of authenticated smtp
-     *
-     * @return
      */
     String getSmtpUsername();
 
     /**
      * Get the smtp password in case of authenticated smtp
-     *
-     * @return
      */
     String getSmtpPassword();
 
     /**
      * Get the smtp port
-     *
-     * @return
      */
     String getSmtpPort();
 
     /**
      * In demo mode ?
-     *
-     * @return
      */
     boolean isInDemoMode();
 
     /**
      * Don't force language ?
-     *
-     * @return
      */
     boolean isDontForceLanguage();
 
     /**
      * Is eHour initialized ?
-     *
-     * @return
      */
     boolean isInitialized();
 
@@ -148,15 +119,16 @@ public interface EhourConfig {
 
     /**
      * Get audit type (NONE, WRITE, ALL)
-     *
-     * @return
      */
     AuditType getAuditType();
 
-
     /**
      * Get rights a PM has
-     * @return
      */
     PmPrivilege getPmPrivilege();
+
+    /**
+     * Split admin in manager & admin?
+     */
+    boolean isSplitAdminRole();
 }

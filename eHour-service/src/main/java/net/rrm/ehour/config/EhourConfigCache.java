@@ -42,6 +42,8 @@ public class EhourConfigCache implements EhourConfig, Serializable {
         cache.setAuditType(config.getAuditType());
 
         cache.setPmPrivilege(config.getPmPrivilege());
+
+        cache.setSplitAdminRole(config.isSplitAdminRole());
     }
 
     @Override
@@ -132,7 +134,6 @@ public class EhourConfigCache implements EhourConfig, Serializable {
     @Override
     public boolean isInitialized() {
         return cache.isInitialized();
-
     }
 
     @Override
@@ -148,5 +149,10 @@ public class EhourConfigCache implements EhourConfig, Serializable {
     @Override
     public PmPrivilege getPmPrivilege() {
         return cache.getPmPrivilege();
+    }
+
+    @Override
+    public boolean isSplitAdminRole() {
+        return false;
     }
 }

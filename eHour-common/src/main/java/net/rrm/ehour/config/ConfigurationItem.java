@@ -19,7 +19,8 @@ public enum ConfigurationItem {
     AUDIT_TYPE("auditType"),
     VERSION("version"),
     DONT_FORCE_LANGUAGE("dontForceLanguage"),
-    PM_PRIVILEGE("pmPrivilege")
+    PM_PRIVILEGE("pmPrivilege"),
+    SPLIT_ADMIN_ROLE("splitAdminRole")
     ;
     private String dbField;
 

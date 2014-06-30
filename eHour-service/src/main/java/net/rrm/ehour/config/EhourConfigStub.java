@@ -48,50 +48,36 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     private AuditType auditType;
     private String version;
     private PmPrivilege pmPrivilege;
+    private boolean splitAdminRole;
 
+    @Override
     public TimeZone getTzAsTimeZone() {
         return EhourConfigUtil.getTzAsTimeZone(this);
     }
 
-
-    /**
-     * @return the availableTranslations
-     */
+    @Override
     public String[] getAvailableTranslations() {
         return availableTranslations;
     }
 
-    /**
-     * @param availableTranslations the availableTranslations to set
-     */
     public void setAvailableTranslations(String[] availableTranslations) {
         this.availableTranslations = availableTranslations;
     }
 
-    /**
-     * @return the completeDayHours
-     */
+    @Override
     public float getCompleteDayHours() {
         return completeDayHours;
     }
 
-    /**
-     * @param completeDayHours the completeDayHours to set
-     */
     public void setCompleteDayHours(float completeDayHours) {
         this.completeDayHours = completeDayHours;
     }
 
-    /**
-     * @return the currency
-     */
+    @Override
     public Locale getCurrency() {
         return currency;
     }
 
-    /**
-     * @param currency the currency to set
-     */
     public void setCurrency(Locale currency) {
         this.currency = currency;
     }
@@ -106,56 +92,43 @@ public class EhourConfigStub implements EhourConfig, Serializable {
         return Currency.getInstance(getCurrency()).getCurrencyCode();
     }
 
-    /**
-     * @return the showTurnover
-     */
+    @Override
     public boolean isShowTurnover() {
         return showTurnover;
     }
 
-    /**
-     * @param showTurnover the showTurnover to set
-     */
     public void setShowTurnover(boolean showTurnover) {
         this.showTurnover = showTurnover;
     }
 
-    /**
-     * @return the timeZone
-     */
+    @Override
     public String getTimeZone() {
         return timeZone;
     }
 
-    /**
-     * @param timeZone the timeZone to set
-     */
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
     }
 
+    @Override
     public String getMailFrom() {
         return mailFrom;
     }
 
+    @Override
     public String getMailSmtp() {
         return mailSmtp;
     }
 
-    /**
-     * @param mailFrom the mailFrom to set
-     */
     public void setMailFrom(String mailFrom) {
         this.mailFrom = mailFrom;
     }
 
-    /**
-     * @param mailSmtp the mailSmtp to set
-     */
     public void setMailSmtp(String mailSmtp) {
         this.mailSmtp = mailSmtp;
     }
 
+    @Override
     public Locale getFormattingLocale() {
         return localeFormatting;
     }
@@ -173,43 +146,34 @@ public class EhourConfigStub implements EhourConfig, Serializable {
         this.localeFormatting = localeFormatting;
     }
 
+    @Override
     public boolean isInDemoMode() {
         return demoMode;
     }
 
-    /**
-     * @param demoMode the demoMode to set
-     */
     public void setDemoMode(boolean demoMode) {
         this.demoMode = demoMode;
     }
 
-
+    @Override
     public boolean isDontForceLanguage() {
         return dontForceLanguage;
     }
 
-    /**
-     * @param dontForceLanguage the dontForceLanguage to set
-     */
     public void setDontForceLanguage(boolean dontForceLanguage) {
         this.dontForceLanguage = dontForceLanguage;
     }
 
-    /**
-     * @return the initialized
-     */
+    @Override
     public boolean isInitialized() {
         return initialized;
     }
 
-    /**
-     * @param initialized the initialized to set
-     */
     public void setInitialized(boolean initialized) {
         this.initialized = initialized;
     }
 
+    @Override
     public String getSmtpUsername() {
         return smtpUsername;
     }
@@ -218,6 +182,7 @@ public class EhourConfigStub implements EhourConfig, Serializable {
         this.smtpUsername = smtpUsername;
     }
 
+    @Override
     public String getSmtpPassword() {
         return smtpPassword;
     }
@@ -226,6 +191,7 @@ public class EhourConfigStub implements EhourConfig, Serializable {
         this.smtpPassword = smtpPassword;
     }
 
+    @Override
     public String getSmtpPort() {
         return smtpPort;
     }
@@ -234,23 +200,16 @@ public class EhourConfigStub implements EhourConfig, Serializable {
         this.smtpPort = smtpPort;
     }
 
-    /**
-     * @return the firstDayOfWeek
-     */
+    @Override
     public int getFirstDayOfWeek() {
         return firstDayOfWeek;
     }
 
-    /**
-     * @param firstDayOfWeek the firstDayOfWeek to set
-     */
     public void setFirstDayOfWeek(int firstDayOfWeek) {
         this.firstDayOfWeek = firstDayOfWeek;
     }
 
-    /**
-     * @return the auditType
-     */
+    @Override
     public AuditType getAuditType() {
         return auditType;
     }
@@ -260,13 +219,19 @@ public class EhourConfigStub implements EhourConfig, Serializable {
         return pmPrivilege;
     }
 
+    @Override
+    public boolean isSplitAdminRole() {
+        return splitAdminRole;
+    }
+
+    public void setSplitAdminRole(boolean splitAdminRole) {
+        this.splitAdminRole = splitAdminRole;
+    }
+
     public void setPmPrivilege(PmPrivilege pmPrivilege) {
         this.pmPrivilege = pmPrivilege;
     }
 
-    /**
-     * @param auditType the auditType to set
-     */
     public void setAuditType(AuditType auditType) {
         this.auditType = auditType;
     }
