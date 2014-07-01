@@ -963,3 +963,12 @@ hr {
 .fa:hover {
     color: #5190c5;
 }
+
+.config {
+    padding: 0 10px 0 0;
+}
+
+.config .help {
+   color: #536e87;
+    font: 0.9em/ 1.5 Geneva, Arial, Helvetica, sans-serif
+}

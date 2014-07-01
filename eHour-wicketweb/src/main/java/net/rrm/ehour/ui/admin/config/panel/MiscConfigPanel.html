@@ -20,9 +20,13 @@
 			</tr>
 
 			<tr>
-				<td valign="top"><wicket:message key="admin.config.firstDayWeek" />:</td>
+				<td valign="top"><wicket:message key="admin.config.firstDayWeek" />:</td>`
 				<td><select style="width: 15em" class="textInputSmall" wicket:id="firstWeekStart"></select></td>
 			</tr>
+
+            <tr>
+                <td colspan="2"><br /></td>
+            </tr>
 
             <tr>
                 <td valign="top"><wicket:message key="admin.config.pmprivileges" />:</td>
@@ -30,9 +34,22 @@
             </tr>
 
             <tr>
-                <td valign="top"><wicket:message key="admin.config.splitAdminRole"/></td>
+                <td colspan="2" class="help">TODO dummy help text  <br /><br /></td>
+            </tr>
+
+            <tr>
+                <td valign="top"><wicket:message key="admin.config.splitAdminRole"/>:</td>
                 <td><input type="checkbox" wicket:id="config.splitAdminRole" /></td>
             </tr>
+
+            <tr>
+                <td colspan="2" class="help">TODO dummy help text </td>
+            </tr>
+
+            <tr>
+                <td colspan="2"><br /></td>
+            </tr>
+
         </wicket:extend>
 	</body>
 </html>
