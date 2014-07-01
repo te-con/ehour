@@ -14,73 +14,79 @@
 		<div wicket:id="blueFrame">
 			<div class="timesheet">
 				<table class="timesheetTable" cellpadding="0" cellspacing="0">
-					<tr class="weekColumnRow">
-						<td class="borderless" style="width: 16px">&nbsp;</td>
-						<td class="projectCode">&nbsp;</td>
-						<td class="project">&nbsp;</td>
-						<td class="spacer">&nbsp;</td>
+                    <thead>
+                        <tr class="weekColumnRow">
+                            <td class="borderless" style="width: 16px">&nbsp;</td>
+                            <td class="projectCode">&nbsp;</td>
+                            <td class="project">&nbsp;</td>
+                            <td class="spacer">&nbsp;</td>
 
-						<td wicket:id="day1Label">Sunday</td>
-						<td wicket:id="day2Label">Monday</td>
-						<td wicket:id="day3Label">Tueday</td>
-						<td wicket:id="day4Label">Wednesday</td>
-						<td wicket:id="day5Label">Thursay</td>
-						<td wicket:id="day6Label">Friday</td>
-						<td class="borderless" wicket:id="day7Label">Saturday</td>
-						<td class="borderless" >
-                            <a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButtonTop" >
-                                <span><wicket:message key="timesheet.store" /></span>
-                                </a>
+                            <td wicket:id="day1Label">Sunday</td>
+                            <td wicket:id="day2Label">Monday</td>
+                            <td wicket:id="day3Label">Tueday</td>
+                            <td wicket:id="day4Label">Wednesday</td>
+                            <td wicket:id="day5Label">Thursay</td>
+                            <td wicket:id="day6Label">Friday</td>
+                            <td class="borderless" wicket:id="day7Label">Saturday</td>
+                            <td class="borderless" >
+                                <a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButtonTop" >
+                                    <span><wicket:message key="timesheet.store" /></span>
+                                    </a>
+                            </td>
+                        </tr>
+                    </thead>
 
-						</td>
-					</tr>
+                    <tfoot>
+                        <tr class="totalRow">
+                            <td colspan="4" style="border: 0" >&nbsp;</td>
 
-					<wicket:container wicket:id="customers">
-						<tr class="customerRow">
-							<td class="customerCell" colspan="5"><strong><wicket:container  wicket:id="customer" /></strong></td>
-							<td class="weekday">&nbsp;</td>
-							<td class="weekday">&nbsp;</td>
-							<td class="weekday">&nbsp;</td>
-							<td class="weekday">&nbsp;</td>
-							<td class="weekday">&nbsp;</td>
-							<td class="saturday">&nbsp;</td>
-							<td class="saturday">&nbsp;</td>
-						</tr>
+                            <td wicket:id="day1Total"></td>
+                            <td wicket:id="day2Total"></td>
+                            <td wicket:id="day3Total"></td>
+                            <td wicket:id="day4Total"></td>
+                            <td wicket:id="day5Total"></td>
+                            <td wicket:id="day6Total"></td>
+                            <td style="border: 0" wicket:id="day7Total"></td>
+                            <td class="total lastColumn" wicket:id="grandTotal"></td>
+                        </tr>
+                    </tfoot>
 
-						<wicket:container wicket:id="rows">
-							<tr class="projectRow">
-								<td class="fold"><a wicket:id="bookWholeWeek" wicket:message="title:timesheet.bookall"><i class="fa fa-check-circle bookAll"></i></a></td>
-                                <td class="projectCode" wicket:id="projectCode">projectCode</td>
-								<td class="project"><span wicket:id="project"></span>
-                                    <span wicket:id="role" style="font-size: 0.7em"></span>
-										<span class="statusMsg" wicket:id="status"></span>
-								</td>
-								<td class="spacer">&nbsp;</td>
+                    <tbody>
+                        <wicket:container wicket:id="customers">
+                            <tr class="customerRow">
+                                <td class="customerCell" colspan="5"><strong><wicket:container  wicket:id="customer" /></strong></td>
+                                <td class="weekday">&nbsp;</td>
+                                <td class="weekday">&nbsp;</td>
+                                <td class="weekday">&nbsp;</td>
+                                <td class="weekday">&nbsp;</td>
+                                <td class="weekday">&nbsp;</td>
+                                <td class="saturday">&nbsp;</td>
+                                <td class="saturday lastColumn">&nbsp;</td>
+                            </tr>
 
-								<td class="sunday" wicket:id="day1"></td>
-								<td class="weekday" wicket:id="day2"></td>
-								<td class="weekday" wicket:id="day3"></td>
-								<td class="weekday" wicket:id="day4"></td>
-								<td class="weekday" wicket:id="day5"></td>
-								<td class="weekday" wicket:id="day6"></td>
-								<td class="saturday" wicket:id="day7"></td>
-								<td class="total" style="text-align: right;padding-right: 10px" wicket:id="total"></td>
-							</tr>
-						</wicket:container>
-					</wicket:container>
+                            <wicket:container wicket:id="rows">
+                                <tr class="projectRow">
+                                    <td class="fold"><a wicket:id="bookWholeWeek" wicket:message="title:timesheet.bookall"><i class="fa fa-check-circle bookAll"></i></a></td>
+                                    <td class="projectCode" wicket:id="projectCode">projectCode</td>
+                                    <td class="project"><span wicket:id="project"></span>
+                                        <span wicket:id="role" style="font-size: 0.7em"></span>
+                                            <span class="statusMsg" wicket:id="status"></span>
+                                    </td>
+                                    <td class="spacer">&nbsp;</td>
 
-					<tr class="totalRow">
-						<td colspan="4" style="border: 0" >&nbsp;</td>
+                                    <td class="sunday" wicket:id="day1"></td>
+                                    <td class="weekday" wicket:id="day2"></td>
+                                    <td class="weekday" wicket:id="day3"></td>
+                                    <td class="weekday" wicket:id="day4"></td>
+                                    <td class="weekday" wicket:id="day5"></td>
+                                    <td class="weekday" wicket:id="day6"></td>
+                                    <td class="saturday" wicket:id="day7"></td>
+                                    <td class="total lastColumn" wicket:id="total"></td>
+                                </tr>
+                            </wicket:container>
+                        </wicket:container>
+                    </tbody>
 
-						<td wicket:id="day1Total"></td>
-						<td wicket:id="day2Total"></td>
-						<td wicket:id="day3Total"></td>
-						<td wicket:id="day4Total"></td>
-						<td wicket:id="day5Total"></td>
-						<td wicket:id="day6Total"></td>
-						<td style="border: 0" wicket:id="day7Total"></td>
-						<td style="border: 0;padding-right: 10px" wicket:id="grandTotal"></td>
-					</tr>
 
 				</table>
 			</div>

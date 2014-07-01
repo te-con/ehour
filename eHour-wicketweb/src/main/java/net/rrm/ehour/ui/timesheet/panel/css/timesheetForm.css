@@ -42,12 +42,11 @@ div.timesheet {
     vertical-align: bottom;
 }
 
-.timesheetTable tr.weekColumnRow td.spacer {
+.timesheetTable tr.weekColumnRow td.spacer,
+.timesheetTable tr.weekColumnRow td.spacer,
+.timesheetTable tr.projectRow td.spacer {
     border-right: 0;
-}
-
-.timesheetTable tr.weekColumnRow td.spacer {
-    border-right: 0;
+    width: 10px;
 }
 
 .timesheetTable tr.projectRow td.fold {
@@ -78,10 +77,6 @@ div.timesheet {
     font-weight: normal;
     text-align: left;
     padding-left: 3px;
-    border-right: 0;
-}
-
-.timesheetTable tr.projectRow td.spacer {
     border-right: 0;
 }
 
@@ -154,14 +149,18 @@ div.timesheet {
     vertical-align: top;
 }
 
+.timesheetTable .lastColumn {
+    width: 0.5em;
+}
+
 .timesheetTable tr.projectRow td.total {
     font: 0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     margin: 0;
     border-right: 0;
-    text-align: center;
-    padding: 8px 0 0 0;
-    vertical-align: top;
+    text-align: right;
+    padding: 0 23px 0 0;
+    vertical-align: middle;
 }
 
 .timesheetTable tr.customerRow td {
