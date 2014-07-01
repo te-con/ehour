@@ -65,8 +65,6 @@ public interface UserService {
 
     UserDepartment getUserDepartment(Integer departmentId) throws ObjectNotFoundException;
 
-    UserRole getUserRole(String userRoleId);
-
     List<UserRole> getUserRoles();
 
     /**

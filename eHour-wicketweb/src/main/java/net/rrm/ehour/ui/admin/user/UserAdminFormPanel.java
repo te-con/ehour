@@ -60,8 +60,6 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
     protected static final String BORDER = "border";
     protected static final String FORM = "userForm";
 
-    private boolean editMode;
-
     @SpringBean
     private UserService userService;
 
@@ -71,7 +69,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
                               List<UserDepartment> departments) {
         super(id, userModel);
 
-        editMode = getPanelModelObject().getUser().getPK() != null;
+        boolean editMode = getPanelModelObject().getUser().getPK() != null;
 
         GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder(BORDER, WebGeo.AUTO);
         add(greyBorder);

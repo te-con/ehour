@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MessageDigestPasswordEncoder passwordEncoder;
 
-
+    @Transactional(readOnly = true)
     public User getUser(Integer userId) throws ObjectNotFoundException {
         User user = userDAO.findById(userId);
         Set<ProjectAssignment> inactiveAssignments = new HashSet<ProjectAssignment>();
@@ -96,6 +96,7 @@ public class UserServiceImpl implements UserService {
         user.setInactiveProjectAssignments(inactiveAssignments);
     }
 
+    @Transactional(readOnly = true)
     public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException {
         User user = getUser(userId);
 
@@ -119,24 +120,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional(readOnly = true)
     public User getUser(String username) {
         return userDAO.findByUsername(username);
     }
 
+    @Transactional(readOnly = true)
     public List<UserDepartment> getUserDepartments() {
         return userDepartmentDAO.findAll();
-    }
-
-    public void setUserDAO(UserDao dao) {
-        userDAO = dao;
-    }
-
-    public void setUserDepartmentDAO(UserDepartmentDao dao) {
-        userDepartmentDAO = dao;
-    }
-
-    public void setUserRoleDAO(UserRoleDao dao) {
-        userRoleDAO = dao;
     }
 
     @Transactional
@@ -154,9 +145,9 @@ public class UserServiceImpl implements UserService {
         }
 
         return department;
-
     }
 
+    @Transactional(readOnly = true)
     public UserDepartment getUserDepartment(Integer departmentId) throws ObjectNotFoundException {
         UserDepartment userDepartment = userDepartmentDAO.findById(departmentId);
 
@@ -169,23 +160,17 @@ public class UserServiceImpl implements UserService {
         return userDepartment;
     }
 
+    @Transactional(readOnly = true)
     public List<User> getUsers() {
         return userDAO.findUsers(false);
     }
 
+    @Transactional(readOnly = true)
     public List<User> getActiveUsers() {
         return userDAO.findActiveUsers();
     }
 
-
-    public UserRole getUserRole(String userRoleId) {
-        return userRoleDAO.findById(userRoleId);
-    }
-
-
-    /**
-     * Get the assignable user roles
-     */
+    @Transactional(readOnly = true)
     public List<UserRole> getUserRoles() {
         List<UserRole> userRoles = userRoleDAO.findAll();
 
@@ -194,9 +179,6 @@ public class UserServiceImpl implements UserService {
         return userRoles;
     }
 
-    /**
-     * Persist user
-     */
     @Transactional
     public User editUser(User user) throws ObjectNotUniqueException {
         // check username uniqueness
@@ -228,8 +210,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private User findUserOnId(User user) {
-        User dbUser;
-        dbUser = userDAO.findById(user.getUserId());
+        User dbUser = userDAO.findById(user.getUserId());
 
         if (dbUser == null) {
             throw new IllegalArgumentException(String.format("%d user ID not found", user.getUserId()));
@@ -290,10 +271,6 @@ public class UserServiceImpl implements UserService {
         userDAO.persist(user);
     }
 
-
-    /**
-     * Encrypt password (sha1)
-     */
     private String encryptPassword(String plainPassword, Object salt) {
         return passwordEncoder.encodePassword(plainPassword, salt);
     }
@@ -320,7 +297,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-
     /**
      * Find user on id and add PM role
      */
@@ -336,11 +312,8 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#getActiveUsers(net.rrm.ehour.persistence.persistence.user.domain.UserRole)
-      */
     @Override
+    @Transactional(readOnly = true)
     public List<User> getUsers(UserRole userRole) {
 
         List<User> users = userDAO.findActiveUsers();
@@ -356,10 +329,6 @@ public class UserServiceImpl implements UserService {
         return validUsers;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#deleteUser(net.rrm.ehour.persistence.persistence.user.domain.User)
-      */
     @Transactional
     public void deleteUser(Integer userId) {
         User user = userDAO.findById(userId);
@@ -369,10 +338,6 @@ public class UserServiceImpl implements UserService {
         userDAO.delete(user);
     }
 
-    /*
-      * (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.user.service.UserService#deleteDepartment(java.lang.Integer)
-      */
     @Transactional
     public void deleteDepartment(Integer departmentId) {
         UserDepartment department = userDepartmentDAO.findById(departmentId);
@@ -394,5 +359,17 @@ public class UserServiceImpl implements UserService {
 
     public void setProjectAssignmentManagementService(ProjectAssignmentManagementService projectAssignmentManagementService) {
         this.projectAssignmentManagementService = projectAssignmentManagementService;
+    }
+
+    public void setUserDAO(UserDao dao) {
+        userDAO = dao;
+    }
+
+    public void setUserDepartmentDAO(UserDepartmentDao dao) {
+        userDepartmentDAO = dao;
+    }
+
+    public void setUserRoleDAO(UserRoleDao dao) {
+        userRoleDAO = dao;
     }
 }

@@ -140,20 +140,6 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testGetUserRole() {
-        expect(userRoleDAO.findById(UserRole.ROLE_USER))
-                .andReturn(UserRole.USER);
-
-        replay(userRoleDAO);
-
-        UserRole ur = userService.getUserRole(UserRole.ROLE_USER);
-
-        verify(userRoleDAO);
-
-        assertEquals(UserRole.ROLE_USER, ur.getRole());
-    }
-
-    @Test
     public void testGetUserRoles() {
         expect(userRoleDAO.findAll())
                 .andReturn(new ArrayList<UserRole>());

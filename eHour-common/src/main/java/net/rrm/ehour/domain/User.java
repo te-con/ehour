@@ -93,11 +93,6 @@ public class User extends DomainObject<Integer, User> {
     @Transient
     private boolean deletable;
 
-    // Constructors
-
-    /**
-     * default constructor
-     */
     public User() {
     }
 
