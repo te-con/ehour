@@ -153,6 +153,6 @@ public class EhourConfigCache implements EhourConfig, Serializable {
 
     @Override
     public boolean isSplitAdminRole() {
-        return false;
+        return cache.isSplitAdminRole();
     }
 }
