@@ -25,6 +25,7 @@ import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
+import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.util.WebUtils;
@@ -233,19 +234,20 @@ public class EhourWebSession extends AuthenticatedWebSession {
         }
     }
 
-    public boolean isWithReportRole() {
-        return hasRole(UserRole.ROLE_REPORT);
+    public boolean isReporter() {
+        return SecurityRules.isWithReportRole(getRoles());
     }
 
-    public boolean isWithPmRole() {
-        return hasRole(UserRole.ROLE_PROJECTMANAGER);
+    public boolean isProjectManager() {
+        return SecurityRules.isWithPmRole(getRoles());
     }
+
     public boolean isAdmin() {
-        return hasRole(UserRole.ROLE_ADMIN);
+        return SecurityRules.isWithAdminRole(getRoles());
     }
 
-    private boolean hasRole(String role) {
-        return getRoles().hasRole(role);
+    public boolean isManager() {
+        return SecurityRules.isWithManagerRole(getRoles());
     }
 
     /**
@@ -271,7 +273,9 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     public void impersonateUser(User userToImpersonate) throws UnauthorizedToImpersonateException {
-        if (!isAdmin()) {
+        boolean allowedToImpersonate = SecurityRules.allowedToImpersonate(getUser(), userToImpersonate, ehourConfig.isSplitAdminRole());
+
+        if (!allowedToImpersonate) {
             throw new UnauthorizedToImpersonateException();
         }
 
