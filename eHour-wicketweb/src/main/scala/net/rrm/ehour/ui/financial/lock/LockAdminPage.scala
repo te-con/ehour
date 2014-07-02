@@ -1,28 +1,26 @@
 package net.rrm.ehour.ui.financial.lock
 
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation
-import net.rrm.ehour.domain.{TimesheetLock, UserRole}
-import org.apache.wicket.model.{IModel, ResourceModel}
-import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage
-import org.apache.wicket.markup.html.panel.{Fragment, Panel}
-import org.apache.wicket.spring.injection.annot.SpringBean
+import net.rrm.ehour.domain.TimesheetLock
 import net.rrm.ehour.timesheet.service.TimesheetLockService
-import org.apache.wicket.markup.html.basic.Label
-import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorPanel, EntrySelectorListView}
-import org.apache.wicket.markup.html.list.ListItem
+import net.rrm.ehour.ui.common.border.GreyRoundedBorder
+import net.rrm.ehour.ui.common.component.AddEditTabbedPanel
+import net.rrm.ehour.ui.common.model.DateModel
+import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorListView, EntrySelectorPanel}
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.ui.common.wicket.Event
+import net.rrm.ehour.ui.manage.AbstractTabbedAdminPage
 import net.rrm.ehour.util._
 import org.apache.wicket.ajax.AjaxRequestTarget
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import org.apache.wicket.event.IEvent
-import net.rrm.ehour.ui.common.wicket.Event
-import net.rrm.ehour.ui.common.model.DateModel
-import net.rrm.ehour.ui.common.component.AddEditTabbedPanel
-import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.list.ListItem
+import org.apache.wicket.markup.html.panel.{Fragment, Panel}
+import org.apache.wicket.model.{IModel, ResourceModel}
+import org.apache.wicket.request.resource.CssResourceReference
+import org.apache.wicket.spring.injection.annot.SpringBean
 import org.joda.time.DateTime
-import net.rrm.ehour.ui.common.session.EhourWebSession
 
-@AuthorizeInstantiation(value = Array(UserRole.ROLE_ADMIN))
 class LockAdminPage extends AbstractTabbedAdminPage[LockAdminBackingBean](new ResourceModel("op.lock.admin.title"),
   new ResourceModel("op.lock.admin.addLock.header"),
   new ResourceModel("op.lock.admin.editLock.header"),

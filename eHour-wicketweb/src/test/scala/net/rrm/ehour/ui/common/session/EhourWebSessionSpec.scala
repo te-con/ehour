@@ -64,7 +64,6 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
 
       session.getRoles should contain(ROLE_USER)
       session.getUserSelectedCriteria should be(null)
-
     }
 
     "return to the original user when impersonating is stopped" in {

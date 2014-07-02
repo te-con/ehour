@@ -2,15 +2,15 @@ package net.rrm.ehour.ui.common.header;
 
 import java.util
 
-import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage
-import net.rrm.ehour.ui.admin.backup.BackupDbPage
-import net.rrm.ehour.ui.admin.config.page.MainConfigPage
-import net.rrm.ehour.ui.admin.customer.CustomerAdminPage
-import net.rrm.ehour.ui.admin.department.DepartmentAdminPage
-import net.rrm.ehour.ui.admin.project.ProjectAdminPage
-import net.rrm.ehour.ui.admin.user.{ImpersonateUserPage, UserAdminPage}
 import net.rrm.ehour.ui.audit.page.AuditReportPage
 import net.rrm.ehour.ui.financial.lock.LockAdminPage
+import net.rrm.ehour.ui.manage.assignment.AssignmentAdminPage
+import net.rrm.ehour.ui.manage.backup.BackupDbPage
+import net.rrm.ehour.ui.manage.config.page.MainConfigPage
+import net.rrm.ehour.ui.manage.customer.CustomerAdminPage
+import net.rrm.ehour.ui.manage.department.DepartmentAdminPage
+import net.rrm.ehour.ui.manage.project.ProjectAdminPage
+import net.rrm.ehour.ui.manage.user.{ImpersonateUserPage, UserAdminPage}
 import net.rrm.ehour.ui.pm.ProjectManagementPage
 import net.rrm.ehour.ui.report.page.ReportPage
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage

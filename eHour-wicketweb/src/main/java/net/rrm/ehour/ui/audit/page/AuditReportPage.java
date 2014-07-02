@@ -18,13 +18,13 @@ package net.rrm.ehour.ui.audit.page;
 
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.audit.AuditConstants;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaForm;
 import net.rrm.ehour.ui.audit.panel.AuditReportCriteriaPanel;
 import net.rrm.ehour.ui.audit.panel.AuditReportDataPanel;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
+import net.rrm.ehour.ui.manage.AbstractAdminPage;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;

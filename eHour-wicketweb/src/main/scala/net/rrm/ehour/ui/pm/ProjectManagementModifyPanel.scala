@@ -1,14 +1,14 @@
 package net.rrm.ehour.ui.pm
 
-import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import net.rrm.ehour.domain.Project
-import net.rrm.ehour.ui.admin.project.ProjectAdminBackingBean
-import org.apache.wicket.model.Model
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder
-import net.rrm.ehour.project.service.ProjectAssignmentManagementService
-import org.apache.wicket.spring.injection.annot.SpringBean
 import net.rrm.ehour.config.PmPrivilege
-import net.rrm.ehour.ui.admin.project.assign.{ManagementPanelConfig, ManageAssignmentsPanel}
+import net.rrm.ehour.domain.Project
+import net.rrm.ehour.project.service.ProjectAssignmentManagementService
+import net.rrm.ehour.ui.common.border.GreyRoundedBorder
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel
+import net.rrm.ehour.ui.manage.project.ProjectAdminBackingBean
+import net.rrm.ehour.ui.manage.project.assign.{ManageAssignmentsPanel, ManagementPanelConfig}
+import org.apache.wicket.model.Model
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 class ProjectManagementModifyPanel(id: String, project: Project) extends AbstractBasePanel(id) {
   @SpringBean

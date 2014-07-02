@@ -1,26 +1,27 @@
 package net.rrm.ehour.ui.pm
 
-import net.rrm.ehour.ui.common.page.AbstractBasePage
-import org.apache.wicket.model.{IModel, ResourceModel}
-import net.rrm.ehour.domain.{Project, UserRole}
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation
-import org.apache.wicket.markup.html.panel.Fragment
-import org.apache.wicket.AttributeModifier
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.markup.html.list.ListItem
-import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorPanel, EntrySelectorListView}
+import java.lang.Boolean
 import java.{util => ju}
-import org.apache.wicket.spring.injection.annot.SpringBean
+
+import net.rrm.ehour.config.PmPrivilege
+import net.rrm.ehour.domain.{Project, UserRole}
 import net.rrm.ehour.project.service.ProjectService
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
-import net.rrm.ehour.ui.common.wicket.Container
-import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
-import org.apache.wicket.request.resource.CssResourceReference
-import net.rrm.ehour.config.PmPrivilege
 import net.rrm.ehour.ui.common.event.AjaxEvent
-import java.lang.Boolean
-import net.rrm.ehour.ui.admin.assignment.AssignmentAjaxEventType
+import net.rrm.ehour.ui.common.page.AbstractBasePage
+import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorListView, EntrySelectorPanel}
+import net.rrm.ehour.ui.common.wicket.Container
+import net.rrm.ehour.ui.manage.assignment.AssignmentAjaxEventType
+import org.apache.wicket.AttributeModifier
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation
+import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
+import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.list.ListItem
+import org.apache.wicket.markup.html.panel.Fragment
+import org.apache.wicket.model.{IModel, ResourceModel}
+import org.apache.wicket.request.resource.CssResourceReference
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 @AuthorizeInstantiation(Array(UserRole.ROLE_PROJECTMANAGER))
 class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
