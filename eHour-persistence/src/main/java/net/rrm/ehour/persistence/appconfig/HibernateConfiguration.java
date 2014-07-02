@@ -64,7 +64,11 @@ public class HibernateConfiguration {
         properties.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, caching);
         properties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
         properties.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
-        properties.setProperty(AvailableSettings.HBM2DDL_AUTO, (String) configProperties.get("hibernate.hbm2ddl.auto"));
+
+        String validateSchema = (String) configProperties.get("hibernate.hbm2ddl.auto");
+        if (!"false".equalsIgnoreCase(validateSchema)) {
+            properties.setProperty(AvailableSettings.HBM2DDL_AUTO, validateSchema);
+        }
 
         sessionFactoryBean.setHibernateProperties(properties);
         sessionFactoryBean.afterPropertiesSet();
