@@ -17,14 +17,12 @@
 package net.rrm.ehour.ui.common.renderers;
 
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.common.util.WebUtils;
 
 public class UserRoleRenderer extends LocalizedDomainObjectResourceRenderer<UserRole> {
     private static final long serialVersionUID = -4020935210828625185L;
 
     @Override
     protected String getResourceKey(UserRole role) {
-        return WebUtils.getResourceKeyForUserRole(role);
+        return role.getRole();
     }
-
 }

@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.common.util;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.EhourConstants;
 import org.apache.wicket.injection.Injector;
@@ -32,10 +31,6 @@ import java.util.Locale;
  */
 
 public class WebUtils {
-    public static final String ROLE_CONSULTANT = "ROLE_CONSULTANT";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
-    public static final String ROLE_REPORT = "ROLE_REPORT";
-
     public static String formatDate(String format, Date date) {
         Locale locale = EhourWebSession.getEhourConfig().getFormattingLocale();
 
@@ -43,7 +38,6 @@ public class WebUtils {
 
         return formatter.format(date);
     }
-
 
     /**
      * Inject beans into @SpringBean annotated properties
@@ -54,20 +48,11 @@ public class WebUtils {
 
     /**
      * Get the content of a resource model as a string
-     *
-     * @param model
-     * @return
      */
     public static String getResourceModelString(IModel<String> model) {
         return model.getObject();
     }
 
-    /**
-     * Get resource key for project assignment type
-     *
-     * @param type
-     * @return
-     */
     public static String getResourceKeyForProjectAssignmentType(ProjectAssignmentType type) {
         String key;
         switch (type.getAssignmentTypeId()) {
@@ -85,27 +70,6 @@ public class WebUtils {
                 break;
         }
 
-        return key;
-    }
-
-    /**
-     * Get resource key for user role
-     *
-     * @param role
-     * @return
-     */
-    public static String getResourceKeyForUserRole(UserRole role) {
-        String key = null;
-
-        if (role.getRole().equals(UserRole.ROLE_USER)) {
-            key = "role.ROLE_CONSULTANT";
-        } else if (role.getRole().equals(UserRole.ROLE_REPORT)) {
-            key = "role.ROLE_REPORT";
-        } else if (role.getRole().equals(UserRole.ROLE_PROJECTMANAGER)) {
-            key = "role.ROLE_PROJECTMANAGER";
-        } else if (role.getRole().equals(UserRole.ROLE_ADMIN)) {
-            key = "role.ROLE_ADMIN";
-        }
         return key;
     }
 }
