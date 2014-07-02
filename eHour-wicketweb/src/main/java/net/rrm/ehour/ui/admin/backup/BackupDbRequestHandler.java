@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.manage.backup;
+package net.rrm.ehour.ui.admin.backup;
 
 import net.rrm.ehour.backup.service.DatabaseBackupService;
 import net.rrm.ehour.domain.UserRole;

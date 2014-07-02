@@ -6,7 +6,7 @@ import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.util.AuthUtil._
 import net.rrm.ehour.ui.common.wicket.AjaxLink
 import net.rrm.ehour.ui.common.wicket.AjaxLink._
-import net.rrm.ehour.ui.manage.AbstractAdminPage
+import net.rrm.ehour.ui.manage.AbstractManagePage
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.event.IEvent
 import org.apache.wicket.markup.html.basic.Label
@@ -14,7 +14,7 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.ResourceModel
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class ImpersonateUserPage extends AbstractAdminPage(new ResourceModel("admin.impersonate.title")) {
+class ImpersonateUserPage extends AbstractManagePage(new ResourceModel("admin.impersonate.title")) {
   val Self = this
 
   val BorderId = "border"

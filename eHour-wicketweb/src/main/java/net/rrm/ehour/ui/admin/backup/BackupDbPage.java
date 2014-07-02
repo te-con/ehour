@@ -1,22 +1,20 @@
-package net.rrm.ehour.ui.manage.backup;
+package net.rrm.ehour.ui.admin.backup;
 
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.ui.admin.AbstractAdminPage;
+import net.rrm.ehour.ui.admin.backup.restore.RestoreDbPanel;
+import net.rrm.ehour.ui.admin.backup.restore.ValidateRestorePanel;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
-import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
-import net.rrm.ehour.ui.manage.backup.restore.RestoreDbPanel;
-import net.rrm.ehour.ui.manage.backup.restore.ValidateRestorePanel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -25,8 +23,7 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
 
-@AuthorizeInstantiation(UserRole.ROLE_ADMIN)
-public class BackupDbPage extends AbstractBasePage<Void> {
+public class BackupDbPage extends AbstractAdminPage<Void> {
     private static final String ID_PARSE_STATUS = "parseStatus";
     private static final String ID_RESTORE_BORDER = "restoreBorder";
 

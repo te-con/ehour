@@ -1,13 +1,13 @@
-package net.rrm.ehour.ui.manage.backup.restore;
+package net.rrm.ehour.ui.admin.backup.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.RestoreService;
+import net.rrm.ehour.ui.admin.backup.BackupAjaxEventType;
 import net.rrm.ehour.ui.common.decorator.DemoDecorator;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
-import net.rrm.ehour.ui.manage.backup.BackupAjaxEventType;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;

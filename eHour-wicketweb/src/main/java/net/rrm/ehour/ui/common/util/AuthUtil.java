@@ -19,9 +19,9 @@ package net.rrm.ehour.ui.common.util;
 import com.google.common.base.Optional;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.ui.admin.config.MainConfigPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.manage.config.page.MainConfigPage;
-import net.rrm.ehour.ui.manage.customer.CustomerAdminPage;
+import net.rrm.ehour.ui.manage.customer.CustomerManagePage;
 import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import org.apache.wicket.Page;
@@ -102,7 +102,7 @@ public class AuthUtil {
     }
 
     private static final Homepage UserHomepage;
-    private static final Homepage ManagerHomepage = new Homepage(CustomerAdminPage.class, Optional.<PageParameters>absent());
+    private static final Homepage ManagerHomepage = new Homepage(CustomerManagePage.class, Optional.<PageParameters>absent());
     private static final Homepage AdminHomepage = new Homepage(MainConfigPage.class, Optional.<PageParameters>absent());
     private static final Homepage ReportHomepage = new Homepage(ReportPage.class, Optional.<PageParameters>absent());
 

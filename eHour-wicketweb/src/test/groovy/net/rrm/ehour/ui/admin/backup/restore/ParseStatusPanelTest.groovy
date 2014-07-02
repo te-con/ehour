@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.manage.backup.restore
+package net.rrm.ehour.ui.admin.backup.restore
 
 import net.rrm.ehour.backup.domain.ParseSession
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType

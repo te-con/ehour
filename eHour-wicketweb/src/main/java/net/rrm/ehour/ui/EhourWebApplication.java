@@ -17,23 +17,23 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.ui.admin.audit.audit.page.AuditReportPage;
+import net.rrm.ehour.ui.admin.audit.AuditReportPage;
+import net.rrm.ehour.ui.admin.backup.BackupDbPage;
+import net.rrm.ehour.ui.admin.config.MainConfigPage;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
 import net.rrm.ehour.ui.common.session.DevelopmentWebSession;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.financial.lock.LockAdminPage;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
-import net.rrm.ehour.ui.manage.assignment.AssignmentAdminPage;
-import net.rrm.ehour.ui.manage.backup.BackupDbPage;
-import net.rrm.ehour.ui.manage.config.page.MainConfigPage;
-import net.rrm.ehour.ui.manage.customer.CustomerAdminPage;
-import net.rrm.ehour.ui.manage.department.DepartmentAdminPage;
-import net.rrm.ehour.ui.manage.project.ProjectAdminPage;
+import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage;
+import net.rrm.ehour.ui.manage.customer.CustomerManagePage;
+import net.rrm.ehour.ui.manage.department.DepartmentManagePage;
+import net.rrm.ehour.ui.manage.lock.LockManagePage;
+import net.rrm.ehour.ui.manage.project.ProjectManagePage;
 import net.rrm.ehour.ui.manage.user.ImpersonateUserPage;
-import net.rrm.ehour.ui.manage.user.UserAdminPage;
+import net.rrm.ehour.ui.manage.user.UserManagePage;
 import net.rrm.ehour.ui.pm.ProjectManagementPage;
 import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource;
@@ -170,11 +170,11 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/logout", Logout.class);
 
         mountPage("/admin", MainConfigPage.class);
-        mountPage("/admin/employee", UserAdminPage.class);
-        mountPage("/admin/department", DepartmentAdminPage.class);
-        mountPage("/admin/customer", CustomerAdminPage.class);
-        mountPage("/admin/project", ProjectAdminPage.class);
-        mountPage("/admin/assignment", AssignmentAdminPage.class);
+        mountPage("/admin/employee", UserManagePage.class);
+        mountPage("/admin/department", DepartmentManagePage.class);
+        mountPage("/admin/customer", CustomerManagePage.class);
+        mountPage("/admin/project", ProjectManagePage.class);
+        mountPage("/admin/assignment", AssignmentManagePage.class);
 
         mountPage("/consultant/overview", MonthOverviewPage.class);
 
@@ -191,7 +191,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
         mountPage("/backup", BackupDbPage.class);
 
-        mountPage("/op/lock", LockAdminPage.class);
+        mountPage("/op/lock", LockManagePage.class);
 
         mountPage("/admin/impersonate", ImpersonateUserPage.class);
     }

@@ -71,8 +71,8 @@ public class AssignmentAdminPageTest extends BaseSpringWebAppTester {
 
         replay(userService);
 
-        getTester().startPage(AssignmentAdminPage.class);
-        getTester().assertRenderedPage(AssignmentAdminPage.class);
+        getTester().startPage(AssignmentManagePage.class);
+        getTester().assertRenderedPage(AssignmentManagePage.class);
         getTester().assertNoErrorMessage();
 
         verify(userService);

@@ -2,14 +2,15 @@ package net.rrm.ehour.ui.common.header;
 
 import java.util
 
-import net.rrm.ehour.ui.admin.audit.audit.page.AuditReportPage
-import net.rrm.ehour.ui.financial.lock.LockAdminPage
-import net.rrm.ehour.ui.manage.assignment.AssignmentAdminPage
-import net.rrm.ehour.ui.manage.config.page.MainConfigPage
-import net.rrm.ehour.ui.manage.customer.CustomerAdminPage
-import net.rrm.ehour.ui.manage.department.DepartmentAdminPage
-import net.rrm.ehour.ui.manage.project.ProjectAdminPage
-import net.rrm.ehour.ui.manage.user.{ImpersonateUserPage, UserAdminPage}
+import net.rrm.ehour.ui.admin.audit.AuditReportPage
+import net.rrm.ehour.ui.admin.backup.BackupDbPage
+import net.rrm.ehour.ui.admin.config.MainConfigPage
+import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage
+import net.rrm.ehour.ui.manage.customer.CustomerManagePage
+import net.rrm.ehour.ui.manage.department.DepartmentManagePage
+import net.rrm.ehour.ui.manage.lock.LockManagePage
+import net.rrm.ehour.ui.manage.project.ProjectManagePage
+import net.rrm.ehour.ui.manage.user.{ImpersonateUserPage, UserManagePage}
 import net.rrm.ehour.ui.pm.ProjectManagementPage
 import net.rrm.ehour.ui.report.page.ReportPage
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage
@@ -30,12 +31,12 @@ object MenuDefinition {
     val report = LinkItem("nav.report", classOf[ReportPage])
     val pm = LinkItem("nav.pm", classOf[ProjectManagementPage])
 
-    val deptAdmin = LinkItem("nav.admin.departments", classOf[DepartmentAdminPage])
-    val userAdmin = LinkItem("nav.admin.users", classOf[UserAdminPage])
-    val customerAdmin = LinkItem("nav.admin.customers", classOf[CustomerAdminPage])
-    val projectAdmin = LinkItem("nav.admin.projects", classOf[ProjectAdminPage])
-    val assignmentAdmin = LinkItem("nav.admin.assignments", classOf[AssignmentAdminPage])
-    val lockAdmin = LinkItem("nav.admin.lock", classOf[LockAdminPage])
+    val deptAdmin = LinkItem("nav.admin.departments", classOf[DepartmentManagePage])
+    val userAdmin = LinkItem("nav.admin.users", classOf[UserManagePage])
+    val customerAdmin = LinkItem("nav.admin.customers", classOf[CustomerManagePage])
+    val projectAdmin = LinkItem("nav.admin.projects", classOf[ProjectManagePage])
+    val assignmentAdmin = LinkItem("nav.admin.assignments", classOf[AssignmentManagePage])
+    val lockAdmin = LinkItem("nav.admin.lock", classOf[LockManagePage])
     val impersonate = LinkItem("nav.admin.impersonate", classOf[ImpersonateUserPage])
     val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(deptAdmin, userAdmin, customerAdmin, projectAdmin, assignmentAdmin, lockAdmin, impersonate))
 

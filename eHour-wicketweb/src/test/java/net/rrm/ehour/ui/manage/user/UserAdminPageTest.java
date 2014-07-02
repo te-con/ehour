@@ -52,8 +52,8 @@ public class UserAdminPageTest extends BaseSpringWebAppTester {
 
         replay(userService);
 
-        getTester().startPage(UserAdminPage.class);
-        getTester().assertRenderedPage(UserAdminPage.class);
+        getTester().startPage(UserManagePage.class);
+        getTester().assertRenderedPage(UserManagePage.class);
         getTester().assertNoErrorMessage();
 
         verify(userService);
