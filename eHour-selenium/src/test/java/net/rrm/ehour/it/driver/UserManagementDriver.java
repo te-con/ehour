@@ -31,7 +31,7 @@ public abstract class UserManagementDriver {
     }
 
     public static void createUser(ItUser user, String lastName, String role) {
-        loadUserAdmin();
+        loadUserManagement();
 
         fillUserForm(user, lastName, role);
 
@@ -67,8 +67,13 @@ public abstract class UserManagementDriver {
         findElement("userSelection_border_border__body_entrySelectorFrame_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_1").click();
     }
 
-    public static void loadUserAdmin() {
+    public static void loadUserManagement() {
         Driver.get(BASE_URL + "/eh/admin/employee");
+    }
+
+    public static java.util.List<WebElement> getUserRoles() {
+        Select userRoles = new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.userRoles"));
+        return userRoles.getOptions();
     }
 
     public static void showOnlyActiveUsers() {

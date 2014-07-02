@@ -8,7 +8,7 @@ import static net.rrm.ehour.it.driver.EhourApplicationDriver.loginAdmin;
 import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 import static org.junit.Assert.assertTrue;
 
-public class UserAdminScenario extends AbstractScenario {
+public class UserManagementScenario extends AbstractScenario {
     // EHO-339
     @Test
     public void should_change_username() {
@@ -19,7 +19,7 @@ public class UserAdminScenario extends AbstractScenario {
         createUser(new ItUser("thies2", "a"), lastName, "User");
         assertUserDataSaved();
 
-        loadUserAdmin();
+        loadUserManagement();
         showOnlyActiveUsers();
         editUser(lastName);
 
@@ -35,7 +35,7 @@ public class UserAdminScenario extends AbstractScenario {
     public void should_move_to_assignments_after_creating_user_when_ticking_show_assignments() {
         loginAdmin();
 
-        loadUserAdmin();
+        loadUserManagement();
         fillUserForm(new ItUser("thies2", "a"), "Edeling2", "User");
         tickShowAssignments();
         submitUserForm();
@@ -47,7 +47,7 @@ public class UserAdminScenario extends AbstractScenario {
     public void should_stay_in_user_admin_after_creating_user_without_ticking_show_assignments() {
         loginAdmin();
 
-        loadUserAdmin();
+        loadUserManagement();
         fillUserForm(new ItUser("thies2", "a"), "Edeling2", "User");
         submitUserForm();
 

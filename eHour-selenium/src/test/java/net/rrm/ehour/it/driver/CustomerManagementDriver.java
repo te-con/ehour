@@ -1,5 +1,6 @@
 package net.rrm.ehour.it.driver;
 
+import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
@@ -10,6 +11,10 @@ public class CustomerManagementDriver {
     public static final ItCustomer ACTIVE_CUSTOMER = new ItCustomer("KLM", "KLM");
     public static final ItCustomer ANOTHER_ACTIVE_CUSTOMER = new ItCustomer("VU", "VU");
     public static final ItCustomer INACTIVE_CUSTOMER = new ItCustomer("CED", "CED");
+
+    public static void assertCustomerManagementLoaded() {
+        assertEquals("Customer management", Driver.getTitle());
+    }
 
     public static ItCustomer createActiveCustomer() {
         createCustomer(ACTIVE_CUSTOMER);

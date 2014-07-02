@@ -26,7 +26,7 @@ public class ProjectManagementScenario  extends AbstractScenario {
     @Ignore
     public void modify_assignment() {
         loginAdmin();
-        loadUserAdmin();
+        loadUserManagement();
         createRegularUser();
 
         ItUser pmUser = new ItUser("anton", "pom");

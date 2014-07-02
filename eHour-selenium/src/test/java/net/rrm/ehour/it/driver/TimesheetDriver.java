@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 public abstract class TimesheetDriver {
     public static void createUserAndAssign() {
         loginAdmin();
-        loadUserAdmin();
+        loadUserManagement();
         createRegularUser();
         createActiveCustomer();
         createActiveProjectForActiveCustomer();
@@ -30,14 +30,9 @@ public abstract class TimesheetDriver {
         logout();
     }
 
-    public static void amIOnTheOverviewPage() {
-        assertTrue(findElement("contentContainer_projectOverview_greyBorder_title").getText().contains("Aggregated hours"));
-    }
-
     public static void amIOnTheTimesheet() {
         assertTrue(findElement("contentContainer_timesheetFrame_title") != null);
     }
-
 
     public static boolean isBookingHoursPossible(int day) {
         try {

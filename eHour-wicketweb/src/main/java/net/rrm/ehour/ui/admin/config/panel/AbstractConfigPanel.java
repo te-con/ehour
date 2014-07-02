@@ -39,83 +39,71 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Created on Apr 21, 2009, 3:10:49 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<MainConfigBackingBean>
-{
-	private static final long serialVersionUID = -3129819024578782528L;
-	private static final Logger LOGGER = Logger.getLogger(AbstractConfigPanel.class);
-	
-	private WebComponent serverMessage;
-	
-	@SpringBean
-	private ConfigurationService configService;
+public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<MainConfigBackingBean> {
+    private static final long serialVersionUID = -3129819024578782528L;
+    private static final Logger LOGGER = Logger.getLogger(AbstractConfigPanel.class);
 
-	public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model)
-	{
-		this(id, model, WebGeo.W_CONTENT_ADMIN_TAB);
-	}
-	
-	public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model, WebGeo width)
-	{
-		super(id, model);
-		
-		createComponents(model, width);
-	}	
-	
-	private void createComponents(IModel<MainConfigBackingBean> model, WebGeo width)
-	{
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", width);
-		add(greyBorder);
-		
-		Form<?> form = createForm("form", model);
-		greyBorder.add(form);
-		form.setOutputMarkupId(true);
-		
-		serverMessage = new WebComponent("serverMessage");
-		serverMessage.setOutputMarkupId(true);
-		form.add(serverMessage);
+    private WebComponent serverMessage;
 
-		addFormComponents(form);
-		addSubmitButton(form);
-	}
-	
-	protected Form<?> createForm(String id, IModel<MainConfigBackingBean> model)
-	{
-		return new Form<MainConfigBackingBean>(id, model);
-	}
+    @SpringBean
+    private ConfigurationService configService;
 
-	/**
-	 * Set ajax submit button
-	 */
-	@SuppressWarnings("serial")
-	private void addSubmitButton(Form<?> form)
-	{
-		form.add(new AjaxButton("submitButton", form)
-		{
-			@Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
-			{
-				IModel<?> msgModel;
+    public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model) {
+        this(id, model, WebGeo.W_CONTENT_ADMIN_TAB);
+    }
 
-				if (!getConfig().isInDemoMode())
-				{
-					try
-					{
-						configService.persistConfiguration(getConfigStub());
-						msgModel = new ResourceModel("general.dataSaved");
-					}
-					catch (Exception t)
-					{
-						LOGGER.error("While saving config", t);
-						msgModel = new ResourceModel("general.saveError");
-					}
-					
-					getEhourWebSession().reloadConfig();
-					
-					replaceFeedbackMessage(msgModel);
-				}
+    public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model, WebGeo width) {
+        super(id, model);
+
+        createComponents(model, width);
+    }
+
+    private void createComponents(IModel<MainConfigBackingBean> model, WebGeo width) {
+        GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", width);
+        add(greyBorder);
+
+        Form<?> form = createForm("form", model);
+        greyBorder.add(form);
+        form.setOutputMarkupId(true);
+
+        serverMessage = new WebComponent("serverMessage");
+        serverMessage.setOutputMarkupId(true);
+        form.add(serverMessage);
+
+        addFormComponents(form);
+        addSubmitButton(form);
+    }
+
+    protected Form<?> createForm(String id, IModel<MainConfigBackingBean> model) {
+        return new Form<MainConfigBackingBean>(id, model);
+    }
+
+    /**
+     * Set ajax submit button
+     */
+    @SuppressWarnings("serial")
+    private void addSubmitButton(Form<?> form) {
+        form.add(new AjaxButton("submitButton", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                IModel<?> msgModel;
+
+                if (!getConfig().isInDemoMode()) {
+                    try {
+                        configService.persistConfiguration(getConfigStub());
+                        msgModel = new ResourceModel("general.dataSaved");
+                    } catch (Exception t) {
+                        LOGGER.error("While saving config", t);
+                        msgModel = new ResourceModel("general.saveError");
+                    }
+
+                    getEhourWebSession().reloadConfig();
+
+                    replaceFeedbackMessage(msgModel);
+                }
             }
 
             @Override
@@ -125,49 +113,42 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
                 attributes.getAjaxCallListeners().add(getConfig().isInDemoMode() ? new DemoDecorator() : new LoadingSpinnerDecorator());
             }
 
-			@Override
-			protected void onError(final AjaxRequestTarget target, Form<?> form)
-			{
-				target.add(form);
+            @Override
+            protected void onError(final AjaxRequestTarget target, Form<?> form) {
+                target.add(form);
             }
-        });		
-	}
+        });
+    }
 
-	protected void replaceFeedbackMessage(IModel<?> msgModel)
-	{
-		Label replacementLabel = new Label("serverMessage", msgModel);
-		replacementLabel.setOutputMarkupId(true);
-		replacementLabel.add(AttributeModifier.replace("class", "smallTextRed"));
-		serverMessage.replaceWith(replacementLabel);
-		serverMessage = replacementLabel;
+    protected void replaceFeedbackMessage(IModel<?> msgModel) {
+        Label replacementLabel = new Label("serverMessage", msgModel);
+        replacementLabel.setOutputMarkupId(true);
+        replacementLabel.add(AttributeModifier.replace("class", "smallTextRed"));
+        serverMessage.replaceWith(replacementLabel);
+        serverMessage = replacementLabel;
 
         AjaxRequestTarget target = getRequestCycle().find(AjaxRequestTarget.class);
 
-        if (target != null)
-		{
-			target.add(serverMessage);
-		}
-	}
-	
-	private EhourConfig getConfigStub()
-	{
-		return ((MainConfigBackingBean)getDefaultModelObject()).getConfig();
-	}
-	
-	protected abstract void addFormComponents(Form<?> form);
+        if (target != null) {
+            target.add(serverMessage);
+        }
+    }
 
-    protected final WebComponent getServerMessage()
-	{
-		return serverMessage;
-	}
-	
-	protected final void setServerMessage(WebComponent serverMessage)
-	{
-		this.serverMessage = serverMessage;
-	}
-	
-	protected ConfigurationService getConfigService()
-	{
-		return configService;
-	}
+    private EhourConfig getConfigStub() {
+        return ((MainConfigBackingBean) getDefaultModelObject()).getConfig();
+    }
+
+    protected abstract void addFormComponents(Form<?> form);
+
+    protected final WebComponent getServerMessage() {
+        return serverMessage;
+    }
+
+    protected final void setServerMessage(WebComponent serverMessage) {
+        this.serverMessage = serverMessage;
+    }
+
+    protected ConfigurationService getConfigService() {
+        return configService;
+    }
 }
