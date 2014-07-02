@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.ui.audit.page.AuditReportPage;
+import net.rrm.ehour.ui.admin.audit.audit.page.AuditReportPage;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
 import net.rrm.ehour.ui.common.session.DevelopmentWebSession;

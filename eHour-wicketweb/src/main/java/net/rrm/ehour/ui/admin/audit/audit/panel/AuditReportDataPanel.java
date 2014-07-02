@@ -14,13 +14,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.audit.panel;
+package net.rrm.ehour.ui.admin.audit.audit.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.ui.audit.model.AuditReportDataProvider;
+import net.rrm.ehour.ui.admin.audit.audit.model.AuditReportDataProvider;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
