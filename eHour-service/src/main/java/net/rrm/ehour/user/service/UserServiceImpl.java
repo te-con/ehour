@@ -172,11 +172,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     public List<UserRole> getUserRoles() {
-        List<UserRole> userRoles = userRoleDAO.findAll();
-
-        userRoles.remove(UserRole.PROJECTMANAGER);
-
-        return userRoles;
+        return userRoleDAO.findAll();
     }
 
     @Transactional

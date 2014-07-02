@@ -16,9 +16,11 @@
 
 package net.rrm.ehour.ui.admin.user;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.assignment.AssignmentAdminPage;
@@ -29,6 +31,7 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntryListUpdatedEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
@@ -164,6 +167,18 @@ public class UserAdminPage extends AbstractTabbedAdminPage<UserAdminBackingBean>
     private List<UserRole> getUserRoles() {
         if (roles == null) {
             roles = userService.getUserRoles();
+
+            roles.remove(UserRole.PROJECTMANAGER);
+
+            User user = EhourWebSession.getSession().getUser();
+
+            if (!SecurityRules.isAdmin(user)) {
+                roles.remove(UserRole.ADMIN);
+            }
+
+            if (!EhourWebSession.getEhourConfig().isSplitAdminRole()) {
+                roles.remove(UserRole.MANAGER);
+            }
         }
 
         return roles;
