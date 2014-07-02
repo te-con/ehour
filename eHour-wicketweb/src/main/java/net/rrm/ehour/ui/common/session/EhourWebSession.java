@@ -62,6 +62,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     @SpringBean
     private AuditService auditService;
+
     private Calendar navCalendar;
     private UserSelectedCriteria userSelectedCriteria;
     private Boolean hideInactiveSelections = true;
@@ -273,7 +274,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     public void impersonateUser(User userToImpersonate) throws UnauthorizedToImpersonateException {
-        boolean allowedToImpersonate = SecurityRules.allowedToImpersonate(getUser(), userToImpersonate, ehourConfig.isSplitAdminRole());
+        boolean allowedToImpersonate = allowedToImpersonate(userToImpersonate);
 
         if (!allowedToImpersonate) {
             throw new UnauthorizedToImpersonateException();
@@ -287,6 +288,11 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
         logAndAuditImpersonation(originalUser);
     }
+
+    protected boolean allowedToImpersonate(User userToImpersonate) {
+        return SecurityRules.allowedToImpersonate(getUser(), userToImpersonate, ehourConfig.isSplitAdminRole());
+    }
+
 
     private void logAndAuditImpersonation(User originalUser) {
         StringBuilder auditMsg = new StringBuilder((originalUser != null) ? originalUser.getFullName() : "N/A");

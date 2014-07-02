@@ -26,8 +26,10 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
   "Ehour Web Session should" should {
     val User = new User("thies", "password").addUserRole(USER)
 
-    "do not allow non-admin users to impersonate" in {
-      val session = new EhourWebSession(req) {
+    "throw exception when not allowed to impersonate" in {
+      val session = new EhourWebSession(req)  {
+        override def allowedToImpersonate(user: User) = false
+
         override def authenticate(username: String, password: String): Boolean = true
 
         override def getRoles: Roles = new Roles(s"$ROLE_USER,$ROLE_REPORT,$ROLE_PROJECTMANAGER")
@@ -40,8 +42,10 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
       }
     }
 
-    "do allow admin users to impersonate and have User set to impersonating user" in {
-      val session = new EhourWebSession(req) {
+    "return impersonated user when impersonating is succesful" in {
+      val session = new EhourWebSession(req)  {
+        override def allowedToImpersonate(userToImpersonate: User) = true
+
         override def authenticate(username: String, password: String): Boolean = true
 
         override def isAdmin: Boolean = true
@@ -65,6 +69,8 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
 
     "return to the original user when impersonating is stopped" in {
       val session = new EhourWebSession(req) {
+        override def allowedToImpersonate(userToImpersonate: User) = true
+
         override def authenticate(username: String, password: String): Boolean = true
 
         override def isAdmin: Boolean = true
