@@ -65,7 +65,6 @@ public class HibernateConfiguration {
         properties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
         properties.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
         properties.setProperty(AvailableSettings.HBM2DDL_AUTO, (String) configProperties.get("hibernate.hbm2ddl.auto"));
-//        properties.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "org.springframework.orm.hibernate4.SpringSessionContext");
 
         sessionFactoryBean.setHibernateProperties(properties);
         sessionFactoryBean.afterPropertiesSet();
