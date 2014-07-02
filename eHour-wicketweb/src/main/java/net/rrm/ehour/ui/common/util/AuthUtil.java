@@ -18,7 +18,9 @@ package net.rrm.ehour.ui.common.util;
 
 import com.google.common.base.Optional;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
+import net.rrm.ehour.ui.admin.customer.CustomerAdminPage;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
@@ -100,6 +102,7 @@ public class AuthUtil {
     }
 
     private static final Homepage UserHomepage;
+    private static final Homepage ManagerHomepage = new Homepage(CustomerAdminPage.class, Optional.<PageParameters>absent());
     private static final Homepage AdminHomepage = new Homepage(MainConfigPage.class, Optional.<PageParameters>absent());
     private static final Homepage ReportHomepage = new Homepage(ReportPage.class, Optional.<PageParameters>absent());
 
@@ -111,11 +114,13 @@ public class AuthUtil {
     }
 
     public static Homepage getHomepageForRole(Roles roles) {
-        if (roles.contains(WebUtils.ROLE_CONSULTANT)) {
+        if (roles.contains(UserRole.ROLE_USER)) {
             return UserHomepage;
-        } else if (roles.contains(WebUtils.ROLE_ADMIN)) {
+        } else if (roles.contains(UserRole.ROLE_MANAGER)) {
+            return ManagerHomepage;
+        } else if (roles.contains(UserRole.ROLE_ADMIN)) {
             return AdminHomepage;
-        } else if (roles.contains(WebUtils.ROLE_REPORT)) {
+        } else if (roles.contains(UserRole.ROLE_REPORT)) {
             return ReportHomepage;
         } else {
             return UserHomepage;
@@ -132,5 +137,3 @@ public class AuthUtil {
         }
     }
 }
-
-

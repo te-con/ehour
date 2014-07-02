@@ -26,40 +26,35 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * Provides userDetails 
- **/
+ * Provides userDetails
+ */
 @Service("authService")
-public class AuthService implements UserDetailsService
-{
-	@Autowired
-	private	UserService	userService;
-	private	static final Logger LOGGER = Logger.getLogger(AuthService.class);
+public class AuthService implements UserDetailsService {
+    @Autowired
+    private UserService userService;
+    private static final Logger LOGGER = Logger.getLogger(AuthService.class);
 
-	/**
-	 * Get user by username (acegi)
-	 * @param username
-	 */
-	
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
-	{
-		AuthUser	authUser;
-		
-		User user = userService.getUser(username);
-		
-		if (user == null || !user.isActive())
-		{
-			if (LOGGER.isDebugEnabled())
-			{
-				LOGGER.debug("Load user by username for " + username + " but user unknown or inactive");
-			}
-			
-			throw new UsernameNotFoundException("User unknown");
-		}
-		else
-		{
-			authUser = new AuthUser(user);
-		}
-		
-		return authUser;
-	}
+    /**
+     * Get user by username (acegi)
+     *
+     * @param username
+     */
+
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AuthUser authUser;
+
+        User user = userService.getUser(username);
+
+        if (user == null || !user.isActive()) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Load user by username for " + username + " but user unknown or inactive");
+            }
+
+            throw new UsernameNotFoundException("User unknown");
+        } else {
+            authUser = new AuthUser(user);
+        }
+
+        return authUser;
+    }
 }

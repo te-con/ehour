@@ -2,7 +2,6 @@ package net.rrm.ehour.ui.common.header
 
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.ui.common.util.AuthUtil
 import net.rrm.ehour.ui.common.util.AuthUtil._
 import net.rrm.ehour.ui.login.page.Logout
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage
@@ -17,7 +16,7 @@ class LoggedInAsPanel(id: String) extends AbstractBasePanel(id) {
     super.onInitialize()
 
     val link = new BookmarkablePageLink("prefsLink", classOf[UserPreferencePage])
-    val loggedInUserLabel = new Label("loggedInUser", new Model[String](AuthUtil.getUser.getFullName))
+    val loggedInUserLabel = new Label("loggedInUser", new Model[String](EhourWebSession.getSession.getUser.getFullName))
     link.add(loggedInUserLabel)
 
     addOrReplace(link)

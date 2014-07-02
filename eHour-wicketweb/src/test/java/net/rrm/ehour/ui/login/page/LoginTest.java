@@ -18,12 +18,12 @@ package net.rrm.ehour.ui.login.page;
 
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.admin.config.page.MainConfigPage;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
-import net.rrm.ehour.ui.common.util.WebUtils;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class LoginTest extends BaseSpringWebAppTester {
     @Override
     protected Roles getRoles() {
         Roles authorizedRoles = new Roles();
-        authorizedRoles.add(WebUtils.ROLE_ADMIN);
+        authorizedRoles.add(UserRole.ROLE_ADMIN);
 
         return authorizedRoles;
     }

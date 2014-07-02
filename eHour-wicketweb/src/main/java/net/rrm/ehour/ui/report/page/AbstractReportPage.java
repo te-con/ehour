@@ -75,7 +75,7 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
     }
 
     protected void determineDefaultReportType(UserSelectedCriteria userSelectedCriteria) {
-        if (getEhourWebSession().isWithReportRole()) {
+        if (getEhourWebSession().isReporter()) {
             userSelectedCriteria.setReportTypeToGlobal();
         } else if (isReportForPm()) {
             userSelectedCriteria.setReportTypeToPM(getEhourWebSession().getUser());
@@ -84,6 +84,6 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
         }
     }
     private boolean isReportForPm() {
-        return getEhourWebSession().isWithPmRole();
+        return getEhourWebSession().isProjectManager();
     }
 }

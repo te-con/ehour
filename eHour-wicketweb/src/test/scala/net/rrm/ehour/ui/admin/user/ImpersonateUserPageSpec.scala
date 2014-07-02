@@ -57,7 +57,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     }
 
     "impersonate user" in {
-      prep(service, overviewTimesheet)
+      prepare(service, overviewTimesheet)
 
       tester.startPage(classOf[ImpersonateUserPage])
 
@@ -72,7 +72,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     }
 
     "cannot impersonate user when user is already impersonating" in {
-      prep(service, overviewTimesheet)
+      prepare(service, overviewTimesheet)
 
       tester.startPage(classOf[ImpersonateUserPage])
 
@@ -91,7 +91,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     }
   }
 
-  def prep(service: UserService, overviewTimesheet: IOverviewTimesheet) {
+  def prepare(service: UserService, overviewTimesheet: IOverviewTimesheet) {
     val user = UserObjectMother.createUser
 
     when(overviewTimesheet.getWeekOverview(any[User], any[Calendar])).thenReturn(new WeekOverview(Lists.newArrayList(), Lists.newArrayList()))

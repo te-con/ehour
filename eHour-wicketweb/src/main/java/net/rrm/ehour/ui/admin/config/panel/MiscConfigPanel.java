@@ -70,8 +70,8 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         form.add(new DropDownChoice<PmPrivilege>("config.pmPrivilege", Arrays.asList(PmPrivilege.values()), new EnumChoiceRenderer<PmPrivilege>()));
 
         // split admin role
+        // TODO when disabling, convert all managers to admins or at least do something with them
         form.add(new CheckBox("config.splitAdminRole"));
-
     }
 
     private static final class WeekDayRenderer extends ChoiceRenderer<Date> {

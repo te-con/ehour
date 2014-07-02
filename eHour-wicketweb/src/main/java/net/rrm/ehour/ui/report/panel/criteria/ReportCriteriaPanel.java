@@ -197,11 +197,11 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         EhourWebSession session = getEhourWebSession();
 
-        if (session.isWithReportRole()) {
+        if (session.isReporter()) {
             types.add(ReportType.REPORT);
         }
 
-        if (session.isWithPmRole()) {
+        if (session.isProjectManager()) {
             types.add(ReportType.PM);
         }
 

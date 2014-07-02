@@ -1,17 +1,18 @@
 package net.rrm.ehour.ui.report.panel.detail
 
-import org.joda.time.{DateTimeZone, LocalDate, DateTime}
 import java.util
-import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.report.criteria.AggregateBy
 import java.util.Date
+
+import net.rrm.ehour.report.criteria.AggregateBy
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import org.joda.time.{DateTime, DateTimeZone, LocalDate}
 
 case class DetailedReportResponse(pointStart: DateTime,
                                   `type`: Char,
                                   title: String,
                                   yAxis: String,
                                   series: util.List[JSparseDateSeries],
-                                  hasReportRole: Boolean = EhourWebSession.getSession.isWithReportRole)
+                                  hasReportRole: Boolean = EhourWebSession.getSession.isReporter)
 
 object DetailedReportResponse {
   def apply(aggregateBy: AggregateBy,

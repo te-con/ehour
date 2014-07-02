@@ -70,7 +70,7 @@ public class ReportColumn implements Serializable {
             boolean showTurnover = EhourWebSession.getEhourConfig().isShowTurnover();
 
             if (!showTurnover) {
-                isVisibleAndAuthorized = EhourWebSession.getSession().isWithReportRole();
+                isVisibleAndAuthorized = EhourWebSession.getSession().isReporter();
             }
         }
 

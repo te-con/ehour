@@ -46,7 +46,7 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
                                 aggregateByLabel =  model.getString.toLowerCase,
                                 yAxis = "Hours",
                                 series = toJava(unprocessedSeries.map(JSparseDateSeries(_))),
-                                hasReportRole =  EhourWebSession.getSession.isWithReportRole)
+                                hasReportRole =  EhourWebSession.getSession.isReporter)
       case None =>
         val errorMsg = s"no data found for key $cacheKey"
         DetailedReportRESTResource.LOG.warn(errorMsg)
@@ -70,7 +70,7 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
                               aggregateByLabel = model.getString.toLowerCase,
                               yAxis = "Turnover",
                               series = toJava(unprocessedSeries.map(JSparseDateSeries(_))),
-                              hasReportRole =  EhourWebSession.getSession.isWithReportRole)
+                              hasReportRole =  EhourWebSession.getSession.isReporter)
       case None =>
         val errorMsg = s"no data found for key $cacheKey"
         DetailedReportRESTResource.LOG.warn(errorMsg)
