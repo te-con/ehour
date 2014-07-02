@@ -39,11 +39,13 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
     public static final String ROLE_USER = "ROLE_CONSULTANT";
     public static final String ROLE_REPORT = "ROLE_REPORT";
     public static final String ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
+    public static final String ROLE_MANAGER = "ROLE_MANAGER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     public static final UserRole USER = new UserRole(ROLE_USER, "Consultant");
     public static final UserRole REPORT = new UserRole(ROLE_REPORT, "Report Role");
     public static final UserRole PROJECTMANAGER = new UserRole(ROLE_PROJECTMANAGER, "PM");
+    public static final UserRole MANAGER = new UserRole(ROLE_MANAGER, "Manager");
     public static final UserRole ADMIN = new UserRole(ROLE_ADMIN, "Administrator");
 
     public static final Map<String, UserRole> ROLES = new HashMap<String, UserRole>();
@@ -52,6 +54,7 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
         ROLES.put(ROLE_USER, USER);
         ROLES.put(ROLE_REPORT, REPORT);
         ROLES.put(ROLE_PROJECTMANAGER, PROJECTMANAGER);
+        ROLES.put(ROLE_MANAGER, MANAGER);
         ROLES.put(ROLE_ADMIN, ADMIN);
     }
 
@@ -70,7 +73,6 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
     public UserRole(String role, String roleName) {
         this.role = role;
         this.roleName = roleName;
-
     }
 
     public String getRoleName() {
