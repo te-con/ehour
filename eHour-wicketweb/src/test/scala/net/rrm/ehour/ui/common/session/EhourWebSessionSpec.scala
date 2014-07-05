@@ -6,7 +6,6 @@ import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.domain.UserRole._
 import net.rrm.ehour.report.criteria.UserSelectedCriteria
-import net.rrm.ehour.ui.common.util.AuthUtil
 import org.apache.wicket.ThreadContext
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
 import org.apache.wicket.markup.html.panel.EmptyPanel
@@ -59,7 +58,7 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
 
       session.impersonateUser(User)
 
-      val user = AuthUtil.getUser
+      val user = EhourWebSession.getUser
       user should be(User)
 
       session.getRoles should contain(ROLE_USER)
@@ -85,7 +84,7 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
 
       session.stopImpersonating()
 
-      AuthUtil.getUser should not be User
+      EhourWebSession.getUser should not be User
       session.getUserSelectedCriteria should be(null)
     }
   }

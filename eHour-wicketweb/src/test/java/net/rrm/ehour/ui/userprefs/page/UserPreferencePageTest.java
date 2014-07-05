@@ -33,7 +33,7 @@ public class UserPreferencePageTest extends BaseSpringWebAppTester
 		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
 		getMockContext().putBean(overviewTimesheet);
 
-		MockExpectations.navCalendar(overviewTimesheet, getWebApp());
+		MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
 
 		UserService userService = createMock(UserService.class);
 		getMockContext().putBean("userService", userService);
@@ -55,7 +55,7 @@ public class UserPreferencePageTest extends BaseSpringWebAppTester
         IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
         getMockContext().putBean(overviewTimesheet);
 
-        MockExpectations.navCalendar(overviewTimesheet, getWebApp());
+        MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
 
         UserService userService = createMock(UserService.class);
         getMockContext().putBean("userService", userService);

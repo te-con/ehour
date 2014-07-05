@@ -17,90 +17,21 @@
 package net.rrm.ehour.ui.common.util;
 
 import com.google.common.base.Optional;
-import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.MainConfigPage;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.manage.customer.CustomerManagePage;
 import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import org.apache.wicket.Page;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.springframework.stereotype.Service;
 
 /**
  * Common stuff for auth
  */
-
+@Service
 public class AuthUtil {
-    public static User getUser() {
-        EhourWebSession session = EhourWebSession.getSession();
-
-        return (session.getAuthUser() != null) ? session.getAuthUser().getUser() : null;
-    }
-
-    /**
-     * Check if the logged in user has the specified role
-     *
-     * @param role
-     * @return
-     */
-    public static boolean hasRole(String role) {
-        Roles roles = getRoles();
-
-        return (roles != null) && roles.contains(role);
-    }
-
-    /**
-     * Get the roles of the logged in user
-     *
-     * @return
-     */
-    public static Roles getRoles() {
-        EhourWebSession session = EhourWebSession.getSession();
-
-        return session.getRoles();
-    }
-
-    /**
-     * Is the user authorized for the page?
-     *
-     * @param pageClass
-     * @return
-     */
-    public static boolean isUserAuthorizedForPage(Class<? extends WebPage> pageClass) {
-        AuthorizeInstantiation authorizeAnnotation;
-        Roles userRoles;
-        boolean authorized = false;
-
-        if (pageClass.isAnnotationPresent(AuthorizeInstantiation.class)) {
-            userRoles = getRoles();
-
-            if (userRoles != null) {
-                authorizeAnnotation = pageClass.getAnnotation(AuthorizeInstantiation.class);
-
-                OUTER:
-                for (String role : userRoles) {
-                    for (int i = 0;
-                         i < authorizeAnnotation.value().length;
-                         i++) {
-                        if (authorizeAnnotation.value()[i].equalsIgnoreCase(role)) {
-                            authorized = true;
-                            break OUTER;
-                        }
-                    }
-                }
-            }
-        } else {
-            // no authorize annotation available
-            authorized = true;
-        }
-
-        return authorized;
-    }
-
     private static final Homepage UserHomepage;
     private static final Homepage ManagerHomepage = new Homepage(CustomerManagePage.class, Optional.<PageParameters>absent());
     private static final Homepage AdminHomepage = new Homepage(MainConfigPage.class, Optional.<PageParameters>absent());
@@ -113,7 +44,7 @@ public class AuthUtil {
         UserHomepage = new Homepage(MonthOverviewPage.class, Optional.of(parameters));
     }
 
-    public static Homepage getHomepageForRole(Roles roles) {
+    public Homepage getHomepageForRole(Roles roles) {
         if (roles.contains(UserRole.ROLE_USER)) {
             return UserHomepage;
         } else if (roles.contains(UserRole.ROLE_MANAGER)) {

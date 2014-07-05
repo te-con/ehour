@@ -1,8 +1,7 @@
 package net.rrm.ehour.ui.admin.backup;
 
 import net.rrm.ehour.backup.service.DatabaseBackupService;
-import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.common.util.AuthUtil;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import org.apache.log4j.Logger;
 import org.apache.wicket.request.IRequestCycle;
@@ -72,9 +71,8 @@ public class BackupDbRequestHandler implements IRequestHandler {
     }
 
     private boolean checkAuthorization() {
-        return (AuthUtil.hasRole(UserRole.ROLE_ADMIN));
+        return EhourWebSession.getSession().isAdmin();
     }
-
 
     private String getFilename() {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");

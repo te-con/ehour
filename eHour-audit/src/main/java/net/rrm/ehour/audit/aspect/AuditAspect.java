@@ -198,7 +198,7 @@ public class AuditAspect {
         User user;
 
         try {
-            user = EhourWebSession.getSession().getUser();
+            user = EhourWebSession.getUser();
         } catch (Exception t) {
             user = null;
         }

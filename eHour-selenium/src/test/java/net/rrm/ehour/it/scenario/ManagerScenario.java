@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class ManagerScenario extends AbstractScenario {
 
     @Test
-    public void should_hide_manager_role_in_user_admin_when_split_manager_is_toggled() {
+    public void should_show_manager_role_in_user_admin_when_split_manager_is_toggled() {
         loginAdmin();
 
         checkSplitAdminRole();

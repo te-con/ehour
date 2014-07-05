@@ -28,9 +28,39 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 
-public class UserAdminPageTest extends BaseSpringWebAppTester {
+public class UserManagePageTest extends BaseSpringWebAppTester {
     @Test
     public void should_render() {
+        UserService userService = createMock(UserService.class);
+        getMockContext().putBean("userService", userService);
+
+        List<User> users = new ArrayList<User>();
+        User user = new User();
+        user.setFirstName("thies");
+        user.setUserId(1);
+        user.setLastName("Edeling");
+        users.add(user);
+
+        expect(userService.getActiveUsers())
+                .andReturn(users);
+
+        expect(userService.getUserRoles())
+                .andReturn(new ArrayList<UserRole>());
+
+        expect(userService.getUserDepartments())
+                .andReturn(new ArrayList<UserDepartment>());
+
+        replay(userService);
+
+        getTester().startPage(UserManagePage.class);
+        getTester().assertRenderedPage(UserManagePage.class);
+        getTester().assertNoErrorMessage();
+
+        verify(userService);
+    }
+
+    @Test
+    public void dont_display_admin_role_when_signed_in_as_manager() {
         UserService userService = createMock(UserService.class);
         getMockContext().putBean("userService", userService);
 

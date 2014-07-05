@@ -9,7 +9,7 @@ import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
 
-class LockAdminPageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
+class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
   "Lock Admin Page" should {
     val service = mockService[TimesheetLockService]
 

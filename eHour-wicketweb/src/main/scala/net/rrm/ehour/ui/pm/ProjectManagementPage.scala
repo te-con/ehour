@@ -10,6 +10,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.event.AjaxEvent
 import net.rrm.ehour.ui.common.page.AbstractBasePage
 import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorListView, EntrySelectorPanel}
+import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.manage.assignment.AssignmentAjaxEventType
 import org.apache.wicket.AttributeModifier
@@ -57,7 +58,7 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
   }
 
   def initializeProjectSelector() = {
-    val projects = projectService.getProjectManagerProjects(getEhourWebSession.getUser)
+    val projects = projectService.getProjectManagerProjects(EhourWebSession.getUser)
     val projectListHolder = createProjectListHolder(projects)
 
     new EntrySelectorPanel("projectSelector", projectListHolder, new ResourceModel("admin.project.hideInactive"))

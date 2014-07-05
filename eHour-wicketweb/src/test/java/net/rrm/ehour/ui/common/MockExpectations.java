@@ -27,25 +27,36 @@ import java.util.GregorianCalendar;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.notNull;
+import static org.mockito.Mockito.when;
 
 /**
  * Mock expectations
  */
 
-public class MockExpectations {
-    private MockExpectations() {
+public abstract class MockExpectations {
 
-    }
-
-    @SuppressWarnings("deprecation")
-    public static void navCalendar(IOverviewTimesheet IOverviewTimesheet, TestEhourWebApplication webApp) {
-        Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
-        EhourWebSession session = webApp.getSession();
-        session.setNavCalendar(requestedMonth);
-
-        LocalDate bookedDay = new LocalDate(2007, DateTimeConstants.DECEMBER, 15);
+    public static void navCalendarEasyMock(IOverviewTimesheet IOverviewTimesheet, TestEhourWebApplication webApp) {
+        LocalDate bookedDay = getDate(webApp);
 
         expect(IOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
                 .andReturn(Arrays.asList(bookedDay));
     }
+
+    public static void navCalendarMockito(IOverviewTimesheet IOverviewTimesheet, TestEhourWebApplication webApp) {
+        LocalDate bookedDay = getDate(webApp);
+
+        when(IOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
+                .thenReturn(Arrays.asList(bookedDay));
+    }
+
+    @SuppressWarnings("deprecation")
+    private static LocalDate getDate(TestEhourWebApplication webApp) {
+        Calendar requestedMonth = new GregorianCalendar(2007, 12 - 1, 10);
+        EhourWebSession session = webApp.getSession();
+        session.setNavCalendar(requestedMonth);
+
+        return new LocalDate(2007, DateTimeConstants.DECEMBER, 15);
+    }
+
+
 }

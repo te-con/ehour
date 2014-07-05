@@ -34,7 +34,6 @@ import org.apache.wicket.model.ResourceModel;
 public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventListener {
     private static final long serialVersionUID = 7090746921483608658L;
     public static final String NEW_VERSION_ID = "newVersion";
-    public static final String IMPERSONATE_ID = "impersonate";
 
     public AbstractBasePage(ResourceModel pageTitle) {
         super();

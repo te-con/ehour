@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.manage.user
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.domain.UserDepartmentObjectMother
 import net.rrm.ehour.domain.UserObjectMother
@@ -17,6 +18,7 @@ import org.mockito.MockitoAnnotations
 import static org.junit.Assert.*
 import static org.mockito.Matchers.anyObject
 import static org.mockito.Mockito.verify
+import static org.mockito.Mockito.when
 
 public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
     @Mock
@@ -27,6 +29,8 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
     void "set up"() {
         MockitoAnnotations.initMocks this
         getMockContext().putBean("userService", userService);
+
+        when(userService.getUserRoles()).thenReturn(Lists.newArrayList(UserRole.ADMIN, UserRole.MANAGER, UserRole.PROJECTMANAGER, UserRole.REPORT, UserRole.USER))
     }
 
     @Test
@@ -93,7 +97,6 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
     void startPanel(UserAdminBackingBean bean) {
         tester.startComponentInPage(new UserAdminFormPanel("panel",
                         new CompoundPropertyModel<UserAdminBackingBean>(bean),
-                        Arrays.asList(UserRole.ADMIN),
                         Arrays.asList(UserDepartmentObjectMother.createUserDepartment())))
     }
 }

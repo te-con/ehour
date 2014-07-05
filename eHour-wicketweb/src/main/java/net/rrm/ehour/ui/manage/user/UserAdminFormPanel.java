@@ -20,6 +20,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
@@ -30,6 +31,7 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.userprefs.panel.PasswordFieldFactory;
 import net.rrm.ehour.user.service.UserService;
@@ -60,16 +62,23 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
     protected static final String BORDER = "border";
     protected static final String FORM = "userForm";
 
+    private List<UserRole> roles;
+
     @SpringBean
     private UserService userService;
 
     public UserAdminFormPanel(String id,
                               CompoundPropertyModel<UserAdminBackingBean> userModel,
-                              List<UserRole> roles,
                               List<UserDepartment> departments) {
         super(id, userModel);
 
-        boolean editMode = getPanelModelObject().getUser().getPK() != null;
+        UserAdminBackingBean userAdminBackingBean = userModel.getObject();
+        User user = userAdminBackingBean.getUser();
+        boolean readOnly = SecurityRules.allowedToModify(EhourWebSession.getUser(),
+                user,
+                EhourWebSession.getEhourConfig().isSplitAdminRole());
+
+        boolean editMode = user.getPK() != null;
 
         GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder(BORDER, WebGeo.AUTO);
         add(greyBorder);
@@ -107,7 +116,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
 
         // password
         Label label = new Label("passwordEditLabel", new ResourceModel("admin.user.editPassword"));
-        label.setVisible(userModel.getObject().isEditMode());
+        label.setVisible(userAdminBackingBean.isEditMode());
         form.add(label);
 
         PasswordFieldFactory.createOptionalPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
@@ -121,7 +130,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
         form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
 
         // user roles
-        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", roles, new UserRoleRenderer());
+        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", getUserRoles(), new UserRoleRenderer());
         userRoles.setMaxRows(4);
         userRoles.setLabel(new ResourceModel("admin.user.roles"));
         userRoles.setRequired(true);
@@ -134,14 +143,14 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
 
         // show assignments
         CheckBox showAssignments = new CheckBox("showAssignments");
-        showAssignments.setVisible(!userModel.getObject().isEditMode());
+        showAssignments.setVisible(!userAdminBackingBean.isEditMode());
         form.add(showAssignments);
 
 
         // data save label
         form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 
-        boolean deletable = userModel.getObject().getUser().isDeletable();
+        boolean deletable = user.isDeletable();
 
         FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable)
                 .withDeleteEventType(USER_DELETED)
@@ -153,6 +162,27 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
 
         greyBorder.add(form);
     }
+
+    private List<UserRole> getUserRoles() {
+        if (roles == null) {
+            roles = userService.getUserRoles();
+
+            roles.remove(UserRole.PROJECTMANAGER);
+
+            User user = EhourWebSession.getUser();
+
+            if (!SecurityRules.isAdmin(user)) {
+                roles.remove(UserRole.ADMIN);
+            }
+
+            if (!EhourWebSession.getEhourConfig().isSplitAdminRole()) {
+                roles.remove(UserRole.MANAGER);
+            }
+        }
+
+        return roles;
+    }
+
 
     @Override
     protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {

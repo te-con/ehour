@@ -16,11 +16,8 @@
 
 package net.rrm.ehour.ui.manage.user;
 
-import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -29,7 +26,6 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntryListUpdatedEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage;
 import net.rrm.ehour.user.service.UserService;
@@ -52,7 +48,6 @@ public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBea
     @SpringBean
     private UserService userService;
 
-    private List<UserRole> roles;
     private List<UserDepartment> departments;
 
     private static final long serialVersionUID = 1883278850247747252L;
@@ -139,7 +134,6 @@ public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBea
     protected Panel getBaseAddPanel(String panelId) {
         return new UserAdminFormPanel(panelId,
                 new CompoundPropertyModel<UserAdminBackingBean>(getTabbedPanel().getAddBackingBean()),
-                getUserRoles(),
                 getUserDepartments());
     }
 
@@ -160,28 +154,7 @@ public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBea
     protected Panel getBaseEditPanel(String panelId) {
         return new UserAdminFormPanel(panelId,
                 new CompoundPropertyModel<UserAdminBackingBean>(getTabbedPanel().getEditBackingBean()),
-                getUserRoles(),
                 getUserDepartments());
-    }
-
-    private List<UserRole> getUserRoles() {
-        if (roles == null) {
-            roles = userService.getUserRoles();
-
-            roles.remove(UserRole.PROJECTMANAGER);
-
-            User user = EhourWebSession.getSession().getUser();
-
-            if (!SecurityRules.isAdmin(user)) {
-                roles.remove(UserRole.ADMIN);
-            }
-
-            if (!EhourWebSession.getEhourConfig().isSplitAdminRole()) {
-                roles.remove(UserRole.MANAGER);
-            }
-        }
-
-        return roles;
     }
 
     private List<UserDepartment> getUserDepartments() {

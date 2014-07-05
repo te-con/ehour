@@ -42,20 +42,20 @@ class SecurityRulesSpec extends AbstractSpec {
       SecurityRules.isWithManagerRole(WrapAsJava.asJavaCollection(List(UserRole.ROLE_ADMIN, UserRole.ROLE_USER))) should be(false)
     }
 
-    "when role split is enabled, manager cannot impersonate admin" in {
-        SecurityRules.allowedToImpersonate(manager, admin, splittedAdminRole = true) should be (false)
+    "when role split is enabled, manager cannot modifyadmin" in {
+        SecurityRules.allowedToModify(manager, admin, splittedAdminRole = true) should be (false)
     }
 
-    "when role split is enabled, admin can impersonate manager" in {
-      SecurityRules.allowedToImpersonate(admin, manager, splittedAdminRole = true) should be (true)
+    "when role split is enabled, admin can modify manager" in {
+      SecurityRules.allowedToModify(admin, manager, splittedAdminRole = true) should be (true)
     }
 
-    "when role split is disabled, admin can impersonate" in {
-      SecurityRules.allowedToImpersonate(manager, admin, splittedAdminRole = false) should be (false)
+    "when role split is disabled, admin can modify" in {
+      SecurityRules.allowedToModify(manager, admin, splittedAdminRole = false) should be (false)
     }
 
-    "when role split is disabled, non-admin cannot to impersonate" in {
-      SecurityRules.allowedToImpersonate(manager, user, splittedAdminRole = false) should be (false)
+    "when role split is disabled, non-admin cannot to modify" in {
+      SecurityRules.allowedToModify(manager, user, splittedAdminRole = false) should be (false)
     }
 
 

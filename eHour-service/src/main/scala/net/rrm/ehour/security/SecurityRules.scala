@@ -17,17 +17,17 @@ object SecurityRules {
 
   def isWithReportRole(roles: util.Collection[String]) = roles.contains(UserRole.ROLE_REPORT)
 
-  def allowedToImpersonate(impersonatingUser: User, userToImpersonate: User, splittedAdminRole: Boolean): Boolean = {
+  def allowedToModify(modifyingUser: User, userToModify: User, splittedAdminRole: Boolean): Boolean = {
     if (splittedAdminRole) {
       // should be either manager or admin
-      if (!isAdmin(impersonatingUser) && !isManager(impersonatingUser))
+      if (!isAdmin(modifyingUser) && !isManager(modifyingUser))
         false
-      else if (isAdmin(userToImpersonate) && !isAdmin(impersonatingUser))
+      else if (isAdmin(userToModify) && !isAdmin(modifyingUser))
         false
       else
         true
     }
-    else if (!isAdmin(impersonatingUser)) false
+    else if (!isAdmin(modifyingUser)) false
     else
       true
   }

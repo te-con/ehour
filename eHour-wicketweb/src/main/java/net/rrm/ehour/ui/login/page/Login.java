@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.login.page;
 
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.common.util.AuthUtil;
 import org.apache.wicket.Application;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -31,11 +32,11 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.io.Serializable;
 
 import static net.rrm.ehour.ui.common.util.AuthUtil.Homepage;
-import static net.rrm.ehour.ui.common.util.AuthUtil.getHomepageForRole;
 
 /**
  * Login page
@@ -44,12 +45,15 @@ import static net.rrm.ehour.ui.common.util.AuthUtil.getHomepageForRole;
 public class Login extends WebPage {
     private static final long serialVersionUID = -134022212692477120L;
 
+    @SpringBean
+    private AuthUtil authUtil;
+
     @Override
     protected void onBeforeRender() {
         EhourWebSession session = EhourWebSession.getSession();
 
         if (session.isSignedIn()) {
-            Homepage homepage = getHomepageForRole(session.getRoles());
+            Homepage homepage = authUtil.getHomepageForRole(session.getRoles());
             throw new RestartResponseAtInterceptPageException(homepage.homePage, homepage.parameters);
         }
 
@@ -65,7 +69,7 @@ public class Login extends WebPage {
     }
 
     private void redirectToHomepage(EhourWebSession session) {
-        Homepage homepage = getHomepageForRole(session.getRoles());
+        Homepage homepage = authUtil.getHomepageForRole(session.getRoles());
         setResponsePage(homepage.homePage, homepage.parameters);
     }
 

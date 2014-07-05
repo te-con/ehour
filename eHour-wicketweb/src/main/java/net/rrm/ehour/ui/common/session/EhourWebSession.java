@@ -77,6 +77,19 @@ public class EhourWebSession extends AuthenticatedWebSession {
         reloadConfig();
     }
 
+    public static EhourWebSession getSession() {
+        return (EhourWebSession) Session.get();
+    }
+
+
+    public static User getUser() {
+        EhourWebSession session = EhourWebSession.getSession();
+        AuthUser authUser = session.getAuthUser();
+        return (authUser != null) ? authUser.getUser() : null;
+    }
+
+
+
     public final void reloadConfig() {
         WebUtils.springInjection(this);
 
@@ -134,10 +147,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
         }
 
         return authUser;
-    }
-
-    public User getUser() {
-        return (getAuthUser() != null) ? getAuthUser().getUser() : null;
     }
 
     /**
@@ -290,7 +299,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     protected boolean allowedToImpersonate(User userToImpersonate) {
-        return SecurityRules.allowedToImpersonate(getUser(), userToImpersonate, ehourConfig.isSplitAdminRole());
+        return SecurityRules.allowedToModify(getUser(), userToImpersonate, ehourConfig.isSplitAdminRole());
     }
 
 
@@ -347,10 +356,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     private void setAuthentication(Authentication authentication) {
         SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
-    public static EhourWebSession getSession() {
-        return (EhourWebSession) Session.get();
     }
 
     public UserSelectedCriteria getUserSelectedCriteria() {

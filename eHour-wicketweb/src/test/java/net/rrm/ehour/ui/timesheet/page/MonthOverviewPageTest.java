@@ -39,14 +39,13 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
 		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
 		getMockContext().putBean(overviewTimesheet);
 		
-		MockExpectations.navCalendar(overviewTimesheet, getWebApp());
+		MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
 
 		TimesheetOverview overview = new TimesheetOverview();
 		
 		expect(overviewTimesheet.getTimesheetOverview((User)notNull(), (Calendar)notNull()))
 				.andReturn(overview);					
 
-		
 		replay(overviewTimesheet);
 		
 		getTester().startPage(MonthOverviewPage.class);

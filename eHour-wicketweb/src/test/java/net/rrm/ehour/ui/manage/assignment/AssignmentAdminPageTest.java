@@ -31,50 +31,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
-
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AssignmentAdminPageTest extends BaseSpringWebAppTester {
-    /**
-     * Test render
-     */
     @Test
     public void shouldRender() {
-        UserService userService = createMock(UserService.class);
+        UserService userService = mock(UserService.class);
         getMockContext().putBean("userService", userService);
 
-        ProjectService projectService = createMock(ProjectService.class);
+        ProjectService projectService = mock(ProjectService.class);
         getMockContext().putBean("projectService", projectService);
 
-        CustomerService customerService = createMock(CustomerService.class);
+        CustomerService customerService = mock(CustomerService.class);
         getMockContext().putBean("customerService", customerService);
 
-        ProjectAssignmentService assignmentService = createMock(ProjectAssignmentService.class);
+        ProjectAssignmentService assignmentService = mock(ProjectAssignmentService.class);
         getMockContext().putBean("assignmentService", assignmentService);
 
-        expect(assignmentService.getProjectAssignmentTypes())
-                .andReturn(new ArrayList<ProjectAssignmentType>());
-
-        replay(assignmentService);
+        when(assignmentService.getProjectAssignmentTypes()).thenReturn(new ArrayList<ProjectAssignmentType>());
 
         Customer cust = new Customer(22);
         List<Customer> custs = new ArrayList<Customer>();
         custs.add(cust);
 
-        expect(customerService.getActiveCustomers())
-                .andReturn(custs);
+        when(customerService.getActiveCustomers()).thenReturn(custs);
 
-        replay(customerService);
-
-        expect(userService.getUsers(UserRole.USER))
-                .andReturn(Arrays.asList(UserObjectMother.createUser()));
-
-        replay(userService);
+        when(userService.getUsers(UserRole.USER)).thenReturn(Arrays.asList(UserObjectMother.createUser()));
 
         getTester().startPage(AssignmentManagePage.class);
         getTester().assertRenderedPage(AssignmentManagePage.class);
         getTester().assertNoErrorMessage();
-
-        verify(userService);
     }
 }

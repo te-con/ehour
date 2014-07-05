@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.common;
 
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.update.UpdateService;
 import org.apache.wicket.spring.test.ApplicationContextMock;
 
@@ -35,7 +36,6 @@ public abstract class AbstractSpringTester {
     protected ApplicationContextMock mockContext;
     private EhourConfigStub config;
     private AuditService auditService;
-    private UpdateService updateService;
 
     private void createContextSetup() {
         mockContext = new ApplicationContextMock();
@@ -47,7 +47,9 @@ public abstract class AbstractSpringTester {
         auditService = createMock(AuditService.class);
         mockContext.putBean("auditService", auditService);
 
-        updateService = createMock(UpdateService.class);
+        mockContext.putBean("authUtil", buildAuthUtil());
+
+        UpdateService updateService = createMock(UpdateService.class);
         mockContext.putBean(updateService);
 
         expect(updateService.isLatestVersion()).andReturn(Boolean.TRUE).atLeastOnce();
@@ -60,6 +62,10 @@ public abstract class AbstractSpringTester {
         }
 
         return mockContext;
+    }
+
+    protected AuthUtil buildAuthUtil() {
+        return new AuthUtil();
     }
 
     public final void clearMockContext() {

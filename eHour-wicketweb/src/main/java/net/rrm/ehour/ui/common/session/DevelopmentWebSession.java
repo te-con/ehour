@@ -23,7 +23,6 @@ public class DevelopmentWebSession extends EhourWebSession {
         this.authorizedRoles = (authorizedRoles == null) ? createDefaultAuthorizedRoles() : authorizedRoles;
     }
 
-
     public AuthUser getAuthUser() {
         User user = createAuthenticatedUser();
 

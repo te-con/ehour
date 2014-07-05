@@ -67,7 +67,7 @@ public class ExportReportSignOff extends AbstractExportReportPart
 	{
 		IModel<String> userSignature = new StringResourceModel("excelMonth.userSignature",
 				null,
-				new Object[]{EhourWebSession.getSession().getUser().getFullName()});
+				new Object[]{EhourWebSession.getUser().getFullName()});
 
 		
 		CellFactory.createCell(row, cellMargin + 4, userSignature, workbook);

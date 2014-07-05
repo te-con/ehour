@@ -16,64 +16,67 @@
 
 package net.rrm.ehour.ui.login.page;
 
-import net.rrm.ehour.config.EhourConfigStub;
+import com.google.common.base.Optional;
 import net.rrm.ehour.config.service.ConfigurationService;
-import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
-import net.rrm.ehour.ui.admin.config.MainConfigPage;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
+import net.rrm.ehour.ui.common.page.DummyPage;
+import net.rrm.ehour.ui.common.util.AuthUtil;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.FormTester;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the login tests
  */
 
+@RunWith(MockitoJUnitRunner.class)
 public class LoginTest extends BaseSpringWebAppTester {
-    @Override
-    protected Roles getRoles() {
-        Roles authorizedRoles = new Roles();
-        authorizedRoles.add(UserRole.ROLE_ADMIN);
 
-        return authorizedRoles;
+    @Mock
+    private AuthUtil authUtil;
+
+    @Mock
+    private ConfigurationService configService;
+
+    @Mock
+    private SystemInfoService infoService;
+
+    @Override
+    protected AuthUtil buildAuthUtil() {
+        return authUtil;
+    }
+
+    @Before
+    public void setupMocks() throws Exception {
+        getMockContext().putBean("configService", configService);
+        getMockContext().putBean(infoService);
     }
 
     @Test
     public void shouldLoginPageRender() {
-        getTester().startPage(Login.class);
-        getTester().assertRenderedPage(Login.class);
-        getTester().assertNoErrorMessage();
+        tester.startPage(Login.class);
+        tester.assertRenderedPage(Login.class);
+        tester.assertNoErrorMessage();
 
-        ConfigurationService configService = createMock(ConfigurationService.class);
-        getMockContext().putBean("configService", configService);
+        when(infoService.info()).thenReturn(new SystemInfo("a", "b", "c"));
+        when(authUtil.getHomepageForRole(any(Roles.class))).thenReturn(new AuthUtil.Homepage(DummyPage.class, Optional.<PageParameters>absent()));
 
-        MailService mailService = createMock(MailService.class);
-        getMockContext().putBean("mailService", mailService);
-
-        SystemInfoService infoService = createMock(SystemInfoService.class);
-        getMockContext().putBean(infoService);
-        expect(infoService.info()).andReturn(new SystemInfo("a", "b", "c"));
-        expectLastCall().times(2);
-        replay(infoService);
-
-        expect(configService.getConfiguration())
-                .andReturn(new EhourConfigStub())
-                .anyTimes();
-
-        replay(configService);
-        FormTester form = getTester().newFormTester("loginform");
+        FormTester form = tester.newFormTester("loginform");
         form.setValue("username", "thies");
         form.setValue("password", "Ttst");
-
         form.submit();
-        verify(configService);
 
-        getTester().assertNoErrorMessage();
-        getTester().assertRenderedPage(MainConfigPage.class);
+        tester.assertNoErrorMessage();
+        tester.assertRenderedPage(DummyPage.class);
     }
 }

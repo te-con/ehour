@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.common.header
 
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.ui.common.util.AuthUtil._
+import net.rrm.ehour.ui.common.util.AuthUtil
 import net.rrm.ehour.ui.login.page.Logout
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage
 import org.apache.wicket.markup.html.WebMarkupContainer
@@ -10,13 +10,17 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.{BookmarkablePageLink, Link}
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.Model
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 class LoggedInAsPanel(id: String) extends AbstractBasePanel(id) {
+  @SpringBean
+  protected var authUtil: AuthUtil = _
+
   override def onInitialize() = {
     super.onInitialize()
 
     val link = new BookmarkablePageLink("prefsLink", classOf[UserPreferencePage])
-    val loggedInUserLabel = new Label("loggedInUser", new Model[String](EhourWebSession.getSession.getUser.getFullName))
+    val loggedInUserLabel = new Label("loggedInUser", new Model[String](EhourWebSession.getUser.getFullName))
     link.add(loggedInUserLabel)
 
     addOrReplace(link)
@@ -34,12 +38,12 @@ class LoggedInAsPanel(id: String) extends AbstractBasePanel(id) {
           val session = EhourWebSession.getSession
           session.stopImpersonating()
 
-          val homepage = getHomepageForRole(session.getRoles)
+          val homepage = authUtil.getHomepageForRole(session.getRoles)
           setResponsePage(homepage.homePage, homepage.parameters)
         }
       })
 
-      fragment.add(new Label("name", EhourWebSession.getSession.getUser.getFullName))
+      fragment.add(new Label("name", EhourWebSession.getUser.getFullName))
 
       fragment
     }

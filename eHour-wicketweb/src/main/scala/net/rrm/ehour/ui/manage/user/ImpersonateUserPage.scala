@@ -3,7 +3,7 @@ package net.rrm.ehour.ui.manage.user
 import net.rrm.ehour.ui.common.border.{GreyBlueRoundedBorder, GreyRoundedBorder}
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent
 import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.ui.common.util.AuthUtil._
+import net.rrm.ehour.ui.common.util.AuthUtil
 import net.rrm.ehour.ui.common.wicket.AjaxLink
 import net.rrm.ehour.ui.common.wicket.AjaxLink._
 import net.rrm.ehour.ui.manage.AbstractManagePage
@@ -26,6 +26,9 @@ class ImpersonateUserPage extends AbstractManagePage(new ResourceModel("admin.im
 
   @SpringBean
   protected var userService: UserService = _
+
+  @SpringBean
+  protected var authUtil: AuthUtil = _
 
   override def onInitialize() {
     super.onInitialize()
@@ -64,7 +67,7 @@ class ImpersonateUserPage extends AbstractManagePage(new ResourceModel("admin.im
       session.impersonateUser(user)
       val roles = session.getRoles
 
-      val homepage = getHomepageForRole(roles)
+      val homepage = authUtil.getHomepageForRole(roles)
       setResponsePage(homepage.homePage, homepage.parameters)
     }
 
