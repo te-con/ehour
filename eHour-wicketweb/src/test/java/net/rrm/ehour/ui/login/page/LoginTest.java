@@ -35,10 +35,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
-/**
- * Tests the login tests
- */
-
 @RunWith(MockitoJUnitRunner.class)
 public class LoginTest extends BaseSpringWebAppTester {
 
