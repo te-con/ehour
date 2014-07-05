@@ -26,12 +26,9 @@ import org.apache.wicket.markup.html.link.Link;
 public class HtmlUtil
 {
 	public static final String HTML_NBSP = "&nbsp;";
-	public static final String HTML_BR = "<br />";
-	
-	/**
+
+    /**
 	 * Get a &ampnbsp;label
-	 * @param id
-	 * @return
 	 */
 	public static Label getNbspLabel(String id)
 	{
@@ -43,8 +40,6 @@ public class HtmlUtil
 
     /**
 	 * Get an invisible link
-	 * @param id
-	 * @return
 	 */
 	public static Link<Void> getInvisibleLink(String id)
 	{

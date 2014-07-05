@@ -16,34 +16,26 @@
 
 package net.rrm.ehour.ui.common.util;
 
+import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanelTest;
+import org.junit.Test;
+
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanelTest;
-
-import org.junit.Test;
 
 /**
  * Created on Mar 17, 2009, 7:04:03 AM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class WebUtilsTest extends ProjectReportPanelTest
-{
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.util.CommonWebUtil#findComponent(org.apache.wicket.MarkupContainer, java.lang.Class)}.
-	 */
-	@Test
-	public void testFindComponent()
-	{
-		setupExpectations();
-		
-		replay(getAggregateReportService());
-		
-		getTester().assertNoErrorMessage();
-		
-		verify(getAggregateReportService());
-		
-//		List<OpenFlashChart> components = CommonWebUtil.findComponent(panel, OpenFlashChart.class);
-//		assertEquals(2, components.size());
-	}
+public class WebUtilsTest extends ProjectReportPanelTest {
+    @Test
+    public void testFindComponent() {
+        setupExpectations();
+
+        replay(getAggregateReportService());
+
+        getTester().assertNoErrorMessage();
+
+        verify(getAggregateReportService());
+    }
 }
