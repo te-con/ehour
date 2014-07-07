@@ -1,5 +1,7 @@
 package net.rrm.ehour.ui.manage.user
 
+import net.rrm.ehour.domain.User
+import net.rrm.ehour.security.SecurityRules
 import net.rrm.ehour.ui.common.border.{GreyBlueRoundedBorder, GreyRoundedBorder}
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent
 import net.rrm.ehour.ui.common.session.EhourWebSession
@@ -13,6 +15,9 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.ResourceModel
 import org.apache.wicket.spring.injection.annot.SpringBean
+import java.util
+
+import scala.collection.convert.{WrapAsJava, WrapAsScala}
 
 class ImpersonateUserPage extends AbstractManagePage(new ResourceModel("admin.impersonate.title")) {
   val Self = this
@@ -33,7 +38,15 @@ class ImpersonateUserPage extends AbstractManagePage(new ResourceModel("admin.im
   override def onInitialize() {
     super.onInitialize()
 
-    add(new UserSelectionPanel("userSelection", None))
+    val splitAdminRole = EhourWebSession.getEhourConfig.isSplitAdminRole
+    val user = EhourWebSession.getUser
+
+    val filter = (xs:util.List[User]) => {
+      val xsS = WrapAsScala.asScalaBuffer(xs)
+      WrapAsJava.bufferAsJavaList(xsS.filter(u => SecurityRules.allowedToModify(user, u, splitAdminRole)))
+    }
+
+    add(new UserSelectionPanel("userSelection", None, filter))
     add(frame)
     frame.add(border)
 
