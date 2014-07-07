@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.user.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
@@ -40,6 +41,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import scala.tools.cmd.gen.AnyVals;
 
 import java.util.*;
 
@@ -172,7 +174,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     public List<UserRole> getUserRoles() {
-        return userRoleDAO.findAll();
+        return Lists.newArrayList(UserRole.ROLES.values());
     }
 
     @Transactional

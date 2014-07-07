@@ -49,6 +49,7 @@ import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 
+import java.util.Collection;
 import java.util.List;
 
 import static net.rrm.ehour.ui.manage.user.ManageUserAjaxEventType.*;
