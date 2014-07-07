@@ -141,14 +141,9 @@ public class UserServiceImplTest {
 
     @Test
     public void testGetUserRoles() {
-        expect(userRoleDAO.findAll())
-                .andReturn(new ArrayList<UserRole>());
+        List<UserRole> userRoles = userService.getUserRoles();
 
-        replay(userRoleDAO);
-
-        userService.getUserRoles();
-
-        verify(userRoleDAO);
+        assertEquals(UserRole.ROLES.size(), userRoles.size());
     }
 
     @Test
