@@ -22,9 +22,13 @@ import net.rrm.ehour.config.PmPrivilege;
 import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.validation.validator.RangeValidator;
 
@@ -71,7 +75,19 @@ public class MiscConfigPanel extends AbstractConfigPanel {
 
         // split admin role
         // TODO when disabling, convert all managers to admins or at least do something with them
-        form.add(new CheckBox("config.splitAdminRole"));
+        CheckBox checkBox = new CheckBox("config.splitAdminRole", new PropertyModel<Boolean>(getPanelModel(), "config.splitAdminRole"));
+        checkBox.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Boolean value = (Boolean) getDefaultModelObject();
+
+                if (value != EhourWebSession.getEhourConfig().isSplitAdminRole()) {
+
+                }
+            }
+        });
+
+        form.add(checkBox);
     }
 
     private static final class WeekDayRenderer extends ChoiceRenderer<Date> {
