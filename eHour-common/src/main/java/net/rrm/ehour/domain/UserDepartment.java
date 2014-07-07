@@ -31,171 +31,120 @@ import java.util.Set;
 @Entity
 @Table(name = "USER_DEPARTMENT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class UserDepartment extends DomainObject<Integer, UserDepartment>
-{
-	private static final long serialVersionUID = 7802944013593352L;
+public class UserDepartment extends DomainObject<Integer, UserDepartment> {
+    private static final long serialVersionUID = 7802944013593352L;
 
     @Transient
-	private boolean deletable;
+    private boolean deletable;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "DEPARTMENT_ID")
-	private Integer departmentId;
+    private Integer departmentId;
 
     @NotNull
     @Column(name = "NAME", nullable = false, length = 512)
-	private String name;
+    private String name;
 
     @NotNull
     @Column(name = "CODE", nullable = false, length = 64)
     private String code;
 
     @OneToMany(mappedBy = "userDepartment")
-	private Set<User>		users;
+    private Set<User> users;
 
-	// Constructors
+    public UserDepartment() {
+    }
 
-	/** default constructor */
-	public UserDepartment()
-	{
-	}
-	
-	public UserDepartment(Integer departmentId)
-	{
-		this.departmentId = departmentId;	
-	}
+    public UserDepartment(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
 
-	/** minimal constructor */
-	public UserDepartment(Integer departmentId, String name, String code)
-	{
-		this.departmentId = departmentId;
-		this.name = name;
-		this.code = code;
-	}
+    public UserDepartment(Integer departmentId, String name, String code) {
+        this.departmentId = departmentId;
+        this.name = name;
+        this.code = code;
+    }
 
-	/** full constructor */
-	public UserDepartment(Integer departmentId, String name, String code, Set<User> users)
-	{
-		this.departmentId = departmentId;
-		this.name = name;
-		this.code = code;
-		this.users = users;
-	}
+    public UserDepartment(Integer departmentId, String name, String code, Set<User> users) {
+        this.departmentId = departmentId;
+        this.name = name;
+        this.code = code;
+        this.users = users;
+    }
 
-	public Integer getDepartmentId()
-	{
-		return this.departmentId;
-	}
+    public Integer getDepartmentId() {
+        return this.departmentId;
+    }
 
-	public void setDepartmentId(Integer departmentId)
-	{
-		this.departmentId = departmentId;
-	}
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
 
-	/**
-	 * @return  the name
-	 * @uml.property  name="name"
-	 */
-	public String getName()
-	{
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.domain.DomainObject#getFullName()
-	 */
-	@Override
-	public String getFullName()
-	{
-		return getName();
-	}
+    @Override
+    public String getFullName() {
+        return getName();
+    }
 
-	/**
-	 * @param name  the name to set
-	 * @uml.property  name="name"
-	 */
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @return  the code
-	 * @uml.property  name="code"
-	 */
-	public String getCode()
-	{
-		return this.code;
-	}
+    public String getCode() {
+        return this.code;
+    }
 
-	/**
-	 * @param code  the code to set
-	 * @uml.property  name="code"
-	 */
-	public void setCode(String code)
-	{
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public Set<User> getUsers()
-	{
-		return users;
-	}
+    public Set<User> getUsers() {
+        return users;
+    }
 
-	public void setUsers(Set<User> users)
-	{
-		this.users = users;
-	}
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
-	@Override
-	public Integer getPK()
-	{
-		return departmentId;
-	}
+    @Override
+    public Integer getPK() {
+        return departmentId;
+    }
 
-	/**
-	 * @return the deletable
-	 */
-	public boolean isDeletable()
-	{
-		return deletable;
-	}
+    public boolean isDeletable() {
+        return deletable;
+    }
 
-	/**
-	 * @param deletable the deletable to set
-	 */
-	public void setDeletable(boolean deletable)
-	{
-		this.deletable = deletable;
-	}
-	
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+    }
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(UserDepartment object)
-	{
-		return new CompareToBuilder()
-			.append(this.getName(), object.getName())
-			.append(this.getCode(), object.getCode())
-			.append(this.getDepartmentId(), object.getDepartmentId()).toComparison();
-	}
+    public int compareTo(UserDepartment object) {
+        return new CompareToBuilder()
+                .append(this.getName(), object.getName())
+                .append(this.getCode(), object.getCode())
+                .append(this.getDepartmentId(), object.getDepartmentId()).toComparison();
+    }
 
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof UserDepartment))
-			return false;
-		UserDepartment castOther = (UserDepartment) other;
-		return new EqualsBuilder().append(name, castOther.name).append(code, castOther.code).isEquals();
-	}
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof UserDepartment))
+            return false;
+        UserDepartment castOther = (UserDepartment) other;
+        return new EqualsBuilder().append(name, castOther.name).append(code, castOther.code).isEquals();
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(name).append(code).toHashCode();
-	}
-	
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(name).append(code).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s", code, name);
+    }
 }
