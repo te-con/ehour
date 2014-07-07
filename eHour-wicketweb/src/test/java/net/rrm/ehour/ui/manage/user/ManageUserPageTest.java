@@ -75,15 +75,32 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
 
     @Test
     public void use_read_only_when_manager_views_admin() throws ObjectNotFoundException {
+        getConfig().setSplitAdminRole(true);
         when(userService.getUserAndCheckDeletability(1)).thenReturn(user);
 
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER));
         super.startTester();
 
-        ManageUserPage subject = tester.startPage(ManageUserPage.class);
+        tester.startPage(ManageUserPage.class);
 
         tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
 
         tester.assertComponent("tabs:panel", ManageUserReadOnlyPanel.class);
+    }
+
+    @Test
+    public void use_edit_when_manager_views_non_admins() throws ObjectNotFoundException {
+        getConfig().setSplitAdminRole(true);
+        user.setUserRoles(Sets.newHashSet(UserRole.USER));
+        when(userService.getUserAndCheckDeletability(1)).thenReturn(user);
+
+        webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER));
+        super.startTester();
+
+        tester.startPage(ManageUserPage.class);
+
+        tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
+
+        tester.assertComponent("tabs:panel", ManageUserFormPanel.class);
     }
 }

@@ -9,27 +9,21 @@
 <wicket:panel>
     <div wicket:id="border">
     <form wicket:id="userForm" class="adminForm" autocomplete="off">
-        <table class="contentTable" style="padding: 0 10px 0 0">
+        <table class="contentTable" style="Thispadding: 0 10px 0 0">
             <tr>
-                <td valign="top">
-                    <wicket:message key="admin.user.username"/> :
-                </td>
+                <td valign="top"><wicket:message key="admin.user.username"/>:</td>
                 <td><input type="text" class="textInputSmall" wicket:id="user.username" />
                     <span wicket:id="userValidationError"></span>
                 </td>
             </tr>
 
             <tr>
-                <td valign="top">
-                    <wicket:message key="admin.user.firstName"/> :
-                </td>
+                <td valign="top"><wicket:message key="admin.user.firstName"/>:</td>
                 <td><input type="text"  class="textInputSmall" wicket:id="user.firstName" />
                 </td>
             </tr>
             <tr>
-                <td valign="top">
-                    <wicket:message key="admin.user.lastName"/> :
-                </td>
+                <td valign="top"><wicket:message key="admin.user.lastName"/>:</td>
                 <td><input type="text" class="textInputSmall" wicket:id="user.lastName" />
                     <span wicket:id="lastNameValidationError"></span>
                 </td>
@@ -57,16 +51,11 @@
 
 
             <tr>
-                <td valign="top">
-                    <wicket:message key="user.password"/> :
-                </td>
+                <td valign="top"><wicket:message key="user.password"/>:</td>
                 <td><input type="password" class="textInputSmall" wicket:id="password" autocomplete="off"/></td> </tr>
 
             <tr>
-                <td valign="top">
-                    <wicket:message key="user.confirmpassword"/>
-                    :
-                </td>
+                <td valign="top"><wicket:message key="user.confirmpassword"/>:</td>
                 <td><input type="password" class="textInputSmall" wicket:id="confirmPassword" autocomplete="off"/>
                     <span wicket:id="confirmPasswordValidationError"></span>
                 </td>
@@ -78,10 +67,7 @@
             </tr>
 
             <tr>
-                <td valign="top">
-                    <wicket:message key="admin.user.department"/>
-                    :
-                </td>
+                <td valign="top"><wicket:message key="admin.user.department"/>:</td>
                 <td><select class="textInputSmall" wicket:id="user.userDepartment"></select>
                     <span wicket:id="departmentValidationError"></span>
                 </td>
@@ -94,9 +80,7 @@
             </tr>
 
             <tr>
-                <td valign="top">
-                    <wicket:message key="admin.user.roles"/> :
-                </td>
+                <td valign="top"><wicket:message key="admin.user.roles"/>:</td>
                 <td><select class="textInputSmall" wicket:id="user.userRoles"></select>
                     <span wicket:id="rolesValidationError"></span>
                 </td>
@@ -109,9 +93,7 @@
             </tr>
 
             <tr>
-                <td valign="top">
-                    <wicket:message key="admin.user.active"/> :
-                </td>
+                <td valign="top"><wicket:message key="admin.user.active"/>:</td>
                 <td><input type="checkbox" wicket:id="user.active"/></td>
             </tr>
 

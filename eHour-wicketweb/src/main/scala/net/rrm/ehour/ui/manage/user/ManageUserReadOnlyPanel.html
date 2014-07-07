@@ -8,57 +8,63 @@
 <body>
 <wicket:panel>
     <div wicket:id="border">
-        <table class="contentTable" style="padding: 0 10px 0 0">
-            <tr>
-                <td valign="top"><wicket:message key="admin.user.username"/>:</td>
-                <td wicket:id="user.username"></td>
-            </tr>
+        <div class="adminForm">
+            <div class="info">
+                <h4><i class="fa fa-info-circle"></i><wicket:message key="admin.user.no_edit"/>/h4>
+            </div>
 
-            <tr>
-                <td valign="top"><wicket:message key="admin.user.firstName"/>:</td>
-                <td wicket:id="user.firstName"></td>
-            </tr>
-            <tr>
-                <td valign="top"><wicket:message key="admin.user.lastName"/>:</td>
-                <td wicket:id="user.lastName"></td>
-            </tr>
+            <table class="contentTable" style="padding: 0 10px 0 0">
+                <tr>
+                    <td valign="top"><wicket:message key="admin.user.username"/>:</td>
+                    <td wicket:id="user.username"></td>
+                </tr>
 
-            <tr>
-                <td valign="top"><wicket:message key="user.email" />:</td>
-                <td wicket:id="user.email"></td>
-            </tr>
+                <tr>
+                    <td valign="top"><wicket:message key="admin.user.firstName"/>:</td>
+                    <td wicket:id="user.firstName"></td>
+                </tr>
+                <tr>
+                    <td valign="top"><wicket:message key="admin.user.lastName"/>:</td>
+                    <td wicket:id="user.lastName"></td>
+                </tr>
 
-            <tr>
-                <td colspan="2"><br/></td>
-            </tr>
+                <tr>
+                    <td valign="top"><wicket:message key="user.email" />:</td>
+                    <td wicket:id="user.email"></td>
+                </tr>
 
-            <tr>
-                <td valign="top"><wicket:message key="admin.user.department"/>:</td>
-                <td wicket:id="user.userDepartment"></td>
-            </tr>
+                <tr>
+                    <td colspan="2"><br/></td>
+                </tr>
 
-            <tr>
-                <td colspan="2">
-                    <br/>
-                </td>
-            </tr>
+                <tr>
+                    <td valign="top"><wicket:message key="admin.user.department"/>:</td>
+                    <td wicket:id="user.userDepartment"></td>
+                </tr>
 
-            <tr>
-                <td valign="top"><wicket:message key="admin.user.roles"/>:</td>
-                <td wicket:id="user.userRoles"></td>
-            </tr>
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                    </td>
+                </tr>
 
-            <tr>
-                <td colspan="2">
-                    <br/>
-                </td>
-            </tr>
+                <tr>
+                    <td valign="top"><wicket:message key="admin.user.roles"/>:</td>
+                    <td wicket:id="user.userRoles"></td>
+                </tr>
 
-            <tr>
-                <td valign="top"> <wicket:message key="admin.user.active"/>:</td>
-                <td  wicket:id="user.active"></td>
-            </tr>
-        </table>
+                <tr>
+                    <td colspan="2">
+                        <br/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td valign="top"> <wicket:message key="admin.user.active"/>:</td>
+                    <td  wicket:id="user.active"></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </wicket:panel>
 

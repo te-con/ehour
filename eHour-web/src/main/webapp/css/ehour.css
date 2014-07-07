@@ -972,3 +972,17 @@ hr {
    color: #536e87;
     font: 0.9em/ 1.5 Geneva, Arial, Helvetica, sans-serif
 }
+
+.info {
+    padding: 0 0 1em 1em;
+}
+
+.info h4 {
+    font-weight: normal;
+}
+
+.info .fa {
+    color: #6a6d3b;
+    margin-right: 1em;
+}
+

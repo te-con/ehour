@@ -4,7 +4,9 @@ import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.util.WebGeo
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.model.IModel
+import org.apache.wicket.model.{IModel, ResourceModel}
+
+import scala.collection.convert.WrapAsScala
 
 class ManageUserReadOnlyPanel(id: String, model: IModel[ManageUserBackingBean]) extends AbstractBasePanel[ManageUserBackingBean](id, model) {
   val BorderId = "border"
@@ -22,7 +24,11 @@ class ManageUserReadOnlyPanel(id: String, model: IModel[ManageUserBackingBean]) 
     greyBorder.add(new Label("user.lastName"))
     greyBorder.add(new Label("user.email"))
     greyBorder.add(new Label("user.userDepartment"))
-    greyBorder.add(new Label("user.userRoles"))
+
+    val scalaSet = WrapAsScala.asScalaSet(model.getObject.getUser.getUserRoles)
+    val roles = scalaSet.map(role => new ResourceModel(role.getRole).getObject).mkString(", ")
+
+    greyBorder.add(new Label("user.userRoles", roles))
     greyBorder.add(new Label("user.active"))
   }
 }
