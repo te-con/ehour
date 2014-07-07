@@ -16,8 +16,10 @@
 
 package net.rrm.ehour.ui.manage.user;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -26,6 +28,7 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntryListUpdatedEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage;
 import net.rrm.ehour.user.service.UserService;
@@ -152,9 +155,21 @@ public class ManageUserPage extends AbstractTabbedManagePage<ManageUserBackingBe
 
     @Override
     protected Panel getBaseEditPanel(String panelId) {
-        return new ManageUserFormPanel(panelId,
-                new CompoundPropertyModel<ManageUserBackingBean>(getTabbedPanel().getEditBackingBean()),
-                getUserDepartments());
+        ManageUserBackingBean bean = getTabbedPanel().getEditBackingBean();
+        User user = bean.getUser();
+
+        boolean editableUser = SecurityRules.allowedToModify(EhourWebSession.getUser(),
+                user,
+                EhourWebSession.getEhourConfig().isSplitAdminRole());
+
+        if (editableUser) {
+            return new ManageUserFormPanel(panelId,
+                    new CompoundPropertyModel<ManageUserBackingBean>(bean),
+                    getUserDepartments());
+        } else {
+            return new ManageUserReadOnlyPanel(panelId,
+                    new CompoundPropertyModel<ManageUserBackingBean>(bean));
+        }
     }
 
     private List<UserDepartment> getUserDepartments() {

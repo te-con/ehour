@@ -16,76 +16,74 @@
 
 package net.rrm.ehour.ui.manage.user;
 
+import com.google.common.collect.Sets;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ManageUserPageTest extends BaseSpringWebAppTester {
-    @Test
-    public void should_render() {
-        UserService userService = createMock(UserService.class);
+    @Mock
+    private UserService userService;
+    private User user;
+
+    @Override
+    protected void afterSetup() {
+        // dont start it
+    }
+
+    @Before
+    public void setup_userservice() throws Exception {
+        super.setUp();
         getMockContext().putBean("userService", userService);
 
         List<User> users = new ArrayList<User>();
-        User user = new User();
+        user = new User();
         user.setFirstName("thies");
         user.setUserId(1);
         user.setLastName("Edeling");
+        user.setUserRoles(Sets.newHashSet(UserRole.ADMIN));
         users.add(user);
 
-        expect(userService.getActiveUsers())
-                .andReturn(users);
-
-        expect(userService.getUserRoles())
-                .andReturn(new ArrayList<UserRole>());
-
-        expect(userService.getUserDepartments())
-                .andReturn(new ArrayList<UserDepartment>());
-
-        replay(userService);
-
-        getTester().startPage(ManageUserPage.class);
-        getTester().assertRenderedPage(ManageUserPage.class);
-        getTester().assertNoErrorMessage();
-
-        verify(userService);
+        when(userService.getActiveUsers()).thenReturn(users);
+        when(userService.getUserRoles()).thenReturn(new ArrayList<UserRole>());
+        when(userService.getUserDepartments()).thenReturn(new ArrayList<UserDepartment>());
     }
 
     @Test
-    public void dont_display_admin_role_when_signed_in_as_manager() {
-        UserService userService = createMock(UserService.class);
-        getMockContext().putBean("userService", userService);
+    public void should_render() {
+        super.startTester();
 
-        List<User> users = new ArrayList<User>();
-        User user = new User();
-        user.setFirstName("thies");
-        user.setUserId(1);
-        user.setLastName("Edeling");
-        users.add(user);
+        tester.startPage(ManageUserPage.class);
+        tester.assertRenderedPage(ManageUserPage.class);
+        tester.assertNoErrorMessage();
+    }
 
-        expect(userService.getActiveUsers())
-                .andReturn(users);
+    @Test
+    public void use_read_only_when_manager_views_admin() throws ObjectNotFoundException {
+        when(userService.getUserAndCheckDeletability(1)).thenReturn(user);
 
-        expect(userService.getUserRoles())
-                .andReturn(new ArrayList<UserRole>());
+        webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER));
+        super.startTester();
 
-        expect(userService.getUserDepartments())
-                .andReturn(new ArrayList<UserDepartment>());
+        ManageUserPage subject = tester.startPage(ManageUserPage.class);
 
-        replay(userService);
+        tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
 
-        getTester().startPage(ManageUserPage.class);
-        getTester().assertRenderedPage(ManageUserPage.class);
-        getTester().assertNoErrorMessage();
-
-        verify(userService);
+        tester.assertComponent("tabs:panel", ManageUserReadOnlyPanel.class);
     }
 }

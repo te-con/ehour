@@ -33,7 +33,7 @@ import static org.easymock.EasyMock.*;
  * @author Thies Edeling (thies@te-con.nl)
  */
 public abstract class AbstractSpringTester {
-    protected ApplicationContextMock mockContext;
+    private ApplicationContextMock mockContext;
     private EhourConfigStub config;
     private AuditService auditService;
 

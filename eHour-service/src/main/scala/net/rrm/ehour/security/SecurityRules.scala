@@ -27,9 +27,9 @@ object SecurityRules {
       else
         true
     }
-    else if (!isAdmin(modifyingUser)) false
+    else if (isAdmin(modifyingUser)) true
     else
-      true
+      false
   }
 }
 

@@ -39,7 +39,7 @@ public abstract class AbstractReportPanelTest extends BaseSpringWebAppTester {
     @Before
     public void setup() {
         aggregateReportService = createMock(AggregateReportService.class);
-        mockContext.putBean("aggregateReportService", aggregateReportService);
+        getMockContext().putBean("aggregateReportService", aggregateReportService);
     }
 
     @Test

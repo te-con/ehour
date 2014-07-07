@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+
+<body>
+<wicket:panel>
+    <div wicket:id="border">
+        <table class="contentTable" style="padding: 0 10px 0 0">
+            <tr>
+                <td valign="top"><wicket:message key="admin.user.username"/>:</td>
+                <td wicket:id="user.username"></td>
+            </tr>
+
+            <tr>
+                <td valign="top"><wicket:message key="admin.user.firstName"/>:</td>
+                <td wicket:id="user.firstName"></td>
+            </tr>
+            <tr>
+                <td valign="top"><wicket:message key="admin.user.lastName"/>:</td>
+                <td wicket:id="user.lastName"></td>
+            </tr>
+
+            <tr>
+                <td valign="top"><wicket:message key="user.email" />:</td>
+                <td wicket:id="user.email"></td>
+            </tr>
+
+            <tr>
+                <td colspan="2"><br/></td>
+            </tr>
+
+            <tr>
+                <td valign="top"><wicket:message key="admin.user.department"/>:</td>
+                <td wicket:id="user.userDepartment"></td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <br/>
+                </td>
+            </tr>
+
+            <tr>
+                <td valign="top"><wicket:message key="admin.user.roles"/>:</td>
+                <td wicket:id="user.userRoles"></td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <br/>
+                </td>
+            </tr>
+
+            <tr>
+                <td valign="top"> <wicket:message key="admin.user.active"/>:</td>
+                <td  wicket:id="user.active"></td>
+            </tr>
+        </table>
+    </div>
+</wicket:panel>
+
+</body>
+
+</html>

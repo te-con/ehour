@@ -23,7 +23,6 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
     "create a new lock" in {
       val panel = createPanel
       tester.startComponentInPage(panel)
-      tester.debugComponentTrees()
 
       val formTester = tester.newFormTester(formPath)
 
@@ -45,7 +44,6 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
     "fail to create a new lock when start is after end date" in {
       val panel = createPanel
       tester.startComponentInPage(panel)
-      tester.debugComponentTrees()
 
       val formTester = tester.newFormTester(formPath)
 

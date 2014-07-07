@@ -42,8 +42,6 @@ class ProjectManagementModifyPanelSpec extends AbstractSpringWebAppSpec with Bef
 
       tester.executeAjaxEvent("id:border:border_body:assignments:border:border_body:assignedUserPanel:border:border_body:assignments:0", "click")
 
-      tester.debugComponentTrees()
-
       val formTester =tester.newFormTester("id:border:border_body:assignments:border:border_body:assignmentFormPanel:border:greySquaredFrame:border_body:assignmentForm")
       formTester.setValue("formComponents:projectAssignment.active", false)
       formTester.select("formComponents:assignmentType:projectAssignment.assignmentType", 0)

@@ -30,13 +30,13 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
         backingBean.setProjectAssignment(DummyUIDataGenerator.getProjectAssignment(1));
 
         assignmentService = createMock(ProjectAssignmentService.class);
-        mockContext.putBean(assignmentService);
+        getMockContext().putBean(assignmentService);
 
         customerService = createMock(CustomerService.class);
-        mockContext.putBean(customerService);
+        getMockContext().putBean(customerService);
 
         projectService = createMock(ProjectService.class);
-        mockContext.putBean(projectService);
+        getMockContext().putBean(projectService);
     }
 
     @Test

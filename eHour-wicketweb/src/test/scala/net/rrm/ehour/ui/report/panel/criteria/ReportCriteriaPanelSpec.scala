@@ -47,8 +47,6 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
 
       tester.startComponentInPage(new ReportCriteriaPanel("testObject", model))
       tester.assertNoErrorMessage()
-
-      tester.debugComponentTrees()
     }
 
     "EHO-352: tick only Billable projects should not throw an exception" in {

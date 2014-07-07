@@ -59,8 +59,8 @@ import static net.rrm.ehour.ui.manage.user.ManageUserAjaxEventType.*;
 
 public class ManageUserFormPanel extends AbstractFormSubmittingPanel<ManageUserBackingBean> {
     private static final long serialVersionUID = -7427807216389657732L;
-    protected static final String BORDER = "border";
-    protected static final String FORM = "userForm";
+    private static final String BORDER = "border";
+    private static final String FORM = "userForm";
 
     private List<UserRole> roles;
 
@@ -74,9 +74,6 @@ public class ManageUserFormPanel extends AbstractFormSubmittingPanel<ManageUserB
 
         ManageUserBackingBean manageUserBackingBean = userModel.getObject();
         User user = manageUserBackingBean.getUser();
-        boolean readOnly = SecurityRules.allowedToModify(EhourWebSession.getUser(),
-                user,
-                EhourWebSession.getEhourConfig().isSplitAdminRole());
 
         boolean editMode = user.getPK() != null;
 
