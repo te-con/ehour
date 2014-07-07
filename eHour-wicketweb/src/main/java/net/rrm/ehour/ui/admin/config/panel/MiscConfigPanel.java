@@ -76,16 +76,16 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         // split admin role
         // TODO when disabling, convert all managers to admins or at least do something with them
         CheckBox checkBox = new CheckBox("config.splitAdminRole", new PropertyModel<Boolean>(getPanelModel(), "config.splitAdminRole"));
-        checkBox.add(new AjaxFormChoiceComponentUpdatingBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                Boolean value = (Boolean) getDefaultModelObject();
-
-                if (value != EhourWebSession.getEhourConfig().isSplitAdminRole()) {
-
-                }
-            }
-        });
+//        checkBox.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+//            @Override
+//            protected void onUpdate(AjaxRequestTarget target) {
+//                Boolean value = (Boolean) getDefaultModelObject();
+//
+//                if (value != EhourWebSession.getEhourConfig().isSplitAdminRole()) {
+//
+//                }
+//            }
+//        });
 
         form.add(checkBox);
     }
