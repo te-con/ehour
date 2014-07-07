@@ -7,7 +7,9 @@ import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.domain.UserRole
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import net.rrm.ehour.user.service.UserService
+import org.apache.wicket.authroles.authorization.strategies.role.Roles
 import org.apache.wicket.markup.html.form.Form
+import org.apache.wicket.markup.html.form.ListMultipleChoice
 import org.apache.wicket.model.CompoundPropertyModel
 import org.junit.Before
 import org.junit.Test
@@ -33,8 +35,15 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         when(userService.getUserRoles()).thenReturn(Lists.newArrayList(UserRole.ADMIN, UserRole.MANAGER, UserRole.PROJECTMANAGER, UserRole.REPORT, UserRole.USER))
     }
 
+    @Override
+    protected void afterSetup() {
+        // don't start in tester
+    }
+
     @Test
     void "should render"() {
+        super.startTester()
+
         startPanel(new UserAdminBackingBean())
 
         tester.assertNoErrorMessage()
@@ -43,6 +52,8 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
 
     @Test
     void "should create new user"() {
+        super.startTester()
+
         startPanel(new UserAdminBackingBean())
 
         assertFalse(tester.isVisible(formPath + ":showAssignments").wasFailed())
@@ -57,7 +68,7 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         formTester.setValue("password", "abc")
         formTester.setValue("confirmPassword", "abc")
 
-        tester.executeAjaxEvent(formPath +":submitButton", "onclick")
+        tester.executeAjaxEvent(formPath + ":submitButton", "onclick")
 
         tester.assertNoErrorMessage()
         tester.assertComponent(formPath, Form.class)
@@ -71,6 +82,8 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
 
     @Test
     void "should edit user and not have the assignments checkbox"() {
+        super.startTester()
+
         startPanel(new UserAdminBackingBean(UserObjectMother.createUser()))
 
         assertTrue(tester.isVisible(formPath + ":showAssignments").wasFailed())
@@ -93,6 +106,60 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         verify(userService).editUser(anyObject() as User)
     }
 
+    @Test
+    void "should not show admin role when adding/editing as a manager"() {
+        config.setSplitAdminRole(true)
+        webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER))
+        super.startTester()
+
+        startPanel(new UserAdminBackingBean(UserObjectMother.createUser()))
+
+        def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
+
+        def choices = select.getChoices()
+        assertTrue("Manager role is available", choices.contains(UserRole.MANAGER))
+        assertTrue("Report role is available", choices.contains(UserRole.REPORT))
+        assertTrue("User role is available", choices.contains(UserRole.USER))
+
+        assertEquals(3, choices.size())
+    }
+
+    @Test
+    void "should not show manager role when split is disabled"() {
+        config.setSplitAdminRole(false)
+        webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_ADMIN))
+        super.startTester()
+
+        startPanel(new UserAdminBackingBean(UserObjectMother.createUser()))
+
+        def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
+
+        def choices = select.getChoices()
+        assertTrue("Admin role is available", choices.contains(UserRole.ADMIN))
+        assertTrue("Report role is available", choices.contains(UserRole.REPORT))
+        assertTrue("User role is available", choices.contains(UserRole.USER))
+
+        assertEquals(3, choices.size())
+    }
+
+    @Test
+    void "should show manager role when split is enabled"() {
+        config.setSplitAdminRole(true)
+        webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_ADMIN))
+        super.startTester()
+
+        startPanel(new UserAdminBackingBean(UserObjectMother.createUser()))
+
+        def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
+
+        def choices = select.getChoices()
+        assertTrue("Admin role is available", choices.contains(UserRole.ADMIN))
+        assertTrue("Manager role is available", choices.contains(UserRole.MANAGER))
+        assertTrue("Report role is available", choices.contains(UserRole.REPORT))
+        assertTrue("User role is available", choices.contains(UserRole.USER))
+
+        assertEquals(4, choices.size())
+    }
 
     void startPanel(UserAdminBackingBean bean) {
         tester.startComponentInPage(new UserAdminFormPanel("panel",

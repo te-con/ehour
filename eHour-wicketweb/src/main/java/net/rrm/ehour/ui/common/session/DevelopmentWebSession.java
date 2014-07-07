@@ -41,10 +41,10 @@ public class DevelopmentWebSession extends EhourWebSession {
 
     private Roles createDefaultAuthorizedRoles() {
         authorizedRoles = new Roles();
-        authorizedRoles.add(UserRole.ROLE_PROJECTMANAGER);
-        authorizedRoles.add(UserRole.ROLE_USER);
-        authorizedRoles.add(UserRole.ROLE_ADMIN);
-        authorizedRoles.add(UserRole.ROLE_REPORT);
+
+        for (UserRole userRole : UserRole.ROLES.values()) {
+            authorizedRoles.add(userRole.getRole());
+        }
 
         return authorizedRoles;
     }
@@ -56,7 +56,15 @@ public class DevelopmentWebSession extends EhourWebSession {
             user.setPassword("secret");
 
             Set<UserRole> userRoles = new HashSet<UserRole>();
-            userRoles.addAll(UserRole.ROLES.values());
+
+            if (authorizedRoles != null) {
+                for (String authorizedRole : authorizedRoles) {
+                    UserRole userRole = UserRole.ROLES.get(authorizedRole);
+                    userRoles.add(userRole);
+                }
+            } else {
+                userRoles.addAll(UserRole.ROLES.values());
+            }
 
             user.setUserRoles(userRoles);
 

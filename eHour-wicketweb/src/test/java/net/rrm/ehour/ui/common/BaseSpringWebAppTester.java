@@ -45,8 +45,15 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
 
         webApp.setAuthorizedRoles(getRoles());
 
-        tester = new StrictWicketTester(webApp);
+        afterSetup();
+    }
 
+    protected void afterSetup() {
+        startTester();
+    }
+
+    protected final void startTester() {
+        tester = new StrictWicketTester(webApp);
         bypassStringResourceLoading();
     }
 
@@ -59,8 +66,7 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
         clearMockContext();
     }
 
-
-    private void bypassStringResourceLoading() {
+    protected final void bypassStringResourceLoading() {
         webApp.getResourceSettings().getStringResourceLoaders().add(new IStringResourceLoader() {
             @Override
             public String loadStringResource(Class<?> clazz, String key, Locale locale, String style, String variation) {
