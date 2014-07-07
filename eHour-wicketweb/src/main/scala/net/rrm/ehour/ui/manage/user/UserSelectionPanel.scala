@@ -20,7 +20,7 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.{IModel, ResourceModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class UserSelectionPanel(id: String, titleResourceKey: Option[String]) extends AbstractBasePanel[UserAdminBackingBean](id) {
+class UserSelectionPanel(id: String, titleResourceKey: Option[String]) extends AbstractBasePanel[ManageUserBackingBean](id) {
   val Self = this
 
   val hideInactiveFilter = new HideInactiveFilter()

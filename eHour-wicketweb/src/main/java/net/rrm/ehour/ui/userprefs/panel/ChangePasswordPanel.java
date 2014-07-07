@@ -41,7 +41,7 @@ import org.apache.wicket.validation.ValidationError;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import static net.rrm.ehour.ui.common.event.CommonAjaxEventType.SUBMIT_ERROR;
-import static net.rrm.ehour.ui.manage.user.UserEditAjaxEventType.PASSWORD_CHANGED;
+import static net.rrm.ehour.ui.manage.user.ManageUserAjaxEventType.PASSWORD_CHANGED;
 
 /**
  * User preferences form

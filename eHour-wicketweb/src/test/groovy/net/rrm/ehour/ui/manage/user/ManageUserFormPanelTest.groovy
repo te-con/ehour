@@ -22,7 +22,7 @@ import static org.mockito.Matchers.anyObject
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
-public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
+public class ManageUserFormPanelTest extends BaseSpringWebAppTester {
     @Mock
     private UserService userService
     def formPath =  "panel:border:greySquaredFrame:border_body:userForm"
@@ -44,7 +44,7 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
     void "should render"() {
         super.startTester()
 
-        startPanel(new UserAdminBackingBean())
+        startPanel(new ManageUserBackingBean())
 
         tester.assertNoErrorMessage()
         tester.assertComponent(formPath, Form.class)
@@ -54,7 +54,7 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
     void "should create new user"() {
         super.startTester()
 
-        startPanel(new UserAdminBackingBean())
+        startPanel(new ManageUserBackingBean())
 
         assertFalse(tester.isVisible(formPath + ":showAssignments").wasFailed())
 
@@ -84,7 +84,7 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
     void "should edit user and not have the assignments checkbox"() {
         super.startTester()
 
-        startPanel(new UserAdminBackingBean(UserObjectMother.createUser()))
+        startPanel(new ManageUserBackingBean(UserObjectMother.createUser()))
 
         assertTrue(tester.isVisible(formPath + ":showAssignments").wasFailed())
 
@@ -112,7 +112,7 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER))
         super.startTester()
 
-        startPanel(new UserAdminBackingBean(UserObjectMother.createUser()))
+        startPanel(new ManageUserBackingBean(UserObjectMother.createUser()))
 
         def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
 
@@ -130,7 +130,7 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_ADMIN))
         super.startTester()
 
-        startPanel(new UserAdminBackingBean(UserObjectMother.createUser()))
+        startPanel(new ManageUserBackingBean(UserObjectMother.createUser()))
 
         def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
 
@@ -148,7 +148,7 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_ADMIN))
         super.startTester()
 
-        startPanel(new UserAdminBackingBean(UserObjectMother.createUser()))
+        startPanel(new ManageUserBackingBean(UserObjectMother.createUser()))
 
         def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
 
@@ -161,9 +161,9 @@ public class UserAdminFormPanelTest extends BaseSpringWebAppTester {
         assertEquals(4, choices.size())
     }
 
-    void startPanel(UserAdminBackingBean bean) {
-        tester.startComponentInPage(new UserAdminFormPanel("panel",
-                        new CompoundPropertyModel<UserAdminBackingBean>(bean),
+    void startPanel(ManageUserBackingBean bean) {
+        tester.startComponentInPage(new ManageUserFormPanel("panel",
+                        new CompoundPropertyModel<ManageUserBackingBean>(bean),
                         Arrays.asList(UserDepartmentObjectMother.createUserDepartment())))
     }
 }

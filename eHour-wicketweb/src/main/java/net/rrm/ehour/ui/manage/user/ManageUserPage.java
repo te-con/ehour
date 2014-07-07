@@ -44,7 +44,7 @@ import java.util.List;
 /**
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel
  */
-public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBean> {
+public class ManageUserPage extends AbstractTabbedManagePage<ManageUserBackingBean> {
     @SpringBean
     private UserService userService;
 
@@ -52,7 +52,7 @@ public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBea
 
     private static final long serialVersionUID = 1883278850247747252L;
 
-    public UserManagePage() {
+    public ManageUserPage() {
         super(new ResourceModel("admin.user.title"),
                 new ResourceModel("admin.user.addUser"),
                 new ResourceModel("admin.user.editUser"),
@@ -70,7 +70,7 @@ public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBea
             Integer userId = entrySelectedEvent.userId();
 
             try {
-                getTabbedPanel().setEditBackingBean(new UserAdminBackingBean(userService.getUserAndCheckDeletability(userId)));
+                getTabbedPanel().setEditBackingBean(new ManageUserBackingBean(userService.getUserAndCheckDeletability(userId)));
                 getTabbedPanel().switchTabOnAjaxTarget(entrySelectedEvent.target(), AddEditTabbedPanel.TABPOS_EDIT);
             } catch (ObjectNotFoundException e) {
                 // TODO deal with it
@@ -85,10 +85,10 @@ public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBea
         AjaxEventType type = ajaxEvent.getEventType();
 
         AjaxRequestTarget target = ajaxEvent.getTarget();
-        if (type == UserEditAjaxEventType.USER_CREATED) {
+        if (type == ManageUserAjaxEventType.USER_CREATED) {
             PayloadAjaxEvent<AdminBackingBean> payloadAjaxEvent = (PayloadAjaxEvent<AdminBackingBean>) ajaxEvent;
 
-            UserAdminBackingBean bean = (UserAdminBackingBean) payloadAjaxEvent.getPayload();
+            ManageUserBackingBean bean = (ManageUserBackingBean) payloadAjaxEvent.getPayload();
 
             if (bean.isShowAssignments()) {
                 setResponsePage(new AssignmentManagePage(bean.getUser()));
@@ -100,13 +100,13 @@ public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBea
 
                 return false;
             }
-        } else if (type == UserEditAjaxEventType.USER_UPDATED
-                || type == UserEditAjaxEventType.USER_DELETED) {
+        } else if (type == ManageUserAjaxEventType.USER_UPDATED
+                || type == ManageUserAjaxEventType.USER_DELETED) {
             updateEntryList(target);
             succesfulSave(target);
 
             return updateUserList(target);
-        } else if (type == UserEditAjaxEventType.PASSWORD_CHANGED) {
+        } else if (type == ManageUserAjaxEventType.PASSWORD_CHANGED) {
             succesfulSave(target);
             return false;
         }
@@ -132,28 +132,28 @@ public class UserManagePage extends AbstractTabbedManagePage<UserAdminBackingBea
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
-        return new UserAdminFormPanel(panelId,
-                new CompoundPropertyModel<UserAdminBackingBean>(getTabbedPanel().getAddBackingBean()),
+        return new ManageUserFormPanel(panelId,
+                new CompoundPropertyModel<ManageUserBackingBean>(getTabbedPanel().getAddBackingBean()),
                 getUserDepartments());
     }
 
     @Override
-    protected UserAdminBackingBean getNewAddBaseBackingBean() {
-        UserAdminBackingBean userBean = new UserAdminBackingBean();
+    protected ManageUserBackingBean getNewAddBaseBackingBean() {
+        ManageUserBackingBean userBean = new ManageUserBackingBean();
         userBean.getUser().setActive(true);
 
         return userBean;
     }
 
     @Override
-    protected UserAdminBackingBean getNewEditBaseBackingBean() {
-        return new UserAdminBackingBean();
+    protected ManageUserBackingBean getNewEditBaseBackingBean() {
+        return new ManageUserBackingBean();
     }
 
     @Override
     protected Panel getBaseEditPanel(String panelId) {
-        return new UserAdminFormPanel(panelId,
-                new CompoundPropertyModel<UserAdminBackingBean>(getTabbedPanel().getEditBackingBean()),
+        return new ManageUserFormPanel(panelId,
+                new CompoundPropertyModel<ManageUserBackingBean>(getTabbedPanel().getEditBackingBean()),
                 getUserDepartments());
     }
 

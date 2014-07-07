@@ -51,13 +51,13 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 import java.util.List;
 
-import static net.rrm.ehour.ui.manage.user.UserEditAjaxEventType.*;
+import static net.rrm.ehour.ui.manage.user.ManageUserAjaxEventType.*;
 
 /**
  * User Form Panel for admin
  */
 
-public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBackingBean> {
+public class ManageUserFormPanel extends AbstractFormSubmittingPanel<ManageUserBackingBean> {
     private static final long serialVersionUID = -7427807216389657732L;
     protected static final String BORDER = "border";
     protected static final String FORM = "userForm";
@@ -67,13 +67,13 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
     @SpringBean
     private UserService userService;
 
-    public UserAdminFormPanel(String id,
-                              CompoundPropertyModel<UserAdminBackingBean> userModel,
-                              List<UserDepartment> departments) {
+    public ManageUserFormPanel(String id,
+                               CompoundPropertyModel<ManageUserBackingBean> userModel,
+                               List<UserDepartment> departments) {
         super(id, userModel);
 
-        UserAdminBackingBean userAdminBackingBean = userModel.getObject();
-        User user = userAdminBackingBean.getUser();
+        ManageUserBackingBean manageUserBackingBean = userModel.getObject();
+        User user = manageUserBackingBean.getUser();
         boolean readOnly = SecurityRules.allowedToModify(EhourWebSession.getUser(),
                 user,
                 EhourWebSession.getEhourConfig().isSplitAdminRole());
@@ -85,7 +85,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
 
         setOutputMarkupId(true);
 
-        final Form<UserAdminBackingBean> form = new Form<UserAdminBackingBean>(FORM, userModel);
+        final Form<ManageUserBackingBean> form = new Form<ManageUserBackingBean>(FORM, userModel);
 
         // username
         RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
@@ -116,7 +116,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
 
         // password
         Label label = new Label("passwordEditLabel", new ResourceModel("admin.user.editPassword"));
-        label.setVisible(userAdminBackingBean.isEditMode());
+        label.setVisible(manageUserBackingBean.isEditMode());
         form.add(label);
 
         PasswordFieldFactory.createOptionalPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
@@ -143,7 +143,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
 
         // show assignments
         CheckBox showAssignments = new CheckBox("showAssignments");
-        showAssignments.setVisible(!userAdminBackingBean.isEditMode());
+        showAssignments.setVisible(!manageUserBackingBean.isEditMode());
         form.add(showAssignments);
 
 
@@ -186,12 +186,12 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
 
     @Override
     protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
-        UserAdminBackingBean userAdminBackingBean = (UserAdminBackingBean) backingBean;
+        ManageUserBackingBean manageUserBackingBean = (ManageUserBackingBean) backingBean;
 
         boolean eventHandled;
 
         try {
-            User user = userAdminBackingBean.getUser();
+            User user = manageUserBackingBean.getUser();
             eventHandled = false;
 
             if (type == USER_CREATED) {
@@ -204,7 +204,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
                     userService.changePassword(user.getUsername(), password);
                 }
             } else if (type == USER_DELETED) {
-                deleteUser(userAdminBackingBean);
+                deleteUser(manageUserBackingBean);
             }
         } catch (ObjectNotUniqueException obnu) {
             backingBean.setServerMessage(obnu.getMessage());
@@ -215,8 +215,8 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
         return !eventHandled;
     }
 
-    private void deleteUser(UserAdminBackingBean userAdminBackingBean) {
-        userService.deleteUser(userAdminBackingBean.getUser().getUserId());
+    private void deleteUser(ManageUserBackingBean manageUserBackingBean) {
+        userService.deleteUser(manageUserBackingBean.getUser().getUserId());
     }
 
     private class DuplicateUsernameValidator implements IValidator<String> {
@@ -225,7 +225,7 @@ public class UserAdminFormPanel extends AbstractFormSubmittingPanel<UserAdminBac
         @Override
         public void validate(IValidatable<String> validatable) {
             String username = validatable.getValue();
-            String orgUsername = ((UserAdminBackingBean) getDefaultModelObject()).getOriginalUsername();
+            String orgUsername = ((ManageUserBackingBean) getDefaultModelObject()).getOriginalUsername();
 
             if ((StringUtils.isNotBlank(orgUsername) && !username.equalsIgnoreCase(orgUsername) && userService.getUser(username) != null)) {
                 validatable.error(new ValidationError("admin.user.errorUsernameExists"));

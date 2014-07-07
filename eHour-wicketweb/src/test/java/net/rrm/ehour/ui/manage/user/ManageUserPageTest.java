@@ -28,7 +28,7 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 
-public class UserManagePageTest extends BaseSpringWebAppTester {
+public class ManageUserPageTest extends BaseSpringWebAppTester {
     @Test
     public void should_render() {
         UserService userService = createMock(UserService.class);
@@ -52,8 +52,8 @@ public class UserManagePageTest extends BaseSpringWebAppTester {
 
         replay(userService);
 
-        getTester().startPage(UserManagePage.class);
-        getTester().assertRenderedPage(UserManagePage.class);
+        getTester().startPage(ManageUserPage.class);
+        getTester().assertRenderedPage(ManageUserPage.class);
         getTester().assertNoErrorMessage();
 
         verify(userService);
@@ -82,8 +82,8 @@ public class UserManagePageTest extends BaseSpringWebAppTester {
 
         replay(userService);
 
-        getTester().startPage(UserManagePage.class);
-        getTester().assertRenderedPage(UserManagePage.class);
+        getTester().startPage(ManageUserPage.class);
+        getTester().assertRenderedPage(ManageUserPage.class);
         getTester().assertNoErrorMessage();
 
         verify(userService);
