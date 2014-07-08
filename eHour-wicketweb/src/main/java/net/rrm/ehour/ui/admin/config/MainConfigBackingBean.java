@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.admin.config;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.sort.LocaleComparator;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.ArrayUtils;
@@ -33,16 +34,15 @@ import java.util.*;
  * @author Thies Edeling (thies@te-con.nl)
  */
 
-public class MainConfigBackingBean implements Serializable
-{
+public class MainConfigBackingBean implements Serializable {
     private static final long serialVersionUID = -682573285773646807L;
     private boolean translationsOnly = false;
     private boolean smtpAuthentication = false;
     private EhourConfigStub config;
     private Date firstWeekStart;
+    private UserRole convertManagersTo = UserRole.ADMIN;
 
-    public MainConfigBackingBean(EhourConfigStub config)
-    {
+    public MainConfigBackingBean(EhourConfigStub config) {
         this.config = config;
 
         smtpAuthentication = StringUtils.isNotBlank(config.getSmtpUsername()) && StringUtils.isNotBlank(config.getSmtpPassword());
@@ -53,17 +53,14 @@ public class MainConfigBackingBean implements Serializable
         firstWeekStart = cal.getTime();
     }
 
-    public List<Locale> getAvailableLanguages()
-    {
+    public List<Locale> getAvailableLanguages() {
         Locale[] locales = Locale.getAvailableLocales();
         Map<String, Locale> localeMap = new HashMap<String, Locale>();
 
         // remove all variants
-        for (Locale locale : locales)
-        {
+        for (Locale locale : locales) {
             if (isTranslationsOnly()
-                    && !ArrayUtils.contains(config.getAvailableTranslations(), locale.getLanguage()))
-            {
+                    && !ArrayUtils.contains(config.getAvailableTranslations(), locale.getLanguage())) {
                 continue;
             }
 
@@ -76,38 +73,27 @@ public class MainConfigBackingBean implements Serializable
 
         SortedSet<Locale> localeSet = new TreeSet<Locale>(new LocaleComparator(LocaleComparator.CompareType.LANGUAGE));
 
-        for (Locale locale : localeMap.values())
-        {
+        for (Locale locale : localeMap.values()) {
             localeSet.add(locale);
         }
 
         return new ArrayList<Locale>(localeSet);
     }
 
-    public boolean isTranslationsOnly()
-    {
+    public boolean isTranslationsOnly() {
         return translationsOnly;
     }
 
-    public void setTranslationsOnly(boolean translationsOnly)
-    {
+    public void setTranslationsOnly(boolean translationsOnly) {
         this.translationsOnly = translationsOnly;
     }
 
 
-    /**
-     * Available locales
-     *
-     * @return
-     */
-    public static List<Locale> getAvailableLocales()
-    {
+    public static List<Locale> getAvailableLocales() {
         List<Locale> locales = new ArrayList<Locale>();
 
-        for (Locale locale : Locale.getAvailableLocales())
-        {
-            if (!StringUtils.isBlank(locale.getDisplayCountry()))
-            {
+        for (Locale locale : Locale.getAvailableLocales()) {
+            if (!StringUtils.isBlank(locale.getDisplayCountry())) {
                 locales.add(locale);
             }
         }
@@ -117,16 +103,10 @@ public class MainConfigBackingBean implements Serializable
         return locales;
     }
 
-    /**
-     * @return
-     */
-    public static List<Locale> getAvailableCurrencies()
-    {
+    public static List<Locale> getAvailableCurrencies() {
         List<Locale> locales = getAvailableLocales();
-        SortedSet<Locale> currencyLocales = new TreeSet<Locale>(new Comparator<Locale>()
-        {
-            public int compare(Locale o1, Locale o2)
-            {
+        SortedSet<Locale> currencyLocales = new TreeSet<Locale>(new Comparator<Locale>() {
+            public int compare(Locale o1, Locale o2) {
                 Currency curr1 = Currency.getInstance(o1);
                 Currency curr2 = Currency.getInstance(o2);
 
@@ -136,10 +116,8 @@ public class MainConfigBackingBean implements Serializable
         }
         );
 
-        for (Locale locale : locales)
-        {
-            if (!StringUtils.isBlank(locale.getCountry()))
-            {
+        for (Locale locale : locales) {
+            if (!StringUtils.isBlank(locale.getCountry())) {
                 currencyLocales.add(locale);
             }
         }
@@ -147,24 +125,15 @@ public class MainConfigBackingBean implements Serializable
         return new ArrayList<Locale>(currencyLocales);
     }
 
-    /**
-     * @return the localeLanguage
-     */
-    public Locale getLocaleLanguage()
-    {
+    public Locale getLocaleLanguage() {
         return config.getLanguageLocale();
     }
 
-    /**
-     * @param localeLanguage the localeLanguage to set
-     */
-    public void setLocaleLanguage(Locale localeLanguage)
-    {
+    public void setLocaleLanguage(Locale localeLanguage) {
         config.setLocaleLanguage(localeLanguage);
     }
 
-    public Locale getLocaleCountry()
-    {
+    public Locale getLocaleCountry() {
         return config.getFormattingLocale();
     }
 
@@ -172,48 +141,40 @@ public class MainConfigBackingBean implements Serializable
         config.setLocaleFormatting(localeCountry);
     }
 
-    public void setCurrency(Locale currencySymbol)
-    {
+    public void setCurrency(Locale currencySymbol) {
         this.config.setCurrency(currencySymbol);
     }
 
-    /**
-     * @return the config
-     */
-    public EhourConfig getConfig()
-    {
+    public EhourConfig getConfig() {
         return config;
     }
 
-    public boolean isSmtpAuthentication()
-    {
+    public boolean isSmtpAuthentication() {
         return smtpAuthentication;
     }
 
-    public void setSmtpAuthentication(boolean smtpAuthentication)
-    {
+    public void setSmtpAuthentication(boolean smtpAuthentication) {
         this.smtpAuthentication = smtpAuthentication;
     }
 
-
-    /**
-     * @return the firstWeekStart
-     */
-    public Date getFirstWeekStart()
-    {
+    public Date getFirstWeekStart() {
         return firstWeekStart;
     }
 
 
-    /**
-     * @param firstWeekStart the firstWeekStart to set
-     */
-    public void setFirstWeekStart(Date firstWeekStart)
-    {
+    public void setFirstWeekStart(Date firstWeekStart) {
         this.firstWeekStart = firstWeekStart;
 
         Calendar cal = new GregorianCalendar();
         cal.setTime(firstWeekStart);
         config.setFirstDayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
+    }
+
+    public UserRole isConvertManagersToAdmin() {
+        return convertManagersTo;
+    }
+
+    public void setConvertManagersTo(UserRole convertManagersTo) {
+        this.convertManagersTo = convertManagersTo;
     }
 }

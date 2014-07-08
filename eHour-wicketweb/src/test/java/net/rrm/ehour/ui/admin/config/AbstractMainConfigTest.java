@@ -24,6 +24,7 @@ import net.rrm.ehour.mail.service.MailService;
 import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
+import net.rrm.ehour.user.service.UserService;
 import org.junit.After;
 import org.junit.Before;
 
@@ -39,8 +40,9 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
     protected ConfigurationServiceImpl configService;
 	private MailService mailService;
 	private EhourConfigStub config;
+    private UserService userService;
 
-	@SuppressWarnings({"deprecation"})
+    @SuppressWarnings({"deprecation"})
     @Before
 	public void before() throws Exception
 	{
@@ -59,9 +61,12 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
 		getMockContext().putBean("mailService", mailService);	
 
 		config = new EhourConfigStub();
-		expect(configService.getConfiguration())
-				.andReturn(config);
-	}
+		expect(configService.getConfiguration()).andReturn(config);
+
+        userService = createMock(UserService.class);
+        getMockContext().putBean("userService", userService);
+
+    }
 
 	@After
 	public void tearDown()
