@@ -76,6 +76,5 @@ public class AdminAccountValidator {
         configService.persistConfiguration(config);
 
         LOGGER.info("eHour's state to initialized");
-
     }
 }

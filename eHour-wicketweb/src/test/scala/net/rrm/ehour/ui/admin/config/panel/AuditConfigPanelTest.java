@@ -1,6 +1,7 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.domain.AuditType;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
@@ -27,6 +28,6 @@ public class AuditConfigPanelTest extends AbstractMainConfigTest {
 
         assertEquals(AuditType.ALL, config.getAuditType());
 
-        verify(configService).persistConfiguration(config);
+        verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
     }
 }

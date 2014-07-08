@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User editUser(User user) throws ObjectNotUniqueException {
+    public User persistEditedUser(User user) throws ObjectNotUniqueException {
         // check username uniqueness
         User dbUser = userDAO.findByUsername(user.getUsername());
 
@@ -218,7 +218,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void newUser(User user, String password) throws ObjectNotUniqueException {
+    public void persistNewUser(User user, String password) throws ObjectNotUniqueException {
         // check username uniqueness
         User dbUser = userDAO.findByUsername(user.getUsername());
 

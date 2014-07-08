@@ -49,7 +49,6 @@ import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import java.util.Collection;
 import java.util.List;
 
 import static net.rrm.ehour.ui.manage.user.ManageUserAjaxEventType.*;
@@ -193,9 +192,9 @@ public class ManageUserFormPanel extends AbstractFormSubmittingPanel<ManageUserB
             eventHandled = false;
 
             if (type == USER_CREATED) {
-                userService.newUser(user, user.getPassword());
+                userService.persistNewUser(user, user.getPassword());
             } else if (type == USER_UPDATED) {
-                userService.editUser(user);
+                userService.persistEditedUser(user);
 
                 String password = user.getPassword();
                 if (StringUtils.isNotBlank(password)) {

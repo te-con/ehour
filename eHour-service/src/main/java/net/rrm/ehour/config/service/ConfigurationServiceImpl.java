@@ -27,6 +27,7 @@ import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import net.rrm.ehour.persistence.value.ImageLogo;
+import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Autowired
     private TranslationDiscovery translationDiscovery;
 
+    @Autowired
+    private UserService userService;
 
     private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
 
@@ -251,7 +254,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         persistConfig(ConfigurationItem.PM_PRIVILEGE.getDbField(), getPmPrivilege(config).name());
 
-
         persistConfig(ConfigurationItem.SPLIT_ADMIN_ROLE.getDbField(), config.isSplitAdminRole());
     }
 
@@ -270,7 +272,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             return config.getPmPrivilege();
         }
     }
-
 
     private void persistConfig(String key, String value) {
         Configuration config = new Configuration();

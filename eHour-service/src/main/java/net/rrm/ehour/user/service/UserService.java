@@ -40,9 +40,9 @@ public interface UserService {
 
     User getUser(String username);
 
-    User editUser(User user) throws ObjectNotUniqueException;
+    User persistEditedUser(User user) throws ObjectNotUniqueException;
 
-    void newUser(User user, String password) throws ObjectNotUniqueException;
+    void persistNewUser(User user, String password) throws ObjectNotUniqueException;
 
     void changePassword(String username, String newUnencryptedPassword);
 

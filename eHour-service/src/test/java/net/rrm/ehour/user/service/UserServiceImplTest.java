@@ -200,7 +200,7 @@ public class UserServiceImplTest {
 
         replay(userDAO, assignmentService);
 
-        userService.newUser(user, "password");
+        userService.persistNewUser(user, "password");
 
         verify(userDAO, assignmentService);
 
@@ -218,7 +218,7 @@ public class UserServiceImplTest {
 
         replay(userDAO, assignmentService);
 
-        userService.editUser(user);
+        userService.persistEditedUser(user);
 
         verify(userDAO, assignmentService);
     }

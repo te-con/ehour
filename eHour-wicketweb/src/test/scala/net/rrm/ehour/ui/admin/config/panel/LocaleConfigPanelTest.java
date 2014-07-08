@@ -17,6 +17,7 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
 import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
 import org.apache.wicket.markup.html.form.Form;
@@ -51,6 +52,6 @@ public class LocaleConfigPanelTest extends AbstractMainConfigTest {
         assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), config.getCurrency());
         assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), config.getFormattingLocale());
 
-        verify(configService).persistConfiguration(config);
+        verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
     }
 }

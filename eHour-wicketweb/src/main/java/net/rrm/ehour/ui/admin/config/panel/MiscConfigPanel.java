@@ -125,5 +125,4 @@ public class MiscConfigPanel extends AbstractConfigPanel {
             return Integer.toString(cal.get(Calendar.DAY_OF_WEEK));
         }
     }
-
 }

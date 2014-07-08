@@ -75,7 +75,7 @@ public class ManageUserFormPanelTest extends BaseSpringWebAppTester {
 
         def captor = ArgumentCaptor.forClass(String.class);
 
-        verify(userService).newUser(anyObject() as User, captor.capture())
+        verify(userService).persistNewUser(anyObject() as User, captor.capture())
 
         assertEquals("abc", captor.getValue())
     }
@@ -103,7 +103,7 @@ public class ManageUserFormPanelTest extends BaseSpringWebAppTester {
         tester.assertNoErrorMessage()
         tester.assertComponent(formPath, Form.class)
 
-        verify(userService).editUser(anyObject() as User)
+        verify(userService).persistEditedUser(anyObject() as User)
     }
 
     @Test

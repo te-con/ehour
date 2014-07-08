@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.config.service.IPersistConfiguration;
 import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.decorator.DemoDecorator;
@@ -50,6 +51,9 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 
     @SpringBean
     private ConfigurationService configService;
+
+    @SpringBean
+    private IPersistConfiguration iPersistConfiguration;
 
     public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model) {
         this(id, model, WebGeo.W_CONTENT_MEDIUM);
@@ -121,7 +125,9 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
     }
 
     private void persistConfiguration() {
-        configService.persistConfiguration(getConfigStub());
+//        configService.persistConfiguration(getConfigStub());
+
+        iPersistConfiguration.persistAndCleanUp(getConfigStub(), getPanelModelObject().getConvertManagersTo());
     }
 
     protected void replaceFeedbackMessage(IModel<?> msgModel) {

@@ -170,7 +170,7 @@ public class MainConfigBackingBean implements Serializable {
         config.setFirstDayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
     }
 
-    public UserRole isConvertManagersToAdmin() {
+    public UserRole getConvertManagersTo() {
         return convertManagersTo;
     }
 

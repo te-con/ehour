@@ -18,6 +18,7 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
@@ -55,7 +56,7 @@ public class MailServerConfigPanelTest extends AbstractMainConfigTest {
         assertEquals("localhost", config.getMailSmtp());
         assertEquals("25", config.getSmtpPort());
 
-        verify(configService).persistConfiguration(config);
+        verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
 
         verify(mailService).mailTestMessage(config);
 

@@ -20,6 +20,7 @@ import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.Configuration;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.persistence.value.ImageLogo;
 
 import java.util.List;

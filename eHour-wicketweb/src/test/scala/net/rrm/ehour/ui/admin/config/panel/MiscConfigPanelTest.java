@@ -55,7 +55,7 @@ public class MiscConfigPanelTest extends AbstractMainConfigTest {
 
         tester.assertNoErrorMessage();
 
-        verify(configService).persistConfiguration(config);
+        verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
     }
 
     @Test

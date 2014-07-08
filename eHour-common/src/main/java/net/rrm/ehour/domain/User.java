@@ -135,6 +135,13 @@ public class User extends DomainObject<Integer, User> {
         return this;
     }
 
+    public User deleteUserRole(UserRole role) {
+        if (userRoles != null) {
+            userRoles.remove(role);
+        }
+        return this;
+    }
+
     public String getFullName() {
         StringBuilder fullName = new StringBuilder();
 
