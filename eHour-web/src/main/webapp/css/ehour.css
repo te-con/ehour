@@ -835,7 +835,7 @@ hr {
     padding-top: 5px;
 }
 
-.entrySelectorTable  th {
+.entrySelectorTable th {
     border-bottom: 1px solid #f9f9f9;
     text-align: left !important;
 }
@@ -918,7 +918,7 @@ hr {
     margin: 0;
     padding: 0 5px 0 5px;
     color: #496987;
-    font:0.9em Geneva,Arial,Helvetica,sans-serif;
+    font: 0.9em Geneva, Arial, Helvetica, sans-serif;
 }
 
 .navigator .hoverNavigator {
@@ -928,11 +928,10 @@ hr {
     text-align: center;
 }
 
-
 .hoverNavigator:hover {
     border: 1px solid #bbbbbb;
     border-radius: 3px;
-    background-color:#eeeeee;
+    background-color: #eeeeee;
 }
 
 .navigator .page em {
@@ -940,12 +939,13 @@ hr {
     font-weight: bold;
     font-style: normal !important;
 }
+
 .hidden {
     display: none;
 }
 
 .excelLink:hover {
-   color: #5190c5;
+    color: #5190c5;
 }
 
 .impersonatingNotification {
@@ -969,8 +969,9 @@ hr {
 }
 
 .config .help {
-   color: #536e87;
-    font: 0.9em/ 1.5 Geneva, Arial, Helvetica, sans-serif
+    color: #536e87;
+    font: 0.9em Geneva, Arial, Helvetica, sans-serif;
+    padding-bottom: 30px;
 }
 
 .info {

@@ -29,27 +29,27 @@
             </tr>
 
             <tr>
-                <td valign="top"><wicket:message key="admin.config.pmprivileges" />:</td>
+                <td valign="top"><wicket:message key="admin.config.pmprivileges.label" />:</td>
                 <td><select style="width: 15em" class="textInputSmall" wicket:id="config.pmPrivilege"></select></td>
             </tr>
 
             <tr>
-                <td colspan="2" class="help">TODO dummy help text  <br /><br /></td>
+                <td colspan="2" class="help"><wicket:message key="admin.config.pmprivileges.help"/></td>
             </tr>
 
             <tr>
-                <td valign="top"><wicket:message key="admin.config.splitAdminRole"/>:</td>
+                <td valign="top"><wicket:message key="admin.config.splitAdminRole.label"/>:</td>
                 <td><input type="checkbox" wicket:id="config.splitAdminRole" /></td>
             </tr>
 
             <tr wicket:id="convertManagers">
-                <td valign="top">Existing managers found, change role of managers to:</td>
+                <td valign="top"><wicket:message key="admin.config.splitAdminRole.existing"/></td>
                 <td><select style="width: 15em" class="textInputSmall" wicket:id="convertManagersTo"></select></td>
             </tr>
 
 
             <tr>
-                <td colspan="2" class="help">TODO dummy help text </td>
+                <td colspan="2" class="help"><wicket:message key="admin.config.splitAdminRole.help"/></td>
             </tr>
 
             <tr>

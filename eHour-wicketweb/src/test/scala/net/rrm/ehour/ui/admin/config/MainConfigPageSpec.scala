@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.admin.config
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.config.EhourConfigStub
-import net.rrm.ehour.config.service.ConfigurationService
+import net.rrm.ehour.config.service.{IPersistConfiguration, ConfigurationService}
 import net.rrm.ehour.sysinfo.{SystemInfo, SystemInfoService}
 import net.rrm.ehour.user.service.UserService
 import org.mockito.Mockito._
@@ -12,6 +12,7 @@ class MainConfigPageSpec extends AbstractSpringWebAppSpec {
     val sysInfoService = mockService[SystemInfoService]
     val configService = mockService[ConfigurationService]
     mockService[UserService]
+    mockService[IPersistConfiguration]
 
     "render" in {
       when(sysInfoService.info).thenReturn(SystemInfo("mysql", "..", "jdbc.Driver"))
