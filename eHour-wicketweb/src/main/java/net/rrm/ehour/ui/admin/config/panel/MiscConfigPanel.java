@@ -88,10 +88,10 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         convertManagersContainer.setVisible(false);
         form.add(convertManagersContainer);
 
-        AjaxCheckBox checkBox = new AjaxCheckBox("config.splitAdminRole", new PropertyModel<Boolean>(getPanelModel(), "config.splitAdminRole")) {
+        AjaxCheckBox withManagerCheckbox = new AjaxCheckBox("config.splitAdminRole") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                Boolean managersEnabled = (Boolean) getDefaultModelObject();
+                Boolean managersEnabled = this.getModelObject();
 
                 boolean showConvert = !managersEnabled && userService.getUsers(UserRole.MANAGER).size() > 0;
 
@@ -102,7 +102,7 @@ public class MiscConfigPanel extends AbstractConfigPanel {
             }
         };
 
-        form.add(checkBox);
+        form.add(withManagerCheckbox);
     }
 
     private static final class WeekDayRenderer extends ChoiceRenderer<Date> {

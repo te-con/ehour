@@ -93,7 +93,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
 
                 if (!getConfig().isInDemoMode()) {
                     try {
-                        configService.persistConfiguration(getConfigStub());
+                        persistConfiguration();
                         msgModel = new ResourceModel("general.dataSaved");
                     } catch (Exception t) {
                         LOGGER.error("While saving config", t);
@@ -118,6 +118,10 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
                 target.add(form);
             }
         });
+    }
+
+    private void persistConfiguration() {
+        configService.persistConfiguration(getConfigStub());
     }
 
     protected void replaceFeedbackMessage(IModel<?> msgModel) {
