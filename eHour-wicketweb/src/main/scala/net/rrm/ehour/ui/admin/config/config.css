@@ -11,3 +11,8 @@
     width: 7em;
 }
 
+.contentTable tr td:first-child {
+    width: 25em;
+    padding-right: 2em;
+}
+

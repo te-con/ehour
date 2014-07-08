@@ -26,6 +26,7 @@ import org.junit.Test;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created on Apr 22, 2009, 4:20:02 PM
@@ -36,10 +37,6 @@ import static org.junit.Assert.assertTrue;
 public class MiscConfigPanelTest extends AbstractMainConfigTest {
     @Test
     public void shouldSubmit() {
-        getConfigService().persistConfiguration(getConfigStub());
-
-        replay(getConfigService());
-
         startPage();
 
         tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
@@ -51,9 +48,11 @@ public class MiscConfigPanelTest extends AbstractMainConfigTest {
 
         tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":submitButton", "onclick");
 
-        assertEquals(4f, getConfigStub().getCompleteDayHours(), 0.001);
-        assertTrue(getConfigStub().isSplitAdminRole());
+        assertEquals(4f, config.getCompleteDayHours(), 0.001);
+        assertTrue(config.isSplitAdminRole());
 
         tester.assertNoErrorMessage();
+
+        verify(configService).persistConfiguration(config);
     }
 }

@@ -4,19 +4,15 @@ import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
-import org.easymock.EasyMock;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
 public class AuditConfigPanelTest extends AbstractMainConfigTest {
 
     @Test
     public void shouldSubmit() {
-        getConfigService().persistConfiguration(getConfigStub());
-
-        EasyMock.replay(getConfigService());
-
         startPage();
 
         tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
@@ -29,6 +25,8 @@ public class AuditConfigPanelTest extends AbstractMainConfigTest {
 
         tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":submitButton", "onclick");
 
-        assertEquals(AuditType.ALL, getConfigStub().getAuditType());
+        assertEquals(AuditType.ALL, config.getAuditType());
+
+        verify(configService).persistConfiguration(config);
     }
 }

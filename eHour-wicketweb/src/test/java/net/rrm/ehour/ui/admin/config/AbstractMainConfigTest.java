@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.admin.config;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.mail.service.MailService;
@@ -25,74 +24,49 @@ import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-import org.junit.After;
 import org.junit.Before;
 
 import java.io.Serializable;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("serial")
-public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester implements Serializable
-{
-    public  static final String FORM_PATH = "configTabs:panel:border:greySquaredFrame:border_body:form";
+public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester implements Serializable {
+    public static final String FORM_PATH = "configTabs:panel:border:greySquaredFrame:border_body:form";
 
     protected ConfigurationServiceImpl configService;
-	private MailService mailService;
-	private EhourConfigStub config;
-    private UserService userService;
+    protected MailService mailService;
+    protected EhourConfigStub config;
+    protected UserService userService;
 
     @SuppressWarnings({"deprecation"})
     @Before
-	public void before() throws Exception
-	{
+    public void before() throws Exception {
         EhourHomeUtil.setEhourHome("src/test/resources");
-		configService = createMock(ConfigurationServiceImpl.class,
+        configService = mock(ConfigurationServiceImpl.class);/*,
                 ConfigurationServiceImpl.class.getMethod("getConfiguration"),
-                ConfigurationServiceImpl.class.getMethod("persistConfiguration", EhourConfig.class));
-		getMockContext().putBean("configService", configService);
+                ConfigurationServiceImpl.class.getMethod("persistConfiguration", EhourConfig.class));*/
+        getMockContext().putBean("configService", configService);
 
-        SystemInfoService infoService = createMock(SystemInfoService.class);
+        SystemInfoService infoService = mock(SystemInfoService.class);
         getMockContext().putBean(infoService);
-        expect(infoService.info()).andReturn(new SystemInfo("a", "b", "c"));
-        replay(infoService);
+        when(infoService.info()).thenReturn(new SystemInfo("a", "b", "c"));
 
-        mailService = createMock(MailService.class);
-		getMockContext().putBean("mailService", mailService);	
+        mailService = mock(MailService.class);
+        getMockContext().putBean("mailService", mailService);
 
-		config = new EhourConfigStub();
-		expect(configService.getConfiguration()).andReturn(config);
+        config = new EhourConfigStub();
+        when(configService.getConfiguration()).thenReturn(config);
 
-        userService = createMock(UserService.class);
+        userService = mock(UserService.class);
         getMockContext().putBean("userService", userService);
 
     }
 
-	@After
-	public void tearDown()
-	{
-		verify(configService);
-	}
-
-	protected void startPage()
-	{
-		getTester().startPage(MainConfigPage.class);
-		getTester().assertRenderedPage(MainConfigPage.class);
-		getTester().assertNoErrorMessage();
-	}
-	
-	protected EhourConfigStub getConfigStub()
-	{
-		return config;
-	}
-	
-	protected ConfigurationServiceImpl getConfigService()
-	{
-		return configService;
-	}
-	
-	protected MailService getMailService()
-	{
-		return mailService;
-	}
+    protected void startPage() {
+        getTester().startPage(MainConfigPage.class);
+        getTester().assertRenderedPage(MainConfigPage.class);
+        getTester().assertNoErrorMessage();
+    }
 }

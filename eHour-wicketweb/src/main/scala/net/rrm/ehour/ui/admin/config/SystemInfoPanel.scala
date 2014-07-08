@@ -13,8 +13,6 @@ class SystemInfoPanel(id: String) extends AbstractBasePanel(id) {
   @SpringBean
   protected var infoService: SystemInfoService = _
 
-  val Css = new CssResourceReference(classOf[SystemInfoPanel], "systemInfo.css")
-
   override def onInitialize() {
     super.onInitialize()
 
@@ -35,9 +33,5 @@ class SystemInfoPanel(id: String) extends AbstractBasePanel(id) {
     add(new Label("db.driver", info.jdbcDriver))
     add(new Label("db.url", info.databaseUrl))
 
-  }
-
-  override def renderHead(response: IHeaderResponse) {
-    response.render(CssHeaderItem.forReference(Css))
   }
 }

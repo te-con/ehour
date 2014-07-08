@@ -52,7 +52,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
     private ConfigurationService configService;
 
     public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model) {
-        this(id, model, WebGeo.W_CONTENT_ADMIN_TAB);
+        this(id, model, WebGeo.W_CONTENT_MEDIUM);
     }
 
     public AbstractConfigPanel(String id, IModel<MainConfigBackingBean> model, WebGeo width) {

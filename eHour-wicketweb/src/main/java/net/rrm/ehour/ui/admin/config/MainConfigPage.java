@@ -20,15 +20,18 @@ import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.ui.admin.AbstractAdminPage;
 import net.rrm.ehour.ui.admin.config.panel.ConfigTabPanel;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * Main config page
  */
 public class MainConfigPage extends AbstractAdminPage<Void> {
-    private static final long serialVersionUID = 8613594529875207988L;
+    private static final CssResourceReference CSS = new CssResourceReference(MainConfigPage.class, "config.css");
 
     @SpringBean
     private ConfigurationService configService;
@@ -47,5 +50,10 @@ public class MainConfigPage extends AbstractAdminPage<Void> {
 
     private EhourConfigStub getDbConfig() {
         return configService.getConfiguration();
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(CssHeaderItem.forReference(CSS));
     }
 }

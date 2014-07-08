@@ -23,42 +23,27 @@ import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
 import org.apache.wicket.markup.html.form.Form;
 import org.junit.Test;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created on Apr 22, 2009, 4:19:36 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
 @SuppressWarnings("serial")
-public class SkinConfigPanelTest extends AbstractMainConfigTest
-{
-	@Test
-	public void shouldSubmit()
-	{
-		BinaryConfigurationDao binConfigDao = createMock(BinaryConfigurationDao.class);
+public class SkinConfigPanelTest extends AbstractMainConfigTest {
+    @Test
+    public void shouldSubmit() {
+        BinaryConfigurationDao binConfigDao = mock(BinaryConfigurationDao.class);
+        configService.setBinConfigDAO(binConfigDao);
 
-		getConfigService().setBinConfigDAO(binConfigDao);
+        when(binConfigDao.findById("excelHeaderLogo")).thenReturn(null);
+        startPage();
 
-		expect(binConfigDao.findById("excelHeaderLogo"))
-			.andReturn(null)
-			.anyTimes();
-		
-		
-		replay(binConfigDao);
-		
-		getConfigService().getExcelLogo();
-		
-		replay(getConfigService());
-		replay(getMailService());
-		
-		startPage();
-		
-		tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
-		
-		tester.clickLink("configTabs:tabs-container:tabs:3:link", true);
-		
-		verify(getMailService());
-		verify(binConfigDao);
-	}
+        tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
+
+        tester.clickLink("configTabs:tabs-container:tabs:3:link", true);
+
+        verify(configService).getExcelLogo();
+    }
 }

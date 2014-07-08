@@ -23,39 +23,34 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
 
-import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created on Apr 22, 2009, 4:19:07 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-@SuppressWarnings("serial")
-public class LocaleConfigPanelTest extends AbstractMainConfigTest
-{
-	@Test
-	public void shouldSubmit()
-	{
-		getConfigService().persistConfiguration(getConfigStub());
-		
-		replay(getConfigService());
-		
-		startPage();
+public class LocaleConfigPanelTest extends AbstractMainConfigTest {
+    @Test
+    public void shouldSubmit() {
+        startPage();
 
         tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
 
         tester.clickLink("configTabs:tabs-container:tabs:1:link", true);
-		
-		FormTester miscFormTester = tester.newFormTester(AbstractMainConfigTest.FORM_PATH);
-		
-		miscFormTester.select("config.currency", 1);
-		miscFormTester.select("localeCountry", 0);
-		miscFormTester.select("localeLanguage", 0);
+
+        FormTester miscFormTester = tester.newFormTester(AbstractMainConfigTest.FORM_PATH);
+
+        miscFormTester.select("config.currency", 1);
+        miscFormTester.select("localeCountry", 0);
+        miscFormTester.select("localeLanguage", 0);
 
         tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":submitButton", "onclick");
-		
-		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), getConfigStub().getCurrency());
-		assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), getConfigStub().getFormattingLocale());
-	}
+
+        assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), config.getCurrency());
+        assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), config.getFormattingLocale());
+
+        verify(configService).persistConfiguration(config);
+    }
 }
