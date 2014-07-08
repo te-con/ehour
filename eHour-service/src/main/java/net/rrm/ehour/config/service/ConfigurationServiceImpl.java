@@ -59,9 +59,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
 
-    /* (non-Javadoc)
-      * @see net.rrm.ehour.persistence.persistence.config.service.ConfigurationService#persistExcelLogo(net.rrm.ehour.persistence.persistence.value.ImageLogo)
-      */
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
     public void persistExcelLogo(ImageLogo logo) {
@@ -225,14 +222,10 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     @Override
-    public List<Configuration> findAllConfiguration
-            () {
+    public List<Configuration> findAllConfiguration() {
         return configDAO.findAll();
     }
 
-    /* (non-Javadoc)
-    * @see net.rrm.ehour.persistence.persistence.config.service.ConfigService#persistConfiguration(java.util.List)
-    */
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
     public void persistConfiguration(EhourConfig config) {
