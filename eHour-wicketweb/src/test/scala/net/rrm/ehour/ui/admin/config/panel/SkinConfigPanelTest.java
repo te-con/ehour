@@ -18,26 +18,23 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
+import net.rrm.ehour.persistence.value.ImageLogo;
 import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
 import org.apache.wicket.markup.html.form.Form;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created on Apr 22, 2009, 4:19:36 PM
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-@SuppressWarnings("serial")
 public class SkinConfigPanelTest extends AbstractMainConfigTest {
     @Test
     public void shouldSubmit() {
-        BinaryConfigurationDao binConfigDao = mock(BinaryConfigurationDao.class);
-        configService.setBinConfigDAO(binConfigDao);
-
-        when(binConfigDao.findById("excelHeaderLogo")).thenReturn(null);
+        when(configService.getExcelLogo()).thenReturn(new ImageLogo());
         startPage();
 
         tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
