@@ -36,6 +36,8 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
     private EhourWebSession session;
     private Roles authorizedRoles = null;
 
+    private Boolean enableBookWholeWeek = true;
+
     /**
      * When not authorized, just let it pass
      */
@@ -75,5 +77,14 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 
     @Override
     protected void registerEhourHomeResourceLoader() {
+    }
+
+    @Override
+    public Boolean isEnableBookWholeWeek() {
+        return enableBookWholeWeek;
+    }
+
+    public void setEnableBookWholeWeek(Boolean enableBookWholeWeek) {
+        this.enableBookWholeWeek = enableBookWholeWeek;
     }
 }

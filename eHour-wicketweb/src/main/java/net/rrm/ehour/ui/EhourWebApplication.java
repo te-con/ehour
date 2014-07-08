@@ -87,6 +87,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     @Value("${ehour.disableAuth:false}")
     private Boolean disableAuth;
+
+    @Value("${ehour.enableBookWholeWeek:true}")
+    private Boolean enableBookWholeWeek;
+
     private String build;
 
     public void init() {
@@ -311,5 +315,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     public String getBuild() {
         return build;
+    }
+
+    public Boolean isEnableBookWholeWeek() {
+        return enableBookWholeWeek;
     }
 }

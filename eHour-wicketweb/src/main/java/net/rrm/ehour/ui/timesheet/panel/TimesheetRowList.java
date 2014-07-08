@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.timesheet.panel;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -83,7 +84,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         final TimesheetRow row = item.getModelObject();
         ProjectAssignment assignment = row.getProjectAssignment();
 
-        item.add(createBookWholeWeekLink(row));
+        item.add(createBookWholeWeekLink(row, "bookWholeWeek"));
         item.add(new Label("project", assignment.getProject().getName()));
         Label role = new Label("role", String.format("(%s)", assignment.getRole()));
         role.setVisible(StringUtils.isNotBlank(assignment.getRole()));
@@ -94,8 +95,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         item.add(createTotalHoursLabel(row));
     }
 
-    private AjaxLink<Void> createBookWholeWeekLink(final TimesheetRow row) {
-        AjaxLink<Void> projectLink = new AjaxLink<Void>("bookWholeWeek") {
+    private Component createBookWholeWeekLink(final TimesheetRow row, final String bookWholeWeek) {
+        final AjaxLink<Void> link = new AjaxLink<Void>(bookWholeWeek) {
             private static final long serialVersionUID = -663239917205218384L;
 
             @Override
@@ -104,8 +105,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                 target.add(form);
             }
         };
-
-        return projectLink;
+        link.setVisible(EhourWebApplication.get().isEnableBookWholeWeek());
+        return link;
     }
 
     private Label createStatusLabel(ListItem<TimesheetRow> item) {
