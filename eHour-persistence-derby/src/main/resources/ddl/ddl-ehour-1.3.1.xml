@@ -209,21 +209,30 @@
 	</table>
 
     <table name="timesheet_lock">
-        <column name="LOCK_ID" primaryKey="true" required="true" type="INTEGER"
-                size="10" autoIncrement="true" />
-        <column name="DATE_START" primaryKey="true" required="true"
-                type="DATE" autoIncrement="false" />
-        <column name="DATE_END" primaryKey="true" required="true"
-                type="DATE" autoIncrement="false" />
-        <column name="NAME" primaryKey="false" required="false" type="VARCHAR"
-                size="128" autoIncrement="false" />
+        <column name="LOCK_ID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true" />
+        <column name="DATE_START" primaryKey="false" required="true" type="DATE" autoIncrement="false" />
+        <column name="DATE_END" primaryKey="false" required="true" type="DATE" autoIncrement="false" />
+        <column name="NAME" primaryKey="false" required="false" type="VARCHAR" size="128" autoIncrement="false" />
         <index name="LOCK_DATE">
             <index-column name="DATE_START" />
             <index-column name="DATE_END" />
         </index>
-        <index name="LOCK_ID">
+    </table>
+
+    <table name="timesheet_lock_exclusion">
+        <column name="LOCK_ID" primaryKey="true" required="true" type="INTEGER" size="10"/>
+        <column name="USER_ID" primaryKey="true" required="true" type="INTEGER" size="10"/>
+        <index name="IDX_LOCK_ID">
             <index-column name="LOCK_ID" />
         </index>
+
+        <foreign-key foreignTable="timesheet_lock" name="FK_EXCLUSION_LOCK">
+            <reference local="LOCK_ID" foreign="LOCK_ID" />
+        </foreign-key>
+
+        <foreign-key foreignTable="users" name="FK_EXCLUSION_USER">
+            <reference local="USER_ID" foreign="USER_ID" />
+        </foreign-key>
     </table>
 
 	<table name="user_department">

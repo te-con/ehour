@@ -3,15 +3,20 @@ package net.rrm.ehour.domain;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "TIMESHEET_LOCK")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
     private static final long serialVersionUID = 2546435367535412269L;
 
@@ -31,6 +36,13 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
     @Column(name = "NAME")
     private String name;
 
+    @ManyToMany(targetEntity = User.class, cascade = CascadeType.REFRESH)
+    @JoinTable(name = "TIMESHEET_LOCK_EXCLUSION",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "LOCK_ID"))
+    @Transient
+    private List<User> excludedUsers;
+
     public TimesheetLock() {
     }
 
@@ -48,8 +60,6 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
         this(dateStart, dateEnd, name);
         this.lockId = lockId;
     }
-
-
 
     public Integer getLockId() {
         return lockId;
@@ -81,6 +91,14 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<User> getExcludedUsers() {
+        return excludedUsers;
+    }
+
+    public void setExcludedUsers(List<User> excludedUsers) {
+        this.excludedUsers = excludedUsers;
     }
 
     @Override
