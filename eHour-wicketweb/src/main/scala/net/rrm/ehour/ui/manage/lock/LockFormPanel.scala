@@ -2,6 +2,7 @@ package net.rrm.ehour.ui.manage.lock
 
 import java.util.Date
 
+import net.rrm.ehour.domain.User
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder
 import net.rrm.ehour.ui.common.component._
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator
@@ -52,6 +53,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
         attributes.getAjaxCallListeners.add(new LoadingSpinnerDecorator)
       }
     }
+
     startDate.add(onChangeAjaxBehavior)
     form.add(startDate)
     startDate.add(new ValidatingFormComponentAjaxBehavior)
@@ -94,6 +96,12 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     val label = new Label(LockFormPanel.ServerMessageId, model)
     label.setOutputMarkupPlaceholderTag(true)
     label
+  }
+
+  def createUserSelection(id: String) = {
+    new Model
+
+    new GroupableListMultipleChoice[User](id, Eh)
   }
 }
 

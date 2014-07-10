@@ -13,7 +13,7 @@
             <table class="contentTable">
                 <tr>
                     <td valign="top">
-                        <wicket:message key="op.lock.admin.form.chooseDate.label" /> :
+                        <wicket:message key="op.lock.admin.form.chooseDate.label" />:
                     </td>
                     <td>
                         <input style="width: 7em; clear: both" type="text" wicket:id="startDate">
@@ -24,6 +24,7 @@
                         <span wicket:id="endDateValidationError"></span>
                     </td>
                 </tr>
+
                 <tr>
                     <td valign="top">
                         <wicket:message key="op.lock.admin.name.label" />:
@@ -36,6 +37,20 @@
                 <tr>
                     <td colspan="2"><br /></td>
                 </tr>
+
+                <tr>
+                    <td valign="top">
+                        Excluded users:
+                    </td>
+                    <td>
+                        <select class="textInputSmall" wicket:id="excludedUsers"></select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><br /></td>
+                </tr>
+
 
                 <tr>
                     <td>

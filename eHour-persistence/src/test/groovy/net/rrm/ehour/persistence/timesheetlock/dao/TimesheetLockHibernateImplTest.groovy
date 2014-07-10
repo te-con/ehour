@@ -18,7 +18,6 @@ class TimesheetLockHibernateImplTest extends AbstractAnnotationDaoTest {
     @Autowired
     private UserDao userDao;
 
-
     TimesheetLockHibernateImplTest() {
         super("dataset-timesheetlock.xml")
     }
