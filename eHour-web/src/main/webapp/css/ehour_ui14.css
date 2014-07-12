@@ -1,0 +1,84 @@
+body {
+	color: white;
+	  font: 1.3em Geneva, Arial, Helvetica, sans-serif;
+}
+
+.outer-container {
+	border-radius: 14px;
+	border: 1px solid #f8f8f8;
+	background: #f8f8f8;
+	width: 450px;
+	margin-left: auto;
+	margin-right: auto;
+
+	margin-top: 10%;
+}
+
+.inner-container {
+	margin: 15px 25px 15px 25px;
+
+	padding: 10px;
+
+	border-radius: 14px;
+	border: 0px solid transparent;
+
+	background: #b1cbe5; /* Old browsers */
+	background: -moz-linear-gradient(left,  #b1cbe5 0%, #a6c0da 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#b1cbe5), color-stop(100%,#a6c0da)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  #b1cbe5 0%,#a6c0da 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  #b1cbe5 0%,#a6c0da 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  #b1cbe5 0%,#a6c0da 100%); /* IE10+ */
+	background: linear-gradient(to right,  #b1cbe5 0%,#a6c0da 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b1cbe5', endColorstr='#a6c0da',GradientType=1 ); /* IE6-9 */
+}
+
+.content {
+	padding: 10px;
+	width: inherit;
+}
+
+.logo {
+	text-align: center;
+}
+
+.logo .version {
+	padding-left: 2.4em;
+	font-size: 1em;
+}
+
+.login-form {
+	padding-top: 5px;
+}
+
+input {
+	height: 2em !important;
+	border: 1px solid #9abbd9 !important;
+	color: #233e55 !important;
+}
+
+input:focus {
+	border: 1px solid #7f9ab3 !important;
+}
+
+.form-input {
+	padding-left: 2px !important;
+}
+
+.submit {
+	text-align: right;
+}
+
+.submit .button {
+	background: transparent;
+	color:white;
+	border-color: #f0f0f0;
+}
+
+.submit .button:hover {
+	background-color: #afcae5;
+	border-color: #eeeeee;
+}
+
+.error {
+	color: #ff3333;
+}
