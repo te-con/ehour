@@ -59,6 +59,26 @@ public class Login extends WebPage {
 
         setupForm();
 
+        String version = EhourWebApplication.get().getVersion();
+
+        if (version != null && version.contains("SNAPSHOT")) {
+            version = String.format("%s beta", version.substring(0, version.indexOf("-SNAPSHOT")));
+
+            add(new Label("build", String.format("build %s", EhourWebApplication.get().getBuild())));
+        } else {
+            Label build = new Label("build", "");
+            build.setVisible(false);
+            add(build);
+        }
+
+
+
+        add(new Label("version", version));
+
+        FeedbackPanel feedback = new LoginFeedbackPanel("feedback");
+        feedback.setMaxMessages(1);
+        add(feedback);
+
         super.onBeforeRender();
     }
 
@@ -66,6 +86,8 @@ public class Login extends WebPage {
         addOrReplace(new Label("pageTitle", new ResourceModel("login.login.header")));
 
         addOrReplace(new SignInForm("loginform", new SimpleUser()));
+
+
     }
 
     private void redirectToHomepage(EhourWebSession session) {
@@ -85,11 +107,6 @@ public class Login extends WebPage {
 
         public SignInForm(String id, SimpleUser model) {
             super(id, new CompoundPropertyModel<SimpleUser>(model));
-
-            FeedbackPanel feedback = new LoginFeedbackPanel("feedback");
-            feedback.setMaxMessages(1);
-            add(feedback);
-
             usernameInput = new RequiredTextField<String>("username");
             usernameInput.setMarkupId("username");
             usernameInput.setOutputMarkupId(true);
@@ -101,23 +118,9 @@ public class Login extends WebPage {
             add(password);
 
             // layout is off when feedback panel uses its space
-            Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
-            add(demoMode);
-            demoMode.setVisible(EhourWebSession.getEhourConfig().isInDemoMode());
-
-            String version = EhourWebApplication.get().getVersion();
-
-            if (version != null && version.contains("SNAPSHOT")) {
-                version = String.format("%s beta", version.substring(0, version.indexOf("-SNAPSHOT")));
-
-                add(new Label("build", String.format("build %s", EhourWebApplication.get().getBuild())));
-            } else {
-                Label build = new Label("build", "");
-                build.setVisible(false);
-                add(build);
-            }
-
-            add(new Label("version", version));
+//            Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
+//            add(demoMode);
+//            demoMode.setVisible(EhourWebSession.getEhourConfig().isInDemoMode());
         }
 
         @Override
