@@ -116,10 +116,9 @@ public class Login extends WebPage {
             password.setOutputMarkupId(true);
             add(password);
 
-            // layout is off when feedback panel uses its space
-//            Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
-//            add(demoMode);
-//            demoMode.setVisible(EhourWebSession.getEhourConfig().isInDemoMode());
+            Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
+            add(demoMode);
+            demoMode.setVisible(EhourWebSession.getEhourConfig().isInDemoMode());
         }
 
         @Override
