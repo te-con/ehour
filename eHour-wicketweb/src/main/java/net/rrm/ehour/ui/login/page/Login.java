@@ -73,19 +73,18 @@ public class Login extends WebPage {
 
         add(new Label("version", version));
 
-        FeedbackPanel feedback = new LoginFeedbackPanel("feedback");
-        feedback.setMaxMessages(1);
-        add(feedback);
-
         super.onBeforeRender();
     }
 
     private void setupForm() {
         addOrReplace(new Label("pageTitle", new ResourceModel("login.login.header")));
 
-        addOrReplace(new SignInForm("loginform", new SimpleUser()));
+        SignInForm loginForm = new SignInForm("loginform", new SimpleUser());
+        addOrReplace(loginForm);
 
-
+        FeedbackPanel feedback = new LoginFeedbackPanel("feedback");
+        feedback.setMaxMessages(1);
+        loginForm.add(feedback);
     }
 
     private void redirectToHomepage(EhourWebSession session) {
