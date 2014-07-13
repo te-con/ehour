@@ -28,92 +28,71 @@
     <meta name="msapplication-config" content="/browserconfig.xml">
 
     <title wicket:id="pageTitle">eHour</title>
-    <link rel="stylesheet" type="text/css" href="css/ehour.css"/>
-    <link rel="stylesheet" type="text/css" href="css/ehourLogin.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/ehour_ui14.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/font-awesome/css/font-awesome.css"/>
+    <script type="text/javascript" src="/assets/bootstrap/js/bootstrap.min.js"></script>
 </wicket:head>
 
 <body>
 
-<form wicket:id="loginform" style="padding-top: 100px;">
-    <div class="GreyFrameContainer loginContainer">
-        <h3>&nbsp;</h3>
+<div class="outer-container">
+    <div class="inner-container">
+        <div class="container content">
+            <div class="row">
+                <div class="col-sm-1">&nbsp;</div>
+                <div class="col-sm-10 logo">
+                    <img src="/img/14/ehour_large.png" width="323" alt="eHour"> <br/>
 
-        <div class="GreyFrameBody wideGreyFrame">
-            <div class="GreyBlueFrameHorizontal">
-                <div class="GreyBlueLeftTop">
-                    <div class="GreyBlueRightTop">
-                        &nbsp;
-                    </div>
-                </div>
-
-                <div style="padding: 10px">
-                    <br />
-                    <div class="logoContainer">
-                        <img src="img/ehour_grey.gif"/><br/>
-
-                        <div style="padding-right: 6px" wicket:id="version">0.8.0</div>
-                        <div style="padding-right: 6px;font-size:70%" wicket:id="build">489</div>
-                    </div>
-
-                    <div style="float: left;padding: 7px 23px 0 9px">
-                        <img src="img/grey_frame/pixel_grey.gif" height="70" width="1"/>
-                    </div>
-
-                    <div style="margin: 0; padding: 30px 0 0 0">
-                        <table cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td style="padding-right:5px">
-                                    <wicket:message key="login.login.username"/>
-                                </td>
-                                <td><input size="23" autocomplete="off"
-                                           onfocus='this.setAttribute("autocomplete", "on");'
-                                           onblur='this.setAttribute("autocomplete", "off");' wicket:id="username"
-                                           type="text"/></td>
-                                <td>&nbsp;</td>
-                            </tr>
-
-                            <tr>
-                                <td style="padding-right:5px">
-                                    <wicket:message key="login.login.password"/>
-                                </td>
-                                <td><input size="23" wicket:id="password" type="password"/></td>
-                                <td style="padding-left:10px">
-                                    <button class="submitButton" type="submit">
-                                        <wicket:message key="login.login.submit"/>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="3">
-                                    <div wicket:id="feedback" class="error"></div>
-                                    <div wicket:id="demoMode" class="error"></div>
-                                </td>
-                            </tr>
-                        </table>
-
-                    </div>
-                </div>
-
-
-                <br/>
-
-
-                <div class="GreyBlueLeftBottom">
-                    <div class="GreyBlueRightBottom">
-                        &nbsp;
+                    <div class="version">
+                        <wicket:container wicket:id="version" /><br />
+                        <wicket:container wicket:id="build" />
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="GreyFrameFooter">
-            <p/>
+            <div class="row login-form">
+                <div class="col-sm-1">&nbsp;</div>
+                <div class="col-sm-10 login-form-container">
+
+                    <form class="form" role="form" wicket:id="loginform">
+                        <div class="form-group">
+                            <div class="col-sm-12 form-input">
+                                <input type="text" class="form-control" wicket:id="username"
+                                       wicket:message="placeholder:login.login.username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 form-input">
+                                <input type="password" class="form-control" wicket:id="password"
+                                       wicket:message="placeholder:login.login.password">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <wicket:enclosure child="feedback">
+                <div class="row">
+                    <div class="col-sm-1">&nbsp;</div>
+                    <div class="col-sm-10">
+                        <i class="error fa fa-warning"></i> <span wicket:id="feedback"/>
+                    </div>
+                </div>
+            </wicket:enclosure>
+
+            <br/>
+
+            <div class="row">
+                <div class="col-sm-11 login-form submit">
+                    <button class="btn btn-default button">
+                        <wicket:message key="login.login.submit"/>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
-</form>
-
-
+</div>
 
 </body>
 </html>

@@ -71,8 +71,6 @@ public class Login extends WebPage {
             add(build);
         }
 
-
-
         add(new Label("version", version));
 
         FeedbackPanel feedback = new LoginFeedbackPanel("feedback");
@@ -125,7 +123,6 @@ public class Login extends WebPage {
 
         @Override
         protected void onSubmit() {
-
             SimpleUser user = getModelObject();
             String username = user.getUsername();
             String password = user.getPassword();
