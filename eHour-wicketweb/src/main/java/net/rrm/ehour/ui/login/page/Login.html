@@ -51,11 +51,10 @@
                 </div>
             </div>
 
-            <div class="row login-form">
-                <div class="col-sm-1">&nbsp;</div>
-                <div class="col-sm-10 login-form-container">
-
-                    <form class="form" role="form" wicket:id="loginform">
+            <form class="form" role="form" wicket:id="loginform">
+                <div class="row login-form">
+                    <div class="col-sm-1">&nbsp;</div>
+                    <div class="col-sm-10 login-form-container">
                         <div class="form-group">
                             <div class="col-sm-12 form-input">
                                 <input type="text" class="form-control" wicket:id="username"
@@ -68,28 +67,26 @@
                                        wicket:message="placeholder:login.login.password">
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-
-            <wicket:enclosure child="feedback">
-                <div class="row">
-                    <div class="col-sm-1">&nbsp;</div>
-                    <div class="col-sm-10">
-                        <i class="error fa fa-warning"></i> <span wicket:id="feedback"/>
                     </div>
                 </div>
-            </wicket:enclosure>
 
-            <br/>
+                <wicket:enclosure child="feedback">
+                    <div class="row">
+                        <div class="col-sm-1">&nbsp;</div>
+                        <div class="col-sm-10">
+                            <i class="error fa fa-warning"></i> <span wicket:id="feedback"/>
+                        </div>
+                    </div>
+                </wicket:enclosure>
 
-            <div class="row">
-                <div class="col-sm-11 login-form submit">
-                    <button class="btn btn-default button">
-                        <wicket:message key="login.login.submit"/>
-                    </button>
+                <div class="row">
+                    <div class="col-sm-11 login-form submit">
+                        <button class="btn btn-default button">
+                            <wicket:message key="login.login.submit"/>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
