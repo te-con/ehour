@@ -52,10 +52,6 @@ body {
     padding: 0 0 0 0.5em;
 }
 
-.login-form {
-    padding-top: 2em;
-}
-
 input {
     height: 2em !important;
     border: 1px solid #9abbd9 !important;
@@ -93,4 +89,5 @@ input:focus {
 
 .error {
     color: #ff3333;
+    padding-top: 2em;
 }

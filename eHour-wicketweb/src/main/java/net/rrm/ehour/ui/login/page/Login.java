@@ -49,7 +49,9 @@ public class Login extends WebPage {
     private AuthUtil authUtil;
 
     @Override
-    protected void onBeforeRender() {
+    protected void onInitialize() {
+        super.onInitialize();
+
         EhourWebSession session = EhourWebSession.getSession();
 
         if (session.isSignedIn()) {
@@ -64,11 +66,11 @@ public class Login extends WebPage {
         if (version != null && version.contains("SNAPSHOT")) {
             version = String.format("%s beta", version.substring(0, version.indexOf("-SNAPSHOT")));
 
-            add(new Label("build", String.format("build %s", EhourWebApplication.get().getBuild())));
+            addOrReplace(new Label("build", String.format("build %s", EhourWebApplication.get().getBuild())));
         } else {
             Label build = new Label("build", "");
             build.setVisible(false);
-            add(build);
+            addOrReplace(build);
         }
 
         add(new Label("version", version));

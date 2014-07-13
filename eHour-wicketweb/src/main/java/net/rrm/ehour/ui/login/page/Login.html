@@ -31,7 +31,6 @@
     <link rel="stylesheet" type="text/css" href="/assets/bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/css/ehour_ui14.css"/>
     <link rel="stylesheet" type="text/css" href="/assets/font-awesome/css/font-awesome.css"/>
-    <script type="text/javascript" src="/assets/bootstrap/js/bootstrap.min.js"></script>
 </wicket:head>
 
 <body>
@@ -52,6 +51,13 @@
             </div>
 
             <form class="form" role="form" wicket:id="loginform">
+                <div class="row">
+                    <div class="col-sm-1">&nbsp;</div>
+                    <div class="col-sm-10">
+                        <span wicket:id="feedback"/>
+                    </div>
+                </div>
+
                 <div class="row login-form">
                     <div class="col-sm-1">&nbsp;</div>
                     <div class="col-sm-10 login-form-container">
@@ -69,15 +75,6 @@
                         </div>
                     </div>
                 </div>
-
-                <wicket:enclosure child="feedback">
-                    <div class="row">
-                        <div class="col-sm-1">&nbsp;</div>
-                        <div class="col-sm-10">
-                            <i class="error fa fa-warning"></i> <span wicket:id="feedback"/>
-                        </div>
-                    </div>
-                </wicket:enclosure>
 
                 <div class="row">
                     <div class="col-sm-11 login-form submit">
