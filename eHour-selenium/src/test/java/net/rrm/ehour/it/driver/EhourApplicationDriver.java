@@ -29,7 +29,7 @@ public class EhourApplicationDriver {
         findElement(WicketBy.wicketPath("loginform_username")).clear();
         findElement(WicketBy.wicketPath("loginform_username")).sendKeys(user.name);
         findElement(WicketBy.wicketPath("loginform_password")).sendKeys(user.password);
-        findElement(By.cssSelector("button.submitButton")).click();
+        findElement(By.id("loginSubmit")).click();
 
         assertTrue(findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Signed in as[\\s\\S]*$"));
     }

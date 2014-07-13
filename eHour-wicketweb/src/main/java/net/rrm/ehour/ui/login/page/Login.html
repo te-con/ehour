@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="col-sm-1">&nbsp;</div>
                 <div class="col-sm-10 logo">
-                    <img src="/img/14/ehour_large.png" width="323" alt="eHour"> <br/>
+                    <img src="/img/14/ehour_large.png" width="324" height="113" alt="eHour"> <br/>
 
                     <div class="version">
                         <wicket:container wicket:id="version" /><br />
@@ -53,10 +53,14 @@
             <form class="form" role="form" wicket:id="loginform">
                 <div class="row">
                     <div class="col-sm-1">&nbsp;</div>
-                    <div class="col-sm-10">
-                        <span wicket:id="feedback"/>
-                    </div>
+                    <div class="col-sm-10" wicket:id="feedback"></div>
                 </div>
+
+                <div class="row">
+                    <div class="col-sm-1">&nbsp;</div>
+                    <div class="col-sm-10" wicket:id="demoMode"></div>
+                </div>
+
 
                 <div class="row login-form">
                     <div class="col-sm-1">&nbsp;</div>
@@ -76,9 +80,11 @@
                     </div>
                 </div>
 
+
+
                 <div class="row">
                     <div class="col-sm-11 login-form submit">
-                        <button class="btn btn-default button">
+                        <button class="btn btn-default button" id="loginSubmit">
                             <wicket:message key="login.login.submit"/>
                         </button>
                     </div>
