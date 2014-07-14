@@ -56,7 +56,13 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
       }
 
       form.add(link)
-      form.add(new Container(LockFormPanel.AffectedContainerId))
+
+      val container = getPage match {
+        case p: LockManagePage if p.affectedUsersShown => new LockAffectedUsersPanel(LockFormPanel.AffectedContainerId, model)
+        case _ => new Container(LockFormPanel.AffectedContainerId)
+      }
+
+      form.add(container)
     }
 
     def createSubmitButton: NonDemoAjaxButton = {
@@ -100,6 +106,11 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
       new LockAffectedUsersPanel(LockFormPanel.AffectedContainerId, model)
 
     updatePanel(form, target, replacement)
+
+    getPage match {
+      case p: LockManagePage => p.affectedUsersShown = isShowingAffectedUsersPanel(form)
+      case _ =>
+    }
   }
 
   private def updatePanel(form: Form[_], target: AjaxRequestTarget, replacement: WebMarkupContainer) {

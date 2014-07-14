@@ -36,6 +36,8 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
 
   var view: EntrySelectorListView[TimesheetLock] = _
 
+  var affectedUsersShown = false
+
   @SpringBean
   protected var lockService: TimesheetLockService = _
 
