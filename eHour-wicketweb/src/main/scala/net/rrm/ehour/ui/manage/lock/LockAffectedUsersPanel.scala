@@ -27,20 +27,17 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
   override def onBeforeRender(): Unit = {
     super.onBeforeRender()
 
-    val greyBorder = new GreyRoundedBorder(LockAffectedUsersPanel.GreyBorderId, new ResourceModel("op.lock.admin.affectedUsers.headers"))
-    addOrReplace(greyBorder)
-
     val blueBorder = new GreyBlueRoundedBorder(LockAffectedUsersPanel.BorderId)
     blueBorder.setOutputMarkupId(true)
-    greyBorder.addOrReplace(blueBorder)
+    addOrReplace(blueBorder)
 
     val domainObject = getPanelModelObject.getDomainObject
     val affectedUsers = lockService.findAffectedUsers(domainObject.getDateStart, domainObject.getDateEnd)
 
     val affectedUserDetailsModel = Model(AffectedUser())
 
-    val details: Container = createProjectList(affectedUserDetailsModel)
-    greyBorder.addOrReplace(details)
+    val details = createProjectList(affectedUserDetailsModel)
+    addOrReplace(details)
 
     val repeater = new ListView[AffectedUser](LockAffectedUsersPanel.AffectedUsersId, toJava(affectedUsers)) {
       def populateItem(item: ListItem[AffectedUser]) {

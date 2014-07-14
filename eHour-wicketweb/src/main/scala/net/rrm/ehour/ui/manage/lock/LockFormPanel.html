@@ -42,14 +42,22 @@
                     <td valign="top">
                         Excluded users:
                     </td>
-                    <td>
-                        <select class="textInputSmall" wicket:id="excludedUsers"></select>
+                    <td wicket:id="excludedUsers">
                     </td>
                 </tr>
 
                 <tr>
                     <td colspan="2"><br /></td>
                 </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <a wicket:id="showAffected">Click to show affected users</a><br />
+
+                        <span wicket:id="affectedContainer"></span>
+                    </td>
+                </tr>
+
 
 
                 <tr>

@@ -47,7 +47,7 @@ class MultiUserSelect(id: String) extends AbstractBasePanel[Unit](id) with Filte
     selectedContainer.addOrReplace(createSelectedUserView(SelectedUsersListId, new ListModel[User](Lists.newArrayList())))
   }
 
-  private[multiselect] def selectedContainer = get(SelectedContainerId)
+  private def selectedContainer =  get(SelectedContainerId)
 
   def selectedUsers = selectedContainer.get(SelectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
 

@@ -16,7 +16,7 @@ import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.list.ListItem
 import org.apache.wicket.markup.html.panel.{Fragment, Panel}
-import org.apache.wicket.model.{IModel, ResourceModel}
+import org.apache.wicket.model.{Model, IModel, ResourceModel}
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.joda.time.DateTime
@@ -91,15 +91,15 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
 
     event.getPayload match {
       case event: LockAddedEvent =>
-        val lock = event.bean.getDomainObject
+        val lock = event.lock
         lockService.createNew(Option.apply(lock.getName), lock.getDateStart, lock.getDateEnd)
         update(event)
       case event: LockEditedEvent =>
-        val lock = event.bean.getDomainObject
+        val lock = event.lock
         lockService.updateExisting(lock.getLockId, lock.getDateStart, lock.getDateEnd, lock.getName)
         update(event)
       case event: UnlockedEvent =>
-        val lock = event.bean.getDomainObject
+        val lock = event.lock
         lockService.deleteLock(lock.getLockId)
         update(event)
       case _ =>
@@ -114,9 +114,9 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
 
   protected def getNewEditBaseBackingBean: LockAdminBackingBean = new LockAdminBackingBean(new TimesheetLock())
 
-  protected def getBaseAddPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getAddBackingBean)
+  protected def getBaseAddPanel(panelId: String): Panel = new LockFormPanel(panelId, new Model(getTabbedPanel.getAddBackingBean))
 
-  protected def getBaseEditPanel(panelId: String): Panel = new LockFormContainer(panelId, getTabbedPanel.getEditBackingBean)
+  protected def getBaseEditPanel(panelId: String): Panel = new LockFormPanel(panelId, new Model(getTabbedPanel.getEditBackingBean))
 
   override def renderHead(response: IHeaderResponse) {
     response.render(CssHeaderItem.forReference(Css))

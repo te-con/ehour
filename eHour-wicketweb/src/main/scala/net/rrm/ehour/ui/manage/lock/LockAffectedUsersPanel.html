@@ -7,50 +7,47 @@
 <body>
 
 <wicket:panel>
-    <div wicket:id="greyBorder" class="inline">
-        <div wicket:id="border" class="left inline">
-            <div class="listScroll affectedUsersList" id="listContents" style="width: 95%">
-                <table class="entrySelectorTable" cellpadding="0" cellspacing="0" style="width: 95%">
-                    <thead>
-                    <tr>
-                        <th><wicket:message key="op.lock.admin.affectedUsers.name.label" /></th>
-                        <th class="alignRight"><wicket:message key="op.lock.admin.affectedUsers.hours.label" /></th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr class="filterRow" wicket:id="affectedUsers">
-                        <td wicket:id="user"></td>
-                        <td class="alignRight" wicket:id="hours"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="adminForm" style="margin-top: 20px" wicket:id="projectContainer">
-            <table class="contentTable" style="width:92%;margin-left: 1em">
+    <div wicket:id="border" class="left inline">
+        <div class="listScroll affectedUsersList" id="listContents" style="width: 95%">
+            <table class="entrySelectorTable" cellpadding="0" cellspacing="0" style="width: 95%">
                 <thead>
-                <tr class="projectHeader">
-                    <th>
-                        <wicket:message key="op.lock.admin.affectedUsers.project.label" />
-                    </th>
-                    <th class="alignRight">
-                        <wicket:message key="op.lock.admin.affectedUsers.hours.label" />
-                    </th>
+                <tr>
+                    <th><wicket:message key="op.lock.admin.affectedUsers.name.label" /></th>
+                    <th class="alignRight"><wicket:message key="op.lock.admin.affectedUsers.hours.label" /></th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr class="row" wicket:id="projects">
-                    <td wicket:id="project">341</td>
-                    <td wicket:id="hours" class="alignRight">123</td>
+                <tr class="filterRow" wicket:id="affectedUsers">
+                    <td wicket:id="user"></td>
+                    <td class="alignRight" wicket:id="hours"></td>
                 </tr>
-
                 </tbody>
             </table>
         </div>
+    </div>
 
+    <div class="adminForm" style="margin-top: 20px" wicket:id="projectContainer">
+        <table class="contentTable" style="width:92%;margin-left: 1em">
+            <thead>
+            <tr class="projectHeader">
+                <th>
+                    <wicket:message key="op.lock.admin.affectedUsers.project.label" />
+                </th>
+                <th class="alignRight">
+                    <wicket:message key="op.lock.admin.affectedUsers.hours.label" />
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr class="row" wicket:id="projects">
+                <td wicket:id="project">341</td>
+                <td wicket:id="hours" class="alignRight">123</td>
+            </tr>
+
+            </tbody>
+        </table>
     </div>
 </wicket:panel>
 
