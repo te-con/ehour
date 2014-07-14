@@ -82,6 +82,10 @@ input:focus {
     border-color: #f0f0f0;
 }
 
+.btn:hover, .btn:active, .btn:focus {
+    outline: none !important;
+}
+
 .submit .button:hover {
     background-color: #afcae5;
     border-color: #eeeeee;
