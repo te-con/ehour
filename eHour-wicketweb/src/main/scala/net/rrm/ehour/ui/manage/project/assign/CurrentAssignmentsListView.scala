@@ -6,6 +6,7 @@ import net.rrm.ehour.domain.{Project, ProjectAssignment}
 import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
+import net.rrm.ehour.ui.common.panel.multiselect.{Highlights, Filterable}
 import net.rrm.ehour.ui.common.wicket.AjaxLink._
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import net.rrm.ehour.ui.common.wicket.{AjaxLink, DateLabel, Event, NonEmptyLabel}
@@ -22,10 +23,12 @@ import org.apache.wicket.model.{IModel, PropertyModel}
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivate: Boolean = false) extends AbstractBasePanel[ProjectAdminBackingBean](id, model) {
+class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivate: Boolean = false)
+  extends AbstractBasePanel[ProjectAdminBackingBean](id, model) with Filterable with Highlights {
   val Self = this
-  val HighlightJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listHighlight.js")
-  val FilterJs = new JavaScriptResourceReference(classOf[CurrentAssignmentsListView], "listFilter.js")
+  override def listFilterId = "#filterAssignmentInput"
+  override def listId = ".assignmentList"
+
 
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
@@ -98,15 +101,6 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
   private def fetchProjectAssignments(project: Project) = if (project.getPK == null) List() else toScala(assignmentService.getProjectAssignmentsAndCheckDeletability(project))
 
   private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
-
-  override def renderHead(response: IHeaderResponse) {
-    response.render(JavaScriptHeaderItem.forReference(HighlightJs))
-    response.render(JavaScriptHeaderItem.forReference(FilterJs))
-
-    response.render(OnDomReadyHeaderItem.forScript(applyJsFilter))
-  }
-
-  val applyJsFilter = "new ListFilter('#filterAssignmentInput', '.assignmentList');"
 }
 
 case class EditAssignmentEvent(assignment: ProjectAssignment, override val target: AjaxRequestTarget) extends Event(target)

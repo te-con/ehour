@@ -13,10 +13,6 @@
             <div class="filter floatLeft">
                 <input class="textInput searchInput" id="filterUserInput" type="text" placeholder="Filter..."/>
             </div>
-
-            <div class="floatRight">
-                <i class="fa fa-question-circle" wicket:id="help"></i>
-            </div>
         </div>
     </div>
 
@@ -30,7 +26,7 @@
                     <thead>
                     <tr>
                         <th>
-                            <wicket:message key="admin.project.assignments.allUsers"/>
+                            <wicket:message key="multiuserselect.availableUsers"/>
                         </th>
                     </tr>
                     </thead>
@@ -47,19 +43,19 @@
 
 
     <div class="floatRight">
-        <div wicket:id="affectedContainer" class="affectedContainer inline">
-            <div class="listScroll inline userList" id="affectedUsers">
+        <div wicket:id="selectedContainer" class="selectedContainer inline">
+            <div class="listScroll inline userList" id="selectedUsers">
                 <table class="entrySelectorTable">
                     <thead>
                     <tr>
-                        <th class="affectedUserHeader">
-                            <wicket:message key="admin.project.assignments.selectedUsers"/>
+                        <th class="selectedUserHeader">
+                            <wicket:message key="multiuserselect.selectedUsers"/>
                         </th>
                     </tr>
                     </thead>
 
                     <tbody>
-                    <tr wicket:id="affectedUsers" class="row">
+                    <tr wicket:id="selectedUsers" class="row">
                         <td class="name" wicket:id="name"></td>
                     </tr>
                     </tbody>

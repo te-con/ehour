@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.manage.project.assign
+package net.rrm.ehour.ui.common.panel.multiselect
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
@@ -6,7 +6,7 @@ import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util._
 import org.mockito.Mockito._
 
-class NewAssignmentUserListViewSpec extends AbstractSpringWebAppSpec {
+class MultiUserSelectSpec extends AbstractSpringWebAppSpec {
   val userService = mockService[UserService]
   val user = UserObjectMother.createUser()
 
@@ -17,49 +17,49 @@ class NewAssignmentUserListViewSpec extends AbstractSpringWebAppSpec {
     when(userService.getActiveUsers).thenReturn(toJava(List(user)))
   }
 
-  "New Assignment User List View Panel" should {
+  "MultiUser Select" should {
 
     "render" in {
-      tester.startComponentInPage(new NewAssignmentUserListView("id"))
+      tester.startComponentInPage(new MultiUserSelect("id"))
       tester.assertNoErrorMessage()
     }
 
     def clickFirstUser() { tester.executeAjaxEvent("id:allBorder:allBorder_body:users:0", "click") }
-    def deselectFirstAffectedUser() { tester.executeAjaxEvent("id:affectedContainer:affectedUsers:0", "click") }
+    def deselectFirstSelectedUser() { tester.executeAjaxEvent("id:selectedContainer:selectedUsers:0", "click") }
 
-    def firstSelectedUser(subject: NewAssignmentUserListView): User = subject.selectedAffectedUsers.getObject.get(0)
+    def firstSelectedUser(subject: MultiUserSelect): User = subject.selectedUsers.getObject.get(0)
 
     "select user" in {
-      val subject = new NewAssignmentUserListView("id")
+      val subject = new MultiUserSelect("id")
       tester.startComponentInPage(subject)
       clickFirstUser()
 
       firstSelectedUser(subject) should equal(user)
 
-      val affectedUserItemModel = tester.getComponentFromLastRenderedPage("id:affectedContainer:affectedUsers:0")
-      affectedUserItemModel.getDefaultModelObject should equal(user)
+      val selectedUserItemModel = tester.getComponentFromLastRenderedPage("id:selectedContainer:selectedUsers:0")
+      selectedUserItemModel.getDefaultModelObject should equal(user)
 
       tester.assertNoErrorMessage()
     }
 
     "deselect a previously selected user through the list of available users" in {
-      val subject = new NewAssignmentUserListView("id")
+      val subject = new MultiUserSelect("id")
       tester.startComponentInPage(subject)
       clickFirstUser()
       clickFirstUser()
 
-      subject.selectedAffectedUsers.getObject should be ('empty)
+      subject.selectedUsers.getObject should be ('empty)
 
       tester.assertNoErrorMessage()
     }
 
-    "deselect a previously selected user through the list of affected users" in {
-      val subject = new NewAssignmentUserListView("id")
+    "deselect a previously selected user through the list of selected users" in {
+      val subject = new MultiUserSelect("id")
       tester.startComponentInPage(subject)
       clickFirstUser()
-      deselectFirstAffectedUser()
+      deselectFirstSelectedUser()
 
-      subject.selectedAffectedUsers.getObject should be ('empty)
+      subject.selectedUsers.getObject should be ('empty)
 
       tester.assertNoErrorMessage()
     }
