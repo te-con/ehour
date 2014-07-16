@@ -51,13 +51,20 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
         this.dateEnd = dateEnd;
     }
 
-    public TimesheetLock(Date dateStart, Date dateEnd, String name) {
+    public TimesheetLock(Date dateStart, Date dateEnd, List<User> excludedUsers) {
         this(dateStart, dateEnd);
+        this.excludedUsers = excludedUsers;
+    }
+
+    public TimesheetLock(Date dateStart, Date dateEnd, String name, List<User> excludedUsers) {
+        this(dateStart, dateEnd, excludedUsers);
+
         this.name = name;
     }
 
-    public TimesheetLock(Integer lockId, Date dateStart, Date dateEnd, String name) {
-        this(dateStart, dateEnd, name);
+
+    public TimesheetLock(Integer lockId, Date dateStart, Date dateEnd, String name, List<User> excludedUsers) {
+        this(dateStart, dateEnd, name, excludedUsers);
         this.lockId = lockId;
     }
 

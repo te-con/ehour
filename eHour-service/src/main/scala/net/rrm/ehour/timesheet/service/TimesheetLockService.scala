@@ -1,10 +1,12 @@
 package net.rrm.ehour.timesheet.service
 
 import java.util.Date
+
 import java.{util => ju}
 
 import com.github.nscala_time.time.Imports._
 import com.github.nscala_time.time.TypeImports.{DateTime, Interval}
+import com.google.common.collect.Lists
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain.{Project, TimesheetEntry, TimesheetLock, User}
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
@@ -15,12 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-import scala.collection.JavaConversions._
-
 trait TimesheetLockService {
-  def createNew(name: Option[String] = None, startDate: Date, endDate: Date): TimesheetLock
+  def createNew(name: Option[String] = None, startDate: Date, endDate: Date, excludedUsers: ju.List[User]): TimesheetLock
 
-  def updateExisting(id: Int, startDate: Date, endDate: Date, name: String)
+  def updateExisting(id: Int, startDate: Date, endDate: Date, name: String, excludedUsers: ju.List[User]): TimesheetLock
 
   def deleteLock(id: Int)
 
@@ -51,10 +51,10 @@ object TimesheetLockService {
 class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, timesheetDao: TimesheetDao) extends TimesheetLockService {
 
   @Transactional
-  override def createNew(name: Option[String] = None, startDate: Date, endDate: Date): TimesheetLock = {
-    val lock = name match {
-      case Some(n) => new TimesheetLock(startDate, endDate, n)
-      case None => new TimesheetLock(startDate, endDate)
+  override def createNew(optionalName: Option[String] = None, startDate: Date, endDate: Date, excludedUsers: ju.List[User] = Lists.newArrayList()): TimesheetLock = {
+    val lock = optionalName match {
+      case Some(name) => new TimesheetLock(startDate, endDate, name, excludedUsers)
+      case None => new TimesheetLock(startDate, endDate, excludedUsers)
     }
 
     lockDao.persist(lock)
@@ -62,11 +62,11 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     lock
   }
 
-
   @Transactional
-  override def updateExisting(id: Int, startDate: Date, endDate: Date, name: String) {
-    val lock = new TimesheetLock(id, startDate, endDate, name)
-    lockDao.persist(lock)
+  override def updateExisting(id: Int, startDate: Date, endDate: Date, name: String, excludedUsers: ju.List[User]): TimesheetLock = {
+
+    val lock = new TimesheetLock (id, startDate, endDate, name, excludedUsers)
+    lockDao.persist (lock)
   }
 
   @Transactional
@@ -74,7 +74,7 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     lockDao.deleteOnId(id)
   }
 
-  private[service] def determineName(startDate: Date, endDate: Date):String = {
+  private[service] def determineName(startDate: Date, endDate: Date): String = {
     val start = new DateTime(startDate)
     val end = new DateTime(endDate)
 
@@ -82,8 +82,8 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     days / 7 match {
       case 1 => "Week %s" format DateTimeFormat.forPattern("w, yyyy").print(start)
       case 4 | 5 => DateTimeFormat.forPattern("MMMM, yyyy").print(start)
-      case 11 | 12 | 13 => "Quarter %d, %d" format ((start.getMonthOfYear / 3) + 1, start.getYear)
-      case _ => "%s - %s" format (DateTimeFormat.forPattern("dd MM yyyy").print(start), DateTimeFormat.forPattern("dd MM yyyy").print(end))
+      case 11 | 12 | 13 => "Quarter %d, %d" format((start.getMonthOfYear / 3) + 1, start.getYear)
+      case _ => "%s - %s" format(DateTimeFormat.forPattern("dd MM yyyy").print(start), DateTimeFormat.forPattern("dd MM yyyy").print(end))
     }
   }
 
@@ -94,6 +94,7 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     case null => None
   }
 
+  import scala.collection.JavaConversions._
   override def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval] = {
     implicit def dateToDateTime(d: Date): DateTime = LocalDate.fromDateFields(d).toDateTimeAtStartOfDay
 

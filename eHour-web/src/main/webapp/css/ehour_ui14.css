@@ -20,7 +20,7 @@ body {
     padding: 10px;
 
     border-radius: 14px;
-    border: 0px solid transparent;
+    border: 0 solid transparent;
 
     background: #b1cbe5; /* Old browsers */
     background: -moz-linear-gradient(left,  #b1cbe5 0%, #a6c0da 100%); /* FF3.6+ */

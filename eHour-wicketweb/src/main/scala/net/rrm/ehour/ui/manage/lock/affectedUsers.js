@@ -1,4 +1,4 @@
-function ListHighlight() {
+function AffectedListHighlight() {
     this.selectAndDeselectRest = function(toSelect) {
         $(".affectedUsersList").find(".filterRow").each(function (idx, element) {
             var row = $(element);
@@ -12,4 +12,4 @@ function ListHighlight() {
     }
 }
 
-var listHighlight = new ListHighlight();
+var affectedListHighlight = new AffectedListHighlight();

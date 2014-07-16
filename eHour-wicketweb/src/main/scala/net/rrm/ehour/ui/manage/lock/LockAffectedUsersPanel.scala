@@ -50,7 +50,7 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
           target => {
             affectedUserDetailsModel.setObject(affectedUser)
             target.add(details)
-            target.appendJavaScript("listHighlight.selectAndDeselectRest('%s')" format item.getMarkupId)
+            target.appendJavaScript("affectedListHighlight.selectAndDeselectRest('%s')" format item.getMarkupId)
           }
         }))
       }

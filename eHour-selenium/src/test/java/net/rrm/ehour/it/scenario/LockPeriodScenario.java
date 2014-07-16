@@ -4,11 +4,12 @@ import net.rrm.ehour.it.AbstractScenario;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
+import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static net.rrm.ehour.it.driver.TimesheetDriver.*;
-import static net.rrm.ehour.it.driver.TimesheetLockDriver.assertServerMessage;
-import static net.rrm.ehour.it.driver.TimesheetLockDriver.newLock;
+import static net.rrm.ehour.it.driver.TimesheetLockDriver.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -19,7 +20,25 @@ public class LockPeriodScenario extends AbstractScenario {
 
         newLock(new LocalDate(2013, DateTimeConstants.DECEMBER, 1), new LocalDate(2013, DateTimeConstants.DECEMBER, 31));
 
-        assertServerMessage("Data saved");
+        submit();
+        assertDataSaved();
+    }
+
+    @Test
+    public void should_create_lock_with_excluded_users() {
+        loginAdmin();
+
+        newLock(new LocalDate(2013, DateTimeConstants.DECEMBER, 1), new LocalDate(2013, DateTimeConstants.DECEMBER, 31));
+
+        excludeUser(0);
+        submit();
+        assertDataSaved();
+
+        navigateToAdminLocks();
+        editLock(0, "December, 2013");
+
+        WebElement element = findElement("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_excludedUsers");
+        assertTrue(element.getText().startsWith("Admin, eHour"));
     }
 
     @Test
@@ -27,6 +46,8 @@ public class LockPeriodScenario extends AbstractScenario {
         loginAdmin();
 
         newLock(new LocalDate(2013, DateTimeConstants.DECEMBER, 1), new LocalDate(2013, DateTimeConstants.DECEMBER, 31));
+        submit();
+        assertDataSaved();
 
         createUserAndAssign();
 

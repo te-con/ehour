@@ -60,7 +60,7 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
       formTester.setValue("startDate", "01/01/12")
       formTester.setValue("endDate", "01/01/13")
 
-      tester.executeAjaxEvent(createPath("excludedUsers:allBorder:allBorder_body:users:0"), "click")
+      tester.executeAjaxEvent(createPath("excludedUsers:userSelect:allBorder:allBorder_body:users:0"), "click")
 
       submitForm()
 

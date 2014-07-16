@@ -94,11 +94,11 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
     event.getPayload match {
       case event: LockAddedEvent =>
         val lock = event.lock
-        lockService.createNew(Option.apply(lock.getName), lock.getDateStart, lock.getDateEnd)
+        lockService.createNew(Option.apply(lock.getName), lock.getDateStart, lock.getDateEnd, lock.getExcludedUsers)
         update(event)
       case event: LockEditedEvent =>
         val lock = event.lock
-        lockService.updateExisting(lock.getLockId, lock.getDateStart, lock.getDateEnd, lock.getName)
+        lockService.updateExisting(lock.getLockId, lock.getDateStart, lock.getDateEnd, lock.getName, lock.getExcludedUsers)
         update(event)
       case event: UnlockedEvent =>
         val lock = event.lock

@@ -122,42 +122,59 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     nameInputField
   }
 
-  private def addUserSelection(form: Form[_]) = {
+  // ugly..
+  private def addUserSelection(form: Form[_]): Fragment = {
     val users = getPanelModelObject.getLock.getExcludedUsers
 
     val fragment: Fragment = if (users.isEmpty) {
       new Fragment(LockFormPanel.ExcludedUsersId, "noExcludedUsers", self)
     } else {
-      val f = new Fragment(LockFormPanel.ExcludedUsersId, "readOnlyExcludedUsers", self)
-
-      f.setOutputMarkupId(true)
-
-      f.add(new ListView[User]("excluded", new PropertyModel(model, "lock.excludedUsers")) {
-        override def populateItem(item: ListItem[User]) {
-          val userFullName = item.getModelObject.getFullName
-
-          val labelText = if (item.getIndex < getList.size() - 1) s"$userFullName, " else userFullName
-
-          item.add(new Label("name", labelText))
-        }
-      })
-
-      f
+      createReadOnlyExcludedUsersView()
     }
 
     fragment.setOutputMarkupId(true)
 
     val linkCallback: LinkCallback = target => {
-      val replacement = new MultiUserSelect(LockFormPanel.ExcludedUsersId, new PropertyModel(getPanelModel, "lock.excludedUsers"))
-      replacement.setOutputMarkupId(true)
-      target.add(replacement)
-      form.addOrReplace(replacement)
+      val f = new Fragment(LockFormPanel.ExcludedUsersId, "selectUsersToExclude", self)
+      f.setOutputMarkupId(true)
+
+      f.add(new MultiUserSelect("userSelect", new PropertyModel(getPanelModel, "lock.excludedUsers")))
+      f.setOutputMarkupId(true)
+      target.add(f)
+      form.addOrReplace(f)
+
+      val cb: LinkCallback = target => {
+        val replacement = addUserSelection(form)
+        target.add(replacement)
+      }
+
+      val link = new AjaxLink("hide", cb)
+      f.add(link)
 
     }
     val link = new AjaxLink("modify", linkCallback)
     fragment.add(link)
 
-    form.add(fragment)
+    form.addOrReplace(fragment)
+
+    fragment
+  }
+
+  def createReadOnlyExcludedUsersView(): Fragment = {
+    val f = new Fragment(LockFormPanel.ExcludedUsersId, "readOnlyExcludedUsers", self)
+
+    f.setOutputMarkupId(true)
+
+    f.add(new ListView[User]("excluded", new PropertyModel(model, "lock.excludedUsers")) {
+      override def populateItem(item: ListItem[User]) {
+        val userFullName = item.getModelObject.getFullName
+
+        val labelText = if (item.getIndex < getList.size() - 1) s"$userFullName, " else userFullName
+
+        item.add(new Label("name", labelText))
+      }
+    })
+    f
   }
 
   private def addDateInputFields(form: Form[_]) {

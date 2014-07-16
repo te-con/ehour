@@ -9,14 +9,18 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import net.rrm.ehour.ui.common.wicket.{Container, NonEmptyLabel}
 import net.rrm.ehour.user.service.UserService
+import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.model.{IModel, PropertyModel}
 import org.apache.wicket.model.util.ListModel
+import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 
 import scala.collection.mutable.{Map => MMap}
 
 class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[User](Lists.newArrayList())) extends AbstractBasePanel(id, model) with Filterable with Highlights {
+  val Css = new CssResourceReference(classOf[MultiUserSelect], "multiUserSelect.css")
+
   val SelectedContainerId = "selectedContainer"
   val SelectedUsersListId = "selectedUsers"
   val AllUsersBorderId = "allBorder"
@@ -107,5 +111,10 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
         item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "fullName")))
       }
     }
+  }
+
+  override def renderHead(response: IHeaderResponse) {
+    super.renderHead(response)
+    response.render(CssHeaderItem.forReference(Css))
   }
 }
