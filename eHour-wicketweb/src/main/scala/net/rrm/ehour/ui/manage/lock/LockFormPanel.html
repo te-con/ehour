@@ -42,6 +42,7 @@
                     <td valign="top">
                         Excluded users:
                     </td>
+
                     <td wicket:id="excludedUsers">
                     </td>
                 </tr>
@@ -78,6 +79,20 @@
             <br clear="all">
         </form>
     </div>
+
+    <wicket:fragment wicket:id="readOnlyExcludedUsers">
+        <wicket:container wicket:id="excluded">
+            <wicket:container wicket:id="name" />
+        </wicket:container>
+        <br />
+        <a wicket:id="modify">Modify</a>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="noExcludedUsers">
+        None<br />
+        <a wicket:id="modify">Modify</a>
+    </wicket:fragment>
+
 
 </wicket:panel>
 

@@ -1,5 +1,6 @@
 package net.rrm.ehour.domain;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -40,8 +41,7 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
     @JoinTable(name = "TIMESHEET_LOCK_EXCLUSION",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "LOCK_ID"))
-    @Transient
-    private List<User> excludedUsers;
+    private List<User> excludedUsers = Lists.newArrayList();
 
     public TimesheetLock() {
     }

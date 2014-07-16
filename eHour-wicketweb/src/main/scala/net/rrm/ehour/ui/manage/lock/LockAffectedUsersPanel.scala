@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.manage.lock
 
 import net.rrm.ehour.domain.Project
 import net.rrm.ehour.timesheet.service.{AffectedUser, TimesheetLockService}
-import net.rrm.ehour.ui.common.border.{GreyBlueRoundedBorder, GreyRoundedBorder}
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import net.rrm.ehour.ui.common.wicket.{Container, Model}
@@ -10,7 +10,7 @@ import net.rrm.ehour.util._
 import org.apache.wicket.markup.head.{IHeaderResponse, JavaScriptHeaderItem}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import org.apache.wicket.model.{IModel, PropertyModel, ResourceModel}
+import org.apache.wicket.model.{IModel, PropertyModel}
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 

@@ -13,21 +13,21 @@ import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.util.WebGeo
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 import net.rrm.ehour.ui.common.wicket.AjaxButton._
-import net.rrm.ehour.ui.common.wicket.{Container, Event, NonDemoAjaxButton, NonDemoAjaxLink}
+import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
+import net.rrm.ehour.ui.common.wicket._
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
-import org.apache.wicket.ajax.markup.html.AjaxLink
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.form.{Form, TextField}
+import org.apache.wicket.markup.html.list.{ListItem, ListView}
+import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.{IModel, Model, PropertyModel, ResourceModel}
 
 class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends AbstractFormSubmittingPanel[LockAdminBackingBean](id, model) {
   val self = this
-
-  val ExcludedUsersId = "excludedUsers"
 
   override def onInitialize() {
     super.onInitialize()
@@ -41,20 +41,15 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
     form.add(createNameInputField())
     addDateInputFields(form)
-    val excludedUserSelection = createUserSelection(ExcludedUsersId)
-    form.add(excludedUserSelection)
+    addUserSelection(form)
     addAffectedUserPanel()
     form.add(new ServerMessageLabel(LockFormPanel.ServerMessageId, "formValidationError", new PropertyModel[String](model, "serverMessage")))
     form.add(createSubmitButton)
     form.add(createUnlockButton)
 
     def addAffectedUserPanel() {
-      val link = new AjaxLink(LockFormPanel.ShowAffectedId) {
-        override def onClick(target: AjaxRequestTarget) {
-          toggleAffectedUsersPanel(form, target)
-        }
-      }
-
+      val showAffectedCallback: LinkCallback = target => toggleAffectedUsersPanel(form, target)
+      val link = new AjaxLink(LockFormPanel.ShowAffectedId, showAffectedCallback)
       form.add(link)
 
       val container = getPage match {
@@ -73,8 +68,6 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
         target.add(label)
 
         val lock = getPanelModelObject.getLock
-        val excludedUsers = excludedUserSelection.selectedUsers.getObject
-        lock.setExcludedUsers(excludedUsers)
 
         val event = if (modelObject.isNew)
           LockAddedEvent(lock, target)
@@ -113,6 +106,10 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     }
   }
 
+  private def isShowingAffectedUsersPanel(form: Form[_]) = getAffectedPanel(form).isInstanceOf[LockAffectedUsersPanel]
+
+  private def getAffectedPanel(form: Form[_]) = form.get(LockFormPanel.AffectedContainerId)
+
   private def updatePanel(form: Form[_], target: AjaxRequestTarget, replacement: WebMarkupContainer) {
     replacement.setOutputMarkupId(true)
     form.addOrReplace(replacement)
@@ -125,7 +122,43 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     nameInputField
   }
 
-  private def createUserSelection(id: String) = new MultiUserSelect(id)
+  private def addUserSelection(form: Form[_]) = {
+    val users = getPanelModelObject.getLock.getExcludedUsers
+
+    val fragment: Fragment = if (users.isEmpty) {
+      new Fragment(LockFormPanel.ExcludedUsersId, "noExcludedUsers", self)
+    } else {
+      val f = new Fragment(LockFormPanel.ExcludedUsersId, "readOnlyExcludedUsers", self)
+
+      f.setOutputMarkupId(true)
+
+      f.add(new ListView[User]("excluded", new PropertyModel(model, "lock.excludedUsers")) {
+        override def populateItem(item: ListItem[User]) {
+          val userFullName = item.getModelObject.getFullName
+
+          val labelText = if (item.getIndex < getList.size() - 1) s"$userFullName, " else userFullName
+
+          item.add(new Label("name", labelText))
+        }
+      })
+
+      f
+    }
+
+    fragment.setOutputMarkupId(true)
+
+    val linkCallback: LinkCallback = target => {
+      val replacement = new MultiUserSelect(LockFormPanel.ExcludedUsersId, new PropertyModel(getPanelModel, "lock.excludedUsers"))
+      replacement.setOutputMarkupId(true)
+      target.add(replacement)
+      form.addOrReplace(replacement)
+
+    }
+    val link = new AjaxLink("modify", linkCallback)
+    fragment.add(link)
+
+    form.add(fragment)
+  }
 
   private def addDateInputFields(form: Form[_]) {
     val startDate = new LocalizedDatePicker("startDate", new PropertyModel[Date](model, "lock.dateStart"))
@@ -159,10 +192,6 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
     form.add(new DateOverlapValidator("dateStartDateEnd", startDate, endDate))
   }
-
-  private def isShowingAffectedUsersPanel(form: Form[_]) = getAffectedPanel(form).isInstanceOf[LockAffectedUsersPanel]
-
-  private def getAffectedPanel(form: Form[_]) = form.get(LockFormPanel.AffectedContainerId)
 }
 
 object LockFormPanel {
@@ -175,6 +204,7 @@ object LockFormPanel {
   val UnlockId = "unlock"
   val ShowAffectedId = "showAffected"
   val AffectedContainerId = "affectedContainer"
+  val ExcludedUsersId = "excludedUsers"
 }
 
 case class LockAddedEvent(lock: TimesheetLock, override val target: AjaxRequestTarget) extends Event(target)

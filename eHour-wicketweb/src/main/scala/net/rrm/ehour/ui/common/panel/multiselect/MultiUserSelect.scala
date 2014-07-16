@@ -10,13 +10,13 @@ import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import net.rrm.ehour.ui.common.wicket.{Container, NonEmptyLabel}
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import org.apache.wicket.model.PropertyModel
+import org.apache.wicket.model.{IModel, PropertyModel}
 import org.apache.wicket.model.util.ListModel
 import org.apache.wicket.spring.injection.annot.SpringBean
 
 import scala.collection.mutable.{Map => MMap}
 
-class MultiUserSelect(id: String) extends AbstractBasePanel[Unit](id) with Filterable with Highlights {
+class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[User](Lists.newArrayList())) extends AbstractBasePanel(id, model) with Filterable with Highlights {
   val SelectedContainerId = "selectedContainer"
   val SelectedUsersListId = "selectedUsers"
   val AllUsersBorderId = "allBorder"
@@ -44,12 +44,12 @@ class MultiUserSelect(id: String) extends AbstractBasePanel[Unit](id) with Filte
     val selectedContainer = new Container(SelectedContainerId)
     addOrReplace(selectedContainer)
     selectedContainer.setOutputMarkupId(true)
-    selectedContainer.addOrReplace(createSelectedUserView(SelectedUsersListId, new ListModel[User](Lists.newArrayList())))
+    selectedContainer.addOrReplace(createSelectedUserView(SelectedUsersListId, model))
   }
 
   private def selectedContainer =  get(SelectedContainerId)
 
-  def selectedUsers = selectedContainer.get(SelectedUsersListId).getDefaultModel.asInstanceOf[ListModel[User]]
+  def selectedUsers = selectedContainer.get(SelectedUsersListId).getDefaultModel.asInstanceOf[IModel[ju.List[User]]]
 
   def createAllUserView(id: String, users: ju.List[User]): ListView[User] = {
     new ListView[User](id, users) {
@@ -84,7 +84,7 @@ class MultiUserSelect(id: String) extends AbstractBasePanel[Unit](id) with Filte
     }
   }
 
-  def createSelectedUserView(id: String, users: ListModel[User]): ListView[User] = {
+  def createSelectedUserView(id: String, users: IModel[ju.List[User]]): ListView[User] = {
     new ListView[User](id, users) {
       override def populateItem(item: ListItem[User]) {
         val itemModel = item.getModel

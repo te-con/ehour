@@ -1,6 +1,5 @@
 package net.rrm.ehour.ui.manage.lock
 
-
 import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.UserObjectMother
@@ -54,13 +53,14 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
     "exclude users in new lock" in {
       tester.startComponentInPage(createPanel)
+      tester.executeAjaxEvent(createPath("excludedUsers:modify"), "click")
 
       val formTester = tester.newFormTester(formPath)
 
       formTester.setValue("startDate", "01/01/12")
       formTester.setValue("endDate", "01/01/13")
 
-      tester.executeAjaxEvent(s"$formPath:excludedUsers:allBorder:allBorder_body:users:0", "click")
+      tester.executeAjaxEvent(createPath("excludedUsers:allBorder:allBorder_body:users:0"), "click")
 
       submitForm()
 

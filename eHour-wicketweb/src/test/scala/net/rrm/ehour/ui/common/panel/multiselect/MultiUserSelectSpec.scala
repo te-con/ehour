@@ -1,9 +1,11 @@
 package net.rrm.ehour.ui.common.panel.multiselect
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util._
+import org.apache.wicket.model.util.ListModel
 import org.mockito.Mockito._
 
 class MultiUserSelectSpec extends AbstractSpringWebAppSpec {
@@ -62,6 +64,20 @@ class MultiUserSelectSpec extends AbstractSpringWebAppSpec {
       subject.selectedUsers.getObject should be ('empty)
 
       tester.assertNoErrorMessage()
+    }
+
+    "deselect from a provided list" in {
+      val users = Lists.newArrayList(UserObjectMother.createUser())
+      val model = new ListModel(users)
+      val subject = new MultiUserSelect("id", model)
+
+      tester.startComponentInPage(subject)
+      deselectFirstSelectedUser()
+
+      users should be ('empty)
+
+      tester.assertNoErrorMessage()
+
     }
 
   }

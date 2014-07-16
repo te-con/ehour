@@ -29,7 +29,6 @@ class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBe
   override def listFilterId = "#filterAssignmentInput"
   override def listId = ".assignmentList"
 
-
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
 

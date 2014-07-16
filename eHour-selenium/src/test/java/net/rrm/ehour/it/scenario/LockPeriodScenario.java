@@ -12,7 +12,6 @@ import static net.rrm.ehour.it.driver.TimesheetLockDriver.newLock;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
 public class LockPeriodScenario extends AbstractScenario {
     @Test
     public void should_create_lock() {

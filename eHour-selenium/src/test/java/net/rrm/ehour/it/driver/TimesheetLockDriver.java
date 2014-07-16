@@ -18,19 +18,19 @@ public class TimesheetLockDriver {
     public static void newLock(LocalDate startDate, LocalDate endDate) {
         navigateToAdminLocks();
 
-        WebElement startDateElement = findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_startDate"));
+        WebElement startDateElement = findElement(WicketBy.wicketPath("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_startDate"));
         startDateElement.clear();
         startDateElement.sendKeys(startDate.toString("MM/dd/YY"));
-        WebElement endDateElement = findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_endDate"));
+        WebElement endDateElement = findElement(WicketBy.wicketPath("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_endDate"));
         endDateElement.clear();
         endDateElement.sendKeys(endDate.toString("MM/dd/YY"));
 
-        findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_submit")).click();
+        findElement(WicketBy.wicketPath("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_submit")).click();
 
-        assertTrue(findElement("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_serverMessage").getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
+        assertTrue(findElement("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_serverMessage").getText().matches("^[\\s\\S]*Data saved[\\s\\S]*$"));
     }
 
     public static void assertServerMessage(String msg) {
-        assertEquals(msg, findElement(WicketBy.wicketPath("tabs_panel_lockFormPanel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_serverMessage")).getText());
+        assertEquals(msg, findElement(WicketBy.wicketPath("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_serverMessage")).getText());
     }
 }
