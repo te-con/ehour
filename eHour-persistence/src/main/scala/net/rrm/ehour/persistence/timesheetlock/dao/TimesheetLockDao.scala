@@ -11,8 +11,8 @@ trait TimesheetLockDao extends GenericDao[Integer, TimesheetLock] {
 }
 
 @Repository("timesheetLockDao")
-class TimesheetLockHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, TimesheetLock](classOf[TimesheetLock]) with TimesheetLockDao {
-  def findMatchingLock(start: Date, end: Date): JList[TimesheetLock] = {
+class TimesheetLockDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, TimesheetLock](classOf[TimesheetLock]) with TimesheetLockDao {
+  override def findMatchingLock(start: Date, end: Date): JList[TimesheetLock] = {
     val keys = List("startDate", "endDate")
     val params = List(start, end)
 

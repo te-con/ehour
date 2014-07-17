@@ -203,10 +203,6 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
 
     /**
      * Get week overview for a date. Week number of supplied requested week is used
-     *
-     * @param userId
-     * @param requestedWeek
-     * @return
      */
     public WeekOverview getWeekOverview(User user, Calendar requestedWeek) {
         Calendar reqWeek = (Calendar) requestedWeek.clone();

@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import static org.junit.Assert.*
 
-class TimesheetLockHibernateImplTest extends AbstractAnnotationDaoTest {
+class TimesheetLockDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     @Autowired
     private TimesheetLockDao timesheetLockDao;
 
     @Autowired
     private UserDao userDao;
 
-    TimesheetLockHibernateImplTest() {
+    TimesheetLockDaoHibernateImplTest() {
         super("dataset-timesheetlock.xml")
     }
 
@@ -44,11 +44,7 @@ class TimesheetLockHibernateImplTest extends AbstractAnnotationDaoTest {
 
         def persistedLock = timesheetLockDao.findById(id.lockId)
         assertEquals(startDate, persistedLock.dateStart)
-        println persistedLock.excludedUsers
-
-        println userDao.findById(2000)
     }
-
 
     @Test
     void shouldFindMatching() {

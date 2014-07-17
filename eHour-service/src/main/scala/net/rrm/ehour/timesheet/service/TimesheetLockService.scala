@@ -1,7 +1,6 @@
 package net.rrm.ehour.timesheet.service
 
 import java.util.Date
-
 import java.{util => ju}
 
 import com.github.nscala_time.time.Imports._
@@ -29,6 +28,8 @@ trait TimesheetLockService {
   def find(id: Int): Option[TimesheetLock]
 
   def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval]
+
+  def findLockedDatesInRange(startDate: Date, endDate: Date, user: User): Seq[Interval]
 
   def findAffectedUsers(startDate: Date, endDate: Date): Seq[AffectedUser]
 }
@@ -94,8 +95,21 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     case null => None
   }
 
+  override def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval] =
+    mergeDatesToInterval(startDate, endDate, lockDao.findMatchingLock(startDate, endDate))
+
   import scala.collection.JavaConversions._
-  override def findLockedDatesInRange(startDate: Date, endDate: Date): Seq[Interval] = {
+  override def findLockedDatesInRange(startDate: Date, endDate: Date, user: User): Seq[Interval] = {
+    val locks = lockDao.findMatchingLock(startDate, endDate)
+
+    val filteredLocks = locks.filterNot(_.getExcludedUsers.contains(user))
+
+    mergeDatesToInterval(startDate, endDate, filteredLocks)
+  }
+
+
+  import scala.collection.JavaConversions._
+  private def mergeDatesToInterval(startDate: Date, endDate: Date, dates: ju.List[TimesheetLock]): Seq[Interval] = {
     implicit def dateToDateTime(d: Date): DateTime = LocalDate.fromDateFields(d).toDateTimeAtStartOfDay
 
     def overlapsAtEdges(i: Interval, r: Interval) = {
@@ -108,7 +122,7 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
       overlapsAtStart orElse overlapsAtEnd
     }
 
-    val lockIntervals = lockDao.findMatchingLock(startDate, endDate).map(l => new Interval(l.getDateStart, l.getDateEnd)).toList
+    val lockIntervals = dates.map(l => new Interval(l.getDateStart, l.getDateEnd)).toList
 
     val requestedInterval = new Interval(startDate, endDate)
     def intervalsThatOverlap = lockIntervals.map(i => requestedInterval overlap i match {
@@ -117,7 +131,6 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     }).flatten
 
     val overlaps = intervalsThatOverlap
-
 
     def mergeIntervals(current: Interval, stack: Seq[Interval], merged: Seq[Interval]): Seq[Interval] = {
       stack match {
