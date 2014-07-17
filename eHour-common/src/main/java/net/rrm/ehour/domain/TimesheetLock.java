@@ -4,13 +4,10 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -37,10 +34,10 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
     @Column(name = "NAME")
     private String name;
 
-    @ManyToMany(targetEntity = User.class, cascade = CascadeType.REFRESH)
+    @ManyToMany(targetEntity = User.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "TIMESHEET_LOCK_EXCLUSION",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "LOCK_ID"))
+            joinColumns = @JoinColumn(name = "LOCK_ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID"))
     private List<User> excludedUsers = Lists.newArrayList();
 
     public TimesheetLock() {
