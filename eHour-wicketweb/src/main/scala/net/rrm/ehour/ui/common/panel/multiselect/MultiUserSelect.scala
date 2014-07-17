@@ -9,6 +9,7 @@ import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import net.rrm.ehour.ui.common.wicket.{Container, Event, NonEmptyLabel}
 import net.rrm.ehour.user.service.UserService
+import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
@@ -47,12 +48,13 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
 
     val allBorder = new GreyBlueRoundedBorder(AllUsersBorderId)
     addOrReplace(allBorder)
-    allBorder.addOrReplace(createAllUserView("users", users))
 
     val selectedContainer = new Container(SelectedContainerId)
     addOrReplace(selectedContainer)
     selectedContainer.setOutputMarkupId(true)
     selectedContainer.addOrReplace(createSelectedUserView(SelectedUsersListId, model))
+
+    allBorder.addOrReplace(createAllUserView("users", users))
   }
 
   private def selectedContainer =  get(SelectedContainerId)
@@ -60,14 +62,15 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
   def selectedUsers = selectedContainer.get(SelectedUsersListId).getDefaultModel.asInstanceOf[IModel[ju.List[User]]]
 
   def createAllUserView(id: String, users: ju.List[User]): ListView[User] = {
+    val selected = selectedUsers.getObject
+
     new ListView[User](id, users) {
       override def populateItem(item: ListItem[User]) {
         val itemModel = item.getModel
+        val user = itemModel.getObject
 
         item.add(ajaxClick({
           target => {
-            val user = itemModel.getObject
-
             val users = selectedUsers.getObject
             val markupId = item.getMarkupId
 
@@ -88,6 +91,10 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
             sendEvent(target)
           }
         }))
+
+        if (selected.contains(user)) {
+          item.add(AttributeModifier.append("class", "selected"))
+        }
 
         item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "fullName")))
       }
