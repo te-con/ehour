@@ -17,8 +17,6 @@
 			type="BLOB"  autoIncrement="false" />
 		<column name="metadata" primaryKey="false" required="false"
 			type="VARCHAR" size="255" autoIncrement="false" />
-			
-			
 	</table>
 	<table name="customer">
 		<column name="CUSTOMER_ID" primaryKey="true" required="true"

@@ -65,9 +65,8 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
 
   @Transactional
   override def updateExisting(id: Int, startDate: Date, endDate: Date, name: String, excludedUsers: ju.List[User]): TimesheetLock = {
-
-    val lock = new TimesheetLock (id, startDate, endDate, name, excludedUsers)
-    lockDao.persist (lock)
+    val lock = new TimesheetLock(id, startDate, endDate, name, excludedUsers)
+    lockDao.persist(lock)
   }
 
   @Transactional
@@ -99,6 +98,7 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     mergeDatesToInterval(startDate, endDate, lockDao.findMatchingLock(startDate, endDate))
 
   import scala.collection.JavaConversions._
+
   override def findLockedDatesInRange(startDate: Date, endDate: Date, user: User): Seq[Interval] = {
     val locks = lockDao.findMatchingLock(startDate, endDate)
 
@@ -109,6 +109,7 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
 
 
   import scala.collection.JavaConversions._
+
   private def mergeDatesToInterval(startDate: Date, endDate: Date, dates: ju.List[TimesheetLock]): Seq[Interval] = {
     implicit def dateToDateTime(d: Date): DateTime = LocalDate.fromDateFields(d).toDateTimeAtStartOfDay
 
