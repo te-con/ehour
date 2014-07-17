@@ -31,7 +31,7 @@ trait TimesheetLockService {
 
   def findLockedDatesInRange(startDate: Date, endDate: Date, user: User): Seq[Interval]
 
-  def findAffectedUsers(startDate: Date, endDate: Date, excludedUsers: List[User]): Seq[AffectedUser]
+  def findAffectedUsers(startDate: Date, endDate: Date, excludedUsers: Seq[User]): Seq[AffectedUser]
 }
 
 object TimesheetLockService {
@@ -147,7 +147,7 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
     }).reverse
   }
 
-  def findAffectedUsers(startDate: Date, endDate: Date, excludedUsers: List[User]): Seq[AffectedUser] = {
+  def findAffectedUsers(startDate: Date, endDate: Date, excludedUsers: Seq[User]): Seq[AffectedUser] = {
     val xs = toScala(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate)))
 
     val entriesPerUser: Map[User, List[TimesheetEntry]] = xs.groupBy(_.getEntryId.getProjectAssignment.getUser)

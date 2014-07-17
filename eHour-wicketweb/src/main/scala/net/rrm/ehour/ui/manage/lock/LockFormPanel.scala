@@ -8,19 +8,20 @@ import net.rrm.ehour.ui.common.component._
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker
-import net.rrm.ehour.ui.common.panel.multiselect.MultiUserSelect
+import net.rrm.ehour.ui.common.panel.multiselect.{MultiUserSelect, SelectionUpdatedEvent}
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.util.WebGeo
 import net.rrm.ehour.ui.common.validator.DateOverlapValidator
 import net.rrm.ehour.ui.common.wicket.AjaxButton._
 import net.rrm.ehour.ui.common.wicket.AjaxLink.LinkCallback
 import net.rrm.ehour.ui.common.wicket._
+import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
-import org.apache.wicket.event.Broadcast
-import org.apache.wicket.markup.html.WebMarkupContainer
+import org.apache.wicket.event.{Broadcast, IEvent}
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.border.Border
 import org.apache.wicket.markup.html.form.{Form, TextField}
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.markup.html.panel.Fragment
@@ -86,7 +87,6 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
         send(getPage, Broadcast.BREADTH, UnlockedEvent(getPanelModelObject.getLock, target))
       }, List(new JavaScriptConfirmation(new ResourceModel("general.deleteConfirmation"))))
 
-
       unlockButton.setVisible(!getPanelModelObject.isNew)
       unlockButton
     }
@@ -110,7 +110,20 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
   private def getAffectedPanel(form: Form[_]) = form.get(LockFormPanel.AffectedContainerId)
 
-  private def updatePanel(form: Form[_], target: AjaxRequestTarget, replacement: WebMarkupContainer) {
+  override def onEvent(wrappedEvent: IEvent[_]) {
+    wrappedEvent.getPayload match {
+      case event: SelectionUpdatedEvent =>
+        val component = get(LockFormPanel.OuterBorderId).asInstanceOf[Border].getBodyContainer
+        val form = component.get(LockFormPanel.FormId).asInstanceOf[Form[_]]
+
+        if (isShowingAffectedUsersPanel(form)) {
+          updatePanel(form, event.target, getAffectedPanel(form))
+        }
+      case _ =>
+    }
+  }
+
+  private def updatePanel(form: Form[_], target: AjaxRequestTarget, replacement: Component) {
     replacement.setOutputMarkupId(true)
     form.addOrReplace(replacement)
     target.add(replacement)

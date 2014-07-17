@@ -24,7 +24,8 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
 
   val self = this
 
-  override def onBeforeRender(): Unit = {
+  import scala.collection.JavaConversions._
+  override def onBeforeRender() {
     super.onBeforeRender()
 
     val blueBorder = new GreyBlueRoundedBorder(LockAffectedUsersPanel.BorderId)
@@ -32,7 +33,7 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
     addOrReplace(blueBorder)
 
     val domainObject = getPanelModelObject.getDomainObject
-    val affectedUsers = lockService.findAffectedUsers(domainObject.getDateStart, domainObject.getDateEnd)
+    val affectedUsers = lockService.findAffectedUsers(domainObject.getDateStart, domainObject.getDateEnd, domainObject.getExcludedUsers)
 
     val affectedUserDetailsModel = Model(AffectedUser())
 

@@ -7,12 +7,14 @@ import net.rrm.ehour.domain.User
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
-import net.rrm.ehour.ui.common.wicket.{Container, NonEmptyLabel}
+import net.rrm.ehour.ui.common.wicket.{Container, Event, NonEmptyLabel}
 import net.rrm.ehour.user.service.UserService
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.event.Broadcast
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import org.apache.wicket.model.{IModel, PropertyModel}
 import org.apache.wicket.model.util.ListModel
+import org.apache.wicket.model.{IModel, PropertyModel}
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 
@@ -26,6 +28,8 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
   val AllUsersBorderId = "allBorder"
 
   val userToItemId: MMap[User, String] = MMap.empty
+
+  val self = this
 
   override def listFilterId = "#filterUserInput"
   override def listId = "#allUsers"
@@ -80,6 +84,8 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
             }
 
             target.add(selectedContainer)
+
+            sendEvent(target)
           }
         }))
 
@@ -105,12 +111,19 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
               case Some(itemId) => target.appendJavaScript("listHighlight.deselect('%s')" format itemId)
               case None =>
             }
+
+            sendEvent(target)
           }
         }))
 
         item.add(new NonEmptyLabel("name", new PropertyModel(itemModel, "fullName")))
       }
+
     }
+  }
+
+  def sendEvent(target: AjaxRequestTarget) {
+    send(self, Broadcast.BUBBLE, SelectionUpdatedEvent(target))
   }
 
   override def renderHead(response: IHeaderResponse) {
@@ -118,3 +131,5 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
     response.render(CssHeaderItem.forReference(Css))
   }
 }
+
+case class SelectionUpdatedEvent(override val target: AjaxRequestTarget) extends Event(target)
