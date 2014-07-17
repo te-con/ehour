@@ -81,16 +81,18 @@
     </div>
 
     <wicket:fragment wicket:id="readOnlyExcludedUsers">
-        <wicket:container wicket:id="excluded">
-            <wicket:container wicket:id="name" />
-        </wicket:container>
+        <div class="maxScroll">
+            <wicket:container wicket:id="excluded">
+                <wicket:container wicket:id="name" /><br />
+            </wicket:container>
+        </div>
         <br />
         <a wicket:id="modify">Modify</a>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="noExcludedUsers">
-        None<br />
-        <a wicket:id="modify">Modify</a>
+        No users have been excluded from this lock<br />
+        <a wicket:id="modify"><i class="fa fa-plus-square-o"></i> Exclude users</a>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="selectUsersToExclude">
