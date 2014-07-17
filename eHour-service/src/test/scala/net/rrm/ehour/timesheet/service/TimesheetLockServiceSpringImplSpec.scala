@@ -83,11 +83,30 @@ class TimesheetLockServiceSpringImplSpec extends AbstractSpec {
 
       when(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate))).thenReturn(Lists.newArrayList(entryA, entryB, entryC))
 
-      val affectedUsers = service.findAffectedUsers(startDate, endDate)
+      val affectedUsers = service.findAffectedUsers(startDate, endDate, Nil)
 
       affectedUsers should have size 2
       affectedUsers.head.hoursBooked should be (13)
       affectedUsers(1).hoursBooked should be (4)
+    }
+
+    "aggregate the booked hours per affected user in a date range excluding users" in {
+      val startDate = LocalDate.parse("20130101").toDate
+      val endDate = LocalDate.parse("20130108").toDate
+
+      val entryA = TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5)
+      val entryB = TimesheetEntryObjectMother.createTimesheetEntry(1, new DateTime().plusDays(1).toDate, 8)
+      val entryC = TimesheetEntryObjectMother.createTimesheetEntry(2, new Date(), 4)
+      entryA.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
+      entryB.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
+      entryC.getEntryId.getProjectAssignment.getUser.setUsername("boplin")
+
+      when(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate))).thenReturn(Lists.newArrayList(entryA, entryB, entryC))
+
+      val affectedUsers = service.findAffectedUsers(startDate, endDate, List(entryC.getEntryId.getProjectAssignment.getUser))
+
+      affectedUsers should have size 1
+      affectedUsers.head.hoursBooked should be (13)
     }
 
     {
