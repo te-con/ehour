@@ -1,0 +1,14 @@
+.userList {
+    width: 17.5em !important;
+    min-width: 17.5em !important;
+    max-width: 17.5em !important;
+    height: 15em !important;
+}
+
+.userList .selected, .userList .row:hover, .assignmentList .selected, .assignmentList .row:hover {
+    background-color: #d1e5f9;
+}
+
+.userList .row:hover, .assignmentList .row:hover {
+    cursor: pointer;
+}

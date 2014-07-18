@@ -1,15 +1,26 @@
 package net.rrm.ehour.ui.manage.lock
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
+import net.rrm.ehour.domain.UserObjectMother
+import net.rrm.ehour.timesheet.service.TimesheetLockService
+import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.manage.lock.LockFormPanel._
+import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.model.Model
+import org.mockito.Mockito._
 
 class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
   val formPath = s"id:$OuterBorderId:greySquaredFrame:outerBorder_body:$FormId"
   def createPath(path: String) = s"$formPath:$path"
 
+  val userService = mockService[UserService]
+  val timesheetLockService = mockService[TimesheetLockService]
+
   "Lock Form Panel" should {
+
+    when(userService.getActiveUsers).thenReturn(Lists.newArrayList(UserObjectMother.createUser()))
 
     def createPanel = new LockFormPanel("id", new Model(LockAdminBackingBeanObjectMother.create))
 
@@ -39,6 +50,47 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
       val lockAddedEvent = tester.findEvent(classOf[LockAddedEvent])
       lockAddedEvent.isPresent should be (true)
+    }
+
+    "exclude users in new lock" in {
+      tester.startComponentInPage(createPanel)
+      tester.executeAjaxEvent(createPath("excludedUsers:modify"), "click")
+
+      val formTester = tester.newFormTester(formPath)
+
+      formTester.setValue("startDate", "01/01/12")
+      formTester.setValue("endDate", "01/01/13")
+
+      tester.executeAjaxEvent(createPath("excludedUsers:userSelect:allBorder:allBorder_body:users:0"), "click")
+
+      submitForm()
+
+      val confirm = tester.getComponentFromLastRenderedPage(createPath("serverMessage"))
+      confirm.getDefaultModelObject should be("Locked")
+
+      val lockAddedEvent = tester.findEvent(classOf[LockAddedEvent])
+      lockAddedEvent.isPresent should be (true)
+
+      val payload = lockAddedEvent.get().event.getPayload.asInstanceOf[LockAddedEvent]
+
+      payload.lock.getExcludedUsers.size() should be (1)
+    }
+
+    "show affected users" in {
+      tester.startComponentInPage(createPanel)
+
+      tester.executeAjaxEvent(s"$formPath:affected:affectedLinkToggle", "click")
+
+      tester.assertComponent(s"$formPath:affectedContainer", classOf[LockAffectedUsersPanel])
+    }
+
+    "hide affected users" in {
+      tester.startComponentInPage(createPanel)
+
+      tester.executeAjaxEvent(s"$formPath:affected:affectedLinkToggle", "click") // show
+      tester.executeAjaxEvent(s"$formPath:affected:affectedLinkToggle", "click") // hide
+
+      tester.assertComponent(s"$formPath:affectedContainer", classOf[Container])
     }
 
     "fail to create a new lock when start is after end date" in {

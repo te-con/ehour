@@ -59,7 +59,7 @@ PRIMARY KEY (config_key)
 
 LOCK TABLES CONFIGURATION WRITE;
 /*!40000 ALTER TABLE CONFIGURATION DISABLE KEYS */;
-INSERT INTO CONFIGURATION VALUES ('initialized','false'),('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','en-US'),('localeCountry','en-US'),('availableTranslations','en,nl,fr,it'),('mailFrom','noreply@localhost.net'),('smtpPort','25'),('mailSmtp','127.0.0.1'),('demoMode','false'),('version', '1.3');
+INSERT INTO CONFIGURATION VALUES ('initialized','false'),('completeDayHours','8'),('showTurnOver','true'),('localeLanguage','en'),('currency','en-US'),('localeCountry','en-US'),('availableTranslations','en,nl,fr,it'),('mailFrom','noreply@localhost.net'),('smtpPort','25'),('mailSmtp','127.0.0.1'),('demoMode','false'),('version', '1.3.1');
 /*!40000 ALTER TABLE CONFIGURATION ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,6 +356,15 @@ CREATE  TABLE TIMESHEET_LOCK (
 ALTER TABLE TIMESHEET_LOCK
 ADD INDEX IDX_LOCK_RANGE (DATE_START ASC, DATE_END ASC) ;
 
+CREATE TABLE TIMESHEET_LOCK_EXCLUSION (
+  LOCK_ID INT(11) NOT NULL,
+  USER_ID INT(11) NOT NULL,
+  PRIMARY KEY (LOCK_ID, USER_ID),
+  INDEX IDX_LOCK_ID (LOCK_ID ASC),
+  INDEX fk_TIMESHEET_LOCK_EXCLUSION_1_idx (USER_ID ASC),
+  CONSTRAINT FK_EXCLUSION_USER FOREIGN KEY (USER_ID) REFERENCES USERS (USER_ID),
+  CONSTRAINT FK_EXCLUSION_LOCK FOREIGN KEY (LOCK_ID) REFERENCES TIMESHEET_LOCK (LOCK_ID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

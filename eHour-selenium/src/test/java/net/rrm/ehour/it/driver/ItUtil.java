@@ -24,6 +24,10 @@ public abstract class ItUtil {
         waitForValue(WicketBy.wicketPath(path), expectedValue);
     }
 
+    public static void waitForPresence(String path) {
+        waitUntil(ExpectedConditions.presenceOfElementLocated(WicketBy.wicketPath(path)));
+    }
+
     public static void waitForValue(By by, String expectedValue) {
         waitUntil(ExpectedConditions.textToBePresentInElementValue(by, expectedValue));
     }

@@ -3,6 +3,7 @@ package net.rrm.ehour.ui.manage.project.assign
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{ProjectAssignment, ProjectAssignmentObjectMother, ProjectObjectMother}
 import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
+import net.rrm.ehour.ui.common.panel.multiselect.MultiUserSelect
 import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.manage.assignment.AssignmentFormPanel
 import net.rrm.ehour.ui.manage.project.ProjectAdminBackingBean
@@ -34,7 +35,7 @@ class ManageAssignmentsPanelSpec extends AbstractSpringWebAppSpec {
 
       subject.onEvent(event)
 
-      tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.LIST_ID), classOf[NewAssignmentUserListView])
+      tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.LIST_ID), classOf[MultiUserSelect])
       tester.assertComponent("%s:%s" format (subject.getBorderContainer.getPageRelativePath, subject.AFFECTED_USER_ID), classOf[Container])
 
       tester.assertNoErrorMessage()

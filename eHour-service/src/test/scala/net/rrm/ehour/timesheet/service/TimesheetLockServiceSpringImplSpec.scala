@@ -5,19 +5,16 @@ import java.util.Date
 import java.{util => ju}
 
 import com.github.nscala_time.time.Imports._
+import com.google.common.collect.Lists
+import net.rrm.ehour.AbstractSpec
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{TimesheetEntryObjectMother, TimesheetLock}
+import net.rrm.ehour.domain.{TimesheetEntryObjectMother, TimesheetLock, UserObjectMother}
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.persistence.timesheetlock.dao.TimesheetLockDao
 import org.joda.time.LocalDate
-import org.junit.runner.RunWith
 import org.mockito.Mockito._
-import org.scalatest._
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.mock.MockitoSugar
 
-@RunWith(classOf[JUnitRunner])
-class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with MockitoSugar with BeforeAndAfterEach {
+class TimesheetLockServiceSpringImplSpec extends AbstractSpec {
   val lockDao = mock[TimesheetLockDao]
   val timesheetDao = mock[TimesheetDao]
   
@@ -42,7 +39,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
     "find all" in {
       val lock2 = new TimesheetLock(startDate.plusDays(1).toDate, endDate.plusDays(2).toDate)
 
-      when(lockDao.findAll()).thenReturn(ju.Arrays.asList(lock, lock2))
+      when(lockDao.findAll()).thenReturn(Lists.newArrayList(lock, lock2))
 
       val lockedTimesheets: List[TimesheetLock] = service.findAll()
 
@@ -84,13 +81,32 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       entryB.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
       entryC.getEntryId.getProjectAssignment.getUser.setUsername("boplin")
 
-      when(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate))).thenReturn(ju.Arrays.asList(entryA, entryB, entryC))
+      when(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate))).thenReturn(Lists.newArrayList(entryA, entryB, entryC))
 
-      val affectedUsers = service.findAffectedUsers(startDate, endDate)
+      val affectedUsers = service.findAffectedUsers(startDate, endDate, Nil)
 
       affectedUsers should have size 2
       affectedUsers.head.hoursBooked should be (13)
       affectedUsers(1).hoursBooked should be (4)
+    }
+
+    "aggregate the booked hours per affected user in a date range excluding users" in {
+      val startDate = LocalDate.parse("20130101").toDate
+      val endDate = LocalDate.parse("20130108").toDate
+
+      val entryA = TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5)
+      val entryB = TimesheetEntryObjectMother.createTimesheetEntry(1, new DateTime().plusDays(1).toDate, 8)
+      val entryC = TimesheetEntryObjectMother.createTimesheetEntry(2, new Date(), 4)
+      entryA.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
+      entryB.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
+      entryC.getEntryId.getProjectAssignment.getUser.setUsername("boplin")
+
+      when(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate))).thenReturn(Lists.newArrayList(entryA, entryB, entryC))
+
+      val affectedUsers = service.findAffectedUsers(startDate, endDate, List(entryC.getEntryId.getProjectAssignment.getUser))
+
+      affectedUsers should have size 1
+      affectedUsers.head.hoursBooked should be (13)
     }
 
     {
@@ -106,7 +122,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find first 2 days as locked with lock matching requested range" in {
-        val response = ju.Arrays.asList(new TimesheetLock(startDate.toDate, startDate.plusDays(2).toDate))
+        val response = Lists.newArrayList(new TimesheetLock(startDate.toDate, startDate.plusDays(2).toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 1
@@ -117,7 +133,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
 
 
       "find first 2 days as locked with lock partially overlapping the requested range" in {
-        val response = ju.Arrays.asList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(2).toDate))
+        val response = Lists.newArrayList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(2).toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 1
@@ -127,7 +143,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find first day as locked when locked abuts the requested range at the start" in {
-        val response = ju.Arrays.asList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.toDate))
+        val response = Lists.newArrayList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 1
@@ -137,7 +153,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find last 2 days as locked with lock matching the requested range" in {
-        val response = ju.Arrays.asList(new TimesheetLock(endDate.minusDays(2).toDate, endDate.toDate))
+        val response = Lists.newArrayList(new TimesheetLock(endDate.minusDays(2).toDate, endDate.toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 1
@@ -147,7 +163,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find last 2 days as locked with lock partially overlapping the requested range" in {
-        val response = ju.Arrays.asList(new TimesheetLock(endDate.minusDays(2).toDate, endDate.plusDays(2).toDate))
+        val response = Lists.newArrayList(new TimesheetLock(endDate.minusDays(2).toDate, endDate.plusDays(2).toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 1
@@ -157,7 +173,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find last day locked as end lock is inclusive" in {
-        val response = ju.Arrays.asList(new TimesheetLock(endDate.toDate, endDate.plusDays(1).toDate))
+        val response = Lists.newArrayList(new TimesheetLock(endDate.toDate, endDate.plusDays(1).toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 1
@@ -167,7 +183,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find first 2 days and last day as locked" in {
-        val response = ju.Arrays.asList(new TimesheetLock(startDate.toDate, startDate.plusDays(2).toDate), new TimesheetLock(endDate.minusDays(1).toDate, endDate.toDate))
+        val response = Lists.newArrayList(new TimesheetLock(startDate.toDate, startDate.plusDays(2).toDate), new TimesheetLock(endDate.minusDays(1).toDate, endDate.toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 2
@@ -180,7 +196,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find first start day and last day as locked" in {
-        val response = ju.Arrays.asList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.toDate), new TimesheetLock(endDate.toDate, endDate.toDate))
+        val response = Lists.newArrayList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.toDate), new TimesheetLock(endDate.toDate, endDate.toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 2
@@ -193,7 +209,7 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find first 4 days as locked with locks overlapping eachother" in {
-        val response = ju.Arrays.asList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(2).toDate), new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(4).toDate))
+        val response = Lists.newArrayList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(2).toDate), new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(4).toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 1
@@ -203,13 +219,44 @@ class TimesheetLockServiceSpringImplTest extends WordSpec with Matchers with Moc
       }
 
       "find first 4 days as locked with locks abuts eachother" in {
-        val response = ju.Arrays.asList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(2).toDate), new TimesheetLock(startDate.plusDays(2).toDate, startDate.plusDays(4).toDate))
+        val response = Lists.newArrayList(new TimesheetLock(startDate.minusDays(2).toDate, startDate.plusDays(2).toDate), new TimesheetLock(startDate.plusDays(2).toDate, startDate.plusDays(4).toDate))
         val locked = findLockedDatesInRange(response)
 
         locked should have size 1
 
         locked(0).start.toLocalDate should be(startDate)
         locked(0).end.toLocalDate should be(startDate + 4.days)
+      }
+
+      "exclude locks where user is.. excluded !" in {
+        val userA = UserObjectMother.createUser()
+        val userB = UserObjectMother.createUser()
+        userB.setUsername("imanotheruser")
+
+        val start = startDate
+        val end = startDate.plusDays(2)
+        val lockA = new TimesheetLock(start.toDate, end.toDate, Lists.newArrayList(userA))
+        val lockB = new TimesheetLock(startDate.toDate, startDate.plusDays(3).toDate, Lists.newArrayList(userB))
+        val response = Lists.newArrayList(lockA, lockB)
+
+        when(lockDao.findMatchingLock(startDate.toDate, endDate.toDate)).thenReturn(response)
+
+        val locked = service.findLockedDatesInRange(startDate.toDate, endDate.toDate, userB)
+
+        locked should have size 1
+
+        locked(0).start.toLocalDate should be(start)
+        locked(0).end.toLocalDate should be(end)
+      }
+
+      "don't fail when there are no locks" in {
+        val response = Lists.newArrayList[TimesheetLock]()
+
+        when(lockDao.findMatchingLock(startDate.toDate, endDate.toDate)).thenReturn(response)
+
+        val locked = service.findLockedDatesInRange(startDate.toDate, endDate.toDate, UserObjectMother.createUser())
+
+        locked should have size 0
       }
     }
   }

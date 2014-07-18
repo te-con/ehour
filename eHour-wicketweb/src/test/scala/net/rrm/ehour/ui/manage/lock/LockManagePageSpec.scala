@@ -1,7 +1,9 @@
 package net.rrm.ehour.ui.manage.lock
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.timesheet.service.TimesheetLockService
+import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
@@ -10,11 +12,12 @@ import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
 
 class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
-  "Lock Admin Page" should {
+  "Lock Manage Page" should {
     val service = mockService[TimesheetLockService]
 
-    val bean = LockAdminBackingBeanObjectMother.create
-    val lock = bean.lock
+    mockService[UserService]
+
+    val lock = LockAdminBackingBeanObjectMother.create.lock
 
     when(service.findAll()).thenReturn(List(lock))
 
@@ -44,9 +47,9 @@ class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
 
       val target = mock[AjaxRequestTarget]
 
-      page.send(page, Broadcast.DEPTH, LockAddedEvent(bean, target))
+      page.send(page, Broadcast.DEPTH, LockAddedEvent(lock, target))
 
-      verify(service).createNew(None, lock.getDateStart, lock.getDateEnd)
+      verify(service).createNew(None, lock.getDateStart, lock.getDateEnd, Lists.newArrayList())
       verify(service, times(2)).findAll()
       verify(target, times(2)).add(any(classOf[Component]))
 
@@ -59,9 +62,9 @@ class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
       lock.setLockId(5)
       val target = mock[AjaxRequestTarget]
 
-      page.send(page, Broadcast.DEPTH, LockEditedEvent(bean, target))
+      page.send(page, Broadcast.DEPTH, LockEditedEvent(lock, target))
 
-      verify(service).updateExisting(5, lock.getDateStart, lock.getDateEnd, lock.getName)
+      verify(service).updateExisting(5, lock.getDateStart, lock.getDateEnd, lock.getName, Lists.newArrayList())
       verify(service, times(2)).findAll()
       verify(target, times(2)).add(any(classOf[Component]))
 
@@ -74,7 +77,7 @@ class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
       lock.setLockId(5)
       val target = mock[AjaxRequestTarget]
 
-      page.send(page, Broadcast.DEPTH, UnlockedEvent(bean, target))
+      page.send(page, Broadcast.DEPTH, UnlockedEvent(lock, target))
 
       verify(service).deleteLock(5)
       verify(service, times(2)).findAll()

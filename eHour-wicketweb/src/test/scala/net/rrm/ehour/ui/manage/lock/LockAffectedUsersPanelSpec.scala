@@ -15,7 +15,7 @@ class LockAffectedUsersPanelSpec extends AbstractSpringWebAppSpec {
       val bean = LockAdminBackingBeanObjectMother.create
       val lock = bean.lock
 
-      when(service.findAffectedUsers(lock.getDateStart, lock.getDateEnd)).thenReturn(List(AffectedUser(UserObjectMother.createUser(), Map())))
+      when(service.findAffectedUsers(lock.getDateStart, lock.getDateEnd, Nil)).thenReturn(List(AffectedUser(UserObjectMother.createUser(), Map())))
 
       tester.startComponentInPage(new LockAffectedUsersPanel("id", Model(bean)))
       tester.assertNoErrorMessage()

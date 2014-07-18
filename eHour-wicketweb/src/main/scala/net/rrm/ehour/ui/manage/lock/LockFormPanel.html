@@ -13,7 +13,7 @@
             <table class="contentTable">
                 <tr>
                     <td valign="top">
-                        <wicket:message key="op.lock.admin.form.chooseDate.label" /> :
+                        <wicket:message key="op.lock.admin.form.chooseDate.label" />:
                     </td>
                     <td>
                         <input style="width: 7em; clear: both" type="text" wicket:id="startDate">
@@ -24,6 +24,7 @@
                         <span wicket:id="endDateValidationError"></span>
                     </td>
                 </tr>
+
                 <tr>
                     <td valign="top">
                         <wicket:message key="op.lock.admin.name.label" />:
@@ -31,6 +32,29 @@
                     <td>
                         <input type="text" wicket:id="name">
                     </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><br /></td>
+                </tr>
+
+                <tr>
+                    <td valign="top">
+                        <wicket:message key="op.lock.admin.excluded.label" />:
+                    </td>
+
+                    <td wicket:id="excludedUsers">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><br /></td>
+                </tr>
+
+                <tr>
+                    <td valign="top" wicket:id="affected"></td>
+
+                    <td wicket:id="affectedContainer"></td>
                 </tr>
 
                 <tr>
@@ -55,6 +79,38 @@
             <br clear="all">
         </form>
     </div>
+
+    <wicket:fragment wicket:id="hideHours">
+        <a wicket:id="affectedLinkToggle"><i class="fa fa-caret-square-o-down"></i> <wicket:message key="op.lock.admin.excluded.hide" /></a>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="showHours">
+        <a wicket:id="affectedLinkToggle"><i class="fa fa-caret-square-o-up"></i> <wicket:message key="op.lock.admin.excluded.view" /></a>
+    </wicket:fragment>
+
+
+    <wicket:fragment wicket:id="readOnlyExcludedUsers">
+        <div class="maxScroll">
+            <wicket:container wicket:id="excluded">
+                <wicket:container wicket:id="name" /><br />
+            </wicket:container>
+        </div>
+        <br />
+        <a wicket:id="modify"><i class="fa fa-pencil-square-o"></i> <wicket:message key="op.lock.admin.excluded.modify" /></a>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="noExcludedUsers">
+        <wicket:message key="op.lock.admin.none.label" /><br />
+        <br />
+        <a wicket:id="modify"><i class="fa fa-plus-square-o"></i> <wicket:message key="op.lock.admin.excluded.header" /></a>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="selectUsersToExclude">
+        <wicket:container wicket:id="userSelect"/>
+        <br/>
+        <a wicket:id="hide"><i class="fa fa-caret-square-o-up"></i> <wicket:message key="op.lock.admin.hide.label" /></a>
+    </wicket:fragment>
+
 
 </wicket:panel>
 

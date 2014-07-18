@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.manage.lock
 
 import net.rrm.ehour.domain.Project
 import net.rrm.ehour.timesheet.service.{AffectedUser, TimesheetLockService}
-import net.rrm.ehour.ui.common.border.{GreyBlueRoundedBorder, GreyRoundedBorder}
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import net.rrm.ehour.ui.common.wicket.{Container, Model}
@@ -10,7 +10,7 @@ import net.rrm.ehour.util._
 import org.apache.wicket.markup.head.{IHeaderResponse, JavaScriptHeaderItem}
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
-import org.apache.wicket.model.{IModel, PropertyModel, ResourceModel}
+import org.apache.wicket.model.{IModel, PropertyModel}
 import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 
@@ -24,23 +24,21 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
 
   val self = this
 
-  override def onBeforeRender(): Unit = {
+  import scala.collection.JavaConversions._
+  override def onBeforeRender() {
     super.onBeforeRender()
-
-    val greyBorder = new GreyRoundedBorder(LockAffectedUsersPanel.GreyBorderId, new ResourceModel("op.lock.admin.affectedUsers.headers"))
-    addOrReplace(greyBorder)
 
     val blueBorder = new GreyBlueRoundedBorder(LockAffectedUsersPanel.BorderId)
     blueBorder.setOutputMarkupId(true)
-    greyBorder.addOrReplace(blueBorder)
+    addOrReplace(blueBorder)
 
     val domainObject = getPanelModelObject.getDomainObject
-    val affectedUsers = lockService.findAffectedUsers(domainObject.getDateStart, domainObject.getDateEnd)
+    val affectedUsers = lockService.findAffectedUsers(domainObject.getDateStart, domainObject.getDateEnd, domainObject.getExcludedUsers)
 
     val affectedUserDetailsModel = Model(AffectedUser())
 
-    val details: Container = createProjectList(affectedUserDetailsModel)
-    greyBorder.addOrReplace(details)
+    val details = createProjectList(affectedUserDetailsModel)
+    addOrReplace(details)
 
     val repeater = new ListView[AffectedUser](LockAffectedUsersPanel.AffectedUsersId, toJava(affectedUsers)) {
       def populateItem(item: ListItem[AffectedUser]) {
@@ -53,7 +51,7 @@ class LockAffectedUsersPanel(id: String, lockModel: IModel[LockAdminBackingBean]
           target => {
             affectedUserDetailsModel.setObject(affectedUser)
             target.add(details)
-            target.appendJavaScript("listHighlight.selectAndDeselectRest('%s')" format item.getMarkupId)
+            target.appendJavaScript("affectedListHighlight.selectAndDeselectRest('%s')" format item.getMarkupId)
           }
         }))
       }

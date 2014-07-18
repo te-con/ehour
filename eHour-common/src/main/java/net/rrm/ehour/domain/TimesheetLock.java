@@ -1,17 +1,20 @@
 package net.rrm.ehour.domain;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "TIMESHEET_LOCK")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
     private static final long serialVersionUID = 2546435367535412269L;
 
@@ -31,6 +34,12 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
     @Column(name = "NAME")
     private String name;
 
+    @ManyToMany(targetEntity = User.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "TIMESHEET_LOCK_EXCLUSION",
+            joinColumns = @JoinColumn(name = "LOCK_ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    private List<User> excludedUsers = Lists.newArrayList();
+
     public TimesheetLock() {
     }
 
@@ -39,17 +48,22 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
         this.dateEnd = dateEnd;
     }
 
-    public TimesheetLock(Date dateStart, Date dateEnd, String name) {
+    public TimesheetLock(Date dateStart, Date dateEnd, List<User> excludedUsers) {
         this(dateStart, dateEnd);
+        this.excludedUsers = excludedUsers;
+    }
+
+    public TimesheetLock(Date dateStart, Date dateEnd, String name, List<User> excludedUsers) {
+        this(dateStart, dateEnd, excludedUsers);
+
         this.name = name;
     }
 
-    public TimesheetLock(Integer lockId, Date dateStart, Date dateEnd, String name) {
-        this(dateStart, dateEnd, name);
+
+    public TimesheetLock(Integer lockId, Date dateStart, Date dateEnd, String name, List<User> excludedUsers) {
+        this(dateStart, dateEnd, name, excludedUsers);
         this.lockId = lockId;
     }
-
-
 
     public Integer getLockId() {
         return lockId;
@@ -81,6 +95,14 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<User> getExcludedUsers() {
+        return excludedUsers;
+    }
+
+    public void setExcludedUsers(List<User> excludedUsers) {
+        this.excludedUsers = excludedUsers;
     }
 
     @Override

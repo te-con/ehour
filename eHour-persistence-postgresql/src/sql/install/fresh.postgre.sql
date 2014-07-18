@@ -34,7 +34,7 @@ INSERT INTO CONFIGURATION VALUES
 ('showTurnOver','true'), ('localeLanguage','en'), ('currency','en-US'),
 ('localeCountry','en-US'), ('availableTranslations','en,nl,fr,it'),
 ('mailFrom','noreply@localhost.net'), ('smtpPort','25'),
-('mailSmtp','127.0.0.1'), ('demoMode','false'), ('version', '1.3');
+('mailSmtp','127.0.0.1'), ('demoMode','false'), ('version', '1.3.1');
 
 
 --
@@ -306,6 +306,13 @@ CREATE  TABLE TIMESHEET_LOCK (
 
 CREATE INDEX TIMESHEET_LOCK_IDX ON TIMESHEET_LOCK (DATE_START, DATE_END);
 
+CREATE TABLE TIMESHEET_LOCK_EXCLUSION (
+  LOCK_ID INTEGER,
+  USER_ID INTEGER,
+  CONSTRAINT PK PRIMARY KEY (LOCK_ID, USER_ID) USING INDEX TABLESPACE PG_DEFAULT,
+  CONSTRAINT FK_EXCL_USER_ID FOREIGN KEY (USER_ID) REFERENCES USERS (USER_ID) ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT FK_EXCL_LOCK_ID FOREIGN KEY (LOCK_ID) REFERENCES TIMESHEET_LOCK (LOCK_ID) ON UPDATE NO ACTION ON DELETE NO ACTION
+);
 
 
 

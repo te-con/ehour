@@ -30,131 +30,125 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import scala.collection.immutable.Vector;
 
 import java.util.*;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
-@SuppressWarnings( { "deprecation" })
-public class TimesheetServiceImplTest
-{
-	private TimesheetServiceImpl timesheetService;
-	private TimesheetDao timesheetDAO;
-	private TimesheetCommentDao timesheetCommentDAO;
-	private EhourConfig config;
-	private AggregateReportService aggregateReportService;
-	private ProjectAssignmentService projectAssignmentService;
+@SuppressWarnings({"deprecation"})
+@RunWith(MockitoJUnitRunner.class)
+public class TimesheetServiceImplTest {
+    private TimesheetServiceImpl timesheetService;
+
+    @Mock
+    private TimesheetDao timesheetDAO;
+
+    @Mock
+    private TimesheetCommentDao timesheetCommentDAO;
+
+    @Mock
+    private EhourConfig config;
+
+    @Mock
+    private AggregateReportService aggregateReportService;
+
+    @Mock
+    private ProjectAssignmentService projectAssignmentService;
+
+    @Mock
     private TimesheetLockService timesheetLockService;
 
-	@Before
-	public void setUp()
-	{
-
-		config = createMock(EhourConfig.class);
-		timesheetDAO = createMock(TimesheetDao.class);
-		aggregateReportService = createMock(AggregateReportService.class);
-		timesheetCommentDAO = createMock(TimesheetCommentDao.class);
-		projectAssignmentService = createMock(ProjectAssignmentService.class);
-        timesheetLockService = createMock(TimesheetLockService.class);
-
+    @Before
+    public void setUp() {
         timesheetService = new TimesheetServiceImpl(timesheetDAO, timesheetCommentDAO, timesheetLockService,
-                                                    aggregateReportService, projectAssignmentService, config);
-	}
+                aggregateReportService, projectAssignmentService, config);
+    }
 
-	@Test
-	public void should_get_booked_days_for_february() throws Exception
-	{
-		Calendar cal = new GregorianCalendar(2006, 10, 5);
+    @Test
+    public void should_get_booked_days_for_february() throws Exception {
+        Calendar cal = new GregorianCalendar(2006, Calendar.NOVEMBER, 5);
 
-		BookedDay dayA = new BookedDay();
-		dayA.setDate(new Date(2006 - 1900, 10, 1));
-		dayA.setHours((float) 6);
+        BookedDay dayA = new BookedDay();
+        dayA.setDate(new Date(2006 - 1900, Calendar.NOVEMBER, 1));
+        dayA.setHours((float) 6);
 
-        BookedDay  dayB = new BookedDay();
-		dayB.setDate(new Date(2006 - 1900, 10, 2));
-		dayB.setHours((float) 8);
+        BookedDay dayB = new BookedDay();
+        dayB.setDate(new Date(2006 - 1900, Calendar.NOVEMBER, 2));
+        dayB.setHours((float) 8);
 
-		expect(timesheetDAO.getBookedHoursperDayInRange(1, DateUtil.calendarToMonthRange(cal))).andReturn(Arrays.asList(dayA, dayB));
-		expect(config.getCompleteDayHours()).andReturn(8f).times(2);
-
-		replay(config);
-
-		replay(timesheetDAO);
+        when(timesheetDAO.getBookedHoursperDayInRange(1, DateUtil.calendarToMonthRange(cal))).thenReturn(Arrays.asList(dayA, dayB));
+        when(config.getCompleteDayHours()).thenReturn(8f);
 
         List<LocalDate> results = timesheetService.getBookedDaysMonthOverview(1, cal);
 
-        verify(timesheetDAO);
-		verify(config);
+        verify(timesheetDAO).getBookedHoursperDayInRange(1, DateUtil.calendarToMonthRange(cal));
+        verify(config, times(2)).getCompleteDayHours();
 
         assertEquals(1, results.size());
         assertEquals(2, results.get(0).getDayOfMonth());
     }
 
-	@Test
-	public void should_get_timesheet_overview() throws Exception
-	{
-		List<TimesheetEntry> daoResults = new ArrayList<TimesheetEntry>();
-		List<AssignmentAggregateReportElement> reportResults = new ArrayList<AssignmentAggregateReportElement>();
-		Calendar cal = new GregorianCalendar();
+    @Test
+    public void should_get_timesheet_overview() throws Exception {
+        List<TimesheetEntry> daoResults = new ArrayList<TimesheetEntry>();
+        List<AssignmentAggregateReportElement> reportResults = new ArrayList<AssignmentAggregateReportElement>();
+        Calendar cal = new GregorianCalendar();
 
-		TimesheetEntry entryA, entryB;
-		TimesheetEntryId idA, idB;
+        TimesheetEntry entryA, entryB;
+        TimesheetEntryId idA, idB;
 
-		idA = new TimesheetEntryId(new Date(2006 - 1900, 10 - 1, 2), null);
-		entryA = new TimesheetEntry();
-		entryA.setEntryId(idA);
-		entryA.setHours((float) 5);
-		daoResults.add(entryA);
+        idA = new TimesheetEntryId(new Date(2006 - 1900, Calendar.OCTOBER, 2), null);
+        entryA = new TimesheetEntry();
+        entryA.setEntryId(idA);
+        entryA.setHours((float) 5);
+        daoResults.add(entryA);
 
-		idB = new TimesheetEntryId(new Date(2006 - 1900, 10 - 1, 6), null);
-		entryB = new TimesheetEntry();
-		entryB.setEntryId(idB);
-		entryB.setHours((float) 3);
-		daoResults.add(entryB);
+        idB = new TimesheetEntryId(new Date(2006 - 1900, Calendar.OCTOBER, 6), null);
+        entryB = new TimesheetEntry();
+        entryB.setEntryId(idB);
+        entryB.setHours((float) 3);
+        daoResults.add(entryB);
 
-		AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
-		ProjectAssignment pa = ProjectAssignmentObjectMother.createProjectAssignment(0);
-		agg.setProjectAssignment(pa);
-		reportResults.add(agg);
+        AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
+        ProjectAssignment pa = ProjectAssignmentObjectMother.createProjectAssignment(0);
+        agg.setProjectAssignment(pa);
+        reportResults.add(agg);
 
-		expect(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal))).andReturn(daoResults);
+        when(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal))).thenReturn(daoResults);
+        when(aggregateReportService.getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal))).thenReturn(reportResults);
 
-		expect(aggregateReportService.getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal))).andReturn(reportResults);
+        timesheetService.getTimesheetOverview(new User(1), cal);
 
-		replay(timesheetDAO);
-		replay(aggregateReportService);
+        verify(timesheetDAO).getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal));
+        verify(aggregateReportService).getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal));
+    }
 
-		timesheetService.getTimesheetOverview(new User(1), cal);
+    @Test
+    public void should_get_timesheet_entries() {
+        Date da = new Date(2006 - 1900, Calendar.DECEMBER, 31);
+        Date db = new Date(2007 - 1900, Calendar.JANUARY, 6);
+        DateRange range = new DateRange(da, db);
 
-		verify(timesheetDAO);
-		verify(aggregateReportService);
-	}
+        DateRange rangeB = new DateRange(new Date(2006 - 1900, Calendar.DECEMBER, 31), new Date(2007 - 1900, Calendar.JANUARY, 6));
 
-	@Test
-	public void should_get_timesheet_entries()
-	{
-		Date da = new Date(2006 - 1900, 12 - 1, 31);
-		Date db = new Date(2007 - 1900, 1 - 1, 6);
-		DateRange range = new DateRange(da, db);
+        when(timesheetDAO.getTimesheetEntriesInRange(1, range)).thenReturn(new ArrayList<TimesheetEntry>());
+        when(timesheetCommentDAO.findById(new TimesheetCommentId(1, range.getDateStart()))).thenReturn(new TimesheetComment());
+        when(projectAssignmentService.getProjectAssignmentsForUser(1, rangeB)).thenReturn(new ArrayList<ProjectAssignment>());
+        when(config.getFirstDayOfWeek()).thenReturn(1);
+        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class))).thenReturn(new Vector<Interval>(0, 0, 1));
 
-		DateRange rangeB = new DateRange(new Date(2006 - 1900, 12 - 1, 31), new Date(2007 - 1900, 1 - 1, 6));
+        timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, Calendar.JANUARY, 1));
 
-		expect(timesheetDAO.getTimesheetEntriesInRange(1, range)).andReturn(new ArrayList<TimesheetEntry>());
-		expect(timesheetCommentDAO.findById(new TimesheetCommentId(1, range.getDateStart()))).andReturn(new TimesheetComment());
-		expect(projectAssignmentService.getProjectAssignmentsForUser(1, rangeB)).andReturn(new ArrayList<ProjectAssignment>());
-        expect(config.getFirstDayOfWeek()).andReturn(1);
-        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class))).andReturn(new Vector<Interval>(0, 0, 1));
-
-		replay(timesheetDAO, timesheetCommentDAO, projectAssignmentService, config, timesheetLockService);
-
-		timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, 1 - 1, 1));
-
-		verify(timesheetDAO);
-		verify(timesheetCommentDAO);
-		verify(projectAssignmentService);
-        verify(config);
-        verify(timesheetLockService);
+        verify(timesheetDAO).getTimesheetEntriesInRange(1, range);
+        verify(timesheetCommentDAO).findById(new TimesheetCommentId(1, range.getDateStart()));
+        verify(projectAssignmentService).getProjectAssignmentsForUser(1, rangeB);
+        verify(config).getFirstDayOfWeek();
+        verify(timesheetLockService).findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class));
     }
 }

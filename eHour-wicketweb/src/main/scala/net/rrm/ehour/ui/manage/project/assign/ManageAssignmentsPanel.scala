@@ -10,6 +10,7 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.event.{AjaxEvent, PayloadAjaxEvent}
 import net.rrm.ehour.ui.common.model.AdminBackingBean
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel
+import net.rrm.ehour.ui.common.panel.multiselect.MultiUserSelect
 import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.manage.assignment.form.AssignmentFormComponentContainerPanel.DisplayOption
 import net.rrm.ehour.ui.manage.assignment.{AssignmentAdminBackingBean, AssignmentAjaxEventType, AssignmentFormPanel}
@@ -71,7 +72,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   }
 
   def selectedAffectedUsers: ju.List[User] = findListPanel match {
-    case newUserList: NewAssignmentUserListView => newUserList.selectedAffectedUsers.getObject
+    case newUserList: MultiUserSelect => newUserList.selectedUsers.getObject
     case _ => Lists.newArrayList()
   }
 
@@ -87,8 +88,8 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
       formPanel
     }
 
-    def replaceUserListPanel: NewAssignmentUserListView = {
-      val view = new NewAssignmentUserListView(LIST_ID)
+    def replaceUserListPanel: MultiUserSelect = {
+      val view = new MultiUserSelect(LIST_ID)
       view.setOutputMarkupId(true)
       getBorderContainer.addOrReplace(view)
       view
