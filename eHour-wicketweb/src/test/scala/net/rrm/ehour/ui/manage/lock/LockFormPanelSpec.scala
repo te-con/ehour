@@ -4,6 +4,7 @@ import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.timesheet.service.TimesheetLockService
+import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.manage.lock.LockFormPanel._
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.model.Model
@@ -78,9 +79,18 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
     "show affected users" in {
       tester.startComponentInPage(createPanel)
 
-      tester.executeAjaxEvent(s"$formPath:showAffected", "click")
+      tester.executeAjaxEvent(s"$formPath:affected:affectedLinkToggle", "click")
 
       tester.assertComponent(s"$formPath:affectedContainer", classOf[LockAffectedUsersPanel])
+    }
+
+    "hide affected users" in {
+      tester.startComponentInPage(createPanel)
+
+      tester.executeAjaxEvent(s"$formPath:affected:affectedLinkToggle", "click") // show
+      tester.executeAjaxEvent(s"$formPath:affected:affectedLinkToggle", "click") // hide
+
+      tester.assertComponent(s"$formPath:affectedContainer", classOf[Container])
     }
 
     "fail to create a new lock when start is after end date" in {

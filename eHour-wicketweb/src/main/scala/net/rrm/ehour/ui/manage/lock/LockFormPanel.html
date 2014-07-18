@@ -52,14 +52,14 @@
                 </tr>
 
                 <tr>
-                    <td valign="top">
-                        <a wicket:id="showAffected">Click to show affected users</a>
-                    </td>
+                    <td valign="top" wicket:id="affected"></td>
 
                     <td wicket:id="affectedContainer"></td>
                 </tr>
 
-
+                <tr>
+                    <td colspan="2"><br /></td>
+                </tr>
 
                 <tr>
                     <td>
@@ -80,6 +80,15 @@
         </form>
     </div>
 
+    <wicket:fragment wicket:id="hideHours">
+        <a wicket:id="affectedLinkToggle"><i class="fa fa-caret-square-o-down"></i>  View locked hours</a>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="showHours">
+        <a wicket:id="affectedLinkToggle"><i class="fa fa-caret-square-o-up"></i>  Hours that will be locked</a>
+    </wicket:fragment>
+
+
     <wicket:fragment wicket:id="readOnlyExcludedUsers">
         <div class="maxScroll">
             <wicket:container wicket:id="excluded">
@@ -87,18 +96,18 @@
             </wicket:container>
         </div>
         <br />
-        <a wicket:id="modify">Modify</a>
+        <a wicket:id="modify"><i class="fa fa-pencil-square-o"></i> Add/remove users</a>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="noExcludedUsers">
-        No users have been excluded from this lock<br />
+        No users have been excluded from this lock<br /><br />
         <a wicket:id="modify"><i class="fa fa-plus-square-o"></i> Exclude users</a>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="selectUsersToExclude">
-        <a wicket:id="hide">Hide</a>
-        <br />
         <wicket:container wicket:id="userSelect"/>
+        <br/>
+        <a wicket:id="hide"><i class="fa fa-caret-square-o-up"></i> Hide</a>
     </wicket:fragment>
 
 

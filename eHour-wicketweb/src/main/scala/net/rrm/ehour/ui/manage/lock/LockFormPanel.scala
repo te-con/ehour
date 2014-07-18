@@ -20,6 +20,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior
 import org.apache.wicket.event.{Broadcast, IEvent}
+import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.border.Border
 import org.apache.wicket.markup.html.form.{Form, TextField}
@@ -29,6 +30,8 @@ import org.apache.wicket.model.{IModel, Model, PropertyModel, ResourceModel}
 
 class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends AbstractFormSubmittingPanel[LockAdminBackingBean](id, model) {
   val self = this
+
+  var affectedUsersShown = false
 
   override def onInitialize() {
     super.onInitialize()
@@ -43,22 +46,49 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
     form.add(createNameInputField())
     addDateInputFields(form)
     addUserSelection(form)
-    addAffectedUserPanel()
+    createAffectedUserPanel(LockFormPanel.AffectedId)
     form.add(new ServerMessageLabel(LockFormPanel.ServerMessageId, "formValidationError", new PropertyModel[String](model, "serverMessage")))
     form.add(createSubmitButton)
     form.add(createUnlockButton)
 
-    def addAffectedUserPanel() {
-      val showAffectedCallback: LinkCallback = target => toggleAffectedUsersPanel(form, target)
-      val link = new AjaxLink(LockFormPanel.ShowAffectedId, showAffectedCallback)
-      form.add(link)
+    def createAffectedUserPanel(id: String) {
+      getPage match {
+        case p: LockManagePage => if (p.affectedUsersShown) showAffectedUserPanel(id) else hideAffectedUserPanel(id)
+        case _ => if (affectedUsersShown) showAffectedUserPanel(id) else hideAffectedUserPanel(id)
+      }
+    }
 
-      val container = getPage match {
-        case p: LockManagePage if p.affectedUsersShown => new LockAffectedUsersPanel(LockFormPanel.AffectedContainerId, model)
-        case _ => new Container(LockFormPanel.AffectedContainerId)
+    def showAffectedUserPanel(id: String) {
+      displayAffectedUserPanel(id, "showHours", showAfterClick = false, new LockAffectedUsersPanel(LockFormPanel.AffectedContainerId, model))
+    }
+
+    def hideAffectedUserPanel(id: String) {
+      displayAffectedUserPanel(id, "hideHours", showAfterClick = true, new Container(LockFormPanel.AffectedContainerId))
+    }
+
+    def displayAffectedUserPanel(id: String, fragmentId: String, showAfterClick: Boolean, panel: WebMarkupContainer) {
+      val f = new Fragment(id, fragmentId, this)
+      f.setOutputMarkupId(true)
+
+      val showAffectedCallback: LinkCallback = target => toggleAffectedUsersPanel(id, target, show = showAfterClick)
+      val link = new AjaxLink("affectedLinkToggle", showAffectedCallback)
+      f.add(link)
+      form.addOrReplace(f)
+
+     panel.setOutputMarkupId(true)
+     form.addOrReplace(panel)
+    }
+
+    def toggleAffectedUsersPanel(id: String, target: AjaxRequestTarget, show: Boolean) {
+      getPage match {
+        case p: LockManagePage => p.affectedUsersShown = show
+        case _ => affectedUsersShown = show
       }
 
-      form.add(container)
+      createAffectedUserPanel(id)
+
+      target.add(form.get(LockFormPanel.AffectedId))
+      target.add(form.get(LockFormPanel.AffectedContainerId))
     }
 
     def createSubmitButton: NonDemoAjaxButton = {
@@ -89,20 +119,6 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
       unlockButton.setVisible(!getPanelModelObject.isNew)
       unlockButton
-    }
-  }
-
-  def toggleAffectedUsersPanel(form: Form[_], target: AjaxRequestTarget) {
-    val replacement = if (isShowingAffectedUsersPanel(form))
-      new Container(LockFormPanel.AffectedContainerId)
-    else
-      new LockAffectedUsersPanel(LockFormPanel.AffectedContainerId, model)
-
-    updatePanel(form, target, replacement)
-
-    getPage match {
-      case p: LockManagePage => p.affectedUsersShown = isShowingAffectedUsersPanel(form)
-      case _ =>
     }
   }
 
@@ -232,7 +248,7 @@ object LockFormPanel {
   val AffectedUsersId = "affectedUsersPanel"
   val SubmitId = "submit"
   val UnlockId = "unlock"
-  val ShowAffectedId = "showAffected"
+  val AffectedId = "affected"
   val AffectedContainerId = "affectedContainer"
   val ExcludedUsersId = "excludedUsers"
 }
