@@ -40,7 +40,7 @@
 
                 <tr>
                     <td valign="top">
-                        Excluded users:
+                        <wicket:message key="op.lock.admin.excluded.label" />:
                     </td>
 
                     <td wicket:id="excludedUsers">
@@ -81,11 +81,11 @@
     </div>
 
     <wicket:fragment wicket:id="hideHours">
-        <a wicket:id="affectedLinkToggle"><i class="fa fa-caret-square-o-down"></i>  View locked hours</a>
+        <a wicket:id="affectedLinkToggle"><i class="fa fa-caret-square-o-down"></i> <wicket:message key="op.lock.admin.excluded.hide" /></a>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="showHours">
-        <a wicket:id="affectedLinkToggle"><i class="fa fa-caret-square-o-up"></i>  Hours that will be locked</a>
+        <a wicket:id="affectedLinkToggle"><i class="fa fa-caret-square-o-up"></i> <wicket:message key="op.lock.admin.excluded.view" /></a>
     </wicket:fragment>
 
 
@@ -96,18 +96,19 @@
             </wicket:container>
         </div>
         <br />
-        <a wicket:id="modify"><i class="fa fa-pencil-square-o"></i> Add/remove users</a>
+        <a wicket:id="modify"><i class="fa fa-pencil-square-o"></i> <wicket:message key="op.lock.admin.excluded.modify" /></a>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="noExcludedUsers">
-        No users have been excluded from this lock<br /><br />
-        <a wicket:id="modify"><i class="fa fa-plus-square-o"></i> Exclude users</a>
+        <wicket:message key="op.lock.admin.none.label" /><br />
+        <br />
+        <a wicket:id="modify"><i class="fa fa-plus-square-o"></i> <wicket:message key="op.lock.admin.excluded.header" /></a>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="selectUsersToExclude">
         <wicket:container wicket:id="userSelect"/>
         <br/>
-        <a wicket:id="hide"><i class="fa fa-caret-square-o-up"></i> Hide</a>
+        <a wicket:id="hide"><i class="fa fa-caret-square-o-up"></i> <wicket:message key="op.lock.admin.hide.label" /></a>
     </wicket:fragment>
 
 
