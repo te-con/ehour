@@ -4,6 +4,7 @@ import net.rrm.ehour.it.AbstractScenario;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
@@ -37,7 +38,7 @@ public class LockPeriodScenario extends AbstractScenario {
         navigateToAdminLocks();
         editLock(0, "December, 2013");
 
-        WebElement element = findElement("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_excludedUsers");
+        WebElement element = findElement(By.className("maxScroll"));
         assertTrue(element.getText().startsWith("Admin, eHour"));
     }
 
