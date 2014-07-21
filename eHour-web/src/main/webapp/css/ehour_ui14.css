@@ -20,7 +20,7 @@ body {
     padding: 10px;
 
     border-radius: 14px;
-    border: 0px solid transparent;
+    border: 0 solid transparent;
 
     background: #b1cbe5; /* Old browsers */
     background: -moz-linear-gradient(left,  #b1cbe5 0%, #a6c0da 100%); /* FF3.6+ */
@@ -29,7 +29,6 @@ body {
     background: -o-linear-gradient(left,  #b1cbe5 0%,#a6c0da 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(left,  #b1cbe5 0%,#a6c0da 100%); /* IE10+ */
     background: linear-gradient(to right,  #b1cbe5 0%,#a6c0da 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b1cbe5', endColorstr='#a6c0da',GradientType=1 ); /* IE6-9 */
 }
 
 .content {
