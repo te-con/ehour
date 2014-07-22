@@ -20,7 +20,6 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
-import net.rrm.ehour.ui.common.MockExpectations;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -39,7 +38,7 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
 		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
 		getMockContext().putBean(overviewTimesheet);
 		
-		MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
+//		MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
 
 		TimesheetOverview overview = new TimesheetOverview();
 		

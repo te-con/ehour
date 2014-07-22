@@ -21,13 +21,10 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
-import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
-import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.panel.OverviewPanel;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
-import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -45,9 +42,6 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
     }
 
     public static final String PARAM_OPEN = "openPanel";
-
-    private CalendarPanel calendarPanel;
-    private ContextualHelpPanel helpPanel;
 
     public MonthOverviewPage() {
         this(OpenPanel.OVERVIEW);
@@ -73,22 +67,14 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
     }
 
     private void init(OpenPanel panelToOpen) {
-        // add calendar panel
-        calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser());
-        add(calendarPanel);
-
         WebMarkupContainer contentContainer;
 
         if (panelToOpen == OpenPanel.OVERVIEW) {
-            helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
             contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);
         } else {
-            calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
-            helpPanel = getTimesheetHelpPanel();
             contentContainer = getTimesheetPanel();
         }
 
-        add(helpPanel);
         addOrReplaceContentContainer(contentContainer);
     }
 
@@ -102,10 +88,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
         } else if (type == CalendarAjaxEventType.WEEK_CLICK
                 || type == TimesheetAjaxEventType.WEEK_NAV) {
             calendarWeekClicked(target);
-            calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
-            calendarPanel.refreshCalendar(target);
         } else if (type == TimesheetAjaxEventType.TIMESHEET_SUBMIT) {
-            calendarPanel.refreshCalendar(target);
         }
 
         return false;
@@ -119,12 +102,6 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
     private void calendarWeekClicked(AjaxRequestTarget target) {
         TimesheetPanel panel = getTimesheetPanel();
         addOrReplaceContentContainer(panel, target);
-
-        ContextualHelpPanel replacementHelp = getTimesheetHelpPanel();
-        helpPanel.replaceWith(replacementHelp);
-        helpPanel = replacementHelp;
-        target.add(replacementHelp);
-
     }
 
     /**
@@ -161,21 +138,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
      */
     private TimesheetPanel getTimesheetPanel() {
         return new TimesheetPanel(ID_CONTENT_CONTAINER,
-                getEhourWebSession().getUser(),
+                EhourWebSession.getUser(),
                 getEhourWebSession().getNavCalendar());
-    }
-
-    /**
-     * @return
-     */
-    private ContextualHelpPanel getTimesheetHelpPanel() {
-        ContextualHelpPanel helpPanel = new ContextualHelpPanel("contextHelp",
-                "timesheet.help.header",
-                "timesheet.help.body"
-        );
-
-        helpPanel.setOutputMarkupId(true);
-
-        return helpPanel;
     }
 }
