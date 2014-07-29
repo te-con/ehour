@@ -28,10 +28,12 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntryListUpdatedEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent;
+import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage;
 import net.rrm.ehour.user.service.UserService;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
@@ -76,8 +78,7 @@ public class ManageUserPage extends AbstractTabbedManagePage<ManageUserBackingBe
                 getTabbedPanel().setEditBackingBean(new ManageUserBackingBean(userService.getUserAndCheckDeletability(userId)));
                 getTabbedPanel().switchTabOnAjaxTarget(entrySelectedEvent.target(), AddEditTabbedPanel.TABPOS_EDIT);
             } catch (ObjectNotFoundException e) {
-                // TODO deal with it
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
@@ -170,6 +171,12 @@ public class ManageUserPage extends AbstractTabbedManagePage<ManageUserBackingBe
             return new ManageUserReadOnlyPanel(panelId,
                     new CompoundPropertyModel<ManageUserBackingBean>(bean));
         }
+    }
+
+    @Override
+    protected Component onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent) {
+        send(this, Broadcast.DEPTH, inactiveFilterChangedEvent);
+        return null;
     }
 
     private List<UserDepartment> getUserDepartments() {

@@ -85,7 +85,10 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
 
     event.getPayload match {
       case event: EntryListUpdatedEvent => refresh(event)
-      case event: InactiveFilterChangedEvent => refresh(event)
+      case event: InactiveFilterChangedEvent => {
+        hideInactiveFilter.setHideInactive(event.hideInactiveFilter.isHideInactive)
+        refresh(event)
+      }
       case _ =>
     }
   }
