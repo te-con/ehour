@@ -131,4 +131,34 @@ public interface EhourConfig {
      * Split admin in manager & admin?
      */
     boolean isSplitAdminRole();
+
+    /**
+     * Is sending reminders enabled?
+     */
+    boolean isReminderEnabled();
+
+    /**
+     * How many hours does a user need to have a tracked
+     */
+    int getReminderMinimalHours();
+
+    /**
+     * Reminder mails are cc'ed to (comma separated list)
+     */
+    String getReminderCC();
+
+    /**
+     * When the reminders should be sent, in cronjob format
+     */
+    String getReminderTime();
+
+    /**
+     * Subject of the reminder email
+     */
+    String getReminderSubject();
+
+    /**
+     * The reminder mail body
+     */
+    String getReminderBody();
 }

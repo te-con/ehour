@@ -20,7 +20,13 @@ public enum ConfigurationItem {
     VERSION("version"),
     DONT_FORCE_LANGUAGE("dontForceLanguage"),
     PM_PRIVILEGE("pmPrivilege"),
-    SPLIT_ADMIN_ROLE("splitAdminRole")
+    SPLIT_ADMIN_ROLE("splitAdminRole"),
+    REMINDER_ENABLED("reminderEnabled"),
+    REMINDER_TIME("reminderTime"),
+    REMINDER_SUBJECT("reminderSubject"),
+    REMINDER_BODY("reminderBody"),
+    REMINDER_MIN_HOURS("reminderMinimalHours"),
+    REMINDER_CC("reminderCC"),
     ;
     private String dbField;
 

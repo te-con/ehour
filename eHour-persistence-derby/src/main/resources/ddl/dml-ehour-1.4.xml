@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <configuration config_key="version" config_value="1.4"></configuration>
+    <configuration config_key="reminderEnabled" config_value="false"></configuration>
+    <configuration config_key="reminderBody" config_value="Our records show that you have not posted your weekly hours online. Please be sure to post your hours by 5:30PM Friday."></configuration>
+    <configuration config_key="reminderTime" config_value="* 16 5 * *"></configuration>
+    <configuration config_key="reminderSubject" config_value="Missing hours"></configuration>
+    <configuration config_key="reminderMinimalHours" config_value="32"></configuration>
+</data>

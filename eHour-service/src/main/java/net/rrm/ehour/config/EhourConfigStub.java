@@ -50,6 +50,13 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     private PmPrivilege pmPrivilege;
     private boolean splitAdminRole;
 
+    private boolean reminderEnabled;
+    private int reminderMinimalHours;
+    private String reminderTime;
+    private String reminderSubject;
+    private String reminderBody;
+    private String reminderCC;
+
     @Override
     public TimeZone getTzAsTimeZone() {
         return EhourConfigUtil.getTzAsTimeZone(this);
@@ -222,6 +229,60 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     @Override
     public boolean isSplitAdminRole() {
         return splitAdminRole;
+    }
+
+    @Override
+    public boolean isReminderEnabled() {
+        return reminderEnabled;
+    }
+
+    public void setReminderEnabled(boolean reminderEnabled) {
+        this.reminderEnabled = reminderEnabled;
+    }
+
+    @Override
+    public String getReminderTime() {
+        return reminderTime;
+    }
+
+    public void setReminderTime(String reminderTime) {
+        this.reminderTime = reminderTime;
+    }
+
+    @Override
+    public String getReminderSubject() {
+        return reminderSubject;
+    }
+
+    public void setReminderSubject(String reminderSubject) {
+        this.reminderSubject = reminderSubject;
+    }
+
+    @Override
+    public String getReminderBody() {
+        return reminderBody;
+    }
+
+    public void setReminderBody(String reminderBody) {
+        this.reminderBody = reminderBody;
+    }
+
+    @Override
+    public int getReminderMinimalHours() {
+        return reminderMinimalHours;
+    }
+
+    public void setReminderMinimalHours(int reminderMinimalHours) {
+        this.reminderMinimalHours = reminderMinimalHours;
+    }
+
+    @Override
+    public String getReminderCC() {
+        return reminderCC;
+    }
+
+    public void setReminderCC(String reminderCC) {
+        this.reminderCC = reminderCC;
     }
 
     public void setSplitAdminRole(boolean splitAdminRole) {

@@ -190,6 +190,36 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     }
 
     @Override
+    public boolean isReminderEnabled() {
+        return this.getBoolean(REMINDER_ENABLED.getDbField(), false);
+    }
+
+    @Override
+    public String getReminderTime() {
+        return this.getString(REMINDER_TIME.getDbField(), "* 16 5 * *");
+    }
+
+    @Override
+    public String getReminderSubject() {
+        return this.getString(REMINDER_SUBJECT.getDbField(), "");
+    }
+
+    @Override
+    public String getReminderBody() {
+        return this.getString(REMINDER_BODY.getDbField(), "");
+    }
+
+    @Override
+    public int getReminderMinimalHours() {
+        return this.getInt(REMINDER_MIN_HOURS.getDbField(), 40);
+    }
+
+    @Override
+    public String getReminderCC() {
+        return this.getString(REMINDER_CC.getDbField(), "");
+    }
+
+    @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("completeDayHours", getCompleteDayHours())

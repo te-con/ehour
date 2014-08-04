@@ -44,6 +44,13 @@ public class EhourConfigCache implements EhourConfig, Serializable {
         cache.setPmPrivilege(config.getPmPrivilege());
 
         cache.setSplitAdminRole(config.isSplitAdminRole());
+
+        cache.setReminderBody(config.getReminderBody());
+        cache.setReminderCC(config.getReminderCC());
+        cache.setReminderEnabled(config.isReminderEnabled());
+        cache.setReminderMinimalHours(config.getReminderMinimalHours());
+        cache.setReminderSubject(config.getReminderSubject());
+        cache.setReminderTime(config.getReminderTime());
     }
 
     @Override
@@ -154,5 +161,35 @@ public class EhourConfigCache implements EhourConfig, Serializable {
     @Override
     public boolean isSplitAdminRole() {
         return cache.isSplitAdminRole();
+    }
+
+    @Override
+    public boolean isReminderEnabled() {
+        return cache.isReminderEnabled();
+    }
+
+    @Override
+    public String getReminderTime() {
+        return cache.getReminderTime();
+    }
+
+    @Override
+    public String getReminderSubject() {
+        return cache.getReminderSubject();
+    }
+
+    @Override
+    public String getReminderBody() {
+        return cache.getReminderBody();
+    }
+
+    @Override
+    public int getReminderMinimalHours() {
+        return cache.getReminderMinimalHours();
+    }
+
+    @Override
+    public String getReminderCC() {
+        return cache.getReminderCC();
     }
 }
