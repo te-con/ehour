@@ -1,5 +1,5 @@
 package net.rrm.ehour.config;
 
 public abstract class PersistenceConfig {
-    public static final String DB_VERSION = "1.3.1";
+    public static final String DB_VERSION = "1.4";
 }
