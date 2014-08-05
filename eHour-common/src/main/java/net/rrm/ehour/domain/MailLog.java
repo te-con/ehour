@@ -35,8 +35,7 @@ import java.util.Date;
 @Table(name = "MAIL_LOG")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
 @Inheritance(strategy = InheritanceType.JOINED)
-public class MailLog extends DomainObject<Integer, MailLog>
-{
+public class MailLog extends DomainObject<Integer, MailLog> {
     private static final long serialVersionUID = -3984593984762448559L;
 
     @Id
@@ -62,114 +61,76 @@ public class MailLog extends DomainObject<Integer, MailLog>
     @NotNull
     private Boolean success = Boolean.TRUE;
 
-    @Column(name = "RESULT_MSG", length = 255)
-    private String resultMsg;
-
-
-    /**
-     * default constructor
-     */
-    public MailLog()
-    {
+    public MailLog() {
     }
 
     /**
      * full constructor
      */
-    public MailLog(MailType mailType, User toUser, Date timestamp, Boolean success, String resultMsg)
-    {
+    public MailLog(MailType mailType, User toUser, Date timestamp, Boolean success) {
         this.mailType = mailType;
         this.toUser = toUser;
         this.timestamp = timestamp;
         this.success = success;
-        this.resultMsg = resultMsg;
     }
 
     // Property accessors
 
-    public Integer getMailLogId()
-    {
+    public Integer getMailLogId() {
         return this.mailLogId;
     }
 
-    public void setMailLogId(Integer mailLogId)
-    {
+    public void setMailLogId(Integer mailLogId) {
         this.mailLogId = mailLogId;
     }
 
-    public MailType getMailType()
-    {
+    public MailType getMailType() {
         return this.mailType;
     }
 
-    public void setMailType(MailType mailType)
-    {
+    public void setMailType(MailType mailType) {
         this.mailType = mailType;
     }
 
-    public User getToUser()
-    {
+    public User getToUser() {
         return this.toUser;
     }
 
-    public void setToUser(User toUser)
-    {
+    public void setToUser(User toUser) {
         this.toUser = toUser;
     }
 
-    public Date getTimestamp()
-    {
+    public Date getTimestamp() {
         return this.timestamp;
     }
 
-    public void setTimestamp(Date timestamp)
-    {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
-    public Boolean getSuccess()
-    {
+    public Boolean getSuccess() {
         return this.success;
     }
 
-    public void setSuccess(Boolean success)
-    {
+    public void setSuccess(Boolean success) {
         this.success = success;
     }
 
-    public String getResultMsg()
-    {
-        return this.resultMsg;
-    }
-
-    public void setResultMsg(String resultMsg)
-    {
-        this.resultMsg = resultMsg;
-    }
-
     @Override
-    public Integer getPK()
-    {
+    public Integer getPK() {
         return mailLogId;
     }
 
-    public int compareTo(MailLog o)
-    {
+    public int compareTo(MailLog o) {
         return getTimestamp().compareTo(o.getTimestamp());
     }
 
-    /**
-     * @see java.lang.Object#equals(Object)
-     */
-    public boolean equals(Object object)
-    {
-        if (!(object instanceof MailLog))
-        {
+    public boolean equals(Object object) {
+        if (!(object instanceof MailLog)) {
             return false;
         }
         MailLog rhs = (MailLog) object;
         return new EqualsBuilder()
-                .append(this.getResultMsg(), rhs.getResultMsg())
                 .append(this.getTimestamp(), rhs.getTimestamp())
                 .append(this.getToUser(), rhs.getToUser())
                 .append(this.getMailLogId(), rhs.getMailLogId())
@@ -178,13 +139,8 @@ public class MailLog extends DomainObject<Integer, MailLog>
                 .isEquals();
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode()
-    {
+    public int hashCode() {
         return new HashCodeBuilder(1202909165, -339864927)
-                .append(this.getResultMsg())
                 .append(this.getTimestamp())
                 .append(this.getToUser())
                 .append(this.getMailLogId())
