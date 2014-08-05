@@ -19,7 +19,7 @@ package net.rrm.ehour.timesheet.service;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
-import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
@@ -44,23 +44,21 @@ import static org.junit.Assert.fail;
 public class IPersistTimesheetDAOTest {
     private TimesheetPersistance persister;
     private TimesheetDao timesheetDAO;
-    private MailService mailService;
+    private ProjectManagerNotifierService projectManagerNotifierService;
     private ProjectAssignmentStatusService statusService;
     private ProjectAssignment assignment;
     private List<TimesheetEntry> newEntries;
     private List<TimesheetEntry> existingEntries;
-    private ApplicationContext context;
-    private TimesheetCommentDao commentDao;
 
     @Before
     public void setUp() {
         timesheetDAO = createMock(TimesheetDao.class);
         statusService = createMock(ProjectAssignmentStatusService.class);
-        mailService = createMock(MailService.class);
-        context = createMock(ApplicationContext.class);
-        commentDao = createMock(TimesheetCommentDao.class);
+        projectManagerNotifierService = createMock(ProjectManagerNotifierService.class);
+        ApplicationContext context = createMock(ApplicationContext.class);
+        TimesheetCommentDao commentDao = createMock(TimesheetCommentDao.class);
 
-        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, mailService, context);
+        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, projectManagerNotifierService, context);
 
         initData();
     }
@@ -169,10 +167,6 @@ public class IPersistTimesheetDAOTest {
         }
     }
 
-    /**
-     * @throws OverBudgetException
-     * @throws OverBudgetException
-     */
     @SuppressWarnings("deprecation")
     @Test
     public void testPersistOverrunDecreasingTimesheet() throws OverBudgetException {
@@ -246,7 +240,7 @@ public class IPersistTimesheetDAOTest {
         try {
             persister.validateAndPersist(assignment, newEntries, new DateRange());
             fail();
-        } catch (OverBudgetException obe) {
+        } catch (OverBudgetException ignored) {
 
         }
         verify(timesheetDAO);
@@ -276,19 +270,17 @@ public class IPersistTimesheetDAOTest {
 
         expect(statusService.getAssignmentStatus(assignment)).andReturn(afterStatus);
 
-        mailService.mailPMFlexAllottedReached(isA(AssignmentAggregateReportElement.class), isA(Date.class), isA(User.class));
+        projectManagerNotifierService.mailPMFlexAllottedReached(isA(AssignmentAggregateReportElement.class), isA(Date.class), isA(User.class));
 
         replay(statusService);
         replay(timesheetDAO);
-        replay(mailService);
+        replay(projectManagerNotifierService);
 
         persister.validateAndPersist(assignment, newEntries, new DateRange());
 
         verify(timesheetDAO);
         verify(statusService);
-        verify(mailService);
+        verify(projectManagerNotifierService);
     }
-
-//    public void should
 }
 

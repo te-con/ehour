@@ -16,7 +16,7 @@
 
 package net.rrm.ehour.ui.admin.config.panel;
 
-import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.mail.service.MailMan;
 import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
@@ -39,7 +39,7 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
     private static final long serialVersionUID = 1500312866540540312L;
 
     @SpringBean
-    private MailService mailService;
+    private MailMan mailMain;
 
     public MailServerConfigPanel(String id, IModel<MainConfigBackingBean> model) {
         super(id, model);
@@ -95,7 +95,7 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 MainConfigBackingBean configBackingBean = (MainConfigBackingBean) MailServerConfigPanel.this.getDefaultModelObject();
 
-                mailService.mailTestMessage(configBackingBean.getConfig());
+                mailMain.sendTestMessage(configBackingBean.getConfig());
 
                 Label replacementLabel = new Label("serverMessage", new ResourceModel("admin.config.testSmtpSent"));
                 replacementLabel.setOutputMarkupId(true);

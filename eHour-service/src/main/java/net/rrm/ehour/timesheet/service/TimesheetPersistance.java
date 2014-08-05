@@ -23,7 +23,7 @@ import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
-import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
@@ -47,15 +47,15 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     private TimesheetDao timesheetDAO;
     private TimesheetCommentDao timesheetCommentDAO;
     private ProjectAssignmentStatusService projectAssignmentStatusService;
-    private MailService mailService;
+    private ProjectManagerNotifierService projectManagerNotifierService;
     private ApplicationContext context;
 
     @Autowired
-    public TimesheetPersistance(TimesheetDao timesheetDAO, TimesheetCommentDao timesheetCommentDAO, ProjectAssignmentStatusService projectAssignmentStatusService, MailService mailService, ApplicationContext context) {
+    public TimesheetPersistance(TimesheetDao timesheetDAO, TimesheetCommentDao timesheetCommentDAO, ProjectAssignmentStatusService projectAssignmentStatusService, ProjectManagerNotifierService projectManagerNotifierService, ApplicationContext context) {
         this.timesheetDAO = timesheetDAO;
         this.timesheetCommentDAO = timesheetCommentDAO;
         this.projectAssignmentStatusService = projectAssignmentStatusService;
-        this.mailService = mailService;
+        this.projectManagerNotifierService = projectManagerNotifierService;
         this.context = context;
     }
 
@@ -205,21 +205,21 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         // over alloted - fixed
         if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
                 && status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) {
-            mailService.mailPMFixedAllottedReached(status.getAggregate(),
+            projectManagerNotifierService.mailPMFixedAllottedReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());
         }
         // over overrun - flex
         else if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX
                 && status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) {
-            mailService.mailPMFlexOverrunReached(status.getAggregate(),
+            projectManagerNotifierService.mailPMFlexOverrunReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());
         }
         // in overrun - flex
         else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN)
                 && assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX) {
-            mailService.mailPMFlexAllottedReached(status.getAggregate(),
+            projectManagerNotifierService.mailPMFlexAllottedReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());
         }

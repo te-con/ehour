@@ -20,7 +20,7 @@ import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
 import net.rrm.ehour.config.service.IPersistConfiguration;
-import net.rrm.ehour.mail.service.MailService;
+import net.rrm.ehour.mail.service.MailMan;
 import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
@@ -43,7 +43,7 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
     protected ConfigurationServiceImpl configService;
 
     @Mock
-    protected MailService mailService;
+    protected MailMan mailMan;
 
     protected EhourConfigStub config;
 
@@ -66,7 +66,7 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
         getMockContext().putBean(infoService);
         when(infoService.info()).thenReturn(new SystemInfo("a", "b", "c"));
 
-        getMockContext().putBean("mailService", mailService);
+        getMockContext().putBean("mailMan", mailMan);
         getMockContext().putBean("userService", userService);
         getMockContext().putBean("configurationPersistence", iPersistConfiguration);
 

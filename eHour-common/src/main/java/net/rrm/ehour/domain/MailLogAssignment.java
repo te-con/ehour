@@ -33,9 +33,8 @@ import java.util.Date;
 @Entity
 @Table(name = "MAIL_LOG_ASSIGNMENT")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
-public class MailLogAssignment extends MailLog
-{
-	private static final long serialVersionUID = -6902873370377635410L;
+public class MailLogAssignment extends MailLog {
+    private static final long serialVersionUID = -6902873370377635410L;
 
 
     @ManyToOne
@@ -44,94 +43,81 @@ public class MailLogAssignment extends MailLog
     private ProjectAssignment projectAssignment;
 
     @Column(name = "BOOKED_HOURS")
-	private Float bookedHours;
+    private Float bookedHours;
 
     @Column(name = "BOOK_DATE")
-    private Date	bookDate;
+    private Date bookDate;
 
-	// Constructors
+    public MailLogAssignment() {
+    }
 
-	/** default constructor */
-	public MailLogAssignment()
-	{
-	}
+    /**
+     * full constructor
+     */
+    public MailLogAssignment(MailType mailType, User toUser, Date timestamp, Boolean success, ProjectAssignment projectAssignment) {
+        super(mailType, toUser, timestamp, success);
+        this.projectAssignment = projectAssignment;
+    }
 
-	/** full constructor */
-	public MailLogAssignment(MailType mailType, User toUser, Date timestamp, Boolean success, String resultMsg, ProjectAssignment projectAssignment)
-	{
-		super(mailType, toUser, timestamp, success, resultMsg);
-		this.projectAssignment = projectAssignment;
-	}
+    // Property accessors
+    public ProjectAssignment getProjectAssignment() {
+        return this.projectAssignment;
+    }
 
-	// Property accessors
-	public ProjectAssignment getProjectAssignment()
-	{
-		return this.projectAssignment;
-	}
-
-	public void setProjectAssignment(ProjectAssignment projectAssignment)
-	{
-		this.projectAssignment = projectAssignment;
-	}
+    public void setProjectAssignment(ProjectAssignment projectAssignment) {
+        this.projectAssignment = projectAssignment;
+    }
 
 
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(MailLogAssignment object)
-	{
-		return new CompareToBuilder()
-			.append(this.getProjectAssignment(), object.getProjectAssignment())
-			.toComparison();
-	}
+    /**
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public int compareTo(MailLogAssignment object) {
+        return new CompareToBuilder()
+                .append(this.getProjectAssignment(), object.getProjectAssignment())
+                .toComparison();
+    }
 
 
+    /**
+     * @return the bookDate
+     */
+    public Date getBookDate() {
+        return bookDate;
+    }
 
-	/**
-	 * @return the bookDate
-	 */
-	public Date getBookDate()
-	{
-		return bookDate;
-	}
+    /**
+     * @param bookDate the bookDate to set
+     */
+    public void setBookDate(Date bookDate) {
+        this.bookDate = bookDate;
+    }
 
-	/**
-	 * @param bookDate the bookDate to set
-	 */
-	public void setBookDate(Date bookDate)
-	{
-		this.bookDate = bookDate;
-	}
+    /**
+     * @return the bookedHours
+     */
+    public Float getBookedHours() {
+        return bookedHours;
+    }
 
-	/**
-	 * @return the bookedHours
-	 */
-	public Float getBookedHours()
-	{
-		return bookedHours;
-	}
+    /**
+     * @param bookedHours the bookedHours to set
+     */
+    public void setBookedHours(Float bookedHours) {
+        this.bookedHours = bookedHours;
+    }
 
-	/**
-	 * @param bookedHours the bookedHours to set
-	 */
-	public void setBookedHours(Float bookedHours)
-	{
-		this.bookedHours = bookedHours;
-	}
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof MailLogAssignment))
+            return false;
+        MailLogAssignment castOther = (MailLogAssignment) other;
+        return new EqualsBuilder().append(projectAssignment, castOther.projectAssignment).append(bookedHours, castOther.bookedHours).append(bookDate, castOther.bookDate).isEquals();
+    }
 
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof MailLogAssignment))
-			return false;
-		MailLogAssignment castOther = (MailLogAssignment) other;
-		return new EqualsBuilder().append(projectAssignment, castOther.projectAssignment).append(bookedHours, castOther.bookedHours).append(bookDate, castOther.bookDate).isEquals();
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(projectAssignment).append(bookedHours).append(bookDate).toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(projectAssignment).append(bookedHours).append(bookDate).toHashCode();
+    }
 
 }

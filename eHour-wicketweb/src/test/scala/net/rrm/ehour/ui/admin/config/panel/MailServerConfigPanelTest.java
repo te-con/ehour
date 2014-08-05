@@ -58,7 +58,7 @@ public class MailServerConfigPanelTest extends AbstractMainConfigTest {
 
         verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
 
-        verify(mailService).mailTestMessage(config);
+        verify(mailMan).sendTestMessage(config);
 
     }
 }

@@ -27,9 +27,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * TODO make this an enum
- */
 @Entity
 @Table(name = "MAIL_TYPE")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
