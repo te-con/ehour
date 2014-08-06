@@ -15,27 +15,23 @@ import static org.mockito.Mockito.verify
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: 1/19/11 - 8:54 PM
  */
-class DatabaseTruncaterTest
-{
-  @Mock
-  RestoreDao importDao
+class DatabaseTruncaterTest {
+    @Mock
+    RestoreDao importDao
 
-  DatabaseTruncater truncater
+    DatabaseTruncater truncater
 
-  @Before
-  void setUp()
-  {
-    MockitoAnnotations.initMocks this
-    truncater = new DatabaseTruncater()
-    truncater.restoreDao = importDao
-  }
+    @Before
+    void setUp() {
+        MockitoAnnotations.initMocks this
+        truncater = new DatabaseTruncater()
+        truncater.restoreDao = importDao
+    }
 
-  @Test
-  void shouldTruncate()
-  {
-    truncater.truncateDatabase()
+    @Test
+    void shouldTruncate() {
+        truncater.truncateDatabase()
 
-    verify(importDao, times(BackupEntityType.reverseOrderedValues()[0].order + 4)).delete anyObject()
-
-  }
+        verify(importDao, times(BackupEntityType.reverseOrderedValues()[0].order + 3)).delete anyObject()
+    }
 }
