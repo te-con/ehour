@@ -26,7 +26,7 @@ trait MailMan {
 
   def sendTestMessage(alternativeConfig: EhourConfig)
 
-  def deliver(mail: Mail, postDeliverCallBack: callBack = (_, _) => {}, config: EhourConfig = ehourConfig)
+  def deliver(mail: Mail, postDeliverCallBack: CallBack = (_, _) => {}, config: EhourConfig = ehourConfig)
 }
 
 
@@ -46,12 +46,12 @@ class MailManSmtpImpl extends MailMan {
     deliver(Mail(to = user, subject = subject, body = body), (_, _) => {}, alternativeConfig)
   }
 
-  override def deliver(mail: Mail, postDeliverCallBack: callBack = (_, _) => {}, config: EhourConfig = ehourConfig) {
+  override def deliver(mail: Mail, postDeliverCallBack: CallBack = (_, _) => {}, config: EhourConfig = ehourConfig) {
     val mailTask = new MailTask(mail, postDeliverCallBack, config)
     taskExecutor.execute(mailTask)
   }
 
-  private class MailTask(mail: Mail, postDeliverCallBack: callBack, config: EhourConfig) extends Runnable {
+  private class MailTask(mail: Mail, postDeliverCallBack: CallBack, config: EhourConfig) extends Runnable {
 
     override def run() {
       val msg = new SimpleMailMessage

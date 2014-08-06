@@ -18,11 +18,6 @@ package net.rrm.ehour.util;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
 
-
-/**
- * TODO change to enum 
- **/
-
 public class EhourConstants
 {
 	// update ProjectAssignmentType as well!
@@ -33,9 +28,5 @@ public class EhourConstants
 	public static final ProjectAssignmentType ASSIGNMENT_TYPE_DATE = new ProjectAssignmentType(ASSIGNMENT_DATE);
 	public static final ProjectAssignmentType ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED = new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FIXED);
 	public static final ProjectAssignmentType ASSIGNMENT_TYPE_TIME_ALLOTTED_FLEX = new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FLEX);
-	
-	public static final int MAILTYPE_FIXED_ALLOTTED_REACHED = 1;
-	public static final int MAILTYPE_FLEX_ALLOTTED_REACHED = 2;
-	public static final int MAILTYPE_FLEX_OVERRUN_REACHED = 3;
 }
 

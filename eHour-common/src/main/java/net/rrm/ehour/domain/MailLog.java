@@ -52,7 +52,7 @@ public class MailLog extends DomainObject<Integer, MailLog> {
     @NotNull
     private Boolean success = Boolean.TRUE;
 
-    @Column(name = "MAIL_EVENT", length = 255)
+    @Column(name = "MAIL_EVENT", length = 64)
     @NotNull
     private String mailEvent;
 

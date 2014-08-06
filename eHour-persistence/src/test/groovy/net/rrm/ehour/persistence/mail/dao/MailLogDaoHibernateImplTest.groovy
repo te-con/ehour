@@ -16,7 +16,13 @@ class MailLogDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     void shouldFindMailLogOnEvent() {
-        def xs = mailLogDao.findOnEvent("DD")
+        def xs = mailLogDao.find("CC")
+        assertEquals(1, xs.size())
+    }
+
+    @Test
+    void shouldFindMailLogOnEventAndMailTo() {
+        def xs = mailLogDao.find("thies@aa.net", "DD")
         assertEquals(1, xs.size())
     }
 }

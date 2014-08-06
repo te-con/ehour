@@ -7,4 +7,9 @@
 	    WHERE mailEvent = :event
 	</query>
 
+    <query name="MailLog.findOnEventAndMailTo">
+        FROM MailLog
+        WHERE mailEvent = :event AND mailTo = :mailTo
+    </query>
+
 </hibernate-mapping>
