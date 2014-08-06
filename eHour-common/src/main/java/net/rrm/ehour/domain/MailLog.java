@@ -61,6 +61,9 @@ public class MailLog extends DomainObject<Integer, MailLog> {
     @NotNull
     private Boolean success = Boolean.TRUE;
 
+    @Column(name = "ABOUT", length = 255)
+    private String about;
+
     public MailLog() {
     }
 
@@ -116,6 +119,14 @@ public class MailLog extends DomainObject<Integer, MailLog> {
         this.success = success;
     }
 
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
     @Override
     public Integer getPK() {
         return mailLogId;
@@ -136,6 +147,7 @@ public class MailLog extends DomainObject<Integer, MailLog> {
                 .append(this.getMailLogId(), rhs.getMailLogId())
                 .append(this.getSuccess(), rhs.getSuccess())
                 .append(this.getMailType(), rhs.getMailType())
+                .append(this.getAbout(), rhs.getAbout())
                 .isEquals();
     }
 
@@ -146,6 +158,7 @@ public class MailLog extends DomainObject<Integer, MailLog> {
                 .append(this.getMailLogId())
                 .append(this.getSuccess())
                 .append(this.getMailType())
+                .append(this.getAbout())
                 .toHashCode();
     }
 

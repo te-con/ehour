@@ -45,6 +45,8 @@
 			size="1" autoIncrement="false" />
 		<column name="TO_USER_ID" primaryKey="false" required="false"
 			type="INTEGER" size="10" autoIncrement="false" />
+        <column name="ABOUT" primaryKey="false" required="false"
+                type="VARCHAR" size="255" autoIncrement="false" />
 		<foreign-key foreignTable="mail_type" name="MAIL_LOG_fk">
 			<reference local="MAIL_TYPE_ID" foreign="MAIL_TYPE_ID" />
 		</foreign-key>
@@ -60,6 +62,9 @@
 		<index name="TO_USER_ID">
 			<index-column name="TO_USER_ID" />
 		</index>
+        <index name="IDX_ABOUT">
+            <index-column name="ABOUT" />
+        </index>
 	</table>
 	<table name="mail_log_assignment">
 		<column name="MAIL_LOG_ID" primaryKey="true" required="true"
