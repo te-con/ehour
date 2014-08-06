@@ -11,6 +11,7 @@ import org.apache.log4j.Logger
 import org.joda.time.LocalDate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 import scala.collection.mutable
 
@@ -37,6 +38,7 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
 
 @Service
 class IFindUsersWithoutSufficientHours @Autowired()(userDao: UserDao, timesheetDao: TimesheetDao) {
+  @Transactional
   def findUsersWithoutSufficientHours(minimalHours: Int): List[User] = {
     val activeUsers = userDao.findActiveUsers()
 
