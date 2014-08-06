@@ -14,9 +14,6 @@
     <configuration config_key="demoMode" config_value="false"></configuration>
     <configuration config_key="initialized" config_value="false"></configuration>
     <configuration config_key="auditType" config_value="WRITE"></configuration>
-    <mail_type MAIL_TYPE_ID="1" MAIL_TYPE="FIXED_ALLOTTED_REACHED"></mail_type>
-    <mail_type MAIL_TYPE_ID="2" MAIL_TYPE="FLEX_ALLOTTED_REACHED"></mail_type>
-    <mail_type MAIL_TYPE_ID="3" MAIL_TYPE="FLEX_OVERRUN_REACHED"></mail_type>
     <project_assignment_type ASSIGNMENT_TYPE_ID="0" ASSIGNMENT_TYPE="DATE_TYPE"></project_assignment_type>
     <project_assignment_type ASSIGNMENT_TYPE_ID="2" ASSIGNMENT_TYPE="TIME_ALLOTTED_FIXED"></project_assignment_type>
     <project_assignment_type ASSIGNMENT_TYPE_ID="3" ASSIGNMENT_TYPE="TIME_ALLOTTED_FLEX"></project_assignment_type>

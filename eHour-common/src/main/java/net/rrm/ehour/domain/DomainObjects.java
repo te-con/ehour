@@ -9,7 +9,7 @@ public class DomainObjects
     public static final Class[] DOMAIN_OBJECTS = new Class[]{User.class, UserDepartment.class, UserRole.class,
                                                              Configuration.class, BinaryConfiguration.class, Audit.class,
                                                             Customer.class, Project.class, ProjectAssignment.class, ProjectAssignmentType.class,
-                                                            MailLog.class, MailLogAssignment.class, MailType.class,
+                                                            MailLog.class,
                                                             TimesheetEntry.class, TimesheetComment.class,
                                                             TimesheetLock.class
     };

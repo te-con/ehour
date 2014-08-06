@@ -43,15 +43,6 @@ public class MailLog extends DomainObject<Integer, MailLog> {
     @Column(name = "MAIL_LOG_ID")
     private Integer mailLogId;
 
-    @ManyToOne
-    @JoinColumn(name = "MAIL_TYPE_ID")
-    @NotNull
-    private MailType mailType;
-
-    @ManyToOne
-    @JoinColumn(name = "TO_USER_ID", nullable = true)
-    private User toUser;
-
     @Column(name = "TIMESTAMP", nullable = false)
     @NotNull
     private Date timestamp;
@@ -62,49 +53,26 @@ public class MailLog extends DomainObject<Integer, MailLog> {
     private Boolean success = Boolean.TRUE;
 
     @Column(name = "MAIL_EVENT", length = 255)
+    @NotNull
     private String mailEvent;
+
+    @Column(name = "MAIL_TO", length = 255)
+    @NotNull
+    private String mailTo;
 
     public MailLog() {
     }
 
-    /**
-     * full constructor
-     */
-    public MailLog(MailType mailType, User toUser, Date timestamp, Boolean success) {
-        this.mailType = mailType;
-        this.toUser = toUser;
-        this.timestamp = timestamp;
-        this.success = success;
-    }
-
-    // Property accessors
-
     public Integer getMailLogId() {
-        return this.mailLogId;
+        return mailLogId;
     }
 
     public void setMailLogId(Integer mailLogId) {
         this.mailLogId = mailLogId;
     }
 
-    public MailType getMailType() {
-        return this.mailType;
-    }
-
-    public void setMailType(MailType mailType) {
-        this.mailType = mailType;
-    }
-
-    public User getToUser() {
-        return this.toUser;
-    }
-
-    public void setToUser(User toUser) {
-        this.toUser = toUser;
-    }
-
     public Date getTimestamp() {
-        return this.timestamp;
+        return timestamp;
     }
 
     public void setTimestamp(Date timestamp) {
@@ -112,7 +80,7 @@ public class MailLog extends DomainObject<Integer, MailLog> {
     }
 
     public Boolean getSuccess() {
-        return this.success;
+        return success;
     }
 
     public void setSuccess(Boolean success) {
@@ -123,8 +91,16 @@ public class MailLog extends DomainObject<Integer, MailLog> {
         return mailEvent;
     }
 
-    public void setMailEvent(String about) {
-        this.mailEvent = about;
+    public void setMailEvent(String mailEvent) {
+        this.mailEvent = mailEvent;
+    }
+
+    public String getMailTo() {
+        return mailTo;
+    }
+
+    public void setMailTo(String mailTo) {
+        this.mailTo = mailTo;
     }
 
     @Override
@@ -143,22 +119,18 @@ public class MailLog extends DomainObject<Integer, MailLog> {
         MailLog rhs = (MailLog) object;
         return new EqualsBuilder()
                 .append(this.getTimestamp(), rhs.getTimestamp())
-                .append(this.getToUser(), rhs.getToUser())
-                .append(this.getMailLogId(), rhs.getMailLogId())
                 .append(this.getSuccess(), rhs.getSuccess())
-                .append(this.getMailType(), rhs.getMailType())
                 .append(this.getMailEvent(), rhs.getMailEvent())
+                .append(this.getMailTo(), rhs.getMailTo())
                 .isEquals();
     }
 
     public int hashCode() {
         return new HashCodeBuilder(1202909165, -339864927)
                 .append(this.getTimestamp())
-                .append(this.getToUser())
-                .append(this.getMailLogId())
                 .append(this.getSuccess())
-                .append(this.getMailType())
                 .append(this.getMailEvent())
+                .append(this.getMailTo())
                 .toHashCode();
     }
 

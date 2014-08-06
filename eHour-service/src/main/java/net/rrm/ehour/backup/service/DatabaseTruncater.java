@@ -3,7 +3,6 @@ package net.rrm.ehour.backup.service;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.MailLog;
-import net.rrm.ehour.domain.MailLogAssignment;
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
 import net.rrm.ehour.persistence.backup.dao.RestoreDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,6 @@ public class DatabaseTruncater
 
         restoreDao.delete(Configuration.class);
         restoreDao.delete(BinaryConfiguration.class);
-        restoreDao.delete(MailLogAssignment.class);
         restoreDao.delete(MailLog.class);
     }
 

@@ -4,18 +4,20 @@ import net.rrm.ehour.AbstractSpec
 import net.rrm.ehour.config.EhourConfigStub
 import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.mail.service.MailMan
+import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
 class ReminderServiceSpec extends AbstractSpec {
   val mailMan = mock[MailMan]
   val userFinder = mock[IFindUsersWithoutSufficientHours]
+  val mailLogDao = mock[MailLogDao]
 
   val config = new EhourConfigStub
   config.setReminderEnabled(true)
   config.setReminderMinimalHours(32)
   
-  val subject = new ReminderService(config, userFinder, mailMan)
+  val subject = new ReminderService(config, userFinder, mailMan, mailLogDao)
   
   override protected def beforeEach() = reset(mailMan, userFinder)
   

@@ -5,7 +5,7 @@ import java.util.Date
 import net.rrm.ehour.AbstractSpec
 import net.rrm.ehour.config.EhourConfigStub
 import net.rrm.ehour.domain.{ProjectAssignmentObjectMother, User}
-import net.rrm.ehour.persistence.mail.dao.{MailLogAssignmentDao, MailLogDao}
+import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
 import org.mockito.ArgumentCaptor
 import org.mockito.Matchers._
@@ -13,10 +13,9 @@ import org.mockito.Mockito._
 
 class ProjectManagerNotifierServiceMailImplSpec extends AbstractSpec {
   val mailMan = mock[MailMan]
-  val dao = mock[MailLogAssignmentDao]
   val mailLogDao = mock[MailLogDao]
 
-  val subject = new ProjectManagerNotifierServiceMailImpl(mailMan, dao, new EhourConfigStub, mailLogDao)
+  val subject = new ProjectManagerNotifierServiceMailImpl(mailMan, new EhourConfigStub, mailLogDao)
 
   val assignment = ProjectAssignmentObjectMother.createProjectAssignment(1)
   assignment.setAllottedHours(5)
@@ -26,7 +25,7 @@ class ProjectManagerNotifierServiceMailImplSpec extends AbstractSpec {
   val user = new User()
   user.setEmail("thies@te-con.nl")
 
-  override protected def beforeEach() = reset(mailMan, dao, mailLogDao)
+  override protected def beforeEach() = reset(mailMan, mailLogDao)
 
   "Project Manager Notifier Service" should {
 

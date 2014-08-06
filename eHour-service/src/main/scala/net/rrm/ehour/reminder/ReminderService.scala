@@ -4,6 +4,7 @@ import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain.{TimesheetEntry, User}
 import net.rrm.ehour.mail.service.{Mail, MailMan}
+import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.persistence.user.dao.UserDao
 import org.apache.commons.lang.StringUtils
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 import scala.collection.mutable
 
 @Service
-class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWithoutSufficientHours, mailMan: MailMan) {
+class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWithoutSufficientHours, mailMan: MailMan, mailLogDao: MailLogDao) {
   final val LOGGER = Logger.getLogger(classOf[ReminderService])
 
   def sendReminderMail() {
