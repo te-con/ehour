@@ -6,6 +6,8 @@ import net.rrm.ehour.domain.{TimesheetEntry, User}
 import net.rrm.ehour.mail.service.{Mail, MailMan}
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.persistence.user.dao.UserDao
+import org.apache.commons.lang.StringUtils
+import org.apache.log4j.Logger
 import org.joda.time.LocalDate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -14,15 +16,20 @@ import scala.collection.mutable
 
 @Service
 class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWithoutSufficientHours, mailMan: MailMan) {
+  final val LOGGER = Logger.getLogger(classOf[ReminderService])
+
   def sendReminderMail() {
     if (config.isReminderEnabled) {
 
       val usersToRemind = userFinder.findUsersWithoutSufficientHours(config.getReminderMinimalHours)
 
       for (user <- usersToRemind) {
-        val mail = Mail(user, config.getReminderCC, config.getReminderSubject, config.getReminderBody)
-
-        mailMan.deliver(mail = mail)
+        if (StringUtils.isBlank(user.getEmail)) {
+          LOGGER.warn(s"Trying to send reminder mail to ${user.getFullName} but no email address is entered")
+        } else {
+          val mail = Mail(user, config.getReminderCC, config.getReminderSubject, config.getReminderBody)
+          mailMan.deliver(mail = mail)
+        }
       }
     }
   }
