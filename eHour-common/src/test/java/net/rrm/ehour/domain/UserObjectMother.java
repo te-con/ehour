@@ -14,12 +14,35 @@ public class UserObjectMother {
         return createUser(new UserDepartment(1));
     }
 
+    public static User createUser(String username) {
+        return createUser(username, new UserDepartment(1));
+    }
+
+
     public static User createUser(UserDepartment department) {
         User user = new User();
         user.setUserId(1);
         user.setActive(true);
         user.setEmail("thies@te-con.nl");
         user.setUsername("testmetoo");
+        user.setFirstName("Dummy");
+        user.setLastName("TestUser");
+        user.setPassword("abc");
+
+        user.setUserDepartment(department);
+        HashSet<UserRole> userRoles = new HashSet<UserRole>();
+        userRoles.add(UserRole.ADMIN);
+        user.setUserRoles(userRoles);
+
+        return user;
+    }
+
+    public static User createUser(String username, UserDepartment department) {
+        User user = new User();
+        user.setUserId(1);
+        user.setActive(true);
+        user.setEmail("thies@te-con.nl");
+        user.setUsername(username);
         user.setFirstName("Dummy");
         user.setLastName("TestUser");
         user.setPassword("abc");

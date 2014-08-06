@@ -3,7 +3,7 @@ package net.rrm.ehour.reminder
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain.{TimesheetEntry, User}
-import net.rrm.ehour.mail.service.MailMan
+import net.rrm.ehour.mail.service.{Mail, MailMan}
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.persistence.user.dao.UserDao
 import org.joda.time.LocalDate
@@ -13,22 +13,24 @@ import org.springframework.stereotype.Service
 import scala.collection.mutable
 
 @Service
-class ReminderService @Autowired() (config: EhourConfig, userDao: UserDao, timesheetDao: TimesheetDao, mailMan: MailMan) {
-  def sendMail() {
+class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWithoutSufficientHours, mailMan: MailMan) {
+  def sendReminderMail() {
     if (config.isReminderEnabled) {
 
+      val usersToRemind = userFinder.findUsersWithoutSufficientHours(config.getReminderMinimalHours)
 
+      for (user <- usersToRemind) {
+        val mail = Mail(user, config.getReminderCC, config.getReminderSubject, config.getReminderBody)
 
-
+        mailMan.deliver(mail = mail)
+      }
     }
-
-    Console.println("WE'RE HERE")
   }
 }
 
 @Service
-class UserDiscoveryService @Autowired() (userDao: UserDao, timesheetDao: TimesheetDao) {
-  def usersWithoutSufficientHours(minimalHours: Int) {
+class IFindUsersWithoutSufficientHours @Autowired()(userDao: UserDao, timesheetDao: TimesheetDao) {
+  def findUsersWithoutSufficientHours(minimalHours: Int): List[User] = {
     val activeUsers = userDao.findActiveUsers()
 
     val endDate = new LocalDate()
@@ -37,13 +39,14 @@ class UserDiscoveryService @Autowired() (userDao: UserDao, timesheetDao: Timeshe
     val timesheetEntriesInRange = timesheetDao.getTimesheetEntriesInRange(range)
 
     import scala.collection.JavaConversions._
-    val entriesByUser: Map[User, mutable.Buffer[TimesheetEntry]] = timesheetEntriesInRange groupBy ( _.getEntryId.getProjectAssignment.getUser)
-    val hoursPerUser: Map[User, Float] = entriesByUser.map(f => (f._1, f._2.foldLeft(0f)(_ + _.getHours))).toMap
+    val entriesByUser: Map[User, mutable.Buffer[TimesheetEntry]] = timesheetEntriesInRange groupBy (_.getEntryId.getProjectAssignment.getUser)
+    val entriesByActiveUsers = entriesByUser.filterKeys(activeUsers.contains)
+    val hoursPerUser: Map[User, Float] = entriesByActiveUsers.map(f => (f._1, f._2.foldLeft(0f)(_ + _.getHours))).toMap
 
     val userNotMeetingMinimalHours: Map[User, Float] = hoursPerUser.filter(p => p._2 < minimalHours)
 
     val usersWithoutAnyHours: Set[User] = activeUsers.toSet.diff(entriesByUser.keySet)
 
-    usersWithoutAnyHours :: userNotMeetingMinimalHours.keySet :: Nil
+    usersWithoutAnyHours.toList ++ userNotMeetingMinimalHours.keySet.toList
   }
 }

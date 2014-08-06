@@ -41,7 +41,7 @@ class ReminderConfig extends SchedulingConfigurer {
 
       val task = new CronTask(new Runnable() {
         override def run() {
-          reminderService.sendMail()
+          reminderService.sendReminderMail()
         }
       }, cronTrigger)
 

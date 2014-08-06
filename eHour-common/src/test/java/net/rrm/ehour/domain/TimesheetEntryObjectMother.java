@@ -19,4 +19,21 @@ public class TimesheetEntryObjectMother {
 
         return entry;
     }
+
+    public static TimesheetEntry createTimesheetEntry(User user, Date date, float hours) {
+        TimesheetEntryId id = new TimesheetEntryId();
+        id.setEntryDate(date);
+
+        ProjectAssignment projectAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1, 1, 1);
+        projectAssignment.setUser(user);
+
+        id.setProjectAssignment(projectAssignment);
+
+        TimesheetEntry entry = new TimesheetEntry();
+        entry.setEntryId(id);
+        entry.setHours(hours);
+
+        return entry;
+    }
+
 }
