@@ -3,9 +3,7 @@ package net.rrm.ehour.ui.admin.config
 import net.rrm.ehour.sysinfo.SystemInfoService
 import net.rrm.ehour.ui.EhourWebApplication
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 
 class SystemInfoPanel(id: String) extends AbstractBasePanel(id) {
