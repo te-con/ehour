@@ -66,7 +66,7 @@ class MailManSmtpImpl extends MailMan {
 
         if (systemConfig.isEnableMail) {
           LOGGER.info(s"Sending email to ${mail.to.getEmail}: ${mail.subject} ")
-//          mailSender.send(msg)
+          mailSender.send(msg)
         } else {
           LOGGER.info(s"Mail is disabled, otherwise I would be sending email to ${mail.to.getEmail}: ${mail.subject} ")
         }
