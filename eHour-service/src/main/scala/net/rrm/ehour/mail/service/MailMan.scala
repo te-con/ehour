@@ -35,7 +35,6 @@ trait MailMan {
 class MailManSmtpImpl extends MailMan {
 
   final val LOGGER = Logger.getLogger(classOf[MailManSmtpImpl])
-  LOGGER.info(if (systemConfig.isEnableEmail) "Sending mail is enabled in your ehour.properties file" else "Sending mail is disabled in your ehour.properties file")
 
   override def sendTestMessage(alternativeConfig: EhourConfig) {
     val subject = "eHour test message"
@@ -65,7 +64,7 @@ class MailManSmtpImpl extends MailMan {
       try {
         val mailSender = createMailSender(config)
 
-        if (enableMail) {
+        if (systemConfig.isEnableMail) {
           LOGGER.info(s"Sending email to ${mail.to.getEmail}: ${mail.subject} ")
 //          mailSender.send(msg)
         } else {

@@ -1004,3 +1004,6 @@ hr {
     margin-right: 1em;
 }
 
+.fa .alert {
+    color: red;
+}

@@ -18,6 +18,7 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import com.google.common.collect.Lists;
+import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.PmPrivilege;
 import net.rrm.ehour.domain.UserRole;
@@ -49,6 +50,9 @@ public class MiscConfigPanel extends AbstractConfigPanel {
 
     @SpringBean
     private UserService userService;
+
+    @SpringBean
+    private EhourSystemConfig ehourSystemConfig;
 
     public MiscConfigPanel(String id, IModel<MainConfigBackingBean> model) {
         super(id, model);
@@ -111,6 +115,10 @@ public class MiscConfigPanel extends AbstractConfigPanel {
     }
 
     private void addReminderComponents(Form<?> form) {
+        Container disabled = new Container("mailDisabled");
+        disabled.setVisible(!ehourSystemConfig.isEnableMail());
+        form.add(disabled);
+
         AjaxCheckBox reminderEnabledCheckbox = new AjaxCheckBox("config.reminderEnabled") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
@@ -118,9 +126,10 @@ public class MiscConfigPanel extends AbstractConfigPanel {
             }
         };
 
+        reminderEnabledCheckbox.setEnabled(ehourSystemConfig.isEnableMail());
+
         form.add(reminderEnabledCheckbox);
     }
-
 
 
     private static final class WeekDayRenderer extends ChoiceRenderer<Date> {

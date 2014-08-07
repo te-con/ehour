@@ -12,8 +12,8 @@ public class EhourSystemConfig {
     @Value("${ehour.enableBookWholeWeek:true}")
     private boolean bookWholeWeekEnabled = true;
 
-    @Value("${ehour.enableEmail:true}")
-    private boolean enableEmail = true;
+    @Value("${ehour.enableMail:true}")
+    private boolean enableMail = true;
 
     @Value("${ehour.configurationType}")
     private String configurationType;
@@ -35,8 +35,8 @@ public class EhourSystemConfig {
         return bookWholeWeekEnabled;
     }
 
-    public boolean isEnableEmail() {
-        return enableEmail;
+    public boolean isEnableMail() {
+        return enableMail;
     }
 
     public String getConfigurationType() {
