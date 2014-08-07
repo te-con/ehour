@@ -1,24 +1,26 @@
 package net.rrm.ehour.config
 
+import net.rrm.ehour.appconfig.EhourSystemConfig
 import org.junit.Before
 import org.junit.Test
 
 class TranslationDiscoveryTest {
 
-  def discovery;
+    def discovery;
 
-  @Before
-  void setUp() {
-    discovery = new TranslationDiscovery()
-    discovery.eHourHome = "src"
-    discovery.translationsDir = "%ehour.home%/test/resources/i18n"
-  }
+    @Before
+    void setUp() {
+        discovery = new TranslationDiscovery()
 
-  @Test
-  void shouldDiscoverLanguages() {
-    discovery.scanTranslations()
-    def translations =  discovery.translations.sort()
+        def config = new EhourSystemConfig(eHourHome: "src", translationsDir: "%ehour.home%/test/resources/i18n")
+        discovery.systemConfig = config
+    }
 
-    assert translations == ["cs", "de", "en", "el", "es", "fr", "it", "ja", "nl", "pl", "pt", "sv", "unknown"].sort()
-  }
+    @Test
+    void shouldDiscoverLanguages() {
+        discovery.scanTranslations()
+        def translations = discovery.translations.sort()
+
+        assert translations == ["cs", "de", "en", "el", "es", "fr", "it", "ja", "nl", "pl", "pt", "sv", "unknown"].sort()
+    }
 }
