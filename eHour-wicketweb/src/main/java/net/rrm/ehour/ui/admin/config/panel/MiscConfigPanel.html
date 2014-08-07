@@ -8,8 +8,8 @@
 	<body>
 		<wicket:extend>
             <tr>
-                <td colspan="2">
-                    <h3><wicket:message key="admin.config.misc.title" /></h3>
+                <td colspan="2" class="header">
+                    <h3 class="sectionHeader"><wicket:message key="admin.config.misc.title" /></h3>
                 </td>
             </tr>
 
@@ -63,14 +63,14 @@
             </tr>
 
             <tr>
-                <td colspan="2">
-                    <h3><wicket:message key="admin.config.reminder.title" /></h3>
+                <td colspan="2" class="header">
+                    <h3 class="sectionHeader"><wicket:message key="admin.config.reminder.title" /></h3>
                 </td>
             </tr>
 
             <tr wicket:id="mailDisabled">
                 <td colspan="2" class="alert">
-                    <i class="fa fa-exclamation-circle error"></i> Mail is disabled in your ehour.properties file. Reminders will not be sent
+                    <i class="fa fa-exclamation-circle error"></i> <wicket:message key="admin.config.reminder.mail_disabled"/>
                 </td>
             </tr>
 
@@ -79,7 +79,7 @@
             </tr>
 
             <tr>
-                <td valign="top"><wicket:message key="admin.config.reminder.enable"/>:</td>
+                <td valign="top"><wicket:message key="admin.config.reminder.enable"/></td>
                 <td><input type="checkbox" wicket:id="config.reminderEnabled" /></td>
             </tr>
 
@@ -87,13 +87,14 @@
                 <td valign="top"><wicket:message key="admin.config.reminder.time"/>:</td>
                 <td><select style="width: 4em" class="textInputSmall" wicket:id="reminderDay"></select>
                     <select style="width: 3em" class="textInputSmall" wicket:id="reminderHour"></select>
+                    :
                     <select style="width: 3em" class="textInputSmall" wicket:id="reminderMinute"></select>
                 </td>
             </tr>
 
             <tr wicket:id="reminderMinHoursContainer">
                 <td valign="top"><wicket:message key="admin.config.reminder.minimumhours.label"/>:</td>
-                <td><input type="text" style="width: 14em" class="textInputSmall"  wicket:id="config.reminderMinimalHours" /><br />
+                <td><input type="text" style="width: 3em" class="textInputSmall"  wicket:id="config.reminderMinimalHours" /><br />
                     <span wicket:id="minHoursValidationError"></span>
 
                 </td>

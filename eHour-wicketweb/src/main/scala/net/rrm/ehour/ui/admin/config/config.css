@@ -16,3 +16,20 @@
     padding-right: 2em;
 }
 
+.config {
+    padding: 0 10px 0 0;
+}
+
+.config .help {
+    color: #536e87;
+    font: 0.85em Geneva, Arial, Helvetica, sans-serif;
+    padding-bottom: 15px;
+}
+
+.config tr td:first-child {
+    padding-left: 10px;
+}
+
+.config .header {
+    padding: 0 !important
+}

@@ -981,16 +981,6 @@ hr {
     color: #5190c5;
 }
 
-.config {
-    padding: 0 10px 0 0;
-}
-
-.config .help {
-    color: #536e87;
-    font: 0.9em Geneva, Arial, Helvetica, sans-serif;
-    padding-bottom: 15px;
-}
-
 .info {
     padding: 0 0 1em 1em;
 }
@@ -1006,4 +996,13 @@ hr {
 
 .fa .alert {
     color: red;
+}
+
+.sectionHeader {
+    background: transparent !important;
+    margin: 0 !important;
+}
+
+.error {
+    color: #ff3333;
 }
