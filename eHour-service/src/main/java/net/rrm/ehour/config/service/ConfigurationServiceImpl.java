@@ -218,6 +218,18 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 config.setPmPrivilege(PmPrivilege.valueOf(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.SPLIT_ADMIN_ROLE.getDbField())) {
                 config.setSplitAdminRole(Boolean.parseBoolean(value));
+            } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_ENABLED.getDbField())) {
+                config.setReminderEnabled(Boolean.parseBoolean(value));
+            } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_CC.getDbField())) {
+                config.setReminderCC(value);
+            } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_BODY.getDbField())) {
+                config.setReminderBody(value);
+            } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_MIN_HOURS.getDbField())) {
+                config.setReminderMinimalHours(Integer.parseInt(value));
+            } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_SUBJECT.getDbField())) {
+                config.setReminderSubject(value);
+            } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_TIME.getDbField())) {
+                config.setReminderTime(value);
             }
         }
 
@@ -255,6 +267,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(ConfigurationItem.PM_PRIVILEGE.getDbField(), getPmPrivilege(config).name());
 
         persistConfig(ConfigurationItem.SPLIT_ADMIN_ROLE.getDbField(), config.isSplitAdminRole());
+
+        persistConfig(ConfigurationItem.REMINDER_BODY.getDbField(), config.getReminderBody());
+        persistConfig(ConfigurationItem.REMINDER_CC.getDbField(), config.getReminderCC());
+        persistConfig(ConfigurationItem.REMINDER_ENABLED.getDbField(), config.isReminderEnabled());
+        persistConfig(ConfigurationItem.REMINDER_MIN_HOURS.getDbField(), config.getReminderMinimalHours());
+        persistConfig(ConfigurationItem.REMINDER_SUBJECT.getDbField(), config.getReminderSubject());
+        persistConfig(ConfigurationItem.REMINDER_TIME.getDbField(), config.getReminderTime());
     }
 
     private AuditType getAuditType(EhourConfig config) {

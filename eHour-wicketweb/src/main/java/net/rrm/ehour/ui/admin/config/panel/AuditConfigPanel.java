@@ -33,7 +33,6 @@ import java.util.Arrays;
 public class AuditConfigPanel extends AbstractConfigPanel {
     private static final long serialVersionUID = -5212420452301193422L;
 
-
     public AuditConfigPanel(String id, IModel<MainConfigBackingBean> model) {
         super(id, model);
     }

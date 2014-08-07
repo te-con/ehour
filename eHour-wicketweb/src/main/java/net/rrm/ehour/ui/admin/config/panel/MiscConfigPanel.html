@@ -7,6 +7,12 @@
 
 	<body>
 		<wicket:extend>
+            <tr>
+                <td colspan="2">
+                    <h3><wicket:message key="admin.config.misc.title" /></h3>
+                </td>
+            </tr>
+
 			<tr>
 				<td><wicket:message key="admin.config.showTurnover" />:</td>
 				<td><input type="checkbox" wicket:id="config.showTurnover" /></td>
@@ -55,6 +61,22 @@
             <tr>
                 <td colspan="2"><br /></td>
             </tr>
+
+            <tr>
+                <td colspan="2">
+                    <h3><wicket:message key="admin.config.reminder.title" /></h3>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="help"><wicket:message key="admin.config.reminder.help"/></td>
+            </tr>
+
+            <tr>
+                <td valign="top"><wicket:message key="admin.config.reminder.enable"/>:</td>
+                <td><input type="checkbox" wicket:id="config.reminderEnabled" /></td>
+            </tr>
+
 
         </wicket:extend>
 	</body>

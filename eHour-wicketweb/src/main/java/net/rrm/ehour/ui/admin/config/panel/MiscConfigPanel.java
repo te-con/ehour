@@ -32,7 +32,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
@@ -57,6 +56,12 @@ public class MiscConfigPanel extends AbstractConfigPanel {
 
     @Override
     protected void addFormComponents(Form<?> form) {
+        addMiscComponents(form);
+
+        addReminderComponents(form);
+    }
+
+    private void addMiscComponents(Form<?> form) {
         // show turnover checkbox
         form.add(new CheckBox("config.showTurnover"));
 
@@ -104,6 +109,19 @@ public class MiscConfigPanel extends AbstractConfigPanel {
 
         form.add(withManagerCheckbox);
     }
+
+    private void addReminderComponents(Form<?> form) {
+        AjaxCheckBox reminderEnabledCheckbox = new AjaxCheckBox("config.reminderEnabled") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+
+            }
+        };
+
+        form.add(reminderEnabledCheckbox);
+    }
+
+
 
     private static final class WeekDayRenderer extends ChoiceRenderer<Date> {
         private static final long serialVersionUID = -2044803875511515992L;

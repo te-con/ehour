@@ -53,6 +53,7 @@ public class MainConfigBackingBean implements Serializable {
         firstWeekStart = cal.getTime();
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public List<Locale> getAvailableLanguages() {
         Locale[] locales = Locale.getAvailableLocales();
         Map<String, Locale> localeMap = new HashMap<String, Locale>();
@@ -87,7 +88,6 @@ public class MainConfigBackingBean implements Serializable {
     public void setTranslationsOnly(boolean translationsOnly) {
         this.translationsOnly = translationsOnly;
     }
-
 
     public static List<Locale> getAvailableLocales() {
         List<Locale> locales = new ArrayList<Locale>();
