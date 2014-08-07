@@ -8,7 +8,7 @@
         <column name="config_key" primaryKey="true" required="true"
                 type="VARCHAR" size="255" autoIncrement="false"/>
         <column name="config_value" primaryKey="false" required="false"
-                type="VARCHAR" size="255" autoIncrement="false"/>
+                type="VARCHAR" size="4096" autoIncrement="false"/>
     </table>
     <table name="configuration_bin">
         <column name="config_key" primaryKey="true" required="true"
