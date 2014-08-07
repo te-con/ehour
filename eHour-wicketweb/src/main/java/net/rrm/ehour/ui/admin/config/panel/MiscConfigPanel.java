@@ -122,6 +122,20 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         disabled.setVisible(!ehourSystemConfig.isEnableMail());
         form.add(disabled);
 
+        // minimum hours
+        final ReminderContainer reminderMinHoursContainer = new ReminderContainer("reminderMinHoursContainer");
+        form.add(reminderMinHoursContainer);
+
+        final TextField<Integer> reminderMinHours = new TextField<Integer>("config.reminderMinimalHours");
+        reminderMinHours.add(new UpdateBehavior());
+        reminderMinHours.add(new ValidatingFormComponentAjaxBehavior());
+        reminderMinHoursContainer.add(new AjaxFormComponentFeedbackIndicator("minHoursValidationError", reminderMinHours));
+        reminderMinHours.add(RangeValidator.minimum(0));
+        reminderMinHoursContainer.add(reminderMinHours);
+
+        final Container reminderMinHoursHelpContainer = new ReminderContainer("reminderMinHoursHelpContainer");
+        form.add(reminderMinHoursHelpContainer);
+
         // carbon copy
         final ReminderContainer reminderCcContainer = new ReminderContainer("reminderCcContainer");
         form.add(reminderCcContainer);
@@ -179,7 +193,7 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         AjaxCheckBox reminderEnabledCheckbox = new AjaxCheckBox("config.reminderEnabled") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                target.add(reminderTimeContainer, reminderSubjectContainer, reminderBodyContainer, reminderCcContainer, reminderCcHelpContainer);
+                target.add(reminderTimeContainer, reminderSubjectContainer, reminderBodyContainer, reminderCcContainer, reminderCcHelpContainer, reminderMinHoursContainer, reminderMinHoursHelpContainer);
             }
         };
 

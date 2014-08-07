@@ -91,6 +91,18 @@
                 </td>
             </tr>
 
+            <tr wicket:id="reminderMinHoursContainer">
+                <td valign="top"><wicket:message key="admin.config.reminder.minimumhours.label"/>:</td>
+                <td><input type="text" style="width: 14em" class="textInputSmall"  wicket:id="config.reminderMinimalHours" /><br />
+                    <span wicket:id="minHoursValidationError"></span>
+
+                </td>
+            </tr>
+
+            <tr wicket:id="reminderMinHoursHelpContainer">
+                <td colspan="2" class="help"><wicket:message key="admin.config.reminder.minimumhours.help"/></td>
+            </tr>
+
             <tr wicket:id="reminderCcContainer">
                 <td valign="top"><wicket:message key="admin.config.reminder.cc.label"/>:</td>
                 <td><input type="text" style="width: 14em" class="textInputSmall"  wicket:id="config.reminderCC" /></td>
