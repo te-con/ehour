@@ -1,53 +1,72 @@
 package net.rrm.ehour.reminder
 
+import javax.annotation.PostConstruct
+
 import com.google.common.collect.Lists
 import net.rrm.ehour.config.EhourConfig
+import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.{Bean, Configuration}
-import org.springframework.scheduling.annotation.{EnableScheduling, SchedulingConfigurer}
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.scheduling.config.{CronTask, ScheduledTaskRegistrar}
 import org.springframework.scheduling.support.CronTrigger
-
-object ReminderConfig {
-  private final val Log = Logger.getLogger(ReminderConfig.getClass)
-}
+import org.springframework.stereotype.Service
 
 @Configuration
-@EnableScheduling
-class ReminderConfig extends SchedulingConfigurer {
-
-  @Autowired
-  var config: EhourConfig = _
-
-  @Autowired
-  var reminderService: ReminderService = _
+class ReminderConfig {
+  val s = new ThreadPoolTaskScheduler()
 
   @Bean
-  def taskScheduler(): ThreadPoolTaskScheduler = new ThreadPoolTaskScheduler()
+  def taskScheduler(): ThreadPoolTaskScheduler = s
 
-  override def configureTasks(taskRegistrar: ScheduledTaskRegistrar) {
-    taskRegistrar.setTaskScheduler(taskScheduler())
+  @Bean
+  def configureScheduler(): ScheduledTaskRegistrar = {
+    val taskRegistrar: ScheduledTaskRegistrar = new ScheduledTaskRegistrar
 
-    if (config.isReminderEnabled) {
+    taskRegistrar.setScheduler(taskScheduler())
+    taskRegistrar
+  }
+}
+
+@Service
+class IScheduleReminders @Autowired()(taskRegistrar: ScheduledTaskRegistrar, config: EhourConfig, reminderService: ReminderService) {
+  private final val Log = Logger.getLogger(classOf[IScheduleReminders])
+
+  @PostConstruct
+  def scheduleReminders() {
+    rescheduleReminders(config)
+  }
+  
+  def rescheduleReminders(reminderConfig: EhourConfig) {
+    if (reminderConfig.isReminderEnabled) {
+      // destroy any scheduled futures
+      taskRegistrar.destroy()
+
+      // remove previous crontasks
       taskRegistrar.setCronTasksList(Lists.newArrayList())
 
-      ReminderConfig.Log.info("Reminder mails are enabled.")
+      val reminderTime = reminderConfig.getReminderTime
 
-      val reminderTime = config.getReminderTime
+      if (StringUtils.isBlank(reminderTime)) {
+        Log.warn("Reminder mails are enabled but reminder time configured.")
+      } else {
 
-      val cronTrigger = new CronTrigger(reminderTime)
+        Log.info(s"Reminder mails are enabled, running at $reminderTime.")
 
-      val task = new CronTask(new Runnable() {
-        override def run() {
-          reminderService.sendReminderMail()
-        }
-      }, cronTrigger)
+        val cronTrigger = new CronTrigger(reminderTime)
 
-      taskRegistrar.addCronTask(task)
+        val task = new CronTask(new Runnable() {
+          override def run() {
+            reminderService.sendReminderMail()
+          }
+        }, cronTrigger)
+
+        taskRegistrar.addCronTask(task)
+        taskRegistrar.afterPropertiesSet()
+      }
     } else {
-      ReminderConfig.Log.info("Reminder mails are disabled.")
+      Log.info("Per configuration, reminder mails are disabled.")
     }
   }
 }

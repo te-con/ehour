@@ -72,4 +72,25 @@ public class MiscConfigPanelTest extends AbstractMainConfigTest {
         tester.assertVisible(AbstractMainConfigTest.FORM_PATH + ":convertManagers:convertManagersTo");
         tester.assertNoErrorMessage();
     }
+
+    @Test
+    public void should_enable_reminder_time_dropdowns_when_reminders_are_enabled() {
+        config.setReminderEnabled(false);
+        config.setReminderTime("* 10 16 * * FRI");
+
+        startPage();
+
+        tester.assertDisabled(AbstractMainConfigTest.FORM_PATH + ":reminderDay");
+
+        FormTester miscFormTester = tester.newFormTester(AbstractMainConfigTest.FORM_PATH);
+        miscFormTester.setValue("config.reminderEnabled", true);
+
+        tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":config.reminderEnabled", "click");
+
+        tester.assertEnabled(AbstractMainConfigTest.FORM_PATH + ":reminderDay");
+        tester.assertEnabled(AbstractMainConfigTest.FORM_PATH + ":reminderHour");
+        tester.assertEnabled(AbstractMainConfigTest.FORM_PATH + ":reminderMinute");
+
+        tester.assertNoErrorMessage();
+    }
 }

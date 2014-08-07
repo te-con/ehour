@@ -1,9 +1,10 @@
 package net.rrm.ehour.config.service
 
-import com.google.common.collect.{Sets, Lists}
+import com.google.common.collect.{Lists, Sets}
 import net.rrm.ehour.AbstractSpec
 import net.rrm.ehour.config.EhourConfigStub
 import net.rrm.ehour.domain.{UserObjectMother, UserRole}
+import net.rrm.ehour.reminder.IScheduleReminders
 import net.rrm.ehour.user.service.UserService
 import org.mockito.Mockito._
 
@@ -11,7 +12,8 @@ class ConfigurationPersistenceSpec extends AbstractSpec {
 
   val configService = mock[ConfigurationService]
   val userService = mock[UserService]
-  val subject = new ConfigurationPersistence(configService, userService)
+  val scheduler = mock[IScheduleReminders]
+  val subject = new ConfigurationPersistence(configService, userService, scheduler)
 
   override protected def beforeEach() = reset(configService, userService)
 
@@ -29,6 +31,8 @@ class ConfigurationPersistenceSpec extends AbstractSpec {
       user.getUserRoles.iterator().next() should be (UserRole.USER)
 
       verify(userService).persistEditedUser(user)
+
+      verify(scheduler).rescheduleReminders(config)
     }
   }
 }
