@@ -9,9 +9,7 @@ public class DatabaseTruncater {
          Connection connection = dataSource.getConnection();
 
         connection.prepareCall("DELETE FROM AUDIT").execute();
-        connection.prepareCall("DELETE FROM MAIL_LOG_ASSIGNMENT").execute();
         connection.prepareCall("DELETE FROM MAIL_LOG").execute();
-        connection.prepareCall("DELETE FROM MAIL_TYPE").execute();
         connection.prepareCall("DELETE FROM TIMESHEET_COMMENT").execute();
         connection.prepareCall("DELETE FROM TIMESHEET_ENTRY").execute();
 
