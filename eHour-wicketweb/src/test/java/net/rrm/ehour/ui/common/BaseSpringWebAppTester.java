@@ -44,6 +44,7 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
         };
 
         webApp.setAuthorizedRoles(getRoles());
+        webApp.setEhourSystemConfig(getEhourSystemConfig());
 
         afterSetup();
     }

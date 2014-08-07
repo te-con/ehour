@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common;
 
+import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.common.util.AuthUtil;
@@ -36,12 +37,15 @@ public abstract class AbstractSpringTester {
     private ApplicationContextMock mockContext;
     private EhourConfigStub config;
     private AuditService auditService;
+    private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
 
     private void createContextSetup() {
         mockContext = new ApplicationContextMock();
+
+        mockContext.putBean("ehourSystemConfig", ehourSystemConfig);
+
         config = new EhourConfigStub();
         config.setFirstDayOfWeek(Calendar.SUNDAY);
-
         mockContext.putBean("EhourConfig", config);
 
         auditService = createMock(AuditService.class);
@@ -78,5 +82,9 @@ public abstract class AbstractSpringTester {
 
     public final AuditService getAuditService() {
         return auditService;
+    }
+
+    public EhourSystemConfig getEhourSystemConfig() {
+        return ehourSystemConfig;
     }
 }

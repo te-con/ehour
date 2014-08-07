@@ -61,7 +61,6 @@ import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import java.util.Comparator;
@@ -77,7 +76,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private String version;
     private boolean initialized;
 
-    @Autowired
     private EhourSystemConfig ehourSystemConfig;
 
     private String build;
@@ -270,13 +268,13 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         return EhourWebSession.class;
     }
 
-    /**
-     * @param authenticationManager the authenticationManager to set
-     */
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
+    public void setEhourSystemConfig(EhourSystemConfig ehourSystemConfig) {
+        this.ehourSystemConfig = ehourSystemConfig;
+    }
 
     public static EhourWebApplication get() {
         return (EhourWebApplication) WebApplication.get();
