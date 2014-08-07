@@ -80,7 +80,7 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
     }
 
     @Override
-    public Boolean isEnableBookWholeWeek() {
+    public Boolean isBookWholeWeekEnabled() {
         return enableBookWholeWeek;
     }
 

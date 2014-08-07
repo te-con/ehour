@@ -1,8 +1,9 @@
 package net.rrm.ehour.config;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
+import net.rrm.ehour.appconfig.EhourSystemConfig;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,17 +20,14 @@ public class TranslationDiscovery {
     private static final Logger LOG = Logger.getLogger(TranslationDiscovery.class);
     private static final Map<String, Locale> LOCALE_MAP = createLocaleMap();
 
-    @Value("${EHOUR_HOME}")
-    private String eHourHome;
-
-    @Value("${ehour.translations}")
-    private String translationsDir;
+    @Autowired
+    private EhourSystemConfig systemConfig;
 
     private List<String> translations;
 
     @PostConstruct
     public void scanTranslations() {
-        String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(eHourHome, translationsDir);
+        String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(systemConfig.getEhourHome(), systemConfig.getTranslationsDir());
 
         File transDir = new File(absoluteTranslationsPath);
 

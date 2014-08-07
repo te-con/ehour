@@ -2,11 +2,12 @@ package net.rrm.ehour.mail.service
 
 import java.util.Properties
 
+import net.rrm.ehour.appconfig.EhourSystemConfig
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.domain.User
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
-import org.springframework.beans.factory.annotation.{Autowired, Value}
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.task.TaskExecutor
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.mail.{MailException, MailSender, SimpleMailMessage}
@@ -21,8 +22,8 @@ trait MailMan {
   @Autowired
   var taskExecutor: TaskExecutor = _
 
-  @Value("${ehour.enableMail:true}")
-  var enableMail: Boolean = true
+  @Autowired
+  var systemConfig: EhourSystemConfig = _
 
   def sendTestMessage(alternativeConfig: EhourConfig)
 
@@ -34,7 +35,7 @@ trait MailMan {
 class MailManSmtpImpl extends MailMan {
 
   final val LOGGER = Logger.getLogger(classOf[MailManSmtpImpl])
-  LOGGER.info(if (enableMail) "Sending mail is enabled in your ehour.properties file" else "Sending mail is disabled in your ehour.properties file")
+  LOGGER.info(if (systemConfig.isEnableEmail) "Sending mail is enabled in your ehour.properties file" else "Sending mail is disabled in your ehour.properties file")
 
   override def sendTestMessage(alternativeConfig: EhourConfig) {
     val subject = "eHour test message"
@@ -66,7 +67,7 @@ class MailManSmtpImpl extends MailMan {
 
         if (enableMail) {
           LOGGER.info(s"Sending email to ${mail.to.getEmail}: ${mail.subject} ")
-          mailSender.send(msg)
+//          mailSender.send(msg)
         } else {
           LOGGER.info(s"Mail is disabled, otherwise I would be sending email to ${mail.to.getEmail}: ${mail.subject} ")
         }

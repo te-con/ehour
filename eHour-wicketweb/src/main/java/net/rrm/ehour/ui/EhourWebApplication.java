@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
+import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.ui.admin.audit.AuditReportPage;
 import net.rrm.ehour.ui.admin.backup.BackupDbPage;
 import net.rrm.ehour.ui.admin.config.MainConfigPage;
@@ -60,7 +61,7 @@ import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import java.util.Comparator;
@@ -76,20 +77,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private String version;
     private boolean initialized;
 
-    @Value("${ehour.configurationType}")
-    private String configurationType;
-
-    @Value("${EHOUR_HOME}")
-    private String eHourHome;
-
-    @Value("${ehour.translations}")
-    private String translationsDir;
-
-    @Value("${ehour.disableAuth:false}")
-    private Boolean disableAuth;
-
-    @Value("${ehour.enableBookWholeWeek:true}")
-    private Boolean enableBookWholeWeek;
+    @Autowired
+    private EhourSystemConfig ehourSystemConfig;
 
     private String build;
 
@@ -149,7 +138,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     }
 
     protected void registerEhourHomeResourceLoader() {
-        String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(eHourHome, translationsDir);
+        String absoluteTranslationsPath = EhourHomeUtil.getTranslationsDir(ehourSystemConfig.getEhourHome(), ehourSystemConfig.getTranslationsDir());
         EhourHomeResourceLoader resourceLoader = new EhourHomeResourceLoader(absoluteTranslationsPath);
 
         getResourceSettings().getResourceFinders().add(resourceLoader);
@@ -159,6 +148,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     public RuntimeConfigurationType getConfigurationType() {
         String development = RuntimeConfigurationType.DEVELOPMENT.name();
         String deployment = RuntimeConfigurationType.DEPLOYMENT.name();
+
+        String configurationType = ehourSystemConfig.getConfigurationType();
 
         if (configurationType == null || (!configurationType.equalsIgnoreCase(deployment) &&
                 !configurationType.equalsIgnoreCase(development))) {
@@ -234,7 +225,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     @Override
     public Session newSession(Request request, Response response) {
-        if (disableAuth) {
+        if (ehourSystemConfig.isDisableAuth()) {
             System.err.println("*** eHour is configured to disable any authentication");
             System.err.println("*** Enable by setting ehour.disableAuth=false in your ehour.properties");
             System.err.println("*** DO NOT RUN IN PRODUCTION WITH THIS CONFIGURATION");
@@ -306,7 +297,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     }
 
     public String geteHourHome() {
-        return eHourHome;
+        return ehourSystemConfig.getEhourHome();
     }
 
     public void setBuild(String build) {
@@ -317,7 +308,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         return build;
     }
 
-    public Boolean isEnableBookWholeWeek() {
-        return enableBookWholeWeek;
+    public Boolean isBookWholeWeekEnabled() {
+        return ehourSystemConfig.isBookWholeWeekEnabled();
     }
 }
