@@ -80,14 +80,16 @@ public class MiscConfigPanelTest extends AbstractMainConfigTest {
 
         startPage();
 
-        tester.assertInvisible(AbstractMainConfigTest.FORM_PATH + ":reminderContainer");
+        tester.assertInvisible(AbstractMainConfigTest.FORM_PATH + ":reminderTimeContainer");
+        tester.assertInvisible(AbstractMainConfigTest.FORM_PATH + ":reminderBodyContainer");
 
         FormTester miscFormTester = tester.newFormTester(AbstractMainConfigTest.FORM_PATH);
         miscFormTester.setValue("config.reminderEnabled", true);
 
         tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":config.reminderEnabled", "click");
 
-        tester.assertVisible(AbstractMainConfigTest.FORM_PATH + ":reminderContainer");
+        tester.assertVisible(AbstractMainConfigTest.FORM_PATH + ":reminderTimeContainer");
+        tester.assertVisible(AbstractMainConfigTest.FORM_PATH + ":reminderBodyContainer");
 
         tester.assertNoErrorMessage();
     }
