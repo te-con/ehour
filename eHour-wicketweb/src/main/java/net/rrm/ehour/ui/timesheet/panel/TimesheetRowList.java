@@ -51,7 +51,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.Calendar;
 import java.util.List;
@@ -198,7 +197,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         // add inputfield with validation to the parent
         final TimesheetTextField dayInput = new TimesheetTextField("day", cellModel, 1);
-        dayInput.add(RangeValidator.minimum(0f));
         dayInput.setOutputMarkupId(true);
 
         // add validation
