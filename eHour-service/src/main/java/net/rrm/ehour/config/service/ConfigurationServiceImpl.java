@@ -225,7 +225,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_BODY.getDbField())) {
                 config.setReminderBody(value);
             } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_MIN_HOURS.getDbField())) {
-                config.setReminderMinimalHours(Integer.parseInt(value));
+                config.setReminderMinimalHours((int) Float.parseFloat(value));
             } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_SUBJECT.getDbField())) {
                 config.setReminderSubject(value);
             } else if (key.equalsIgnoreCase(ConfigurationItem.REMINDER_TIME.getDbField())) {

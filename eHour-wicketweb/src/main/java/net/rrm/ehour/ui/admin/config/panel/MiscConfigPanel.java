@@ -29,7 +29,9 @@ import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
+import org.apache.commons.lang.WordUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.IModel;
@@ -119,16 +121,68 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         disabled.setVisible(!ehourSystemConfig.isEnableMail());
         form.add(disabled);
 
+        //
+        final DropDownChoice<String> reminderDay = new DropDownChoice<String>("reminderDay", MainConfigBackingBean.VALID_REMINDER_DAYS, new IChoiceRenderer<String>() {
+            @Override
+            public Object getDisplayValue(String object) {
+                return WordUtils.capitalizeFully(object);
+            }
+
+            @Override
+            public String getIdValue(String object, int index) {
+                return Integer.toString(index);
+            }
+        }) {
+            @Override
+            public boolean isEnabled() {
+                return ehourSystemConfig.isEnableMail() && getPanelModelObject().getConfig().isReminderEnabled();
+            }
+        };
+        reminderDay.setOutputMarkupId(true);
+        reminderDay.add(new UpdateBehavior());
+        form.add(reminderDay);
+
+        //
+        final DropDownChoice<Integer> reminderHour = new DropDownChoice<Integer>("reminderHour", integerListTo(23)) {
+            @Override
+            public boolean isEnabled() {
+                return ehourSystemConfig.isEnableMail() && getPanelModelObject().getConfig().isReminderEnabled();
+            }
+        };
+        reminderHour.add(new UpdateBehavior());
+        reminderHour.setOutputMarkupId(true);
+        form.add(reminderHour);
+
+        //
+        final DropDownChoice<Integer> reminderMinute = new DropDownChoice<Integer>("reminderMinute", integerListTo(59)) {
+            @Override
+            public boolean isEnabled() {
+                return ehourSystemConfig.isEnableMail() && getPanelModelObject().getConfig().isReminderEnabled();
+            }
+        };
+        reminderMinute.setOutputMarkupId(true);
+        reminderMinute.add(new UpdateBehavior());
+        form.add(reminderMinute);
+
+
         AjaxCheckBox reminderEnabledCheckbox = new AjaxCheckBox("config.reminderEnabled") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-
+                target.add(reminderDay, reminderHour, reminderMinute);
             }
         };
 
         reminderEnabledCheckbox.setEnabled(ehourSystemConfig.isEnableMail());
-
         form.add(reminderEnabledCheckbox);
+    }
+
+    private List<Integer> integerListTo(int max) {
+        List<Integer> xs = Lists.newArrayList();
+
+        for (int i = 0; i < max; i++) {
+            xs.add(i);
+        }
+        return xs;
     }
 
 
@@ -152,4 +206,16 @@ public class MiscConfigPanel extends AbstractConfigPanel {
             return Integer.toString(cal.get(Calendar.DAY_OF_WEEK));
         }
     }
+
+    private static class UpdateBehavior extends AjaxFormComponentUpdatingBehavior {
+        private UpdateBehavior() {
+            super("change");
+        }
+
+        @Override
+        protected void onUpdate(AjaxRequestTarget target) {
+
+        }
+    }
+
 }

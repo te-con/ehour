@@ -211,7 +211,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
     @Override
     public int getReminderMinimalHours() {
-        return this.getInt(REMINDER_MIN_HOURS.getDbField(), 40);
+        return  (int) this.getFloat(REMINDER_MIN_HOURS.getDbField(), 40);
     }
 
     @Override

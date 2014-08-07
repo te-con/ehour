@@ -83,6 +83,13 @@
                 <td><input type="checkbox" wicket:id="config.reminderEnabled" /></td>
             </tr>
 
+            <tr>
+                <td valign="top"><wicket:message key="admin.config.reminder.time"/>:</td>
+                <td><select style="width: 4em" class="textInputSmall" wicket:id="reminderDay"></select>
+                    <select style="width: 3em" class="textInputSmall" wicket:id="reminderHour"></select>
+                    <select style="width: 3em" class="textInputSmall" wicket:id="reminderMinute"></select>
+                </td>
+            </tr>
         </wicket:extend>
 	</body>
 </html>

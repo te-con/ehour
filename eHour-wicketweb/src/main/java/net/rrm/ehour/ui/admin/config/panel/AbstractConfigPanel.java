@@ -125,8 +125,6 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
     }
 
     private void persistConfiguration() {
-//        configService.persistConfiguration(getConfigStub());
-
         iPersistConfiguration.persistAndCleanUp(getConfigStub(), getPanelModelObject().getConvertManagersTo());
     }
 
@@ -145,7 +143,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
     }
 
     private EhourConfig getConfigStub() {
-        return ((MainConfigBackingBean) getDefaultModelObject()).getConfig();
+        return getPanelModelObject().getConfig();
     }
 
     protected abstract void addFormComponents(Form<?> form);

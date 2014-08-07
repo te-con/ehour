@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.admin.config;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.UserRole;
@@ -23,6 +24,7 @@ import net.rrm.ehour.ui.common.sort.LocaleComparator;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.*;
@@ -36,11 +38,20 @@ import java.util.*;
 
 public class MainConfigBackingBean implements Serializable {
     private static final long serialVersionUID = -682573285773646807L;
+
+    private static final Logger LOGGER = Logger.getLogger(MainConfigBackingBean.class);
+
+    public static final List<String> VALID_REMINDER_DAYS = Lists.newArrayList("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT");
+
     private boolean translationsOnly = false;
     private boolean smtpAuthentication = false;
     private EhourConfigStub config;
     private Date firstWeekStart;
     private UserRole convertManagersTo = UserRole.ADMIN;
+
+    private Integer reminderMinute;
+    private Integer reminderHour;
+    private String reminderDay;
 
     public MainConfigBackingBean(EhourConfigStub config) {
         this.config = config;
@@ -51,6 +62,48 @@ public class MainConfigBackingBean implements Serializable {
         DateUtil.dayOfWeekFix(cal);
         cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
         firstWeekStart = cal.getTime();
+
+        splitCronExpression(config.getReminderTime());
+        updateReminderCronExpression();
+    }
+
+    private void splitCronExpression(String cron) {
+        if (StringUtils.isBlank(cron)) {
+            resetReminderTimeToDefault();
+            return;
+        }
+
+        String[] splittedCron = cron.split(" ");
+
+        if (splittedCron.length != 6) {
+            LOGGER.error(cron + " is not a valid cron expression, expecting 6 elements. Defaulting to FRI 17:30");
+            resetReminderTimeToDefault();
+            return;
+        }
+
+        try {
+            reminderMinute = Integer.valueOf(splittedCron[1]);
+            reminderHour = Integer.valueOf(splittedCron[2]);
+            reminderDay = splittedCron[5];
+
+            if (reminderMinute >= 60 || reminderHour >= 24 || !VALID_REMINDER_DAYS.contains(reminderDay)) {
+                LOGGER.error(cron + " contains illegal time elements.");
+                resetReminderTimeToDefault();
+            }
+
+        } catch (NumberFormatException nfe) {
+            LOGGER.error(cron + " contains items that can not be parsed for the UI (although it may be a legal cron expression).");
+            resetReminderTimeToDefault();
+        }
+
+    }
+
+    private void resetReminderTimeToDefault() {
+        LOGGER.info("Defaulting reminder time to FRI 17:30");
+
+        reminderMinute = 30;
+        reminderHour = 17;
+        reminderDay = "FRI";
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -176,5 +229,37 @@ public class MainConfigBackingBean implements Serializable {
 
     public void setConvertManagersTo(UserRole convertManagersTo) {
         this.convertManagersTo = convertManagersTo;
+    }
+
+    public Integer getReminderMinute() {
+        return reminderMinute;
+    }
+
+    public void setReminderMinute(Integer reminderMinute) {
+        this.reminderMinute = reminderMinute;
+        updateReminderCronExpression();
+    }
+
+    public Integer getReminderHour() {
+        return reminderHour;
+    }
+
+    public void setReminderHour(Integer reminderHour) {
+        this.reminderHour = reminderHour;
+        updateReminderCronExpression();
+    }
+
+    public String getReminderDay() {
+        return reminderDay;
+    }
+
+    public void setReminderDay(String reminderDay) {
+        this.reminderDay = reminderDay;
+        updateReminderCronExpression();
+    }
+
+    private void updateReminderCronExpression() {
+        String cron = String.format("* %d %d * * %s", reminderMinute, reminderHour, reminderDay);
+        config.setReminderTime(cron);
     }
 }
