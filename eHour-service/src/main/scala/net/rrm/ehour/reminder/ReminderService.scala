@@ -1,15 +1,18 @@
 package net.rrm.ehour.reminder
 
+import java.util.Date
+
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{TimesheetEntry, User}
-import net.rrm.ehour.mail.service.{Mail, MailMan}
+import net.rrm.ehour.domain.{MailLog, TimesheetEntry, User}
+import net.rrm.ehour.mail.service._
 import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.persistence.user.dao.UserDao
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
 import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,18 +22,44 @@ import scala.collection.mutable
 @Service
 class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWithoutSufficientHours, mailMan: MailMan, mailLogDao: MailLogDao) {
   final val LOGGER = Logger.getLogger(classOf[ReminderService])
+  final val Formatter = DateTimeFormat.forPattern("yyyyMMdd")
 
   def sendReminderMail() {
+    def determineMailEvent = {
+      val end = new LocalDate()
+      val start = end minusDays 6
+      val startFormatted = Formatter.print(start)
+      val endFormatted = Formatter.print(end)
+
+      s"Reminder for $startFormatted-$endFormatted"
+    }
+
+    def hasMailBeenSent(mailTo: String, mailEvent: String) = mailLogDao.find(mailTo, mailEvent).size > 0
+
     if (config.isReminderEnabled) {
 
       val usersToRemind = userFinder.findUsersWithoutSufficientHours(config.getReminderMinimalHours)
 
+      val mailEvent = determineMailEvent
+
+      val callback: CallBack = (mail, success) => {
+        val mailLog = new MailLog
+        mailLog.setTimestamp(new Date)
+        mailLog.setSuccess(success)
+        mailLog.setMailTo(mail.to.getEmail)
+        mailLog.setMailEvent(mailEvent)
+        mailLogDao.persist(mailLog)
+      }
+
       for (user <- usersToRemind) {
         if (StringUtils.isBlank(user.getEmail)) {
-          LOGGER.warn(s"Trying to send reminder mail to ${user.getFullName} but no email address is entered")
+          LOGGER.warn(s"Trying to send reminder mail to ${user.getFullName} but no email address is entered.")
+        } else if (hasMailBeenSent(user.getEmail, mailEvent)) {
+          LOGGER.info(s"Mail to ${user.getFullName} (${user.getEmail}) about $mailEvent was already sent.")
         } else {
           val mail = Mail(user, config.getReminderCC, config.getReminderSubject, config.getReminderBody)
-          mailMan.deliver(mail = mail)
+
+          mailMan.deliver(mail = mail, postDeliverCallBack = callback)
         }
       }
     }
