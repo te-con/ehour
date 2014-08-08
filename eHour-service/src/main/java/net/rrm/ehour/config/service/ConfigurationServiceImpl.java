@@ -274,6 +274,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(ConfigurationItem.REMINDER_MIN_HOURS.getDbField(), config.getReminderMinimalHours());
         persistConfig(ConfigurationItem.REMINDER_SUBJECT.getDbField(), config.getReminderSubject());
         persistConfig(ConfigurationItem.REMINDER_TIME.getDbField(), config.getReminderTime());
+
+        persistConfig(ConfigurationItem.TIMEZONE.getDbField(), config.getTimeZone());
     }
 
     private AuditType getAuditType(EhourConfig config) {

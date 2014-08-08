@@ -49,12 +49,12 @@ class IScheduleReminders @Autowired()(taskRegistrar: ScheduledTaskRegistrar, con
       val reminderTime = reminderConfig.getReminderTime
 
       if (StringUtils.isBlank(reminderTime)) {
-        Log.warn("Reminder mails are enabled but reminder time configured.")
+        Log.warn("Reminder mails are enabled but reminder time is not configured.")
       } else {
 
         Log.info(s"Reminder mails are enabled, running at $reminderTime.")
 
-        val cronTrigger = new CronTrigger(reminderTime)
+        val cronTrigger = new CronTrigger(reminderTime, config.getTzAsTimeZone)
 
         val task = new CronTask(new Runnable() {
           override def run() {

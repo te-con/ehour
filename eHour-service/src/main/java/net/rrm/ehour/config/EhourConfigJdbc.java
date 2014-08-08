@@ -43,6 +43,8 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     private Boolean initialized;
     private AuditType auditType;
 
+    private String systemConfiguredTimezone = TimeZone.getDefault().getDisplayName();
+
     @Autowired
     public EhourConfigJdbc(DataSource datasource) {
         super(datasource, "CONFIGURATION", "config_key", "config_value");
@@ -66,9 +68,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     }
 
     @Override
-    public String getTimeZone() {
-        return this.getString("timezone");
-    }
+    public String getTimeZone() { return this.getString(TIMEZONE.getDbField(), systemConfiguredTimezone); }
 
     @Override
     public Locale getCurrency() {
