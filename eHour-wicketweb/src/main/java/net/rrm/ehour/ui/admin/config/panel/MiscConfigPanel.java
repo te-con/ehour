@@ -39,6 +39,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.joda.time.DateTimeZone;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -89,6 +90,13 @@ public class MiscConfigPanel extends AbstractConfigPanel {
                 DateUtil.createDateSequence(DateUtil.getDateRangeForWeek(new GregorianCalendar()), new EhourConfigStub()),
                 new WeekDayRenderer(configBackingBean.getLocaleLanguage()));
         form.add(weekStartsAt);
+
+        // Timezone
+        System.out.println(getPanelModelObject().getConfig().getTimeZone());
+
+
+        DropDownChoice<String> timezone = new DropDownChoice<String>("config.timeZone", Lists.newArrayList(DateTimeZone.getAvailableIDs()));
+        form.add(timezone);
 
         // pm access rights
         form.add(new DropDownChoice<PmPrivilege>("config.pmPrivilege", Arrays.asList(PmPrivilege.values()), new EnumChoiceRenderer<PmPrivilege>()));

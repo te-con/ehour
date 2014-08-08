@@ -21,6 +21,7 @@ import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     private Boolean initialized;
     private AuditType auditType;
 
-    private String systemConfiguredTimezone = TimeZone.getDefault().getDisplayName();
+    private String systemConfiguredTimezone = DateTimeZone.getDefault().getID();
 
     @Autowired
     public EhourConfigJdbc(DataSource datasource) {

@@ -17,6 +17,7 @@
 package net.rrm.ehour.config;
 
 import net.rrm.ehour.domain.AuditType;
+import org.joda.time.DateTimeZone;
 
 import java.io.Serializable;
 import java.util.Currency;
@@ -34,7 +35,7 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     private Locale currency = Locale.US;
     private Locale localeLanguage = Locale.US;
     private Locale localeFormatting = Locale.US;
-    private String timeZone;
+    private String timeZone = DateTimeZone.getDefault().getID();
     private boolean showTurnover;
     private String mailFrom;
     private String mailSmtp;
