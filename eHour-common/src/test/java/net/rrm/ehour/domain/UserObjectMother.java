@@ -18,7 +18,6 @@ public class UserObjectMother {
         return createUser(username, new UserDepartment(1));
     }
 
-
     public static User createUser(UserDepartment department) {
         User user = new User();
         user.setUserId(1);

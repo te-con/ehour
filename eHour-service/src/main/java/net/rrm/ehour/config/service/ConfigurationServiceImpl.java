@@ -49,7 +49,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private static final long serialVersionUID = -8862725896852558151L;
 
     @Autowired
-    private ConfigurationDao configDAO;
+    private ConfigurationDao configDao;
 
     @Autowired
     private BinaryConfigurationDao binConfigDAO;
@@ -78,9 +78,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Configuration logoWidth = new Configuration(prefix + "LogoWidth", Integer.toString(logo.getWidth()));
         Configuration logoHeight = new Configuration(prefix + "LogoHeight", Integer.toString(logo.getHeight()));
 
-        configDAO.persist(logoType);
-        configDAO.persist(logoWidth);
-        configDAO.persist(logoHeight);
+        configDao.persist(logoType);
+        configDao.persist(logoWidth);
+        configDao.persist(logoHeight);
     }
 
     @NonAuditable
@@ -104,13 +104,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             logo = new ImageLogo();
             logo.setImageData(logoDomObj.getConfigValue());
 
-            Configuration logoType = configDAO.findById(prefix + "LogoType");
+            Configuration logoType = configDao.findById(prefix + "LogoType");
             logo.setImageType(logoType.getConfigValue());
 
-            Configuration logoWidth = configDAO.findById(prefix + "LogoWidth");
+            Configuration logoWidth = configDao.findById(prefix + "LogoWidth");
             logo.setWidth(Integer.parseInt(logoWidth.getConfigValue()));
 
-            Configuration logoHeight = configDAO.findById(prefix + "LogoHeight");
+            Configuration logoHeight = configDao.findById(prefix + "LogoHeight");
             logo.setHeight(Integer.parseInt(logoHeight.getConfigValue()));
         }
 
@@ -169,7 +169,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Transactional
     @NonAuditable
     public EhourConfigStub getConfiguration() {
-        List<Configuration> configs = configDAO.findAll();
+        List<Configuration> configs = configDao.findAll();
         EhourConfigStub config = new EhourConfigStub();
 
         List<String> translations = translationDiscovery.getTranslations();
@@ -238,7 +238,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     @Override
     public List<Configuration> findAllConfiguration() {
-        return configDAO.findAll();
+        return configDao.findAll();
     }
 
     @Transactional
@@ -299,7 +299,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         config.setConfigKey(key);
         config.setConfigValue(value == null ? "" : value);
 
-        configDAO.persist(config);
+        configDao.persist(config);
     }
 
     private void persistConfig(String key, boolean value) {
@@ -310,8 +310,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(key, Float.toString(value));
     }
 
-    public void setConfigDAO(ConfigurationDao configDAO) {
-        this.configDAO = configDAO;
+    public void setConfigDao(ConfigurationDao configDao) {
+        this.configDao = configDao;
     }
 
     public void setBinConfigDAO(BinaryConfigurationDao binaryConfigDAO) {

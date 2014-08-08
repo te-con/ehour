@@ -65,8 +65,9 @@ class MailManSmtpImpl extends MailMan {
         val mailSender = createMailSender(config)
 
         if (systemConfig.isEnableMail) {
-          LOGGER.info(s"Sending email to ${mail.to.getEmail}: ${mail.subject} ")
           mailSender.send(msg)
+          LOGGER.info(s"Mail sent to ${mail.to.getEmail}: ${mail.subject} ")
+
         } else {
           LOGGER.info(s"Mail is disabled, otherwise I would be sending email to ${mail.to.getEmail}: ${mail.subject} ")
         }
@@ -76,7 +77,7 @@ class MailManSmtpImpl extends MailMan {
 
       catch {
         case me: MailException =>
-          LOGGER.info("Failed to e-mail to " + msg.getTo + ": " + me.getMessage)
+          LOGGER.error(s"Failed to email to ${msg.getTo}: ${me.getMessage}")
 
           postDeliverCallBack(mail, false)
       }

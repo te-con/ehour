@@ -37,6 +37,4 @@ public enum ConfigurationItem {
     public String getDbField() {
         return dbField;
     }
-
-
 }

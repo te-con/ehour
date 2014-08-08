@@ -38,7 +38,7 @@ class ConfigurationServiceImplTest {
 
         MockitoAnnotations.initMocks this
 
-        configurationService.setConfigDAO(configDAO);
+        configurationService.setConfigDao(configDAO);
         configurationService.setBinConfigDAO(binaryConfigDao);
 
         def discovery = new TranslationDiscovery()
