@@ -26,7 +26,6 @@ public class ConfigTabPanel extends MultiTabbedPanel {
     private void createTabs(IModel<MainConfigBackingBean> model) {
         addTab(ConfigTab.MISC, new MiscConfigPanelFactory(), model);
         addTab(ConfigTab.LOCALE, new LocaleConfigPanelFactory(), model);
-        addTab(ConfigTab.SMTP, new MailServerConfigPanelFactory(), model);
         addTab(ConfigTab.SKIN, new SkinConfigPanelFactory(), model);
         addTab(ConfigTab.AUDIT, new AuditConfigPanelFactory(), model);
     }
@@ -71,13 +70,6 @@ public class ConfigTabPanel extends MultiTabbedPanel {
     private static class LocaleConfigPanelFactory implements TabFactory {
         public Panel createTab(String panelId, IModel<MainConfigBackingBean> model) {
             return new LocaleConfigPanel(panelId, model);
-        }
-    }
-
-    @SuppressWarnings("serial")
-    private static class MailServerConfigPanelFactory implements TabFactory {
-        public Panel createTab(String panelId, IModel<MainConfigBackingBean> model) {
-            return new MailServerConfigPanel(panelId, model);
         }
     }
 

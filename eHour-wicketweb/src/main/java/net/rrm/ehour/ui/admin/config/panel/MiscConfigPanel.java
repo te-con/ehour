@@ -29,16 +29,13 @@ import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
-import org.apache.commons.lang.WordUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.RangeValidator;
-import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.DateTimeZone;
 
 import java.text.SimpleDateFormat;
@@ -66,7 +63,8 @@ public class MiscConfigPanel extends AbstractConfigPanel {
     protected void addFormComponents(Form<?> form) {
         addMiscComponents(form);
 
-        addReminderComponents(form);
+        form.add(new MailServerConfigPanel("smtpConfig", getPanelModel()));
+        form.add(new ReminderConfigPanel("reminderConfig", getPanelModel()));
     }
 
     private void addMiscComponents(Form<?> form) {
@@ -92,9 +90,6 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         form.add(weekStartsAt);
 
         // Timezone
-        System.out.println(getPanelModelObject().getConfig().getTimeZone());
-
-
         DropDownChoice<String> timezone = new DropDownChoice<String>("config.timeZone", Lists.newArrayList(DateTimeZone.getAvailableIDs()));
         form.add(timezone);
 
@@ -125,111 +120,7 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         form.add(withManagerCheckbox);
     }
 
-    private void addReminderComponents(Form<?> form) {
-        Container disabled = new Container("mailDisabled");
-        disabled.setVisible(!ehourSystemConfig.isEnableMail());
-        form.add(disabled);
 
-        // minimum hours
-        final ReminderContainer reminderMinHoursContainer = new ReminderContainer("reminderMinHoursContainer");
-        form.add(reminderMinHoursContainer);
-
-        final TextField<Integer> reminderMinHours = new TextField<Integer>("config.reminderMinimalHours");
-        reminderMinHours.add(new UpdateBehavior());
-        reminderMinHours.add(new ValidatingFormComponentAjaxBehavior());
-        reminderMinHoursContainer.add(new AjaxFormComponentFeedbackIndicator("minHoursValidationError", reminderMinHours));
-        reminderMinHours.add(RangeValidator.minimum(0));
-        reminderMinHoursContainer.add(reminderMinHours);
-
-        final Container reminderMinHoursHelpContainer = new ReminderContainer("reminderMinHoursHelpContainer");
-        form.add(reminderMinHoursHelpContainer);
-
-        // carbon copy
-        final ReminderContainer reminderCcContainer = new ReminderContainer("reminderCcContainer");
-        form.add(reminderCcContainer);
-
-        final TextField<String> reminderCc = new TextField<String>("config.reminderCC");
-        reminderCc.add(new UpdateBehavior());
-        reminderCcContainer.add(reminderCc);
-
-        final Container reminderCcHelpContainer = new ReminderContainer("reminderCcHelpContainer");
-        form.add(reminderCcHelpContainer);
-
-        // body
-        final ReminderContainer reminderBodyContainer = new ReminderContainer("reminderBodyContainer");
-        form.add(reminderBodyContainer);
-
-        final TextArea<String> reminderBody = new TextArea<String>("config.reminderBody");
-        reminderBody.add(new ValidatingFormComponentAjaxBehavior());
-        reminderBody.add(StringValidator.maximumLength(4095));
-        reminderBodyContainer.add(new AjaxFormComponentFeedbackIndicator("bodyValidationError", reminderBody));
-        reminderBody.setLabel(new ResourceModel("admin.config.reminder.body"));
-        reminderBody.add(new UpdateBehavior());
-        reminderBodyContainer.add(reminderBody);
-
-        // subject
-        final ReminderContainer reminderSubjectContainer = new ReminderContainer("reminderSubjectContainer");
-        form.add(reminderSubjectContainer);
-
-        final TextField<String> reminderSubject = new TextField<String>("config.reminderSubject");
-        reminderSubject.add(new ValidatingFormComponentAjaxBehavior());
-        reminderSubject.add(StringValidator.maximumLength(4095));
-        reminderSubjectContainer.add(new AjaxFormComponentFeedbackIndicator("subjectValidationError", reminderBody));
-        reminderSubject.setLabel(new ResourceModel("admin.config.reminder.subject"));
-        reminderSubject.add(new UpdateBehavior());
-        reminderSubjectContainer.add(reminderSubject);
-
-        // reminder time
-        final Container reminderTimeContainer = new ReminderContainer("reminderTimeContainer");
-        form.add(reminderTimeContainer);
-
-        reminderTimeContainer.add(new DropDownChoice<String>("reminderDay", MainConfigBackingBean.VALID_REMINDER_DAYS, new IChoiceRenderer<String>() {
-            @Override
-            public Object getDisplayValue(String object) {
-                return WordUtils.capitalizeFully(object);
-            }
-
-            @Override
-            public String getIdValue(String object, int index) {
-                return Integer.toString(index);
-            }
-        }));
-        reminderTimeContainer.add(new DropDownChoice<Integer>("reminderHour", integerListTo(23)));
-        reminderTimeContainer.add(new DropDownChoice<Integer>("reminderMinute", integerListTo(59)));
-
-        // enable flag
-        AjaxCheckBox reminderEnabledCheckbox = new AjaxCheckBox("config.reminderEnabled") {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                target.add(reminderTimeContainer, reminderSubjectContainer, reminderBodyContainer, reminderCcContainer, reminderCcHelpContainer, reminderMinHoursContainer, reminderMinHoursHelpContainer);
-            }
-        };
-
-        reminderEnabledCheckbox.setEnabled(ehourSystemConfig.isEnableMail());
-        form.add(reminderEnabledCheckbox);
-    }
-
-    private List<Integer> integerListTo(int max) {
-        List<Integer> xs = Lists.newArrayList();
-
-        for (int i = 0; i < max; i++) {
-            xs.add(i);
-        }
-        return xs;
-    }
-
-    private class ReminderContainer extends Container {
-        public ReminderContainer(String id) {
-            super(id);
-
-            setOutputMarkupPlaceholderTag(true);
-        }
-
-        @Override
-        public boolean isVisible() {
-            return ehourSystemConfig.isEnableMail() && getPanelModelObject().getConfig().isReminderEnabled();
-        }
-    }
 
     private static final class WeekDayRenderer extends ChoiceRenderer<Date> {
         private static final long serialVersionUID = -2044803875511515992L;
@@ -253,14 +144,4 @@ public class MiscConfigPanel extends AbstractConfigPanel {
     }
 
 
-    private static class UpdateBehavior extends AjaxFormComponentUpdatingBehavior {
-        private UpdateBehavior() {
-            super("change");
-        }
-
-        @Override
-        protected void onUpdate(AjaxRequestTarget target) {
-            // it's just the update of the model that's needed
-        }
-    }
 }

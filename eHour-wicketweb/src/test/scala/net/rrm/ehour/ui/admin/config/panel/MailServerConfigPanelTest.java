@@ -7,24 +7,28 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * 
+ *
  * eHour is sponsored by TE-CON  - http://www.te-con.nl/
  */
 
 package net.rrm.ehour.ui.admin.config.panel;
 
 
-import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
-import org.apache.wicket.markup.html.form.Form;
+import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.mail.service.MailMan;
+import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.util.tester.FormTester;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -32,33 +36,41 @@ import static org.mockito.Mockito.verify;
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-public class MailServerConfigPanelTest extends AbstractMainConfigTest {
+public class MailServerConfigPanelTest extends BaseSpringWebAppTester {
+
+    private MailMan mailMan;
+
+    @Before
+    public void init_mocks() throws Exception {
+        mailMan = mock(MailMan.class);
+
+        getMockContext().putBean(mailMan);
+    }
+
     @Test
-    public void shouldSubmit() {
+    public void should_send_test_email() {
+        EhourConfigStub config = new EhourConfigStub();
+        config.setSmtpUsername("smtpUser");
+        config.setSmtpPassword("smtpPassword");
 
-        startPage();
+        MainConfigBackingBean bean = new MainConfigBackingBean(config);
+        bean.setSmtpAuthentication(true);
 
-        tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
+        tester.startComponentInPage(new MailServerConfigPanel("id", new CompoundPropertyModel<MainConfigBackingBean>(bean)));
 
-        tester.clickLink("configTabs:tabs-container:tabs:2:link", true);
+        FormTester formTester = tester.newFormTester("id:smtpForm");
 
-        FormTester miscFormTester = tester.newFormTester(AbstractMainConfigTest.FORM_PATH);
+        formTester.setValue("config.mailFrom", "thies@thies.net");
+        formTester.setValue("config.mailSmtp", "localhost");
+        formTester.setValue("config.smtpPort", "25");
 
-        miscFormTester.setValue("config.mailFrom", "thies@thies.net");
-        miscFormTester.setValue("config.mailSmtp", "localhost");
-        miscFormTester.setValue("config.smtpPort", "25");
-
-        tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":testMail", "onclick");
-
-        tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":submitButton", "onclick");
+        tester.executeAjaxEvent("id:smtpForm:testMail", "onclick");
 
         assertEquals("thies@thies.net", config.getMailFrom());
         assertEquals("localhost", config.getMailSmtp());
         assertEquals("25", config.getSmtpPort());
+        assertEquals("smtpPassword", config.getSmtpPassword());
 
-        verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
-
-        verify(mailMan).sendTestMessage(config);
-
+        verify(mailMan).sendTestMail(config);
     }
 }

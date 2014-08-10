@@ -6,8 +6,23 @@
 	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 
 	<body>
-		<wicket:extend>
-			<tr>
+		<wicket:panel>
+
+            <form wicket:id="smtpForm">
+
+            <tr>
+                <td colspan="2" class="header">
+                    <h3 class="sectionHeader"><wicket:message key="admin.config.smtp.title" /></h3>
+                </td>
+            </tr>
+
+            <tr wicket:id="mailDisabled">
+                <td colspan="2" class="alert">
+                    <i class="fa fa-exclamation-circle error"></i> <wicket:message key="admin.config.mailDisabled"/>
+                </td>
+            </tr>
+
+            <tr>
 				<td valign="top"><wicket:message key="admin.config.mailFrom" />:</td>
 				<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="config.mailFrom" />
 					<span wicket:id="mailFromError"></span>
@@ -28,7 +43,15 @@
 				</td>
 			</tr>
 
-			<tr>
+            <tr>
+                <td colspan="2" class="alert">
+                    <br />
+                    <wicket:message key="admin.config.smtpAuthHelp"/>
+                </td>
+            </tr>
+
+
+            <tr>
 				<td><wicket:message key="admin.config.smtpUsername" />:</td>
 				<td><input type="text" style="width: 15em" class="textInputSmall"  wicket:id="config.smtpUsername" /></td>
 			</tr>
@@ -37,14 +60,26 @@
 				<td><wicket:message key="admin.config.smtpPassword" />:</td>
 				<td><input type="password" style="width: 15em" class="textInputSmall"  wicket:id="config.smtpPassword" /></td>
 			</tr>
-			
-			<tr>
-				<td colspan="2" align="right">
-					<a class="bluebutton" onclick="this.blur();" wicket:id="testMail" style="float:right">
+
+            <tr>
+                <td colspan="2" class="help" style="padding-bottom: 0">
+                    <br />
+                    <wicket:message key="admin.config.testMailHelp"/>
+                </td>
+            </tr>
+
+            <tr>
+				<td>
+					<a class="bluebutton" onclick="this.blur();" wicket:id="testMail">
 					<span><wicket:message key="admin.config.testSmtp" /></span></a>
 				</td>
-			</tr>					
-		</wicket:extend>
-	</body>
 
+                <td wicket:id="sendResult">
+
+                </td>
+			</tr>
+
+            </form>
+		</wicket:panel>
+	</body>
 </html>

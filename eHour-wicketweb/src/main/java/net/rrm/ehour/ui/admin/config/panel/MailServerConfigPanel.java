@@ -20,23 +20,29 @@ import net.rrm.ehour.mail.service.MailMan;
 import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
+import net.rrm.ehour.ui.common.wicket.Container;
+import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.RangeValidator;
 
-
-public class MailServerConfigPanel extends AbstractConfigPanel {
+public class MailServerConfigPanel extends AbstractBasePanel<MainConfigBackingBean> {
     private static final long serialVersionUID = 1500312866540540312L;
+
+    private static final Logger LOGGER = Logger.getLogger(MailServerConfigPanel.class);
 
     @SpringBean
     private MailMan mailMain;
@@ -46,9 +52,19 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
     }
 
     @Override
-    protected void addFormComponents(Form<?> form) {
+    protected void onInitialize() {
+        super.onInitialize();
+
+        Form<MainConfigBackingBean> form = new Form<MainConfigBackingBean>("smtpForm", getPanelModel());
+        add(form);
+
+
+        Container disabled = new Container("mailDisabled");
+        disabled.setVisible(!mailMain.isMailEnabled());
+        form.add(disabled);
+
         // reply sender
-        RequiredTextField<String> mailFrom = new RequiredTextField<String>("config.mailFrom");
+        TextField<String> mailFrom = new TextField<String>("config.mailFrom");
         mailFrom.setLabel(new ResourceModel("admin.config.mailFrom"));
         mailFrom.add(EmailAddressValidator.getInstance());
         mailFrom.add(new ValidatingFormComponentAjaxBehavior());
@@ -57,13 +73,13 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
 
         // smtp server, port, username, pass
 
-        TextField<String> mailSmtp = new RequiredTextField<String>("config.mailSmtp");
+        TextField<String> mailSmtp = new TextField<String>("config.mailSmtp");
         mailSmtp.setLabel(new ResourceModel("admin.config.mailSmtp"));
         mailSmtp.add(new ValidatingFormComponentAjaxBehavior());
         form.add(new AjaxFormComponentFeedbackIndicator("mailSmtpValidationError", mailSmtp));
         form.add(mailSmtp);
 
-        TextField<Integer> smtpPort = new RequiredTextField<Integer>("config.smtpPort");
+        TextField<Integer> smtpPort = new TextField<Integer>("config.smtpPort");
         smtpPort.setLabel(new ResourceModel("admin.config.smtpPort"));
         smtpPort.add(new ValidatingFormComponentAjaxBehavior());
         form.add(new AjaxFormComponentFeedbackIndicator("smtpPortValidationError", mailSmtp));
@@ -82,12 +98,11 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
         addTestMailSettingsButton(form);
     }
 
-    /**
-     * Add test mail button
-     *
-     * @param form
-     */
-    private void addTestMailSettingsButton(Form<?> form) {
+    private void addTestMailSettingsButton(final Form<?> form) {
+        final Label sendResult = new Label("sendResult", "");
+        sendResult.setOutputMarkupId(true);
+        form.add(sendResult);
+
         form.add(new AjaxButton("testMail", form) {
             private static final long serialVersionUID = 1L;
 
@@ -95,15 +110,29 @@ public class MailServerConfigPanel extends AbstractConfigPanel {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 MainConfigBackingBean configBackingBean = (MainConfigBackingBean) MailServerConfigPanel.this.getDefaultModelObject();
 
-                mailMain.sendTestMessage(configBackingBean.getConfig());
+                Label replacementLabel;
 
-                Label replacementLabel = new Label("serverMessage", new ResourceModel("admin.config.testSmtpSent"));
+                try {
+                    mailMain.sendTestMail(configBackingBean.getConfig());
+                    replacementLabel = new Label("sendResult", new ResourceModel("admin.config.testSmtpSent"));
+                    replacementLabel.add(AttributeModifier.replace("class", "whiteText"));
+                } catch (Exception e) {
+                    replacementLabel = new Label("sendResult", new StringResourceModel("admin.config.testSentFailed", this, null, new Object[]{e.getMessage()}));
+                    LOGGER.warn("Failed to send test message: " + e.getMessage());
+                }
+
                 replacementLabel.setOutputMarkupId(true);
-                replacementLabel.add(AttributeModifier.replace("class", "whiteText"));
-                getServerMessage().replaceWith(replacementLabel);
-                setServerMessage(replacementLabel);
+                form.addOrReplace(replacementLabel);
                 target.add(replacementLabel);
             }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+            }
+
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
