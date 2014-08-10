@@ -39,7 +39,7 @@ public class SkinConfigPanelTest extends AbstractMainConfigTest {
 
         tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
 
-        tester.clickLink("configTabs:tabs-container:tabs:3:link", true);
+        tester.clickLink("configTabs:tabs-container:tabs:" + ConfigTab.SKIN.getTabIndex() + ":link", true);
 
         verify(configService).getExcelLogo();
     }

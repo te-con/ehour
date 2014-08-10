@@ -18,11 +18,11 @@ public class AuditConfigPanelTest extends AbstractMainConfigTest {
 
         tester.assertComponent(AbstractMainConfigTest.FORM_PATH, Form.class);
 
-        tester.clickLink("configTabs:tabs-container:tabs:4:link", true);
+        tester.clickLink("configTabs:tabs-container:tabs:" + ConfigTab.AUDIT.getTabIndex() + ":link", true);
 
         FormTester formTester = tester.newFormTester(AbstractMainConfigTest.FORM_PATH);
 
-        formTester.select("config.auditType", 3);
+        formTester.select("config.auditType", ConfigTab.AUDIT.getTabIndex());
 
         tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":submitButton", "onclick");
 
