@@ -25,25 +25,26 @@ trait MailMan {
   @Autowired
   var systemConfig: EhourSystemConfig = _
 
-  def sendTestMessage(alternativeConfig: EhourConfig)
+  def sendTestMail(alternativeConfig: EhourConfig)
 
   def deliver(mail: Mail, postDeliverCallBack: CallBack = (_, _) => {}, config: EhourConfig = ehourConfig)
-}
 
+  def isMailEnabled = systemConfig.isEnableMail
+}
 
 @Service
 class MailManSmtpImpl extends MailMan {
 
   final val LOGGER = Logger.getLogger(classOf[MailManSmtpImpl])
 
-  override def sendTestMessage(alternativeConfig: EhourConfig) {
+  override def sendTestMail(alternativeConfig: EhourConfig) {
     val subject = "eHour test message"
     val body = "You successfully configured eHour's mail settings."
 
     val user = new User()
     user.setEmail(alternativeConfig.getMailFrom)
 
-    deliver(Mail(to = user, subject = subject, body = body), (_, _) => {}, alternativeConfig)
+    deliver(Mail(to = user, subject = subject, body = body), config = alternativeConfig)
   }
 
   override def deliver(mail: Mail, postDeliverCallBack: CallBack = (_, _) => {}, config: EhourConfig = ehourConfig) {
@@ -58,26 +59,27 @@ class MailManSmtpImpl extends MailMan {
       msg.setText(mail.body)
       msg.setSubject(mail.subject)
       msg.setFrom(config.getMailFrom)
-      msg.setCc(mail.cc.split(","))
+
+      if (StringUtils.isNotBlank(mail.cc))
+        msg.setCc(mail.cc.split(","))
       msg.setTo(mail.to.getEmail)
 
       try {
         val mailSender = createMailSender(config)
 
-        if (systemConfig.isEnableMail) {
+        val success = if (systemConfig.isEnableMail) {
           mailSender.send(msg)
           LOGGER.info(s"Mail sent to ${mail.to.getEmail}: ${mail.subject} ")
-
+          true
         } else {
           LOGGER.info(s"Mail is disabled, otherwise I would be sending email to ${mail.to.getEmail}: ${mail.subject} ")
+          false
         }
 
-        postDeliverCallBack(mail, true)
-      }
-
-      catch {
+        postDeliverCallBack(mail, success)
+      } catch {
         case me: MailException =>
-          LOGGER.error(s"Failed to email to ${msg.getTo}: ${me.getMessage}")
+          LOGGER.error(s"Failed to send mail to ${mail.to.getEmail}: ${me.getMessage}")
 
           postDeliverCallBack(mail, false)
       }
