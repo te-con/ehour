@@ -152,12 +152,12 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
     @Override
     public String getSmtpPassword() {
-        return this.getString(MAIL_SMTP_USERNAME.getDbField());
+        return this.getString(MAIL_SMTP_PASSWORD.getDbField());
     }
 
     @Override
     public String getSmtpUsername() {
-        return this.getString(MAIL_SMTP_PASSWORD.getDbField());
+        return this.getString(MAIL_SMTP_USERNAME.getDbField());
     }
 
     @Override

@@ -58,7 +58,6 @@ public class MailServerConfigPanel extends AbstractBasePanel<MainConfigBackingBe
         Form<MainConfigBackingBean> form = new Form<MainConfigBackingBean>("smtpForm", getPanelModel());
         add(form);
 
-
         Container disabled = new Container("mailDisabled");
         disabled.setVisible(!mailMain.isMailEnabled());
         form.add(disabled);
@@ -91,7 +90,8 @@ public class MailServerConfigPanel extends AbstractBasePanel<MainConfigBackingBe
         smtpUsername.setLabel(new ResourceModel("admin.config.smtpUsername"));
         form.add(smtpUsername);
 
-        TextField<String> smtpPassword = new PasswordTextField("config.smtpPassword");
+        PasswordTextField smtpPassword = new PasswordTextField("config.smtpPassword");
+        smtpPassword.setResetPassword(false);
         smtpPassword.setRequired(false);
         smtpPassword.setLabel(new ResourceModel("admin.config.smtpPassword"));
         form.add(smtpPassword);
