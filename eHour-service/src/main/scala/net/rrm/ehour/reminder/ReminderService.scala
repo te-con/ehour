@@ -24,6 +24,7 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
   final val LOGGER = Logger.getLogger(classOf[ReminderService])
   final val Formatter = DateTimeFormat.forPattern("yyyyMMdd")
 
+  @Transactional
   def sendReminderMail() {
     def determineMailEvent = {
       val end = new LocalDate()
