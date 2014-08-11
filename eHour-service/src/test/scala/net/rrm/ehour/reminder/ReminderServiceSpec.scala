@@ -36,7 +36,7 @@ class ReminderServiceSpec extends AbstractSpec {
       verify(mailLogDao).find(emailCaptor.capture(), mailEventCaptor.capture())
 
       emailCaptor.getValue should equal(user.getEmail)
-      mailEventCaptor.getValue should startWith("Reminder for ")
+      mailEventCaptor.getValue should startWith("1:Reminder for ")
     }
   }  
 }

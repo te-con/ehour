@@ -26,20 +26,21 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
 
   @Transactional
   def sendReminderMail() {
+    val minimumHours = config.getReminderMinimalHours
+
     def determineMailEvent = {
       val end = new LocalDate()
       val start = end minusDays 6
       val startFormatted = Formatter.print(start)
       val endFormatted = Formatter.print(end)
 
-      s"Reminder for $startFormatted-$endFormatted"
+      s"Reminder for $startFormatted-$endFormatted not $minimumHours hours"
     }
 
     def hasMailBeenSent(mailTo: String, mailEvent: String) = mailLogDao.find(mailTo, mailEvent).size > 0
 
     if (config.isReminderEnabled) {
-
-      val usersToRemind = userFinder.findUsersWithoutSufficientHours(config.getReminderMinimalHours)
+      val usersToRemind = userFinder.findUsersWithoutSufficientHours(minimumHours)
 
       LOGGER.info(s"Mail reminder job running, will remind ${usersToRemind.size} users.")
 
@@ -57,7 +58,7 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
       for (user <- usersToRemind) {
         if (StringUtils.isBlank(user.getEmail)) {
           LOGGER.warn(s"Trying to send reminder mail to ${user.getFullName} but no email address is entered.")
-        } else if (hasMailBeenSent(user.getEmail, mailEvent)) {
+        } else if (hasMailBeenSent(user.getEmail, s"${user.getUserId}:$mailEvent")) {
           LOGGER.info(s"Mail to ${user.getFullName} (${user.getEmail}) about $mailEvent was already sent.")
         } else {
           val mail = Mail(user, config.getReminderCC, config.getReminderSubject, config.getReminderBody)
