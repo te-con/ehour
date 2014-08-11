@@ -28,7 +28,7 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
   def sendReminderMail() {
     val minimumHours = config.getReminderMinimalHours
 
-    def determineMailEvent = {
+    def determineMailEvent() = {
       val end = new LocalDate()
       val start = end minusDays 6
       val startFormatted = Formatter.print(start)
@@ -44,21 +44,21 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
 
       LOGGER.info(s"Mail reminder job running, will remind ${usersToRemind.size} users.")
 
-      val mailEvent = determineMailEvent
-
-      val callback: CallBack = (mail, success) => {
-        val mailLog = new MailLog
-        mailLog.setTimestamp(new Date)
-        mailLog.setSuccess(success)
-        mailLog.setMailTo(mail.to.getEmail)
-        mailLog.setMailEvent(mailEvent)
-        mailLogDao.persist(mailLog)
-      }
-
       for (user <- usersToRemind) {
+        val mailEvent = s"${user.getUserId}:${determineMailEvent()}"
+
+        val callback: CallBack = (mail, success) => {
+          val mailLog = new MailLog
+          mailLog.setTimestamp(new Date)
+          mailLog.setSuccess(success)
+          mailLog.setMailTo(mail.to.getEmail)
+          mailLog.setMailEvent(mailEvent)
+          mailLogDao.persist(mailLog)
+        }
+
         if (StringUtils.isBlank(user.getEmail)) {
           LOGGER.warn(s"Trying to send reminder mail to ${user.getFullName} but no email address is entered.")
-        } else if (hasMailBeenSent(user.getEmail, s"${user.getUserId}:$mailEvent")) {
+        } else if (hasMailBeenSent(user.getEmail, mailEvent)) {
           LOGGER.info(s"Mail to ${user.getFullName} (${user.getEmail}) about $mailEvent was already sent.")
         } else {
           val mail = Mail(user, config.getReminderCC, config.getReminderSubject, config.getReminderBody)
