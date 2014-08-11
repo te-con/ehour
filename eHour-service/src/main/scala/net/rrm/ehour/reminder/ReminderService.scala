@@ -4,11 +4,11 @@ import java.util.Date
 
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{MailLog, TimesheetEntry, User}
+import net.rrm.ehour.domain.{MailLog, TimesheetEntry, User, UserRole}
 import net.rrm.ehour.mail.service._
 import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
-import net.rrm.ehour.persistence.user.dao.UserDao
+import net.rrm.ehour.user.service.UserService
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
 import org.joda.time.LocalDate
@@ -40,6 +40,8 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
 
       val usersToRemind = userFinder.findUsersWithoutSufficientHours(config.getReminderMinimalHours)
 
+      LOGGER.info(s"Mail reminder job running, will remind ${usersToRemind.size} users.")
+
       val mailEvent = determineMailEvent
 
       val callback: CallBack = (mail, success) => {
@@ -67,10 +69,10 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
 }
 
 @Service
-class IFindUsersWithoutSufficientHours @Autowired()(userDao: UserDao, timesheetDao: TimesheetDao) {
+class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService, timesheetDao: TimesheetDao) {
   @Transactional
   def findUsersWithoutSufficientHours(minimalHours: Int): List[User] = {
-    val activeUsers = userDao.findActiveUsers()
+    val activeUsers = userService.getUsers(UserRole.USER)
 
     val endDate = new LocalDate()
     val startDate = endDate.minusWeeks(1).plusDays(1)
