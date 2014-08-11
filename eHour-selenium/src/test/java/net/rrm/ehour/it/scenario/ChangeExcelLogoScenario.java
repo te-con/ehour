@@ -3,12 +3,11 @@ package net.rrm.ehour.it.scenario;
 import net.rrm.ehour.it.AbstractScenario;
 import net.rrm.ehour.it.WicketBy;
 import net.rrm.ehour.it.driver.EhourApplicationDriver;
-import net.rrm.ehour.it.driver.ItUtil;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import static net.rrm.ehour.it.driver.ItUtil.*;
+import static net.rrm.ehour.it.driver.ItUtil.findElement;
 import static org.junit.Assert.assertTrue;
 
 public class ChangeExcelLogoScenario extends AbstractScenario {
@@ -30,6 +29,6 @@ public class ChangeExcelLogoScenario extends AbstractScenario {
     }
 
     private void clickCustomizeTab() {
-        findElement(WicketBy.wicketPath("configTabs_tabs-container_tabs_3_link_title")).click();
+        findElement(WicketBy.wicketPath("configTabs_tabs-container_tabs_2_link_title")).click();
     }
 }
