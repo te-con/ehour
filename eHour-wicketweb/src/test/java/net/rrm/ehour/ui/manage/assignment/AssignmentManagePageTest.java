@@ -34,7 +34,7 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AssignmentAdminPageTest extends BaseSpringWebAppTester {
+public class AssignmentManagePageTest extends BaseSpringWebAppTester {
     @Test
     public void shouldRender() {
         UserService userService = mock(UserService.class);
