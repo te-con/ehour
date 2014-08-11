@@ -259,7 +259,7 @@ public class MainConfigBackingBean implements Serializable {
     }
 
     private void updateReminderCronExpression() {
-        String cron = String.format("* %d %d * * %s", reminderMinute, reminderHour, reminderDay);
+        String cron = String.format("0 %d %d * * %s", reminderMinute, reminderHour, reminderDay);
         config.setReminderTime(cron);
     }
 }

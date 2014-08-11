@@ -15,7 +15,7 @@ class MainConfigBackingBeanSpec extends AbstractSpec {
 
     "use default reminder when invalid values provided" in {
       val config = new EhourConfigStub
-      config.setReminderTime("* 70 25 * * AMS")
+      config.setReminderTime("0 70 25 * * AMS")
 
       val backingBean = new MainConfigBackingBean(config)
       backingBean.getReminderDay should equal("FRI")
@@ -39,13 +39,13 @@ class MainConfigBackingBeanSpec extends AbstractSpec {
       backingBean.setReminderHour(12)
       backingBean.setReminderMinute(45)
       backingBean.setReminderDay("THU")
-      backingBean.getConfig.getReminderTime should equal("* 45 12 * * THU")
+      backingBean.getConfig.getReminderTime should equal("0 45 12 * * THU")
     }
   }
 
   def createSubject  = {
     val config = new EhourConfigStub
-    config.setReminderTime("* 25 16 * * TUE")
+    config.setReminderTime("0 25 16 * * TUE")
 
     new MainConfigBackingBean(config)
   }

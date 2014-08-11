@@ -12,7 +12,7 @@ class ReminderConfigPanelSpec extends AbstractSpringWebAppSpec {
     "hide reminder time dropdowns when reminders are not enabled" in {
       val config = new EhourConfigStub
       config.setReminderEnabled(false)
-      config.setReminderTime("* 10 16 * * FRI")
+      config.setReminderTime("0 10 16 * * FRI")
 
       val bean = new MainConfigBackingBean(config)
 

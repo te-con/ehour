@@ -197,7 +197,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
     @Override
     public String getReminderTime() {
-        return this.getString(REMINDER_TIME.getDbField(), "* 30 17 * * FRI");
+        return this.getString(REMINDER_TIME.getDbField(), "0 30 17 * * FRI");
     }
 
     @Override
