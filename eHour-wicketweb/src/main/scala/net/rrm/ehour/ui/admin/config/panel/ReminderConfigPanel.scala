@@ -83,7 +83,7 @@ class ReminderConfigPanel(id: String, model: IModel[MainConfigBackingBean]) exte
     }))
 
     reminderTimeContainer.add(new DropDownChoice[Integer]("reminderHour", (0 to 23).toList.asInstanceOf[List[java.lang.Integer]]))
-    reminderTimeContainer.add(new DropDownChoice[Integer]("reminderMinute", (0 to 23).toList.asInstanceOf[List[java.lang.Integer]]))
+    reminderTimeContainer.add(new DropDownChoice[Integer]("reminderMinute", (0 to 59).toList.asInstanceOf[List[java.lang.Integer]]))
 
     val reminderEnabledCheckbox = new AjaxCheckBox("config.reminderEnabled") {
       override protected def onUpdate(target: AjaxRequestTarget) {
