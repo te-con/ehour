@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-import scala.collection.{JavaConversions, mutable}
+import scala.collection.mutable
 
 @Service
 class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWithoutSufficientHours, mailMan: MailMan, mailLogDao: MailLogDao) {
@@ -78,8 +78,8 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
                                                     projectAssignmentService: ProjectAssignmentService
                                                      ) {
   @Transactional
-  import scala.collection.JavaConversions._
   def findUsersWithoutSufficientHours(minimalHours: Int): List[User] = {
+
     val reminderEndDate = new LocalDate()
     val reminderStartDate = reminderEndDate.minusWeeks(1).plusDays(1)
 
@@ -99,6 +99,7 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
     usersWithoutAnyHours.toList ++ userNotMeetingMinimalHours.keySet.toList
   }
 
+  import scala.collection.JavaConversions._
   private def findActiveUsersWithAssignments(reminderEndDate: LocalDate, reminderStartDate: LocalDate): List[User] = {
     def toWeekDays(t: (LocalDate, LocalDate)) = JodaDateUtil.enumerate(t._1, t._2).map(_.getDayOfWeek)
 
