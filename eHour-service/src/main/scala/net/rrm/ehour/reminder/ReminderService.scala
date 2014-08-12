@@ -4,11 +4,13 @@ import java.util.Date
 
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{MailLog, TimesheetEntry, User, UserRole}
+import net.rrm.ehour.domain._
 import net.rrm.ehour.mail.service._
 import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
+import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.user.service.UserService
+import net.rrm.ehour.util.JodaDateUtil
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
 import org.joda.time.LocalDate
@@ -17,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-import scala.collection.mutable
+import scala.collection.{JavaConversions, mutable}
 
 @Service
 class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWithoutSufficientHours, mailMan: MailMan, mailLogDao: MailLogDao) {
@@ -71,15 +73,19 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
 }
 
 @Service
-class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService, timesheetDao: TimesheetDao) {
+class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
+                                                    timesheetDao: TimesheetDao,
+                                                    projectAssignmentService: ProjectAssignmentService
+                                                     ) {
   @Transactional
+  import scala.collection.JavaConversions._
   def findUsersWithoutSufficientHours(minimalHours: Int): List[User] = {
-    val activeUsers = userService.getUsers(UserRole.USER)
+    val reminderEndDate = new LocalDate()
+    val reminderStartDate = reminderEndDate.minusWeeks(1).plusDays(1)
 
-    val endDate = new LocalDate()
-    val startDate = endDate.minusWeeks(1).plusDays(1)
-    val range = new DateRange(startDate.toDate, endDate.toDate)
-    val timesheetEntriesInRange = timesheetDao.getTimesheetEntriesInRange(range)
+    val activeUsers = findActiveUsersWithAssignments(reminderEndDate, reminderStartDate)
+
+    val timesheetEntriesInRange = timesheetDao.getTimesheetEntriesInRange(new DateRange(reminderStartDate.toDate, reminderEndDate.toDate))
 
     import scala.collection.JavaConversions._
     val entriesByUser: Map[User, mutable.Buffer[TimesheetEntry]] = timesheetEntriesInRange groupBy (_.getEntryId.getProjectAssignment.getUser)
@@ -91,5 +97,30 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService, ti
     val usersWithoutAnyHours: Set[User] = activeUsers.toSet.diff(entriesByUser.keySet)
 
     usersWithoutAnyHours.toList ++ userNotMeetingMinimalHours.keySet.toList
+  }
+
+  private def findActiveUsersWithAssignments(reminderEndDate: LocalDate, reminderStartDate: LocalDate): List[User] = {
+    def toWeekDays(t: (LocalDate, LocalDate)) = JodaDateUtil.enumerate(t._1, t._2).map(_.getDayOfWeek)
+
+    val reminderWeekDays = toWeekDays(reminderStartDate, reminderEndDate)
+
+    def coversReminderDays(ds: List[(LocalDate, LocalDate)]): Boolean = {
+      val boundedDs = ds.map(t =>
+        (if (t._1.isBefore(reminderStartDate)) reminderStartDate else t._1,
+          if (t._2.isAfter(reminderEndDate)) reminderEndDate else t._2)
+      )
+
+      val joinedWeekDays = boundedDs.flatMap(toWeekDays)
+      joinedWeekDays.foldLeft(0)(_ + _) == reminderWeekDays.foldLeft(0)(_ + _)
+    }
+
+    val activeUsers = userService.getUsers(UserRole.USER).toList
+
+    activeUsers.filter(u => {
+      val assignments = projectAssignmentService.getProjectAssignmentsForUser(u.getUserId, new DateRange(reminderStartDate.toDate, reminderEndDate.toDate))
+
+      val assignmentDates = assignments.toList.map(a => (new LocalDate(a.getDateStart), new LocalDate(a.getDateEnd)))
+      coversReminderDays(assignmentDates)
+    })
   }
 }

@@ -5,6 +5,7 @@ import java.util.Date
 import net.rrm.ehour.AbstractSpec
 import net.rrm.ehour.domain.{TimesheetEntryObjectMother, UserObjectMother, UserRole}
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
+import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.user.service.UserService
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -13,8 +14,9 @@ import scala.collection.JavaConversions._
 class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
   val userService = mock[UserService]
   val timesheetDao = mock[TimesheetDao]
+  private val assignmentService = mock[ProjectAssignmentService]
 
-  val subject = new IFindUsersWithoutSufficientHours(userService, timesheetDao)
+  val subject = new IFindUsersWithoutSufficientHours(userService, timesheetDao, assignmentService)
 
   val userA = UserObjectMother.createUser("a")
   val userB = UserObjectMother.createUser("b")
@@ -73,6 +75,14 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
 
       foundUsers should have size 1
       foundUsers should contain (userA)
+    }
+
+    "ignore user that doesn't have project assignments covering the whole range" in {
+      fail()
+    }
+
+    "subtract 8 hours per day that is locked" in {
+      fail()
     }
   }
 }
