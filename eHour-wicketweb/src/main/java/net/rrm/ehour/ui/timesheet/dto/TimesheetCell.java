@@ -68,9 +68,29 @@ public class TimesheetCell implements Comparable<TimesheetCell>, Serializable {
         this.timesheetEntry = timesheetEntry;
     }
 
-
+    @Override
     public int compareTo(TimesheetCell o) {
         return getTimesheetEntry().getEntryId().getEntryDate().compareTo(o.getTimesheetEntry().getEntryId().getEntryDate());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TimesheetCell that = (TimesheetCell) o;
+
+        if (!date.equals(that.date)) return false;
+        if (!timesheetEntry.equals(that.timesheetEntry)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = timesheetEntry.hashCode();
+        result = 31 * result + date.hashCode();
+        return result;
     }
 
     /**

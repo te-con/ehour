@@ -30,10 +30,10 @@ import java.text.SimpleDateFormat;
 
 public class FlatLockableDateNode extends ReportNode {
     private static final long serialVersionUID = 7854152602780377915L;
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 
     public FlatLockableDateNode(FlatReportElement element) {
-        super(element.isEmptyEntry() ? 0 : formatter.format(element.getDayDate()), element.isEmptyEntry());
+        super(element.isEmptyEntry() ? 0 : new SimpleDateFormat("yyyyMMdd").format(element.getDayDate()), element.isEmptyEntry());
         this.columnValues = new LockableDate[]{element.getLockableDate()};
     }
 

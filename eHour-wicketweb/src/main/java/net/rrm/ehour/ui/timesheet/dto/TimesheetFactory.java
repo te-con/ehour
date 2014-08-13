@@ -129,7 +129,9 @@ public class TimesheetFactory {
             firstDate.setTime(timesheetDates.get(0).date);
         }
 
-        for (ProjectAssignment assignment : assignmentMap.keySet()) {
+        for (Map.Entry<ProjectAssignment, Map<String, TimesheetEntry>> assignmentEntry : assignmentMap.entrySet()) {
+            ProjectAssignment assignment = assignmentEntry.getKey();
+
             TimesheetRow timesheetRow = new TimesheetRow(config);
             timesheetRow.setTimesheet(timesheet);
             timesheetRow.setProjectAssignment(assignment);
@@ -137,7 +139,7 @@ public class TimesheetFactory {
 
             // create a cell for every requested timesheetDate
             for (TimesheetDate timesheetDate : timesheetDates) {
-                TimesheetEntry entry = assignmentMap.get(assignment).get(timesheetDate.formatted);
+                TimesheetEntry entry = assignmentEntry.getValue().get(timesheetDate.formatted);
 
                 timesheetRow.addTimesheetCell(timesheetDate.dayInWeek,
                         createTimesheetCell(assignment, entry, timesheetDate.date, timesheetDate.locked, validProjectAssignments));
