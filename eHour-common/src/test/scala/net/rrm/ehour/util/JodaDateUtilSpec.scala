@@ -3,7 +3,7 @@ package net.rrm.ehour.util
 import net.rrm.ehour.AbstractSpec
 import org.joda.time.{Interval, LocalDate}
 
-class JodaDateUtilTest extends AbstractSpec {
+class JodaDateUtilSpec extends AbstractSpec {
   "Joda Date Util" should {
     "return enumerate the dates between two dates" in {
       val start = new LocalDate(2014, 1, 1)
@@ -28,20 +28,20 @@ class JodaDateUtilTest extends AbstractSpec {
       xs should be ('empty)
     }
 
-    "find 2 weekend days in an interval" in {
+    "find 6 work days in an interval" in {
       val start = new LocalDate(2014, 8, 1)
       val end = new LocalDate(2014, 8, 7)
 
-      val days = JodaDateUtil.findWeekendDays(new Interval(start.toDateTimeAtStartOfDay, end.toDateTimeAtStartOfDay))
+      val days = JodaDateUtil.findWorkDays(new Interval(start.toDateTimeAtStartOfDay, end.toDateTimeAtStartOfDay))
 
-      days should have size 2
+      days should have size 5
     }
 
-    "find no weekend days in an interval" in {
-      val start = new LocalDate(2014, 8, 5)
-      val end = new LocalDate(2014, 8, 7)
+    "find no work days in the weekend" in {
+      val start = new LocalDate(2014, 8, 2)
+      val end = new LocalDate(2014, 8, 3)
 
-      val days = JodaDateUtil.findWeekendDays(new Interval(start.toDateTimeAtStartOfDay, end.toDateTimeAtStartOfDay))
+      val days = JodaDateUtil.findWorkDays(new Interval(start.toDateTimeAtStartOfDay, end.toDateTimeAtStartOfDay))
 
       days should be ('empty)
     }

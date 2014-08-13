@@ -7,11 +7,13 @@ import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.timesheet.service.TimesheetLockService
 import net.rrm.ehour.user.service.UserService
-import org.joda.time.LocalDate
+import net.rrm.ehour.util.JodaDateUtil
+import org.joda.time.{Interval, LocalDate}
 import org.mockito.Matchers.{eq => mockitoEq, _}
 import org.mockito.Mockito._
 
 import scala.collection.JavaConversions._
+
 class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
   val userService = mock[UserService]
   val timesheetDao = mock[TimesheetDao]
@@ -37,18 +39,19 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
   assignmentB.setDateStart(currentDate.minusDays(15).toDate)
   assignmentB.setDateEnd(currentDate.plusDays(15).toDate)
 
-  override protected def beforeEach() = reset(userService, timesheetDao)
+  override protected def beforeEach() = reset(userService, timesheetDao, lockService)
 
   "I find users without sufficient hours" should {
-    "find 1 user with 30 hours" in {
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA))
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userB.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
+    "find the user with less than the minimum hours, ignore the user with more than the minimum" in {
+      `user A has assignment A`
+      `user B has assignment B`
 
-      when(userService.getUsers(UserRole.USER)).thenReturn(List(userA, userB))
+      `user A and B are active`
+      `no locked days are in the range`
 
-      val timesheetEntryInvalid = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 30)
-      val timesheetEntryValid = TimesheetEntryObjectMother.createTimesheetEntry(userB, currentDate.toDate, 34)
-      when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryInvalid, timesheetEntryValid))
+      val timesheetEntryInvalid = `create a timesheet entry for user`(userA, 30)
+      val timesheetEntryValid = `create a timesheet entry for user`(userB, 34)
+      `with timesheet entries`(timesheetEntryInvalid, timesheetEntryValid)
 
       val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
 
@@ -56,69 +59,33 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       foundUsers should contain(userA)
     }
 
-    "find no user as the user booked sufficient hours" in {
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA))
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userB.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
+    "find no user as the user booked sufficient hours over multiple days within that week" in {
+      `user A has assignment A`
+      `user B has assignment B`
 
-      when(userService.getUsers(UserRole.USER)).thenReturn(List(userA))
+      `user A is active`
+      `no locked days are in the range`
 
-      val timesheetEntryValidA = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 10)
-      val timesheetEntryValidB = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 10)
-      val timesheetEntryValidC = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 10)
-      val timesheetEntryValidD = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 10)
-      when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryValidA, timesheetEntryValidB, timesheetEntryValidC, timesheetEntryValidD))
-
-      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
-
-      foundUsers should be ('empty)
-    }
-
-    "find 1 user without any hours booked at all" in {
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA))
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userB.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
-
-      when(userService.getUsers(UserRole.USER)).thenReturn(List(userA, userB))
-
-      val timesheetEntryInvalid = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 34)
-      when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryInvalid))
+      val timesheetEntryValidA = `create a timesheet entry for user`(userA, 10)
+      val timesheetEntryValidB = `create a timesheet entry for user`(userA, 10)
+      val timesheetEntryValidC = `create a timesheet entry for user`(userA, 10)
+      val timesheetEntryValidD = `create a timesheet entry for user`(userA, 10)
+      `with timesheet entries`(timesheetEntryValidA, timesheetEntryValidB, timesheetEntryValidC, timesheetEntryValidD)
 
       val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
 
-      foundUsers should have size 1
-      foundUsers should contain (userB)
+      foundUsers should be('empty)
     }
 
-    "find 1 user with 30 hours and should ignore the deactivated user who booked hours" in {
-      val userC = UserObjectMother.createUser("c")
+    "find a user when he has an active assignment but didn't book any hours at all" in {
+      `user A has assignment A`
+      `user B has assignment B`
 
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA))
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userB.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userC.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
+      `user A and B are active`
+      `no locked days are in the range`
 
-      when(userService.getUsers(UserRole.USER)).thenReturn(List(userA))
-
-      val timesheetEntryInvalid = TimesheetEntryObjectMother.createTimesheetEntry(userC, currentDate.toDate, 30)
-      when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryInvalid))
-
-      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
-
-      foundUsers should have size 1
-      foundUsers should contain (userA)
-    }
-
-    "ignore user that doesn't have project assignments covering the whole range" in {
-      val assignmentA2 = ProjectAssignmentObjectMother.createProjectAssignment(userA, project)
-      assignmentA2.setDateStart(currentDate.minusDays(2).toDate)
-      assignmentA2.setDateEnd(currentDate.plusDays(1).toDate)
-
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA2))
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userB.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
-
-      when(userService.getUsers(UserRole.USER)).thenReturn(List(userA, userB))
-
-      val timesheetEntryInvalid = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 30)
-      val timesheetEntryValid = TimesheetEntryObjectMother.createTimesheetEntry(userB, currentDate.toDate, 31)
-      when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryInvalid, timesheetEntryValid))
+      val timesheetEntryInvalid = `create a timesheet entry for user`(userA, 34)
+      `with timesheet entries`(timesheetEntryInvalid)
 
       val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
 
@@ -126,8 +93,122 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       foundUsers should contain(userB)
     }
 
-    "subtract 8 hours per day that is locked" ignore {
-      fail()
+    "ignore any users that are inactive, even if they booked hours" in {
+      val userC = UserObjectMother.createUser("c")
+
+      `user A has assignment A`
+      `user B has assignment B`
+      `user C has assignment B`(userC)
+
+      `user A is active`
+      `no locked days are in the range`
+
+      val timesheetEntryInvalid = `create a timesheet entry for user`(userC, 30)
+      `with timesheet entries`(timesheetEntryInvalid)
+
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
+
+      foundUsers should have size 1
+      foundUsers should contain(userA)
     }
+
+    "ignore user that doesn't have project assignments covering the whole week" in {
+      val assignmentA2 = ProjectAssignmentObjectMother.createProjectAssignment(userA, project)
+      assignmentA2.setDateStart(currentDate.minusDays(2).toDate)
+      assignmentA2.setDateEnd(currentDate.plusDays(1).toDate)
+
+      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA2))
+      `user B has assignment B`
+
+      `user A and B are active`
+      `no locked days are in the range`
+
+      val timesheetEntryInvalid = `create a timesheet entry for user`(userA, 30)
+      val timesheetEntryValid = `create a timesheet entry for user`(userB, 31)
+      `with timesheet entries`(timesheetEntryInvalid, timesheetEntryValid)
+
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
+
+      foundUsers should have size 1
+      foundUsers should contain(userB)
+    }
+
+    "from the required minimum hours, subtract 8 hours per work day that is locked" in {
+      def findWorkDay(date: LocalDate): LocalDate = if (JodaDateUtil.isWeekend(date)) findWorkDay(date.minusDays(1)) else date
+
+      `user A has assignment A`
+      `user B has assignment B`
+
+      `user A and B are active`
+
+      val nonWeekendDate = findWorkDay(currentDate)
+      val lockedInterval = new Interval(nonWeekendDate.toDateTimeAtStartOfDay, nonWeekendDate.toDateTimeAtStartOfDay)
+      when(lockService.findLockedDatesInRange(any(), any())).thenReturn(List(lockedInterval))
+
+      val timesheetEntrySufficient = `create a timesheet entry for user`(userA, 30)
+      val timesheetEntryInsufficient = `create a timesheet entry for user`(userB, 20)
+      `with timesheet entries`(timesheetEntrySufficient, timesheetEntryInsufficient)
+
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
+
+      foundUsers should have size 1
+      foundUsers should contain(userB)
+    }
+
+    "from the required minimum hours, do not subtract any hours for locked weekend days" in {
+      def findDateInWeekend(date: LocalDate): LocalDate = if (JodaDateUtil.isWeekend(date)) date else findDateInWeekend(date.minusDays(1))
+
+      `user A has assignment A`
+      `user B has assignment B`
+
+      `user A and B are active`
+
+      val weekendDate = findDateInWeekend(currentDate)
+      val lockedInterval = new Interval(weekendDate.toDateTimeAtStartOfDay, weekendDate.toDateTimeAtStartOfDay)
+      when(lockService.findLockedDatesInRange(any(), any())).thenReturn(List(lockedInterval))
+
+      val timesheetEntrySufficient = `create a timesheet entry for user`(userA, 30)
+      val timesheetEntryInsufficient = `create a timesheet entry for user`(userB, 20)
+      `with timesheet entries`(timesheetEntrySufficient, timesheetEntryInsufficient)
+
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
+
+      foundUsers should have size 2
+      foundUsers should contain(userA)
+      foundUsers should contain(userB)
+    }
+  }
+
+  def `user C has assignment B`(userC: User) {
+    when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userC.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
+  }
+
+  def `user A is active` {
+    when(userService.getUsers(UserRole.USER)).thenReturn(List(userA))
+  }
+
+  def `with timesheet entries`(entry: TimesheetEntry*) {
+    when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(entry.toList)
+  }
+
+  def `create a timesheet entry for user`(user: User = userA, hours: Int = 30): TimesheetEntry = {
+    val timesheetEntryInvalid = TimesheetEntryObjectMother.createTimesheetEntry(user, currentDate.toDate, hours)
+    timesheetEntryInvalid
+  }
+
+  def `user A and B are active` {
+    when(userService.getUsers(UserRole.USER)).thenReturn(List(userA, userB))
+  }
+
+  def `user B has assignment B` {
+    `user C has assignment B`(userB)
+  }
+
+  def `user A has assignment A` {
+    when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA))
+  }
+
+  def `no locked days are in the range` {
+    when(lockService.findLockedDatesInRange(any(), any())).thenReturn(List())
   }
 }

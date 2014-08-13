@@ -108,7 +108,7 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
   private def subtractLockedDaysFromMinimumHours(minimumHours: Int, workHoursPerDay: Float, reminderStartDate: LocalDate, reminderEndDate: LocalDate): Int = {
     val lockedDatesInRange = lockService.findLockedDatesInRange(reminderStartDate.toDate, reminderEndDate.toDate)
 
-    val correction = lockedDatesInRange.foldLeft(0f)((v, interval) => v + (JodaDateUtil.findWeekendDays(interval).size * workHoursPerDay))
+    val correction = lockedDatesInRange.foldLeft(0f)((v, interval) => v + (JodaDateUtil.findWorkDays(interval).size * workHoursPerDay))
 
     Math.ceil(minimumHours - correction).toInt
   }

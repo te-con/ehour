@@ -3,11 +3,13 @@ package net.rrm.ehour.util
 import org.joda.time.{DateTimeConstants, Interval, LocalDate}
 
 object JodaDateUtil {
-  def findWeekendDays(interval: Interval):List[LocalDate] = {
+  def findWorkDays(interval: Interval):List[LocalDate] = {
     val dates = enumerate(interval.getStart.toLocalDate, interval.getEnd.toLocalDate)
 
-    dates.filter(p => p.getDayOfWeek == DateTimeConstants.SATURDAY || p.getDayOfWeek == DateTimeConstants.SUNDAY)
+    dates.filterNot(isWeekend)
   }
+
+  def isWeekend(p: LocalDate): Boolean = p.getDayOfWeek == DateTimeConstants.SATURDAY || p.getDayOfWeek == DateTimeConstants.SUNDAY
 
   // returns an enumeration of all dates between start and end, including start and end
   def enumerate(start: LocalDate, end: LocalDate): List[LocalDate] = {
