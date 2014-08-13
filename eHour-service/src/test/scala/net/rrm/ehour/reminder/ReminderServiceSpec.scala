@@ -15,6 +15,7 @@ class ReminderServiceSpec extends AbstractSpec {
   val mailLogDao = mock[MailLogDao]
 
   val config = new EhourConfigStub
+  config.setCompleteDayHours(8f)
   config.setReminderEnabled(true)
   config.setReminderMinimalHours(32)
   
@@ -25,7 +26,7 @@ class ReminderServiceSpec extends AbstractSpec {
   "Reminder Service" should {
     "mail users to remind" in {
       val user = UserObjectMother.createUser
-      when(userFinder.findUsersWithoutSufficientHours(32, 8)).thenReturn(List(user))
+      when(userFinder.findUsersWithoutSufficientHours(32, 8f)).thenReturn(List(user))
       when(mailLogDao.find(any(), any())).thenReturn(List())
 
       subject.sendReminderMail()
