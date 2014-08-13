@@ -1,7 +1,7 @@
 package net.rrm.ehour.util
 
 import net.rrm.ehour.AbstractSpec
-import org.joda.time.LocalDate
+import org.joda.time.{Interval, LocalDate}
 
 class JodaDateUtilTest extends AbstractSpec {
   "Joda Date Util" should {
@@ -26,6 +26,24 @@ class JodaDateUtilTest extends AbstractSpec {
       val xs = JodaDateUtil.enumerate(start, end)
 
       xs should be ('empty)
+    }
+
+    "find 2 weekend days in an interval" in {
+      val start = new LocalDate(2014, 8, 1)
+      val end = new LocalDate(2014, 8, 7)
+
+      val days = JodaDateUtil.findWeekendDays(new Interval(start.toDateTimeAtStartOfDay, end.toDateTimeAtStartOfDay))
+
+      days should have size 2
+    }
+
+    "find no weekend days in an interval" in {
+      val start = new LocalDate(2014, 8, 5)
+      val end = new LocalDate(2014, 8, 7)
+
+      val days = JodaDateUtil.findWeekendDays(new Interval(start.toDateTimeAtStartOfDay, end.toDateTimeAtStartOfDay))
+
+      days should be ('empty)
     }
   }
 }

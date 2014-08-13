@@ -9,6 +9,7 @@ import net.rrm.ehour.mail.service._
 import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.project.service.ProjectAssignmentService
+import net.rrm.ehour.timesheet.service.TimesheetLockService
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util.JodaDateUtil
 import org.apache.commons.lang.StringUtils
@@ -42,7 +43,7 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
     def hasMailBeenSent(mailTo: String, mailEvent: String) = mailLogDao.find(mailTo, mailEvent).size > 0
 
     if (config.isReminderEnabled) {
-      val usersToRemind = userFinder.findUsersWithoutSufficientHours(minimumHours)
+      val usersToRemind = userFinder.findUsersWithoutSufficientHours(minimumHours, config.getCompleteDayHours)
 
       LOGGER.info(s"Mail reminder job running, will remind ${usersToRemind.size} users.")
 
@@ -75,15 +76,18 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
 @Service
 class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
                                                     timesheetDao: TimesheetDao,
-                                                    projectAssignmentService: ProjectAssignmentService
+                                                    projectAssignmentService: ProjectAssignmentService,
+                                                    lockService: TimesheetLockService
                                                      ) {
   @Transactional
-  def findUsersWithoutSufficientHours(minimalHours: Int): List[User] = {
+  def findUsersWithoutSufficientHours(minimumHours: Int, workHoursPerDay: Float): List[User] = {
 
     val reminderEndDate = new LocalDate()
     val reminderStartDate = reminderEndDate.minusWeeks(1).plusDays(1)
 
-    val activeUsers = findActiveUsersWithAssignments(reminderEndDate, reminderStartDate)
+    val correctedMinimumHours = subtractLockedDaysFromMinimumHours(minimumHours, workHoursPerDay, reminderStartDate, reminderEndDate)
+
+    val activeUsers = findActiveUsersWithAssignments(reminderStartDate, reminderEndDate)
 
     val timesheetEntriesInRange = timesheetDao.getTimesheetEntriesInRange(new DateRange(reminderStartDate.toDate, reminderEndDate.toDate))
 
@@ -92,15 +96,25 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
     val entriesByActiveUsers = entriesByUser.filterKeys(activeUsers.contains)
     val hoursPerUser: Map[User, Float] = entriesByActiveUsers.map(f => (f._1, f._2.foldLeft(0f)(_ + _.getHours))).toMap
 
-    val userNotMeetingMinimalHours: Map[User, Float] = hoursPerUser.filter(p => p._2 < minimalHours)
+    val userNotMeetingMinimalHours: Map[User, Float] = hoursPerUser.filter(p => p._2 < correctedMinimumHours)
 
     val usersWithoutAnyHours: Set[User] = activeUsers.toSet.diff(entriesByUser.keySet)
 
     usersWithoutAnyHours.toList ++ userNotMeetingMinimalHours.keySet.toList
   }
 
+  // for every locked day in the range, subtract the work hours per day from the minimum hours
+  // excluded locked days that fall in the weekend
+  private def subtractLockedDaysFromMinimumHours(minimumHours: Int, workHoursPerDay: Float, reminderStartDate: LocalDate, reminderEndDate: LocalDate): Int = {
+    val lockedDatesInRange = lockService.findLockedDatesInRange(reminderStartDate.toDate, reminderEndDate.toDate)
+
+    val correction = lockedDatesInRange.foldLeft(0f)((v, interval) => v + (JodaDateUtil.findWeekendDays(interval).size * workHoursPerDay))
+
+    Math.ceil(minimumHours - correction).toInt
+  }
+
   import scala.collection.JavaConversions._
-  private def findActiveUsersWithAssignments(reminderEndDate: LocalDate, reminderStartDate: LocalDate): List[User] = {
+  private def findActiveUsersWithAssignments(reminderStartDate: LocalDate, reminderEndDate: LocalDate): List[User] = {
     def toWeekDays(t: (LocalDate, LocalDate)) = JodaDateUtil.enumerate(t._1, t._2).map(_.getDayOfWeek)
 
     val reminderWeekDays = toWeekDays(reminderStartDate, reminderEndDate)

@@ -5,6 +5,7 @@ import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain._
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
 import net.rrm.ehour.project.service.ProjectAssignmentService
+import net.rrm.ehour.timesheet.service.TimesheetLockService
 import net.rrm.ehour.user.service.UserService
 import org.joda.time.LocalDate
 import org.mockito.Matchers.{eq => mockitoEq, _}
@@ -15,8 +16,9 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
   val userService = mock[UserService]
   val timesheetDao = mock[TimesheetDao]
   val assignmentService = mock[ProjectAssignmentService]
+  val lockService = mock[TimesheetLockService]
 
-  val subject = new IFindUsersWithoutSufficientHours(userService, timesheetDao, assignmentService)
+  val subject = new IFindUsersWithoutSufficientHours(userService, timesheetDao, assignmentService, lockService)
 
   val userA = UserObjectMother.createUser("a")
   userA.setUserId(1)
@@ -48,7 +50,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       val timesheetEntryValid = TimesheetEntryObjectMother.createTimesheetEntry(userB, currentDate.toDate, 34)
       when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryInvalid, timesheetEntryValid))
 
-      val foundUsers = subject.findUsersWithoutSufficientHours(32)
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
 
       foundUsers should have size 1
       foundUsers should contain(userA)
@@ -66,7 +68,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       val timesheetEntryValidD = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 10)
       when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryValidA, timesheetEntryValidB, timesheetEntryValidC, timesheetEntryValidD))
 
-      val foundUsers = subject.findUsersWithoutSufficientHours(32)
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
 
       foundUsers should be ('empty)
     }
@@ -80,7 +82,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       val timesheetEntryInvalid = TimesheetEntryObjectMother.createTimesheetEntry(userA, currentDate.toDate, 34)
       when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryInvalid))
 
-      val foundUsers = subject.findUsersWithoutSufficientHours(32)
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
 
       foundUsers should have size 1
       foundUsers should contain (userB)
@@ -98,14 +100,18 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       val timesheetEntryInvalid = TimesheetEntryObjectMother.createTimesheetEntry(userC, currentDate.toDate, 30)
       when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryInvalid))
 
-      val foundUsers = subject.findUsersWithoutSufficientHours(32)
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
 
       foundUsers should have size 1
       foundUsers should contain (userA)
     }
 
     "ignore user that doesn't have project assignments covering the whole range" in {
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List())
+      val assignmentA2 = ProjectAssignmentObjectMother.createProjectAssignment(userA, project)
+      assignmentA2.setDateStart(currentDate.minusDays(2).toDate)
+      assignmentA2.setDateEnd(currentDate.plusDays(1).toDate)
+
+      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA2))
       when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userB.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
 
       when(userService.getUsers(UserRole.USER)).thenReturn(List(userA, userB))
@@ -114,7 +120,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       val timesheetEntryValid = TimesheetEntryObjectMother.createTimesheetEntry(userB, currentDate.toDate, 31)
       when(timesheetDao.getTimesheetEntriesInRange(any())).thenReturn(List(timesheetEntryInvalid, timesheetEntryValid))
 
-      val foundUsers = subject.findUsersWithoutSufficientHours(32)
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
 
       foundUsers should have size 1
       foundUsers should contain(userB)
