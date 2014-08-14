@@ -134,7 +134,11 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
     activeUsers.filter(u => {
       val assignments = projectAssignmentService.getProjectAssignmentsForUser(u.getUserId, new DateRange(reminderStartDate.toDate, reminderEndDate.toDate))
 
-      val assignmentDates = assignments.toList.map(a => (new LocalDate(a.getDateStart), new LocalDate(a.getDateEnd)))
+      val assignmentDates = assignments.toList.map(a => {
+        val s = if (a.getDateStart == null) reminderStartDate else new LocalDate(a.getDateStart)
+        val e = if (a.getDateEnd == null) reminderEndDate else new LocalDate(a.getDateEnd)
+        (s,e)
+      })
       coversReminderDays(assignmentDates)
     })
   }

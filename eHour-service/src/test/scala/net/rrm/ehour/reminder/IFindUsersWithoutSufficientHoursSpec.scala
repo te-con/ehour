@@ -133,6 +133,25 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       foundUsers should contain(userB)
     }
 
+    "find a user that has project assignments with infinite start/end date" in {
+      val assignmentA2 = ProjectAssignmentObjectMother.createProjectAssignment(userA, project)
+      assignmentA2.setDateStart(null)
+      assignmentA2.setDateEnd(null)
+
+      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA2))
+
+      `user A is active`
+      `no locked days are in the range`
+
+      val timesheetEntryInsufficient = `create a timesheet entry for user`(userA, 30)
+      `with timesheet entries`(timesheetEntryInsufficient)
+
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
+
+      foundUsers should have size 1
+      foundUsers should contain(userA)
+    }
+
     "from the required minimum hours, subtract 8 hours per work day that is locked" in {
       def findWorkDay(date: LocalDate): LocalDate = if (JodaDateUtil.isWeekend(date)) findWorkDay(date.minusDays(1)) else date
 
@@ -201,6 +220,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
   }
 
   def `user B has assignment B` {
+
     `user C has assignment B`(userB)
   }
 
