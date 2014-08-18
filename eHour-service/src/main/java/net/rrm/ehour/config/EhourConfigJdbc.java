@@ -50,6 +50,8 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     public EhourConfigJdbc(DataSource datasource) {
         super(datasource, "CONFIGURATION", "config_key", "config_value");
 
+        setDelimiterParsingDisabled(true);
+
         LOG.info("Configuration loaded from database: " + toString());
     }
 
