@@ -319,14 +319,14 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     public void stopImpersonating() {
-        User impUser = impersonatingAuthUser.get().getUser();
+        if (impersonatingAuthUser.isPresent()) {
+            User impUser = impersonatingAuthUser.get().getUser();
 
-        impersonatingAuthUser = Optional.absent();
+            User originalUser = getUser();
+            logAndAuditStopImpersonation(originalUser, impUser);
 
-        User originalUser = getUser();
-        logAndAuditStopImpersonation(originalUser, impUser);
-
-        impersonatingAuthUser = Optional.absent();
+            impersonatingAuthUser = Optional.absent();
+        }
 
         clearUserSelectedReportCriteria();
     }

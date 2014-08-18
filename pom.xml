@@ -63,8 +63,8 @@
         <jetty.version>8.1.14.v20131031</jetty.version>
         <derbydb.version>10.10.2.0</derbydb.version>
         <aspectj.version>1.6.12</aspectj.version>
-        <gmaven.version>1.4</gmaven.version>
-        <groovy.version>1.7.2</groovy.version>
+        <gmaven.version>1.5</gmaven.version>
+        <groovy.version>1.8.8</groovy.version>
         <slf4j.version>1.6.4</slf4j.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
@@ -736,14 +736,14 @@
                                 <goal>testCompile</goal>
                             </goals>
                             <configuration>
-                                <providerSelection>1.7</providerSelection>
+                                <providerSelection>1.8</providerSelection>
                             </configuration>
                         </execution>
                     </executions>
                     <dependencies>
                         <dependency>
                             <groupId>org.codehaus.gmaven.runtime</groupId>
-                            <artifactId>gmaven-runtime-1.7</artifactId>
+                            <artifactId>gmaven-runtime-1.8</artifactId>
                             <version>${gmaven.version}</version>
                         </dependency>
                         <dependency>
@@ -826,8 +826,34 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
 
+        <profile>
+            <id>clover</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.atlassian.maven.plugins</groupId>
+                        <artifactId>maven-clover2-plugin</artifactId>
+                        <version>4.0.0</version>
+                        <configuration>
+                            <snapshot>${user.home}/.clover/${project.groupId}-${project.artifactId}/clover.snapshot</snapshot>
+                            <singleCloverDatabase>true</singleCloverDatabase>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>clover</id>
+                                <goals>
+                                    <goal>setup</goal>
+                                    <goal>optimize</goal>
+                                    <goal>snapshot</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <repositories>
         <repository>
             <id>eHour</id>
@@ -844,8 +870,8 @@
             </snapshots>
         </repository>
     </repositories>
-
-    <distributionManagement>
+    
+	<distributionManagement>
         <repository>
             <id>releases</id>
             <url>http://nexus.te-con.nl/content/repositories/releases</url>
