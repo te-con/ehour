@@ -60,6 +60,8 @@ class ReminderConfigPanel(id: String, model: IModel[MainConfigBackingBean]) exte
     reminderBodyContainer.add(new AjaxFormComponentFeedbackIndicator("bodyValidationError", reminderBody))
     reminderBody.setLabel(new ResourceModel("admin.config.reminder.body"))
     reminderBody.add(new UpdateBehavior)
+    reminderBody.setEscapeModelStrings(false)
+
     reminderBodyContainer.add(reminderBody)
 
     val reminderSubjectContainer = new ReminderContainer("reminderSubjectContainer")

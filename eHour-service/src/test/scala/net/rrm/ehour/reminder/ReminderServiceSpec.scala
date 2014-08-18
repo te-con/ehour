@@ -39,5 +39,17 @@ class ReminderServiceSpec extends AbstractSpec {
       emailCaptor.getValue should equal(user.getEmail)
       mailEventCaptor.getValue should startWith("1:Reminder for ")
     }
+
+    "replace $name with the user full name" in {
+      val user = UserObjectMother.createUser
+      user.setFirstName("a")
+      user.setLastName("b")
+
+      config.setReminderBody("hello $name")
+
+      val body = subject.enrichMailBody(user)
+
+      body should be("hello a b")
+    }
   }  
 }

@@ -67,7 +67,14 @@ INSERT INTO CONFIGURATION
 VALUES ('initialized', 'false'), ('completeDayHours', '8'), ('showTurnOver', 'true'), ('localeLanguage', 'en'),
   ('currency', 'en-US'), ('localeCountry', 'en-US'), ('availableTranslations', 'en,nl,fr,it'),
   ('mailFrom', 'noreply@localhost.net'), ('smtpPort', '25'), ('mailSmtp', '127.0.0.1'), ('demoMode', 'false'),
-  ('version', '1.3.1');
+  ('version', '1.4');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderEnabled', 'false');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderBody', 'Hello $name,\r\n\r\nThis is an automated message.\r\n\r\nOur records show that you have not posted your weekly hours online. Please be sure to post your hours by 5:30PM Friday.\r\n\r\nThank You,\r\n\r\neHour');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderTime', '0 30 17 * * FRI');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderSubject', 'Missing hours');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderMinimalHours', '32');
+
+
 /*!40000 ALTER TABLE CONFIGURATION ENABLE KEYS */;
 UNLOCK TABLES;
 

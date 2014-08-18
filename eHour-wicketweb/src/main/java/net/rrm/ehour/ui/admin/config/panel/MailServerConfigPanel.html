@@ -62,14 +62,8 @@
 			</tr>
 
             <tr>
-                <td colspan="2" class="help" style="padding-bottom: 0">
-                    <br />
-                    <wicket:message key="admin.config.testMailHelp"/>
-                </td>
-            </tr>
-
-            <tr>
 				<td>
+                    <br />
 					<a class="bluebutton" onclick="this.blur();" wicket:id="testMail">
 					<span><wicket:message key="admin.config.testSmtp" /></span></a>
 				</td>
@@ -78,6 +72,12 @@
 
                 </td>
 			</tr>
+
+            <tr>
+                <td colspan="2" class="help">
+                    <wicket:message key="admin.config.testMailHelp"/>
+                </td>
+            </tr>
 
             </form>
 		</wicket:panel>

@@ -24,8 +24,8 @@ import scala.collection.mutable
 
 @Service
 class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWithoutSufficientHours, mailMan: MailMan, mailLogDao: MailLogDao) {
-  final val LOGGER = Logger.getLogger(classOf[ReminderService])
-  final val Formatter = DateTimeFormat.forPattern("yyyyMMdd")
+  private final val LOGGER = Logger.getLogger(classOf[ReminderService])
+  private final val Formatter = DateTimeFormat.forPattern("yyyyMMdd")
 
   @Transactional
   def sendReminderMail() {
@@ -64,12 +64,24 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
         } else if (hasMailBeenSent(user.getEmail, mailEvent)) {
           LOGGER.info(s"Mail to ${user.getFullName} (${user.getEmail}) about $mailEvent was already sent.")
         } else {
-          val mail = Mail(user, config.getReminderCC, config.getReminderSubject, config.getReminderBody)
+          val body = enrichMailBody(user)
+
+          val mail = Mail(user, config.getReminderCC, config.getReminderSubject, body)
 
           mailMan.deliver(mail = mail, postDeliverCallBack = callback)
         }
       }
     }
+  }
+
+  private[reminder] def enrichMailBody(user: User): String = {
+    val fullName = user.getFirstName + " " + user.getLastName
+    val template = config.getReminderBody
+
+    if (StringUtils.isNotBlank(template))
+      template.replace("$name", fullName)
+    else
+      template
   }
 }
 
