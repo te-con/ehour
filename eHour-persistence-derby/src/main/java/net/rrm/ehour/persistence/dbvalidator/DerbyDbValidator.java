@@ -31,7 +31,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -41,206 +40,180 @@ import java.sql.Statement;
 
 /**
  * Derby database accessor methods
- **/
-public class DerbyDbValidator
-{
-	private static final String DDL_FILE = "ddl/ddl-ehour-%s.xml";
-	private static final String DML_FILE = "ddl/dml-ehour-%s.xml";
+ */
+public class DerbyDbValidator {
+    private static final String DDL_FILE = "ddl/ddl-ehour-%s.xml";
+    private static final String DML_FILE = "ddl/dml-ehour-%s.xml";
+    private static final String DML_DIFF_FILE = "ddl/dml-ehour-%s-diff.xml";
 
-	enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE}
+    enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE}
 
-	private static final Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
+    private static final Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
 
-	private EmbeddedDataSource dataSource;
-	private String requiredDbVersion;
-
-
-	public DerbyDbValidator(String requiredDbVersion, DataSource dataSource)
-	{
-		this.requiredDbVersion = requiredDbVersion;
-		this.dataSource = (EmbeddedDataSource)dataSource;
-	}
-
-	public DdlType checkDatabaseState()
-	{
-		boolean databaseInState;
-		String 	currentVersion;
-		DdlType ddlType;
-
-		LOGGER.info("Verifying datamodel version. Minimum version: " + requiredDbVersion);
-
-		Connection connection = null;
-
-		try
-		{
-			dataSource.setCreateDatabase("create");
-
-			connection = dataSource.getConnection();
-
-			currentVersion = getCurrentVersion(connection);
-
-			databaseInState = (currentVersion != null) && currentVersion.equalsIgnoreCase(requiredDbVersion);
-
-			if (databaseInState)
-			{
-				ddlType = DdlType.NONE;
-				LOGGER.info("Datamodel is the required version.");
-			}
-			else
-			{
-				LOGGER.info("Datamodel of version " + currentVersion + " found. Upgrading to " + requiredDbVersion);
-
-				ddlType = DdlType.ALTER_TABLE;
-			}
+    private EmbeddedDataSource dataSource;
+    private String requiredDbVersion;
 
 
-		} catch (SQLException e)
-		{
-			ddlType = DdlType.CREATE_TABLE;
-			LOGGER.info("Could not determine datamodel's version, recreating..");
-		}
-		finally
-		{
-			dataSource.setCreateDatabase("");
+    public DerbyDbValidator(String requiredDbVersion, DataSource dataSource) {
+        this.requiredDbVersion = requiredDbVersion;
+        this.dataSource = (EmbeddedDataSource) dataSource;
+    }
 
-			try
-			{
-				if (connection != null)
-				{
-					connection.close();
-				}
-			} catch (SQLException e)
-			{
-				LOGGER.error("Failed to close connection", e);
-			}
-		}
+    public DdlType checkDatabaseState() {
+        boolean databaseInState;
+        String currentVersion;
+        DdlType ddlType;
 
-		if (ddlType != DdlType.NONE)
-		{
-			try
-			{
-				createOrAlterDatamodel(dataSource, ddlType);
-			} catch (Exception e)
-			{
-				LOGGER.error("Failed to create or upgrade datamodel", e);
-			}
-		}
+        LOGGER.info("Verifying datamodel version. Minimum version: " + requiredDbVersion);
+
+        Connection connection = null;
+
+        try {
+            dataSource.setCreateDatabase("create");
+
+            connection = dataSource.getConnection();
+
+            currentVersion = getCurrentVersion(connection);
+
+            databaseInState = (currentVersion != null) && currentVersion.equalsIgnoreCase(requiredDbVersion);
+
+            if (databaseInState) {
+                ddlType = DdlType.NONE;
+                LOGGER.info("Datamodel is the required version.");
+            } else {
+                LOGGER.info("Datamodel of version " + currentVersion + " found. Upgrading to " + requiredDbVersion);
+
+                ddlType = DdlType.ALTER_TABLE;
+            }
+
+
+        } catch (SQLException e) {
+            ddlType = DdlType.CREATE_TABLE;
+            LOGGER.info("Could not determine datamodel's version, recreating..");
+        } finally {
+            dataSource.setCreateDatabase("");
+
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Failed to close connection", e);
+            }
+        }
+
+        if (ddlType != DdlType.NONE) {
+            try {
+                createOrAlterDatamodel(dataSource, ddlType);
+            } catch (Exception e) {
+                LOGGER.error("Failed to create or upgrade datamodel", e);
+            }
+        }
 
         return ddlType;
-	}
+    }
 
-	/**
-	 * Create datamodel and fill with initial data
-	 * @throws IOException
-	 * @throws DdlUtilsException
-	 */
-	private void createOrAlterDatamodel(DataSource dataSource, DdlType ddlType) throws DdlUtilsException, IOException
-	{
-		Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
+    /**
+     * Create datamodel and fill with initial data
+     */
+    private void createOrAlterDatamodel(DataSource dataSource, DdlType ddlType) throws DdlUtilsException, IOException {
+        Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
 
-		Resource resource = new ClassPathResource(getDdlFilename());
+        Resource resource = new ClassPathResource(getDdlFilename());
 
-		DatabaseIO reader = new DatabaseIO();
-		reader.setValidateXml(false);
-		reader.setUseInternalDtd(true);
+        DatabaseIO reader = new DatabaseIO();
+        reader.setValidateXml(false);
+        reader.setUseInternalDtd(true);
 
-		Database ddlModel = reader.read(new InputStreamReader(resource.getInputStream()));
+        Database ddlModel = reader.read(new InputStreamReader(resource.getInputStream()));
 
-		if (ddlType == DdlType.CREATE_TABLE)
-		{
-			platform.createTables(ddlModel, false, false);
-			insertData(platform, ddlModel);
-		}
-		else
-		{
-			platform.alterTables(ddlModel, false);
-			updateVersion(ddlModel, platform);
-		}
-	}
+        if (ddlType == DdlType.CREATE_TABLE) {
+            platform.createTables(ddlModel, false, false);
+            insertInitialData(platform, ddlModel);
+        } else {
+            platform.alterTables(ddlModel, false);
+            insertDiffData(platform, ddlModel);
+            updateVersion(platform, ddlModel);
+        }
+    }
 
-	/**
-	 * Insert data
-	 *
-     * @param platform
-     * @param model
-     * @throws IOException
-	 * @throws FileNotFoundException
-	 * @throws DdlUtilsException
-	 */
-	private void insertData(Platform platform, Database model) throws DdlUtilsException, IOException
-	{
-		DatabaseDataIO	dataIO = new DatabaseDataIO();
+    /**
+     * Insert data
+     */
+    private void insertInitialData(Platform platform, Database model) throws DdlUtilsException, IOException {
+        insertData(platform, model, getDmlFilename());
+        LOGGER.info("Data inserted");
+    }
 
-		DataReader dataReader = dataIO.getConfiguredDataReader(platform, model);
+
+    /**
+     * Insert diff data (for existing db's)
+     */
+    private void insertDiffData(Platform platform, Database model) throws DdlUtilsException, IOException {
+        insertData(platform, model, getDmlDiffFilename());
+        LOGGER.info("Data updated");
+    }
+
+    private void insertData(Platform platform, Database model, String filename) throws IOException {
+        DatabaseDataIO dataIO = new DatabaseDataIO();
+
+        DataReader dataReader = dataIO.getConfiguredDataReader(platform, model);
 
         dataReader.getSink().start();
 
-        Resource resource = new ClassPathResource(getDmlFilename());
+        Resource resource = new ClassPathResource(filename);
 
         dataIO.writeDataToDatabase(dataReader, new InputStreamReader(resource.getInputStream()));
+    }
 
-        LOGGER.info("Data inserted");
-	}
-
-	/**
-	 * Get current version of database state
-	 * @param connection
-	 * @return
-	 * @throws SQLException
-	 */
-	private String getCurrentVersion(Connection connection) throws SQLException
-	{
-		String version = null;
-		Statement stmt = null;
-		ResultSet results = null;
-
-		try
-		{
-			stmt = connection.createStatement();
-			results = stmt.executeQuery("SELECT config_value FROM CONFIGURATION WHERE config_key = '"+ ConfigurationItem.VERSION.getDbField() + "'");
-
-			if (results.next())
-			{
-				version = results.getString("config_value");
-			}
-		}
-		finally
-		{
-			if (results != null) {
-				results.close();
-			}
-
-			if (stmt != null) {
-				stmt.close();
-			}
-		}
-
-		return version;
-	}
-
-	/**
-	 *
-     * @param database
-     * @param platform
+    /**
+     * Get current version of database state
      */
-	private void updateVersion(Database database, Platform platform)
-	{
-		DynaBean configuration = database.createDynaBeanFor("CONFIGURATION", false);
-		configuration.set("config_key", "version");
-		platform.delete(database, configuration);
+    private String getCurrentVersion(Connection connection) throws SQLException {
+        String version = null;
+        Statement stmt = null;
+        ResultSet results = null;
 
-		configuration.set("config_value", requiredDbVersion);
+        try {
+            stmt = connection.createStatement();
+            results = stmt.executeQuery("SELECT config_value FROM CONFIGURATION WHERE config_key = '" + ConfigurationItem.VERSION.getDbField() + "'");
 
-		platform.insert(database, configuration);
-	}
+            if (results.next()) {
+                version = results.getString("config_value");
+            }
+        } finally {
+            if (results != null) {
+                results.close();
+            }
 
-	private String getDdlFilename()
-	{
-		return String.format(DDL_FILE, requiredDbVersion);
-	}
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
 
-	private String getDmlFilename()
-	{
-		return String.format(DML_FILE, requiredDbVersion);
-	}
+        return version;
+    }
+
+    private void updateVersion(Platform platform, Database database) {
+        DynaBean configuration = database.createDynaBeanFor("CONFIGURATION", false);
+        configuration.set("config_key", "version");
+        platform.delete(database, configuration);
+
+        configuration.set("config_value", requiredDbVersion);
+
+        platform.insert(database, configuration);
+    }
+
+    private String getDdlFilename() {
+        return String.format(DDL_FILE, requiredDbVersion);
+    }
+
+    private String getDmlFilename() {
+        return String.format(DML_FILE, requiredDbVersion);
+    }
+
+    private String getDmlDiffFilename() {
+        return String.format(DML_DIFF_FILE, requiredDbVersion);
+    }
+
 }

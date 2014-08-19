@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <user_role ROLE="ROLE_MANAGER" NAME="Manager"></user_role>
+
+    <configuration config_key="reminderEnabled" config_value="false"></configuration>
+    <configuration config_key="reminderBody" config_value="Hello $name,
+    This is an automated message.
+
+    Our records show that you have not posted your weekly hours online.
+
+    Please be sure to post your hours by 5:30PM Friday.
+
+    Thank You,
+
+    eHour"></configuration>
+    <configuration config_key="reminderTime" config_value="0 30 17 * * FRI"></configuration>
+    <configuration config_key="reminderSubject" config_value="Missing hours"></configuration>
+    <configuration config_key="reminderMinimalHours" config_value="32"></configuration>
+</data>
