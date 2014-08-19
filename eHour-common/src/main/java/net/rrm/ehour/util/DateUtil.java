@@ -18,10 +18,7 @@ package net.rrm.ehour.util;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.Interval;
-import org.joda.time.LocalDate;
+import org.joda.time.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -315,9 +312,7 @@ public class DateUtil {
      * @return
      */
     public static Calendar getCalendar(EhourConfig config) {
-        Calendar calendar;
-
-        calendar = new GregorianCalendar(config.getTzAsTimeZone());
+        Calendar calendar = new GregorianCalendar(DateTimeZone.getDefault().toTimeZone());
         calendar.setFirstDayOfWeek(config.getFirstDayOfWeek());
         return calendar;
     }
