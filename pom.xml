@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.rrm.ehour</groupId>
-    <version>1.4.1</version>
+    <version>1.4.2-SNAPSHOT</version>
     <artifactId>eHour</artifactId>
     <packaging>pom</packaging>
     <name>eHour</name>
@@ -29,7 +29,7 @@
         <url>http://github.com/tedeling/ehour.git</url>
         <connection>scm:git:ssh://git@github.com/tedeling/ehour.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/tedeling/ehour.git</developerConnection>
-        <tag>eHour-1.4.1</tag>
+        <tag>eHour-1.5-SNAPSHOT</tag>
     </scm>
     <issueManagement>
         <system>eHour bugtracker</system>
