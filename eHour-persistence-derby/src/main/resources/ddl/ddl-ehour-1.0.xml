@@ -324,4 +324,28 @@
 		</index>
 	</table>
 
+	<table name="activities">
+		<column name="ACTIVITY_ID" primaryKey="true" required="true"
+			type="INTEGER" size="10" autoIncrement="true" />
+		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
+			size="255" autoIncrement="false" />
+		<column name="DATE_START" primaryKey="false" required="false"
+			type="DATE" autoIncrement="false" />
+		<column name="DATE_END" primaryKey="false" required="false"
+			type="DATE" autoIncrement="false" />
+		<column name="ALLOTTED_HOURS" primaryKey="false" required="false"
+			type="FLOAT" size="9,3" autoIncrement="false" />			
+		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
+			size="1" default="Y" autoIncrement="false" />
+		<column name="PROJECT_ID" primaryKey="false" required="false"
+			type="INTEGER" size="10" autoIncrement="false" />
+		<column name="USER_ID" primaryKey="false" required="false"
+			type="INTEGER" size="10" autoIncrement="false" />						
+		<foreign-key foreignTable="project" name="ACTIVITY_fk1">
+			<reference local="PROJECT_ID" foreign="PROJECT_ID" />
+		</foreign-key>
+		<foreign-key foreignTable="users" name="ACTIVITY_fk2">
+			<reference local="USER_ID" foreign="USER_ID" />
+		</foreign-key>
+	</table>
 </database>

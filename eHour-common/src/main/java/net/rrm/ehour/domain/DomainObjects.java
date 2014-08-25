@@ -11,6 +11,7 @@ public class DomainObjects
                                                             Customer.class, Project.class, ProjectAssignment.class, ProjectAssignmentType.class,
                                                             MailLog.class,
                                                             TimesheetEntry.class, TimesheetComment.class,
-                                                            TimesheetLock.class
+                                                            TimesheetLock.class,
+                                                            Activity.class
     };
 }

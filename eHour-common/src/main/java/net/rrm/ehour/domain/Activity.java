@@ -5,130 +5,143 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "ACTIVITY")
+@Table(name = "ACTIVITIES")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Activity extends DomainObject<Integer, Activity> {
 
- private static final long serialVersionUID = -6070312413971626368L;
+	private static final long serialVersionUID = -6070312413971626368L;
 
- @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ACTIVITY_ID")
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ACTIVITY_ID")
+	private Integer id;
 
-    @Column(name = "NAME", length = 255)
-    @NotNull
- private String name;
+	@Column(name = "NAME")
+	@NotNull
+	private String name;
 
- @Column(name = "DATE_START")
- @NotNull
- private Date dateStart;
+	@Column(name = "DATE_START")
+	private Date dateStart;
 
- @Column(name = "DATE_END")
- @NotNull
- private Date dateEnd;
+	@Column(name = "DATE_END")
+	private Date dateEnd;
 
- @Column(name = "ALLOTTED_HOURS")
- @NotNull
- private Float allottedHours;
+	@Column(name = "ALLOTTED_HOURS")
+	private Float allottedHours;
 
- @ManyToOne
-    @JoinColumn(name = "USER_ID")
- private User assignedUser;
- 
- @ManyToOne
- @JoinColumn(name = "PROJECT_ID")
- private Project project;
- 
- public Integer getId() {
-  return id;
- }
+	@ManyToOne
+	@JoinColumn(name = "USER_ID")
+	private User assignedUser;
 
- public void setId(Integer id) {
-  this.id = id;
- }
+	@ManyToOne
+	@JoinColumn(name = "PROJECT_ID")
+	private Project project;
 
- public String getName() {
-  return name;
- }
+	@Column(name = "ACTIVE")
+	@Type(type = "yes_no")
+	private Boolean active = Boolean.TRUE;
+	
+	public Integer getId() {
+		return id;
+	}
 
- public void setName(String name) {
-  this.name = name;
- }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
- public Date getDateStart() {
-  return dateStart;
- }
+	public String getName() {
+		return name;
+	}
 
- public void setDateStart(Date dateStart) {
-  this.dateStart = dateStart;
- }
+	public void setName(String name) {
+		this.name = name;
+	}
 
- public Date getDateEnd() {
-  return dateEnd;
- }
+	public Date getDateStart() {
+		return dateStart;
+	}
 
- public void setDateEnd(Date dateEnd) {
-  this.dateEnd = dateEnd;
- }
+	public void setDateStart(Date dateStart) {
+		this.dateStart = dateStart;
+	}
 
- public Float getAllottedHours() {
-  return allottedHours;
- }
+	public Date getDateEnd() {
+		return dateEnd;
+	}
 
- public void setAllottedHours(Float allottedHours) {
-  this.allottedHours = allottedHours;
- }
+	public void setDateEnd(Date dateEnd) {
+		this.dateEnd = dateEnd;
+	}
 
- public User getAssignedUser() {
-  return assignedUser;
- }
+	public Float getAllottedHours() {
+		return allottedHours;
+	}
 
- public void setAssignedUser(User assignedUser) {
-  this.assignedUser = assignedUser;
- }
+	public void setAllottedHours(Float allottedHours) {
+		this.allottedHours = allottedHours;
+	}
 
- public Project getProject() {
-  return project;
- }
+	public User getAssignedUser() {
+		return assignedUser;
+	}
 
- public void setProject(Project project) {
-  this.project = project;
- }
+	public void setAssignedUser(User assignedUser) {
+		this.assignedUser = assignedUser;
+	}
 
- @Override
- public boolean equals(Object obj) {
-  if (obj == null) {
-   return false;
-  }
-  if (obj == this) {
-   return true;
-  }
-  if (obj.getClass() != getClass()) {
-   return false;
-  }
-  Activity other = (Activity) obj;
-  return new EqualsBuilder().append(this.getId(), other.getId()).isEquals();
- }
+	public Project getProject() {
+		return project;
+	}
 
- @Override
- public Integer getPK() {
-  return id;
- }
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
- @Override
- public int hashCode() {
-  return new HashCodeBuilder().append(name).append(dateStart).append(dateEnd).append(allottedHours).toHashCode();
- }
+	public Boolean getActive() {
+		return active;
+	}
 
- @Override
- public int compareTo(Activity activity) {
-  return new CompareToBuilder().append(this.getId(), activity.getId()).toComparison();
- }
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Activity other = (Activity) obj;
+		return new EqualsBuilder().append(this.getId(), other.getId())
+				.isEquals();
+	}
+
+	@Override
+	public Integer getPK() {
+		return id;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(name).append(dateStart).append(
+				dateEnd).append(allottedHours).append(active).toHashCode();
+	}
+
+	@Override
+	public int compareTo(Activity activity) {
+		return new CompareToBuilder().append(this.getId(), activity.getId())
+				.toComparison();
+	}
 }
