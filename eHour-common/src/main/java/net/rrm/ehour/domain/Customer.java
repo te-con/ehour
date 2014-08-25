@@ -26,7 +26,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -58,6 +60,10 @@ public class Customer extends DomainObject<Integer, Customer> {
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "customer")
     private Set<Project> projects;
 
+	@ManyToMany(targetEntity = User.class, cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+	private List<User> reviewers;
+	
     @Transient
     private boolean deletable;
 
@@ -144,6 +150,13 @@ public class Customer extends DomainObject<Integer, Customer> {
         this.name = name;
         return this;
     }
+	public List<User> getReviewers() {
+		return reviewers;
+	}
+
+	public void setReviewers(List<User> reviewers) {
+		this.reviewers = reviewers;
+	}
 
     public String getDescription() {
         return this.description;
@@ -193,6 +206,23 @@ public class Customer extends DomainObject<Integer, Customer> {
     public boolean isActive() {
         return active;
     }
+    
+	public void addReviewer(User reviewer) {
+		if (this.reviewers == null)
+		{
+			this.reviewers = new ArrayList<User>();
+		}
+		reviewers.add(reviewer);
+	}
+	
+	@Override
+	public boolean equals(final Object other)
+	{
+		if (!(other instanceof Customer))
+			return false;
+		Customer castOther = (Customer) other;
+		return new EqualsBuilder().append(code, castOther.code).append(name, castOther.name).append(description, castOther.description).append(active, castOther.active).isEquals();
+	}
 
     /**
      * @param active the active to set
@@ -248,14 +278,6 @@ public class Customer extends DomainObject<Integer, Customer> {
         projects.add(project);
 
         project.setCustomer(this);
-    }
-
-    @Override
-    public boolean equals(final Object other) {
-        if (!(other instanceof Customer))
-            return false;
-        Customer castOther = (Customer) other;
-        return new EqualsBuilder().append(code, castOther.code).append(name, castOther.name).append(description, castOther.description).append(active, castOther.active).isEquals();
     }
 
     @Override
