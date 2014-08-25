@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
+import net.rrm.ehour.ui.admin.activity.page.ActivityAdmin;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.ui.admin.audit.AuditReportPage;
 import net.rrm.ehour.ui.admin.backup.BackupDbPage;
@@ -168,6 +169,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/admin/customer", CustomerManagePage.class);
         mountPage("/admin/project", ProjectManagePage.class);
         mountPage("/admin/assignment", AssignmentManagePage.class);
+        mountPage("/admin/activity", ActivityAdmin.class);
 
         mountPage("/consultant/overview", MonthOverviewPage.class);
 

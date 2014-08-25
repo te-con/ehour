@@ -96,4 +96,17 @@ public class ActivityServiceTest {
 		
 		verify(activityDao);
 	}
+	
+	@Test
+	public void shouldGetAllActivities() {
+		expect(activityDao.findAll()).andReturn(new ArrayList<Activity>());
+		
+		replay(activityDao);
+		
+		List<Activity> allActivities = activityService.getActivities();
+		
+		Assert.assertNotNull(allActivities);
+		
+		verify(activityDao);
+	}
 }

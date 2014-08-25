@@ -15,7 +15,7 @@ public class ActivityServiceImpl implements ActivityService {
 
 	@Autowired
 	private ActivityDao activityDao;
-	
+
 	@Override
 	public Activity persistActivity(Activity activity) {
 		return activityDao.persist(activity);
@@ -37,4 +37,10 @@ public class ActivityServiceImpl implements ActivityService {
 	public List<Activity> getAllActivitiesForUser(User assignedUser) {
 		return activityDao.findAllActivitiesOfUser(assignedUser);
 	}
+
+	@Override
+	public List<Activity> getActivities() {
+		return activityDao.findAll();
+	}
+
 }

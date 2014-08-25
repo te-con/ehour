@@ -38,4 +38,11 @@ public interface ActivityService {
 	 * @return
 	 */
 	List<Activity> getAllActivitiesForProject(Project project);
+
+	/**
+	 * Returns all Active/Inactive {@link Activity}s
+	 * @return
+	 */
+	List<Activity> getActivities();
+
 }
