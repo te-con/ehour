@@ -2,7 +2,6 @@ package net.rrm.ehour.persistence.activity.dao;
 
 import java.util.List;
 
-import junit.framework.Assert;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -12,13 +11,12 @@ import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Tests for {@link ActivityDaoHibernateImpl}.
- * 
- */
+import static org.junit.Assert.assertNotNull;
+
 public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
 	@Autowired
@@ -56,10 +54,10 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		activity.setName(activityName);
 		activity.setActive(Boolean.TRUE);
 		activityDao.persist(activity);
-		Assert.assertNotNull(activity.getId());
+		assertNotNull(activity.getId());
 		Assert.assertEquals(1, activityDao.findAll().size());
 		
-		activityDao.delete(activity.getPK());
+		activityDao.delete(activity);
 		Assert.assertEquals(0, activityDao.findAll().size());
 	}
 	

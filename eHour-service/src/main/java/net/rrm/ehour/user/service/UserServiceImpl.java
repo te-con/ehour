@@ -390,4 +390,16 @@ public class UserServiceImpl implements UserService {
 		}
 		return user;		
 	}
+
+    private User getUserAndAddRole(Integer userId, UserRole newRole) throws ObjectNotUniqueException {
+        User user = userDAO.findById(userId);
+
+        UserRole userRole = userRoleDAO.findById(newRole.getRole());
+
+        user.getUserRoles().add(userRole);
+
+        userDAO.persist(user);
+
+        return user;
+    }
 }

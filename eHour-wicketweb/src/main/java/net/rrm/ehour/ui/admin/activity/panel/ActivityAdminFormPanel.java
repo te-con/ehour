@@ -9,19 +9,22 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.admin.activity.dto.ActivityBackingBean;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
+import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 
+import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -35,7 +38,7 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 	public ActivityAdminFormPanel(String id, CompoundPropertyModel<ActivityBackingBean> activityModel, List<User> users,
 			List<Project> projects) {
 		super(id, activityModel);
-		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border");
+		GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
 		add(greyBorder);
 
 		setOutputMarkupId(true);
@@ -45,13 +48,8 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 		TextField<String> nameField = new TextField<String>("activity.name");
 		form.add(nameField);
 
-		TextField<Date> startDateField = new TextField<Date>("activity.dateStart");
-		startDateField.add(new DatePicker());
-		form.add(startDateField);
-
-		TextField<Date> endDateField = new TextField<Date>("activity.dateEnd");
-		endDateField.add(new DatePicker());
-		form.add(endDateField);
+        form.add(new LocalizedDatePicker("startDateField", new PropertyModel<Date>(activityModel, "activity.dateStart")));
+        form.add(new LocalizedDatePicker("endDateField", new PropertyModel<Date>(activityModel, "activity.dateEnd")));
 
 		TextField<Float> allottedHoursField = new TextField<Float>("activity.allottedHours");
 		form.add(allottedHoursField);
@@ -67,15 +65,23 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 		form.add(projectsDropDownList);
 		
 		form.add(new CheckBox("activity.active"));
-		
-		FormUtil.setSubmitActions(form, true, this, ActivityEditAjaxEventType.ACTIVITY_UPDATED, ActivityEditAjaxEventType.ACTIVITY_DELETED,
-				((EhourWebSession) getSession()).getEhourConfig());
+
+        final FormConfig formConfig = new FormConfig(form);
+        formConfig.withDeleteEventType(ActivityEditAjaxEventType.ACTIVITY_DELETED);
+        formConfig.withDelete(true);
+
+        formConfig.withSubmitEventType(ActivityEditAjaxEventType.ACTIVITY_UPDATED);
+        formConfig.withSubmitTarget(this);
+
+        FormUtil.setSubmitActions(formConfig);
+//        FormUtil.setSubmitActions(form, true, this, ActivityEditAjaxEventType.ACTIVITY_UPDATED, ActivityEditAjaxEventType.ACTIVITY_DELETED,
+//				((EhourWebSession) getSession()).getEhourConfig());
 
 		greyBorder.add(form);
 	}
 
 	@Override
-	protected void processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+	protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
 		ActivityBackingBean activityBackingBean = (ActivityBackingBean) backingBean;
 		if (type == ActivityEditAjaxEventType.ACTIVITY_UPDATED) {
 			persistActivity(activityBackingBean);
@@ -84,7 +90,8 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 			removeActivity(activityBackingBean);
 
 		}
-	}
+        return true;
+    }
 
 	private void removeActivity(ActivityBackingBean activityBackingBean) {
 		activityService.deleteActivity(activityBackingBean.getActivity().getId());

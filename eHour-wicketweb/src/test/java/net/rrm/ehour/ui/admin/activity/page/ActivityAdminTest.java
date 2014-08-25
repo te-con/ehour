@@ -1,24 +1,19 @@
 package net.rrm.ehour.ui.admin.activity.page;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-
 import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-
-import org.junit.Before;
 import org.junit.Test;
 
-public class ActivityAdminTest extends AbstractSpringWebAppTester {
+import java.util.ArrayList;
+
+import static org.easymock.EasyMock.*;
+
+public class ActivityAdminTest extends BaseSpringWebAppTester {
 
 	private ActivityService activityService;
 	
@@ -39,7 +34,7 @@ public class ActivityAdminTest extends AbstractSpringWebAppTester {
 		getMockContext().putBean("projectService", projectService);
 		
 		expect(activityService.getActivities()).andReturn(new ArrayList<Activity>());		
-		expect(projectService.getAllProjects(true)).andReturn(new ArrayList<Project>());
+		expect(projectService.getActiveProjects()).andReturn(new ArrayList<Project>());
 		expect(userService.getUsers()).andReturn(new ArrayList<User>());
 		
 		replay(activityService);

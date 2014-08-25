@@ -1,14 +1,11 @@
 package net.rrm.ehour.ui.admin.activity.page;
 
-import java.util.List;
-
 import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.ui.admin.AbstractTabbedAdminPage;
 import net.rrm.ehour.ui.admin.activity.dto.ActivityBackingBean;
 import net.rrm.ehour.ui.admin.activity.panel.ActivityAdminFormPanel;
 import net.rrm.ehour.ui.admin.activity.panel.ActivityEditAjaxEventType;
@@ -16,9 +13,8 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.common.util.WebGeo;
+import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.log4j.Logger;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,7 +28,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class ActivityAdmin extends AbstractTabbedAdminPage<ActivityBackingBean> {
+import java.util.List;
+
+public class ActivityAdmin extends AbstractTabbedManagePage<ActivityBackingBean> {
 
 	private final static Logger logger = Logger.getLogger(ActivityAdmin.class);
 
@@ -54,17 +52,17 @@ public class ActivityAdmin extends AbstractTabbedAdminPage<ActivityBackingBean> 
 	private EntrySelectorPanel selectorPanel;
 
 	public ActivityAdmin() {
-		super(new ResourceModel("admin.activity.title"), new ResourceModel("admin.activity.addActivity"), new ResourceModel(
-				"admin.activity.editActivity"), new ResourceModel("admin.activity.noEditActivitySelected"), "admin.activity.help.header",
-				"admin.activity.help.body");
+		super(new ResourceModel("admin.activity.title"),
+                new ResourceModel("admin.activity.addActivity"),
+                new ResourceModel("admin.activity.editActivity"),
+                new ResourceModel("admin.activity.noEditActivitySelected"));
 
 		List<Activity> activities;
 		activities = getActivities();
 
 		Fragment activityListHolder = getActivityListHolder(activities);
 
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.activity.title"),
-				WebGeo.W_ENTRY_SELECTOR);
+		GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.activity.title"));
 		add(greyBorder);
 
 		selectorPanel = new EntrySelectorPanel("activitySelector", activityListHolder);
@@ -137,14 +135,14 @@ public class ActivityAdmin extends AbstractTabbedAdminPage<ActivityBackingBean> 
 	}
 
 	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
 		AjaxEventType eventType = ajaxEvent.getEventType();
 
 		if (ActivityEditAjaxEventType.ACTIVITY_DELETED.equals(eventType) || ActivityEditAjaxEventType.ACTIVITY_UPDATED.equals(eventType)) {
 
 			activityListView.setList(activityService.getActivities());
 			
-			((EntrySelectorPanel) ((MarkupContainer) get("entrySelectorFrame")).get("activitySelector")).refreshList(ajaxEvent.getTarget());
+			((EntrySelectorPanel) get("entrySelectorFrame").get("activitySelector")).refreshList(ajaxEvent.getTarget());
 
 			getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
 		}
@@ -153,7 +151,7 @@ public class ActivityAdmin extends AbstractTabbedAdminPage<ActivityBackingBean> 
 
 	public List<Project> getProjects() {
 		if (projects == null) {
-			projects = projectService.getAllProjects(true);
+			projects = projectService.getActiveProjects();
 		}
 
 		return projects;
