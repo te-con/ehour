@@ -25,6 +25,7 @@
   <user_role ROLE="ROLE_CONSULTANT" NAME="Consultant"></user_role>
   <user_role ROLE="ROLE_PROJECTMANAGER" NAME="PM"></user_role>
   <user_role ROLE="ROLE_REPORT" NAME="Report role"></user_role>
+  <user_role ROLE="ROLE_CUSTOMERREVIEWER" NAME="Reviewer"></user_role>    
   <users USER_ID="1" USERNAME="admin" PASSWORD="admin" FIRST_NAME="eHour" LAST_NAME="Admin" DEPARTMENT_ID="1" ACTIVE="Y"></users>
   <user_to_userrole ROLE="ROLE_ADMIN" USER_ID="1"></user_to_userrole>
 </data>
