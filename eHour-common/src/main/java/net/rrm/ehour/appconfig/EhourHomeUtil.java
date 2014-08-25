@@ -19,6 +19,7 @@ public final class EhourHomeUtil
 
     /**
      * Get EHOUR_HOME property, either as a system property or an environment variable
+     * @return
      */
     public static String getEhourHome()
     {
@@ -32,31 +33,35 @@ public final class EhourHomeUtil
         return eHourHome;
     }
 
-    public static boolean isEhourHomeDefined() {
-        return StringUtils.isNotBlank(System.getProperty(EHOUR_HOME)) || StringUtils.isNotBlank(System.getenv(EHOUR_HOME));
-    }
-
     /**
      * Get the conf dir, relative to ehour home dir
+     * @param eHourHome
+     * @return
      */
     public static String getConfDir(String eHourHome)
     {
-        return String.format("%s/conf/", eHourHome);
-    }
+        String separator = System.getProperty("file.separator");
 
-    public static File getFileInConfDir(String filename) {
-        String configurationDir = getConfDir(getEhourHome());
+        StringBuffer buffer = new StringBuffer(eHourHome);
+        buffer.append(separator);
+        buffer.append("conf");
+        buffer.append(separator);
 
-        return new File(configurationDir, filename);
+        return buffer.toString();
     }
 
     /**
      * Get the ehour.properties location as a file
+     * @param eHourHome
+     * @return
      */
-    public static File getEhourPropertiesFile()
+    public static File getEhourPropertiesFile(String eHourHome)
     {
-        return getFileInConfDir(EHOUR_PROPERTIES_FILENAME);
+        String eHourPropsFilename = getConfDir(eHourHome) + EHOUR_PROPERTIES_FILENAME;
+        return new File(eHourPropsFilename);
     }
+
+
 
     /**
      * Get the dir with translations, relative to to ehour home
@@ -64,7 +69,7 @@ public final class EhourHomeUtil
     public static String getTranslationsDir(String eHourHome, String translationsDir)
     {
         String absoluteTranslationsPath = translationsDir.replace("%ehour.home%", (eHourHome != null) ? eHourHome : "");
-        return absoluteTranslationsPath  + "/";
+        return absoluteTranslationsPath  + System.getProperty("file.separator");
     }
 
     public static Properties loadDatabaseProperties(String databaseName)
@@ -81,14 +86,10 @@ public final class EhourHomeUtil
         }
     }
 
-    public static void setEhourHome(String homeDir) {
-        System.getProperties().put(EhourHomeUtil.EHOUR_HOME, homeDir);
-    }
-
     private static Properties loadProperties(String filename) throws IOException
     {
-        ClassPathResource resource = new ClassPathResource(filename);
+        ClassPathResource hibernatePropertiesResource = new ClassPathResource(filename);
 
-        return PropertiesLoaderUtils.loadProperties(resource);
+        return PropertiesLoaderUtils.loadProperties(hibernatePropertiesResource);
     }
 }
