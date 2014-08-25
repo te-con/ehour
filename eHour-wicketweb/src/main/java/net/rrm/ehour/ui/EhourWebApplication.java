@@ -170,7 +170,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/admin/project", ProjectManagePage.class);
         mountPage("/admin/assignment", AssignmentManagePage.class);
         mountPage("/admin/activity", ActivityAdmin.class);
-
         mountPage("/consultant/overview", MonthOverviewPage.class);
 
         mountPage("/consultant/exportmonth", TimesheetExportPage.class);
