@@ -1,8 +1,5 @@
 package net.rrm.ehour.ui.admin.activity.panel;
 
-import java.util.Date;
-import java.util.List;
-
 import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -14,19 +11,16 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import net.rrm.ehour.ui.common.util.WebGeo;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Date;
+import java.util.List;
 
 public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<ActivityBackingBean> {
 
@@ -48,8 +42,8 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 		TextField<String> nameField = new TextField<String>("activity.name");
 		form.add(nameField);
 
-        form.add(new LocalizedDatePicker("startDateField", new PropertyModel<Date>(activityModel, "activity.dateStart")));
-        form.add(new LocalizedDatePicker("endDateField", new PropertyModel<Date>(activityModel, "activity.dateEnd")));
+        form.add(new LocalizedDatePicker("activity.dateStart", new PropertyModel<Date>(activityModel, "activity.dateStart")));
+        form.add(new LocalizedDatePicker("activity.dateEnd", new PropertyModel<Date>(activityModel, "activity.dateEnd")));
 
 		TextField<Float> allottedHoursField = new TextField<Float>("activity.allottedHours");
 		form.add(allottedHoursField);
