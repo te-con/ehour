@@ -1,5 +1,7 @@
 package net.rrm.ehour.persistence.customer.dao;
 
+import java.util.List;
+
 import junit.framework.Assert;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;

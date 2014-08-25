@@ -19,9 +19,13 @@ package net.rrm.ehour.customer.service;
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.customer.dao.CustomerDao;
+import net.rrm.ehour.user.service.UserService;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -34,11 +38,15 @@ import java.util.List;
  * Customer service implementation
  */
 @Service("customerService")
-public class CustomerServiceImpl implements CustomerService {
-    @Autowired
-    private CustomerDao customerDAO;
-
-    private static final Logger LOGGER = Logger.getLogger(CustomerServiceImpl.class);
+public class CustomerServiceImpl implements CustomerService
+{
+	@Autowired
+	private	CustomerDao		customerDAO;
+	
+	@Autowired
+	private UserService     userService;
+	
+	private	static final Logger	LOGGER = Logger.getLogger(CustomerServiceImpl.class);
 
     public CustomerServiceImpl() {
     }
@@ -68,6 +76,8 @@ public class CustomerServiceImpl implements CustomerService {
             }
         }
     }
+    
+    
 
 
     @Transactional(readOnly = true)
@@ -103,6 +113,13 @@ public class CustomerServiceImpl implements CustomerService {
 
         try {
             customerDAO.persist(customer);
+
+            List<User> reviewers = customer.getReviewers();
+            if (reviewers != null && reviewers.size() > 0) {
+                for (User reviewer : reviewers) {
+                    userService.addCustomerReviewerRole(reviewer.getUserId());
+                }
+            }
         } catch (DataIntegrityViolationException cve) {
             throw new ObjectNotUniqueException(cve);
         }
@@ -112,5 +129,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     public void setCustomerDAO(CustomerDao customerDAO) {
         this.customerDAO = customerDAO;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

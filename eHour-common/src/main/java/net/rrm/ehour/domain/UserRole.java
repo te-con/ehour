@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;

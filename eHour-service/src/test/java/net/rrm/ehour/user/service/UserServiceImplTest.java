@@ -24,6 +24,7 @@ import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import org.easymock.Capture;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -221,5 +222,93 @@ public class UserServiceImplTest {
         userService.persistEditedUser(user);
 
         verify(userDAO, assignmentService);
+    }
+
+    @Test
+    public void shouldAddCustomerReviewerRoleCorrectly() {
+        User earlierPersistedUser = new User();
+        earlierPersistedUser.setUserId(1);
+
+        expect(userDAO.findById(1)).andReturn(earlierPersistedUser);
+
+        earlierPersistedUser.addUserRole(UserRole.CUSTOMERREVIEWER);
+
+        expect(userDAO.persist(earlierPersistedUser)).andReturn(earlierPersistedUser);
+
+        expect (userRoleDAO.findById(UserRole.CUSTOMERREVIEWER.getRole())).andReturn(UserRole.CUSTOMERREVIEWER);
+
+        replay(userDAO);
+        replay(userRoleDAO);
+
+        User updatedUser = userService.addCustomerReviewerRole(1);
+
+        verify(userDAO);
+        verify(userRoleDAO);
+
+        Set<UserRole> userRoles = updatedUser.getUserRoles();
+        Assert.assertNotNull(userRoles);
+        Assert.assertEquals(1, userRoles.size());
+        Assert.assertTrue(userRoles.contains(UserRole.CUSTOMERREVIEWER));
+    }
+
+    @Test
+    public void shouldUpdateUserRoleAppropriatelyIfAssociatedToCustomer()
+            throws ObjectNotUniqueException {
+        User user = new User(1);
+        user.setPassword("aa");
+        user.setUpdatedPassword("aa");
+        user.setSalt(new Integer(2));
+        user.setUsername("user");
+
+        Customer customer = new Customer();
+        customer.setName("Test Customer");
+        customer.setActive(true);
+        Set<Customer> associatedCustomers = new HashSet<Customer>();
+        associatedCustomers.add(customer);
+        user.setCustomers(associatedCustomers);
+
+        expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
+
+        expect(userRoleDAO.findById(UserRole.ROLE_CUSTOMERREVIEWER)).andReturn(
+                UserRole.CUSTOMERREVIEWER);
+
+        expect(userDAO.merge(user)).andReturn(user);
+
+        replay(userDAO);
+
+        replay(userRoleDAO);
+
+        User persistedUser = userService.persistEditedUser(user);
+
+        verify(userDAO);
+        verify(userRoleDAO);
+
+        assertNotNull(persistedUser);
+        assertEquals(1, persistedUser.getCustomers().size());
+    }
+
+    @Test
+    public void shouldNotUpdateUserRoleIfNotAssociatedToCustomer() throws ObjectNotUniqueException {
+        User user = new User(1);
+        user.setPassword("aa");
+        user.setUpdatedPassword("aa");
+        user.setSalt(new Integer(2));
+        user.setUsername("user");
+
+        expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
+
+        expect(userDAO.merge(user)).andReturn(user);
+
+        replay(userDAO);
+
+        replay(userRoleDAO);
+
+        User persistedUser = userService.persistEditedUser(user);
+
+        verify(userDAO);
+        verify(userRoleDAO);
+
+        assertNotNull(persistedUser);
+        assertEquals(0, persistedUser.getCustomers().size());
     }
 }

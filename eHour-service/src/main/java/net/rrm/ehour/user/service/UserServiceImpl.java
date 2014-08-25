@@ -247,7 +247,6 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(encryptedCurrentPassword)) {
             throw new BadCredentialsException("Invalid current password");
         }
-
         changePassword(user, newUnencryptedPassword);
     }
 
@@ -260,16 +259,16 @@ public class UserServiceImpl implements UserService {
         changePassword(user, newUnencryptedPassword);
     }
 
+    private String encryptPassword(String plainPassword, Object salt) {
+        return passwordEncoder.encodePassword(plainPassword, salt);
+    }
+
     private void changePassword(User user, String newUnencryptedPassword) {
         int salt = (int) (Math.random() * 10000);
         user.setSalt(salt);
         user.setPassword(encryptPassword(newUnencryptedPassword, salt));
 
         userDAO.persist(user);
-    }
-
-    private String encryptPassword(String plainPassword, Object salt) {
-        return passwordEncoder.encodePassword(plainPassword, salt);
     }
 
     public List<User> getUsersWithEmailSet() {
@@ -375,6 +374,20 @@ public class UserServiceImpl implements UserService {
             UserRole customerReviewerRole = userRoleDAO.findById(UserRole.ROLE_CUSTOMERREVIEWER);
             user.addUserRole(customerReviewerRole);
         }
-    }
+	}
 
+	@Override
+	@Transactional
+	public User addCustomerReviewerRole(Integer userId) {
+		User user = null;
+		try {
+			if (userId != null) {
+				user = getUserAndAddRole(userId, UserRole.CUSTOMERREVIEWER);
+			}
+		} catch (ObjectNotUniqueException exc) {
+			// won't happen
+			LOGGER.error("Account already exists", exc);
+		}
+		return user;		
+	}
 }

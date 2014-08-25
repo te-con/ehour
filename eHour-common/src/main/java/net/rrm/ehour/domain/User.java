@@ -267,6 +267,12 @@ public class User extends DomainObject<Integer, User> {
 		return customers;
 	}
 
+    public void setCustomers(Set<Customer> customers) {
+        this.customers = customers;
+    }
+
+
+
     /**
      * @return the projectAssignments
      */

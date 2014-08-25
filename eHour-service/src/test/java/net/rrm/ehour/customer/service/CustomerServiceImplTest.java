@@ -18,30 +18,37 @@ package net.rrm.ehour.customer.service;
 
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.customer.dao.CustomerDao;
+import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.fail;
 
 public class CustomerServiceImplTest {
-    private CustomerServiceImpl
-            customerService;
+    private CustomerServiceImpl customerService;
+
+    private UserService userService;
+
     private CustomerDao customerDAO;
 
     @Before
     public void setUp() {
         customerService = new CustomerServiceImpl();
-
+        userService = createMock(UserService.class);
         customerDAO = createMock(CustomerDao.class);
         customerService.setCustomerDAO(customerDAO);
+        customerService.setUserService(userService);
     }
 
     @Test
@@ -137,6 +144,28 @@ public class CustomerServiceImplTest {
         customerService.persistCustomer(cust);
 
         verify(customerDAO);
+    }
+
+    @Test
+    public void testPersistCustomerContainingReviewers() throws ObjectNotUniqueException {
+        Customer cust = new Customer();
+        cust.setCustomerId(1);
+
+        List<User> reviewers = new ArrayList<User>();
+        reviewers.add(new User(1));
+        reviewers.add(new User(2));
+        cust.setReviewers(reviewers);
+
+        expect(customerDAO.persist(cust)).andReturn(cust);
+
+        expect(userService.addCustomerReviewerRole(1)).andReturn(new User(1));
+        expect(userService.addCustomerReviewerRole(2)).andReturn(new User(1));
+
+        replay(customerDAO, userService);
+
+        customerService.persistCustomer(cust);
+
+        verify(customerDAO, userService);
     }
 
 }
