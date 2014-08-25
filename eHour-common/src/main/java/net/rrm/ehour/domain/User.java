@@ -16,6 +16,25 @@
 
 package net.rrm.ehour.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -87,12 +106,18 @@ public class User extends DomainObject<Integer, User> {
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<ProjectAssignment> projectAssignments;
 
-    @Transient
-    private Set<ProjectAssignment> inactiveProjectAssignments;
 
-    @Transient
-    private boolean deletable;
+	@ManyToMany(targetEntity = Customer.class, cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
+	private Set<Customer> customers = new HashSet<Customer>();
 
+	@Transient
+	private Set<ProjectAssignment> inactiveProjectAssignments;
+
+	@Transient
+	private boolean deletable;
+
+	// Constructors
     public User() {
     }
 
@@ -166,7 +191,8 @@ public class User extends DomainObject<Integer, User> {
         return this.userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Integer userId)
+    {
         this.userId = userId;
     }
 
@@ -206,15 +232,18 @@ public class User extends DomainObject<Integer, User> {
         return this.email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
         this.email = email;
     }
 
-    public Set<UserRole> getUserRoles() {
+    public Set<UserRole> getUserRoles()
+    {
         return this.userRoles;
     }
 
-    public void setUserRoles(Set<UserRole> userRoles) {
+    public void setUserRoles(Set<UserRole> userRoles)
+    {
         this.userRoles = userRoles;
     }
 
@@ -246,6 +275,16 @@ public class User extends DomainObject<Integer, User> {
     public void setUserDepartment(UserDepartment userDepartment) {
         this.userDepartment = userDepartment;
     }
+	public void addCustomer(Customer customer) {
+		if (customers == null) {
+			customers = new HashSet<Customer>();
+		}
+		customers.add(customer);
+	}
+	
+	public Set<Customer> getCustomers() {
+		return customers;
+	}
 
     /**
      * @return the projectAssignments
@@ -313,42 +352,48 @@ public class User extends DomainObject<Integer, User> {
     /**
      * @return the deletable
      */
-    public boolean isDeletable() {
+    public boolean isDeletable()
+    {
         return deletable;
     }
 
     /**
      * @param deletable the deletable to set
      */
-    public void setDeletable(boolean deletable) {
+    public void setDeletable(boolean deletable)
+    {
         this.deletable = deletable;
     }
 
     /**
      * @return the salt
      */
-    public Integer getSalt() {
+    public Integer getSalt()
+    {
         return salt;
     }
 
     /**
      * @param salt the salt to set
      */
-    public void setSalt(Integer salt) {
+    public void setSalt(Integer salt)
+    {
         this.salt = salt;
     }
 
     /**
      * @return the updatedPassword
      */
-    public String getUpdatedPassword() {
+    public String getUpdatedPassword()
+    {
         return updatedPassword;
     }
 
     /**
      * @param updatedPassword the updatedPassword to set
      */
-    public void setUpdatedPassword(String updatedPassword) {
+    public void setUpdatedPassword(String updatedPassword)
+    {
         this.updatedPassword = updatedPassword;
     }
 

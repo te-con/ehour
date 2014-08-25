@@ -41,12 +41,14 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
     public static final String ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
     public static final String ROLE_MANAGER = "ROLE_MANAGER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public final static String ROLE_CUSTOMERREVIEWER = "ROLE_CUSTOMERREVIEWER";
 
     public static final UserRole USER = new UserRole(ROLE_USER, "Consultant");
     public static final UserRole REPORT = new UserRole(ROLE_REPORT, "Report Role");
     public static final UserRole PROJECTMANAGER = new UserRole(ROLE_PROJECTMANAGER, "PM");
     public static final UserRole MANAGER = new UserRole(ROLE_MANAGER, "Manager");
     public static final UserRole ADMIN = new UserRole(ROLE_ADMIN, "Administrator");
+    public static final UserRole CUSTOMERREVIEWER = new UserRole(ROLE_CUSTOMERREVIEWER, "Customer Reviewer");
 
     public static final Map<String, UserRole> ROLES = new HashMap<String, UserRole>();
 
@@ -97,13 +99,6 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
     }
 
     @Override
-    public int compareTo(UserRole object) {
-        return new CompareToBuilder()
-                .append(this.getRole(), object.getRole())
-                .append(this.getRoleName(), object.getRoleName()).toComparison();
-    }
-
-    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getRole()).toHashCode();
     }
@@ -119,5 +114,12 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
         }
 
         return isEqual;
+    }
+
+    @Override
+    public int compareTo(UserRole object) {
+        return new CompareToBuilder()
+                .append(this.getRole(), object.getRole())
+                .append(this.getRoleName(), object.getRoleName()).toComparison();
     }
 }

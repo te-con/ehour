@@ -41,7 +41,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import scala.tools.cmd.gen.AnyVals;
 
 import java.util.*;
 
@@ -370,4 +369,12 @@ public class UserServiceImpl implements UserService {
     public void setUserRoleDAO(UserRoleDao dao) {
         userRoleDAO = dao;
     }
+
+	private void checkCustomerAssociationsAndAssignRoleAccordingly(User user) {
+        if (user.getCustomers() != null && user.getCustomers().size() > 0) {
+            UserRole customerReviewerRole = userRoleDAO.findById(UserRole.ROLE_CUSTOMERREVIEWER);
+            user.addUserRole(customerReviewerRole);
+        }
+    }
+
 }
