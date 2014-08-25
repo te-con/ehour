@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>net.rrm.ehour</groupId>
-		<artifactId>eHour</artifactId>
-		<version>1.4.2-SNAPSHOT</version>
+		<groupId>nl.tecon.ehevo</groupId>
+		<artifactId>ehevo</artifactId>
+        <version>1.4.2-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>eHour-web</artifactId>
+	<groupId>nl.tecon.ehevo</groupId>
+	<artifactId>ehevo-web</artifactId>
 	<packaging>war</packaging>
-	<name>eHour web UI</name>
+	<name>eHour Evolutions web UI</name>
 
 	<dependencies>
         <dependency>
@@ -16,20 +17,20 @@
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-service</artifactId>
+        
+		<dependency>
+			<groupId>nl.tecon.ehevo</groupId>
+			<artifactId>ehevo-service</artifactId>
+		</dependency>
+        
+		<dependency>
+			<groupId>nl.tecon.ehevo</groupId>
+			<artifactId>ehevo-wicketweb</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-wicketweb</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>net.rrm.ehour</groupId>
-			<artifactId>eHour-audit</artifactId>
+			<groupId>nl.tecon.ehevo</groupId>
+			<artifactId>ehevo-audit</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,14 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>net.rrm.ehour</groupId>
-		<artifactId>eHour</artifactId>
+        <groupId>nl.tecon.ehevo</groupId>
+        <artifactId>ehevo</artifactId>
 		<version>1.4.2-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.rrm.ehour</groupId>
-	<artifactId>eHour-persistence-mysql</artifactId>
+	<artifactId>ehevo-persistence-mysql</artifactId>
 	<packaging>jar</packaging>
-	<name>eHour DB MySQL connectivity</name>
+	<name>eHour Evolutions DB MySQL connectivity</name>
 
 	<dependencies>
 		<dependency>

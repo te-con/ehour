@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.rrm.ehour</groupId>
+    <groupId>nl.tecon.ehevo</groupId>
+    <artifactId>ehevo</artifactId>
     <version>1.4.2-SNAPSHOT</version>
-    <artifactId>eHour</artifactId>
     <packaging>pom</packaging>
-    <name>eHour</name>
+    <name>eHour Evolutions</name>
     <url>http://www.ehour.nl/</url>
     <modules>
         <module>eHour-common</module>
@@ -19,7 +19,6 @@
         <module>eHour-audit</module>
         <module>eHour-standalone</module>
         <module>eHour-war</module>
-        <module>eHour-selenium</module>
     </modules>
     <description>
         eHour - web-based time registration for consultancy companies
@@ -460,73 +459,59 @@
 
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-persistence</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-persistence-derby</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-persistence-derby</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-persistence-mysql</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-persistence-mysql</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-persistence-postgresql</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-persistence-postgresql</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-common</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-standalone</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-common</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-common</artifactId>
                 <version>${project.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-service</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-wicketweb</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-wicketweb</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-audit</artifactId>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-audit</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>net.rrm.ehour</groupId>
-                <artifactId>eHour-common</artifactId>
-                <version>${project.version}</version>
-                <scope>test</scope>
-                <classifier>tests</classifier>
             </dependency>
 
             <dependency>
@@ -552,7 +537,6 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
@@ -857,7 +841,7 @@
     <repositories>
         <repository>
             <id>eHour</id>
-            <name>eHour Maven Repository Group</name>
+            <name>eHour Evolutions Maven Repository Group</name>
             <url>http://nexus.te-con.nl/content/groups/public</url>
             <layout>default</layout>
             <releases>
