@@ -16,9 +16,27 @@
 
 package net.rrm.ehour.persistence.activity.dao;
 
+import java.util.List;
+
 import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.dao.GenericDao;
 
-public interface ActivityDao extends GenericDao<Activity, Integer>
-{
+public interface ActivityDao extends GenericDao<Activity, Integer> {
+	
+	/**
+	 * Finds All {@link Activity} Of An {@link User}
+	 * @param user
+	 * @return
+	 */
+	List<Activity> findAllActivitiesOfUser(User assignedUser);
+
+	/**
+	 * Finds All {@link Activity} Of An {@link Project}
+	 * @param user
+	 * @return
+	 */
+	List<Activity> findAllActivitiesOfProject(Project project);
+	
 }

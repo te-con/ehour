@@ -16,17 +16,32 @@
 
 package net.rrm.ehour.persistence.activity.dao;
 
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
 
+import org.springframework.stereotype.Repository;
+
 @Repository("activityDao")
-public class ActivityDaoHibernateImpl extends
-		AbstractGenericDaoHibernateImpl<Activity, Integer> implements ActivityDao {
+public class ActivityDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<Activity, Integer> implements ActivityDao {
 
 	public ActivityDaoHibernateImpl() {
 		super(Activity.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Activity> findAllActivitiesOfUser(User assignedUser) {
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Activity.findByUser", "assignedUser", assignedUser);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Activity> findAllActivitiesOfProject(Project project) {
+		return getHibernateTemplate().findByNamedQueryAndNamedParam("Activity.findByProject", "project", project);
 	}
 
 }
