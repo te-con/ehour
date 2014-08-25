@@ -7,22 +7,9 @@
 		FROM Activity as activity
 		WHERE assignedUser = :assignedUser
 	</query>
-	
 	<query name="Activity.findByProject"> 
  	    SELECT activity
 		FROM Activity as activity
 		WHERE project = :project
-	</query>
-
-	<query name="Activity.findActivitiessForUserInRange">
-    <![CDATA[	
-		FROM Activity activity
-		WHERE activity.active is true AND 
-			  activity.project.active is true AND
-			  activity.project.customer.active is true AND 
-			  activity.assignedUser.userId = :userId AND
-			  (activity.dateStart IS NULL OR activity.dateStart <= :dateEnd) AND
-			  (activity.dateEnd IS NULL or activity.dateEnd >= :dateStart)
-    		 ]]>
 	</query>
 </hibernate-mapping>

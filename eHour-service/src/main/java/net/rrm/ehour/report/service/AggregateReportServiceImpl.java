@@ -16,39 +16,24 @@
 
 package net.rrm.ehour.report.service;
 
-<<<<<<< HEAD
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
-=======
-import net.rrm.ehour.activity.service.ActivityService;
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Activity;
-import net.rrm.ehour.domain.MailLogAssignment;
->>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-<<<<<<< HEAD
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
-=======
->>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
-<<<<<<< HEAD
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.util.DomainUtil;
-=======
-import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
-
->>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
 
 import java.util.*;
 
@@ -188,226 +173,3 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
         return new DateRange(minMaxRange.getDateStart(), minMaxRange.getDateEnd());
     }
 }
-=======
-
-/**
- * Provides reporting services on timesheets. 
- * @author Thies
- *
- */
-@Service("aggregateReportService")
-public class AggregateReportServiceImpl extends AbstractReportServiceImpl<ActivityAggregateReportElement> 
-										implements AggregateReportService 
-{
-	@Autowired
-	private	ReportAggregatedDao	reportAggregatedDAO;
-
-	@Autowired
-	private	MailService			mailService;
-
-	@Autowired
-	private ActivityService     activityService;
-	
-	private	static final Logger LOGGER = Logger.getLogger(AggregateReportServiceImpl.class);
-	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.ReportService#getHoursPerAssignment(java.lang.Integer[])
-	 */
-	public List<ActivityAggregateReportElement> getHoursPerActivity(List<? extends Serializable> activityIds)
-	{
-		return reportAggregatedDAO.getCumulatedHoursPerActivityForActivities(activityIds);
-	}
-	
-	/**
-	 * Get the booked hours per project assignment for a date range
-	 * @param userId
-	 * @param
-	 * @return 
-	 */		
-	public List<ActivityAggregateReportElement> getHoursPerActivityInRange(Integer userId, DateRange dateRange)
-	{
-		List<ActivityAggregateReportElement>	activityAggregateReportElements;
-
-		List<User>	users = new ArrayList<User>();
-		users.add(new User(userId));
-		activityAggregateReportElements = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, dateRange);
-
-		return activityAggregateReportElements;
-	}	
-	
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.AggregateReportService#getAggregateReportData(net.rrm.ehour.persistence.persistence.report.criteria.ReportCriteria)
-	 */
-	public ReportData getAggregateReportData(ReportCriteria criteria)
-	{
-		return getReportData(criteria);
-	}	
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.AbstractReportServiceImpl#getReportElements(java.util.List, java.util.List, net.rrm.ehour.persistence.persistence.data.DateRange)
-	 */
-	@Override
-	protected List<ActivityAggregateReportElement> getReportElements(List<User> users,
-																			List<Project >projects,
-																			DateRange reportRange)
-	{
-		List<ActivityAggregateReportElement>	aggregates = new ArrayList<ActivityAggregateReportElement>();
-		
-		if (users == null && projects == null)
-		{
-			aggregates = reportAggregatedDAO.getCumulatedHoursPerActivity(reportRange);
-		}
-		else if (projects == null && users != null)
-		{
-			if (!CollectionUtils.isEmpty(users))
-			{
-				aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, reportRange);
-			}
-		}
-		else if (projects != null && users == null)
-		{
-			if (!CollectionUtils.isEmpty(projects))
-			{
-				aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(projects, reportRange);
-			}
-		}
-		else
-		{
-			if (!CollectionUtils.isEmpty(users) && !CollectionUtils.isEmpty(projects))
-			{
-				aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, projects, reportRange);
-			}
-		}
-		
-		return aggregates;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.ReportService#getProjectManagerReport(net.rrm.ehour.persistence.persistence.data.DateRange, java.lang.Integer)
-	 */
-	public ProjectManagerReport getProjectManagerDetailedReport(DateRange reportRange, Integer projectId)
-	{
-		ProjectManagerReport	report = new ProjectManagerReport();
-		SortedSet<ActivityAggregateReportElement>	aggregates;
-		List<MailLogAssignment>	sentMail;
-		Project					project;
-		List<Integer>			activityIds = new ArrayList<Integer>();
-		List<Activity>	allActivities;
-		ActivityAggregateReportElement	emptyAggregate;
-		
-		// get the project
-		project = getProjectDAO().findById(projectId);
-		report.setProject(project);
-		LOGGER.debug("PM report for project " + project.getName());
-		
-		// get a proper report range
-		reportRange = getReportRangeForProject(reportRange, project);
-		report.setReportRange(reportRange);
-		
-		// get all aggregates
-		List<Project>	projects = new ArrayList<Project>();
-		projects.add(new Project(projectId));
-		aggregates = new TreeSet<ActivityAggregateReportElement>(reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(projects, reportRange));
-
-		LOGGER.debug("No of aggregates : "+aggregates.size());
-		// filter out just the id's
-		for (ActivityAggregateReportElement aggregate : aggregates)
-		{
-			activityIds.add(aggregate.getActivity().getId());
-		}
-		
-		// get all assignments for this period regardless whether they booked hours on it
-		allActivities = activityService.getActivities(project, reportRange);
-		
-		for (Activity activity : allActivities)
-		{
-			if (!activityIds.contains(activity.getId()))
-			{
-				emptyAggregate = new ActivityAggregateReportElement();
-				emptyAggregate.setActivity(activity);
-			
-				aggregates.add(emptyAggregate);	
-			}
-		}
-
-		LOGGER.debug("Final No of aggregates : "+aggregates.size());
-		
-		report.setAggregates(aggregates);
-		
-
-		// get mail sent for this project
-		if (activityIds.size() > 0)
-		{
-			sentMail = mailService.getSentMailForAssignment((Integer[])activityIds.toArray(new Integer[activityIds.size()]));
-			report.setSentMail(new TreeSet<MailLogAssignment>(sentMail));
-		}
-		
-		report.deriveTotals();
-		
-		return report;
-	}
-	
-	/**
-	 * Get report range for project
-	 * @param reportRange
-	 * @param project
-	 * @return
-	 */
-	private DateRange getReportRangeForProject(DateRange reportRange, Project project)
-	{
-		DateRange	minMaxRange;
-		
-		if (reportRange.getDateStart() == null || reportRange.getDateEnd() == null)
-		{
-			minMaxRange = reportAggregatedDAO.getMinMaxDateTimesheetEntry(project);
-			
-			if (reportRange.getDateStart() == null)
-			{
-				reportRange.setDateStart(minMaxRange.getDateStart());
-			}
-
-			if (reportRange.getDateEnd() == null)
-			{
-				reportRange.setDateEnd(minMaxRange.getDateEnd());
-			}
-		}
-		
-		LOGGER.debug("Used date range for pm report: " + reportRange + " on report " + project);
-		
-		return reportRange;
-	}
-	
-
-	public void setActivityService(ActivityService activityService) {
-		this.activityService = activityService;
-	}
-
-	public void setReportAggregatedDAO(ReportAggregatedDao reportAggregatedDAO)
-	{
-		this.reportAggregatedDAO = reportAggregatedDAO;
-	}
-
-	/**
-	 * @param mailService the mailService to set
-	 */
-	public void setMailService(MailService mailService)
-	{
-		this.mailService = mailService;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.report.service.AggregateReportService#getProjectManagerDashboard(net.rrm.ehour.persistence.persistence.domain.User)
-	 */
-	public ProjectManagerDashboard getProjectManagerDashboard(User user)
-	{
-		return null;
-	}
-}
->>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure

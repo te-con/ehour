@@ -21,6 +21,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.EhourConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,9 +74,8 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	private ProjectAssignmentStatus getAllottedStatus(ProjectAssignment assignment)
 	{
 		ProjectAssignmentStatus	status = new ProjectAssignmentStatus();
-// TODO-NK : Need to create parallel methods in ReportAggregateDao for getting cumulative hours for Assignment
-//		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForActivity(assignment);
-//		status.setAggregate(aggregate);
+		AssignmentAggregateReportElement aggregate = reportAggregatedDAO.getCumulatedHoursForAssignment(assignment);
+		status.setAggregate(aggregate);
 
 		addStatusForAssignmentType(assignment, status);
 		
@@ -105,7 +105,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 	{
 		if (assignment.getDateStart() != null)
 		{
-			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesBefore(null, assignment.getDateStart());
+			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesBefore(assignment, assignment.getDateStart());
 			
 			if (entries != null && entries.size() > 0)
 			{
@@ -116,7 +116,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 
 		if (assignment.getDateEnd() != null)
 		{
-			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesAfter(null, assignment.getDateEnd());
+			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesAfter(assignment, assignment.getDateEnd());
 			
 			if (entries != null && entries.size() > 0)
 			{

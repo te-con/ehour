@@ -32,8 +32,8 @@ public class TimesheetRowComparator implements Comparator<TimesheetRow>, Seriali
 
 	public int compare(TimesheetRow o1, TimesheetRow o2)
 	{
-		return o1.getActivity().getProject().getName().compareToIgnoreCase(
-				o2.getActivity().getProject().getName());
+		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
+				o2.getProjectAssignment().getProject().getName());
 	}
 
 }

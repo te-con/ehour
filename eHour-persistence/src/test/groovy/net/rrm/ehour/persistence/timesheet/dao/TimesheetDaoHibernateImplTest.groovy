@@ -1,7 +1,6 @@
 package net.rrm.ehour.persistence.timesheet.dao
 
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.ProjectAssignment
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
@@ -43,7 +42,6 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         assertEquals(2, results.size());
     }
 
-<<<<<<< HEAD
     @Test
     void shouldGetTimesheetEntriesInRange() {
         Calendar dateStart = new GregorianCalendar(2006, 10 - 1, 1);
@@ -51,19 +49,6 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         DateRange dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
 
         def results = timesheetDAO.getTimesheetEntriesInRange(dateRange);
-=======
-	@Test
-	void shouldGetTimesheetEntriesInRangeForActivity()
-	{
-		Calendar 	dateStart = new GregorianCalendar(2006, 10 - 1, 1);
-		Calendar 	dateEnd = new GregorianCalendar(2006, 11 - 1, 1);
-		DateRange	dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
-
-		Activity activity = new Activity();
-		activity.setId(2);
-		
-		def results = timesheetDAO.getTimesheetEntriesInRange(activity, dateRange);
->>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 
         assertEquals(9, results.size());
     }
@@ -83,7 +68,6 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         assertEquals(-1, results[2].hours.floatValue(), 0.01);
     }
 
-<<<<<<< HEAD
     @Test
     void shouldGetTimesheetEntriesBefore() {
         def res = timesheetDAO.getTimesheetEntriesBefore(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 3));
@@ -93,31 +77,11 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     @Test
     void shouldGetTimesheetEntriesAfter() {
         def res = timesheetDAO.getTimesheetEntriesAfter(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 4));
-=======
-	@Test
-	void shouldGetTimesheetEntriesBefore()
-	{
-		Activity activity = new Activity();
-		activity.setId(1);
-		
-		def res = timesheetDAO.getTimesheetEntriesBefore(activity, new Date(2006 - 1900, 10 - 1, 3));
-		assertEquals(1, res.size());
-	}
-
-	@Test
-	void shouldGetTimesheetEntriesAfter()
-	{
-		Activity activity = new Activity();
-		activity.setId(1);
-		
-		def res = timesheetDAO.getTimesheetEntriesAfter(activity, new Date(2006 - 1900, 10 - 1, 4));
->>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 
         assertEquals(3, res.size());
     }
 
 
-<<<<<<< HEAD
     @Test
     void shouldGetLatestTimesheetEntryForAssignment() {
         def entry = timesheetDAO.getLatestTimesheetEntryForAssignment(1);
@@ -126,37 +90,12 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     void shouldDeleteTimesheetEntries() {
-=======
-	@Test
-	void shouldGetLatestTimesheetEntryForAssignment()
-	{
-		def entry = timesheetDAO.getLatestTimesheetEntryForActivity(1);
-		assertEquals(9.2f, entry.hours, 0.01f);
-	}
-
-
-	@Test
-	void shouldDeleteTimesheetEntries()
-	{
->>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
         def ids = [5]
 
         int deleted = timesheetDAO.deleteTimesheetEntries(ids);
 
-<<<<<<< HEAD
         assertEquals(2, deleted);
     }
-=======
-		assertEquals(2, deleted);
-	}
-	
-	@Test
-	void shouldFindAll()
-	{
-		def results = timesheetDAO.findAll();
-		assertEquals(12, results.size());
-	}
->>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 }
 
 
