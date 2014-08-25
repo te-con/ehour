@@ -17,10 +17,15 @@
 package net.rrm.ehour.timesheet.service;
 
 import net.rrm.ehour.data.DateRange;
+<<<<<<< HEAD:eHour-service/src/main/java/net/rrm/ehour/timesheet/service/IPersistTimesheet.java
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetComment;
+=======
+import net.rrm.ehour.domain.Activity;
+>>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure:eHour-service/src/main/java/net/rrm/ehour/timesheet/service/TimesheetPersister.java
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.exception.OverBudgetException;
+<<<<<<< HEAD:eHour-service/src/main/java/net/rrm/ehour/timesheet/service/IPersistTimesheet.java
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 import java.util.Collection;
@@ -47,3 +52,23 @@ public interface IPersistTimesheet {
                             DateRange weekRange) throws OverBudgetException;
 
 }
+=======
+
+/**
+ * Timesheet persister & validator
+ **/
+
+public interface TimesheetPersister
+{
+	/**
+	 * Validate, persist and notify list of timesheet entries
+	 * @param assignment
+	 * @param entries
+	 * @throws BusinessException
+	 */
+	public void validateAndPersist(Activity activity, 
+									List<TimesheetEntry> entries,
+									DateRange weekRange) throws OverBudgetException;
+
+}
+>>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure:eHour-service/src/main/java/net/rrm/ehour/timesheet/service/TimesheetPersister.java

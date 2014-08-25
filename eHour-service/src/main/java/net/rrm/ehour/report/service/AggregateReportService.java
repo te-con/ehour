@@ -17,10 +17,16 @@
 package net.rrm.ehour.report.service;
 
 import net.rrm.ehour.data.DateRange;
+<<<<<<< HEAD
 import net.rrm.ehour.domain.Project;
+=======
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.User;
+>>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
+<<<<<<< HEAD
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 
 import java.util.List;
@@ -65,3 +71,55 @@ public interface AggregateReportService {
      */
     ProjectManagerReport getProjectManagerDetailedReport(Project project);
 }
+=======
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
+
+
+/**
+ * Provides reporting services on timesheets. * @author Thies
+ *
+ */
+
+public interface AggregateReportService
+{
+
+	/**
+	 * Get the booked hours per {@link Activity} for a date range
+	 * @param userId
+	 * @param calendar
+	 * @return List with projectReport objects
+	 */
+
+	public List<ActivityAggregateReportElement> getHoursPerActivityInRange(Integer userId, DateRange dateRange);
+	
+	/**
+	 * Get all booked hours for {@link Activity}s
+	 * @param activityIds
+	 * @return
+	 */
+	public List<ActivityAggregateReportElement> getHoursPerActivity(List<? extends Serializable> activityIds);
+	
+	/**
+	 * Get aggregate report data
+	 * @param criteria
+	 * @return
+	 */
+	public ReportData getAggregateReportData(ReportCriteria criteria);
+	
+	/**
+	 * Get project manager report
+	 * @param reportCriteria
+	 * @return
+	 */
+	public ProjectManagerReport getProjectManagerDetailedReport(DateRange reportRange, Integer projectId);
+	
+	
+	/**
+	 * Get dashboard for projects where user is PM
+	 * @param reportRange
+	 * @param projectId
+	 * @return
+	 */
+	public ProjectManagerDashboard getProjectManagerDashboard(User user);
+}
+>>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure

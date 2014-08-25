@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
+
 /**
  * An Activity can have 2 statusses: - booked hours before allotted hours mark
  * (IN_ALLOTTED_PHASE) - over the alloted hours mark, no more hours can be
@@ -22,6 +24,8 @@ public class ActivityStatus implements Serializable {
 
 	private List<Status> statusses;
 
+	private ActivityAggregateReportElement aggregate;
+	
 	private boolean valid;
 
 	public ActivityStatus() {
@@ -51,10 +55,21 @@ public class ActivityStatus implements Serializable {
 		this.valid = valid;
 	}
 
+	public ActivityAggregateReportElement getAggregate() {
+		return aggregate;
+	}
+
+	public void setAggregate(ActivityAggregateReportElement aggregate) {
+		this.aggregate = aggregate;
+	}
+
 	public boolean isActivityBookable() {
 		boolean isBookable = true;
-		for (Status status : statusses) {
-			isBookable &= (status == Status.IN_ALLOTTED);
+		//TODO-NK Need to find a better way of doing this with Collections
+		if (statusses != null && statusses.size() > 0) {
+			for (Status status : statusses) {
+				isBookable &= (status == Status.IN_ALLOTTED);
+			}
 		}
 		return isBookable;
 	}

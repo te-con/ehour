@@ -1,7 +1,10 @@
 package net.rrm.ehour.activity.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.rrm.ehour.activity.status.ActivityStatusService;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -18,6 +21,9 @@ public class ActivityServiceImpl implements ActivityService {
 	@Autowired
 	private ActivityDao activityDao;
 
+	@Autowired
+	private ActivityStatusService activityStatusService;
+	
 	@Override
 	public Activity getActivity(Integer activityid) throws ObjectNotFoundException {
 		Activity result = activityDao.findById(activityid);
@@ -54,6 +60,26 @@ public class ActivityServiceImpl implements ActivityService {
 	@Override
 	public List<Activity> getActivities() {
 		return activityDao.findAll();
+	}
+
+	@Override
+	public List<Activity> getActivitiesForUser(Integer userId, DateRange dateRange) {
+		List<Activity> validActivities = new ArrayList<Activity>();
+		
+		List<Activity> allActivities = activityDao.findActivitiesForUser(userId, dateRange);
+		
+		for (Activity activity : allActivities) {
+			if (activityStatusService.getActivityStatus(activity, dateRange).isActivityBookable()) {
+				validActivities.add(activity);
+			}
+			
+		}
+		return validActivities;
+	}
+
+	@Override
+	public List<Activity> getActivities(Project project, DateRange dateRange) {
+		return activityDao.findActivitiesOfProject(project, dateRange);
 	}
 
 }

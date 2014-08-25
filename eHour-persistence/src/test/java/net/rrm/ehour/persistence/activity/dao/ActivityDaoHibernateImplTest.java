@@ -1,7 +1,12 @@
 package net.rrm.ehour.persistence.activity.dao;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+import net.rrm.ehour.data.DateRange;
+>>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
@@ -38,10 +43,8 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 	
 	@Test
 	public void shouldPersistActivity() {
-		Activity activity = new Activity();
-		String activityName = "testActivity";
-		activity.setName(activityName);
-		activity.setActive(Boolean.TRUE);
+		Activity activity = createActivity("testActivity", true, null);
+		
 		activityDao.persist(activity);
 		
 		Assert.assertNotNull(activity.getId());
@@ -49,10 +52,8 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 	
 	@Test
 	public void shouldDeleteActivity() {
-		Activity activity = new Activity();
-		String activityName = "testActivity";
-		activity.setName(activityName);
-		activity.setActive(Boolean.TRUE);
+		Activity activity = createActivity("testActivity", true, null);
+		
 		activityDao.persist(activity);
 		assertNotNull(activity.getId());
 		Assert.assertEquals(1, activityDao.findAll().size());
@@ -63,10 +64,8 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 	
 	@Test
 	public void shouldretrieveActivityById() {
-		Activity activity = new Activity();
-		String activityName = "testActivity";
-		activity.setName(activityName);
-		activity.setActive(Boolean.TRUE);
+		Activity activity = createActivity("testActivity", true, null);
+		
 		activityDao.persist(activity);
 		
 		Assert.assertNotNull(activity.getId());
@@ -82,16 +81,10 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		Assert.assertNotNull(retrievedUser);
 		Assert.assertEquals("thies", retrievedUser.getUsername());
 		
-		Activity activity1 = new Activity();
-		activity1.setName("activity1");
-		activity1.setActive(Boolean.TRUE);
-		activity1.setAssignedUser(retrievedUser);
+		Activity activity1 = createActivity("activity1", Boolean.TRUE, retrievedUser);
 		activityDao.persist(activity1);
 		
-		Activity activity2 = new Activity();
-		activity2.setName("activity2");
-		activity2.setActive(Boolean.TRUE);
-		activity2.setAssignedUser(retrievedUser);
+		Activity activity2 = createActivity("activity2", Boolean.TRUE, retrievedUser);
 		activityDao.persist(activity2);
 
 		Activity retrievedActivity1 = activityDao.findById(activity1.getId());
@@ -104,6 +97,8 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		Assert.assertEquals("activity2", retrievedActivity2.getName());
 		Assert.assertEquals("1", retrievedActivity2.getAssignedUser().getUserId().toString());
 	}
+
+
 	
 	@Test
 	public void shouldPersistActivitiesWithAssignedUserAndProject() {
@@ -111,13 +106,7 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		customerDao.persist(customer);
 		Assert.assertNotNull(customer.getCustomerId());
 		
-		Project project = new Project();
-		project.setActive(true);
-		project.setBillable(true);
-		project.setContact("contact");
-		project.setCustomer(customer);
-		project.setName("Grid Computing");
-		project.setProjectCode("GC");
+		Project project = createProject("Grid Computing", "GC", "contact", true, true, customer);
 		projectDao.persist(project);
 		Assert.assertNotNull(project.getProjectId());
 		
@@ -125,17 +114,11 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		Assert.assertNotNull(retrievedUser);
 		Assert.assertEquals("thies", retrievedUser.getUsername());
 		
-		Activity activity1 = new Activity();
-		activity1.setName("activity1");
-		activity1.setActive(Boolean.TRUE);
-		activity1.setAssignedUser(retrievedUser);
+		Activity activity1 = createActivity("activity1", Boolean.TRUE, retrievedUser);
 		activity1.setProject(project);
 		activityDao.persist(activity1);
 		
-		Activity activity2 = new Activity();
-		activity2.setName("activity2");
-		activity2.setActive(Boolean.TRUE);
-		activity2.setAssignedUser(retrievedUser);
+		Activity activity2 = createActivity("activity2", Boolean.TRUE, retrievedUser);
 		activity2.setProject(project);
 		activityDao.persist(activity2);
 
@@ -160,17 +143,13 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		Assert.assertNotNull(retrievedUser);
 		Assert.assertEquals("thies", retrievedUser.getUsername());
 		
-		Activity activity1 = new Activity();
-		activity1.setName("activity1");
-		activity1.setActive(Boolean.TRUE);
+		Activity activity1 = createActivity("activity1", Boolean.TRUE, null);
 		activityDao.persist(activity1);
 		Activity retrievedActivity = activityDao.findById(activity1.getId());
 		Assert.assertNotNull(retrievedActivity);
 		Assert.assertEquals("activity1", retrievedActivity.getName());
 		
-		Activity activity2 = new Activity();
-		activity2.setName("activity2");
-		activity2.setActive(Boolean.TRUE);
+		Activity activity2 = createActivity("activity2", Boolean.TRUE, null);
 		activityDao.persist(activity2);
 		retrievedActivity = activityDao.findById(activity2.getId());
 		Assert.assertNotNull(retrievedActivity);
@@ -192,13 +171,7 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		customerDao.persist(customer);
 		Assert.assertNotNull(customer.getCustomerId());
 		
-		Project project = new Project();
-		project.setActive(true);
-		project.setBillable(true);
-		project.setContact("contact");
-		project.setCustomer(customer);
-		project.setName("Grid Computing");
-		project.setProjectCode("GC");
+		Project project = createProject("Grid Computing", "GC", "contact", true, true, customer);
 		projectDao.persist(project);
 		Assert.assertNotNull(project.getProjectId());
 		
@@ -206,17 +179,11 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		Assert.assertNotNull(retrievedUser);
 		Assert.assertEquals("thies", retrievedUser.getUsername());
 		
-		Activity activity1 = new Activity();
-		activity1.setName("activity1");
-		activity1.setActive(Boolean.TRUE);
-		activity1.setAssignedUser(retrievedUser);
+		Activity activity1 = createActivity("activity1", Boolean.TRUE, retrievedUser);
 		activity1.setProject(project);
 		activityDao.persist(activity1);
 		
-		Activity activity2 = new Activity();
-		activity2.setName("activity2");
-		activity2.setActive(Boolean.TRUE);
-		activity2.setAssignedUser(retrievedUser);
+		Activity activity2 = createActivity("activity2", Boolean.TRUE, retrievedUser);
 		activity2.setProject(project);
 		activityDao.persist(activity2);
 
@@ -236,6 +203,54 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 		
 		List<Activity> allActivitiesOfProject = activityDao.findAllActivitiesOfProject(project);
 		Assert.assertEquals(2, allActivitiesOfProject.size());
+	}
+
+	@Test
+	public void shouldFindAllActivitiesForUserInDateRange() {
+		Customer customer = new Customer("IBM", "International Business Machine", "Hardware and Software",true);
+		customerDao.persist(customer);
+		Assert.assertNotNull(customer.getCustomerId());
 		
+		Project project = createProject("Grid Computing", "GC", "contact", true, true, customer);
+		projectDao.persist(project);
+		Assert.assertNotNull(project.getProjectId());
+		
+		User retrievedUser = userDao.findById(1);
+		Assert.assertNotNull(retrievedUser);
+		Assert.assertEquals("thies", retrievedUser.getUsername());
+		
+		
+		Activity activity1 = createActivity("activity1", Boolean.TRUE, retrievedUser);
+		activity1.setDateStart(new GregorianCalendar(2010, 5, 1).getTime());
+		activity1.setDateEnd(new GregorianCalendar(2010, 7, 1).getTime());
+		activity1.setProject(project);
+		activityDao.persist(activity1);
+		
+		
+		GregorianCalendar startDateCalendar = new GregorianCalendar(2010, 1, 1);
+		GregorianCalendar endDateCalendar = new GregorianCalendar(2011, 11, 1);
+		List<Activity> allActivitiesForUser = activityDao.findActivitiesForUser(1, new DateRange(startDateCalendar.getTime(), endDateCalendar.getTime()));
+		Assert.assertNotNull(allActivitiesForUser);
+		Assert.assertEquals(1, allActivitiesForUser.size());
+	}
+
+	private Project createProject(String projectName, String projectCode, String contractName, boolean isActive, boolean isBillable, Customer customer) {
+		Project project = new Project();
+		project.setActive(isActive);
+		project.setBillable(isBillable);
+		project.setContact(contractName);
+		project.setName(projectName);
+		project.setProjectCode(projectCode);
+		project.setCustomer(customer);
+		return project;
+	}
+	
+
+	private Activity createActivity(String activityName, Boolean isActive, User assignedUser) {
+		Activity activity = new Activity();
+		activity.setName(activityName);
+		activity.setActive(isActive);
+		activity.setAssignedUser(assignedUser);
+		return activity;
 	}
 }

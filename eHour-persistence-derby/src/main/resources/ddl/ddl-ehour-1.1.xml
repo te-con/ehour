@@ -184,7 +184,7 @@
 			autoIncrement="false" />
 	</table>
 	<table name="timesheet_entry">
-		<column name="ASSIGNMENT_ID" primaryKey="true" required="true"
+		<column name="ACTIVITY_ID" primaryKey="true" required="true"
 			type="INTEGER" size="10" autoIncrement="false" />
 		<column name="ENTRY_DATE" primaryKey="true" required="true"
 			type="DATE" autoIncrement="false" />
@@ -194,15 +194,15 @@
 			type="VARCHAR" size="1024" autoIncrement="false" />
 		<column name="UPDATE_DATE" primaryKey="false" required="false"
 			type="TIMESTAMP" autoIncrement="false" />
-		<foreign-key foreignTable="project_assignment" name="TIMESHEET_ENTRY_fk">
-			<reference local="ASSIGNMENT_ID" foreign="ASSIGNMENT_ID" />
+		<foreign-key foreignTable="activities" name="TIMESHEET_ENTRY_fk">
+			<reference local="ACTIVITY_ID" foreign="ACTIVITY_ID" />
 		</foreign-key>
 		<index name="ENTRY">
 			<index-column name="ENTRY_DATE" />
-			<index-column name="ASSIGNMENT_ID" />
+			<index-column name="ACTIVITY_ID" />
 		</index>
-		<index name="ASSIGNMENT_ID">
-			<index-column name="ASSIGNMENT_ID" />
+		<index name="ACTIVITY_ID">
+			<index-column name="ACTIVITY_ID" />
 		</index>
 	</table>
 	<table name="user_department">

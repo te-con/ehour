@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.timesheet.dto;
 
+<<<<<<< HEAD
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -122,4 +123,128 @@ public class WeekOverview implements Serializable {
     public List<Date> getLockedDays() {
         return lockedDays;
     }
+=======
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.TimesheetComment;
+import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
+
+/**
+ * Value object for timesheet entries of a week and corresponding comments
+ **/
+
+public class WeekOverview implements Serializable
+{
+	private static final long serialVersionUID = -3281374385102106958L;
+	private List<TimesheetEntry>	timesheetEntries;
+	private TimesheetComment		comment;
+	private	List<Activity>			activities;
+	private	DateRange				weekRange;
+	private	User					user;
+	private	Set<Customer>			customers;
+
+	/**
+	 * 
+	 */
+	public void initCustomers()
+	{
+		customers = new HashSet<Customer>();
+		
+		for (Activity activity : activities) {
+			customers.add(activity.getProject().getCustomer());
+		}
+		
+		for (TimesheetEntry entry : timesheetEntries)
+		{
+			customers.add(entry.getEntryId().getActivity().getProject().getCustomer());
+		}
+	}
+	
+	
+	/**
+	 * Get customser
+	 * @return
+	 */
+	public Set<Customer> getCustomers()
+	{
+		return customers;
+	}
+	
+	/**
+	 * @return the timesheetEntries
+	 */
+	public List<TimesheetEntry> getTimesheetEntries()
+	{
+		return timesheetEntries;
+	}
+	/**
+	 * @param timesheetEntries the timesheetEntries to set
+	 */
+	public void setTimesheetEntries(List<TimesheetEntry> timesheetEntries)
+	{
+		this.timesheetEntries = timesheetEntries;
+	}
+
+	public List<Activity> getActivities() {
+		return activities;
+	}
+
+
+	public void setActivities(List<Activity> activities) {
+		this.activities = activities;
+	}
+
+
+	/**
+	 * @return the weekRange
+	 */
+	public DateRange getWeekRange()
+	{
+		return weekRange;
+	}
+	/**
+	 * @param weekRange the weekRange to set
+	 */
+	public void setWeekRange(DateRange weekRange)
+	{
+		this.weekRange = weekRange;
+	}
+	/**
+	 * @return the comment
+	 */
+	public TimesheetComment getComment()
+	{
+		return comment;
+	}
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(TimesheetComment comment)
+	{
+		this.comment = comment;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public User getUser()
+	{
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user)
+	{
+		this.user = user;
+	}
+>>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 }

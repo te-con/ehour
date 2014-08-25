@@ -47,7 +47,7 @@ public class Activity extends DomainObject<Integer, Activity> {
 	@Column(name = "ACTIVE")
 	@Type(type = "yes_no")
 	private Boolean active = Boolean.TRUE;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -125,14 +125,21 @@ public class Activity extends DomainObject<Integer, Activity> {
 		}
 		Activity other = (Activity) obj;
 		return new EqualsBuilder().append(this.getId(), other.getId())
-				.isEquals();
+		                          .append(this.getName(), other.getName())
+		                          .append(this.getAllottedHours(), other.getAllottedHours())
+		                          .append(this.getActive(), other.getActive())
+		                          .append(this.getDateStart(), other.getDateStart())
+		                          .append(this.getDateEnd(), other.getDateEnd())
+		                          .append(this.getProject(), other.getProject())
+		                          .append(this.getAssignedUser(), other.getAssignedUser())
+		                          .isEquals();
 	}
 
 	@Override
 	public String getFullName() {
 		return getName();
 	}
-	
+
 	@Override
 	public Integer getPK() {
 		return id;
@@ -140,13 +147,15 @@ public class Activity extends DomainObject<Integer, Activity> {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(name).append(dateStart).append(
-				dateEnd).append(allottedHours).append(active).toHashCode();
+		return new HashCodeBuilder().append(name).append(dateStart).append(dateEnd).append(allottedHours).append(active).toHashCode();
 	}
 
 	@Override
 	public int compareTo(Activity activity) {
 		return new CompareToBuilder().append(this.getId(), activity.getId())
-				.toComparison();
+									 .append(this.getProject(), activity.getProject())
+									 .append(this.getDateStart(), activity.getDateStart())
+									 .append(this.getDateEnd(), activity.getDateEnd())
+									 .append(this.getAllottedHours(), activity.getAllottedHours()).toComparison();
 	}
 }

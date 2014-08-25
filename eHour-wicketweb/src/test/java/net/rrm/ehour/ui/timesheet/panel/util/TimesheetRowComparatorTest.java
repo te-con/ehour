@@ -16,14 +16,19 @@
 
 package net.rrm.ehour.ui.timesheet.panel.util;
 
+import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.config.EhourConfigStub;
+<<<<<<< HEAD
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
+=======
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.ActivityMother;
+>>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
  * @author thies
@@ -34,6 +39,7 @@ public class TimesheetRowComparatorTest
 	@Test
 	public void testCompare()
 	{
+<<<<<<< HEAD
 		ProjectAssignment pA = ProjectAssignmentObjectMother.createProjectAssignment(1);
 		pA.getProject().setName("A");
 		TimesheetRow rowA = new TimesheetRow(new EhourConfigStub());
@@ -41,9 +47,18 @@ public class TimesheetRowComparatorTest
 		
 		ProjectAssignment pB = ProjectAssignmentObjectMother.createProjectAssignment(1);
 		pB.getProject().setName("b");
+=======
+		Activity a1 = ActivityMother.createActivity(1);
+		a1.getProject().setName("A");
+		TimesheetRow rowA = new TimesheetRow(new EhourConfigStub());
+		rowA.setActivity(a1);
+
+		Activity a2 = ActivityMother.createActivity(1);
+		a2.getProject().setName("B");
+>>>>>>> 420c91d... EHV-23, EHV-24: Modifications in Service, Dao and UI layers for Customer --> Project --> Activity structure
 		TimesheetRow rowB = new TimesheetRow(new EhourConfigStub());
-		rowB.setProjectAssignment(pB);
-		
+		rowB.setActivity(a2);
+				
 		assertEquals(-1, TimesheetRowComparator.INSTANCE.compare(rowA, rowB));
 	}
 
