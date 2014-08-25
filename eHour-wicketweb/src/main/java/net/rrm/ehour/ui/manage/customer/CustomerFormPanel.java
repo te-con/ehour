@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.manage.customer;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
@@ -31,6 +32,7 @@ import net.rrm.ehour.ui.common.form.FormUtil;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.util.WebGeo;
+import net.rrm.ehour.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.*;
@@ -49,6 +51,9 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 
     @SpringBean
     private CustomerService customerService;
+
+    @SpringBean
+    private UserService userService;
 
     public CustomerFormPanel(String id, CompoundPropertyModel<CustomerAdminBackingBean> model) {
         super(id, model);
@@ -83,6 +88,11 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
         TextArea<String> textArea = new KeepAliveTextArea("customer.description");
         textArea.setLabel(new ResourceModel("admin.customer.description"));
         form.add(textArea);
+
+		//Reviewer
+		ListMultipleChoice<User> reviewersChoices = new ListMultipleChoice<User>("customer.reviewers", userService.getUsers(), new ChoiceRenderer<User>("fullName"));
+		reviewersChoices.setLabel(new ResourceModel("admin.customer.reviewers"));
+		form.add(reviewersChoices);
 
         // active
         form.add(new CheckBox("customer.active"));

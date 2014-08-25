@@ -146,6 +146,13 @@ public class Customer extends DomainObject<Integer, Customer> {
         return this.name;
     }
 
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+        return active;
+    }
+
     public Customer setName(String name) {
         this.name = name;
         return this;
@@ -200,13 +207,6 @@ public class Customer extends DomainObject<Integer, Customer> {
         this.projects = projects;
     }
 
-    /**
-     * @return the active
-     */
-    public boolean isActive() {
-        return active;
-    }
-    
 	public void addReviewer(User reviewer) {
 		if (this.reviewers == null)
 		{
@@ -214,6 +214,7 @@ public class Customer extends DomainObject<Integer, Customer> {
 		}
 		reviewers.add(reviewer);
 	}
+
 	
 	@Override
 	public boolean equals(final Object other)

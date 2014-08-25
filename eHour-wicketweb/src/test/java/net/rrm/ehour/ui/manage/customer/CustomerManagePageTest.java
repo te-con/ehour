@@ -41,18 +41,18 @@ public class CustomerManagePageTest extends BaseSpringWebAppTester
 	public void testCustomerAdminRender()
 	{
 		CustomerService customerService = createMock(CustomerService.class);
-		
+
 		UserService userService = createMock(UserService.class);
-		
+
 		getMockContext().putBean("customerService", customerService);
 		getMockContext().putBean("userService", userService);
-		
+
 		expect(userService.getUsers()).andReturn(new ArrayList<User>());
 		expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
 
 		replay(customerService);
 		replay(userService);
-		
+
 		getTester().startPage(CustomerManagePage.class);
 		getTester().assertRenderedPage(CustomerManagePage.class);
 		getTester().assertNoErrorMessage();
