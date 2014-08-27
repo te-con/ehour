@@ -80,6 +80,17 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
         container.add(new Label("grandTotalHours", new Model<Float>(totalHours)));
 
+        float totalAllottedHours = 0;
+
+        if (projectStatusSet != null) {
+            for (UserProjectStatus status : projectStatusSet) {
+                Float activityAllottedHours = status.getActivity().getAllottedHours();
+                totalAllottedHours += (activityAllottedHours != null) ? activityAllottedHours : 0;
+            }
+        }
+
+        container.add(new Label("grandTotalAllottedHours", new Model<Float>(totalAllottedHours)));
+
         Label projectLabel = HtmlUtil.getNbspLabel("grandProject");
         Label customerLabel = HtmlUtil.getNbspLabel("grandCustomer");
 
@@ -138,6 +149,17 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 Number hours = projectStatus.getHours();
 
                 item.add(new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f)));
+
+                Label bookedHoursLabel = new Label("monthHours", new Model<Float>(projectStatus.getHours().floatValue()));
+                item.add(bookedHoursLabel);
+
+                Float activityAllottedHours = projectStatus.getActivity().getAllottedHours();
+                float activityAllottedHoursValue = (activityAllottedHours != null) ? activityAllottedHours.floatValue() : 0;
+                Label allottedHoursLabel = new Label("allottedHours", new Model<Float>(activityAllottedHoursValue));
+                item.add(allottedHoursLabel);
+
+                Label activityLabel = new Label("activityName", projectStatus.getActivity().getFullName());
+                item.add(activityLabel);
 
                 // SummaryRow
                 Component projectSummaryRow = createProjectSummaryRow(ID_SUMMARY_ROW, projectStatus);
