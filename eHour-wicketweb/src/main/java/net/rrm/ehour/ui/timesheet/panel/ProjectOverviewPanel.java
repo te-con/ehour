@@ -20,7 +20,6 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
-import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
@@ -72,28 +71,14 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
     private void addGrandTotals(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet, EhourConfig config) {
         float totalHours = 0;
-        float totalTurnover = 0;
-        Label turnOverLabel;
 
         if (projectStatusSet != null) {
             for (UserProjectStatus status : projectStatusSet) {
                 totalHours += (status.getHours() != null) ? status.getHours().floatValue() : 0;
-                totalTurnover += (status.getTurnOver() != null) ? status.getTurnOver().floatValue() : 0;
             }
         }
 
         container.add(new Label("grandTotalHours", new Model<Float>(totalHours)));
-
-        turnOverLabel = new CurrencyLabel("grandTotalTurnover", new Model<Float>(totalTurnover));
-
-        turnOverLabel.setVisible(config.isShowTurnover());
-        turnOverLabel.setEscapeModelStrings(false);
-        container.add(turnOverLabel);
-
-        turnOverLabel = HtmlUtil.getNbspLabel("grandRate");
-        turnOverLabel.setVisible(config.isShowTurnover());
-        turnOverLabel.setEscapeModelStrings(false);
-        container.add(turnOverLabel);
 
         Label projectLabel = HtmlUtil.getNbspLabel("grandProject");
         Label customerLabel = HtmlUtil.getNbspLabel("grandCustomer");
@@ -115,15 +100,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         setCustomerLabelWidth(customerLabel);
         container.add(customerLabel);
 
-        Label rateLabel = new Label("rateLabel", new ResourceModel("overview.rate"));
-        setRateWidthOrHide(rateLabel);
-        container.add(rateLabel);
-
         container.add(new Label("bookedHoursLabel", new ResourceModel("overview.hours")));
-
-        Label turnOverLabel = new Label("turnoverLabel", new ResourceModel("overview.turnover"));
-        setTurnoverWidthOrHide(turnOverLabel);
-        container.add(turnOverLabel);
     }
 
     @SuppressWarnings("serial")
@@ -158,21 +135,9 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 projectCodeLabel.setOutputMarkupId(true);
                 item.add(projectCodeLabel);
 
-                // TODO-NK No Hourly rate for Activity
-                Label rateLabel = new Label("rate", "--");
-                rateLabel.setEscapeModelStrings(false);
-                setRateWidthOrHide(rateLabel);
-                item.add(rateLabel);
-
                 Number hours = projectStatus.getHours();
 
                 item.add(new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f)));
-
-                boolean billable = project.isBillable();
-                Label turnOverLabel = billable ? new CurrencyLabel("turnover", projectStatus.getTurnOver().floatValue()) : new Label("turnover", "--");
-                setTurnoverWidthOrHide(turnOverLabel);
-
-                item.add(turnOverLabel);
 
                 // SummaryRow
                 Component projectSummaryRow = createProjectSummaryRow(ID_SUMMARY_ROW, projectStatus);
@@ -258,26 +223,10 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
 
     private void setCustomerLabelWidth(Label label) {
-        if (!isTurnOverVisible()) {
             label.add(AttributeModifier.replace("style", "width: 30%;"));
-        }
     }
 
     private void setProjectLabelWidth(Component label) {
-        if (!isTurnOverVisible()) {
             label.add(AttributeModifier.replace("style", "width: 35%;"));
-        }
-    }
-
-    private void setRateWidthOrHide(Label label) {
-        label.setVisible(isTurnOverVisible());
-    }
-
-    private void setTurnoverWidthOrHide(Label label) {
-        label.setVisible(isTurnOverVisible());
-    }
-
-    private boolean isTurnOverVisible() {
-        return getConfig().isShowTurnover();
     }
 }
