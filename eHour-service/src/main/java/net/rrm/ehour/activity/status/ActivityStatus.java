@@ -19,7 +19,7 @@ import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 public class ActivityStatus implements Serializable {
 
 	public enum Status {
-		IN_ALLOTTED, OVER_ALLOTTED
+		IN_ALLOTTED, OVER_ALLOTTED, BEFORE_START, RUNNING, AFTER_DEADLINE
 	}
 
 	private List<Status> statusses;

@@ -14,6 +14,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ActivityAggregateReportElement implements Comparable<ActivityAggregateReportElement>, ProjectStructuredReportElement {
 
 	private Activity activity;
+	
 	private Number hours;
     private Boolean emptyEntry;
 
