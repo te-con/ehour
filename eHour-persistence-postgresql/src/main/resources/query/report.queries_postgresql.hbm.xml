@@ -53,11 +53,12 @@
          ]]>
     </sql-query>
     	
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>	
     <sql-query name="Report.getHoursPerDayForUsers">
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
-		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
@@ -96,8 +97,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				PAG.HOURLY_RATE
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>	
          
@@ -105,7 +105,6 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
-		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
@@ -144,8 +143,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				PAG.HOURLY_RATE
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>	
 	
@@ -153,7 +151,6 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
-		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
@@ -193,8 +190,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				PAG.HOURLY_RATE
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>	
 	
@@ -202,7 +198,6 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
-		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
 		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
