@@ -83,16 +83,13 @@ public class ProjectServiceImplTest {
         Project project = new Project(1);
 
         expect(projectDao.persist(project)).andReturn(project);
-        expect(userService.validateProjectManagementRoles(null)).andReturn(null);
-
-        replay(userService, projectDao);
+        replay(projectDao);
 
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.setProject(null);
 
         projectService.createProject(project);
 
-        verify(userService);
         verify(projectDao);
     }
 
@@ -101,16 +98,14 @@ public class ProjectServiceImplTest {
         Project project = new Project(1);
 
         expect(projectDao.persist(project)).andReturn(project);
-        expect(userService.validateProjectManagementRoles(null)).andReturn(null);
 
-        replay(userService, projectDao);
+        replay(projectDao);
 
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.setProject(project);
 
         projectService.createProject(project);
 
-        verify(userService);
         verify(projectDao);
     }
 

@@ -88,8 +88,9 @@ public class User extends DomainObject<Integer, User> {
     private Set<ProjectAssignment> projectAssignments;
 
 
-	@ManyToMany(targetEntity = Customer.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
+//	@ManyToMany(targetEntity = Customer.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+//	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
+@Transient
 	private Set<Customer> customers = new HashSet<Customer>();
 
 	@Transient

@@ -31,9 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static net.rrm.ehour.activity.status.ActivityStatus.Status;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.fail;
 
 /**
  * @author thies
@@ -42,7 +40,6 @@ public class IPersistTimesheetDAOTest {
     private TimesheetPersistance persister;
     private TimesheetDao timesheetDAO;
     private ActivityStatusService statusService;
-    private Activity assignment;
     private Activity activity;
     private List<TimesheetEntry> newEntries;
     private List<TimesheetEntry> existingEntries;
@@ -133,32 +130,28 @@ public class IPersistTimesheetDAOTest {
         verify(statusService);
     }
 
-    @Test
-    public void testPersistInvalidTimesheet() {
+    @Test(expected = OverBudgetException.class)
+    public void testPersistInvalidTimesheet() throws OverBudgetException {
         timesheetDAO.delete(isA(TimesheetEntry.class));
 
         expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
 
         expect(timesheetDAO.getTimesheetEntriesInRange(isA(Activity.class), isA(DateRange.class))).andReturn(existingEntries);
 
-        expect(statusService.getActivityStatus(assignment)).andReturn(new ActivityStatus());
+        expect(statusService.getActivityStatus(activity)).andReturn(new ActivityStatus());
 
-        ActivityStatus status = new ActivityStatus();
-        status.addStatus(Status.OVER_ALLOTTED);
-        status.setValid(false);
+        ActivityStatus inValidStatus = new ActivityStatus();
+        inValidStatus.setValid(false);
 
-        expect(statusService.getActivityStatus(assignment)).andReturn(status);
+        expect(statusService.getActivityStatus(activity)).andReturn(inValidStatus);
 
         replay(statusService);
         replay(timesheetDAO);
 
-        try {
-            persister.validateAndPersist(assignment, newEntries, new DateRange());
-            fail();
-        } catch (OverBudgetException e) {
-            verify(timesheetDAO);
-            verify(statusService);
-        }
+        persister.validateAndPersist(activity, newEntries, new DateRange());
+
+        verify(timesheetDAO);
+        verify(statusService);
     }
 }
 

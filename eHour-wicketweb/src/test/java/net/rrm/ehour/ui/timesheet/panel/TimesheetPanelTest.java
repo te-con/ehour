@@ -118,19 +118,6 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    public void shouldBookAllHours() {
-        startAndReplayWithDefaultWeekOverview();
-
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:bookWholeWeek", "onclick");
-        tester.assertNoErrorMessage();
-
-        Label grandTotalLabel = (Label) tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:grandTotal");
-        assertEquals(40f, (Float) grandTotalLabel.getDefaultModelObject(), 0.01f);
-
-        tester.assertNoErrorMessage();
-    }
-
-    @Test
     public void updateCounts() {
         startAndReplayWithDefaultWeekOverview();
 
@@ -287,18 +274,6 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         tester.assertNoErrorMessage();
     }
-
-    @Test
-    public void shouldHideBookWholeWeekIconWhenDisabledInConfig() {
-        webApp.setEnableBookWholeWeek(false);
-
-        startAndReplayWithDefaultWeekOverview();
-
-        Component book = tester.getComponentFromLastRenderedPage("panel:timesheetFrame:timesheetFrame_body:timesheetForm:blueFrame:blueFrame_body:customers:0:rows:0:bookWholeWeek");
-        // not visible = null
-        assertNull(book);
-    }
-
 
     @After
     public void verifyMocks() {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
     <user_role ROLE="ROLE_MANAGER" NAME="Manager"></user_role>
+    <user_role ROLE="ROLE_CUSTOMERREVIEWER" NAME="Reviewer"></user_role>
 
     <configuration config_key="reminderEnabled" config_value="false"></configuration>
     <configuration config_key="reminderBody" config_value="Hello $name,

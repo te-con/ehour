@@ -86,7 +86,7 @@
     <query name="Report.getMinMaxTimesheetEntryDateForProject">
         SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
 		FROM TimesheetEntry entry
-        WHERE entry.entryId.projectAssignment.project = :project
+        WHERE entry.entryId.activity.project = :project
 	</query>
 
     <query name="Report.getActivitiesWithoutBookings">
