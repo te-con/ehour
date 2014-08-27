@@ -152,7 +152,7 @@ public class MonthOverviewPanel extends Panel {
             protected void populateItem(ListItem<TimesheetEntry> item) {
                 TimesheetEntry entry = item.getModelObject();
 
-                Project project = entry.getEntryId().getProjectAssignment().getProject();
+                Project project = entry.getEntryId().getActivity().getProject();
                 Label projectCodeLabel = new Label("projectCode", project.getProjectCode());
                 projectCodeLabel.setMarkupId(String.format("prjV%d", project.getProjectId()));
                 projectCodeLabel.setOutputMarkupId(true);

@@ -18,9 +18,9 @@ package net.rrm.ehour.persistence.report.dao
 import java.util
 
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{Project, ProjectAssignment, User}
+import net.rrm.ehour.domain.{Project, Activity, User}
 import net.rrm.ehour.persistence.dao.{AbstractAnnotationDaoHibernate4Impl, FindByNamedQuery}
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement
 import org.springframework.stereotype.Repository
 
 /**
@@ -34,56 +34,56 @@ class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Im
                                         with FindByNamedQuery {
   private final val CacheRegion = Some("query.Report")
 
-  override def getCumulatedHoursPerAssignmentForUsers(users: util.List[User], dateRange: DateRange): util.List[AssignmentAggregateReportElement] = {
+  override def getCumulatedHoursPerActivityForUsers(users: util.List[User], dateRange: DateRange): util.List[ActivityAggregateReportElement] = {
     val keys = List("dateStart", "dateEnd", "users")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd, users)
-    findByNamedQuery[AssignmentAggregateReportElement]("Report.getCumulatedHoursPerAssignmentOnDateForUsers", keys, params, CacheRegion)
+    findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursPerAssignmentOnDateForUsers", keys, params, CacheRegion)
   }
 
-  override def getCumulatedHoursPerAssignmentForUsers(users: util.List[User]): util.List[AssignmentAggregateReportElement] =
-    findByNamedQuery[AssignmentAggregateReportElement]("Report.getCumulatedHoursPerAssignmentForUsers", "users", users)
+  override def getCumulatedHoursPerActivityForUsers(users: util.List[User]): util.List[ActivityAggregateReportElement] =
+    findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursPerAssignmentForUsers", "users", users)
 
   override def getMinMaxDateTimesheetEntry: DateRange = {
     val results = findByNamedQuery[DateRange]("Report.getMinMaxTimesheetEntryDate")
     getFirstOr(results, new DateRange())
   }
 
-  override def getCumulatedHoursPerAssignmentForUsers(users: util.List[User], projects: util.List[Project]): util.List[AssignmentAggregateReportElement] = {
+  override def getCumulatedHoursPerActivityForUsers(users: util.List[User], projects: util.List[Project]): util.List[ActivityAggregateReportElement] = {
     val keys = List("users", "projects")
     val params = List(users, projects)
-    findByNamedQuery[AssignmentAggregateReportElement]("Report.getCumulatedHoursPerAssignmentForUsersAndProjects", keys, params)
+    findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursPerAssignmentForUsersAndProjects", keys, params)
   }
 
-  override def getCumulatedHoursPerAssignmentForUsers(users: util.List[User], projects: util.List[Project], dateRange: DateRange): util.List[AssignmentAggregateReportElement] = {
+  override def getCumulatedHoursPerActivityForUsers(users: util.List[User], projects: util.List[Project], dateRange: DateRange): util.List[ActivityAggregateReportElement] = {
     val keys = List("dateStart", "dateEnd", "users", "projects")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd, users, projects)
-    findByNamedQuery[AssignmentAggregateReportElement]("Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects", keys, params)
+    findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursPerAssignmentOnDateForUsersAndProjects", keys, params)
   }
 
   override def getMinMaxDateTimesheetEntry(user: User): DateRange = {
-    val results =  findByNamedQuery[DateRange]("Report.getMinMaxTimesheetEntryDateForUser", "user", List(user)).asInstanceOf[util.List[DateRange]]
+    val results = findByNamedQuery[DateRange]("Report.getMinMaxTimesheetEntryDateForUser", "user", List(user))
     getFirstOr(results, new DateRange())
   }
 
-  override def getCumulatedHoursPerAssignment(dateRange: DateRange): util.List[AssignmentAggregateReportElement] = {
+  override def getCumulatedHoursPerActivity(dateRange: DateRange): util.List[ActivityAggregateReportElement] = {
     val keys = List("dateStart", "dateEnd")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd)
-    findByNamedQuery[AssignmentAggregateReportElement]("Report.getCumulatedHoursPerAssignment", keys, params)
+    findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursPerAssignment", keys, params)
   }
 
-  override def getCumulatedHoursPerAssignmentForProjects(projects: util.List[Project], dateRange: DateRange): util.List[AssignmentAggregateReportElement] = {
+  override def getCumulatedHoursPerActivityForProjects(projects: util.List[Project], dateRange: DateRange): util.List[ActivityAggregateReportElement] = {
     val keys = List("dateStart", "dateEnd", "projects")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd, projects)
-    findByNamedQuery[AssignmentAggregateReportElement]("Report.getCumulatedHoursPerAssignmentOnDateForProjects", keys, params)
+    findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursPerAssignmentOnDateForProjects", keys, params)
   }
 
-  override def getCumulatedHoursForAssignment(projectAssignment: ProjectAssignment): AssignmentAggregateReportElement = {
-    val results = findByNamedQuery[AssignmentAggregateReportElement]("Report.getCumulatedHoursForAssignment", "assignment", List(projectAssignment))
+  override def getCumulatedHoursForActivity(projectActivity: Activity): ActivityAggregateReportElement = {
+    val results = findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursForAssignment", "assignment", List(projectActivity))
     getFirstOr(results, null)
   }
 
-  override def getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds: util.List[Integer]): util.List[AssignmentAggregateReportElement] = {
-    findByNamedQuery[AssignmentAggregateReportElement]("Report.getCumulatedHoursPerAssignmentForAssignmentIds", "assignmentIds", projectAssignmentIds)
+  override def getCumulatedHoursPerActivityForActivities(projectActivityIds: util.List[Integer]): util.List[ActivityAggregateReportElement] = {
+    findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursPerAssignmentForAssignmentIds", "assignmentIds", projectActivityIds)
   }
 
   override def getMinMaxDateTimesheetEntry(project: Project): DateRange = {
@@ -91,10 +91,10 @@ class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Im
     getFirstOr(results, new DateRange)
   }
 
-  override def getAssignmentsWithoutBookings(dateRange: DateRange): util.List[ProjectAssignment] = {
+  override def getActivitiesWithoutBookings(dateRange: DateRange): util.List[Activity] = {
     val keys = List("dateStart", "dateEnd")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd)
-    findByNamedQuery[ProjectAssignment]("Report.getAssignmentsWithoutBookings", keys, params)
+    findByNamedQuery[Activity]("Report.getActivitiesWithoutBookings", keys, params)
   }
 
   private def getFirstOr[A](results: util.List[A], or: => A):A = {

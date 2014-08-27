@@ -19,7 +19,7 @@ package net.rrm.ehour.persistence.report.dao;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.util.DomainUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,32 +66,33 @@ public class ReportAggregatedDaoHibernateImplTest extends AbstractAnnotationDaoT
     }
 
     @Test
-    public void shouldGetCumulatedHoursPerAssignmentForUserAndDate() {
+    public void shouldGetCumulatedHoursPerActivityForUserAndDate() {
         DateRange dateRange = new DateRange(OCT_1_2006, new Date(2007 - 1900, 10, 30));
 
         List<User> users = Arrays.asList(UserObjectMother.createUser());
 
-        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, dateRange);
+        List<ActivityAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, dateRange);
 
         // test if collection is properly initialized
-        AssignmentAggregateReportElement rep = results.get(0);
-        assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
+        ActivityAggregateReportElement rep = results.get(0);
+        assertEquals("eHour", rep.getActivity().getProject().getName());
 
         rep = results.get(0);
-        assertEquals(3676.5f, rep.getTurnOver().floatValue(), 0.1);
+        //TODO-NK Need to figure out the turnover implementation in case of Activity
+        assertEquals(0, rep.getTurnOver().floatValue(), 0.1);
 
         assertEquals(3, results.size());
     }
 
     @Test
-    public void shouldGetCumulatedHoursPerAssignmentForUser() {
+    public void shouldGetCumulatedHoursPerActivityForUser() {
         List<User> users = Arrays.asList(UserObjectMother.createUser(), new User(2));
 
-        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users);
+        List<ActivityAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users);
 
         // test if collection is properly initialized
-        AssignmentAggregateReportElement rep = results.get(0);
-        assertEquals("eHour", rep.getProjectAssignment().getProject().getName());
+        ActivityAggregateReportElement rep = results.get(0);
+        assertEquals("eHour", rep.getActivity().getProject().getName());
 
         assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
 
@@ -99,52 +100,52 @@ public class ReportAggregatedDaoHibernateImplTest extends AbstractAnnotationDaoT
     }
 
     @Test
-    public void shouldGetCumulatedHoursPerAssignmentForUserProject() {
+    public void shouldGetCumulatedHoursPerActivityForUserProject() {
         List<User> users = Arrays.asList(UserObjectMother.createUser());
         List<Project> projects = Arrays.asList(ProjectObjectMother.createProject(1));
 
-        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, projects);
+        List<ActivityAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, projects);
 
         // test if collection is properly initialized
-        AssignmentAggregateReportElement rep = results.get(0);
+        ActivityAggregateReportElement rep = results.get(0);
         assertEquals(38.7f, rep.getHours().floatValue(), 0.1);
 
         assertEquals(2, results.size());
     }
 
     @Test
-    public void shouldGetCumulatedHoursPerAssignmentForUserProjectDate() {
+    public void shouldGetCumulatedHoursPerActivityForUserProjectDate() {
         DateRange dateRange = OCT_1_TO_4;
         List<User> users = Arrays.asList(UserObjectMother.createUser());
         List<Project> projects = Arrays.asList(ProjectObjectMother.createProject(1));
 
-        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, projects, dateRange);
+        List<ActivityAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, projects, dateRange);
 
-        AssignmentAggregateReportElement rep = results.get(0);
+        ActivityAggregateReportElement rep = results.get(0);
         assertEquals(14f, rep.getHours().floatValue(), 0.1);
 
         assertEquals(2, results.size());
     }
 
     @Test
-    public void shouldGetCumulatedHoursPerAssignment() {
-        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignment(OCT_1_TO_4);
+    public void shouldGetCumulatedHoursPerActivity() {
+        List<ActivityAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerActivity(OCT_1_TO_4);
 
         assertEquals(3, results.size());
     }
 
     @Test
-    public void shouldGetCumulatedHoursPerAssignmentForProjects() {
+    public void shouldGetCumulatedHoursPerActivityForProjects() {
         List<Project> projects = Arrays.asList(ProjectObjectMother.createProject(1));
 
-        List<AssignmentAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, OCT_1_TO_4);
+        List<ActivityAggregateReportElement> results = reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(projects, OCT_1_TO_4);
 
         assertEquals(2, results.size());
     }
 
     @Test
-    public void shouldGetAssignmentsWithoutHours() {
-        List<ProjectAssignment> assignments = reportAggregatedDAO.getAssignmentsWithoutBookings(OCT_1_TO_4);
+    public void shouldGetActivitysWithoutHours() {
+        List<Activity> assignments = reportAggregatedDAO.getActivitiesWithoutBookings(OCT_1_TO_4);
 
         List<Integer> assignmentIds = DomainUtil.getIdsFromDomainObjects(assignments);
         Collections.sort(assignmentIds);

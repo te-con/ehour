@@ -77,9 +77,9 @@ class TimesheetLockServiceSpringImplSpec extends AbstractSpec {
       val entryA = TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5)
       val entryB = TimesheetEntryObjectMother.createTimesheetEntry(1, new DateTime().plusDays(1).toDate, 8)
       val entryC = TimesheetEntryObjectMother.createTimesheetEntry(2, new Date(), 4)
-      entryA.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
-      entryB.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
-      entryC.getEntryId.getProjectAssignment.getUser.setUsername("boplin")
+      entryA.getEntryId.getActivity.getAssignedUser.setUsername("aplin")
+      entryB.getEntryId.getActivity.getAssignedUser.setUsername("aplin")
+      entryC.getEntryId.getActivity.getAssignedUser.setUsername("boplin")
 
       when(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate))).thenReturn(Lists.newArrayList(entryA, entryB, entryC))
 
@@ -97,13 +97,13 @@ class TimesheetLockServiceSpringImplSpec extends AbstractSpec {
       val entryA = TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5)
       val entryB = TimesheetEntryObjectMother.createTimesheetEntry(1, new DateTime().plusDays(1).toDate, 8)
       val entryC = TimesheetEntryObjectMother.createTimesheetEntry(2, new Date(), 4)
-      entryA.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
-      entryB.getEntryId.getProjectAssignment.getUser.setUsername("aplin")
-      entryC.getEntryId.getProjectAssignment.getUser.setUsername("boplin")
+      entryA.getEntryId.getActivity.getAssignedUser.setUsername("aplin")
+      entryB.getEntryId.getActivity.getAssignedUser.setUsername("aplin")
+      entryC.getEntryId.getActivity.getAssignedUser.setUsername("boplin")
 
       when(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate))).thenReturn(Lists.newArrayList(entryA, entryB, entryC))
 
-      val affectedUsers = service.findAffectedUsers(startDate, endDate, List(entryC.getEntryId.getProjectAssignment.getUser))
+      val affectedUsers = service.findAffectedUsers(startDate, endDate, List(entryC.getEntryId.getActivity.getAssignedUser))
 
       affectedUsers should have size 1
       affectedUsers.head.hoursBooked should be (13)

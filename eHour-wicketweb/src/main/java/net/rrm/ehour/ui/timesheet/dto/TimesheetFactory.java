@@ -19,8 +19,8 @@ package net.rrm.ehour.ui.timesheet.dto;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
@@ -51,7 +51,7 @@ public class TimesheetFactory {
 
         Timesheet timesheet = new Timesheet();
         timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
-        List<TimesheetRow> timesheetRows = createTimesheetRows(weekOverview.getAssignmentMap(), timesheetDates, weekOverview.getProjectAssignments(), timesheet);
+        List<TimesheetRow> timesheetRows = createTimesheetRows(weekOverview.getActivityMap(), timesheetDates, weekOverview.getActivities(), timesheet);
 
         timesheet.setCustomers(structureRowsPerCustomer(timesheetRows));
         timesheet.setDateSequence(dateSequence.toArray(new Date[7]));
@@ -97,7 +97,7 @@ public class TimesheetFactory {
         SortedMap<Customer, List<TimesheetRow>> customerMap = new TreeMap<Customer, List<TimesheetRow>>();
 
         for (TimesheetRow timesheetRow : rows) {
-            Customer customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
+            Customer customer = timesheetRow.getActivity().getProject().getCustomer();
 
             List<TimesheetRow> timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new ArrayList<TimesheetRow>();
             timesheetRows.add(timesheetRow);
@@ -118,9 +118,9 @@ public class TimesheetFactory {
         }
     }
 
-    private List<TimesheetRow> createTimesheetRows(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap,
+    private List<TimesheetRow> createTimesheetRows(Map<Activity, Map<String, TimesheetEntry>> activityMap,
                                                    List<TimesheetDate> timesheetDates,
-                                                   List<ProjectAssignment> validProjectAssignments,
+                                                   List<Activity> validActivities,
                                                    Timesheet timesheet) {
         List<TimesheetRow> timesheetRows = new ArrayList<TimesheetRow>();
         Calendar firstDate = DateUtil.getCalendar(config);
@@ -129,20 +129,20 @@ public class TimesheetFactory {
             firstDate.setTime(timesheetDates.get(0).date);
         }
 
-        for (Map.Entry<ProjectAssignment, Map<String, TimesheetEntry>> assignmentEntry : assignmentMap.entrySet()) {
-            ProjectAssignment assignment = assignmentEntry.getKey();
+        for (Map.Entry<Activity, Map<String, TimesheetEntry>> activityEntry : activityMap.entrySet()) {
+            Activity activity = activityEntry.getKey();
 
             TimesheetRow timesheetRow = new TimesheetRow(config);
             timesheetRow.setTimesheet(timesheet);
-            timesheetRow.setProjectAssignment(assignment);
+            timesheetRow.setActivity(activity);
             timesheetRow.setFirstDayOfWeekDate(firstDate);
 
             // create a cell for every requested timesheetDate
             for (TimesheetDate timesheetDate : timesheetDates) {
-                TimesheetEntry entry = assignmentEntry.getValue().get(timesheetDate.formatted);
+                TimesheetEntry entry = activityEntry.getValue().get(timesheetDate.formatted);
 
                 timesheetRow.addTimesheetCell(timesheetDate.dayInWeek,
-                        createTimesheetCell(assignment, entry, timesheetDate.date, timesheetDate.locked, validProjectAssignments));
+                        createTimesheetCell(activity, entry, timesheetDate.date, timesheetDate.locked, validActivities));
             }
 
             timesheetRows.add(timesheetRow);
@@ -154,15 +154,15 @@ public class TimesheetFactory {
     /**
      * Create timesheet cell, a cell is valid when the timesheetDate is within the assignment valid range
      */
-    private TimesheetCell createTimesheetCell(ProjectAssignment assignment,
+    private TimesheetCell createTimesheetCell(Activity activity,
                                               TimesheetEntry entry,
                                               Date date,
                                               Boolean locked,
-                                              List<ProjectAssignment> validProjectAssignments) {
+                                              List<Activity> validActivities) {
         TimesheetCell cell = new TimesheetCell();
 
         cell.setTimesheetEntry(entry);
-        cell.setValid(isCellValid(assignment, validProjectAssignments, date));
+        cell.setValid(isCellValid(activity, validActivities, date));
 
         cell.setLocked(locked);
         cell.setDate(date);
@@ -174,14 +174,14 @@ public class TimesheetFactory {
      * Check if the cell is still valid. Even if they're in the timesheet entries it can be that time allotted
      * assignments are over their budget or default assignments are de-activated
      */
-    private boolean isCellValid(ProjectAssignment assignment,
-                                List<ProjectAssignment> validProjectAssignments,
+    private boolean isCellValid(Activity activity,
+                                List<Activity> validActivities,
                                 Date date) {
         // first check if it's in valid project assignments (time allotted can have values
         // but not be valid anymore)
-        boolean isValid = validProjectAssignments.contains(assignment);
+        boolean isValid = validActivities.contains(activity);
 
-        DateRange dateRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
+        DateRange dateRange = new DateRange(activity.getDateStart(), activity.getDateEnd());
 
         isValid = isValid && DateUtil.isDateWithinRange(date, dateRange);
 

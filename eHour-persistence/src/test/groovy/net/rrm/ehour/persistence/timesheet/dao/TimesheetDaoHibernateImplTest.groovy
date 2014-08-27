@@ -1,6 +1,7 @@
 package net.rrm.ehour.persistence.timesheet.dao
 
 import net.rrm.ehour.data.DateRange
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.ProjectAssignment
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
@@ -32,16 +33,20 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     }
 
     @Test
-    void shouldGetTimesheetEntriesInRangeForAssignment() {
-        Calendar dateStart = new GregorianCalendar(2006, 10 - 1, 1);
-        Calendar dateEnd = new GregorianCalendar(2006, 11 - 1, 1);
-        DateRange dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
+    void shouldGetTimesheetEntriesInRangeForActivity()
+    {
+        Calendar 	dateStart = new GregorianCalendar(2006, 10 - 1, 1);
+        Calendar 	dateEnd = new GregorianCalendar(2006, 11 - 1, 1);
+        DateRange	dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
 
-        def results = timesheetDAO.getTimesheetEntriesInRange(new ProjectAssignment(2), dateRange);
+        Activity activity = new Activity();
+        activity.setId(2);
+
+        def results = timesheetDAO.getTimesheetEntriesInRange(activity, dateRange);
 
         assertEquals(2, results.size());
     }
-
+    
     @Test
     void shouldGetTimesheetEntriesInRange() {
         Calendar dateStart = new GregorianCalendar(2006, 10 - 1, 1);
@@ -53,19 +58,21 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         assertEquals(9, results.size());
     }
 
+
     @Test
-    void shouldGetBookedHoursperDayInRange() {
-        Calendar dateStart = new GregorianCalendar(2006, 10 - 1, 1);
-        Calendar dateEnd = new GregorianCalendar(2006, 11 - 1, 1);
-        DateRange dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
+    void shouldGetBookedHoursperDayInRange()
+    {
+        Calendar 	dateStart = new GregorianCalendar(2006, 10 - 1, 1);
+        Calendar 	dateEnd = new GregorianCalendar(2006, 11 - 1, 1);
+        DateRange	dateRange = new DateRange(dateStart.getTime(), dateEnd.getTime());
 
         def results = timesheetDAO.getBookedHoursperDayInRange(new Integer(1), dateRange);
 
         assertEquals(6, results.size());
 
-        assertEquals(6.5, results[3].hours.floatValue(), 0.01);
+        assertEquals(6.5, results[3].hours, 0.01);
 
-        assertEquals(-1, results[2].hours.floatValue(), 0.01);
+        assertEquals(-1, results[2].hours, 0.01);
     }
 
     @Test
@@ -84,7 +91,7 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     void shouldGetLatestTimesheetEntryForAssignment() {
-        def entry = timesheetDAO.getLatestTimesheetEntryForAssignment(1);
+        def entry = timesheetDAO.getLatestTimesheetEntryForActivity(1);
         assertEquals(9.2f, entry.hours, 0.01f);
     }
 
@@ -95,6 +102,13 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         int deleted = timesheetDAO.deleteTimesheetEntries(ids);
 
         assertEquals(2, deleted);
+    }
+
+    @Test
+    void shouldFindAll()
+    {
+        def results = timesheetDAO.findAll();
+        assertEquals(12, results.size());
     }
 }
 

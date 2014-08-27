@@ -86,15 +86,15 @@ public class DetailedReportServiceImplTest {
     @Test
     public void should_get_all() {
         provideNoLocks();
-        provideNoAssignmentsWithoutBookings();
+        provideNoActivitiesWithoutBookings();
 
         provideNoData();
         detailedReportService.getDetailedReportData(reportCriteria);
         verify(detailedReportDao);
     }
 
-    private void provideNoAssignmentsWithoutBookings() {
-        expect(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).andReturn(Lists.<ProjectAssignment>newArrayList());
+    private void provideNoActivitiesWithoutBookings() {
+        expect(reportAggregatedDao.getActivitiesWithoutBookings(reportCriteria.getReportRange())).andReturn(Lists.<Activity>newArrayList());
         replay(reportAggregatedDao);
     }
 
@@ -107,7 +107,7 @@ public class DetailedReportServiceImplTest {
     public void should_filter_on_user() {
         provideNoLocks();
         singleUserSelected();
-        provideNoAssignmentsWithoutBookings();
+        provideNoActivitiesWithoutBookings();
 
         expect(detailedReportDao.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class))).andReturn(Arrays.asList(createFlatReportElement()));
         replay(detailedReportDao);
@@ -116,14 +116,14 @@ public class DetailedReportServiceImplTest {
     }
 
     private FlatReportElement createFlatReportElement() {
-        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-        return FlatReportElementBuilder.buildFlatReportElement(assignment);
+        Activity activity = ActivityMother.createActivity(1);
+        return FlatReportElementBuilder.buildFlatReportElement(activity);
     }
 
     @Test
     public void should_filter_on_project() {
         provideNoLocks();
-        provideNoAssignmentsWithoutBookings();
+        provideNoActivitiesWithoutBookings();
         singleProjectSelected();
 
         expect(detailedReportDao.getHoursPerDayForProjects(isA(List.class), isA(DateRange.class))).andReturn(new ArrayList<FlatReportElement>());
@@ -137,7 +137,7 @@ public class DetailedReportServiceImplTest {
         provideNoLocks();
         singleProjectSelected();
         singleUserSelected();
-        provideNoAssignmentsWithoutBookings();
+        provideNoActivitiesWithoutBookings();
 
         expect(detailedReportDao.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
                 .andReturn(new ArrayList<FlatReportElement>());
@@ -153,7 +153,7 @@ public class DetailedReportServiceImplTest {
     @Test
     public void should_filter_on_user_department() {
         provideNoLocks();
-        provideNoAssignmentsWithoutBookings();
+        provideNoActivitiesWithoutBookings();
         singleProjectSelected();
         List<UserDepartment> departments = Arrays.asList(new UserDepartment(1));
         userSelectedCriteria.setDepartments(departments);
@@ -175,7 +175,7 @@ public class DetailedReportServiceImplTest {
     public void should_add_locked_days_to_detailed_report() {
         DateTime dateTime = new DateTime(reportCriteria.getReportRange().getDateStart());
         Interval interval = new Interval(dateTime, dateTime);
-        provideNoAssignmentsWithoutBookings();
+        provideNoActivitiesWithoutBookings();
 
         expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
                 .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.newArrayList(interval)));
@@ -200,7 +200,7 @@ public class DetailedReportServiceImplTest {
     @Test
     public void should_only_include_billable_without_customer_or_project_selection() {
         provideNoLocks();
-        provideNoAssignmentsWithoutBookings();
+        provideNoActivitiesWithoutBookings();
 
         userSelectedCriteria.setOnlyBillableProjects(true);
 
@@ -229,7 +229,7 @@ public class DetailedReportServiceImplTest {
     public void should_provide_assignments_without_bookings() {
         provideNoLocks();
 
-        expect(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).andReturn(Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1)));
+        expect(reportAggregatedDao.getActivitiesWithoutBookings(reportCriteria.getReportRange())).andReturn(Arrays.asList(ActivityMother.createActivity(1)));
         replay(reportAggregatedDao);
 
         userSelectedCriteria.setShowZeroBookings(true);

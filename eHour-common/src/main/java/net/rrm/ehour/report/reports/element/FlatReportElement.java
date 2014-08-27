@@ -33,8 +33,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private String customerName;
     private String customerCode;
     private Number totalHours = 0;
-    private Number totalTurnOver = 0;
-    private Number rate = 0;
     private String entryDate;
     private Integer userId;
     private String userLastName;
@@ -42,8 +40,8 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private Integer projectId;
     private String projectName;
     private String projectCode;
-    private Integer assignmentId;
-    private String role;
+    private Integer activityId;
+    private String activityName;
     private Date dayDate;
     private String comment;
     private Integer displayOrder;
@@ -59,8 +57,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         customerName = clone.customerName;
         customerCode = clone.customerCode;
         totalHours = clone.totalHours;
-        totalTurnOver = clone.totalTurnOver;
-        rate = clone.rate;
+
         entryDate = clone.entryDate;
         userId = clone.userId;
         userLastName = clone.userLastName;
@@ -68,8 +65,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         projectId = clone.projectId;
         projectName = clone.projectName;
         projectCode = clone.projectCode;
-        assignmentId = clone.assignmentId;
-        role = clone.role;
+        activityId = clone.activityId;
         dayDate = clone.dayDate;
         comment = clone.comment;
         displayOrder = clone.displayOrder;
@@ -94,15 +90,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
 
     public void setLockableDate(LockableDate lockableDate) {
         this.lockableDate = lockableDate;
-    }
-
-    public Number getRate() {
-        return rate;
-    }
-
-
-    public void setRate(Number rate) {
-        this.rate = rate;
     }
 
     /**
@@ -160,20 +147,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
      */
     public void setTotalHours(Number totalHours) {
         this.totalHours = totalHours;
-    }
-
-    /**
-     * @return the totalTurnOver
-     */
-    public Number getTotalTurnOver() {
-        return totalTurnOver == null ? 0 : totalTurnOver;
-    }
-
-    /**
-     * @param totalTurnOver the totalTurnOver to set
-     */
-    public void setTotalTurnOver(Number totalTurnOver) {
-        this.totalTurnOver = totalTurnOver;
     }
 
     /**
@@ -262,34 +235,18 @@ public class FlatReportElement implements ProjectStructuredReportElement {
 
 
     /**
-     * @return the role
+     * @return the activityId
      */
-    public String getRole() {
-        return role;
+    public Integer getActivityId() {
+        return activityId;
     }
 
 
     /**
-     * @param role the role to set
+     * @param activityId the activityId to set
      */
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-
-    /**
-     * @return the assignmentId
-     */
-    public Integer getAssignmentId() {
-        return assignmentId;
-    }
-
-
-    /**
-     * @param assignmentId the assignmentId to set
-     */
-    public void setAssignmentId(Integer assignmentId) {
-        this.assignmentId = assignmentId;
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 
     /**
@@ -317,7 +274,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("assignmentId", assignmentId)
+                .append("activityId", activityId)
                 .append("date", dayDate)
                 .append("totalHours", totalHours)
                 .toString();
@@ -333,11 +290,10 @@ public class FlatReportElement implements ProjectStructuredReportElement {
 
         FlatReportElement rhs = (FlatReportElement) object;
         return new EqualsBuilder()
-                .append(this.assignmentId, rhs.getAssignmentId())
+                .append(this.activityId, rhs.getActivityId())
                 .append(this.dayDate, rhs.getDayDate())
                 .append(this.entryDate, rhs.getEntryDate())
                 .append(this.totalHours, rhs.getTotalHours())
-                .append(this.totalTurnOver, rhs.getTotalTurnOver())
                 .append(this.displayOrder, rhs.getDisplayOrder())
                 .isEquals();
     }
@@ -347,11 +303,10 @@ public class FlatReportElement implements ProjectStructuredReportElement {
      */
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(this.assignmentId)
+                .append(this.activityId)
                 .append(this.dayDate)
                 .append(this.entryDate)
                 .append(this.totalHours)
-                .append(this.totalTurnOver)
                 .append(this.displayOrder)
                 .toHashCode();
     }
@@ -390,5 +345,13 @@ public class FlatReportElement implements ProjectStructuredReportElement {
      */
     public void setDisplayOrder(Integer displayOrder) {
         this.displayOrder = displayOrder;
+    }
+
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
     }
 }

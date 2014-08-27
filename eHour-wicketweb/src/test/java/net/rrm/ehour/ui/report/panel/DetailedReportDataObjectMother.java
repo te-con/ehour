@@ -33,7 +33,7 @@ public class DetailedReportDataObjectMother {
 
         {
             FlatReportElement fre = new FlatReportElement();
-            fre.setAssignmentId(1);
+            fre.setActivityId(1);
             fre.setComment("ja hallo");
             fre.setCustomerCode("AA");
             fre.setCustomerId(1);
@@ -42,7 +42,6 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(1);
             fre.setEntryDate("492007");
             fre.setTotalHours(5);
-            fre.setTotalTurnOver(15);
             fre.setProjectId(1);
             fre.setProjectName("PRJ");
             fre.setProjectCode("PRJ");
@@ -52,7 +51,7 @@ public class DetailedReportDataObjectMother {
 
         {
             FlatReportElement fre = new FlatReportElement();
-            fre.setAssignmentId(1);
+            fre.setActivityId(1);
             fre.setComment("ja hallo");
             fre.setCustomerCode("AA");
             fre.setCustomerId(1);
@@ -61,7 +60,6 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(1);
             fre.setEntryDate("492007");
             fre.setTotalHours(6);
-            fre.setTotalTurnOver(16);
             fre.setProjectId(1);
             fre.setProjectName("PRJ");
             fre.setProjectCode("PRJ");
@@ -72,7 +70,7 @@ public class DetailedReportDataObjectMother {
 
         {
             FlatReportElement fre = new FlatReportElement();
-            fre.setAssignmentId(2);
+            fre.setActivityId(2);
             fre.setComment("ja hallo");
             fre.setCustomerCode("AA");
             fre.setCustomerId(1);
@@ -81,7 +79,6 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(1);
             fre.setEntryDate("492007");
             fre.setTotalHours(7);
-            fre.setTotalTurnOver(17);
             fre.setProjectId(1);
             fre.setProjectName("PRJ");
             fre.setProjectCode("PRJ");
@@ -92,7 +89,7 @@ public class DetailedReportDataObjectMother {
 
         {
             FlatReportElement fre = new FlatReportElement();
-            fre.setAssignmentId(2);
+            fre.setActivityId(2);
             fre.setComment("ja hallo");
             fre.setCustomerCode("AA");
             fre.setCustomerId(1);
@@ -101,7 +98,6 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(2);
             fre.setEntryDate("492007");
             fre.setTotalHours(8);
-            fre.setTotalTurnOver(18);
             fre.setProjectId(1);
             fre.setProjectName("PRJ");
             fre.setProjectCode("PRJ");
@@ -112,7 +108,7 @@ public class DetailedReportDataObjectMother {
 
         {
             FlatReportElement fre = new FlatReportElement();
-            fre.setAssignmentId(3);
+            fre.setActivityId(3);
             fre.setComment("ja hallo");
             fre.setCustomerCode("AA");
             fre.setCustomerId(1);
@@ -121,7 +117,6 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(2);
             fre.setEntryDate("492007");
             fre.setTotalHours(8.25);
-            fre.setTotalTurnOver(18);
             fre.setProjectId(2);
             fre.setProjectName("PRJB");
             fre.setProjectCode("PRJB");

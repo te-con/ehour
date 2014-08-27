@@ -16,8 +16,9 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
+import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
@@ -40,11 +41,11 @@ public class TimesheetRow implements Serializable
 {
 	private static final long serialVersionUID = -5800367771424869244L;
 
-	private ProjectAssignment	projectAssignment;
+	private Activity            activity;
+	private ActivityStatus      activityStatus;
 	private	TimesheetCell[]		timesheetCells;
 	private	Calendar			firstDayOfWeekDate;
 	private Timesheet			timesheet; // parent timesheet
-	private ProjectAssignmentStatus assignmentStatus;
 	private EhourConfig			config;
 
 	
@@ -68,32 +69,16 @@ public class TimesheetRow implements Serializable
 	{
 		this.config = config;
 	}
-
-	/**
-	 * @return the assignmentStatus
-	 */
-	public ProjectAssignmentStatus getAssignmentStatus()
-	{
-		return assignmentStatus;
-	}
-
-	/**
-	 * @param assignmentStatus the assignmentStatus to set
-	 */
-	public void setAssignmentStatus(ProjectAssignmentStatus assignmentStatus)
-	{
-		this.assignmentStatus = assignmentStatus;
-	}
 	
-	/**
-	 * Get status
-	 * @return
-	 */
-	public String getStatus()
-	{
-        if (assignmentStatus != null && assignmentStatus.getAggregate() != null && assignmentStatus.getAggregate().getAvailableHours() != null
-                && assignmentStatus.getAggregate().getAvailableHours().or(0f) < 0) {
-            AvailableHours hours = new AvailableHours((int) (getAssignmentStatus().getAggregate().getAvailableHours().or(0f) * -1));
+    /**
+     * Get status
+     * @return
+     */
+    public String getStatus()
+    {
+        if (activityStatus != null && activityStatus.getAggregate() != null && activityStatus.getAggregate().getAvailableHours() != null
+                && activityStatus.getAggregate().getAvailableHours().or(0f) < 0) {
+            AvailableHours hours = new AvailableHours((int) (activityStatus.getAggregate().getAvailableHours().or(0f) * -1));
 
             Localizer localizer = Application.get().getResourceSettings().getLocalizer();
 
@@ -103,53 +88,6 @@ public class TimesheetRow implements Serializable
         return "<br />";
     }
 
-	/**
-	 * 
-	 */
-	public void bookRemainingHoursOnRow()
-	{
-		// only for monday - friday
-		for (int day = 1; day <= 5; day++)
-		{
-			float remaining = timesheet.getRemainingHoursForDay(day);
-			
-			if (remaining > 0)
-			{
-				TimesheetEntry  entry = timesheetCells[day].getTimesheetEntry();
-				
-				if (entry == null)
-				{
-					entry = new TimesheetEntry();
-				}
-				
-				if (entry.getHours() == null)
-				{
-					entry.setHours(remaining);
-				}
-				else
-				{
-					entry.setHours(entry.getHours() + remaining);
-				}
-				
-				timesheetCells[day].setTimesheetEntry(entry);
-			}
-		}
-	}
-	
-	/**
-	 * @return the projectAssignment
-	 */
-	public ProjectAssignment getProjectAssignment()
-	{
-		return projectAssignment;
-	}
-	/**
-	 * @param projectAssignment the projectAssignment to set
-	 */
-	public void setProjectAssignment(ProjectAssignment projectAssignment)
-	{
-		this.projectAssignment = projectAssignment;
-	}
 	/**
 	 * @return the timesheetCells
 	 */
@@ -203,13 +141,12 @@ public class TimesheetRow implements Serializable
                     // new entries got empty entry id
                     if (timesheetCell.getTimesheetEntry().getEntryId() == null) {
                         TimesheetEntryId id = new TimesheetEntryId();
-
-                        id.setProjectAssignment(getProjectAssignment());
+                        id.setActivity(getActivity());
                         id.setEntryDate(timesheetCell.getDate());
 
                         timesheetCell.getTimesheetEntry().setEntryId(id);
                     } else {
-                        timesheetCell.getTimesheetEntry().getEntryId().setProjectAssignment(getProjectAssignment());
+                        timesheetCell.getTimesheetEntry().getEntryId().setActivity(getActivity());
                     }
 
                     entries.add(timesheetCell.getTimesheetEntry());
@@ -218,6 +155,22 @@ public class TimesheetRow implements Serializable
 		}
 		
 		return entries;
+	}
+
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+
+	public ActivityStatus getActivityStatus() {
+		return activityStatus;
+	}
+
+	public void setActivityStatus(ActivityStatus activityStatus) {
+		this.activityStatus = activityStatus;
 	}
 
 	/**
@@ -273,7 +226,7 @@ public class TimesheetRow implements Serializable
         }
         TimesheetRow castOther = (TimesheetRow) other;
         return new EqualsBuilder()
-                .append(projectAssignment, castOther.projectAssignment)
+                .append(activity, castOther.activity)
                 .isEquals();
     }
 
@@ -282,7 +235,7 @@ public class TimesheetRow implements Serializable
     public int hashCode()
     {
         return new HashCodeBuilder()
-                .append(projectAssignment)
+                .append(activity)
                 .toHashCode();
     }
 	

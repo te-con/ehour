@@ -139,7 +139,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 item.add(projectNameContainer);
                 setProjectLabelWidth(projectNameContainer);
 
-                Project project = projectStatus.getProjectAssignment().getProject();
+                Project project = projectStatus.getActivity().getProject();
                 Label projectLabel = new Label("projectName", project.getName());
                 projectLabel.setMarkupId(String.format("prjN%d", project.getProjectId()));
                 projectLabel.setOutputMarkupId(true);
@@ -158,8 +158,8 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 projectCodeLabel.setOutputMarkupId(true);
                 item.add(projectCodeLabel);
 
-                Float hourlyRate = projectStatus.getProjectAssignment().getHourlyRate();
-                Label rateLabel = hourlyRate != null ? new CurrencyLabel("rate", hourlyRate) : new Label("rate", "--");
+                // TODO-NK No Hourly rate for Activity
+                Label rateLabel = new Label("rate", "--");
                 rateLabel.setEscapeModelStrings(false);
                 setRateWidthOrHide(rateLabel);
                 item.add(rateLabel);
@@ -221,6 +221,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         return foldImg;
     }
 
+    // Activity are always of Alloted Types
     private Component createProjectSummaryRow(String id, UserProjectStatus projectStatus) {
         // SummaryRow placeholder
         WebMarkupContainer container = new WebMarkupContainer(id);
@@ -229,15 +230,14 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         container.setVisible(false);
 
         // valid from until label
-        DateModel startDate = new DateModel(projectStatus.getProjectAssignment().getDateStart(), getConfig());
-        DateModel endDate = new DateModel(projectStatus.getProjectAssignment().getDateEnd(), getConfig());
+        DateModel startDate = new DateModel(projectStatus.getActivity().getDateStart(), getConfig());
+        DateModel endDate = new DateModel(projectStatus.getActivity().getDateEnd(), getConfig());
         Label validityLabel = new Label("overview.validity", new MessageResourceModel("overview.validity", this, startDate, endDate));
         validityLabel.setEscapeModelStrings(false);
         container.add(validityLabel);
 
         WebMarkupContainer cont = new WebMarkupContainer("remainingHoursLabel");
         // only shown for allotted types
-        cont.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
 
         Number bookedHours = projectStatus.getTotalBookedHours();
         float totalBookedHours = (bookedHours != null) ? projectStatus.getTotalBookedHours().floatValue() : 0;
@@ -245,12 +245,10 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         cont.add(new Label("overview.totalbooked", new MessageResourceModel("overview.totalbooked", this, totalBookedHours)));
 
         Label remainingLabel = new Label("overview.remainingfixed", new MessageResourceModel("overview.remainingfixed", this, projectStatus.getFixedHoursRemaining()));
-        remainingLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isAllottedType());
         cont.add(remainingLabel);
 
         Label remainingFlexLabel = new Label("overview.remainingflex", new MessageResourceModel("overview.remainingflex", this, projectStatus.getFlexHoursRemaining()));
         // only shown for flex allotted types
-        remainingFlexLabel.setVisible(projectStatus.getProjectAssignment().getAssignmentType().isFlexAllottedType());
         cont.add(remainingFlexLabel);
 
         container.add(cont);

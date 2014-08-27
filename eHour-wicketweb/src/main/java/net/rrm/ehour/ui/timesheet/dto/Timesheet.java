@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
+import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
@@ -50,11 +51,13 @@ public class Timesheet implements Serializable {
      *
      * @param failedProjectStatusses
      */
-    public void updateFailedProjects(List<ProjectAssignmentStatus> failedProjectStatusses) {
+    public void updateFailedProjects(List<ActivityStatus> failedProjectStatusses)
+    {
         clearAssignmentStatus();
 
-        for (ProjectAssignmentStatus projectAssignmentStatus : failedProjectStatusses) {
-            setAssignmentStatus(projectAssignmentStatus);
+        for (ActivityStatus	activityStatus : failedProjectStatusses)
+        {
+            setAssignmentStatus(activityStatus);
         }
     }
 
@@ -63,11 +66,15 @@ public class Timesheet implements Serializable {
      *
      * @param status
      */
-    private void setAssignmentStatus(ProjectAssignmentStatus status) {
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
-                if (row.getProjectAssignment().equals(status.getAggregate().getProjectAssignment())) {
-                    row.setAssignmentStatus(status);
+    private void setAssignmentStatus(ActivityStatus status)
+    {
+        for (Customer customer : customers.keySet())
+        {
+            for (TimesheetRow row : customers.get(customer))
+            {
+                if (row.getActivity().equals(status.getAggregate().getActivity()))
+                {
+                    row.setActivityStatus(status);
                     return;
                 }
             }
@@ -78,9 +85,11 @@ public class Timesheet implements Serializable {
      * Clear each assignment status
      */
     private void clearAssignmentStatus() {
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
-                row.setAssignmentStatus(null);
+        for (Customer customer : customers.keySet())
+        {
+            for (TimesheetRow row : customers.get(customer))
+            {
+                row.setActivityStatus(null);
             }
         }
     }

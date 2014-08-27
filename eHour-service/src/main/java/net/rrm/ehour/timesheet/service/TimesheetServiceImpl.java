@@ -17,14 +17,14 @@
 package net.rrm.ehour.timesheet.service;
 
 import com.google.common.collect.Lists;
+import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
@@ -37,16 +37,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import scala.collection.Seq;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Provides services for displaying and manipulating timesheets.
- * Methods are organized by their functionality rather than technical impact.
- *
+ * Methods are organized by their functionality rather than technical impact. 
  * @author Thies
+ *
  */
 @Service("timesheetService")
-public class TimesheetServiceImpl implements IOverviewTimesheet {
+public class TimesheetServiceImpl implements IOverviewTimesheet
+{
     private TimesheetDao timesheetDAO;
 
     private TimesheetCommentDao timesheetCommentDAO;
@@ -55,7 +57,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
 
     private AggregateReportService aggregateReportService;
 
-    private ProjectAssignmentService projectAssignmentService;
+    private ActivityService activityService;
 
     private EhourConfig configuration;
 
@@ -64,13 +66,13 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
                                 TimesheetCommentDao timesheetCommentDAO,
                                 TimesheetLockService timesheetLockService,
                                 AggregateReportService aggregateReportService,
-                                ProjectAssignmentService projectAssignmentService,
+                                ActivityService activityService,
                                 EhourConfig configuration) {
         this.timesheetDAO = timesheetDAO;
         this.timesheetCommentDAO = timesheetCommentDAO;
         this.timesheetLockService = timesheetLockService;
         this.aggregateReportService = aggregateReportService;
-        this.projectAssignmentService = projectAssignmentService;
+        this.activityService = activityService;
         this.configuration = configuration;
     }
 
@@ -78,7 +80,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
      * requested month and a list with all timesheet entries for that month.
      *
-     * @param userId
+     * @param user
      * @param requestedMonth only the month and year of the calendar is used
      * @return TimesheetOverviewAction
      * @throws ObjectNotFoundException
@@ -105,31 +107,27 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      * @return
      */
     private SortedSet<UserProjectStatus> getProjectStatus(Integer userId, DateRange monthRange) {
-        List<Integer> assignmentIds = Lists.newArrayList();
+        List<Integer> activityIds = Lists.newArrayList();
         SortedSet<UserProjectStatus> userProjectStatus = new TreeSet<UserProjectStatus>();
-        Map<Integer, AssignmentAggregateReportElement> originalAggregates = new HashMap<Integer, AssignmentAggregateReportElement>();
+        List<ActivityAggregateReportElement> timeAllottedAggregates;
+        Map<Integer, ActivityAggregateReportElement> originalAggregates = new HashMap<Integer, ActivityAggregateReportElement>();
+        Integer activityId;
 
-        List<AssignmentAggregateReportElement> aggregates = aggregateReportService.getHoursPerAssignmentInRange(userId, monthRange);
+        List<ActivityAggregateReportElement> aggregates = aggregateReportService.getHoursPerActivityInRange(userId, monthRange);
 
-        // only flex & fixed needed, others can already be added to the returned list
-        for (AssignmentAggregateReportElement aggregate : aggregates) {
-            if (aggregate.getProjectAssignment().getAssignmentType().isFixedAllottedType() ||
-                    aggregate.getProjectAssignment().getAssignmentType().isFlexAllottedType()) {
-                Integer assignmentId = aggregate.getProjectAssignment().getAssignmentId();
-                assignmentIds.add(assignmentId);
-                originalAggregates.put(assignmentId, aggregate);
-            } else {
-                userProjectStatus.add(new UserProjectStatus(aggregate));
-            }
+        // it's all allotted
+        for (ActivityAggregateReportElement aggregate : aggregates) {
+            activityId = aggregate.getActivity().getId();
+            activityIds.add(activityId);
+            originalAggregates.put(activityId, aggregate);
         }
 
         // fetch total hours for flex/fixed assignments
-        if (assignmentIds.size() > 0) {
-            List<AssignmentAggregateReportElement> timeAllottedAggregates = aggregateReportService.getHoursPerAssignment(assignmentIds);
+        if (activityIds.size() > 0) {
+            timeAllottedAggregates = aggregateReportService.getHoursPerActivity(activityIds);
 
-            for (AssignmentAggregateReportElement aggregate : timeAllottedAggregates) {
-                userProjectStatus.add(new UserProjectStatus(originalAggregates.get(aggregate.getProjectAssignment().getAssignmentId()),
-                        aggregate.getHours()));
+            for (ActivityAggregateReportElement aggregate : timeAllottedAggregates) {
+                userProjectStatus.add(new UserProjectStatus(originalAggregates.get(aggregate.getActivity().getId()), aggregate.getHours()));
             }
         }
 
@@ -161,6 +159,8 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
 
         return fullyBookedDays;
     }
+
+
 
     /**
      * Put the timesheet entries in a map where the day is the key and
@@ -212,11 +212,12 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
 
         List<TimesheetEntry> timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), range);
         TimesheetComment comment = timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart()));
-        List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range);
+
+        List<Activity> activities = activityService.getActivitiesForUser(user.getUserId(), range);
 
         Seq<Interval> lockedDatesAsIntervals = timesheetLockService.findLockedDatesInRange(range.getDateStart(), range.getDateEnd(), user);
         List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);
 
-        return new WeekOverview(timesheetEntries, comment, assignments, range, user, lockedDates);
+        return new WeekOverview(timesheetEntries, comment, activities, range, user, lockedDates);
     }
 }

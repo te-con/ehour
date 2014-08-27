@@ -16,11 +16,11 @@
 
 package net.rrm.ehour.ui.timesheet.model;
 
+import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.timesheet.service.IPersistTimesheet;
@@ -61,7 +61,7 @@ public class TimesheetModel implements IModel<Timesheet> {
         timesheet = load();
     }
 
-    public List<ProjectAssignmentStatus> persistTimesheet() {
+    public List<ActivityStatus> persistTimesheet() {
         WebUtils.springInjection(this);
 
         Timesheet timesheet = getObject();

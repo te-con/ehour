@@ -93,8 +93,6 @@ public abstract class ReportNode implements Serializable {
 
     /**
      * Process aggregate
-     *
-     * @param aggregate
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -157,9 +155,6 @@ public abstract class ReportNode implements Serializable {
 
     /**
      * Process aggregate for this value? Only process aggregates that got the same id
-     *
-     * @param aggregate
-     * @param forId
      * @return
      */
     private boolean shouldProcessElement(ReportElement reportElement) {
@@ -192,25 +187,6 @@ public abstract class ReportNode implements Serializable {
         }
 
         return totalHours;
-    }
-
-    /**
-     * Get turnover
-     *
-     * @return
-     */
-    public Number getTurnover() {
-        float totalTurnover = 0;
-
-        for (ReportNode reportNode : reportNodes) {
-            Number turnOver = reportNode.getTurnover();
-
-            if (turnOver != null) {
-                totalTurnover += turnOver.floatValue();
-            }
-        }
-
-        return totalTurnover;
     }
 
     /**

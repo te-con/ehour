@@ -9,6 +9,7 @@ import net.rrm.ehour.domain.Configuration
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao
 import org.apache.commons.io.FileUtils
 import org.junit.Before
+import org.junit.Ignore;
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -75,6 +76,7 @@ class ImportServiceImplTest
   }
 
   @Test
+  @Ignore
   void shouldImport()
   {
     def version = new Configuration("version", "0.8.3")

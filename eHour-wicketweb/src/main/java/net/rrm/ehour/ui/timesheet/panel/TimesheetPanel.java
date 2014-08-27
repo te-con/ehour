@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
+import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
@@ -241,7 +241,8 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         parent.add(resetButton);
     }
 
-    private void addFailedProjectMessages(List<ProjectAssignmentStatus> failedProjects, final AjaxRequestTarget target) {
+    private void addFailedProjectMessages(List<ActivityStatus> failedProjects, final AjaxRequestTarget target)
+    {
         ((Timesheet) getDefaultModelObject()).updateFailedProjects(failedProjects);
 
         timesheetForm.visitChildren(Label.class, new IVisitor<Label, Void>() {
@@ -334,7 +335,11 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.WEEK_NAV));
     }
 
-    private List<ProjectAssignmentStatus> persistTimesheetEntries() {
+    /**
+     * Persist timesheet entries
+     */
+    private List<ActivityStatus> persistTimesheetEntries()
+    {
         return ((TimesheetModel) getDefaultModel()).persistTimesheet();
     }
 
@@ -371,7 +376,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         @Override
         protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-            List<ProjectAssignmentStatus> failedProjects = persistTimesheetEntries();
+            List<ActivityStatus> failedProjects = persistTimesheetEntries();
 
             if (failedProjects.isEmpty()) {
                 target.add(updatePostPersistMessage());

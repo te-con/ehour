@@ -18,7 +18,7 @@ package net.rrm.ehour.timesheet.dto;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
@@ -36,62 +36,63 @@ import java.util.Map;
 
 public class WeekOverview implements Serializable {
     private static final long serialVersionUID = -3281374385102106958L;
-    private final Map<ProjectAssignment,Map<String,TimesheetEntry>> assignmentMap;
+    private final Map<Activity, Map<String, TimesheetEntry>> activityMap;
 
     public final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 
     private List<TimesheetEntry> timesheetEntries;
     private TimesheetComment comment;
-    private List<ProjectAssignment> projectAssignments;
     private DateRange weekRange;
     private User user;
     private List<Date> lockedDays;
 
-    public WeekOverview(List<TimesheetEntry> timesheetEntries, List<ProjectAssignment> projectAssignments) {
-        this.timesheetEntries = timesheetEntries;
-        this.projectAssignments = projectAssignments;
+    private List<Activity> activities;
 
-        assignmentMap = mergeUnbookedAssignments(createAssignmentMap());
+    public WeekOverview(List<TimesheetEntry> timesheetEntries, List<Activity> activities) {
+        this.timesheetEntries = timesheetEntries;
+        this.activities = activities;
+
+        activityMap = mergeUnbookedActivities(createActivityMap());
         weekRange = new DateRange(new Date(), new Date());
         lockedDays = Lists.newArrayList();
     }
 
-    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<ProjectAssignment> projectAssignments, DateRange weekRange, User user, List<Date> lockedDates) {
-        this(timesheetEntries, projectAssignments);
+    public WeekOverview(List<TimesheetEntry> timesheetEntries, TimesheetComment comment, List<Activity> activities, DateRange weekRange, User user, List<Date> lockedDates) {
+        this(timesheetEntries, activities);
         this.comment = comment;
         this.weekRange = weekRange;
         this.user = user;
         this.lockedDays = lockedDates;
     }
 
-    public Map<ProjectAssignment, Map<String, TimesheetEntry>> getAssignmentMap() {
-        return assignmentMap;
+    public Map<Activity, Map<String, TimesheetEntry>> getActivityMap() {
+        return activityMap;
     }
 
-    private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap() {
-        Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap = new HashMap<ProjectAssignment, Map<String, TimesheetEntry>>();
+    private Map<Activity, Map<String, TimesheetEntry>> createActivityMap() {
+        Map<Activity, Map<String, TimesheetEntry>> activityMap = new HashMap<Activity, Map<String, TimesheetEntry>>();
 
         for (TimesheetEntry entry : getTimesheetEntries()) {
-            ProjectAssignment assignment = entry.getEntryId().getProjectAssignment();
+            Activity activity = entry.getEntryId().getActivity();
 
-            Map<String, TimesheetEntry> entryDateMap = assignmentMap.containsKey(assignment) ? assignmentMap.get(assignment) : new HashMap<String, TimesheetEntry>();
+            Map<String, TimesheetEntry> entryDateMap = activityMap.containsKey(activity) ? activityMap.get(activity) : new HashMap<String, TimesheetEntry>();
 
             entryDateMap.put(formatter.format(entry.getEntryId().getEntryDate()), entry);
 
-            assignmentMap.put(assignment, entryDateMap);
+            activityMap.put(activity, entryDateMap);
         }
 
-        return assignmentMap;
+        return activityMap;
     }
 
     /**
      * Merge unused project assignments into the week overview
      */
-    private Map<ProjectAssignment, Map<String, TimesheetEntry>> mergeUnbookedAssignments(Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap) {
-        if (getProjectAssignments() != null) {
-            for (ProjectAssignment assignment : getProjectAssignments()) {
-                if (!assignmentMap.containsKey(assignment)) {
-                    assignmentMap.put(assignment, new HashMap<String, TimesheetEntry>());
+    private Map<Activity, Map<String, TimesheetEntry>> mergeUnbookedActivities(Map<Activity, Map<String, TimesheetEntry>> assignmentMap) {
+        if (getActivities() != null) {
+            for (Activity activity : getActivities()) {
+                if (!assignmentMap.containsKey(activity)) {
+                    assignmentMap.put(activity, new HashMap<String, TimesheetEntry>());
                 }
             }
         }
@@ -107,8 +108,8 @@ public class WeekOverview implements Serializable {
         return comment;
     }
 
-    public List<ProjectAssignment> getProjectAssignments() {
-        return projectAssignments;
+    public List<Activity> getActivities() {
+        return activities;
     }
 
     public DateRange getWeekRange() {

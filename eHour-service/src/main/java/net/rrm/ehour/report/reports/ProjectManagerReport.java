@@ -18,7 +18,7 @@ package net.rrm.ehour.report.reports;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 
 import java.io.Serializable;
 import java.util.SortedSet;
@@ -32,7 +32,7 @@ public class ProjectManagerReport implements Serializable {
     private static final long serialVersionUID = 1768574303126675320L;
 
     private Project project;
-    private SortedSet<AssignmentAggregateReportElement> aggregates = new TreeSet<AssignmentAggregateReportElement>();
+    private SortedSet<ActivityAggregateReportElement> aggregates = new TreeSet<ActivityAggregateReportElement>();
     private DateRange reportRange;
     private Float totalHoursBooked;
     private Float totalHoursAvailable;
@@ -45,13 +45,18 @@ public class ProjectManagerReport implements Serializable {
         float avail = 0;
 
         if (aggregates != null) {
-            for (AssignmentAggregateReportElement aggregate : aggregates) {
+            for (ActivityAggregateReportElement aggregate : aggregates) {
                 if (aggregate.getHours() == null) {
                     continue;
                 }
 
                 hours += aggregate.getHours().floatValue();
-                avail += aggregate.getAvailableHours().or(0f);
+
+                //TODO-NK Need to see how we have to do the same for Activity
+//				if (aggregate.getProjectAssignment().getAssignmentType().isAllottedType())
+//				{
+                avail += aggregate.getActivity().getAllottedHours().floatValue();
+//				}
             }
         }
 
@@ -62,14 +67,14 @@ public class ProjectManagerReport implements Serializable {
     /**
      * @return the aggregates
      */
-    public SortedSet<AssignmentAggregateReportElement> getAggregates() {
+    public SortedSet<ActivityAggregateReportElement> getAggregates() {
         return aggregates;
     }
 
     /**
      * @param aggregates the aggregates to set
      */
-    public void setAggregates(SortedSet<AssignmentAggregateReportElement> aggregates) {
+    public void setAggregates(SortedSet<ActivityAggregateReportElement> aggregates) {
         this.aggregates = aggregates;
     }
 
@@ -109,10 +114,23 @@ public class ProjectManagerReport implements Serializable {
     }
 
     /**
+     * @param totalHoursAvailable the totalHoursAvailable to set
+     */
+    public void setTotalHoursAvailable(Float totalHoursAvailable) {
+        this.totalHoursAvailable = totalHoursAvailable;
+    }
+
+    /**
      * @return the totalHoursBooked
      */
     public Float getTotalHoursBooked() {
         return totalHoursBooked;
     }
 
+    /**
+     * @param totalHoursBooked the totalHoursBooked to set
+     */
+    public void setTotalHoursBooked(Float totalHoursBooked) {
+        this.totalHoursBooked = totalHoursBooked;
+    }
 }

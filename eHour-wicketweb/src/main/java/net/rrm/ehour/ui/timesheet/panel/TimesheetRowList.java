@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
@@ -81,31 +82,13 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     @Override
     protected void populateItem(ListItem<TimesheetRow> item) {
         final TimesheetRow row = item.getModelObject();
-        ProjectAssignment assignment = row.getProjectAssignment();
+        Activity activity = row.getActivity();
 
-        item.add(createBookWholeWeekLink(row, "bookWholeWeek"));
-        item.add(new Label("project", assignment.getProject().getName()));
-        Label role = new Label("role", String.format("(%s)", assignment.getRole()));
-        role.setVisible(StringUtils.isNotBlank(assignment.getRole()));
-        item.add(role);
-        item.add(new Label("projectCode", assignment.getProject().getProjectCode()));
+        item.add(new Label("project", activity.getProject().getName()));
+        item.add(new Label("projectCode", activity.getProject().getProjectCode()));
         item.add(createStatusLabel(item));
         addInputCells(item, row);
         item.add(createTotalHoursLabel(row));
-    }
-
-    private Component createBookWholeWeekLink(final TimesheetRow row, final String bookWholeWeek) {
-        final AjaxLink<Void> link = new AjaxLink<Void>(bookWholeWeek) {
-            private static final long serialVersionUID = -663239917205218384L;
-
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                row.bookRemainingHoursOnRow();
-                target.add(form);
-            }
-        };
-        link.setVisible(EhourWebApplication.get().isBookWholeWeekEnabled());
-        return link;
     }
 
     private Label createStatusLabel(ListItem<TimesheetRow> item) {
@@ -115,7 +98,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                 return StringUtils.isNotBlank(getDefaultModelObjectAsString());
             }
         };
-
+    
         label.setEscapeModelStrings(false);
         label.setOutputMarkupId(true);
         label.setOutputMarkupPlaceholderTag(true);
@@ -132,8 +115,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row) {
         Calendar currentDate = (Calendar) row.getFirstDayOfWeekDate().clone();
 
-        ProjectAssignment assignment = row.getProjectAssignment();
-        DateRange range = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
+        DateRange range = new DateRange(row.getActivity().getDateStart(),
+                row.getActivity().getDateEnd());
 
         // now add every cell
         for (int i = 1;
@@ -325,7 +308,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                     new StringResourceModel("timesheet.dayComments",
                             this,
                             null,
-                            new Object[]{row.getProjectAssignment().getFullName(),
+                            new Object[]{row.getActivity().getFullName(),
                                     new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
 
             AbstractLink cancelButton = new AjaxLink<Void>("cancel") {

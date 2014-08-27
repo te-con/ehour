@@ -81,7 +81,6 @@ object DetailedReportAggregator {
           clone.setDayDate(converter.toDate(k.baseElement.getDayDate))
 
         clone.setTotalHours(v)
-        clone.setTotalTurnOver(v * (if (clone.getRate != null) clone.getRate.floatValue() else 0))
         clone.setComment("")
         clone
     }).toList
@@ -89,12 +88,12 @@ object DetailedReportAggregator {
 }
 
 private case class AggregateKey(aggregatedOn: String, baseElement: FlatReportElement) {
-  override def hashCode() = new HashCodeBuilder().append(aggregatedOn, baseElement.getAssignmentId).toHashCode
+  override def hashCode() = new HashCodeBuilder().append(aggregatedOn, baseElement.getActivityId).toHashCode
 
   override def equals(other: Any) = other match {
     case that: AggregateKey =>
-      val id = baseElement.getAssignmentId
-      val otherId = that.baseElement.getAssignmentId
+      val id = baseElement.getActivityId
+      val otherId = that.baseElement.getActivityId
       that.aggregatedOn.equals(aggregatedOn) && id.equals(otherId)
     case _ => false
   }

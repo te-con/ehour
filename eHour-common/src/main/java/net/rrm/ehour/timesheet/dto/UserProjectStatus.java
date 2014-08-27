@@ -16,90 +16,96 @@
 
 package net.rrm.ehour.timesheet.dto;
 
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 
 /**
- * Value object for timesheet overview. While the hours in an aggregate
- * reflect only a certain period, totalBookedHours is all hours booked on this assignment
+ * Value object for timesheet overview. While the hours in an aggregate reflect
+ * only a certain period, totalBookedHours is all hours booked on this
+ * assignment
  */
 
-public class UserProjectStatus extends AssignmentAggregateReportElement
-{
-	private static final long serialVersionUID = 2321889010790629630L;
+public class UserProjectStatus extends ActivityAggregateReportElement {
+    private static final long serialVersionUID = 2321889010790629630L;
+    private Number totalBookedHours;
 
-	private Number	totalBookedHours;
+    public UserProjectStatus() {
+    }
+    
+    public UserProjectStatus(ActivityAggregateReportElement aggregate) {
+        this(aggregate, null);
+    }
 
-	public UserProjectStatus(AssignmentAggregateReportElement aggregate)
-	{
-		this(aggregate, null);
-	}
-	
-	public UserProjectStatus(AssignmentAggregateReportElement aggregate, Number totalBookedHours)
-	{
-		super(aggregate.getProjectAssignment(), aggregate.getHours());
-		this.totalBookedHours = totalBookedHours;
-	}
-	
+    public UserProjectStatus(ActivityAggregateReportElement aggregate, Number totalBookedHours) {
+        super(aggregate.getActivity(), aggregate.getHours());
+        this.totalBookedHours = totalBookedHours;
+    }
+
 	/**
-	 * Get fixed hours remaining to book on this project
-	 * This is applicable to fixed and flex assignments
+	 * Get fixed hours remaining to book on this project This is applicable to
+	 * fixed and flex assignments
+	 * 
 	 * @return
 	 */
-	public Float getFixedHoursRemaining()
-	{
-		Float	remainder = null;
-		
-		if (totalBookedHours != null)
-		{
-			if (getProjectAssignment().getAssignmentType().isAllottedType())
-			{
-				remainder = getProjectAssignment().getAllottedHours() - totalBookedHours.floatValue();
-				// Flex assignment that are over their fixed number of hours should report
-				// zero fixed remaining.
-                if (getProjectAssignment().getAssignmentType().isFlexAllottedType() && remainder < 0) {
-                    remainder = 0f;
-                }
-			}
-		}
-		
-		return remainder;
-	}
-	
+    public Float getFixedHoursRemaining()
+    {
+        Float	remainder = null;
+
+        if (totalBookedHours != null) {
+            // TODO-NK Need to check about the assignment Type
+            // if (getProjectAssignment().getAssignmentType().isAllottedType())
+            // {
+            remainder = new Float(getActivity().getAllottedHours().floatValue() - totalBookedHours.floatValue());
+            // Flex assignment that are over their fixed number of hours should
+            // report
+            // zero fixed remaining.
+//			if (getProjectAssignment().getAssignmentType().isFlexAllottedType()) {
+//				if (remainder.floatValue() < 0) {
+//					remainder = new Float(0f);
+//				}
+//			}
+
+        }
+
+        return remainder;
+    }
+
 	/**
 	 * Get flex hours remaining to book on this project
+	 * 
 	 * @return
 	 */
-	public Float getFlexHoursRemaining()
-	{
-		Float	remainder = null;
+    public Float getFlexHoursRemaining() {
+        Float remainder = null;
 
-        if (totalBookedHours != null && getProjectAssignment().getAssignmentType().isFlexAllottedType()) {
-            if (totalBookedHours.floatValue() <= getProjectAssignment().getAllottedHours()) {
-                remainder = getProjectAssignment().getAllowedOverrun();
-            } else {
-                remainder = getProjectAssignment().getAllottedHours()
-                        + getProjectAssignment().getAllowedOverrun()
-                        - totalBookedHours.floatValue();
-            }
+        if (totalBookedHours != null) {
+            // TODO-NK Need to check about the assignment Type
+            remainder = new Float(getActivity().getAllottedHours().floatValue() - totalBookedHours.floatValue());
+//			if (getProjectAssignment().getAssignmentType().isFlexAllottedType()) {
+//				if (totalBookedHours.floatValue() <= getProjectAssignment().getAllottedHours().floatValue()) {
+//					remainder = new Float(getProjectAssignment().getAllowedOverrun().floatValue());
+//				} else {
+//					remainder = new Float(getProjectAssignment().getAllottedHours().floatValue()
+//							+ getProjectAssignment().getAllowedOverrun().floatValue() - totalBookedHours.floatValue());
+//				}
+//			}
         }
-		
-		return remainder;
-	}
-	
+
+        return remainder;
+    }
+
 	/**
 	 * @return the totalBookedHours
 	 */
-	public Number getTotalBookedHours()
-	{
+	public Number getTotalBookedHours() {
 		return totalBookedHours;
 	}
 
 	/**
-	 * @param totalBookedHours the totalBookedHours to set
+	 * @param totalBookedHours
+	 *            the totalBookedHours to set
 	 */
-	public void setTotalBookedHours(Number totalBookedHours)
-	{
+	public void setTotalBookedHours(Number totalBookedHours) {
 		this.totalBookedHours = totalBookedHours;
 	}
-	
+
 }

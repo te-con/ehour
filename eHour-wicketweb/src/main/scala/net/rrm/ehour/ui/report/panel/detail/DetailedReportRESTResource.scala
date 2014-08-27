@@ -54,30 +54,6 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
     }
   }
 
-
-  @MethodMapping("/turnover/{cacheKey}")
-  def getTurnoverData(cacheKey: String): DetailedReportResponse = {
-    cacheService.retrieveReportData(cacheKey) match {
-      case Some(data) =>
-        val aggregateBy = data.getCriteria.getAggregateBy
-        val reportRange = data.getReportRange
-        val unprocessedSeries = DetailedReportChartGenerator.generateTurnoverBasedDetailedChartData(data)
-
-        val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
-
-        DetailedReportResponse(aggregateBy = aggregateBy,
-                              startDate = reportRange.getDateStart,
-                              aggregateByLabel = model.getString.toLowerCase,
-                              yAxis = "Turnover",
-                              series = toJava(unprocessedSeries.map(JSparseDateSeries(_))),
-                              hasReportRole =  EhourWebSession.getSession.isReporter)
-      case None =>
-        val errorMsg = s"no data found for key $cacheKey"
-        DetailedReportRESTResource.LOG.warn(errorMsg)
-        throw new IllegalArgumentException(errorMsg)
-    }
-  }
-
   private def cacheService = {
     if (reportCacheService == null) WebUtils.springInjection(this)
 

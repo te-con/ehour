@@ -2,6 +2,7 @@ package net.rrm.ehour.activity.service;
 
 import java.util.List;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
@@ -48,10 +49,13 @@ public interface ActivityService {
 	 */
 	List<Activity> getAllActivitiesForProject(Project project);
 
+	List<Activity> getActivities(Project project, DateRange dateRange);
+
 	/**
 	 * Returns all Active/Inactive {@link Activity}s
 	 * @return
 	 */
 	List<Activity> getActivities();
 
+	List<Activity> getActivitiesForUser(Integer userId, DateRange dateRange);
 }

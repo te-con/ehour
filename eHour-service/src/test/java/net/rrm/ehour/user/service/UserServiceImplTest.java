@@ -22,7 +22,6 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
-import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import org.easymock.Capture;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,7 +38,6 @@ public class UserServiceImplTest {
     private UserDao userDAO;
     private UserDepartmentDao userDepartmentDAO;
     private UserRoleDao userRoleDAO;
-    private ProjectAssignmentManagementService assignmentService;
 
     @Before
     public void setUp() {
@@ -47,13 +45,11 @@ public class UserServiceImplTest {
         userDAO = createMock(UserDao.class);
         userDepartmentDAO = createMock(UserDepartmentDao.class);
         userRoleDAO = createMock(UserRoleDao.class);
-        assignmentService = createMock(ProjectAssignmentManagementService.class);
 
 
         userService.setUserDAO(userDAO);
         userService.setUserDepartmentDAO(userDepartmentDAO);
         userService.setUserRoleDAO(userRoleDAO);
-        userService.setProjectAssignmentManagementService(assignmentService);
 
         userService.setPasswordEncoder(new ShaPasswordEncoder(1));
     }
@@ -197,13 +193,12 @@ public class UserServiceImplTest {
 
         expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
         expect(userDAO.persist(user)).andReturn(user);
-        expect(assignmentService.assignUserToDefaultProjects(user)).andReturn(user);
 
-        replay(userDAO, assignmentService);
+        replay(userDAO);
 
         userService.persistNewUser(user, "password");
 
-        verify(userDAO, assignmentService);
+        verify(userDAO);
 
         assertNotSame("password", user.getPassword());
     }
@@ -217,11 +212,11 @@ public class UserServiceImplTest {
         expect(userDAO.findById(user.getUserId())).andReturn(persistedUser);
         expect(userDAO.persist(persistedUser)).andReturn(persistedUser);
 
-        replay(userDAO, assignmentService);
+        replay(userDAO);
 
         userService.persistEditedUser(user);
 
-        verify(userDAO, assignmentService);
+        verify(userDAO);
     }
 
     @Test
@@ -257,7 +252,7 @@ public class UserServiceImplTest {
         User user = new User(1);
         user.setPassword("aa");
         user.setUpdatedPassword("aa");
-        user.setSalt(new Integer(2));
+        user.setSalt(2);
         user.setUsername("user");
 
         Customer customer = new Customer();
@@ -292,7 +287,7 @@ public class UserServiceImplTest {
         User user = new User(1);
         user.setPassword("aa");
         user.setUpdatedPassword("aa");
-        user.setSalt(new Integer(2));
+        user.setSalt(2);
         user.setUsername("user");
 
         expect(userDAO.findByUsername(user.getUsername())).andReturn(null);

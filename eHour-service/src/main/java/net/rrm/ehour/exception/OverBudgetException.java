@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.exception;
 
+import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 /**
@@ -24,29 +25,24 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 public class OverBudgetException extends BusinessException
 {
-	private static final long serialVersionUID = 1L;
-	private ProjectAssignmentStatus status;
-	
-
-	public OverBudgetException()
-	{
-		super();
-	}
-	
-	public OverBudgetException(ProjectAssignmentStatus status)
-	{
-		super();
-		
-		this.status = status;
-	}
+    private static final long serialVersionUID = 1L;
+    private ActivityStatus status;
 
 
-	/**
-	 * @return the status
-	 */
-	public ProjectAssignmentStatus getStatus()
-	{
-		return status;
-	}
+    public OverBudgetException()
+    {
+        super();
+    }
+
+    public OverBudgetException(ActivityStatus status)
+    {
+        super();
+
+        this.status = status;
+    }
+
+    public ActivityStatus getStatus() {
+        return status;
+    }
 
 }

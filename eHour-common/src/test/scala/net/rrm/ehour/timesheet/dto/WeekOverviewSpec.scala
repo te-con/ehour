@@ -1,9 +1,10 @@
 package net.rrm.ehour.timesheet.dto
 
-import org.scalatest.{Matchers, WordSpec}
-import net.rrm.ehour.domain.{TimesheetEntry, TimesheetEntryObjectMother, ProjectAssignmentObjectMother}
 import java.{util => ju}
+
+import net.rrm.ehour.domain.{ActivityMother, TimesheetEntry, TimesheetEntryObjectMother}
 import org.joda.time.LocalDate
+import org.scalatest.{Matchers, WordSpec}
 
 class WeekOverviewSpec extends WordSpec with Matchers {
   "Week Overview" should {
@@ -13,9 +14,9 @@ class WeekOverviewSpec extends WordSpec with Matchers {
 
       val overview = new WeekOverview(ju.Arrays.asList(entry1, entry2), ju.Arrays.asList())
 
-      overview.getAssignmentMap should have size 2
+      overview.getActivityMap should have size 2
 
-      val entriesOnDate = overview.getAssignmentMap.get(entry1.getEntryId.getProjectAssignment)
+      val entriesOnDate = overview.getActivityMap.get(entry1.getEntryId.getActivity)
       entriesOnDate should have size 1
 
       val entry: TimesheetEntry = entriesOnDate.get(overview.formatter.format(entry1.getEntryId.getEntryDate))
@@ -28,9 +29,9 @@ class WeekOverviewSpec extends WordSpec with Matchers {
 
       val overview = new WeekOverview(ju.Arrays.asList(entry1, entry2), ju.Arrays.asList())
 
-      overview.getAssignmentMap should have size 1
+      overview.getActivityMap should have size 1
 
-      val entriesOnDate = overview.getAssignmentMap.get(entry1.getEntryId.getProjectAssignment)
+      val entriesOnDate = overview.getActivityMap.get(entry1.getEntryId.getActivity)
       entriesOnDate should have size 2
 
       val entry: TimesheetEntry = entriesOnDate.get(overview.formatter.format(entry2.getEntryId.getEntryDate))
@@ -38,15 +39,15 @@ class WeekOverviewSpec extends WordSpec with Matchers {
     }
 
 
-    "merge assignments without entries" in {
-      val assignment = ProjectAssignmentObjectMother.createProjectAssignment(3)
+    "merge activities without entries" in {
+      val activity = ActivityMother.createActivity(3)
 
       val entry1 = TimesheetEntryObjectMother.createTimesheetEntry(1, LocalDate.parse("20131108").toDate, 5f)
       val entry2 = TimesheetEntryObjectMother.createTimesheetEntry(2, LocalDate.parse("20131109").toDate, 3f)
 
-      val overview = new WeekOverview(ju.Arrays.asList(entry1, entry2), ju.Arrays.asList(assignment))
+      val overview = new WeekOverview(ju.Arrays.asList(entry1, entry2), ju.Arrays.asList(activity))
 
-      overview.getAssignmentMap should have size 3
+      overview.getActivityMap should have size 3
     }
   }
 }

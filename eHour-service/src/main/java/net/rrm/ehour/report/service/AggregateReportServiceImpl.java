@@ -17,20 +17,19 @@
 package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
+import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
-import net.rrm.ehour.util.DomainUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,36 +42,37 @@ import java.util.*;
  * @author Thies
  */
 @Service("aggregateReportService")
-public class AggregateReportServiceImpl extends AbstractReportServiceImpl<AssignmentAggregateReportElement> implements AggregateReportService {
+public class AggregateReportServiceImpl extends AbstractReportServiceImpl<ActivityAggregateReportElement>
+        implements AggregateReportService {
     private ReportAggregatedDao reportAggregatedDAO;
 
-    private ProjectAssignmentService projectAssignmentService;
+    private ActivityService activityService;
 
     AggregateReportServiceImpl() {
         super();
     }
 
     @Autowired
-    public AggregateReportServiceImpl(ProjectAssignmentService projectAssignmentService, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
+    public AggregateReportServiceImpl(ActivityService activityService, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
         super(userDao, projectDao, lockService, reportAggregatedDAO);
         this.reportAggregatedDAO = reportAggregatedDAO;
-        this.projectAssignmentService = projectAssignmentService;
+        this.activityService = activityService;
     }
 
     @Override
-    public List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds) {
-        return reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds);
+    public List<ActivityAggregateReportElement> getHoursPerActivity(List<Integer> activityIds) {
+        return reportAggregatedDAO.getCumulatedHoursPerActivityForActivities(activityIds);
     }
 
     @Override
-    public List<AssignmentAggregateReportElement> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange) {
-        List<AssignmentAggregateReportElement> assignmentAggregateReportElements;
+    public List<ActivityAggregateReportElement> getHoursPerActivityInRange(Integer userId, DateRange dateRange) {
+        List<ActivityAggregateReportElement> activityAggregateReportElements;
 
         List<User> users = new ArrayList<User>();
         users.add(new User(userId));
-        assignmentAggregateReportElements = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, dateRange);
+        activityAggregateReportElements = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, dateRange);
 
-        return assignmentAggregateReportElements;
+        return activityAggregateReportElements;
     }
 
     @Override
@@ -81,50 +81,29 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     }
 
     @Override
-    protected List<AssignmentAggregateReportElement> getReportElements(List<User> users, List<Project> projects, List<Date> lockedDates, DateRange reportRange, boolean showZeroBookings) {
-        List<AssignmentAggregateReportElement> aggregates = findAggregates(users, projects, reportRange);
-
-        List<AssignmentAggregateReportElement> noBookings = findAssignmentsWithoutBookings(users, projects, reportRange, showZeroBookings);
-
-        noBookings.addAll(aggregates);
-
-        return noBookings;
-    }
-
-    private List<AssignmentAggregateReportElement> findAssignmentsWithoutBookings(List<User> users, List<Project> projects, DateRange reportRange, boolean showZeroBookings) {
-        List<AssignmentAggregateReportElement> elements = Lists.newArrayList();
-
-        if (showZeroBookings) {
-            List<Integer> userIds = DomainUtil.getIdsFromDomainObjects(users);
-            List<Integer> projectIds = DomainUtil.getIdsFromDomainObjects(projects);
-
-            List<ProjectAssignment> filterAssignmentsWithoutBookings = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
-
-            for (ProjectAssignment filterAssignmentsWithoutBooking : filterAssignmentsWithoutBookings) {
-                elements.add(new AssignmentAggregateReportElement(filterAssignmentsWithoutBooking));
-            }
-        }
-        return elements;
-    }
-
-    private List<AssignmentAggregateReportElement> findAggregates(List<User> users, List<Project> projects, DateRange reportRange) {
-        List<AssignmentAggregateReportElement> aggregates = new ArrayList<AssignmentAggregateReportElement>();
+    protected List<ActivityAggregateReportElement> getReportElements(List<User> users,
+                                                                     List<Project> projects,
+                                                                     List<Date> lockedDates,
+                                                                     DateRange reportRange,
+                                                                     boolean showZeroBookings) {
+        List<ActivityAggregateReportElement> aggregates = Lists.newArrayList();
 
         if (users == null && projects == null) {
-            aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignment(reportRange);
+            aggregates = reportAggregatedDAO.getCumulatedHoursPerActivity(reportRange);
         } else if (projects == null) {
             if (!CollectionUtils.isEmpty(users)) {
-                aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, reportRange);
+                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, reportRange);
             }
         } else if (users == null) {
             if (!CollectionUtils.isEmpty(projects)) {
-                aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, reportRange);
+                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(projects, reportRange);
             }
         } else {
             if (!CollectionUtils.isEmpty(users) && !CollectionUtils.isEmpty(projects)) {
-                aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, projects, reportRange);
+                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, projects, reportRange);
             }
         }
+
         return aggregates;
     }
 
@@ -142,21 +121,21 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
 
         // get all aggregates
         List<Project> projects = Arrays.asList(project);
-        SortedSet<AssignmentAggregateReportElement> aggregates = new TreeSet<AssignmentAggregateReportElement>(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, reportRange));
+        SortedSet<ActivityAggregateReportElement> aggregates = new TreeSet<ActivityAggregateReportElement>(reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(projects, reportRange));
 
         // filter out just the id's
-        List<Integer> assignmentIds = new ArrayList<Integer>();
-        for (AssignmentAggregateReportElement aggregate : aggregates) {
-            assignmentIds.add(aggregate.getProjectAssignment().getAssignmentId());
+        List<Integer> activityIds = new ArrayList<Integer>();
+        for (ActivityAggregateReportElement aggregate : aggregates) {
+            activityIds.add(aggregate.getActivity().getId());
         }
 
-        // get all assignments for this period regardless whether they booked hours on it
-        List<ProjectAssignment> allAssignments = projectAssignmentService.getProjectAssignments(project, reportRange);
+        // get all activities for this period regardless whether they booked hours on it
+        List<Activity> allActivities = activityService.getActivities(project, reportRange);
 
-        for (ProjectAssignment assignment : allAssignments) {
-            if (!assignmentIds.contains(assignment.getAssignmentId())) {
-                AssignmentAggregateReportElement emptyAggregate = new AssignmentAggregateReportElement();
-                emptyAggregate.setProjectAssignment(assignment);
+        for (Activity activity : allActivities) {
+            if (!activityIds.contains(activity.getId())) {
+                ActivityAggregateReportElement emptyAggregate = new ActivityAggregateReportElement();
+                emptyAggregate.setActivity(activity);
 
                 aggregates.add(emptyAggregate);
             }

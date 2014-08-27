@@ -27,8 +27,7 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
-import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.IDeleteTimesheetEntry;
@@ -53,14 +52,16 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDAO;
+
     @Autowired
     private UserDepartmentDao userDepartmentDAO;
+
     @Autowired
     private UserRoleDao userRoleDAO;
-    @Autowired
-    private ProjectAssignmentManagementService projectAssignmentManagementService;
+
     @Autowired
     private AggregateReportService aggregateReportService;
+
     @Autowired
     private IDeleteTimesheetEntry deleteTimesheetEntryService;
 
@@ -111,7 +112,7 @@ public class UserServiceImpl implements UserService {
             assignmentIds.addAll(DomainUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
             assignmentIds.addAll(DomainUtil.getIdsFromDomainObjects(user.getInactiveProjectAssignments()));
 
-            List<AssignmentAggregateReportElement> aggregates = aggregateReportService.getHoursPerAssignment(assignmentIds);
+            List<ActivityAggregateReportElement> aggregates = aggregateReportService.getHoursPerActivity(assignmentIds);
 
             user.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
         }
@@ -232,7 +233,7 @@ public class UserServiceImpl implements UserService {
         userDAO.persist(user);
 
         // assign new users to default projects
-        projectAssignmentManagementService.assignUserToDefaultProjects(user);
+        //projectAssignmentManagementService.assignUserToDefaultProjects(user);
     }
 
     @Override
@@ -353,10 +354,6 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void setProjectAssignmentManagementService(ProjectAssignmentManagementService projectAssignmentManagementService) {
-        this.projectAssignmentManagementService = projectAssignmentManagementService;
-    }
-
     public void setUserDAO(UserDao dao) {
         userDAO = dao;
     }
@@ -368,13 +365,6 @@ public class UserServiceImpl implements UserService {
     public void setUserRoleDAO(UserRoleDao dao) {
         userRoleDAO = dao;
     }
-
-	private void checkCustomerAssociationsAndAssignRoleAccordingly(User user) {
-        if (user.getCustomers() != null && user.getCustomers().size() > 0) {
-            UserRole customerReviewerRole = userRoleDAO.findById(UserRole.ROLE_CUSTOMERREVIEWER);
-            user.addUserRole(customerReviewerRole);
-        }
-	}
 
 	@Override
 	@Transactional

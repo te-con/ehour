@@ -16,14 +16,14 @@
 
 package net.rrm.ehour.ui.timesheet.panel.util;
 
+import static org.junit.Assert.assertEquals;
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.ActivityMother;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 /**
  * @author thies
@@ -31,20 +31,20 @@ import static org.junit.Assert.assertEquals;
  */
 public class TimesheetRowComparatorTest
 {
-	@Test
-	public void testCompare()
-	{
-		ProjectAssignment pA = ProjectAssignmentObjectMother.createProjectAssignment(1);
-		pA.getProject().setName("A");
-		TimesheetRow rowA = new TimesheetRow(new EhourConfigStub());
-		rowA.setProjectAssignment(pA);
-		
-		ProjectAssignment pB = ProjectAssignmentObjectMother.createProjectAssignment(1);
-		pB.getProject().setName("b");
-		TimesheetRow rowB = new TimesheetRow(new EhourConfigStub());
-		rowB.setProjectAssignment(pB);
-		
-		assertEquals(-1, TimesheetRowComparator.INSTANCE.compare(rowA, rowB));
-	}
+    @Test
+    public void testCompare()
+    {
+        Activity a1 = ActivityMother.createActivity(1);
+        a1.getProject().setName("A");
+        TimesheetRow rowA = new TimesheetRow(new EhourConfigStub());
+        rowA.setActivity(a1);
+
+        Activity a2 = ActivityMother.createActivity(1);
+        a2.getProject().setName("B");
+        TimesheetRow rowB = new TimesheetRow(new EhourConfigStub());
+        rowB.setActivity(a2);
+
+        assertEquals(-1, TimesheetRowComparator.INSTANCE.compare(rowA, rowB));
+    }
 
 }

@@ -1,15 +1,13 @@
 package net.rrm.ehour.ui.manage.project
 
-import com.google.common.collect.Lists
+import net.rrm.ehour.activity.service.ActivityService
 import net.rrm.ehour.customer.service.CustomerService
-import net.rrm.ehour.domain.{Project, ProjectAssignment, ProjectObjectMother}
-import net.rrm.ehour.project.service.{ProjectAssignmentService, ProjectService}
+import net.rrm.ehour.domain.ProjectObjectMother
+import net.rrm.ehour.project.service.ProjectService
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.model.CompoundPropertyModel
 import org.junit.runner.RunWith
-import org.mockito.Matchers._
-import org.mockito.Mockito._
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
@@ -23,7 +21,7 @@ class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter wi
   var projectService: ProjectService = _
   var userService: UserService = _
   var customerService: CustomerService = _
-  var assignmentService: ProjectAssignmentService = _
+  var activityService: ActivityService = _
 
   before {
     springTester.setUp()
@@ -37,8 +35,8 @@ class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter wi
     customerService = mock[CustomerService]
     springTester.getMockContext.putBean("customerService", customerService)
 
-    assignmentService = mock[ProjectAssignmentService]
-    springTester.getMockContext.putBean(assignmentService)
+    activityService = mock[ActivityService]
+    springTester.getMockContext.putBean(activityService)
   }
 
   after {
@@ -46,7 +44,7 @@ class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter wi
   }
 
   test("should render projectFormPanel") {
-    when(assignmentService.getProjectAssignmentsAndCheckDeletability(any(classOf[Project]))).thenReturn(Lists.newArrayList[ProjectAssignment]())
+//    when(activityService.getProjectAssignmentsAndCheckDeletability(any(classOf[Project]))).thenReturn(Lists.newArrayList[ProjectAssignment]())
 
     startPanel(createModel())
 

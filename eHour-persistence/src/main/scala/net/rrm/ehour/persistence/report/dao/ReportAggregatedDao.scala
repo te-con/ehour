@@ -18,8 +18,8 @@ package net.rrm.ehour.persistence.report.dao
 import java.util
 
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{Project, ProjectAssignment, User}
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
+import net.rrm.ehour.domain.{Project, Activity, User}
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement
 
 /**
  * Reporting data operations
@@ -30,42 +30,42 @@ trait ReportAggregatedDao {
   /**
    * Get cumulated hours per project assignment for user in a date range
    */
-  def getCumulatedHoursPerAssignmentForUsers(users: util.List[User], dateRange: DateRange): util.List[AssignmentAggregateReportElement]
+  def getCumulatedHoursPerActivityForUsers(users: util.List[User], dateRange: DateRange): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for users
    */
-  def getCumulatedHoursPerAssignmentForUsers(users: util.List[User]): util.List[AssignmentAggregateReportElement]
+  def getCumulatedHoursPerActivityForUsers(users: util.List[User]): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for assignments
    */
-  def getCumulatedHoursPerAssignmentForAssignments(projectAssignmentIds: util.List[Integer]): util.List[AssignmentAggregateReportElement]
+  def getCumulatedHoursPerActivityForActivities(activityIds: util.List[Integer]): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for users, projects
    */
-  def getCumulatedHoursPerAssignmentForUsers(users: util.List[User], projects: util.List[Project]): util.List[AssignmentAggregateReportElement]
+  def getCumulatedHoursPerActivityForUsers(users: util.List[User], projects: util.List[Project]): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for users, projects in a date range
    */
-  def getCumulatedHoursPerAssignmentForUsers(users: util.List[User], projects: util.List[Project], dateRange: DateRange): util.List[AssignmentAggregateReportElement]
+  def getCumulatedHoursPerActivityForUsers(users: util.List[User], projects: util.List[Project], dateRange: DateRange): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for all users, projects in a date range
    */
-  def getCumulatedHoursPerAssignmentForProjects(projects: util.List[Project], dateRange: DateRange): util.List[AssignmentAggregateReportElement]
+  def getCumulatedHoursPerActivityForProjects(projects: util.List[Project], dateRange: DateRange): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours for a project assignment
    */
-  def getCumulatedHoursForAssignment(assignment: ProjectAssignment): AssignmentAggregateReportElement
+  def getCumulatedHoursForActivity(assignment: Activity): ActivityAggregateReportElement
 
   /**
    * Get cumulated hours
    */
-  def getCumulatedHoursPerAssignment(dateRange: DateRange): util.List[AssignmentAggregateReportElement]
+  def getCumulatedHoursPerActivity(dateRange: DateRange): util.List[ActivityAggregateReportElement]
 
   /**
    * Get the min/max timesheet date
@@ -85,6 +85,6 @@ trait ReportAggregatedDao {
   /**
    * Get assignments without bookings for a particular range
    */
-  def getAssignmentsWithoutBookings(dateRange: DateRange): util.List[ProjectAssignment]
+  def getActivitiesWithoutBookings(dateRange: DateRange): util.List[Activity]
 }
 

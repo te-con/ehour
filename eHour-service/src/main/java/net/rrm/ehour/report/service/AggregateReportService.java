@@ -21,8 +21,9 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -33,35 +34,23 @@ import java.util.List;
 public interface AggregateReportService {
 
     /**
-     * Get the booked hours per project assignment for a date range
-     *
-     * @param userId
-     * @param calendar
-     * @return List with projectReport objects
+     * Get the booked hours per {@link net.rrm.ehour.domain.Activity} for a date range
      */
 
-    List<AssignmentAggregateReportElement> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange);
+    List<ActivityAggregateReportElement> getHoursPerActivityInRange(Integer userId, DateRange dateRange);
 
     /**
      * Get all booked hours for assignments
-     *
-     * @param projectAssignmentIds
-     * @return
      */
-    List<AssignmentAggregateReportElement> getHoursPerAssignment(List<Integer> projectAssignmentIds);
+    List<ActivityAggregateReportElement> getHoursPerActivity(List<Integer> activityIds);
 
     /**
      * Get aggregate report data
-     *
-     * @param criteria
-     * @return
      */
     ReportData getAggregateReportData(ReportCriteria criteria);
 
     /**
      * Get project manager report
-     *
-     * @return
      */
     ProjectManagerReport getProjectManagerDetailedReport(Project project);
 }

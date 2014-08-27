@@ -23,7 +23,6 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.component.CurrencyLabel;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
@@ -235,10 +234,6 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
                 switch (column.getColumnType()) {
                     case HOUR:
                         label = new Label(childId, new Model<Float>(reportModel.getTotalHours()));
-                        break;
-                    case TURNOVER:
-                        label = new CurrencyLabel(childId, reportModel.getTotalTurnover());
-                        label.setEscapeModelStrings(false);
                         break;
                     default:
                         label = HtmlUtil.getNbspLabel(childId);

@@ -29,14 +29,12 @@ import java.io.Serializable;
 public class FlatEntryEndNode extends ReportNode {
     private static final long serialVersionUID = 7854152602780377915L;
     private Number hours;
-    private Number turnOver;
 
     public FlatEntryEndNode(FlatReportElement element) {
         super(element.getDisplayOrder(), element.isEmptyEntry());
         hours = element.getTotalHours();
-        turnOver = element.getTotalTurnOver();
 
-        this.columnValues = new Serializable[]{element.getComment(), element.getRate(), hours, turnOver};
+        this.columnValues = new Serializable[]{element.getComment(), hours};
     }
 
     @Override
@@ -47,11 +45,6 @@ public class FlatEntryEndNode extends ReportNode {
     @Override
     public Number getHours() {
         return hours;
-    }
-
-    @Override
-    public Number getTurnover() {
-        return turnOver;
     }
 
     @Override

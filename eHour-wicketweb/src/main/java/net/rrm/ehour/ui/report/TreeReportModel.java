@@ -33,7 +33,6 @@ public abstract class TreeReportModel extends AbstractReportModel {
     private static final long serialVersionUID = -3717854276306653784L;
 
     private float totalHours;
-    private float totalTurnover;
 
     private ReportConfig reportConfig;
 
@@ -75,11 +74,9 @@ public abstract class TreeReportModel extends AbstractReportModel {
     protected abstract ReportData fetchReportData(ReportCriteria reportCriteria);
 
     private void deriveTotals(List<ReportNode> rootNodes) {
-        totalTurnover = 0;
         totalHours = 0;
 
         for (ReportNode reportNode : rootNodes) {
-            totalTurnover += reportNode.getTurnover().floatValue();
             totalHours += reportNode.getHours().floatValue();
         }
     }
@@ -101,9 +98,5 @@ public abstract class TreeReportModel extends AbstractReportModel {
 
     public float getTotalHours() {
         return totalHours;
-    }
-
-    public float getTotalTurnover() {
-        return totalTurnover;
     }
 }

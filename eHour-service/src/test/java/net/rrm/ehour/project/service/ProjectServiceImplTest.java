@@ -16,12 +16,12 @@
 
 package net.rrm.ehour.project.service;
 
+import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
-import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,17 +34,15 @@ public class ProjectServiceImplTest {
     private ProjectServiceImpl projectService;
     private ProjectDao projectDao;
     private UserService userService;
-    private AggregateReportService aggregateReportService;
-    private ProjectAssignmentManagementService projectAssignmentManagementService;
+    private ActivityService activityService;
 
     @Before
     public void setUp() {
         projectDao = createMock(ProjectDao.class);
         userService = createMock(UserService.class);
-        aggregateReportService = createMock(AggregateReportService.class);
-        projectAssignmentManagementService = createMock(ProjectAssignmentManagementService.class);
+        activityService = createMock(ActivityService.class);
 
-        projectService = new ProjectServiceImpl(projectDao, projectAssignmentManagementService, aggregateReportService, userService);
+        projectService = new ProjectServiceImpl(projectDao, activityService, userService);
     }
 
     @Test

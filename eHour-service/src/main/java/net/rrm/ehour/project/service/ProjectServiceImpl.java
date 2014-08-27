@@ -16,19 +16,17 @@
 
 package net.rrm.ehour.project.service;
 
+import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.audit.annot.Auditable;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.DomainUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,17 +43,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     private ProjectDao projectDAO;
 
-    private ProjectAssignmentManagementService projectAssignmentManagementService;
-
-    private AggregateReportService aggregateReportService;
+    private ActivityService activityService;
 
     private UserService userService;
 
     @Autowired
-    public ProjectServiceImpl(ProjectDao projectDAO, ProjectAssignmentManagementService projectAssignmentManagementService, AggregateReportService aggregateReportService, UserService userService) {
+    public ProjectServiceImpl(ProjectDao projectDAO, ActivityService activityService, UserService userService) {
         this.projectDAO = projectDAO;
-        this.projectAssignmentManagementService = projectAssignmentManagementService;
-        this.aggregateReportService = aggregateReportService;
+        this.activityService = activityService;
         this.userService = userService;
     }
 
@@ -88,14 +83,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public void setProjectDeletability(Project project) {
-        List<Integer> ids = DomainUtil.getIdsFromDomainObjects(project.getProjectAssignments());
-        List<AssignmentAggregateReportElement> aggregates = null;
-
-        if (ids != null && ids.size() > 0) {
-            aggregates = aggregateReportService.getHoursPerAssignment(ids);
-        }
-
-        project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
+        // broken impl
+        project.setDeletable(true);
     }
 
     @Transactional
@@ -111,16 +100,11 @@ public class ProjectServiceImpl implements ProjectService {
     public Project updateProject(Project project) {
         projectDAO.persist(project);
 
-        validatePMRoles(project);
-        assignUsersToDefaultProject(project);
+        // PM's are not used by RM
+        //validatePMRoles(project);
+        // default projects are not used by RM
 
         return project;
-    }
-
-    private void assignUsersToDefaultProject(Project project) {
-        if (project.isDefaultProject() && project.isActive()) {
-            projectAssignmentManagementService.assignAllUsersToProject(project);
-        }
     }
 
     @Override
@@ -136,26 +120,26 @@ public class ProjectServiceImpl implements ProjectService {
 
         project = projectDAO.findById(projectId);
 
-        deleteEmptyAssignments(project);
+        deleteEmptyActivities(project);
         LOGGER.debug("Deleting project " + project);
         projectDAO.delete(project);
     }
 
-    private void deleteEmptyAssignments(Project project) throws ParentChildConstraintException {
+    private void deleteEmptyActivities(Project project) throws ParentChildConstraintException {
         checkProjectDeletability(project);
 
-        if (project.getProjectAssignments() != null &&
-                project.getProjectAssignments().size() > 0) {
-            deleteAnyAssignments(project);
+        if (project.getActivities() != null &&
+                project.getActivities().size() > 0) {
+            deleteAnyActivities(project);
         }
     }
 
-    private void deleteAnyAssignments(Project project) throws ParentChildConstraintException {
-        for (ProjectAssignment assignment : project.getProjectAssignments()) {
-            projectAssignmentManagementService.deleteProjectAssignment(assignment);
+    private void deleteAnyActivities(Project project) throws ParentChildConstraintException {
+        for (Activity activity : project.getActivities()) {
+            activityService.deleteActivity(activity.getId());
         }
 
-        project.getProjectAssignments().clear();
+        project.getActivities().clear();
     }
 
     private void checkProjectDeletability(Project project) throws ParentChildConstraintException {

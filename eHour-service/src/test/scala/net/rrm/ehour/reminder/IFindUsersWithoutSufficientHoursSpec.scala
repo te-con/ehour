@@ -1,10 +1,10 @@
 package net.rrm.ehour.reminder
 
 import net.rrm.ehour.AbstractSpec
+import net.rrm.ehour.activity.service.ActivityService
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain._
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
-import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.timesheet.service.TimesheetLockService
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util.JodaDateUtil
@@ -17,10 +17,10 @@ import scala.collection.JavaConversions._
 class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
   val userService = mock[UserService]
   val timesheetDao = mock[TimesheetDao]
-  val assignmentService = mock[ProjectAssignmentService]
+  val activityService = mock[ActivityService]
   val lockService = mock[TimesheetLockService]
 
-  val subject = new IFindUsersWithoutSufficientHours(userService, timesheetDao, assignmentService, lockService)
+  val subject = new IFindUsersWithoutSufficientHours(userService, timesheetDao, activityService, lockService)
 
   val userA = UserObjectMother.createUser("a")
   userA.setUserId(1)
@@ -31,20 +31,20 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
 
   val project = ProjectObjectMother.createProject(1)
 
-  val assignmentA = ProjectAssignmentObjectMother.createProjectAssignment(userA, project)
-  assignmentA.setDateStart(currentDate.minusDays(15).toDate)
-  assignmentA.setDateEnd(currentDate.plusDays(15).toDate)
+  val activityA = ActivityMother.createActivity(userA, project)
+  activityA.setDateStart(currentDate.minusDays(15).toDate)
+  activityA.setDateEnd(currentDate.plusDays(15).toDate)
 
-  val assignmentB = ProjectAssignmentObjectMother.createProjectAssignment(userB, project)
-  assignmentB.setDateStart(currentDate.minusDays(15).toDate)
-  assignmentB.setDateEnd(currentDate.plusDays(15).toDate)
+  val activityB = ActivityMother.createActivity(userB, project)
+  activityB.setDateStart(currentDate.minusDays(15).toDate)
+  activityB.setDateEnd(currentDate.plusDays(15).toDate)
 
   override protected def beforeEach() = reset(userService, timesheetDao, lockService)
 
   "I find users without sufficient hours" should {
     "find the user with less than the minimum hours, ignore the user with more than the minimum" in {
-      `user A has assignment A`
-      `user B has assignment B`
+      `user A has activity A`
+      `user B has activity B`
 
       `user A and B are active`
       `no locked days are in the range`
@@ -60,8 +60,8 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
     }
 
     "find no user as the user booked sufficient hours over multiple days within that week" in {
-      `user A has assignment A`
-      `user B has assignment B`
+      `user A has activity A`
+      `user B has activity B`
 
       `user A is active`
       `no locked days are in the range`
@@ -77,9 +77,9 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       foundUsers should be('empty)
     }
 
-    "find a user when he has an active assignment but didn't book any hours at all" in {
-      `user A has assignment A`
-      `user B has assignment B`
+    "find a user when he has an active activity but didn't book any hours at all" in {
+      `user A has activity A`
+      `user B has activity B`
 
       `user A and B are active`
       `no locked days are in the range`
@@ -96,9 +96,9 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
     "ignore any users that are inactive, even if they booked hours" in {
       val userC = UserObjectMother.createUser("c")
 
-      `user A has assignment A`
-      `user B has assignment B`
-      `user C has assignment B`(userC)
+      `user A has activity A`
+      `user B has activity B`
+      `user has activity B`(userC)
 
       `user A is active`
       `no locked days are in the range`
@@ -112,13 +112,13 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       foundUsers should contain(userA)
     }
 
-    "ignore user that doesn't have project assignments covering the whole week" in {
-      val assignmentA2 = ProjectAssignmentObjectMother.createProjectAssignment(userA, project)
-      assignmentA2.setDateStart(currentDate.minusDays(2).toDate)
-      assignmentA2.setDateEnd(currentDate.plusDays(1).toDate)
+    "ignore user that doesn't have project activitys covering the whole week" in {
+      val activityA2 = ActivityMother.createActivity(userA, project)
+      activityA2.setDateStart(currentDate.minusDays(2).toDate)
+      activityA2.setDateEnd(currentDate.plusDays(1).toDate)
 
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA2))
-      `user B has assignment B`
+      when(activityService.getActivitiesForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(activityA2))
+      `user B has activity B`
 
       `user A and B are active`
       `no locked days are in the range`
@@ -133,12 +133,12 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       foundUsers should contain(userB)
     }
 
-    "find a user that has project assignments with infinite start/end date" in {
-      val assignmentA2 = ProjectAssignmentObjectMother.createProjectAssignment(userA, project)
-      assignmentA2.setDateStart(null)
-      assignmentA2.setDateEnd(null)
+    "find a user that has project activitys with infinite start/end date" in {
+      val activityA2 = ActivityMother.createActivity(userA, project)
+      activityA2.setDateStart(null)
+      activityA2.setDateEnd(null)
 
-      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA2))
+      when(activityService.getActivitiesForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(activityA2))
 
       `user A is active`
       `no locked days are in the range`
@@ -155,8 +155,8 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
     "from the required minimum hours, subtract 8 hours per work day that is locked" in {
       def findWorkDay(date: LocalDate): LocalDate = if (JodaDateUtil.isWeekend(date)) findWorkDay(date.minusDays(1)) else date
 
-      `user A has assignment A`
-      `user B has assignment B`
+      `user A has activity A`
+      `user B has activity B`
 
       `user A and B are active`
 
@@ -177,8 +177,8 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
     "from the required minimum hours, do not subtract any hours for locked weekend days" in {
       def findDateInWeekend(date: LocalDate): LocalDate = if (JodaDateUtil.isWeekend(date)) date else findDateInWeekend(date.minusDays(1))
 
-      `user A has assignment A`
-      `user B has assignment B`
+      `user A has activity A`
+      `user B has activity B`
 
       `user A and B are active`
 
@@ -198,8 +198,8 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
     }
   }
 
-  def `user C has assignment B`(userC: User) {
-    when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userC.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
+  def `user has activity B`(user: User) {
+    when(activityService.getActivitiesForUser(mockitoEq(user.getUserId), any(classOf[DateRange]))).thenReturn(List(activityB))
   }
 
   def `user A is active` {
@@ -219,13 +219,12 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
     when(userService.getUsers(UserRole.USER)).thenReturn(List(userA, userB))
   }
 
-  def `user B has assignment B` {
-
-    `user C has assignment B`(userB)
+  def `user B has activity B` {
+    `user has activity B`(userB)
   }
 
-  def `user A has assignment A` {
-    when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA))
+  def `user A has activity A` {
+    when(activityService.getActivitiesForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(activityA))
   }
 
   def `no locked days are in the range` {

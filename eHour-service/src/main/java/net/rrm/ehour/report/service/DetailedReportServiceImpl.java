@@ -18,8 +18,8 @@ package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
@@ -75,7 +75,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
         }
 
         if (showZeroBookings) {
-            List<FlatReportElement> reportElementsForAssignmentsWithoutBookings = getReportElementsForAssignmentsWithoutBookings(reportRange, userIds, projectIds);
+            List<FlatReportElement> reportElementsForAssignmentsWithoutBookings = getReportElementsForActivitiesWithoutBookings(reportRange, userIds, projectIds);
 
             reportElementsForAssignmentsWithoutBookings.addAll(elements);
 
@@ -85,13 +85,13 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
         }
     }
 
-    private List<FlatReportElement> getReportElementsForAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
-        List<ProjectAssignment> assignments = getAssignmentsWithoutBookings(reportRange, userIds, projectIds);
+    private List<FlatReportElement> getReportElementsForActivitiesWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
+        List<Activity> activities = getActivitiesWithoutBookings(reportRange, userIds, projectIds);
 
         List<FlatReportElement> elements = Lists.newArrayList();
 
-        for (ProjectAssignment assignment : assignments) {
-            elements.add(FlatReportElementBuilder.buildFlatReportElement(assignment));
+        for (Activity activity : activities) {
+            elements.add(FlatReportElementBuilder.buildFlatReportElement(activity));
         }
 
         return elements;

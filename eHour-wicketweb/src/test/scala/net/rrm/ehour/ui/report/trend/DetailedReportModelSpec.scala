@@ -20,7 +20,7 @@ class DetailedReportModelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
 
   def toElement(year: Int, month: Int, day: Int) = {
     val e = new FlatReportElement()
-    e.setAssignmentId(1)
+    e.setActivityId(1)
     e.setDayDate(new LocalDate(year, month, day).toDate)
     e
   }

@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
-import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -95,7 +94,7 @@ public class ManageUserPage extends AbstractTabbedManagePage<ManageUserBackingBe
             ManageUserBackingBean bean = (ManageUserBackingBean) payloadAjaxEvent.getPayload();
 
             if (bean.isShowAssignments()) {
-                setResponsePage(new AssignmentManagePage(bean.getUser()));
+//                setResponsePage(new AssignmentManagePage(bean.getUser()));
                 return false;
 
             } else {

@@ -29,18 +29,15 @@ import java.io.Serializable;
 public class UserEndNode extends ReportNode {
     private static final long serialVersionUID = 3861923371702158088L;
     private Number hours;
-    private Number turnOver;
 
     public UserEndNode(AssignmentAggregateReportElement aggregate) {
         super(aggregate.getProjectAssignment().getPK(), aggregate.isEmptyEntry());
         hours = aggregate.getHours();
-        turnOver = aggregate.getTurnOver();
 
         this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName(),
                 aggregate.getProjectAssignment().getRole(),
                 aggregate.getProjectAssignment().getHourlyRate(),
-                aggregate.getHours(),
-                aggregate.getTurnOver()};
+                aggregate.getHours()};
     }
 
     @Override
@@ -52,11 +49,6 @@ public class UserEndNode extends ReportNode {
     @Override
     public Number getHours() {
         return hours;
-    }
-
-    @Override
-    public Number getTurnover() {
-        return turnOver;
     }
 
     @Override

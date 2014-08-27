@@ -10,7 +10,7 @@
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
 		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -31,7 +31,7 @@
 		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
 		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
 		      PAG.USER_ID = USR.USER_ID AND
-		      PAG.ASSIGNMENT_ID IN (:assignmentId) AND
+		      PAG.ASSIGNMENT_ID IN (:activityId) AND
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
@@ -58,7 +58,7 @@
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
 		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -106,7 +106,7 @@
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
 		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -154,7 +154,7 @@
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
 		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -203,7 +203,7 @@
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
 		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       PAG.ASSIGNMENT_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",

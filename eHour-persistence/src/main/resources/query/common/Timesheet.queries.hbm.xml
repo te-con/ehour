@@ -6,14 +6,14 @@
         <![CDATA[FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate >= :dateStart AND
                        entry.entryId.entryDate <= :dateEnd AND
-                       entry.entryId.projectAssignment.user.userId = :userId
+                       entry.entryId.activity.assignedUser.userId = :userId
         ]]></query>
 
-    <query name="Timesheet.getEntriesBetweenDateForAssignment">
+    <query name="Timesheet.getEntriesBetweenDateForActivity">
         <![CDATA[FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate >= :dateStart AND
                        entry.entryId.entryDate <= :dateEnd AND
-                       entry.entryId.projectAssignment = :assignment
+                       entry.entryId.activity = :activity
         ]]></query>
 
     <query name="Timesheet.getEntriesBetweenDate">
@@ -23,36 +23,29 @@
         ]]></query>
 
         
-    <query name="Timesheet.getEntriesBeforeDateForAssignment">
+    <query name="Timesheet.getEntriesBeforeDateForActivity">
         <![CDATA[FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate < :date AND
-                       entry.entryId.projectAssignment = :assignment
+                       entry.entryId.activity = :activity
         ]]></query>        
 
-    <query name="Timesheet.getEntriesAfterDateForAssignment">
+    <query name="Timesheet.getEntriesAfterDateForActivity">
         <![CDATA[FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate > :date AND
-                       entry.entryId.projectAssignment = :assignment
+                       entry.entryId.activity = :activity
         ]]></query>        
-
         
     <query name="Timesheet.getBookedDaysInRangeForUserId">
         <![CDATA[SELECT new net.rrm.ehour.timesheet.dto.BookedDay(entry.entryId.entryDate, SUM(entry.hours))
         		 FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate >= :dateStart AND
                        entry.entryId.entryDate <= :dateEnd AND
-                       entry.entryId.projectAssignment.user.userId = :userId
+                       entry.entryId.activity.assignedUser.userId = :userId
 				 GROUP BY entry.entryId.entryDate                       
         ]]></query>   
 
-    <query name="Timesheet.getEntryCountForAssignmentId">
-    	SELECT COUNT(entry.entryId.entryDate)
-    	FROM TimesheetEntry entry
-    	WHERE entry.entryId.projectAssignment.assignmentId = :assignmentId
-	</query>   
-
     <query name="TimesheetComment.getCommentsForUserIdInRange">
-    <![CDATA[
+	    <![CDATA[
     	FROM TimesheetComment comment
     	WHERE comment.commentId.commentDate >= :dateStart AND
     		  comment.commentId.commentDate <= :dateEnd AND
@@ -60,17 +53,17 @@
     		 ]]>
 	</query>   
 
-    <query name="Timesheet.getLatestEntryForAssignmentId">
+    <query name="Timesheet.getLatestEntryForActivityId">
     	FROM TimesheetEntry entry
-    	WHERE entry.entryId.projectAssignment.assignmentId = :assignmentId
+    	WHERE entry.entryId.activity.id = :activityId
     	ORDER BY entry.updateDate DESC
 	</query>   
-	
-    <query name="Timesheet.deleteOnAssignmentIds">
+
+    <query name="Timesheet.deleteOnActivityIds">
     <![CDATA[
     	DELETE
     	FROM TimesheetEntry entry
-    	WHERE entry.entryId.projectAssignment.assignmentId IN (:assignmentIds)
+    	WHERE entry.entryId.activity.id IN (:activityIds)
     		 ]]>
 	</query>  	
 	

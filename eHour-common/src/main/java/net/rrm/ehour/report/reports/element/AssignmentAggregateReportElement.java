@@ -62,7 +62,7 @@ public class AssignmentAggregateReportElement implements Comparable<AssignmentAg
         float dateRangeLength;
 
         if (projectAssignment == null) {
-            return Optional.absent();
+            return percentage;
         }
 
         if (projectAssignment.getAssignmentType().isAllottedType()) {
@@ -150,11 +150,19 @@ public class AssignmentAggregateReportElement implements Comparable<AssignmentAg
                 .toString();
     }
 
-    public Number getHours() {
-        return hours == null ? 0 : hours;
+    /**
+     * @return the hours
+     */
+    public Number getHours()
+    {
+        return hours;
     }
 
-    public void setHours(Number hours) {
+    /**
+     * @param hours the hours to set
+     */
+    public void setHours(Number hours)
+    {
         this.hours = hours;
     }
 

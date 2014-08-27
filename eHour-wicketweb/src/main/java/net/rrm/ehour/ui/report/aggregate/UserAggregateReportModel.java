@@ -72,8 +72,6 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
 
             /**
              * Only needed for the root node, user
-             * @param aggregate
-             * @return
              */
 
             public Serializable getElementId(AssignmentAggregateReportElement aggregate) {
@@ -103,18 +101,15 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
         private static final long serialVersionUID = 1L;
 
         private Number hours;
-        private Number turnOver;
 
         private ProjectEndNode(AssignmentAggregateReportElement aggregate) {
             super(aggregate.getProjectAssignment().getProject().getPK());
             hours = aggregate.getHours();
-            turnOver = aggregate.getTurnOver();
 
             this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getProject().getName(),
                     aggregate.getProjectAssignment().getProject().getProjectCode(),
                     aggregate.getProjectAssignment().getHourlyRate(),
-                    aggregate.getHours(),
-                    aggregate.getTurnOver()};
+                    aggregate.getHours()};
         }
 
         @Override
@@ -127,11 +122,6 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
         @Override
         public Number getHours() {
             return hours;
-        }
-
-        @Override
-        public Number getTurnover() {
-            return turnOver;
         }
 
         @Override

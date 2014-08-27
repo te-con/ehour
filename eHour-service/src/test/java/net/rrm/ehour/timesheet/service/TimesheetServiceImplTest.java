@@ -16,13 +16,13 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.dto.BookedDay;
 import net.rrm.ehour.util.DateUtil;
@@ -59,15 +59,14 @@ public class TimesheetServiceImplTest {
     private AggregateReportService aggregateReportService;
 
     @Mock
-    private ProjectAssignmentService projectAssignmentService;
-
+    private ActivityService activityService;
     @Mock
     private TimesheetLockService timesheetLockService;
 
     @Before
     public void setUp() {
         timesheetService = new TimesheetServiceImpl(timesheetDAO, timesheetCommentDAO, timesheetLockService,
-                aggregateReportService, projectAssignmentService, config);
+                aggregateReportService, activityService, config);
     }
 
     @Test
@@ -97,7 +96,7 @@ public class TimesheetServiceImplTest {
     @Test
     public void should_get_timesheet_overview() throws Exception {
         List<TimesheetEntry> daoResults = new ArrayList<TimesheetEntry>();
-        List<AssignmentAggregateReportElement> reportResults = new ArrayList<AssignmentAggregateReportElement>();
+        List<ActivityAggregateReportElement> reportResults = new ArrayList<ActivityAggregateReportElement>();
         Calendar cal = new GregorianCalendar();
 
         TimesheetEntry entryA, entryB;
@@ -115,18 +114,19 @@ public class TimesheetServiceImplTest {
         entryB.setHours((float) 3);
         daoResults.add(entryB);
 
-        AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();
-        ProjectAssignment pa = ProjectAssignmentObjectMother.createProjectAssignment(0);
-        agg.setProjectAssignment(pa);
+        ActivityAggregateReportElement agg = new ActivityAggregateReportElement();
+        Activity activity = new Activity();
+        activity.setId(1);
+        agg.setActivity(activity);
         reportResults.add(agg);
 
         when(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal))).thenReturn(daoResults);
-        when(aggregateReportService.getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal))).thenReturn(reportResults);
+        when(aggregateReportService.getHoursPerActivityInRange(1, DateUtil.calendarToMonthRange(cal))).thenReturn(reportResults);
 
         timesheetService.getTimesheetOverview(new User(1), cal);
 
         verify(timesheetDAO).getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal));
-        verify(aggregateReportService).getHoursPerAssignmentInRange(1, DateUtil.calendarToMonthRange(cal));
+        verify(aggregateReportService).getHoursPerActivityInRange(1, DateUtil.calendarToMonthRange(cal));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class TimesheetServiceImplTest {
 
         when(timesheetDAO.getTimesheetEntriesInRange(1, range)).thenReturn(new ArrayList<TimesheetEntry>());
         when(timesheetCommentDAO.findById(new TimesheetCommentId(1, range.getDateStart()))).thenReturn(new TimesheetComment());
-        when(projectAssignmentService.getProjectAssignmentsForUser(1, rangeB)).thenReturn(new ArrayList<ProjectAssignment>());
+        when(activityService.getActivitiesForUser(1, rangeB)).thenReturn(new ArrayList<Activity>());
         when(config.getFirstDayOfWeek()).thenReturn(1);
         when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class))).thenReturn(new Vector<Interval>(0, 0, 1));
 
@@ -147,7 +147,7 @@ public class TimesheetServiceImplTest {
 
         verify(timesheetDAO).getTimesheetEntriesInRange(1, range);
         verify(timesheetCommentDAO).findById(new TimesheetCommentId(1, range.getDateStart()));
-        verify(projectAssignmentService).getProjectAssignmentsForUser(1, rangeB);
+        verify(activityService).getActivitiesForUser(1, rangeB);
         verify(config).getFirstDayOfWeek();
         verify(timesheetLockService).findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class));
     }

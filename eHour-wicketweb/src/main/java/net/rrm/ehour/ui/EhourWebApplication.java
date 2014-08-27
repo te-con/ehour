@@ -29,14 +29,12 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
-import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage;
 import net.rrm.ehour.ui.manage.customer.CustomerManagePage;
 import net.rrm.ehour.ui.manage.department.DepartmentManagePage;
 import net.rrm.ehour.ui.manage.lock.LockManagePage;
 import net.rrm.ehour.ui.manage.project.ProjectManagePage;
 import net.rrm.ehour.ui.manage.user.ImpersonateUserPage;
 import net.rrm.ehour.ui.manage.user.ManageUserPage;
-import net.rrm.ehour.ui.pm.ProjectManagementPage;
 import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource$;
@@ -168,7 +166,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/admin/department", DepartmentManagePage.class);
         mountPage("/admin/customer", CustomerManagePage.class);
         mountPage("/admin/project", ProjectManagePage.class);
-        mountPage("/admin/assignment", AssignmentManagePage.class);
         mountPage("/admin/activity", ActivityAdmin.class);
         mountPage("/consultant/overview", MonthOverviewPage.class);
 
@@ -178,8 +175,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/report/summary/project", ProjectSummaryPage.class);
 
         mountPage("/audit", AuditReportPage.class);
-
-        mountPage("/pm", ProjectManagementPage.class);
 
         mountPage("/prefs", UserPreferencePage.class);
 

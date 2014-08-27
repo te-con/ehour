@@ -150,13 +150,13 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
   def findAffectedUsers(startDate: Date, endDate: Date, excludedUsers: Seq[User]): Seq[AffectedUser] = {
     val xs = toScala(timesheetDao.getTimesheetEntriesInRange(new DateRange(startDate, endDate)))
 
-    val entriesPerUser: Map[User, List[TimesheetEntry]] = xs.groupBy(_.getEntryId.getProjectAssignment.getUser)
+    val entriesPerUser: Map[User, List[TimesheetEntry]] = xs.groupBy(_.getEntryId.getActivity.getAssignedUser)
 
     val filteredUsers = entriesPerUser.filterNot(p => excludedUsers.contains(p._1))
 
     (for ((k, v) <- filteredUsers) yield {
 
-      val byProject: Map[Project, List[TimesheetEntry]] = v.groupBy(_.getPK.getProjectAssignment.getProject)
+      val byProject: Map[Project, List[TimesheetEntry]] = v.groupBy(_.getPK.getActivity.getProject)
 
       val aggregatedProjects: Map[Project, Float] = for ((p, xs) <- byProject) yield {
         (p, xs.foldLeft(0f)(_ + _.getHours))

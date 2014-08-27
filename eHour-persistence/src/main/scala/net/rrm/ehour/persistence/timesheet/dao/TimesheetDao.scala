@@ -4,7 +4,7 @@ import java.util
 import java.util.Date
 
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{ProjectAssignment, TimesheetEntry, TimesheetEntryId}
+import net.rrm.ehour.domain.{Activity, TimesheetEntry, TimesheetEntryId}
 import net.rrm.ehour.persistence.dao.GenericDao
 import net.rrm.ehour.timesheet.dto.BookedDay
 
@@ -15,9 +15,9 @@ trait TimesheetDao extends GenericDao[TimesheetEntryId, TimesheetEntry] {
   def getTimesheetEntriesInRange(userId: Integer, dateRange: DateRange): util.List[TimesheetEntry]
 
   /**
-   * Get timesheet entries within date range for an assignment
+   * Get timesheet entries within date range for an activity
    */
-  def getTimesheetEntriesInRange(assignment: ProjectAssignment, dateRange: DateRange): util.List[TimesheetEntry]
+  def getTimesheetEntriesInRange(activity: Activity, dateRange: DateRange): util.List[TimesheetEntry]
 
   /**
    * Get timesheet entries within date range
@@ -27,12 +27,12 @@ trait TimesheetDao extends GenericDao[TimesheetEntryId, TimesheetEntry] {
   /**
    * Get timesheet entries before date
    */
-  def getTimesheetEntriesBefore(assignment: ProjectAssignment, date: Date): util.List[TimesheetEntry]
+  def getTimesheetEntriesBefore(activity: Activity, date: Date): util.List[TimesheetEntry]
 
   /**
    * Get timesheet entries after date
    */
-  def getTimesheetEntriesAfter(assignment: ProjectAssignment, date: Date): util.List[TimesheetEntry]
+  def getTimesheetEntriesAfter(activity: Activity, date: Date): util.List[TimesheetEntry]
 
   /**
    * Get cumulated hours per day for a date range
@@ -41,14 +41,14 @@ trait TimesheetDao extends GenericDao[TimesheetEntryId, TimesheetEntry] {
   def getBookedHoursperDayInRange(userId: Integer, dateRange: DateRange): util.List[BookedDay]
 
   /**
-   * Get latest timesheet entry for assignment
+   * Get latest timesheet entry for activity
    */
-  def getLatestTimesheetEntryForAssignment(assignmentId: Integer): TimesheetEntry
+  def getLatestTimesheetEntryForActivity(activityId: Integer): TimesheetEntry
 
   /**
-   * Delete timesheet entries for assignment
+   * Delete timesheet entries for activity
    */
-  def deleteTimesheetEntries(assignmentIds: util.List[Integer]): Int
+  def deleteTimesheetEntries(activityIds: util.List[Integer]): Int
 }
 
 

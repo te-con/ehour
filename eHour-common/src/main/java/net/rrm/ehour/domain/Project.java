@@ -18,8 +18,6 @@ package net.rrm.ehour.domain;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -71,6 +69,10 @@ public class Project extends DomainObject<Integer, Project> {
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "project")
     @Basic(fetch = FetchType.LAZY)
     private Set<ProjectAssignment> projectAssignments;
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "project")
+    @Basic(fetch = FetchType.EAGER)
+    private Set<Activity> activities;
 
     @ManyToOne
     @JoinColumn(name = "PROJECT_MANAGER", nullable = true)
@@ -266,27 +268,52 @@ public class Project extends DomainObject<Integer, Project> {
         this.deletable = deletable;
     }
 
-    public void addProjectAssignment(ProjectAssignment assignment) {
-        if (projectAssignments == null) {
-            projectAssignments = new HashSet<ProjectAssignment>();
+
+    public void addActivity(Activity activity) {
+        if (activities == null) {
+            activities = new HashSet<Activity>();
         }
 
-        projectAssignments.add(assignment);
+        activities.add(activity);
     }
 
+
     @Override
-    public boolean equals(final Object other) {
-        if (!(other instanceof Project)) {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Project project = (Project) o;
+
+        if (active != null ? !active.equals(project.active) : project.active != null) return false;
+        if (billable != null ? !billable.equals(project.billable) : project.billable != null) return false;
+        if (customer != null ? !customer.equals(project.customer) : project.customer != null) return false;
+        if (defaultProject != null ? !defaultProject.equals(project.defaultProject) : project.defaultProject != null)
             return false;
-        }
-        Project castOther = (Project) other;
-        return new EqualsBuilder().append(projectCode, castOther.projectCode).append(contact, castOther.contact).append(description, castOther.description).append(name, castOther.name).append(defaultProject, castOther.defaultProject).append(active, castOther.active).append(
-                customer, castOther.customer).append(billable, castOther.billable).isEquals();
+        if (name != null ? !name.equals(project.name) : project.name != null) return false;
+        if (projectCode != null ? !projectCode.equals(project.projectCode) : project.projectCode != null) return false;
+        if (projectId != null ? !projectId.equals(project.projectId) : project.projectId != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(projectCode).append(contact).append(description).append(name).append(defaultProject).append(active).append(customer).append(billable).toHashCode();
+        int result = projectId != null ? projectId.hashCode() : 0;
+        result = 31 * result + (projectCode != null ? projectCode.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (defaultProject != null ? defaultProject.hashCode() : 0);
+        result = 31 * result + (active != null ? active.hashCode() : 0);
+        result = 31 * result + (customer != null ? customer.hashCode() : 0);
+        result = 31 * result + (billable != null ? billable.hashCode() : 0);
+        return result;
     }
 
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
+    }
 }

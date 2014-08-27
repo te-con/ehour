@@ -11,7 +11,7 @@ public class TimesheetEntryObjectMother {
     public static TimesheetEntry createTimesheetEntry(int prjId, Date date, float hours) {
         TimesheetEntryId id = new TimesheetEntryId();
         id.setEntryDate(date);
-        id.setProjectAssignment(ProjectAssignmentObjectMother.createProjectAssignment(prjId, prjId, 1));
+        id.setActivity(ActivityMother.createActivity(prjId, prjId, 1));
 
         TimesheetEntry entry = new TimesheetEntry();
         entry.setEntryId(id);
@@ -24,10 +24,9 @@ public class TimesheetEntryObjectMother {
         TimesheetEntryId id = new TimesheetEntryId();
         id.setEntryDate(date);
 
-        ProjectAssignment projectAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1, 1, 1);
-        projectAssignment.setUser(user);
-
-        id.setProjectAssignment(projectAssignment);
+        Activity activity = ActivityMother.createActivity(1, 1, 1);
+        activity.setAssignedUser(user);
+        id.setActivity(activity);
 
         TimesheetEntry entry = new TimesheetEntry();
         entry.setEntryId(id);

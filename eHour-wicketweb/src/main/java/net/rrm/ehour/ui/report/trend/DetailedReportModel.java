@@ -127,8 +127,6 @@ public class DetailedReportModel extends TreeReportModel {
                     case 4:
                         return new FlatUserNode(flatElement);
                     case 5:
-                        return new FlatRoleNode(flatElement);
-                    case 6:
                         return new FlatEntryEndNode(flatElement);
                 }
 

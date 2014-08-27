@@ -1,18 +1,18 @@
 package net.rrm.ehour.report.reports.element;
 
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 
 public class FlatReportElementBuilder {
-    public static FlatReportElement buildFlatReportElement(ProjectAssignment assignment) {
+    public static FlatReportElement buildFlatReportElement(Activity activity) {
         FlatReportElement element = new FlatReportElement();
 
-        element.setAssignmentId(assignment.getAssignmentId());
-        element.setRole(assignment.getRole());
+        element.setActivityId(activity.getId());
+        element.setActivityName(activity.getName());
 
-        Project project = assignment.getProject();
+        Project project = activity.getProject();
         Customer customer = project.getCustomer();
 
         element.setCustomerCode(customer.getCode());
@@ -24,9 +24,7 @@ public class FlatReportElementBuilder {
         element.setProjectId(project.getProjectId());
         element.setProjectName(project.getName());
 
-        element.setRate(assignment.getHourlyRate());
-
-        User user = assignment.getUser();
+        User user = activity.getAssignedUser();
         element.setUserId(user.getUserId());
         element.setUserFirstName(user.getFirstName());
         element.setUserLastName(user.getLastName());

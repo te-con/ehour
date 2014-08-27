@@ -2,13 +2,13 @@ package net.rrm.ehour.reminder
 
 import java.util.Date
 
+import net.rrm.ehour.activity.service.ActivityService
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain._
 import net.rrm.ehour.mail.service._
 import net.rrm.ehour.persistence.mail.dao.MailLogDao
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao
-import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.timesheet.service.TimesheetLockService
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util.JodaDateUtil
@@ -88,7 +88,7 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
 @Service
 class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
                                                     timesheetDao: TimesheetDao,
-                                                    projectAssignmentService: ProjectAssignmentService,
+                                                    activityService: ActivityService,
                                                     lockService: TimesheetLockService
                                                      ) {
   @Transactional
@@ -104,7 +104,7 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
     val timesheetEntriesInRange = timesheetDao.getTimesheetEntriesInRange(new DateRange(reminderStartDate.toDate, reminderEndDate.toDate))
 
     import scala.collection.JavaConversions._
-    val entriesByUser: Map[User, mutable.Buffer[TimesheetEntry]] = timesheetEntriesInRange groupBy (_.getEntryId.getProjectAssignment.getUser)
+    val entriesByUser: Map[User, mutable.Buffer[TimesheetEntry]] = timesheetEntriesInRange groupBy (_.getEntryId.getActivity.getAssignedUser)
     val entriesByActiveUsers = entriesByUser.filterKeys(activeUsers.contains)
     val hoursPerUser: Map[User, Float] = entriesByActiveUsers.map(f => (f._1, f._2.foldLeft(0f)(_ + _.getHours))).toMap
 
@@ -144,14 +144,14 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
     val activeUsers = userService.getUsers(UserRole.USER).toList
 
     activeUsers.filter(u => {
-      val assignments = projectAssignmentService.getProjectAssignmentsForUser(u.getUserId, new DateRange(reminderStartDate.toDate, reminderEndDate.toDate))
+      val activities = activityService.getActivitiesForUser(u.getUserId, new DateRange(reminderStartDate.toDate, reminderEndDate.toDate))
 
-      val assignmentDates = assignments.toList.map(a => {
+      val activityDates = activities.toList.map(a => {
         val s = if (a.getDateStart == null) reminderStartDate else new LocalDate(a.getDateStart)
         val e = if (a.getDateEnd == null) reminderEndDate else new LocalDate(a.getDateEnd)
         (s,e)
       })
-      coversReminderDays(assignmentDates)
+      coversReminderDays(activityDates)
     })
   }
 }

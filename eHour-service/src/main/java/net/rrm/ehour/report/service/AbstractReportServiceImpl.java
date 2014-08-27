@@ -18,8 +18,8 @@ package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
@@ -190,19 +190,19 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         return users;
     }
 
-    protected List<ProjectAssignment> getAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
-        List<ProjectAssignment> assignmentsWithoutBookings = reportAggregatedDao.getAssignmentsWithoutBookings(reportRange);
+    protected List<Activity> getActivitiesWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
+        List<Activity> assignmentsWithoutBookings = reportAggregatedDao.getActivitiesWithoutBookings(reportRange);
 
-        List<ProjectAssignment> filteredAssignmentsWithoutBookings = Lists.newArrayList();
+        List<Activity> filteredActivitiesWithoutBookings = Lists.newArrayList();
 
-        for (ProjectAssignment assignmentsWithoutBooking : assignmentsWithoutBookings) {
-            boolean passedUserFilter = userIds == null || userIds.contains(assignmentsWithoutBooking.getUser().getUserId());
-            boolean passedProjectFilter = projectIds == null || projectIds.contains(assignmentsWithoutBooking.getProject().getProjectId());
+        for (Activity activityWithoutBooking : assignmentsWithoutBookings) {
+            boolean passedUserFilter = userIds == null || userIds.contains(activityWithoutBooking.getAssignedUser().getUserId());
+            boolean passedProjectFilter = projectIds == null || projectIds.contains(activityWithoutBooking.getProject().getProjectId());
 
             if (passedUserFilter && passedProjectFilter) {
-                filteredAssignmentsWithoutBookings.add(assignmentsWithoutBooking);
+                filteredActivitiesWithoutBookings.add(activityWithoutBooking);
             }
         }
-        return filteredAssignmentsWithoutBookings;
+        return filteredActivitiesWithoutBookings;
     }
 }

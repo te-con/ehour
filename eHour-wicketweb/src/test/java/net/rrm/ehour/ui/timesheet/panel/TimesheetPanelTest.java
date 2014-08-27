@@ -17,9 +17,9 @@
 package net.rrm.ehour.ui.timesheet.panel;
 
 import com.google.common.collect.Lists;
+import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.timesheet.service.IPersistTimesheet;
@@ -206,7 +206,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     @Test
     public void shouldSubmitSuccessful() {
         expect(persistTimesheet.persistTimesheetWeek(isA(Collection.class), isA(TimesheetComment.class), isA(DateRange.class)))
-                .andReturn(new ArrayList<ProjectAssignmentStatus>());
+                .andReturn(new ArrayList<ActivityStatus>());
 
         startAndReplayWithDefaultWeekOverview();
 
@@ -242,9 +242,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         timesheetEntry.setComment("Comment");
 
         List<TimesheetEntry> entries = Arrays.asList(timesheetEntry);
-        List<ProjectAssignment> assignments = Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1));
+        List<Activity> activities = Arrays.asList(ActivityMother.createActivity(1));
 
-        WeekOverview overview = new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
+        WeekOverview overview = new WeekOverview(entries, null, activities, nextWeekRange, USER, lockedDates);
 
         expectDefaultWeekOverview(overview);
 
@@ -333,8 +333,8 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         DateRange nextWeekRange = new DateRange(new Date(), now.getTime());
 
         List<TimesheetEntry> entries = Arrays.asList(TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5));
-        List<ProjectAssignment> assignments = Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1));
+        List<Activity> activities = Arrays.asList(ActivityMother.createActivity(1));
 
-        return new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
+        return new WeekOverview(entries, null, activities, nextWeekRange, USER, lockedDates);
     }
 }

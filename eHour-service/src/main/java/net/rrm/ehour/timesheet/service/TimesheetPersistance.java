@@ -16,18 +16,16 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import net.rrm.ehour.activity.status.ActivityStatus;
+import net.rrm.ehour.activity.status.ActivityStatusService;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.TimesheetComment;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
-import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.util.DomainUtil;
 import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.StringUtils;
@@ -46,16 +44,14 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
 
     private TimesheetDao timesheetDAO;
     private TimesheetCommentDao timesheetCommentDAO;
-    private ProjectAssignmentStatusService projectAssignmentStatusService;
-    private ProjectManagerNotifierService projectManagerNotifierService;
+    private ActivityStatusService activityStatusService;
     private ApplicationContext context;
 
     @Autowired
-    public TimesheetPersistance(TimesheetDao timesheetDAO, TimesheetCommentDao timesheetCommentDAO, ProjectAssignmentStatusService projectAssignmentStatusService, ProjectManagerNotifierService projectManagerNotifierService, ApplicationContext context) {
+    public TimesheetPersistance(TimesheetDao timesheetDAO, TimesheetCommentDao timesheetCommentDAO, ActivityStatusService activityStatusService, ApplicationContext context) {
         this.timesheetDAO = timesheetDAO;
         this.timesheetCommentDAO = timesheetCommentDAO;
-        this.projectAssignmentStatusService = projectAssignmentStatusService;
-        this.projectManagerNotifierService = projectManagerNotifierService;
+        this.activityStatusService = activityStatusService;
         this.context = context;
     }
 
@@ -69,14 +65,14 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     }
 
     @Transactional
-    public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
+    public List<ActivityStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
                                                               TimesheetComment comment,
                                                               DateRange weekRange) {
-        Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
+        Map<Activity, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
 
-        List<ProjectAssignmentStatus> errorStatusses = new ArrayList<ProjectAssignmentStatus>();
+        List<ActivityStatus> errorStatusses = new ArrayList<ActivityStatus>();
 
-        for (Map.Entry<ProjectAssignment, List<TimesheetEntry>> entry : timesheetRows.entrySet()) {
+        for (Map.Entry<Activity, List<TimesheetEntry>> entry : timesheetRows.entrySet()) {
             try {
                 getTimesheetPersister().validateAndPersist(entry.getKey(), entry.getValue(), weekRange);
             } catch (OverBudgetException e) {
@@ -91,23 +87,24 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         return errorStatusses;
     }
 
+    // get an instance to ourselves for cheap new transactions
     private IPersistTimesheet getTimesheetPersister() {
         return context.getBean(IPersistTimesheet.class);
     }
 
-    private Map<ProjectAssignment, List<TimesheetEntry>> getTimesheetAsRows(Collection<TimesheetEntry> entries) {
-        Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = new HashMap<ProjectAssignment, List<TimesheetEntry>>();
+    private Map<Activity, List<TimesheetEntry>> getTimesheetAsRows(Collection<TimesheetEntry> entries) {
+        Map<Activity, List<TimesheetEntry>> timesheetRows = new HashMap<Activity, List<TimesheetEntry>>();
 
         for (TimesheetEntry timesheetEntry : entries) {
-            ProjectAssignment assignment = timesheetEntry.getEntryId().getProjectAssignment();
+            Activity activity = timesheetEntry.getEntryId().getActivity();
 
-            List<TimesheetEntry> assignmentEntries = (timesheetRows.containsKey(assignment))
-                    ? timesheetRows.get(assignment)
+            List<TimesheetEntry> activityEntries = (timesheetRows.containsKey(activity))
+                    ? timesheetRows.get(activity)
                     : new ArrayList<TimesheetEntry>();
 
-            assignmentEntries.add(timesheetEntry);
+            activityEntries.add(timesheetEntry);
 
-            timesheetRows.put(assignment, assignmentEntries);
+            timesheetRows.put(activity, activityEntries);
         }
 
         return timesheetRows;
@@ -115,35 +112,33 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
 
     @Transactional(rollbackFor = OverBudgetException.class, propagation = Propagation.REQUIRES_NEW)
     @NonAuditable
-    public void validateAndPersist(ProjectAssignment assignment,
+    public void validateAndPersist(Activity activity,
                                    List<TimesheetEntry> entries,
                                    DateRange weekRange) throws OverBudgetException {
-        ProjectAssignmentStatus beforeStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
+        ActivityStatus beforeStatus = activityStatusService.getActivityStatus(activity);
 
         boolean checkAfterStatus = beforeStatus.isValid();
 
         try {
-            persistEntries(assignment, entries, weekRange, !beforeStatus.isValid());
+            persistEntries(activity, entries, weekRange, !beforeStatus.isValid());
         } catch (OverBudgetException obe) {
             // make sure it's retrown by checking the after status
             checkAfterStatus = true;
         }
 
-        ProjectAssignmentStatus afterStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
+        ActivityStatus afterStatus = activityStatusService.getActivityStatus(activity);
 
         if (checkAfterStatus && !afterStatus.isValid()) {
             throw new OverBudgetException(afterStatus);
-        } else if (!beforeStatus.equals(afterStatus) && canNotifyPm(assignment)) {
-            notifyPm(assignment, afterStatus);
         }
     }
 
-    private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException {
-        List<TimesheetEntry> previousEntries = timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange);
+    private void persistEntries(Activity activity, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException {
+        List<TimesheetEntry> previousEntries = timesheetDAO.getTimesheetEntriesInRange(activity, weekRange);
 
         for (TimesheetEntry entry : entries) {
-            if (!entry.getEntryId().getProjectAssignment().equals(assignment)) {
-                LOGGER.error("Invalid entry in assignment list, skipping: " + entry);
+            if (!entry.getEntryId().getActivity().equals(activity)) {
+                LOGGER.error("Invalid entry in activity list, skipping: " + entry);
                 continue;
             }
 
@@ -195,40 +190,5 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         } else {
             return null;
         }
-    }
-
-    private void notifyPm(ProjectAssignment assignment, ProjectAssignmentStatus status) {
-        TimesheetEntry entry;
-
-        entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
-
-        // over alloted - fixed
-        if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
-                && status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) {
-            projectManagerNotifierService.mailPMFixedAllottedReached(status.getAggregate(),
-                    entry.getEntryId().getEntryDate(),
-                    assignment.getProject().getProjectManager());
-        }
-        // over overrun - flex
-        else if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX
-                && status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) {
-            projectManagerNotifierService.mailPMFlexOverrunReached(status.getAggregate(),
-                    entry.getEntryId().getEntryDate(),
-                    assignment.getProject().getProjectManager());
-        }
-        // in overrun - flex
-        else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN)
-                && assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX) {
-            projectManagerNotifierService.mailPMFlexAllottedReached(status.getAggregate(),
-                    entry.getEntryId().getEntryDate(),
-                    assignment.getProject().getProjectManager());
-        }
-    }
-
-    private boolean canNotifyPm(ProjectAssignment assignment) {
-        return assignment.isNotifyPm()
-                && assignment.getProject().getProjectManager() != null
-                && assignment.getProject().getProjectManager().getEmail() != null;
-
     }
 }

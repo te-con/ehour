@@ -26,9 +26,9 @@ public class TimesheetFactoryTest {
     @Test
     public void should_build_timesheet_with_1_customer_with_1_assignment() {
         // given
-        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        Activity activity = ActivityMother.createActivity(1);
 
-        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment), RANGE, null, Lists.<Date>newArrayList());
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(activity), RANGE, null, Lists.<Date>newArrayList());
 
 
         // when
@@ -47,10 +47,9 @@ public class TimesheetFactoryTest {
         User user = UserObjectMother.createUser();
         Project project = ProjectObjectMother.createProject(1);
 
-        ProjectAssignment assignment01 = ProjectAssignmentObjectMother.createProjectAssignment(user, project);
-        ProjectAssignment assignment02 = ProjectAssignmentObjectMother.createProjectAssignment(user, project);
-        assignment02.setAssignmentId(2);
-        assignment02.setRole("role");
+        Activity assignment01 = ActivityMother.createActivity(user, project);
+        Activity assignment02 = ActivityMother.createActivity(user, project);
+        assignment02.setId(2);
 
         WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, Lists.<Date>newArrayList());
 
@@ -69,12 +68,11 @@ public class TimesheetFactoryTest {
         // given
         User user = UserObjectMother.createUser();
 
-        ProjectAssignment assignment01 = ProjectAssignmentObjectMother.createProjectAssignment(user, ProjectObjectMother.createProject(1));
+        Activity assignment01 = ActivityMother.createActivity(user, ProjectObjectMother.createProject(1));
         assignment01.getProject().setName("b");
-        ProjectAssignment assignment02 = ProjectAssignmentObjectMother.createProjectAssignment(user, ProjectObjectMother.createProject(2));
+        Activity assignment02 = ActivityMother.createActivity(user, ProjectObjectMother.createProject(2));
         assignment02.getProject().setName("a");
-        assignment02.setAssignmentId(2);
-        assignment02.setRole("role");
+        assignment02.setId(2);
 
         WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, Lists.<Date>newArrayList());
 
@@ -89,7 +87,7 @@ public class TimesheetFactoryTest {
 
         List<TimesheetRow> rows = customerRows.get(customers.iterator().next());
 
-        assertEquals("a", rows.get(0).getProjectAssignment().getProject().getName());
-        assertEquals("b", rows.get(1).getProjectAssignment().getProject().getName());
+        assertEquals("a", rows.get(0).getActivity().getProject().getName());
+        assertEquals("b", rows.get(1).getActivity().getProject().getName());
     }
 }

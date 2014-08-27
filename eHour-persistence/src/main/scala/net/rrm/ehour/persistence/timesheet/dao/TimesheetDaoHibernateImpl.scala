@@ -4,7 +4,7 @@ import java.util
 import java.util.Date
 
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{ProjectAssignment, TimesheetEntry, TimesheetEntryId}
+import net.rrm.ehour.domain.{Activity, ProjectAssignment, TimesheetEntry, TimesheetEntryId}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import net.rrm.ehour.timesheet.dto.BookedDay
@@ -15,10 +15,10 @@ class TimesheetDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Timeshee
   override def getTimesheetEntriesInRange(userId: Integer, dateRange: DateRange): util.List[TimesheetEntry] =
     applyConstraintsAndExecute(userId, dateRange, "Timesheet.getEntriesBetweenDateForUserId", classOf[TimesheetEntry])
 
-  override def getTimesheetEntriesInRange(assignment: ProjectAssignment, dateRange: DateRange): util.List[TimesheetEntry] = {
-    val keys = List("dateStart", "dateEnd", "assignment")
-    val params = List(dateRange.getDateStart, dateRange.getDateEnd, assignment)
-    findByNamedQuery("Timesheet.getEntriesBetweenDateForAssignment", keys, params)
+  override def getTimesheetEntriesInRange(activity: Activity, dateRange: DateRange): util.List[TimesheetEntry] = {
+    val keys = List("dateStart", "dateEnd", "activity")
+    val params = List(dateRange.getDateStart, dateRange.getDateEnd, activity)
+    findByNamedQuery("Timesheet.getEntriesBetweenDateForActivity", keys, params)
   }
 
   override def getTimesheetEntriesInRange(dateRange: DateRange): util.List[TimesheetEntry] = {
@@ -36,26 +36,26 @@ class TimesheetDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Timeshee
     findByNamedQuery(hql, keys, params).asInstanceOf[util.List[T]]
   }
 
-  override def getLatestTimesheetEntryForAssignment(assignmentId: Integer): TimesheetEntry = {
-    val results = findByNamedQuery("Timesheet.getLatestEntryForAssignmentId", "assignmentId", assignmentId)
+  override def getLatestTimesheetEntryForActivity(activityId: Integer): TimesheetEntry = {
+    val results = findByNamedQuery("Timesheet.getLatestEntryForActivityId", "activityId", activityId)
     if (results.size > 0) results.get(0) else null
   }
 
-  override def deleteTimesheetEntries(assignmentIds: util.List[Integer]): Int = {
-    val query = getSession.getNamedQuery("Timesheet.deleteOnAssignmentIds")
-    query.setParameterList("assignmentIds", assignmentIds)
+  override def deleteTimesheetEntries(activityIds: util.List[Integer]): Int = {
+    val query = getSession.getNamedQuery("Timesheet.deleteOnActivityIds")
+    query.setParameterList("activityIds", activityIds)
     ExponentialBackoffRetryPolicy retry query.executeUpdate
   }
 
-  override def getTimesheetEntriesAfter(assignment: ProjectAssignment, date: Date): util.List[TimesheetEntry] = {
-    val keys = List("date", "assignment")
-    val params = List(date, assignment)
-    findByNamedQuery("Timesheet.getEntriesAfterDateForAssignment", keys, params)
+  override def getTimesheetEntriesAfter(activity: Activity, date: Date): util.List[TimesheetEntry] = {
+    val keys = List("date", "activity")
+    val params = List(date, activity)
+    findByNamedQuery("Timesheet.getEntriesBeforeDateForActivity", keys, params)
   }
 
-  override def getTimesheetEntriesBefore(assignment: ProjectAssignment, date: Date): util.List[TimesheetEntry] = {
-    val keys = List("date", "assignment")
-    val params = List(date, assignment)
-    findByNamedQuery("Timesheet.getEntriesBeforeDateForAssignment", keys, params)
+  override def getTimesheetEntriesBefore(activity: Activity, date: Date): util.List[TimesheetEntry] = {
+    val keys = List("date", "activity")
+    val params = List(date, activity)
+    findByNamedQuery("Timesheet.getEntriesAfterDateForActivity", keys, params)
   }
 }

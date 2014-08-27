@@ -21,7 +21,6 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
 
     "by month: aggregate 2 bookings on 1 assignment without rate in 1 month into 1 aggregated element" in {
       val element = buildElement(1, baseDate, 10)
-      element.setRate(null)
       val data = List(element, buildElement(1, baseDate.plusWeeks(3), 5))
 
       val aggregate = DetailedReportAggregator.aggregate(data, new ByMonth())
@@ -137,7 +136,7 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
 
   def buildElement(assignmentId: Int, date: LocalDate, hours: Float) = {
     val element = new FlatReportElement()
-    element.setAssignmentId(assignmentId)
+    element.setActivityId(assignmentId)
     element.setDayDate(date.toDate)
     element.setTotalHours(hours)
     element

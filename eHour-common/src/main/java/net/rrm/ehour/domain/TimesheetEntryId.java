@@ -36,18 +36,18 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     private Date entryDate;
 
     @ManyToOne
-    @JoinColumn(name = "ASSIGNMENT_ID", nullable = false)
+    @JoinColumn(name = "ACTIVITY_ID", nullable = false)
     @Basic(fetch = FetchType.LAZY)
     @NotNull
-    private ProjectAssignment projectAssignment;
+    private Activity activity;
 
     /**
      * full constructor
      */
-    public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment)
+    public TimesheetEntryId(Date entryDate, Activity activity)
     {
         this.entryDate = entryDate;
-        this.projectAssignment = projectAssignment;
+        this.activity = activity;
     }
 
     /**
@@ -67,11 +67,19 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
         this.entryDate = entryDate;
     }
 
-    @Override
+    public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+
+	@Override
     public String toString()
     {
         return new ToStringBuilder(this).append("entryDate", getEntryDate())
-                .append("assignment", getProjectAssignment())
+                .append("activity", getActivity())
                 .toString();
     }
 
@@ -88,24 +96,14 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
         }
         TimesheetEntryId castOther = (TimesheetEntryId) other;
         return new EqualsBuilder().append(this.getEntryDate(), castOther.getEntryDate())
-                .append(this.getProjectAssignment(), castOther.getProjectAssignment()).isEquals();
+                .append(this.getActivity(), castOther.getActivity()).isEquals();
     }
 
     @Override
     public int hashCode()
     {
         return new HashCodeBuilder().append(getEntryDate())
-                .append(getProjectAssignment()).toHashCode();
-    }
-
-    public ProjectAssignment getProjectAssignment()
-    {
-        return projectAssignment;
-    }
-
-    public void setProjectAssignment(ProjectAssignment projectAssignment)
-    {
-        this.projectAssignment = projectAssignment;
+                .append(getActivity()).toHashCode();
     }
 
     /**
@@ -114,7 +112,7 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     public int compareTo(TimesheetEntryId object)
     {
         return new CompareToBuilder()
-                .append(this.getProjectAssignment(), object.getProjectAssignment())
+                .append(this.getActivity(), object.getActivity())
                 .append(this.getEntryDate(), object.getEntryDate())
                 .toComparison();
     }
