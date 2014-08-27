@@ -2,7 +2,6 @@ package net.rrm.ehour.report.reports.element;
 
 import com.google.common.base.Optional;
 import net.rrm.ehour.domain.Activity;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -84,6 +83,7 @@ public class ActivityAggregateReportElement implements Comparable<ActivityAggreg
 	 */
 	public Number getTurnOver() {
 		//TODO-NK Need to have HourlyRate information in Activity to calculate the same
+        //TODO-TRE: Let's get rid completely of the turn over
 		return 0;
 	}
 
