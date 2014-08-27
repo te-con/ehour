@@ -65,10 +65,9 @@ public class ActivityStatus implements Serializable {
 
 	public boolean isActivityBookable() {
 		boolean isBookable = true;
-		//TODO-NK Need to find a better way of doing this with Collections
-		if (statusses != null && statusses.size() > 0) {
-			for (Status status : statusses) {
-				isBookable &= (status == Status.IN_ALLOTTED);
+		if (statusses != null) {
+			if (statusses.contains(Status.BEFORE_START) || statusses.contains(Status.AFTER_DEADLINE) || statusses.contains(Status.OVER_ALLOTTED)) {
+				isBookable = false;
 			}
 		}
 		return isBookable;

@@ -32,4 +32,33 @@ public class ActivityStatusTest {
 		
 		Assert.assertFalse(activityStatus.isActivityBookable());
 	}
+
+	@Test
+	public void testShouldReturnFalseWhenAfterDeadLineStatus() {
+		activityStatus.addStatus(Status.AFTER_DEADLINE);
+		activityStatus.addStatus(Status.IN_ALLOTTED);
+		
+		Assert.assertFalse(activityStatus.isActivityBookable());
+	}
+
+	@Test
+	public void testShouldReturnFalseWhenBeforeStartStatus() {
+		activityStatus.addStatus(Status.BEFORE_START);
+		activityStatus.addStatus(Status.IN_ALLOTTED);
+		
+		Assert.assertFalse(activityStatus.isActivityBookable());
+	}
+	
+	@Test
+	public void testShouldReturnTrueWithMultipleStatusesButOverAllottedStatusIsNotPresent() {
+		activityStatus.addStatus(Status.IN_ALLOTTED);
+		activityStatus.addStatus(Status.RUNNING);
+
+		Assert.assertTrue(activityStatus.isActivityBookable());
+	}
+	
+	@Test
+	public void testShouldReturnTrueWithNoStatusesArePresent() {
+		Assert.assertTrue(activityStatus.isActivityBookable());
+	}
 }
