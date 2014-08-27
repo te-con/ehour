@@ -147,14 +147,12 @@
 				PAG.HOURLY_RATE
          ]]>         
 	</sql-query>	
-	
+
     <sql-query name="Report.getHoursPerDayForProjectsAndUsers">
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
-		       PAG.HOURLY_RATE AS "rate",
 		       ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "activityId",
+		       PAG.ASSIGNMENT_ID AS "assignmentId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -196,6 +194,7 @@
 				PAG.HOURLY_RATE
          ]]>
 	</sql-query>	
+-->
 	
     <sql-query name="Report.getHoursPerDay">
 	<![CDATA[	
