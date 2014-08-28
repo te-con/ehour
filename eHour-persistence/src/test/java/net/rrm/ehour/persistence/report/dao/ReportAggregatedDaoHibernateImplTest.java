@@ -144,12 +144,12 @@ public class ReportAggregatedDaoHibernateImplTest extends AbstractAnnotationDaoT
     }
 
     @Test
-    public void shouldGetActivitysWithoutHours() {
-        List<Activity> assignments = reportAggregatedDAO.getActivitiesWithoutBookings(OCT_1_TO_4);
+    public void shouldGetActivitiesWithoutHours() {
+        List<Activity> activities = reportAggregatedDAO.getActivitiesWithoutBookings(OCT_1_TO_4);
 
-        List<Integer> assignmentIds = DomainUtil.getIdsFromDomainObjects(assignments);
-        Collections.sort(assignmentIds);
+        List<Integer> activityIds = DomainUtil.getIdsFromDomainObjects(activities);
+        Collections.sort(activityIds);
 
-        assertArrayEquals(new Integer[]{3, 6, 10}, assignmentIds.toArray());
+        assertArrayEquals(new Integer[]{7, 12}, activityIds.toArray());
     }
 }
