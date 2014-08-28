@@ -3,18 +3,18 @@
     <parent>
         <groupId>nl.tecon.ehevo</groupId>
         <artifactId>ehevo</artifactId>
-        <version>0.9.0-SNAPSHOT</version>
+        <version>1.4.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>nl.tecon.ehevo</groupId>
     <artifactId>ehevo-persistence-oracle</artifactId>
     <packaging>jar</packaging>
     <name>eHour Evolutions DB Oracle connectivity</name>
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc</artifactId>
+            <version>10.1.0.5</version>
         </dependency>
 
         <dependency>
