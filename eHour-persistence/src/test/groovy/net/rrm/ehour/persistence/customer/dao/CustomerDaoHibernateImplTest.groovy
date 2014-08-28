@@ -16,7 +16,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 
 	CustomerDaoHibernateImplTest()
 	{
-		super("dataset-users-customer.xml")
+		super("dataset-users-customers.xml")
 	}
 
 	@Test
@@ -65,7 +65,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	@Test
 	void "should find on name and code"()
 	{
-		assert "TEC" == customerDao.findOnNameAndCode("te-con", "TEC").code
+		assert "BA" == customerDao.findOnNameAndCode("BA", "BA").code
 	}
 
 	@Test
@@ -166,6 +166,6 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 		
 		def customerReviewers = updatedCustomer.getReviewers();
 		assertEquals(1, customerReviewers.size());
-		assertEquals("testacc", customerReviewers.get(0).getUsername());
+		assertEquals("thies", customerReviewers.get(0).getUsername());
 	}
 }
