@@ -16,7 +16,8 @@
 
 package net.rrm.ehour.ui.report.aggregate.node;
 
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.node.ReportNode;
 
@@ -29,18 +30,18 @@ import java.io.Serializable;
 public class CustomerNode extends ReportNode {
     private static final long serialVersionUID = -356525734449023397L;
 
-    public CustomerNode(AssignmentAggregateReportElement aggregate) {
-        super(aggregate.getProjectAssignment().getProject().getCustomer().getPK(), aggregate.isEmptyEntry());
+    public CustomerNode(ActivityAggregateReportElement aggregate) {
+        super(aggregate.getActivity().getProject().getCustomer().getPK(), aggregate.isEmptyEntry());
 
-        if (aggregate.getProjectAssignment() != null) {
-            this.columnValues = new String[]{aggregate.getProjectAssignment().getProject().getCustomer().getFullName()};
+        if (aggregate.getActivity() != null) {
+            this.columnValues = new String[]{aggregate.getActivity().getProject().getCustomer().getFullName()};
         }
     }
 
     @Override
     protected Serializable getElementId(ReportElement element) {
-        AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement) element;
+        ActivityAggregateReportElement aggregate = (ActivityAggregateReportElement) element;
 
-        return aggregate.getProjectAssignment() != null ? aggregate.getProjectAssignment().getProject().getCustomer().getPK() : Integer.valueOf(1);
+        return aggregate.getActivity() != null ? aggregate.getActivity().getProject().getCustomer().getPK() : Integer.valueOf(1);
     }
 }

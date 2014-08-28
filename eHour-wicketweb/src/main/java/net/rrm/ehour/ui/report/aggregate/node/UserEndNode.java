@@ -16,6 +16,9 @@
 
 package net.rrm.ehour.ui.report.aggregate.node;
 
+import java.io.Serializable;
+
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.node.ReportNode;
@@ -30,20 +33,17 @@ public class UserEndNode extends ReportNode {
     private static final long serialVersionUID = 3861923371702158088L;
     private Number hours;
 
-    public UserEndNode(AssignmentAggregateReportElement aggregate) {
-        super(aggregate.getProjectAssignment().getPK(), aggregate.isEmptyEntry());
+    public UserEndNode(ActivityAggregateReportElement aggregate) {
+        super(aggregate.getActivity().getPK(), aggregate.isEmptyEntry());
         hours = aggregate.getHours();
 
-        this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName(),
-                aggregate.getProjectAssignment().getRole(),
-                aggregate.getProjectAssignment().getHourlyRate(),
-                aggregate.getHours()};
+        this.columnValues = new Serializable[]{aggregate.getActivity().getAssignedUser().getFullName(), aggregate.getHours()};
     }
 
     @Override
     protected Serializable getElementId(ReportElement element) {
-        AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement) element;
-        return aggregate.getProjectAssignment().getPK();
+        ActivityAggregateReportElement aggregate = (ActivityAggregateReportElement) element;
+        return aggregate.getActivity().getPK();
     }
 
     @Override

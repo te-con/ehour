@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.report.aggregate;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.AggregatedReportConfig;
 import net.rrm.ehour.ui.report.AbstractAggregateReportModel;
@@ -41,12 +41,12 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
     @SuppressWarnings("unchecked")
     @Override
     protected ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
-        List<AssignmentAggregateReportElement> reportElements = (List<AssignmentAggregateReportElement>) reportData.getReportElements();
+        List<ActivityAggregateReportElement> reportElements = (List<ActivityAggregateReportElement>) reportData.getReportElements();
 
-        Collections.sort(reportElements, new Comparator<AssignmentAggregateReportElement>() {
+        Collections.sort(reportElements, new Comparator<ActivityAggregateReportElement>() {
             @Override
-            public int compare(AssignmentAggregateReportElement o1, AssignmentAggregateReportElement o2) {
-                return o1.getProjectAssignment().getUser().compareTo(o2.getProjectAssignment().getUser());
+            public int compare(ActivityAggregateReportElement o1, ActivityAggregateReportElement o2) {
+                return o1.getActivity().getAssignedUser().compareTo(o2.getActivity().getAssignedUser());
             }
         });
 
@@ -54,10 +54,10 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
     }
 
     @Override
-    public ReportNodeFactory<AssignmentAggregateReportElement> getReportNodeFactory() {
-        return new ReportNodeFactory<AssignmentAggregateReportElement>() {
+    public ReportNodeFactory<ActivityAggregateReportElement> getReportNodeFactory() {
+        return new ReportNodeFactory<ActivityAggregateReportElement>() {
             @Override
-            public ReportNode createReportNode(AssignmentAggregateReportElement aggregate, int hierarchyLevel) {
+            public ReportNode createReportNode(ActivityAggregateReportElement aggregate, int hierarchyLevel) {
                 switch (hierarchyLevel) {
                     case 0:
                         return new UserNode(aggregate);
@@ -74,8 +74,8 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
              * Only needed for the root node, user
              */
 
-            public Serializable getElementId(AssignmentAggregateReportElement aggregate) {
-                return aggregate.getProjectAssignment().getUser().getPK();
+            public Serializable getElementId(ActivityAggregateReportElement aggregate) {
+                return aggregate.getActivity().getAssignedUser().getPK();
             }
         };
     }
@@ -83,17 +83,16 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
     private static final class UserNode extends ReportNode {
         private static final long serialVersionUID = 8534482324216994500L;
 
-        private UserNode(AssignmentAggregateReportElement aggregate) {
-            super(aggregate.getProjectAssignment().getPK());
-            this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getUser().getFullName(),
-                    aggregate.getProjectAssignment().getRole()};
+        private UserNode(ActivityAggregateReportElement aggregate) {
+            super(aggregate.getActivity().getPK());
+            this.columnValues = new Serializable[]{aggregate.getActivity().getAssignedUser().getFullName()};
         }
 
         @Override
         protected Serializable getElementId(ReportElement element) {
-            AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement) element;
+            ActivityAggregateReportElement aggregate = (ActivityAggregateReportElement) element;
 
-            return aggregate.getProjectAssignment().getPK();
+            return aggregate.getActivity().getPK();
         }
     }
 
@@ -102,21 +101,20 @@ public class UserAggregateReportModel extends AbstractAggregateReportModel {
 
         private Number hours;
 
-        private ProjectEndNode(AssignmentAggregateReportElement aggregate) {
-            super(aggregate.getProjectAssignment().getProject().getPK());
+        private ProjectEndNode(ActivityAggregateReportElement aggregate) {
+            super(aggregate.getActivity().getProject().getPK());
             hours = aggregate.getHours();
 
-            this.columnValues = new Serializable[]{aggregate.getProjectAssignment().getProject().getName(),
-                    aggregate.getProjectAssignment().getProject().getProjectCode(),
-                    aggregate.getProjectAssignment().getHourlyRate(),
+            this.columnValues = new Serializable[]{aggregate.getActivity().getProject().getName(),
+                    aggregate.getActivity().getProject().getProjectCode(),
                     aggregate.getHours()};
         }
 
         @Override
         protected Serializable getElementId(ReportElement element) {
-            AssignmentAggregateReportElement aggregate = (AssignmentAggregateReportElement) element;
+            ActivityAggregateReportElement aggregate = (ActivityAggregateReportElement) element;
 
-            return aggregate.getProjectAssignment().getProject().getPK();
+            return aggregate.getActivity().getProject().getPK();
         }
 
         @Override
