@@ -15,7 +15,13 @@ class ActivityDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
 
   override def findAllActivitiesOfProject(project: Project): util.List[Activity] = findByNamedQuery("Activity.findByProject", "project", project)
 
-  override def findActivitiesOfProject(project: Project, dateRange: DateRange) = null
+  override def findActivitiesOfProject(project: Project, dateRange: DateRange) = {
+    val keys  = List("project", "dateStart", "dateEnd")
+    val params  = List(project, dateRange.getDateStart, dateRange.getDateEnd)
+
+    findByNamedQuery("Activity.findByProjectAndDateRange", keys, params, CacheRegion)
+
+  }
 
   override def findActivitiesForUser(userId: Integer, dateRange: DateRange): util.List[Activity] = {
     val keys  = List("dateStart", "dateEnd", "userId")
