@@ -2,6 +2,7 @@ package net.rrm.ehour.persistence.activity.dao
 
 import java.util
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain.{Customer, Activity, Project, User}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
@@ -30,6 +31,12 @@ class ActivityDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
     findByNamedQuery("Activity.findActivitiessForUserInRange", keys, params, CacheRegion)
   }
 
-  override def findActivitiesForCustomers(customers: util.List[Customer]): util.List[Activity] =
+  override def findActivitiesForCustomers(customers: util.List[Customer]): util.List[Activity] = {
+    if (customers == null || customers.isEmpty) {
+      return Lists.newArrayList()
+    }
+
     findByNamedQuery("Activity.findActivitiesForCustomers", "customers", customers, CacheRegion)
+  }
+
 }

@@ -65,6 +65,8 @@ public class UserSelectedCriteria implements Serializable {
     private User pm;
     private boolean showZeroBookings = false;
     private AggregateBy aggregateBy = AggregateBy.DAY;
+    private boolean customerReporter;
+    private User loggedInUser;
 
     public UserSelectedCriteria() {
         resetCustomerSelection();
@@ -122,6 +124,22 @@ public class UserSelectedCriteria implements Serializable {
     public void setReportTypeToIndividualUser(User user) {
         setSelectedReportType(ReportType.INDIVIDUAL_USER);
         setUser(user);
+    }
+
+    public boolean isCustomerReporter() {
+        return customerReporter;
+    }
+
+    public void setCustomerReporter(boolean customerReporter) {
+        this.customerReporter = customerReporter;
+    }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 
     public Sort getCustomerSort() {

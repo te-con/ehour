@@ -1,6 +1,8 @@
 package net.rrm.ehour.persistence.customer.dao
 
 import net.rrm.ehour.domain.CustomerObjectMother
+import net.rrm.ehour.domain.User
+import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import net.rrm.ehour.persistence.user.dao.UserDao
 import org.junit.Ignore
@@ -14,7 +16,6 @@ import static org.junit.Assert.*
  * Created on: Nov 16, 2010 - 2:08:30 PM
  */
 @Ignore
-// TODO re-enable last
 class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
@@ -177,4 +178,23 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 		assertEquals(1, customerReviewers.size());
 		assertEquals("thies", customerReviewers.get(0).getUsername());
 	}
+
+    @Test
+    public void shouldReturnCorrectlyWhenCustomersAreHavingPassedUserAsReporter() {
+        def user = UserObjectMother.createUser();
+
+        def customers = customerDao.findAllCustomersHavingReporter(user);
+
+        assertNotNull(customers);
+        assertEquals(2, customers.size());
+    }
+
+    @Test
+    public void shouldReturnEmptyListWhenCustomersAreNotHavingPassedUserAsReporter() {
+        def user = new User(2);
+
+        def customers = customerDao.findAllCustomersHavingReporter(user);
+
+        assertEquals(0, customers.size());
+    }
 }

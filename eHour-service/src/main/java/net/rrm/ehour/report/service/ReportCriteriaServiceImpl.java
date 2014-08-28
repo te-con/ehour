@@ -19,12 +19,14 @@ package net.rrm.ehour.report.service;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.domain.*;
+import net.rrm.ehour.persistence.customer.dao.CustomerDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import net.rrm.ehour.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import scala.Tuple2;
@@ -48,6 +50,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     private IndividualUserCriteriaSync individualUserCriteriaSync;
     private TimesheetLockService lockService;
+    private UserService userService;
+    private CustomerDao customerDao;
 
     protected ReportCriteriaServiceImpl() {
     }
@@ -57,12 +61,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                      CustomerAndProjectCriteriaFilter customerAndProjectCriteriaFilter,
                                      UserAndDepartmentCriteriaFilter userAndDepartmentCriteriaFilter,
                                      IndividualUserCriteriaSync individualUserCriteriaSync,
-                                     TimesheetLockService lockService) {
+                                     TimesheetLockService lockService,
+                                     UserService userService,
+                                     CustomerDao customerDao) {
         this.reportAggregatedDAO = reportAggregatedDAO;
         this.customerAndProjectCriteriaFilter = customerAndProjectCriteriaFilter;
         this.userAndDepartmentCriteriaFilter = userAndDepartmentCriteriaFilter;
         this.individualUserCriteriaSync = individualUserCriteriaSync;
         this.lockService = lockService;
+        this.userService = userService;
+        this.customerDao = customerDao;
     }
 
     /**
@@ -75,12 +83,20 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         List<TimesheetLock> timesheetLocks = Lists.newArrayList(WrapAsJava$.MODULE$.asJavaCollection(lockService.findAll()));
         availCriteria.setTimesheetLocks(timesheetLocks);
 
-        if (userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm()) {
+        if (userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm() || userSelectedCriteria.isCustomerReporter()) {
             if (updateType == UPDATE_CUSTOMERS_AND_PROJECTS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
-                Tuple2<List<Customer>, List<Project>> available = customerAndProjectCriteriaFilter.getAvailableCustomers(userSelectedCriteria);
 
-                List<Customer> updatedAvailableCustomers = available._1();
+                List<Customer> updatedAvailableCustomers;
+
+                if (userSelectedCriteria.isCustomerReporter()) {
+                    updatedAvailableCustomers = customerDao.findAllCustomersHavingReporter(userSelectedCriteria.getLoggedInUser());
+                } else {
+                    Tuple2<List<Customer>, List<Project>> available = customerAndProjectCriteriaFilter.getAvailableCustomers(userSelectedCriteria);
+
+                    updatedAvailableCustomers = available._1();
+
+                }
                 availCriteria.setCustomers(updatedAvailableCustomers);
                 preserveSelectedCustomers(userSelectedCriteria, updatedAvailableCustomers);
 
@@ -92,10 +108,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
             if (updateType == ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS ||
                     updateType == ReportCriteriaUpdateType.UPDATE_ALL) {
 
-                Tuple2<List<UserDepartment>, List<User>> avail = userAndDepartmentCriteriaFilter.getAvailableUsers(userSelectedCriteria);
+                if (userSelectedCriteria.isCustomerReporter()) {
+                    availCriteria.setUsers(userService.getAllUsersAssignedToCustomers(userSelectedCriteria.getCustomers()));
+                } else {
+                    Tuple2<List<UserDepartment>, List<User>> avail = userAndDepartmentCriteriaFilter.getAvailableUsers(userSelectedCriteria);
 
-                availCriteria.setUserDepartments(avail._1());
-                availCriteria.setUsers(avail._2());
+                    availCriteria.setUserDepartments(avail._1());
+                    availCriteria.setUsers(avail._2());
+                }
             }
 
             if (updateType == ReportCriteriaUpdateType.UPDATE_ALL) {

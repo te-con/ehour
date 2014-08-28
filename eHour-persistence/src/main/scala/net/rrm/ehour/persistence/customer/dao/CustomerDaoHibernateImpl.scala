@@ -2,7 +2,7 @@ package net.rrm.ehour.persistence.customer.dao
 
 import java.util
 
-import net.rrm.ehour.domain.Customer
+import net.rrm.ehour.domain.{User, Customer}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -25,6 +25,9 @@ class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
   }
 
   override def findAllActive(): util.List[Customer] = findByNamedQuery("Customer.findAllWithActive", "active", java.lang.Boolean.TRUE, CacheRegion)
+
+  override def findAllCustomersHavingReporter(user: User): util.List[Customer] =
+    findByNamedQuery("Customer.findAllCustomersHavingReporter", "userId", user.getUserId, CacheRegion)
 }
 
 

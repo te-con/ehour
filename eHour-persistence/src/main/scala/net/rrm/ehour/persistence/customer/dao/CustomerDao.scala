@@ -2,7 +2,7 @@ package net.rrm.ehour.persistence.customer.dao
 
 import java.util
 
-import net.rrm.ehour.domain.Customer
+import net.rrm.ehour.domain.{User, Customer}
 import net.rrm.ehour.persistence.dao.GenericDao
 
 trait CustomerDao extends GenericDao[Integer, Customer] {
@@ -20,4 +20,6 @@ trait CustomerDao extends GenericDao[Integer, Customer] {
    * Find customer on name and code
    */
   def findOnNameAndCode(name: String, code: String): Customer
+
+  def findAllCustomersHavingReporter(user: User): util.List[Customer]
 }

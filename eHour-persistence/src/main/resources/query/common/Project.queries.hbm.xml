@@ -6,8 +6,14 @@
 		FROM Customer customer
 	    WHERE active = :active
 	</query>
-	
-	<query name="Customer.findByNameAndCode">
+
+    <query name="Customer.findAllCustomersHavingReporter">
+        SELECT distinct customer
+        FROM Customer as customer
+        JOIN customer.reporters reporters where reporters.userId = :userId
+    </query>
+
+    <query name="Customer.findByNameAndCode">
 		FROM Customer customer
 	    WHERE lower(name) = :name AND lower(code) = :code
 	</query>

@@ -398,7 +398,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsersAssignedToCustomers(List<Customer> customers) {
-        List<User> result = null;
+        List<User> result = Lists.newArrayList();
+
         List<Activity> activities = activityDao.findActivitiesForCustomers(customers);
         if (activities != null && !activities.isEmpty()) {
             result = new ArrayList<User>();

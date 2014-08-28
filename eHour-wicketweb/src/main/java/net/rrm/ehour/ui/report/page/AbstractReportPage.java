@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
@@ -69,6 +71,10 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
 
         userSelectedCriteria.setReportRange(DateUtil.getDateRangeForMonth(DateUtil.getCalendar(EhourWebSession.getEhourConfig())));
 
+        User loggedInUser = EhourWebSession.getUser();
+        userSelectedCriteria.setLoggedInUser(loggedInUser);
+        userSelectedCriteria.setCustomerReporter(loggedInUser.getUserRoles().contains(UserRole.CUSTOMERREPORTER));
+
         determineDefaultReportType(userSelectedCriteria);
 
         return userSelectedCriteria;
@@ -78,9 +84,9 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
         if (getEhourWebSession().isReporter()) {
             userSelectedCriteria.setReportTypeToGlobal();
         } else if (isReportForPm()) {
-            userSelectedCriteria.setReportTypeToPM(getEhourWebSession().getUser());
+            userSelectedCriteria.setReportTypeToPM(EhourWebSession.getUser());
         } else {
-            userSelectedCriteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
+            userSelectedCriteria.setReportTypeToIndividualUser(EhourWebSession.getUser());
         }
     }
     private boolean isReportForPm() {
