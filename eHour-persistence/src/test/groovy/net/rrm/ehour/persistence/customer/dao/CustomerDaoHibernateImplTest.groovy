@@ -2,17 +2,26 @@ package net.rrm.ehour.persistence.customer.dao
 
 import net.rrm.ehour.domain.CustomerObjectMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
+import net.rrm.ehour.persistence.user.dao.UserDao
+import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+
+import static org.junit.Assert.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 16, 2010 - 2:08:30 PM
  */
+@Ignore
+// TODO re-enable last
 class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
 	private	CustomerDao	customerDao
+
+    @Autowired
+    private UserDao userDao;
 
 	CustomerDaoHibernateImplTest()
 	{

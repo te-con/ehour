@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+"<?xml version="1.0"?>
 <database name="ehour-0.7">
     <table name="hibernate_unique_key">
         <column name="next_hi" primaryKey="false" required="false"
@@ -227,6 +227,34 @@
             <index-column name="USER_ID"/>
         </index>
     </table>
+
+    <table name="customer_reviewers">
+        <column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
+                size="10" autoIncrement="false" />
+        <column name="CUSTOMER_ID" primaryKey="true" required="true" type="INTEGER"
+                size="10" autoIncrement="false" />
+        <foreign-key foreignTable="users" name="CUSTOMER_REVIEWERS_fk1">
+            <reference local="USER_ID" foreign="USER_ID" />
+        </foreign-key>
+        <foreign-key foreignTable="customer" name="CUSTOMER_REVIEWERS_fk2">
+            <reference local="CUSTOMER_ID" foreign="CUSTOMER_ID" />
+        </foreign-key>
+    </table>
+
+
+    <table name="customer_reporters">
+        <column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
+                size="10" autoIncrement="false" />
+        <column name="CUSTOMER_ID" primaryKey="true" required="true" type="INTEGER"
+                size="10" autoIncrement="false" />
+        <foreign-key foreignTable="users" name="CUSTOMER_REPORTERS_fk1">
+            <reference local="USER_ID" foreign="USER_ID" />
+        </foreign-key>
+        <foreign-key foreignTable="customer" name="CUSTOMER_REPORTERS_fk2">
+            <reference local="CUSTOMER_ID" foreign="CUSTOMER_ID" />
+        </foreign-key>
+    </table>
+
     <table name="users">
         <column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
                 size="10" autoIncrement="true"/>
