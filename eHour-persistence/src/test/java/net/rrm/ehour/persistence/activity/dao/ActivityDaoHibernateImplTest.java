@@ -44,7 +44,7 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         Activity retrievedActivity = activityDao.persist(activity);
 
         Assert.assertNotNull(retrievedActivity.getId());
-//        Assert.assertEquals("ta", retrievedActivity.getCode());
+        Assert.assertEquals("ta", retrievedActivity.getCode());
     }
 
     @Test

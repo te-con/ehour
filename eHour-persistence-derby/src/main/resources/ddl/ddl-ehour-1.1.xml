@@ -340,6 +340,8 @@
 	<table name="activities">
 		<column name="ACTIVITY_ID" primaryKey="true" required="true"
 			type="INTEGER" size="10" autoIncrement="true" />
+		<column name="CODE" primaryKey="false" required="false" type="VARCHAR"
+			size="128" autoIncrement="false" />	
 		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
 			size="255" autoIncrement="false" />
 		<column name="DATE_START" primaryKey="false" required="false"

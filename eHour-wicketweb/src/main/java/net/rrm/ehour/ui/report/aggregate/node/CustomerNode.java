@@ -34,7 +34,7 @@ public class CustomerNode extends ReportNode {
         super(aggregate.getActivity().getProject().getCustomer().getPK(), aggregate.isEmptyEntry());
 
         if (aggregate.getActivity() != null) {
-            this.columnValues = new String[]{aggregate.getActivity().getProject().getCustomer().getFullName()};
+            this.columnValues = new String[]{aggregate.getActivity().getProject().getCustomer().getName()};
         }
     }
 
