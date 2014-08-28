@@ -113,17 +113,22 @@ public class CustomerServiceImpl implements CustomerService
         try {
             customerDAO.persist(customer);
 
-            List<User> reviewers = customer.getReviewers();
-            if (reviewers != null && reviewers.size() > 0) {
-                for (User reviewer : reviewers) {
-                    userService.addCustomerReviewerRole(reviewer.getUserId());
-                }
-            }
+            addRoleToUsers(customer.getReviewers(), UserRole.CUSTOMERREVIEWER);
+
+            addRoleToUsers(customer.getReporters(), UserRole.CUSTOMERREPORTER);
         } catch (DataIntegrityViolationException cve) {
             throw new ObjectNotUniqueException(cve);
         }
 
         return customer;
+    }
+
+    private void addRoleToUsers(List<User> users, UserRole userRole) {
+        if (users != null && users.size() > 0) {
+            for (User reviewer : users) {
+                userService.addRole(reviewer.getUserId(), userRole);
+            }
+        }
     }
 
     public void setCustomerDAO(CustomerDao customerDAO) {

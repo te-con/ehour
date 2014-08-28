@@ -169,4 +169,56 @@ public class CustomerServiceImplTest {
         verify(customerDAO, userService);
     }
 
+    @Test
+    public void testPersistCustomerContainingReporters() throws ObjectNotUniqueException
+    {
+        Customer cust = new Customer();
+        cust.setCustomerId(1);
+
+        List<User> reporters = new ArrayList<User>();
+        reporters.add(new User(1));
+        reporters.add(new User(2));
+        cust.setReporters(reporters);
+
+        expect(customerDAO.persist(cust)).andReturn(cust);
+
+        expect(userService.addRole(1, UserRole.CUSTOMERREPORTER)).andReturn(new User(1));
+        expect(userService.addRole(2, UserRole.CUSTOMERREPORTER)).andReturn(new User(1));
+
+        replay(customerDAO, userService);
+
+        customerService.persistCustomer(cust);
+
+        verify(customerDAO, userService);
+    }
+
+    @Test
+    public void testPersistCustomerContainingBothReportersAndReviewers() throws ObjectNotUniqueException
+    {
+        Customer cust = new Customer();
+        cust.setCustomerId(1);
+
+        List<User> reporters = new ArrayList<User>();
+        reporters.add(new User(1));
+        reporters.add(new User(2));
+        cust.setReporters(reporters);
+
+        List<User> reviewers = new ArrayList<User>();
+        reviewers.add(new User(3));
+        cust.setReviewers(reviewers);
+
+        expect(customerDAO.persist(cust)).andReturn(cust);
+
+        expect(userService.addRole(1, UserRole.CUSTOMERREPORTER)).andReturn(new User(1));
+        expect(userService.addRole(2, UserRole.CUSTOMERREPORTER)).andReturn(new User(1));
+
+        expect(userService.addRole(3, UserRole.CUSTOMERREVIEWER)).andReturn(new User(3));
+
+        replay(customerDAO, userService);
+
+        customerService.persistCustomer(cust);
+
+        verify(customerDAO, userService);
+    }
+
 }

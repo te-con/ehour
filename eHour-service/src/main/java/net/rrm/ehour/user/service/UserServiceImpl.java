@@ -373,7 +373,7 @@ public class UserServiceImpl implements UserService {
         User user = null;
         try {
             if (userId != null) {
-                user = getUserAndAddRole(userId, UserRole.CUSTOMERREVIEWER);
+                user = getUserAndAddRole(userId, newRole);
             }
         } catch (ObjectNotUniqueException exc) {
             // won't happen
