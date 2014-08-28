@@ -32,7 +32,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-				ENTRY_DATE,
+				ENTRY.ENTRY_DATE,
 				CUST.CUSTOMER_ID,
 				CUST.NAME,
 				CUST.CODE,
@@ -45,10 +45,10 @@
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT
-         ]]>         
-	</sql-query>	
-         
-    <sql-query name="Report.getHoursPerDayForProjects">
+         ]]>
+	</sql-query>
+
+	<sql-query name="Report.getHoursPerDayForProjects">
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
@@ -78,7 +78,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-				ENTRY_DATE,
+				ENTRY.ENTRY_DATE,
 				CUST.CUSTOMER_ID,
 				CUST.NAME,
 				CUST.CODE,
@@ -91,10 +91,10 @@
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT
-         ]]>         
-	</sql-query>	
-	
-    <sql-query name="Report.getHoursPerDayForProjectsAndUsers">
+         ]]>
+	</sql-query>
+
+	<sql-query name="Report.getHoursPerDayForProjectsAndUsers">
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
@@ -125,7 +125,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-				ENTRY_DATE,
+				ENTRY.ENTRY_DATE,
 				CUST.CUSTOMER_ID,
 				CUST.NAME,
 				CUST.CODE,
@@ -138,10 +138,10 @@
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT
-         ]]>         
-	</sql-query>	
-	
-    <sql-query name="Report.getHoursPerDay">
+         ]]>
+	</sql-query>
+
+	<sql-query name="Report.getHoursPerDay">
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
@@ -170,7 +170,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY PAG.ASSIGNMENT_ID,
-				ENTRY_DATE,
+				ENTRY.ENTRY_DATE,
 				CUST.CUSTOMER_ID,
 				CUST.NAME,
 				CUST.CODE,
@@ -182,8 +182,8 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				PAG.HOURLY_RATE
-         ]]>         
+				ENTRY.COMMENT
+         ]]>
 	</sql-query>
+
 </hibernate-mapping>

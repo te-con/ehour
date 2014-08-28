@@ -11,7 +11,7 @@
         <module>eHour-common</module>
         <module>eHour-persistence</module>
         <module>eHour-persistence-derby</module>
-        <module>eHour-persistence-postgresql</module>
+        <module>eHour-persistence-oracle</module>
         <module>eHour-service</module>
         <module>eHour-wicketweb</module>
         <module>eHour-web</module>
