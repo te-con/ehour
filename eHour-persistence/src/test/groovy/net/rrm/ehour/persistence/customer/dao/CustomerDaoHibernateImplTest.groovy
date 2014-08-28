@@ -68,4 +68,104 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 		assert "TEC" == customerDao.findOnNameAndCode("te-con", "TEC").code
 	}
 
+	@Test
+	public void shouldGetAssociatedReviewersCorrectly() {
+		def retrievedCustomer = customerDao.findById(1);
+		assertNotNull(retrievedCustomer);
+		def reviewers = retrievedCustomer.getReviewers();
+		assertNotNull(reviewers);
+		assertEquals(1, reviewers.size());
+	}
+
+	@Test
+	public void customerShouldBeAbleToExistWithoutReviewersOrReporters() {
+		def retrievedCustomer = customerDao.findById(3);
+		assertNotNull(retrievedCustomer);
+		def reviewers = retrievedCustomer.getReviewers();
+		assertNotNull(reviewers);
+		assertEquals(0, reviewers.size());
+
+		def reporters = retrievedCustomer.getReporters();
+		assertNotNull(reporters);
+		assertEquals(0, reporters.size());
+	}
+
+	@Test
+	public void shouldPersistCustomerWithReviewerCorrectly() {
+		def retrievedCustomer = customerDao.findById(3);
+		assertNotNull(retrievedCustomer);
+		def reviewers = retrievedCustomer.getReviewers();
+		assertNotNull(reviewers);
+		assertEquals(0, reviewers.size());
+		
+		def retrievedUser = userDao.findById(1);
+		retrievedCustomer.addReviewer(retrievedUser);
+		customerDao.merge(retrievedCustomer);
+		
+		def updatedCustomer = customerDao.findById(3);
+		assertEquals(1, updatedCustomer.getReviewers().size());
+	}
+
+	@Test
+	public void shouldPersistCustomerWithReporterCorrectly() {
+		def retrievedCustomer = customerDao.findById(3);
+		assertNotNull(retrievedCustomer);
+		def reporters = retrievedCustomer.getReporters();
+		assertNotNull(reporters);
+		assertEquals(0, reporters.size());
+		
+		def retrievedUser = userDao.findById(2);
+		retrievedCustomer.addReporter(retrievedUser);
+		customerDao.merge(retrievedCustomer);
+		
+		def updatedCustomer = customerDao.findById(3);
+		def customerReporters = updatedCustomer.getReporters();
+		assertEquals(1, customerReporters.size());
+		
+		assertEquals("admin", customerReporters.get(0).getUsername());
+	}
+	
+	@Test
+	public void shouldGetAssociatedReportersCorrectly() {
+		def retrievedCustomer = customerDao.findById(2);
+		assertNotNull(retrievedCustomer);
+		def reporters = retrievedCustomer.getReporters();
+		assertNotNull(reporters);
+		assertEquals(1, reporters.size());
+		def reporterUser = reporters.get(0);
+		assertNotNull(reporterUser);
+		assertEquals("thies", reporterUser.getUsername());
+	}
+
+	@Test
+	public void shouldPersistCustomerWithBothReporterAndReviewerCorrectly() {
+		def retrievedCustomer = customerDao.findById(3);
+		assertNotNull(retrievedCustomer);
+
+		def reporters = retrievedCustomer.getReporters();
+		assertNotNull(reporters);
+		assertEquals(0, reporters.size());
+
+		def reviewers = retrievedCustomer.getReviewers();
+		assertNotNull(reviewers);
+		assertEquals(0, reviewers.size());
+		
+		def userAsReporter = userDao.findById(2);
+		retrievedCustomer.addReporter(userAsReporter);
+	
+		def userAsReviewer = userDao.findById(3);
+		retrievedCustomer.addReviewer(userAsReviewer);
+		
+		customerDao.merge(retrievedCustomer);
+		
+		def updatedCustomer = customerDao.findById(3);
+		
+		def customerReporters = updatedCustomer.getReporters();
+		assertEquals(1, customerReporters.size());
+		assertEquals("admin", customerReporters.get(0).getUsername());
+		
+		def customerReviewers = updatedCustomer.getReviewers();
+		assertEquals(1, customerReviewers.size());
+		assertEquals("testacc", customerReviewers.get(0).getUsername());
+	}
 }

@@ -1,13 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-  <CUSTOMER CUSTOMER_ID="5" NAME="Te-con" DESCRIPTION="Java contractor" CODE="TEC" ACTIVE="Y"/>
+  <CUSTOMER CUSTOMER_ID="1" NAME="Te-con" DESCRIPTION="Java contractor" CODE="TEC" ACTIVE="Y"/>
   <CUSTOMER CUSTOMER_ID="2" NAME="Tester" DESCRIPTION="Test customer" CODE="TEST" ACTIVE="Y"/>  
   <CUSTOMER CUSTOMER_ID="3" NAME="Inactive" DESCRIPTION="Test customer" CODE="TEST" ACTIVE="N"/>    
   <CUSTOMER CUSTOMER_ID="4" NAME="Another" DESCRIPTION="Test customer" CODE="TEST" ACTIVE="Y"/>
-<!--
-
+ 
   <CUSTOMER_REVIEWERS USER_ID="1" CUSTOMER_ID="1"/>
   <CUSTOMER_REVIEWERS USER_ID="1" CUSTOMER_ID="2"/>
--->
+ 
+  <CUSTOMER_REPORTERS USER_ID="1" CUSTOMER_ID="2"/>
+  <CUSTOMER_REPORTERS USER_ID="2" CUSTOMER_ID="4"/>
+    
 </dataset>
  

@@ -64,31 +64,34 @@ public class Customer extends DomainObject<Integer, Customer> {
 //	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
     @Transient
 	private List<User> reviewers;
-	
+
+	@ManyToMany(targetEntity = User.class, cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@JoinTable(name = "CUSTOMER_REPORTERS", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+	private List<User> reporters;
+
     @Transient
-    private boolean deletable;
-
-    // Constructors
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("customerId", customerId)
-                .append("code", code)
-                .append("name", name)
-                .append("active", active)
-                .toString();
-    }
-
-    /**
-     * default constructor
-     */
-    public Customer() {
-    }
-
-    public Customer(Integer customerId) {
-        this.customerId = customerId;
-    }
+	private boolean deletable;
+	
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this)
+			.append("customerId", customerId)
+			.append("code", code)
+			.append("name", name)
+			.append("active", active)
+			.toString();		
+	}
+	
+	/** default constructor */
+	public Customer()
+	{
+	}
+	
+	public Customer(Integer customerId)
+	{
+		this.customerId = customerId;
+	}
 
     public Customer(Integer customerId, String code, String name) {
         this(customerId);
@@ -214,6 +217,21 @@ public class Customer extends DomainObject<Integer, Customer> {
 			this.reviewers = new ArrayList<User>();
 		}
 		reviewers.add(reviewer);
+	}
+
+	public List<User> getReporters() {
+		return reporters;
+	}
+
+	public void setReporters(List<User> reporters) {
+		this.reporters = reporters;
+	}
+
+	public void addReporter(User reporter) {
+		if (this.reporters == null) {
+			this.reporters = new ArrayList<User>();
+		}
+		this.reporters.add(reporter);
 	}
 
 	
