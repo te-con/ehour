@@ -48,6 +48,7 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
         assertEquals(10, results.size());
 
         assertNotNull(results.get(0).getProjectId());
+        assertNotNull(results.get(0).getActivityName());
     }
 
     @Test

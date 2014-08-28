@@ -7,6 +7,7 @@
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
 		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.NAME AS "activityName",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -29,6 +30,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY ACT.ACTIVITY_ID,
+		        ACT.NAME,
 				ENTRY_DATE,
 				CUST.CUSTOMER_ID,
 				CUST.NAME,
@@ -49,6 +51,7 @@
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
 		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.NAME AS "activityName",		       
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -71,6 +74,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY ACT.ACTIVITY_ID,
+		        ACT.NAME,		
 				ENTRY_DATE,
 				CUST.CUSTOMER_ID,
 				CUST.NAME,
@@ -89,7 +93,8 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
-		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.ACTIVITY_ID AS "assignmentId",
+		       ACT.NAME AS "activityName",		       
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -113,6 +118,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY ACT.ACTIVITY_ID,
+		        ACT.NAME,		
 				ENTRY_DATE,
 				CUST.CUSTOMER_ID,
 				CUST.NAME,
@@ -131,7 +137,8 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
-		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.ACTIVITY_ID AS "assignmentId",
+		       ACT.NAME AS "activityName",		       
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -153,6 +160,7 @@
 		      (ENTRY.ENTRY_DATE >= :dateStart AND
 		      ENTRY.ENTRY_DATE <= :dateEnd)
 		GROUP BY ACT.ACTIVITY_ID,
+		        ACT.NAME,		
 				ENTRY_DATE,
 				CUST.CUSTOMER_ID,
 				CUST.NAME,
