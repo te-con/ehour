@@ -85,7 +85,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         Activity activity = row.getActivity();
 
         item.add(new Label("project", activity.getProject().getName()));
-        item.add(new Label("projectCode", activity.getProject().getProjectCode()));
+        item.add(new Label("activityCode", activity.getName()));
         item.add(createStatusLabel(item));
         addInputCells(item, row);
         item.add(createTotalHoursLabel(row));

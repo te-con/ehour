@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
-import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
@@ -53,7 +53,7 @@ public class TimesheetFactory {
         timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
         List<TimesheetRow> timesheetRows = createTimesheetRows(weekOverview.getActivityMap(), timesheetDates, weekOverview.getActivities(), timesheet);
 
-        timesheet.setCustomers(structureRowsPerCustomer(timesheetRows));
+        timesheet.setCustomers(structureRowsPerProject(timesheetRows));
         timesheet.setDateSequence(dateSequence.toArray(new Date[7]));
         timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());
         timesheet.setWeekEnd(weekOverview.getWeekRange().getDateEnd());
@@ -93,27 +93,27 @@ public class TimesheetFactory {
         return formattedLockedDays;
     }
 
-    private SortedMap<Customer, List<TimesheetRow>> structureRowsPerCustomer(List<TimesheetRow> rows) {
-        SortedMap<Customer, List<TimesheetRow>> customerMap = new TreeMap<Customer, List<TimesheetRow>>();
+    private SortedMap<Project, List<TimesheetRow>> structureRowsPerProject(List<TimesheetRow> rows) {
+        SortedMap<Project, List<TimesheetRow>> projectMap = new TreeMap<Project, List<TimesheetRow>>();
 
         for (TimesheetRow timesheetRow : rows) {
-            Customer customer = timesheetRow.getActivity().getProject().getCustomer();
+            Project customer = timesheetRow.getActivity().getProject();
 
-            List<TimesheetRow> timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new ArrayList<TimesheetRow>();
+            List<TimesheetRow> timesheetRows = projectMap.containsKey(customer) ? projectMap.get(customer) : new ArrayList<TimesheetRow>();
             timesheetRows.add(timesheetRow);
 
-            customerMap.put(customer, timesheetRows);
+            projectMap.put(customer, timesheetRows);
         }
 
-        sortTimesheetRows(customerMap);
+        sortTimesheetRows(projectMap);
 
-        return customerMap;
+        return projectMap;
     }
 
-    private void sortTimesheetRows(SortedMap<Customer, List<TimesheetRow>> rows) {
-        Set<Map.Entry<Customer, List<TimesheetRow>>> entries = rows.entrySet();
+    private void sortTimesheetRows(SortedMap<Project, List<TimesheetRow>> rows) {
+        Set<Map.Entry<Project, List<TimesheetRow>>> entries = rows.entrySet();
 
-        for (Map.Entry<Customer, List<TimesheetRow>> entry : entries) {
+        for (Map.Entry<Project, List<TimesheetRow>> entry : entries) {
             Collections.sort(entry.getValue(), TimesheetRowComparator.INSTANCE);
         }
     }

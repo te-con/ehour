@@ -43,7 +43,7 @@ import static org.junit.Assert.*;
 
 public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
-    private static final String DAY1_PATH = "blueFrame:blueFrame_body:customers:0:rows:0:day1";
+    private static final String DAY1_PATH = "blueFrame:blueFrame_body:projects:0:rows:0:day1";
     private static final String DAY1_FULL_PATH = TIMESHEET_PATH + ":" + DAY1_PATH;
     private static final User USER = new User(1);
 
@@ -158,10 +158,10 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         tester.assertContains(DAY1_PATH + ":day");
 
         //changing another field should not resend the unmodified day1
-        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day2:day", "8");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:day", "onblur");
+        formTester.setValue("blueFrame:blueFrame_body:projects:0:rows:0:day2:day", "8");
+        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:projects:0:rows:0:day2:day", "onblur");
         tester.assertNoErrorMessage();
-        tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:day2:day");
+        tester.assertContains("blueFrame:blueFrame_body:projects:0:rows:0:day2:day");
     }
 
     @Test
@@ -208,8 +208,8 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startAndReplayWithLockedDays(Arrays.asList(lockedDay));
 
-        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:day", Label.class);
-        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day3:day", TimesheetTextField.class);
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:projects:0:rows:0:day2:day", Label.class);
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:projects:0:rows:0:day3:day", TimesheetTextField.class);
 
         tester.assertNoErrorMessage();
     }
@@ -243,9 +243,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         tester.startComponentInPage(new TimesheetPanel("panel", USER, new GregorianCalendar()));
 
         // then
-        openCommentWindow(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2");
+        openCommentWindow(TIMESHEET_PATH + ":blueFrame:blueFrame_body:projects:0:rows:0:day2");
 
-        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:dayWin:content:comment", Label.class);
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:projects:0:rows:0:day2:dayWin:content:comment", Label.class);
 
         tester.assertNoErrorMessage();
         verify(overviewTimesheet, userService, persistTimesheet);
@@ -257,7 +257,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startAndReplayWithLockedDays(Arrays.asList(lockedDay));
 
-        Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:commentLink");
+        Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:projects:0:rows:0:day2:commentLink");
         assertNull(commentLink); // null = not visible...
 
         tester.assertNoErrorMessage();

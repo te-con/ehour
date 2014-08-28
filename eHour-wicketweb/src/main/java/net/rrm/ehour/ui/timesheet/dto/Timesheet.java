@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.timesheet.dto;
 
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.domain.*;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 import java.io.Serializable;
 import java.util.*;
@@ -29,7 +28,7 @@ import java.util.*;
 
 public class Timesheet implements Serializable {
     private static final long serialVersionUID = -547682050331580675L;
-    private SortedMap<Customer, List<TimesheetRow>> customers;
+    private SortedMap<Project, List<TimesheetRow>> projects;
     private Date[] dateSequence;
     private Date weekStart;
     private Date weekEnd;
@@ -51,12 +50,10 @@ public class Timesheet implements Serializable {
      *
      * @param failedProjectStatusses
      */
-    public void updateFailedProjects(List<ActivityStatus> failedProjectStatusses)
-    {
+    public void updateFailedProjects(List<ActivityStatus> failedProjectStatusses) {
         clearAssignmentStatus();
 
-        for (ActivityStatus	activityStatus : failedProjectStatusses)
-        {
+        for (ActivityStatus activityStatus : failedProjectStatusses) {
             setAssignmentStatus(activityStatus);
         }
     }
@@ -66,14 +63,10 @@ public class Timesheet implements Serializable {
      *
      * @param status
      */
-    private void setAssignmentStatus(ActivityStatus status)
-    {
-        for (Customer customer : customers.keySet())
-        {
-            for (TimesheetRow row : customers.get(customer))
-            {
-                if (row.getActivity().equals(status.getAggregate().getActivity()))
-                {
+    private void setAssignmentStatus(ActivityStatus status) {
+        for (Project project : projects.keySet()) {
+            for (TimesheetRow row : projects.get(project)) {
+                if (row.getActivity().equals(status.getAggregate().getActivity())) {
                     row.setActivityStatus(status);
                     return;
                 }
@@ -85,10 +78,8 @@ public class Timesheet implements Serializable {
      * Clear each assignment status
      */
     private void clearAssignmentStatus() {
-        for (Customer customer : customers.keySet())
-        {
-            for (TimesheetRow row : customers.get(customer))
-            {
+        for (Project project : projects.keySet()) {
+            for (TimesheetRow row : projects.get(project)) {
                 row.setActivityStatus(null);
             }
         }
@@ -121,7 +112,7 @@ public class Timesheet implements Serializable {
     public List<TimesheetEntry> getTimesheetEntries() {
         List<TimesheetEntry> timesheetEntries = new ArrayList<TimesheetEntry>();
 
-        Collection<List<TimesheetRow>> rows = getCustomers().values();
+        Collection<List<TimesheetRow>> rows = getProjects().values();
 
         for (List<TimesheetRow> list : rows) {
             for (TimesheetRow timesheetRow : list) {
@@ -141,8 +132,8 @@ public class Timesheet implements Serializable {
     public Float getRemainingHoursForDay(int day) {
         float remainingHours = maxHoursPerDay;
 
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Project project : projects.keySet()) {
+            for (TimesheetRow row : projects.get(project)) {
                 TimesheetCell cell = row.getTimesheetCells()[day];
 
                 if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null) {
@@ -162,8 +153,8 @@ public class Timesheet implements Serializable {
     public Float getTotalBookedHours() {
         float totalHours = 0;
 
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Project project : projects.keySet()) {
+            for (TimesheetRow row : projects.get(project))
                 for (TimesheetCell cell : row.getTimesheetCells()) {
                     if (cell != null
                             && cell.getTimesheetEntry() != null
@@ -171,8 +162,8 @@ public class Timesheet implements Serializable {
                         totalHours += cell.getTimesheetEntry().getHours();
                     }
                 }
-            }
         }
+
 
         return totalHours;
     }
@@ -205,33 +196,30 @@ public class Timesheet implements Serializable {
         this.comment = comment;
     }
 
-    /**
-     * @return the customers
-     */
-    public SortedMap<Customer, List<TimesheetRow>> getCustomers() {
-        return customers;
+    public SortedMap<Project, List<TimesheetRow>> getProjects() {
+        return projects;
     }
 
     /**
      * @return
      */
-    public List<Customer> getCustomerList() {
-        return new ArrayList<Customer>(getCustomers().keySet());
+    public Collection<Project> getProjectList() {
+        return new ArrayList<Project>(getProjects().keySet());
     }
 
     /**
-     * @param customer
+     * @param project
      * @return
      */
-    public List<TimesheetRow> getTimesheetRows(Customer customer) {
-        return customers.get(customer);
+    public List<TimesheetRow> getTimesheetRows(Project project) {
+        return projects.get(project);
     }
 
     /**
-     * @param customers the customers to set
+     * @param projects the customers to set
      */
-    public void setCustomers(SortedMap<Customer, List<TimesheetRow>> customers) {
-        this.customers = customers;
+    public void setCustomers(SortedMap<Project, List<TimesheetRow>> projects) {
+        this.projects = projects;
     }
 
     /**

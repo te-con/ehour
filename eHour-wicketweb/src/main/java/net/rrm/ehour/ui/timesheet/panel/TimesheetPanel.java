@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.timesheet.panel;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -346,22 +347,22 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     private GrandTotal buildForm(final Form<?> form, WebMarkupContainer parent) {
         final GrandTotal grandTotals = new GrandTotal();
 
-        ListView<Customer> customers = new ListView<Customer>("customers", new PropertyModel<List<Customer>>(getDefaultModelObject(), "customerList")) {
+        ListView<Project> projects = new ListView<Project>("projects", new PropertyModel<List<Project>>(getDefaultModelObject(), "projectList")) {
             private static final long serialVersionUID = 1L;
 
             @Override
-            protected void populateItem(ListItem<Customer> item) {
-                final Customer customer = item.getModelObject();
+            protected void populateItem(ListItem<Project> item) {
+                final Project project = item.getModelObject();
 
                 Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
-                item.add(new Label("customer", customer.getName()));
+                item.add(new Label("project", project.getName()));
 
-                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), grandTotals, form, TimesheetPanel.this));
+                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this));
             }
         };
-        customers.setReuseItems(true);
+        projects.setReuseItems(true);
 
-        parent.add(customers);
+        parent.add(projects);
 
         return grandTotals;
     }
