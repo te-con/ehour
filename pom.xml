@@ -477,7 +477,7 @@
 
             <dependency>
                 <groupId>nl.tecon.ehevo</groupId>
-                <artifactId>ehevo-persistence-postgresql</artifactId>
+                <artifactId>ehevo-persistence-oracle</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

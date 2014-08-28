@@ -51,7 +51,7 @@
 
         <dependency>
             <groupId>nl.tecon.ehevo</groupId>
-            <artifactId>ehevo-persistence-postgresql</artifactId>
+            <artifactId>ehevo-persistence-oracle</artifactId>
         </dependency>
 
         <dependency>

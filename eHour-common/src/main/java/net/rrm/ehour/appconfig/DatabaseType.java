@@ -4,7 +4,7 @@ public enum DatabaseType
 {
 	DERBY("derby"),
 	MYSQL("mysql"),
-	POSTGRESQL("postgresql")
+	ORACLE("oracle")
 	;
 	
 	private String databaseName;
