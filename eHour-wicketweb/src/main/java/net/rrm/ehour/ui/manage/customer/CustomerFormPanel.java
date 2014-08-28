@@ -89,10 +89,15 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
         textArea.setLabel(new ResourceModel("admin.customer.description"));
         form.add(textArea);
 
-		//Reviewer
-		ListMultipleChoice<User> reviewersChoices = new ListMultipleChoice<User>("customer.reviewers", userService.getUsers(), new ChoiceRenderer<User>("fullName"));
-		reviewersChoices.setLabel(new ResourceModel("admin.customer.reviewers"));
-		form.add(reviewersChoices);
+        //Reviewer
+        ListMultipleChoice<User> reviewersChoices = new ListMultipleChoice<User>("customer.reviewers", userService.getUsers(), new ChoiceRenderer<User>("fullName"));
+        reviewersChoices.setLabel(new ResourceModel("admin.customer.reviewers"));
+        form.add(reviewersChoices);
+
+        //Reporter
+        ListMultipleChoice<User> reportersChoices = new ListMultipleChoice<User>("customer.reporters", userService.getUsers(), new ChoiceRenderer<User>("fullName"));
+        reportersChoices.setLabel(new ResourceModel("admin.customer.reporters"));
+        form.add(reportersChoices);
 
         // active
         form.add(new CheckBox("customer.active"));
