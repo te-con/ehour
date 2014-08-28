@@ -54,14 +54,6 @@
         <!-- SQL DDL scripts -->
         <fileSet>
             <useDefaultExcludes/>
-            <outputDirectory>/sql/mysql</outputDirectory>
-            <fileMode>0644</fileMode>
-            <directoryMode>0775</directoryMode>
-            <directory>../eHour-persistence-mysql/src/sql</directory>
-            <filtered>false</filtered>
-        </fileSet>
-        <fileSet>
-            <useDefaultExcludes/>
             <outputDirectory>/sql/postgresql</outputDirectory>
             <fileMode>0644</fileMode>
             <directoryMode>0775</directoryMode>

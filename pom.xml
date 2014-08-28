@@ -188,18 +188,6 @@
             </dependency>
 
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.15</version>
-            </dependency>
-
-            <dependency>
-                <groupId>postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>8.4-702.jdbc4</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate.validator.version}</version>
@@ -466,12 +454,6 @@
             <dependency>
                 <groupId>nl.tecon.ehevo</groupId>
                 <artifactId>ehevo-persistence-derby</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>nl.tecon.ehevo</groupId>
-                <artifactId>ehevo-persistence-mysql</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
