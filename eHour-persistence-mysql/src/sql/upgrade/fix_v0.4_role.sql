@@ -1,2 +1,0 @@
-ALTER TABLE PROJECT_ASSIGNMENT CHANGE description role varchar(255);
-
