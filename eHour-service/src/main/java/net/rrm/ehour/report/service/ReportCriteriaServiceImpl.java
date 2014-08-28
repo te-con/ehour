@@ -96,13 +96,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
                     updatedAvailableCustomers = available._1();
 
+                    List<Project> updatedAvailableProjects = available._2();
+                    availCriteria.setProjects(updatedAvailableProjects);
+                    preserveSelectedProjects(userSelectedCriteria, updatedAvailableProjects);
                 }
                 availCriteria.setCustomers(updatedAvailableCustomers);
                 preserveSelectedCustomers(userSelectedCriteria, updatedAvailableCustomers);
 
-                List<Project> updatedAvailableProjects = available._2();
-                availCriteria.setProjects(updatedAvailableProjects);
-                preserveSelectedProjects(userSelectedCriteria, updatedAvailableProjects);
             }
 
             if (updateType == ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS ||

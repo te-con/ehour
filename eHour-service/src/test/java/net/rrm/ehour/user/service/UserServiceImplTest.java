@@ -325,7 +325,7 @@ public class UserServiceImplTest {
 
         verify(activityDao);
 
-        Assert.assertNull(allUsersAssignedToCustomers);
+        assertEquals(0, allUsersAssignedToCustomers.size());
     }
 
     @Test
