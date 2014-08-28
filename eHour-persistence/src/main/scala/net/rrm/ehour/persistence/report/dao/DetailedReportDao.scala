@@ -7,11 +7,6 @@ import net.rrm.ehour.report.reports.element.FlatReportElement
 
 trait DetailedReportDao {
   /**
-   * Get hours per day for assignments
-   */
-  def getHoursPerDayForAssignment(assignmentId: util.List[Integer], dateRange: DateRange): util.List[FlatReportElement]
-
-  /**
    * Get hours per day for users
    */
   def getHoursPerDayForUsers(userIds: util.List[Integer], dateRange: DateRange): util.List[FlatReportElement]

@@ -29,16 +29,6 @@ import org.springframework.stereotype.Repository
  */
 @Repository("detailedReportDao")
 class DetailedReportDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl with DetailedReportDao {
-  override def getHoursPerDayForAssignment(assignmentIds: util.List[Integer], dateRange: DateRange): util.List[FlatReportElement] = {
-    val session = this.getSession
-    val query = session.getNamedQuery("Report.getHoursPerDayForAssignment")
-      .setDate("dateStart", dateRange.getDateStart)
-      .setDate("dateEnd", dateRange.getDateEnd)
-      .setParameterList("assignmentId", assignmentIds)
-      .setResultTransformer(Transformers.aliasToBean(classOf[FlatReportElement]))
-    ExponentialBackoffRetryPolicy retry query.list.asInstanceOf[util.List[FlatReportElement]]
-  }
-
   override def getHoursPerDayForUsers(userIds: util.List[Integer], dateRange: DateRange): util.List[FlatReportElement] = {
     val session = this.getSession
     val query = session.getNamedQuery("Report.getHoursPerDayForUsers").setDate("dateStart", dateRange.getDateStart).setDate("dateEnd", dateRange.getDateEnd).setParameterList("userIds", userIds).setResultTransformer(Transformers.aliasToBean(classOf[FlatReportElement]))

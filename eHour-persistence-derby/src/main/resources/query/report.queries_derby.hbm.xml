@@ -2,62 +2,11 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-
-
-
-<sql-query name="Report.getHoursPerDayForAssignment">
-	<![CDATA[	
-		SELECT SUM(ENTRY.HOURS) AS "totalHours",
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
-		       PAG.HOURLY_RATE AS "rate",
-		       ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "activityId",
-		       CUST.CUSTOMER_ID AS "customerId",
-		       CUST.NAME AS "customerName",
-		       CUST.CODE AS "customerCode",
-		       PAG.PROJECT_ID AS "projectId",
-		       PAG.USER_ID AS "userId",
-		       USR.FIRST_NAME AS "userFirstName",
-		       USR.LAST_NAME AS "userLastName",
-		       PAG.ROLE AS "role",
-		       PRJ.NAME AS "projectName",
-		       PRJ.PROJECT_CODE as "projectCode",
-		       ENTRY.COMMENT AS "comment"
-		FROM TIMESHEET_ENTRY ENTRY,
-		     CUSTOMER CUST,
-		     PROJECT PRJ,
-		     PROJECT_ASSIGNMENT PAG,
-		     USERS USR
-		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
-		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
-		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
-		      PAG.USER_ID = USR.USER_ID AND
-		      PAG.ASSIGNMENT_ID IN (:activityId) AND
-		      (ENTRY.ENTRY_DATE >= :dateStart AND
-		      ENTRY.ENTRY_DATE <= :dateEnd)
-		GROUP BY PAG.ASSIGNMENT_ID,
-				ENTRY_DATE,
-				CUST.CUSTOMER_ID,
-				CUST.NAME,
-				CUST.CODE,
-				PAG.PROJECT_ID,
-				PAG.USER_ID,
-				USR.FIRST_NAME,
-				USR.LAST_NAME,
-				PAG.ROLE,
-				PRJ.PROJECT_ID,
-				PRJ.PROJECT_CODE,
-				PRJ.NAME,
-				ENTRY.COMMENT,
-				PAG.HOURLY_RATE
-         ]]>
-    </sql-query>
-    	
     <sql-query name="Report.getHoursPerDayForUsers">
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
-		       ACT.ACTIVITY_ID AS "assignmentId",
+		       ACT.ACTIVITY_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -65,7 +14,6 @@
 		       ACT.USER_ID AS "userId",
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -92,8 +40,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				PAG.HOURLY_RATE
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>
 	
@@ -101,7 +48,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
-		       ACT.ACTIVITY_ID AS "assignmentId",
+		       ACT.ACTIVITY_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -109,7 +56,6 @@
 		       ACT.USER_ID AS "userId",
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -136,15 +82,14 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				PAG.HOURLY_RATE
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>
     <sql-query name="Report.getHoursPerDayForProjectsAndUsers">
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
-		       ACT.ACTIVITY_ID AS "assignmentId",
+		       ACT.ACTIVITY_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -152,7 +97,6 @@
 		       ACT.USER_ID AS "userId",
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -187,7 +131,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
-		       ACT.ACTIVITY_ID AS "assignmentId",
+		       ACT.ACTIVITY_ID AS "activityId",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -195,7 +139,6 @@
 		       ACT.USER_ID AS "userId",
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -221,8 +164,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT,
-				PAG.HOURLY_RATE
+				ENTRY.COMMENT
          ]]>         
 	</sql-query>
 </hibernate-mapping>
