@@ -3,7 +3,7 @@ package net.rrm.ehour.persistence.activity.dao
 import java.util
 
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{Activity, Project, User}
+import net.rrm.ehour.domain.{Customer, Activity, Project, User}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import org.springframework.stereotype.Repository
 
@@ -29,4 +29,7 @@ class ActivityDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
 
     findByNamedQuery("Activity.findActivitiessForUserInRange", keys, params, CacheRegion)
   }
+
+  override def findActivitiesForCustomers(customers: util.List[Customer]): util.List[Activity] =
+    findByNamedQuery("Activity.findActivitiesForCustomers", "customers", customers, CacheRegion)
 }

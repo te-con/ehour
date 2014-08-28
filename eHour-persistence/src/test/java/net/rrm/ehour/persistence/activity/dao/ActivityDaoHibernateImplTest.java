@@ -14,6 +14,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -234,7 +235,7 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         Assert.assertEquals(1, allActivitiesForUser.size());
     }
 
-/*    @Test
+    @Test
     public void shouldFindAllActivitiesForCustomers() {
         Customer customer1 = new Customer("IBM", "International Business Machine", "Hardware and Software",true);
         customerDao.persist(customer1);
@@ -296,7 +297,7 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         Assert.assertTrue(activitiesForCustomer2.contains(activity3));
     }
 
-    @Test
+ /*   @Test
     public void shouldFindAllActivitiesForCustomersInDateRange() {
         Customer customer1 = new Customer("IBM", "International Business Machine", "Hardware and Software",true);
         customerDao.persist(customer1);
@@ -405,7 +406,7 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         activity.setName(activityName);
         activity.setActive(isActive);
         activity.setAssignedUser(assignedUser);
-//        activity.setCode(activityCode);
+        activity.setCode(activityCode);
         return activity;
     }
 }

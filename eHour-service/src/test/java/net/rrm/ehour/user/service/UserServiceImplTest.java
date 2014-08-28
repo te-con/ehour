@@ -19,6 +19,7 @@ package net.rrm.ehour.user.service;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.persistence.activity.dao.ActivityDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
@@ -39,6 +40,7 @@ public class UserServiceImplTest {
     private UserDao userDAO;
     private UserDepartmentDao userDepartmentDAO;
     private UserRoleDao userRoleDAO;
+    private ActivityDao activityDao;
 
     @Before
     public void setUp() {
@@ -46,11 +48,12 @@ public class UserServiceImplTest {
         userDAO = createMock(UserDao.class);
         userDepartmentDAO = createMock(UserDepartmentDao.class);
         userRoleDAO = createMock(UserRoleDao.class);
-
+        activityDao = createMock(ActivityDao.class);
 
         userService.setUserDAO(userDAO);
         userService.setUserDepartmentDAO(userDepartmentDAO);
         userService.setUserRoleDAO(userRoleDAO);
+        userService.setActivityDao(activityDao);
 
         userService.setPasswordEncoder(new ShaPasswordEncoder(1));
     }
@@ -308,5 +311,51 @@ public class UserServiceImplTest {
 
         assertNotNull(persistedUser);
         assertEquals(0, persistedUser.getCustomers().size());
+    }
+
+    @Test
+    public void testShouldReturnNullWhenNoUsersAssociatedWithCustomers() {
+        List<Customer> customers = new ArrayList<Customer>();
+
+        expect(activityDao.findActivitiesForCustomers(customers)).andReturn(null);
+
+        replay(activityDao);
+
+        List<User> allUsersAssignedToCustomers = userService.getAllUsersAssignedToCustomers(customers);
+
+        verify(activityDao);
+
+        Assert.assertNull(allUsersAssignedToCustomers);
+    }
+
+    @Test
+    public void testShouldReturnCorrectlyWhenUsersAssociatedWithCustomers() {
+        List<Customer> customers = new ArrayList<Customer>();
+
+        List<Activity> activities = new ArrayList<Activity>();
+
+        Activity activity1 = new Activity();
+        User user1  = new User();
+        user1.setUsername("user1");
+        activity1.setAssignedUser(user1);
+
+        Activity activity2 = new Activity();
+        User user2  = new User();
+        user2.setUsername("user2");
+        activity1.setAssignedUser(user2);
+
+        activities.add(activity1);
+        activities.add(activity2);
+
+        expect(activityDao.findActivitiesForCustomers(customers)).andReturn(activities);
+
+        replay(activityDao);
+
+        List<User> allUsersAssignedToCustomers = userService.getAllUsersAssignedToCustomers(customers);
+
+        verify(activityDao);
+
+        Assert.assertNotNull(allUsersAssignedToCustomers);
+        Assert.assertEquals(2, allUsersAssignedToCustomers.size());
     }
 }

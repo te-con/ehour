@@ -18,12 +18,10 @@ package net.rrm.ehour.user.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
-import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.persistence.activity.dao.ActivityDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
@@ -55,6 +53,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDepartmentDao userDepartmentDAO;
+
+
+    @Autowired
+    private ActivityDao activityDao;
 
     @Autowired
     private UserRoleDao userRoleDAO;
@@ -393,4 +395,22 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    @Override
+    public List<User> getAllUsersAssignedToCustomers(List<Customer> customers) {
+        List<User> result = null;
+        List<Activity> activities = activityDao.findActivitiesForCustomers(customers);
+        if (activities != null && !activities.isEmpty()) {
+            result = new ArrayList<User>();
+            for (Activity activity : activities) {
+                result.add(activity.getAssignedUser());
+            }
+        }
+        return result;
+    }
+
+    public void setActivityDao(ActivityDao activityDao) {
+        this.activityDao = activityDao;
+    }
+
 }

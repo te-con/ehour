@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.user.service;
 
+import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
@@ -85,4 +86,11 @@ public interface UserService {
     void deleteDepartment(Integer departmentId);
 
     void changePassword(String username, String currentPassword, String newUnencryptedPassword) throws BadCredentialsException;
+
+    /**
+     * Returns a list of all {@link User}s who are working on Activities of Projects of passed Customers
+     * @param customers
+     * @return
+     */
+    List<User> getAllUsersAssignedToCustomers(List<Customer> customers);
 }

@@ -36,4 +36,14 @@
 			  (activity.dateEnd IS NULL or activity.dateEnd >= :dateStart)
     		 ]]>
 	</query>
+
+	<query name="Activity.findActivitiesForCustomers">
+    <![CDATA[	
+		FROM Activity activity
+		WHERE activity.active is true AND 
+			  activity.project.active is true AND
+			  activity.project.customer.active is true AND 
+			  activity.project.customer in (:customers)
+    		 ]]>
+	</query>	
 </hibernate-mapping>
