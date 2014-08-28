@@ -22,6 +22,7 @@ import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.report.AggregatedReportConfig;
 import net.rrm.ehour.ui.report.AbstractAggregateReportModel;
+import net.rrm.ehour.ui.report.aggregate.node.BlankReportNode;
 import net.rrm.ehour.ui.report.aggregate.node.CustomerNode;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
 import net.rrm.ehour.ui.report.aggregate.node.UserEndNode;
@@ -71,8 +72,6 @@ public class ProjectAggregateReportModel extends AbstractAggregateReportModel {
                     case 0:
                         return new ProjectNode(aggregate);
                     case 1:
-                        return new BlankReportNode(aggregate);
-                    case 2:
                         return new UserEndNode(aggregate);
                     default:
                         throw new RuntimeException("Hierarchy level too deep");
