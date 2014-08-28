@@ -19,6 +19,7 @@ package net.rrm.ehour.customer.service;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -71,7 +72,7 @@ public class CustomerServiceImplTest {
             customerService.deleteCustomer(1);
             fail("no ParentChildConstraintException thrown");
 
-        } catch (ParentChildConstraintException e) {
+        } catch (ParentChildConstraintException ignored) {
         }
 
         verify(customerDAO);
@@ -158,8 +159,8 @@ public class CustomerServiceImplTest {
 
         expect(customerDAO.persist(cust)).andReturn(cust);
 
-        expect(userService.addCustomerReviewerRole(1)).andReturn(new User(1));
-        expect(userService.addCustomerReviewerRole(2)).andReturn(new User(1));
+        expect(userService.addRole(1, UserRole.CUSTOMERREVIEWER)).andReturn(new User(1));
+        expect(userService.addRole(2, UserRole.CUSTOMERREVIEWER)).andReturn(new User(1));
 
         replay(customerDAO, userService);
 

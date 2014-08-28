@@ -68,16 +68,15 @@ public interface UserService {
     List<UserRole> getUserRoles();
 
     /**
-     * Validate that all users with a PM role are still listed as PM in the project; delete accordingly
-     * Add CustomerReviewer role to user.
+     * Add new role to user.
      * @param userId
+     * @param newRole {@link UserRole}
      * @return
      */
-    public User addCustomerReviewerRole(Integer userId);
+    public User addRole(Integer userId, UserRole newRole);
     
     /**
      * Cascading delete of user
-     * @param user
      */
     User validateProjectManagementRoles(Integer userId);
 

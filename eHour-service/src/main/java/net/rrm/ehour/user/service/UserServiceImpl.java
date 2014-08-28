@@ -366,20 +366,21 @@ public class UserServiceImpl implements UserService {
         userRoleDAO = dao;
     }
 
-	@Override
-	@Transactional
-	public User addCustomerReviewerRole(Integer userId) {
-		User user = null;
-		try {
-			if (userId != null) {
-				user = getUserAndAddRole(userId, UserRole.CUSTOMERREVIEWER);
-			}
-		} catch (ObjectNotUniqueException exc) {
-			// won't happen
-			LOGGER.error("Account already exists", exc);
-		}
-		return user;		
-	}
+
+    @Override
+    @Transactional
+    public User addRole(Integer userId, UserRole newRole) {
+        User user = null;
+        try {
+            if (userId != null) {
+                user = getUserAndAddRole(userId, UserRole.CUSTOMERREVIEWER);
+            }
+        } catch (ObjectNotUniqueException exc) {
+            // won't happen
+            LOGGER.error("Account already exists", exc);
+        }
+        return user;
+    }
 
     private User getUserAndAddRole(Integer userId, UserRole newRole) throws ObjectNotUniqueException {
         User user = userDAO.findById(userId);

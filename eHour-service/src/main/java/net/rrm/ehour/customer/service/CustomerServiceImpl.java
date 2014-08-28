@@ -20,6 +20,7 @@ import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -48,13 +49,11 @@ public class CustomerServiceImpl implements CustomerService
 	
 	private	static final Logger	LOGGER = Logger.getLogger(CustomerServiceImpl.class);
 
-    public CustomerServiceImpl() {
-    }
-
     @Transactional(readOnly = true)
     public Customer getCustomer(String customerName, String customerCode) {
         return customerDAO.findOnNameAndCode(customerName, customerCode);
     }
+
 
     @Auditable(actionType = AuditActionType.DELETE)
     @Transactional

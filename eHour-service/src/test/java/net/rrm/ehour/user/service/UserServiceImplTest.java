@@ -236,7 +236,7 @@ public class UserServiceImplTest {
         replay(userDAO);
         replay(userRoleDAO);
 
-        User updatedUser = userService.addCustomerReviewerRole(1);
+        User updatedUser = userService.addRole(1, UserRole.CUSTOMERREVIEWER);
 
         verify(userDAO);
         verify(userRoleDAO);

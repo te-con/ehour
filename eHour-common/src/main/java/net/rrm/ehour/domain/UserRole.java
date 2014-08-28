@@ -36,12 +36,13 @@ import java.util.Map;
 public class UserRole extends DomainObject<String, UserRole> implements GrantedAuthority {
     private static final long serialVersionUID = 3806904191272349157L;
 
-    public static final String ROLE_USER = "ROLE_CONSULTANT";
-    public static final String ROLE_REPORT = "ROLE_REPORT";
-    public static final String ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
+	public final static String	ROLE_USER = "ROLE_CONSULTANT";
+	public final static String	ROLE_REPORT = "ROLE_REPORT";
+	public final static String	ROLE_PROJECTMANAGER = "ROLE_PROJECTMANAGER";
+	public final static String	ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_MANAGER = "ROLE_MANAGER";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
-    public final static String ROLE_CUSTOMERREVIEWER = "ROLE_CUSTOMERREVIEWER";
+	public final static String	ROLE_CUSTOMERREVIEWER = "ROLE_CUSTOMERREVIEWER";
+    public final static String	ROLE_CUSTOMERREPORTER = "ROLE_CUSTOMERREPORTER";
 
     public static final UserRole USER = new UserRole(ROLE_USER, "Consultant");
     public static final UserRole REPORT = new UserRole(ROLE_REPORT, "Report Role");
@@ -49,6 +50,7 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
     public static final UserRole MANAGER = new UserRole(ROLE_MANAGER, "Manager");
     public static final UserRole ADMIN = new UserRole(ROLE_ADMIN, "Administrator");
     public static final UserRole CUSTOMERREVIEWER = new UserRole(ROLE_CUSTOMERREVIEWER, "Customer Reviewer");
+    public static final UserRole CUSTOMERREPORTER = new UserRole(ROLE_CUSTOMERREPORTER, "Customer Reporter");
 
     public static final Map<String, UserRole> ROLES = new HashMap<String, UserRole>();
 
