@@ -4,7 +4,7 @@ import java.util
 import java.util.Date
 
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{Activity, ProjectAssignment, TimesheetEntry, TimesheetEntryId}
+import net.rrm.ehour.domain.{Activity, TimesheetEntry, TimesheetEntryId}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import net.rrm.ehour.timesheet.dto.BookedDay
@@ -50,12 +50,12 @@ class TimesheetDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Timeshee
   override def getTimesheetEntriesAfter(activity: Activity, date: Date): util.List[TimesheetEntry] = {
     val keys = List("date", "activity")
     val params = List(date, activity)
-    findByNamedQuery("Timesheet.getEntriesBeforeDateForActivity", keys, params)
+    findByNamedQuery("Timesheet.getEntriesAfterDateForActivity", keys, params)
   }
 
   override def getTimesheetEntriesBefore(activity: Activity, date: Date): util.List[TimesheetEntry] = {
     val keys = List("date", "activity")
     val params = List(date, activity)
-    findByNamedQuery("Timesheet.getEntriesAfterDateForActivity", keys, params)
+    findByNamedQuery("Timesheet.getEntriesBeforeDateForActivity", keys, params)
   }
 }

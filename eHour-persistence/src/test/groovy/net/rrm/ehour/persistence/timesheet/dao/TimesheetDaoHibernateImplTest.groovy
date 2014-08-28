@@ -1,8 +1,7 @@
 package net.rrm.ehour.persistence.timesheet.dao
 
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.Activity;
-import net.rrm.ehour.domain.ProjectAssignment
+import net.rrm.ehour.domain.Activity
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -77,13 +76,19 @@ class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     void shouldGetTimesheetEntriesBefore() {
-        def res = timesheetDAO.getTimesheetEntriesBefore(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 3));
+        Activity activity = new Activity();
+        activity.setId(1);
+
+        def res = timesheetDAO.getTimesheetEntriesBefore(activity, new Date(2006 - 1900, 10 - 1, 3));
         assertEquals(1, res.size());
     }
 
     @Test
     void shouldGetTimesheetEntriesAfter() {
-        def res = timesheetDAO.getTimesheetEntriesAfter(new ProjectAssignment(1), new Date(2006 - 1900, 10 - 1, 4));
+        Activity activity = new Activity();
+        activity.setId(1);
+
+        def res = timesheetDAO.getTimesheetEntriesAfter(activity, new Date(2006 - 1900, 10 - 1, 4));
 
         assertEquals(3, res.size());
     }

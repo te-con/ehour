@@ -4,6 +4,7 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +16,7 @@ import java.util.Set;
  * Tests for {@link UserDaoHibernateImpl}.
  * 
  */
+@Ignore
 public class TempUserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
 	// All these tests need to be ported to corresponding Groovy class.
