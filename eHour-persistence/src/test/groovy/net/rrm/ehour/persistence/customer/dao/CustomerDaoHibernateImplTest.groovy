@@ -16,7 +16,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 
 	CustomerDaoHibernateImplTest()
 	{
-		super("dataset-customer.xml")
+		super("dataset-users-customer.xml")
 	}
 
 	@Test

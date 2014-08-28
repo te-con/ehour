@@ -29,7 +29,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "AUDIT")
+@Table(name = "AUDITLOG")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Audit extends DomainObject<Number, Audit> {
     private static final long serialVersionUID = -5025801585806813596L;

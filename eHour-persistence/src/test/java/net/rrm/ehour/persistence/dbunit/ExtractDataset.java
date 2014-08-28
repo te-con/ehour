@@ -16,16 +16,16 @@
 
 package net.rrm.ehour.persistence.dbunit;
 
-import java.io.FileOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 
-public abstract class ExtractDataset
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class ExtractDataset
 {
 	public static void main(String[] args) throws Exception
 	{
@@ -51,7 +51,7 @@ public abstract class ExtractDataset
 //        partialDataSet.addTable("mail_type");
 //        partialDataSet.addTable("mail_log");
 //        partialDataSet.addTable("mail_log_assignment");
-        partialDataSet.addTable("AUDIT");
+        partialDataSet.addTable("AUDITLOG");
 
         FlatXmlDataSet.write(partialDataSet,
                 new FileOutputStream("src/test/resources/test-dataset-20081112.xml"));		
