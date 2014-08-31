@@ -295,7 +295,7 @@
             <index-column name="DEPARTMENT_ID"/>
         </index>
     </table>
-    <table name="audit">
+    <table name="auditlog">
         <column name="AUDIT_ID" primaryKey="true" required="true" type="INTEGER"
                 size="10" autoIncrement="true"/>
         <column name="USER_ID" primaryKey="false" required="false"
