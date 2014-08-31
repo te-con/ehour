@@ -24,7 +24,7 @@ public class TimesheetFactoryTest {
     }
 
     @Test
-    public void should_build_timesheet_with_1_customer_with_1_assignment() {
+    public void should_build_timesheet_with_1_customer_with_1_activity() {
         // given
         Activity activity = ActivityMother.createActivity(1);
 
@@ -42,16 +42,16 @@ public class TimesheetFactoryTest {
     }
 
     @Test
-    public void should_build_timesheet_with_multiple_assignments_on_same_project() {
+    public void should_build_timesheet_with_multiple_activities_on_same_project() {
         // given
         User user = UserObjectMother.createUser();
         Project project = ProjectObjectMother.createProject(1);
 
-        Activity assignment01 = ActivityMother.createActivity(user, project);
-        Activity assignment02 = ActivityMother.createActivity(user, project);
-        assignment02.setId(2);
+        Activity activity01 = ActivityMother.createActivity(user, project);
+        Activity activity02 = ActivityMother.createActivity(user, project);
+        activity02.setId(2);
 
-        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, Lists.<Date>newArrayList());
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(activity01, activity02), RANGE, null, Lists.<Date>newArrayList());
 
         // when
         Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
@@ -68,13 +68,14 @@ public class TimesheetFactoryTest {
         // given
         User user = UserObjectMother.createUser();
 
-        Activity assignment01 = ActivityMother.createActivity(user, ProjectObjectMother.createProject(1));
-        assignment01.getProject().setName("b");
-        Activity assignment02 = ActivityMother.createActivity(user, ProjectObjectMother.createProject(2));
-        assignment02.getProject().setName("a");
-        assignment02.setId(2);
+        Activity activity01 = ActivityMother.createActivity(user, ProjectObjectMother.createProject(1));
+        activity01.getProject().setName("b");
+        Activity activity02 = ActivityMother.createActivity(user, ProjectObjectMother.createProject(2));
+        activity02.getProject().setName("a");
+        activity02.setId(2);
 
-        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(assignment01, assignment02), RANGE, null, Lists.<Date>newArrayList());
+
+        WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(activity01, activity02), RANGE, null, Lists.<Date>newArrayList());
 
         // when
         Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
@@ -82,12 +83,12 @@ public class TimesheetFactoryTest {
         // then
         SortedMap<Project,List<TimesheetRow>> projectRows = timesheet.getProjects();
 
-        Set<Project> customers = projectRows.keySet();
-        assertEquals(1, customers.size());
+        Set<Project> projects = projectRows.keySet();
+        assertEquals(2, projects.size());
 
-        List<TimesheetRow> rows = projectRows.get(customers.iterator().next());
+        Iterator<Project> iterator = projects.iterator();
 
-        assertEquals("a", rows.get(0).getActivity().getProject().getName());
-        assertEquals("b", rows.get(1).getActivity().getProject().getName());
+        assertEquals("a", iterator.next().getName());
+        assertEquals("b", iterator.next().getName());
     }
 }
