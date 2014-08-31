@@ -92,14 +92,13 @@ class ReminderConfigPanel(id: String, model: IModel[MainConfigBackingBean]) exte
         target.add(reminderTimeContainer, reminderSubjectContainer, reminderBodyContainer, reminderCcContainer, reminderCcHelpContainer, reminderMinHoursContainer, reminderMinHoursHelpContainer)
       }
     }
-    reminderEnabledCheckbox.setEnabled(ehourSystemConfig.isEnableMail)
     form.add(reminderEnabledCheckbox)
   }
 
   private class ReminderContainer(id: String) extends Container(id) {
     setOutputMarkupPlaceholderTag(true)
 
-    override def isVisible: Boolean = ehourSystemConfig.isEnableMail && getPanelModelObject.getConfig.isReminderEnabled
+    override def isVisible: Boolean = getPanelModelObject.getConfig.isReminderEnabled
   }
 
   private class UpdateBehavior extends AjaxFormComponentUpdatingBehavior("change") {
