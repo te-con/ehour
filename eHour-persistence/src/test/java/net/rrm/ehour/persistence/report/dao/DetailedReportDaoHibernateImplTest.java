@@ -39,19 +39,6 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     }
 
     @Test
-    public void shouldGetHoursPerDayForAssignment() {
-        DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
-                new Date(2008 - 1900, 1, 3));
-        List<Integer> projectIds = new ArrayList<Integer>();
-        projectIds.add(1);
-        List<FlatReportElement> results = detailedReportDao.getHoursPerDayForAssignment(projectIds, dateRange);
-
-        assertEquals(6, results.size());
-
-        assertNotNull(results.get(0).getProjectId());
-    }
-
-    @Test
     public void shouldGetHoursPerDayForUsers() {
         DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
                 new Date(2008 - 1900, 1, 3));
