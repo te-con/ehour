@@ -18,12 +18,14 @@ package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.*;
+import net.rrm.ehour.persistence.customer.dao.CustomerDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,9 +62,17 @@ public class ReportCriteriaServiceImplTest {
     @Mock
     private TimesheetLockService timesheetLockService;
 
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private CustomerDao customerDao;
+
     @Before
     public void setup() {
-        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO, customerAndProjectCriteriaFilter, userAndDepartmentCriteriaFilter, individualUserCriteriaSync, timesheetLockService);
+        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO,
+                                                              customerAndProjectCriteriaFilter,
+                userAndDepartmentCriteriaFilter, individualUserCriteriaSync, timesheetLockService, userService, customerDao);
 
         when(timesheetLockService.findAll()).thenReturn(List$.MODULE$.<TimesheetLock>empty());
     }

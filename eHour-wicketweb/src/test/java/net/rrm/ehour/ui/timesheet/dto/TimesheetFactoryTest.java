@@ -35,10 +35,10 @@ public class TimesheetFactoryTest {
         Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
-        SortedMap<Customer,List<TimesheetRow>> customers = timesheet.getCustomers();
+        SortedMap<Project,List<TimesheetRow>> projects = timesheet.getProjects();
 
-        assertEquals(1, customers.keySet().size());
-        assertEquals(1, customers.values().iterator().next().size());
+        assertEquals(1, projects.keySet().size());
+        assertEquals(1, projects.values().iterator().next().size());
     }
 
     @Test
@@ -57,10 +57,10 @@ public class TimesheetFactoryTest {
         Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
-        SortedMap<Customer,List<TimesheetRow>> customers = timesheet.getCustomers();
+        SortedMap<Project,List<TimesheetRow>> projects = timesheet.getProjects();
 
-        assertEquals(1, customers.keySet().size());
-        assertEquals(2, customers.values().iterator().next().size());
+        assertEquals(1, projects.keySet().size());
+        assertEquals(2, projects.values().iterator().next().size());
     }
 
     @Test
@@ -80,12 +80,12 @@ public class TimesheetFactoryTest {
         Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
-        SortedMap<Customer,List<TimesheetRow>> customerRows = timesheet.getCustomers();
+        SortedMap<Project,List<TimesheetRow>> projectRows = timesheet.getProjects();
 
-        Set<Customer> customers = customerRows.keySet();
+        Set<Project> customers = projectRows.keySet();
         assertEquals(1, customers.size());
 
-        List<TimesheetRow> rows = customerRows.get(customers.iterator().next());
+        List<TimesheetRow> rows = projectRows.get(customers.iterator().next());
 
         assertEquals("a", rows.get(0).getActivity().getProject().getName());
         assertEquals("b", rows.get(1).getActivity().getProject().getName());
