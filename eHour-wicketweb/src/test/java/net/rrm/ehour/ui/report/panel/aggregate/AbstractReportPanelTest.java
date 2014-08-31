@@ -57,7 +57,7 @@ public abstract class AbstractReportPanelTest extends BaseSpringWebAppTester {
 
     protected void setupExpectations() {
         expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-                .andReturn(AggregateReportDataObjectMother.getAssignmentReportData())
+                .andReturn(AggregateReportDataObjectMother.getReportData())
                 .anyTimes();
     }
 

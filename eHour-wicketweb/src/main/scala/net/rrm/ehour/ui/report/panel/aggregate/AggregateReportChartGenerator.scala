@@ -1,11 +1,11 @@
 package net.rrm.ehour.ui.report.panel.aggregate
 
 import net.rrm.ehour.report.reports.ReportData
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement
 import nl.tecon.highcharts.HighChart
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
 import nl.tecon.highcharts.config._
-import java.lang.String
-import collection.Seq
+
+import scala.collection.Seq
 import scala.collection.convert.WrapAsScala
 
 case class ChartContext(renderToId: String, reportData: ReportData, currencySymbol: String, withTurnover: Boolean)
@@ -13,18 +13,18 @@ case class ChartContext(renderToId: String, reportData: ReportData, currencySymb
 object AggregateReportChartGenerator {
 
   def generateEmployeeReportChart(chartContext: ChartContext): String =
-    generateReportChart(chartContext, _.getProjectAssignment.getUser.getFullName, "Users in hours")
+    generateReportChart(chartContext, _.getActivity.getAssignedUser.getFullName, "Users in hours")
 
   def generateCustomerReportChart(chartContext: ChartContext): String =
-    generateReportChart(chartContext, _.getProjectAssignment.getProject.getCustomer.getFullName, "Customers in hours")
+    generateReportChart(chartContext, _.getActivity.getProject.getCustomer.getFullName, "Customers in hours")
 
   def generateProjectReportChart(chartContext: ChartContext): String =
-    generateReportChart(chartContext, _.getProjectAssignment.getFullName, "Projects in hours")
+    generateReportChart(chartContext, _.getActivity.getFullName, "Projects in hours")
 
-  private def generateReportChart(chartContext: ChartContext, findCategory: (AssignmentAggregateReportElement) => String, chartTitle: String): String = {
+  private def generateReportChart(chartContext: ChartContext, findCategory: (ActivityAggregateReportElement) => String, chartTitle: String): String = {
     import nl.tecon.highcharts.config.Conversions.valueToOption
 
-    val elements = WrapAsScala.asScalaBuffer(chartContext.reportData.getReportElements).toSeq.asInstanceOf[Seq[AssignmentAggregateReportElement]]
+    val elements = WrapAsScala.asScalaBuffer(chartContext.reportData.getReportElements).toSeq.asInstanceOf[Seq[ActivityAggregateReportElement]]
 
     val categoryData = extractCategoryData(elements, findCategory)
 
@@ -64,10 +64,10 @@ object AggregateReportChartGenerator {
     ).build(chartContext.renderToId)
   }
 
-  private def extractCategoryData(elements: Seq[AssignmentAggregateReportElement], findCategory: (AssignmentAggregateReportElement) => String): List[(String, Float, Float)] = {
+  private def extractCategoryData(elements: Seq[ActivityAggregateReportElement], findCategory: (ActivityAggregateReportElement) => String): List[(String, Float, Float)] = {
     val categories = (elements map findCategory).toSet
 
-    val aggregator = (id: String, valueOf: (AssignmentAggregateReportElement) => Float) => elements.foldLeft(0f)((total, element) => if (findCategory(element) == id) total + valueOf(element) else total)
+    val aggregator = (id: String, valueOf: (ActivityAggregateReportElement) => Float) => elements.foldLeft(0f)((total, element) => if (findCategory(element) == id) total + valueOf(element) else total)
 
     val hourAggregator = (id: String) => aggregator(id, _.getHours.floatValue())
     val turnOverAggregator = (id: String) => aggregator(id, _.getTurnOver.floatValue())

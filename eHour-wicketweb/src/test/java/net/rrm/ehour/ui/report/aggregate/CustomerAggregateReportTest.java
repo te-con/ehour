@@ -50,7 +50,7 @@ public class CustomerAggregateReportTest extends BaseSpringWebAppTester
     public void should_create_report() throws Exception
     {
 		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-			.andReturn(AggregateReportDataObjectMother.getAssignmentReportData());
+			.andReturn(AggregateReportDataObjectMother.getReportData());
 		replay(aggregateReportService);
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
 

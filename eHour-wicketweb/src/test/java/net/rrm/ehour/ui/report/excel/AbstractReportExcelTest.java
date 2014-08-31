@@ -22,7 +22,7 @@ public class AbstractReportExcelTest extends BaseSpringWebAppTester {
         criteria = DetailedReportDataObjectMother.getReportCriteria();
 
         expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-                .andReturn(AggregateReportDataObjectMother.getAssignmentReportData());
+                .andReturn(AggregateReportDataObjectMother.getReportData());
 
         replay(aggregateReportService);
     }

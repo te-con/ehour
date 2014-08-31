@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.report.aggregate;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.ui.common.report.AggregatedReportConfig;
 import net.rrm.ehour.ui.report.AbstractAggregateReportModel;
 import net.rrm.ehour.ui.report.aggregate.node.ProjectNode;
@@ -49,12 +48,12 @@ public class ProjectAggregateReportModel extends AbstractAggregateReportModel {
     @SuppressWarnings("unchecked")
     @Override
     protected ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
-        List<AssignmentAggregateReportElement> reportElements = (List<AssignmentAggregateReportElement>) reportData.getReportElements();
+        List<ActivityAggregateReportElement> reportElements = (List<ActivityAggregateReportElement>) reportData.getReportElements();
 
-        Collections.sort(reportElements, new Comparator<AssignmentAggregateReportElement>() {
+        Collections.sort(reportElements, new Comparator<ActivityAggregateReportElement>() {
             @Override
-            public int compare(AssignmentAggregateReportElement o1, AssignmentAggregateReportElement o2) {
-                return o1.getProjectAssignment().getProject().compareTo(o2.getProjectAssignment().getProject());
+            public int compare(ActivityAggregateReportElement o1, ActivityAggregateReportElement o2) {
+                return o1.getActivity().getProject().compareTo(o2.getActivity().getProject());
             }
         });
 
@@ -80,10 +79,7 @@ public class ProjectAggregateReportModel extends AbstractAggregateReportModel {
 
             /**
              * Only needed for the root node, customer
-             * @param aggregate
-             * @return
              */
-
             public Serializable getElementId(ActivityAggregateReportElement aggregate) {
                 return aggregate.getActivity().getProject().getPK();
             }

@@ -51,7 +51,15 @@ public class Activity extends DomainObject<Integer, Activity> {
 	@Type(type = "yes_no")
 	private Boolean active = Boolean.TRUE;
 
-	public Integer getId() {
+    public Activity() {
+    }
+
+    public Activity(User assignedUser, Project project) {
+        this.assignedUser = assignedUser;
+        this.project = project;
+    }
+
+    public Integer getId() {
 		return id;
 	}
 
