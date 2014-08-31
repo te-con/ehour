@@ -137,7 +137,7 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
           if (t._2.isAfter(reminderEndDate)) reminderEndDate else t._2)
       )
 
-      val joinedWeekDays = boundedDs.flatMap(toWeekDays)
+      val joinedWeekDays = boundedDs.flatMap(toWeekDays).toSet
       joinedWeekDays.foldLeft(0)(_ + _) == reminderWeekDays.foldLeft(0)(_ + _)
     }
 

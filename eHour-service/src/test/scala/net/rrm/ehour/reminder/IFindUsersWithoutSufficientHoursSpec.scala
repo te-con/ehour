@@ -98,7 +98,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
 
       `user A has assignment A`
       `user B has assignment B`
-      `user C has assignment B`(userC)
+      `user has an active assignment`(userC)
 
       `user A is active`
       `no locked days are in the range`
@@ -196,13 +196,36 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
       foundUsers should contain(userA)
       foundUsers should contain(userB)
     }
+
+    "find a user when he has multiple active assignments but did not book sufficient hours" in {
+      val assignment = ProjectAssignmentObjectMother.createProjectAssignment(userA, project)
+      assignment.setDateStart(currentDate.minusDays(15).toDate)
+      assignment.setDateEnd(currentDate.plusDays(15).toDate)
+
+      when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userA.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentA, assignment))
+      `user A is active`
+
+      `no locked days are in the range`
+
+      val timesheetEntryInvalid = `create a timesheet entry for user`(userA, 16)
+      `with timesheet entries`(timesheetEntryInvalid)
+
+      val foundUsers = subject.findUsersWithoutSufficientHours(32, 8)
+
+      foundUsers should have size 1
+      foundUsers should contain(userA)
+    }
   }
 
-  def `user C has assignment B`(userC: User) {
-    when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userC.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
+  def `user has an active assignment`(user: User) {
+    val assignment = ProjectAssignmentObjectMother.createProjectAssignment(user, project)
+    assignment.setDateStart(currentDate.minusDays(15).toDate)
+    assignment.setDateEnd(currentDate.plusDays(15).toDate)
+
+    when(assignmentService.getProjectAssignmentsForUser(mockitoEq(user.getUserId), any(classOf[DateRange]))).thenReturn(List(assignment))
   }
 
-  def `user A is active` {
+  def `user A is active`  {
     when(userService.getUsers(UserRole.USER)).thenReturn(List(userA))
   }
 
@@ -220,8 +243,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
   }
 
   def `user B has assignment B` {
-
-    `user C has assignment B`(userB)
+    when(assignmentService.getProjectAssignmentsForUser(mockitoEq(userB.getUserId), any(classOf[DateRange]))).thenReturn(List(assignmentB))
   }
 
   def `user A has assignment A` {
