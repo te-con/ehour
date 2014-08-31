@@ -2,10 +2,10 @@ package net.rrm.ehour.ui
 package chart
 
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother
-import org.scalatest.junit.JUnitRunner
+import net.rrm.ehour.ui.report.panel.aggregate.{AggregateReportChartGenerator, ChartContext}
 import org.junit.runner.RunWith
-import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
-import report.panel.aggregate.{ChartContext, AggregateReportChartGenerator}
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 
 @RunWith(classOf[JUnitRunner])
 class CustomerChartGeneratorTest extends FunSuite with Matchers with BeforeAndAfter {
@@ -33,9 +33,5 @@ class CustomerChartGeneratorTest extends FunSuite with Matchers with BeforeAndAf
 
   test("should have series with booked hours") {
     chart should include("""series:[{"name":"Hours","data":[12.0,32.0,10.0,10.0],"yAxis":0}""")
-  }
-
-  test("should have series with turnover") {
-    chart should include("""{"name":"Turnover","data":[60.0,690.0,350.0,350.0],"yAxis":1}]""")
   }
 }

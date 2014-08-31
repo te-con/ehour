@@ -1,10 +1,10 @@
 package net.rrm.ehour.ui.chart
 
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother
-import org.scalatest.junit.JUnitRunner
+import net.rrm.ehour.ui.report.panel.aggregate.{AggregateReportChartGenerator, ChartContext}
 import org.junit.runner.RunWith
-import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
-import net.rrm.ehour.ui.report.panel.aggregate.{ChartContext, AggregateReportChartGenerator}
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 
 @RunWith(classOf[JUnitRunner])
 class ProjectChartGeneratorTest extends FunSuite with Matchers with BeforeAndAfter {
@@ -17,24 +17,18 @@ class ProjectChartGeneratorTest extends FunSuite with Matchers with BeforeAndAft
   }
 
   test("should have minimum height of 400px") {
-    chart should include("""chart:{"renderTo":"container","defaultSeriesType":"bar","height":400}""")
+    chart should include( """chart:{"renderTo":"container","defaultSeriesType":"bar","height":400}""")
   }
 
   test("should have x axis with projects") {
-    chart should include("""xAxis:[{"categories":["Project A","Project B","Project C","Project D","Project E"]}]""")
+    chart should include( """xAxis:[{"categories":["aa50","aa40","aa200","aa30","aa10","aa300"]}]""")
   }
 
-  test("should have two y axises with hours and formatted turnover") {
-    chart should include("""yAxis:[{"title":{"text":"Hours"}},{"title":{"text":"""")
-
-    chart should include("""},"labels":{"formatter":function() { return this.value.toLocaleString();}},"opposite":true}]""")
+  test("should have one y axis with hours") {
+    chart should include( """yAxis:[{"title":{"text":"Hours"},"opposite":true}""")
   }
 
   test("should have series with booked hours") {
-    chart should include("""series:[{"name":"Hours","data":[14.0,18.0,10.0,12.0,10.0],"yAxis":0}""")
-  }
-
-  test("should have series with turnover") {
-    chart should include("""{"name":"Turnover","data":[140.0,550.0,350.0,60.0,350.0],"yAxis":1}]""")
+    chart should include( """series:[{"name":"Booked hours","data":[5,4,20,3,1,30],"yAxis":0}""")
   }
 }
