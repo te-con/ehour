@@ -14,7 +14,7 @@ class EmployeeChartGeneratorTest extends FunSuite with Matchers with BeforeAndAf
   before {
     val reportData = AggregateReportDataObjectMother.generateReportData
 
-    chart = AggregateReportChartGenerator.generateEmployeeReportChart(ChartContext("container", reportData, "$", withTurnover = true))
+    chart = AggregateReportChartGenerator.generateEmployeeReportChart(ChartContext("container", reportData, "$"))
   }
 
   test("should have minimum height of 400px") {

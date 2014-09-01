@@ -14,7 +14,7 @@ class CustomerChartGeneratorTest extends FunSuite with Matchers with BeforeAndAf
   before {
     val reportData = AggregateReportDataObjectMother.generateReportData
 
-    chart = AggregateReportChartGenerator.generateCustomerReportChart(ChartContext("container", reportData, "$", withTurnover = true))
+    chart = AggregateReportChartGenerator.generateCustomerReportChart(ChartContext("container", reportData, "$"))
   }
 
   test("should have minimum height of 400px") {

@@ -13,7 +13,7 @@ class ProjectChartGeneratorTest extends FunSuite with Matchers with BeforeAndAft
   before {
     val reportData = AggregateReportDataObjectMother.generateReportData
 
-    chart = AggregateReportChartGenerator.generateProjectReportChart(ChartContext("container", reportData, "$", withTurnover = true))
+    chart = AggregateReportChartGenerator.generateProjectReportChart(ChartContext("container", reportData, "$"))
   }
 
   test("should have minimum height of 400px") {
@@ -21,14 +21,14 @@ class ProjectChartGeneratorTest extends FunSuite with Matchers with BeforeAndAft
   }
 
   test("should have x axis with projects") {
-    chart should include( """xAxis:[{"categories":["aa50","aa40","aa200","aa30","aa10","aa300"]}]""")
+    chart should include( """xAxis:[{"categories":["Project A","Project B","Project C","Project D","Project E"]}]""")
   }
 
   test("should have one y axis with hours") {
-    chart should include( """yAxis:[{"title":{"text":"Hours"},"opposite":true}""")
+    chart should include( """yAxis:[{"title":{"text":"Hours"}}]""")
   }
 
   test("should have series with booked hours") {
-    chart should include( """series:[{"name":"Booked hours","data":[5,4,20,3,1,30],"yAxis":0}""")
+    chart should include( """series:[{"name":"Hours","data":[14.0,18.0,10.0,12.0,10.0],"yAxis":0}]""")
   }
 }

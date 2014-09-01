@@ -8,7 +8,7 @@ import nl.tecon.highcharts.config._
 import scala.collection.Seq
 import scala.collection.convert.WrapAsScala
 
-case class ChartContext(renderToId: String, reportData: ReportData, currencySymbol: String, withTurnover: Boolean)
+case class ChartContext(renderToId: String, reportData: ReportData, currencySymbol: String)
 
 object AggregateReportChartGenerator {
 
@@ -19,7 +19,7 @@ object AggregateReportChartGenerator {
     generateReportChart(chartContext, _.getActivity.getProject.getCustomer.getFullName, "Customers in hours")
 
   def generateProjectReportChart(chartContext: ChartContext): String =
-    generateReportChart(chartContext, _.getActivity.getFullName, "Projects in hours")
+    generateReportChart(chartContext, _.getActivity.getProject.getFullName, "Projects in hours")
 
   private def generateReportChart(chartContext: ChartContext, findCategory: (ActivityAggregateReportElement) => String, chartTitle: String): String = {
     import nl.tecon.highcharts.config.Conversions.valueToOption
@@ -30,26 +30,14 @@ object AggregateReportChartGenerator {
 
     val categories = categoryData map (_._1)
     val hourSeries = Series(name = "Hours", data = categoryData map (_._2), yAxis = 0)
-    val legend = Labels(formatter = JavascriptFunction("function() { return this.value.toLocaleString();}"))
-
     // not winning a beauty contest with this..
-    val series: Option[List[Series[Float]]] = Some(if (chartContext.withTurnover) {
-      val turnoverSeries = Series(name = "Turnover", data = categoryData map (_._3), yAxis = 1)
-      List(hourSeries, turnoverSeries)
-    } else {
-      List(hourSeries)
-    })
+    val series: Option[List[Series[Float]]] = Some(List(hourSeries))
 
     val hourAxis = Axis(title = Title(text = "Hours"))
 
-    val yAxis: Option[Seq[Axis]] = Some(if (chartContext.withTurnover) {
-      val turnOverAxis = Axis(title = Title(text = chartContext.currencySymbol), labels = legend, opposite = true)
-      Seq(hourAxis, turnOverAxis)
-    } else {
-      Seq(hourAxis)
-    })
+    val yAxis: Option[Seq[Axis]] = Some(Seq(hourAxis))
 
-    val chartTitleText = if (chartContext.withTurnover) chartTitle + " and turnover" else chartTitle
+    val chartTitleText = chartTitle
 
     val height = (categories.size * 35) + 110
     val chart = Chart(defaultSeriesType = SeriesType.bar, height = if (height < 400) 400 else height)
