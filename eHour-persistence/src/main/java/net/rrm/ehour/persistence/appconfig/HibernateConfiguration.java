@@ -40,7 +40,7 @@ public class HibernateConfiguration {
     private static final Logger LOGGER = Logger.getLogger(HibernateConfiguration.class);
 
     @Bean(name = "sessionFactory")
-    public final SessionFactory getSessionFactory() throws Exception {
+    public SessionFactory getSessionFactory() throws Exception {
         validateAndSetCaching();
 
         Properties configProperties = EhourHomeUtil.loadDatabaseProperties(databaseName);
