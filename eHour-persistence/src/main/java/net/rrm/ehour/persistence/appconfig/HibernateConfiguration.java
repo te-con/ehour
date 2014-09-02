@@ -40,7 +40,7 @@ public class HibernateConfiguration {
     private static final Logger LOGGER = Logger.getLogger(HibernateConfiguration.class);
 
     @Bean(name = "sessionFactory")
-    public SessionFactory getSessionFactory() throws Exception {
+    public final SessionFactory getSessionFactory() throws Exception {
         validateAndSetCaching();
 
         Properties configProperties = EhourHomeUtil.loadDatabaseProperties(databaseName);
@@ -53,7 +53,7 @@ public class HibernateConfiguration {
         List<Resource> mappingResources = getMappingResources(configProperties);
         sessionFactoryBean.setMappingLocations(mappingResources.toArray(new Resource[mappingResources.size()]));
 
-        sessionFactoryBean.setPackagesToScan("net.rrm.ehour.domain");
+        sessionFactoryBean.setPackagesToScan(getPackagesToScan());
 
         Properties properties = new Properties();
 
@@ -71,9 +71,19 @@ public class HibernateConfiguration {
         }
 
         sessionFactoryBean.setHibernateProperties(properties);
+        beforeFinalizingSessionFactoryBean(sessionFactoryBean);
         sessionFactoryBean.afterPropertiesSet();
 
         return sessionFactoryBean.getObject();
+    }
+
+    protected void beforeFinalizingSessionFactoryBean(LocalSessionFactoryBean bean) {
+
+    }
+
+
+    protected String[] getPackagesToScan() {
+        return new String[]{"net.rrm.ehour.domain"};
     }
 
     private void validateAndSetCaching() {
