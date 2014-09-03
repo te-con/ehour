@@ -87,7 +87,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         Form<ProjectAdminBackingBean> form = new Form<ProjectAdminBackingBean>("projectForm", model);
         addFormComponents(form);
 
-        boolean deletable = model.getObject().getProject().isDeletable();
+        boolean deletable = model.getObject().isDeletable();
 
         ProjectAjaxEventType submitEventType = editMode ? ProjectAjaxEventType.PROJECT_UPDATED : ProjectAjaxEventType.PROJECT_CREATED;
 

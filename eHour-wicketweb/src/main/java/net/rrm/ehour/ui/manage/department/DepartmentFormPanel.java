@@ -75,7 +75,7 @@ public class DepartmentFormPanel extends AbstractFormSubmittingPanel<DepartmentA
         // data save label
         form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
 
-        boolean deletable = model.getObject().getDepartment().isDeletable();
+        boolean deletable = model.getObject().isDeletable();
         FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(DepartmentAjaxEventType.DEPARTMENT_DELETED)
                 .withSubmitEventType(DepartmentAjaxEventType.DEPARTMENT_UPDATED);

@@ -51,7 +51,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
         greyBorder.add(form);
 
         // add submit form
-        boolean deletable = getPanelModelObject().getProjectAssignment().isDeletable();
+        boolean deletable = getPanelModelObject().isDeletable();
         FormConfig formConfig = FormConfig.forForm(form).withDelete(deletable).withSubmitTarget(this)
                 .withDeleteEventType(AssignmentAjaxEventType.ASSIGNMENT_DELETED)
                 .withSubmitEventType(AssignmentAjaxEventType.ASSIGNMENT_UPDATED);
