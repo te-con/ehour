@@ -28,7 +28,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  */
 
 public class DepartmentManagePage extends AbstractDepartmentManagePageTemplate<DepartmentAdminBackingBean> {
-    private static final String DEPT_SELECTOR_ID = "deptSelector";
     private static final long serialVersionUID = -6686097898699382233L;
 
     @SpringBean

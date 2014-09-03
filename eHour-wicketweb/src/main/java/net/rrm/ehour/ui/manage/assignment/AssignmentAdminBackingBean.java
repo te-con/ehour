@@ -135,7 +135,6 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
         this.projectAssignment = projectAssignment;
     }
 
-
     public Customer getCustomer() {
         return customer;
     }
@@ -172,4 +171,8 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
         this.selectedProjects = selectedProjects;
     }
 
+    @Override
+    public boolean isDeletable() {
+        return projectAssignment != null && projectAssignment.isDeletable();
+    }
 }

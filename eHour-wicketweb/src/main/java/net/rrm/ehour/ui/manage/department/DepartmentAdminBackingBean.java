@@ -20,38 +20,38 @@ import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
 
 /**
- * Department backing bean 
- **/
+ * Department backing bean
+ */
 
-public class DepartmentAdminBackingBean extends AdminBackingBeanImpl<UserDepartment>
-{
-	private static final long serialVersionUID = -4095608816724112187L;
-	private UserDepartment	department;
-	
-	public DepartmentAdminBackingBean(UserDepartment department)
-	{
-		this.department = department;
-	}
+public class DepartmentAdminBackingBean extends AdminBackingBeanImpl<UserDepartment> {
+    private static final long serialVersionUID = -4095608816724112187L;
+    private UserDepartment department;
 
-	/**
-	 * @return the department
-	 */
-	public UserDepartment getDepartment()
-	{
-		return department;
-	}
+    public DepartmentAdminBackingBean(UserDepartment department) {
+        this.department = department;
+    }
 
-	/**
-	 * @param department the department to set
-	 */
-	public void setDepartment(UserDepartment department)
-	{
-		this.department = department;
-	}
+    /**
+     * @return the department
+     */
+    public UserDepartment getDepartment() {
+        return department;
+    }
+
+    /**
+     * @param department the department to set
+     */
+    public void setDepartment(UserDepartment department) {
+        this.department = department;
+    }
 
     @Override
-	public UserDepartment getDomainObject()
-	{
-		return getDepartment();
-	}
+    public UserDepartment getDomainObject() {
+        return getDepartment();
+    }
+
+    @Override
+    public boolean isDeletable() {
+        return department != null && department.isDeletable();
+    }
 }

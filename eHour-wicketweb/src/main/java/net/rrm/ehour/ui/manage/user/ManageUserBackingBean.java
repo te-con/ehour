@@ -73,4 +73,9 @@ public class ManageUserBackingBean extends AdminBackingBeanImpl<User> {
     public User getDomainObject() {
         return getUser();
     }
+
+    @Override
+    public boolean isDeletable() {
+        return user.isDeletable();
+    }
 }

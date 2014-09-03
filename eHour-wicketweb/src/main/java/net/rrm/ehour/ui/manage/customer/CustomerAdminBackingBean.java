@@ -89,4 +89,9 @@ public class CustomerAdminBackingBean extends AdminBackingBeanImpl<Customer> {
     public Customer getDomainObject() {
         return getCustomer();
     }
+
+    @Override
+    public boolean isDeletable() {
+        return customer != null && customer.isDeletable();
+    }
 }

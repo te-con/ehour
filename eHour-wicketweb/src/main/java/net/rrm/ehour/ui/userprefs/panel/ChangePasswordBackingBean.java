@@ -32,4 +32,9 @@ public class ChangePasswordBackingBean extends AdminBackingBeanImpl<Void> {
     public Void getDomainObject() {
         throw new IllegalArgumentException("Not implemented here");
     }
+
+    @Override
+    public boolean isDeletable() {
+        return false;
+    }
 }

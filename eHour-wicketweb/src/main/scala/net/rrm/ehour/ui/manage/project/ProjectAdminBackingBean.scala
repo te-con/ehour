@@ -19,5 +19,6 @@ class ProjectAdminBackingBean(private val project: Project) extends AdminBacking
     this.assignExistingUsersToDefaultProjects = assignExistingUsersToDefaultProjects
   }
 
+  override def isDeletable = project.isDeletable
 }
 
