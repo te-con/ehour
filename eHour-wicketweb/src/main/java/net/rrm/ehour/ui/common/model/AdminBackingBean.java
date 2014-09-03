@@ -39,4 +39,9 @@ public interface AdminBackingBean<T> extends Serializable {
      * @return
      */
     T getDomainObject();
+
+    /**
+     * Is the underlying domain object deletable?
+     */
+    boolean isDeletable();
 }
