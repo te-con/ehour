@@ -158,7 +158,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         return RuntimeConfigurationType.valueOf(configurationType.toUpperCase());
     }
 
-    private void mountPages() {
+    protected void mountPages() {
         mountPage("/login", Login.class);
         mountPage("/logout", Logout.class);
 
