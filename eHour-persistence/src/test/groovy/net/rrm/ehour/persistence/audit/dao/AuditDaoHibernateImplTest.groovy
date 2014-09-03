@@ -1,5 +1,6 @@
 package net.rrm.ehour.persistence.audit.dao
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.data.AuditReportRequest
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain.Audit
@@ -22,7 +23,7 @@ class AuditDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     private AuditReportRequest request;
 
     public AuditDaoHibernateImplTest() {
-        super(["dataset-audit.xml"] as String[]);
+        super("dataset-audit.xml");
     }
 
     @Before
