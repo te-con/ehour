@@ -1,34 +1,15 @@
-/*
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- */
-
 package net.rrm.ehour.ui.manage.user;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
-import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
-import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -36,10 +17,10 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.userprefs.panel.PasswordFieldFactory;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -53,26 +34,31 @@ import java.util.List;
 
 import static net.rrm.ehour.ui.manage.user.ManageUserAjaxEventType.*;
 
-/**
- * User Form Panel for admin
- */
-
-public class ManageUserFormPanel extends AbstractFormSubmittingPanel<ManageUserBackingBean> {
+public class AbstractUserFormPanelTemplate<T extends ManageUserBackingBean>  extends AbstractFormSubmittingPanel<T> {
     private static final long serialVersionUID = -7427807216389657732L;
     private static final String BORDER = "border";
     private static final String FORM = "userForm";
+    private final List<UserDepartment> departments;
 
     private List<UserRole> roles;
 
     @SpringBean
     private UserService userService;
 
-    public ManageUserFormPanel(String id,
-                               CompoundPropertyModel<ManageUserBackingBean> userModel,
+    public AbstractUserFormPanelTemplate(String id,
+                               CompoundPropertyModel<T> userModel,
                                List<UserDepartment> departments) {
         super(id, userModel);
+        this.departments = departments;
+    }
 
-        ManageUserBackingBean manageUserBackingBean = userModel.getObject();
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        IModel<T> userModel = getPanelModel();
+
+        T manageUserBackingBean = getPanelModelObject();
         User user = manageUserBackingBean.getUser();
 
         boolean editMode = user.getPK() != null;
@@ -82,7 +68,7 @@ public class ManageUserFormPanel extends AbstractFormSubmittingPanel<ManageUserB
 
         setOutputMarkupId(true);
 
-        final Form<ManageUserBackingBean> form = new Form<ManageUserBackingBean>(FORM, userModel);
+        final Form<T> form = new Form<T>(FORM, userModel);
 
         // username
         RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
@@ -158,7 +144,14 @@ public class ManageUserFormPanel extends AbstractFormSubmittingPanel<ManageUserB
         FormUtil.setSubmitActions(formConfig);
 
         greyBorder.add(form);
+
+        onFormCreated(form);
     }
+
+    protected void onFormCreated(Form<T> form) {
+
+    }
+
 
     private List<UserRole> getUserRoles() {
         if (roles == null) {
@@ -180,41 +173,6 @@ public class ManageUserFormPanel extends AbstractFormSubmittingPanel<ManageUserB
         return roles;
     }
 
-
-    @Override
-    protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
-        ManageUserBackingBean manageUserBackingBean = (ManageUserBackingBean) backingBean;
-
-        boolean eventHandled;
-
-        try {
-            User user = manageUserBackingBean.getUser();
-            eventHandled = false;
-
-            if (type == USER_CREATED) {
-                userService.persistNewUser(user, user.getPassword());
-            } else if (type == USER_UPDATED) {
-                userService.persistEditedUser(user);
-
-                String password = user.getPassword();
-                if (StringUtils.isNotBlank(password)) {
-                    userService.changePassword(user.getUsername(), password);
-                }
-            } else if (type == USER_DELETED) {
-                deleteUser(manageUserBackingBean);
-            }
-        } catch (ObjectNotUniqueException obnu) {
-            backingBean.setServerMessage(obnu.getMessage());
-            target.add(this);
-            eventHandled = true;
-        }
-
-        return !eventHandled;
-    }
-
-    private void deleteUser(ManageUserBackingBean manageUserBackingBean) {
-        userService.deleteUser(manageUserBackingBean.getUser().getUserId());
-    }
 
     private class DuplicateUsernameValidator implements IValidator<String> {
         private static final long serialVersionUID = 542950054849279025L;

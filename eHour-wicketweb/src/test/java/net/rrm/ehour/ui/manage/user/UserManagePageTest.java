@@ -101,6 +101,6 @@ public class UserManagePageTest extends BaseSpringWebAppTester {
 
         tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
 
-        tester.assertComponent("tabs:panel", ManageUserFormPanel.class);
+        tester.assertComponent("tabs:panel", UserManageFormPanel.class);
     }
 }

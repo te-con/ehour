@@ -22,7 +22,7 @@ import static org.mockito.Matchers.anyObject
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.when
 
-public class ManageUserFormPanelTest extends BaseSpringWebAppTester {
+public class UserManageFormPanelTest extends BaseSpringWebAppTester {
     @Mock
     private UserService userService
     def formPath =  "panel:border:greySquaredFrame:border_body:userForm"
@@ -162,7 +162,7 @@ public class ManageUserFormPanelTest extends BaseSpringWebAppTester {
     }
 
     void startPanel(ManageUserBackingBean bean) {
-        tester.startComponentInPage(new ManageUserFormPanel("panel",
+        tester.startComponentInPage(new UserManageFormPanel("panel",
                         new CompoundPropertyModel<ManageUserBackingBean>(bean),
                         Arrays.asList(UserDepartmentObjectMother.createUserDepartment())))
     }
