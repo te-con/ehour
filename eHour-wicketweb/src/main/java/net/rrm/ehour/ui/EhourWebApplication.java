@@ -34,7 +34,7 @@ import net.rrm.ehour.ui.manage.department.DepartmentManagePage;
 import net.rrm.ehour.ui.manage.lock.LockManagePage;
 import net.rrm.ehour.ui.manage.project.ProjectManagePage;
 import net.rrm.ehour.ui.manage.user.ImpersonateUserPage;
-import net.rrm.ehour.ui.manage.user.ManageUserPage;
+import net.rrm.ehour.ui.manage.user.UserManagePage;
 import net.rrm.ehour.ui.pm.ProjectManagementPage;
 import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource;
@@ -163,7 +163,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/logout", Logout.class);
 
         mountPage("/admin", MainConfigPage.class);
-        mountPage("/admin/employee", ManageUserPage.class);
+        mountPage("/admin/employee", UserManagePage.class);
         mountPage("/admin/department", DepartmentManagePage.class);
         mountPage("/admin/customer", CustomerManagePage.class);
         mountPage("/admin/project", ProjectManagePage.class);

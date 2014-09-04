@@ -36,7 +36,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ManageUserPageTest extends BaseSpringWebAppTester {
+public class UserManagePageTest extends BaseSpringWebAppTester {
     @Mock
     private UserService userService;
     private User user;
@@ -68,8 +68,8 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
     public void should_render() {
         super.startTester();
 
-        tester.startPage(ManageUserPage.class);
-        tester.assertRenderedPage(ManageUserPage.class);
+        tester.startPage(UserManagePage.class);
+        tester.assertRenderedPage(UserManagePage.class);
         tester.assertNoErrorMessage();
     }
 
@@ -81,7 +81,7 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER));
         super.startTester();
 
-        tester.startPage(ManageUserPage.class);
+        tester.startPage(UserManagePage.class);
 
         tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
 
@@ -97,7 +97,7 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER));
         super.startTester();
 
-        tester.startPage(ManageUserPage.class);
+        tester.startPage(UserManagePage.class);
 
         tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
 
