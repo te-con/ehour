@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="5.1.6" transformSequenceNumber="4">
   <directoryPresets config="./icons" />
-  <application name="eHour" distributionSourceDir="" applicationId="2498-7425-0494-0609" mediaDir="../../dist" mediaFilePattern="${compiler:sys.shortName}-${compiler:sys.version}-standalone-${compiler:sys.platform}" compression="9" lzmaCompression="true" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="eHour" publisher="TE-CON B.V." publisherWeb="http://www.te-con.nl/" version="1.4.2-SNAPSHOT.2" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="false" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
+  <application name="eHour" distributionSourceDir="" applicationId="2498-7425-0494-0609" mediaDir="../../dist" mediaFilePattern="${compiler:sys.shortName}-${compiler:sys.version}-standalone-${compiler:sys.platform}" compression="9" lzmaCompression="true" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="eHour" publisher="TE-CON B.V." publisherWeb="http://www.te-con.nl/" version="1.4.2-SNAPSHOT" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="false" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="./install_en.properties" />
       <additionalLanguages />
@@ -54,7 +54,7 @@
           <versionLine x="20" y="40" text="version ${compiler:sys.version}" font="Arial" fontSize="8" fontColor="0,0,0" fontWeight="500" />
         </text>
       </splashScreen>
-      <java mainClass="net.rrm.ehour.EhourServerRunner" vmParameters="" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
+      <java mainClass="net.rrm.ehour.EhourServerRunner" vmParameters="-XX:MaxPermSize=128m -Xmx512m" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
         <classPath>
           <scanDirectory location="lib" failOnError="false" />
           <directory location="conf" failOnError="false" />
@@ -617,7 +617,7 @@ Documentation is available at &lt;a href="http://wiki.ehour.nl/"&gt;http://wiki.
     </macosFolder>
   </mediaSets>
   <buildIds buildAll="false">
-    <mediaSet refId="74" />
+    <mediaSet refId="24" />
   </buildIds>
   <buildOptions verbose="false" faster="false" disableSigning="false" debug="false" />
 </install4j>
