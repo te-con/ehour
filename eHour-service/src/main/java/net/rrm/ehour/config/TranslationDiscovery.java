@@ -4,7 +4,7 @@ import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.*;
  * User: x082062 (Thies Edeling - thies@te-con.nl)
  * Date: 1/12/11 1:05 PM
  */
-@Component
+@Service
 public class TranslationDiscovery {
     private static final String FILE_PREFIX = "EhourWebApplication";
     private static final Logger LOG = Logger.getLogger(TranslationDiscovery.class);

@@ -81,7 +81,6 @@ public class HibernateConfiguration {
 
     }
 
-
     protected String[] getPackagesToScan() {
         return new String[]{"net.rrm.ehour.domain"};
     }

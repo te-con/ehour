@@ -6,7 +6,7 @@ import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
 import net.rrm.ehour.persistence.backup.dao.RestoreDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 1/18/11 - 7:30 PM
  */
-@Component
+@Service
 public class DatabaseTruncater
 {
     @Autowired

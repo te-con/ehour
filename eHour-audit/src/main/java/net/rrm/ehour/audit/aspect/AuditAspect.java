@@ -35,7 +35,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.lang.annotation.Annotation;
 import java.util.Calendar;
@@ -45,7 +45,7 @@ import java.util.Date;
  * Auditable Aspect
  */
 @Aspect
-@Component
+@Service
 public class AuditAspect {
     @Autowired
     private AuditService auditService;

@@ -5,13 +5,13 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * @author thies (thies@te-con.nl)
  *         Date: 12/6/10 11:47 PM
  */
-@Component("userRoleParserDao")
+@Service("userRoleParserDao")
 public class UserRoleParserDaoPersistImpl implements UserRoleParserDao {
     @Autowired
     private UserDao userDao;

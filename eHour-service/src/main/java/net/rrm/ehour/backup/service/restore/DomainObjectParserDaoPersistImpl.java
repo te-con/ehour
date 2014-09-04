@@ -3,7 +3,7 @@ package net.rrm.ehour.backup.service.restore;
 import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.persistence.backup.dao.RestoreDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 12/6/10 - 4:05 PM
  */
-@Component("domainObjectParserDao")
+@Service("domainObjectParserDao")
 public class DomainObjectParserDaoPersistImpl implements DomainObjectParserDao {
     @Autowired
     private RestoreDao restoreDao;
