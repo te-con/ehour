@@ -1,10 +1,11 @@
-package net.rrm.ehour.ui.common.header;
+package net.rrm.ehour.ui.common.config
 
 import java.util
 
 import net.rrm.ehour.ui.admin.audit.AuditReportPage
 import net.rrm.ehour.ui.admin.backup.BackupDbPage
 import net.rrm.ehour.ui.admin.config.MainConfigPage
+import net.rrm.ehour.ui.common.header.{DropdownMenu, LinkItem, MenuItem}
 import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage
 import net.rrm.ehour.ui.manage.customer.CustomerManagePage
 import net.rrm.ehour.ui.manage.department.DepartmentManagePage
@@ -16,10 +17,12 @@ import net.rrm.ehour.ui.report.page.ReportPage
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
 import org.apache.wicket.request.mapper.parameter.PageParameters
+import org.springframework.context.annotation.{Bean, Configuration}
 
-object MenuDefinition {
-
-  def createMenuDefinition:util.List[_ <: MenuItem] = {
+@Configuration
+class PageLayoutConfig {
+  @Bean
+  def menuDefinition:util.List[_ <: MenuItem] = {
     val params = new PageParameters()
     params.add(MonthOverviewPage.PARAM_OPEN, MonthOverviewPage.OpenPanel.TIMESHEET)
 
@@ -47,4 +50,5 @@ object MenuDefinition {
 
     util.Arrays.asList(hoursDropdown, report, pm, manageDropdown, systemDropdown)
   }
+
 }
