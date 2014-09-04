@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
@@ -55,6 +56,8 @@ public abstract class AbstractSpringTester {
 
         UpdateService updateService = createMock(UpdateService.class);
         mockContext.putBean(updateService);
+
+        mockContext.putBean("menuDefinition", Lists.newArrayList());
 
         expect(updateService.isLatestVersion()).andReturn(Boolean.TRUE).atLeastOnce();
         replay(updateService);
