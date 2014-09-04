@@ -10,7 +10,7 @@
             classpath:context-propertyconfig.xml
             classpath:context-datasource.xml
             classpath:context-dbconnectivity.xml
-            classpath:context-scanner.xml
+            classpath:context-service-scanner.xml
             classpath:context-service.xml
             classpath:context-security.xml
             classpath:context-cache.xml
