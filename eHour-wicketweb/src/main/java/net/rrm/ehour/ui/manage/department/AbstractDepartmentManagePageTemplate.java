@@ -113,4 +113,8 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
 
         return userDepartments;
     }
+
+    protected final UserService getUserService() {
+        return userService;
+    }
 }
