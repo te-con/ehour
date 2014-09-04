@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.ui.test.StrictWicketTester;
 import org.apache.wicket.Component;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -47,6 +48,9 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
         webApp.setEhourSystemConfig(getEhourSystemConfig());
 
         afterSetup();
+
+        getMockContext().putBean("menuDefinition", Lists.newArrayList());
+
     }
 
     protected void afterSetup() {
