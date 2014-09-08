@@ -3,9 +3,10 @@ package net.rrm.ehour.ui.manage.project
 import java.{util => ju}
 
 import net.rrm.ehour.domain.Project
-import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl
+import net.rrm.ehour.ui.common.model.{AdminBackingBean, AdminBackingBeanImpl}
 
-class ProjectAdminBackingBean(private val project: Project) extends AdminBackingBeanImpl[Project] {
+//  with AdminBackingBean[Project] looks silly but is to satisy IntellJ's scala plugin
+class ProjectAdminBackingBean(private val project: Project) extends AdminBackingBeanImpl[Project] with AdminBackingBean[Project] {
   val getProject: Project = project
   override def getDomainObject: Project = getProject
 

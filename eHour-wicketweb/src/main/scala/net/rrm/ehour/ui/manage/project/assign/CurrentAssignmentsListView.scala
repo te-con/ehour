@@ -6,7 +6,7 @@ import net.rrm.ehour.domain.{Project, ProjectAssignment}
 import net.rrm.ehour.project.service.ProjectAssignmentService
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import net.rrm.ehour.ui.common.panel.multiselect.{Highlights, Filterable}
+import net.rrm.ehour.ui.common.panel.multiselect.{Filterable, Highlights}
 import net.rrm.ehour.ui.common.wicket.AjaxLink._
 import net.rrm.ehour.ui.common.wicket.WicketDSL._
 import net.rrm.ehour.ui.common.wicket.{AjaxLink, DateLabel, Event, NonEmptyLabel}
@@ -15,16 +15,14 @@ import net.rrm.ehour.util._
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
-import org.apache.wicket.markup.head.{IHeaderResponse, JavaScriptHeaderItem, OnDomReadyHeaderItem}
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.list.{ListItem, ListView}
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.{IModel, PropertyModel}
-import org.apache.wicket.request.resource.JavaScriptResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class CurrentAssignmentsListView(id: String, model: IModel[ProjectAdminBackingBean], onlyDeactivate: Boolean = false)
-  extends AbstractBasePanel[ProjectAdminBackingBean](id, model) with Filterable with Highlights {
+class CurrentAssignmentsListView[T <: ProjectAdminBackingBean](id: String, model: IModel[T], onlyDeactivate: Boolean = false)
+  extends AbstractBasePanel[T](id, model) with Filterable with Highlights {
   val Self = this
   override def listFilterId = "#filterAssignmentInput"
   override def listId = ".assignmentList"

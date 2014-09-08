@@ -23,7 +23,7 @@ import org.apache.wicket.model.{CompoundPropertyModel, IModel, ResourceModel}
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean], panelConfig: ManagementPanelConfig = ManagementPanelConfig(onlyDeactivation = false, borderless = false)) extends AbstractAjaxPanel(id, model) {
+class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IModel[T], panelConfig: ManagementPanelConfig = ManagementPanelConfig(onlyDeactivation = false, borderless = false)) extends AbstractAjaxPanel(id, model) {
   val BORDER_ID = "border"
   val LIST_ID = "list"
   val FORM_ID = "form"
@@ -31,7 +31,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
 
   val Self = this
 
-  val Css = new CssResourceReference(classOf[ManageAssignmentsPanel], "manageAssignments.css")
+  val Css = new CssResourceReference(classOf[ManageAssignmentsPanel[T]], "manageAssignments.css")
 
   @SpringBean
   protected var assignmentService: ProjectAssignmentService = _
@@ -57,7 +57,7 @@ class ManageAssignmentsPanel(id: String, model: IModel[ProjectAdminBackingBean],
   def createFormContainer = new Container(FORM_ID)
 
   def createCurrentAssignmentsList = {
-    val view: CurrentAssignmentsListView = new CurrentAssignmentsListView(LIST_ID, model, panelConfig.onlyDeactivation)
+    val view = new CurrentAssignmentsListView[T](LIST_ID, model, panelConfig.onlyDeactivation)
     view.setOutputMarkupId(true)
     view
   }
