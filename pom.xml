@@ -58,7 +58,7 @@
         </developer>
     </developers>
     <properties>
-        <spring.version>4.0.6.RELEASE</spring.version>
+        <spring.version>4.0.7.RELEASE</spring.version>
         <wicket.version>6.17.0</wicket.version>
         <jetty.version>8.1.14.v20131031</jetty.version>
         <derbydb.version>10.10.2.0</derbydb.version>
