@@ -100,6 +100,12 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
         FormUtil.setSubmitActions(formConfig);
 
         greyBorder.addOrReplace(form);
+
+        onFormCreated(form);
+    }
+
+    protected void onFormCreated(Form<T> form) {
+
     }
 
     private void addFormComponents(Form<T> form) {
