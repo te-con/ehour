@@ -37,8 +37,6 @@ public class ProjectManagePageTest extends BaseSpringWebAppTester {
     private ProjectService projectService;
     private UserService userService;
     private CustomerService customerService;
-    private ProjectAssignmentService projectAssignmentService;
-    private ProjectAssignmentManagementService assignmentManagementService;
 
     @Before
     public void before() throws Exception {
@@ -51,10 +49,10 @@ public class ProjectManagePageTest extends BaseSpringWebAppTester {
         customerService = createMock(CustomerService.class);
         getMockContext().putBean("customerService", customerService);
 
-        projectAssignmentService = createMock(ProjectAssignmentService.class);
+        ProjectAssignmentService projectAssignmentService = createMock(ProjectAssignmentService.class);
         getMockContext().putBean(projectAssignmentService);
 
-        assignmentManagementService = createMock(ProjectAssignmentManagementService.class);
+        ProjectAssignmentManagementService assignmentManagementService = createMock(ProjectAssignmentManagementService.class);
         getMockContext().putBean(assignmentManagementService);
 
     }

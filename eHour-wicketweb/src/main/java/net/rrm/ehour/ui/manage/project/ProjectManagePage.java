@@ -45,10 +45,7 @@ public class ProjectManagePage extends AbstractProjectManagePageTemplate<Project
 
     @Override
     protected ProjectAdminBackingBean getNewAddBaseBackingBean() {
-        Project project = new Project();
-        project.setActive(true);
-
-        return new ProjectAdminBackingBean(project);
+        return new ProjectAdminBackingBean(new Project());
     }
 
     @Override
