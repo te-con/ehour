@@ -35,12 +35,12 @@ public class DepartmentManagePage extends AbstractDepartmentManagePageTemplate<D
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
-        return new DepartmentFormPanel(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
+        return new DepartmentFormPanel<DepartmentAdminBackingBean>(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
     }
 
     @Override
     protected Panel getBaseEditPanel(String panelId) {
-        return new DepartmentFormPanel(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
+        return new DepartmentFormPanel<DepartmentAdminBackingBean>(panelId, new CompoundPropertyModel<DepartmentAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
     }
 
     @Override
