@@ -23,7 +23,7 @@ import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
  * Backing bean for users
  */
 
-public class ManageUserBackingBean extends AdminBackingBeanImpl<User> {
+public class UserManageBackingBean extends AdminBackingBeanImpl<User> {
     private static final long serialVersionUID = 2781902854421696575L;
     private final User user;
     private String originalUsername;
@@ -31,13 +31,13 @@ public class ManageUserBackingBean extends AdminBackingBeanImpl<User> {
 
     private boolean showAssignments;
 
-    public ManageUserBackingBean(User user) {
+    public UserManageBackingBean(User user) {
         this(user, true);
 
         this.originalUsername = user.getUsername();
     }
 
-    public ManageUserBackingBean() {
+    public UserManageBackingBean() {
         this(new User(), false);
 
         user.setActive(true);
@@ -51,7 +51,7 @@ public class ManageUserBackingBean extends AdminBackingBeanImpl<User> {
         this.showAssignments = showAssignments;
     }
 
-    private ManageUserBackingBean(User user, boolean editMode) {
+    private UserManageBackingBean(User user, boolean editMode) {
         this.editMode = editMode;
         this.user = user;
 

@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel
  */
-public class UserManagePage extends AbstractUserManagePageTemplate<ManageUserBackingBean> {
+public class UserManagePage extends AbstractUserManagePageTemplate<UserManageBackingBean> {
     @SpringBean
     private UserService userService;
 
@@ -41,33 +41,33 @@ public class UserManagePage extends AbstractUserManagePageTemplate<ManageUserBac
 
     private static final long serialVersionUID = 1883278850247747252L;
 
-    protected ManageUserBackingBean createEditBean(Integer userId) throws ObjectNotFoundException {
-        return new ManageUserBackingBean(userService.getUserAndCheckDeletability(userId));
+    protected UserManageBackingBean createEditBean(Integer userId) throws ObjectNotFoundException {
+        return new UserManageBackingBean(userService.getUserAndCheckDeletability(userId));
     }
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
         return new UserManageFormPanel(panelId,
-                new CompoundPropertyModel<ManageUserBackingBean>(getTabbedPanel().getAddBackingBean()),
+                new CompoundPropertyModel<UserManageBackingBean>(getTabbedPanel().getAddBackingBean()),
                 getUserDepartments());
     }
 
     @Override
-    protected ManageUserBackingBean getNewAddBaseBackingBean() {
-        ManageUserBackingBean userBean = new ManageUserBackingBean();
+    protected UserManageBackingBean getNewAddBaseBackingBean() {
+        UserManageBackingBean userBean = new UserManageBackingBean();
         userBean.getUser().setActive(true);
 
         return userBean;
     }
 
     @Override
-    protected ManageUserBackingBean getNewEditBaseBackingBean() {
-        return new ManageUserBackingBean();
+    protected UserManageBackingBean getNewEditBaseBackingBean() {
+        return new UserManageBackingBean();
     }
 
     @Override
     protected Panel getBaseEditPanel(String panelId) {
-        ManageUserBackingBean bean = getTabbedPanel().getEditBackingBean();
+        UserManageBackingBean bean = getTabbedPanel().getEditBackingBean();
         User user = bean.getUser();
 
         boolean editableUser = SecurityRules.allowedToModify(EhourWebSession.getUser(),
@@ -76,11 +76,11 @@ public class UserManagePage extends AbstractUserManagePageTemplate<ManageUserBac
 
         if (editableUser) {
             return new UserManageFormPanel(panelId,
-                    new CompoundPropertyModel<ManageUserBackingBean>(bean),
+                    new CompoundPropertyModel<UserManageBackingBean>(bean),
                     getUserDepartments());
         } else {
-            return new ManageUserReadOnlyPanel(panelId,
-                    new CompoundPropertyModel<ManageUserBackingBean>(bean));
+            return new UserManageReadOnlyPanel(panelId,
+                    new CompoundPropertyModel<UserManageBackingBean>(bean));
         }
     }
 

@@ -32,9 +32,9 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 import java.util.List;
 
-import static net.rrm.ehour.ui.manage.user.ManageUserAjaxEventType.*;
+import static net.rrm.ehour.ui.manage.user.UserManageAjaxEventType.*;
 
-public class AbstractUserFormPanelTemplate<T extends ManageUserBackingBean>  extends AbstractFormSubmittingPanel<T> {
+public class AbstractUserFormPanelTemplate<T extends UserManageBackingBean>  extends AbstractFormSubmittingPanel<T> {
     private static final long serialVersionUID = -7427807216389657732L;
     private static final String BORDER = "border";
     private static final String FORM = "userForm";
@@ -180,7 +180,7 @@ public class AbstractUserFormPanelTemplate<T extends ManageUserBackingBean>  ext
         @Override
         public void validate(IValidatable<String> validatable) {
             String username = validatable.getValue();
-            String orgUsername = ((ManageUserBackingBean) getDefaultModelObject()).getOriginalUsername();
+            String orgUsername = ((UserManageBackingBean) getDefaultModelObject()).getOriginalUsername();
 
             if ((StringUtils.isNotBlank(orgUsername) && !username.equalsIgnoreCase(orgUsername) && userService.getUser(username) != null)) {
                 validatable.error(new ValidationError("admin.user.errorUsernameExists"));

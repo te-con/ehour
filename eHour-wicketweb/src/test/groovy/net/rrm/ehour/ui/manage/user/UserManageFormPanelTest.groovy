@@ -44,7 +44,7 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
     void "should render"() {
         super.startTester()
 
-        startPanel(new ManageUserBackingBean())
+        startPanel(new UserManageBackingBean())
 
         tester.assertNoErrorMessage()
         tester.assertComponent(formPath, Form.class)
@@ -54,7 +54,7 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
     void "should create new user"() {
         super.startTester()
 
-        startPanel(new ManageUserBackingBean())
+        startPanel(new UserManageBackingBean())
 
         assertFalse(tester.isVisible(formPath + ":showAssignments").wasFailed())
 
@@ -84,7 +84,7 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
     void "should edit user and not have the assignments checkbox"() {
         super.startTester()
 
-        startPanel(new ManageUserBackingBean(UserObjectMother.createUser()))
+        startPanel(new UserManageBackingBean(UserObjectMother.createUser()))
 
         assertTrue(tester.isVisible(formPath + ":showAssignments").wasFailed())
 
@@ -112,7 +112,7 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER))
         super.startTester()
 
-        startPanel(new ManageUserBackingBean(UserObjectMother.createUser()))
+        startPanel(new UserManageBackingBean(UserObjectMother.createUser()))
 
         def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
 
@@ -130,7 +130,7 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_ADMIN))
         super.startTester()
 
-        startPanel(new ManageUserBackingBean(UserObjectMother.createUser()))
+        startPanel(new UserManageBackingBean(UserObjectMother.createUser()))
 
         def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
 
@@ -148,7 +148,7 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
         webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_ADMIN))
         super.startTester()
 
-        startPanel(new ManageUserBackingBean(UserObjectMother.createUser()))
+        startPanel(new UserManageBackingBean(UserObjectMother.createUser()))
 
         def select = tester.getComponentFromLastRenderedPage(formPath + ":user.userRoles") as ListMultipleChoice
 
@@ -161,9 +161,9 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
         assertEquals(4, choices.size())
     }
 
-    void startPanel(ManageUserBackingBean bean) {
+    void startPanel(UserManageBackingBean bean) {
         tester.startComponentInPage(new UserManageFormPanel("panel",
-                        new CompoundPropertyModel<ManageUserBackingBean>(bean),
+                        new CompoundPropertyModel<UserManageBackingBean>(bean),
                         Arrays.asList(UserDepartmentObjectMother.createUserDepartment())))
     }
 }

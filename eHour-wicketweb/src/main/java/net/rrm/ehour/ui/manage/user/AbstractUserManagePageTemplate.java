@@ -20,7 +20,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import scala.Option;
 
-public abstract class AbstractUserManagePageTemplate<T extends ManageUserBackingBean> extends AbstractTabbedManagePage<T> {
+public abstract class AbstractUserManagePageTemplate<T extends UserManageBackingBean> extends AbstractTabbedManagePage<T> {
     @SpringBean
     private UserService userService;
 
@@ -60,10 +60,10 @@ public abstract class AbstractUserManagePageTemplate<T extends ManageUserBacking
         AjaxEventType type = ajaxEvent.getEventType();
 
         AjaxRequestTarget target = ajaxEvent.getTarget();
-        if (type == ManageUserAjaxEventType.USER_CREATED) {
+        if (type == UserManageAjaxEventType.USER_CREATED) {
             PayloadAjaxEvent<AdminBackingBean> payloadAjaxEvent = (PayloadAjaxEvent<AdminBackingBean>) ajaxEvent;
 
-            ManageUserBackingBean bean = (ManageUserBackingBean) payloadAjaxEvent.getPayload();
+            UserManageBackingBean bean = (UserManageBackingBean) payloadAjaxEvent.getPayload();
 
             if (bean.isShowAssignments()) {
                 setResponsePage(new AssignmentManagePage(bean.getUser()));
@@ -74,13 +74,13 @@ public abstract class AbstractUserManagePageTemplate<T extends ManageUserBacking
 
                 return false;
             }
-        } else if (type == ManageUserAjaxEventType.USER_UPDATED
-                || type == ManageUserAjaxEventType.USER_DELETED) {
+        } else if (type == UserManageAjaxEventType.USER_UPDATED
+                || type == UserManageAjaxEventType.USER_DELETED) {
             updateEntryList(target);
             succesfulSave(target);
 
             return updateUserList(target);
-        } else if (type == ManageUserAjaxEventType.PASSWORD_CHANGED) {
+        } else if (type == UserManageAjaxEventType.PASSWORD_CHANGED) {
             succesfulSave(target);
             return false;
         }

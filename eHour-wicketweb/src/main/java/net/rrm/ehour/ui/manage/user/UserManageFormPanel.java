@@ -29,32 +29,32 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 
-import static net.rrm.ehour.ui.manage.user.ManageUserAjaxEventType.*;
+import static net.rrm.ehour.ui.manage.user.UserManageAjaxEventType.*;
 
 /**
  * User Form Panel for admin
  */
 
-public class UserManageFormPanel extends AbstractUserFormPanelTemplate<ManageUserBackingBean> {
+public class UserManageFormPanel extends AbstractUserFormPanelTemplate<UserManageBackingBean> {
     private static final long serialVersionUID = -7427807216389657732L;
 
     @SpringBean
     private UserService userService;
 
     public UserManageFormPanel(String id,
-                               CompoundPropertyModel<ManageUserBackingBean> userModel,
+                               CompoundPropertyModel<UserManageBackingBean> userModel,
                                List<UserDepartment> departments) {
         super(id, userModel, departments);
     }
 
     @Override
     protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
-        ManageUserBackingBean manageUserBackingBean = (ManageUserBackingBean) backingBean;
+        UserManageBackingBean userManageBackingBean = (UserManageBackingBean) backingBean;
 
         boolean eventHandled;
 
         try {
-            User user = manageUserBackingBean.getUser();
+            User user = userManageBackingBean.getUser();
             eventHandled = false;
 
             if (type == USER_CREATED) {
@@ -67,7 +67,7 @@ public class UserManageFormPanel extends AbstractUserFormPanelTemplate<ManageUse
                     userService.changePassword(user.getUsername(), password);
                 }
             } else if (type == USER_DELETED) {
-                deleteUser(manageUserBackingBean);
+                deleteUser(userManageBackingBean);
             }
         } catch (ObjectNotUniqueException obnu) {
             backingBean.setServerMessage(obnu.getMessage());
@@ -78,7 +78,7 @@ public class UserManageFormPanel extends AbstractUserFormPanelTemplate<ManageUse
         return !eventHandled;
     }
 
-    private void deleteUser(ManageUserBackingBean manageUserBackingBean) {
-        userService.deleteUser(manageUserBackingBean.getUser().getUserId());
+    private void deleteUser(UserManageBackingBean userManageBackingBean) {
+        userService.deleteUser(userManageBackingBean.getUser().getUserId());
     }
 }

@@ -8,7 +8,7 @@ import org.apache.wicket.model.{IModel, ResourceModel}
 
 import scala.collection.convert.WrapAsScala
 
-class ManageUserReadOnlyPanel(id: String, model: IModel[ManageUserBackingBean]) extends AbstractBasePanel[ManageUserBackingBean](id, model) {
+class UserManageReadOnlyPanel(id: String, model: IModel[UserManageBackingBean]) extends AbstractBasePanel[UserManageBackingBean](id, model) {
   val BorderId = "border"
 
   override def onInitialize() {

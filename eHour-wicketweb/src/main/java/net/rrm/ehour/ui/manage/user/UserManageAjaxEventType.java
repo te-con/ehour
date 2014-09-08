@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.manage.user;
 
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 
-public enum ManageUserAjaxEventType implements AjaxEventType {
+public enum UserManageAjaxEventType implements AjaxEventType {
     USER_CREATED,
     USER_UPDATED,
     USER_DELETED,

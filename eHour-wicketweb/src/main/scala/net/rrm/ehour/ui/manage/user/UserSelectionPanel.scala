@@ -20,7 +20,7 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.{IModel, ResourceModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUsers: (util.List[User]) => util.List[User]) extends AbstractBasePanel[ManageUserBackingBean](id) {
+class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUsers: (util.List[User]) => util.List[User]) extends AbstractBasePanel[UserManageBackingBean](id) {
   def this(id: String, titleResourceKey: Option[String]) = this(id, titleResourceKey, xs => xs)
 
   val Self = this
