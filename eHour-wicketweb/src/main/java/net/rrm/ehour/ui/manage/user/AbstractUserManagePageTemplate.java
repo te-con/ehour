@@ -110,5 +110,7 @@ public abstract class AbstractUserManagePageTemplate<T extends UserManageBacking
         return null;
     }
 
-
+    protected UserService getUserService() {
+        return userService;
+    }
 }

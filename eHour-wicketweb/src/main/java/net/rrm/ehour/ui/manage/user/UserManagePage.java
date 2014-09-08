@@ -17,18 +17,13 @@
 package net.rrm.ehour.ui.manage.user;
 
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.security.SecurityRules;
-import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * User management page using 2 tabs, an entrySelector panel and the UserForm panel
@@ -36,8 +31,6 @@ import java.util.List;
 public class UserManagePage extends AbstractUserManagePageTemplate<UserManageBackingBean> {
     @SpringBean
     private UserService userService;
-
-    private List<UserDepartment> departments;
 
     private static final long serialVersionUID = 1883278850247747252L;
 
@@ -48,8 +41,7 @@ public class UserManagePage extends AbstractUserManagePageTemplate<UserManageBac
     @Override
     protected Panel getBaseAddPanel(String panelId) {
         return new UserManageFormPanel(panelId,
-                new CompoundPropertyModel<UserManageBackingBean>(getTabbedPanel().getAddBackingBean()),
-                getUserDepartments());
+                new CompoundPropertyModel<UserManageBackingBean>(getTabbedPanel().getAddBackingBean()));
     }
 
     @Override
@@ -76,21 +68,11 @@ public class UserManagePage extends AbstractUserManagePageTemplate<UserManageBac
 
         if (editableUser) {
             return new UserManageFormPanel(panelId,
-                    new CompoundPropertyModel<UserManageBackingBean>(bean),
-                    getUserDepartments());
+                    new CompoundPropertyModel<UserManageBackingBean>(bean)
+            );
         } else {
             return new UserManageReadOnlyPanel(panelId,
                     new CompoundPropertyModel<UserManageBackingBean>(bean));
         }
-    }
-
-    private List<UserDepartment> getUserDepartments() {
-        if (departments == null) {
-            departments = userService.getUserDepartments();
-        }
-
-        Collections.sort(departments, new UserDepartmentComparator());
-
-        return departments;
     }
 }

@@ -4,6 +4,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.security.SecurityRules;
+import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
@@ -30,6 +31,7 @@ import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 
+import java.util.Collections;
 import java.util.List;
 
 import static net.rrm.ehour.ui.manage.user.UserManageAjaxEventType.*;
@@ -38,7 +40,6 @@ public class AbstractUserFormPanelTemplate<T extends UserManageBackingBean>  ext
     private static final long serialVersionUID = -7427807216389657732L;
     private static final String BORDER = "border";
     private static final String FORM = "userForm";
-    private final List<UserDepartment> departments;
 
     private List<UserRole> roles;
 
@@ -46,10 +47,8 @@ public class AbstractUserFormPanelTemplate<T extends UserManageBackingBean>  ext
     private UserService userService;
 
     public AbstractUserFormPanelTemplate(String id,
-                               CompoundPropertyModel<T> userModel,
-                               List<UserDepartment> departments) {
+                               CompoundPropertyModel<T> userModel) {
         super(id, userModel);
-        this.departments = departments;
     }
 
     @Override
@@ -105,7 +104,7 @@ public class AbstractUserFormPanelTemplate<T extends UserManageBackingBean>  ext
         PasswordFieldFactory.createOptionalPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
 
         // department
-        DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", departments, new ChoiceRenderer<UserDepartment>("name"));
+        DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", getUserDepartments(), new ChoiceRenderer<UserDepartment>("name"));
         userDepartment.setRequired(true);
         userDepartment.setLabel(new ResourceModel("admin.user.department"));
         userDepartment.add(new ValidatingFormComponentAjaxBehavior());
@@ -186,5 +185,13 @@ public class AbstractUserFormPanelTemplate<T extends UserManageBackingBean>  ext
                 validatable.error(new ValidationError("admin.user.errorUsernameExists"));
             }
         }
+    }
+
+    private List<UserDepartment> getUserDepartments() {
+        List<UserDepartment> departments = userService.getUserDepartments();
+
+        Collections.sort(departments, new UserDepartmentComparator());
+
+        return departments;
     }
 }

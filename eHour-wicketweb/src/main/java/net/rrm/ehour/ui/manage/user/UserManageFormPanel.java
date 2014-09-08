@@ -42,9 +42,8 @@ public class UserManageFormPanel extends AbstractUserFormPanelTemplate<UserManag
     private UserService userService;
 
     public UserManageFormPanel(String id,
-                               CompoundPropertyModel<UserManageBackingBean> userModel,
-                               List<UserDepartment> departments) {
-        super(id, userModel, departments);
+                               CompoundPropertyModel<UserManageBackingBean> userModel) {
+        super(id, userModel);
     }
 
     @Override

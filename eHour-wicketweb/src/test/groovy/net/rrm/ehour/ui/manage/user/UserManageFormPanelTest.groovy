@@ -33,6 +33,7 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
         getMockContext().putBean("userService", userService);
 
         when(userService.getUserRoles()).thenReturn(Lists.newArrayList(UserRole.ADMIN, UserRole.MANAGER, UserRole.PROJECTMANAGER, UserRole.REPORT, UserRole.USER))
+        when(userService.getUserDepartments()).thenReturn(Lists.newArrayList(UserDepartmentObjectMother.createUserDepartment()))
     }
 
     @Override
@@ -163,7 +164,7 @@ public class UserManageFormPanelTest extends BaseSpringWebAppTester {
 
     void startPanel(UserManageBackingBean bean) {
         tester.startComponentInPage(new UserManageFormPanel("panel",
-                        new CompoundPropertyModel<UserManageBackingBean>(bean),
-                        Arrays.asList(UserDepartmentObjectMother.createUserDepartment())))
+                new CompoundPropertyModel<UserManageBackingBean>(bean)
+        ))
     }
 }
