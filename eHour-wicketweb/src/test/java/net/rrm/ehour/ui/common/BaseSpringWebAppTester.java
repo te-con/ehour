@@ -36,6 +36,10 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
     @SuppressWarnings("serial")
     @Before
     public final void setUp() throws Exception {
+        setUp(null);
+    }
+
+    public final void setUp(Roles roles) throws Exception {
         webApp = new TestEhourWebApplication() {
             @Override
             protected void springInjection() {
@@ -43,7 +47,7 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
             }
         };
 
-        webApp.setAuthorizedRoles(getRoles());
+        webApp.setAuthorizedRoles(roles);
         webApp.setEhourSystemConfig(getEhourSystemConfig());
 
         afterSetup();
@@ -56,10 +60,6 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
     protected final void startTester() {
         tester = new StrictWicketTester(webApp);
         bypassStringResourceLoading();
-    }
-
-    protected Roles getRoles() {
-        return null;
     }
 
     @After

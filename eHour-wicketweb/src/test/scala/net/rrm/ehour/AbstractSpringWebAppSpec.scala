@@ -1,6 +1,7 @@
 package net.rrm.ehour
 
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester
+import org.apache.wicket.authroles.authorization.strategies.role.Roles
 import org.apache.wicket.event.IEvent
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
@@ -12,8 +13,17 @@ abstract class AbstractSpringWebAppSpec extends AbstractSpec with BeforeAndAfter
   def tester = springTester.getTester
 
   override def beforeEach() {
+    startTester
+  }
+
+  def startTester {
     springTester.setUp()
   }
+
+  def startTester(roles: Roles) {
+    springTester.setUp(roles)
+  }
+
 
   def mockService[T <: AnyRef](implicit manifest: Manifest[T]):T  = {
     val mocked = mock[T]
