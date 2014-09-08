@@ -40,7 +40,7 @@ public class UserManagePage extends AbstractUserManagePageTemplate<UserManageBac
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
-        return new UserManageFormPanel(panelId,
+        return new UserFormPanel<UserManageBackingBean>(panelId,
                 new CompoundPropertyModel<UserManageBackingBean>(getTabbedPanel().getAddBackingBean()));
     }
 
@@ -67,7 +67,7 @@ public class UserManagePage extends AbstractUserManagePageTemplate<UserManageBac
                 EhourWebSession.getEhourConfig().isSplitAdminRole());
 
         if (editableUser) {
-            return new UserManageFormPanel(panelId,
+            return new UserFormPanel<UserManageBackingBean>(panelId,
                     new CompoundPropertyModel<UserManageBackingBean>(bean)
             );
         } else {

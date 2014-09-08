@@ -3,14 +3,17 @@ package net.rrm.ehour.ui.manage.user;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.sort.UserDepartmentComparator;
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder;
 import net.rrm.ehour.ui.common.component.AjaxFormComponentFeedbackIndicator;
 import net.rrm.ehour.ui.common.component.ServerMessageLabel;
 import net.rrm.ehour.ui.common.component.ValidatingFormComponentAjaxBehavior;
+import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.form.FormConfig;
 import net.rrm.ehour.ui.common.form.FormUtil;
+import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import net.rrm.ehour.ui.common.renderers.UserRoleRenderer;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
@@ -18,6 +21,7 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.userprefs.panel.PasswordFieldFactory;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -36,18 +40,16 @@ import java.util.List;
 
 import static net.rrm.ehour.ui.manage.user.UserManageAjaxEventType.*;
 
-public class AbstractUserFormPanelTemplate<T extends UserManageBackingBean>  extends AbstractFormSubmittingPanel<T> {
+public class UserFormPanel<T extends UserManageBackingBean> extends AbstractFormSubmittingPanel<T> {
     private static final long serialVersionUID = -7427807216389657732L;
     private static final String BORDER = "border";
     private static final String FORM = "userForm";
 
-    private List<UserRole> roles;
-
     @SpringBean
     private UserService userService;
 
-    public AbstractUserFormPanelTemplate(String id,
-                               CompoundPropertyModel<T> userModel) {
+    public UserFormPanel(String id,
+                         CompoundPropertyModel<T> userModel) {
         super(id, userModel);
     }
 
@@ -151,25 +153,57 @@ public class AbstractUserFormPanelTemplate<T extends UserManageBackingBean>  ext
 
     }
 
-
     private List<UserRole> getUserRoles() {
-        if (roles == null) {
-            roles = userService.getUserRoles();
+        List<UserRole> roles = userService.getUserRoles();
 
-            roles.remove(UserRole.PROJECTMANAGER);
+        roles.remove(UserRole.PROJECTMANAGER);
 
-            User user = EhourWebSession.getUser();
+        User user = EhourWebSession.getUser();
 
-            if (!SecurityRules.isAdmin(user)) {
-                roles.remove(UserRole.ADMIN);
-            }
+        if (!SecurityRules.isAdmin(user)) {
+            roles.remove(UserRole.ADMIN);
+        }
 
-            if (!EhourWebSession.getEhourConfig().isSplitAdminRole()) {
-                roles.remove(UserRole.MANAGER);
-            }
+        if (!EhourWebSession.getEhourConfig().isSplitAdminRole()) {
+            roles.remove(UserRole.MANAGER);
         }
 
         return roles;
+    }
+
+    @Override
+    protected boolean processFormSubmit(AjaxRequestTarget target, AdminBackingBean backingBean, AjaxEventType type) throws Exception {
+        UserManageBackingBean userManageBackingBean = (UserManageBackingBean) backingBean;
+
+        boolean eventHandled;
+
+        try {
+            User user = userManageBackingBean.getUser();
+            eventHandled = false;
+
+            if (type == USER_CREATED) {
+                userService.persistNewUser(user, user.getPassword());
+            } else if (type == USER_UPDATED) {
+                userService.persistEditedUser(user);
+
+                String password = user.getPassword();
+                if (StringUtils.isNotBlank(password)) {
+                    userService.changePassword(user.getUsername(), password);
+                }
+            } else if (type == USER_DELETED) {
+                deleteUser(userManageBackingBean);
+            }
+        } catch (ObjectNotUniqueException obnu) {
+            backingBean.setServerMessage(obnu.getMessage());
+            target.add(this);
+            eventHandled = true;
+        }
+
+        return !eventHandled;
+    }
+
+    private void deleteUser(UserManageBackingBean userManageBackingBean) {
+        userService.deleteUser(userManageBackingBean.getUser().getUserId());
     }
 
 

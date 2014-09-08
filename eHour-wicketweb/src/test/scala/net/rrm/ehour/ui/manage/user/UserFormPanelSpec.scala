@@ -2,16 +2,16 @@ package net.rrm.ehour.ui.manage.user
 
 import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.domain.{UserObjectMother, UserDepartmentObjectMother, UserRole}
+import net.rrm.ehour.domain.{UserDepartmentObjectMother, UserObjectMother, UserRole}
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.authroles.authorization.strategies.role.Roles
-import org.apache.wicket.markup.html.form.{ListMultipleChoice, Form}
+import org.apache.wicket.markup.html.form.{Form, ListMultipleChoice}
 import org.apache.wicket.model.CompoundPropertyModel
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito._
 import org.mockito.Matchers._
+import org.mockito.Mockito._
 
-class UserManageFormPanelSpec extends AbstractSpringWebAppSpec {
+class UserFormPanelSpec extends AbstractSpringWebAppSpec {
   val userService = mockService[UserService]
 
   val FormPath =  "panel:border:greySquaredFrame:border_body:userForm"
@@ -140,6 +140,6 @@ class UserManageFormPanelSpec extends AbstractSpringWebAppSpec {
   }
 
   def startPanel(bean: UserManageBackingBean = new UserManageBackingBean()) {
-    tester.startComponentInPage(new UserManageFormPanel("panel", new CompoundPropertyModel[UserManageBackingBean](bean)))
+    tester.startComponentInPage(new UserFormPanel[UserManageBackingBean]("panel", new CompoundPropertyModel[UserManageBackingBean](bean)))
   }
 }
