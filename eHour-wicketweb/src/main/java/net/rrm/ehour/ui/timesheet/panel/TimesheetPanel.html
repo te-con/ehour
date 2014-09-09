@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/">
 
 <body>
 <wicket:panel>
@@ -66,7 +66,7 @@
 
                             <wicket:container wicket:id="rows">
                                 <tr class="projectRow">
-                                    <td class="fold"></td>
+                                    <td class="fold"><a wicket:id="bookWholeWeek"><img wicket:id="bookImg" src="img/check_all_off.png" border="0" /></a></td>
                                     <td class="project" wicket:id="activityCode">activityCode</td>
                                     <td class="project"><span wicket:id="project"></span>
                                         <span class="statusMsg" wicket:id="status"></span>
@@ -90,35 +90,35 @@
 				</table>
 			</div>
 		</div>
-
+		
 		<br />
 
 		<div wicket:id="commentsFrame">
 			<div class="timesheet">
-				<table class="timesheetCommentsTable" style="margin:0; padding:0" cellpadding="0" cellspacing="0">
-
+				<table class="timesheetCommentsTable" style="margin:0 padding:0" cellpadding="0" cellspacing="0">
+	
 				<tr>
 					<td valign="top">
 						<wicket:message key="timesheet.comments" />:
 					</td>
-
+					
 					<td align="right" colspan="2">
 						<textarea name="comment" wicket:id="commentsArea"
 									rows="3" style="width: 400px" class="timesheetTextarea"
 									wrap="virtual"></textarea>
 					</td>
 				</tr>
-
+				
 				</table>
-
+				
 				<table class="timesheetCommentsTable" style="margin:0 padding:0" cellpadding="0" cellspacing="0">
-
+	
 				<tr>
 					<td width="20%">
 						<a class="bluebutton" onclick="this.blur();" wicket:id="resetButton" >
 							<span><wicket:message key="timesheet.reset" /></span>
 						</a>
-					</td>
+					</td>				
 					<td style="text-align: center"><span wicket:id="serverMessage"></span></td>
 					<td  width="20%" align="right">
 						<a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
@@ -126,56 +126,29 @@
 						</a>
 					</td>
 				</tr>
-
+	
 				</table>
 			</div>
 		</div>
 		</form>
 	</div>
-
+	
    	<wicket:fragment wicket:id="title">
    		<h1>
-	   		<a wicket:id="previousWeek" class="previousWeek" wicket:message="title:timesheet.previousWeek"><i class="fa fa-angle-left"></i></a>
+	   		<a wicket:id="previousWeek"><img src="img/icon_left.gif" border="0" /></a>
 	   		<wicket:container wicket:id="titleLabel"></wicket:container>
-	   		<a wicket:id="nextWeek" class="nextWeek" wicket:message="title:timesheet.nextWeek"><i class="fa fa-angle-right"></i></a>
+	   		<a wicket:id="nextWeek"><img src="img/icon_right.gif" border="0" /></a>
    		</h1>
 	</wicket:fragment>
 
    	<wicket:fragment wicket:id="dayInput">
-   		<input wicket:id="day"/><a wicket:id="commentLink"><img src="img/comment/comment_blue_on.gif"  wicket:id="commentLinkImg" border="0" /></a>
+   		<input wicket:id="day" size="2" /><a wicket:id="dayLink"><img src="img/comment/comment_blue_on.gif"  wicket:id="commentLinkImg" border="0" /></a>
    		<div wicket:id="dayWin"></div>
 	</wicket:fragment>
 
-    <wicket:fragment wicket:id="dayLocked">
-        <wicket:container wicket:id="day" />
-        <a wicket:id="commentLink"><img src="img/comment/comment_blue_on.gif"  wicket:id="commentLinkImg" border="0" /></a>
-        <div wicket:id="dayWin"></div>
-    </wicket:fragment>
-
-    <wicket:fragment wicket:id="dayInputHidden">
+   	<wicket:fragment wicket:id="dayInputHidden">
    		&nbsp;
 	</wicket:fragment>
-
-    <wicket:fragment wicket:id="dayHeader">
-        <div style="width:100%">
-            <span wicket:id="weekDay">Do</span>
-            <br />
-            <div class="lockSpace">&nbsp;</div>
-            <div class="day" wicket:id="day">5</div>
-            <wicket:container wicket:id="lock"></wicket:container>
-        </div>
-    </wicket:fragment>
-
-    <wicket:fragment wicket:id="unlockedDay">
-        <div class="lockSpace">&nbsp;</div>
-    </wicket:fragment>
-
-
-    <wicket:fragment wicket:id="lockedDay">
-        <div class="lockSpace ui-state-default" title="This day is locked" wicket:id="lockedContainer">
-            <i class="fa fa-lock"></i>
-        </div>
-    </wicket:fragment>
 </wicket:panel>
 
 </body>

@@ -67,11 +67,9 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private final GrandTotal grandTotals;
     private Form<?> form;
 
-    private MarkupContainer provider;
-
-    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider) {
+    public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
+    {
         super(id, model);
-        this.provider = provider;
         setReuseItems(true);
         this.grandTotals = grandTotals;
         this.form = form;
@@ -79,16 +77,22 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         config = EhourWebSession.getEhourConfig();
     }
 
-    @Override
-    protected void populateItem(ListItem<TimesheetRow> item) {
-        final TimesheetRow row = item.getModelObject();
-        Activity activity = row.getActivity();
 
-        item.add(new Label("project", activity.getProject().getName()));
-        item.add(new Label("activityCode", activity.getName()));
-        item.add(createStatusLabel(item));
-        addInputCells(item, row);
-        item.add(createTotalHoursLabel(row));
+    /*
+	 * (non-Javadoc)
+	 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
+	 */
+	@Override
+	protected void populateItem(ListItem<TimesheetRow> item)
+	{
+		final TimesheetRow row = (TimesheetRow) item.getModelObject();
+
+		item.add(createBookWholeWeekLink(row));
+		item.add(new Label("activityCode", row.getActivity().getName()));
+        item.add(new Label("availableHours", new PropertyModel<Float>(row.getActivity(), "availableHours")));
+		item.add(createStatusLabel(item));
+		addInputCells(item, row);
+		item.add(createTotalHoursLabel(row));
     }
 
     private Label createStatusLabel(ListItem<TimesheetRow> item) {

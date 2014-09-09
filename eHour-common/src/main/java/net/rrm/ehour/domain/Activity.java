@@ -60,6 +60,12 @@ public class Activity extends DomainObject<Integer, Activity> {
     }
 
     public Integer getId() {
+    // should be in a separate DAO
+    @Transient
+    private Float availableHours;
+
+
+	public Integer getId() {
 		return id;
 	}
 
@@ -131,7 +137,17 @@ public class Activity extends DomainObject<Integer, Activity> {
 		this.active = active;
 	}
 
-	@Override
+    public Float getAvailableHours()
+    {
+        return availableHours;
+    }
+
+    public void setAvailableHours(Float availableHours)
+    {
+        this.availableHours = availableHours;
+    }
+
+    @Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
@@ -177,4 +193,6 @@ public class Activity extends DomainObject<Integer, Activity> {
 									 .append(this.getDateEnd(), activity.getDateEnd())
 									 .append(this.getAllottedHours(), activity.getAllottedHours()).toComparison();
 	}
+
+
 }
