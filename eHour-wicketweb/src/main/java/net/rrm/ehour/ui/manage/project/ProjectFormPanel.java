@@ -58,9 +58,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
     @SpringBean
     private CustomerService customerService;
 
-    @SpringBean
-    private UserService userService;
-
     private static final long serialVersionUID = -8677950352090140144L;
 
     private boolean editMode;
@@ -195,18 +192,5 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         }
 
         return customers;
-    }
-
-    private List<User> getEligablePms() {
-
-        List<User> users = userService.getUsersWithEmailSet();
-
-        if (users != null) {
-            Collections.sort(users, new UserComparator(false));
-        } else {
-            users = new ArrayList<User>();
-        }
-
-        return users;
     }
 }

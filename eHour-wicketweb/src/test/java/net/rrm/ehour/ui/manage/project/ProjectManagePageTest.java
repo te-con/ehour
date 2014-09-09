@@ -33,7 +33,7 @@ import static org.easymock.EasyMock.*;
 
 public class ProjectManagePageTest extends BaseSpringWebAppTester {
     private ProjectService projectService;
-    private UserService userService;
+//    private UserService userService;
     private CustomerService customerService;
 
     @Before
@@ -41,8 +41,8 @@ public class ProjectManagePageTest extends BaseSpringWebAppTester {
         projectService = createMock(ProjectService.class);
         getMockContext().putBean("projectService", projectService);
 
-        userService = createMock(UserService.class);
-        getMockContext().putBean("userService", userService);
+//        userService = createMock(UserService.class);
+//        getMockContext().putBean("userService", userService);
 
         customerService = createMock(CustomerService.class);
         getMockContext().putBean("customerService", customerService);
@@ -53,18 +53,18 @@ public class ProjectManagePageTest extends BaseSpringWebAppTester {
         expect(customerService.getActiveCustomers())
                 .andReturn(new ArrayList<Customer>());
 
-        expect(userService.getUsersWithEmailSet())
-                .andReturn(new ArrayList<User>());
+//        expect(userService.getUsersWithEmailSet())
+//                .andReturn(new ArrayList<User>());
 
         expect(projectService.getActiveProjects())
                 .andReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
 
-        replay(projectService, userService, customerService);
+        replay(projectService, /*userService, */customerService);
 
         tester.startPage(ProjectManagePage.class);
         tester.assertRenderedPage(ProjectManagePage.class);
         tester.assertNoErrorMessage();
 
-        verify(projectService, userService, customerService);
+        verify(projectService, /*userService, */customerService);
     }
 }
