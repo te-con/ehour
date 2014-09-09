@@ -60,8 +60,6 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
     public OverviewPanel(String id, User user) {
         super(id);
 
-        System.out.println("I am in the new Overview Panel with User" + user.getFirstName());
-
         setOutputMarkupId(true);
         EhourWebSession session = ((EhourWebSession)this.getSession());
 

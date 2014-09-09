@@ -39,7 +39,7 @@ import org.apache.wicket.util.string.StringValue;
 @AuthorizeInstantiation(UserRole.ROLE_USER)
 public class MonthOverviewPage extends AbstractBasePage<Void> {
     private static final long serialVersionUID = -6873845464139697303L;
-    private static final String ID_CONTENT_CONTAINER = "contentContainer";
+    protected static final String ID_CONTENT_CONTAINER = "contentContainer";
 
     public enum OpenPanel {
         OVERVIEW, TIMESHEET
@@ -61,30 +61,42 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
         StringValue param = parameters.get(PARAM_OPEN);
 
         if (param != null) {
-            init(OpenPanel.valueOf(param.toOptionalString()));
+            init(OpenPanel.valueOf(param.toOptionalString()), null);
         } else {
-            init(OpenPanel.OVERVIEW);
+            init(OpenPanel.OVERVIEW, null);
         }
     }
 
     public MonthOverviewPage(OpenPanel panelToOpen) {
         super(new ResourceModel("overview.title"), null);
 
-        init(panelToOpen);
+        init(panelToOpen, null);
     }
 
-    private void init(OpenPanel panelToOpen) {
+    public MonthOverviewPage(OpenPanel panelToOpen, User user) {
+        this(panelToOpen);
+        init(panelToOpen, user);
+    }
+
+    private void init(OpenPanel panelToOpen, User user) {
         // add calendar panel
         calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser());
         add(calendarPanel);
 
         WebMarkupContainer contentContainer;
 
-        if (panelToOpen == OpenPanel.OVERVIEW) {
+        if (panelToOpen == OpenPanel.OVERVIEW)
+        {
             helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
-            contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);
-        } else {
-            calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
+            
+            if (user != null) {
+                contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER, user);
+            } else {
+                contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);    
+            }
+            contentContainer.setEnabled(false);
+        } else
+        {
             helpPanel = getTimesheetHelpPanel();
             contentContainer = getTimesheetPanel();
         }

@@ -169,7 +169,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         GuardedAjaxLink<Void> nextWeekLink = new GuardedWeekLink("nextWeek", weekStart, 1);
         titleFragment.add(nextWeekLink);
-
+        
         return titleFragment;
     }
 
@@ -418,4 +418,12 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             moveWeek(weekStart, delta);
         }
     }
+
+	public Form<TimesheetModel> getTimesheetForm() {
+		return timesheetForm;
+	}
+
+	public void setTimesheetForm(Form<TimesheetModel> timesheetForm) {
+		this.timesheetForm = timesheetForm;
+	}
 }

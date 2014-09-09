@@ -55,7 +55,6 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 		EhourWebSession session = ((EhourWebSession)this.getSession());
 		User user = EhourWebSession.getUser();
 		
-		// Now I want to get all customers for which user is a reviewer
 		Set<User> usersForACustomer = new HashSet<User>();
 		List<Customer> customersForWhichUserIsAReviewer = customerService.findAllCustomersForWhichUserIsaReviewer(user);
 		

@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.timesheet.page;
 
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
 
 import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 
@@ -26,12 +27,22 @@ import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInst
 
 @AuthorizeInstantiation("ROLE_CONSULTANT")
 public class UserOverviewPage extends MonthOverviewPage {
+	
+	private User user;
 
 	public UserOverviewPage(User user) {
 		this(user, OpenPanel.OVERVIEW);
+		this.user = user;
 	}
 
 	public UserOverviewPage(User user, OpenPanel overview) {
 		super(overview, user);
 	}
+	
+	protected TimesheetPanel getTimesheetPanel()
+    {
+        TimesheetPanel timesheetPanel = new TimesheetPanel(ID_CONTENT_CONTAINER, user, getEhourWebSession().getNavCalendar());
+        timesheetPanel.getTimesheetForm().setEnabled(false);
+		return timesheetPanel;
+    }
 }
