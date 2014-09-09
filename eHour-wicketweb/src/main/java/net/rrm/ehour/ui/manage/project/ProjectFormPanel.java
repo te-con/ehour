@@ -107,9 +107,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         addDescriptionAndContact(form);
         addGeneralInfo(form);
         addMisc(form);
-        form.add(getProjectManager());
-
-        form.add(new CheckBox("project.billable"));
     }
 
     private void addGeneralInfo(WebMarkupContainer parent) {
@@ -138,15 +135,6 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
         parent.add(customerDropdown);
         parent.add(new AjaxFormComponentFeedbackIndicator("customerValidationError", customerDropdown));
-    }
-
-    private DropDownChoice<User> getProjectManager() {
-        // project manager
-        DropDownChoice<User> projectManager = new DropDownChoice<User>("project.projectManager", getEligablePms(), new ChoiceRenderer<User>("fullName"));
-        projectManager.setNullValid(true);
-        projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
-
-        return projectManager;
     }
 
     private void addDescriptionAndContact(WebMarkupContainer parent) {

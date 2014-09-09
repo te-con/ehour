@@ -48,13 +48,8 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	@Test
 	void "should find all active customers"()
 	{
-<<<<<<< HEAD
-		def customers = customerDao.findAllActive()
-		assert 3 == customers.size()
-=======
 		def customers = customerDao.findAllActive();
 		assertEquals(2, customers.size());
->>>>>>> 13bdb68... EHV-16: Implemented comments related to removal of billable flags in Reporting section. Made active flag work in different scenarios related to CustomerReviewer role
 	}
 
 	@Test
@@ -183,38 +178,17 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 		assertEquals(1, customerReviewers.size());
 		assertEquals("thies", customerReviewers.get(0).getUsername());
 	}
-<<<<<<< HEAD
-=======
-	
-	@Test
-	public void shouldReturnCorrectlyWhenCustomersAreHavingPassedUserAsReporter() {
-		def user = UserMother.createUser();
-		
-		def customers = customerDao.findAllCustomersHavingReporter(user, true);
-		
-		assertNotNull(customers);
-		assertEquals(1, customers.size());	
-	}
->>>>>>> 13bdb68... EHV-16: Implemented comments related to removal of billable flags in Reporting section. Made active flag work in different scenarios related to CustomerReviewer role
 
 	@Test
 	public void shouldReturnCorrectlyWhenCustomersAreHavingPassedUserAsReporterAndAskedForInActiveCustomersAlso() {
-		def user = UserMother.createUser();
+		def user = UserObjectMother.createUser();
 		
-		def customers = customerDao.findAllCustomersHavingReporter(user, false);
+		def customers = customerDao.findAllCustomersHavingReporter(user);
 		
 		assertNotNull(customers);
 		assertEquals(2, customers.size());
 	}
-	
-	@Test
-	public void shouldReturnEmptyListWhenCustomersAreNotHavingPassedUserAsReporter() {
-		def user = new User(2);
-		
-		def customers = customerDao.findAllCustomersHavingReporter(user, true);
-		
-		assertEquals(0, customers.size());
-	}
+
 
     @Test
     public void shouldReturnCorrectlyWhenCustomersAreHavingPassedUserAsReporter() {

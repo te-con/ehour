@@ -16,12 +16,6 @@
 
 package net.rrm.ehour.ui.customerreviewer;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Activity;
@@ -29,7 +23,6 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
-import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
@@ -38,12 +31,13 @@ import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.*;
 
 /**
  * Customer Reviewer Page for viewing all Time-sheets for users
@@ -64,25 +58,16 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 	
 	private GreyRoundedBorder greyBorder;
 	
-	
-	/**
-	 * Default constructor
-	 * 
-	 * @param pageTitle
-	 * @param model
-	 */
 	public CustomerReviewerPage() {
 		super(new ResourceModel("customerReviewer.title"));
 		
 		EhourWebSession session = ((EhourWebSession)this.getSession());
-		User user = EhourWebSession.getUser();
-
 		Calendar overviewFor = session.getNavCalendar();
 		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
 		
 		List<TimesheetOverview> timesheetOverviews = getTimesheetOverViews();
 		
-        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
+        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", EhourWebSession.getUser());
         add(calendarPanel);
 		
 		greyBorder = new GreyRoundedBorder("customerReviewerFrame", new ResourceModel("customerReviewer.title"));
@@ -99,7 +84,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 		Calendar overviewFor = session.getNavCalendar();
 		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
 
-		User user = session.getUser().getUser();
+		User user = EhourWebSession.getUser();
 		Set<User> usersForACustomer = new HashSet<User>();
 		List<Customer> customersForWhichUserIsAReviewer = customerService.findAllCustomersForWhichUserIsaReviewer(user);
 
@@ -117,11 +102,9 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 
 	/**
      * Handle Ajax request
-     *
-     * @param target
      */
 	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
 		AjaxEventType type = ajaxEvent.getEventType();
 		AjaxRequestTarget target = ajaxEvent.getTarget();
 
@@ -148,7 +131,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
     private void addOrReplaceContentContainer(WebMarkupContainer contentContainer, AjaxRequestTarget target)
     {
     	addOrReplaceContentContainer(contentContainer);
-        AjaxRequestTarget.get().addComponent(contentContainer);
+        target.add(contentContainer);
     }
 
 }

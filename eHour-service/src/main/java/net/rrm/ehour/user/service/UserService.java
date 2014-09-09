@@ -14,14 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-<<<<<<< HEAD
 package net.rrm.ehour.user.service;
-=======
-package net.rrm.ehour.user.service;
-
-import java.util.List;
-import java.util.Set;
->>>>>>> 13bdb68... EHV-16: Implemented comments related to removal of billable flags in Reporting section. Made active flag work in different scenarios related to CustomerReviewer role
 
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
@@ -32,6 +25,7 @@ import net.rrm.ehour.exception.ObjectNotUniqueException;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface UserService {
@@ -100,10 +94,5 @@ public interface UserService {
      * @param onlyActiveUsers TODO
      * @return
      */
-<<<<<<< HEAD
-    List<User> getAllUsersAssignedToCustomers(List<Customer> customers);
+    List<User> getAllUsersAssignedToCustomers(List<Customer> customers, boolean onlyActiveUsers);
 }
-=======
-    public Set<User> getAllUsersAssignedToCustomers(List<Customer> customers, boolean onlyActiveUsers);
-}
->>>>>>> 13bdb68... EHV-16: Implemented comments related to removal of billable flags in Reporting section. Made active flag work in different scenarios related to CustomerReviewer role

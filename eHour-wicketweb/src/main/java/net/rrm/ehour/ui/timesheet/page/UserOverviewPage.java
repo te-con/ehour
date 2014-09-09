@@ -18,8 +18,7 @@ package net.rrm.ehour.ui.timesheet.page;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
-
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 
 /**
  * Overview page

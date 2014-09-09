@@ -321,7 +321,7 @@ public class UserServiceImplTest {
 
         replay(activityDao);
 
-        List<User> allUsersAssignedToCustomers = userService.getAllUsersAssignedToCustomers(customers);
+        List<User> allUsersAssignedToCustomers = userService.getAllUsersAssignedToCustomers(customers, true);
 
         verify(activityDao);
 
@@ -351,7 +351,7 @@ public class UserServiceImplTest {
 
         replay(activityDao);
 
-        List<User> allUsersAssignedToCustomers = userService.getAllUsersAssignedToCustomers(customers);
+        List<User> allUsersAssignedToCustomers = userService.getAllUsersAssignedToCustomers(customers, true);
 
         verify(activityDao);
 
