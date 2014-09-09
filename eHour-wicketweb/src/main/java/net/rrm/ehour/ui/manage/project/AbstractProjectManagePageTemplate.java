@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.manage.project;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.project.service.ProjectService;
@@ -8,10 +9,8 @@ import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.common.panel.entryselector.HideInactiveFilter;
-import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
+import net.rrm.ehour.ui.common.panel.entryselector.*;
+import net.rrm.ehour.ui.common.report.ColumnType;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -26,6 +25,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Header;
 
 public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBackingBean> extends AbstractTabbedManagePage<T> {
     private static final long serialVersionUID = 9196677804018589806L;
@@ -58,10 +59,8 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
 
         List<Project> projects = getProjects();
 
-        Fragment projectListHolder = createProjectListHolder(projects);
-
         entrySelectorPanel = new EntrySelectorPanel(PROJECT_SELECTOR_ID,
-                projectListHolder,
+                createSelectorData(projects),
                 new ResourceModel("admin.project.hideInactive"));
         greyBorder.addOrReplace(entrySelectorPanel);
     }
@@ -101,35 +100,19 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
         }
     }
 
-    @SuppressWarnings("serial")
-    private Fragment createProjectListHolder(List<Project> projects) {
-        Fragment fragment = new Fragment(EntrySelectorPanel.ITEM_LIST_HOLDER_ID, "itemListHolder", AbstractProjectManagePageTemplate.this);
-        fragment.setOutputMarkupId(true);
+    private EntrySelectorData createSelectorData(List<Project> projects) {
 
-        projectListView = new EntrySelectorListView<Project>("itemList", projects) {
-            @Override
-            protected void onPopulate(ListItem<Project> item, IModel<Project> itemModel) {
-                Project project = itemModel.getObject();
+        List<Header> headers = Lists.newArrayList(new Header("admin.project.code.short"), new Header("admin.project.name"));
 
-                if (!project.isActive()) {
-                    item.add(AttributeModifier.append("class", "inactive"));
-                }
+        List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
 
-                item.add(new Label("name", project.getName()));
-                item.add(new Label("code", project.getProjectCode()));
-            }
+        for (Project project : projects) {
+            boolean active = project.isActive();
 
-            @Override
-            protected void onClick(ListItem<Project> item, AjaxRequestTarget target) throws ObjectNotFoundException {
-                Integer projectId = item.getModelObject().getProjectId();
-                getTabbedPanel().setEditBackingBean(createEditBean(projectId));
-                getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
-            }
-        };
+            rows.add(new EntrySelectorData.EntrySelectorRow(Lists.newArrayList(project.getName(), project.getProjectCode()), active));
+        }
 
-        fragment.add(projectListView);
-
-        return fragment;
+        return new EntrySelectorData(headers, rows);
     }
 
     protected abstract T createEditBean(Integer projectId) throws ObjectNotFoundException;

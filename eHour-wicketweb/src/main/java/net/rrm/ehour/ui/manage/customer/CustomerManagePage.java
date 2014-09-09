@@ -16,18 +16,17 @@
 
 package net.rrm.ehour.ui.manage.customer;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.common.panel.entryselector.HideInactiveFilter;
-import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
+import net.rrm.ehour.ui.common.panel.entryselector.*;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -44,6 +43,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.ColumnType;
+import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Header;
 
 /**
  * Customer admin page
@@ -72,6 +74,16 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
 
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.customer.title"));
         add(greyBorder);
+        new EntrySelectorPanel.ClickHandler() {
+
+            @Override
+            public void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException {
+                final Integer customerId = item.getModelObject().getCustomerId();
+
+                getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
+                getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
+            }
+        }
 
         entrySelectorPanel = new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
                 customerListHolder,
@@ -131,6 +143,24 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
         return customerListView.getParent();
     }
 
+    private EntrySelectorData createSelectorData(List<Customer> customers) {
+
+        List<Header> headers = Lists.newArrayList(new Header("admin.customer.code"),
+                                                  new Header("admin.customer.name"),
+                                                  new Header(ColumnType.NUMERIC, "admin.customer.projects")
+        );
+
+        List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
+
+        for (Customer customer : customers) {
+            boolean active = customer.isActive();
+
+            rows.add(new EntrySelectorData.EntrySelectorRow(Lists.newArrayList(customer.getName(), customer.getCode(), customer.getProjects() == null ? 0 : customer.getProjects().size()), active));
+        }
+
+        return new EntrySelectorData(headers, rows);
+    }
+
     /**
      * Get a the customerListHolder fragment containing the listView
      */
@@ -174,3 +204,4 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
         return customers;
     }
 }
+

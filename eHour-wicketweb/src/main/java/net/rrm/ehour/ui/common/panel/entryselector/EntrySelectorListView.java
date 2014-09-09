@@ -10,15 +10,19 @@ import org.apache.wicket.model.IModel;
 
 import java.util.List;
 
-public abstract class EntrySelectorListView<T> extends ListView<T> {
-    private ListItem<T> selectedItem = null;
+import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.EntrySelectorRow;
 
-    public EntrySelectorListView(String id, List<? extends T> list) {
+public abstract class EntrySelectorListView extends ListView<EntrySelectorRow> {
+    private final EntrySelectorPanel.ClickHandler clickHandler;
+    private ListItem<EntrySelectorRow> selectedItem = null;
+
+    public EntrySelectorListView(String id, List<? extends EntrySelectorRow> list, EntrySelectorPanel.ClickHandler clickHandler) {
         super(id, list);
+        this.clickHandler = clickHandler;
     }
 
     @Override
-    protected final void populateItem(final ListItem<T> item) {
+    protected final void populateItem(final ListItem<EntrySelectorRow> item) {
         item.setOutputMarkupId(true);
 
         item.add(new AjaxEventBehavior("onclick") {
@@ -35,7 +39,7 @@ public abstract class EntrySelectorListView<T> extends ListView<T> {
                 selectedItem = item;
 
                 try {
-                    onClick(item, target);
+                    clickHandler.onClick(item.getModelObject(), target);
                 } catch (ObjectNotFoundException e) {
                 }
             }
@@ -44,7 +48,5 @@ public abstract class EntrySelectorListView<T> extends ListView<T> {
         onPopulate(item, item.getModel());
     }
 
-    protected abstract void onPopulate(ListItem<T> item, IModel<T> itemModel);
-
-    protected abstract void onClick(ListItem<T> item, AjaxRequestTarget target) throws ObjectNotFoundException;
+    protected abstract void onPopulate(ListItem<EntrySelectorRow> item, IModel<EntrySelectorRow> itemModel);
 }

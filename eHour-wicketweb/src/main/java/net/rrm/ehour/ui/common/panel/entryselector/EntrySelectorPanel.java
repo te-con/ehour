@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.common.panel.entryselector;
 
+import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.AttributeModifier;
@@ -29,16 +30,22 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
+import java.io.Serializable;
+
+import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.EntrySelectorRow;
+
 /**
  * Selector with autocompletion filter
  */
 
-public class EntrySelectorPanel extends AbstractBasePanel<Void> {
+public class EntrySelectorPanel<T> extends AbstractBasePanel<T> {
     public static final String ITEM_LIST_HOLDER_ID = "itemListHolder";
 
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
@@ -49,11 +56,11 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     private GreyBlueRoundedBorder blueBorder;
 
 
-    public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder) {
-        this(id, itemListHolder, null);
+    public <I> EntrySelectorPanel(String id, EntrySelectorData<I> entrySelectorData) {
+        this(id, entrySelectorData, null);
     }
 
-    public EntrySelectorPanel(String id, WebMarkupContainer itemListHolder, IModel<String> checkboxPrefix) {
+    public <I> EntrySelectorPanel(String id, EntrySelectorData<I> entrySelectorData, IModel<String> checkboxPrefix) {
         super(id);
 
         if (checkboxPrefix != null) {
@@ -61,7 +68,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
             showHideInactiveCheckbox = true;
         }
 
-        setUpPanel(itemListHolder);
+        setUpPanel(entrySelectorData);
     }
 
     @Override
@@ -86,7 +93,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         response.render(OnDomReadyHeaderItem.forScript("window.entrySelector = new EntrySelector('#listFilter', '.entrySelectorTable');"));
     }
 
-    private void setUpPanel(WebMarkupContainer itemListHolder) {
+    private <I> void setUpPanel(EntrySelectorData<I> entrySelectorData) {
         WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
 
         blueBorder = new GreyBlueRoundedBorder("blueBorder") {
@@ -107,8 +114,27 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
         add(selectorFrame);
 
-        blueBorder.add(itemListHolder);
+        blueBorder.add(createListView("itemList", entrySelectorData));
     }
+
+    private <I> EntrySelectorListView createListView(String id, EntrySelectorData<I> entrySelectorData) {
+        return new EntrySelectorListView(id, entrySelectorData.getRows(), null) {
+
+            @Override
+            protected void onPopulate(ListItem<EntrySelectorRow<I>> item, IModel<EntrySelectorRow<I>> itemModel) {
+                EntrySelectorRow object = item.getModelObject();
+
+                RepeatingView cells = new RepeatingView("child");
+
+                for (Serializable serializable : object.getCells()) {
+                    cells.add(new Label(cells.newChildId(), serializable));
+                }
+
+                item.add(cells);
+            }
+        };
+    }
+
 
     private Form<Void> createForm() {
         Form<Void> form = new Form<Void>("filterForm");
@@ -148,5 +174,9 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     }
 
     private static final long serialVersionUID = -7928428437664050056L;
+
+    public interface ClickHandler {
+        void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException;
+    }
 }
 
