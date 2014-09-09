@@ -120,7 +120,7 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 		
 		public RejectPanel(String id, IModel<Activity> model) {
 			super(id, model);
-			add(new Link("reject") {
+			add(new Link<Activity>("reject") {
 				@Override
 				public void onClick() {
 				}
@@ -132,20 +132,20 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 		
 		public AcceptPanel(String id, IModel<Activity> model) {
 			super(id, model);
-			add(new Link("accept") {
+			add(new Link<Activity>("accept") {
 				@Override
 				public void onClick() {
 				}
 			});
 		}
-	}
+	}	
 	
 	class ViewTimesheetPanel extends Panel {
 
 		public ViewTimesheetPanel(String id, IModel<Activity> model) {
 			super(id, model);
-			final Activity activity = model.getObject();
-			add(new Link("view") {
+			final Activity activity = (Activity) model.getObject();
+			add(new Link<Activity>("view") {
 				@Override
 				public void onClick() {
 					 UserOverviewPage userOverviewPage = new
