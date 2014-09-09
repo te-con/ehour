@@ -16,8 +16,12 @@
 
 package net.rrm.ehour.ui.customerreviewer;
 
+import java.util.Calendar;
+import java.util.List;
+
 import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.customer.service.CustomerService;
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
@@ -31,6 +35,7 @@ import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -46,7 +51,7 @@ import java.util.*;
 public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 	
 	@SpringBean
-	private IOverviewTimesheet timesheetService;
+	private TimesheetService timesheetService;
 	
 	@SpringBean
 	private CustomerService customerService;
@@ -65,7 +70,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 		Calendar overviewFor = session.getNavCalendar();
 		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
 		
-		List<TimesheetOverview> timesheetOverviews = getTimesheetOverViews();
+		List<Activity> allActivitiesOfCustomerForMonth = getActivitiesForCustomersForWhichUserIsAReviewer();
 		
         CalendarPanel calendarPanel = new CalendarPanel("sidePanel", EhourWebSession.getUser());
         add(calendarPanel);
@@ -74,30 +79,23 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 		greyBorder.setOutputMarkupId(true);
 		add(greyBorder);
 		
-		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, timesheetOverviews);
+		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, allActivitiesOfCustomerForMonth);
 		addOrReplaceContentContainer(customerReviewerPanel);
 	}
 	
-	private List<TimesheetOverview> getTimesheetOverViews() {
-		List<TimesheetOverview> timesheetOverviews = new ArrayList<TimesheetOverview>();
+	private List<Activity> getActivitiesForCustomersForWhichUserIsAReviewer() {
 		EhourWebSession session = ((EhourWebSession) this.getSession());
 		Calendar overviewFor = session.getNavCalendar();
 		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
 
-		User user = EhourWebSession.getUser();
+		User user = session.getUser().getUser();
 		Set<User> usersForACustomer = new HashSet<User>();
 		List<Customer> customersForWhichUserIsAReviewer = customerService.findAllCustomersForWhichUserIsaReviewer(user);
+		DateRange monthRange = DateUtil.calendarToMonthRange(overviewFor);
+		
+		List<Activity> allActivitiesForcustomers = activityService.getAllActivitiesForcustomers(customersForWhichUserIsAReviewer, monthRange);
 
-		List<Activity> allActivitiesForcustomers = activityService.getAllActivitiesForcustomers(customersForWhichUserIsAReviewer);
-		for (Activity activity : allActivitiesForcustomers) {
-			usersForACustomer.add(activity.getAssignedUser());
-		}
-
-		for (User userForCustomer : usersForACustomer) {
-			TimesheetOverview timesheetOverview = timesheetService.getTimesheetOverview(userForCustomer, overviewFor);
-			timesheetOverviews.add(timesheetOverview);
-		}
-		return timesheetOverviews;
+		return allActivitiesForcustomers;
 	}
 
 	/**
@@ -118,7 +116,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 		EhourWebSession session = ((EhourWebSession) this.getSession());
 		Calendar overviewFor = session.getNavCalendar();
 		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, getTimesheetOverViews());
+		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, getActivitiesForCustomersForWhichUserIsAReviewer());
 		addOrReplaceContentContainer(customerReviewerPanel, target);
 	}
 	

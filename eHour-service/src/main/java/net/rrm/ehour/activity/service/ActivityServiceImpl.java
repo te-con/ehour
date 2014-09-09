@@ -91,8 +91,8 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public List<Activity> getAllActivitiesForcustomers(List<Customer> customers) {
-		return activityDao.findActivitiesForCustomers(customers);
+	public List<Activity> getAllActivitiesForcustomers(List<Customer> customers, DateRange dateRange) {
+		return activityDao.findActivitiesForCustomers(customers, dateRange);
 	}
 
 }

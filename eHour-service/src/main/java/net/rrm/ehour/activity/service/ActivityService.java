@@ -73,5 +73,5 @@ public interface ActivityService {
 	 */
 	List<Activity> findAllActivityForCustomer(Customer customer);
 
-	List<Activity> getAllActivitiesForcustomers(List<Customer> customers);
+	List<Activity> getAllActivitiesForcustomers(List<Customer> customers, DateRange dateRange);
 }
