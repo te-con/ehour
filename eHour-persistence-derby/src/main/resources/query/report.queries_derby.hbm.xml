@@ -16,7 +16,7 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment"
+		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -42,7 +42,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT_TEXT
          ]]>         
 	</sql-query>
 	
@@ -60,7 +60,7 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment"
+		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -86,7 +86,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT_TEXT
          ]]>         
 	</sql-query>
     <sql-query name="Report.getHoursPerDayForProjectsAndUsers">
@@ -103,7 +103,7 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment"
+		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -129,7 +129,7 @@
 				USR.LAST_NAME,
 				PRJ.PROJECT_ID,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT_TEXT
          ]]>         
 	</sql-query>
 
@@ -147,7 +147,7 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment"
+		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -172,7 +172,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT_TEXT
          ]]>         
 	</sql-query>
 </hibernate-mapping>

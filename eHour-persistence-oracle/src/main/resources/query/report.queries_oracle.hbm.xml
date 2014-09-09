@@ -18,7 +18,7 @@
 		       PAG.ROLE AS "role",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment"
+		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -44,7 +44,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT_TEXT
          ]]>
 	</sql-query>
 
@@ -64,7 +64,7 @@
 		       PAG.ROLE AS "role",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment"
+		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -90,7 +90,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT_TEXT
          ]]>
 	</sql-query>
 
@@ -110,7 +110,7 @@
 		       PAG.ROLE AS "role",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment"
+		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -137,7 +137,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT_TEXT
          ]]>
 	</sql-query>
 
@@ -157,7 +157,7 @@
 		       PAG.ROLE AS "role",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
-		       ENTRY.COMMENT AS "comment"
+		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
 		     PROJECT PRJ,
@@ -182,7 +182,7 @@
 				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
-				ENTRY.COMMENT
+				ENTRY.COMMENT_TEXT
          ]]>
 	</sql-query>
 

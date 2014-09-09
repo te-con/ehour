@@ -30,8 +30,8 @@
   <TIMESHEET_ENTRY ACTIVITY_ID="7" ENTRY_DATE="2007-02-02" UPDATE_DATE="2006-10-02 12:00:10.0" HOURS="8.0" />
   <TIMESHEET_ENTRY ACTIVITY_ID="12" ENTRY_DATE="2007-02-01" UPDATE_DATE="2006-10-02 12:00:11.0" HOURS="8.0" />
   
-  <TIMESHEET_COMMENT USER_ID="1" COMMENT_DATE="2007-01-07" COMMENT="Had to go to the dentist"/>
-  <TIMESHEET_COMMENT USER_ID="1" COMMENT_DATE="2007-01-14" COMMENT="Had to go to the dentist again"/>
-  <TIMESHEET_COMMENT USER_ID="2" COMMENT_DATE="2007-01-21" COMMENT="Had to go to the dentist as well"/>    
-  <TIMESHEET_COMMENT USER_ID="3" COMMENT_DATE="2007-01-28" COMMENT="There is an infectious dentist thing going on!"/>      
+  <TIMESHEET_COMMENT USER_ID="1" COMMENT_DATE="2007-01-07" COMMENT_TEXT="Had to go to the dentist"/>
+  <TIMESHEET_COMMENT USER_ID="1" COMMENT_DATE="2007-01-14" COMMENT_TEXT="Had to go to the dentist again"/>
+  <TIMESHEET_COMMENT USER_ID="2" COMMENT_DATE="2007-01-21" COMMENT_TEXT="Had to go to the dentist as well"/>    
+  <TIMESHEET_COMMENT USER_ID="3" COMMENT_DATE="2007-01-28" COMMENT_TEXT="There is an infectious dentist thing going on!"/>      
 </dataset>
