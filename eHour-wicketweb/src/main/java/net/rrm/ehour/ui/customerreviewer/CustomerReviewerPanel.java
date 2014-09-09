@@ -14,7 +14,7 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
+import net.rrm.ehour.ui.timesheet.page.UserOverviewPage;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -66,9 +66,11 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 				Link<UserProjectStatus> link = new Link<UserProjectStatus>("viewTimesheet") {
 					@Override
 					public void onClick() {
-						setResponsePage(MonthOverviewPage.class);
+						UserOverviewPage userOverviewPage = new UserOverviewPage(userProjectStatus.getActivity().getAssignedUser());
+						setResponsePage(userOverviewPage);
 					}
 				};
+				
 				Label customerLabel = new Label("customer", userProjectStatus.getActivity().getProject().getCustomer().getName());
 				Label userLabel = new Label("user", userProjectStatus.getActivity().getAssignedUser().getFirstName());
 				Label monthLabel = new Label("period", new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY));

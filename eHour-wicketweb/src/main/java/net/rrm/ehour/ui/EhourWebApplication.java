@@ -42,6 +42,7 @@ import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource$;
 import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
+import net.rrm.ehour.ui.timesheet.page.UserOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import org.apache.log4j.Logger;
 import org.apache.wicket.*;
@@ -171,6 +172,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/consultant/overview", MonthOverviewPage.class);
 
         mountPage("/consultant/customer/reviewer", CustomerReviewerPage.class);
+        mountPage("/consultant/customeReviewer/useroverview", UserOverviewPage.class));
         mountPage("/consultant/exportmonth", TimesheetExportPage.class);
 
         mountPage("/report", ReportPage.class);

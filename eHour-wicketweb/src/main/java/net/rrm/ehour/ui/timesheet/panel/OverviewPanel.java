@@ -56,6 +56,24 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
         add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
     }
 
+
+    public OverviewPanel(String id, User user) {
+        super(id);
+
+        System.out.println("I am in the new Overview Panel with User" + user.getFirstName());
+
+        setOutputMarkupId(true);
+        EhourWebSession session = ((EhourWebSession)this.getSession());
+
+        Calendar overviewFor = session.getNavCalendar();
+        overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+
+        TimesheetOverview timesheetOverview = overviewTimesheet.getTimesheetOverview(user, overviewFor);
+
+        add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
+        add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
+    }
+
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);

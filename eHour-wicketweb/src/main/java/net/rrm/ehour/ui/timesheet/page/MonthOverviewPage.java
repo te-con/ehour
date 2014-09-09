@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.page;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
