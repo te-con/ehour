@@ -134,21 +134,48 @@
 	</div>
 	
    	<wicket:fragment wicket:id="title">
-   		<h1>
-	   		<a wicket:id="previousWeek"><img src="img/icon_left.gif" border="0" /></a>
-	   		<wicket:container wicket:id="titleLabel"></wicket:container>
-	   		<a wicket:id="nextWeek"><img src="img/icon_right.gif" border="0" /></a>
-   		</h1>
+        <h1>
+            <a wicket:id="previousWeek" class="previousWeek" wicket:message="title:timesheet.previousWeek"><i class="fa fa-angle-left"></i></a>
+            <wicket:container wicket:id="titleLabel"></wicket:container>
+            <a wicket:id="nextWeek" class="nextWeek" wicket:message="title:timesheet.nextWeek"><i class="fa fa-angle-right"></i></a>
+        </h1>
 	</wicket:fragment>
 
-   	<wicket:fragment wicket:id="dayInput">
-   		<input wicket:id="day" size="2" /><a wicket:id="dayLink"><img src="img/comment/comment_blue_on.gif"  wicket:id="commentLinkImg" border="0" /></a>
-   		<div wicket:id="dayWin"></div>
-	</wicket:fragment>
+    <wicket:fragment wicket:id="dayInput">
+        <input wicket:id="day"/><a wicket:id="commentLink"><img src="img/comment/comment_blue_on.gif"  wicket:id="commentLinkImg" border="0" /></a>
+        <div wicket:id="dayWin"></div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="dayLocked">
+        <wicket:container wicket:id="day" />
+        <a wicket:id="commentLink"><img src="img/comment/comment_blue_on.gif"  wicket:id="commentLinkImg" border="0" /></a>
+        <div wicket:id="dayWin"></div>
+    </wicket:fragment>
 
    	<wicket:fragment wicket:id="dayInputHidden">
    		&nbsp;
 	</wicket:fragment>
+
+    <wicket:fragment wicket:id="dayHeader">
+        <div style="width:100%">
+            <span wicket:id="weekDay">Do</span>
+            <br />
+            <div class="lockSpace">&nbsp;</div>
+            <div class="day" wicket:id="day">5</div>
+            <wicket:container wicket:id="lock"></wicket:container>
+        </div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="unlockedDay">
+        <div class="lockSpace">&nbsp;</div>
+    </wicket:fragment>
+
+
+    <wicket:fragment wicket:id="lockedDay">
+        <div class="lockSpace ui-state-default" title="This day is locked" wicket:id="lockedContainer">
+            <i class="fa fa-lock"></i>
+        </div>
+    </wicket:fragment>
 </wicket:panel>
 
 </body>
