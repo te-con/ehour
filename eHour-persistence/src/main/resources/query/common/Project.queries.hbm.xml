@@ -1,149 +1,80 @@
-<<<<<<< HEAD
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<query name="Customer.findAllWithActive">
-		FROM Customer customer
-	    WHERE active = :active
-	</query>
+    <query name="Customer.findAllWithActive">
+        FROM Customer customer
+        WHERE active = :active
+    </query>
 
     <query name="Customer.findByNameAndCode">
-		FROM Customer customer
-	    WHERE lower(name) = :name AND lower(code) = :code
-	</query>
+        FROM Customer customer
+        WHERE lower(name) = :name AND lower(code) = :code
+    </query>
 
-	<query name="Customer.findAllCustomersHavingReporter">
-	    SELECT distinct customer
-		FROM Customer as customer
-		JOIN customer.reporters reporters where reporters.userId = :userId
-	</query>
-	
-	<query name="Customer.findAllCustomersForWhichUserIsaReviewer">
-		SELECT distinct customer
-		FROM Customer as customer
-		JOIN customer.reviewers reviewers where reviewers.userId = :userId
-	</query>	
-	
-	<query name="Project.findAllActive">
-		FROM Project project
-		WHERE project.active is true AND
-			  project.customer.active is true
-	    ORDER BY name
-	</query>	
+    <query name="Customer.findAllCustomersHavingReporter">
+        SELECT distinct customer
+        FROM Customer as customer
+        JOIN customer.reporters reporters
+        WHERE reporters.userId = :userId
+    </query>
 
-	<query name="Project.findAllActiveDefault">
-		FROM Project project
-	    WHERE project.active is true AND 
-	    	  project.customer.active is true AND 
-	    	  project.defaultProject is true
-	</query>	
+    <query name="Customer.findAllActiveCustomersHavingReporter">
+        SELECT distinct customer
+        FROM Customer as customer
+        JOIN customer.reporters reporters
+        WHERE customer.active is true AND
+        reporters.userId = :userId
+    </query>
 
-	<query name="Project.findAllProjectsForCustomers">
-		FROM Project prj
-		WHERE prj.customer IN (:customers)
-		ORDER BY prj.name
-	</query>	
+    <query name="Customer.findAllCustomersForWhichUserIsaReviewer">
+        SELECT distinct customer
+        FROM Customer as customer
+        JOIN customer.reviewers reviewers where reviewers.userId = :userId
+    </query>
 
-	<query name="Project.findActiveProjectsForCustomers">
-		FROM Project prj
-		WHERE prj.customer IN (:customers) AND
-			  prj.active is true
-		ORDER BY prj.name			  
-	</query>	
+    <query name="Project.findAllActive">
+        FROM Project project
+        WHERE project.active is true AND
+        project.customer.active is true
+        ORDER BY name
+    </query>
 
-	<query name="Project.findActiveProjectsWhereUserIsPM">
-		FROM Project prj
-		WHERE prj.projectManager = :user AND
-			  prj.active is true AND
-			  prj.customer.active is true
-	</query>	
+    <query name="Project.findAllActiveDefault">
+        FROM Project project
+        WHERE project.active is true AND
+        project.customer.active is true AND
+        project.defaultProject is true
+    </query>
 
+    <query name="Project.findAllProjectsForCustomers">
+        FROM Project prj
+        WHERE prj.customer IN (:customers)
+        ORDER BY prj.name
+    </query>
 
-=======
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
-	<query name="Customer.findAllWithActive">
-		FROM Customer customer
-	    WHERE active = :active
-	</query>
-	
-	<query name="Customer.findByNameAndCode">
-		FROM Customer customer
-	    WHERE lower(name) = :name AND lower(code) = :code
-	</query>
+    <query name="Project.findActiveProjectsForCustomers">
+        FROM Project prj
+        WHERE prj.customer IN (:customers) AND
+        prj.active is true
+        ORDER BY prj.name
+    </query>
 
-	<query name="Customer.findAllCustomersHavingReporter">
-	    SELECT distinct customer
-		FROM Customer as customer
-		JOIN customer.reporters reporters 
-		WHERE reporters.userId = :userId 
-	</query>
-	
-	<query name="Customer.findAllActiveCustomersHavingReporter">
-	    SELECT distinct customer
-		FROM Customer as customer
-		JOIN customer.reporters reporters 
-		WHERE customer.active is true AND 
-		      reporters.userId = :userId 
-	</query>
-	
-	<query name="Customer.findAllCustomersForWhichUserIsaReviewer">
-		SELECT distinct customer
-		FROM Customer as customer
-		JOIN customer.reviewers reviewers where reviewers.userId = :userId
-	</query>	
-	
-	<query name="Project.findAllActive">
-		FROM Project project
-		WHERE project.active is true AND
-			  project.customer.active is true
-	    ORDER BY name
-	</query>
-	
-	<query name="Project.findByNamePattern"> 
-		SELECT project
-		FROM Project as project
-	    WHERE lower(name) like  :pattern
-	    ORDER BY name
-	</query>
-	
-	<query name="Project.findActiveByNamePattern"> 
-		SELECT project
-		FROM Project as project
-	    WHERE lcase(name) like  :pattern AND active = true
-	    ORDER BY name    
-	</query>	
-	
-	<query name="Project.findAllActiveDefault">
-		FROM Project project
-	    WHERE project.active is true AND 
-	    	  project.customer.active is true AND 
-	    	  project.defaultProject is true
-	</query>	
+    <query name="Project.findActiveProjectsWhereUserIsPM">
+        FROM Project prj
+        WHERE prj.projectManager = :user AND
+        prj.active is true AND
+        prj.customer.active is true
+    </query>
 
-	<query name="Project.findAllProjectsForCustomers">
-		FROM Project prj
-		WHERE prj.customer IN (:customers)
-		ORDER BY prj.name
-	</query>	
+    <query name="Project.findByProjectCode">
+        FROM Project as project
+        WHERE projectCode = :projectCode
+    </query>
 
-	<query name="Project.findActiveProjectsForCustomers">
-		FROM Project prj
-		WHERE prj.customer IN (:customers) AND
-			  prj.active is true
-		ORDER BY prj.name			  
-	</query>	
+    <query name="Customer.findByCode">
+        FROM Customer as customer
+        WHERE code = :customerCode
+    </query>
 
-	<query name="Project.findActiveProjectsWhereUserIsPM">
-		FROM Project prj
-		WHERE prj.projectManager = :user AND
-			  prj.active is true AND
-			  prj.customer.active is true
-	</query>	
-
-
->>>>>>> 13bdb68... EHV-16: Implemented comments related to removal of billable flags in Reporting section. Made active flag work in different scenarios related to CustomerReviewer role
 </hibernate-mapping>

@@ -17,7 +17,6 @@
 	
 	<cache name="net.rrm.ehour.config.domain.Configuration"
 	    maxElementsInMemory="50"
-		timeToIdleSeconds="600"
 		timeToLiveSeconds="1200"
 	    overflowToDisk="false"
 	/>	

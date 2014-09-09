@@ -60,14 +60,13 @@ public class Customer extends DomainObject<Integer, Customer> {
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "customer")
     private Set<Project> projects;
 
-	@ManyToMany(targetEntity = User.class, cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
-	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
-    @Transient
-	private List<User> reviewers;
+    @ManyToMany(targetEntity = User.class, cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    private List<User> reviewers;
 
-	@ManyToMany(targetEntity = User.class, cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
-	@JoinTable(name = "CUSTOMER_REPORTERS", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
-	private List<User> reporters;
+    @ManyToMany(targetEntity = User.class, cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "CUSTOMER_REPORTERS", joinColumns = @JoinColumn(name = "CUSTOMER_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    private List<User> reporters;
 
     @Transient
 	private boolean deletable;
