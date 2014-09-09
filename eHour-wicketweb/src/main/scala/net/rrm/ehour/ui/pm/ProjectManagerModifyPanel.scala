@@ -10,7 +10,7 @@ import net.rrm.ehour.ui.manage.project.assign.{ManageAssignmentsPanel, Managemen
 import org.apache.wicket.model.Model
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class ProjectManagementModifyPanel(id: String, project: Project) extends AbstractBasePanel(id) {
+class ProjectManagerModifyPanel(id: String, project: Project) extends AbstractBasePanel(id) {
   @SpringBean
   protected var assignmentMgmtService: ProjectAssignmentManagementService = _
 

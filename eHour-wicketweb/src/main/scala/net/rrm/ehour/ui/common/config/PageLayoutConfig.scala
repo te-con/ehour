@@ -12,7 +12,7 @@ import net.rrm.ehour.ui.manage.department.DepartmentManagePage
 import net.rrm.ehour.ui.manage.lock.LockManagePage
 import net.rrm.ehour.ui.manage.project.ProjectManagePage
 import net.rrm.ehour.ui.manage.user.{ImpersonateUserPage, UserManagePage}
-import net.rrm.ehour.ui.pm.ProjectManagementPage
+import net.rrm.ehour.ui.pm.ProjectManagerPage
 import net.rrm.ehour.ui.report.page.ReportPage
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage
@@ -32,7 +32,7 @@ class PageLayoutConfig {
     val hoursDropdown = DropdownMenu("nav.hours.yourHours", util.Arrays.asList(enterHours, hoursOverview, monthExport))
 
     val report = LinkItem("nav.report", classOf[ReportPage])
-    val pm = LinkItem("nav.pm", classOf[ProjectManagementPage])
+    val pm = LinkItem("nav.pm", classOf[ProjectManagerPage])
 
     val deptAdmin = LinkItem("nav.admin.departments", classOf[DepartmentManagePage])
     val userAdmin = LinkItem("nav.admin.users", classOf[UserManagePage])

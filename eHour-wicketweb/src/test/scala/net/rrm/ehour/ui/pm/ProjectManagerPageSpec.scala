@@ -11,7 +11,7 @@ import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.report.service.AggregateReportService
 import net.rrm.ehour.report.reports.ProjectManagerReport
 
-class ProjectManagementPageSpec extends AbstractSpringWebAppSpec {
+class ProjectManagerPageSpec extends AbstractSpringWebAppSpec {
   "Project Management page" should {
     val projectService = mock[ProjectService]
     springTester.getMockContext.putBean(projectService)
@@ -29,7 +29,7 @@ class ProjectManagementPageSpec extends AbstractSpringWebAppSpec {
     springTester.getMockContext.putBean(aggregateReportService)
 
     "render" in {
-      tester.startPage(classOf[ProjectManagementPage])
+      tester.startPage(classOf[ProjectManagerPage])
       tester.assertNoErrorMessage()
     }
 
@@ -38,7 +38,7 @@ class ProjectManagementPageSpec extends AbstractSpringWebAppSpec {
       when(aggregateReportService.getProjectManagerDetailedReport(project)).thenReturn(new ProjectManagerReport)
       when(projectService.getProjectManagerProjects(any(classOf[User]))).thenReturn(WrapAsJava.bufferAsJavaList(ListBuffer(project)))
 
-      tester.startPage(classOf[ProjectManagementPage])
+      tester.startPage(classOf[ProjectManagerPage])
 
       tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:projectSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click")
 

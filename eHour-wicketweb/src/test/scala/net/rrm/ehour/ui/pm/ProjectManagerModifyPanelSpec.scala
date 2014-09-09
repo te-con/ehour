@@ -9,7 +9,7 @@ import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util._
 import net.rrm.ehour.ui.DummyUIDataGenerator
 
-class ProjectManagementModifyPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
+class ProjectManagerModifyPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
   val assignmentService = mock[ProjectAssignmentService]
   val assignmentMgmtService = mock[ProjectAssignmentManagementService]
   val userService = mock[UserService]
@@ -27,7 +27,7 @@ class ProjectManagementModifyPanelSpec extends AbstractSpringWebAppSpec with Bef
 
   "Project Management Project Info Panel" should {
     "render" in {
-      tester.startComponentInPage(new ProjectManagementModifyPanel("id", ProjectObjectMother.createProject(1)))
+      tester.startComponentInPage(new ProjectManagerModifyPanel("id", ProjectObjectMother.createProject(1)))
       tester.assertNoErrorMessage()
     }
 
@@ -38,7 +38,7 @@ class ProjectManagementModifyPanelSpec extends AbstractSpringWebAppSpec with Bef
 
       when(assignmentService.getProjectAssignmentTypes).thenReturn(DummyUIDataGenerator.getProjectAssignmentTypes)
 
-      tester.startComponentInPage(new ProjectManagementModifyPanel("id", project))
+      tester.startComponentInPage(new ProjectManagerModifyPanel("id", project))
 
       tester.executeAjaxEvent("id:border:border_body:assignments:border:border_body:assignedUserPanel:border:border_body:assignments:0", "click")
 
@@ -58,7 +58,7 @@ class ProjectManagementModifyPanelSpec extends AbstractSpringWebAppSpec with Bef
       assignment.setDeletable(true)
       when(assignmentService.getProjectAssignmentsAndCheckDeletability(project)).thenReturn(toJava(List(assignment)))
 
-      tester.startComponentInPage(new ProjectManagementModifyPanel("id", project))
+      tester.startComponentInPage(new ProjectManagerModifyPanel("id", project))
 
       tester.executeAjaxEvent("id:border:border_body:assignments:assignmentContainer:assignments:0:container", "click")
       tester.executeAjaxEvent("id:border:border_body:assignments:assignmentContainer:assignments:0:container:editForm:delete", "click")

@@ -25,13 +25,13 @@ import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 
 @AuthorizeInstantiation(Array(UserRole.ROLE_PROJECTMANAGER))
-class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
+class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
 
   val ContainerId = "content"
   val StatusId = "status"
   val Self = this
 
-  val Css = new CssResourceReference(classOf[ProjectManagementPage], "projectManagement.css")
+  val Css = new CssResourceReference(classOf[ProjectManagerPage], "projectManagement.css")
 
   @SpringBean
   protected var projectService: ProjectService = _
@@ -65,7 +65,7 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
   }
 
   private def createProjectListHolder(projects: ju.List[Project]): Fragment = {
-    val fragment = new Fragment("itemListHolder", "itemListHolder", ProjectManagementPage.this)
+    val fragment = new Fragment("itemListHolder", "itemListHolder", ProjectManagerPage.this)
     fragment.setOutputMarkupId(true)
 
     val projectListView = new EntrySelectorListView[Project]("itemList", projects) {
@@ -82,13 +82,13 @@ class ProjectManagementPage extends AbstractBasePage[String](new ResourceModel("
         val project = item.getModelObject
 
         if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
-          val projectInfoPanel = new ProjectManagementModifyPanel(ContainerId, project)
+          val projectInfoPanel = new ProjectManagerModifyPanel(ContainerId, project)
           projectInfoPanel.setOutputMarkupId(true)
           Self.addOrReplace(projectInfoPanel)
           target.add(projectInfoPanel)
         }
 
-        val statusPanel = new ProjectManagementStatusPanel(StatusId, project)
+        val statusPanel = new ProjectManagerStatusPanel(StatusId, project)
         statusPanel.setOutputMarkupId(true)
         Self.addOrReplace(statusPanel)
         target.add(statusPanel)

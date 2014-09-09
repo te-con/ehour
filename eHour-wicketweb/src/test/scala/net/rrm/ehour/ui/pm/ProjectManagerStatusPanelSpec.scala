@@ -9,7 +9,7 @@ import net.rrm.ehour.report.reports.ProjectManagerReport
 import net.rrm.ehour.report.reports.element.{AssignmentAggregateReportElement, AssignmentAggregateReportElementMother}
 import com.google.common.collect.Sets
 
-class ProjectManagementStatusPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll  {
+class ProjectManagerStatusPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll  {
   val aggregateReportService = mock[AggregateReportService]
 
   override def beforeAll() {
@@ -29,7 +29,7 @@ class ProjectManagementStatusPanelSpec extends AbstractSpringWebAppSpec with Bef
       report.setAggregates(aggregates)
 
       when(aggregateReportService.getProjectManagerDetailedReport(project)).thenReturn(report)
-      tester.startComponentInPage(new ProjectManagementStatusPanel("id", project))
+      tester.startComponentInPage(new ProjectManagerStatusPanel("id", project))
       tester.assertNoErrorMessage()
     }
   }

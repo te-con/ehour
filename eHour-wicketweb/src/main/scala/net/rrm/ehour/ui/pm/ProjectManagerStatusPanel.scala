@@ -16,7 +16,7 @@ import net.rrm.ehour.ui.common.wicket.NonEmptyLabel
 import com.google.common.base.Optional
 import java.util.{Comparator, Collections}
 
-class ProjectManagementStatusPanel(id: String, project: Project) extends AbstractBasePanel(id) {
+class ProjectManagerStatusPanel(id: String, project: Project) extends AbstractBasePanel(id) {
   @SpringBean
   var aggregateReportService: AggregateReportService = _
 
