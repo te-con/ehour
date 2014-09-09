@@ -14,7 +14,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+<<<<<<< HEAD
 package net.rrm.ehour.user.service;
+=======
+package net.rrm.ehour.user.service;
+
+import java.util.List;
+import java.util.Set;
+>>>>>>> 13bdb68... EHV-16: Implemented comments related to removal of billable flags in Reporting section. Made active flag work in different scenarios related to CustomerReviewer role
 
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
@@ -90,7 +97,13 @@ public interface UserService {
     /**
      * Returns a list of all {@link User}s who are working on Activities of Projects of passed Customers
      * @param customers
+     * @param onlyActiveUsers TODO
      * @return
      */
+<<<<<<< HEAD
     List<User> getAllUsersAssignedToCustomers(List<Customer> customers);
 }
+=======
+    public Set<User> getAllUsersAssignedToCustomers(List<Customer> customers, boolean onlyActiveUsers);
+}
+>>>>>>> 13bdb68... EHV-16: Implemented comments related to removal of billable flags in Reporting section. Made active flag work in different scenarios related to CustomerReviewer role
