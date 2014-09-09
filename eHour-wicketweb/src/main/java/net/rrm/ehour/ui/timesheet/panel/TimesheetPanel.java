@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
