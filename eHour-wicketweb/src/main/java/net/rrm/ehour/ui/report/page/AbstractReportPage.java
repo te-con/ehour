@@ -73,7 +73,6 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
 
         User loggedInUser = EhourWebSession.getUser();
         userSelectedCriteria.setLoggedInUser(loggedInUser);
-        userSelectedCriteria.setCustomerReporter(loggedInUser.getUserRoles().contains(UserRole.CUSTOMERREPORTER));
 
         determineDefaultReportType(userSelectedCriteria);
 

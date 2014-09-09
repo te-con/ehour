@@ -122,7 +122,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         UserSelectedCriteria userSelectedCriteria = criteriaBackingBean.getReportCriteria().getUserSelectedCriteria();
         boolean showDepartmentAndOtherUsers = userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm();
-        form.add(showDepartmentAndOtherUsers ? addDepartmentsAndUsers(criteriaBackingBean, ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
+        form.add(new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
 
         addSubmitButtons(form);
 

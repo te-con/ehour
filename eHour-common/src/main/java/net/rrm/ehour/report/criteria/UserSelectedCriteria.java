@@ -19,10 +19,7 @@ package net.rrm.ehour.report.criteria;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -65,7 +62,6 @@ public class UserSelectedCriteria implements Serializable {
     private User pm;
     private boolean showZeroBookings = false;
     private AggregateBy aggregateBy = AggregateBy.DAY;
-    private boolean customerReporter;
     private User loggedInUser;
 
     public UserSelectedCriteria() {
@@ -126,14 +122,6 @@ public class UserSelectedCriteria implements Serializable {
         setUser(user);
     }
 
-    public boolean isCustomerReporter() {
-        return customerReporter;
-    }
-
-    public void setCustomerReporter(boolean customerReporter) {
-        this.customerReporter = customerReporter;
-    }
-
     public User getLoggedInUser() {
         return loggedInUser;
     }
@@ -165,6 +153,11 @@ public class UserSelectedCriteria implements Serializable {
 
         users.add(user);
     }
+
+    public boolean isCustomerReporter() {
+        return (loggedInUser != null) && loggedInUser.getUserRoles().contains(UserRole.CUSTOMERREPORTER);
+    }
+
 
     public User getPm() {
         return pm;
