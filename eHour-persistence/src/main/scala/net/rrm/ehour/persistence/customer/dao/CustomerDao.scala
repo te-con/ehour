@@ -21,5 +21,17 @@ trait CustomerDao extends GenericDao[Integer, Customer] {
    */
   def findOnNameAndCode(name: String, code: String): Customer
 
+  /**
+   * Find and return all Customers having passed {@link User} as one of their Reporter
+   * @param user
+   * @return
+   */
   def findAllCustomersHavingReporter(user: User): util.List[Customer]
+
+  /**
+   * Find and return all Customers having passed {@link User} as one of their Reviewer
+   * @param user
+   * @return
+   */
+  def findAllCustomersForWhichUserIsaReviewer(user: User): util.List[Customer]
 }

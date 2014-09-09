@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
@@ -57,5 +58,20 @@ public interface ActivityService {
 	 */
 	List<Activity> getActivities();
 
+	/**
+	 * gets all activities of an user
+	 * @param userId
+	 * @param dateRange
+	 * @return
+	 */
 	List<Activity> getActivitiesForUser(Integer userId, DateRange dateRange);
+
+	/**
+	 * gets all activity of a customer
+	 * @param customer
+	 * @return
+	 */
+	List<Activity> findAllActivityForCustomer(Customer customer);
+
+	List<Activity> getAllActivitiesForcustomers(List<Customer> customers);
 }

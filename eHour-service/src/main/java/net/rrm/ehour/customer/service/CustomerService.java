@@ -17,6 +17,7 @@
 package net.rrm.ehour.customer.service;
 
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -79,4 +80,12 @@ public interface CustomerService {
      * @return
      */
     public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException;
+
+    /**
+     * finds all customers for which user is a reviewer
+     * @param user
+     * @return
+     */
+    public List<Customer> findAllCustomersForWhichUserIsaReviewer(User user);
+
 }

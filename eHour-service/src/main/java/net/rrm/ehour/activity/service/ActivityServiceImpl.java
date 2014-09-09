@@ -6,6 +6,7 @@ import java.util.List;
 import net.rrm.ehour.activity.status.ActivityStatusService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
@@ -80,6 +81,18 @@ public class ActivityServiceImpl implements ActivityService {
 	@Override
 	public List<Activity> getActivities(Project project, DateRange dateRange) {
 		return activityDao.findActivitiesOfProject(project, dateRange);
+	}
+
+	@Override
+	public List<Activity> findAllActivityForCustomer(Customer customer) {
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		customers.add(customer);
+		return activityDao.findActivitiesForCustomers(customers);
+	}
+
+	@Override
+	public List<Activity> getAllActivitiesForcustomers(List<Customer> customers) {
+		return activityDao.findActivitiesForCustomers(customers);
 	}
 
 }

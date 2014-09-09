@@ -28,6 +28,9 @@ class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
 
   override def findAllCustomersHavingReporter(user: User): util.List[Customer] =
     findByNamedQuery("Customer.findAllCustomersHavingReporter", "userId", user.getUserId, CacheRegion)
+
+  override def findAllCustomersForWhichUserIsaReviewer(user: User): util.List[Customer] =
+    findByNamedQuery("Customer.findAllCustomersForWhichUserIsaReviewer", "userId", user.getUserId, CacheRegion)
 }
 
 

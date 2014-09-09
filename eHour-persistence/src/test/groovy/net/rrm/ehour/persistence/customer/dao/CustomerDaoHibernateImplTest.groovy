@@ -179,6 +179,15 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 		assertEquals("thies", customerReviewers.get(0).getUsername());
 	}
 
+	@Test
+	public void shouldReturnEmptyListWhenCustomersAreNotHavingPassedUserAsReporter() {
+		def user = new User(2);
+		
+		def customers = customerDao.findAllCustomersHavingReporter(user);
+		
+		assertEquals(0, customers.size());
+	}
+
     @Test
     public void shouldReturnCorrectlyWhenCustomersAreHavingPassedUserAsReporter() {
         def user = UserObjectMother.createUser();
@@ -188,13 +197,25 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
         assertNotNull(customers);
         assertEquals(2, customers.size());
     }
+	
+	@Test
+	public void shouldReturnCorrectlyWhenCustomersAreHavingPassedUserAsReviewer() {
+		def user = UserObjectMother.createUser();
+		
+		def customers = customerDao.findAllCustomersForWhichUserIsaReviewer(user);
+		
+		assertNotNull(customers);
+		assertEquals(2, customers.size());
+	}
+	
+	@Test
+	public void shouldReturnEmptyListWhenCustomersAreHavingPassedUserAsReviewer() {
+		def user = new User(2);
+		
+		def customers = customerDao.findAllCustomersForWhichUserIsaReviewer(user);
+		
+		assertNotNull(customers);
+		assertEquals(0, customers.size());
+	}
 
-    @Test
-    public void shouldReturnEmptyListWhenCustomersAreNotHavingPassedUserAsReporter() {
-        def user = new User(2);
-
-        def customers = customerDao.findAllCustomersHavingReporter(user);
-
-        assertEquals(0, customers.size());
-    }
 }

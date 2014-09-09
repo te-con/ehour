@@ -26,6 +26,7 @@ import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
 import net.rrm.ehour.ui.common.session.DevelopmentWebSession;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.customerreviewer.CustomerReviewerPage;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
@@ -169,6 +170,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/admin/activity", ActivityAdmin.class);
         mountPage("/consultant/overview", MonthOverviewPage.class);
 
+        mountPage("/consultant/customer/reviewer", CustomerReviewerPage.class);
         mountPage("/consultant/exportmonth", TimesheetExportPage.class);
 
         mountPage("/report", ReportPage.class);

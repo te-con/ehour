@@ -49,11 +49,20 @@ public class CustomerServiceImpl implements CustomerService
 	
 	private	static final Logger	LOGGER = Logger.getLogger(CustomerServiceImpl.class);
 
-    @Transactional(readOnly = true)
-    public Customer getCustomer(String customerName, String customerCode) {
-        return customerDAO.findOnNameAndCode(customerName, customerCode);
-    }
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.persistence.persistence.customer.service.CustomerService#getCustomer(java.lang.String, java.lang.String)
+	 */
+	@Transactional(readOnly=true)
+	public Customer getCustomer(String customerName, String customerCode)
+	{
+		return customerDAO.findOnNameAndCode(customerName, customerCode);
+	}
 
+    @Override
+    public List<Customer> findAllCustomersForWhichUserIsaReviewer(User user) {
+        return customerDAO.findAllCustomersForWhichUserIsaReviewer(user);
+    }
 
     @Auditable(actionType = AuditActionType.DELETE)
     @Transactional
