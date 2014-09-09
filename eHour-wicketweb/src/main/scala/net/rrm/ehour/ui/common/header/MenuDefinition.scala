@@ -5,6 +5,7 @@ import java.util
 import net.rrm.ehour.ui.admin.audit.AuditReportPage
 import net.rrm.ehour.ui.admin.backup.BackupDbPage
 import net.rrm.ehour.ui.admin.config.MainConfigPage
+import net.rrm.ehour.ui.customerreviewer.CustomerReviewerPage
 import net.rrm.ehour.ui.manage.customer.CustomerManagePage
 import net.rrm.ehour.ui.manage.department.DepartmentManagePage
 import net.rrm.ehour.ui.manage.lock.LockManagePage
@@ -41,6 +42,10 @@ object MenuDefinition {
     val export = LinkItem("nav.admin.export", classOf[BackupDbPage])
     val systemDropdown = DropdownMenu("nav.admin", util.Arrays.asList(mainConfig, auditReport, export))
 
-    util.Arrays.asList(hoursDropdown, report, manageDropdown, systemDropdown)
+    val customerReviewer = LinkItem("nav.customerreviewer.usertimesheet", classOf[CustomerReviewerPage])
+    val customerReviewerParent = DropdownMenu("nav.customerreviewer", util.Arrays.asList(customerReviewer))
+
+
+    util.Arrays.asList(hoursDropdown, report, manageDropdown, systemDropdown, customerReviewerParent)
   }
 }
