@@ -141,13 +141,6 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 setCustomerLabelWidth(customerLabel);
                 item.add(customerLabel);
 
-                String projectCode = project.getProjectCode();
-                Label projectCodeLabel = new Label("projectCode", projectCode);
-                createTitle(customerLabel, projectCode);
-                projectCodeLabel.setMarkupId(String.format("prjC%d", project.getProjectId()));
-                projectCodeLabel.setOutputMarkupId(true);
-                item.add(projectCodeLabel);
-
                 Number hours = projectStatus.getHours();
 
                 item.add(new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f)));
