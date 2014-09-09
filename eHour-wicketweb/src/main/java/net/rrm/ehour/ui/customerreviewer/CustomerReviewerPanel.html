@@ -5,16 +5,19 @@
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 
 <wicket:head>
-	<link wicket:id="customerReviewerStyle" rel="stylesheet" type="text/css"
-		href="style/customerReviewerStyle.css" />
+	<link wicket:id="customerReviewerStyle" rel="stylesheet"
+		type="text/css" href="style/customerReviewerStyle.css" />
 </wicket:head>
 
 <body>
-
 <wicket:panel>
-	<div wicket:id="border"><span wicket:id="dataContainer">
-	<table cellpadding="0" cellspacing="0" style="padding: 0 5px 0 5px" wicket:id="data"  class="reportTable"></table>
-	</span></div>
+	<div wicket:id="border">
+		<div wicket:id="dataContainer">
+			<form wicket:id="customerReviewerForm">
+				<table cellpadding="0" cellspacing="0" style="padding: 0 5px 0 5px" wicket:id="data" class="reportTable"></table>
+			</form>
+		</div>
+	</div>
 </wicket:panel>
 </body>
 </html>
