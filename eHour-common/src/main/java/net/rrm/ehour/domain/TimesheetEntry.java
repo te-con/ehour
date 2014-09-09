@@ -45,7 +45,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     @Column(name = "HOURS")
     private Float hours;
 
-    @Column(name = "COMMENT", length = 2048)
+    @Column(name = "COMMENT_TEXT", length = 2048)
     private String comment;
 
     @Column(name = "UPDATE_DATE")

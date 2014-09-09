@@ -142,7 +142,7 @@
                 size="10" autoIncrement="false"/>
         <column name="COMMENT_DATE" primaryKey="true" required="true"
                 type="DATE" autoIncrement="false"/>
-        <column name="COMMENT" required="false" type="VARCHAR" size="2048"
+        <column name="COMMENT_TEXT" required="false" type="VARCHAR" size="2048"
                 autoIncrement="false"/>
     </table>
     <table name="timesheet_entry">
@@ -152,7 +152,7 @@
                 type="DATE" autoIncrement="false"/>
         <column name="HOURS" primaryKey="false" required="false" type="FLOAT"
                 size="9,3" autoIncrement="false"/>
-        <column name="COMMENT" primaryKey="false" required="false"
+        <column name="COMMENT_TEXT" primaryKey="false" required="false"
                 type="VARCHAR" size="1024" autoIncrement="false"/>
         <column name="UPDATE_DATE" primaryKey="false" required="false"
                 type="TIMESTAMP" autoIncrement="false"/>

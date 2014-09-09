@@ -180,7 +180,7 @@
 			size="10" autoIncrement="false" />
 		<column name="COMMENT_DATE" primaryKey="true" required="true"
 			type="DATE" autoIncrement="false" />
-		<column name="COMMENT" required="false" type="VARCHAR" size="2048"
+		<column name="COMMENT_TEXT" required="false" type="VARCHAR" size="2048"
 			autoIncrement="false" />
 	</table>
 	<table name="timesheet_entry">

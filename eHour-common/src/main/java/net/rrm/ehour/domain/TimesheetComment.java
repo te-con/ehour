@@ -36,7 +36,7 @@ public class TimesheetComment extends DomainObject<TimesheetCommentId, Timesheet
     @Valid
     private TimesheetCommentId commentId;
 
-    @Column(name = "COMMENT", length = 2048)
+    @Column(name = "COMMENT_TEXT", length = 2048)
     private String comment;
 
     @Transient
