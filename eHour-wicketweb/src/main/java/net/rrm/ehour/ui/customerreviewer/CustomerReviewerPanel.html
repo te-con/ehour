@@ -4,29 +4,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 
+<wicket:head>
+	<link wicket:id="customerReviewerStyle" rel="stylesheet" type="text/css"
+		href="style/customerReviewerStyle.css" />
+</wicket:head>
+
 <body>
 
 <wicket:panel>
 	<div wicket:id="border"><span wicket:id="dataContainer">
-	<div wicket:id="navigator"></div>
-	<table cellpadding="5" cellspacing="2" style="padding: 0 5px 0 5px" class="reportTable">
-		<tr>
-			<th>Customer</th>
-			<th>User</th>
-			<th>Period</th>
-			<th>Status</th>
-			<th>Action</th>
-			<th>View Timesheet</th>
-		</tr>
-		<tr wicket:id="customerUserTable">
-			<td><span wicket:id="customer">customer</span></td>
-			<td><span wicket:id="user">User</span></td>
-			<td><span wicket:id="period">Period</span></td>
-			<td><span>status</span></td>
-			<td><span>Action</span></td>
-			<td><span wicket:id="viewTimesheet">View Timesheet</span></td>
-		</tr>
-	</table>
+	<table cellpadding="0" cellspacing="0" style="padding: 0 5px 0 5px" wicket:id="data"  class="reportTable"></table>
 	</span></div>
 </wicket:panel>
 </body>

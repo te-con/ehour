@@ -27,6 +27,7 @@ import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
+import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -81,6 +82,10 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 			SortedSet<UserProjectStatus> projectStatus = timesheetOverview.getProjectStatus();
 			userProjectstatuses.add(projectStatus);
 		}
+		
+		// add calendar panel
+        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser());
+        add(calendarPanel);
 		
 		GreyRoundedBorder greyBorder = new GreyRoundedBorder("customerReviewerFrame", new ResourceModel("customerReviewer.title"));
 		add(greyBorder);

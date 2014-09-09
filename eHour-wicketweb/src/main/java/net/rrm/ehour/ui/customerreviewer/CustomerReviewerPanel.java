@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
+import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
@@ -14,16 +15,26 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.customerreviewer.model.CustomerReviewerDataProvider;
 import net.rrm.ehour.ui.timesheet.page.UserOverviewPage;
 
+import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.markup.repeater.data.ListDataProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 
 @SuppressWarnings("serial")
 public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
@@ -39,6 +50,8 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 		}
 
 		addAllComponents(overviewFor, setOfProjectstatuses);
+		add(new StyleSheetReference("customerReviewerStyle", new CompressedResourceReference(CustomerReviewerPanel.class,
+				"style/customerReviewerStyle.css")));
 		setOutputMarkupId(true);
 	}
 
@@ -54,38 +67,56 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 		Border greyBorder = new GreyBlueRoundedBorder("border");
 		add(greyBorder);
 
-		DataView<UserProjectStatus> dataView = new DataView<UserProjectStatus>("customerUserTable",
-				new ListDataProvider<UserProjectStatus>(statusses), 5) {
-			
+		@SuppressWarnings("unchecked")
+		IColumn<UserProjectStatus>[] columns = new IColumn[4];
+		columns[0] = new PropertyColumn<UserProjectStatus>(new ResourceModel("customerreviewer.timesheet.column.customer"), "activity.project.customer.name");
+		columns[1] = new PropertyColumn<UserProjectStatus>(new ResourceModel("customerreviewer.timesheet.column.user"), "activity.assignedUser.firstName");
+		columns[2] = new DateColumn(new ResourceModel("customerreviewer.timesheet.column.period"), getConfig());
+		columns[3] = new AbstractColumn<UserProjectStatus>(new Model<String>("timesheet")) {
+			@SuppressWarnings({ "rawtypes", "unchecked" })
 			@Override
-			protected void populateItem(Item<UserProjectStatus> item) {
-				EhourWebSession session = ((EhourWebSession)this.getSession());
-				Calendar overviewFor = session.getNavCalendar();
-				overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-				final UserProjectStatus userProjectStatus = (UserProjectStatus) item.getModelObject();
-				Link<UserProjectStatus> link = new Link<UserProjectStatus>("viewTimesheet") {
+			public void populateItem(final Item item, String compId, final IModel model) {
+				final UserProjectStatus userProjectStatus = (UserProjectStatus) model.getObject();
+				item.add(new Link(compId, new Model("timesheet")) {
 					@Override
 					public void onClick() {
 						UserOverviewPage userOverviewPage = new UserOverviewPage(userProjectStatus.getActivity().getAssignedUser());
 						setResponsePage(userOverviewPage);
 					}
-				};
-				
-				Label customerLabel = new Label("customer", userProjectStatus.getActivity().getProject().getCustomer().getName());
-				Label userLabel = new Label("user", userProjectStatus.getActivity().getAssignedUser().getFirstName());
-				Label monthLabel = new Label("period", new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY));
-				item.add(customerLabel);
-				item.add(userLabel);
-				item.add(monthLabel);
-				item.add(link);
+					
+					protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
+						replaceComponentTagBody(markupStream, openTag, "view");
+					};
+					
+				});
 			}
 		};
-
+		
+		AjaxFallbackDefaultDataTable<UserProjectStatus> table = new AjaxFallbackDefaultDataTable<UserProjectStatus>("data", columns, new CustomerReviewerDataProvider(statusses), 20);
 		final WebMarkupContainer dataContainer = new WebMarkupContainer("dataContainer");
 		dataContainer.setOutputMarkupId(true);
-		dataContainer.add(dataView);
-		dataContainer.add(new PagingNavigator("navigator", dataView));
-
+		dataContainer.add(table);
 		greyBorder.add(dataContainer);
+	}
+	
+	private class DateColumn extends AbstractColumn<UserProjectStatus>
+	{
+		private static final long serialVersionUID = -5517077439980001335L;
+		private EhourConfig config;
+		
+		public DateColumn(IModel<String> displayModel, EhourConfig config)
+		{
+			super(displayModel);
+			this.config = config;
+		}
+
+		@Override
+		public void populateItem(Item<ICellPopulator<UserProjectStatus>> cellItem, String componentId, IModel<UserProjectStatus> rowModel) {
+			EhourWebSession session = EhourWebSession.getSession();
+			Calendar overviewFor = session.getNavCalendar();
+			overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+			cellItem.add(new Label(componentId, new DateModel(overviewFor, config, DateModel.DATESTYLE_MONTHONLY)));
+		}
+
 	}
 }

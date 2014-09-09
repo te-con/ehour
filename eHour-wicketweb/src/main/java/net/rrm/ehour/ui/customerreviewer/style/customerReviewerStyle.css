@@ -1,0 +1,152 @@
+.reportTable
+{
+	padding: 0 10px 0 10px;
+	width: 100%;
+}
+
+
+.reportTable tr.even
+{
+	background-color: #eef6fe;
+	padding-bottom: 1px;
+	border-top-style: solid;
+	border-top-color:#a1bcd7;
+	border-top-width: 1px;
+}
+
+
+.reportTable tr.even td
+{
+	color:	#536e87;
+	border-right-style: solid;
+	border-right-color:#a1bcd7;
+	border-right-width: 1px;
+	padding: 0 5px 0 5px;
+	font:  0.9em Geneva, Arial, Helvetica, sans-serif;	
+}
+
+.reportTable tr.odd
+{
+    background-color: #fefeff;
+    padding-bottom: 1px;
+    border-top-style: solid;
+    border-top-color:#a1bcd7;
+    border-top-width: 1px;
+}
+
+
+.reportTable tr.odd td
+{
+    color:  #536e87;
+    border-right-style: solid;
+    border-right-color:#a1bcd7;
+    border-right-width: 1px;
+    padding: 0 5px 0 5px;
+    font:  0.9em Geneva, Arial, Helvetica, sans-serif;  
+}
+
+.reportTable tr.dataRow td.lastChild
+{
+	border: 0;
+}
+
+.reportTable tr.dataRow a:link
+{
+	color: #233e55;
+	font-weight: normal;
+	text-decoration: none;
+}
+
+.reportTable tr.dataRow a:visited
+{
+	color: #233e55;
+	font-weight: normal;	
+	text-decoration: none;
+}
+
+.reportTable tr.dataRow a:hover
+{
+	text-decoration: underline;
+}
+
+.reportTable tr.dataRow a:active
+{
+	text-decoration: none
+}
+
+.reportTable tr.totalRow td
+{
+	color:	#536e87;
+	border-top-style: solid;
+	border-top-color:#a1bcd7;
+	border-top-width: 1px;
+	padding: 0 5px 5px 5px;
+	font: bold 0.9em Geneva, Arial, Helvetica, sans-serif;
+}
+
+.reportTable th
+{
+	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	padding: 0 5px 0px 5px;
+	text-align: left;
+}
+
+
+.reportTable
+{
+	padding: 0;
+}
+
+.reportTable tr.reportTotal td
+{
+	font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	padding: 0 5px 0 5px;
+}
+
+.reportTable tr.customerRow
+{
+	background-color: #eef6fe;
+	padding-bottom: 1px;
+	border-top-style: solid;
+	border-top-color:#a1bcd7;
+	border-top-width: 1px;
+}
+
+
+.reportTable tr.customerRow td
+{
+	color:	#536e87;
+	border-right-style: solid;
+	border-right-color:#a1bcd7;
+	border-right-width: 1px;
+	padding: 0 5px 0 5px;
+}
+
+.reportTable tr.customerRow td.lastChild
+{
+	border: 0;
+}
+
+.reportTable th
+{
+	font:  bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;	
+	color: #536e87;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+.navigatorLabel,  .navigator
+{
+    font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
+    color:  #fefeff;
+}
+
+.navigator a:link
+{
+    font:  1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
+    color:  #536e87;
+}
