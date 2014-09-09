@@ -18,9 +18,6 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Activity;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -67,9 +64,12 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private final GrandTotal grandTotals;
     private Form<?> form;
 
-    public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form)
+    private MarkupContainer provider;
+
+    public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider)
     {
         super(id, model);
+        this.provider = provider;
         setReuseItems(true);
         this.grandTotals = grandTotals;
         this.form = form;
@@ -85,9 +85,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 	@Override
 	protected void populateItem(ListItem<TimesheetRow> item)
 	{
-		final TimesheetRow row = (TimesheetRow) item.getModelObject();
+		final TimesheetRow row = item.getModelObject();
 
-		item.add(createBookWholeWeekLink(row));
 		item.add(new Label("activityCode", row.getActivity().getName()));
         item.add(new Label("availableHours", new PropertyModel<Float>(row.getActivity(), "availableHours")));
 		item.add(createStatusLabel(item));

@@ -1,9 +1,5 @@
 package net.rrm.ehour.ui.customerreviewer;
 
-import java.util.*;
-import java.util.Calendar;
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Activity;
@@ -14,7 +10,6 @@ import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.customerreviewer.model.CustomerReviewerDataProvider;
 import net.rrm.ehour.ui.timesheet.page.UserOverviewPage;
-
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
@@ -34,13 +29,17 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 @SuppressWarnings("serial")
 public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 
-	public CustomerReviewerPanel(String id, Calendar overviewFor, List<Activity> allActivitiesOfCustomerForMonth) {
+	public CustomerReviewerPanel(String id, List<Activity> allActivitiesOfCustomerForMonth) {
 		super(id);
 
-		addAllComponents(overviewFor, allActivitiesOfCustomerForMonth);
+		addAllComponents(allActivitiesOfCustomerForMonth);
 
 		setOutputMarkupId(true);
 	}
@@ -52,7 +51,7 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
         response.render(CssHeaderItem.forReference(new CssResourceReference(CustomerReviewerPanel.class, "style/customerReviewerStyle.css")));
     }
 
-	private void addAllComponents(Calendar overviewFor, List<Activity> allActivitiesOfCustomerForMonth) {
+	private void addAllComponents(List<Activity> allActivitiesOfCustomerForMonth) {
 		Border greyBorder = new GreyBlueRoundedBorder("border");
 		add(greyBorder);
 
@@ -60,33 +59,34 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 
 		@SuppressWarnings("unchecked")
         List<IColumn<Activity, Date>> columns = Lists.newArrayList();
-        columns.add(new PropertyColumn<Activity>(new ResourceModel("customerreviewer.timesheet.column.customer"), "project.customer.name");
-		columns[1] = new PropertyColumn<Activity>(new ResourceModel("customerreviewer.timesheet.column.user"), "assignedUser.firstName");
-		columns[2] = new DateColumn(new ResourceModel("customerreviewer.timesheet.column.period"), getConfig());
-		columns[3] = new AbstractColumn<Activity>(new Model<String>("view")) {
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			@Override
-			public void populateItem(final Item item, String compId, final IModel model) {
-				item.add(new ViewTimesheetPanel(compId, model));
-			}
-		};
-		columns[4] = new AbstractColumn<Activity>(new Model<String>("approve")) {
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			@Override
-			public void populateItem(final Item item, String compId, final IModel model) {
-				item.add(new AcceptPanel(compId, model));
-			}
-		};
+        columns.add(new PropertyColumn<Activity, Date>(new ResourceModel("customerreviewer.timesheet.column.customer"), "project.customer.name"));
+        columns.add(new PropertyColumn<Activity, Date>(new ResourceModel("customerreviewer.timesheet.column.user"), "assignedUser.firstName"));
+        columns.add(new DateColumn(new ResourceModel("customerreviewer.timesheet.column.period"), getConfig()));
+        columns.add(new AbstractColumn<Activity, Date>(new Model<String>("view")) {
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            @Override
+            public void populateItem(final Item item, String compId, final IModel model) {
+                item.add(new ViewTimesheetPanel(compId, model));
+            }
+        });
+        columns.add(new AbstractColumn<Activity, Date>(new Model<String>("approve")) {
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            @Override
+            public void populateItem(final Item item, String compId, final IModel model) {
+                item.add(new AcceptPanel(compId, model));
+            }
+        });
 
-		columns[5] = new AbstractColumn<Activity>(new Model<String>("reject")) {
+        columns.add(new AbstractColumn<Activity, Date>(new Model<String>("reject")) {
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			@Override
 			public void populateItem(final Item item, String compId, final IModel model) {
 				item.add(new RejectPanel(compId, model));
 			}
-		};
+		});
 
-		AjaxFallbackDefaultDataTable<Activity> table = new AjaxFallbackDefaultDataTable<Activity>("data", columns,
+
+		AjaxFallbackDefaultDataTable<Activity, Date> table = new AjaxFallbackDefaultDataTable<Activity, Date>("data", columns,
 				new CustomerReviewerDataProvider(allActivitiesOfCustomerForMonth), 20);
 
 		form.setOutputMarkupId(true);
@@ -98,7 +98,7 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 		greyBorder.add(dataContainer);
 	}
 
-	private class DateColumn extends AbstractColumn<Activity> {
+	private class DateColumn extends AbstractColumn<Activity, Date> {
 		private EhourConfig config;
 
 		public DateColumn(IModel<String> displayModel, EhourConfig config) {
@@ -144,7 +144,7 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 
 		public ViewTimesheetPanel(String id, IModel<Activity> model) {
 			super(id, model);
-			final Activity activity = (Activity) model.getObject();
+			final Activity activity = model.getObject();
 			add(new Link<Activity>("view") {
 				@Override
 				public void onClick() {

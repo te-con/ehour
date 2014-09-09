@@ -47,6 +47,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private Integer displayOrder;
     private LockableDate lockableDate;
     private Boolean emptyEntry;
+    private Number 	hours = 0;
 
     public FlatReportElement() {
     }
@@ -114,13 +115,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
 		this.customerName = customerName;
 	}
 	/**
-	 * @return the projectId
-	 */
-	public Integer getProjectId()
-	{
-		return projectId;
-	}
-	/**
 	 * @param projectId the projectId to set
 	 */
 	public void setProjectId(Number projectId)
@@ -128,88 +122,11 @@ public class FlatReportElement implements ProjectStructuredReportElement {
 		this.projectId = (projectId != null) ? projectId.intValue() : null;
 	}
 	/**
-	 * @return the projectName
-	 */
-	public String getProjectName()
-	{
-		return projectName;
-	}
-	/**
-	 * @param projectName the projectName to set
-	 */
-	public void setProjectName(String projectName)
-	{
-		this.projectName = projectName;
-	}
-	/**
-	 * @return the totalHours
-	 */
-	public Number getTotalHours()
-	{
-		return totalHours;
-	}
-	/**
-	 * @param totalHours the totalHours to set
-	 */
-	public void setTotalHours(Number totalHours)
-	{
-		this.totalHours = totalHours;
-	}
-	/**
-	 * @return the userFirstName
-	 */
-	public String getUserFirstName()
-	{
-		return userFirstName;
-	}
-	/**
-	 * @param userFirstName the userFirstName to set
-	 */
-	public void setUserFirstName(String userFirstName)
-	{
-		this.userFirstName = userFirstName;
-	}
-	/**
-	 * @return the userId
-	 */
-	public Integer getUserId()
-	{
-		return userId;
-	}
-	/**
 	 * @param userId the userId to set
 	 */
 	public void setUserId(Number userId)
 	{
 		this.userId = (userId != null) ? userId.intValue() : null;
-	}
-	/**
-	 * @return the userLastName
-	 */
-	public String getUserLastName()
-	{
-		return userLastName;
-	}
-	/**
-	 * @param userLastName the userLastName to set
-	 */
-	public void setUserLastName(String userLastName)
-	{
-		this.userLastName = userLastName;
-	}
-	/**
-	 * @return the entryDate
-	 */
-	public String getEntryDate()
-	{
-		return entryDate;
-	}
-	/**
-	 * @param entryDate the entryDate to set
-	 */
-	public void setEntryDate(String weekYear)
-	{
-		this.entryDate = weekYear;
 	}
 
     /**

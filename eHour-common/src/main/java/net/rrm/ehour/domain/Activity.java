@@ -22,7 +22,7 @@ public class Activity extends DomainObject<Integer, Activity> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ACTIVITY_ID")
 	private Integer id;
-	
+
 	@Column(name = "CODE", length = 128)
 	private String code;
 
@@ -51,6 +51,10 @@ public class Activity extends DomainObject<Integer, Activity> {
 	@Type(type = "yes_no")
 	private Boolean active = Boolean.TRUE;
 
+    // should be in a separate DAO
+    @Transient
+    private Float availableHours;
+
     public Activity() {
     }
 
@@ -59,20 +63,15 @@ public class Activity extends DomainObject<Integer, Activity> {
         this.project = project;
     }
 
+
     public Integer getId() {
-    // should be in a separate DAO
-    @Transient
-    private Float availableHours;
-
-
-	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getCode() {
 		return code;
 	}
@@ -196,3 +195,4 @@ public class Activity extends DomainObject<Integer, Activity> {
 
 
 }
+

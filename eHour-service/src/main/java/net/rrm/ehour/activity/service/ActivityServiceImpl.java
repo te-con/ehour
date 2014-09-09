@@ -19,7 +19,6 @@ import java.util.List;
 @Service("activityService")
 public class ActivityServiceImpl implements ActivityService
 {
-
     @Autowired
     private ActivityDao activityDao;
 
@@ -97,7 +96,7 @@ public class ActivityServiceImpl implements ActivityService
     {
         if (status.getAggregate() != null)
         {
-            activity.setAvailableHours(status.getAggregate().getAvailableHours());
+            activity.setAvailableHours(status.getAggregate().getAvailableHours().or(0f));
         } else
         {
             activity.setAvailableHours(activity.getAllottedHours());

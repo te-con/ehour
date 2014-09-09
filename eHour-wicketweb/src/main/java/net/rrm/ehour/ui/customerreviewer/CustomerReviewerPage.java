@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.customerreviewer;
 
-import java.util.Calendar;
-import java.util.List;
-
 import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.data.DateRange;
@@ -26,8 +23,6 @@ import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
-import net.rrm.ehour.timesheet.dto.TimesheetOverview;
-import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
@@ -35,14 +30,15 @@ import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-
+import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Customer Reviewer Page for viewing all Time-sheets for users
@@ -63,9 +59,6 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 	
 	/**
 	 * Default constructor
-	 * 
-	 * @param pageTitle
-	 * @param model
 	 */
 	public CustomerReviewerPage() {
 		super(new ResourceModel("customerReviewer.title"));
@@ -76,14 +69,14 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 		
 		List<Activity> allActivitiesOfCustomerForMonth = getActivitiesForCustomersForWhichUserIsAReviewer();
 		
-        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser(), false);
+        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", EhourWebSession.getUser(), false);
         add(calendarPanel);
 		
 		greyBorder = new GreyRoundedBorder("customerReviewerFrame", new ResourceModel("customerReviewer.title"));
 		greyBorder.setOutputMarkupId(true);
 		add(greyBorder);
 		
-		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, allActivitiesOfCustomerForMonth);
+		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", allActivitiesOfCustomerForMonth);
 		addOrReplaceContentContainer(customerReviewerPanel);
 	}
 	
@@ -94,10 +87,8 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 		User user = EhourWebSession.getUser();
 		List<Customer> customersForWhichUserIsAReviewer = customerService.findAllCustomersForWhichUserIsaReviewer(user);
 		DateRange monthRange = DateUtil.calendarToMonthRange(overviewFor);
-		
-		List<Activity> allActivitiesForcustomers = activityService.getAllActivitiesForcustomers(customersForWhichUserIsAReviewer, monthRange);
 
-		return allActivitiesForcustomers;
+        return activityService.getAllActivitiesForcustomers(customersForWhichUserIsAReviewer, monthRange);
 	}
 
 	/**
@@ -118,7 +109,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 		EhourWebSession session = ((EhourWebSession) this.getSession());
 		Calendar overviewFor = session.getNavCalendar();
 		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, getActivitiesForCustomersForWhichUserIsAReviewer());
+		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", getActivitiesForCustomersForWhichUserIsAReviewer());
 		addOrReplaceContentContainer(customerReviewerPanel, target);
 	}
 	
@@ -131,7 +122,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
     private void addOrReplaceContentContainer(WebMarkupContainer contentContainer, AjaxRequestTarget target)
     {
     	addOrReplaceContentContainer(contentContainer);
-        AjaxRequestTarget.get().addComponent(contentContainer);
+        target.add(contentContainer);
     }
 
 }

@@ -1,14 +1,13 @@
 package net.rrm.ehour.ui.customerreviewer.model;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import net.rrm.ehour.domain.Activity;
-
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 public class CustomerReviewerDataProvider extends SortableDataProvider<Activity, Date> {
 
@@ -20,12 +19,12 @@ public class CustomerReviewerDataProvider extends SortableDataProvider<Activity,
 		this.activities = activities;
 	}
 
-	@Override
-	public Iterator<? extends Activity> iterator(int first, int count) {
-		return activities.iterator();
-	}
+    @Override
+    public Iterator<? extends Activity> iterator(long first, long count) {
+        return activities.iterator();
+    }
 
-	@Override
+    @Override
 	public long size() {
 		return activities.size();
 	}

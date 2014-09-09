@@ -4,7 +4,7 @@ import java.util
 
 import com.google.common.collect.Lists
 import net.rrm.ehour.data.DateRange
-import net.rrm.ehour.domain.{Customer, Activity, Project, User}
+import net.rrm.ehour.domain.{Activity, Customer, Project, User}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import org.springframework.stereotype.Repository
 
@@ -39,4 +39,20 @@ class ActivityDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
     findByNamedQuery("Activity.findActivitiesForCustomers", "customers", customers, CacheRegion)
   }
 
+  override def findActivitiesForCustomers(customers: util.List[Customer], dateRange: DateRange): util.List[Activity] = {
+    val keys  = List("customers", "dateStart", "dateEnd")
+    val params  = List(customers, dateRange.getDateStart, dateRange.getDateEnd)
+
+    findByNamedQuery("Activity.findActivitiessForUserInRange", keys, params, CacheRegion)
+  }
+
+  /**
+   * Searches and if found returns an {@link Activity} having the code same as
+   * passed in the parameter.
+   */
+  override def findByCode(code: String): Activity = {
+    val xs = findByNamedQuery("Activity.findByCode","code", code, CacheRegion)
+
+    if (xs.isEmpty) null else xs.get(0)
+  }
 }
