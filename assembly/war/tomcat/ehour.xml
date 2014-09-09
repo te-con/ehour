@@ -1,4 +1,4 @@
-<Context path="/ehour" reloadable="false" cookies="true" docBase="${EHOUR_HOME}/app/ehour-@VERSION@.war">
+<Context path="/ehour" reloadable="false" cookies="true" docBase="${EHOUR_HOME}/app/ehevo-@VERSION@.war">
     <Resource name="jdbc/eHourDS"
               auth="Container"
               type="javax.sql.DataSource"
@@ -8,7 +8,7 @@
               username="%ehour.db.username%"
               password="%ehour.db.password%"
               driverClassName="oracle.jdbc.driver.OracleDriver"
-              url="jdbc:Oracle:thin:@localhost:1521/%ehour.db.name%"/>
+              url="jdbc:oracle:thin:@localhost:1521/%ehour.db.name%"/>
 
     <!-- Rather than defining an environment variable you can also specify the EHOUR_HOME here
          Remove the comment tags and set the absolute path to your eHour home dir as the value.
