@@ -28,8 +28,10 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
@@ -154,12 +156,27 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 item.add(bookedHoursLabel);
 
                 Float activityAllottedHours = projectStatus.getActivity().getAllottedHours();
-                float activityAllottedHoursValue = (activityAllottedHours != null) ? activityAllottedHours.floatValue() : 0;
+                float activityAllottedHoursValue = (activityAllottedHours != null) ? activityAllottedHours : 0;
                 Label allottedHoursLabel = new Label("allottedHours", new Model<Float>(activityAllottedHoursValue));
                 item.add(allottedHoursLabel);
 
                 Label activityLabel = new Label("activityName", projectStatus.getActivity().getFullName());
                 item.add(activityLabel);
+
+                Form userProjectStatusRowForm = new Form("userProjectStatusRowForm", item.getDefaultModel());
+
+                AjaxButton requestApprovalButton = new AjaxButton("overview.approvalStatus.requestForApproval", userProjectStatusRowForm) {
+
+                    @Override
+                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        target.add(this);
+                        this.setVisible(false);
+                    }
+                };
+
+                requestApprovalButton.setOutputMarkupId(true);
+                userProjectStatusRowForm.add(requestApprovalButton);
+                item.add(userProjectStatusRowForm);
 
                 // SummaryRow
                 Component projectSummaryRow = createProjectSummaryRow(ID_SUMMARY_ROW, projectStatus);

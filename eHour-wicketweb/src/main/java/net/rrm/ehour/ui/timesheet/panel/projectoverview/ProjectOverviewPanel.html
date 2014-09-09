@@ -30,9 +30,12 @@
 					<div class="textCell" style="width: 12%;margin-top:0;" wicket:id="activityName">[activityName]</div>
 					<div class="numbCell" style="width: 12%;" wicket:id="monthHours">24.50</div>
 					<div class="numbCell" style="width: 12%;" wicket:id="allottedHours">100.00</div>
-					<div class="bluebutton" style="width: 15%; float:right; font-size: 10px"><span><wicket:message key="overview.approvalStatus.requestForApproval" /></span></div>
+					<form wicket:id="userProjectStatusRowForm" style="padding: 0;margin:0">
+						<a class="button" style="float:right; font-size: 10px" wicket:id="overview.approvalStatus.requestForApproval" >
+							<span><wicket:message key="overview.approvalStatus.requestForApproval" /></span>
+						</a>
+					</form>	
 				</div>
-	
 				<span wicket:id="summaryRow"></span>
 			</wicket:container>
 			
