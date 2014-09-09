@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.user.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
@@ -245,8 +246,8 @@ public class UserServiceImplTest {
         verify(userRoleDAO);
 
         Set<UserRole> userRoles = updatedUser.getUserRoles();
-        Assert.assertNotNull(userRoles);
-        Assert.assertEquals(1, userRoles.size());
+        assertNotNull(userRoles);
+        assertEquals(1, userRoles.size());
         Assert.assertTrue(userRoles.contains(UserRole.CUSTOMERREVIEWER));
     }
 
@@ -317,7 +318,7 @@ public class UserServiceImplTest {
     public void testShouldReturnNullWhenNoUsersAssociatedWithCustomers() {
         List<Customer> customers = new ArrayList<Customer>();
 
-        expect(activityDao.findActivitiesForCustomers(customers)).andReturn(null);
+        expect(activityDao.findActivitiesForCustomers(customers)).andReturn(Lists.<Activity>newArrayList());
 
         replay(activityDao);
 
@@ -342,7 +343,7 @@ public class UserServiceImplTest {
         Activity activity2 = new Activity();
         User user2  = new User();
         user2.setUsername("user2");
-        activity1.setAssignedUser(user2);
+        activity2.setAssignedUser(user2);
 
         activities.add(activity1);
         activities.add(activity2);
@@ -355,7 +356,7 @@ public class UserServiceImplTest {
 
         verify(activityDao);
 
-        Assert.assertNotNull(allUsersAssignedToCustomers);
-        Assert.assertEquals(2, allUsersAssignedToCustomers.size());
+        assertNotNull(allUsersAssignedToCustomers);
+        assertEquals(2, allUsersAssignedToCustomers.size());
     }
 }
