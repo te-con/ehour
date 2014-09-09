@@ -185,7 +185,7 @@
 	</table>
 	<table name="timesheet_entry">
 		<column name="ACTIVITY_ID" primaryKey="true" required="true"
-			type="INTEGER" size="10" autoIncrement="false" />
+			type="INTEGER" size="11" autoIncrement="false" />
 		<column name="ENTRY_DATE" primaryKey="true" required="true"
 			type="DATE" autoIncrement="false" />
 		<column name="HOURS" primaryKey="false" required="false" type="FLOAT"
@@ -240,9 +240,9 @@
 	
 	<table name="customer_reviewers">
 		<column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
-			size="10" autoIncrement="false" />
+			size="11" autoIncrement="false" />
 		<column name="CUSTOMER_ID" primaryKey="true" required="true" type="INTEGER"
-			size="10" autoIncrement="false" />			
+			size="11" autoIncrement="false" />			
 		<foreign-key foreignTable="users" name="CUSTOMER_REVIEWERS_fk1">
 			<reference local="USER_ID" foreign="USER_ID" />
 		</foreign-key>
@@ -253,9 +253,9 @@
 
 	<table name="customer_reporters">
 		<column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
-			size="10" autoIncrement="false" />
+			size="11" autoIncrement="false" />
 		<column name="CUSTOMER_ID" primaryKey="true" required="true" type="INTEGER"
-			size="10" autoIncrement="false" />			
+			size="11" autoIncrement="false" />			
 		<foreign-key foreignTable="users" name="CUSTOMER_REPORTERS_fk1">
 			<reference local="USER_ID" foreign="USER_ID" />
 		</foreign-key>
@@ -339,7 +339,7 @@
 
 	<table name="activities">
 		<column name="ACTIVITY_ID" primaryKey="true" required="true"
-			type="INTEGER" size="10" autoIncrement="true" />
+			type="INTEGER" size="11" autoIncrement="true" />
 		<column name="CODE" primaryKey="false" required="false" type="VARCHAR"
 			size="128" autoIncrement="false" />	
 		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
@@ -353,9 +353,9 @@
 		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
 			size="1" default="Y" autoIncrement="false" />
 		<column name="PROJECT_ID" primaryKey="false" required="false"
-			type="INTEGER" size="10" autoIncrement="false" />
+			type="INTEGER" size="11" autoIncrement="false" />
 		<column name="USER_ID" primaryKey="false" required="false"
-			type="INTEGER" size="10" autoIncrement="false" />						
+			type="INTEGER" size="11" autoIncrement="false" />						
 		<foreign-key foreignTable="project" name="ACTIVITY_fk1">
 			<reference local="PROJECT_ID" foreign="PROJECT_ID" />
 		</foreign-key>
