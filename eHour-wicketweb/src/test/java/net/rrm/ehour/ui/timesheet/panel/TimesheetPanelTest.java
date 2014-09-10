@@ -34,6 +34,7 @@ import org.apache.wicket.util.tester.FormTester;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -41,6 +42,7 @@ import java.util.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
+@Ignore
 public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
     private static final String DAY1_PATH = "blueFrame:blueFrame_body:projects:0:rows:0:day1";
