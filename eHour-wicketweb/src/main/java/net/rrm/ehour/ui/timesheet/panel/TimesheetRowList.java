@@ -326,6 +326,13 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         modalWindow.setInitialWidth(500);
         modalWindow.setInitialHeight(325);
 
+
+        boolean isEditable = false;
+        if (isActivityBookable) {
+            isEditable = isDayInputApprovedOrRequestedForApproval(row, index);
+        }
+        modalWindow.setEnabled(isEditable);
+
         modalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
 
         Component panel = status == DayStatus.OPEN ? new TimesheetEntryCommentPanel(modalWindow.getContentId(), commentModel, row, index, modalWindow) :
@@ -363,11 +370,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         commentLink.setOutputMarkupId(true);
         commentLink.add(CommonModifiers.tabIndexModifier(255));
 
-        boolean isEditable = false;
-        if (isActivityBookable) {
-            isEditable = isDayInputApprovedOrRequestedForApproval(row, index);
-        }
-        commentLink.setEnabled(isEditable);
 
         parent.add(commentLink);
     }
