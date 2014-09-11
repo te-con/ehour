@@ -394,6 +394,9 @@
 			type="INTEGER" size="10" autoIncrement="false" />	
 		<column name="user_preference_value" primaryKey="false" required="false"
 			type="VARCHAR" size="255" autoIncrement="false" />
+		<foreign-key foreignTable="users" name="USER_PREFERENCES_fk">
+			<reference local="USER_ID" foreign="USER_ID" />
+		</foreign-key>			
 	</table>		
 	
 </database>
