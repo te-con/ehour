@@ -39,6 +39,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -179,7 +180,12 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 		public RejectPanel(String id, final IModel<Activity> model) {
 			super(id, model);
 			final ModalWindow rejectTimesheetModalWindow;
+
 			rejectTimesheetModalWindow = new ModalWindow("rejectTimesheetModalWindow");
+			rejectTimesheetModalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
+			rejectTimesheetModalWindow.setResizable(false);
+			rejectTimesheetModalWindow.setInitialWidth(400);
+			rejectTimesheetModalWindow.setInitialHeight(225);
 			
 			rejectTimesheetModalWindow.setContent(new RejectTimesheetContentPanel(rejectTimesheetModalWindow.getContentId(), CustomerReviewerPanel.this, rejectTimesheetModalWindow, model));
 			
