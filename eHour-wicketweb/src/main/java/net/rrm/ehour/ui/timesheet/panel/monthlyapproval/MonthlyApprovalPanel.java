@@ -38,6 +38,8 @@ public class MonthlyApprovalPanel extends Panel {
 
 	private CustomTitledGreyRoundedBorder greyBorder;
 
+	private static final String APPROVALSTATUS_RESOURCEKEY_PREFIX = "monthlyTimeSheet.approvalStatus.";
+
 	@SpringBean
 	private ApprovalStatusService approvalStatusService;
 
@@ -75,7 +77,9 @@ public class MonthlyApprovalPanel extends Panel {
 
 				String currentApprovalStatus = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(user, customer, monthRange)
 						.get(0).getStatus().toString();
-				final Label approvalStatusLabel = new Label("approvalStatus", currentApprovalStatus);
+				String currentApprovalStatusResourceBundleKey = APPROVALSTATUS_RESOURCEKEY_PREFIX + currentApprovalStatus.toLowerCase();
+				
+				final Label approvalStatusLabel = new Label("approvalStatus", new ResourceModel(currentApprovalStatusResourceBundleKey));
 				item.add(approvalStatusLabel);
 				approvalStatusLabel.setOutputMarkupId(true);
 
