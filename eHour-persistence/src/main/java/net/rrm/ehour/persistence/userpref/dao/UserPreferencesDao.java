@@ -8,6 +8,6 @@ import net.rrm.ehour.persistence.dao.GenericDao;
 
 public interface UserPreferencesDao extends GenericDao<UserPreference, UserPreferenceId> {
 
-	// UserPreference getUserPreferenceForUserForType(User user, UserPreferenceType userPreferenceType);
+	 UserPreference getUserPreferenceForUserForType(User user, UserPreferenceType userPreferenceType);
 
 }

@@ -16,8 +16,7 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
 
 	@Override
 	public UserPreference getUserPreferenceForUserForType(User user, UserPreferenceType userPreferenceType) {
-//		return userPreferencesDao.getUserPreferenceForUserForType(user, userPreferenceType);
-		return null;
+		return userPreferencesDao.getUserPreferenceForUserForType(user, userPreferenceType);
 	}
 
 	@Override

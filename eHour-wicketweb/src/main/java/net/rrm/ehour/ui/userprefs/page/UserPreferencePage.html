@@ -3,27 +3,22 @@
     
 <html 
     xmlns="http://www.w3.org/1999/xhtml" 
-    xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+    xmlns:wicket="http://wicket.sourceforge.net/">
 
     <body>
         <wicket:extend>
-            <div class="colmask leftmenu">
-                <div class="colright">
-                    <div class="col1wrap">
-                        <div class="col1">
-                            <div class="ContentPanelLoc" wicket:id="preferenceForm"></div>
-                        </div>
-                    </div>
+            <div style="float: left">
+                <br />
+                <div class="SidePanelLoc" wicket:id="sidePanel"></div>
 
-                    <div class="col2">
-                        <br/>
-
-                        <div class="SidePanelLoc" wicket:id="sidePanel"></div>
-
-                    </div>
-                </div>
+                <br clear="all" />
             </div>
-
+            
+            <div class="ContentPanelLoc">            
+            	<div wicket:id="preferenceForm" />
+            	<div wicket:id="userPreferenceForm" />
+            </div>
+            
         </wicket:extend>
     </body>
 </html>

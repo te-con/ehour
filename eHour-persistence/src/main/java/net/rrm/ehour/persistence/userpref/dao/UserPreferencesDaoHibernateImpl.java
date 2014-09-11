@@ -1,9 +1,7 @@
 package net.rrm.ehour.persistence.userpref.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserPreference;
 import net.rrm.ehour.domain.UserPreferenceId;
@@ -26,15 +24,20 @@ public class UserPreferencesDaoHibernateImpl extends AbstractGenericDaoHibernate
 		return getHibernateTemplate().merge(domobj);
 	}
 
-//	@Override
-//	public UserPreference getUserPreferenceForUserForType(User user, UserPreferenceType userPreferenceType) {
-//		List<UserPreference> results = new ArrayList<UserPreference>();
-//
-//		String[] keys = new String[] { "user", "userPreferenceKey"};
-//		Object[] params = new Object[] { user, userPreferenceType.getValue() };
-//		
-//		results = findByNamedQueryAndNamedParam("UserPreference.getUserPreferenceForUserForType", keys, params, false, null);
-//		return null;
-//	}
+	@Override
+	public UserPreference getUserPreferenceForUserForType(User user, UserPreferenceType userPreferenceType) {
+		List<UserPreference> results = null;
 
+		String[] keys = new String[] { "userPreferenceKey", "user" };
+		Object[] params = new Object[] { userPreferenceType.getValue(), user };
+		
+		results = findByNamedQueryAndNamedParam("UserPreference.getUserPreferenceForUserForType", keys, params, false, null);
+		
+		if(results != null && results.size() >0) {
+			return results.get(0);
+		} else {
+			
+			return null;
+		}
+	}
 }

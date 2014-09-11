@@ -118,4 +118,31 @@ public class UserPreferencesDaoHibernateImplTest extends AbstractAnnotationDaoTe
 		
 		Assert.assertEquals(2, userPreferencesDao.findAll().size());
 	}
+	
+	@Test
+	public void testGetUserPreferenceForUserForType() {
+		User user1 = userDao.findById(1);
+		Assert.assertNotNull(user1);
+		UserPreferenceId userPreferenceId1 = new UserPreferenceId(UserPreferenceType.ENABLE_WEEKENDS.getValue(), user1);
+		UserPreference userPreference1 = new UserPreference(userPreferenceId1, UserPreferenceType.ENABLE_WEEKENDS);
+		userPreferencesDao.persist(userPreference1);
+		Assert.assertNotNull(userPreference1.getUserPreferenceId());
+		
+		Assert.assertEquals(1, userPreferencesDao.findAll().size());
+		
+		User user2 = userDao.findById(2);
+		Assert.assertNotNull(user2);
+		UserPreferenceId userPreferenceId2 = new UserPreferenceId(UserPreferenceType.ENABLE_WEEKENDS.getValue(), user2);
+		UserPreference userPreference2 = new UserPreference(userPreferenceId2, UserPreferenceType.ENABLE_WEEKENDS);
+		userPreferencesDao.persist(userPreference2);
+		
+		Assert.assertNotNull(userPreference2.getUserPreferenceId());
+		
+		Assert.assertEquals(2, userPreferencesDao.findAll().size());
+		
+		UserPreference userPreferenceForUserForType = userPreferencesDao.getUserPreferenceForUserForType(user1, UserPreferenceType.ENABLE_WEEKENDS);
+		Assert.assertNotNull(userPreferenceForUserForType);
+		Assert.assertEquals(UserPreferenceValueType.DISABLE.name(), userPreferenceForUserForType.getUserPreferenceValue());
+	}
+	
 }

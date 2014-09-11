@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.userprefs.page;
 
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
@@ -25,15 +24,16 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
-import net.rrm.ehour.ui.userprefs.panel.ChangePasswordBackingBean;
-import net.rrm.ehour.ui.userprefs.panel.ChangePasswordPanel;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import net.rrm.ehour.ui.userprefs.panel.UserPasswordChangePanel;
+import net.rrm.ehour.ui.userprefs.panel.UserPreferenceChangePanel;
+
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.ResourceModel;
 
 /**
  * User preference page 
  **/
-@AuthorizeInstantiation({UserRole.ROLE_USER, UserRole.ROLE_ADMIN, UserRole.ROLE_REPORT})
+@AuthorizeInstantiation({"ROLE_CONSULTANT", "ROLE_ADMIN", "ROLE_REPORT"})
 public class UserPreferencePage extends AbstractBasePage<Void>
 {
 	public UserPreferencePage() throws ObjectNotFoundException
@@ -41,14 +41,21 @@ public class UserPreferencePage extends AbstractBasePage<Void>
 		super(new ResourceModel("userprefs.title"));
 		
 		// add calendar panel
-		add(new CalendarPanel("sidePanel", getEhourWebSession().getUser()));
+		add(new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser()));
 
 		// add 
-		add(new ChangePasswordPanel("preferenceForm", new ChangePasswordBackingBean()));
+		add(new UserPasswordChangePanel("preferenceForm", getEhourWebSession().getUser().getUser()));
+		
+		// add
+		add(new UserPreferenceChangePanel("userPreferenceForm", getEhourWebSession().getUser().getUser()));
 	}
 	
+	/**
+	 * Handle Ajax request
+	 * @param target
+	 */
 	@Override
-	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		AjaxEventType type = ajaxEvent.getEventType();
 		
