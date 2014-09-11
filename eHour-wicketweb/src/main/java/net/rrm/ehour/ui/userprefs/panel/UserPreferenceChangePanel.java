@@ -23,6 +23,10 @@ public class UserPreferenceChangePanel extends Panel {
 
 	private static final long serialVersionUID = 4028974383646159890L;
 	
+	private static final String WEEKEND_VISIBLE = "userprefs.weekend.enable";
+
+	private static final String WEEKEND_HIDDEN = "userprefs.weekend.disable";
+
 	@SpringBean
 	private UserPreferenceService userPreferenceService;
 	
@@ -44,8 +48,12 @@ public class UserPreferenceChangePanel extends Panel {
 		Form<Void> userPreferenceChangeForm = new Form<Void>("userPreferenceChangeForm");
 		userPreferenceChangeForm.setOutputMarkupId(true);
 		
-		final Label userPreferenceSelection = new Label("userPreferenceSelection", new ResourceModel(getCurrentWeekendVisibilitySettings()));
+		String currentWeekendVisibilitySettings = getCurrentWeekendVisibilitySettings();
+		
+		final Label userPreferenceSelection = new Label("userPreferenceSelection", new ResourceModel(currentWeekendVisibilitySettings));
+		
 		userPreferenceSelection.setOutputMarkupId(true);
+		
 		userPreferenceChangeForm.add(userPreferenceSelection);
 		
 		AjaxButton hideWeekendButton = new AjaxButton("hideWeekendsButton") {
@@ -66,7 +74,11 @@ public class UserPreferenceChangePanel extends Panel {
 				setResponsePage(UserPreferencePage.class);
 			}
 		};
+
 		hideWeekendButton.setOutputMarkupId(true);
+		if (WEEKEND_HIDDEN.equalsIgnoreCase(currentWeekendVisibilitySettings)) {
+			hideWeekendButton.setVisible(false);
+		}
 		
 
 		AjaxButton enableWeekendsButton = new AjaxButton("enableWeekendsButton") {
@@ -89,10 +101,12 @@ public class UserPreferenceChangePanel extends Panel {
 		};
 		
 		enableWeekendsButton.setOutputMarkupId(true);
+		if (WEEKEND_VISIBLE.equalsIgnoreCase(currentWeekendVisibilitySettings)) {
+			enableWeekendsButton.setVisible(false);
+		}
 		
 		userPreferenceChangeForm.add(hideWeekendButton);
 		userPreferenceChangeForm.add(enableWeekendsButton);
-		
 		greyBorder.add(userPreferenceChangeForm);
 		
 		setOutputMarkupId(true);		
@@ -101,9 +115,9 @@ public class UserPreferenceChangePanel extends Panel {
 	private String getCurrentWeekendVisibilitySettings() {
 		UserPreference userPreference = userPreferenceService.getUserPreferenceForUserForType(user, UserPreferenceType.ENABLE_WEEKENDS);
 		if (userPreference != null && UserPreferenceValueType.ENABLE.name().equalsIgnoreCase(userPreference.getUserPreferenceValue())) {
-			return "userprefs.weekend.enable";
+			return WEEKEND_HIDDEN;
 		} else {
-			return "userprefs.weekend.disable";
+			return WEEKEND_VISIBLE;
 		}
 	}
 
