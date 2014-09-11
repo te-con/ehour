@@ -5,11 +5,11 @@ import org.apache.wicket.util.io.IClusterable;
 import java.io.Serializable;
 import java.util.List;
 
-public class EntrySelectorData<T> implements IClusterable {
+public class EntrySelectorData implements IClusterable {
     private final List<Header> columnHeaders;
-    private final List<EntrySelectorRow<T>> rows;
+    private final List<EntrySelectorRow> rows;
 
-    public EntrySelectorData(List<Header> columnHeaders, List<EntrySelectorRow<T>> rows) {
+    public EntrySelectorData(List<Header> columnHeaders, List<EntrySelectorRow> rows) {
         this.columnHeaders = columnHeaders;
         this.rows = rows;
     }
@@ -18,20 +18,21 @@ public class EntrySelectorData<T> implements IClusterable {
         return columnHeaders;
     }
 
-    public List<EntrySelectorRow<T>> getRows() {
+    public List<EntrySelectorRow> getRows() {
         return rows;
     }
 
-    public static class EntrySelectorRow<T> implements IClusterable {
+
+    public static class EntrySelectorRow implements IClusterable {
         private List<? extends Serializable> cells;
-        private T id;
+        private Serializable id;
         private final boolean active;
 
-        public EntrySelectorRow(List<? extends Serializable> cells, T id) {
+        public EntrySelectorRow(List<? extends Serializable> cells, Serializable id) {
             this(cells, id, true);
         }
 
-        public EntrySelectorRow(List<? extends Serializable> cells, T id, boolean active) {
+        public EntrySelectorRow(List<? extends Serializable> cells, Serializable id, boolean active) {
             this.cells = cells;
             this.id = id;
             this.active = active;
@@ -45,10 +46,11 @@ public class EntrySelectorData<T> implements IClusterable {
             return active;
         }
 
-        public T getId() {
+        public Serializable getId() {
             return id;
         }
     }
+
 
     public static class Header implements IClusterable {
         private final ColumnType columnType;

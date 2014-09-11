@@ -50,18 +50,21 @@ public class EntrySelectorPanel<T> extends AbstractBasePanel<T> {
 
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
+    private static final String ITEM_LIST_ID = "itemList";
+    private final ClickHandler clickHandler;
 
     private IModel<String> hideInactiveCheckboxPrefix;
     private boolean showHideInactiveCheckbox = false;
     private GreyBlueRoundedBorder blueBorder;
 
 
-    public <I> EntrySelectorPanel(String id, EntrySelectorData<I> entrySelectorData) {
-        this(id, entrySelectorData, null);
+    public  EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler) {
+        this(id, entrySelectorData, clickHandler, null);
     }
 
-    public <I> EntrySelectorPanel(String id, EntrySelectorData<I> entrySelectorData, IModel<String> checkboxPrefix) {
+    public  EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> checkboxPrefix) {
         super(id);
+        this.clickHandler = clickHandler;
 
         if (checkboxPrefix != null) {
             this.hideInactiveCheckboxPrefix = checkboxPrefix;
@@ -78,11 +81,15 @@ public class EntrySelectorPanel<T> extends AbstractBasePanel<T> {
         if (event instanceof EntryListUpdatedEvent) {
             EntryListUpdatedEvent entryListUpdatedEvent = (EntryListUpdatedEvent) event;
 
-            refreshList(entryListUpdatedEvent.target());
+            reRender(entryListUpdatedEvent.target());
         }
     }
 
-    public void refreshList(AjaxRequestTarget target) {
+    public void updateData(EntrySelectorData entrySelectorData) {
+        blueBorder.addOrReplace(createListView(ITEM_LIST_ID, entrySelectorData));
+    }
+
+    public void reRender(AjaxRequestTarget target) {
         target.add(blueBorder);
         target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
     }
@@ -93,7 +100,7 @@ public class EntrySelectorPanel<T> extends AbstractBasePanel<T> {
         response.render(OnDomReadyHeaderItem.forScript("window.entrySelector = new EntrySelector('#listFilter', '.entrySelectorTable');"));
     }
 
-    private <I> void setUpPanel(EntrySelectorData<I> entrySelectorData) {
+    private  void setUpPanel(EntrySelectorData entrySelectorData) {
         WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
 
         blueBorder = new GreyBlueRoundedBorder("blueBorder") {
@@ -114,14 +121,14 @@ public class EntrySelectorPanel<T> extends AbstractBasePanel<T> {
 
         add(selectorFrame);
 
-        blueBorder.add(createListView("itemList", entrySelectorData));
+        blueBorder.add(createListView(ITEM_LIST_ID, entrySelectorData));
     }
 
-    private <I> EntrySelectorListView createListView(String id, EntrySelectorData<I> entrySelectorData) {
-        return new EntrySelectorListView(id, entrySelectorData.getRows(), null) {
+    private  EntrySelectorListView createListView(String id, EntrySelectorData entrySelectorData) {
+        return new EntrySelectorListView(id, entrySelectorData.getRows(), clickHandler) {
 
             @Override
-            protected void onPopulate(ListItem<EntrySelectorRow<I>> item, IModel<EntrySelectorRow<I>> itemModel) {
+            protected void onPopulate(ListItem<EntrySelectorRow> item, IModel<EntrySelectorRow> itemModel) {
                 EntrySelectorRow object = item.getModelObject();
 
                 RepeatingView cells = new RepeatingView("child");

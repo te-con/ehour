@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.manage.customer;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
@@ -46,6 +45,7 @@ import java.util.List;
 
 import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.ColumnType;
 import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Header;
+import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.ClickHandler;
 
 /**
  * Customer admin page
@@ -74,19 +74,22 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
 
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.customer.title"));
         add(greyBorder);
-        new EntrySelectorPanel.ClickHandler() {
+
+        ClickHandler clickHandler = new ClickHandler() {
 
             @Override
             public void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException {
-                final Integer customerId = item.getModelObject().getCustomerId();
+                final Integer customerId = (Integer) row.getId();
 
                 getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
                 getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
             }
-        }
+        };
+
 
         entrySelectorPanel = new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
                 customerListHolder,
+                clickHandler,
                 new ResourceModel("admin.customer.hideInactive")
         );
 
@@ -124,7 +127,7 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
             List<Customer> customers = getCustomers();
             customerListView.setList(customers);
 
-            entrySelectorPanel.refreshList(ajaxEvent.getTarget());
+            entrySelectorPanel.reRender(ajaxEvent.getTarget());
 
             getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
             return false;

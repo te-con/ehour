@@ -41,7 +41,7 @@ import static org.junit.Assert.fail;
 /**
  * @author thies
  */
-public class IPersistTimesheetDAOTest {
+public class TimesheetPersistanceTest {
     private TimesheetPersistance persister;
     private TimesheetDao timesheetDAO;
     private ProjectManagerNotifierService projectManagerNotifierService;
