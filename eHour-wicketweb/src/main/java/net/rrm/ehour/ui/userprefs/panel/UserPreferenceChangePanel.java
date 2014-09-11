@@ -37,14 +37,14 @@ public class UserPreferenceChangePanel extends Panel {
 	}
 
 	private void addComponents() {
-		greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.title"), WebGeo.W_CONTENT_XSMALL);
+		greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.panel.title"), WebGeo.W_CONTENT_XSMALL);
 		greyBorder.setOutputMarkupId(true);
 		add(greyBorder);
 		
 		Form<Void> userPreferenceChangeForm = new Form<Void>("userPreferenceChangeForm");
 		userPreferenceChangeForm.setOutputMarkupId(true);
 		
-		final Label userPreferenceSelection = new Label("userPreferenceSelection", getUserPreference());
+		final Label userPreferenceSelection = new Label("userPreferenceSelection", new ResourceModel(getCurrentWeekendVisibilitySettings()));
 		userPreferenceSelection.setOutputMarkupId(true);
 		userPreferenceChangeForm.add(userPreferenceSelection);
 		
@@ -98,17 +98,13 @@ public class UserPreferenceChangePanel extends Panel {
 		setOutputMarkupId(true);		
 	}
 
-	private String getUserPreference() {
-		String userPreferenceText = "Weekend is enabled";
+	private String getCurrentWeekendVisibilitySettings() {
 		UserPreference userPreference = userPreferenceService.getUserPreferenceForUserForType(user, UserPreferenceType.ENABLE_WEEKENDS);
-		if (userPreference != null) {
-			if(userPreference.getUserPreferenceValue().equalsIgnoreCase(UserPreferenceValueType.ENABLE.name())) {
-				userPreferenceText = "Weekend is disabled";
-			} else {
-				userPreferenceText = "Weekend is enabled";
-			}
+		if (userPreference != null && UserPreferenceValueType.ENABLE.name().equalsIgnoreCase(userPreference.getUserPreferenceValue())) {
+			return "userprefs.weekend.enable";
+		} else {
+			return "userprefs.weekend.disable";
 		}
-		return userPreferenceText;
 	}
 
 }

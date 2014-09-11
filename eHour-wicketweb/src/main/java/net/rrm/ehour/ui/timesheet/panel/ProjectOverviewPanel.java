@@ -41,12 +41,10 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Panel showing overview
@@ -220,11 +218,19 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         container.setVisible(false);
 
         // valid from until label
-        DateModel startDate = new DateModel(projectStatus.getActivity().getDateStart(), getConfig());
-        DateModel endDate = new DateModel(projectStatus.getActivity().getDateEnd(), getConfig());
-        Label validityLabel = new Label("overview.validity", new MessageResourceModel("overview.validity", this, startDate, endDate));
+        Date activityStartDate = projectStatus.getActivity().getDateStart();
+        Date activityEndDate = projectStatus.getActivity().getDateEnd();
+        Label validityLabel = new Label("overview.validity", new StringResourceModel("overview.validity", this, null, new Object[] {
+                new DateModel(activityStartDate, getConfig()),
+                new DateModel(activityEndDate, getConfig()) }));
         validityLabel.setEscapeModelStrings(false);
         container.add(validityLabel);
+
+        if (activityStartDate != null && activityEndDate != null) {
+            validityLabel.setVisible(true);
+        } else {
+            validityLabel.setVisible(false);
+        }
 
         WebMarkupContainer cont = new WebMarkupContainer("remainingHoursLabel");
         // only shown for allotted types
@@ -236,10 +242,6 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
         Label remainingLabel = new Label("overview.remainingfixed", new MessageResourceModel("overview.remainingfixed", this, projectStatus.getFixedHoursRemaining()));
         cont.add(remainingLabel);
-
-        Label remainingFlexLabel = new Label("overview.remainingflex", new MessageResourceModel("overview.remainingflex", this, projectStatus.getFlexHoursRemaining()));
-        // only shown for flex allotted types
-        cont.add(remainingFlexLabel);
 
         container.add(cont);
 

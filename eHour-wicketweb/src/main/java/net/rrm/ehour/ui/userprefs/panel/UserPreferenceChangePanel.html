@@ -7,13 +7,13 @@
 
 <body>
 <wicket:panel>
-    <div wicket:id="border">
+    <div wicket:id="border" style="padding-top: 10px;">
     	<form wicket:id="userPreferenceChangeForm">
-    	<table class="contentTable">
+    	<table class="contentTable" style="padding: 0 10px 0 0">
     		<tr>
-    			<td><span wicket:id="userPreferenceSelection"></span></td>
-    			<td><a class="button" wicket:id="hideWeekendsButton"><span><wicket:message key="userprefs.panel.hidebutton" /></span></a></td>
-    			<td><a class="button" wicket:id="enableWeekendsButton"><span><wicket:message key="userprefs.panel.showbutton" /></span></a></td>
+    			<td style="text-align: left; width: 40%"><span wicket:id="userPreferenceSelection"></span></td>
+    			<td style="text-align: center; width: 20%"><a class="button" wicket:id="hideWeekendsButton"><span><wicket:message key="userprefs.panel.hidebutton" /></span></a></td>
+    			<td style="text-align: right; width: 20%"><a class="button" wicket:id="enableWeekendsButton"><span><wicket:message key="userprefs.panel.showbutton" /></span></a></td>
     		</tr>
     	</table>
     	</form>

@@ -63,6 +63,11 @@ div.MonthAggregateTable div.TotalRow
     overflow: hidden;
 }
 
+.monthlyOverviewRowCell {
+	height:auto;
+	width: 14%;	
+}
+
 .numbCell
 {
 	height: 1em;
