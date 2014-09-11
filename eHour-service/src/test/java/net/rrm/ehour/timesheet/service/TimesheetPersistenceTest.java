@@ -24,10 +24,10 @@ import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,7 +114,7 @@ public class TimesheetPersistenceTest {
 
     @Test
     public void shouldPersistValidatedTimesheetAndCreateAnApprovalStatusForFirstTime() throws OverBudgetException {
-        DateRange dateRange = new DateRange();
+        DateRange dateRange = DateUtil.getDateRangeForMonth(new Date());
 
         timesheetDAO.delete(isA(TimesheetEntry.class));
 
@@ -124,13 +124,19 @@ public class TimesheetPersistenceTest {
 
         expect(statusService.getActivityStatus(activity)).andReturn(new ActivityStatus()).times(2);
 
+        expect(approvalStatusService.getApprovalStatusForUserWorkingForCustomer(isA(User.class), isA(Customer.class), isA(DateRange.class))).andReturn(null);
+
+        approvalStatusService.persist(isA(ApprovalStatus.class));
+
         replay(statusService);
         replay(timesheetDAO);
+        replay(approvalStatusService);
 
         persister.validateAndPersist(activity, newEntries, dateRange);
 
         verify(timesheetDAO);
         verify(statusService);
+        verify(approvalStatusService);
     }
 
     @Test(expected = OverBudgetException.class)
@@ -147,6 +153,85 @@ public class TimesheetPersistenceTest {
         inValidStatus.setValid(false);
 
         expect(statusService.getActivityStatus(activity)).andReturn(inValidStatus);
+
+        replay(statusService);
+        replay(timesheetDAO);
+
+        persister.validateAndPersist(activity, newEntries, new DateRange());
+
+        verify(timesheetDAO);
+        verify(statusService);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testPersistOverrunDecreasingTimesheet() throws OverBudgetException
+    {
+        Date dateC = new Date(2008 - 1900, 4 - 1, 3);
+
+        newEntries.clear();
+        existingEntries.clear();
+
+        {
+            TimesheetEntry entryDel = new TimesheetEntry();
+            TimesheetEntryId idDel = new TimesheetEntryId();
+            idDel.setActivity(activity);
+            idDel.setEntryDate(dateC);
+            entryDel.setEntryId(idDel);
+            entryDel.setHours(7f);
+            newEntries.add(entryDel);
+        }
+
+        {
+            TimesheetEntry entryDel = new TimesheetEntry();
+            TimesheetEntryId idDel = new TimesheetEntryId();
+            idDel.setActivity(activity);
+            idDel.setEntryDate(dateC);
+            entryDel.setEntryId(idDel);
+            entryDel.setHours(8f);
+            existingEntries.add(entryDel);
+        }
+
+        expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
+
+        expect(timesheetDAO.getTimesheetEntriesInRange(isA(Activity.class), isA(DateRange.class))).andReturn(existingEntries);
+
+        ActivityStatus inValidStatus = new ActivityStatus();
+        inValidStatus.setValid(false);
+
+        expect(statusService.getActivityStatus(activity)).andReturn(inValidStatus).times(2);
+        expect(approvalStatusService.getApprovalStatusForUserWorkingForCustomer(isA(User.class), isA(Customer.class), isA(DateRange.class))).andReturn(new ArrayList<ApprovalStatus>()).anyTimes();
+        approvalStatusService.persist(isA(ApprovalStatus.class));
+
+        replay(statusService);
+        replay(timesheetDAO);
+        replay(approvalStatusService);
+
+        DateRange weekRange = new DateRange();
+        Date dateStart = new Date();
+        weekRange.setDateStart(dateStart);
+        weekRange.setDateEnd(dateStart);
+
+        persister.validateAndPersist(activity, newEntries, weekRange);
+
+        verify(timesheetDAO);
+        verify(statusService);
+        verify(approvalStatusService);
+    }
+
+    /**
+     *
+     * @throws OverBudgetException
+     */
+    @Test(expected=OverBudgetException.class)
+    public void testPersistOverrunInvalidTimesheet() throws OverBudgetException
+    {
+        expect(timesheetDAO.getTimesheetEntriesInRange(isA(Activity.class), isA(DateRange.class))).andReturn(existingEntries);
+
+        ActivityStatus inValidStatus = new ActivityStatus();
+        inValidStatus.setValid(false);
+
+        expect(statusService.getActivityStatus(activity)).andReturn(inValidStatus).times(2);
 
         replay(statusService);
         replay(timesheetDAO);

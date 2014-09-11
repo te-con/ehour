@@ -1,37 +1,37 @@
 package net.rrm.ehour.ui.customerreviewer.model;
 
-import net.rrm.ehour.domain.Activity;
+import java.util.Iterator;
+import java.util.List;
+
+import net.rrm.ehour.domain.ApprovalStatus;
+
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-public class CustomerReviewerDataProvider extends SortableDataProvider<Activity, Date> {
+public class CustomerReviewerDataProvider extends SortableDataProvider<ApprovalStatus> {
 
 	private static final long serialVersionUID = -1681462964159319312L;
 	
-	List<Activity> activities;
+	List<ApprovalStatus> approvalStatuses;
 	
-	public CustomerReviewerDataProvider(List<Activity> activities) {
-		this.activities = activities;
-	}
-
-    @Override
-    public Iterator<? extends Activity> iterator(long first, long count) {
-        return activities.iterator();
-    }
-
-    @Override
-	public long size() {
-		return activities.size();
+	public CustomerReviewerDataProvider(List<ApprovalStatus> approvalStatuses) {
+		this.approvalStatuses = approvalStatuses;
 	}
 
 	@Override
-	public IModel<Activity> model(Activity object) {
-		return new CompoundPropertyModel<Activity>(object);
+	public Iterator<? extends ApprovalStatus> iterator(long first, long count) {
+		return approvalStatuses.iterator();
+	}
+
+	@Override
+	public long size() {
+		return approvalStatuses.size();
+	}
+
+	@Override
+	public IModel<ApprovalStatus> model(ApprovalStatus object) {
+		return new CompoundPropertyModel<ApprovalStatus>(object);
 	}
 
 }

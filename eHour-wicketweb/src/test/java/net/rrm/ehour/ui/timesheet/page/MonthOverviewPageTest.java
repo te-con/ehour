@@ -18,19 +18,29 @@ package net.rrm.ehour.ui.timesheet.page;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 import static org.easymock.EasyMock.notNull;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.easymock.EasyMock.isA;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import net.rrm.ehour.activity.service.ActivityService;
+import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.ApprovalStatus;
+import net.rrm.ehour.domain.ApprovalStatusType;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
+import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
@@ -52,25 +62,42 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
 		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
 		getMockContext().putBean(overviewTimesheet);
 
-        ActivityService activityService = createMock(ActivityService.class);
-        getMockContext().putBean("activityService", activityService);
-
+        ApprovalStatusService approvalStatusService = createMock(ApprovalStatusService.class);
+        getMockContext().putBean("approvalStatusService", approvalStatusService);
 
         MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
 
 		TimesheetOverview overview = new TimesheetOverview();
-		
+        UserProjectStatus userProjectStatus = new UserProjectStatus();
+        userProjectStatus.setHours(10);
+        Activity activity = new Activity();
+        Project project = new Project();
+        project.setCustomer(new Customer());
+        activity.setProject(project);
+        userProjectStatus.setActivity(activity);
+
+        TreeSet<UserProjectStatus> allProjectStatuses = new TreeSet<UserProjectStatus>();
+        allProjectStatuses.add(userProjectStatus);
+
+        overview.setProjectStatus(allProjectStatuses);
+
 		expect(overviewTimesheet.getTimesheetOverview((User)notNull(), (Calendar)notNull()))
 				.andReturn(overview);
 
-        expect(activityService.getActivitiesForUser(isA(Integer.class), isA(DateRange.class))).andReturn(new ArrayList<Activity>());
+        ApprovalStatus approvalStatus = new ApprovalStatus();
+        approvalStatus.setStatus(ApprovalStatusType.IN_PROGRESS);
 
-		replay(overviewTimesheet, activityService);
+        ArrayList<ApprovalStatus> allApprovalStatuses = new ArrayList<ApprovalStatus>();
+        allApprovalStatuses.add(approvalStatus);
+
+        expect(approvalStatusService.getApprovalStatusForUserWorkingForCustomer(isA(User.class), isA(Customer.class), isA(DateRange.class))).andReturn(allApprovalStatuses);
+
+        replay(overviewTimesheet, approvalStatusService);
 		
 		getTester().startPage(MonthOverviewPage.class);
 		getTester().assertRenderedPage(MonthOverviewPage.class);
 		getTester().assertNoErrorMessage();
 		
-		verify(overviewTimesheet, activityService);
+		verify(overviewTimesheet, approvalStatusService);
 	}
 }

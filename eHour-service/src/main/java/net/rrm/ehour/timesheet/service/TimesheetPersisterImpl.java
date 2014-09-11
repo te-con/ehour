@@ -86,11 +86,11 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 			throw new OverBudgetException(afterStatus);
 		}
 
-		 updateApprovalStatusForActivityWithinWeekRange(activity, weekRange);
+		updateApprovalStatusWithinWeekRange(activity, weekRange);
 		
 	}
 
-	private void updateApprovalStatusForActivityWithinWeekRange(Activity activity, DateRange weekRange) {
+	private void updateApprovalStatusWithinWeekRange(Activity activity, DateRange weekRange) {
 		DateRange dateRangeForCurrentMonth = DateUtil.getDateRangeForMonth(weekRange.getDateStart());
 		
 		if (checkThatWeekSpansMonths(weekRange)) {
@@ -109,11 +109,12 @@ public class TimesheetPersisterImpl implements TimesheetPersister
 	}
 
 	private void updateApprovalStatusForMonth(Activity activity, DateRange monthRange) {
-		List<ApprovalStatus> allApprovalStatuses = approvalStatusService.getApprovalStatusForActivity(activity, monthRange);
+		List<ApprovalStatus> allApprovalStatuses = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(activity.getAssignedUser(), activity.getProject().getCustomer(), monthRange);
 		
 		if (allApprovalStatuses == null || allApprovalStatuses.isEmpty()) {
 			ApprovalStatus approvalStatus = new ApprovalStatus();
-			approvalStatus.setActivity(activity);
+			approvalStatus.setCustomer(activity.getProject().getCustomer());
+			approvalStatus.setUser(activity.getAssignedUser());
 			approvalStatus.setStatus(ApprovalStatusType.IN_PROGRESS);
 			approvalStatus.setStartDate(monthRange.getDateStart());
 			approvalStatus.setEndDate(monthRange.getDateEnd());

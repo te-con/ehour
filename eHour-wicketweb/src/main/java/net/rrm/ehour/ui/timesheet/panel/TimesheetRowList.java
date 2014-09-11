@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
+import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
@@ -49,6 +50,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
 import java.util.List;
@@ -63,6 +65,9 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private EhourConfig config;
     private final GrandTotal grandTotals;
     private Form<?> form;
+
+    @SpringBean
+    private ApprovalStatusService approvalStatusService;
 
     private MarkupContainer provider;
 
@@ -80,63 +85,88 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
     /*
 	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket.markup.html.list.ListItem)
+	 * 
+	 * @see
+	 * org.apache.wicket.markup.html.list.ListView#populateItem(org.apache.wicket
+	 * .markup.html.list.ListItem)
 	 */
 	@Override
-	protected void populateItem(ListItem<TimesheetRow> item)
-	{
+	protected void populateItem(ListItem<TimesheetRow> item) {
 		final TimesheetRow row = item.getModelObject();
 
-		item.add(new Label("activityCode", row.getActivity().getName()));
-        item.add(new Label("availableHours", new PropertyModel<Float>(row.getActivity(), "availableHours")));
+		item.add(createBookWholeWeekLink(row));
+		item.add(new Label("activityName", row.getActivity().getName()));
+		item.add(new Label("availableHours", new PropertyModel<Float>(row.getActivity(), "availableHours")));
 		item.add(createStatusLabel(item));
 		addInputCells(item, row);
 		item.add(createTotalHoursLabel(row));
     }
 
-    private Label createStatusLabel(ListItem<TimesheetRow> item) {
-        Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status")) {
-            @Override
-            public boolean isVisible() {
-                return StringUtils.isNotBlank(getDefaultModelObjectAsString());
-            }
-        };
-    
-        label.setEscapeModelStrings(false);
-        label.setOutputMarkupId(true);
-        label.setOutputMarkupPlaceholderTag(true);
-        return label;
-    }
+	private Label createTotalHoursLabel(final TimesheetRow row) {
+		Label totalHours = new Label("total", new ProjectTotalModel(row));
+		totalHours.setOutputMarkupId(true);
+		return totalHours;
+	}
 
-
-    private Label createTotalHoursLabel(final TimesheetRow row) {
-        Label totalHours = new Label("total", new ProjectTotalModel(row));
-        totalHours.setOutputMarkupId(true);
-        return totalHours;
-    }
-
-    private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row) {
+	private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row)
+	{
         Calendar currentDate = (Calendar) row.getFirstDayOfWeekDate().clone();
-
-        DateRange range = new DateRange(row.getActivity().getDateStart(),
-                row.getActivity().getDateEnd());
-
-        // now add every cell
-        for (int i = 1;
-             i <= 7;
-             i++, currentDate.add(Calendar.DAY_OF_YEAR, 1)) {
-            String id = "day" + i;
+        
+		DateRange range = new DateRange(row.getActivity().getDateStart(),
+										row.getActivity().getDateEnd());
+		
+		// now add every cell
+		for (int i = 1;
+			 i <= 7;
+			 i++, currentDate.add(Calendar.DAY_OF_YEAR, 1))
+		{
+			String id = "day" + i;
 
             int index = currentDate.get(Calendar.DAY_OF_WEEK) - 1;
             TimesheetCell timesheetCell = row.getTimesheetCells()[index];
+
 
             if (DateUtil.isDateWithinRange(currentDate, range)) {
                 item.add(timesheetCell.isLocked() ? createLockedTimesheetEntry(id, row, index) : createInputTimesheetEntry(id, row, index));
             } else {
                 item.add(createEmptyTimesheetEntry(id));
             }
-        }
+		}
+	}
+
+	private AjaxLink<Void> createBookWholeWeekLink(final TimesheetRow row)
+	{
+		AjaxLink<Void> projectLink = new AjaxLink<Void>("bookWholeWeek")
+		{
+			private static final long serialVersionUID = -663239917205218384L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				row.bookRemainingHoursOnRow();
+				target.addComponent(form);
+			}
+		};
+		
+		ContextImage img = new ContextImage("bookImg", new Model<String>("img/check_all_off.png"));
+		CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/check_all_on.png", getContextRoot() + "img/check_all_off.png", "bwh");
+		projectLink.add(img);
+		
+		return projectLink;
+	}
+
+    private String getContextRoot() {
+        return getRequest().getRelativePathPrefixToContextRoot();
     }
+
+
+	private Label createStatusLabel(ListItem<TimesheetRow> item)
+	{
+		Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status"));
+		label.setEscapeModelStrings(false);
+		label.setOutputMarkupId(true);
+		return label;
+	}
 
     private Fragment createAndAddFragment(String id, String fragmentId) {
         return new Fragment(id, fragmentId, provider);
@@ -160,6 +190,243 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         return fragment;
     }
+    
+    private Fragment createEmptyTimesheetEntry(String id) {
+        return createAndAddFragment(id, "dayInputHidden");
+    }
+	
+	/**
+	 * Get validated text field
+	 * @param id
+	 * @param row
+	 * @param index
+	 * @return
+	 */
+	private void createTimesheetEntryItems(String id, TimesheetRow row, final int index, ListItem<TimesheetRow> item)
+	{
+		Fragment fragment = new Fragment(id, "dayInput", this);
+		
+		item.add(fragment);
+		
+		fragment.add(createValidatedTextField(row, index));
+		
+		createTimesheetEntryComment(row, index, fragment);
+	}
+	
+	/**
+	 * Create a validating text field for row[index]
+	 * @param id
+	 * @param row
+	 * @param index
+	 * @return
+	 */
+	private TimesheetTextField createValidatedTextField(TimesheetRow row, final int index)
+	{
+		final TimesheetTextField	dayInput;
+		PropertyModel<Float>		cellModel;
+		
+		cellModel = new PropertyModel<Float>(row, "timesheetCells[" + index + "].timesheetEntry.hours");
+		
+		// make sure it's added to the grandtotal
+		grandTotals.addValue(index, cellModel);
+		
+		// list it on the page
+		dayInput = new TimesheetTextField("day", cellModel, 1);
+		dayInput.setEnabled(isDayInputApprovedOrRequestedForApproval(row, index));
+		dayInput.add(new MinimumValidator<Float>(0f));
+		dayInput.setOutputMarkupId(true);
+		
+		// make sure values are checked
+		AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onblur")
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target)
+			{
+				// update the project total
+				target.addComponent(dayInput.getParent().getParent().get("total"));
+				
+				// update the grand total & day total
+				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
+												.get("blueFrame"))
+												.get("grandTotal"));
+				
+				
+				target.addComponent(((MarkupContainer)dayInput.findParent(Form.class)
+												.get("blueFrame"))
+												.get("day" + grandTotals.getOrderForIndex(index) + "Total"));
+				
+				form.visitFormComponents(new FormHighlighter(target));
+			}		
+			
+			@Override
+			protected void onError(final AjaxRequestTarget target, RuntimeException e)
+			{
+				form.visitFormComponents(new FormHighlighter(target));
+			}			
+		};
+		
+		dayInput.add(behavior);
+
+		return dayInput;
+	}
+	
+	private boolean isDayInputApprovedOrRequestedForApproval(TimesheetRow row, int index) {
+		boolean enabled = true;
+		ApprovalStatus approvalStatus = null;
+		
+		Activity activity = row.getActivity();
+		TimesheetCell[] timesheetCells = row.getTimesheetCells();
+		Date date = timesheetCells[index].getDate();
+		Calendar calendar = DateUtil.getCalendar(date);
+		DateRange monthRange = DateUtil.calendarToMonthRange(calendar);
+		
+		List<ApprovalStatus> approvalStatusesForActivity = approvalStatusService.getApprovalStatusForActivity(activity, monthRange);
+		
+		if(approvalStatusesForActivity != null && approvalStatusesForActivity.size() !=0) {
+			approvalStatus = approvalStatusesForActivity.iterator().next();
+		}
+		
+		if(approvalStatus != null) {
+			if(approvalStatus.getStatus().equals(ApprovalStatusType.APPROVED) || approvalStatus.getStatus().equals(ApprovalStatusType.READY_FOR_APPROVAL)) {
+				enabled = false;
+			}
+		}
+		
+		
+		return enabled;
+	}
+
+	/**
+	 * Create comment box for timesheet entry
+	 * @param id
+	 * @param row
+	 * @param index
+	 */
+	@SuppressWarnings("serial")
+	private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent)
+	{
+		final ModalWindow modalWindow;
+		final AjaxLink<Void> commentLink;
+		final PropertyModel<String> commentModel = new PropertyModel<String>(row, "timesheetCells[" + index + "].timesheetEntry.comment");
+		
+		modalWindow = new ModalWindow("dayWin");
+		modalWindow.setResizable(false);
+		modalWindow.setInitialWidth(400);
+		modalWindow.setInitialHeight(225);
+		
+		modalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
+		modalWindow.setContent(new TimesheetEntryCommentPanel(modalWindow.getContentId(),
+																		commentModel, row, index, modalWindow));
+		
+		commentLink = new AjaxLink<Void>("dayLink")
+		{
+			@Override
+			public void onClick(AjaxRequestTarget target)
+			{
+				modalWindow.show(target);
+			}
+		};		
+		
+		modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback()
+		{
+			public void onClose(AjaxRequestTarget target)
+			{
+				setCommentLinkClass(commentModel, commentLink);
+				
+				target.addComponent(commentLink);
+			}
+		});
+		
+		parent.add(modalWindow);
+		
+		commentLink.setOutputMarkupId(true);
+		commentLink.add(CommonModifiers.tabIndexModifier(255));
+		
+		ContextImage img;
+		if (StringUtils.isBlank((String)commentModel.getObject()))
+		{
+			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
+			CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/comment/comment_blue_on.gif", getContextRoot() + "img/comment/comment_blue_off.gif", "comment");
+		}
+		else
+		{
+			img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
+		}
+		commentLink.add(img);
+		
+//		setCommentLinkClass(commentModel, commentLink);
+		
+		parent.add(commentLink);
+	}
+	
+	/**
+	 * Set comment link css class
+	 * @param commentModel
+	 * @param commentLink
+	 */
+	private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink)
+	{
+		commentLink.add(new SimpleAttributeModifier("class"
+				, StringUtils.isBlank((String)commentModel.getObject()) ? "timesheetEntryComment"
+				: "timesheetEntryCommented"));
+	}	
+	
+	/**
+	 * Comments panel for timesheet entries
+	 * @author Thies
+	 *
+	 */
+	class TimesheetEntryCommentPanel extends Panel
+	{
+		private static final long serialVersionUID = 1L;
+
+		public TimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window)
+		{
+			super(id);
+
+			Calendar thisDate = (Calendar)row.getFirstDayOfWeekDate().clone();
+			// Use the render order, not the index order, when calculating the date
+			thisDate.add(Calendar.DAY_OF_YEAR, grandTotals.getOrderForIndex(index)-1);
+
+			final String previousModel = model.getObject();
+			add(new Label("dayComments",
+					new StringResourceModel("timesheet.dayComments",
+												this,
+												null,
+												new Object[]{row.getActivity().getFullName(),
+															 new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
+			
+			final KeepAliveTextArea textArea = new KeepAliveTextArea("comment", model);
+			textArea.add(new AjaxFormComponentUpdatingBehavior("onchange")
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void onUpdate(AjaxRequestTarget target)
+				{
+					// simple hack to get around IE's prob with nested forms in a modalwindow
+				}
+			});
+			
+			add(textArea);
+			
+			AjaxLink<Void> submitButton = new AjaxLink<Void>("submit")
+			{
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClick(AjaxRequestTarget target)
+				{
+					window.close(target);
+				}
+			};
+			add(submitButton);
+
+			AbstractLink cancelButton = new AjaxLink<Void>("cancel")
+			{
+				private static final long serialVersionUID = 1L;
 
     private Fragment createEmptyTimesheetEntry(String id) {
         return createAndAddFragment(id, "dayInputHidden");

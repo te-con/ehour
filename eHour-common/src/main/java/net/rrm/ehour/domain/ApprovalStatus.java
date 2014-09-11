@@ -37,16 +37,20 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
 	private Date endDate;
 
 	@ManyToOne
-	@JoinColumn(name = "ACTIVITY_ID")
-	private Activity activity;
+	@JoinColumn(name = "CUSTOMER_ID")
+	private Customer customer;
 
-    @Enumerated(EnumType.STRING)	
-    @Column(name = "STATUS")
+	@ManyToOne
+	@JoinColumn(name = "USER_ID")
+	private User user;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "STATUS")
 	private ApprovalStatusType status;
 
-    @Column(name = "COMMENT_TEXT", length = 2048)
+	@Column(name = "COMMENT_TEXT", length = 2048)
 	private String comment;
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -60,13 +64,13 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
 		}
 		ApprovalStatus other = (ApprovalStatus) obj;
 		return new EqualsBuilder().append(this.getId(), other.getId()).append(this.getStartDate(), other.getStartDate()).append(
-				this.getEndDate(), other.getEndDate()).append(this.getActivity(), other.getActivity()).append(this.getStatus(),
-				other.getStatus()).isEquals();
+				this.getEndDate(), other.getEndDate()).append(this.getCustomer(), other.getCustomer()).append(this.getUser(),
+				other.getUser()).append(this.getStatus(), other.getStatus()).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(id).append(startDate).append(endDate).append(activity).append(status).toHashCode();
+		return new HashCodeBuilder().append(id).append(startDate).append(endDate).append(customer).append(status).toHashCode();
 	}
 
 	@Override
@@ -76,16 +80,16 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
 
 	@Override
 	public int compareTo(ApprovalStatus other) {
-		return new CompareToBuilder().append(this.getId(), other.getId()).append(this.getActivity(), other.getActivity()).append(
-				this.getStartDate(), other.getStartDate()).append(this.getEndDate(), other.getEndDate()).append(this.getStatus(),
-				other.getStatus()).toComparison();
+		return new CompareToBuilder().append(this.getId(), other.getId()).append(this.getCustomer(), other.getCustomer()).append(
+				this.getUser(), other.getUser()).append(this.getStartDate(), other.getStartDate()).append(this.getEndDate(),
+				other.getEndDate()).append(this.getStatus(), other.getStatus()).toComparison();
 	}
 
 	@Override
 	public String getFullName() {
 		return getId().toString();
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -110,12 +114,20 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
 		this.endDate = endDate;
 	}
 
-	public Activity getActivity() {
-		return activity;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setActivity(Activity activity) {
-		this.activity = activity;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public ApprovalStatusType getStatus() {

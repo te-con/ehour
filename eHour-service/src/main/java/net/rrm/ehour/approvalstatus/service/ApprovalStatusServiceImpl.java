@@ -3,8 +3,9 @@ package net.rrm.ehour.approvalstatus.service;
 import java.util.List;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.ApprovalStatus;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.approvalstatus.dao.ApprovalStatusDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,20 @@ public class ApprovalStatusServiceImpl implements ApprovalStatusService {
 	private ApprovalStatusDao approvalStatusDao;
 	
 	@Override
-	public List<ApprovalStatus> getApprovalStatusForActivity(Activity activity, DateRange dateRange) {
-		return approvalStatusDao.findApprovalStatusesForActivity(activity, dateRange);
+	public List<ApprovalStatus> getApprovalStatusForUserWorkingForCustomer(User user, Customer customer, DateRange dateRange) {
+		return approvalStatusDao.findApprovalStatusesForUserWorkingForCustomer(user, customer, dateRange);
 	}
 
+	@Override
+	public List<ApprovalStatus> getApprovalStatusesForCustomers(List<Customer> customers, DateRange dateRange) {
+		return approvalStatusDao.findApprovalStatusesForCustomers(customers, dateRange);
+	}
+	
 	@Override
 	@Transactional
 	public void persist(ApprovalStatus approvalStatus) {
 		approvalStatusDao.persist(approvalStatus);
 	}
+
 
 }

@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.activity.status.ActivityStatus;
+import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
@@ -52,6 +53,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private IPersistTimesheet persistTimesheet;
     private IOverviewTimesheet overviewTimesheet;
     private UserService userService;
+    private ApprovalStatusService approvalStatusService;
 
     @Before
     public void setup() {
@@ -66,6 +68,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         userService = createMock(UserService.class);
         getMockContext().putBean("userService", userService);
+
+        approvalStatusService = createMock(ApprovalStatusService.class);
+        getMockContext().putBean("approvalStatusService", approvalStatusService);
     }
 
     @Test
@@ -286,6 +291,14 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     private void startAndReplayWithDefaultWeekOverview() {
+        List<ApprovalStatus> approvalStatuses = new ArrayList<ApprovalStatus>();
+        ApprovalStatus approvalStatus = new ApprovalStatus();
+        approvalStatus.setStatus(ApprovalStatusType.IN_PROGRESS);
+        approvalStatuses.add(approvalStatus);
+
+        expect(approvalStatusService.getApprovalStatusForUserWorkingForCustomer(isA(User.class), isA(Customer.class), isA(DateRange.class))).andReturn(approvalStatuses).anyTimes();
+
+
         startAndReplayWithLockedDays(Lists.<Date>newArrayList());
     }
 

@@ -2,12 +2,22 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<query name="ApprovalStatus.findApprovalStatusesForActivity">
- 	    <![CDATA[	
-		FROM ApprovalStatus approvalStatus
-		WHERE approvalStatus.activity =:activity AND 
+	<query name="ApprovalStatus.findApprovalStatusesForUserWorkingForCustomer">
+        <![CDATA[
+        FROM ApprovalStatus approvalStatus
+        WHERE approvalStatus.user =:user AND
+              approvalStatus.customer =:customer AND
 			  (approvalStatus.startDate <= :dateStart) AND
 			  (approvalStatus.endDate >= :dateEnd)
-    		 ]]>
+		 ]]>
+	</query>
+
+	<query name="ApprovalStatus.findApprovalStatusesForCustomers">
+        <![CDATA[
+        FROM ApprovalStatus approvalStatus
+        WHERE approvalStatus.customer in (:customers) AND
+			  (approvalStatus.startDate <= :dateStart) AND
+			  (approvalStatus.endDate >= :dateEnd)
+		 ]]>
 	</query>	
 </hibernate-mapping>

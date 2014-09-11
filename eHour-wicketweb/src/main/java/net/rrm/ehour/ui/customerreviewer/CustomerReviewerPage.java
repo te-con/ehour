@@ -16,10 +16,13 @@
 
 package net.rrm.ehour.ui.customerreviewer;
 
-import net.rrm.ehour.activity.service.ActivityService;
+import java.util.Calendar;
+import java.util.List;
+
+import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.ApprovalStatus;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -31,89 +34,92 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.Calendar;
-import java.util.List;
-
 /**
  * Customer Reviewer Page for viewing all Time-sheets for users
  **/
- @AuthorizeInstantiation("ROLE_CUSTOMERREVIEWER")
+@AuthorizeInstantiation("ROLE_CUSTOMERREVIEWER")
 public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
-	
-	@SpringBean
-	private CustomerService customerService;
-	
-	@SpringBean
-	private ActivityService activityService;
-	
-	private WebMarkupContainer customerReviewerPanel;
-	
-	private GreyRoundedBorder greyBorder;
-	
-	
-	/**
-	 * Default constructor
-	 */
-	public CustomerReviewerPage() {
-		super(new ResourceModel("customerReviewer.title"));
-		
-		EhourWebSession session = ((EhourWebSession) this.getSession());
-		Calendar overviewFor = session.getNavCalendar();
-		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-		
-		List<Activity> allActivitiesOfCustomerForMonth = getActivitiesForCustomersForWhichUserIsAReviewer();
-		
-        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", EhourWebSession.getUser(), false);
-        add(calendarPanel);
-		
-		greyBorder = new GreyRoundedBorder("customerReviewerFrame", new ResourceModel("customerReviewer.title"));
-		greyBorder.setOutputMarkupId(true);
-		add(greyBorder);
-		
-		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", allActivitiesOfCustomerForMonth);
-		addOrReplaceContentContainer(customerReviewerPanel);
-	}
-	
-	private List<Activity> getActivitiesForCustomersForWhichUserIsAReviewer() {
-		EhourWebSession session = ((EhourWebSession) this.getSession());
-		Calendar overviewFor = session.getNavCalendar();
-		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-		User user = EhourWebSession.getUser();
-		List<Customer> customersForWhichUserIsAReviewer = customerService.findAllCustomersForWhichUserIsaReviewer(user);
-		DateRange monthRange = DateUtil.calendarToMonthRange(overviewFor);
 
-        return activityService.getAllActivitiesForcustomers(customersForWhichUserIsAReviewer, monthRange);
-	}
+    @SpringBean
+    private CustomerService customerService;
 
-	/**
-     * Handle Ajax request
+    @SpringBean
+    private ApprovalStatusService approvalStatusService;
+
+    private WebMarkupContainer customerReviewerPanel;
+
+    private GreyRoundedBorder greyBorder;
+
+
+    /**
+     * Default constructor
+     *
+     * @param pageTitle
+     * @param model
      */
-	@Override
-	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
-		AjaxEventType type = ajaxEvent.getEventType();
-		AjaxRequestTarget target = ajaxEvent.getTarget();
+    public CustomerReviewerPage() {
+        super(new ResourceModel("customerReviewer.title"));
 
-		if (type == CalendarAjaxEventType.MONTH_CHANGE) {
-			calendarChanged(target);
-		}
-		return false;
-	}
+        EhourWebSession session = ((EhourWebSession) this.getSession());
+        Calendar overviewFor = session.getNavCalendar();
+        overviewFor.set(Calendar.DAY_OF_MONTH, 1);
 
-	private void calendarChanged(AjaxRequestTarget target) {
-		EhourWebSession session = ((EhourWebSession) this.getSession());
-		Calendar overviewFor = session.getNavCalendar();
-		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-		customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", getActivitiesForCustomersForWhichUserIsAReviewer());
-		addOrReplaceContentContainer(customerReviewerPanel, target);
-	}
-	
-	private void addOrReplaceContentContainer(WebMarkupContainer contentContainer)
+        List<ApprovalStatus> allApprovalStatuses = getApprovalStatusesForCustomersForWhichUserIsAReviewer();
+
+        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser(), false);
+        add(calendarPanel);
+
+        greyBorder = new GreyRoundedBorder("customerReviewerFrame", new ResourceModel("customerReviewer.title"));
+        greyBorder.setOutputMarkupId(true);
+        add(greyBorder);
+
+        customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, allApprovalStatuses);
+        addOrReplaceContentContainer(customerReviewerPanel);
+    }
+
+    private List<ApprovalStatus> getApprovalStatusesForCustomersForWhichUserIsAReviewer() {
+        EhourWebSession session = ((EhourWebSession) this.getSession());
+        Calendar overviewFor = session.getNavCalendar();
+        overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+        User user = session.getUser().getUser();
+        List<Customer> customersForWhichUserIsAReviewer = customerService.findAllCustomersForWhichUserIsaReviewer(user);
+        DateRange monthRange = DateUtil.calendarToMonthRange(overviewFor);
+
+        return approvalStatusService.getApprovalStatusesForCustomers(customersForWhichUserIsAReviewer, monthRange);
+    }
+
+    /**
+     * Handle Ajax request
+     *
+     * @param target
+     */
+    @Override
+    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        AjaxEventType type = ajaxEvent.getEventType();
+        AjaxRequestTarget target = ajaxEvent.getTarget();
+
+        if (type == CalendarAjaxEventType.MONTH_CHANGE) {
+            calendarChanged(target);
+        }
+        return false;
+    }
+
+    private void calendarChanged(AjaxRequestTarget target) {
+        EhourWebSession session = ((EhourWebSession) this.getSession());
+        Calendar overviewFor = session.getNavCalendar();
+        overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+        customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, getApprovalStatusesForCustomersForWhichUserIsAReviewer());
+        addOrReplaceContentContainer(customerReviewerPanel, target);
+    }
+
+    private void addOrReplaceContentContainer(WebMarkupContainer contentContainer)
     {
         contentContainer.setOutputMarkupId(true);
         greyBorder.addOrReplace(contentContainer);
@@ -121,8 +127,8 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 
     private void addOrReplaceContentContainer(WebMarkupContainer contentContainer, AjaxRequestTarget target)
     {
-    	addOrReplaceContentContainer(contentContainer);
-        target.add(contentContainer);
+        addOrReplaceContentContainer(contentContainer);
+        AjaxRequestTarget.get().addComponent(contentContainer);
     }
 
 }
