@@ -90,7 +90,7 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
         ArrayList<ApprovalStatus> allApprovalStatuses = new ArrayList<ApprovalStatus>();
         allApprovalStatuses.add(approvalStatus);
 
-        expect(approvalStatusService.getApprovalStatusForUserWorkingForCustomer(isA(User.class), isA(Customer.class), isA(DateRange.class))).andReturn(allApprovalStatuses);
+        expect(approvalStatusService.getApprovalStatusForUserWorkingForCustomer(isA(User.class), isA(Customer.class), isA(DateRange.class))).andReturn(allApprovalStatuses).anyTimes();
 
         replay(overviewTimesheet, approvalStatusService);
 		

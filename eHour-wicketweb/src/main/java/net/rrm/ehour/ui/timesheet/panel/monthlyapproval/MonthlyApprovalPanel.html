@@ -8,15 +8,16 @@
 		<span wicket:id="greyBorder" >
 		<div class="MonthAggregateTable">
 			<div class="AggregateHeader">
-				<div class="foldCell">&nbsp;</div>
-				<div class="textCell" style="width: 14%;margin-top:0;"><wicket:message key="overview.customer" /></div>
-				<div class="textCell" style="width: 15%;margin-top:0; float: right;"><wicket:message key="overview.approvalStatus" /></div>
+				<div class="textCell" style="width: 30%;margin-top:0;"><wicket:message key="overview.customer" /></div>
+				<div class="textCell" style="width: 30%;margin-top:0;"><wicket:message key="overview.approvalStatus" /></div>
+				<div class="textCell" style="width: 30%; float:right;margin-top:0;"><wicket:message key="monthlyapproval.action" /></div>				
 			</div>
 			<wicket:container wicket:id="monthlyApprovalStatus">
 				<div class="AggregateRow">
-					<div class="textCell" style="width: 14%" wicket:id="customerName">[customerName]</div>
+					<div class="textCell" style="width: 30%" wicket:id="customerName">[customerName]</div>
+					<div class="textCell" style="width: 30%" wicket:id="approvalStatus">[approvalStatus]</div>
 					<form wicket:id="monthlyApprovalStatusForm" style="padding: 0;margin:0">
-						<a style="float:right; font-size: 10px" wicket:id="monthlyApproveLink" >
+						<a style="width: 30%; float:right; font-size: 10px" wicket:id="monthlyApproveLink" >
 							<span><wicket:message key="overview.approvalStatus.requestForApproval" /></span>
 						</a>
 					</form>	
