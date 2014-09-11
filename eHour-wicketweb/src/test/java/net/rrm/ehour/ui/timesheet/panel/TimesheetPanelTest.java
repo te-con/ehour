@@ -76,6 +76,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         userPreferenceService = createMock(UserPreferenceService.class);
         getMockContext().putBean("userPreferenceService", userPreferenceService);
+
+        windChillUpdateService = createMock(WindChillUpdateService.class);
+        getMockContext().putBean("windChillUpdateService", windChillUpdateService);
     }
 
     @Test

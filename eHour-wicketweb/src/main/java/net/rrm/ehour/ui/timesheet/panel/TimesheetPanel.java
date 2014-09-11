@@ -18,7 +18,9 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
@@ -59,16 +61,18 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.*;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * The main panel - timesheet form
@@ -85,6 +89,9 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     private Form<TimesheetModel> timesheetForm;
     private static final String ID_FOLD_LINK = "foldLink";
     private static final String ID_FOLD_IMG = "foldImg";
+
+    @SpringBean
+    private WindChillUpdateService windChillUpdateService;
 
     public TimesheetPanel(String id, User user, Calendar forWeek) {
         super(id);
@@ -414,6 +421,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             List<ActivityStatus> failedProjects = persistTimesheetEntries();
 
             if (failedProjects.isEmpty()) {
+                sendToProjectLink();
                 target.add(updatePostPersistMessage());
             } else {
                 target.add(updateErrorMessage());
@@ -436,6 +444,32 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             form.visitFormComponents(new FormHighlighter(target));
         }
     }
+
+    private void sendToProjectLink() {
+        TimesheetModel model = (TimesheetModel) getDefaultModel();
+        Timesheet timesheet = model.getObject();
+
+        User user = EhourWebSession.getUser();
+
+        List<TimesheetEntry> entries = timesheet.getTimesheetEntries();
+        List<Activity> activities = new ArrayList<Activity>();
+
+        for (TimesheetEntry entry : entries) {
+            activities.add(entry.getEntryId().getActivity());
+        }
+
+        HttpServletRequest request = ((WebRequestCycle) RequestCycle.get()).getWebRequest().getHttpServletRequest();
+
+        try {
+            windChillUpdateService.updateProjectLink(user, request, activities);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (RemoteException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
+
 
     private class GuardedWeekLink extends GuardedAjaxLink<Void> {
         private int delta;
