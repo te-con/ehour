@@ -39,6 +39,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
@@ -82,10 +83,10 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 
 		@SuppressWarnings("unchecked")
         List<IColumn<Activity, Date>> columns = Lists.newArrayList();
-        columns.add(new PropertyColumn<Activity>(new ResourceModel("customerreviewer.timesheet.column.customer"), "project.customer.name");
-        columns.add(new PropertyColumn<Activity>(new ResourceModel("customerreviewer.timesheet.column.user"), "assignedUser.firstName");
+        columns.add(new PropertyColumn<Activity, Date>(new ResourceModel("customerreviewer.timesheet.column.customer"), "project.customer.name");
+        columns.add(new PropertyColumn<Activity, Date>(new ResourceModel("customerreviewer.timesheet.column.user"), "assignedUser.firstName");
         columns.add(new DateColumn(new ResourceModel("customerreviewer.timesheet.column.period"), getConfig());
-		columns[3] = new AbstractColumn<Activity>(new Model<String>("Status")) {
+        columns.add(new AbstractColumn<Activity, Date>(new Model<String>("Status")) {
 			@Override
 			public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
 				cellItem.add(new Label(componentId, getStatus(rowModel)));
@@ -103,29 +104,29 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 				return result;
 			}
 
-		};
-		columns[4] = new AbstractColumn<Activity>(new Model<String>("view")) {
-			@Override
-			public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
-				cellItem.add(new ViewTimesheetPanel(componentId, rowModel));
-			}
-		};
-		columns[5] = new AbstractColumn<Activity>(new Model<String>("approve")) {
-			@Override
-			public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
-				AcceptPanel acceptPanel = new AcceptPanel(componentId, rowModel);
-				Activity activity = rowModel.getObject();
-				ApprovalStatus approvalStatusForActivity = findApprovalStatusForActivity(activity);
-				if(approvalStatusForActivity!=null && (approvalStatusForActivity.getStatus().equals(ApprovalStatusType.APPROVED) || approvalStatusForActivity.getStatus().equals(ApprovalStatusType.IN_PROGRESS))) {
-					acceptPanel.setEnabled(false);
-				}
-				if(approvalStatusForActivity == null) {
-					acceptPanel.setEnabled(false);
-				}
-				cellItem.add(acceptPanel);
-			}
-		};
-		columns[6] = new AbstractColumn<Activity>(new Model<String>("reject")) {
+		});
+        columns.add(new AbstractColumn<Activity, Date>(new Model<String>("view")) {
+            @Override
+            public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
+                cellItem.add(new ViewTimesheetPanel(componentId, rowModel));
+            }
+        });
+        columns.add(new AbstractColumn<Activity, Date>(new Model<String>("approve")) {
+            @Override
+            public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
+                AcceptPanel acceptPanel = new AcceptPanel(componentId, rowModel);
+                Activity activity = rowModel.getObject();
+                ApprovalStatus approvalStatusForActivity = findApprovalStatusForActivity(activity);
+                if (approvalStatusForActivity != null && (approvalStatusForActivity.getStatus().equals(ApprovalStatusType.APPROVED) || approvalStatusForActivity.getStatus().equals(ApprovalStatusType.IN_PROGRESS))) {
+                    acceptPanel.setEnabled(false);
+                }
+                if (approvalStatusForActivity == null) {
+                    acceptPanel.setEnabled(false);
+                }
+                cellItem.add(acceptPanel);
+            }
+        });
+        columns.add(new AbstractColumn<Activity, Date>(new Model<String>("reject")) {
 			@SuppressWarnings({"rawtypes", "unchecked" })
 			@Override
 			public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
@@ -133,7 +134,7 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 			}
 		};
 		
-		AjaxFallbackDefaultDataTable<Activity> table = new AjaxFallbackDefaultDataTable<Activity>("data", columns, new CustomerReviewerDataProvider(allActivitiesOfCustomerForMonth), 20);
+		AjaxFallbackDefaultDataTable<Activity, Date> table = new AjaxFallbackDefaultDataTable<Activity, Date>("data", columns, new CustomerReviewerDataProvider(allActivitiesOfCustomerForMonth), 20);
 		
 		form.setOutputMarkupId(true);
 		form.add(table);
@@ -184,7 +185,7 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 			
 			rejectTimesheetModalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
 				public void onClose(AjaxRequestTarget target) {
-					target.addComponent(dataContainer);
+					target.add(dataContainer);
 				}
 			});
 			rejectTimesheetModalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback() {
@@ -217,7 +218,7 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 					if (statusForActivity != null) {
 						statusForActivity.setStatus(ApprovalStatusType.APPROVED);
 						approvalStatusService.persist(statusForActivity);
-						target.addComponent(dataContainer);
+						target.add(dataContainer);
 					}
 				}
 			});
