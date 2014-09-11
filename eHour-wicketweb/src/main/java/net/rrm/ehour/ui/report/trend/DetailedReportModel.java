@@ -123,7 +123,7 @@ public class DetailedReportModel extends TreeReportModel {
                     case 2:
                         return new FlatProjectNode(flatElement);
                     case 3:
-                        return new FlatProjectCodeNode(flatElement);
+                        return new FlatActivityNode(flatElement);
                     case 4:
                         return new FlatUserNode(flatElement);
                     case 5:

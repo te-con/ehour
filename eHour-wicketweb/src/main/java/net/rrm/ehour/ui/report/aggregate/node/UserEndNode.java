@@ -37,7 +37,9 @@ public class UserEndNode extends ReportNode {
         super(aggregate.getActivity().getPK(), aggregate.isEmptyEntry());
         hours = aggregate.getHours();
 
-        this.columnValues = new Serializable[]{aggregate.getActivity().getAssignedUser().getFullName(), aggregate.getHours()};
+        this.columnValues = new Serializable[]{aggregate.getActivity().getFullName(),
+                aggregate.getActivity().getAssignedUser().getFullName(),
+                aggregate.getHours()};
     }
 
     @Override

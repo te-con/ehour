@@ -14,30 +14,37 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.report.aggregate.node;
-
-import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
-import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.node.ReportNode;
+package net.rrm.ehour.ui.report.trend.node;
 
 import java.io.Serializable;
 
-/**
- * Project node displaying project full name 
- */
-public class ProjectNode extends ReportNode
+import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.report.node.ReportNode;
+
+@SuppressWarnings("serial")
+public class FlatActivityNode extends ReportNode
 {
-	private static final long serialVersionUID = -8068372785700592324L;
-
-	public ProjectNode(ActivityAggregateReportElement aggregate) {
-        super(aggregate.getActivity().getProject().getPK(), aggregate.isEmptyEntry());
-        this.columnValues = new String[]{aggregate.getActivity().getProject().getName()};
-    }
-
-    @Override
-    protected Serializable getElementId(ReportElement element)
+	
+	/**
+	 * 
+	 * @param element
+	 * @param hierarchyLevel
+	 */
+	public FlatActivityNode(FlatReportElement element, int hierarchyLevel)
     {
-        ActivityAggregateReportElement aggregate = (ActivityAggregateReportElement)element;
-        return aggregate.getActivity().getProject().getPK();
+		this.id = element.getAssignmentId();
+		this.columnValues = new String[]{element.getActivityName()};
+		this.hierarchyLevel = hierarchyLevel;
     }
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
+	 */
+	@Override
+	protected Serializable getElementId(ReportElement element)
+	{
+		return ((FlatReportElement)element).getAssignmentId();
+	}
 }

@@ -32,7 +32,7 @@ public class FlatProjectNode extends ReportNode {
     public FlatProjectNode(FlatReportElement element) {
 
         super(element.getProjectId(), element.isEmptyEntry());
-        this.columnValues = new String[]{element.getProjectName(), element.getActivityName()};
+        this.columnValues = new String[]{element.getProjectName()};
     }
 
     @Override
