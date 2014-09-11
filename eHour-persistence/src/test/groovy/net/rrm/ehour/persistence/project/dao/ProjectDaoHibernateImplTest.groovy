@@ -4,6 +4,9 @@ import net.rrm.ehour.domain.*
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.annotation.ExpectedException;
+import static junit.framework.Assert.*
+import net.rrm.ehour.domain.*
 
 import static org.junit.Assert.*
 
@@ -82,9 +85,23 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         assertEquals(2, r.size())
     }
 
-    @Test
-    public void shouldFindActiveProjectsWhereUserIsPM() {
-        def res = projectDAO.findActiveProjectsWhereUserIsPM(new User(1))
-        assertEquals(10, res.iterator().next().getPK())
-    }
+  @Test
+  public void shouldFindActiveProjectsWhereUserIsPM()
+  {
+    def res = projectDAO.findActiveProjectsWhereUserIsPM(new User(1))
+    assertEquals(1, res.iterator().next().getPK())
+  }
+  
+  @Test
+  public void shouldFindProjectWithExistingCode() {
+	  Project existingProject = projectDAO.findByProjectCode("EHR");
+	  assertNotNull(existingProject);
+	  assertEquals("eHour", existingProject.getName());
+  }
+  
+  @Test
+  public void shouldReturnNullWhenFindingProjectWithNonExistingCode() {
+	  Project nonExistingProject = projectDAO.findByProjectCode("NON-EXISTING-CODE");
+	  assertNull(nonExistingProject);
+  }
 }

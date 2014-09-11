@@ -1,4 +1,10 @@
 --
+-- Modification for table `PROJECT`
+--
+alter table PROJECT add unique (PROJECT_CODE);
+alter table PROJECT add unique (PROJECT_CODE, ACTIVE);
+
+--
 -- Modification for table `AUDIT`
 --
 

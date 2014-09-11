@@ -23,8 +23,7 @@ import net.rrm.ehour.exception.ParentChildConstraintException;
 
 import java.util.List;
 
-public interface ProjectService
-{
+public interface ProjectService {
 	/**
 	 * Get all (active & inactive) projects
 	 */
@@ -42,6 +41,14 @@ public interface ProjectService
 	 */
 	Project getProject(Integer projectId) throws ObjectNotFoundException;
 	
+	/**
+	 * Searches and if found returns {@link Project} having the same ProjectCode
+	 * as passed in the parameter else returns <code>null</code>
+	 * @param projectCode
+	 * @return Project
+	 */
+	public Project getProject(String projectCode);
+
 	/**
 	 * Get project and check deletability
 	 * @param projectId

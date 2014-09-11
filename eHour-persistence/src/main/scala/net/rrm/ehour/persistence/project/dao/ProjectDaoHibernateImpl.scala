@@ -36,6 +36,15 @@ class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, P
     criteria.setFetchMode("projectManager.userRoles", FetchMode.JOIN)
     ExponentialBackoffRetryPolicy retry criteria.list.asInstanceOf[util.List[Project]]
   }
+
+  override def findByProjectCode(projectCode: String): Project = {
+    val projects = findByNamedQuery("Project.findByProjectCode", "projectCode", projectCode, CacheRegion)
+
+    if (projects.isEmpty)
+      null
+    else
+      projects.get(0)
+  }
 }
 
 

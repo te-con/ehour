@@ -71,6 +71,40 @@ public class ProjectServiceImpl implements ProjectService {
         if (project == null) {
             throw new ObjectNotFoundException("Project not found for id " + projectId);
         }
+	@Override
+	public Project getProject(String projectCode) {
+		return projectDAO.findByProjectCode(projectCode);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
+	 */
+	public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException
+	{
+		Project project = getProject(projectId);
+		
+		setProjectDeletability(project);
+		
+		return project;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#setProjectDeletability(net.rrm.ehour.persistence.persistence.project.domain.Project)
+	 */
+	public void setProjectDeletability(Project project)
+	{
+		List<Integer> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
+		List<ActivityAggregateReportElement> aggregates = null;
+		
+		if (ids != null && ids.size() > 0)
+		{
+			aggregates = aggregateReportService.getHoursPerActivity(ids);
+		}
+		
+		project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
+	}
 
         return project;
     }

@@ -112,6 +112,13 @@
 			size="1" default="Y" autoIncrement="false" />
 		<column name="PROJECT_MANAGER" primaryKey="false" required="false"
 			type="INTEGER" size="10" autoIncrement="false" />
+		<unique name="PROJECT_CODE">
+			<unique-column name="PROJECT_CODE" />
+		</unique>
+		<unique name="PROJECT_CODE_ACTIVE">
+			<unique-column name="PROJECT_CODE" />
+			<unique-column name="ACTIVE" />
+		</unique>			
 		<foreign-key foreignTable="customer" name="PROJECT_fk">
 			<reference local="CUSTOMER_ID" foreign="CUSTOMER_ID" />
 		</foreign-key>

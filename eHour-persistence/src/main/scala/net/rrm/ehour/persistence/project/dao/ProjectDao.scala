@@ -40,5 +40,11 @@ trait ProjectDao extends GenericDao[Integer, Project] {
    * Find all projects which have a defined projectmanager
    */
   def findAllProjectsWithPmSet(): util.List[Project]
+
+  /**
+   * Searches and if found returns {@link Project} having the same projectCode
+   * as the one passed in parameter
+   */
+  def findByProjectCode(projectCode: String): Project
 }
 
