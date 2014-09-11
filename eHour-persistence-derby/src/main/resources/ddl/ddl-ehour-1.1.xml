@@ -40,7 +40,8 @@
 			<unique-column name="CODE" />
 			<unique-column name="ACTIVE" />
 		</unique>
-	</table>	
+	</table>
+	
 	<table name="mail_log">
 		<column name="MAIL_LOG_ID" primaryKey="true" required="true"
 			type="INTEGER" size="10" autoIncrement="true" />
@@ -354,8 +355,8 @@
 	<table name="activities">
 		<column name="ACTIVITY_ID" primaryKey="true" required="true"
 			type="INTEGER" size="11" autoIncrement="true" />
-		<column name="CODE" primaryKey="false" required="false" type="VARCHAR"
-			size="128" autoIncrement="false" />	
+		<column name="CODE" primaryKey="false" required="true" type="VARCHAR"
+			size="32" autoIncrement="false" />
 		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
 			size="255" autoIncrement="false" />
 		<column name="DATE_START" primaryKey="false" required="false"
@@ -369,7 +370,14 @@
 		<column name="PROJECT_ID" primaryKey="false" required="false"
 			type="INTEGER" size="11" autoIncrement="false" />
 		<column name="USER_ID" primaryKey="false" required="false"
-			type="INTEGER" size="11" autoIncrement="false" />						
+			type="INTEGER" size="11" autoIncrement="false" />
+		<unique name="ACTIVITY_CODE">
+			<unique-column name="CODE" />
+		</unique>
+		<unique name="ACTIVITY_CODE_ACTIVE">
+			<unique-column name="CODE" />
+			<unique-column name="ACTIVE" />
+		</unique>							
 		<foreign-key foreignTable="project" name="ACTIVITY_fk1">
 			<reference local="PROJECT_ID" foreign="PROJECT_ID" />
 		</foreign-key>

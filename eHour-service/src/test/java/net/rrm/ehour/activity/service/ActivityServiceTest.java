@@ -167,4 +167,27 @@ public class ActivityServiceTest {
 		Assert.assertEquals(2, validActivitiesForUser.size());
 		verify(activityDao, activityStatusService);
 	}
+	
+	@Test
+	public void shouldReturnActivityForAnExistingCode() {
+		expect(activityDao.findByCode("EXISTINGCODE")).andReturn(new Activity());
+		
+		replay(activityDao);
+		
+		Activity activity = activityService.getActivity("EXISTINGCODE");
+		verify(activityDao);
+		Assert.assertNotNull(activity);
+	}
+
+	@Test
+	public void shouldReturnNullWhenSearchingForNonExistingCode() {
+		expect(activityDao.findByCode("NON-EXISTINGCODE")).andReturn(null);
+		
+		replay(activityDao);
+		
+		Activity activity = activityService.getActivity("NON-EXISTINGCODE");
+		verify(activityDao);
+		Assert.assertNull(activity);
+	}
+	
 }

@@ -22,8 +22,9 @@ public class Activity extends DomainObject<Integer, Activity> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ACTIVITY_ID")
 	private Integer id;
-
-	@Column(name = "CODE", length = 128)
+	
+	@Column(name = "CODE", nullable = false, length = 128)
+	@NotNull
 	private String code;
 
 	@Column(name = "NAME")

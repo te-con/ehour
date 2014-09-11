@@ -72,79 +72,7 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         Assert.assertNotNull(retrievedId);
         Assert.assertEquals("testActivity", retrievedId.getName());
 	}
-	
-	@Test
-	public void shouldFindAllActivitiesForCustomersInDateRange() {
-		Customer customer1 = new Customer("IBM", "International Business Machine", "Hardware and Software",true);
-		customerDao.persist(customer1);
-		Assert.assertNotNull(customer1.getCustomerId());
 
-		Project project1 = createProject("Grid Computing", "GC", "contact", true, true, customer1);
-		projectDao.persist(project1);
-		Assert.assertNotNull(project1.getProjectId());
-		
-		User retrievedUser1 = userDao.findById(1);
-		Assert.assertNotNull(retrievedUser1);
-		Assert.assertEquals("thies", retrievedUser1.getUsername());
-
-        Activity activity1 = createActivity("activity1", Boolean.TRUE, retrievedUser1, "activity1");
-		activity1.setDateStart(new GregorianCalendar(2010, 5, 1).getTime());
-		activity1.setDateEnd(new GregorianCalendar(2010, 7, 1).getTime());
-		activity1.setProject(project1);
-		
-		activityDao.persist(activity1);
-
-        Activity activity2 = createActivity("activity2", Boolean.TRUE, retrievedUser1, "activity2");
-		activity2.setDateStart(new GregorianCalendar(2010, 5, 1).getTime());
-		activity2.setDateEnd(new GregorianCalendar(2010, 7, 1).getTime());
-		activity2.setProject(project1);
-		
-		activityDao.persist(activity2);
-
-		Customer customer2 = new Customer("MS", "Microsoft", "Software", true);
-		customerDao.persist(customer2);
-		Assert.assertNotNull(customer2.getCustomerId());
-
-		Project project2 = createProject("Windows 8", "Win8", "contact", true, true, customer2);
-		projectDao.persist(project2);
-		Assert.assertNotNull(project2.getProjectId());
-
-		User retrievedUser2 = userDao.findById(2);
-		Assert.assertNotNull(retrievedUser2);
-		Assert.assertEquals("admin", retrievedUser2.getUsername());
-
-        Activity activity3 = createActivity("activity3", Boolean.TRUE, retrievedUser2, "activity3");
-		activity3.setDateStart(new GregorianCalendar(2010, 5, 1).getTime());
-		activity3.setDateEnd(new GregorianCalendar(2010, 7, 1).getTime());
-		activity3.setProject(project2);
-		activityDao.persist(activity3);
-		
-		List<Customer> customers = new ArrayList<Customer>();
-		customers.add(customer1);
-
-		DateRange dateRange = new DateRange();
-		dateRange.setDateStart(new GregorianCalendar(2010, 5, 1).getTime());
-		dateRange.setDateEnd(new GregorianCalendar(2010, 7, 1).getTime());
-
-        List<Activity> activitiesForCustomer1 = activityDao.findActivitiesForCustomers(customers, dateRange);
-		Assert.assertEquals(2, activitiesForCustomer1.size());
-		Assert.assertTrue(activitiesForCustomer1.contains(activity1));
-		Assert.assertTrue(activitiesForCustomer1.contains(activity2));
-
-		customers.clear();
-		customers.add(customer2);
-		
-		List<Activity> activitiesForCustomer2 = activityDao.findActivitiesForCustomers(customers, dateRange);
-		Assert.assertEquals(1, activitiesForCustomer2.size());
-		Assert.assertTrue(activitiesForCustomer2.contains(activity3));
-		
-		dateRange.setDateEnd(new GregorianCalendar(2011, 5, 1).getTime());
-		dateRange.setDateStart(new GregorianCalendar(2011, 7, 1).getTime());
-		
-		activitiesForCustomer2 = activityDao.findActivitiesForCustomers(customers, dateRange);
-		Assert.assertEquals(0, activitiesForCustomer2.size());
-	}
-	
 	private Project createProject(String projectName, String projectCode, String contractName, boolean isActive, boolean isBillable, Customer customer) {
 		Project project = new Project();
 		project.setActive(isActive);
@@ -381,7 +309,7 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         Assert.assertTrue(activitiesForCustomer2.contains(activity3));
     }
 
- /*   @Test
+    @Test
     public void shouldFindAllActivitiesForCustomersInDateRange() {
         Customer customer1 = new Customer("IBM", "International Business Machine", "Hardware and Software",true);
         customerDao.persist(customer1);
@@ -452,8 +380,8 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
         activitiesForCustomer2 = activityDao.findActivitiesForCustomers(customers, dateRange);
         Assert.assertEquals(0, activitiesForCustomer2.size());
-    }*/
-/*
+    }
+
 
     @Test
     public void shouldFindActivityWithAnExistingCode() {
@@ -465,13 +393,13 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         Activity activityWithExistingCode = activityDao.findByCode("ta");
         Assert.assertNotNull(activityWithExistingCode);
     }
-*/
 
-//    @Test
-//    public void shouldReturnNullWithANonExistingCode() {
-//        Activity activityWithNonExistingCode = activityDao.findByCode("NON-EXISTING-CODE");
-//        Assert.assertNull(activityWithNonExistingCode);
-//    }
+
+    @Test
+    public void shouldReturnNullWithANonExistingCode() {
+        Activity activityWithNonExistingCode = activityDao.findByCode("NON-EXISTING-CODE");
+        Assert.assertNull(activityWithNonExistingCode);
+    }
 
     private Activity createActivity(String activityName, Boolean isActive, User assignedUser, String activityCode) {
         Activity activity = new Activity();

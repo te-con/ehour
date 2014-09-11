@@ -17,27 +17,42 @@ public interface ActivityService {
 
 	/**
 	 * Returns an Activity with passed activityId
+	 * 
 	 * @param activityid
 	 * @return
 	 * @throws ObjectNotFoundException
 	 */
 	Activity getActivity(Integer activityid) throws ObjectNotFoundException;
-	
+
 	/**
-	 * Saves or Updates an already persisted {@link Activity} in underlying data-storage
+	 * Searches and if found returns an {@link Activity} having the code same as
+	 * passed in the parameter.
+	 * 
+	 * @param activityCode
+	 * @return
+	 */
+	Activity getActivity(String code);
+
+	/**
+	 * Saves or Updates an already persisted {@link Activity} in underlying
+	 * data-storage
+	 * 
 	 * @param activity
 	 * @return
 	 */
 	Activity persistActivity(Activity activity);
 
 	/**
-	 * Archives and not hard delete the passed {@link Activity} in underlying data-storage
+	 * Archives and not hard delete the passed {@link Activity} in underlying
+	 * data-storage
+	 * 
 	 * @param activityId
 	 */
 	void deleteActivity(Integer activityId);
-	
+
 	/**
 	 * Returns all Active/Inactive {@link Activity}s for passed {@link User}
+	 * 
 	 * @param assignedUser
 	 * @return
 	 */
@@ -45,6 +60,7 @@ public interface ActivityService {
 
 	/**
 	 * Returns all Active/Inactive {@link Activity}s for passed {@link Project}
+	 * 
 	 * @param project
 	 * @return
 	 */
@@ -54,12 +70,14 @@ public interface ActivityService {
 
 	/**
 	 * Returns all Active/Inactive {@link Activity}s
+	 * 
 	 * @return
 	 */
 	List<Activity> getActivities();
 
 	/**
 	 * gets all activities of an user
+	 * 
 	 * @param userId
 	 * @param dateRange
 	 * @return
@@ -68,6 +86,7 @@ public interface ActivityService {
 
 	/**
 	 * gets all activity of a customer
+	 * 
 	 * @param customer
 	 * @return
 	 */

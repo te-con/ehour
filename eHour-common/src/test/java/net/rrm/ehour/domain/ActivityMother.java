@@ -9,6 +9,7 @@ public class ActivityMother {
 
         activity.setActive(true);
         activity.setId(1);
+        activity.setCode("1");
         activity.setAllottedHours(100.0f);
 
         return activity;
@@ -58,8 +59,9 @@ public class ActivityMother {
         activity = new Activity();
         activity.setProject(prj);
         activity.setId(activityId);
+        activity.setCode(String.valueOf(activityId));
         activity.setAllottedHours((float) activityId);
-        activity.setAvailableHours(new Float(activityId));
+        activity.setAvailableHours((float) activityId);
 
         user = UserObjectMother.createUser();
         user.setUserId(userId);

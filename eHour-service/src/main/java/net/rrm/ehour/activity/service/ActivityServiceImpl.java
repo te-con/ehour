@@ -123,4 +123,9 @@ public class ActivityServiceImpl implements ActivityService
         return activityDao.findActivitiesForCustomers(customers, dateRange);
     }
 
+	@Override
+	public Activity getActivity(String code) {
+		return activityDao.findByCode(code);
+	}
+
 }
