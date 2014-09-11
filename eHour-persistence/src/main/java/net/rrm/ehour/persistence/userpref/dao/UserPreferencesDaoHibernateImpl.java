@@ -7,8 +7,8 @@ import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
 
 import org.springframework.stereotype.Repository;
 
-@Repository("userPreferencesDao")
-public class UserPreferencesDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<UserPreference, Integer> implements UserPreferencesDao {
+@Repository("userPreferenceDao")
+public class UserPreferencesDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<UserPreference, String> implements UserPreferencesDao {
 
 	public UserPreferencesDaoHibernateImpl() {
 		super(UserPreference.class);

@@ -3,6 +3,7 @@ package net.rrm.ehour.persistence.userpref.dao;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserPreference;
 import net.rrm.ehour.domain.UserPreferenceType;
+import net.rrm.ehour.domain.UserPreferenceValueType;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 
@@ -32,9 +33,10 @@ public class UserPreferencesDaoHibernateImplTest extends AbstractAnnotationDaoTe
 		Assert.assertNotNull(user);
 		UserPreference userPreference = new UserPreference(user, UserPreferenceType.DISABLE_WEEKENDS);
 		userPreferencesDao.persist(userPreference);
-		Assert.assertNotNull(userPreference.getUserPreferenceId());
-		UserPreference retrievedUserPreferences = userPreferencesDao.findById(userPreference.getPK());
-		Assert.assertEquals(UserPreferenceType.DISABLE_WEEKENDS, retrievedUserPreferences.getUserPreferenceType());
+		Assert.assertNotNull(userPreference.getUserPreferenceKey());
+		UserPreference retrievedUserPreference = userPreferencesDao.findById(userPreference.getUserPreferenceKey());
+		Assert.assertEquals(UserPreferenceType.DISABLE_WEEKENDS.toString(), retrievedUserPreference.getUserPreferenceKey());
+		Assert.assertEquals(UserPreferenceValueType.yes.name(), retrievedUserPreference.getUserPreferenceValue());
 	}
 
 }

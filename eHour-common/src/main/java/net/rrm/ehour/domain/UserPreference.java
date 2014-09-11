@@ -18,13 +18,11 @@ package net.rrm.ehour.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -38,24 +36,26 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "USER_PREFERENCES")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class UserPreference extends DomainObject<Integer, UserPreference> {
+public class UserPreference extends DomainObject<String, UserPreference> {
 	private static final long serialVersionUID = -5457250186090868408L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "USER_PREFERENCE_ID")
-	private Integer userPreferenceId;
+	@Column(name = "USER_PREFERENCE_KEY", nullable = false, length = 255)
+	@NotNull
+	private String userPreferenceKey;
+
+	@Column(name = "USER_PREFERENCE_VALUE" , nullable = false, length = 255)
+	@NotNull
+	private String userPreferenceValue;
 
 	@ManyToOne
+	@JoinColumn(name = "USER_ID")
 	private User user;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "USER_PREFERENCE_TYPE", length = 32)
-	private UserPreferenceType userPreferenceType;
 
 	public UserPreference(User user, UserPreferenceType userPreferenceType) {
 		this.user = user;
-		this.userPreferenceType = userPreferenceType;
+		this.userPreferenceValue = userPreferenceType.getUserPreferenceValueType().name();
+		this.userPreferenceKey = userPreferenceType.name();
 	}
 
 	/*
@@ -64,8 +64,8 @@ public class UserPreference extends DomainObject<Integer, UserPreference> {
 	 * @see net.rrm.ehour.domain.DomainObject#getPK()
 	 */
 	@Override
-	public Integer getPK() {
-		return userPreferenceId;
+	public String getPK() {
+		return userPreferenceKey;
 	}
 
 	/*
@@ -74,7 +74,8 @@ public class UserPreference extends DomainObject<Integer, UserPreference> {
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(UserPreference object) {
-		return new CompareToBuilder().append(this.getUser(), object.getUser()).toComparison();
+		return new CompareToBuilder().append(this.getUserPreferenceKey(), object.getUserPreferenceKey())
+				.append(this.getUser(), object.getUser()).toComparison();
 	}
 
 	/*
@@ -88,7 +89,8 @@ public class UserPreference extends DomainObject<Integer, UserPreference> {
 
 		if (other instanceof UserPreference) {
 			castOther = (UserPreference) other;
-			return new EqualsBuilder().append(this.getUser(), castOther.getUser()).isEquals();
+			return new EqualsBuilder().append(this.getUserPreferenceKey(), ((UserPreference) other).getUserPreferenceKey())
+					.append(this.getUser(), castOther.getUser()).isEquals();
 		} else {
 			return false;
 		}
@@ -101,7 +103,7 @@ public class UserPreference extends DomainObject<Integer, UserPreference> {
 	 */
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(getUser()).toHashCode();
+		return new HashCodeBuilder().append(getUserPreferenceKey()).append(getUser()).toHashCode();
 	}
 
 	public User getUser() {
@@ -112,20 +114,20 @@ public class UserPreference extends DomainObject<Integer, UserPreference> {
 		this.user = user;
 	}
 
-	public Integer getUserPreferenceId() {
-		return userPreferenceId;
+	public String getUserPreferenceKey() {
+		return userPreferenceKey;
 	}
 
-	public void setUserPreferenceId(Integer userPreferenceId) {
-		this.userPreferenceId = userPreferenceId;
+	public void setUserPreferenceKey(String userPreferenceKey) {
+		this.userPreferenceKey = userPreferenceKey;
 	}
 
-	public UserPreferenceType getUserPreferenceType() {
-		return userPreferenceType;
+	public String getUserPreferenceValue() {
+		return userPreferenceValue;
 	}
 
-	public void setUserPreferenceType(UserPreferenceType userPreferenceType) {
-		this.userPreferenceType = userPreferenceType;
+	public void setUserPreferenceValue(String userPreferenceValue) {
+		this.userPreferenceValue = userPreferenceValue;
 	}
 
 }
