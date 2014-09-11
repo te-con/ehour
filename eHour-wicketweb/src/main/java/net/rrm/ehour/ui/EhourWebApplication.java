@@ -62,6 +62,7 @@ import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import java.util.Comparator;
@@ -80,6 +81,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private EhourSystemConfig ehourSystemConfig;
 
     private String build;
+
+    @Value("${richemont.projectlinkUrl}")
+    private String projectLinkUrl;
 
     public void init() {
         if (!initialized) {
@@ -308,5 +312,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     public Boolean isBookWholeWeekEnabled() {
         return ehourSystemConfig.isBookWholeWeekEnabled();
+    }
+
+    public String getProjectLinkUrl() {
+        return projectLinkUrl;
     }
 }

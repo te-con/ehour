@@ -20,6 +20,7 @@ import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
+import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -45,6 +46,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.AbstractLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -110,7 +112,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 	protected void populateItem(ListItem<TimesheetRow> item) {
 		final TimesheetRow row = item.getModelObject();
 
-		item.add(createBookWholeWeekLink(row));
+        item.add(createProjectLinkLink(row));
 		item.add(new Label("activityName", row.getActivity().getName()));
 		item.add(new Label("availableHours", new PropertyModel<Float>(row.getActivity(), "availableHours")));
 		item.add(createStatusLabel(item));
@@ -153,27 +155,22 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 		}
 	}
 
-	private AjaxLink<Void> createBookWholeWeekLink(final TimesheetRow row)
-	{
-		AjaxLink<Void> projectLink = new AjaxLink<Void>("bookWholeWeek")
-		{
-			private static final long serialVersionUID = -663239917205218384L;
+    private ExternalLink createProjectLinkLink(final TimesheetRow row) {
 
-			@Override
-			public void onClick(AjaxRequestTarget target)
-			{
-				row.bookRemainingHoursOnRow();
-				target.addComponent(form);
-			}
-		};
-		
-		ContextImage img = new ContextImage("bookImg", new Model<String>("img/check_all_off.png"));
-		CommonJavascript.addMouseOver(img, this, getContextRoot() + "img/check_all_on.png", getContextRoot() + "img/check_all_off.png", "bwh");
-		projectLink.add(img);
-		
-		return projectLink;
-	}
+        String activityCode = row.getActivity().getCode();
 
+        String projectLinkUrl = ((EhourWebApplication) getApplication()).getProjectLinkUrl();
+
+        String updatedUrl = projectLinkUrl.replace("!{WORKITEM}", activityCode);
+
+        ExternalLink link = new ExternalLink("projectLinkLink", updatedUrl);
+
+
+        ContextImage img = new ContextImage("projectLinkLinkImg", new Model<String>("img/external_link.gif"));
+        link.add(img);
+
+        return link;
+    }
     private String getContextRoot() {
         return getRequest().getRelativePathPrefixToContextRoot();
     }
