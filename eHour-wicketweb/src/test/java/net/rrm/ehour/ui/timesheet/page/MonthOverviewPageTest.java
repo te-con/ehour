@@ -21,10 +21,14 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.notNull;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.isA;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
-import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
+import net.rrm.ehour.activity.service.ActivityService;
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
@@ -48,10 +52,8 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
 		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
 		getMockContext().putBean(overviewTimesheet);
 
-        ApprovalStatusService approvalStatusService = createMock(ApprovalStatusService.class);
-
-        getMockContext().putBean("timesheetService", timesheetService);
-        getMockContext().putBean("approvalStatusService", approvalStatusService);
+        ActivityService activityService = createMock(ActivityService.class);
+        getMockContext().putBean("activityService", activityService);
 
 
         MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
@@ -59,14 +61,16 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
 		TimesheetOverview overview = new TimesheetOverview();
 		
 		expect(overviewTimesheet.getTimesheetOverview((User)notNull(), (Calendar)notNull()))
-				.andReturn(overview);					
+				.andReturn(overview);
 
-		replay(overviewTimesheet);
+        expect(activityService.getActivitiesForUser(isA(Integer.class), isA(DateRange.class))).andReturn(new ArrayList<Activity>());
+
+		replay(overviewTimesheet, activityService);
 		
 		getTester().startPage(MonthOverviewPage.class);
 		getTester().assertRenderedPage(MonthOverviewPage.class);
 		getTester().assertNoErrorMessage();
 		
-		verify(overviewTimesheet);
+		verify(overviewTimesheet, activityService);
 	}
 }

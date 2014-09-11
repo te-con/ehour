@@ -20,9 +20,12 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.timesheet.panel.monthlyapproval.MonthlyApprovalPanel;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -54,6 +57,7 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
 
         add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
         add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
+        add(new MonthlyApprovalPanel("monthlyApproval"));
     }
 
 
@@ -61,7 +65,7 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
         super(id);
 
         setOutputMarkupId(true);
-        EhourWebSession session = ((EhourWebSession)this.getSession());
+        EhourWebSession session = EhourWebSession.getSession();
 
         Calendar overviewFor = session.getNavCalendar();
         overviewFor.set(Calendar.DAY_OF_MONTH, 1);
@@ -69,6 +73,16 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
         TimesheetOverview timesheetOverview = overviewTimesheet.getTimesheetOverview(user, overviewFor);
 
         add(new ProjectOverviewPanel("projectOverview", overviewFor, timesheetOverview.getProjectStatus()));
+
+        MarkupContainer markupContainer = projectOverviewPanel.getLabel().getParent();
+
+        
+        Label label = new Label("title", new Strin
+                gResourceModel("projectoverview.aggregatedPerMonthforuser", this, null,
+                new Object[] { user.getFirstName(), new DateModel(overviewFor,  EhourWebSession.getSession().getEhourConfig(), DateModel.DATESTYLE_MONTHONLY) }));
+
+        markupContainer.addOrReplace(label);
+        
         add(new MonthOverviewPanel("monthOverview", timesheetOverview, overviewFor));
     }
 

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+<body>
+	<wicket:panel>
+		<span wicket:id="greyBorder" >
+		<div class="MonthAggregateTable">
+			<div class="AggregateHeader">
+				<div class="foldCell">&nbsp;</div>
+				<div class="textCell" style="width: 14%;margin-top:0;"><wicket:message key="overview.customer" /></div>
+				<div class="textCell" style="width: 15%;margin-top:0; float: right;"><wicket:message key="overview.approvalStatus" /></div>
+			</div>
+			<wicket:container wicket:id="monthlyApprovalStatus">
+				<div class="AggregateRow">
+					<div class="textCell" style="width: 14%" wicket:id="customerName">[customerName]</div>
+					<form wicket:id="monthlyApprovalStatusForm" style="padding: 0;margin:0">
+						<a style="float:right; font-size: 10px" wicket:id="monthlyApproveLink" >
+							<span><wicket:message key="overview.approvalStatus.requestForApproval" /></span>
+						</a>
+					</form>	
+				</div>
+			</wicket:container>
+		</div>
+	</span>	
+	</wicket:panel>
+</body>
+</html>

@@ -60,8 +60,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
     private static final String ID_FOLD_LINK = "foldLink";
     private static final String ID_FOLD_IMG = "foldImg";
 
-    @SpringBean
-    private ApprovalStatusService approvalStatusService;
+    Label label;
 
     public ProjectOverviewPanel(String id, Calendar overviewFor, Collection<UserProjectStatus> projectStatusses) {
         super(id);
@@ -69,7 +68,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         this.setOutputMarkupId(true);
 
         // this should be easier..
-        Label label = new Label("title", new MessageResourceModel("projectoverview.aggregatedPerMonth", this, new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY)));
+        label = new Label("title", new MessageResourceModel("projectoverview.aggregatedPerMonth", this, new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY)));
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_GREY_BORDER, label);
 
         addGrandTotals(greyBorder, projectStatusses, getConfig());
@@ -165,57 +164,11 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 Label activityLabel = new Label("activityName", projectStatus.getActivity().getFullName());
                 item.add(activityLabel);
 
-                Form userProjectStatusRowForm = new Form("userProjectStatusRowForm", item.getDefaultModel());
-
-                AjaxLink<Void> requestApprovalLink = new AjaxLink<Void>("overview.approvalStatus.requestForApproval") {
-
-                    @Override
-                    public void onClick(AjaxRequestTarget target) {
-                        target.add(this);
-                        UserProjectStatus userProjectStatus = item.getModelObject();
-                        changeActivityStatus(userProjectStatus);
-                        setVisibilityOfApprovalLink(userProjectStatus, this);
-                    }
-
-                    private void changeActivityStatus(UserProjectStatus userProjectStatus) {
-                        EhourWebSession session = ((EhourWebSession) this.getSession());
-                        Calendar overviewFor = session.getNavCalendar();
-                        overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-                        DateRange monthrange = DateUtil.calendarToMonthRange(overviewFor);
-                        List<ApprovalStatus> approvalStatusForActivity = approvalStatusService.getApprovalStatusForActivity(userProjectStatus.getActivity(), monthrange);
-                        ApprovalStatus approvalStatus = approvalStatusForActivity.iterator().next();
-                        approvalStatus.setStatus(ApprovalStatusType.READY_FOR_APPROVAL);
-                        approvalStatusService.persist(approvalStatus);
-                    }
-                };
-
-                setVisibilityOfApprovalLink(item.getModelObject(), requestApprovalLink);
-
-                requestApprovalLink.setOutputMarkupId(true);
-                userProjectStatusRowForm.add(requestApprovalLink);
-                item.add(userProjectStatusRowForm);
-
                 // SummaryRow
                 Component projectSummaryRow = createProjectSummaryRow(ID_SUMMARY_ROW, projectStatus);
                 item.add(projectSummaryRow);
 
                 item.add(createFoldLink(projectSummaryRow));
-            }
-
-            private void setVisibilityOfApprovalLink(UserProjectStatus userProjectStatus, AjaxLink<Void> requestApprovalLink) {
-                EhourWebSession session = ((EhourWebSession) this.getSession());
-                Calendar overviewFor = session.getNavCalendar();
-                overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-                DateRange monthrange = DateUtil.calendarToMonthRange(overviewFor);
-                List<ApprovalStatus> approvalStatusForActivity = approvalStatusService.getApprovalStatusForActivity(userProjectStatus.getActivity(), monthrange);
-                ApprovalStatusType approvalStatusType = approvalStatusForActivity.iterator().next().getStatus();
-
-                if(approvalStatusType.equals(ApprovalStatusType.IN_PROGRESS) || approvalStatusType.equals(ApprovalStatusType.REJECTED)) {
-                    requestApprovalLink.setVisible(true);
-                } else {
-                    requestApprovalLink.setVisible(false);
-                }
-
             }
         };
 
@@ -300,5 +253,9 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
     private void setProjectLabelWidth(Component label) {
             label.add(AttributeModifier.replace("style", "width: 35%;"));
+    }
+
+    public Label getLabel() {
+        return label;
     }
 }

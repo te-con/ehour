@@ -12,27 +12,22 @@
 
             <div class="AggregateHeader">
                 <div class="foldCell">&nbsp;</div>
-                <div class="textCell" style="width: 15%;margin-top:0;"><wicket:message key="overview.customer" /></div>
-                <div class="textCell" style="width: 15%;margin-top:0;"><wicket:message key="overview.project" /></div>
-                <div class="textCell" style="width: 15%;margin-top:0;"><wicket:message key="overview.activityName" /></div>
-                <div class="numbCell" style="width: 15%;margin-top:0"><wicket:message key="overview.hours" /></div>
-                <div class="numbCell" style="width: 15%;margin-top:0"><wicket:message key="overview.totalHours" /></div>
-                <div class="textCell" style="width: 15%;margin-top:0;"><wicket:message key="overview.approvalStatus" /></div>
+                <div class="textCell" style="width: 14%;margin-top:0;"><wicket:message key="overview.customer" /></div>
+                <div class="textCell" style="width: 14%;margin-top:0;"><wicket:message key="overview.project" /></div>
+                <div class="textCell" style="width: 34%;margin-top:0;"><wicket:message key="overview.activityName" /></div>
+                <div class="numbCell" style="width: 14%;margin-top:0"><wicket:message key="overview.hours" /></div>
+                <div class="numbCell" style="width: 14%;margin-top:0"><wicket:message key="overview.totalHours" /></div>
             </div>
 
 			<wicket:container wicket:id="projectStatus">
 				<div class="AggregateRow">
 					<div class="foldCell"><a wicket:id="foldLink"><i class="fa fa-angle-up" wicket:id="foldImg"></i></a></div>
-					<div class="textCell customer" wicket:id="customerName">[customerName]</div>
-					<div class="textCell project" style="overflow:hidden;cursor:pointer" wicket:id="projectNameContainer"><span wicket:id="projectName">[project name]</span></div>
-                    <div class="textCell" style="width: 15%;margin-top:0;" wicket:id="activityName">[activityName]</div>
-					<div class="numbCell bookedHours" wicket:id="monthHours">24.50</div>
-                    <div class="numbCell" style="width: 15%;" wicket:id="allottedHours">100.00</div>
-                    <form wicket:id="userProjectStatusRowForm" style="padding: 0;margin:0">
-                        <a style="float:right; font-size: 10px" wicket:id="overview.approvalStatus.requestForApproval" >
-                            <span><wicket:message key="overview.approvalStatus.requestForApproval" /></span>
-                        </a>
-                    </form>	                </div>
+					<div class="textCell customer" style="width: 14%;" wicket:id="customerName">[customerName]</div>
+					<div class="textCell project" style="width: 14%;overflow:hidden;cursor:pointer" wicket:id="projectNameContainer"><span wicket:id="projectName">[project name]</span></div>
+                    <div class="textCell" style="width: 34%;margin-top:0;" wicket:id="activityName">[activityName]</div>
+					<div class="numbCell bookedHours" style="width: 14%;"  wicket:id="monthHours">24.50</div>
+                    <div class="numbCell" style="width: 14%;" wicket:id="allottedHours">100.00</div>
+                </div>
 
                 <div class="SummaryRow" wicket:id="summaryRow">
                     <div class="foldCell">&nbsp;</div>
@@ -47,11 +42,11 @@
 			
 			<div class="TotalRow">
 				<div class="foldCell">&nbsp;</div>
-				<div class="textCell customer" wicket:id="grandCustomer">&nbsp;</div>
-				<div class="textCell project">&nbsp;</div>
-                <div class="textCell" style="width: 15%">&nbsp;</div>
-				<div class="numbCell bookedHours" wicket:id="grandTotalHours"></div>
-                <div class="numbCell" style="width: 15%; margin-top:2px" wicket:id="grandTotalAllottedHours"></div>
+				<div class="textCell customer" style="width: 14%;"wicket:id="grandCustomer">&nbsp;</div>
+				<div class="textCell project" style="width: 14%;">&nbsp;</div>
+                <div class="textCell" style="width: 34%">&nbsp;</div>
+				<div class="numbCell bookedHours" style="width: 14%;" wicket:id="grandTotalHours"></div>
+                <div class="numbCell" style="width: 14%; margin-top:2px" wicket:id="grandTotalAllottedHours"></div>
             </div>
 		</div>
 	</div>
