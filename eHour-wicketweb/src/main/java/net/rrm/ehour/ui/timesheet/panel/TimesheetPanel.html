@@ -68,9 +68,13 @@
                                 <tr class="projectRow">
                                     <td class="fold">
                                     </td>
-                                    <td class="project" wicket:id="activityCode">activityCode</td>
-                                    <td class="project"><span wicket:id="project"></span>
-                                        <span class="statusMsg" wicket:id="status"></span>
+                                    <td class="project"><span wicket:id="activityName">activityName</span>&nbsp;(<span wicket:id="availableHours">availableHours</span>)</td>
+                                    <td class="project">
+                                        <wicket:enclosure>
+                                            <br clear="both"/>
+                                            <span style="clear:both;padding: 1px 0 0 0;color:red;font-size:0.8em" wicket:id="status"></span>
+                                            <br />
+                                        </wicket:enclosure>
                                     </td>
                                     <td class="spacer">&nbsp;</td>
 

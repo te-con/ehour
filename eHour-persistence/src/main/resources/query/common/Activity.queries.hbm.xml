@@ -34,7 +34,7 @@
 	<query name="Activity.findActivitiessForUserInRange">
     <![CDATA[	
 		FROM Activity activity
-		WHERE activity.active is true AND 
+		WHERE activity.active is true AND
 			  activity.project.active is true AND
 			  activity.project.customer.active is true AND 
 			  activity.assignedUser.userId = :userId AND

@@ -229,10 +229,17 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private boolean isActivityBookable(TimesheetRow timeSheetRow) {
         boolean result = true;
         Activity activity = timeSheetRow.getActivity();
+
         if (activity != null) {
-            Float availableHours = activity.getAvailableHours();
-            if (availableHours != null) {
-                result = availableHours > 0;
+
+            if (activity.getLocked()) {
+                result = false;
+            } else {
+                Float availableHours = activity.getAvailableHours();
+
+                if (availableHours != null) {
+                    result = availableHours > 0;
+                }
             }
         }
         return result;

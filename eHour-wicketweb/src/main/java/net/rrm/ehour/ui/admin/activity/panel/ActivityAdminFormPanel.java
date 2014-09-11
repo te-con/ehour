@@ -60,6 +60,8 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 		
 		form.add(new CheckBox("activity.active"));
 
+        form.add(new CheckBox("activity.locked"));
+
         final FormConfig formConfig = new FormConfig(form);
         formConfig.withDeleteEventType(ActivityEditAjaxEventType.ACTIVITY_DELETED);
         formConfig.withDelete(true);
@@ -68,8 +70,6 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
         formConfig.withSubmitTarget(this);
 
         FormUtil.setSubmitActions(formConfig);
-//        FormUtil.setSubmitActions(form, true, this, ActivityEditAjaxEventType.ACTIVITY_UPDATED, ActivityEditAjaxEventType.ACTIVITY_DELETED,
-//				((EhourWebSession) getSession()).getEhourConfig());
 
 		greyBorder.add(form);
 	}

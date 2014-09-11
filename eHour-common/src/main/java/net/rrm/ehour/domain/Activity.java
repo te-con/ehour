@@ -7,7 +7,15 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -51,6 +59,11 @@ public class Activity extends DomainObject<Integer, Activity> {
 	@Column(name = "ACTIVE", nullable = false)
 	@Type(type = "yes_no")
 	private Boolean active = Boolean.TRUE;
+
+    @Column(name = "LOCKED")
+    @Type(type = "yes_no")
+    private Boolean locked = Boolean.FALSE;
+
 
     // should be in a separate DAO
     @Transient
@@ -147,6 +160,14 @@ public class Activity extends DomainObject<Integer, Activity> {
         this.availableHours = availableHours;
     }
 
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
     @Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -159,6 +180,7 @@ public class Activity extends DomainObject<Integer, Activity> {
 			return false;
 		}
 		Activity other = (Activity) obj;
+
 		return new EqualsBuilder().append(this.getId(), other.getId())
 		                          .append(this.getName(), other.getName())
 		                          .append(this.getAllottedHours(), other.getAllottedHours())
