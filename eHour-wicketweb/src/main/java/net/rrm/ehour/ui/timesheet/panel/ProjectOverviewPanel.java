@@ -158,17 +158,19 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
                 Form userProjectStatusRowForm = new Form("userProjectStatusRowForm", item.getDefaultModel());
 
-                AjaxButton requestApprovalButton = new AjaxButton("overview.approvalStatus.requestForApproval", userProjectStatusRowForm) {
+                AjaxLink<Void> requestApprovalLink = new AjaxLink<Void>("overview.approvalStatus.requestForApproval") {
 
                     @Override
-                    protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                    public void onClick(AjaxRequestTarget target) {
+                        final UserProjectStatus modelObject = item.getModelObject();
                         target.add(this);
                         this.setVisible(false);
+
                     }
                 };
 
-                requestApprovalButton.setOutputMarkupId(true);
-                userProjectStatusRowForm.add(requestApprovalButton);
+                requestApprovalLink.setOutputMarkupId(true);
+                userProjectStatusRowForm.add(requestApprovalLink);
                 item.add(userProjectStatusRowForm);
 
                 // SummaryRow

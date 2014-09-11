@@ -30,10 +30,10 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
 	@Column(name = "APPROVALSTATUS_ID")
 	private Integer id;
 
-	@Column(name = "START_DATE")
+	@Column(name = "DATE_START")
 	private Date startDate;
 
-	@Column(name = "END_DATE")
+	@Column(name = "DATE_END")
 	private Date endDate;
 
 	@ManyToOne
@@ -44,6 +44,9 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
     @Column(name = "STATUS")
 	private ApprovalStatusType status;
 
+    @Column(name = "COMMENT_TEXT", length = 2048)
+	private String coment;
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -123,4 +126,11 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
 		this.status = currentStatus;
 	}
 
+	public String getComent() {
+		return coment;
+	}
+
+	public void setComent(String coment) {
+		this.coment = coment;
+	}
 }

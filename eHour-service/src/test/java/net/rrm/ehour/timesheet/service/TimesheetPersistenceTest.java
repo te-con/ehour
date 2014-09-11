@@ -18,6 +18,7 @@ package net.rrm.ehour.timesheet.service;
 
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.activity.status.ActivityStatusService;
+import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
@@ -26,6 +27,7 @@ import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,13 +38,14 @@ import static org.easymock.EasyMock.*;
 /**
  * @author thies
  */
-public class IPersistTimesheetDAOTest {
+public class TimesheetPersistenceTest {
     private TimesheetPersistance persister;
     private TimesheetDao timesheetDAO;
     private ActivityStatusService statusService;
     private Activity activity;
     private List<TimesheetEntry> newEntries;
     private List<TimesheetEntry> existingEntries;
+    private ApprovalStatusService approvalStatusService;
 
     @Before
     public void setUp() {
@@ -50,9 +53,9 @@ public class IPersistTimesheetDAOTest {
         statusService = createMock(ActivityStatusService.class);
         ApplicationContext context = createMock(ApplicationContext.class);
         TimesheetCommentDao commentDao = createMock(TimesheetCommentDao.class);
+        approvalStatusService = createMock(ApprovalStatusService.class);
 
-
-        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, context);
+        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, context, approvalStatusService);
 
         initData();
     }
@@ -110,7 +113,7 @@ public class IPersistTimesheetDAOTest {
     }
 
     @Test
-    public void shouldPersistValidatedTimesheet() throws OverBudgetException {
+    public void shouldPersistValidatedTimesheetAndCreateAnApprovalStatusForFirstTime() throws OverBudgetException {
         DateRange dateRange = new DateRange();
 
         timesheetDAO.delete(isA(TimesheetEntry.class));

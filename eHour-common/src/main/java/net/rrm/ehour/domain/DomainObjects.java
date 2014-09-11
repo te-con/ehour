@@ -10,8 +10,8 @@ public class DomainObjects
                                                              Configuration.class, BinaryConfiguration.class, Audit.class,
                                                             Customer.class, Project.class, ProjectAssignment.class, ProjectAssignmentType.class,
                                                             MailLog.class,
-                                                            TimesheetEntry.class, TimesheetComment.class,
-                                                            TimesheetLock.class,
-                                                            Activity.class
+                                                            TimesheetEntry.class, TimesheetComment.class, 
+                                                            Activity.class,
+                                                            ApprovalStatus.class
     };
 }

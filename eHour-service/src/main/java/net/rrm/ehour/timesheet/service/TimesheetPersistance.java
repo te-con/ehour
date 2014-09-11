@@ -18,6 +18,7 @@ package net.rrm.ehour.timesheet.service;
 
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.activity.status.ActivityStatusService;
+import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
@@ -26,6 +27,7 @@ import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.DomainUtil;
 import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.StringUtils;
@@ -46,13 +48,19 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     private TimesheetCommentDao timesheetCommentDAO;
     private ActivityStatusService activityStatusService;
     private ApplicationContext context;
+    private ApprovalStatusService approvalStatusService;
 
     @Autowired
-    public TimesheetPersistance(TimesheetDao timesheetDAO, TimesheetCommentDao timesheetCommentDAO, ActivityStatusService activityStatusService, ApplicationContext context) {
+    public TimesheetPersistance(TimesheetDao timesheetDAO,
+                                TimesheetCommentDao timesheetCommentDAO,
+                                ActivityStatusService activityStatusService,
+                                ApplicationContext context,
+                                ApprovalStatusService approvalStatusService) {
         this.timesheetDAO = timesheetDAO;
         this.timesheetCommentDAO = timesheetCommentDAO;
         this.activityStatusService = activityStatusService;
         this.context = context;
+        this.approvalStatusService = approvalStatusService;
     }
 
     @Transactional
@@ -131,6 +139,41 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         if (checkAfterStatus && !afterStatus.isValid()) {
             throw new OverBudgetException(afterStatus);
         }
+
+        // updateApprovalStatusForActivityWithinWeekRange(activity, weekRange);
+    }
+
+    private void updateApprovalStatusForActivityWithinWeekRange(Activity activity, DateRange weekRange) {
+        // check that the week spans two months
+        // if this is so then get two approval statuses and commit them
+        if(checkThatWeekSpansMonths(weekRange)) {
+
+        } else {
+
+        }
+
+        List<ApprovalStatus> allApprovalStatuses = approvalStatusService.getApprovalStatusForActivity(activity, weekRange);
+        if (allApprovalStatuses == null || allApprovalStatuses.isEmpty()) {
+            ApprovalStatus approvalStatus = new ApprovalStatus();
+            approvalStatus.setActivity(activity);
+            approvalStatus.setStatus(ApprovalStatusType.IN_PROGRESS);
+            DateRange dateRangeForMonth = DateUtil.getDateRangeForMonth(weekRange.getDateStart());
+            approvalStatus.setStartDate(dateRangeForMonth.getDateStart());
+            approvalStatus.setEndDate(dateRangeForMonth.getDateEnd());
+            approvalStatusService.persist(approvalStatus);
+        }
+    }
+
+    private Boolean checkThatWeekSpansMonths(DateRange weekRange) {
+        Boolean doesWeekSpanMonths = false;
+
+        DateRange dateRangeForCurrentMonth = DateUtil.getDateRangeForMonth(weekRange.getDateStart());
+        DateRange dateRangeForNextMonth = DateUtil.getDateRangeForMonth(weekRange.getDateEnd());
+
+        if(dateRangeForCurrentMonth.getDateStart().before(dateRangeForNextMonth.getDateStart())) {
+            doesWeekSpanMonths = true;
+        }
+        return doesWeekSpanMonths;
     }
 
     private void persistEntries(Activity activity, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException {
