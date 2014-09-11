@@ -76,7 +76,7 @@ public interface ProjectService
 	 * @param projectId
 	 * @return
 	 */
-	void deleteProject(Integer projectId) throws ParentChildConstraintException;
+	public void deleteProject(Integer projectId) throws ParentChildConstraintException;
 
 	/**
 	 * Get project's where user is project manager

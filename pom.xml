@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.tecon.ehevo</groupId>
     <artifactId>ehevo</artifactId>
@@ -18,16 +19,19 @@
         <module>eHour-audit</module>
         <module>eHour-standalone</module>
         <module>eHour-war</module>
+        <module>eHour-windchill</module>
     </modules>
     <description>
         eHour - web-based time registration for consultancy companies
         and other project based businesses
     </description>
     <scm>
-        <url>http://github.com/tedeling/ehour.git</url>
-        <connection>scm:git:ssh://git@github.com/tedeling/ehour.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/tedeling/ehour.git</developerConnection>
-        <tag>eHour-1.5-SNAPSHOT</tag>
+        <connection>
+            scm:svn:https://svn.te-con.nl/repos/ehevo/trunk/
+        </connection>
+        <developerConnection>
+            scm:svn:https://svn.te-con.nl/repos/ehevo/trunk/
+        </developerConnection>
     </scm>
     <issueManagement>
         <system>eHour bugtracker</system>
@@ -507,6 +511,26 @@
                 <artifactId>commons-io</artifactId>
                 <version>2.0</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.richemont.wt</groupId>
+                <artifactId>boot</artifactId>
+                <version>1.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.richemont.wt</groupId>
+                <artifactId>wnc4ehour</artifactId>
+                <version>1.0</version>
+            </dependency>
+            
+                        <dependency>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-windchill</artifactId>
+                <version>${pom.version}</version>
+            </dependency>
+
+
 
             <dependency>
                 <groupId>com.google.guava</groupId>

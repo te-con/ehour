@@ -17,6 +17,8 @@
 package net.rrm.ehour.ui.login.page;
 
 import com.google.common.base.Optional;
+import com.richemont.windchill.WindChillService;
+import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
@@ -47,6 +49,9 @@ public class LoginTest extends BaseSpringWebAppTester {
     @Mock
     private SystemInfoService infoService;
 
+    @Mock
+    private WindChillService chillService;
+    
     @Override
     protected AuthUtil buildAuthUtil() {
         return authUtil;
@@ -56,6 +61,7 @@ public class LoginTest extends BaseSpringWebAppTester {
     public void setupMocks() throws Exception {
         getMockContext().putBean("configService", configService);
         getMockContext().putBean(infoService);
+        getMockContext().putBean(chillService);
     }
 
     @Test

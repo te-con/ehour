@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.login.page;
 
+import com.richemont.windchill.WindChillService;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
@@ -47,6 +48,11 @@ public class Login extends WebPage {
 
     @SpringBean
     private AuthUtil authUtil;
+
+    @SpringBean
+    private WindChillService chillService;
+
+
 
     @Override
     protected void onInitialize() {
@@ -120,6 +126,17 @@ public class Login extends WebPage {
             add(demoMode);
             demoMode.setVisible(EhourWebSession.getEhourConfig().isInDemoMode());
         }
+                    // TODO Morgan, you can hook into Windchill like this
+//                    HttpServletRequest request = getWebRequestCycle().getWebRequest().getHttpServletRequest();
+//                    chillService.initDataForUser(username, request);
+
+                    setResponsePage(homepage);
+				}
+				else
+				{
+					error(getLocalizer().getString("login.login.failed", this));
+				}
+			}
 
         @Override
         protected void onSubmit() {
