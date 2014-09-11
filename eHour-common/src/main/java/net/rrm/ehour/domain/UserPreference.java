@@ -45,6 +45,9 @@ public class UserPreference extends DomainObject<UserPreferenceId, UserPreferenc
 	@Column(name = "USER_PREFERENCE_VALUE" , nullable = false, length = 255)
 	@NotNull
 	private String userPreferenceValue;
+	
+	public UserPreference() {
+	}
 
 
 	public UserPreference(UserPreferenceId userPreferenceId, UserPreferenceType userPreferenceType) {

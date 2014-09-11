@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.userpref.UserPreferenceService;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
@@ -54,6 +55,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private IOverviewTimesheet overviewTimesheet;
     private UserService userService;
     private ApprovalStatusService approvalStatusService;
+    private UserPreferenceService userPreferenceService;
 
     @Before
     public void setup() {
@@ -71,6 +73,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         approvalStatusService = createMock(ApprovalStatusService.class);
         getMockContext().putBean("approvalStatusService", approvalStatusService);
+
+        userPreferenceService = createMock(UserPreferenceService.class);
+        getMockContext().putBean("userPreferenceService", userPreferenceService);
     }
 
     @Test

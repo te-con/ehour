@@ -7,6 +7,7 @@ import net.rrm.ehour.persistence.userpref.dao.UserPreferencesDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("userPreferenceService")
 public class UserPreferenceServiceImpl implements UserPreferenceService {
@@ -20,12 +21,14 @@ public class UserPreferenceServiceImpl implements UserPreferenceService {
 	}
 
 	@Override
+	@Transactional
 	public void persist(UserPreference userPreference) {
 		userPreferencesDao.persist(userPreference);
 
 	}
 
 	@Override
+	@Transactional
 	public void merge(UserPreference userPreference) {
 		userPreferencesDao.merge(userPreference);
 

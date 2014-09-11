@@ -2,13 +2,17 @@ package net.rrm.ehour.ui.userprefs.panel;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserPreference;
+import net.rrm.ehour.domain.UserPreferenceId;
 import net.rrm.ehour.domain.UserPreferenceType;
+import net.rrm.ehour.domain.UserPreferenceValueType;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.util.WebGeo;
+import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import net.rrm.ehour.userpref.UserPreferenceService;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -23,6 +27,8 @@ public class UserPreferenceChangePanel extends Panel {
 	private UserPreferenceService userPreferenceService;
 	
 	private User user;
+	
+	private Border greyBorder;
 
 	public UserPreferenceChangePanel(String id, User user) {
 		super(id);
@@ -31,11 +37,16 @@ public class UserPreferenceChangePanel extends Panel {
 	}
 
 	private void addComponents() {
-		Border greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.title"), WebGeo.W_CONTENT_XSMALL);
+		greyBorder = new GreyRoundedBorder("border", new ResourceModel("userprefs.title"), WebGeo.W_CONTENT_XSMALL);
+		greyBorder.setOutputMarkupId(true);
 		add(greyBorder);
 		
 		Form<Void> userPreferenceChangeForm = new Form<Void>("userPreferenceChangeForm");
 		userPreferenceChangeForm.setOutputMarkupId(true);
+		
+		final Label userPreferenceSelection = new Label("userPreferenceSelection", getUserPreference());
+		userPreferenceSelection.setOutputMarkupId(true);
+		userPreferenceChangeForm.add(userPreferenceSelection);
 		
 		AjaxButton hideWeekendButton = new AjaxButton("hideWeekendsButton") {
 			
@@ -44,20 +55,60 @@ public class UserPreferenceChangePanel extends Panel {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				UserPreference userPreference = userPreferenceService.getUserPreferenceForUserForType(user, UserPreferenceType.DISABLE_WEEKENDS);
-				System.out.println("" + userPreference);
-				
+				if(userPreference == null) {
+					UserPreferenceId userPreferenceId = new UserPreferenceId(UserPreferenceType.DISABLE_WEEKENDS.getValue(), user);
+					userPreference = new UserPreference(userPreferenceId, UserPreferenceType.DISABLE_WEEKENDS);
+					userPreferenceService.persist(userPreference);
+				} else {
+					userPreference.setUserPreferenceValue(UserPreferenceType.DISABLE_WEEKENDS.getUserPreferenceValueType().name());
+					userPreferenceService.merge(userPreference);
+				}
+				setResponsePage(UserPreferencePage.class);
+			}
+		};
+		hideWeekendButton.setOutputMarkupId(true);
+		
+
+		AjaxButton enableWeekendsButton = new AjaxButton("enableWeekendsButton") {
+
+			private static final long serialVersionUID = -6080612594252857510L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				UserPreference userPreference = userPreferenceService.getUserPreferenceForUserForType(user, UserPreferenceType.ENABLE_WEEKENDS);
+				if (userPreference == null) {
+					UserPreferenceId userPreferenceId = new UserPreferenceId(UserPreferenceType.ENABLE_WEEKENDS.getValue(), user);
+					userPreference = new UserPreference(userPreferenceId, UserPreferenceType.ENABLE_WEEKENDS);
+					userPreferenceService.persist(userPreference);
+				} else {
+					userPreference.setUserPreferenceValue(UserPreferenceType.ENABLE_WEEKENDS.getUserPreferenceValueType().name());
+					userPreferenceService.merge(userPreference);
+				}
+				setResponsePage(UserPreferencePage.class);
 			}
 		};
 		
-		hideWeekendButton.setOutputMarkupId(true);
+		enableWeekendsButton.setOutputMarkupId(true);
 		
 		userPreferenceChangeForm.add(hideWeekendButton);
+		userPreferenceChangeForm.add(enableWeekendsButton);
 		
 		greyBorder.add(userPreferenceChangeForm);
 		
 		setOutputMarkupId(true);		
 	}
 
-
+	private String getUserPreference() {
+		String userPreferenceText = "Weekend is enabled";
+		UserPreference userPreference = userPreferenceService.getUserPreferenceForUserForType(user, UserPreferenceType.ENABLE_WEEKENDS);
+		if (userPreference != null) {
+			if(userPreference.getUserPreferenceValue().equalsIgnoreCase(UserPreferenceValueType.ENABLE.name())) {
+				userPreferenceText = "Weekend is disabled";
+			} else {
+				userPreferenceText = "Weekend is enabled";
+			}
+		}
+		return userPreferenceText;
+	}
 
 }
