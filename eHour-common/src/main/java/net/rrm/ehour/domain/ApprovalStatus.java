@@ -45,7 +45,7 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
 	private ApprovalStatusType status;
 
     @Column(name = "COMMENT_TEXT", length = 2048)
-	private String coment;
+	private String comment;
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -126,11 +126,11 @@ public class ApprovalStatus extends DomainObject<Integer, ApprovalStatus> {
 		this.status = currentStatus;
 	}
 
-	public String getComent() {
-		return coment;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setComent(String coment) {
-		this.coment = coment;
+	public void setComment(String coment) {
+		this.comment = coment;
 	}
 }

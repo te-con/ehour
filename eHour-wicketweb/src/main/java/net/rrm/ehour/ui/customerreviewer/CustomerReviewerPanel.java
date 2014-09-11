@@ -21,6 +21,7 @@ import net.rrm.ehour.util.DateUtil;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
@@ -174,13 +175,34 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 
 	class RejectPanel extends Panel {
 		
-		public RejectPanel(String id, IModel<Activity> model) {
+		public RejectPanel(String id, final IModel<Activity> model) {
 			super(id, model);
-			add(new Link<Activity>("reject") {
-				@Override
-				public void onClick() {
+			final ModalWindow rejectTimesheetModalWindow;
+			rejectTimesheetModalWindow = new ModalWindow("rejectTimesheetModalWindow");
+			
+			rejectTimesheetModalWindow.setContent(new RejectTimesheetContentPanel(rejectTimesheetModalWindow.getContentId(), CustomerReviewerPanel.this, rejectTimesheetModalWindow, model));
+			
+			rejectTimesheetModalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+				public void onClose(AjaxRequestTarget target) {
+					target.addComponent(dataContainer);
 				}
 			});
+			rejectTimesheetModalWindow.setCloseButtonCallback(new ModalWindow.CloseButtonCallback() {
+				public boolean onCloseButtonClicked(AjaxRequestTarget target) {
+					return true;
+				}
+			});
+			
+			add(rejectTimesheetModalWindow);
+			
+			AjaxLink<Activity> rejectLink = new AjaxLink<Activity>("reject") {
+				@Override
+				public void onClick(AjaxRequestTarget target) {
+					rejectTimesheetModalWindow.show(target);
+				}
+			};
+			
+			add(rejectLink);
 		}
 	}
 	
