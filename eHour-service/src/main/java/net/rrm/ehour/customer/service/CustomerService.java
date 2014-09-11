@@ -88,4 +88,12 @@ public interface CustomerService {
      */
     public List<Customer> findAllCustomersForWhichUserIsaReviewer(User user);
 
+    /**
+     * Searches and if found returns {@link Customer} having the same
+     * customerCode as passed in the parameter else returns <code>null</code>
+     *
+     * @param customerCode
+     * @return {@link Customer}
+     */
+    public Customer getCustomer(String customerCode);
 }

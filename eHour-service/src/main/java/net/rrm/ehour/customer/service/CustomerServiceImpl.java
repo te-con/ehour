@@ -64,6 +64,11 @@ public class CustomerServiceImpl implements CustomerService
         return customerDAO.findAllCustomersForWhichUserIsaReviewer(user);
     }
 
+    @Override
+    public Customer getCustomer(String customerCode) {
+        return customerDAO.findByCustomerCode(customerCode);
+    }
+
     @Auditable(actionType = AuditActionType.DELETE)
     @Transactional
     public void deleteCustomer(Integer customerId) throws ParentChildConstraintException {

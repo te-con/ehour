@@ -34,4 +34,6 @@ trait CustomerDao extends GenericDao[Integer, Customer] {
    * @return
    */
   def findAllCustomersForWhichUserIsaReviewer(user: User): util.List[Customer]
+
+  def findByCustomerCode(customerCode: String): Customer
 }

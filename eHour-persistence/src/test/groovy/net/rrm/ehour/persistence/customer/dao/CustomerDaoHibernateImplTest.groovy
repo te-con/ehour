@@ -1,5 +1,9 @@
 package net.rrm.ehour.persistence.customer.dao
 
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.CustomerMother
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserMother;
 import net.rrm.ehour.domain.CustomerObjectMother
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.domain.UserObjectMother
@@ -218,6 +222,21 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 		
 		assertNotNull(customers);
 		assertEquals(0, customers.size());
+	}
+	
+	@Test
+	public void shouldFindCustomerWithExistingCode() {
+		Customer customer = customerDao.findByCustomerCode("TE-CON");
+		
+		assertNotNull(customer);
+		assertEquals("TE-CON", customer.getName());
+	}
+
+	@Test	
+	public void shouldReturnNullWhenFindingCustomerWithNonExistentCode() {
+		Customer customer = customerDao.findByCustomerCode("NON-EXISTING-CODE");
+		
+		assertNull(customer);
 	}
 
 }

@@ -37,6 +37,7 @@ class ProjectDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, P
     ExponentialBackoffRetryPolicy retry criteria.list.asInstanceOf[util.List[Project]]
   }
 
+  @Transactional(readOnly = true)
   override def findByProjectCode(projectCode: String): Project = {
     val projects = findByNamedQuery("Project.findByProjectCode", "projectCode", projectCode, CacheRegion)
 

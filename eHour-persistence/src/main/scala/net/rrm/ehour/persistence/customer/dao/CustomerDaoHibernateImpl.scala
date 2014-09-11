@@ -2,7 +2,7 @@ package net.rrm.ehour.persistence.customer.dao
 
 import java.util
 
-import net.rrm.ehour.domain.{User, Customer}
+import net.rrm.ehour.domain.{Project, User, Customer}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -31,6 +31,16 @@ class CustomerDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
 
   override def findAllCustomersForWhichUserIsaReviewer(user: User): util.List[Customer] =
     findByNamedQuery("Customer.findAllCustomersForWhichUserIsaReviewer", "userId", user.getUserId, CacheRegion)
+
+  @Transactional(readOnly = true)
+  override def findByCustomerCode(customerCode: String): Customer = {
+    val customers = findByNamedQuery("Customer.findByCode", "customerCode", customerCode, CacheRegion)
+
+    if (customers.isEmpty)
+      null
+    else
+      customers.get(0)
+  }
 }
 
 

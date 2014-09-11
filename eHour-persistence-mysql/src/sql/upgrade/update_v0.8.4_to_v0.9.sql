@@ -1,4 +1,10 @@
 --
+-- Modification for table `CUSTOMER`
+--
+alter table CUSTOMER add unique (CODE);
+alter table CUSTOMER add unique (CODE, ACTIVE);
+
+--
 -- Modification for table `PROJECT`
 --
 alter table PROJECT add unique (PROJECT_CODE);

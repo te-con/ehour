@@ -76,9 +76,5 @@
         FROM Customer as customer
         WHERE code = :customerCode
     </query>
-	<query name="Project.findByProjectCode"> 
- 	    FROM Project as project
- 		WHERE projectCode = :projectCode
-	</query>
 
 </hibernate-mapping>

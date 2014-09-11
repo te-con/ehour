@@ -33,7 +33,14 @@
 			<unique-column name="NAME" />
 			<unique-column name="CODE" />
 		</unique>
-	</table>
+		<unique name="CODE">
+			<unique-column name="CODE" />
+		</unique>
+		<unique name="CODE_ACTIVE">
+			<unique-column name="CODE" />
+			<unique-column name="ACTIVE" />
+		</unique>
+	</table>	
 	<table name="mail_log">
 		<column name="MAIL_LOG_ID" primaryKey="true" required="true"
 			type="INTEGER" size="10" autoIncrement="true" />
