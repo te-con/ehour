@@ -12,6 +12,7 @@ public class DomainObjects
                                                             MailLog.class,
                                                             TimesheetEntry.class, TimesheetComment.class, 
                                                             Activity.class,
-                                                            ApprovalStatus.class
+                                                            ApprovalStatus.class,
+                                                            UserPreference.class
     };
 }
