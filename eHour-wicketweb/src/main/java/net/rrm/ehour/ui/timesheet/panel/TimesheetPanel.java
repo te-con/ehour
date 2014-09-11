@@ -40,10 +40,12 @@ import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -52,13 +54,11 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.util.visit.IVisit;
@@ -83,6 +83,8 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     private EhourConfig config;
     private WebComponent serverMsgLabel;
     private Form<TimesheetModel> timesheetForm;
+    private static final String ID_FOLD_LINK = "foldLink";
+    private static final String ID_FOLD_IMG = "foldImg";
 
     public TimesheetPanel(String id, User user, Calendar forWeek) {
         super(id);
@@ -356,7 +358,10 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
                 Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
                 item.add(new Label("project", project.getName()));
 
-                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this));
+                TimesheetRowList rows = new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this);
+                item.add(createToggleLink(timeSheetRowsList));
+
+                item.add(rows);
             }
         };
         projects.setReuseItems(true);
@@ -364,6 +369,36 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         parent.add(projects);
 
         return grandTotals;
+    }
+
+    private Component createToggleLink(final TimesheetRowList activityRows) {
+        // set relative URL to image and set id
+        ContextImage img = createFoldImage(false);
+
+        AjaxLink<String> foldLink = new AjaxLink<String>(ID_FOLD_LINK) {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                activityRows.setVisible(!activityRows.isVisible());
+                target.addComponent(timesheetForm);
+            }
+        };
+
+        foldLink.add(img);
+        return foldLink;
+    }
+
+    private ContextImage createFoldImage(boolean up) {
+        String upStr = "img/icon_" + (up ? "up_" : "down_");
+
+        ContextImage img = new ContextImage(ID_FOLD_IMG, new Model<String>(upStr + "off.gif"));
+        img.setOutputMarkupId(true);
+        CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif", "upDown");
+
+        return img;
+    }
+
+    private String getContextRoot() {
+        return getRequest().getRelativePathPrefixToContextRoot();
     }
 
     private class SubmitButton extends AjaxButton {
