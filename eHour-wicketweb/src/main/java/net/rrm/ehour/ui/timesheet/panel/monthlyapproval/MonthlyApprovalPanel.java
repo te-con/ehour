@@ -35,7 +35,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class MonthlyApprovalPanel extends Panel {
 
 	private static final long serialVersionUID = 7854272569953832030L;
-	
+
 	private CustomTitledGreyRoundedBorder greyBorder;
 
 	@SpringBean
@@ -57,7 +57,8 @@ public class MonthlyApprovalPanel extends Panel {
 
 	private void addPanelComponents(Calendar overviewFor, SortedSet<UserProjectStatus> userProjectStatuses) {
 
-		greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", new Label("title", new ResourceModel("monthlyapproval.title")), WebGeo.W_CONTENT_MEDIUM);
+		greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", new Label("title", new ResourceModel("monthlyapproval.title")),
+				WebGeo.W_CONTENT_MEDIUM);
 		greyBorder.setOutputMarkupId(true);
 
 		List<Customer> customers = getAllCustomersForWhichThisUserWorks(userProjectStatuses);
@@ -72,8 +73,9 @@ public class MonthlyApprovalPanel extends Panel {
 				Label customerLabel = new Label("customerName", customer.getName());
 				item.add(customerLabel);
 
-				final Label approvalStatusLabel = new Label("approvalStatus", approvalStatusService
-						.getApprovalStatusForUserWorkingForCustomer(user, customer, monthRange).get(0).getStatus().toString());
+				String currentApprovalStatus = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(user, customer, monthRange)
+						.get(0).getStatus().toString();
+				final Label approvalStatusLabel = new Label("approvalStatus", currentApprovalStatus);
 				item.add(approvalStatusLabel);
 				approvalStatusLabel.setOutputMarkupId(true);
 
@@ -92,7 +94,8 @@ public class MonthlyApprovalPanel extends Panel {
 					}
 
 					private void changeApprovalStatus(Customer customer) {
-						List<ApprovalStatus> currentApprovalStatus = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(user, customer, monthRange);
+						List<ApprovalStatus> currentApprovalStatus = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(user,
+								customer, monthRange);
 						// TODO Can be handled in better way.
 						// Should get only element in the list
 						ApprovalStatus approvalStatus = currentApprovalStatus.get(0);
@@ -112,11 +115,13 @@ public class MonthlyApprovalPanel extends Panel {
 		add(greyBorder);
 	}
 
-	private void setVisibilityOfApprovalLinkAndUpdateStatus(Customer customer, AjaxLink<Void> requestApprovalLink, Label appprovalStatusLabel) {
-		List<ApprovalStatus> approvalStatusForCustomer = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(this.user, customer, this.monthRange);
+	private void setVisibilityOfApprovalLinkAndUpdateStatus(Customer customer, AjaxLink<Void> requestApprovalLink,
+			Label appprovalStatusLabel) {
+		List<ApprovalStatus> approvalStatusForCustomer = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(this.user,
+				customer, this.monthRange);
 		ApprovalStatusType approvalStatusType = approvalStatusForCustomer.iterator().next().getStatus();
-		
-		if(approvalStatusType != null) {
+
+		if (approvalStatusType != null) {
 			appprovalStatusLabel = new Label("approvalStatus", approvalStatusType.toString());
 		}
 

@@ -54,8 +54,8 @@ div.MonthAggregateTable div.TotalRow
 
 .textCell
 {
-	height: 1em;
-	width: 15%;
+	height: auto;
+	width: 20%;
 	float: left;
 	padding-right: 5px;
 	margin: 1px;
@@ -63,18 +63,14 @@ div.MonthAggregateTable div.TotalRow
     overflow: hidden;
 }
 
-.monthlyOverviewRowCell {
-	height:auto;
-	width: 14%;	
-}
-
 .numbCell
 {
-	height: 1em;
-	width: 10%;
+	height:auto;	
+	width: 14%;
 	text-align: right;
-	float: left;
+	float: right;
 	padding-right: 5px;
+    margin-top:2px;	
 }
 
 .MonthOverviewIEWorkAround
