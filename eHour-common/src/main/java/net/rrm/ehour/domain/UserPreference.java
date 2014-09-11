@@ -19,9 +19,8 @@ package net.rrm.ehour.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -36,26 +35,23 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "USER_PREFERENCES")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class UserPreference extends DomainObject<String, UserPreference> {
+public class UserPreference extends DomainObject<UserPreferenceId, UserPreference> {
 	private static final long serialVersionUID = -5457250186090868408L;
 
 	@Id
-	@Column(name = "USER_PREFERENCE_KEY", nullable = false, length = 255)
-	@NotNull
-	private String userPreferenceKey;
+	@Valid
+	private UserPreferenceId userPreferenceId;
 
 	@Column(name = "USER_PREFERENCE_VALUE" , nullable = false, length = 255)
 	@NotNull
 	private String userPreferenceValue;
 
-	@ManyToOne
-	@JoinColumn(name = "USER_ID")
-	private User user;
 
-	public UserPreference(User user, UserPreferenceType userPreferenceType) {
-		this.user = user;
-		this.userPreferenceValue = userPreferenceType.getUserPreferenceValueType().name();
-		this.userPreferenceKey = userPreferenceType.getValue();
+	public UserPreference(UserPreferenceId userPreferenceId, UserPreferenceType userPreferenceType) {
+		
+		this.userPreferenceId = userPreferenceId;
+		userPreferenceValue = userPreferenceType.getUserPreferenceValueType().name();
+		
 	}
 
 	/*
@@ -64,8 +60,8 @@ public class UserPreference extends DomainObject<String, UserPreference> {
 	 * @see net.rrm.ehour.domain.DomainObject#getPK()
 	 */
 	@Override
-	public String getPK() {
-		return userPreferenceKey;
+	public UserPreferenceId getPK() {
+		return userPreferenceId;
 	}
 
 	/*
@@ -74,8 +70,8 @@ public class UserPreference extends DomainObject<String, UserPreference> {
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(UserPreference object) {
-		return new CompareToBuilder().append(this.getUserPreferenceKey(), object.getUserPreferenceKey())
-				.append(this.getUser(), object.getUser()).toComparison();
+		return new CompareToBuilder().append(this.getUserPreferenceId(), object.getUserPreferenceId())
+				.append(this.getUserPreferenceValue(), object.getUserPreferenceValue()).toComparison();
 	}
 
 	/*
@@ -89,8 +85,8 @@ public class UserPreference extends DomainObject<String, UserPreference> {
 
 		if (other instanceof UserPreference) {
 			castOther = (UserPreference) other;
-			return new EqualsBuilder().append(this.getUserPreferenceKey(), ((UserPreference) other).getUserPreferenceKey())
-					.append(this.getUser(), castOther.getUser()).isEquals();
+			return new EqualsBuilder().append(this.getUserPreferenceId(), ((UserPreference) other).getUserPreferenceId())
+					.append(this.getUserPreferenceValue(), castOther.getUserPreferenceValue()).isEquals();
 		} else {
 			return false;
 		}
@@ -103,28 +99,11 @@ public class UserPreference extends DomainObject<String, UserPreference> {
 	 */
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(getUserPreferenceKey()).append(getUser()).toHashCode();
+		return new HashCodeBuilder().append(getUserPreferenceId()).append(getUserPreferenceValue()).toHashCode();
 	}
 	
 	public void setUserPrefence(UserPreferenceType userPreferenceType) {
 		setUserPreferenceValue(userPreferenceType.getUserPreferenceValueType().name());
-		// setUserPreferenceKey(userPreferenceType.getValue());
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public String getUserPreferenceKey() {
-		return userPreferenceKey;
-	}
-
-	public void setUserPreferenceKey(String userPreferenceKey) {
-		this.userPreferenceKey = userPreferenceKey;
 	}
 
 	public String getUserPreferenceValue() {
@@ -133,6 +112,14 @@ public class UserPreference extends DomainObject<String, UserPreference> {
 
 	public void setUserPreferenceValue(String userPreferenceValue) {
 		this.userPreferenceValue = userPreferenceValue;
+	}
+
+	public UserPreferenceId getUserPreferenceId() {
+		return userPreferenceId;
+	}
+
+	public void setUserPreferenceId(UserPreferenceId userPreferenceId) {
+		this.userPreferenceId = userPreferenceId;
 	}
 
 }
