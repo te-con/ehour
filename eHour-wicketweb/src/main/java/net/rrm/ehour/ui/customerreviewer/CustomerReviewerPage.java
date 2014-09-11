@@ -41,6 +41,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import static net.rrm.ehour.ui.common.session.EhourWebSession.getUser;
+
 /**
  * Customer Reviewer Page for viewing all Time-sheets for users
  **/
@@ -73,7 +75,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 
         List<ApprovalStatus> allApprovalStatuses = getApprovalStatusesForCustomersForWhichUserIsAReviewer();
 
-        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser(), false);
+        CalendarPanel calendarPanel = new CalendarPanel("sidePanel", getUser(), false);
         add(calendarPanel);
 
         greyBorder = new GreyRoundedBorder("customerReviewerFrame", new ResourceModel("customerReviewer.title"));
@@ -88,7 +90,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
         EhourWebSession session = ((EhourWebSession) this.getSession());
         Calendar overviewFor = session.getNavCalendar();
         overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-        User user = session.getUser().getUser();
+        User user = getUser();
         List<Customer> customersForWhichUserIsAReviewer = customerService.findAllCustomersForWhichUserIsaReviewer(user);
         DateRange monthRange = DateUtil.calendarToMonthRange(overviewFor);
 
@@ -101,7 +103,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
      * @param target
      */
     @Override
-    public boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
         AjaxRequestTarget target = ajaxEvent.getTarget();
 
@@ -128,7 +130,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
     private void addOrReplaceContentContainer(WebMarkupContainer contentContainer, AjaxRequestTarget target)
     {
         addOrReplaceContentContainer(contentContainer);
-        AjaxRequestTarget.get().addComponent(contentContainer);
+        target.add(contentContainer);
     }
 
 }

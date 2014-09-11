@@ -91,7 +91,7 @@ public interface UserService {
     /**
      * Returns a list of all {@link User}s who are working on Activities of Projects of passed Customers
      * @param customers
-     * @param onlyActiveUsers TODO
+     * @param onlyActiveUsers
      * @return
      */
     List<User> getAllUsersAssignedToCustomers(List<Customer> customers, boolean onlyActiveUsers);

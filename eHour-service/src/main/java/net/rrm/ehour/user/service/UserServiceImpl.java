@@ -344,6 +344,22 @@ public class UserServiceImpl implements UserService {
         return validUsers;
     }
 
+    @Override
+    @Transactional
+    public User addRole(Integer userId, UserRole newRole) {
+        User user = null;
+        try {
+            if (userId != null) {
+                user = getUserAndAddRole(userId, newRole);
+            }
+        } catch (ObjectNotUniqueException exc) {
+            // won't happen
+            LOGGER.error("Account already exists", exc);
+        }
+        return user;
+    }
+
+
     @Transactional
     public void deleteUser(Integer userId) {
         User user = userDAO.findById(userId);
@@ -384,21 +400,6 @@ public class UserServiceImpl implements UserService {
         userRoleDAO = dao;
     }
 
-
-    @Override
-    @Transactional
-    public User addRole(Integer userId, UserRole newRole) {
-        User user = null;
-        try {
-            if (userId != null) {
-                user = getUserAndAddRole(userId, newRole);
-            }
-        } catch (ObjectNotUniqueException exc) {
-            // won't happen
-            LOGGER.error("Account already exists", exc);
-        }
-        return user;
-    }
 
     private User getUserAndAddRole(Integer userId, UserRole newRole) throws ObjectNotUniqueException {
         User user = userDAO.findById(userId);

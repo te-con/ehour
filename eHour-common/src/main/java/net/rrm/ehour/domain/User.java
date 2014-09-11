@@ -87,10 +87,8 @@ public class User extends DomainObject<Integer, User> {
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<ProjectAssignment> projectAssignments;
 
-
-//	@ManyToMany(targetEntity = Customer.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-//	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
-@Transient
+	@ManyToMany(targetEntity = Customer.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
 	private Set<Customer> customers = new HashSet<Customer>();
 
 	@Transient
@@ -245,13 +243,6 @@ public class User extends DomainObject<Integer, User> {
     }
 
     /**
-     * @return the userDepartment
-     */
-    public UserDepartment getUserDepartment() {
-        return userDepartment;
-    }
-
-    /**
      * @param userDepartment the userDepartment to set
      */
     public void setUserDepartment(UserDepartment userDepartment) {
@@ -271,6 +262,12 @@ public class User extends DomainObject<Integer, User> {
     public void setCustomers(Set<Customer> customers) {
         this.customers = customers;
     }
+	/**
+	 * @return the userDepartment
+	 */
+	public UserDepartment getUserDepartment() {
+		return userDepartment;
+	}
 
 
 

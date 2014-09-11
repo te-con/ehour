@@ -56,4 +56,18 @@
 		WHERE ROLE = 'ROLE_PROJECTMANAGER' AND
 				USER_ID NOT IN (SELECT PROJECT_MANAGER FROM PROJECT)
 	</sql-query>
+
+	<sql-query name="User.deleteRedundantReviewers">
+		DELETE 
+		FROM USER_TO_USERROLE
+		WHERE ROLE = 'ROLE_CUSTOMERREVIEWER' AND
+				USER_ID NOT IN (SELECT USER_ID FROM CUSTOMER_REVIEWERS)
+	</sql-query>
+
+	<sql-query name="User.deleteRedundantReporters">
+		DELETE 
+		FROM USER_TO_USERROLE
+		WHERE ROLE = 'ROLE_CUSTOMERREPORTER' AND
+				USER_ID NOT IN (SELECT USER_ID FROM CUSTOMER_REPORTERS)
+	</sql-query>		
 </hibernate-mapping>
