@@ -55,6 +55,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static net.rrm.ehour.ui.common.session.EhourWebSession.getUser;
@@ -215,6 +216,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
 
     private Fragment createInputTimesheetEntry(String id, TimesheetRow row, final int index) {
+        boolean isActivityBookable = isActivityBookable(row);
+
         Fragment fragment = createAndAddFragment(id, "dayInput");
         fragment.add(createTextFieldWithValidation(row, index));
 
@@ -223,7 +226,19 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return fragment;
     }
 
-    private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index) {
+    private boolean isActivityBookable(TimesheetRow timeSheetRow) {
+        boolean result = true;
+        Activity activity = timeSheetRow.getActivity();
+        if (activity != null) {
+            Float availableHours = activity.getAvailableHours();
+            if (availableHours != null) {
+                result = availableHours > 0;
+            }
+        }
+        return result;
+    }
+
+    private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index, boolean isActivityBookable) {
         TimesheetCell timesheetCell = row.getTimesheetCells()[index];
         PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
 
@@ -232,7 +247,14 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         // add inputfield with validation to the parent
         final TimesheetTextField dayInput = new TimesheetTextField("day", cellModel, 1);
-        dayInput.setEnabled(isDayInputApprovedOrRequestedForApproval(row, index));
+
+        boolean isEditable = false;
+
+        if (isActivityBookable) {
+            isEditable = isDayInputApprovedOrRequestedForApproval(row, index);
+        }
+
+        dayInput.setEnabled(isEditable);
         dayInput.setOutputMarkupId(true);
 
         // add validation
@@ -296,7 +318,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 	}
 
     @SuppressWarnings("serial")
-    private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent, DayStatus status) {
+    private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent, DayStatus status, boolean isActivityBookable) {
         final PropertyModel<String> commentModel = new PropertyModel<String>(row, "timesheetCells[" + index + "].timesheetEntry.comment");
 
         final ModalWindow modalWindow = new ModalWindow("dayWin");
@@ -340,6 +362,12 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         commentLink.setOutputMarkupId(true);
         commentLink.add(CommonModifiers.tabIndexModifier(255));
+
+        boolean isEditable = false;
+        if (isActivityBookable) {
+            isEditable = isDayInputApprovedOrRequestedForApproval(row, index);
+        }
+        commentLink.setEnabled(isEditable);
 
         parent.add(commentLink);
     }

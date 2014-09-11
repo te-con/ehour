@@ -59,6 +59,7 @@ public class ActivityMother {
         activity.setProject(prj);
         activity.setId(activityId);
         activity.setAllottedHours((float) activityId);
+        activity.setAvailableHours(new Float(activityId));
 
         user = UserObjectMother.createUser();
         user.setUserId(userId);
