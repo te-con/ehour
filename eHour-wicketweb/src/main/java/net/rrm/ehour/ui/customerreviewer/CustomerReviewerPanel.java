@@ -9,6 +9,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.ApprovalStatus;
+import net.rrm.ehour.domain.ApprovalStatusType;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -18,6 +19,8 @@ import net.rrm.ehour.ui.customerreviewer.model.CustomerReviewerDataProvider;
 import net.rrm.ehour.ui.timesheet.page.UserOverviewPage;
 import net.rrm.ehour.util.DateUtil;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
@@ -46,6 +49,8 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 	
 	@SpringBean
 	private ApprovalStatusService approvalStatusService;
+	
+	private WebMarkupContainer dataContainer;
 
 	public CustomerReviewerPanel(String id, List<Activity> allActivitiesOfCustomerForMonth) {
 		super(id);
@@ -65,6 +70,9 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 	private void addAllComponents(List<Activity> allActivitiesOfCustomerForMonth) {
 		Border greyBorder = new GreyBlueRoundedBorder("border");
 		add(greyBorder);
+		
+		dataContainer = new WebMarkupContainer("dataContainer");
+		dataContainer.setOutputMarkupId(true);
 
 		final Form<Void> form = new Form<Void>("customerReviewerForm");
 		
@@ -77,12 +85,11 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
         columns.add(new PropertyColumn<Activity>(new ResourceModel("customerreviewer.timesheet.column.user"), "assignedUser.firstName");
         columns.add(new DateColumn(new ResourceModel("customerreviewer.timesheet.column.period"), getConfig());
 		columns[3] = new AbstractColumn<Activity>(new Model<String>("Status")) {
-			@SuppressWarnings({"unchecked"})
 			@Override
-			public void populateItem(final Item item, String compId, final IModel model) {
-				item.add(new Label(compId, getStatus(model)));
+			public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
+				cellItem.add(new Label(componentId, getStatus(rowModel)));
+				
 			}
-
 			private String getStatus(IModel<Activity> model) {
 				String result = null;
 				Activity activity = model.getObject();
@@ -94,43 +101,57 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 				}
 				return result;
 			}
+
 		};
 		columns[4] = new AbstractColumn<Activity>(new Model<String>("view")) {
-			@SuppressWarnings({"rawtypes", "unchecked"})
 			@Override
-			public void populateItem(final Item item, String compId, final IModel model) {
-				item.add(new ViewTimesheetPanel(compId, model));
+			public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
+				cellItem.add(new ViewTimesheetPanel(componentId, rowModel));
 			}
 		};
 		columns[5] = new AbstractColumn<Activity>(new Model<String>("approve")) {
-			@SuppressWarnings({"rawtypes", "unchecked"})
 			@Override
-			public void populateItem(final Item item, String compId, final IModel model) {
-				item.add(new AcceptPanel(compId, model));
+			public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
+				AcceptPanel acceptPanel = new AcceptPanel(componentId, rowModel);
+				Activity activity = rowModel.getObject();
+				ApprovalStatus approvalStatusForActivity = findApprovalStatusForActivity(activity);
+				if(approvalStatusForActivity!=null && (approvalStatusForActivity.getStatus().equals(ApprovalStatusType.APPROVED) || approvalStatusForActivity.getStatus().equals(ApprovalStatusType.IN_PROGRESS))) {
+					acceptPanel.setEnabled(false);
+				}
+				if(approvalStatusForActivity == null) {
+					acceptPanel.setEnabled(false);
+				}
+				cellItem.add(acceptPanel);
 			}
 		};
-
 		columns[6] = new AbstractColumn<Activity>(new Model<String>("reject")) {
 			@SuppressWarnings({"rawtypes", "unchecked" })
-        columns.add(new AbstractColumn<Activity, Date>(new Model<String>("reject")) {
-			@SuppressWarnings({ "rawtypes", "unchecked" })
 			@Override
-			public void populateItem(final Item item, String compId, final IModel model) {
-				item.add(new RejectPanel(compId, model));
+			public void populateItem(Item<ICellPopulator<Activity>> cellItem, String componentId, IModel<Activity> rowModel) {
+				cellItem.add(new RejectPanel(componentId, rowModel));
 			}
-		});
-
-
-		AjaxFallbackDefaultDataTable<Activity, Date> table = new AjaxFallbackDefaultDataTable<Activity, Date>("data", columns,
-				new CustomerReviewerDataProvider(allActivitiesOfCustomerForMonth), 20);
-
+		};
+		
+		AjaxFallbackDefaultDataTable<Activity> table = new AjaxFallbackDefaultDataTable<Activity>("data", columns, new CustomerReviewerDataProvider(allActivitiesOfCustomerForMonth), 20);
+		
 		form.setOutputMarkupId(true);
 		form.add(table);
-
-		final WebMarkupContainer dataContainer = new WebMarkupContainer("dataContainer");
-		dataContainer.setOutputMarkupId(true);
+		
 		dataContainer.add(form);
 		greyBorder.add(dataContainer);
+	}
+
+	protected ApprovalStatus findApprovalStatusForActivity(Activity activity) {
+		ApprovalStatus appStatus = null;
+		EhourWebSession session = EhourWebSession.getSession();
+		Calendar overviewFor = session.getNavCalendar();
+		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+		DateRange monthRange = DateUtil.calendarToMonthRange(overviewFor);
+    	List<ApprovalStatus> approvalStatusesForActivity = approvalStatusService.getApprovalStatusForActivity(activity, monthRange);
+    	if(approvalStatusesForActivity != null && approvalStatusesForActivity.size()!=0) {
+    		appStatus = approvalStatusesForActivity.iterator().next();
+    	}
+		return appStatus;
 	}
 
 	private class DateColumn extends AbstractColumn<Activity, Date> {
@@ -164,27 +185,31 @@ public class CustomerReviewerPanel extends AbstractAjaxPanel<ReportCriteria> {
 	}
 	
 	class AcceptPanel extends Panel {
-		
-		public AcceptPanel(String id, IModel<Activity> model) {
+		public AcceptPanel(String id, final IModel<Activity> model) {
 			super(id, model);
-			add(new Link<Activity>("accept") {
+			add(new AjaxLink<Activity>("accept") {
 				@Override
-				public void onClick() {
+				public void onClick(AjaxRequestTarget target) {
+					Activity activity = model.getObject();
+					ApprovalStatus statusForActivity = findApprovalStatusForActivity(activity);
+					if (statusForActivity != null) {
+						statusForActivity.setStatus(ApprovalStatusType.APPROVED);
+						approvalStatusService.persist(statusForActivity);
+						target.addComponent(dataContainer);
+					}
 				}
 			});
 		}
 	}	
 	
 	class ViewTimesheetPanel extends Panel {
-
 		public ViewTimesheetPanel(String id, IModel<Activity> model) {
 			super(id, model);
 			final Activity activity = model.getObject();
 			add(new Link<Activity>("view") {
 				@Override
 				public void onClick() {
-					 UserOverviewPage userOverviewPage = new
-					 UserOverviewPage(activity.getAssignedUser());
+					 UserOverviewPage userOverviewPage = new UserOverviewPage(activity.getAssignedUser());
 					 setResponsePage(userOverviewPage);
 				}
 			});

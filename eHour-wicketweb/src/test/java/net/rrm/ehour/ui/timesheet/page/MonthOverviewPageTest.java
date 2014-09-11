@@ -16,6 +16,15 @@
 
 package net.rrm.ehour.ui.timesheet.page;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.notNull;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
+import java.util.Calendar;
+
+import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
@@ -38,8 +47,14 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
 	{
 		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
 		getMockContext().putBean(overviewTimesheet);
-		
-		MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
+
+        ApprovalStatusService approvalStatusService = createMock(ApprovalStatusService.class);
+
+        getMockContext().putBean("timesheetService", timesheetService);
+        getMockContext().putBean("approvalStatusService", approvalStatusService);
+
+
+        MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
 
 		TimesheetOverview overview = new TimesheetOverview();
 		

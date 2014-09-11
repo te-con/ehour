@@ -16,19 +16,24 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
+import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.config.EhourConfig;
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.ApprovalStatus;
+import net.rrm.ehour.domain.ApprovalStatusType;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
+import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -36,6 +41,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,6 +59,9 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
     private static final String ID_SUMMARY_ROW = "summaryRow";
     private static final String ID_FOLD_LINK = "foldLink";
     private static final String ID_FOLD_IMG = "foldImg";
+
+    @SpringBean
+    private ApprovalStatusService approvalStatusService;
 
     public ProjectOverviewPanel(String id, Calendar overviewFor, Collection<UserProjectStatus> projectStatusses) {
         super(id);
@@ -162,12 +171,25 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        final UserProjectStatus modelObject = item.getModelObject();
                         target.add(this);
-                        this.setVisible(false);
+                        UserProjectStatus userProjectStatus = item.getModelObject();
+                        changeActivityStatus(userProjectStatus);
+                        setVisibilityOfApprovalLink(userProjectStatus, this);
+                    }
 
+                    private void changeActivityStatus(UserProjectStatus userProjectStatus) {
+                        EhourWebSession session = ((EhourWebSession) this.getSession());
+                        Calendar overviewFor = session.getNavCalendar();
+                        overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+                        DateRange monthrange = DateUtil.calendarToMonthRange(overviewFor);
+                        List<ApprovalStatus> approvalStatusForActivity = approvalStatusService.getApprovalStatusForActivity(userProjectStatus.getActivity(), monthrange);
+                        ApprovalStatus approvalStatus = approvalStatusForActivity.iterator().next();
+                        approvalStatus.setStatus(ApprovalStatusType.READY_FOR_APPROVAL);
+                        approvalStatusService.persist(approvalStatus);
                     }
                 };
+
+                setVisibilityOfApprovalLink(item.getModelObject(), requestApprovalLink);
 
                 requestApprovalLink.setOutputMarkupId(true);
                 userProjectStatusRowForm.add(requestApprovalLink);
@@ -178,6 +200,22 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 item.add(projectSummaryRow);
 
                 item.add(createFoldLink(projectSummaryRow));
+            }
+
+            private void setVisibilityOfApprovalLink(UserProjectStatus userProjectStatus, AjaxLink<Void> requestApprovalLink) {
+                EhourWebSession session = ((EhourWebSession) this.getSession());
+                Calendar overviewFor = session.getNavCalendar();
+                overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+                DateRange monthrange = DateUtil.calendarToMonthRange(overviewFor);
+                List<ApprovalStatus> approvalStatusForActivity = approvalStatusService.getApprovalStatusForActivity(userProjectStatus.getActivity(), monthrange);
+                ApprovalStatusType approvalStatusType = approvalStatusForActivity.iterator().next().getStatus();
+
+                if(approvalStatusType.equals(ApprovalStatusType.IN_PROGRESS) || approvalStatusType.equals(ApprovalStatusType.REJECTED)) {
+                    requestApprovalLink.setVisible(true);
+                } else {
+                    requestApprovalLink.setVisible(false);
+                }
+
             }
         };
 
