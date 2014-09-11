@@ -2,7 +2,7 @@ package net.rrm.ehour.domain;
 
 public enum UserPreferenceType {
 
-	DISABLE_WEEKENDS("DISABLE_WEEKENDS", UserPreferenceValueType.yes), ENABLE_WEEKENDS("ENABLE_WEEKENDS", UserPreferenceValueType.no);
+	DISABLE_WEEKENDS("DISABLE_WEEKENDS", UserPreferenceValueType.ENABLE), ENABLE_WEEKENDS("DISABLE_WEEKENDS", UserPreferenceValueType.DISABLE);
 
 	private UserPreferenceValueType userPreferenceValueType;
 

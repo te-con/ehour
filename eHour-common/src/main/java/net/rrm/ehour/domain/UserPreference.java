@@ -55,7 +55,7 @@ public class UserPreference extends DomainObject<String, UserPreference> {
 	public UserPreference(User user, UserPreferenceType userPreferenceType) {
 		this.user = user;
 		this.userPreferenceValue = userPreferenceType.getUserPreferenceValueType().name();
-		this.userPreferenceKey = userPreferenceType.name();
+		this.userPreferenceKey = userPreferenceType.getValue();
 	}
 
 	/*
@@ -104,6 +104,11 @@ public class UserPreference extends DomainObject<String, UserPreference> {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(getUserPreferenceKey()).append(getUser()).toHashCode();
+	}
+	
+	public void setUserPrefence(UserPreferenceType userPreferenceType) {
+		setUserPreferenceValue(userPreferenceType.getUserPreferenceValueType().name());
+		// setUserPreferenceKey(userPreferenceType.getValue());
 	}
 
 	public User getUser() {

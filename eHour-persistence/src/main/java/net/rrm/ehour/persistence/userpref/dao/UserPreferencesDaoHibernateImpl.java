@@ -6,6 +6,7 @@ import net.rrm.ehour.domain.UserPreference;
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository("userPreferenceDao")
 public class UserPreferencesDaoHibernateImpl extends AbstractGenericDaoHibernateImpl<UserPreference, String> implements UserPreferencesDao {
@@ -18,6 +19,12 @@ public class UserPreferencesDaoHibernateImpl extends AbstractGenericDaoHibernate
 	public void addUserPreferenceToUser(UserPreferenceType userPreferenceType, User user) {
 		//UserPreferences preferences = new UserPreferences(userPreferenceType.toString(), userPreferenceType.getValue().toString(), user);
 		//getHibernateTemplate().persist(preferences);
+	}
+	
+	@Override
+	@Transactional
+	public UserPreference merge(UserPreference domobj) {
+		return getHibernateTemplate().merge(domobj);
 	}
 
 }

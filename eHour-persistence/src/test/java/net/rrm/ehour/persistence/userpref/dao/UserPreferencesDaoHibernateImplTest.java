@@ -33,10 +33,49 @@ public class UserPreferencesDaoHibernateImplTest extends AbstractAnnotationDaoTe
 		Assert.assertNotNull(user);
 		UserPreference userPreference = new UserPreference(user, UserPreferenceType.DISABLE_WEEKENDS);
 		userPreferencesDao.persist(userPreference);
+	}
+	
+	@Test
+	public void shouldPersistUserPreferenceThatWeekendsBeLocked() {
+		User user = userDao.findById(1);
+		Assert.assertNotNull(user);
+		UserPreference userPreference = new UserPreference(user, UserPreferenceType.DISABLE_WEEKENDS);
+		userPreferencesDao.persist(userPreference);
 		Assert.assertNotNull(userPreference.getUserPreferenceKey());
 		UserPreference retrievedUserPreference = userPreferencesDao.findById(userPreference.getUserPreferenceKey());
-		Assert.assertEquals(UserPreferenceType.DISABLE_WEEKENDS.toString(), retrievedUserPreference.getUserPreferenceKey());
-		Assert.assertEquals(UserPreferenceValueType.yes.name(), retrievedUserPreference.getUserPreferenceValue());
+		Assert.assertEquals(UserPreferenceType.DISABLE_WEEKENDS.getValue(), retrievedUserPreference.getUserPreferenceKey());
+		Assert.assertEquals(UserPreferenceValueType.ENABLE.name(), retrievedUserPreference.getUserPreferenceValue());
 	}
-
+	
+	@Test
+	public void shouldPersistUserPreferenceThatWeekendsBeNotLocked() {
+		User user = userDao.findById(1);
+		Assert.assertNotNull(user);
+		UserPreference userPreference = new UserPreference(user, UserPreferenceType.ENABLE_WEEKENDS);
+		userPreferencesDao.persist(userPreference);
+		Assert.assertNotNull(userPreference.getUserPreferenceKey());
+		UserPreference retrievedUserPreference = userPreferencesDao.findById(userPreference.getUserPreferenceKey());
+		Assert.assertEquals(UserPreferenceType.ENABLE_WEEKENDS.getValue(), retrievedUserPreference.getUserPreferenceKey());
+		Assert.assertEquals(UserPreferenceValueType.DISABLE.name(), retrievedUserPreference.getUserPreferenceValue());
+	}
+	
+	@Test
+	public void shouldModifyUserPreference() {
+		User user = userDao.findById(1);
+		Assert.assertNotNull(user);
+		UserPreference userPreference = new UserPreference(user, UserPreferenceType.ENABLE_WEEKENDS);
+		userPreferencesDao.persist(userPreference);
+		Assert.assertNotNull(userPreference.getUserPreferenceKey());
+		
+		UserPreference retrievedUserPreference = userPreferencesDao.findById(userPreference.getUserPreferenceKey());
+		
+		Assert.assertEquals(UserPreferenceType.ENABLE_WEEKENDS.getValue(), retrievedUserPreference.getUserPreferenceKey());
+		Assert.assertEquals(UserPreferenceValueType.DISABLE.name(), retrievedUserPreference.getUserPreferenceValue());
+		
+		retrievedUserPreference.setUserPrefence(UserPreferenceType.DISABLE_WEEKENDS);
+		UserPreference retrievedUserPreferenceAfterMerge = userPreferencesDao.merge(retrievedUserPreference);
+		
+		Assert.assertEquals(UserPreferenceType.DISABLE_WEEKENDS.getValue(), retrievedUserPreferenceAfterMerge.getUserPreferenceKey());
+		Assert.assertEquals(UserPreferenceValueType.ENABLE.name(), retrievedUserPreferenceAfterMerge.getUserPreferenceValue());
+	}
 }
