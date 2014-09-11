@@ -140,28 +140,39 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
             throw new OverBudgetException(afterStatus);
         }
 
-        // updateApprovalStatusForActivityWithinWeekRange(activity, weekRange);
+        updateApprovalStatusForActivityWithinWeekRange(activity, weekRange);
     }
 
     private void updateApprovalStatusForActivityWithinWeekRange(Activity activity, DateRange weekRange) {
-        // check that the week spans two months
-        // if this is so then get two approval statuses and commit them
-        if(checkThatWeekSpansMonths(weekRange)) {
+        DateRange dateRangeForCurrentMonth = DateUtil.getDateRangeForMonth(weekRange.getDateStart());
 
+        if (checkThatWeekSpansMonths(weekRange)) {
+            updateApprovalStatusForWeekSpanningMonths(activity, weekRange);
         } else {
-
+            updateApprovalStatusForMonth(activity, dateRangeForCurrentMonth);
         }
+    }
 
-        List<ApprovalStatus> allApprovalStatuses = approvalStatusService.getApprovalStatusForActivity(activity, weekRange);
+    private void updateApprovalStatusForWeekSpanningMonths(Activity activity, DateRange weekRange) {
+        DateRange currentMonthRange = DateUtil.getDateRangeForMonth(weekRange.getDateStart());
+        DateRange nextMonthRange = DateUtil.getDateRangeForMonth(weekRange.getDateEnd());
+
+        updateApprovalStatusForMonth(activity, currentMonthRange);
+        updateApprovalStatusForMonth(activity, nextMonthRange);
+    }
+
+    private void updateApprovalStatusForMonth(Activity activity, DateRange monthRange) {
+        List<ApprovalStatus> allApprovalStatuses = approvalStatusService.getApprovalStatusForActivity(activity, monthRange);
+
         if (allApprovalStatuses == null || allApprovalStatuses.isEmpty()) {
             ApprovalStatus approvalStatus = new ApprovalStatus();
             approvalStatus.setActivity(activity);
             approvalStatus.setStatus(ApprovalStatusType.IN_PROGRESS);
-            DateRange dateRangeForMonth = DateUtil.getDateRangeForMonth(weekRange.getDateStart());
-            approvalStatus.setStartDate(dateRangeForMonth.getDateStart());
-            approvalStatus.setEndDate(dateRangeForMonth.getDateEnd());
+            approvalStatus.setStartDate(monthRange.getDateStart());
+            approvalStatus.setEndDate(monthRange.getDateEnd());
             approvalStatusService.persist(approvalStatus);
         }
+
     }
 
     private Boolean checkThatWeekSpansMonths(DateRange weekRange) {
