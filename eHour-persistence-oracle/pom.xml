@@ -15,7 +15,6 @@
             <groupId>com.oracle.jdbc</groupId>
             <artifactId>ojdbc</artifactId>
             <version>10.1.0.5</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
