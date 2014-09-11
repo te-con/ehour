@@ -62,6 +62,7 @@ public class ActivityMother {
         activity.setCode(String.valueOf(activityId));
         activity.setAllottedHours((float) activityId);
         activity.setAvailableHours((float) activityId);
+        activity.setLocked(Boolean.FALSE);
 
         user = UserObjectMother.createUser();
         user.setUserId(userId);

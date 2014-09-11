@@ -38,6 +38,11 @@ public class TestEhourWebApplication extends EhourWebApplication implements Seri
 
     private Boolean enableBookWholeWeek = true;
 
+    @Override
+    public String getProjectLinkUrl() {
+        return "http://!{WORKITEM}/";
+    }
+
     /**
      * When not authorized, just let it pass
      */
