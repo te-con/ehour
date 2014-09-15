@@ -527,7 +527,7 @@
                         <dependency>
                 <groupId>nl.tecon.ehevo</groupId>
                 <artifactId>ehevo-windchill</artifactId>
-                <version>${pom.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
 
