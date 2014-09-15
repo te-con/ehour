@@ -36,7 +36,6 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
   @SpringBean
   protected var projectService: ProjectService = _
 
-
   override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {
     if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED || ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_DELETED) {
       ajaxEvent.getTarget.add(get(StatusId))
@@ -79,24 +78,28 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
       }
 
       protected def onClick(item: ListItem[Project], target: AjaxRequestTarget) {
-        val project = item.getModelObject
-
-        if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
-          val projectInfoPanel = new ProjectManagerModifyPanel(ContainerId, project)
-          projectInfoPanel.setOutputMarkupId(true)
-          Self.addOrReplace(projectInfoPanel)
-          target.add(projectInfoPanel)
-        }
-
-        val statusPanel = new ProjectManagerStatusPanel(StatusId, project)
-        statusPanel.setOutputMarkupId(true)
-        Self.addOrReplace(statusPanel)
-        target.add(statusPanel)
+        onProjectSelected(item, target)
       }
     }
 
     fragment.add(projectListView)
     fragment
+  }
+
+  protected def onProjectSelected(item: ListItem[Project], target: AjaxRequestTarget) {
+    val project = item.getModelObject
+
+    if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
+      val projectInfoPanel = new ProjectManagerModifyPanel(ContainerId, project)
+      projectInfoPanel.setOutputMarkupId(true)
+      Self.addOrReplace(projectInfoPanel)
+      target.add(projectInfoPanel)
+    }
+
+    val statusPanel = new ProjectManagerStatusPanel(StatusId, project)
+    statusPanel.setOutputMarkupId(true)
+    Self.addOrReplace(statusPanel)
+    target.add(statusPanel)
   }
 
   override def renderHead(response: IHeaderResponse) {
