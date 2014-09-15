@@ -1,38 +1,32 @@
 package com.richemont.windchill;
 
+import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
-import net.rrm.ehour.exception.ParentChildConstraintException;
-import net.rrm.ehour.exception.PasswordEmptyException;
-import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
-import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.exception.OverBudgetException;
+import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.service.ProjectService;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
+import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
+import net.rrm.ehour.timesheet.service.IPersistTimesheet;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourUtil;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import wt.httpgw.GatewayAuthenticator;
-import wt.log4j.LogR;
-import wt.method.MethodAuthenticator;
-import wt.method.RemoteMethodServer;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * @author laurent.linck
+ */
 @Service("chillService")
-public class WindChillServiceImpl implements WindChillService
-{
+public class WindChillServiceImpl implements WindChillService {
     @Autowired
     private AggregateReportService aggregateReportService;
 
@@ -46,632 +40,662 @@ public class WindChillServiceImpl implements WindChillService
     private ProjectService projectService;
 
     @Autowired
-    private ProjectAssignmentService projectAssignmentService;
+    private ActivityService activityService;
 
     @Autowired
-    private ProjectAssignmentDao projectAssignmentDao;
+    private IPersistTimesheet timesheetPersister;
 
-    private static Logger logger = LogR.getLogger("ext.service.WindchillServiceImpl");
-    private static Level levelDeTrace;
+    @Autowired
+    private IOverviewTimesheet timesheetService;
 
+    @Autowired
+    private ReportAggregatedDao reportAggregatedDao;
 
-    // can be moved to log4j.properties
-    static
-    {
-        try
-        {
-            // Initialisation log4j
-            // WTProperties props =
-            // RichemontProperties.getRichemontProperties();
-            String TempLevelDeTrace = "debug";
-            levelDeTrace = org.apache.log4j.Level.toLevel(TempLevelDeTrace);
-            logger.setLevel(levelDeTrace);
-            logger.info("ext.service.WindchillServiceImpl loade");
-        } catch (Exception e)
-        {
+    @Autowired
+    private TimesheetDao timesheetDao;
+
+    @Value("${ehour.windchill.enabled}")
+    private String enabled;
+
+    @Autowired
+    private QueryTimeSheets queryTimeSheets;
+
+    @Value("${richemont.windchill.soap.endpoint}")
+    private String endpoint;
+
+    private static Logger LOGGER = Logger.getLogger("ext.service.WindchillServiceImpl");
+
+    static {
+        try {
+            LOGGER.info("ext.service.WindchillServiceImpl loaded");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void checkUserExist(String username)
-    {
-        // Create user if it doesn't exist
-        logger.debug("On vérifie si le user existe :" + username);
-        User user = userService.getUser(username);
-
-        if (user == null)
-        {
-            logger.debug("Le user " + username + " n'existe pas");
-            User newUser = new User(username, "ism");
-            newUser.setUpdatedPassword("ism");
-            newUser.setLastName(username);
-
-            UserDepartment userDepartment = new UserDepartment(1);
-            newUser.setUserDepartment(userDepartment);
-
-            Set<UserRole> userRoles = new HashSet<UserRole>();
-            userRoles.add(UserRole.CONSULTANT);
-            userRoles.add(UserRole.ADMIN);
-            newUser.setUserRoles(userRoles);
-            newUser.setActive(true);
-
-            try
-            {
-                logger.debug("On persiste le user :" + username);
-                userService.persistUser(newUser);
-            } catch (PasswordEmptyException e)
-            {
-                logger.error(e.getMessage());
-                logger.error(e.getStackTrace());
-            } catch (ObjectNotUniqueException e)
-            {
-                logger.error(e.getMessage());
-                logger.error(e.getStackTrace());
-            }
-        }
+    private boolean isEnabled() {
+        return enabled == null || Boolean.parseBoolean(enabled);
     }
 
+
+    /**
+     * update EHour from PJL
+     * called by net.rrm.ehour.ui.login.page.Login.java
+     * called by net.rrm.ehour.ui.common.component.header.HeaderPanel.java
+     *
+     * @param username
+     */
     @Override
-    @SuppressWarnings({})
-    @Transactional
-    public void initDataForUser(String username, HttpServletRequest request)
-    {
-        logger.info("***** Initialisation des donnees de l'utilisateur " + username + "*****");
-        User user = userService.getUser(username);
-        // definition du server RMI
-        MethodAuthenticator auth = new GatewayAuthenticator(request);
-        logger.debug("On recupere le MS distant");
-        RemoteMethodServer remotemethodserver = RemoteMethodServer.getDefault();
-        auth.setServer(remotemethodserver);
-        logger.debug("On authentifie le MS");
-        remotemethodserver.setAuthenticator(auth);
+    public boolean updateDataForUser(Map<String, Activity> allAssignedActivitiesByCode, String username) {
+        boolean isSync = false;
+        if (!isEnabled()) {
+            LOGGER.info("Windchill sync is disabled");
+            return true;
+        } else {
+            try {
+                isSync = updateProjectForUser(allAssignedActivitiesByCode, username);
+            } catch (Exception e) {
+                LOGGER.error("***** updateDataForUser SYNC FAILED *****");
+                e.printStackTrace();
+            }
+        }
+        return isSync;
+
+    }
+
+
+    /**
+     * Update
+     *
+     * @param username
+     * @return
+     */
+    public boolean updateProjectForUser(Map<String, Activity> allAssignedActivitiesByCode, String username) {
+        boolean isSync = false;
+        LOGGER.info("***** Initialisation des donnees de l'utilisateur " + username);
+
+        // DISPLAY FOR DEBUG ONLY !!!
+        if (LOGGER.isDebugEnabled()) {
+            displayAllCustomers(getAllCustomers());
+            displayAllAssignedActivities(allAssignedActivitiesByCode);
+        }
+
+        // liste des activites  eHour que l on va creer ou mettre a jour
+        HashMap<String, Activity> hmDealedActivities = new HashMap<String, Activity>();
+
+        // Windchill
+
+        // recuperation de toutes les activites du user
+        LOGGER.debug("\n\n");
+        LOGGER.debug("***** Appel du Windchill WS TimeSheetMgt *******");
 
         // Create project and activities for this user.
-        Vector listeDesActiviteesDepuisGrutlink;
-        List<ProjectAssignment> listeDesActiviteesDepuisEhour;
-        List<Customer> listeDesProjetsDepuisEhour;
+        List<HashMap<String, Comparable>> listeDesActiviteesDepuisGrutlink;
+        int compte = 0;
 
-        Class[] argTypes = {String.class};
-        Object[] args2 = {username};
+        // TODO FIXME THIES
+        User assignedUser = null; //= userService.getAuthorizedUser(username);
 
-        // HashMap h;
-        try
-        {
+        Map<String, Customer> hmAllCustomersByCode = getAllCustomersByCode();
 
-            logger.debug("On recupere le liste des activitées depuis ehour");
-            listeDesActiviteesDepuisEhour = getProjectsFromEhour(user);
-            logger.debug("Nombre des activitées :" + listeDesActiviteesDepuisEhour.size());
-            listeDesProjetsDepuisEhour = getCustomersFromEhour();
-            logger.debug("Nombre des projets :" + listeDesProjetsDepuisEhour.size());
+        try {
+            // FROM Windchill: get allProjectActivities for a given user
+            listeDesActiviteesDepuisGrutlink = queryTimeSheets.getTimeSheets(username, "getTimeSheets", endpoint);
+            if (listeDesActiviteesDepuisGrutlink != null) {
 
-            // recuperation de toutes les activitees du user
-            logger.debug("Appel de la methode getProjectActivity en RMI");
-            listeDesActiviteesDepuisGrutlink = (Vector) remotemethodserver.invoke("getProjectActivity", "ext.ismts.ProjectConnection", null, argTypes, args2);
-            logger.debug("Liste des activitées récupérées depuis projectlink " + listeDesActiviteesDepuisGrutlink.size());
+                // TO eHour: update/create allProjectActivities for a given user from Windchill
 
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("\n\n");
+                    LOGGER.info("***** Mise a jour de " + listeDesActiviteesDepuisGrutlink.size() + " activites dans eHour a partir de ProjectLink pour " + username);
+                }
 
-            // on cree une liste des projets recuperes depuis projectlink au
-            // format ehour
-            List<Customer> customersFromProjLink = getCustomers(listeDesActiviteesDepuisGrutlink);
-            Iterator<Customer> it_customersFromProjLink = customersFromProjLink.iterator();
+                for (HashMap<String, Comparable> aListeDesActiviteesDepuisGrutlink : listeDesActiviteesDepuisGrutlink) {
 
-            List<Customer> newProjetct = new ArrayList<Customer>();
+                    compte++;
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("--> Activity #" + compte + "/" + listeDesActiviteesDepuisGrutlink.size() + " for user " + username);
+                    }
 
-            while (it_customersFromProjLink.hasNext())// liste depuis Grut
-            {
-                Customer customer = it_customersFromProjLink.next();
-                Iterator<Customer> it_listeDesProjets = listeDesProjetsDepuisEhour.iterator();
-                int nb = 0;
-                while (it_listeDesProjets.hasNext())
-                {// Depuis EHour
-                    Customer projet = it_listeDesProjets.next();
-                    if (!((customer.getCode()).equals((projet.getCode()))))
-                    {
-                        nb = nb + 1;
+                    HashMap<String, Comparable> hm = aListeDesActiviteesDepuisGrutlink;
+                    displayHashMapContent(hm); // trace for debug
 
-                    } else
-                    {
-                        if (projet.getName().equals(customer.getName()))
-                        {
-                            projet.setName(customer.getName());
-                        }
-
-                        projet.setDescription(customer.getDescription());
-
+                    Activity currentActivity = createNewActivity(hm, allAssignedActivitiesByCode, assignedUser, WindchillConst.WIND_DATE_FORMAT, hmAllCustomersByCode);
+                    // toutes les activites nouvelles ou mises a jour dans eHour
+                    if (currentActivity != null) {
+                        hmDealedActivities.put(currentActivity.getCode(), currentActivity);
+                        LOGGER.debug("\tdealedActivities=" + currentActivity.getName());
                     }
                 }
-                if (nb == (listeDesProjetsDepuisEhour.size()))
-                {
-                    newProjetct.add(customer);
+
+                // Les activites non nouvelles ou non mises a jour dans eHour doivent etre desactivees
+                desactivateObsoleteActivity(allAssignedActivitiesByCode, hmDealedActivities);
+                isSync = true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error("***** updateDataForUser SYNC FAILED *****");
+        }
+        return isSync;
+    }
+
+    @Override
+    public Activity createNewActivity(Map<String, Comparable> hm, Map<String, Activity> allAssignedActivitiesByCode, User assignedUser, SimpleDateFormat dateFormat) {
+        Map<String, Customer> hmAllCustomersByCode = getAllCustomersByCode();
+
+        return createNewActivity(hm, allAssignedActivitiesByCode, assignedUser, dateFormat, hmAllCustomersByCode);
+    }
+
+    private Activity createNewActivity(Map<String, Comparable> attributeMap, Map<String, Activity> allAssignedActivitiesByCode, User assignedUser, SimpleDateFormat dateFormat, Map<String, Customer> customerOnCode) {
+        Activity currentActivity = null;
+
+        String orgId = (String) attributeMap.get(WindchillConst.ORG_ID);
+        String orgName = (String) attributeMap.get(WindchillConst.ORG_NAME);
+        String projectID = (String) attributeMap.get(WindchillConst.PROJECT_ID); // ProjectId de Windchill = projectCode de eHour
+        String projectName = (String) attributeMap.get(WindchillConst.PROJECT_NAME);
+        String activityId = (String) attributeMap.get(WindchillConst.ACTIVITY_ID); // ActivityId de Windchill = activityCode de eHour
+        String activityName = (String) attributeMap.get(WindchillConst.ACTIVITY_NAME);
+
+        Float projectAllocatedHours = new Float((String) attributeMap.get(WindchillConst.REMAINING_WORK)); // Remaining Work
+        Float projectPerformedHours = new Float((String) attributeMap.get(WindchillConst.PERWORMED_WORK)); //Actual Work
+
+        Date projectActivityStartDate = DateUtils.convertStringToDate((String) attributeMap.get(WindchillConst.ACTIVITY_START_DATE), dateFormat);
+        Date projectActivityEndDate = DateUtils.convertStringToDate((String) attributeMap.get(WindchillConst.ACTIVITY_END_DATE), dateFormat);
+
+        Project prj = checkProject(projectID, projectName);
+
+        // activites a creer dans ehour
+        if (!isAssignedActivityExist(activityId, allAssignedActivitiesByCode)) {
+            LOGGER.debug("\tisAssignedActivityExist = false --> creation dans eHour de " + activityId);
+
+            try {
+                currentActivity = createAssignedActivity(assignedUser, activityId, activityName,
+                        projectAllocatedHours, projectPerformedHours, projectActivityStartDate, projectActivityEndDate, projectID,
+                        projectName, prj, orgId, orgName,
+                        allAssignedActivitiesByCode,
+                        customerOnCode);
+            } catch (OverBudgetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            // activites deja existantes dans ehour
+        } else {
+            LOGGER.debug("\tisAssignedActivityExist = true --> synchronisation des modifs...");
+            currentActivity = updateAssignedActivity(assignedUser, prj, activityId, activityName, projectAllocatedHours, projectActivityStartDate, projectActivityEndDate, allAssignedActivitiesByCode);
+            LOGGER.debug("\tcurrentActivity --> maj " + currentActivity.getName());
+        }
+        return currentActivity;
+    }
+
+    private Project checkProject(String projectCode, String newProjectName) {
+        // TODO FIXME THIES
+        Project prj = null;//projectService.nonAuditGetProject(projectCode);
+        if (prj == null) {
+            LOGGER.debug("\tThis project does not exist: " + projectCode);
+        } else {
+            // on s assure que le projet est actif
+            LOGGER.debug("\tActive projet: " + prj.getName());
+
+            boolean modified = false;
+
+            if (!prj.isActive()) {
+                prj.setActive(true);
+                modified = true;
+            }
+
+            // verifie si le projet PJl a ete renomme depuis la derniere mise a jour dans e-Hour
+            if (!newProjectName.equals(prj.getName())) {
+                LOGGER.debug("\tMise a jour du nom du projet: " + prj.getName() + " --> " + newProjectName);
+                prj.setName(newProjectName);
+                modified = true;
+            }
+
+            LOGGER.debug("\tproject name=ok");
+
+            if (modified) {
+                prj = projectService.updateProject(prj);
+            }
+        }
+        return prj;
+    }
+
+    /**
+     * @param hmAllAssignedActivitiesByCode : Toutes les activites eHour existantes pour l utilisateur
+     *                                      les activites *dealedActivities* non presentes dans *hmAllAssignedActivitiesByCode* doivent etre desactivees si pas de booked hours
+     * @param hmAllAssignedActivitiesByCode all the activities from ehour
+     * @param hmDealedActivities            all the new and modified activities from windchill to be updated in Ehour
+     */
+    private void desactivateObsoleteActivity(Map<String, Activity> hmAllAssignedActivitiesByCode, Map<String, Activity> hmDealedActivities) {
+
+        List<Activity> list1 = new ArrayList<Activity>(hmAllAssignedActivitiesByCode.values());
+        List<Activity> list2 = new ArrayList<Activity>(hmDealedActivities.values());
+        list1.removeAll(list2);
+
+        LOGGER.debug("\tdesactivateObsoleteActivity()");
+        int i = 0;
+        for (Activity anActivity : list1) {
+
+            if (anActivity.getCode().startsWith(WindchillConst.ACTIVITY_CODE_PREFIX_FOR_PJL)) {
+                LOGGER.debug("\t\tCheck for JPL activity " + anActivity.getName() + " [active=" + anActivity.getActive() + "]");
+                LOGGER.debug("\t\t\tProject " + anActivity.getProject().getName());
+
+                if (anActivity.getActive()) {
+                    LOGGER.debug("\t\t\tGetAllottedHours(): " + anActivity.getAllottedHours());
+
+                    // S il y a des booked hours(= existe une timesheet), on ne veut pas desactiver l activite. Elle sera juste Locked
+                    TimesheetEntry ts = timesheetDao.getLatestTimesheetEntryForActivity(anActivity.getId());
+
+                    if (ts != null) {
+                        LOGGER.debug("\t\t\tLocking JPL activity");
+                        anActivity.setLocked(true);
+                        activityService.persistActivity(anActivity);
+                        LOGGER.debug("\t\t\tactive=" + anActivity.getActive() + " / locked=" + anActivity.getLocked());
+                    } else {
+                        LOGGER.debug("\t\t\tDesactivate JPL activity");
+                        anActivity.setActive(false);
+                        activityService.persistActivity(anActivity);
+                        LOGGER.debug("\t\t\tactive=" + anActivity.getActive() + " / locked=" + anActivity.getLocked());
+                    }
+
+                } else {
+                    LOGGER.debug("\t\t\tactive=" + anActivity.getActive() + " / locked=" + anActivity.getLocked());
                 }
+
             }
-            Date debut = new Date("01/01/2001");
-            Date fin = new Date("01/01/2999");
-            DateRange daterange = new DateRange(debut, fin);
-            createCustomers(customersFromProjLink);// a remettre en ordre a la fin
-            List<Project> projectsFromProjLink = getActivities(listeDesActiviteesDepuisGrutlink, customersFromProjLink);
-            List<Project> projects = createActivities(projectsFromProjLink);
-            List<ProjectAssignment> projectAssignmentFromProjLink = getProjectAssignments(listeDesActiviteesDepuisGrutlink, user, projects);
-            createProjectAssignment(projectAssignmentFromProjLink);
-            DesactivateActivities(listeDesActiviteesDepuisGrutlink, projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), daterange));
-            logger.info("***** Fin de l'initialisation des donnees *****");
-        } catch (RemoteException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvocationTargetException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        }
+        LOGGER.debug("\t\tsubstract " + i + " obsolete JPL activities in e-Hour ");
+    }
+
+
+    //
+    // ORG (CUSTOMER) from Windchill
+    //
+    private HashMap<String, Customer> getCustomersFromGrutlink(Vector v) {
+        HashMap<String, String> h;
+        HashMap<String, Customer> hmCustomers = new HashMap<String, Customer>();
+        for (int i = 0; i < v.size(); i++) {
+            h = (HashMap) v.elementAt(i);
+
+            Customer customer = new Customer((String) h.get("OrgId"),
+                    (String) h.get("OrgName"), "", true);
+            if (!hmCustomers.containsKey(customer.getCode())) {
+                hmCustomers.put((String) h.get("OrgId"), customer);
+            }
+        }
+        return hmCustomers;
+    }
+
+    private void displayAllCustomersFromGrutlink(HashMap<String, Customer> hmCustomers) {
+        Set<String> clef = hmCustomers.keySet();
+        Iterator<String> it = clef.iterator();
+        LOGGER.debug("displayAllCustomersFromGrutlink:");
+        while (it.hasNext()) {
+            Object aKey = it.next();
+            Customer customerValue = hmCustomers.get(aKey);
+            LOGGER.debug("\t" + customerValue.getCode() + " - " + customerValue.getName());
+        }
+
+    }
+
+    //
+    // CUSTOMER from eHour
+    //
+
+    private List<Customer> getAllCustomers() {
+        return customerService.getCustomers();
+    }
+
+    public Map<String, Customer> getAllCustomersByCode() {
+        Map<String, Customer> allCustomersCode = new HashMap<String, Customer>();
+        List<Customer> allCustomers = getAllCustomers();
+
+        for (Customer aCustomer : allCustomers) {
+            allCustomersCode.put(aCustomer.getCode(), aCustomer);
+        }
+        return allCustomersCode;
+    }
+
+
+    private void displayAllCustomers(List<Customer> allCustomers) {
+        Iterator<Customer> it = allCustomers.iterator();
+        Customer aCustomer;
+        LOGGER.debug("displayAllCustomers:");
+        while (it.hasNext()) {
+            aCustomer = (Customer) it.next();
+            LOGGER.debug("\t" + aCustomer.getFullName());
         }
     }
 
-    private void createProjectAssignment(List<ProjectAssignment> projectAssignments)
-    {
-        try
-        {
-            for (ProjectAssignment projectAssignment : projectAssignments)
-            {
-                projectAssignmentDao.persist(projectAssignment);
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private List<Project> createActivities(List<Project> projects)
-    {
-        List<Project> persistedProjects = new ArrayList<Project>();
-        try
-        {
-            for (Project project : projects)
-            {
-                persistedProjects.add(projectService.persistProject(project));
-            }
-
-            return persistedProjects;
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+    private Customer isCustomerExist(String customerCode,
+                                     Map<String, Customer> hmAllCustomerByCode) {
+        if (hmAllCustomerByCode.containsKey(customerCode))
+            return hmAllCustomerByCode.get(customerCode);
         return null;
     }
 
-    private List<Customer> getCustomers(Vector v)
-    {
-        HashMap h;
-        ArrayList<Customer> customers = new ArrayList<Customer>();
-        for (int i = 0; i < v.size(); i++)
-        {
-            h = (HashMap) v.elementAt(i);
-            Customer customer = new Customer((String) h.get("ProjectId"), (String) h.get("ProjectName"), (String) h.get("ProjectDescription"), true);
-            logger.debug("Creation du projet " + h.get("ProjectId") + " " + h.get("ProjectName") + " " + h.get("ProjectDescription"));
-            customers.add(customer);
-        }
-        return customers;
-    }
-
-    private void createCustomers(List<Customer> customers)
-    {
-        try
-        {
-            for (Customer customer : customers)
-            {
-                customerService.persistCustomer(customer);
-            }
-        } catch (Exception e)
-        {
+    private Customer createCustomer(String customerCode, String customerName,
+                                    Map<String, Customer> hmAllCustomerByCode) {
+        Customer newCustomer = new Customer();
+        newCustomer.setCode(customerCode);
+        newCustomer.setName(customerName);
+        try {
+            customerService.persistCustomer(newCustomer);
+        } catch (ObjectNotUniqueException e) {
             e.printStackTrace();
         }
+        hmAllCustomerByCode.put(customerCode, newCustomer);
+        return newCustomer;
     }
 
-    @Override
-    public List<Customer> getCustomersFromEhour()
-    {
-        List<Customer> projs = null;
-        try
-        {
-            projs = customerService.getCustomers();
-            if (logger.isDebugEnabled())
-            {
-                for (Customer proj : projs)
-                {
-                    Customer customer = proj;
-                    logger.debug("Projet : " + customer.getFullName());
-                }
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+    //
+    // PROJECT from eHour
+    //
+
+    private List<Project> getAllProjects() {
+        List<Project> allProjects;
+        allProjects = projectService.getProjects();
+        return allProjects;
+    }
+
+    /**
+     * Tous les projets e-Hour
+     * @return
+     */
+    /**
+     * private HashMap<String, Project> getAllProjectsByCode() {
+     * HashMap<String, Project> HmAllProjectsByCode = new HashMap<String, Project>();
+     * Iterator<Project> it = getAllProjects().iterator();
+     * Project aProject;
+     * while (it.hasNext()) {
+     * aProject = (Project) it.next();
+     * HmAllProjectsByCode.put(aProject.getProjectCode(), aProject);
+     * }
+     * return HmAllProjectsByCode;
+     * }
+     */
+
+    private void displayAllProjects(List<Project> allProjects) {
+        Iterator<Project> it = allProjects.iterator();
+        Project aProject;
+        LOGGER.debug("displayAllProjects:");
+        while (it.hasNext()) {
+            aProject = (Project) it.next();
+            LOGGER.debug("\t" + aProject.getFullName());
         }
-        return projs;
     }
 
-    @Override
-    public List<ProjectAssignment> getProjectsFromEhour(User user)
-    {
-        List<ProjectAssignment> projs = null;
-
-        // TODO: projectService.getAllProjectsForUser(user); is unknown
-//        try
-//        {
-//            projs = projectService.getAllProjectsForUser(user);
-//
-//            if (logger.isDebugEnabled())
-//            {
-//                ProjectAssignment assignment = null;
-//                Iterator<ProjectAssignment> liste_projets = projs.iterator();
-//                while (liste_projets.hasNext())
-//                {
-//                    assignment = liste_projets.next();
-//                    logger.debug("tache : " + assignment.getFullName() + " - date de debut " + assignment.getDateStart() + " - date de fin " + assignment.getDateEnd() + " duree " + assignment.getAllottedHours());
-//                }
-//            }
-//        } catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-        return projs;
-    }
-
-    @Override
-    public List<ProjectAssignment> getAssignmentsFromEhours(int projectID, User userID)
-    {
-        List<ProjectAssignment> listeDesAssignements = null;
-//        try
-//        {
-//            // listeDesAssignements =
-//            // projectAssignmentService.getProjectAssignmentOnUserAndProject(projectID,
-//            // userID);
-//
-//            Date debut = new Date("01/01/2001");
-//            Date fin = new Date("01/01/2999");
-//            DateRange daterange = new DateRange(debut, fin);
-//
-        // TODO UNKNOWN METHOD
-//            // listeDesAssignements =
-//            // projectAssignmentService.getProjectAssignmentsForUser(userID,
-//            // daterange);
-//            listeDesAssignements = projectService.getAllProjectsForUser(userID);
-//        } catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-        return listeDesAssignements;
-    }
-
-    @Override
-    public Float getBookedHours(ProjectAssignment assignement, User user)
-    {
-        List<AssignmentAggregateReportElement> aggregates = new ArrayList<AssignmentAggregateReportElement>();
-        Date debut = new Date("01/01/2001");
-        Date fin = new Date("01/01/2999");
-        DateRange daterange = new DateRange(debut, fin);
-    // TODO unknown method
-//        aggregates = aggregateReportService.getHoursPerAssignmentInRange(user.getUserId(), daterange);
-//        Iterator<AssignmentAggregateReportElement> assi = aggregates.iterator();
-        Float retour = null;
-//        while (assi.hasNext())
-//        {
-//            AssignmentAggregateReportElement current = assi.next();
-//            if ((current.getProjectAssignment().getFullName()).equals(assignement.getFullName()))
-//            {
-//                retour = (Float) current.getHours();
-//            }
-//        }
-        return retour;
-    }
-
-    private List<ProjectAssignment> getProjectAssignments(Vector v, User user, List<Project> projects)
-    {
-        ArrayList<ProjectAssignment> projectAssignments = new ArrayList<ProjectAssignment>();
-        List<Project> projects2 = projects;
-        // List<ProjectAssignment> projectAssignments =
-        // projectAssignmentService.getProjectAssignmentOnUserAndProject(projects.getProjectId(),
-        // user.getUserId());
-        HashMap h;
-        for (int i = 0; i < v.size(); i++)
-        {
-            h = (HashMap) v.elementAt(i);
-            boolean trackEffort = false;
-            if ((String) h.get("isTrackEffort") != null && ((String) h.get("isTrackEffort")).equals("1"))
-            {
-                trackEffort = true;
-            }
-            Date startDate = (Date) h.get("startDate");
-            Date endDate = (Date) h.get("endDate");
-            String work_str = (String) h.get("work");
-            Float work;
-            if (work_str != null)
-            {
-                work = new Float(work_str);
-            } else
-            {
-                work = new Float(1);
-            }
-            Iterator<Project> it_projet = projects2.iterator();
-            ProjectAssignment projectAssignment = new ProjectAssignment();
-            while (it_projet.hasNext())
-            {
-                Project current = it_projet.next();
-                if (current.getProjectCode().equals((String) h.get("ActivityId")))
-                {
-                    projectAssignment = ProjectAssignment.createProjectAssignment(current, user);
-
-                    if (trackEffort)
-                    {
-                        // ProjectAssignmentType assignmentType = new
-                        // ProjectAssignmentType(0);
-                        // assignmentType.setAssignmentType("ASSIGNMENT_DATE");
-                        ProjectAssignmentType assignmentType = new ProjectAssignmentType(2);
-                        assignmentType.setAssignmentType("ASSIGNMENT_TIME_ALLOTTED_FIXED");
-                        projectAssignment.setAssignmentType(assignmentType);
-                        projectAssignment.setAllottedHours(work);
-                        projectAssignment.setDateStart(startDate);
-                        projectAssignment.setDateEnd(endDate);
-                        logger.debug("on cree un assignement entre " + user + " et " + current.getFullName());
-                        logger.debug("date debut :" + startDate + " date fin " + endDate + " duree " + work);
-
-                    } else
-                    {
-                        ProjectAssignmentType assignmentType = new ProjectAssignmentType(2);
-                        assignmentType.setAssignmentType("ASSIGNMENT_TIME_ALLOTTED_FIXED");
-                        projectAssignment.setAssignmentType(assignmentType);
-                        projectAssignment.setDateStart(startDate);
-                        projectAssignment.setDateEnd(endDate);
-                        projectAssignment.setAllottedHours(work);
-                        logger.debug("on cree un assignement entre " + user + " et " + current.getFullName());
-                        logger.debug("date debut :" + startDate + " date fin " + endDate + " duree " + work);
-                    }
-                    if (projectAssignment.getAllottedHours() != new Float(0))
-                    {
-                        projectAssignments.add(projectAssignment);
-                    }
-                }
-            }
-        }
-        return projectAssignments;
-    }
-
-    private Customer createProject(String code, String name)
-    {
-        if (!StringUtils.isBlank(name) && !StringUtils.isBlank(code))
-        {
-            Customer customerFromCode = null;
-            // TODO unknown method
-//            Customer customerFromCode = customerService.getCustomer(code);
-            if (customerFromCode != null)
-            {
-                if (!customerFromCode.getName().equals(name))
-                {
-                    customerFromCode.setName(name);
-                    try
-                    {
-                        // customerService.updateCustomer(customerFromCode);
-                        // //le project importé existe déjà, mais son nom est
-                        // changé
-                        return customerFromCode;
-                    } catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                } else
-                {
-                    return customerFromCode; // le project importé exite déjà
-                }
-                // avec le même nom, on ne fait
-                // rien
-            } else
-            {
-                Customer newCustomer = new Customer(code, name, "", true);
-
-                // customerService.persistCustomer(newCustomer); //le project
-                // importé n'existe pas dans TS
-                return newCustomer;
-            }
-        }
+    private Project isProjectExist(String projectCode,
+                                   HashMap<String, Project> hmAllProjectsByCode) {
+        if (hmAllProjectsByCode.containsKey(projectCode))
+            return hmAllProjectsByCode.get(projectCode);
         return null;
     }
 
-    private List<Project> getActivities(Vector v, List<Customer> customers)
-    {
-        ArrayList<Project> activities = new ArrayList<Project>();
-        for (int i = 0; i < v.size(); i++)
-        {
-            HashMap h = (HashMap) v.elementAt(i);
-            String code = (String) h.get("ActivityId");
-            String name = (String) h.get("ActivityName");
-            String desc = (String) h.get("ActivityDescription");
-            String prop = (String) h.get("projectManager");
-            Iterator<Customer> it_customer = customers.iterator();
-            String hours = "";
-            while (it_customer.hasNext())
-            {
-                Customer customer = it_customer.next();
-                if ((customer.getCode()).equals((String) h.get("ProjectId")))
-                {
-                    Project project;
-                    if (customer != null)
-                    {
-                        Set<Project> projects = customer.getProjects();
-                        boolean isProjectExist = false;
-                        if (projects != null)
-                        {
-                            for (Project proj : projects)
-                            {
-                                if (proj.getProjectCode().equals(code))
-                                {
-                                    isProjectExist = true;
-                                    Set<ProjectAssignment> projectassign = proj.getProjectAssignments();
-                                    Iterator<ProjectAssignment> it_assignment = projectassign.iterator();
-                                    while (it_assignment.hasNext())
-                                    {
-                                        ProjectAssignment current = it_assignment.next();
-                                        if (current.getProject().getProjectCode().equals(proj.getProjectCode()))
-                                        {
-                                            // if(!current.getDateEnd().equals((Date)h.get("endDate")))
-                                            current.setDateEnd((Date) h.get("endDate"));
-                                            // if(!current.getDateStart().equals((String)h.get("startDate")))
-                                            current.setDateStart((Date) h.get("startDate"));
-                                            hours = current.getAllottedHours().toString();
-                                        }
-                                    }
-                                    if ((proj.getDescription() == null) || (!proj.getDescription().equals(desc)))
-                                    {
-                                        proj.setDescription(desc);
-                                    }
-                                    if (!proj.getName().equals(name))
-                                    {
-                                        proj.setName(name + "(" + hours + ")");
-                                        activities.add(proj); // projectService.persistProject(proj);
-                                        // //modifier le
-                                        // nom de la
-                                        // tâche
 
-                                    } else
-                                    {
-                                        activities.add(proj); // la tâche existe
-                                    }
-                                    // déjà, on ne
-                                    // fait rien
+    public Project createProject(String projectCode, String projectName,
+                                 String customerCode, String customerName,
+                                 Map<String, Customer> hmAllCustomerByCode) {
 
-                                } else
-                                {
-                                    ;
-                                }
-                            }
-                        }
-                        if (!isProjectExist)
-                        {
-                            project = new Project();
-                            project.setName(name + "(" + hours + ")");
-                            ;
-                            project.setDescription(desc);
-                            project.setProjectCode(code);
-                            project.setProjectManager(userService.getUser(prop));
-                            project.setCustomer(customer);
-                            project.setActive(true);
-                            // projectService.persistProject(project); // créer
-                            // une nouvelle tâche avec le projet affecté
-                            activities.add(project);
-                        }
-
-                    } else
-                    { // enregistre la tâche sans lui affecter le projet
-                        project = new Project();
-                        project.setName(name);
-                        project.setProjectCode(code);
-                        project.setDescription(desc);
-                        // projectService.persistProject(project);
-                        activities.add(project);
-                    }
-                }
-            }
+        Project newProject = new Project();
+        Customer customer = isCustomerExist(customerCode, hmAllCustomerByCode);
+        newProject.setProjectCode(projectCode);
+        newProject.setName(projectName);
+        if (customer == null) {
+            customer = createCustomer(customerCode, customerName, hmAllCustomerByCode);
         }
-        return activities;
+        newProject.setCustomer(customer);
+        projectService.createProject(newProject);
+        return newProject;
     }
 
-    private void DesactivateActivities(Vector v, List<ProjectAssignment> assignments)
-    {
 
-        Iterator<ProjectAssignment> it_assignement = assignments.iterator();
-        while (it_assignement.hasNext())
-        {
-            ProjectAssignment current = it_assignement.next();
-            int nb = 0;
-            for (int i = 0; i < v.size(); i++)
-            {
-                HashMap h = (HashMap) v.elementAt(i);
-                if (current.getProject().getProjectCode().equals((String) h.get("ActivityId")))
-                {
-                    nb = nb + 1;
-                }
-            }
-            if (nb == 0)
-            {
-                current.setActive(false);
-                current.getProject().setActive(false);
-                current.getProject().setDefaultProject(false);
-                current.setNotifyPm(false);
-                current.setDeletable(true);
-                int test = current.getProject().getProjectId();
-                try
-                {
-                    projectAssignmentDao.delete(current.getAssignmentId());
-                    projectService.deleteProject(test);
-                } catch (ParentChildConstraintException e)
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
+    //
+    // ACTIVITY (Assignment) from eHour
+    //
+
+    private List<Activity> getAllAssignedActivities(User assignedUser) {
+        List<Activity> allAssignedActivities;
+        allAssignedActivities = activityService.getAllActivitiesForUser(assignedUser);
+        return allAssignedActivities;
     }
 
     @Override
-    public void updateAssignments(String username, HttpServletRequest r)
-    {
-        logger.info("***** Envoie des heures du planning vers projectLink *****");
-        Vector<HashMap> result = new Vector<HashMap>();
-        User user = userService.getUser(username);
-        // definition du server RMI
-        MethodAuthenticator auth = new GatewayAuthenticator(r);
-        RemoteMethodServer remotemethodserver = RemoteMethodServer.getDefault();
-        if (auth != null)
-        {
-            auth.setServer(remotemethodserver);
+    public HashMap<String, Activity> getAllAssignedActivitiesByCode(User assignedUser) {
+        HashMap<String, Activity> allAssignedActivitiesByCode = new HashMap<String, Activity>();
+
+        List<Activity> allAssignedActivities = getAllAssignedActivities(assignedUser);
+
+        for (Activity allAssignedActivity : allAssignedActivities) {
+            allAssignedActivitiesByCode.put(allAssignedActivity.getCode(), allAssignedActivity);
+
         }
-        remotemethodserver.setAuthenticator(auth);
-        try
-        {
-            logger.debug("try");
-            List<Customer> listeDesProjetsDepuisEhour = getCustomersFromEhour();
-            Iterator<Customer> it_listeDesProjets = listeDesProjetsDepuisEhour.iterator();
-            Customer customer = it_listeDesProjets.next();
-            ArrayList<ProjectAssignment> listeDesAssignements = (ArrayList<ProjectAssignment>) getAssignmentsFromEhours(customer.getCustomerId(), user);
-            Iterator<ProjectAssignment> it_listeDesAssignements = listeDesAssignements.iterator();
-            List<Serializable> assignmentIds = new ArrayList<Serializable>();
 
-            assignmentIds.addAll(EhourUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
-            List<AssignmentAggregateReportElement> aggregates = new ArrayList<AssignmentAggregateReportElement>();
-            while (it_listeDesAssignements.hasNext())
-            {
-                ProjectAssignment assignement = it_listeDesAssignements.next();
-                HashMap<String, String> h1 = new HashMap<String, String>();
-                h1.put("ActivityId", assignement.getProject().getProjectCode());// assignement.getAssignementCode()
-                if (assignement.getProject() != null && listeDesAssignements.size() > 0)
-                {
-                    // TODO Unknown method
-//                    aggregates.addAll(projectService.gethours(assignement.getProject()));
-                    if (aggregates.size() > 0)
-                    {
-                        Iterator<AssignmentAggregateReportElement> it_aggregate = aggregates.iterator();
-                        while (it_aggregate.hasNext())
-                        {
-                            AssignmentAggregateReportElement current = it_aggregate.next();
-                            if ((current.getProjectAssignment().getProject().getProjectCode()).equals(assignement.getProject().getProjectCode()))
-                            {
-                                h1.put("ActivityTime", current.getHours().toString());
-                                logger.debug("Ajout de l'activite :" + assignement.getProject().getProjectCode() + "avec le temps :" + current.getHours().toString());
-                            }
+        return allAssignedActivitiesByCode;
+    }
 
-                        }
-                    }
-                }
-                result.add(h1);
+
+    private void displayAllAssignedActivities(Map<String, Activity> allAssignedActivitiesByCode) {
+        Activity theValue;
+        if (allAssignedActivitiesByCode != null) {
+            LOGGER.debug("\tdisplayAllAssignedActivities from eHour [" + allAssignedActivitiesByCode.size() + "]:");
+            for (String theKey : allAssignedActivitiesByCode.keySet()) {
+                theValue = allAssignedActivitiesByCode.get(theKey);
+                LOGGER.debug("\t" + theValue.getCode() + " --> " + theValue.getFullName() + " [active=" + theValue.getActive() + "/ locked=" + theValue.getLocked() + "]");
+            }
+        }
+    }
+
+    private boolean isAssignedActivityExist(String activityCode, Map<String, Activity> hmAllAssignedActivitiestByCode) {
+        LOGGER.debug("\tTest existence of " + activityCode + " : " + hmAllAssignedActivitiestByCode.containsKey(activityCode));
+        return hmAllAssignedActivitiestByCode.containsKey(activityCode);
+    }
+
+
+    /**
+     * @param assignedUser                  : nom de l'utilisateur connecte
+     * @param activityCode                  : ida2a2 de l'activite
+     * @param activityName                  : Nom de l activite PJL
+     * @param allocatedHours                : nombre d'heures allouees PJL
+     * @param performedHours                : nombre d'heures utilisees PJL
+     * @param dateStart                     : date de demarrage de l'activite PJL
+     * @param dateEnd                       : date de fin de l'activite PJL
+     * @param projectCode                   : ida2a2 du projet
+     * @param projectName                   : Nom du projet PJL
+     * @param orgID                         : ida2a2 de l'organisation PJL
+     * @param orgName                       : Nom de l'org dans PJL
+     * @param hmAllAssignedActivitiesByCode : toutes les activites assignees a l'utilisateur de e-Hour
+     * @param hmAllCustomersByCode          : tous les customers de e-Hour
+     * @return
+     */
+    private Activity createAssignedActivity(User assignedUser, String activityCode, String activityName, Float allocatedHours, Float performedHours,
+                                            Date dateStart, Date dateEnd, String projectCode, String projectName, Project project, String orgID, String orgName,
+                                            Map<String, Activity> hmAllAssignedActivitiesByCode, Map<String, Customer> hmAllCustomersByCode) throws OverBudgetException {
+
+        if (project == null) {
+            project = createProject(projectCode, projectName, orgID, orgName, hmAllCustomersByCode);
+        }
+        Activity newActivity = new Activity();
+        newActivity.setCode(activityCode);
+        newActivity.setName(activityName);
+        newActivity.setProject(project);
+        newActivity.setAssignedUser(assignedUser);
+        newActivity.setDateStart(dateStart);
+        newActivity.setDateEnd(dateEnd);
+        newActivity.setAllottedHours(allocatedHours);
+
+        newActivity = activityService.persistActivity(newActivity);
+
+        LOGGER.debug("performedHours=" + performedHours);
+        if (performedHours > 0) {
+
+            // if this activity has been reassigned: in that case this activity already exists for another user
+            if (hmAllAssignedActivitiesByCode.containsKey(activityCode)) {
+                LOGGER.debug("\tThis activity has been reassigned: no need to create virtual timesheet.");
+
+
+            } else { //  else this activity have hours set only in Windchill
+                LOGGER.debug("\tCreating virtual Timesheet because existing performed hours.");
             }
 
-            Class[] argTypes = {Vector.class, String.class};
-            Object[] args2 = {result, user.getUsername()};
-            Vector v = (Vector) remotemethodserver.invoke("updateProjectActivity", "ext.ismts.ProjectConnection", null, argTypes, args2);
-            return;
-        } catch (Exception e)
-        {
-            e.printStackTrace();
         }
 
+        hmAllAssignedActivitiesByCode.put(activityCode, newActivity);
+
+        return newActivity;
     }
+
+
+    /**
+     * @param activity
+     * @param performedHours
+     * @param assignedUser
+     */
+    private int createVirtualTimesheet(Activity activity, Float performedHours, User assignedUser) {
+        TimesheetEntry newEntry = new TimesheetEntry();
+        TimesheetEntryId entryId = new TimesheetEntryId();
+        entryId.setActivity(activity);
+        entryId.setEntryDate(activity.getDateStart());
+        newEntry.setEntryId(entryId);
+        newEntry.setHours(performedHours);
+
+        List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
+        entries.add(newEntry);
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        Date today = cal.getTime();
+
+        DateRange dateRange = new DateRange(today, today);
+
+        TimesheetComment newTimesheetComment = new TimesheetComment();
+        TimesheetCommentId commentid = new TimesheetCommentId();
+        commentid.setUserId(assignedUser.getUserId());
+        commentid.setCommentDate(today);
+        newTimesheetComment.setCommentId(commentid);
+        newTimesheetComment.setNewComment(Boolean.TRUE);
+        newTimesheetComment.setComment("ATTENTION: " + Double.toString(performedHours) + " heures issues de ProjectLink pour '" + activity.getName() + "' au " + today);
+
+        // set ot read only for approval
+        // timesheetPersister.validateAndPersist(newActivity , entries, weekRange );
+
+        newEntry.setComment("Mise à jour de ProjectLink");
+        LOGGER.debug("VirtualTimesheet created");
+
+        return timesheetPersister.persistTimesheetWeek(entries, newTimesheetComment, dateRange).size();
+
+    }
+
+
+    /**
+     * note:  Les activites non nouvelles ou non mises a jour dans eHour seront desactivees de e-Hour
+     *
+     * @param assignedUser
+     * @param prj
+     * @param activityCode
+     * @param activityName
+     * @param allocatedHours                 (heures estimees windchill = work hours)
+     * @param dateStart
+     * @param dateEnd
+     * @param hmAllAssignedActivitiesByCode : liste des activites dans ehour
+     * @return
+     */
+    private Activity updateAssignedActivity(User assignedUser, Project prj, String activityCode, String activityName, Float allocatedHours,
+                                            Date dateStart, Date dateEnd, Map<String, Activity> hmAllAssignedActivitiesByCode) {
+        boolean modified = false;
+        Activity activity = hmAllAssignedActivitiesByCode.get(activityCode);
+
+        if (!activity.getName().equals(activityName)) {
+            activity.setName(activityName);
+            modified = true;
+        }
+        if (activity.getAssignedUser() != assignedUser) {
+            activity.setAssignedUser(assignedUser);
+            modified = true;
+        }
+
+        if (activity.getDateStart() == null || activity.getDateStart().getTime() != dateStart.getTime()) {
+            activity.setDateStart(dateStart);
+            modified = true;
+        }
+
+        if (activity.getDateEnd() == null || activity.getDateEnd().getTime() != dateEnd.getTime()) {
+            activity.setDateEnd(dateEnd);
+            modified = true;
+        }
+
+        if (activity.getAllottedHours().floatValue() != allocatedHours.floatValue()) {
+            activity.setAllottedHours(allocatedHours);
+            modified = true;
+        }
+
+        if (!activity.getProject().getProjectCode().equals(prj.getProjectCode())) {
+            activity.setProject(prj);
+            modified = true;
+        }
+
+        // getAvailableHours EST TOUJOURS NULL !!!!
+        /*
+        logger.debug("Check synchro of getAvailableHours: " +  activity.getAvailableHours() );
+        if (activity.getAvailableHours() != null ) {
+            if (activity.getAvailableHours().compareTo(performedHours)!= 0) {
+                logger.debug("\tERROR !!!! : BAD SYNC with 'performedHours' between eHour [" + activity.getAllottedHours() + "] against PJL [" + allocatedHours + "]");
+                activity.setLocked(true);
+                modified = true;
+            }
+        }
+        */
+
+
+        if (!activity.getActive()) {
+            activity.setActive(true);
+            modified = true;
+        }
+
+        //if (!activ ity.getLocked().booleanValue()) {
+        //    logger.debug("\tUnlock activity : " + activity.getName());
+        if (!activity.getLocked()) {
+            activity.setLocked(false);
+            modified = true;
+        }
+
+        if (modified) {
+            hmAllAssignedActivitiesByCode.remove(activity.getCode());
+
+            // TODO FIXME THIES
+            activity = null;//activityService.noAuditPersistActivity(activity);
+            hmAllAssignedActivitiesByCode.put(activity.getCode(), activity);
+        }
+        return activity;
+    }
+
+
+    private Double getActivityHours(Activity activity) {
+        ActivityAggregateReportElement aggregateReport = reportAggregatedDao.getCumulatedHoursForActivity(activity);
+        Number number = 0;
+        if (aggregateReport != null) number = aggregateReport.getHours();
+        return number.doubleValue();
+
+    }
+
+    private void displayHashMapContent(HashMap<String, Comparable> hm) {
+        if (LOGGER.isDebugEnabled() && hm != null) {
+            for (String theKey : hm.keySet()) {
+                String theValue;
+                String theClass = "null";
+                if (hm.get(theKey) != null) theClass = hm.get(theKey).getClass().toString();
+                if (hm.get(theKey) instanceof String) theValue = (String) hm.get(theKey);
+                else if (hm.get(theKey) instanceof Date)
+                    theValue = DateUtils.convertDateToString((Date) hm.get(theKey), WindchillConst.WIND_DATE_FORMAT);
+                else theValue = "?";
+                LOGGER.debug("\t" + theKey + " = " + theValue + " [" + theClass + "]");
+
+            }
+        }
+    }
+
 
 }

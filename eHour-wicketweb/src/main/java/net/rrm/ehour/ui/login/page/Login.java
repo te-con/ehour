@@ -17,9 +17,12 @@
 package net.rrm.ehour.ui.login.page;
 
 import com.richemont.windchill.WindChillService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
+import net.rrm.ehour.user.service.UserService;
+import org.apache.log4j.Logger;
 import org.apache.wicket.Application;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -46,13 +49,22 @@ import static net.rrm.ehour.ui.common.util.AuthUtil.Homepage;
 public class Login extends WebPage {
     private static final long serialVersionUID = -134022212692477120L;
 
+    private static Logger LOGGER = Logger.getLogger(Login.class);
+
     @SpringBean
     private AuthUtil authUtil;
 
     @SpringBean
     private WindChillService chillService;
 
+    @SpringBean
+    private WindChillUpdateService chillUpdateService;
 
+//    @SpringBean
+//    private JiraService jiraService;
+
+    @SpringBean
+    private UserService userService;
 
     @Override
     protected void onInitialize() {
@@ -126,17 +138,6 @@ public class Login extends WebPage {
             add(demoMode);
             demoMode.setVisible(EhourWebSession.getEhourConfig().isInDemoMode());
         }
-                    // TODO Morgan, you can hook into Windchill like this
-//                    HttpServletRequest request = getWebRequestCycle().getWebRequest().getHttpServletRequest();
-//                    chillService.initDataForUser(username, request);
-
-                    setResponsePage(homepage);
-				}
-				else
-				{
-					error(getLocalizer().getString("login.login.failed", this));
-				}
-			}
 
         @Override
         protected void onSubmit() {
@@ -147,7 +148,65 @@ public class Login extends WebPage {
             EhourWebSession session = EhourWebSession.getSession();
 
             if (session.signIn(username, password)) {
+//
+//                HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
+//                User assignedUser = userService.getAuthorizedUser(username);
+//
+//                // eHour: Chargement des activites
+//                LOGGER.info("\n\n");
+//                LOGGER.info("****************** GET ALL ACTIVITIES from login ****************************");
+//                Map<String, Activity> allAssignedActivitiesByCode = chillService.getAllAssignedActivitiesByCode(assignedUser);
+//
+//                // JIRA --> eHour
+//                LOGGER.info("\n\n");
+//                LOGGER.info("****************** START JIRA SYNC (get Jira issues) ****************************");
+//
+//                boolean isJiraUser = userService.isLdapUserMemberOf(username, JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF);
+//                LOGGER.info("Found user in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " createJiraIssuesForUser() for user " + username);
+//
+//                Map<JiraIssue, Activity> activitiesMasteredByJira = null;
+//                try {
+//                    if (isJiraUser){
+//                        activitiesMasteredByJira = jiraService.createJiraIssuesForUser(allAssignedActivitiesByCode, username);
+//                        if (activitiesMasteredByJira == null) {
+//                            isSyncLink = false;
+//                        }else{
+//                            isSyncLink = true;
+//                            LOGGER.info("\n\n");
+//                            LOGGER.info("****************** Identify missing activity in PJL from JIRA->EHOUR ********************");
+//                            JsonArray activitiesPjlToBeCreated = jiraService.identifyMissingPjlActivity (activitiesMasteredByJira);
+//                            LOGGER.debug("JsonArray for activitiesPjlToBeCreated:");
+//                            LOGGER.debug(activitiesPjlToBeCreated);
+//
+//                            request.getSession().setAttribute("MissingPjlActivity", activitiesPjlToBeCreated);
+//                        }
+//                    }else{
+//                        LOGGER.info("User do not exist in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " : skip createJiraIssuesForUser() for user " + username);
+//                        isSyncLink = true;
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    isSyncLink = false;
+//                }
+//
+//
+//                // WINDCHILL --> eHour
+//                LOGGER.info("\n\n");
+//                LOGGER.info("****************** START WINDCHILL SYNC (get PJL activities) ************************");
+//                if (!isEnabled()) {
+//                    LOGGER.info("WARNING: Windchill sync is disabled");
+//                } else {
+//                    try {
+//                        isSyncLink = chillService.updateDataForUser(allAssignedActivitiesByCode , username);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+
+//                allAssignedActivitiesByCode.clear();
                 redirectToHomepage(session);
+
             } else {
                 SignInForm.this.error(getLocalizer().getString("login.login.failed", this));
             }
