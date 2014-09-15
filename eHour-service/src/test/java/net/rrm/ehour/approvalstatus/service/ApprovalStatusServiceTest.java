@@ -1,27 +1,22 @@
 package net.rrm.ehour.approvalstatus.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import net.rrm.ehour.AbstractServiceTest;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ApprovalStatus;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.approvalstatus.dao.ApprovalStatusDao;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-public class ApprovalStatusServiceTest extends AbstractServiceTest {
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+public class ApprovalStatusServiceTest {
 
 	private ApprovalStatusService approvalStatusService;
 	

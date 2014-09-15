@@ -25,9 +25,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
-import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.util.EhourUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,16 +69,17 @@ public class ProjectServiceImpl implements ProjectService {
         if (project == null) {
             throw new ObjectNotFoundException("Project not found for id " + projectId);
         }
-	@Override
-	public Project getProject(String projectCode) {
-		return projectDAO.findByProjectCode(projectCode);
+
+        return project;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#getProjectAndCheckDeletability(java.lang.Integer)
-	 */
-	public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException
+    @Override
+    public Project getProject(String projectCode) {
+        return projectDAO.findByProjectCode(projectCode);
+    }
+
+
+    public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException
 	{
 		Project project = getProject(projectId);
 		
@@ -88,34 +87,6 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return project;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.project.service.ProjectService#setProjectDeletability(net.rrm.ehour.persistence.persistence.project.domain.Project)
-	 */
-	public void setProjectDeletability(Project project)
-	{
-		List<Integer> ids = EhourUtil.getIdsFromDomainObjects(project.getProjectAssignments());
-		List<ActivityAggregateReportElement> aggregates = null;
-		
-		if (ids != null && ids.size() > 0)
-		{
-			aggregates = aggregateReportService.getHoursPerActivity(ids);
-		}
-		
-		project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
-	}
-
-        return project;
-    }
-
-    public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException {
-        Project project = getProject(projectId);
-
-        setProjectDeletability(project);
-
-        return project;
-    }
 
     public void setProjectDeletability(Project project) {
         // broken impl
