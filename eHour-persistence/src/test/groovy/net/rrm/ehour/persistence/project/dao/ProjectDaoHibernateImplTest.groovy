@@ -4,11 +4,9 @@ import net.rrm.ehour.domain.*
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.annotation.ExpectedException;
-import static junit.framework.Assert.*
-import net.rrm.ehour.domain.*
 
-import static org.junit.Assert.*
+import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.assertNull
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)

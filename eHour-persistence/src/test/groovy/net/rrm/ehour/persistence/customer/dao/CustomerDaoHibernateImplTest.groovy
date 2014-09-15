@@ -1,9 +1,6 @@
 package net.rrm.ehour.persistence.customer.dao
 
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.CustomerMother
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserMother;
+import net.rrm.ehour.domain.Customer
 import net.rrm.ehour.domain.CustomerObjectMother
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.domain.UserObjectMother

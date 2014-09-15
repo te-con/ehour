@@ -1,25 +1,19 @@
 package net.rrm.ehour.persistence.approvalstatus.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.*;
+import net.rrm.ehour.persistence.customer.dao.CustomerDao;
+import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.persistence.user.dao.UserDao;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ApprovalStatus;
-import net.rrm.ehour.domain.ApprovalStatusType;
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.CustomerMother;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserMother;
-import net.rrm.ehour.persistence.customer.dao.CustomerDao;
-import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
-import net.rrm.ehour.persistence.user.dao.UserDao;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * 
@@ -43,8 +37,8 @@ public class ApprovalStatusDaoHibernateImplTest extends AbstractAnnotationDaoTes
 	@Test
 	public void shouldPersistApprovalStatusWithCustomerAndUser() {
 
-		Customer customer = CustomerMother.createCustomer(1);
-		User user = UserMother.createUser();
+		Customer customer = CustomerObjectMother.createCustomer(1);
+		User user = UserObjectMother.createUser();
 
 		ApprovalStatus approvalStatus = new ApprovalStatus();
 		approvalStatus.setId(6);
