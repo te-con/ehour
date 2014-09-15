@@ -21,7 +21,6 @@ class ActivityDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
     val params  = List(project, dateRange.getDateStart, dateRange.getDateEnd)
 
     findByNamedQuery("Activity.findByProjectAndDateRange", keys, params, CacheRegion)
-
   }
 
   override def findActivitiesForUser(userId: Integer, dateRange: DateRange): util.List[Activity] = {
