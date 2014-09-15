@@ -1,25 +1,24 @@
 package net.rrm.ehour.ui.report.panel
 package detail
 
-import net.rrm.ehour.ui.common.report.{ReportConfig, DetailedReportConfig}
-import net.rrm.ehour.ui.report.panel.TreeReportDataPanel
-import net.rrm.ehour.ui.report.trend.DetailedReportModel
-import org.apache.wicket.model.PropertyModel
-import net.rrm.ehour.ui.report.{TreeReportData, TreeReportModel}
-import org.apache.wicket.markup.html.WebMarkupContainer
-import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import net.rrm.ehour.ui.report.excel.DetailedReportExcel
-import net.rrm.ehour.report.criteria.{UserSelectedCriteria, AggregateBy}
-import org.apache.wicket.spring.injection.annot.SpringBean
-import net.rrm.ehour.ui.report.cache.ReportCacheService
-import org.apache.wicket.markup.html.panel.Panel
-import org.apache.wicket.markup.html.form.DropDownChoice
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
-import org.apache.wicket.ajax.AjaxRequestTarget
-import org.apache.wicket.event.{IEvent, Broadcast}
-import net.rrm.ehour.ui.common.wicket.Event
-import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer
+import net.rrm.ehour.report.criteria.{AggregateBy, UserSelectedCriteria}
 import net.rrm.ehour.report.reports.ReportData
+import net.rrm.ehour.ui.common.panel.AbstractBasePanel
+import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer
+import net.rrm.ehour.ui.common.report.{DetailedReportConfig, ReportConfig}
+import net.rrm.ehour.ui.common.wicket.Event
+import net.rrm.ehour.ui.report.cache.ReportCacheService
+import net.rrm.ehour.ui.report.excel.DetailedReportExcel
+import net.rrm.ehour.ui.report.trend.DetailedReportModel
+import net.rrm.ehour.ui.report.{TreeReportData, TreeReportModel}
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
+import org.apache.wicket.event.{Broadcast, IEvent}
+import org.apache.wicket.markup.html.WebMarkupContainer
+import org.apache.wicket.markup.html.form.DropDownChoice
+import org.apache.wicket.markup.html.panel.Panel
+import org.apache.wicket.model.PropertyModel
+import org.apache.wicket.spring.injection.annot.SpringBean
 
 object DetailedReportPanel {
   val AggregateToConfigMap = Map(AggregateBy.DAY -> DetailedReportConfig.DETAILED_REPORT_BY_DAY,
