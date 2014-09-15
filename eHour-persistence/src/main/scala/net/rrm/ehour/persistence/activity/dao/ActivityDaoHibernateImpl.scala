@@ -42,7 +42,7 @@ class ActivityDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, 
     val keys  = List("customers", "dateStart", "dateEnd")
     val params  = List(customers, dateRange.getDateStart, dateRange.getDateEnd)
 
-    findByNamedQuery("Activity.findActivitiessForUserInRange", keys, params, CacheRegion)
+    findByNamedQuery("Activity.findActivitiesForCustomersAndDateRange", keys, params, CacheRegion)
   }
 
   /**

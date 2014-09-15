@@ -366,4 +366,39 @@
         </foreign-key>
     </table>
 
+    <table name="approval_statuses">
+        <column name="APPROVALSTATUS_ID" primaryKey="true" required="true"
+                type="INTEGER" size="11" autoIncrement="true" />
+        <column name="DATE_START" primaryKey="false" required="false"
+                type="DATE" autoIncrement="false" />
+        <column name="DATE_END" primaryKey="false" required="false"
+                type="DATE" autoIncrement="false" />
+        <column name="CUSTOMER_ID" primaryKey="false" required="true"
+                type="INTEGER" size="10" autoIncrement="false" />
+        <column name="USER_ID" primaryKey="false" required="true"
+                type="INTEGER" size="10" autoIncrement="false" />
+        <column name="STATUS" primaryKey="false" required="true" type="VARCHAR"
+                size="128" autoIncrement="false" />
+        <column name="COMMENT_TEXT" required="false" type="VARCHAR" size="2048"
+                autoIncrement="false" />
+        <foreign-key foreignTable="customer" name="APPROVAL_STATUSES_fk1">
+            <reference local="CUSTOMER_ID" foreign="CUSTOMER_ID" />
+        </foreign-key>
+        <foreign-key foreignTable="users" name="APPROVAL_STATUSES_fk2">
+            <reference local="USER_ID" foreign="USER_ID" />
+        </foreign-key>
+    </table>
+
+    <table name="user_preferences">
+        <column name="user_preference_key" primaryKey="true" required="true"
+                type="VARCHAR" size="255" autoIncrement="false" />
+        <column name="USER_ID" primaryKey="true" required="true"
+                type="INTEGER" size="10" autoIncrement="false" />
+        <column name="user_preference_value" primaryKey="false" required="false"
+                type="VARCHAR" size="255" autoIncrement="false" />
+        <foreign-key foreignTable="users" name="USER_PREFERENCES_fk">
+            <reference local="USER_ID" foreign="USER_ID" />
+        </foreign-key>
+    </table>
+
 </database>
