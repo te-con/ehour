@@ -1,15 +1,15 @@
 package net.rrm.ehour.ui.customerreviewer.model;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.rrm.ehour.domain.ApprovalStatus;
-
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
-public class CustomerReviewerDataProvider extends SortableDataProvider<ApprovalStatus> {
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+public class CustomerReviewerDataProvider extends SortableDataProvider<ApprovalStatus, Date> {
 
 	private static final long serialVersionUID = -1681462964159319312L;
 	

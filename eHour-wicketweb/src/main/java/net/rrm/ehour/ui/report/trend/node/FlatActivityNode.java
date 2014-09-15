@@ -16,35 +16,21 @@
 
 package net.rrm.ehour.ui.report.trend.node;
 
-import java.io.Serializable;
-
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.report.node.ReportNode;
 
+import java.io.Serializable;
+
 @SuppressWarnings("serial")
-public class FlatActivityNode extends ReportNode
-{
-	
-	/**
-	 * 
-	 * @param element
-	 * @param hierarchyLevel
-	 */
-	public FlatActivityNode(FlatReportElement element, int hierarchyLevel)
-    {
-		this.id = element.getAssignmentId();
-		this.columnValues = new String[]{element.getActivityName()};
-		this.hierarchyLevel = hierarchyLevel;
+public class FlatActivityNode extends ReportNode {
+    public FlatActivityNode(FlatReportElement element) {
+        super(element.getActivityId(), element.isEmptyEntry());
+        this.columnValues = new String[]{element.getActivityName()};
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.node.ReportNode#getElementId(net.rrm.ehour.persistence.persistence.report.reports.importer.ReportElement)
-	 */
-	@Override
-	protected Serializable getElementId(ReportElement element)
-	{
-		return ((FlatReportElement)element).getAssignmentId();
-	}
+    @Override
+    protected Serializable getElementId(ReportElement element) {
+        return ((FlatReportElement) element).getActivityId();
+    }
 }

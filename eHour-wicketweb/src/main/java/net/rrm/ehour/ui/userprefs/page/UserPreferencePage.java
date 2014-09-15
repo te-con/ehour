@@ -22,12 +22,11 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
-import net.rrm.ehour.ui.userprefs.panel.UserPasswordChangePanel;
 import net.rrm.ehour.ui.userprefs.panel.UserPreferenceChangePanel;
-
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -39,20 +38,17 @@ public class UserPreferencePage extends AbstractBasePage<Void>
 	public UserPreferencePage() throws ObjectNotFoundException
 	{
 		super(new ResourceModel("userprefs.title"));
-		
-		add(new CalendarPanel("sidePanel", getEhourWebSession().getUser().getUser()));
 
-		add(new UserPasswordChangePanel("preferenceForm", getEhourWebSession().getUser().getUser()));
-		
-		add(new UserPreferenceChangePanel("userPreferenceForm", getEhourWebSession().getUser().getUser()));
+        add(new CalendarPanel("sidePanel", EhourWebSession.getUser()));
+
+        add(new UserPreferenceChangePanel("userPreferenceForm", EhourWebSession.getUser()));
 	}
 	
 	/**
 	 * Handle Ajax request
-	 * @param target
 	 */
 	@Override
-	public boolean ajaxEventReceived(AjaxEvent ajaxEvent)
+	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{
 		AjaxEventType type = ajaxEvent.getEventType();
 		

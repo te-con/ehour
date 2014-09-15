@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Activity;
@@ -61,16 +62,12 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.*;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
-import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -366,7 +363,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
                 item.add(new Label("project", project.getName()));
 
                 TimesheetRowList rows = new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this);
-                item.add(createToggleLink(timeSheetRowsList));
+                item.add(createToggleLink(rows));
 
                 item.add(rows);
             }
@@ -386,7 +383,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 activityRows.setVisible(!activityRows.isVisible());
-                target.addComponent(timesheetForm);
+                target.add(timesheetForm);
             }
         };
 
@@ -399,13 +396,9 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         ContextImage img = new ContextImage(ID_FOLD_IMG, new Model<String>(upStr + "off.gif"));
         img.setOutputMarkupId(true);
-        CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif", "upDown");
+//        CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif", "upDown");
 
         return img;
-    }
-
-    private String getContextRoot() {
-        return getRequest().getRelativePathPrefixToContextRoot();
     }
 
     private class SubmitButton extends AjaxButton {
@@ -458,13 +451,9 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             activities.add(entry.getEntryId().getActivity());
         }
 
-        HttpServletRequest request = ((WebRequestCycle) RequestCycle.get()).getWebRequest().getHttpServletRequest();
-
         try {
-            windChillUpdateService.updateProjectLink(user, request, activities);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (RemoteException e) {
+            windChillUpdateService.updateProjectLink(user, activities);
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 

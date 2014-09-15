@@ -30,7 +30,6 @@ public class FlatProjectNode extends ReportNode {
     private static final long serialVersionUID = -9117864025503755613L;
 
     public FlatProjectNode(FlatReportElement element) {
-
         super(element.getProjectId(), element.isEmptyEntry());
         this.columnValues = new String[]{element.getProjectName()};
     }

@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.customerreviewer;
 
-import java.util.Calendar;
-import java.util.List;
-
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.data.DateRange;
@@ -34,12 +31,14 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.Calendar;
+import java.util.List;
 
 import static net.rrm.ehour.ui.common.session.EhourWebSession.getUser;
 
@@ -59,14 +58,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
 
     private GreyRoundedBorder greyBorder;
 
-
-    /**
-     * Default constructor
-     *
-     * @param pageTitle
-     * @param model
-     */
-    public CustomerReviewerPage() {
+   public CustomerReviewerPage() {
         super(new ResourceModel("customerReviewer.title"));
 
         EhourWebSession session = ((EhourWebSession) this.getSession());
@@ -82,7 +74,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
         greyBorder.setOutputMarkupId(true);
         add(greyBorder);
 
-        customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, allApprovalStatuses);
+        customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", allApprovalStatuses);
         addOrReplaceContentContainer(customerReviewerPanel);
     }
 
@@ -97,11 +89,6 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
         return approvalStatusService.getApprovalStatusesForCustomers(customersForWhichUserIsAReviewer, monthRange);
     }
 
-    /**
-     * Handle Ajax request
-     *
-     * @param target
-     */
     @Override
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
@@ -117,7 +104,7 @@ public class CustomerReviewerPage extends AbstractBasePage<ReportCriteria> {
         EhourWebSession session = ((EhourWebSession) this.getSession());
         Calendar overviewFor = session.getNavCalendar();
         overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-        customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", overviewFor, getApprovalStatusesForCustomersForWhichUserIsAReviewer());
+        customerReviewerPanel = new CustomerReviewerPanel("customerReviewerPanel", getApprovalStatusesForCustomersForWhichUserIsAReviewer());
         addOrReplaceContentContainer(customerReviewerPanel, target);
     }
 

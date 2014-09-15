@@ -82,8 +82,9 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     boolean hideWeekend = false;
     private MarkupContainer provider;
 
-    public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider)
-    {
+    private boolean beingModerated = false;
+
+    public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider) {
         super(id, model);
         this.provider = provider;
         setReuseItems(true);
@@ -99,8 +100,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         User user = getUser();
         UserPreference userPreference = userPreferenceService.getUserPreferenceForUserForType(user, UserPreferenceType.DISABLE_WEEKENDS);
-        if(userPreference != null) {
-            if(userPreference.getUserPreferenceValue().equalsIgnoreCase(UserPreferenceValueType.ENABLE.name())) {
+        if (userPreference != null) {
+            if (userPreference.getUserPreferenceValue().equalsIgnoreCase(UserPreferenceValueType.ENABLE.name())) {
                 result = true;
             }
         }
@@ -108,37 +109,35 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return result;
     }
 
-	@Override
-	protected void populateItem(ListItem<TimesheetRow> item) {
-		final TimesheetRow row = item.getModelObject();
+    @Override
+    protected void populateItem(ListItem<TimesheetRow> item) {
+        final TimesheetRow row = item.getModelObject();
 
         item.add(createProjectLinkLink(row));
-		item.add(new Label("activityName", row.getActivity().getName()));
-		item.add(new Label("availableHours", new PropertyModel<Float>(row.getActivity(), "availableHours")));
-		item.add(createStatusLabel(item));
-		addInputCells(item, row);
-		item.add(createTotalHoursLabel(row));
+        item.add(new Label("activityName", row.getActivity().getName()));
+        item.add(new Label("availableHours", new PropertyModel<Float>(row.getActivity(), "availableHours")));
+        item.add(createStatusLabel(item));
+        addInputCells(item, row);
+        item.add(createTotalHoursLabel(row));
     }
 
-	private Label createTotalHoursLabel(final TimesheetRow row) {
-		Label totalHours = new Label("total", new ProjectTotalModel(row));
-		totalHours.setOutputMarkupId(true);
-		return totalHours;
-	}
+    private Label createTotalHoursLabel(final TimesheetRow row) {
+        Label totalHours = new Label("total", new ProjectTotalModel(row));
+        totalHours.setOutputMarkupId(true);
+        return totalHours;
+    }
 
-	private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row)
-	{
+    private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row) {
         Calendar currentDate = (Calendar) row.getFirstDayOfWeekDate().clone();
-        
-		DateRange range = new DateRange(row.getActivity().getDateStart(),
-										row.getActivity().getDateEnd());
-		
-		// now add every cell
-		for (int i = 1;
-			 i <= 7;
-			 i++, currentDate.add(Calendar.DAY_OF_YEAR, 1))
-		{
-			String id = "day" + i;
+
+        DateRange range = new DateRange(row.getActivity().getDateStart(),
+                row.getActivity().getDateEnd());
+
+        // now add every cell
+        for (int i = 1;
+             i <= 7;
+             i++, currentDate.add(Calendar.DAY_OF_YEAR, 1)) {
+            String id = "day" + i;
 
             int index = currentDate.get(Calendar.DAY_OF_WEEK) - 1;
             TimesheetCell timesheetCell = row.getTimesheetCells()[index];
@@ -152,8 +151,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             } else {
                 item.add(createEmptyTimesheetEntry(id));
             }
-		}
-	}
+        }
+    }
 
     private ExternalLink createProjectLinkLink(final TimesheetRow row) {
 
@@ -171,18 +170,13 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         return link;
     }
-    private String getContextRoot() {
-        return getRequest().getRelativePathPrefixToContextRoot();
+
+    private Label createStatusLabel(ListItem<TimesheetRow> item) {
+        Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status"));
+        label.setEscapeModelStrings(false);
+        label.setOutputMarkupId(true);
+        return label;
     }
-
-
-	private Label createStatusLabel(ListItem<TimesheetRow> item)
-	{
-		Label label = new Label("status", new PropertyModel<String>(item.getModel(), "status"));
-		label.setEscapeModelStrings(false);
-		label.setOutputMarkupId(true);
-		return label;
-	}
 
     private Fragment createAndAddFragment(String id, String fragmentId) {
         return new Fragment(id, fragmentId, provider);
@@ -202,11 +196,13 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         fragment.add(new Label("day", cellModel));
 
-        createTimesheetEntryComment(row, index, fragment, DayStatus.LOCKED);
+        boolean isActivityBookable = isActivityBookable(row);
+
+        createTimesheetEntryComment(row, index, fragment, DayStatus.LOCKED, isActivityBookable);
 
         return fragment;
     }
-    
+
     private Fragment createEmptyTimesheetEntry(String id) {
         return createAndAddFragment(id, "dayInputHidden");
     }
@@ -216,9 +212,9 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         boolean isActivityBookable = isActivityBookable(row);
 
         Fragment fragment = createAndAddFragment(id, "dayInput");
-        fragment.add(createTextFieldWithValidation(row, index));
+        fragment.add(createTextFieldWithValidation(row, index, isActivityBookable));
 
-        createTimesheetEntryComment(row, index, fragment, DayStatus.OPEN);
+        createTimesheetEntryComment(row, index, fragment, DayStatus.OPEN, isActivityBookable);
 
         return fragment;
     }
@@ -294,32 +290,36 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         OPEN,
         LOCKED
     }
-	
-	private boolean isDayInputApprovedOrRequestedForApproval(TimesheetRow row, int index) {
-		boolean enabled = true;
-		ApprovalStatus approvalStatus = null;
-		
-		Activity activity = row.getActivity();
-		TimesheetCell[] timesheetCells = row.getTimesheetCells();
-		Date date = timesheetCells[index].getDate();
-		Calendar calendar = DateUtil.getCalendar(date);
-		DateRange monthRange = DateUtil.calendarToMonthRange(calendar);
-		
-		List<ApprovalStatus> approvalStatusesForActivity = approvalStatusService.getApprovalStatusForActivity(activity, monthRange);
-		
-		if(approvalStatusesForActivity != null && approvalStatusesForActivity.size() !=0) {
-			approvalStatus = approvalStatusesForActivity.iterator().next();
-		}
-		
-		if(approvalStatus != null) {
-			if(approvalStatus.getStatus().equals(ApprovalStatusType.APPROVED) || approvalStatus.getStatus().equals(ApprovalStatusType.READY_FOR_APPROVAL)) {
-				enabled = false;
-			}
-		}
-		
-		
-		return enabled;
-	}
+
+    private boolean isDayInputApprovedOrRequestedForApproval(TimesheetRow row, int index) {
+        boolean enabled = true;
+
+        ApprovalStatus approvalStatus = null;
+
+        Activity activity = row.getActivity();
+        TimesheetCell[] timesheetCells = row.getTimesheetCells();
+        Date date = timesheetCells[index].getDate();
+        Calendar calendar = DateUtil.getCalendar(date);
+        DateRange monthRange = DateUtil.calendarToMonthRange(calendar);
+
+        List<ApprovalStatus> approvalStatusesForActivity = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(activity
+                .getAssignedUser(), activity.getProject().getCustomer(), monthRange);
+
+        if (approvalStatusesForActivity != null && approvalStatusesForActivity.size() != 0) {
+            approvalStatus = approvalStatusesForActivity.iterator().next();
+        }
+
+        if (approvalStatus != null) {
+            ApprovalStatusType status = approvalStatus.getStatus();
+            if (status == ApprovalStatusType.APPROVED) {
+                enabled = false;
+            } else if (status == ApprovalStatusType.READY_FOR_APPROVAL) {
+                enabled = beingModerated;
+            }
+        }
+
+        return enabled;
+    }
 
     @SuppressWarnings("serial")
     private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent, DayStatus status, boolean isActivityBookable) {
@@ -378,17 +378,20 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         parent.add(commentLink);
     }
 
-	/**
-	 * Set comment link css class
-	 * @param commentModel
-	 * @param commentLink
-	 */
-	private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink)
-	{
-		commentLink.add(new SimpleAttributeModifier("class"
-				, StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment"
-				: "timesheetEntryCommented"));
-	}
+    private ContextImage createContextImage(PropertyModel<String> commentModel) {
+        ContextImage img;
+
+        if (StringUtils.isBlank(commentModel.getObject())) {
+            img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
+        } else {
+            img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
+        }
+        return img;
+    }
+
+    private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink) {
+        commentLink.add(AttributeModifier.replace("class", StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment" : "timesheetEntryCommented"));
+    }
 
     abstract class AbstractTimesheetEntryCommentPanel extends AbstractBasePanel<String> {
         private static final long serialVersionUID = 1L;

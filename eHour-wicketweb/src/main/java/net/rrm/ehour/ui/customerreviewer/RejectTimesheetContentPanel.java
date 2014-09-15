@@ -4,21 +4,22 @@ import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.domain.ApprovalStatus;
 import net.rrm.ehour.domain.ApprovalStatusType;
 import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.CompressedResourceReference;
-import org.apache.wicket.markup.html.resources.StyleSheetReference;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 @SuppressWarnings("serial")
-public class RejectTimesheetContentPanel extends Panel {
+public class RejectTimesheetContentPanel extends Panel implements IHeaderContributor {
 
     @SpringBean
     private ApprovalStatusService approvalStatusService;
@@ -30,9 +31,6 @@ public class RejectTimesheetContentPanel extends Panel {
         final ApprovalStatus approvalStatus = model.getObject();
 
         final PropertyModel<String> commentModel = new PropertyModel<String>(approvalStatus, "comment");
-
-        add(new StyleSheetReference("rejectTimesheetStyle", new CompressedResourceReference(RejectTimesheetContentPanel.class,
-                "style/RejectTimesheetContentPage.css")));
 
         add(new Label("reviewerComments", "Reviewer Comment"));
 
@@ -67,5 +65,12 @@ public class RejectTimesheetContentPanel extends Panel {
                 }
             }
         });
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.render(CssHeaderItem.forReference(new CssResourceReference(RejectTimesheetContentPanel.class, "style/RejectTimesheetContentPage.css")));
     }
 }

@@ -1,12 +1,5 @@
 package net.rrm.ehour.ui.timesheet.panel.monthlyapproval;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ApprovalStatus;
@@ -15,9 +8,7 @@ import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
-import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.util.DateUtil;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
@@ -27,6 +18,8 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.*;
 
 /**
  * Monthly Approval Panel For Users
@@ -59,9 +52,8 @@ public class MonthlyApprovalPanel extends Panel {
 
 	private void addPanelComponents(Calendar overviewFor, SortedSet<UserProjectStatus> userProjectStatuses) {
 
-		greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", new Label("title", new ResourceModel("monthlyapproval.title")),
-				WebGeo.W_CONTENT_MEDIUM);
-		greyBorder.setOutputMarkupId(true);
+		greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", new Label("title", new ResourceModel("monthlyapproval.title")));
+        greyBorder.setOutputMarkupId(true);
 
 		List<Customer> customers = getAllCustomersForWhichThisUserWorks(userProjectStatuses);
 
@@ -83,18 +75,18 @@ public class MonthlyApprovalPanel extends Panel {
 				item.add(approvalStatusLabel);
 				approvalStatusLabel.setOutputMarkupId(true);
 
-				Form monthlyApprovalStatusForm = new Form("monthlyApprovalStatusForm", item.getDefaultModel());
+				Form monthlyApprovalStatusForm = new Form<Customer>("monthlyApprovalStatusForm", item.getModel());
 
 				AjaxLink<Void> requestApprovalLink = new AjaxLink<Void>("monthlyApproveLink") {
 					private static final long serialVersionUID = -3337416577258168873L;
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						target.addComponent(this);
-						target.addComponent(greyBorder);
+						target.add(this);
+						target.add(greyBorder);
 						Customer customer = item.getModelObject();
 						changeApprovalStatus(customer);
-						setVisibilityOfApprovalLinkAndUpdateStatus(customer, this, approvalStatusLabel);
+						setVisibilityOfApprovalLinkAndUpdateStatus(customer, this);
 					}
 
 					private void changeApprovalStatus(Customer customer) {
@@ -108,7 +100,7 @@ public class MonthlyApprovalPanel extends Panel {
 					}
 				};
 
-				setVisibilityOfApprovalLinkAndUpdateStatus(item.getModelObject(), requestApprovalLink, approvalStatusLabel);
+				setVisibilityOfApprovalLinkAndUpdateStatus(item.getModelObject(), requestApprovalLink);
 
 				monthlyApprovalStatusForm.add(requestApprovalLink);
 				item.add(monthlyApprovalStatusForm);
@@ -119,17 +111,16 @@ public class MonthlyApprovalPanel extends Panel {
 		add(greyBorder);
 	}
 
-	private void setVisibilityOfApprovalLinkAndUpdateStatus(Customer customer, AjaxLink<Void> requestApprovalLink,
-			Label appprovalStatusLabel) {
+	private void setVisibilityOfApprovalLinkAndUpdateStatus(Customer customer, AjaxLink<Void> requestApprovalLink) {
 		List<ApprovalStatus> approvalStatusForCustomer = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(this.user,
 				customer, this.monthRange);
 		ApprovalStatusType approvalStatusType = approvalStatusForCustomer.iterator().next().getStatus();
 
 		if (approvalStatusType != null) {
-			appprovalStatusLabel = new Label("approvalStatus", approvalStatusType.toString());
+            Label appprovalStatusLabel = new Label("approvalStatus", approvalStatusType.toString());
 		}
 
-		if (approvalStatusType.equals(ApprovalStatusType.IN_PROGRESS) || approvalStatusType.equals(ApprovalStatusType.REJECTED)) {
+		if ((approvalStatusType != null ? approvalStatusType.equals(ApprovalStatusType.IN_PROGRESS) : false) || approvalStatusType.equals(ApprovalStatusType.REJECTED)) {
 			requestApprovalLink.setVisible(true);
 		} else {
 			requestApprovalLink.setVisible(false);
