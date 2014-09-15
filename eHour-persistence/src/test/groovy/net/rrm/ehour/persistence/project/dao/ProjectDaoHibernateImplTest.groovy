@@ -5,8 +5,7 @@ import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
+import static org.junit.Assert.*
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -87,7 +86,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest {
   public void shouldFindActiveProjectsWhereUserIsPM()
   {
     def res = projectDAO.findActiveProjectsWhereUserIsPM(new User(1))
-    assertEquals(1, res.iterator().next().getPK())
+    assertEquals(10, res.iterator().next().getPK())
   }
   
   @Test

@@ -6,7 +6,6 @@ import net.rrm.ehour.domain.User
 import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import net.rrm.ehour.persistence.user.dao.UserDao
-import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -16,7 +15,6 @@ import static org.junit.Assert.*
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 16, 2010 - 2:08:30 PM
  */
-@Ignore
 class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
 	@Autowired
@@ -43,7 +41,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	void "should find all customers"()
 	{
 		def customers = customerDao.findAll()
-		assert 4 == customers.size()
+		assert 3 == customers.size()
 	}
 
 	@Test
@@ -56,7 +54,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	@Test
 	void "should find on id"()
 	{
-		def customer = customerDao.findById(2)
+		def customer = customerDao.findById(1)
 		assert "Tester" == customer.name
 	}
 
@@ -66,7 +64,6 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 		def customer = CustomerObjectMother.createCustomer()
         customer.name = "aa"
         customer.code = "bb"
-        customer.customerId = null
 
         customerDao.persist(customer)
 
@@ -177,7 +174,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 		
 		def customerReviewers = updatedCustomer.getReviewers();
 		assertEquals(1, customerReviewers.size());
-		assertEquals("thies", customerReviewers.get(0).getUsername());
+		assertEquals("testacc", customerReviewers.get(0).getUsername());
 	}
 
 	@Test
