@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.timesheet.panel;
 
 import com.google.common.collect.Lists;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.data.DateRange;
@@ -55,7 +56,6 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private IOverviewTimesheet overviewTimesheet;
     private UserService userService;
     private ApprovalStatusService approvalStatusService;
-    private UserPreferenceService userPreferenceService;
 
     @Before
     public void setup() {
@@ -74,10 +74,10 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         approvalStatusService = createMock(ApprovalStatusService.class);
         getMockContext().putBean("approvalStatusService", approvalStatusService);
 
-        userPreferenceService = createMock(UserPreferenceService.class);
+        UserPreferenceService userPreferenceService = createMock(UserPreferenceService.class);
         getMockContext().putBean("userPreferenceService", userPreferenceService);
 
-        windChillUpdateService = createMock(WindChillUpdateService.class);
+        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
         getMockContext().putBean("windChillUpdateService", windChillUpdateService);
     }
 

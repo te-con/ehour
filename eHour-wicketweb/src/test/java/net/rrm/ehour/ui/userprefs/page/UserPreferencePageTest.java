@@ -16,49 +16,34 @@
 
 package net.rrm.ehour.ui.userprefs.page;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserPreferenceType;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.timesheet.service.TimesheetService;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 import net.rrm.ehour.user.service.UserService;
-import net.rrm.ehour.userpref.UserPreferenceService;
-
 import org.junit.Test;
 
-public class UserPreferencePageTest extends AbstractSpringWebAppTester {
+import static org.easymock.EasyMock.*;
+
+public class UserPreferencePageTest extends BaseSpringWebAppTester {
 	@Test
 	public void testReportPageRender() throws ObjectNotFoundException {
-		TimesheetService timesheetService = createMock(TimesheetService.class);
-		getMockContext().putBean("timesheetService", timesheetService);
+        IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
+        getMockContext().putBean(overviewTimesheet);
 
-		UserPreferenceService userPreferenceService = createMock(UserPreferenceService.class);
-		getMockContext().putBean("userPreferenceService", userPreferenceService);
+        MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
 
-		MockExpectations.navCalendar(timesheetService, getWebApp());
+        UserService userService = createMock(UserService.class);
+        getMockContext().putBean("userService", userService);
 
-		UserService userService = createMock(UserService.class);
-		getMockContext().putBean("userService", userService);
+        replay(userService);
+        replay(overviewTimesheet);
 
-		expect(userService.getUser(1)).andReturn(new User(1));
-		expect(userPreferenceService.getUserPreferenceForUserForType(isA(User.class), isA(UserPreferenceType.class))).andReturn(null);
+        tester.startPage(UserPreferencePage.class);
+        tester.assertRenderedPage(UserPreferencePage.class);
+        tester.assertNoErrorMessage();
 
-		replay(userService);
-		replay(timesheetService);
-		replay(userPreferenceService);
-
-		getTester().startPage(UserPreferencePage.class);
-		getTester().assertRenderedPage(UserPreferencePage.class);
-		getTester().assertNoErrorMessage();
-
-		verify(userService);
-		verify(timesheetService);
-		verify(userPreferenceService);
+        verify(userService);
+        verify(overviewTimesheet);
 	}
 }
