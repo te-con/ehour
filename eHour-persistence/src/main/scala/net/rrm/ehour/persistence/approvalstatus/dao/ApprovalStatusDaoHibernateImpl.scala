@@ -5,7 +5,9 @@ import java.util
 import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain.{ApprovalStatus, Customer, User}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
+import org.springframework.stereotype.Repository
 
+@Repository("approvalStatusDao")
 class ApprovalStatusDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, ApprovalStatus](classOf[ApprovalStatus]) with ApprovalStatusDao {
   final val CacheRegion = Some("query.ApprovalStatus")
 
