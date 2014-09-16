@@ -49,12 +49,12 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
     User user = UserObjectMother.createUser()
     user.setUserId 5
 
-    ProjectAssignment pa = new ProjectAssignment(user: user, assignmentId: 1, project: new Project(1), assignmentType: new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE))
+    Activity activity = new Activity(assignedUser: user, id: 1, project: new Project(1),)
 
-    def assignments = [pa] as Set
+    def activities = [activity] as Set
 
     user.setUserDepartment(org)
-    user.setProjectAssignments(assignments)
+    user.setActivities(activities)
     userDao.persist(user)
 
     assertNotNull(user.userId)

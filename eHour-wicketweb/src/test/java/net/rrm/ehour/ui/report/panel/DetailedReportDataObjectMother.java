@@ -42,9 +42,8 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(1);
             fre.setEntryDate("492007");
             fre.setTotalHours(5);
-            fre.setProjectId(1);
-            fre.setProjectName("PRJ");
-            fre.setProjectCode("PRJ");
+            fre.setActivityId(1);
+            fre.setActivityName("PRJ");
             fre.setUserId(5);
             els.add(fre);
         }
@@ -60,9 +59,8 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(1);
             fre.setEntryDate("492007");
             fre.setTotalHours(6);
-            fre.setProjectId(1);
-            fre.setProjectName("PRJ");
-            fre.setProjectCode("PRJ");
+            fre.setActivityId(1);
+            fre.setActivityName("PRJ");
 
             fre.setUserId(5);
             els.add(fre);
@@ -79,9 +77,8 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(1);
             fre.setEntryDate("492007");
             fre.setTotalHours(7);
-            fre.setProjectId(1);
-            fre.setProjectName("PRJ");
-            fre.setProjectCode("PRJ");
+            fre.setActivityId(1);
+            fre.setActivityName("PRJ");
 
             fre.setUserId(6);
             els.add(fre);
@@ -98,9 +95,8 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(2);
             fre.setEntryDate("492007");
             fre.setTotalHours(8);
-            fre.setProjectId(1);
-            fre.setProjectName("PRJ");
-            fre.setProjectCode("PRJ");
+            fre.setActivityId(1);
+            fre.setActivityName("PRJ");
 
             fre.setUserId(6);
             els.add(fre);
@@ -117,9 +113,8 @@ public class DetailedReportDataObjectMother {
             fre.setDisplayOrder(2);
             fre.setEntryDate("492007");
             fre.setTotalHours(8.25);
-            fre.setProjectId(2);
-            fre.setProjectName("PRJB");
-            fre.setProjectCode("PRJB");
+            fre.setActivityId(2);
+            fre.setActivityName("PRJB");
 
             fre.setUserId(6);
             els.add(fre);

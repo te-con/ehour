@@ -73,9 +73,9 @@ public class UserServiceImplTest {
     @Test
     public void testGetUser() throws ObjectNotFoundException {
         User user;
-        ProjectAssignment assignmentA, assignmentB;
+        Activity activityA, activityB;
         Project projectA, projectB;
-        Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
+        Set<Activity> activities = new HashSet<Activity>();
         Calendar calA, calB;
 
 
@@ -83,33 +83,31 @@ public class UserServiceImplTest {
 
         projectA = new Project();
         projectA.setActive(true);
-        assignmentA = new ProjectAssignment();
-        assignmentA.setAssignmentId(1);
-        assignmentA.setAssignmentType(new ProjectAssignmentType(0));
+        activityA = new Activity();
+        activityA.setId(1);
         calA = new GregorianCalendar();
         calA.add(Calendar.MONTH, -5);
-        assignmentA.setDateStart(calA.getTime());
+        activityA.setDateStart(calA.getTime());
         calA.add(Calendar.MONTH, 1);
-        assignmentA.setDateEnd(calA.getTime());
-        assignmentA.setProject(projectA);
-        assignments.add(assignmentA);
+        activityA.setDateEnd(calA.getTime());
+        activityA.setProject(projectA);
+        activities.add(activityA);
 
         projectB = new Project();
         projectB.setActive(true);
 
-        assignmentB = new ProjectAssignment();
-        assignmentB.setAssignmentId(2);
-        assignmentB.setAssignmentType(new ProjectAssignmentType(0));
+        activityB = new Activity();
+        activityB.setId(2);
         calB = new GregorianCalendar();
         calB.add(Calendar.MONTH, -2);
-        assignmentB.setDateStart(calB.getTime());
+        activityB.setDateStart(calB.getTime());
         calB = new GregorianCalendar();
         calB.add(Calendar.MONTH, 1);
-        assignmentB.setDateEnd(calB.getTime());
-        assignmentB.setProject(projectB);
-        assignments.add(assignmentB);
+        activityB.setDateEnd(calB.getTime());
+        activityB.setProject(projectB);
+        activities.add(activityB);
 
-        user.setProjectAssignments(assignments);
+        user.setActivities(activities);
 
         expect(userDAO.findById(1))
                 .andReturn(user);
@@ -121,8 +119,7 @@ public class UserServiceImplTest {
         verify(userDAO);
 
         assertEquals("thies", user.getUsername());
-        assertEquals(1, user.getProjectAssignments().size());
-        assertEquals(1, user.getInactiveProjectAssignments().size());
+        assertEquals(2, user.getActivities().size());
     }
 
     @Test

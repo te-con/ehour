@@ -96,8 +96,7 @@ public class ExportReportBody extends AbstractExportReportPart {
 
             if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() >= 0.0) {
                 createDateCell(date, row, isBorder);
-                createProjectCell(flatReportElement.getProjectName(), row, isBorder);
-                createProjectCodeCell(flatReportElement.getProjectCode(), row, isBorder);
+                createProjectCell(flatReportElement.getActivityName(), row, isBorder);
                 createHoursCell(flatReportElement.getTotalHours(), row, isBorder);
                 createCustomerCodeCell(flatReportElement.getCustomerCode(), row, isBorder);
 

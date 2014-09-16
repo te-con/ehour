@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <sql-query name="Report.getHoursPerDayForUsers">
-	<![CDATA[	
+	<sql-query name="Report.getHoursPerDayForUsers">
+	<![CDATA[
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
-		       ENTRY.ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       ENTRY_DATE AS "dayDate",
+		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.NAME AS "activityName",
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -15,8 +15,7 @@
 		       ACT.USER_ID AS "userId",
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
-		       PAG.ROLE AS "role",
-		       PRJ.PROJECT_CODE as "projectCode",
+		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -42,7 +41,6 @@
 				USR.FIRST_NAME,
 				USR.LAST_NAME,
 				PRJ.PROJECT_ID,
-				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
          ]]>
@@ -52,7 +50,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
-		       ACT.ACTIVITY_ID AS "assignmentId",
+		       ACT.ACTIVITY_ID AS "activityId",
 		       ACT.NAME AS "activityName",		       
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
@@ -88,7 +86,6 @@
 				USR.FIRST_NAME,
 				USR.LAST_NAME,
 				PRJ.PROJECT_ID,
-				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
          ]]>
@@ -97,9 +94,9 @@
 	<sql-query name="Report.getHoursPerDayForProjectsAndUsers">
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
-		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
-		       ENTRY.ENTRY_DATE AS "dayDate",
-		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       ENTRY_DATE AS "dayDate",
+		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.NAME AS "activityName",		       
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",
 		       CUST.CODE AS "customerCode",
@@ -145,7 +142,7 @@
 	<![CDATA[	
 		SELECT SUM(ENTRY.HOURS) AS "totalHours",
 		       ENTRY_DATE AS "dayDate",
-		       ACT.ACTIVITY_ID AS "assignmentId",
+		       ACT.ACTIVITY_ID AS "activityId",
 		       ACT.NAME AS "activityName",		       
 		       CUST.CUSTOMER_ID AS "customerId",
 		       CUST.NAME AS "customerName",

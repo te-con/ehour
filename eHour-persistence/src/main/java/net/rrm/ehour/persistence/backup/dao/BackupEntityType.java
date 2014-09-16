@@ -18,12 +18,11 @@ public enum BackupEntityType
     USERS(User.class, "USERLIST", 2),
     CUSTOMER(Customer.class, 3),
     PROJECT(Project.class, 4),
-    PROJECT_ASSIGNMENT_TYPE(ProjectAssignmentType.class, 5),
-    PROJECT_ASSIGNMENT(ProjectAssignment.class, 6),
-    TIMESHEET_ENTRY(TimesheetEntry.class, "TIMESHEET_ENTRIES", 7, new TimesheetEntryRowProcessor()),
-    TIMESHEET_COMMENT(TimesheetComment.class, 8),
-    AUDIT(Audit.class, 9),
-    USER_TO_USERROLE(10);
+    ACTIVITY(Activity.class, 5),
+    TIMESHEET_ENTRY(TimesheetEntry.class, "TIMESHEET_ENTRIES", 6, new TimesheetEntryRowProcessor()),
+    TIMESHEET_COMMENT(TimesheetComment.class, 7),
+    AUDIT(Audit.class, 8),
+    USER_TO_USERROLE(9);
 
     private String parentName;
     private Class<? extends DomainObject<?, ?>> domainObjectClass;

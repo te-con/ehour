@@ -17,9 +17,9 @@
 package net.rrm.ehour.project.service;
 
 import net.rrm.ehour.activity.service.ActivityService;
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.ActivityMother;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.user.service.UserService;
@@ -33,14 +33,12 @@ import static org.easymock.EasyMock.*;
 public class ProjectServiceImplTest {
     private ProjectServiceImpl projectService;
     private ProjectDao projectDao;
-    private UserService userService;
-    private ActivityService activityService;
 
     @Before
     public void setUp() {
         projectDao = createMock(ProjectDao.class);
-        userService = createMock(UserService.class);
-        activityService = createMock(ActivityService.class);
+        UserService userService = createMock(UserService.class);
+        ActivityService activityService = createMock(ActivityService.class);
 
         projectService = new ProjectServiceImpl(projectDao, activityService, userService);
     }
@@ -85,9 +83,6 @@ public class ProjectServiceImplTest {
         expect(projectDao.persist(project)).andReturn(project);
         replay(projectDao);
 
-        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-        assignment.setProject(null);
-
         projectService.createProject(project);
 
         verify(projectDao);
@@ -101,8 +96,8 @@ public class ProjectServiceImplTest {
 
         replay(projectDao);
 
-        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-        assignment.setProject(project);
+        Activity activity = ActivityMother.createActivity(1);
+        activity.setProject(project);
 
         projectService.createProject(project);
 

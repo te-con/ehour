@@ -33,21 +33,20 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private String customerName;
     private String customerCode;
     private Number totalHours = 0;
+    private Number rate = 0;
     private String entryDate;
     private Integer userId;
     private String userLastName;
     private String userFirstName;
-    private Integer projectId;
-    private String projectName;
-    private String projectCode;
     private Integer activityId;
     private String activityName;
+    private String role;
     private Date dayDate;
     private String comment;
     private Integer displayOrder;
     private LockableDate lockableDate;
     private Boolean emptyEntry;
-    private Number 	hours = 0;
+
 
     public FlatReportElement() {
     }
@@ -58,15 +57,14 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         customerName = clone.customerName;
         customerCode = clone.customerCode;
         totalHours = clone.totalHours;
-
+        rate = clone.rate;
         entryDate = clone.entryDate;
         userId = clone.userId;
         userLastName = clone.userLastName;
         userFirstName = clone.userFirstName;
-        projectId = clone.projectId;
-        projectName = clone.projectName;
-        projectCode = clone.projectCode;
         activityId = clone.activityId;
+        activityName = clone.activityName;
+        role = clone.role;
         dayDate = clone.dayDate;
         comment = clone.comment;
         displayOrder = clone.displayOrder;
@@ -74,14 +72,12 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         emptyEntry = clone.emptyEntry;
     }
 
-	/**
-	 * @param hours the hours to set
-	 */
-	public void setHours(Number hours)
-	{
-		this.hours = hours;
-	}
 
+    // TODO FIXME TRE
+    @Override
+    public Integer getProjectId() {
+        return null;
+    }
 
     @Override
     public Boolean isEmptyEntry() {
@@ -100,70 +96,28 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         this.lockableDate = lockableDate;
     }
 
-	/**
-	 * @return the customerName
-	 */
-	public String getCustomerName()
-	{
-		return customerName;
-	}
-	/**
-	 * @param customerName the customerName to set
-	 */
-	public void setCustomerName(String customerName)
-	{
-		this.customerName = customerName;
-	}
-	/**
-	 * @param projectId the projectId to set
-	 */
-	public void setProjectId(Number projectId)
-	{
-		this.projectId = (projectId != null) ? projectId.intValue() : null;
-	}
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(Number userId)
-	{
-		this.userId = (userId != null) ? userId.intValue() : null;
-	}
+    public Number getRate() {
+        return rate;
+    }
 
-    /**
-     * @return the projectId
-     */
-    @Override
-    public Integer getProjectId() {
-        return projectId;
+
+    public void setRate(Number rate) {
+        this.rate = rate;
     }
 
     /**
-     * @param projectId the projectId to set
+     * @return the customerName
      */
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
+    public String getCustomerName() {
+        return customerName;
     }
 
     /**
-     * @return the projectName
+     * @param customerName the customerName to set
      */
-    public String getProjectName() {
-        return projectName;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
-
-    /**
-     * @param projectName the projectName to set
-     */
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-	/**
-	 * @param customerId the customerId to set
-	 */
-	public void setCustomerId(Number customerId)
-	{
-		this.customerId = (customerId != null) ? customerId.intValue() : null;
-	}
 
     /**
      * @return the totalHours
@@ -265,19 +219,20 @@ public class FlatReportElement implements ProjectStructuredReportElement {
 
 
     /**
-     * @return the activityId
+     * @return the role
      */
-    public Integer getActivityId() {
-        return activityId;
+    public String getRole() {
+        return role;
     }
 
 
     /**
-     * @param activityId the activityId to set
+     * @param role the role to set
      */
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
+    public void setRole(String role) {
+        this.role = role;
     }
+
 
     /**
      * @return the dayDate
@@ -293,14 +248,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         this.dayDate = dayDate;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -308,6 +255,26 @@ public class FlatReportElement implements ProjectStructuredReportElement {
                 .append("date", dayDate)
                 .append("totalHours", totalHours)
                 .toString();
+    }
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
+    }
+
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
+    }
+
+    public Boolean getEmptyEntry() {
+        return emptyEntry;
     }
 
     /**
@@ -376,19 +343,4 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     public void setDisplayOrder(Integer displayOrder) {
         this.displayOrder = displayOrder;
     }
-
-    public String getActivityName() {
-        return activityName;
-    }
-
-    public void setActivityName(String activityName) {
-        this.activityName = activityName;
-    }
-	/**
-	 * @param displayOrder the displayOrder to set
-	 */
-	public void setDisplayOrder(Number displayOrder)
-	{
-		this.displayOrder = (displayOrder != null) ? displayOrder.intValue() : null;
-	}
 }

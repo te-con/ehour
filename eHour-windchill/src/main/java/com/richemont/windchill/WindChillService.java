@@ -1,22 +1,29 @@
 package com.richemont.windchill;
 
-
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 
-import java.text.SimpleDateFormat;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
- * @author laurent.linck
+ * @author thies (Thies Edeling - thies@te-con.nl)
+ *         Created on: 3/14/11 - 4:11 PM
  */
-public interface WindChillService {
+public interface WindChillService
+{
+    void checkUserExist(String username);
 
-    boolean updateDataForUser(Map<String, Activity> allAssignedActivitiesByCode, String username);
+    void initDataForUser(String username, HttpServletRequest request);
 
-    Map<String, Activity> getAllAssignedActivitiesByCode(User assignedUser);
-    Map<String, Customer> getAllCustomersByCode();
+    List<Customer> getCustomersFromEhour();
 
-    Activity createNewActivity(Map<String, Comparable> hm, Map<String, Activity> allAssignedActivitiesByCode, User assignedUser, SimpleDateFormat dateFormat);
+    List<Activity> getProjectsFromEhour(User user);
+
+    List<Activity> getAssignmentsFromEhours(int projectID, User userID);
+
+    Float getBookedHours(Activity assignement, User user);
+
+    void updateAssignments(String username, HttpServletRequest r);
 }

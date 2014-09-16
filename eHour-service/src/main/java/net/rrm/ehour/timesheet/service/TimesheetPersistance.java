@@ -23,13 +23,10 @@ import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
-import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.DomainUtil;
-import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +64,8 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     public void deleteAllTimesheetDataForUser(User user) {
         timesheetCommentDAO.deleteCommentsForUser(user.getUserId());
 
-        if (user.getProjectAssignments() != null && user.getProjectAssignments().size() > 0) {
-            timesheetDAO.deleteTimesheetEntries(DomainUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
+        if (user.getActivities() != null && user.getActivities().size() > 0) {
+            timesheetDAO.deleteTimesheetEntries(DomainUtil.getIdsFromDomainObjects(user.getActivities()));
         }
     }
 

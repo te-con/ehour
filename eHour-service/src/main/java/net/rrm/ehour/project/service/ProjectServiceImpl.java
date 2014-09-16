@@ -106,10 +106,6 @@ public class ProjectServiceImpl implements ProjectService {
     public Project updateProject(Project project) {
         projectDAO.persist(project);
 
-        // PM's are not used by RM
-        //validatePMRoles(project);
-        // default projects are not used by RM
-
         return project;
     }
 
@@ -150,11 +146,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     private void checkProjectDeletability(Project project) throws ParentChildConstraintException {
         setProjectDeletability(project);
-
-        if (!project.isDeletable()) {
-            LOGGER.debug("Can't delete project, still has " + project.getProjectAssignments().size() + " assignments");
-            throw new ParentChildConstraintException("Project assignments still attached");
-        }
     }
 
     public List<Project> getProjectManagerProjects(User user) {

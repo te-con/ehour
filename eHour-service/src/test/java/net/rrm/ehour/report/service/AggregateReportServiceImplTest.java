@@ -205,52 +205,5 @@ public class AggregateReportServiceImplTest {
         assertEquals(new Integer(1), report.getProject().getPK());
         assertEquals(16, report.getAggregates().size());
     }
-
-    @Test
-    public void should_create_pm_report() {
-        UserSelectedCriteria criteria = new UserSelectedCriteria();
-
-        User projectManager = new User(2);
-        criteria.setReportTypeToPM(projectManager);
-        Project pmProject = ProjectObjectMother.createProject(1);
-        expect(projectDao.findActiveProjectsWhereUserIsPM(projectManager)).andReturn(Lists.newArrayList(pmProject));
-
-        User user = new User(1);
-
-        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-        assignment.getProject().setProjectId(1);
-        user.addProjectAssignment(assignment);
-
-        List<User> users = Lists.newArrayList(user);
-        List<UserDepartment> departments = Lists.newArrayList(new UserDepartment(2));
-
-        expect(userDao.findUsersForDepartments(departments, true)).andReturn(users);
-        criteria.setDepartments(departments);
-
-        DateRange dateRange = new DateRange();
-        criteria.setReportRange(dateRange);
-
-        criteria.setOnlyActiveUsers(true);
-
-        ReportCriteria reportCriteria = new ReportCriteria(criteria);
-        List<ActivityAggregateReportElement> elements = Lists.newArrayList();
-
-        ActivityAggregateReportElement aggregate = ActivityAggregateReportElementMother.createActivityAggregate(1, 1, 1);
-        aggregate.getActivity().setProject(pmProject);
-        elements.add(aggregate);
-        elements.add(ActivityAggregateReportElementMother.createActivityAggregate(2, 2, 2));
-        elements.add(ActivityAggregateReportElementMother.createActivityAggregate(3, 3, 3));
-
-        expect(reportAggregatedDao.getCumulatedHoursPerActivityForUsers(isA(List.class), isA(DateRange.class))).andReturn(elements);
-
-        replay(reportAggregatedDao, userDao, projectDao);
-
-        ReportData reportData = aggregateReportService.getAggregateReportData(reportCriteria);
-        assertEquals(1, reportData.getReportElements().size());
-
-        verify(reportAggregatedDao);
-        verify(userDao);
-        verify(projectDao);
-    }
 }
 

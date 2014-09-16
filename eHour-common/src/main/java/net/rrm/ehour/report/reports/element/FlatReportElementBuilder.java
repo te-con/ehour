@@ -20,9 +20,6 @@ public class FlatReportElementBuilder {
         element.setCustomerName(customer.getName());
 
         element.setEmptyEntry(true);
-        element.setProjectCode(project.getProjectCode());
-        element.setProjectId(project.getProjectId());
-        element.setProjectName(project.getName());
 
         User user = activity.getAssignedUser();
         element.setUserId(user.getUserId());

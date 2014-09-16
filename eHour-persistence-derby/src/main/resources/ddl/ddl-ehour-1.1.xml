@@ -71,10 +71,10 @@
 			<index-column name="TO_USER_ID" />
 		</index>
 	</table>
-	<table name="mail_log_assignment">
+	<table name="mail_log_activity">
 		<column name="MAIL_LOG_ID" primaryKey="true" required="true"
 			type="INTEGER" size="10" autoIncrement="false" />
-		<column name="PROJECT_ASSIGNMENT_ID" primaryKey="false"
+		<column name="ACTIVITY_ID" primaryKey="false"
 			required="true" type="INTEGER" size="10" autoIncrement="false" />
 		<column name="BOOKED_HOURS" primaryKey="false" required="false"
 			type="FLOAT" size="9,3" autoIncrement="false" />
@@ -83,14 +83,14 @@
 		<foreign-key foreignTable="mail_log" name="MAIL_LOG_ASSIGNMENT_fk">
 			<reference local="MAIL_LOG_ID" foreign="MAIL_LOG_ID" />
 		</foreign-key>
-		<foreign-key foreignTable="project_assignment" name="MAIL_LOG_ASSIGNMENT_fk1">
-			<reference local="PROJECT_ASSIGNMENT_ID" foreign="ASSIGNMENT_ID" />
+		<foreign-key foreignTable="activities" name="MAIL_LOG_ASSIGNMENT_fk1">
+			<reference local="ACTIVITY_ID" foreign="ACTIVITY_ID" />
 		</foreign-key>
 		<unique name="MAIL_LOG_ID">
 			<unique-column name="MAIL_LOG_ID" />
 		</unique>
-		<index name="PROJECT_ASSIGNMENT_ID">
-			<index-column name="PROJECT_ASSIGNMENT_ID" />
+		<index name="ACTIVITY_ID_IDX">
+			<index-column name="ACTIVITY_ID" />
 		</index>
 	</table>
 	<table name="mail_type">
@@ -140,56 +140,7 @@
 			<index-column name="ACTIVE" />
 		</index>
 	</table>
-	<table name="project_assignment">
-		<column name="ASSIGNMENT_ID" primaryKey="true" required="true"
-			type="INTEGER" size="10" autoIncrement="true" />
-		<column name="PROJECT_ID" primaryKey="false" required="true"
-			type="INTEGER" size="10" autoIncrement="false" />
-		<column name="HOURLY_RATE" primaryKey="false" required="false"
-			type="FLOAT" size="9,3" autoIncrement="false" />
-		<column name="DATE_START" primaryKey="false" required="false"
-			type="DATE" autoIncrement="false" />
-		<column name="DATE_END" primaryKey="false" required="false"
-			type="DATE" autoIncrement="false" />
-		<column name="ROLE" primaryKey="false" required="false" type="VARCHAR"
-			size="255" autoIncrement="false" />
-		<column name="USER_ID" primaryKey="false" required="true" type="INTEGER"
-			size="10" autoIncrement="false" />
-		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
-			size="1" default="Y" autoIncrement="false" />
-		<column name="ASSIGNMENT_TYPE_ID" primaryKey="false" required="true"
-			type="INTEGER" size="10" autoIncrement="false" />
-		<column name="ALLOTTED_HOURS" primaryKey="false" required="false"
-			type="FLOAT" size="9,3" autoIncrement="false" />
-		<column name="ALLOTTED_HOURS_OVERRUN" primaryKey="false"
-			required="false" type="FLOAT" size="9,3" autoIncrement="false" />
-		<column name="NOTIFY_PM_ON_OVERRUN" primaryKey="false"
-			required="true" type="CHAR" size="1" default="N" autoIncrement="false" />
-		<foreign-key foreignTable="project" name="PROJECT_ASSIGNMENT_fk">
-			<reference local="PROJECT_ID" foreign="PROJECT_ID" />
-		</foreign-key>
-		<foreign-key foreignTable="users" name="PROJECT_ASSIGNMENT_fk1">
-			<reference local="USER_ID" foreign="USER_ID" />
-		</foreign-key>
-		<foreign-key foreignTable="project_assignment_type" name="PROJECT_ASSIGNMENT_fk2">
-			<reference local="ASSIGNMENT_TYPE_ID" foreign="ASSIGNMENT_TYPE_ID" />
-		</foreign-key>
-		<index name="PROJECT_ID">
-			<index-column name="PROJECT_ID" />
-		</index>
-		<index name="USER_ID">
-			<index-column name="USER_ID" />
-		</index>
-		<index name="ASSIGNMENT_TYPE_ID">
-			<index-column name="ASSIGNMENT_TYPE_ID" />
-		</index>
-	</table>
-	<table name="project_assignment_type">
-		<column name="ASSIGNMENT_TYPE_ID" primaryKey="true" required="true"
-			type="INTEGER" size="10" autoIncrement="false" />
-		<column name="ASSIGNMENT_TYPE" primaryKey="false" required="false"
-			type="VARCHAR" size="64" autoIncrement="false" />
-	</table>
+
 	<table name="timesheet_comment">
 		<column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
 			size="10" autoIncrement="false" />

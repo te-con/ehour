@@ -1,13 +1,13 @@
 package net.rrm.ehour.report.service
 
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
-import org.mockito.Mockito._
-import net.rrm.ehour.report.service.ReportFilterFixture._
-import net.rrm.ehour.report.criteria.UserSelectedCriteria
+import net.rrm.ehour.domain.{UserDepartmentObjectMother, UserObjectMother}
 import net.rrm.ehour.persistence.user.dao.UserDao
-import net.rrm.ehour.domain.{UserDepartmentObjectMother, UserObjectMother, ProjectObjectMother, ProjectAssignmentObjectMother}
+import net.rrm.ehour.report.criteria.UserSelectedCriteria
+import net.rrm.ehour.report.service.ReportFilterFixture._
 import net.rrm.ehour.util._
+import org.mockito.Mockito._
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 
 class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
   val dao = mock[UserDao]
@@ -67,29 +67,5 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
       verify(dao).findActiveUsers()
     }
 
-    "find all users who are assigned to a PM project" in {
-      val userNotAssigned = UserObjectMother.createUser()
-      userNotAssigned.setFirstName("not assigned")
-      val projectNoPm = ProjectObjectMother.createProject(1)
-      val assignment = ProjectAssignmentObjectMother.createProjectAssignment(userNotAssigned, projectNoPm)
-      userNotAssigned.addProjectAssignment(assignment)
-
-      val userAssigned = UserObjectMother.createUser()
-      userAssigned.setFirstName("assigned")
-      val projectPm = ProjectObjectMother.createProject(2)
-      projectPm.setProjectManager(pm)
-      val pmAssignment = ProjectAssignmentObjectMother.createProjectAssignment(userAssigned, projectPm)
-      userAssigned.addProjectAssignment(pmAssignment)
-
-      when(dao.findActiveUsers()).thenReturn(toJava(List(userNotAssigned, userAssigned)))
-
-      val criteria = new UserSelectedCriteria
-      criteria.setReportTypeToPM(pm)
-
-      val (_, users) = subject.getAvailableUsers(criteria)
-
-      users should have size 1
-      users.get(0) should be (userAssigned)
-    }
   }
 }

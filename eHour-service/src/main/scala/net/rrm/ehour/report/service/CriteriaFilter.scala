@@ -94,14 +94,7 @@ class UserAndDepartmentCriteriaFilter @Autowired()(userDao: UserDao) {
 //    else
 //      userDao.findUsersForDepartments(userSelectedCriteria.getDepartments, userSelectedCriteria.isOnlyActiveUsers))
 
-    val filteredUsers = if (userSelectedCriteria.isForPm) {
-      users.filter(u => {
-        val i = WrapAsScala.asScalaIterator(u.getProjectAssignments.iterator())
-        !i.filter(p => userSelectedCriteria.getPm.equals(p.getProject.getProjectManager)).isEmpty
-      })
-    }
-    else
-      users
+    val filteredUsers = users
 
     val departments = filteredUsers.map(_.getUserDepartment).toSet.toList
 

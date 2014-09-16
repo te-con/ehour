@@ -68,10 +68,6 @@ public class Project extends DomainObject<Integer, Project> {
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "project")
     @Basic(fetch = FetchType.LAZY)
-    private Set<ProjectAssignment> projectAssignments;
-
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "project")
-    @Basic(fetch = FetchType.EAGER)
     private Set<Activity> activities;
 
     @ManyToOne
@@ -113,10 +109,6 @@ public class Project extends DomainObject<Integer, Project> {
 
     public String getFullName() {
         return (StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name;
-    }
-
-    public String getFullNameWithCustomer() {
-        return getCustomer().getCode() + ": " + ((StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name);
     }
 
     /**
@@ -200,20 +192,6 @@ public class Project extends DomainObject<Integer, Project> {
     }
 
     /**
-     * @return the projectAssignments
-     */
-    public Set<ProjectAssignment> getProjectAssignments() {
-        return projectAssignments;
-    }
-
-    /**
-     * @param projectAssignments the projectAssignments to set
-     */
-    public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
-        this.projectAssignments = projectAssignments;
-    }
-
-    /**
      * @see java.lang.Comparable#compareTo(Object)
      */
     public int compareTo(Project object) {
@@ -268,9 +246,10 @@ public class Project extends DomainObject<Integer, Project> {
         this.deletable = deletable;
     }
 
-
-    public void addActivity(Activity activity) {
-        if (activities == null) {
+    public void addActivity(Activity activity)
+    {
+        if (activities == null)
+        {
             activities = new HashSet<Activity>();
         }
 

@@ -84,15 +84,13 @@ public class User extends DomainObject<Integer, User> {
     @NotNull
     private UserDepartment userDepartment;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
-    private Set<ProjectAssignment> projectAssignments;
+	@OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REMOVE }, mappedBy = "assignedUser")
+	private Set<Activity> activities;
 
 	@ManyToMany(targetEntity = Customer.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
 	private Set<Customer> customers = new HashSet<Customer>();
-
-	@Transient
-	private Set<ProjectAssignment> inactiveProjectAssignments;
 
 	@Transient
 	private boolean deletable;
@@ -270,48 +268,20 @@ public class User extends DomainObject<Integer, User> {
 	}
 
 
-
-    /**
-     * @return the projectAssignments
-     */
-    public Set<ProjectAssignment> getProjectAssignments() {
-        return projectAssignments;
+    public Set<Activity> getActivities() {
+        return activities;
     }
 
-    /**
-     * @param projectAssignments the projectAssignments to set
-     */
-    public void setProjectAssignments(Set<ProjectAssignment> projectAssignments) {
-        this.projectAssignments = projectAssignments;
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
     }
-
-    /**
-     * @return the inactiveProjectAssignments
-     */
-    public Set<ProjectAssignment> getInactiveProjectAssignments() {
-        return inactiveProjectAssignments;
-    }
-
-    public void addProjectAssignment(ProjectAssignment projectAssignment) {
-        if (projectAssignments == null) {
-            projectAssignments = new HashSet<ProjectAssignment>();
-        }
-
-        projectAssignments.add(projectAssignment);
-    }
-
-    /**
-     * @param inactiveProjectAssignments the inactiveProjectAssignments to set
-     */
-    public void setInactiveProjectAssignments(Set<ProjectAssignment> inactiveProjectAssignments) {
-        this.inactiveProjectAssignments = inactiveProjectAssignments;
-    }
-
 
     @Override
-    public Integer getPK() {
-        return userId;
-    }
+	public Integer getPK() {
+		return userId;
+	}
+
+
 
     @Override
     public String toString() {

@@ -1,7 +1,6 @@
 package net.rrm.ehour.report.util
 
 import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
 import net.rrm.ehour.report.reports.util.ReportUtil
 import org.junit.Test
 

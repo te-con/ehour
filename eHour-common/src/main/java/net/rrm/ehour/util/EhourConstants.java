@@ -16,17 +16,15 @@
 
 package net.rrm.ehour.util;
 
-import net.rrm.ehour.domain.ProjectAssignmentType;
-
 public class EhourConstants
 {
 	// update ProjectAssignmentType as well!
-	public static final int ASSIGNMENT_DATE = 0;
-	public static final int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
-	public static final int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
+	public final static int ASSIGNMENT_DATE = 0;
+	public final static int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
+	public final static int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
 
-	public static final ProjectAssignmentType ASSIGNMENT_TYPE_DATE = new ProjectAssignmentType(ASSIGNMENT_DATE);
-	public static final ProjectAssignmentType ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED = new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FIXED);
-	public static final ProjectAssignmentType ASSIGNMENT_TYPE_TIME_ALLOTTED_FLEX = new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FLEX);
+	public final static int MAILTYPE_FIXED_ALLOTTED_REACHED = 1;
+	public final static int MAILTYPE_FLEX_ALLOTTED_REACHED = 2;
+	public final static int MAILTYPE_FLEX_OVERRUN_REACHED = 3;
 }
 

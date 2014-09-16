@@ -98,11 +98,22 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         }
     }
 
+    private boolean showAll;
+
     @SpringBean
     private WindChillUpdateService windChillUpdateService;
 
     public TimesheetPanel(String id, User user, Calendar forWeek) {
+        this(id, user, forWeek, false);
+
+    }
+
+    // ugly junit hook
+    protected TimesheetPanel(String id, User user, Calendar forWeek, boolean showAll) {
         super(id);
+
+        this.showAll = showAll;
+
 
         GrandTotal grandTotals;
 
@@ -374,7 +385,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
                 item.add(new Label("project", project.getName()));
 
                 TimesheetRowList rows = new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this);
-                rows.setVisible(false);
+                rows.setVisible(showAll);
                 item.add(createToggleLink(rows));
 
                 item.add(rows);

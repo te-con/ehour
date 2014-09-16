@@ -17,7 +17,6 @@
 package net.rrm.ehour.user.service;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
@@ -25,12 +24,7 @@ import net.rrm.ehour.persistence.activity.dao.ActivityDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
-import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
-import net.rrm.ehour.report.reports.util.ReportUtil;
-import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.timesheet.service.IDeleteTimesheetEntry;
-import net.rrm.ehour.util.DateUtil;
-import net.rrm.ehour.util.DomainUtil;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +33,8 @@ import org.springframework.security.authentication.encoding.MessageDigestPasswor
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Thies Edeling (thies@te-con.nl)
@@ -54,15 +49,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDepartmentDao userDepartmentDAO;
 
-
     @Autowired
     private ActivityDao activityDao;
 
     @Autowired
     private UserRoleDao userRoleDAO;
-
-    @Autowired
-    private AggregateReportService aggregateReportService;
 
     @Autowired
     private IDeleteTimesheetEntry deleteTimesheetEntryService;
@@ -72,53 +63,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     public User getUser(Integer userId) throws ObjectNotFoundException {
-        User user = userDAO.findById(userId);
-        Set<ProjectAssignment> inactiveAssignments = new HashSet<ProjectAssignment>();
-
-        if (user != null && user.getProjectAssignments() != null) {
-            splitActiveAndInactiveAssignments(user, inactiveAssignments);
-        } else {
-            throw new ObjectNotFoundException("User not found");
-        }
-
-        return user;
-    }
-
-    private void splitActiveAndInactiveAssignments(User user, Set<ProjectAssignment> inactiveAssignments) {
-        Date currentDate = new Date();
-
-        for (ProjectAssignment assignment : user.getProjectAssignments()) {
-            DateRange assignmentRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
-
-            if ((!DateUtil.isDateWithinRange(currentDate, assignmentRange)) ||
-                    (assignment.getProject() == null || !assignment.getProject().isActive())) {
-                inactiveAssignments.add(assignment);
-            }
-        }
-
-        user.getProjectAssignments().removeAll(inactiveAssignments);
-        user.setInactiveProjectAssignments(inactiveAssignments);
+        return userDAO.findById(userId);
     }
 
     @Transactional(readOnly = true)
     public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException {
         User user = getUser(userId);
 
-        if ((user.getProjectAssignments() == null || user.getProjectAssignments().size() == 0) &&
-                (user.getInactiveProjectAssignments() == null || user.getInactiveProjectAssignments().size() == 0)) {
-            user.setDeletable(true);
-        } else {
-            // bummer, we need to check if the user booked any hours on the assignments
-            List<Integer> assignmentIds = new ArrayList<Integer>();
-
-            assignmentIds.addAll(DomainUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
-            assignmentIds.addAll(DomainUtil.getIdsFromDomainObjects(user.getInactiveProjectAssignments()));
-
-            List<ActivityAggregateReportElement> aggregates = aggregateReportService.getHoursPerActivity(assignmentIds);
-
-            user.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
-        }
-
+        // TODO Not proper implemented, never ported with activity
         LOGGER.info("Retrieved user " + user.getUsername() + ", deletable: " + user.isDeletable());
 
         return user;
@@ -233,9 +185,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encryptPassword(password, user.getSalt()));
 
         userDAO.persist(user);
-
-        // assign new users to default projects
-        //projectAssignmentManagementService.assignUserToDefaultProjects(user);
     }
 
     @Override
