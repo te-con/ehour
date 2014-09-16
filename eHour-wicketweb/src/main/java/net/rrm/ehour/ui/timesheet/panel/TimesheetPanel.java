@@ -57,11 +57,13 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -84,8 +86,17 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     private EhourConfig config;
     private WebComponent serverMsgLabel;
     private Form<TimesheetModel> timesheetForm;
-    private static final String ID_FOLD_LINK = "foldLink";
-    private static final String ID_FOLD_IMG = "foldImg";
+
+    public enum Fold {
+        SHOW("ui-icon ui-icon-arrowthick-1-s"),
+        HIDE("ui-icon ui-icon-arrowthick-1-n");
+
+        public final String jqueryClass;
+
+        private Fold(String jqueryClass) {
+            this.jqueryClass = jqueryClass;
+        }
+    }
 
     @SpringBean
     private WindChillUpdateService windChillUpdateService;
@@ -363,6 +374,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
                 item.add(new Label("project", project.getName()));
 
                 TimesheetRowList rows = new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this);
+                rows.setVisible(false);
                 item.add(createToggleLink(rows));
 
                 item.add(rows);
@@ -377,28 +389,27 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
     private Component createToggleLink(final TimesheetRowList activityRows) {
         // set relative URL to image and set id
-        ContextImage img = createFoldImage(false);
+        Fold fold = Fold.SHOW;
 
-        AjaxLink<String> foldLink = new AjaxLink<String>(ID_FOLD_LINK) {
+        final WebMarkupContainer foldClass = new WebMarkupContainer("foldClass");
+        foldClass.add(AttributeModifier.replace("class", fold.jqueryClass));
+        foldClass.setOutputMarkupId(true);
+
+        AjaxLink<String> foldLink = new AjaxLink<String>("foldLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                activityRows.setVisible(!activityRows.isVisible());
+                boolean isVisible = activityRows.isVisible();
+
+                foldClass.removeAll();
+                foldClass.add(AttributeModifier.replace("class", isVisible ? Fold.SHOW.jqueryClass : Fold.HIDE.jqueryClass));
+
+                activityRows.setVisible(!isVisible);
                 target.add(timesheetForm);
             }
         };
 
-        foldLink.add(img);
+        foldLink.add(foldClass);
         return foldLink;
-    }
-
-    private ContextImage createFoldImage(boolean up) {
-        String upStr = "img/icon_" + (up ? "up_" : "down_");
-
-        ContextImage img = new ContextImage(ID_FOLD_IMG, new Model<String>(upStr + "off.gif"));
-        img.setOutputMarkupId(true);
-//        CommonJavascript.addMouseOver(img, this, getContextRoot() + upStr + "on.gif", getContextRoot() + upStr + "off.gif", "upDown");
-
-        return img;
     }
 
     private class SubmitButton extends AjaxButton {
