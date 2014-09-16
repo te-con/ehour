@@ -46,45 +46,56 @@ object LinkItem {
 
 class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
 
-  val itemMenu = new ListView[MenuItem]("items", items) {
-    def populateItem(item: ListItem[MenuItem]) {
-      val menuItem = item.getModelObject
-      item.setVisible(menuItem.isVisibleForLoggedInUser)
 
-      menuItem match {
-        case LinkItem(_, _, _) => {
-          item.add(createLinkFragment("item", menuItem.asInstanceOf[LinkItem]))
-        }
-        case DropdownMenu(title, menuItems) => {
-          val fragment = new Fragment("item", "linkItems", TreeBasedMenu.this)
-          item.add(fragment)
+  override def onInitialize(): Unit = {
+    super.onInitialize()
+    val pageClass = getPage.getClass
 
-          val titleLink = createLink("dropdown", menuItems.get(0))
-          titleLink.add(new Label("title", new ResourceModel(title)))
-          fragment.add(titleLink)
+    val itemMenu = new ListView[MenuItem]("items", items) {
+      def populateItem(item: ListItem[MenuItem]) {
+        val menuItem = item.getModelObject
+        item.setVisible(menuItem.isVisibleForLoggedInUser)
 
-          fragment.add(new ListView[LinkItem]("subItems", menuItems) {
-            def populateItem(item: ListItem[LinkItem]) {
-              item.add(createLinkFragment("subItem", item.getModelObject))
+        menuItem match {
+          case LinkItem(_, _, _) =>
+            val linkItem = menuItem.asInstanceOf[LinkItem]
+            if (linkItem.responsePageClass.isAssignableFrom(pageClass)) {
+              Console.println("hit")
             }
-          })
+
+            item.add(createLinkFragment("item", linkItem))
+          case DropdownMenu(title, menuItems) =>
+            val fragment = new Fragment("item", "linkItems", TreeBasedMenu.this)
+            item.add(fragment)
+
+            val titleLink = createLink("dropdown", menuItems.get(0))
+            titleLink.add(new Label("title", new ResourceModel(title)))
+            fragment.add(titleLink)
+
+            fragment.add(new ListView[LinkItem]("subItems", menuItems) {
+              def populateItem(item: ListItem[LinkItem]) {
+                item.add(createLinkFragment("subItem", item.getModelObject))
+              }
+            })
         }
       }
     }
+
+    itemMenu.setOutputMarkupId(true)
+    itemMenu.setMarkupId("menu")
+
+    addOrReplace(itemMenu)
   }
 
-  itemMenu.setOutputMarkupId(true)
-  itemMenu.setMarkupId("menu")
 
-  add(itemMenu)
 
-  private def createLinkFragment(id: String, linkItem: LinkItem) = {
+  private final def createLinkFragment(id: String, linkItem: LinkItem) = {
     val fragment = new Fragment(id, "linkItem", TreeBasedMenu.this)
     fragment.add(createLinkForItem("menuLink", linkItem))
     fragment
   }
 
-  private def createLinkForItem(id: String, linkItem: LinkItem) = {
+  private final def createLinkForItem(id: String, linkItem: LinkItem) = {
     val link = createLink("menuLink", linkItem)
 
     link.add(new Label("menuLinkText", new ResourceModel(linkItem.menuTitle)))
