@@ -1,5 +1,12 @@
 package net.rrm.ehour.ui.timesheet.panel.monthlyapproval;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ApprovalStatus;
@@ -67,8 +74,10 @@ public class MonthlyApprovalPanel extends Panel {
 				Label customerLabel = new Label("customerName", customer.getName());
 				item.add(customerLabel);
 
-				String currentApprovalStatus = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(user, customer, monthRange)
-						.get(0).getStatus().toString();
+                List<ApprovalStatus> statuses = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(user, customer, monthRange);
+
+                String currentApprovalStatus = statuses.isEmpty() ? "in_progress" : statuses.get(0).getStatus().toString();
+
 				String currentApprovalStatusResourceBundleKey = APPROVALSTATUS_RESOURCEKEY_PREFIX + currentApprovalStatus.toLowerCase();
 				
 				final Label approvalStatusLabel = new Label("approvalStatus", new ResourceModel(currentApprovalStatusResourceBundleKey));
@@ -111,21 +120,19 @@ public class MonthlyApprovalPanel extends Panel {
 		add(greyBorder);
 	}
 
-	private void setVisibilityOfApprovalLinkAndUpdateStatus(Customer customer, AjaxLink<Void> requestApprovalLink) {
-		List<ApprovalStatus> approvalStatusForCustomer = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(this.user,
-				customer, this.monthRange);
-		ApprovalStatusType approvalStatusType = approvalStatusForCustomer.iterator().next().getStatus();
+    private void setVisibilityOfApprovalLinkAndUpdateStatus(Customer customer, AjaxLink<Void> requestApprovalLink) {
+        List<ApprovalStatus> approvalStatusForCustomer = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(this.user,
+                customer, this.monthRange);
+        Iterator<ApprovalStatus> iterator = approvalStatusForCustomer.iterator();
 
-		if (approvalStatusType != null) {
-            Label appprovalStatusLabel = new Label("approvalStatus", approvalStatusType.toString());
-		}
+        ApprovalStatusType approvalStatusType = iterator.hasNext() ? iterator.next().getStatus() : ApprovalStatusType.IN_PROGRESS;
 
-		if ((approvalStatusType != null ? approvalStatusType.equals(ApprovalStatusType.IN_PROGRESS) : false) || approvalStatusType.equals(ApprovalStatusType.REJECTED)) {
-			requestApprovalLink.setVisible(true);
-		} else {
-			requestApprovalLink.setVisible(false);
-		}
-	}
+        if (approvalStatusType.equals(ApprovalStatusType.IN_PROGRESS) || approvalStatusType.equals(ApprovalStatusType.REJECTED)) {
+            requestApprovalLink.setVisible(true);
+        } else {
+            requestApprovalLink.setVisible(false);
+        }
+    }
 
 	private List<Customer> getAllCustomersForWhichThisUserWorks(SortedSet<UserProjectStatus> userProjectStatuses) {
 		Set<Customer> customers = new HashSet<Customer>();
