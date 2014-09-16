@@ -16,33 +16,25 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ApprovalStatus;
-import net.rrm.ehour.domain.ApprovalStatusType;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
-import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.*;
 
@@ -148,8 +140,6 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 item.add(customerLabel);
 
                 Number hours = projectStatus.getHours();
-
-                item.add(new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f)));
 
                 Label bookedHoursLabel = new Label("monthHours", new Model<Float>(projectStatus.getHours().floatValue()));
                 item.add(bookedHoursLabel);

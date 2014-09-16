@@ -42,6 +42,9 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 		TextField<String> nameField = new TextField<String>("activity.name");
 		form.add(nameField);
 
+        TextField<String> codeField = new TextField<String>("activity.code");
+        form.add(codeField);
+
         form.add(new LocalizedDatePicker("activity.dateStart", new PropertyModel<Date>(activityModel, "activity.dateStart")));
         form.add(new LocalizedDatePicker("activity.dateEnd", new PropertyModel<Date>(activityModel, "activity.dateEnd")));
 

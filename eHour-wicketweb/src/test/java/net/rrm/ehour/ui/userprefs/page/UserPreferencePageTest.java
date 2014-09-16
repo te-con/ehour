@@ -21,6 +21,7 @@ import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.userpref.UserPreferenceService;
 import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
@@ -30,6 +31,8 @@ public class UserPreferencePageTest extends BaseSpringWebAppTester {
 	public void testReportPageRender() throws ObjectNotFoundException {
         IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
         getMockContext().putBean(overviewTimesheet);
+
+        getMockContext().putBean(createMock(UserPreferenceService.class));
 
         MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
 

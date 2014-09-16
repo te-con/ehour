@@ -4,6 +4,7 @@ import java.util
 import java.util.Calendar
 
 import com.google.common.collect.Lists
+import com.richemont.windchill.WindChillUpdateService
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.timesheet.dto.WeekOverview
@@ -23,6 +24,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
   "Impersonate User Page" should {
     val service = mockService[UserService]
     val overviewTimesheet = mockService[IOverviewTimesheet]
+    mockService[WindChillUpdateService]
 
     mockService[IPersistTimesheet]
 

@@ -3,6 +3,7 @@ package net.rrm.ehour.ui.common.header
 import java.util.Calendar
 
 import com.google.common.collect.Lists
+import com.richemont.windchill.WindChillUpdateService
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.timesheet.dto.{TimesheetOverview, WeekOverview}
@@ -27,6 +28,7 @@ class LoggedInAsPanelSpec extends AbstractSpringWebAppSpec {
     }
 
     "stop impersonating" in {
+      mockService[WindChillUpdateService]
       mockService[IPersistTimesheet]
       val overviewTimesheet = mockService[IOverviewTimesheet]
 
