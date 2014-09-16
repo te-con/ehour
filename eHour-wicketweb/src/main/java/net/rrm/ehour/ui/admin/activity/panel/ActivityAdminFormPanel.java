@@ -37,7 +37,7 @@ public class ActivityAdminFormPanel extends AbstractFormSubmittingPanel<Activity
 
 		setOutputMarkupId(true);
 
-		final Form<Void> form = new Form<Void>("activityForm");
+		final Form<ActivityBackingBean> form = new Form<ActivityBackingBean>("activityForm", activityModel);
 
 		TextField<String> nameField = new TextField<String>("activity.name");
 		form.add(nameField);
