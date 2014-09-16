@@ -129,9 +129,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
 
     /**
      * Create a copy of the provided template assignment, replacing the user with the given user
-     * @param assignment
-     * @param user
-     * @return
      */
     public static ProjectAssignment createProjectAssignment(ProjectAssignment templateAssignment, User user) {
         ProjectAssignment assignment = createProjectAssignment(templateAssignment);
@@ -142,9 +139,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
 
     /**
      * Create a copy of the provided template assignment, replacing the project with the given project
-     * @param assignment
-     * @param project
-     * @return
      */
     public static ProjectAssignment createProjectAssignment(ProjectAssignment templateAssignment, Project project) {
         ProjectAssignment assignment = createProjectAssignment(templateAssignment);

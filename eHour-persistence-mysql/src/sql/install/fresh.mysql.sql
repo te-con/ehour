@@ -68,11 +68,12 @@ VALUES ('initialized', 'false'), ('completeDayHours', '8'), ('showTurnOver', 'tr
   ('currency', 'en-US'), ('localeCountry', 'en-US'), ('availableTranslations', 'en,nl,fr,it'),
   ('mailFrom', 'noreply@localhost.net'), ('smtpPort', '25'), ('mailSmtp', '127.0.0.1'), ('demoMode', 'false'),
   ('version', '1.4');
-INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderEnabled', 'false');
-INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderBody', 'Hello $name,\r\n\r\nThis is an automated message.\r\n\r\nOur records show that you have not posted your weekly hours online. Please be sure to post your hours by 5:30PM Friday.\r\n\r\nThank You,\r\n\r\neHour');
-INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderTime', '0 30 17 * * FRI');
-INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderSubject', 'Missing hours');
-INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES('reminderMinimalHours', '32');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES ('reminderEnabled', 'false');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES ('reminderBody',
+                                                             'Hello $name,\r\n\r\nThis is an automated message.\r\n\r\nOur records show that you have not posted your weekly hours online. Please be sure to post your hours by 5:30PM Friday.\r\n\r\nThank You,\r\n\r\neHour');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES ('reminderTime', '0 30 17 * * FRI');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES ('reminderSubject', 'Missing hours');
+INSERT INTO CONFIGURATION (CONFIG_KEY, CONFIG_VALUE) VALUES ('reminderMinimalHours', '32');
 
 
 /*!40000 ALTER TABLE CONFIGURATION ENABLE KEYS */;
@@ -86,7 +87,7 @@ DROP TABLE IF EXISTS CUSTOMER;
 CREATE TABLE CUSTOMER (
   CUSTOMER_ID INT(11)      NOT NULL AUTO_INCREMENT,
   NAME        VARCHAR(255) NOT NULL,
-  DESCRIPTION VARCHAR(1024) DEFAULT NULL,
+  DESCRIPTION VARCHAR(1024)         DEFAULT NULL,
   CODE        VARCHAR(32)  NOT NULL,
   ACTIVE      CHAR(1)      NOT NULL DEFAULT 'Y',
   PRIMARY KEY (CUSTOMER_ID),
@@ -129,11 +130,11 @@ CREATE TABLE USERS (
   USER_ID       INT(11)      NOT NULL AUTO_INCREMENT,
   USERNAME      VARCHAR(64)  NOT NULL,
   PASSWORD      VARCHAR(128) NOT NULL,
-  FIRST_NAME    VARCHAR(64) DEFAULT NULL,
+  FIRST_NAME    VARCHAR(64)           DEFAULT NULL,
   LAST_NAME     VARCHAR(64)  NOT NULL,
   DEPARTMENT_ID INT(11)      NOT NULL,
-  EMAIL         VARCHAR(128) DEFAULT NULL,
-  SALT          INT(11) DEFAULT NULL,
+  EMAIL         VARCHAR(128)          DEFAULT NULL,
+  SALT          INT(11)               DEFAULT NULL,
   ACTIVE        CHAR(1)      NOT NULL DEFAULT 'Y',
   PRIMARY KEY (USER_ID),
   UNIQUE KEY USER_ID (USER_ID),
@@ -181,15 +182,15 @@ CREATE TABLE MAIL_LOG (
 
 CREATE TABLE PROJECT (
   PROJECT_ID      INT(11)      NOT NULL AUTO_INCREMENT,
-  CUSTOMER_ID     INT(11) DEFAULT NULL,
+  CUSTOMER_ID     INT(11)               DEFAULT NULL,
   NAME            VARCHAR(255) NOT NULL,
-  DESCRIPTION     VARCHAR(1024) DEFAULT NULL,
-  CONTACT         VARCHAR(255) DEFAULT NULL,
+  DESCRIPTION     VARCHAR(1024)         DEFAULT NULL,
+  CONTACT         VARCHAR(255)          DEFAULT NULL,
   PROJECT_CODE    VARCHAR(32)  NOT NULL,
   DEFAULT_PROJECT CHAR(1)      NOT NULL DEFAULT 'N',
   ACTIVE          CHAR(1)      NOT NULL DEFAULT 'Y',
-  BILLABLE        CHAR(1) DEFAULT 'Y',
-  PROJECT_MANAGER INT(11) DEFAULT NULL,
+  BILLABLE        CHAR(1)               DEFAULT 'Y',
+  PROJECT_MANAGER INT(11)               DEFAULT NULL,
   PRIMARY KEY (PROJECT_ID),
   KEY CUSTOMER_ID (CUSTOMER_ID),
   KEY PROJECT_fk1 (PROJECT_MANAGER),
@@ -230,16 +231,16 @@ UNLOCK TABLES;
 CREATE TABLE PROJECT_ASSIGNMENT (
   ASSIGNMENT_ID          INT(11)              NOT NULL AUTO_INCREMENT,
   PROJECT_ID             INT(11)              NOT NULL,
-  HOURLY_RATE            FLOAT(9, 3) DEFAULT NULL,
-  DATE_START             DATE DEFAULT NULL,
-  DATE_END               DATE DEFAULT NULL,
-  ROLE                   VARCHAR(255) DEFAULT NULL,
+  HOURLY_RATE            FLOAT(9, 3)                   DEFAULT NULL,
+  DATE_START             DATE                          DEFAULT NULL,
+  DATE_END               DATE                          DEFAULT NULL,
+  ROLE                   VARCHAR(255)                  DEFAULT NULL,
   USER_ID                INT(11)              NOT NULL,
   ACTIVE                 CHAR(1)
                          CHARACTER SET latin1 NOT NULL DEFAULT 'Y',
   ASSIGNMENT_TYPE_ID     INT(11)              NOT NULL,
-  ALLOTTED_HOURS         FLOAT(9, 3) DEFAULT NULL,
-  ALLOTTED_HOURS_OVERRUN FLOAT(9, 3) DEFAULT NULL,
+  ALLOTTED_HOURS         FLOAT(9, 3)                   DEFAULT NULL,
+  ALLOTTED_HOURS_OVERRUN FLOAT(9, 3)                   DEFAULT NULL,
   NOTIFY_PM_ON_OVERRUN   CHAR(1)              NOT NULL DEFAULT 'N',
   PRIMARY KEY (ASSIGNMENT_ID),
   KEY PROJECT_ID (PROJECT_ID),
