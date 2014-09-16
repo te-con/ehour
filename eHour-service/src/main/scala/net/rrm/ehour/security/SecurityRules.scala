@@ -15,7 +15,7 @@ object SecurityRules {
 
   def isWithPmRole(roles: util.Collection[String]) = roles.contains(UserRole.ROLE_PROJECTMANAGER)
 
-  def isWithReportRole(roles: util.Collection[String]) = roles.contains(UserRole.ROLE_REPORT)
+  def isWithReportRole(roles: util.Collection[String]) = roles.contains(UserRole.ROLE_REPORT) || roles.contains(UserRole.CUSTOMERREVIEWER)
 
   def allowedToModify(modifyingUser: User, userToModify: User, splittedAdminRole: Boolean): Boolean = {
     if (splittedAdminRole) {

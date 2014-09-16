@@ -145,30 +145,9 @@
         <br/> <br/>
     </div>
 
-    <wicket:fragment wicket:id="userDepartmentCriteria">
-        <div wicket:id="deptUserBorder">
+    <wicket:fragment wicket:id="userCriteria">
+        <div wicket:id="userBorder">
             <div class="leftColumn">
-                <div class="foldIcon">
-                    <a wicket:id="clearDepartment" wicket:message="title:report.criteria.clear.tooltip">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-
-                    <a href="#" onclick="return toggleFilter('#departmentFilter')"  wicket:message="title:report.criteria.options.tooltip">
-                        <i class="fa fa-wrench"></i>
-                    </a>
-                </div>
-
-                <b><wicket:message key="filter.department"/></b><br/>
-
-                <div id="departmentFilter" class="filterContainer hidden">
-                    <input id="departmentFilterInput" class="textInput searchInput floatLeft" type="text" placeholder="Filter..." />
-                </div>
-
-                <select id="departmentSelect" wicket:id="reportCriteria.userSelectedCriteria.userDepartments" class="textInputSmall reportCriteriaDropdown"></select>
-                <br/>
-            </div>
-
-            <div class="rightColumn">
                 <div class="foldIcon">
                     <a wicket:id="clearUser" wicket:message="title:report.criteria.clear.tooltip">
                         <i class="fa fa-trash-o"></i>
