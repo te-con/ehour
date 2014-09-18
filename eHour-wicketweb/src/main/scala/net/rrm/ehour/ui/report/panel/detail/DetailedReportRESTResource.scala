@@ -30,7 +30,6 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
 
   implicit def weekStartsAt = DateUtil.fromCalendarToJodaTimeDayInWeek(EhourWebSession.getEhourConfig.getFirstDayOfWeek)
 
-
   @MethodMapping("/hour/{cacheKey}")
   def getHourlyData(cacheKey: String): DetailedReportResponse = {
     cacheService.retrieveReportData(cacheKey) match {
@@ -53,7 +52,6 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
         throw new IllegalArgumentException(errorMsg)
     }
   }
-
 
   @MethodMapping("/turnover/{cacheKey}")
   def getTurnoverData(cacheKey: String): DetailedReportResponse = {

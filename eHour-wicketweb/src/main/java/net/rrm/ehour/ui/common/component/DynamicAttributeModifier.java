@@ -46,7 +46,7 @@ public class DynamicAttributeModifier extends AttributeModifier {
     @Override
     public boolean isEnabled(Component comp) {
         return (reverseResult)
-                ? enablingModel.getObject().booleanValue()
-                : !enablingModel.getObject().booleanValue();
+                ? enablingModel.getObject()
+                : !enablingModel.getObject();
     }
 }
