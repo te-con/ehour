@@ -18,8 +18,7 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
-import net.rrm.ehour.ui.common.form.HistoryFormComponent;
-import org.apache.wicket.markup.html.form.TextField;
+import net.rrm.ehour.ui.common.form.TextFieldWithHistory;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 
@@ -27,21 +26,15 @@ import org.apache.wicket.util.convert.IConverter;
  * Timesheet textfield which remembers its previous validation state
  */
 
-public class TimesheetTextField extends TextField<Float> implements HistoryFormComponent {
+public class TimesheetTextField extends TextFieldWithHistory<Float> {
     private static final long serialVersionUID = 7033801704569935582L;
-    private boolean previousValidity = false;
-    private String previousValue;
 
     public TimesheetTextField(final String id, IModel<Float> model, int tabIndex) {
         super(id, model, Float.class);
 
         setConvertEmptyInputStringToNull(true);
 
-        if (getModelObject() != null) {
-            previousValue = getModelObject().toString();
-        } else {
-            previousValue = "";
-        }
+        setPreviousValue(getModelObject() != null ? getModelObject().toString() : "");
 
         add(CommonModifiers.tabIndexModifier(tabIndex));
     }
@@ -52,49 +45,8 @@ public class TimesheetTextField extends TextField<Float> implements HistoryFormC
         return (IConverter<C>) new FloatConverter("");
     }
 
-    /**
-     * @return Is changed since previous submit
-     */
-    @Override
-    public boolean isValueChanged() {
-        return !getRealInput().equals(previousValue);
-    }
-
-    @Override
-    public void rememberCurrentValue() {
-        previousValue = getRealInput();
-    }
-
-    @Override
-    public void rememberCurrentValidity() {
-        previousValidity = isValid();
-    }
-
-    @Override
-    public boolean isPreviousValid() {
-        return previousValidity;
-    }
-
     @Override
     public boolean isInputNullable() {
         return true;
-    }
-
-    /**
-     * Extracts the real user input
-     *
-     * @return the string input or an empty string if no input provided
-     */
-    protected String getRealInput() {
-        //first try to get the float value
-        Float value = getConvertedInput();
-        if (value != null)
-            return value.toString();
-
-        //if there was a conversion error we can see the rawInput
-        String raw = getRawInput();
-        if (raw == null)
-            raw = "";
-        return raw;
     }
 }

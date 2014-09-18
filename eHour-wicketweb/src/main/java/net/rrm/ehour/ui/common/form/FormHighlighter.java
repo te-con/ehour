@@ -52,17 +52,17 @@ public class FormHighlighter implements IVisitor<FormComponent<?>, Object>, Seri
                 LOGGER.trace(markupId + " is not valid");
                 formComponent.add(getColorModifier("#ff0000"));
 
-                if (formComponent instanceof HistoryFormComponent) {
-                    final HistoryFormComponent historyFormComponent = (HistoryFormComponent) formComponent;
-                    historyFormComponent.rememberCurrentValidity();
-                    historyFormComponent.rememberCurrentValue();
+                if (formComponent instanceof TextFieldWithHistory) {
+                    final TextFieldWithHistory textFieldWithHistory = (TextFieldWithHistory) formComponent;
+                    textFieldWithHistory.rememberCurrentValidity();
+                    textFieldWithHistory.rememberCurrentValue();
                 }
 
                 target.add(formComponent);
             }
             // reset color if it was invalid and needs to be reset
-            else if (formComponent instanceof HistoryFormComponent) {
-                HistoryFormComponent ttField = (HistoryFormComponent) formComponent;
+            else if (formComponent instanceof TextFieldWithHistory) {
+                TextFieldWithHistory ttField = (TextFieldWithHistory) formComponent;
 
                 if (ttField.isValueChanged()) {
                     LOGGER.trace(markupId + " is changed");
