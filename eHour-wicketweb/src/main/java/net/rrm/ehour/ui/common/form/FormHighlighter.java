@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.common.form;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -36,8 +35,6 @@ public class FormHighlighter implements IVisitor<FormComponent<?>, Object>, Seri
 
     private transient AjaxRequestTarget target;
 
-    private static final Logger LOGGER = Logger.getLogger(FormHighlighter.class);
-
     public FormHighlighter(AjaxRequestTarget target) {
         this.target = target;
     }
@@ -45,11 +42,8 @@ public class FormHighlighter implements IVisitor<FormComponent<?>, Object>, Seri
     @Override
     public void component(FormComponent<?> formComponent, IVisit<Object> visit) {
         if (target != null) {
-            String markupId = formComponent.getMarkupId();
-
             // paint it red if invalid
             if (!formComponent.isValid()) {
-                LOGGER.trace(markupId + " is not valid");
                 formComponent.add(getColorModifier("#ff0000"));
 
                 if (formComponent instanceof TextFieldWithHistory) {
@@ -65,16 +59,12 @@ public class FormHighlighter implements IVisitor<FormComponent<?>, Object>, Seri
                 TextFieldWithHistory ttField = (TextFieldWithHistory) formComponent;
 
                 if (ttField.isValueChanged()) {
-                    LOGGER.trace(markupId + " is changed");
                     if (!ttField.isPreviousValid()) {
-                        LOGGER.trace(markupId + " was invalid");
                         formComponent.add(getColorModifier("#536e87;"));
                         ttField.rememberCurrentValidity();
                     }
 
                     target.add(formComponent);
-                } else {
-                    LOGGER.trace(markupId + " is not changed");
                 }
 
                 ttField.rememberCurrentValue();
@@ -90,5 +80,4 @@ public class FormHighlighter implements IVisitor<FormComponent<?>, Object>, Seri
             }
         });
     }
-
 }
