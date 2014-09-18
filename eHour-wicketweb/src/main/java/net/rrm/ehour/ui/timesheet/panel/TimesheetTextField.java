@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
+import net.rrm.ehour.ui.common.form.HistoryFormComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
@@ -26,7 +27,7 @@ import org.apache.wicket.util.convert.IConverter;
  * Timesheet textfield which remembers its previous validation state
  */
 
-public class TimesheetTextField extends TextField<Float> {
+public class TimesheetTextField extends TextField<Float> implements HistoryFormComponent {
     private static final long serialVersionUID = 7033801704569935582L;
     private boolean previousValidity = false;
     private String previousValue;
@@ -54,18 +55,22 @@ public class TimesheetTextField extends TextField<Float> {
     /**
      * @return Is changed since previous submit
      */
+    @Override
     public boolean isValueChanged() {
         return !getRealInput().equals(previousValue);
     }
 
+    @Override
     public void rememberCurrentValue() {
         previousValue = getRealInput();
     }
 
+    @Override
     public void rememberCurrentValidity() {
         previousValidity = isValid();
     }
 
+    @Override
     public boolean isPreviousValid() {
         return previousValidity;
     }

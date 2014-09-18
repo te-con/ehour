@@ -14,12 +14,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.timesheet.common;
+package net.rrm.ehour.ui.common.form;
 
-import net.rrm.ehour.ui.timesheet.panel.TimesheetTextField;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -44,8 +42,6 @@ public class FormHighlighter implements IVisitor<FormComponent<?>, Object>, Seri
         this.target = target;
     }
 
-
-
     @Override
     public void component(FormComponent<?> formComponent, IVisit<Object> visit) {
         if (target != null) {
@@ -56,16 +52,17 @@ public class FormHighlighter implements IVisitor<FormComponent<?>, Object>, Seri
                 LOGGER.trace(markupId + " is not valid");
                 formComponent.add(getColorModifier("#ff0000"));
 
-                if (formComponent instanceof TimesheetTextField) {
-                    ((TimesheetTextField) formComponent).rememberCurrentValidity();
-                    ((TimesheetTextField) formComponent).rememberCurrentValue();
+                if (formComponent instanceof HistoryFormComponent) {
+                    final HistoryFormComponent historyFormComponent = (HistoryFormComponent) formComponent;
+                    historyFormComponent.rememberCurrentValidity();
+                    historyFormComponent.rememberCurrentValue();
                 }
 
                 target.add(formComponent);
             }
             // reset color if it was invalid and needs to be reset
-            else if (formComponent instanceof TimesheetTextField) {
-                TimesheetTextField ttField = (TimesheetTextField) formComponent;
+            else if (formComponent instanceof HistoryFormComponent) {
+                HistoryFormComponent ttField = (HistoryFormComponent) formComponent;
 
                 if (ttField.isValueChanged()) {
                     LOGGER.trace(markupId + " is changed");
