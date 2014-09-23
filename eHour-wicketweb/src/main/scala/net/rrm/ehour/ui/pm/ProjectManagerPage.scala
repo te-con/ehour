@@ -59,11 +59,10 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
       }
     }
 
-    val entrySelectorPanel = new EntrySelectorPanel("entrySelectorFrame",
+    val entrySelectorPanel = new EntrySelectorPanel("projectSelector",
       createSelectorData(projects),
       clickHandler,
       new ResourceModel("admin.user.hideInactive"))
-
 
     greyBorder.add(entrySelectorPanel)
 

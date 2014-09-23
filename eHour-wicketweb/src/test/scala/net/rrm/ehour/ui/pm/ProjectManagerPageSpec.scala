@@ -1,15 +1,16 @@
 package net.rrm.ehour.ui.pm
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.project.service.{ProjectAssignmentService, ProjectAssignmentManagementService, ProjectService}
-import org.mockito.Mockito._
-import org.mockito.Matchers._
 import net.rrm.ehour.domain.{ProjectObjectMother, User}
+import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService, ProjectService}
+import net.rrm.ehour.report.reports.ProjectManagerReport
+import net.rrm.ehour.report.service.AggregateReportService
+import net.rrm.ehour.user.service.UserService
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+
 import scala.collection.convert.WrapAsJava
 import scala.collection.mutable.ListBuffer
-import net.rrm.ehour.user.service.UserService
-import net.rrm.ehour.report.service.AggregateReportService
-import net.rrm.ehour.report.reports.ProjectManagerReport
 
 class ProjectManagerPageSpec extends AbstractSpringWebAppSpec {
   "Project Management page" should {
@@ -37,10 +38,11 @@ class ProjectManagerPageSpec extends AbstractSpringWebAppSpec {
       val project = ProjectObjectMother.createProject(1)
       when(aggregateReportService.getProjectManagerDetailedReport(project)).thenReturn(new ProjectManagerReport)
       when(projectService.getProjectManagerProjects(any(classOf[User]))).thenReturn(WrapAsJava.bufferAsJavaList(ListBuffer(project)))
+      when(projectService.getProject(1)).thenReturn(project)
 
       tester.startPage(classOf[ProjectManagerPage])
 
-      tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:projectSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click")
+      tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:projectSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemList:0", "click")
 
       tester.assertNoErrorMessage()
     }

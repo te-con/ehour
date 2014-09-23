@@ -4,11 +4,11 @@ import java.util
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.User
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import net.rrm.ehour.ui.common.panel.entryselector.{EntryListUpdatedEvent, HideInactiveFilter, InactiveFilterChangedEvent}
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.list.ListItem
-import org.apache.wicket.markup.html.panel.Fragment
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
@@ -27,7 +27,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
       startPanel()
       tester.assertNoErrorMessage()
 
-      tester.assertComponent("id:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", classOf[ListItem[_]])
+      tester.assertComponent("id:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemList:0", classOf[ListItem[_]])
     }
 
     "handle updated list event" in {
@@ -42,7 +42,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
 
       tester.assertNoErrorMessage()
 
-      verify(target).add(isA(classOf[Fragment]))
+      verify(target).add(isA(classOf[GreyBlueRoundedBorder]))
     }
 
     "handle inactive filter event" in {
@@ -57,7 +57,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
 
       tester.assertNoErrorMessage()
 
-      verify(target).add(isA(classOf[Fragment]))
+      verify(target).add(isA(classOf[GreyBlueRoundedBorder]))
     }
   }
 
