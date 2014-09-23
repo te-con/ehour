@@ -45,17 +45,7 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
 
         val project = projectService.getProject(id)
 
-        if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
-          val projectInfoPanel = new ProjectManagerModifyPanel(ContainerId, project)
-          projectInfoPanel.setOutputMarkupId(true)
-          Self.addOrReplace(projectInfoPanel)
-          target.add(projectInfoPanel)
-        }
-
-        val statusPanel = new ProjectManagerStatusPanel(StatusId, project)
-        statusPanel.setOutputMarkupId(true)
-        Self.addOrReplace(statusPanel)
-        target.add(statusPanel)
+        onProjectSelected(id, project, target)
       }
     }
 
@@ -68,6 +58,20 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
 
     addOrReplace(new Container(ContainerId))
     addOrReplace(new Container(StatusId))
+  }
+
+  def onProjectSelected(id: Integer, project: Project, target: AjaxRequestTarget) {
+    if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
+      val projectInfoPanel = new ProjectManagerModifyPanel(ContainerId, project)
+      projectInfoPanel.setOutputMarkupId(true)
+      Self.addOrReplace(projectInfoPanel)
+      target.add(projectInfoPanel)
+    }
+
+    val statusPanel = new ProjectManagerStatusPanel(StatusId, project)
+    statusPanel.setOutputMarkupId(true)
+    Self.addOrReplace(statusPanel)
+    target.add(statusPanel)
   }
 
   def projects = projectService.getProjectManagerProjects(EhourWebSession.getUser)
