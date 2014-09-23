@@ -28,30 +28,28 @@ import static org.easymock.EasyMock.*;
 
 /**
  * Customer admin test render
- **/
+ */
 
-public class CustomerManagePageTest extends BaseSpringWebAppTester
-{
-	/**
-	 * Test render
-	 */
-	@Test
-	public void testCustomerAdminRender()
-	{
-		CustomerService customerService = createMock(CustomerService.class);
-		getMockContext().putBean("customerService", customerService);
-		
-		expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
+public class CustomerManagePageTest extends BaseSpringWebAppTester {
+    /**
+     * Test render
+     */
+    @Test
+    public void testCustomerAdminRender() {
+        CustomerService customerService = createMock(CustomerService.class);
+        getMockContext().putBean("customerService", customerService);
 
-		replay(customerService);
-		
-		getTester().startPage(CustomerManagePage.class);
-		getTester().assertRenderedPage(CustomerManagePage.class);
-		getTester().assertNoErrorMessage();
-		
-		verify(customerService);
-	}
-	
+        expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
+
+        replay(customerService);
+
+        getTester().startPage(CustomerManagePage.class);
+        getTester().assertRenderedPage(CustomerManagePage.class);
+        getTester().assertNoErrorMessage();
+
+        verify(customerService);
+    }
+
 //	/**
 //	 * Test render
 //	 */

@@ -10,17 +10,11 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -35,8 +29,6 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
 
     @SpringBean
     private UserService userService;
-
-    private ListView<UserDepartment> deptListView;
 
     private EntrySelectorPanel entrySelectorPanel;
 
@@ -57,8 +49,8 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
         EntrySelectorPanel.ClickHandler clickHandler = new EntrySelectorPanel.ClickHandler() {
             @Override
             public void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException {
-                Integer projectId = (Integer) row.getId();
-                getTabbedPanel().setEditBackingBean(createEditBean(projectId));
+                Integer departmentId = (Integer) row.getId();
+                getTabbedPanel().setEditBackingBean(createEditBean(departmentId));
                 getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
             }
         };
@@ -71,17 +63,20 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
 
     private EntrySelectorData createSelectorData(List<UserDepartment> userDepartments) {
         List<Header> headers = Lists.newArrayList(new Header("admin.dept.code"),
-                                                                    new Header("admin.dept.name"),
-                                                                    new Header("admin.dept.users"));
+                                                  new Header("admin.dept.name"),
+                                                  new Header("admin.dept.users"));
 
         List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
 
         for (UserDepartment department : userDepartments) {
-            rows.add(new EntrySelectorData.EntrySelectorRow(Lists.newArrayList(department.getName(), department.getProjectCode()), active));
+            List<String> cells = Lists.newArrayList(department.getName(),
+                                                    department.getCode(),
+                                                    Integer.toString(department.getUsers() == null ? 0 : department.getUsers().size()));
+
+            rows.add(new EntrySelectorData.EntrySelectorRow(cells, department.getDepartmentId()));
         }
 
         return new EntrySelectorData(headers, rows);
-        return null;
     }
 
     @Override
@@ -93,46 +88,13 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
         AjaxEventType type = ajaxEvent.getEventType();
 
-        if (type == DepartmentAjaxEventType.DEPARTMENT_DELETED
-                || type == DepartmentAjaxEventType.DEPARTMENT_UPDATED) {
-            // update customer list
-            List<UserDepartment> depts = getUserDepartments();
-            deptListView.setList(depts);
-
+        if (type == DepartmentAjaxEventType.DEPARTMENT_DELETED || type == DepartmentAjaxEventType.DEPARTMENT_UPDATED) {
+            entrySelectorPanel.updateData(createSelectorData(getUserDepartments()));
             entrySelectorPanel.reRender(ajaxEvent.getTarget());
-
             getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
         }
 
         return true;
-    }
-
-    @SuppressWarnings("serial")
-    private Fragment getDepartmentListHolder(List<UserDepartment> departments) {
-        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AbstractDepartmentManagePageTemplate.this);
-
-        deptListView = new EntrySelectorListView<UserDepartment>("itemList", departments) {
-            @Override
-            protected void onPopulate(ListItem<UserDepartment> item, IModel<UserDepartment> itemModel) {
-                UserDepartment dept = item.getModelObject();
-
-                item.add(new Label("name", dept.getName()));
-                item.add(new Label("code", dept.getCode()));
-                item.add(new Label("users", dept.getUsers() == null ? 0 : dept.getUsers().size()));
-            }
-
-            @Override
-            protected void onClick(ListItem<UserDepartment> item, AjaxRequestTarget target) throws ObjectNotFoundException {
-                final Integer deptId = item.getModelObject().getDepartmentId();
-
-                getTabbedPanel().setEditBackingBean(createEditBean(deptId));
-                getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
-            }
-        };
-
-        fragment.add(deptListView);
-
-        return fragment;
     }
 
     protected abstract T createEditBean(Integer deptId) throws ObjectNotFoundException;
