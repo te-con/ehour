@@ -46,8 +46,6 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Entr
  */
 
 public class EntrySelectorPanel extends AbstractBasePanel<Void> {
-    public static final String ITEM_LIST_HOLDER_ID = "itemListHolder";
-
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
     private static final String ITEM_LIST_ID = "itemList";
@@ -182,7 +180,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
     private static final long serialVersionUID = -7928428437664050056L;
 
-    public interface ClickHandler {
+    public interface ClickHandler extends Serializable {
         void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException;
     }
 }

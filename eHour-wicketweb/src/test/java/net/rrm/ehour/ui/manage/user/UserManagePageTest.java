@@ -83,7 +83,7 @@ public class UserManagePageTest extends BaseSpringWebAppTester {
 
         tester.startPage(UserManagePage.class);
 
-        tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
+        tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemList:0", "click");
 
         tester.assertComponent("tabs:panel", UserManageReadOnlyPanel.class);
     }
@@ -99,7 +99,7 @@ public class UserManagePageTest extends BaseSpringWebAppTester {
 
         tester.startPage(UserManagePage.class);
 
-        tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
+        tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemList:0", "click");
 
         tester.assertComponent("tabs:panel", UserFormPanel.class);
     }

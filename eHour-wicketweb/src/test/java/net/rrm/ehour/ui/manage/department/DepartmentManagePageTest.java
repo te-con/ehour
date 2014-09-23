@@ -84,7 +84,7 @@ public class DepartmentManagePageTest extends BaseSpringWebAppTester
 		tester.assertRenderedPage(DepartmentManagePage.class);
 		tester.assertNoErrorMessage();
 
-        tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:deptSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
+        tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:deptSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemList:0", "click");
 		verify(userService);
 	}	
 }

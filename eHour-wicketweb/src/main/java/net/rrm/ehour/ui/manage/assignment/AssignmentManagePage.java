@@ -16,24 +16,19 @@
 
 package net.rrm.ehour.ui.manage.assignment;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorListView;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.panel.noentry.NoEntrySelectedPanel;
 import net.rrm.ehour.ui.manage.AbstractManagePage;
 import net.rrm.ehour.user.service.UserService;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -56,21 +51,6 @@ public class AssignmentManagePage extends AbstractManagePage<Void> {
 
     private Panel assignmentPanel;
 
-    public AssignmentManagePage() {
-        super(new ResourceModel("admin.assignment.title"));
-
-        Fragment userListHolder = getUserListHolder(getUsers());
-
-        GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.assignment.title"));
-        add(grey);
-
-        grey.add(new EntrySelectorPanel(USER_SELECTOR_ID, userListHolder));
-
-        assignmentPanel = new NoEntrySelectedPanel(ASSIGNMENT_PANEL_ID, true, new ResourceModel("admin.assignment.noEditEntrySelected"));
-
-        add(assignmentPanel);
-    }
-
     public AssignmentManagePage(User user) {
         this();
 
@@ -79,33 +59,48 @@ public class AssignmentManagePage extends AbstractManagePage<Void> {
         addOrReplace(assignmentPanel);
     }
 
-    private Fragment getUserListHolder(List<User> users) {
-        Fragment fragment = new Fragment("itemListHolder", "itemListHolder", AssignmentManagePage.this);
+    public AssignmentManagePage() {
+        super(new ResourceModel("admin.assignment.title"));
 
-        ListView<User> userListView = new EntrySelectorListView<User>("itemList", users) {
+        GreyRoundedBorder grey = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.assignment.title"));
+        add(grey);
+
+        EntrySelectorPanel.ClickHandler clickHandler = new EntrySelectorPanel.ClickHandler() {
             @Override
-            protected void onPopulate(ListItem<User> item, IModel<User> itemModel) {
-                final User user = item.getModelObject();
-
-                if (!user.isActive()) {
-                    item.add(AttributeModifier.append("class", "inactive"));
-                }
-
-                item.add(new Label("firstName", user.getFirstName()));
-                item.add(new Label("lastName", user.getLastName()));
-                Set<ProjectAssignment> assignments = user.getProjectAssignments();
-                item.add(new Label("assignments", (assignments != null) ? assignments.size() : 0));
-            }
-
-            @Override
-            protected void onClick(ListItem<User> item, AjaxRequestTarget target) throws ObjectNotFoundException {
-                replaceAssignmentPanel(target, item.getModelObject());
+            public void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException {
+                Integer userId = (Integer) row.getId();
+                User user = userService.getUser(userId);
+                replaceAssignmentPanel(target, user);
             }
         };
 
-        fragment.add(userListView);
+        EntrySelectorPanel entrySelectorPanel = new EntrySelectorPanel(USER_SELECTOR_ID,
+                createSelectorData(getUsers()),
+                clickHandler);
 
-        return fragment;
+
+        grey.add(entrySelectorPanel);
+
+        assignmentPanel = new NoEntrySelectedPanel(ASSIGNMENT_PANEL_ID, true, new ResourceModel("admin.assignment.noEditEntrySelected"));
+
+        add(assignmentPanel);
+    }
+
+    private EntrySelectorData createSelectorData(List<User> users) {
+        List<EntrySelectorData.Header> headers = Lists.newArrayList(new EntrySelectorData.Header("admin.user.lastName"),
+                new EntrySelectorData.Header("admin.user.firstName"),
+                new EntrySelectorData.Header("admin.assignment.assignments"));
+
+        List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
+
+        for (User user : users) {
+            Set<ProjectAssignment> assignments = user.getProjectAssignments();
+
+            List<String> cells = Lists.newArrayList(user.getLastName(), user.getFirstName(), Integer.toString((assignments != null) ? assignments.size() : 0));
+            rows.add(new EntrySelectorData.EntrySelectorRow(cells, user.getUserId()));
+        }
+
+        return new EntrySelectorData(headers, rows);
     }
 
     private void replaceAssignmentPanel(AjaxRequestTarget target, User user) {
