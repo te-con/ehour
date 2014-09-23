@@ -8,7 +8,6 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.ItUtil.*;
-import static org.junit.Assert.assertTrue;
 
 public class TimesheetLockDriver {
     public static void navigateToAdminLocks() {
@@ -31,7 +30,7 @@ public class TimesheetLockDriver {
     }
 
     public static void editLock(int index, String name) {
-        findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_lockSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_" + index)).click();
+        findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_lockSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemList_" + index)).click();
         waitForValue("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_name", name);
     }
 

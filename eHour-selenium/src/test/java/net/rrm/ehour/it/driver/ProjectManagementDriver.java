@@ -36,7 +36,7 @@ public abstract class ProjectManagementDriver {
     }
 
     public static void clickFirstProject() {
-        findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_0").click();
+        findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemList_0").click();
     }
 
     public static void makeFirstAssignmentInActive() {

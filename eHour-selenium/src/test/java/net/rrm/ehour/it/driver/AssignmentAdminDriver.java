@@ -38,7 +38,7 @@ public abstract class AssignmentAdminDriver {
     }
 
     private static void clickFirstUser() {
-        findElement("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemListHolder_itemList_0").click();
+        findElement("entrySelectorFrame_entrySelectorFrame__body_userSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemList_0").click();
     }
 
     public static void assignToProject(ItUser user, ItProject project) {
