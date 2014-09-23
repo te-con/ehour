@@ -1,22 +1,21 @@
 package net.rrm.ehour.ui.manage.lock
 
+import java.text.SimpleDateFormat
+
+import com.google.common.collect.Lists
 import net.rrm.ehour.domain.TimesheetLock
 import net.rrm.ehour.timesheet.service.TimesheetLockService
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel
-import net.rrm.ehour.ui.common.model.DateModel
-import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorListView, EntrySelectorPanel}
+import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorData, EntrySelectorPanel}
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage
-import net.rrm.ehour.util._
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.IEvent
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.list.ListItem
-import org.apache.wicket.markup.html.panel.{Fragment, Panel}
-import org.apache.wicket.model.{Model, IModel, ResourceModel}
+import org.apache.wicket.markup.html.panel.Panel
+import org.apache.wicket.model.{Model, ResourceModel}
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.joda.time.DateTime
@@ -34,9 +33,9 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
 
   val self = this
 
-  var view: EntrySelectorListView[TimesheetLock] = _
-
   var affectedUsersShown = false
+
+  var entrySelectorPanel:EntrySelectorPanel = _
 
   @SpringBean
   protected var lockService: TimesheetLockService = _
@@ -47,30 +46,9 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
     val greyBorder = new GreyRoundedBorder(BorderId, new ResourceModel("op.lock.admin.list.header"))
     addOrReplace(greyBorder)
 
-    val timesheetLocks = lockService.findAll()
-    val existingLocksComponent = createLockListHolder(timesheetLocks)
-    val entrySelectorPanel = new EntrySelectorPanel(SelectorId, existingLocksComponent)
-
-    greyBorder.addOrReplace(entrySelectorPanel)
-  }
-
-  private def createLockListHolder(locks: List[TimesheetLock]): Fragment = {
-    val fragment = new Fragment("itemListHolder", "itemListHolder", this)
-    fragment.setOutputMarkupId(true)
-    val ehourConfig = EhourWebSession.getEhourConfig
-    implicit val locale = ehourConfig.getFormattingLocale
-
-    view = new EntrySelectorListView[TimesheetLock]("itemList", toJava(locks)) {
-      protected def onPopulate(item: ListItem[TimesheetLock], itemModel: IModel[TimesheetLock]) {
-        val lock = itemModel.getObject
-
-        item.add(new Label("detailLinkLabel", lock.getName))
-        item.add(new Label("startDate", new DateModel(lock.getDateStart, ehourConfig, DateModel.DATESTYLE_FULL)))
-        item.add(new Label("endDate", new DateModel(lock.getDateEnd, ehourConfig, DateModel.DATESTYLE_FULL)))
-      }
-
-      protected def onClick(item: ListItem[TimesheetLock], target: AjaxRequestTarget) {
-        val id = item.getModelObject.getLockId
+    val clickHandler = new EntrySelectorPanel.ClickHandler {
+      def onClick(row: EntrySelectorData.EntrySelectorRow, target: AjaxRequestTarget) {
+        val id = row.getId.asInstanceOf[Integer]
 
         lockService.find(id) match {
           case Some(lock) =>
@@ -80,14 +58,33 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
         }
       }
     }
-    fragment.add(view)
-    fragment
+
+    entrySelectorPanel = new EntrySelectorPanel(SelectorId, createSelectorData(lockService.findAll()), clickHandler)
+
+    greyBorder.addOrReplace(entrySelectorPanel)
   }
+
+  private def createSelectorData(locks: List[TimesheetLock]): EntrySelectorData = {
+    val headers = Lists.newArrayList(new EntrySelectorData.Header("op.lock.admin.name.label"),
+                                     new EntrySelectorData.Header("op.lock.admin.start.label"),
+                                     new EntrySelectorData.Header("op.lock.admin.end.label"))
+    val ehourConfig = EhourWebSession.getEhourConfig
+    val formatter = new SimpleDateFormat("dd MMM yy", ehourConfig.getFormattingLocale)
+
+    val rows = for (lock <- locks) yield {
+      val cells = Lists.newArrayList(lock.getName, formatter.format(lock.getDateStart), formatter.format(lock.getDateEnd))
+      new EntrySelectorData.EntrySelectorRow(cells, lock.getLockId)
+    }
+
+    import scala.collection.JavaConversions._
+    new EntrySelectorData(headers, rows)
+  }
+
 
   override def onEvent(event: IEvent[_]) {
     def update[T <: Event](event: T) = {
-      view.setList(toJava(lockService.findAll()))
-      event.refresh(view.getParent)
+      entrySelectorPanel.updateData(createSelectorData(lockService.findAll()))
+      entrySelectorPanel.reRender(event.target)
       getTabbedPanel.succesfulSave(event.target)
     }
 

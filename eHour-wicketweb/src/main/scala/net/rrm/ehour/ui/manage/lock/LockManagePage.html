@@ -10,28 +10,6 @@
     <div class="floatLeft" wicket:id="entrySelectorFrame" id="entrySelector">
         <wicket:container wicket:id="lockSelector"></wicket:container>
     </div>
-
-    <wicket:fragment wicket:id="itemListHolder">
-
-        <table class="entrySelectorTable">
-
-            <thead>
-            <tr>
-                <th><wicket:message key="op.lock.admin.name.label" /></th>
-                <th><wicket:message key="op.lock.admin.start.label" /></th>
-                <th><wicket:message key="op.lock.admin.end.label" /></th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr wicket:id="itemList" class="filterRow">
-                <td wicket:id="detailLinkLabel"></td>
-                <td wicket:id="startDate"></td>
-                <td wicket:id="endDate"></td>
-            </tr>
-            </tbody>
-        </table>
-    </wicket:fragment>
 </wicket:extend>
 </body>
 </html>

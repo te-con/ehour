@@ -45,7 +45,7 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Entr
  * Selector with autocompletion filter
  */
 
-public class EntrySelectorPanel<T> extends AbstractBasePanel<T> {
+public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     public static final String ITEM_LIST_HOLDER_ID = "itemListHolder";
 
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
