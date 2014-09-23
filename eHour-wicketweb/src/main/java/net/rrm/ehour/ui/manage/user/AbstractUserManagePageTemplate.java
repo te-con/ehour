@@ -12,7 +12,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage;
 import net.rrm.ehour.user.service.UserService;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
@@ -105,9 +104,8 @@ public abstract class AbstractUserManagePageTemplate<T extends UserManageBacking
     }
 
     @Override
-    protected Component onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent) {
+    protected void onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent, AjaxRequestTarget target) {
         send(this, Broadcast.DEPTH, inactiveFilterChangedEvent);
-        return null;
     }
 
     protected UserService getUserService() {
