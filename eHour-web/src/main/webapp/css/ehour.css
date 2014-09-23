@@ -856,7 +856,7 @@ hr {
     background-color: #d1e5f9;
 }
 
-.entrySelectorTable .inactive td {
+.entrySelectorTable .inactive {
     color: #6e9fcc !important;
 }
 

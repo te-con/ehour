@@ -155,6 +155,10 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
                         label.add(AttributeModifier.replace("class", "numeric"));
                     }
 
+                    if (!object.isActive()) {
+                        label.add(AttributeModifier.append("class", "inactive"));
+                    }
+
                     index++;
                 }
 
@@ -206,4 +210,3 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException;
     }
 }
-
