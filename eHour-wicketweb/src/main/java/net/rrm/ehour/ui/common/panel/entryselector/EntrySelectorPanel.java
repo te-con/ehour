@@ -49,6 +49,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
     private static final String ITEM_LIST_ID = "itemList";
+    private static final String HEADER_ID = "headers";
     private final ClickHandler clickHandler;
 
     private IModel<String> hideInactiveCheckboxPrefix;
@@ -119,10 +120,21 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
         add(selectorFrame);
 
+        blueBorder.add(createHeaders(HEADER_ID, entrySelectorData));
         blueBorder.add(createListView(ITEM_LIST_ID, entrySelectorData));
     }
 
-    private  EntrySelectorListView createListView(String id, EntrySelectorData entrySelectorData) {
+    private RepeatingView createHeaders(String id, EntrySelectorData entrySelectorData) {
+        RepeatingView cells = new RepeatingView(id);
+
+        for (EntrySelectorData.Header header : entrySelectorData.getColumnHeaders()) {
+            cells.add(new Label(cells.newChildId(), new ResourceModel(header.getResourceLabel())));
+        }
+
+        return cells;
+    }
+
+    private  EntrySelectorListView createListView(String id, final EntrySelectorData entrySelectorData) {
         return new EntrySelectorListView(id, entrySelectorData.getRows(), clickHandler) {
 
             @Override
@@ -131,15 +143,25 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
 
                 RepeatingView cells = new RepeatingView("child");
 
+                int index = 0;
+
                 for (Serializable serializable : object.getCells()) {
-                    cells.add(new Label(cells.newChildId(), serializable));
+                    Label label = new Label(cells.newChildId(), serializable);
+                    cells.add(label);
+
+                    EntrySelectorData.Header header = entrySelectorData.getColumnHeaders().get(index);
+
+                    if (header.getColumnType() == EntrySelectorData.ColumnType.NUMERIC) {
+                        label.add(AttributeModifier.replace("class", "numeric"));
+                    }
+
+                    index++;
                 }
 
                 item.add(cells);
             }
         };
     }
-
 
     private Form<Void> createForm() {
         Form<Void> form = new Form<Void>("filterForm");

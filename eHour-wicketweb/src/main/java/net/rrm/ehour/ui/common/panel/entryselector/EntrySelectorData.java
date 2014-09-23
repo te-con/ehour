@@ -57,10 +57,10 @@ public class EntrySelectorData implements IClusterable {
         private final String resourceLabel;
 
         public Header(String resourceLabel) {
-            this(ColumnType.TEXT, resourceLabel);
+            this(resourceLabel, ColumnType.TEXT);
         }
 
-        public Header(ColumnType columnType, String resourceLabel) {
+        public Header(String resourceLabel, ColumnType columnType) {
             this.columnType = columnType;
             this.resourceLabel = resourceLabel;
         }

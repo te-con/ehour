@@ -33,16 +33,15 @@
                 <table class="entrySelectorTable">
 
                     <thead>
-                    <tr>
-                        <th><wicket:message key="admin.project.code.short" /></th>
-                        <th><wicket:message key="admin.project.name" /></th>
-                    </tr>
+                        <tr>
+                            <th wicket:id="headers"></th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    <tr wicket:id="itemList" class="filterRow">
-                        <td wicket:id="child"></td>
-                    </tr>
+                        <tr wicket:id="itemList" class="filterRow">
+                            <td wicket:id="child"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

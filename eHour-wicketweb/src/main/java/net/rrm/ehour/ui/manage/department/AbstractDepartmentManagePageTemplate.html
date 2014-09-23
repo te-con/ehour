@@ -10,33 +10,6 @@
     <div class="floatLeft" wicket:id="entrySelectorFrame">
         <span wicket:id="deptSelector"></span>
     </div>
-
-    <wicket:fragment wicket:id="itemListHolder">
-        <table class="entrySelectorTable">
-
-            <thead>
-            <tr>
-                <th>
-                    <wicket:message key="admin.dept.code"/>
-                </th>
-                <th>
-                    <wicket:message key="admin.dept.name"/>
-                </th>
-                <th>
-                    <wicket:message key="admin.dept.users"/>
-                </th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr wicket:id="itemList" class="filterRow">
-                <td wicket:id="code"></td>
-                <td wicket:id="name"></td>
-                <td class="numeric" wicket:id="users"></td>
-            </tr>
-            </tbody>
-        </table>
-    </wicket:fragment>
 </wicket:extend>
 </body>
 </html>

@@ -93,7 +93,7 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
 
         List<Header> headers = Lists.newArrayList(new Header("admin.customer.code"),
                                                   new Header("admin.customer.name"),
-                                                  new Header(ColumnType.NUMERIC, "admin.customer.projects")
+                                                  new Header("admin.customer.projects", ColumnType.NUMERIC)
         );
 
         List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();

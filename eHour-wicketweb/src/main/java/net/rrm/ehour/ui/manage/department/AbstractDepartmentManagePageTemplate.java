@@ -64,7 +64,7 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
     private EntrySelectorData createSelectorData(List<UserDepartment> userDepartments) {
         List<Header> headers = Lists.newArrayList(new Header("admin.dept.code"),
                                                   new Header("admin.dept.name"),
-                                                  new Header("admin.dept.users"));
+                                                  new Header("admin.dept.users", EntrySelectorData.ColumnType.NUMERIC));
 
         List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
 

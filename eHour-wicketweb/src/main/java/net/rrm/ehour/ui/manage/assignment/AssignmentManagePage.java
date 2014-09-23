@@ -89,7 +89,7 @@ public class AssignmentManagePage extends AbstractManagePage<Void> {
     private EntrySelectorData createSelectorData(List<User> users) {
         List<EntrySelectorData.Header> headers = Lists.newArrayList(new EntrySelectorData.Header("admin.user.lastName"),
                 new EntrySelectorData.Header("admin.user.firstName"),
-                new EntrySelectorData.Header("admin.assignment.assignments"));
+                new EntrySelectorData.Header("admin.assignment.assignments", EntrySelectorData.ColumnType.NUMERIC));
 
         List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
 
