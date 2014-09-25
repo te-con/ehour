@@ -38,6 +38,8 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private Integer userId;
     private String userLastName;
     private String userFirstName;
+    private	String	projectName;
+    private String projectCode;
     private Integer activityId;
     private String activityName;
     private String role;
@@ -46,7 +48,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private Integer displayOrder;
     private LockableDate lockableDate;
     private Boolean emptyEntry;
-
 
     public FlatReportElement() {
     }
@@ -70,6 +71,8 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         displayOrder = clone.displayOrder;
         lockableDate = clone.lockableDate;
         emptyEntry = clone.emptyEntry;
+        projectName = clone.projectName;
+        projectCode = clone.projectCode;
     }
 
 
@@ -145,6 +148,14 @@ public class FlatReportElement implements ProjectStructuredReportElement {
      */
     public void setUserFirstName(String userFirstName) {
         this.userFirstName = userFirstName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     /**
@@ -275,6 +286,14 @@ public class FlatReportElement implements ProjectStructuredReportElement {
 
     public Boolean getEmptyEntry() {
         return emptyEntry;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     /**

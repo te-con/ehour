@@ -16,13 +16,13 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
+import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
-import net.rrm.ehour.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.sort.ActivityComparator;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.report.trend.TrendReportModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -35,7 +35,7 @@ import java.util.Date;
  * Print report for printing a timesheet
  */
 
-public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> {
+public class ExcelExportReportModel extends TrendReportModel<Activity> {
     @SpringBean
     private DetailedReportService detailedReportService;
 
@@ -46,18 +46,18 @@ public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> 
     private static final long serialVersionUID = 6099016674849151669L;
 
     @Override
-    protected ProjectAssignment getRowKey(FlatReportElement aggregate) {
-        ProjectAssignment pa = new ProjectAssignment();
-
-        pa.setAssignmentId(aggregate.getActivityId());
+    protected Activity getRowKey(FlatReportElement aggregate) {
+        Activity activity = new Activity();
+        activity.setId(aggregate.getActivityId());
+        activity.setName(aggregate.getActivityName());
 
         Project prj = new Project();
-        prj.setName(aggregate.getProjectName());
+        prj.setName(aggregate.getActivityName());
         prj.setProjectId(aggregate.getProjectId());
 
-        pa.setProject(prj);
+        activity.setProject(prj);
 
-        return pa;
+        return activity;
     }
 
     /**
@@ -71,8 +71,9 @@ public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> 
     }
 
     @Override
-    protected Comparator<ProjectAssignment> getRKComparator() {
-        return new ProjectAssignmentComparator();
+    protected Comparator<Activity> getRKComparator()
+    {
+        return new ActivityComparator();
     }
 
     @Override

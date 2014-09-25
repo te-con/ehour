@@ -17,6 +17,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
@@ -41,6 +42,7 @@
 				USR.FIRST_NAME,
 				USR.LAST_NAME,
 				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
          ]]>
@@ -61,6 +63,7 @@
 		       USR.LAST_NAME AS "userLastName",
 		       PAG.ROLE AS "assignmentDesc",
 		       PRJ.PROJECT_ID AS "projectId",
+		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
@@ -86,6 +89,7 @@
 				USR.FIRST_NAME,
 				USR.LAST_NAME,
 				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
          ]]>

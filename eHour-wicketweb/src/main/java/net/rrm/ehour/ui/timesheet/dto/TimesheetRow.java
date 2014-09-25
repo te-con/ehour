@@ -21,7 +21,6 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.domain.TimesheetEntryId;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.wicket.Application;

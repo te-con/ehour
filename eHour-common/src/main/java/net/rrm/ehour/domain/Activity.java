@@ -7,15 +7,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -70,6 +62,10 @@ public class Activity extends DomainObject<Integer, Activity> {
     private Float availableHours;
 
     public Activity() {
+    }
+
+    public Activity(Integer id) {
+        this.id = id;
     }
 
     public Activity(User assignedUser, Project project) {

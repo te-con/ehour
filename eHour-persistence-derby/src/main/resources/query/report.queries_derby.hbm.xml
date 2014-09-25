@@ -16,6 +16,7 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
@@ -60,6 +61,7 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
@@ -103,6 +105,7 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,
@@ -129,6 +132,7 @@
 				USR.LAST_NAME,
 				PRJ.PROJECT_ID,
 				PRJ.NAME,
+				PRJ.PROJECT_CODE,
 				ENTRY.COMMENT_TEXT
          ]]>         
 	</sql-query>
@@ -147,6 +151,7 @@
 		       USR.FIRST_NAME AS "userFirstName",
 		       USR.LAST_NAME AS "userLastName",
 		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
 		FROM TIMESHEET_ENTRY ENTRY,
 		     CUSTOMER CUST,

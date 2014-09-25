@@ -17,7 +17,6 @@
 package net.rrm.ehour.exception;
 
 import net.rrm.ehour.activity.status.ActivityStatus;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 /**
  * Over budget exception

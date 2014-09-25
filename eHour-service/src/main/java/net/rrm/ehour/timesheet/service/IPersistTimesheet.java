@@ -16,17 +16,12 @@
 
 package net.rrm.ehour.timesheet.service;
 
-import java.util.List;
-
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.exception.BusinessException;
 import net.rrm.ehour.exception.OverBudgetException;
-import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,8 +39,8 @@ public interface IPersistTimesheet {
      * @param weekRange
      */
     List<ActivityStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
-                                                       TimesheetComment timesheetComment,
-                                                       DateRange weekRange);
+                                              TimesheetComment timesheetComment,
+                                              DateRange weekRange);
 
     void validateAndPersist(Activity activity,
                             List<TimesheetEntry> entries,
