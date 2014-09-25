@@ -96,7 +96,7 @@ public class ExportReportBody extends AbstractExportReportPart {
 
             if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() >= 0.0) {
                 createDateCell(date, row, isBorder);
-                createActivityCell(flatReportElement.getActivityName(), row, isBorder);
+                createActivityCell(flatReportElement.getProjectName(), row, isBorder);
                 createProjectCodeCell(flatReportElement.getProjectCode(), row, isBorder);
                 createHoursCell(flatReportElement.getTotalHours(), row, isBorder);
                 createCustomerCodeCell(flatReportElement.getCustomerCode(), row, isBorder);
@@ -132,7 +132,6 @@ public class ExportReportBody extends AbstractExportReportPart {
     private HSSFCell createProjectCodeCell(String project, HSSFRow row, boolean isBorder) {
         return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT_CODE.getColumn(), project, getWorkbook(), (isBorder) ? CellStyle.BORDER_NORTH_THIN : CellStyle.NORMAL_FONT);
     }
-
 
     private HSSFCell createCustomerCodeCell(String customerCode, HSSFRow row, boolean isBorder) {
         return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER_CODE.getColumn(), customerCode, getWorkbook(), (isBorder) ? CellStyle.BORDER_NORTH_THIN : CellStyle.NORMAL_FONT);

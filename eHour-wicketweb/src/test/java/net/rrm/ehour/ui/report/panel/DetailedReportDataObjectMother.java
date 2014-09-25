@@ -44,6 +44,9 @@ public class DetailedReportDataObjectMother {
             fre.setTotalHours(5);
             fre.setActivityId(1);
             fre.setActivityName("PRJ");
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
+            fre.setProjectCode("PRJ");
             fre.setUserId(5);
             els.add(fre);
         }
@@ -61,7 +64,9 @@ public class DetailedReportDataObjectMother {
             fre.setTotalHours(6);
             fre.setActivityId(1);
             fre.setActivityName("PRJ");
-
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
+            fre.setProjectCode("PRJ");
             fre.setUserId(5);
             els.add(fre);
         }
@@ -79,6 +84,9 @@ public class DetailedReportDataObjectMother {
             fre.setTotalHours(7);
             fre.setActivityId(1);
             fre.setActivityName("PRJ");
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
+            fre.setProjectCode("PRJ");
 
             fre.setUserId(6);
             els.add(fre);
@@ -97,6 +105,9 @@ public class DetailedReportDataObjectMother {
             fre.setTotalHours(8);
             fre.setActivityId(1);
             fre.setActivityName("PRJ");
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
+            fre.setProjectCode("PRJ");
 
             fre.setUserId(6);
             els.add(fre);
@@ -115,6 +126,9 @@ public class DetailedReportDataObjectMother {
             fre.setTotalHours(8.25);
             fre.setActivityId(2);
             fre.setActivityName("PRJB");
+            fre.setProjectId(1);
+            fre.setProjectName("PRJ");
+            fre.setProjectCode("PRJ");
 
             fre.setUserId(6);
             els.add(fre);

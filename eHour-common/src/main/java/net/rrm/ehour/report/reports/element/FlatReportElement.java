@@ -38,6 +38,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private Integer userId;
     private String userLastName;
     private String userFirstName;
+    private	Integer	projectId;
     private	String	projectName;
     private String projectCode;
     private Integer activityId;
@@ -73,13 +74,16 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         emptyEntry = clone.emptyEntry;
         projectName = clone.projectName;
         projectCode = clone.projectCode;
+        projectId = clone.projectId;
     }
 
-
-    // TODO FIXME TRE
     @Override
     public Integer getProjectId() {
-        return null;
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 
     @Override
