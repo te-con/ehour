@@ -29,13 +29,15 @@ import java.util.List;
  * Data holder for reports
  */
 
-public class ReportData implements Serializable {
-    private static final long serialVersionUID = -6344570520998830487L;
+public class ReportData implements Serializable
+{
+	private static final long serialVersionUID = -6344570520998830487L;
 
     private List<Date> lockedDays;
-    private List<? extends ReportElement> reportElements;
-    private DateRange reportRange;
+    private List<? extends ReportElement>		reportElements;
+	private DateRange reportRange;
     private final UserSelectedCriteria criteria;
+
 
     public ReportData(List<? extends ReportElement> reportElements, DateRange reportRange, UserSelectedCriteria criteria) {
         this(Lists.<Date>newArrayList(), reportElements, reportRange, criteria);

@@ -42,6 +42,8 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.ui.report.panel.criteria.quick.*;
+import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
+import net.rrm.ehour.ui.report.panel.criteria.type.ReportTypeRenderer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -91,11 +93,11 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private static final String USER_FILTER_INPUT_ID = "#userFilterInput";
 
     @SpringBean
-    private ReportCriteriaService reportCriteriaService;
+    private	ReportCriteriaService	reportCriteriaService;
 
-    private DatePicker startDatePicker;
-    private DatePicker endDatePicker;
-    private ListMultipleChoice<Project> projects;
+    private DatePicker 			startDatePicker;
+    private DatePicker 			endDatePicker;
+    private	ListMultipleChoice<Project> projects;
     private ListMultipleChoice<Customer> customers;
     private ListMultipleChoice<User> users;
     private List<WebMarkupContainer> quickSelections;
