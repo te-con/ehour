@@ -67,7 +67,7 @@ public class Project extends DomainObject<Integer, Project> {
     private Customer customer;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "project")
-    @Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.EAGER)
     private Set<Activity> activities;
 
     @ManyToOne

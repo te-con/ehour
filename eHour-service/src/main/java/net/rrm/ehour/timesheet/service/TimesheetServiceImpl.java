@@ -35,6 +35,7 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import scala.collection.Seq;
 
 import java.io.Serializable;
@@ -204,6 +205,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet
     /**
      * Get week overview for a date. Week number of supplied requested week is used
      */
+    @Transactional(readOnly = true)
     public WeekOverview getWeekOverview(User user, Calendar requestedWeek) {
         Calendar reqWeek = (Calendar) requestedWeek.clone();
         reqWeek.setFirstDayOfWeek(configuration.getFirstDayOfWeek());
@@ -213,7 +215,17 @@ public class TimesheetServiceImpl implements IOverviewTimesheet
         List<TimesheetEntry> timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), range);
         TimesheetComment comment = timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart()));
 
-        List<Activity> activities = activityService.getActivitiesForUser(user.getUserId(), range);
+	/**
+	 * Get week overview for a date. Week number of supplied requested week is
+	 * used
+	 * 
+	 * @param userId
+	 * @param requestedWeek
+	 * @return
+	 */
+	public WeekOverview getWeekOverview(User user, Calendar requestedWeek, EhourConfig config) {
+		WeekOverview weekOverview;
+		DateRange range;
 
         Seq<Interval> lockedDatesAsIntervals = timesheetLockService.findLockedDatesInRange(range.getDateStart(), range.getDateEnd(), user);
         List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);

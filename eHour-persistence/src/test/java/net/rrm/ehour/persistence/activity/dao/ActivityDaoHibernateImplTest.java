@@ -38,6 +38,35 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         super("dataset-customer.xml");
     }
 
+	@Test
+	public void shouldFindAllActivitiesForUserInDateRange() {
+		Customer customer = new Customer("IBM", "International Business Machine", "Hardware and Software",true);
+		customerDao.persist(customer);
+		Assert.assertNotNull(customer.getCustomerId());
+		
+		Project project = createProject("Grid Computing", "GC", "contact", true, true, customer);
+		projectDao.persist(project);
+		Assert.assertNotNull(project.getProjectId());
+		
+		User retrievedUser = userDao.findById(1);
+		Assert.assertNotNull(retrievedUser);
+		Assert.assertEquals("thies", retrievedUser.getUsername());
+		
+		
+		Activity activity1 = createActivity("activity1", Boolean.TRUE, retrievedUser, "activity1");
+		activity1.setDateStart(new GregorianCalendar(2010, 5, 1).getTime());
+		activity1.setDateEnd(new GregorianCalendar(2010, 7, 1).getTime());
+		activity1.setProject(project);
+		activityDao.persist(activity1);
+		
+		
+		GregorianCalendar startDateCalendar = new GregorianCalendar(2010, 1, 1);
+		GregorianCalendar endDateCalendar = new GregorianCalendar(2011, 11, 1);
+		List<Activity> allActivitiesForUser = activityDao.findActivitiesForUser(1, new DateRange(startDateCalendar.getTime(), endDateCalendar.getTime()));
+        System.out.println(allActivitiesForUser.get(0).getProject().getActivities().getClass());
+		Assert.assertNotNull(allActivitiesForUser);
+		Assert.assertEquals(1, allActivitiesForUser.size());
+	}
 
     @Test
     public void shouldPersistActivity() {
@@ -214,33 +243,6 @@ public class ActivityDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
         List<Activity> allActivitiesOfProject = activityDao.findAllActivitiesOfProject(project);
         assertEquals(2, allActivitiesOfProject.size());
-    }
-
-    @Test
-    public void shouldFindAllActivitiesForUserInDateRange() {
-        Customer customer = new Customer("IBM", "International Business Machine", "Hardware and Software",true);
-        customerDao.persist(customer);
-        assertNotNull(customer.getCustomerId());
-
-        Project project = createProject("Grid Computing", "GC", "contact", true, true, customer);
-        projectDao.persist(project);
-        assertNotNull(project.getProjectId());
-
-        User retrievedUser = userDao.findById(1);
-        assertNotNull(retrievedUser);
-        assertEquals("thies", retrievedUser.getUsername());
-
-        Activity activity1 = createActivity("activity1", Boolean.TRUE, retrievedUser, "activity1");
-        activity1.setDateStart(new GregorianCalendar(2010, 5, 1).getTime());
-        activity1.setDateEnd(new GregorianCalendar(2010, 7, 1).getTime());
-        activity1.setProject(project);
-        activityDao.persist(activity1);
-
-        Calendar startDateCalendar = new GregorianCalendar(2010, 1, 1);
-        Calendar endDateCalendar = new GregorianCalendar(2011, 11, 1);
-        List<Activity> allActivitiesForUser = activityDao.findActivitiesForUser(1, new DateRange(startDateCalendar.getTime(), endDateCalendar.getTime()));
-        assertNotNull(allActivitiesForUser);
-        assertEquals(1, allActivitiesForUser.size());
     }
 
     @Test

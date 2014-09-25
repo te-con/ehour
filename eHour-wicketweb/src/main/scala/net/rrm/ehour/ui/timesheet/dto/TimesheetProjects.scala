@@ -8,7 +8,7 @@ import collection.mutable.{ListBuffer, Map => MutableMap}
 import java.lang.Iterable
 import java.util.{ArrayList => JavaArrayList, List => JavaList}
 
-object TimesheetProjects {
+protected object TimesheetProjects {
   def apply(rows: JavaList[TimesheetRow]): TimesheetProjects = {
 
     val projects = MutableMap[Project, ListBuffer[TimesheetRow]]()
@@ -30,38 +30,31 @@ object TimesheetProjects {
   }
 }
 
-class TimesheetProjects(projectMap: Map[Project, JavaList[TimesheetRow]]) {
+class TimesheetProjects(projectMap: Map[Project, JavaList[TimesheetRow]]) extends Serializable {
   type Predicate[T] = (T => Boolean)
 
-  def get(): JavaList[Project] = new JavaArrayList(projectMap.keySet.asJava)
 
-  def get(activityNameFilter: Option[String]): JavaList[Project] = {
-    if (activityNameFilter.isDefined) {
-      val name = activityNameFilter.get.toLowerCase
+  def get(activityNameFilter: Option[String] = None): JavaList[Project] = {
+    val name = activityNameFilter.getOrElse("").toLowerCase
+    
+    println("filtering get on " + name)
 
-      val activityNamePredicate: Predicate[Project] = (project: Project) =>
-        project.getActivities.asScala.find(_.getName.toLowerCase contains name).isDefined
+    val activityNamePredicate: Predicate[Project] = (project: Project) =>
+      project.getActivities.asScala.find(_.getName.toLowerCase contains name).isDefined
 
-      new JavaArrayList(projectMap.keySet.filter(activityNamePredicate).toList.sortWith( (a:Project,  b:Project) => a.getName.compareToIgnoreCase(b.getName) < 0) asJava)
-    } else {
-      get()
-    }
+    new JavaArrayList(projectMap.keySet.filter(activityNamePredicate).toList.sortWith((a: Project, b: Project) => a.getName.compareToIgnoreCase(b.getName) < 0) asJava)
   }
 
-  def getTimesheetRow(project: Project): JavaList[TimesheetRow] = projectMap.getOrElse(project, new JavaArrayList[TimesheetRow])
+  def getTimesheetRow(project: Project, activityNameFilter: Option[String] = None): JavaList[TimesheetRow] = {
 
-  def getTimesheetRow(project: Project, activityNameFilter: Option[String]): JavaList[TimesheetRow] = {
+    val name = activityNameFilter.getOrElse("").toLowerCase
+    println("filtering getTimesheetRow on " + name)
 
-    if (activityNameFilter.isDefined) {
-      val name = activityNameFilter.get.toLowerCase
+    val rows = projectMap.getOrElse(project, new JavaArrayList[TimesheetRow]).asScala
 
-      val rows = projectMap.getOrElse(project, new JavaArrayList[TimesheetRow]).asScala
-
-      rows.filter(_.getActivity.getName.toLowerCase contains name)
-          .sortWith((a: TimesheetRow, b: TimesheetRow) => a.getActivity.getName.compareToIgnoreCase(b.getActivity.getName) < 0)
-          .asJava
-    } else
-      getTimesheetRow(project)
+    rows.filter(_.getActivity.getName.toLowerCase contains name)
+      .sortWith((a: TimesheetRow, b: TimesheetRow) => a.getActivity.getName.compareToIgnoreCase(b.getActivity.getName) < 0)
+      .asJava
   }
 
   def getTimesheetRows: Iterable[JavaList[TimesheetRow]] = projectMap.values.asJava

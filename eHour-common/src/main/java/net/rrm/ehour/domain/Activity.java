@@ -46,6 +46,7 @@ public class Activity extends DomainObject<Integer, Activity> {
 
 	@ManyToOne
 	@JoinColumn(name = "PROJECT_ID")
+    @Basic(fetch = FetchType.EAGER)
 	private Project project;
 
 	@Column(name = "ACTIVE", nullable = false)
@@ -135,6 +136,7 @@ public class Activity extends DomainObject<Integer, Activity> {
 	}
 
 	public void setProject(Project project) {
+        project.addActivity(this);
 		this.project = project;
 	}
 

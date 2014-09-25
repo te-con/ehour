@@ -142,7 +142,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         timesheetForm.add(blueBorder);
 
         // add activity filter
-        blueBorder.add(createActivityFilter("activityFilter"));
+        blueBorder.add(createActivityFilter("activityFilter", timesheet));
 
         // setup form
         grandTotals = buildForm(timesheetForm, blueBorder);
@@ -170,14 +170,17 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         commentsFrame.add(serverMsgLabel);
     }
 
-    private TextField<String> createActivityFilter(String id) {
+    private TextField<String> createActivityFilter(String id, final TimesheetModel timesheetModel) {
         final TextField<String> filterField = new TextField<String>(id, new Model<String>());
 
         OnChangeAjaxBehavior behavior = new OnChangeAjaxBehavior() {
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                String filter = filterField.getDefaultModelObjectAsString();
+                String Tfilter = filterField.getDefaultModelObjectAsString();
+
+                timesheetModel.getObject().setActivityFilter(filter);
+                target.add(timesheetForm);
             }
 
             @Override
