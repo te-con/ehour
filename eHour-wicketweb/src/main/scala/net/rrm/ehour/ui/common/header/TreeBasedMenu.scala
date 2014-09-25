@@ -5,6 +5,7 @@ import java.util.{List => JList}
 import net.rrm.ehour.domain.UserRole
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import org.apache.wicket.AttributeModifier
+import org.apache.wicket.ajax.{AjaxEventBehavior, AjaxRequestTarget}
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation
 import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.markup.html.basic.Label
@@ -52,7 +53,7 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
     val pageClass = getPage.getClass
     val parameters = getPage.getPageParameters
 
-    def samePage(linkItem: LinkItem): Boolean = {
+    def onSamePage(linkItem: LinkItem): Boolean = {
       val pageHit = linkItem.responsePageClass.isAssignableFrom(pageClass)
 
       if (pageHit) linkItem.pageParameters match {
@@ -81,14 +82,17 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
           case LinkItem(_, _, _) =>
             val linkItem = menuItem.asInstanceOf[LinkItem]
 
-            if (samePage(linkItem)) {
+            if (onSamePage(linkItem)) {
               item.add(createActiveLinkFragment("item", linkItem))
               item.add(AttributeModifier.replace("class", "activeli"))
             } else {
               item.add(createLinkFragment("item", linkItem))
             }
+
+            item.add(createLinkBehavior(linkItem))
+
           case DropdownMenu(title, menuItems) =>
-            val highlight = menuItems.exists(samePage)
+            val highlight = menuItems.exists(onSamePage)
 
             if (highlight) {
               item.add(AttributeModifier.replace("class", "activeli"))
@@ -108,7 +112,7 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
               def populateItem(item: ListItem[LinkItem]) {
                 val linkItem = item.getModelObject
 
-                if (samePage(linkItem)) {
+                if (onSamePage(linkItem)) {
                   item.add(createActiveLinkFragment("subItem", linkItem))
                 } else {
                   item.add(createLinkFragment("subItem", linkItem))
@@ -159,4 +163,16 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
         }
       }
     }
+
+  private def createLinkBehavior(linkItem: LinkItem) = {
+    new AjaxEventBehavior("onclick") {
+      override def onEvent(target: AjaxRequestTarget) {
+        if (linkItem.pageParameters.isDefined) {
+          setResponsePage(linkItem.responsePageClass, linkItem.pageParameters.get)
+        } else {
+          setResponsePage(linkItem.responsePageClass)
+        }
+      }
+    }
+  }
 }
