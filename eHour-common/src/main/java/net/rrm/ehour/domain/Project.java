@@ -111,6 +111,10 @@ public class Project extends DomainObject<Integer, Project> {
         return (StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name;
     }
 
+    public String getFullNameWithCustomer() {
+        return getCustomer().getCode() + ": " + ((StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name);
+    }
+
     /**
      * Get primary key
      */

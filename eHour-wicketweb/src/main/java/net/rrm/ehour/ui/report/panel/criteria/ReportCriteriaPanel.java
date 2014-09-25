@@ -122,9 +122,6 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         addCustomerSelection(criteriaBackingBean, blueBorder);
         addProjectSelection(criteriaBackingBean, blueBorder);
 
-        WebMarkupContainer userSelection = getEhourWebSession().isReporter() ? addUsers(model.getObject(), ID_USERDEPT_PLACEHOLDER) : new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER);
-        form.add(userSelection);
-
         UserSelectedCriteria userSelectedCriteria = criteriaBackingBean.getReportCriteria().getUserSelectedCriteria();
         form.add(new PlaceholderPanel(ID_USERDEPT_PLACEHOLDER));
 
