@@ -1,18 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd"
-      xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
 
+
+<wicket:head>
+    <script src="js/highcharts.js"></script>
+    <script src="js/highcharts-exporting.js"></script>
+</wicket:head>
 <body>
 
 <wicket:panel>
     <div wicket:id="frame">
         <span wicket:id="reportTable"></span>
-        <br/>
+        <br />
 
         <div class="reportContent">
-            <div style="padding-right: 50px" wicket:id="chart">
+            <div style="padding-right: 50px">
+                <div wicket:id="chart"></div>
             </div>
         </div>
     </div>
