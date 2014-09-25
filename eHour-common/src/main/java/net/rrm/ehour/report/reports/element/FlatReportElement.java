@@ -256,6 +256,10 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         return dayDate;
     }
 
+    public String getActivity() {
+        return getActivityName();
+    }
+
     /**
      * @param dayDate the dayDate to set
      */
