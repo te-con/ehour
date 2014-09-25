@@ -34,23 +34,30 @@ import org.apache.wicket.model.ResourceModel;
 public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventListener {
     private static final long serialVersionUID = 7090746921483608658L;
     public static final String NEW_VERSION_ID = "newVersion";
+    private final ResourceModel pageTitle;
 
     public AbstractBasePage(ResourceModel pageTitle) {
         super();
+        this.pageTitle = pageTitle;
 
-        setupPage(pageTitle);
     }
 
     public AbstractBasePage(ResourceModel pageTitle, IModel<T> model) {
         super(model);
 
+        this.pageTitle = pageTitle;
+    }
+
+    @Override
+    protected void onBeforeRender() {
+        super.onBeforeRender();
         setupPage(pageTitle);
     }
 
     private void setupPage(ResourceModel pageTitle) {
-        add(new HeaderPanel("mainNav"));
-        add(new Label("pageTitle", pageTitle));
-        add(new LatestVersionLinkPanel(NEW_VERSION_ID));
+        addOrReplace(new HeaderPanel("mainNav"));
+        addOrReplace(new Label("pageTitle", pageTitle));
+        addOrReplace(new LatestVersionLinkPanel(NEW_VERSION_ID));
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
