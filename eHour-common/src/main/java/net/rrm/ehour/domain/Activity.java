@@ -1,5 +1,6 @@
 package net.rrm.ehour.domain;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -91,6 +92,11 @@ public class Activity extends DomainObject<Integer, Activity> {
 		this.code = code;
 	}
 
+    public boolean contains(String otherName) {
+        return StringUtils.isBlank(otherName) ||
+                 ((name != null) && name.toLowerCase().contains(otherName));
+    }
+    
 	public String getName() {
 		return name;
 	}

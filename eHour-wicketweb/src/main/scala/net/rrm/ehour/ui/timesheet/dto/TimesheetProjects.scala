@@ -33,14 +33,11 @@ protected object TimesheetProjects {
 class TimesheetProjects(projectMap: Map[Project, JavaList[TimesheetRow]]) extends Serializable {
   type Predicate[T] = (T => Boolean)
 
-
   def get(activityNameFilter: Option[String] = None): JavaList[Project] = {
     val name = activityNameFilter.getOrElse("").toLowerCase
     
-    println("filtering get on " + name)
-
     val activityNamePredicate: Predicate[Project] = (project: Project) =>
-      project.getActivities.asScala.find(_.getName.toLowerCase contains name).isDefined
+      project.getActivities.asScala.find(_ contains name).isDefined
 
     new JavaArrayList(projectMap.keySet.filter(activityNamePredicate).toList.sortWith((a: Project, b: Project) => a.getName.compareToIgnoreCase(b.getName) < 0) asJava)
   }
@@ -52,7 +49,7 @@ class TimesheetProjects(projectMap: Map[Project, JavaList[TimesheetRow]]) extend
 
     val rows = projectMap.getOrElse(project, new JavaArrayList[TimesheetRow]).asScala
 
-    rows.filter(_.getActivity.getName.toLowerCase contains name)
+    rows.filter(_.getActivity contains name)
       .sortWith((a: TimesheetRow, b: TimesheetRow) => a.getActivity.getName.compareToIgnoreCase(b.getActivity.getName) < 0)
       .asJava
   }
