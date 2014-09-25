@@ -2,14 +2,13 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<query name="MailLog.findOnActivityIds">
-		FROM MailLogActivity
-	    WHERE activity.id IN (:activityIds)
-	</query>
+    <query name="MailLog.findOnEvent">
+        FROM MailLog
+        WHERE mailEvent = :event
+    </query>
 
     <query name="MailLog.findOnEventAndMailTo">
         FROM MailLog
         WHERE mailEvent = :event AND mailTo = :mailTo
     </query>
-
 </hibernate-mapping>
