@@ -64,12 +64,15 @@ public class ActivityMother {
         activity.setAvailableHours((float) activityId);
         activity.setLocked(Boolean.FALSE);
 
-        user = UserObjectMother.createUser();
-        user.setUserId(userId);
+        prj.addActivity(activity);
 
-        activity.setAssignedUser(user);
-        activity.setActive(true);
-
-        return activity;
-    }
+		user = UserObjectMother.createUser();
+		user.setUserId(userId);
+        user.setLastName("last name " + userId);
+		
+		activity.setAssignedUser(user);
+		activity.setActive(true);
+		
+		return activity;
+	}
 }
