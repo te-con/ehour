@@ -22,6 +22,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.TimesheetEntryId;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.ui.timesheet.util.TimesheetRowComparator;
 import net.rrm.ehour.util.DateUtil;
@@ -53,7 +54,8 @@ public class TimesheetFactory {
         timesheet.setMaxHoursPerDay(config.getCompleteDayHours());
         List<TimesheetRow> timesheetRows = createTimesheetRows(weekOverview.getActivityMap(), timesheetDates, weekOverview.getActivities(), timesheet);
 
-        timesheet.setCustomers(structureRowsPerProject(timesheetRows));
+        TimesheetProjects projects = TimesheetProjects.apply(timesheetRows);
+        timesheet.setProjects(projects);
         timesheet.setDateSequence(dateSequence.toArray(new Date[7]));
         timesheet.setWeekStart(weekOverview.getWeekRange().getDateStart());
         timesheet.setWeekEnd(weekOverview.getWeekRange().getDateEnd());
@@ -93,23 +95,6 @@ public class TimesheetFactory {
         return formattedLockedDays;
     }
 
-    private SortedMap<Project, List<TimesheetRow>> structureRowsPerProject(List<TimesheetRow> rows) {
-        SortedMap<Project, List<TimesheetRow>> projectMap = new TreeMap<Project, List<TimesheetRow>>();
-
-        for (TimesheetRow timesheetRow : rows) {
-            Project customer = timesheetRow.getActivity().getProject();
-
-            List<TimesheetRow> timesheetRows = projectMap.containsKey(customer) ? projectMap.get(customer) : new ArrayList<TimesheetRow>();
-            timesheetRows.add(timesheetRow);
-
-            projectMap.put(customer, timesheetRows);
-        }
-
-        sortTimesheetRows(projectMap);
-
-        return projectMap;
-    }
-
     private void sortTimesheetRows(SortedMap<Project, List<TimesheetRow>> rows) {
         Set<Map.Entry<Project, List<TimesheetRow>>> entries = rows.entrySet();
 
@@ -141,6 +126,9 @@ public class TimesheetFactory {
             for (TimesheetDate timesheetDate : timesheetDates) {
                 TimesheetEntry entry = activityEntry.getValue().get(timesheetDate.formatted);
 
+                if (entry == null) {
+                    entry = new TimesheetEntry(new TimesheetEntryId(timesheetDate.date, activity));
+                }
                 timesheetRow.addTimesheetCell(timesheetDate.dayInWeek,
                         createTimesheetCell(activity, entry, timesheetDate.date, timesheetDate.locked, validActivities));
             }

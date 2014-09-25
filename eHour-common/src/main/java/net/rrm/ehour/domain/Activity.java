@@ -164,6 +164,12 @@ public class Activity extends DomainObject<Integer, Activity> {
         this.availableHours = availableHours;
     }
 
+    public void mutateAvailableHours(Float delta) {
+        synchronized (this) {
+            availableHours += delta;
+        }
+    }
+
     public Boolean getLocked() {
         return locked;
     }

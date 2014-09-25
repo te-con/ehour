@@ -32,19 +32,19 @@ public class ProjectTotalModel extends Model<Float>
 	public Float getObject()
 	{
 		float	totalHours = 0;
-		
-		for (int i = 0; 
+
+		for (int i = 0;
 				i < row.getTimesheetCells().length;
 				i++)
 		{
-			if (row.getTimesheetCells()[i] != null 
-					&& row.getTimesheetCells()[i].getTimesheetEntry() != null 
+			if (row.getTimesheetCells()[i] != null
+					&& row.getTimesheetCells()[i].getTimesheetEntry() != null
 					&& row.getTimesheetCells()[i].getTimesheetEntry().getHours() != null)
 			{
-				totalHours += row.getTimesheetCells()[i].getTimesheetEntry().getHours().floatValue();
-			}			
+				totalHours += row.getTimesheetCells()[i].getTimesheetEntry().getHours();
+			}
 		}
-		
-		return Float.valueOf(totalHours);
+
+		return totalHours;
 	}
 }

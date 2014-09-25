@@ -69,12 +69,9 @@
                                 <tr class="projectRow">
                                     <td class="fold"><a wicket:id="projectLinkLink" target="_blank"><img wicket:id="projectLinkLinkImg" src="img/external_link.gif" border="0" /></a></td>
                                     <td class="project"><span wicket:id="activityName">activityName</span>&nbsp;(<span wicket:id="availableHours">availableHours</span>)</td>
-                                    <td class="project">
-                                        <wicket:enclosure>
-                                            <br clear="both"/>
-                                            <span style="clear:both;padding: 1px 0 0 0;color:red;font-size:0.8em" wicket:id="status"></span>
-                                            <br />
-                                        </wicket:enclosure>
+                                    <td class="project" style="text-align: right">
+                                        <span wicket:id="availableHours">availableHours</span> hours left
+                                        <span class="statusMsg" wicket:id="status"></span>
                                     </td>
                                     <td class="spacer">&nbsp;</td>
 

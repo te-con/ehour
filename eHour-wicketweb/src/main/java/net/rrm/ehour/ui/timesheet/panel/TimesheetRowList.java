@@ -69,6 +69,9 @@ import static net.rrm.ehour.ui.common.session.EhourWebSession.getUser;
 public class TimesheetRowList extends ListView<TimesheetRow> {
     private static final long serialVersionUID = -6905022018110510887L;
 
+    private static final String TOTAL_ID = "total";
+    public static final String AVAILABLE_HOURS_ID = "availableHours";
+
     @SpringBean
     private ApprovalStatusService approvalStatusService;
 
@@ -115,14 +118,21 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         item.add(createProjectLinkLink(row));
         item.add(new Label("activityName", row.getActivity().getName()));
-        item.add(new Label("availableHours", new PropertyModel<Float>(row.getActivity(), "availableHours")));
+        item.add(createRemainingHoursLabel(row));
         item.add(createStatusLabel(item));
         addInputCells(item, row);
         item.add(createTotalHoursLabel(row));
     }
 
+    private Label createRemainingHoursLabel(TimesheetRow row) {
+        Label availableHours = new Label(AVAILABLE_HOURS_ID, new PropertyModel<Float>(row.getActivity(), "availableHours"));
+        availableHours.setOutputMarkupId(true);
+        return availableHours;
+    }
+
+
     private Label createTotalHoursLabel(final TimesheetRow row) {
-        Label totalHours = new Label("total", new ProjectTotalModel(row));
+        Label totalHours = new Label(TOTAL_ID, new ProjectTotalModel(row));
         totalHours.setOutputMarkupId(true);
         return totalHours;
     }
@@ -147,7 +157,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             boolean isWeekend = DateUtil.isWeekend(currentDate) && hideWeekend;
 
             if (isWithinRange && !isWeekend) {
-                item.add(timesheetCell.isLocked() ? createLockedTimesheetEntry(id, row, index) : createInputTimesheetEntry(id, row, index));
+                item.add(timesheetCell.isLocked() ? createLockedTimesheetEntry(id, row, index) : createInputTimesheetEntry(id, row, item, index));
             } else {
                 item.add(createEmptyTimesheetEntry(id));
             }
@@ -163,8 +173,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         String updatedUrl = projectLinkUrl.replace("!{WORKITEM}", activityCode);
 
         ExternalLink link = new ExternalLink("projectLinkLink", updatedUrl);
-
-
         ContextImage img = new ContextImage("projectLinkLinkImg", new Model<String>("img/external_link.gif"));
         link.add(img);
 
@@ -208,11 +216,11 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     }
 
 
-    private Fragment createInputTimesheetEntry(String id, TimesheetRow row, final int index) {
+    private Fragment createInputTimesheetEntry(String id, TimesheetRow row, ListItem<TimesheetRow> item, final int index) {
         boolean isActivityBookable = isActivityBookable(row);
 
         Fragment fragment = createAndAddFragment(id, "dayInput");
-        fragment.add(createTextFieldWithValidation(row, index, isActivityBookable));
+        fragment.add(createTextFieldWithValidation(row, index, item, isActivityBookable));
 
         createTimesheetEntryComment(row, index, fragment, DayStatus.OPEN, isActivityBookable);
 
@@ -238,10 +246,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return result;
     }
 
-    private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index, boolean isActivityBookable) {
-        TimesheetCell timesheetCell = row.getTimesheetCells()[index];
-        PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
-
+    private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index,  final WebMarkupContainer parent, boolean isActivityBookable) {
+        PropertyModel<Float> cellModel = new PropertyModel<Float>(row, "timesheetCells[" + index + "].timesheetEntry.updatedHours");
         // make sure it's added to the grandtotal
         grandTotals.addValue(index, cellModel);
 
@@ -264,13 +270,15 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 // update the project total
-                target.add(dayInput.getParent().getParent().get("total"));
+                target.add(parent.get(TOTAL_ID));
+                target.add(parent.get(AVAILABLE_HOURS_ID));
+
 
                 // update the grand total & day total
-                Component parent = dayInput.findParent(Form.class).get("blueFrame").get("blueFrame_body");
+                MarkupContainer blueFrame = (MarkupContainer) dayInput.findParent(Form.class).get("blueFrame");
+                target.add(blueFrame.get("grandTotal"));
+                target.add(blueFrame.get("day" + grandTotals.getOrderForIndex(index) + "Total"));
 
-                target.add(parent.get("grandTotal"));
-                target.add(parent.get("day" + grandTotals.getOrderForIndex(index) + "Total"));
 
                 form.visitFormComponents(new FormHighlighter(target));
             }

@@ -142,33 +142,6 @@ public class Timesheet implements Serializable {
         return timesheetEntries;
     }
 
-
-    /**
-     * Get remaining hours for a day based on maxHoursPerDay
-     *
-     * @param day
-     * @return
-     */
-    public Float getRemainingHoursForDay(int day)
-    {
-        float remainingHours = maxHoursPerDay;
-
-        for (Project project : projects.get(activityFilterOption()))
-        {
-            for (TimesheetRow row: projects.getTimesheetRow(project, activityFilterOption()))
-            {
-                TimesheetCell cell = row.getTimesheetCells()[day];
-
-                if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null)
-                {
-                    remainingHours -= cell.getTimesheetEntry().getHours();
-                }
-            }
-        }
-
-        return remainingHours;
-    }
-
     /**
      * Get total booked hours
      *

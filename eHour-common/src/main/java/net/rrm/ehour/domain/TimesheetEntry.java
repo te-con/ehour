@@ -93,6 +93,20 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
         this.hours = hours;
     }
 
+    public void setUpdatedHours(Float updatedHours) {
+        Float previousHours = hours == null ? 0 : hours;
+
+        setHours(updatedHours);
+
+        Float mutation = previousHours - (updatedHours == null ? 0 : updatedHours);
+
+        entryId.getActivity().mutateAvailableHours(mutation);
+    }
+
+    public Float getUpdatedHours() {
+        return this.hours;
+    }
+
 
     @Override
     public TimesheetEntryId getPK() {
