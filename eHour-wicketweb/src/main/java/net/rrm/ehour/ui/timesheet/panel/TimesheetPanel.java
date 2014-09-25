@@ -48,6 +48,8 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
+import org.apache.wicket.ajax.attributes.ThrottlingSettings;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -57,16 +59,15 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
@@ -140,6 +141,9 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
         timesheetForm.add(blueBorder);
 
+        // add activity filter
+        blueBorder.add(createActivityFilter("activityFilter"));
+
         // setup form
         grandTotals = buildForm(timesheetForm, blueBorder);
 
@@ -166,6 +170,28 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         commentsFrame.add(serverMsgLabel);
     }
 
+    private TextField<String> createActivityFilter(String id) {
+        final TextField<String> filterField = new TextField<String>(id, new Model<String>());
+
+        OnChangeAjaxBehavior behavior = new OnChangeAjaxBehavior() {
+
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                String filter = filterField.getDefaultModelObjectAsString();
+            }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+                attributes.setThrottlingSettings(new ThrottlingSettings(UUID.randomUUID().toString(), Duration.milliseconds(500), true));
+            }
+        };
+
+        filterField.add(behavior);
+
+        return filterField;
+    }
+
     @Override
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(GUARDFORM_JS));
@@ -176,6 +202,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
     }
+
 
     /**
      * Add week navigation to title

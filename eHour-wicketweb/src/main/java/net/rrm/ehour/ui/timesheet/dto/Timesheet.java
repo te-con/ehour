@@ -28,7 +28,7 @@ import java.util.*;
 
 public class Timesheet implements Serializable {
     private static final long serialVersionUID = -547682050331580675L;
-    private SortedMap<Project, List<TimesheetRow>> projects;
+    private TimesheetProjects projects;
     private Date[] dateSequence;
     private Date weekStart;
     private Date weekEnd;
@@ -43,6 +43,13 @@ public class Timesheet implements Serializable {
 
     public void setLockedDays(List<Date> lockedDays) {
         this.lockedDays = lockedDays;
+    }
+
+    private ActivityPredicate predicate;
+
+
+    public void setPredicate(ActivityPredicate predicate) {
+        this.predicate = predicate;
     }
 
     /**
@@ -64,8 +71,8 @@ public class Timesheet implements Serializable {
      * @param status
      */
     private void setAssignmentStatus(ActivityStatus status) {
-        for (Project project : projects.keySet()) {
-            for (TimesheetRow row : projects.get(project)) {
+        for (Project project : projects.get()) {
+            for (TimesheetRow row : projects.getTimesheetRow(project)) {
                 if (row.getActivity().equals(status.getAggregate().getActivity())) {
                     row.setActivityStatus(status);
                     return;
@@ -78,8 +85,8 @@ public class Timesheet implements Serializable {
      * Clear each assignment status
      */
     private void clearAssignmentStatus() {
-        for (Project project : projects.keySet()) {
-            for (TimesheetRow row : projects.get(project)) {
+        for (Project project : projects.get()) {
+            for (TimesheetRow row : projects.getTimesheetRow(project)) {
                 row.setActivityStatus(null);
             }
         }
@@ -109,13 +116,13 @@ public class Timesheet implements Serializable {
      *
      * @return
      */
-    public List<TimesheetEntry> getTimesheetEntries() {
+    public List<TimesheetEntry> getTimesheetEntries()
+    {
         List<TimesheetEntry> timesheetEntries = new ArrayList<TimesheetEntry>();
 
-        Collection<List<TimesheetRow>> rows = getProjects().values();
-
-        for (List<TimesheetRow> list : rows) {
-            for (TimesheetRow timesheetRow : list) {
+        for (List<TimesheetRow> list : getProjects().getTimesheetRows()) {
+            for (TimesheetRow timesheetRow : list)
+            {
                 timesheetEntries.addAll(timesheetRow.getTimesheetEntries());
             }
         }
@@ -123,20 +130,25 @@ public class Timesheet implements Serializable {
         return timesheetEntries;
     }
 
+
     /**
      * Get remaining hours for a day based on maxHoursPerDay
      *
      * @param day
      * @return
      */
-    public Float getRemainingHoursForDay(int day) {
+    public Float getRemainingHoursForDay(int day)
+    {
         float remainingHours = maxHoursPerDay;
 
-        for (Project project : projects.keySet()) {
-            for (TimesheetRow row : projects.get(project)) {
+        for (Project project : projects.get())
+        {
+            for (TimesheetRow row: projects.getTimesheetRow(project))
+            {
                 TimesheetCell cell = row.getTimesheetCells()[day];
 
-                if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null) {
+                if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null)
+                {
                     remainingHours -= cell.getTimesheetEntry().getHours();
                 }
             }
@@ -150,23 +162,29 @@ public class Timesheet implements Serializable {
      *
      * @return
      */
-    public Float getTotalBookedHours() {
+    public Float getTotalBookedHours()
+    {
         float totalHours = 0;
 
-        for (Project project : projects.keySet()) {
-            for (TimesheetRow row : projects.get(project))
-                for (TimesheetCell cell : row.getTimesheetCells()) {
+        for (Project project : projects.get())
+        {
+            for (TimesheetRow row: projects.getTimesheetRow(project))
+            {
+                for (TimesheetCell cell : row.getTimesheetCells())
+                {
                     if (cell != null
                             && cell.getTimesheetEntry() != null
-                            && cell.getTimesheetEntry().getHours() != null) {
+                            && cell.getTimesheetEntry().getHours() != null)
+                    {
                         totalHours += cell.getTimesheetEntry().getHours();
                     }
                 }
+            }
         }
-
 
         return totalHours;
     }
+
 
     /**
      * @return the weekStart
@@ -196,30 +214,21 @@ public class Timesheet implements Serializable {
         this.comment = comment;
     }
 
-    public SortedMap<Project, List<TimesheetRow>> getProjects() {
+    /**
+     * @return the customers
+     */
+    public TimesheetProjects getProjects()
+    {
         return projects;
     }
 
     /**
+     *
      * @return
      */
-    public Collection<Project> getProjectList() {
-        return new ArrayList<Project>(getProjects().keySet());
-    }
-
-    /**
-     * @param project
-     * @return
-     */
-    public List<TimesheetRow> getTimesheetRows(Project project) {
-        return projects.get(project);
-    }
-
-    /**
-     * @param projects the customers to set
-     */
-    public void setCustomers(SortedMap<Project, List<TimesheetRow>> projects) {
-        this.projects = projects;
+    public List<Project> getProjectList()
+    {
+        return getProjects().get();
     }
 
     /**
@@ -266,4 +275,21 @@ public class Timesheet implements Serializable {
         this.weekEnd = weekEnd;
     }
 
+    /**
+     *
+     * @param project
+     * @return
+     */
+    public List<TimesheetRow> getTimesheetRows(Project project)
+    {
+        return projects.getTimesheetRow(project);
+    }
+
+    /**
+     * @param projects the customers to set
+     */
+    public void setProjects(TimesheetProjects projects)
+    {
+        this.projects = projects;
+    }
 }
