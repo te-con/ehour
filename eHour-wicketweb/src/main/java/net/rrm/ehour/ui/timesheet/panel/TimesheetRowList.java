@@ -35,6 +35,7 @@ import net.rrm.ehour.userpref.UserPreferenceService;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -54,6 +55,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
@@ -78,14 +80,24 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     @SpringBean
     private UserPreferenceService userPreferenceService;
 
-    private EhourConfig config;
-    private final GrandTotal grandTotals;
-    private Form<?> form;
-
-    boolean hideWeekend = false;
-    private MarkupContainer provider;
-
+	private EhourConfig config;
+	private final GrandTotal grandTotals;
+	private Form<?> form;
+	private boolean hideWeekend = false;
     private boolean beingModerated = false;
+	
+	public TimesheetRowList(String id, ListModel<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, boolean beingModerated) {
+		super(id, model);
+        
+		setReuseItems(true);
+		this.grandTotals = grandTotals;
+		this.form = form;
+
+        this.beingModerated = beingModerated;
+
+		config = EhourWebSession.getSession().getEhourConfig();
+		hideWeekend = isHideWeekendForUser();
+	}
 
     public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider) {
         super(id, model);
@@ -262,7 +274,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         dayInput.setEnabled(isEditable);
         dayInput.setOutputMarkupId(true);
-
+        
         // add validation
         AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onblur") {
             private static final long serialVersionUID = 1L;
@@ -299,10 +311,15 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         LOCKED
     }
 
-    private boolean isDayInputApprovedOrRequestedForApproval(TimesheetRow row, int index) {
-        boolean enabled = true;
+	private boolean isDayInputApprovedOrRequestedForApproval(TimesheetRow row, int index) {
+		boolean enabled = true;
 
-        ApprovalStatus approvalStatus = null;
+        if (beingModerated) {
+            return enabled;
+        }
+
+		ApprovalStatus approvalStatus = null;
+
 
         Activity activity = row.getActivity();
         TimesheetCell[] timesheetCells = row.getTimesheetCells();
@@ -313,9 +330,12 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         List<ApprovalStatus> approvalStatusesForActivity = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(activity
                 .getAssignedUser(), activity.getProject().getCustomer(), monthRange);
 
-        if (approvalStatusesForActivity != null && approvalStatusesForActivity.size() != 0) {
-            approvalStatus = approvalStatusesForActivity.iterator().next();
-        }
+		if (approvalStatus != null) {
+            ApprovalStatusType status = approvalStatus.getStatus();
+            if (status == ApprovalStatusType.APPROVED || status == ApprovalStatusType.READY_FOR_APPROVAL) {
+				enabled = false;
+			}
+		}
 
         if (approvalStatus != null) {
             ApprovalStatusType status = approvalStatus.getStatus();

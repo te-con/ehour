@@ -104,18 +104,22 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     @SpringBean
     private WindChillUpdateService windChillUpdateService;
 
+    private boolean isModerating = false;
+
+    /**
+     * Construct timesheetPanel for entering hours
+     */
     public TimesheetPanel(String id, User user, Calendar forWeek) {
         this(id, user, forWeek, false);
 
     }
 
-    // ugly junit hook
-    protected TimesheetPanel(String id, User user, Calendar forWeek, boolean showAll) {
+    public TimesheetPanel(String id, User user, Calendar forWeek, boolean isModerating) {
         super(id);
 
-        this.showAll = showAll;
+        this.isModerating = isModerating;
 
-
+        EhourWebSession session = (EhourWebSession) getSession();
         GrandTotal grandTotals;
 
         config = EhourWebSession.getEhourConfig();
@@ -177,7 +181,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                String Tfilter = filterField.getDefaultModelObjectAsString();
+                String filter = filterField.getDefaultModelObjectAsString();
 
                 timesheetModel.getObject().setActivityFilter(filter);
                 target.add(timesheetForm);
@@ -319,9 +323,8 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
      */
     private Label updatePostPersistMessage() {
         // server message
-        IModel<String> model = new StringResourceModel("timesheet.weekSaved",
+        IModel<String> model = new MessageResourceModel("timesheet.weekSaved",
                 TimesheetPanel.this,
-                null,
                 new PropertyModel<Date>(getDefaultModel(), "totalBookedHours"),
                 new DateModel(new PropertyModel<Date>(getDefaultModel(), "weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
                 new DateModel(new PropertyModel<Date>(getDefaultModel(), "weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT));
@@ -413,12 +416,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
                 Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
                 item.add(new Label("project", project.getName()));
-
-                TimesheetRowList rows = new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this);
-                rows.setVisible(showAll);
-                item.add(createToggleLink(rows));
-
-                item.add(rows);
+                item.add(new TimesheetRowList("rows", new LazyListModel(timesheet, project), grandTotals, form, isModerating));
             }
         };
         projects.setReuseItems(true);
