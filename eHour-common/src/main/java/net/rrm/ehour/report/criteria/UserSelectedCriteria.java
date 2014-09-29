@@ -53,7 +53,6 @@ public class UserSelectedCriteria implements Serializable {
     private List<Customer> customers;
     private Sort customerSort;
     private Sort projectSort;
-    private List<UserDepartment> userDepartments;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
     private ReportType selectedReportType;
@@ -68,7 +67,6 @@ public class UserSelectedCriteria implements Serializable {
         resetCustomerSelection();
         resetProjectSelection();
 
-        resetUserDepartmentSelection();
         resetUserSelection();
 
         infiniteStartDate = false;
@@ -88,10 +86,6 @@ public class UserSelectedCriteria implements Serializable {
         onlyBillableProjects = false;
         projectSort = Sort.NAME;
         projects = Lists.newArrayList();
-    }
-
-    public final void resetUserDepartmentSelection() {
-        userDepartments = Lists.newArrayList();
     }
 
     public final void resetUserSelection() {
@@ -187,7 +181,6 @@ public class UserSelectedCriteria implements Serializable {
                 .append("users", users)
                 .append("projects", projects)
                 .append("customers", customers)
-                .append("departments", userDepartments)
                 .toString();
     }
 
@@ -206,15 +199,7 @@ public class UserSelectedCriteria implements Serializable {
         return projects == null || projects.size() == 0;
     }
 
-    /**
-     * No departments selected ?
-     */
-
-    public boolean isEmptyDepartments() {
-        return userDepartments == null || userDepartments.size() == 0;
-    }
-
-    /**
+        /**
      * No users selected ?
      */
     public boolean isEmptyUsers() {
@@ -269,14 +254,6 @@ public class UserSelectedCriteria implements Serializable {
 
     public void setCustomers(List<Customer> customers) {
         this.customers = customers;
-    }
-
-    public List<UserDepartment> getDepartments() {
-        return userDepartments;
-    }
-
-    public void setDepartments(List<UserDepartment> departments) {
-        this.userDepartments = departments;
     }
 
     public boolean isInfiniteStartDate() {

@@ -39,12 +39,6 @@ public class Audit extends DomainObject<Number, Audit> {
     @Column(name = "AUDIT_ID")
     private Integer auditId;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    @Basic(fetch = FetchType.LAZY)
-    @NotFound(action = NotFoundAction.IGNORE)
-    private User user;
-
     @Column(name = "AUDIT_DATE")
     private Date date;
 
@@ -99,9 +93,6 @@ public class Audit extends DomainObject<Number, Audit> {
         return userFullName;
     }
 
-    /**
-     * @param userName the userName to set
-     */
     public Audit setUserFullName(String userFullName) {
         this.userFullName = userFullName;
         return this;
@@ -158,11 +149,6 @@ public class Audit extends DomainObject<Number, Audit> {
         return this;
     }
 
-    public Audit setUser(User user) {
-        this.user = user;
-        return this;
-    }
-
     public Audit setDate(Date date) {
         this.date = date;
         return this;
@@ -175,13 +161,6 @@ public class Audit extends DomainObject<Number, Audit> {
     @Override
     public Number getPK() {
         return auditId;
-    }
-
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
     }
 
     /**

@@ -171,17 +171,6 @@
 			<index-column name="ACTIVITY_ID" />
 		</index>
 	</table>
-	<table name="user_department">
-		<column name="DEPARTMENT_ID" primaryKey="true" required="true"
-			type="INTEGER" size="10" autoIncrement="true" />
-		<column name="NAME" primaryKey="false" required="true" type="VARCHAR"
-			size="512" autoIncrement="false" />
-		<column name="CODE" primaryKey="false" required="true" type="VARCHAR"
-			size="64" autoIncrement="false" />
-		<unique name="DEPARTMENT_ID">
-			<unique-column name="DEPARTMENT_ID" />
-		</unique>
-	</table>
 	<table name="user_role">
 		<column name="ROLE" primaryKey="true" required="true" type="VARCHAR"
 			size="128" autoIncrement="false" />
@@ -235,23 +224,12 @@
 			size="10" autoIncrement="true" />
 		<column name="USERNAME" primaryKey="false" required="true"
 			type="VARCHAR" size="64" autoIncrement="false" />
-		<column name="PASSWORD" primaryKey="false" required="true"
-			type="VARCHAR" size="128" autoIncrement="false" />
-		<column name="FIRST_NAME" primaryKey="false" required="false"
-			type="VARCHAR" size="64" autoIncrement="false" />
-		<column name="LAST_NAME" primaryKey="false" required="true"
-			type="VARCHAR" size="64" autoIncrement="false" />
-		<column name="DEPARTMENT_ID" primaryKey="false" required="true"
-			type="INTEGER" size="10" autoIncrement="false" />
-		<column name="EMAIL" primaryKey="false" required="false" type="VARCHAR"
-			size="128" autoIncrement="false" />
-		<column name="SALT" primaryKey="false" required="false" type="INTEGER"
-			size="64" autoIncrement="false" />
-		<column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
+		<column name="DN" primaryKey="false" required="false"
+			type="VARCHAR" size="255" autoIncrement="false" />
+        <column name="FULLNAME" primaryKey="false" required="false"
+                type="VARCHAR" size="255" autoIncrement="false" />
+        <column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
 			size="1" default="Y" autoIncrement="false" />
-		<foreign-key foreignTable="user_department" name="USER_fk">
-			<reference local="DEPARTMENT_ID" foreign="DEPARTMENT_ID" />
-		</foreign-key>
 		<unique name="USER_ID">
 			<unique-column name="USER_ID" />
 		</unique>
@@ -262,13 +240,6 @@
 			<unique-column name="USERNAME" />
 			<unique-column name="ACTIVE" />
 		</unique>
-		<index name="IDX_USERNAME_PASSWORD">
-			<index-column name="USERNAME" />
-			<index-column name="PASSWORD" />
-		</index>
-		<index name="ORGANISATION_ID">
-			<index-column name="DEPARTMENT_ID" />
-		</index>
 	</table>
 	<table name="auditlog">
 		<column name="AUDIT_ID" primaryKey="true" required="true" type="INTEGER"

@@ -11,24 +11,13 @@ import java.util.List;
  */
 public class UserObjectMother {
     public static User createUser() {
-        return createUser(new UserDepartment(1));
-    }
-
-    public static User createUser(String username) {
-        return createUser(username, new UserDepartment(1));
-    }
-
-    public static User createUser(UserDepartment department) {
         User user = new User();
         user.setUserId(1);
         user.setActive(true);
         user.setEmail("thies@te-con.nl");
         user.setUsername("testmetoo");
-        user.setFirstName("Dummy");
-        user.setLastName("TestUser");
-        user.setPassword("abc");
+        user.setName("Dummy TestUser");
 
-        user.setUserDepartment(department);
         HashSet<UserRole> userRoles = new HashSet<UserRole>();
         userRoles.add(UserRole.ADMIN);
         user.setUserRoles(userRoles);
@@ -36,17 +25,14 @@ public class UserObjectMother {
         return user;
     }
 
-    public static User createUser(String username, UserDepartment department) {
+    public static User createUser(String username) {
         User user = new User();
         user.setUserId(1);
         user.setActive(true);
         user.setEmail("thies@te-con.nl");
         user.setUsername(username);
-        user.setFirstName("Dummy");
-        user.setLastName("TestUser");
-        user.setPassword("abc");
+        user.setName("Dummy TestUser");
 
-        user.setUserDepartment(department);
         HashSet<UserRole> userRoles = new HashSet<UserRole>();
         userRoles.add(UserRole.ADMIN);
         user.setUserRoles(userRoles);
@@ -55,7 +41,7 @@ public class UserObjectMother {
     }
 
 
-    public static List<User> createUsers(UserDepartment department) {
-        return Arrays.asList(createUser(department));
+    public static List<User> createUsers() {
+        return Arrays.asList(createUser());
     }
 }

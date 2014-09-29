@@ -30,15 +30,6 @@ class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, User
   @Transactional(readOnly = true)
   override def findActiveUsers(): util.List[User] = findUsers(onlyActive = true)
 
-  @Transactional(readOnly = true)
-  override def findUsersForDepartments(departments: util.List[UserDepartment], onlyActive: Boolean): util.List[User] = {
-    val hql = if (onlyActive) "User.findActiveForDepartment" else "User.findForDepartment"
-    findByNamedQuery(hql, "departments", departments, CacheRegion)
-  }
-
-  @Transactional(readOnly = true)
-  override def findAllActiveUsersWithEmailSet(): util.List[User] = findByNamedQuery("User.findAllActiveUsersWithEmailSet", CacheRegion)
-
   @Transactional
   override def deletePmWithoutProject() {
     ExponentialBackoffRetryPolicy retry getSession.getNamedQuery("User.deletePMsWithoutProject").executeUpdate

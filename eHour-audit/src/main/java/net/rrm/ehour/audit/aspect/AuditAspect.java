@@ -225,7 +225,6 @@ public class AuditAspect {
             }
         }
         return new Audit()
-                .setUser(user)
                 .setUserFullName(user != null ? user.getFullName() : null)
                 .setDate(new Date())
                 .setSuccess(success)

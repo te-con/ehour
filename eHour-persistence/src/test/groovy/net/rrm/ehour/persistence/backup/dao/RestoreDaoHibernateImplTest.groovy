@@ -1,7 +1,10 @@
 package net.rrm.ehour.persistence.backup.dao
 
 import net.rrm.ehour.domain.User
+<<<<<<< HEAD:eHour-persistence/src/test/groovy/net/rrm/ehour/persistence/backup/dao/RestoreDaoHibernateImplTest.groovy
 import net.rrm.ehour.domain.UserDepartmentObjectMother
+=======
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object:eHour-persistence/src/test/groovy/net/rrm/ehour/persistence/export/dao/ImportDaoHibernateImplTest.groovy
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +21,7 @@ class RestoreDaoHibernateImplTest extends AbstractAnnotationDaoTest
   private RestoreDao importDao
 
   @Test
+<<<<<<< HEAD:eHour-persistence/src/test/groovy/net/rrm/ehour/persistence/backup/dao/RestoreDaoHibernateImplTest.groovy
   void shouldPersist()
   {
     def userDep = UserDepartmentObjectMother.createUserDepartment()
@@ -29,6 +33,8 @@ class RestoreDaoHibernateImplTest extends AbstractAnnotationDaoTest
   }
 
   @Test
+=======
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object:eHour-persistence/src/test/groovy/net/rrm/ehour/persistence/export/dao/ImportDaoHibernateImplTest.groovy
   void shouldFind()
   {
     def user = importDao.find(3, User.class)

@@ -36,8 +36,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
     private Number rate = 0;
     private String entryDate;
     private Integer userId;
-    private String userLastName;
-    private String userFirstName;
+    private	String	userFullname;
     private	Integer	projectId;
     private	String	projectName;
     private String projectCode;
@@ -62,8 +61,7 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         rate = clone.rate;
         entryDate = clone.entryDate;
         userId = clone.userId;
-        userLastName = clone.userLastName;
-        userFirstName = clone.userFirstName;
+        userFullname = clone.userFullname;
         activityId = clone.activityId;
         activityName = clone.activityName;
         role = clone.role;
@@ -112,6 +110,10 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         this.rate = rate;
     }
 
+    public String getUserFullname() {
+        return userFullname;
+    }
+
     /**
      * @return the customerName
      */
@@ -140,20 +142,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         this.totalHours = totalHours;
     }
 
-    /**
-     * @return the userFirstName
-     */
-    public String getUserFirstName() {
-        return userFirstName;
-    }
-
-    /**
-     * @param userFirstName the userFirstName to set
-     */
-    public void setUserFirstName(String userFirstName) {
-        this.userFirstName = userFirstName;
-    }
-
     public String getProjectName() {
         return projectName;
     }
@@ -174,20 +162,6 @@ public class FlatReportElement implements ProjectStructuredReportElement {
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    /**
-     * @return the userLastName
-     */
-    public String getUserLastName() {
-        return userLastName;
-    }
-
-    /**
-     * @param userLastName the userLastName to set
-     */
-    public void setUserLastName(String userLastName) {
-        this.userLastName = userLastName;
     }
 
     /**

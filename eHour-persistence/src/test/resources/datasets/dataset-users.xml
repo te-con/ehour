@@ -1,13 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
 
-  <USER_DEPARTMENT DEPARTMENT_ID="10" NAME="TE-CON" CODE="TEC"/>
-  <USER_DEPARTMENT DEPARTMENT_ID="20" NAME="EHOUR" CODE="EHR"/>
-  <USERS USER_ID="1" USERNAME="thies" PASSWORD="thies" FIRST_NAME="Thies" LAST_NAME="Edeling" DEPARTMENT_ID="10" EMAIL="thies@rrm.net" ACTIVE="Y"/>
-  <USERS USER_ID="2" USERNAME="admin" PASSWORD="admin" FIRST_NAME="Test" LAST_NAME="Adminedeizaretized" DEPARTMENT_ID="10" EMAIL="thies@te-con.nl" ACTIVE="Y"/>
-  <USERS USER_ID="3" USERNAME="testacc" PASSWORD="garbled" FIRST_NAME="Search" LAST_NAME="Mezed" DEPARTMENT_ID="10" ACTIVE="Y"/>
-  <USERS USER_ID="4" USERNAME="inactivein" PASSWORD="garbled" FIRST_NAME="Search" LAST_NAME="Mezed" DEPARTMENT_ID="10" ACTIVE="N"/>
-  <USERS USER_ID="5" USERNAME="pmWithoutProject" PASSWORD="garbled" FIRST_NAME="Role" LAST_NAME="WithoutProject" DEPARTMENT_ID="10" ACTIVE="Y"/>
+  <USERS USER_ID="1" USERNAME="thies" ACTIVE="Y"/>
+  <USERS USER_ID="2" USERNAME="admin" ACTIVE="Y"/>
+  <USERS USER_ID="3" USERNAME="testacc" ACTIVE="Y"/>
+  <USERS USER_ID="4" USERNAME="inactivein" ACTIVE="N"/>
+  <USERS USER_ID="5" USERNAME="pmWithoutProject"  ACTIVE="Y"/>
 
   <USER_ROLE ROLE="ROLE_ADMIN" NAME="Administrator"/>
   <USER_ROLE ROLE="ROLE_CONSULTANT" NAME="Consultant"/>

@@ -13,13 +13,6 @@
   <CONFIG KEY="version">0.8.3</CONFIG>
   <CONFIG KEY="smtpPort">25</CONFIG>
  </CONFIGURATION>
- <USER_DEPARTMENTS CLASS="net.rrm.ehour.domain.UserDepartment">
-  <USER_DEPARTMENT>
-   <DEPARTMENT_ID>1</DEPARTMENT_ID>
-   <NAME>TE-CON</NAME>
-   <CODE>TEC</CODE>
-  </USER_DEPARTMENT>
- </USER_DEPARTMENTS>
  <USER_ROLES CLASS="net.rrm.ehour.domain.UserRole">
   <USER_ROLE>
    <ROLE>ROLE_ADMIN</ROLE>

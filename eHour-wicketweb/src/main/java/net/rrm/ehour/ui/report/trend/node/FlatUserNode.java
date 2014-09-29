@@ -41,23 +41,6 @@ public class FlatUserNode extends ReportNode {
     }
 
     private String getFullName(FlatReportElement element) {
-        StringBuilder fullName = new StringBuilder();
-
-        String lastName = element.getUserLastName();
-        String firstName = element.getUserFirstName();
-
-        if (!StringUtils.isBlank(lastName)) {
-            fullName.append(lastName);
-
-            if (!StringUtils.isBlank(firstName)) {
-                fullName.append(", ");
-            }
-        }
-
-        if (!StringUtils.isBlank(firstName)) {
-            fullName.append(firstName);
-        }
-
-        return fullName.toString();
+        return element.getUserFullname();
     }
 }

@@ -27,31 +27,14 @@ import net.rrm.ehour.user.service.LdapUser;
 public class ManageUserBackingBean extends AdminBackingBeanImpl<User> {
     private static final long serialVersionUID = 2781902854421696575L;
     private final LdapUser user;
-    private final boolean editMode;
-
-    private boolean showAssignments;
 
     public ManageUserBackingBean(LdapUser user) {
-        this(user, true);
-    }
-
-
-    private ManageUserBackingBean(LdapUser user, boolean editMode) {
-        this.editMode = editMode;
         this.user = user;
 
-    }
+        if (user.getUser() == null) {
+            user.setUser(new User());
+        }
 
-    public boolean isShowAssignments() {
-        return showAssignments;
-    }
-
-    public void setShowAssignments(boolean showAssignments) {
-        this.showAssignments = showAssignments;
-    }
-
-    public boolean isEditMode() {
-        return editMode;
     }
 
     public User getUser() {

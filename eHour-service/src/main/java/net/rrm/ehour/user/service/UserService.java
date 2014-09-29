@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -98,3 +99,100 @@ public interface UserService {
 
     User getAuthorizedUser(String ldapUid);
 }
+=======
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+package net.rrm.ehour.user.service;
+
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.PasswordEmptyException;
+
+import java.util.List;
+import java.util.Set;
+
+
+public interface UserService 
+{
+    /**
+     * Persist a user
+     */
+    public User editUser(User user)  throws PasswordEmptyException, ObjectNotUniqueException;
+
+    /**
+     * Create a new user
+     * @param user
+     * @return
+     * @throws PasswordEmptyException
+     * @throws ObjectNotUniqueException
+     */
+    public void newUser(User user, String password)   throws PasswordEmptyException, ObjectNotUniqueException;
+
+    /**
+     * Get all active users
+     * @return
+     */
+    public List<User> getUsers();
+
+    User getAuthorizedUser(String ldapUid);
+
+    /**
+     * Get userrole on Id
+     * @param userRoleId
+     * @return
+     */
+    public UserRole getUserRole(String userRoleId);
+    
+    /**
+     * Get all user roles
+     * @return
+     */
+    public List<UserRole> getUserRoles();
+    
+    /**
+     * Add pm role to user and validate all other pm roles
+     * @param userId to add pm role to
+     */
+    public User addAndcheckProjectManagementRoles(Integer userId);
+
+    /**
+     * Add new role to user.
+     * @param userId
+     * @param newRole {@link UserRole}
+     * @return
+     */
+    public User addRole(Integer userId, UserRole newRole);
+    
+    /**
+     * Cascading delete of user
+     */
+    public void deleteUser(Integer userId);
+    
+
+    /**
+     * Returns a list of all {@link User}s who are working on Activities of Projects of passed Customers
+     * @param customers
+     * @param onlyActiveUsers
+     * @return
+     */
+    public Set<User> getAllUsersAssignedToCustomers(List<Customer> customers, boolean onlyActiveUsers);
+
+    List<LdapUser> getLdapUsers(String match, boolean authorizedOnly);
+}
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object

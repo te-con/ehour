@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -382,3 +383,311 @@ public class UserServiceImpl implements UserService {
         this.activityDao = activityDao;
     }
 }
+=======
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ */
+
+package net.rrm.ehour.user.service;
+
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.exception.ObjectNotUniqueException;
+import net.rrm.ehour.exception.PasswordEmptyException;
+import net.rrm.ehour.persistence.activity.dao.ActivityDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
+import net.rrm.ehour.persistence.user.dao.UserRoleDao;
+import net.rrm.ehour.timesheet.service.TimesheetService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import java.util.*;
+
+/**
+ * 
+ * @author Thies Edeling (thies@te-con.nl)
+ * 
+ */
+@Service("userService")
+public class UserServiceImpl implements UserService {
+	private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
+
+    @Autowired
+	private UserDao userDAO;
+
+	@Autowired
+	private UserRoleDao userRoleDAO;
+
+	@Autowired
+	private ActivityDao activityDao;
+
+	@Autowired
+	private TimesheetService timesheetService;
+
+    @Autowired
+    private LdapTemplate ldapTemplate;
+
+	public List<User> getUsers() {
+		return userDAO.findAllActiveUsers();
+	}
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<LdapUser> getLdapUsers(final String match, final boolean authorizedOnly) {
+        // TODO be more effective when querying for authorizedOnly
+
+        List<LdapUser> ldapUsers = (List<LdapUser>)ldapTemplate.search("", "(objectClass=person)", new AttributesMapper() {
+            public Object mapFromAttributes(Attributes attrs) throws NamingException {
+                String cn = (String)attrs.get("cn").get();
+
+                Attribute uid = attrs.get("uid");
+
+                return new LdapUser(cn, uid != null ? (String)uid.get() : "");
+            }
+        });
+
+        List<User> users = userDAO.findAll();
+
+        for (User user : users) {
+            for (LdapUser ldapUser : ldapUsers) {
+                if (ldapUser.uid.equalsIgnoreCase(user.getUsername())) {
+                    ldapUser.setUser(user);
+                }
+            }
+        }
+
+        CollectionUtils.filter(ldapUsers, new Predicate() {
+            @Override
+            public boolean evaluate(Object object) {
+                LdapUser user = (LdapUser)object;
+
+                boolean isMatch = (match == null || "".equals(match)) || StringUtils.containsIgnoreCase(user.fullName, match);
+
+                return (!authorizedOnly || user.isAuthorized()) && isMatch;
+            }
+        });
+
+        Collections.sort(ldapUsers, new Comparator<LdapUser>() {
+            @Override
+            public int compare(LdapUser o1, LdapUser o2) {
+                return (o1.fullName == null && o2 != null) ? 1 :
+                       (o1.fullName == null && o2 == null) ? 0 :
+                       (o1.fullName != null && o2 == null) ? -1 :
+                        o1.fullName.compareTo(o2.fullName);
+            }
+        });
+
+        return ldapUsers;
+    }
+
+    @Override
+    public User getAuthorizedUser(String ldapUid) {
+
+        User user = userDAO.findByUsername(ldapUid);
+
+        if (user != null) {
+            String filter = String.format("(&(uid=%s)(objectClass=person))", ldapUid);
+
+            List cn = ldapTemplate.search("", filter, new AttributesMapper() {
+                public Object mapFromAttributes(Attributes attrs) throws NamingException {
+                    return attrs.get("cn").get();
+                }
+            });
+
+            if (cn.size() > 1) {
+                LOGGER.warn(String.format("Multiple LDAP entries found for uid %s", ldapUid));
+            }
+
+            if (cn.size() > 0) {
+                user.setName((String) cn.get(0));
+            } else {
+                LOGGER.warn(String.format("No LDAP entry found for uid %s", ldapUid));
+            }
+        }
+
+        return user;
+    }
+
+	public UserRole getUserRole(String userRoleId) {
+		return userRoleDAO.findById(userRoleId);
+	}
+
+	/**
+	 * Get the assignable user roles
+	 */
+	public List<UserRole> getUserRoles() {
+		List<UserRole> userRoles = userRoleDAO.findAll();
+
+		userRoles.remove(new UserRole("ROLE_PROJECTMANAGER"));
+		userRoles.remove(new UserRole("ROLE_CUSTOMERREVIEWER"));
+		userRoles.remove(new UserRole("ROLE_CUSTOMERREPORTER"));
+
+		return userRoles;
+	}
+
+	/**
+	 * Persist user
+	 */
+    @Transactional
+    public User editUser(User user) throws PasswordEmptyException, ObjectNotUniqueException {
+        User dbUser;
+
+        LOGGER.info("Persisting user: " + user);
+
+        // check username uniqueness
+        dbUser = userDAO.findByUsername(user.getUsername());
+
+        if (dbUser != null && !dbUser.getUserId().equals(user.getUserId())) {
+            throw new ObjectNotUniqueException("Username already in use");
+        }
+
+        dbUser.setActive(user.isActive());
+        dbUser.setEmail(user.getEmail());
+        dbUser.setUsername(user.getUsername());
+        dbUser.setUserRoles(user.getUserRoles());
+
+        userDAO.persist(dbUser);
+
+        return dbUser;
+    }
+
+    @Override
+    @Transactional
+    public void newUser(User user, String password) throws PasswordEmptyException, ObjectNotUniqueException {
+        // check username uniqueness
+        User dbUser = userDAO.findByUsername(user.getUsername());
+
+        if (dbUser != null && !dbUser.getUserId().equals(user.getUserId())) {
+            throw new ObjectNotUniqueException("Username already in use");
+        }
+
+        // encrypt password
+//        user.setSalt((int) (Math.random() * 10000));
+
+        userDAO.persist(user);
+    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.rrm.ehour.persistence.persistence.user.service.UserService#
+	 * addAndcheckProjectManagementRoles(java.lang.Integer)
+	 */
+	@Transactional
+	public User addAndcheckProjectManagementRoles(Integer userId) {
+		User user = null;
+		try {
+			if (userId != null) {
+				user = getUserAndAddRole(userId, UserRole.PROJECTMANAGER);
+			}
+
+			userDAO.deletePmWithoutProject();
+		} catch (PasswordEmptyException e) {
+			// won't happen
+			LOGGER.error("Password empty");
+		} catch (ObjectNotUniqueException e) {
+			// won't happen
+			LOGGER.error("Account already exists", e);
+		}
+
+		return user;
+	}
+
+	/**
+	 * Find user on id and add PM role
+	 * 
+	 * @param userId
+	 * @param newRole
+	 *            {@link UserRole} to be added to the User's set of Roles.
+	 * @throws ObjectNotUniqueException
+	 * @throws PasswordEmptyException
+	 */
+	private User getUserAndAddRole(Integer userId, UserRole newRole) throws PasswordEmptyException, ObjectNotUniqueException {
+		User user = userDAO.findById(userId);
+
+		UserRole userRole = userRoleDAO.findById(newRole.getRole());
+
+		user.getUserRoles().add(userRole);
+
+		userDAO.persist(user);
+
+		return user;
+	}
+
+	@Transactional
+	public void deleteUser(Integer userId) {
+		User user = userDAO.findById(userId);
+
+		timesheetService.deleteTimesheetEntries(user);
+
+		userDAO.delete(user);
+	}
+
+	@Override
+	public Set<User> getAllUsersAssignedToCustomers(List<Customer> customers, boolean onlyActiveUsers) {
+		Set<User> result = new HashSet<User>();
+		List<Activity> activities = activityDao.findActivitiesForCustomers(customers);
+		for (Activity activity : activities) {
+			if (onlyActiveUsers) {
+				if (activity.getAssignedUser() != null && activity.getAssignedUser().isActive()) {
+					result.add(activity.getAssignedUser());
+				}
+			} else {
+				result.add(activity.getAssignedUser());
+			}
+		}
+		return result;
+	}
+
+	@Override
+	@Transactional
+	public User addRole(Integer userId, UserRole newRole) {
+		User user = null;
+		try {
+			if (userId != null) {
+				user = getUserAndAddRole(userId, newRole);
+				userDAO.cleanRedundantRoleInformation(newRole);
+			}
+		} catch (PasswordEmptyException exc) {
+			LOGGER.error("Password empty");
+		} catch (ObjectNotUniqueException exc) {
+			// won't happen
+			LOGGER.error("Account already exists", exc);
+		}
+		return user;
+	}
+
+    public void setUserDAO(UserDao userDAO) {
+        this.userDAO = userDAO;
+    }
+
+
+    public void setUserRoleDAO(UserRoleDao userRoleDAO) {
+        this.userRoleDAO = userRoleDAO;
+    }
+}
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object

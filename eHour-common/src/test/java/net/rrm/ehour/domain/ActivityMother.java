@@ -68,7 +68,7 @@ public class ActivityMother {
 
 		user = UserObjectMother.createUser();
 		user.setUserId(userId);
-        user.setFullName("last name " + userId);
+        user.setName("last name " + userId);
 		
 		activity.setAssignedUser(user);
 		activity.setActive(true);

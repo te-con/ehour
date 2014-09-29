@@ -1,13 +1,24 @@
 package net.rrm.ehour.persistence.user.dao
 
+<<<<<<< HEAD
 import net.rrm.ehour.domain.*
+=======
+import net.rrm.ehour.domain.Activity
+import net.rrm.ehour.domain.Project
+import net.rrm.ehour.domain.User
+import net.rrm.ehour.domain.UserMother
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
-import net.rrm.ehour.util.EhourConstants
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
+<<<<<<< HEAD
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull
+=======
+import static junit.framework.Assert.assertEquals
+import static junit.framework.Assert.assertNotNull
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -44,16 +55,19 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   @Test
   void shouldPersist()
   {
+<<<<<<< HEAD
     def org = UserDepartmentObjectMother.createUserDepartment()
 
     User user = UserObjectMother.createUser()
+=======
+    User user = UserMother.createUser()
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object
     user.setUserId 5
 
     Activity activity = new Activity(assignedUser: user, id: 1, project: new Project(1),)
 
     def activities = [activity] as Set
 
-    user.setUserDepartment(org)
     user.setActivities(activities)
     userDao.persist(user)
 
@@ -61,6 +75,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   }
 
   @Test
+<<<<<<< HEAD
   void shouldFindUsersForDepartments()
   {
     def ids = [new UserDepartment(10)]
@@ -71,19 +86,13 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
   }
 
   @Test
+=======
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object
   void shouldFindAllActiveUsers()
   {
     def results = userDao.findActiveUsers();
 
     assertEquals(4, results.size());
-  }
-
-  @Test
-  void shouldFindAllActiveUsersWithEmailSet()
-  {
-    def results = userDao.findAllActiveUsersWithEmailSet();
-
-    assertEquals(2, results.size());
   }
 
   @Test

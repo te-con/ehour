@@ -103,4 +103,4 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
 
         tester.assertComponent("tabs:panel", ManageUserFormPanel.class);
     }
-}
+}PP

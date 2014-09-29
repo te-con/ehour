@@ -40,7 +40,6 @@ public class AvailableCriteria implements Serializable {
     private List<Customer> customers = Lists.newArrayList();
     private List<Project> projects = Lists.newArrayList();
     private List<User> users = Lists.newArrayList();
-    private List<UserDepartment> userDepartments;
 
     private List<TimesheetLock> timesheetLocks = Lists.newArrayList();
 
@@ -50,11 +49,10 @@ public class AvailableCriteria implements Serializable {
     public AvailableCriteria() {
     }
 
-    public AvailableCriteria(List<Customer> customers, List<Project> projects, List<User> users, List<UserDepartment> userDepartments) {
+    public AvailableCriteria(List<Customer> customers, List<Project> projects, List<User> users) {
         this.customers = customers;
         this.projects = projects;
         this.users = users;
-        this.userDepartments = userDepartments;
     }
 
     public List<TimesheetLock> getTimesheetLocks() {
@@ -63,14 +61,6 @@ public class AvailableCriteria implements Serializable {
 
     public void setTimesheetLocks(List<TimesheetLock> timesheetLocks) {
         this.timesheetLocks = timesheetLocks;
-    }
-
-    public List<UserDepartment> getUserDepartments() {
-        return userDepartments;
-    }
-
-    public void setUserDepartments(List<UserDepartment> userDepartments) {
-        this.userDepartments = userDepartments;
     }
 
     public List<User> getUsers() {

@@ -13,16 +13,15 @@ import java.util.List;
  */
 public enum BackupEntityType
 {
-    USER_DEPARTMENT(UserDepartment.class, 0),
-    USER_ROLE(UserRole.class, 1),
-    USERS(User.class, "USERLIST", 2),
-    CUSTOMER(Customer.class, 3),
-    PROJECT(Project.class, 4),
-    ACTIVITY(Activity.class, 5),
-    TIMESHEET_ENTRY(TimesheetEntry.class, "TIMESHEET_ENTRIES", 6, new TimesheetEntryRowProcessor()),
-    TIMESHEET_COMMENT(TimesheetComment.class, 7),
-    AUDIT(Audit.class, 8),
-    USER_TO_USERROLE(9);
+    USER_ROLE(UserRole.class, 0),
+    USERS(User.class, "USERLIST", 1),
+    CUSTOMER(Customer.class, 2),
+    PROJECT(Project.class, 3),
+    ACTIVITY(Activity.class, 4),
+    TIMESHEET_ENTRY(TimesheetEntry.class, "TIMESHEET_ENTRIES", 5, new TimesheetEntryRowProcessor()),
+    TIMESHEET_COMMENT(TimesheetComment.class, 6),
+    AUDIT(Audit.class, 7),
+    USER_TO_USERROLE(8);
 
     private String parentName;
     private Class<? extends DomainObject<?, ?>> domainObjectClass;

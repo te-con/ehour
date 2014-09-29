@@ -17,15 +17,16 @@
 package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.domain.*;
-import net.rrm.ehour.persistence.customer.dao.CustomerDao;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.TimesheetLock;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
-import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,17 +63,9 @@ public class ReportCriteriaServiceImplTest {
     @Mock
     private TimesheetLockService timesheetLockService;
 
-    @Mock
-    private UserService userService;
-
-    @Mock
-    private CustomerDao customerDao;
-
     @Before
     public void setup() {
-        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO,
-                                                              customerAndProjectCriteriaFilter,
-                userAndDepartmentCriteriaFilter, individualUserCriteriaSync, timesheetLockService, userService, customerDao);
+        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO, customerAndProjectCriteriaFilter, userAndDepartmentCriteriaFilter, individualUserCriteriaSync, timesheetLockService);
 
         when(timesheetLockService.findAll()).thenReturn(List$.MODULE$.<TimesheetLock>empty());
     }
@@ -89,20 +82,6 @@ public class ReportCriteriaServiceImplTest {
         verify(individualUserCriteriaSync).syncCriteriaForIndividualUser(reportCriteria);
     }
 
-    @Test
-    public void should_sync_criteria_for_global_for_all_users() {
-        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
-        userSelectedCriteria.setSelectedReportType(UserSelectedCriteria.ReportType.REPORT);
-        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
-        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
-
-        Tuple2<List<UserDepartment>, List<User>> apply = new Tuple2<List<UserDepartment>, List<User>>(Lists.<UserDepartment>newArrayList(), Lists.<User>newArrayList());
-        when(userAndDepartmentCriteriaFilter.getAvailableUsers(userSelectedCriteria)).thenReturn(apply);
-
-        reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_USERS_AND_DEPTS);
-
-        verify(userAndDepartmentCriteriaFilter).getAvailableUsers(userSelectedCriteria);
-    }
 
     @Test
     public void should_sync_criteria_for_global_for_all_customers() {

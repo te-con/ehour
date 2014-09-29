@@ -21,15 +21,6 @@ trait UserDao extends GenericDao[Integer, User] {
    */
   def findActiveUsers(): util.List[User]
 
-  /**
-   * Find all active users with email address set
-   */
-  def findAllActiveUsersWithEmailSet(): util.List[User]
-
-  /**
-   * Find users for departments with active flag
-   */
-  def findUsersForDepartments(departments: util.List[UserDepartment], onlyActive: Boolean): util.List[User]
 
   /**
    * Delete users with PM role but are not PM anymore

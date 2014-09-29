@@ -48,85 +48,35 @@ public class User extends DomainObject<Integer, User> {
     @Column(name = "USERNAME", length = 64)
     private String username;
 
-    @NotNull
-    @Column(name = "PASSWORD", nullable = false, length = 128)
-    private String password;
-
-    @Column(name = "FIRST_NAME", length = 64)
-    private String firstName;
-
-    @Column(name = "LAST_NAME", nullable = false, length = 64)
-    private String lastName;
-
-    @Column(name = "EMAIL", length = 128)
-    private String email;
-
     @Column(name = "ACTIVE")
     @Type(type = "yes_no")
     private Boolean active = Boolean.TRUE;
 
-    @Column(name = "SALT")
-    private Integer salt;
+    @Column(name = "DN")
+    private String dn;
 
-    @Transient
-    private String updatedPassword;
+    @Column(name = "FULLNAME")
+    private String name;
 
-    @ManyToMany(targetEntity = UserRole.class,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
-            )
-    @JoinTable(name = "USER_TO_USERROLE",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ROLE"))
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "assignedUser")
+    private Set<Activity> activities;
+
+    @ManyToMany(targetEntity = UserRole.class, cascade = { CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = "USER_TO_USERROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE"))
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
-    @ManyToOne
-    @JoinColumn(name = "DEPARTMENT_ID")
-    @NotNull
-    private UserDepartment userDepartment;
+    @Transient
+    private String email;
 
-	@OneToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REMOVE }, mappedBy = "assignedUser")
-	private Set<Activity> activities;
-
-	@ManyToMany(targetEntity = Customer.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-	@JoinTable(name = "CUSTOMER_REVIEWERS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "CUSTOMER_ID"))
-	private Set<Customer> customers = new HashSet<Customer>();
-
-	@Transient
-	private boolean deletable;
-
-	// Constructors
     public User() {
-    }
-
-    public User(UserDepartment userDepartment) {
-        this.userDepartment = userDepartment;
     }
 
     public User(Integer userId) {
         this.userId = userId;
     }
 
-    public User(String username, String password) {
+    public User(String username) {
         this.username = username;
-        this.password = password;
-    }
-
-    public User(Integer userId, String firstName, String lastName) {
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.active = active;
-        this.userRoles = userRoles;
-        this.userDepartment = userDepartment;
     }
 
     public User addUserRole(UserRole role) {
@@ -145,32 +95,26 @@ public class User extends DomainObject<Integer, User> {
         return this;
     }
 
+    @Override
     public String getFullName() {
-        StringBuilder fullName = new StringBuilder();
-
-        if (!StringUtils.isBlank(lastName)) {
-            fullName.append(lastName);
-
-            if (!StringUtils.isBlank(firstName)) {
-                fullName.append(", ");
-            }
-        }
-
-        if (!StringUtils.isBlank(firstName)) {
-            fullName.append(firstName);
-        }
-
-        return fullName.toString();
+        return getName();
     }
 
+
+    public String getDn() {
+        return dn;
+    }
+
+    public void setDn(String dn) {
+        this.dn = dn;
+    }
     // Property accessors
 
     public Integer getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Integer userId)
-    {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -182,46 +126,19 @@ public class User extends DomainObject<Integer, User> {
         this.username = username;
     }
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public Set<UserRole> getUserRoles()
-    {
+    public Set<UserRole> getUserRoles() {
         return this.userRoles;
     }
 
-    public void setUserRoles(Set<UserRole> userRoles)
-    {
+    public void setUserRoles(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
 
@@ -240,56 +157,22 @@ public class User extends DomainObject<Integer, User> {
         this.active = active;
     }
 
-    /**
-     * @param userDepartment the userDepartment to set
-     */
-    public void setUserDepartment(UserDepartment userDepartment) {
-        this.userDepartment = userDepartment;
-    }
-	public void addCustomer(Customer customer) {
-		if (customers == null) {
-			customers = new HashSet<Customer>();
-		}
-		customers.add(customer);
-	}
-	
-	public Set<Customer> getCustomers() {
-		return customers;
-	}
-
-    public void setCustomers(Set<Customer> customers) {
-        this.customers = customers;
-    }
-	/**
-	 * @return the userDepartment
-	 */
-	public UserDepartment getUserDepartment() {
-		return userDepartment;
-	}
-
-
-    public Set<Activity> getActivities() {
-        return activities;
+    public String getName() {
+        return name;
     }
 
-    public void setActivities(Set<Activity> activities) {
-        this.activities = activities;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
-	public Integer getPK() {
-		return userId;
-	}
-
-
+    public Integer getPK() {
+        return userId;
+    }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("userId", getUserId())
-                .append("username", getUsername())
-                .append("lastName", getLastName())
-                .append("firstName", getFirstName())
-                .toString();
+        return new ToStringBuilder(this).append("userId", getUserId()).append("username", getUsername()).append("fullName", getFullName()).toString();
     }
 
     /**
@@ -297,75 +180,26 @@ public class User extends DomainObject<Integer, User> {
      */
     public int compareTo(User object) {
         return new CompareToBuilder()
-                .append(this.getLastName(), object.getLastName())
-                .append(this.getFirstName(), object.getFirstName())
-                .append(this.getUserDepartment(), object.getUserDepartment())
+                .append(this.getFullName(), object.getFullName())
                 .append(this.getUserId(), object.getUserId())
                 .toComparison();
     }
 
-    /**
-     * @return the deletable
-     */
-    public boolean isDeletable()
-    {
-        return deletable;
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof User)) {
+            return false;
+        }
+
+        User castOther = (User) other;
+        return new EqualsBuilder().append(username, castOther.username)
+                .append(name, castOther.name)
+                .append(dn, castOther.dn).append(
+                        active, castOther.active).isEquals();
     }
 
-    /**
-     * @param deletable the deletable to set
-     */
-    public void setDeletable(boolean deletable)
-    {
-        this.deletable = deletable;
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(username).append(name).append(dn).append(active).toHashCode();
     }
-
-    /**
-     * @return the salt
-     */
-    public Integer getSalt()
-    {
-        return salt;
-    }
-
-    /**
-     * @param salt the salt to set
-     */
-    public void setSalt(Integer salt)
-    {
-        this.salt = salt;
-    }
-
-    /**
-     * @return the updatedPassword
-     */
-    public String getUpdatedPassword()
-    {
-        return updatedPassword;
-    }
-
-    /**
-     * @param updatedPassword the updatedPassword to set
-     */
-    public void setUpdatedPassword(String updatedPassword)
-    {
-        this.updatedPassword = updatedPassword;
-    }
-
-	@Override
-	public boolean equals(final Object other) {
-		if (!(other instanceof User)) {
-			return false;
-		}
-		User castOther = (User) other;
-		return new EqualsBuilder().append(username, castOther.username).append(
-				firstName, castOther.firstName).append(lastName,
-				castOther.lastName).append(email, castOther.email).append(
-				active, castOther.active).isEquals();
-	}
-
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(username).append(fullName).append(email).append(active).toHashCode();
-	}
 }

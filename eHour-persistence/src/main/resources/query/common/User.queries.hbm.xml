@@ -17,9 +17,23 @@
 	<query name="User.findActiveUsers">
 		SELECT DISTINCT user
 		FROM User as user
-        WHERE active = true
+	    WHERE lower(firstName) like  :pattern OR lower(lastName) like :pattern
 	    ORDER BY lastName, firstName
 	</query>
+	
+	<query name="User.findActiveByUsernamePattern"> 
+		SELECT DISTINCT user
+		FROM User as user
+	    WHERE (lower(firstName) like  :pattern OR lower(lastName) like :pattern) AND active = true
+	    ORDER BY lastName, firstName	    
+	</query>
+
+	<query name="User.findAllActiveUsers"> 
+		SELECT user
+		FROM User as user
+		WHERE active = true
+	    ORDER BY lastName, firstName	    
+	</query>	
 
 	<query name="User.findAllActiveUsersWithEmailSet">
 	<![CDATA[
@@ -29,27 +43,6 @@
 	    ORDER BY lastName, firstName	]]>    
 	</query>	
 
-	<query name="UserDepartment.findByNameAndCode"> 
-		FROM UserDepartment as userDepartment
-	    WHERE lower(name) like :name  AND lower(code) LIKE :code 
-	    	
-	</query>	
-
-	<query name="User.findActiveForDepartment">
-		SELECT DISTINCT user
-		FROM User as user
-	    WHERE active = true
-	    		AND user.userDepartment IN (:departments)
-	    ORDER BY lastName, firstName	    
-	</query>
-
-	<query name="User.findForDepartment">
-		SELECT DISTINCT user
-		FROM User as user
-	    WHERE user.userDepartment IN (:departments)
-	    ORDER BY lastName, firstName	    
-	</query>
-	
 	<sql-query name="User.deletePMsWithoutProject">
 		DELETE 
 		FROM USER_TO_USERROLE

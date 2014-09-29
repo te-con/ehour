@@ -1,8 +1,13 @@
 package net.rrm.ehour.backup.service.restore
 
+<<<<<<< HEAD:eHour-service/src/test/groovy/net/rrm/ehour/backup/service/restore/DomainObjectParserTest.groovy
 import net.rrm.ehour.backup.domain.ParseSession
 import net.rrm.ehour.domain.*
 import net.rrm.ehour.persistence.backup.dao.BackupEntityType
+=======
+import net.rrm.ehour.export.service.ParseSession
+import net.rrm.ehour.persistence.export.dao.ExportType
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object:eHour-service/src/test/groovy/net/rrm/ehour/export/service/importer/DomainObjectParserTest.groovy
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -12,7 +17,14 @@ import org.mockito.MockitoAnnotations
 import javax.xml.stream.XMLEventReader
 import javax.xml.stream.XMLInputFactory
 
+<<<<<<< HEAD:eHour-service/src/test/groovy/net/rrm/ehour/backup/service/restore/DomainObjectParserTest.groovy
 import static org.junit.Assert.*
+=======
+import net.rrm.ehour.domain.*
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object:eHour-service/src/test/groovy/net/rrm/ehour/export/service/importer/DomainObjectParserTest.groovy
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -85,6 +97,7 @@ class DomainObjectParserTest {
     }
 
     @Test
+<<<<<<< HEAD:eHour-service/src/test/groovy/net/rrm/ehour/backup/service/restore/DomainObjectParserTest.groovy
     void shouldParseUserAndStoreNewKeyInCacheMap() {
         def department = UserDepartmentObjectMother.createUserDepartment()
 
@@ -136,10 +149,11 @@ class DomainObjectParserTest {
     }
 
     @Test
+=======
+>>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object:eHour-service/src/test/groovy/net/rrm/ehour/export/service/importer/DomainObjectParserTest.groovy
     void shouldParseEnum() {
         def resolver = createResolver(""" <AUDITS CLASS="net.rrm.ehour.domain.Audit"><AUDIT>
    <AUDIT_ID>173</AUDIT_ID>
-   <USER_ID>2</USER_ID>
    <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>
    <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>
    <SUCCESS>Y</SUCCESS>
@@ -162,7 +176,6 @@ class DomainObjectParserTest {
 
         def resolver = createResolver(""" <AUDITS CLASS="net.rrm.ehour.domain.Audit"><AUDIT>
    <AUDIT_ID>173</AUDIT_ID>
-   <USER_ID>2</USER_ID>
    <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>
    <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>
    <SUCCESS>Y</SUCCESS>
@@ -180,7 +193,6 @@ class DomainObjectParserTest {
 
         assertEquals AuditActionType.LOGIN, result[0].auditActionType
         assertEquals 1, daoValidator.totalPersistCount
-        assertEquals user, result[0].user
     }
 
     private class DomainObjectParserDaoTestValidator<T> extends DomainObjectParserDaoValidatorImpl {
