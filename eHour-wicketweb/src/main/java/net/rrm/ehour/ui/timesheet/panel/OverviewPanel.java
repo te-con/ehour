@@ -20,6 +20,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.model.DateModel;
+import net.rrm.ehour.ui.common.model.MessageResourceModel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.panel.monthlyapproval.MonthlyApprovalPanel;
 import org.apache.wicket.MarkupContainer;
@@ -79,9 +80,8 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
 
         MarkupContainer markupContainer = projectOverviewPanel.getLabel().getParent();
 
-
-        Label label = new Label("title", new StringResourceModel("projectoverview.aggregatedPerMonthforuser", this, null,
-                new Object[] { user.getFirstName(), new DateModel(overviewFor,  EhourWebSession.getEhourConfig(), DateModel.DATESTYLE_MONTHONLY) }));
+        Label label = new Label("title", new MessageResourceModel("projectoverview.aggregatedPerMonthforuser", this,
+                user.getFullName(), new DateModel(overviewFor, EhourWebSession.getSession().getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
 
         markupContainer.addOrReplace(label);
 

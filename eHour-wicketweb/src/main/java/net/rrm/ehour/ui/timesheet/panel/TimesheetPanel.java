@@ -131,9 +131,8 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         setDefaultModel(timesheet);
 
         // grey & blue frame border
-        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame",
-                getWeekNavigation(timesheet.getWeekStart(), timesheet.getWeekEnd())
-        );
+        WebMarkupContainer weekNavigation = getWeekNavigation(timesheet.getWeekStart(), timesheet.getWeekEnd(), user);
+        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", weekNavigation);
         add(greyBorder);
 
         // add form
@@ -215,13 +214,20 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
      * Add week navigation to title
      */
     @SuppressWarnings("serial")
-    private WebMarkupContainer getWeekNavigation(final Date weekStart, final Date weekEnd) {
+    private WebMarkupContainer getWeekNavigation(final Date weekStart, final Date weekEnd, User user) {
         Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getFormattingLocale());
 
         int weekOfYear = DateUtil.getWeekNumberForDate(weekStart, config.getFirstDayOfWeek());
 
-        IModel<String> weekLabelModel = new MessageResourceModel("timesheet.weekTitle", this, weekOfYear, dateFormatter.format(weekStart), dateFormatter.format(weekEnd));
+
+        IModel<String> weekLabelModel;
+
+        if (EhourWebSession.getUser().getUserId().equals(user.getUserId())) {
+            weekLabelModel = new MessageResourceModel("timesheet.weekTitle", this, weekOfYear, dateFormatter.format(weekStart), dateFormatter.format(weekEnd));
+        } else {
+            weekLabelModel = new MessageResourceModel("timesheet.weekTitleModerating", this, weekOfYear, dateFormatter.format(weekStart), dateFormatter.format(weekEnd), user.getFullName());
+        }
 
         titleFragment.add(new Label("titleLabel", weekLabelModel));
 
