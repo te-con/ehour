@@ -352,24 +352,20 @@ public class User extends DomainObject<Integer, User> {
         this.updatedPassword = updatedPassword;
     }
 
-    @Override
-    public boolean equals(final Object other) {
-        if (!(other instanceof User)) {
-            return false;
-        }
+	@Override
+	public boolean equals(final Object other) {
+		if (!(other instanceof User)) {
+			return false;
+		}
+		User castOther = (User) other;
+		return new EqualsBuilder().append(username, castOther.username).append(
+				firstName, castOther.firstName).append(lastName,
+				castOther.lastName).append(email, castOther.email).append(
+				active, castOther.active).isEquals();
+	}
 
-        User castOther = (User) other;
-        return new EqualsBuilder()
-                .append(username, castOther.username)
-                .append(firstName, castOther.firstName)
-                .append(lastName, castOther.lastName)
-                .append(email, castOther.email)
-                .append(active, castOther.active)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(username).append(firstName).append(lastName).append(email).append(active).toHashCode();
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(username).append(fullName).append(email).append(active).toHashCode();
+	}
 }
