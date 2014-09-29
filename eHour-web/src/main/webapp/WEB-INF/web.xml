@@ -11,6 +11,7 @@
             classpath:context-datasource.xml
             classpath:context-dbconnectivity.xml
             classpath:context-scanner.xml
+            classpath:context-ldap.xml
             classpath:context-service.xml
             classpath:context-security-ldap.xml
             classpath:context-cache.xml

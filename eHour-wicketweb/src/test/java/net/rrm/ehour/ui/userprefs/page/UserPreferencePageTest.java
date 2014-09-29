@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
 
-public class UserPreferencePageTest extends BaseSpringWebAppTester {
+public class UserPreferencePageTest extends AbstractSpringWebAppTester {
 	@Test
 	public void testReportPageRender() throws ObjectNotFoundException {
         IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
@@ -35,9 +35,6 @@ public class UserPreferencePageTest extends BaseSpringWebAppTester {
         getMockContext().putBean(createMock(UserPreferenceService.class));
 
         MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
-
-        UserService userService = createMock(UserService.class);
-        getMockContext().putBean("userService", userService);
 
         replay(userService);
         replay(overviewTimesheet);

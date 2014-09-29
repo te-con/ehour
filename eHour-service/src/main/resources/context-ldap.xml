@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- set up LDAP template -->
+    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+        <property name="url" value="${ldap.url}"/>
+        <property name="base" value="${ldap.basedn}"/>
+        <property name="anonymousReadOnly" value="true" />
+    </bean>
+
+    <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+        <constructor-arg ref="contextSource"/>
+    </bean>
+</beans>

@@ -15,40 +15,40 @@ import static org.easymock.EasyMock.*;
 
 public class ActivityAdminTest extends BaseSpringWebAppTester {
 
-	private ActivityService activityService;
-	
-	private UserService userService;
-	
-	private ProjectService projectService;
-	
+    private ActivityService activityService;
 
-	@Test
-	public void testActivityAdminRender() {
+    private UserService userService;
 
-		activityService = createMock(ActivityService.class);
-		userService = createMock(UserService.class);
-		projectService = createMock(ProjectService.class);
+    private ProjectService projectService;
 
-		getMockContext().putBean("activityService", activityService);
-		getMockContext().putBean("userService", userService);
-		getMockContext().putBean("projectService", projectService);
-		
-		expect(activityService.getActivities()).andReturn(new ArrayList<Activity>());		
-		expect(projectService.getActiveProjects()).andReturn(new ArrayList<Project>());
-		expect(userService.getUsers()).andReturn(new ArrayList<User>());
-		
-		replay(activityService);
-		replay(userService);
-		replay(projectService);
-		
-		getTester().startPage(ActivityAdmin.class);
-		getTester().assertRenderedPage(ActivityAdmin.class);
-		getTester().assertNoErrorMessage();		
-		
-		verify(activityService);
-		
-		verify(userService);
-		
-		verify(projectService);
-	}
+
+    @Test
+    public void testActivityAdminRender() {
+
+        activityService = createMock(ActivityService.class);
+        userService = createMock(UserService.class);
+        projectService = createMock(ProjectService.class);
+
+        getMockContext().putBean("activityService", activityService);
+        getMockContext().putBean("userService", userService);
+        getMockContext().putBean("projectService", projectService);
+
+        expect(activityService.getActivities()).andReturn(new ArrayList<Activity>());
+        expect(projectService.getActiveProjects()).andReturn(new ArrayList<Project>());
+        expect(userService.getUsers()).andReturn(new ArrayList<User>());
+
+        replay(activityService);
+        replay(userService);
+        replay(projectService);
+
+        getTester().startPage(ActivityAdmin.class);
+        getTester().assertRenderedPage(ActivityAdmin.class);
+        getTester().assertNoErrorMessage();
+
+        verify(activityService);
+
+        verify(userService);
+
+        verify(projectService);
+    }
 }

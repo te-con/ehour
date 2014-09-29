@@ -25,15 +25,24 @@ import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
 import net.rrm.ehour.timesheet.service.IDeleteTimesheetEntry;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.ContextMapper;
+import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -59,7 +68,7 @@ public class UserServiceImpl implements UserService {
     private IDeleteTimesheetEntry deleteTimesheetEntryService;
 
     @Autowired
-    private MessageDigestPasswordEncoder passwordEncoder;
+    private LdapTemplate ldapTemplate;
 
     @Transactional(readOnly = true)
     public User getUser(Integer userId) throws ObjectNotFoundException {
@@ -182,24 +191,8 @@ public class UserServiceImpl implements UserService {
 
         // encrypt password
         user.setSalt((int) (Math.random() * 10000));
-        user.setPassword(encryptPassword(password, user.getSalt()));
 
         userDAO.persist(user);
-    }
-
-    @Override
-    @Transactional
-    public void changePassword(String username, String currentPassword, String newUnencryptedPassword) throws BadCredentialsException {
-        User user = userDAO.findByUsername(username);
-
-        Validate.notNull(user, String.format("Can't find user with username %s", username));
-
-        String encryptedCurrentPassword = encryptPassword(currentPassword, user.getSalt());
-
-        if (!user.getPassword().equals(encryptedCurrentPassword)) {
-            throw new BadCredentialsException("Invalid current password");
-        }
-        changePassword(user, newUnencryptedPassword);
     }
 
     @Override
@@ -216,27 +209,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         return result;
-    }
-
-    @Override
-    @Transactional
-    public void changePassword(String username, String newUnencryptedPassword) {
-        User user = userDAO.findByUsername(username);
-        Validate.notNull(user, String.format("Can't find user with username %s", username));
-
-        changePassword(user, newUnencryptedPassword);
-    }
-
-    private String encryptPassword(String plainPassword, Object salt) {
-        return passwordEncoder.encodePassword(plainPassword, salt);
-    }
-
-    private void changePassword(User user, String newUnencryptedPassword) {
-        int salt = (int) (Math.random() * 10000);
-        user.setSalt(salt);
-        user.setPassword(encryptPassword(newUnencryptedPassword, salt));
-
-        userDAO.persist(user);
     }
 
     public List<User> getUsersWithEmailSet() {
@@ -275,22 +247,66 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+    public List<User> getUsers() {
+        return userDAO.findAllActiveUsers();
+    }
 
+    @SuppressWarnings("unchecked")
     @Override
-    @Transactional(readOnly = true)
-    public List<User> getUsers(UserRole userRole) {
+    public List<LdapUser> getLdapUsers(final String match, final boolean authorizedOnly) {
+        ContextMapper contextMapper = new LdapContextMapper();
 
-        List<User> users = userDAO.findActiveUsers();
-        List<User> validUsers = new ArrayList<User>();
+        List<LdapUser> ldapUsers = (List<LdapUser>) ldapTemplate.search("", "(objectClass=person)", contextMapper);
 
-        // result of bad many-to-many mapping. should fix once..
+        List<User> users = userDAO.findAll();
+
         for (User user : users) {
-            if (user.getUserRoles().contains(userRole)) {
-                validUsers.add(user);
+            for (LdapUser ldapUser : ldapUsers) {
+                if (user.getUsername().equalsIgnoreCase(ldapUser.uid)) {
+                    ldapUser.setUser(user);
+                }
             }
         }
 
-        return validUsers;
+        applyRestrictions(match, authorizedOnly, ldapUsers);
+
+        sortLdapUsers(ldapUsers);
+
+        return ldapUsers;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<LdapUser> getLdapUser(String ldapUid) {
+        ContextMapper contextMapper = new LdapContextMapper();
+
+        String filter = String.format("(&(uid=%s)(objectClass=person))", ldapUid);
+        return (List<LdapUser>) ldapTemplate.search("", filter, contextMapper);
+
+    }
+
+    private void sortLdapUsers(List<LdapUser> ldapUsers) {
+        Collections.sort(ldapUsers, new Comparator<LdapUser>() {
+            @Override
+            public int compare(LdapUser o1, LdapUser o2) {
+                return (o1.fullName == null && o2 != null) ? 1 :
+                        (o1.fullName == null && o2 == null) ? 0 :
+                                (o1.fullName != null && o2 == null) ? -1 :
+                                        o1.fullName.compareTo(o2.fullName);
+            }
+        });
+    }
+
+    private void applyRestrictions(final String match, final boolean authorizedOnly, List<LdapUser> ldapUsers) {
+        CollectionUtils.filter(ldapUsers, new Predicate() {
+            @Override
+            public boolean evaluate(Object object) {
+                LdapUser user = (LdapUser) object;
+
+                boolean isMatch = (match == null || "".equals(match)) || StringUtils.containsIgnoreCase(user.fullName, match);
+
+                return (!authorizedOnly || user.isAuthorized()) && isMatch;
+            }
+        });
     }
 
     @Override

@@ -23,15 +23,4 @@
         <sec:ldap-authentication-provider user-search-filter="(&amp;(uid={0})(objectClass=person))"
                                           user-search-base="${ldap.basedn}"/>
     </sec:authentication-manager>
-
-    <!-- set up LDAP template -->
-    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
-        <property name="url" value="${ldap.url}"/>
-        <property name="base" value="${ldap.basedn}"/>
-        <property name="anonymousReadOnly" value="true" />
-    </bean>
-
-    <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
-        <constructor-arg ref="contextSource"/>
-    </bean>
 </beans>

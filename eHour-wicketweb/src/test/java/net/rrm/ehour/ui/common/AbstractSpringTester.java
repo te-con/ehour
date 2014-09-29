@@ -20,15 +20,13 @@ import com.richemont.windchill.WindChillService;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.persistence.user.dao.UserDao;
-import net.rrm.ehour.ui.common.session.AuthorizationService;
 import net.rrm.ehour.ui.common.util.AuthUtil;
-import net.rrm.ehour.update.UpdateService;
+import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.spring.test.ApplicationContextMock;
 
 import java.util.Calendar;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
 
 
 /**
@@ -41,8 +39,8 @@ public abstract class AbstractSpringTester {
     private EhourConfigStub config;
     private AuditService auditService;
     private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
-    private AuthorizationService authorizationService;
     private WindChillService windChillService;
+    private UserService userService;
 
     private void createContextSetup() {
         mockContext = new ApplicationContextMock();
@@ -53,23 +51,17 @@ public abstract class AbstractSpringTester {
         config.setFirstDayOfWeek(Calendar.SUNDAY);
         mockContext.putBean("EhourConfig", config);
 
-        auditService = createMock(AuditService.class);
-        mockContext.putBean("auditService", auditService);
-
-        mockContext.putBean("authUtil", buildAuthUtil());
-
-        UpdateService updateService = createMock(UpdateService.class);
-        mockContext.putBean(updateService);
-
         windChillService = createMock(WindChillService.class);
         mockContext.putBean("windChillService", windChillService);
 
-        authorizationService = createMock(AuthorizationService.class);
-        mockContext.putBean("authorizationService", authorizationService);
+        auditService = createMock(AuditService.class);
+        mockContext.putBean("auditService", auditService);
 
+        userService = createMock(UserService.class);
+        mockContext.putBean("userService", userService);
 
-        expect(updateService.isLatestVersion()).andReturn(Boolean.TRUE).atLeastOnce();
-        replay(updateService);
+        auditService = createMock(AuditService.class);
+        mockContext.putBean("auditService", auditService);
     }
 
     public final ApplicationContextMock getMockContext() {

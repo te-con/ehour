@@ -45,7 +45,6 @@ public class CustomerManagePageTest extends BaseSpringWebAppTester
 		UserService userService = createMock(UserService.class);
 
 		getMockContext().putBean("customerService", customerService);
-		getMockContext().putBean("userService", userService);
 
 		expect(userService.getUsers()).andReturn(new ArrayList<User>()).times(2);
 		expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());

@@ -86,8 +86,6 @@ public interface UserService {
 
     void deleteDepartment(Integer departmentId);
 
-    void changePassword(String username, String currentPassword, String newUnencryptedPassword) throws BadCredentialsException;
-
     /**
      * Returns a list of all {@link User}s who are working on Activities of Projects of passed Customers
      * @param customers
@@ -95,4 +93,8 @@ public interface UserService {
      * @return
      */
     List<User> getAllUsersAssignedToCustomers(List<Customer> customers, boolean onlyActiveUsers);
+
+    List<LdapUser> getLdapUsers(String match, boolean inclInactive);
+
+    User getAuthorizedUser(String ldapUid);
 }
