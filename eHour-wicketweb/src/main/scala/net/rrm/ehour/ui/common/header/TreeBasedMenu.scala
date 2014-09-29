@@ -3,10 +3,10 @@ package net.rrm.ehour.ui.common.header
 import java.util.{List => JList}
 
 import net.rrm.ehour.domain.UserRole
+import net.rrm.ehour.ui.EhourWebApplication
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.{AjaxEventBehavior, AjaxRequestTarget}
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation
 import org.apache.wicket.markup.html.WebPage
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.link.Link
@@ -34,6 +34,12 @@ case class LinkItem(menuTitle: String, responsePageClass: Class[_ <: WebPage], p
 
 object LinkItem {
   private[header] def isUserAuthorizedForPage(pageClass: Class[_ <: WebPage], roles: mutable.Set[UserRole]): Boolean = {
+    val authorizationStrategy = EhourWebApplication.get().getAuthorizationStrategy
+
+    authorizationStrategy.isInstantiationAuthorized(pageClass)
+/*
+
+
     if (pageClass.isAnnotationPresent(classOf[AuthorizeInstantiation])) {
       if (roles != null) {
         val roleNames = roles.map(_.getRole)
@@ -43,6 +49,7 @@ object LinkItem {
     }
     else
       true
+*/
   }
 }
 

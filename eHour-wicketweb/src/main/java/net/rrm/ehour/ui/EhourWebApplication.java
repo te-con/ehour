@@ -45,6 +45,7 @@ import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import org.apache.log4j.Logger;
 import org.apache.wicket.*;
+import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
@@ -79,6 +80,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private EhourSystemConfig ehourSystemConfig;
 
     private String build;
+    private IAuthorizationStrategy authorizationStrategy;
 
     public void init() {
         if (!initialized) {
@@ -208,7 +210,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     protected void setupSecurity() {
         getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 
-        getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
+        authorizationStrategy = getAuthorizationStrategy();
+        getSecuritySettings().setAuthorizationStrategy(authorizationStrategy);
 
         getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener() {
             public void onUnauthorizedInstantiation(final Component component) {
@@ -219,6 +222,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
                 }
             }
         });
+    }
+
+    public IAuthorizationStrategy getAuthorizationStrategy() {
+        return new RoleAuthorizationStrategy(this);
     }
 
     @Override
@@ -259,10 +266,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         return authenticationManager;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see org.apache.wicket.authentication.AuthenticatedWebApplication#getWebSessionClass()
-      */
     @Override
     protected Class<? extends AuthenticatedWebSession> getWebSessionClass() {
         return EhourWebSession.class;
