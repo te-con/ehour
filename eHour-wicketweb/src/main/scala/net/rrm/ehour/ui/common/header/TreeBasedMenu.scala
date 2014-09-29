@@ -2,9 +2,7 @@ package net.rrm.ehour.ui.common.header
 
 import java.util.{List => JList}
 
-import net.rrm.ehour.domain.UserRole
 import net.rrm.ehour.ui.EhourWebApplication
-import net.rrm.ehour.ui.common.session.EhourWebSession
 import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.{AjaxEventBehavior, AjaxRequestTarget}
 import org.apache.wicket.markup.html.WebPage
@@ -17,7 +15,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters
 import org.apache.wicket.util.string.StringValue
 
 import scala.collection.convert.WrapAsScala
-import scala.collection.mutable
 import scala.language.existentials
 
 sealed abstract class MenuItem {
@@ -29,27 +26,14 @@ case class DropdownMenu(menuTitle: String, items: JList[LinkItem]) extends MenuI
 }
 
 case class LinkItem(menuTitle: String, responsePageClass: Class[_ <: WebPage], pageParameters: Option[PageParameters] = None) extends MenuItem {
-  override def isVisibleForLoggedInUser = LinkItem.isUserAuthorizedForPage(responsePageClass, WrapAsScala.asScalaSet(EhourWebSession.getUser.getUserRoles))
+  override def isVisibleForLoggedInUser = LinkItem.isUserAuthorizedForPage(responsePageClass)
 }
 
 object LinkItem {
-  private[header] def isUserAuthorizedForPage(pageClass: Class[_ <: WebPage], roles: mutable.Set[UserRole]): Boolean = {
+  private[header] def isUserAuthorizedForPage(pageClass: Class[_ <: WebPage]): Boolean = {
     val authorizationStrategy = EhourWebApplication.get().getAuthorizationStrategy
 
     authorizationStrategy.isInstantiationAuthorized(pageClass)
-/*
-
-
-    if (pageClass.isAnnotationPresent(classOf[AuthorizeInstantiation])) {
-      if (roles != null) {
-        val roleNames = roles.map(_.getRole)
-        val authorizedRoles = pageClass.getAnnotation(classOf[AuthorizeInstantiation])
-        authorizedRoles.value().toList.exists(roleNames.contains)
-      } else false
-    }
-    else
-      true
-*/
   }
 }
 
