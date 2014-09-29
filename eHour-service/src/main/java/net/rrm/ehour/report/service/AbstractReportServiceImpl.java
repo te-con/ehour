@@ -22,24 +22,15 @@ import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
-<<<<<<< HEAD
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
-=======
->>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
-<<<<<<< HEAD
 import net.rrm.ehour.report.reports.element.ProjectStructuredReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.timesheet.service.TimesheetLockService$;
 import org.joda.time.Interval;
 import scala.collection.Seq;
-=======
-import net.rrm.ehour.report.reports.element.ReportElement;
-import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object
 
 import java.util.Date;
 import java.util.List;
@@ -47,12 +38,9 @@ import java.util.List;
 /**
  * Abstract report service provides utility methods for dealing
  * with the usercriteria obj
-<<<<<<< HEAD
  */
 
 public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredReportElement> {
-    private UserDao userDAO;
-
     private ProjectDao projectDAO;
 
     private TimesheetLockService lockService;
@@ -61,8 +49,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
     AbstractReportServiceImpl() {
     }
 
-    protected AbstractReportServiceImpl(UserDao userDAO, ProjectDao projectDAO, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDao) {
-        this.userDAO = userDAO;
+    protected AbstractReportServiceImpl(ProjectDao projectDAO, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDao) {
         this.projectDAO = projectDAO;
         this.lockService = lockService;
         this.reportAggregatedDao = reportAggregatedDao;
@@ -112,7 +99,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
 
     private List<RE> generateReport(UserSelectedCriteria userSelectedCriteria, List<Date> lockedDates, DateRange reportRange) {
-        boolean noUserRestrictionProvided = userSelectedCriteria.isEmptyDepartments() && userSelectedCriteria.isEmptyUsers();
+        boolean noUserRestrictionProvided = userSelectedCriteria.isEmptyUsers();
         boolean noProjectRestrictionProvided = userSelectedCriteria.isEmptyCustomers() && userSelectedCriteria.isEmptyProjects();
 
         List<Project> projects = null;
@@ -120,11 +107,11 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
         if (!noProjectRestrictionProvided || !noUserRestrictionProvided) {
             if (noProjectRestrictionProvided) {
-                users = getUsersForSelectedDepartments(userSelectedCriteria);
+                users = userSelectedCriteria.getUsers();
             } else if (noUserRestrictionProvided) {
                 projects = getProjects(userSelectedCriteria);
             } else {
-                users = getUsersForSelectedDepartments(userSelectedCriteria);
+                users = userSelectedCriteria.getUsers();
                 projects = getProjects(userSelectedCriteria);
             }
         }
@@ -183,143 +170,19 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         return filteredProjects;
     }
 
-    private List<User> getUsersForSelectedDepartments(UserSelectedCriteria userSelectedCriteria) {
-        List<User> users;
-
-        if (userSelectedCriteria.isEmptyUsers()) {
-            if (!userSelectedCriteria.isEmptyDepartments()) {
-                users = userDAO.findUsersForDepartments(userSelectedCriteria.getDepartments(), userSelectedCriteria.isOnlyActiveUsers());
-            } else {
-                users = null;
-            }
-        } else {
-            users = userSelectedCriteria.getUsers();
-        }
-
-        return users;
-    }
-
     protected List<Activity> getActivitiesWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
-        List<Activity> assignmentsWithoutBookings = reportAggregatedDao.getActivitiesWithoutBookings(reportRange);
+        List<Activity> activitiesWithoutBookings = reportAggregatedDao.getActivitiesWithoutBookings(reportRange);
 
-        List<Activity> filteredActivitiesWithoutBookings = Lists.newArrayList();
+        List<Activity> filteredAssignmentsWithoutBookings = Lists.newArrayList();
 
-        for (Activity activityWithoutBooking : assignmentsWithoutBookings) {
-            boolean passedUserFilter = userIds == null || userIds.contains(activityWithoutBooking.getAssignedUser().getUserId());
-            boolean passedProjectFilter = projectIds == null || projectIds.contains(activityWithoutBooking.getProject().getProjectId());
+        for (Activity activitiesWithoutBooking : activitiesWithoutBookings) {
+            boolean passedUserFilter = userIds == null || userIds.contains(activitiesWithoutBooking.getAssignedUser().getUserId());
+            boolean passedProjectFilter = projectIds == null || projectIds.contains(activitiesWithoutBooking.getProject().getProjectId());
 
             if (passedUserFilter && passedProjectFilter) {
-                filteredActivitiesWithoutBookings.add(activityWithoutBooking);
+                filteredAssignmentsWithoutBookings.add(activitiesWithoutBooking);
             }
         }
-        return filteredActivitiesWithoutBookings;
+        return filteredAssignmentsWithoutBookings;
     }
-=======
- **/
-
-public abstract class AbstractReportServiceImpl<RE extends ReportElement>
-{
-	@Autowired
-	private	ProjectDao	projectDAO;
-	
-	/**
-	 * Get report data for criteria
-	 * @param reportCriteria
-	 * @return
-	 */
-	protected ReportData getReportData(ReportCriteria reportCriteria)
-	{
-		UserCriteria	userCriteria;
-		List<Project>	projects = null;
-		List<User>		users = null;
-		boolean			ignoreUsers;
-		boolean			ignoreProjects;
-		DateRange		reportRange;
-		
-		userCriteria = reportCriteria.getUserCriteria();
-
-		reportRange = reportCriteria.getReportRange();
-		
-		ignoreUsers = userCriteria.isEmptyUsers();
-		ignoreProjects = userCriteria.isEmptyCustomers() && userCriteria.isEmptyProjects();
-
-		if (ignoreProjects && ignoreUsers)
-		{
-		}
-		else if (ignoreProjects && !ignoreUsers)
-		{
-			users = userCriteria.getUsers();
-		}
-		else if (ignoreUsers)
-		{
-			projects = getProjects(userCriteria);
-		}
-		else
-		{
-			users = userCriteria.getUsers();
-			projects = getProjects(userCriteria);
-		}
-
-		return new ReportData(getReportElements(users, projects, reportRange), reportRange);
-	}
-
-	/**
-	 * Get the actual data
-	 * @param users
-	 * @param projects
-	 * @param reportRange
-	 * @return
-	 */
-	protected abstract List<RE> getReportElements(List<User> users,
-													List<Project >projects,
-													DateRange reportRange);
-	
-	/**
-	 * Get project id's based on selected customers
-	 * @param userCriteria
-	 * @return
-	 */
-	protected List<Project> getProjects(UserCriteria userCriteria)
-	{
-		List<Project>	projects;
-		
-		// No projects selected by the user, use any given customer limitation 
-		if (userCriteria.isEmptyProjects())
-		{
-			if (!userCriteria.isEmptyCustomers())
-			{
-				projects = projectDAO.findProjectForCustomers(userCriteria.getCustomers(),
-																userCriteria.isOnlyActiveProjects());
-			}
-			else
-			{
-				projects = null;
-			}
-		}
-		else
-		{
-			projects = userCriteria.getProjects();
-		}
-		
-		return projects;
-	}	
-
-	/**
-	 * @param projectDAO the projectDAO to set
-	 */
-	public void setProjectDAO(ProjectDao projectDAO)
-	{
-		this.projectDAO = projectDAO;
-	}
-
-	/**
-	 * @return the projectDAO
-	 */
-	protected ProjectDao getProjectDAO()
-	{
-		return projectDAO;
-	}
-
-
->>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object
 }

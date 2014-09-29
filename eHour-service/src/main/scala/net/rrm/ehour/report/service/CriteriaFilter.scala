@@ -1,20 +1,22 @@
 package net.rrm.ehour.report.service
 
-import net.rrm.ehour.domain.{UserDepartment, User, Project, Customer}
-import net.rrm.ehour.report.criteria.UserSelectedCriteria
-import org.springframework.beans.factory.annotation.Autowired
-import net.rrm.ehour.persistence.customer.dao.CustomerDao
 import java.{util => ju}
-import org.springframework.stereotype.Service
-import net.rrm.ehour.persistence.user.dao.UserDao
-import scala.collection.convert.WrapAsScala
+
+import net.rrm.ehour.domain.{Customer, Project, User}
+import net.rrm.ehour.persistence.customer.dao.CustomerDao
+import net.rrm.ehour.report.criteria.UserSelectedCriteria
+import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util._
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+
+import scala.collection.convert.WrapAsScala
 
 @Service
 class CustomerAndProjectCriteriaFilter @Autowired()(customerDao: CustomerDao) {
   def getAvailableCustomers(userSelectedCriteria: UserSelectedCriteria): (ju.List[Customer], ju.List[Project]) = {
     def fetchCustomers(userSelectedCriteria: UserSelectedCriteria): List[Customer] =
-      toScala(if (userSelectedCriteria.isOnlyActiveCustomers) customerDao.findAllActive else customerDao.findAll)
+      toScala(if (userSelectedCriteria.isOnlyActiveCustomers) customerDao.findAllActive() else customerDao.findAll())
 
     def filterProjectsOnBillable(xs: List[Project]): List[Project] =
       if (userSelectedCriteria.isOnlyBillableProjects) xs.filter(ProjectPredicate.billablePredicate) else xs
@@ -81,28 +83,23 @@ private object ProjectPredicate {
 }
 
 @Service
-class UserAndDepartmentCriteriaFilter @Autowired()(userDao: UserDao) {
-  def getAvailableUsers(userSelectedCriteria: UserSelectedCriteria): (ju.List[UserDepartment], ju.List[User]) = {
-    val users = toScala(if (userSelectedCriteria.isOnlyActiveUsers)
-      userDao.findActiveUsers()
-    else
-      userDao.findAll())
+class UserAndDepartmentCriteriaFilter @Autowired() (userService: UserService) {
+  import scala.collection.JavaConversions._
+  def getAvailableUsers(userSelectedCriteria: UserSelectedCriteria): ju.List[User] = {
+    val users = new ju.ArrayList[User]
 
-//
-//    val users = toScala(if (userSelectedCriteria.isEmptyDepartments)
-//      userDao.findUsers(userSelectedCriteria.isOnlyActiveUsers)
-//    else
-//      userDao.findUsersForDepartments(userSelectedCriteria.getDepartments, userSelectedCriteria.isOnlyActiveUsers))
+    if (userSelectedCriteria.isCustomerReporter) {
 
-    val filteredUsers = users
+      val allUsersAssignedToCustomers = userService.getAllUsersAssignedToCustomers(userSelectedCriteria.getCustomers, userSelectedCriteria.isOnlyActiveUsers)
+      if (allUsersAssignedToCustomers != null && !allUsersAssignedToCustomers.isEmpty) {
+        users.addAll(allUsersAssignedToCustomers)
+      }
 
-    val departments = filteredUsers.map(_.getUserDepartment).toSet.toList
+      users
+    } else {
+      val ldapUsers = userService.getLdapUsers("", true)
 
-    val xs = if (userSelectedCriteria.isEmptyDepartments)
-      filteredUsers
-    else
-     filteredUsers.filter(u => userSelectedCriteria.getDepartments.contains(u.getUserDepartment))
-
-    (toJava(departments), toJava(xs))
+      ldapUsers filter (f => f.getUser.isActive) map (_.getUser)
+    }
   }
 }

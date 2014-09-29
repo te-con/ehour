@@ -1,18 +1,20 @@
 package net.rrm.ehour.ui.report.panel.criteria
 
-import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.report.service.ReportCriteriaService
-import org.scalatest.BeforeAndAfterAll
-import org.mockito.Mockito._
-import org.mockito.Matchers._
-import net.rrm.ehour.report.criteria.{ReportCriteria, AvailableCriteria, UserSelectedCriteria}
-import org.apache.wicket.model.CompoundPropertyModel
-import net.rrm.ehour.domain._
+import java.util.Date
 import java.{util => ju}
+
+import com.google.common.collect.Lists
+import net.rrm.ehour.AbstractSpringWebAppSpec
+import net.rrm.ehour.domain._
+import net.rrm.ehour.report.criteria.{AvailableCriteria, ReportCriteria, UserSelectedCriteria}
+import net.rrm.ehour.report.service.ReportCriteriaService
+import org.apache.wicket.model.CompoundPropertyModel
+import org.mockito.Matchers._
+import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfterAll
+
 import scala.collection.convert.WrapAsJava
 import scala.collection.mutable
-import com.google.common.collect.Lists
-import java.util.Date
 
 
 class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
@@ -32,8 +34,7 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
 
     val availableCriteria = new AvailableCriteria(toList(mutable.Buffer(CustomerObjectMother.createCustomer())),
       toList(mutable.Buffer(ProjectObjectMother.createProject(1))),
-      toList(mutable.Buffer(UserObjectMother.createUser())),
-      toList(mutable.Buffer(UserDepartmentObjectMother.createUserDepartment())))
+      toList(mutable.Buffer(UserObjectMother.createUser())))
     val criteria = new ReportCriteria(availableCriteria, new UserSelectedCriteria)
     val model = new CompoundPropertyModel[ReportCriteriaBackingBean](new ReportCriteriaBackingBean(criteria))
 

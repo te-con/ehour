@@ -25,8 +25,8 @@ object AggregateReportDataObjectMother {
     val projectD = new Project(4, customerC).setName("Project D")
     val projectE = new Project(5, customerD).setName("Project E")
 
-    val userR = new User(1, "Rosalie", "Edeling")
-    val userT = new User(2, "Thies", "Edeling")
+    val userR = new User(1, "Rosalie Edeling")
+    val userT = new User(2, "Thies Edeling")
 
     val reportElementA = new ActivityAggregateReportElement(new Activity(userR, projectA), 14)
     val reportElementB = new ActivityAggregateReportElement(new Activity(userR, projectB), 8)

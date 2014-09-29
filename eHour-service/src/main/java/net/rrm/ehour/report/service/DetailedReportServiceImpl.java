@@ -50,7 +50,7 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
 
     @Autowired
     public DetailedReportServiceImpl(UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, DetailedReportDao detailedReportDao, ReportAggregatedDao reportAggregatedDAO) {
-        super(userDao, projectDao, lockService, reportAggregatedDAO);
+        super(projectDao, lockService, reportAggregatedDAO);
         this.detailedReportDao = detailedReportDao;
     }
 

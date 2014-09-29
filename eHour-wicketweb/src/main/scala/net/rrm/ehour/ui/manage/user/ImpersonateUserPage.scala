@@ -1,5 +1,7 @@
 package net.rrm.ehour.ui.manage.user
 
+import java.util
+
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.security.SecurityRules
 import net.rrm.ehour.ui.common.border.{GreyBlueRoundedBorder, GreyRoundedBorder}
@@ -15,7 +17,6 @@ import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.ResourceModel
 import org.apache.wicket.spring.injection.annot.SpringBean
-import java.util
 
 import scala.collection.convert.{WrapAsJava, WrapAsScala}
 

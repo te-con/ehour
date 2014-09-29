@@ -18,4 +18,3 @@ public enum ColumnType {
         return numeric;
     }
 }
-git

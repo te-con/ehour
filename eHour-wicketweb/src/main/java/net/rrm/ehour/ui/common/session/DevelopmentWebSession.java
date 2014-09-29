@@ -2,7 +2,6 @@ package net.rrm.ehour.ui.common.session;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.ui.common.authorization.AuthUser;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
 

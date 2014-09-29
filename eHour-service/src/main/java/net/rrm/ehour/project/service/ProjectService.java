@@ -72,12 +72,6 @@ public interface ProjectService {
 
     Project createProject(Project project);
 
-    /**
-     * Validate whether the PM role setup is correct for a project
-     * @param project
-     */
-    void validatePMRoles(Project project);
-
 	/**
 	 * Delete the project
 	 * @param projectId

@@ -109,12 +109,6 @@ public class ProjectServiceImpl implements ProjectService {
         return project;
     }
 
-    @Override
-    @Transactional
-    public void validatePMRoles(Project project) {
-        userService.validateProjectManagementRoles(project.getProjectManager() == null ? null : project.getProjectManager().getUserId());
-    }
-
     @Transactional
     @Auditable(actionType = AuditActionType.DELETE)
     public void deleteProject(Integer projectId) throws ParentChildConstraintException {

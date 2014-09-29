@@ -20,7 +20,7 @@ import org.apache.wicket.markup.html.panel.Fragment
 import org.apache.wicket.model.{IModel, ResourceModel}
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUsers: (util.List[User]) => util.List[User]) extends AbstractBasePanel[ManageUserBackingBean](id) {
+class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUsers: (util.List[User]) => util.List[User]) extends AbstractBasePanel[LdapUserBackingBean](id) {
   def this(id: String, titleResourceKey: Option[String]) = this(id, titleResourceKey, xs => xs)
 
   val Self = this
@@ -57,8 +57,7 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
           item.add(AttributeModifier.append("class", "inactive"))
         }
 
-        item.add(new Label("firstName", user.getFirstName))
-        item.add(new Label("lastName", user.getLastName))
+        item.add(new Label("name", user.getName))
         item.add(new Label("userName", user.getUsername))
       }
 
@@ -94,8 +93,8 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
   }
 
   private def users: util.List[User] = {
-    val users: util.List[User] = filterUsers(if (hideInactiveFilter.isHideInactive) userService.getActiveUsers else userService.getUsers)
-    Collections.sort(users, new UserComparator(false))
+    val users: util.List[User] = filterUsers(if (hideInactiveFilter.isHideInactive) userService.getUsers() else userService.getUsers)
+    Collections.sort(users, new UserComparator())
     users
   }
 }

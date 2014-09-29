@@ -21,29 +21,7 @@ import net.rrm.ehour.domain.User;
 import java.util.Comparator;
 
 public class UserComparator implements Comparator<User> {
-    private boolean firstNameFirst;
-
-    public UserComparator(boolean firstNameFirst) {
-        this.firstNameFirst = firstNameFirst;
-    }
-
     public int compare(User o1, User o2) {
-        int cmp;
-
-        if (firstNameFirst) {
-            cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
-
-            if (cmp == 0) {
-                cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
-            }
-        } else {
-            cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
-
-            if (cmp == 0) {
-                cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
-            }
-        }
-
-        return cmp;
+        return o1.getFullName().compareTo(o2.getFullName());
     }
 }

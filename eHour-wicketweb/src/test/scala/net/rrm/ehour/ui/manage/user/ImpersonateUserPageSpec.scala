@@ -30,7 +30,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
 
     before {
       reset(service, overviewTimesheet)
-      when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
+      when(service.getUsers).thenReturn(util.Arrays.asList(new User("thies")))
     }
 
     "render" in {

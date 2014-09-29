@@ -24,12 +24,9 @@ import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.security.SecurityRules;
-import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
@@ -45,12 +42,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
@@ -68,13 +63,13 @@ public class EhourWebSession extends AuthenticatedWebSession {
     private AuditService auditService;
 
     @SpringBean
-    private AuthorizationService authorizationService;
+    private UserService userService;
 
     private Calendar navCalendar;
     private UserSelectedCriteria userSelectedCriteria;
     private Boolean hideInactiveSelections = true;
 
-    private Optional<AuthUser> impersonatingAuthUser = Optional.absent();
+    private Optional<User> impersonatingAuthUser = Optional.absent();
 
     private static final Logger LOGGER = Logger.getLogger(EhourWebSession.class);
 
@@ -167,7 +162,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
                 String uid = principal.getUsername();
 
-                User authorizedUser = authorizationService.getAuthorizedUser(uid);
+                User authorizedUser = userService.getAuthorizedUser(uid);
 
                 if (authorizedUser == null) {
                     LOGGER.info(String.format("%s succesfully authenticated but not found in local eHour database.", uid));
@@ -258,7 +253,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
         User originalUser = getUser();
 
-        impersonatingAuthUser = Optional.of(new AuthUser(userToImpersonate));
+        impersonatingAuthUser = Optional.of(userToImpersonate);
 
         clearUserSelectedReportCriteria();
 
@@ -273,13 +268,12 @@ public class EhourWebSession extends AuthenticatedWebSession {
     private void logAndAuditImpersonation(User originalUser) {
         StringBuilder auditMsg = new StringBuilder((originalUser != null) ? originalUser.getFullName() : "N/A");
         auditMsg.append(" started impersonating as ");
-        auditMsg.append(impersonatingAuthUser.get().getUser().getFullName());
+        auditMsg.append(impersonatingAuthUser.get().getFullName());
 
         LOGGER.info(auditMsg.toString());
 
         auditService.doAudit(new Audit()
                 .setAuditActionType(AuditActionType.IMPERSONATE)
-                .setUser(originalUser)
                 .setUserFullName(auditMsg.toString())
                 .setDate(new Date())
                 .setSuccess(true));
@@ -287,7 +281,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     public void stopImpersonating() {
         if (impersonatingAuthUser.isPresent()) {
-            User impUser = impersonatingAuthUser.get().getUser();
+            User impUser = impersonatingAuthUser.get();
 
             User originalUser = getUser();
             logAndAuditStopImpersonation(originalUser, impUser);
@@ -315,7 +309,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
         auditService.doAudit(new Audit()
                 .setAuditActionType(AuditActionType.STOP_IMPERSONATE)
-                .setUser(originalUser)
                 .setUserFullName(auditMsg.toString())
                 .setDate(new Date())
                 .setSuccess(true));

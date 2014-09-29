@@ -1,7 +1,10 @@
 package net.rrm.ehour.ui.report.page;
 
 import com.google.common.collect.Sets;
-import net.rrm.ehour.domain.*;
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
@@ -139,10 +142,6 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         Set<Project> projects = Sets.newHashSet();
         projects.add(new Project(2));
         availCriteria.setProjects(projects);
-
-        List<UserDepartment> depts = new ArrayList<UserDepartment>();
-        depts.add(new UserDepartment(2));
-        availCriteria.setUserDepartments(depts);
 
         Set<User> usrs = Sets.newHashSet();
         usrs.add(new User(2));

@@ -22,7 +22,6 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.TimesheetLock;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
@@ -47,9 +46,6 @@ public class ReportCriteriaServiceImplTest {
 
     @Mock
     private ReportAggregatedDao reportAggregatedDAO;
-
-    @Mock
-    private UserDepartmentDao userDepartmentDAO;
 
     @Mock
     private CustomerAndProjectCriteriaFilter customerAndProjectCriteriaFilter;

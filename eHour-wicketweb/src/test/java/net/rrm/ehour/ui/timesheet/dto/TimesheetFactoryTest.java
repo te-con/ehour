@@ -30,15 +30,14 @@ public class TimesheetFactoryTest {
 
         WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(activity), RANGE, null, Lists.<Date>newArrayList());
 
-
         // when
         Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
-        SortedMap<Project,List<TimesheetRow>> projects = timesheet.getProjects();
+        TimesheetProjects projects = timesheet.getProjects();
 
-        assertEquals(1, projects.keySet().size());
-        assertEquals(1, projects.values().iterator().next().size());
+        assertEquals(1, projects.get().size());
+        assertEquals(1, projects.getTimesheetRows().iterator().next().size());
     }
 
     @Test
@@ -57,10 +56,10 @@ public class TimesheetFactoryTest {
         Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
-        SortedMap<Project,List<TimesheetRow>> projects = timesheet.getProjects();
+        TimesheetProjects projects = timesheet.getProjects();
 
-        assertEquals(1, projects.keySet().size());
-        assertEquals(2, projects.values().iterator().next().size());
+        assertEquals(1, projects.get().size());
+        assertEquals(2, projects.getTimesheetRows().iterator().next().size());
     }
 
     @Test
@@ -81,9 +80,9 @@ public class TimesheetFactoryTest {
         Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
 
         // then
-        SortedMap<Project,List<TimesheetRow>> projectRows = timesheet.getProjects();
+        TimesheetProjects projectRows = timesheet.getProjects();
 
-        Set<Project> projects = projectRows.keySet();
+        List<Project> projects = projectRows.get();
         assertEquals(2, projects.size());
 
         Iterator<Project> iterator = projects.iterator();

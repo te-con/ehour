@@ -40,7 +40,7 @@ class ProjectManagerNotifierServiceMailImpl @Autowired()(mailMan: MailMan, confi
     val project = activity.getProject
 
     val assignedUser = activity.getAssignedUser
-    val fullName = s"${assignedUser.getFirstName} ${assignedUser.getLastName}"
+    val fullName = s"${assignedUser.getFullName}"
 
     val subject = s"eHour: All allotted hours used for project ${project.getFullName} by $fullName"
 
@@ -82,8 +82,7 @@ class ProjectManagerNotifierServiceMailImpl @Autowired()(mailMan: MailMan, confi
     val project = assignment.getProject
 
     val assignedUser = assignment.getAssignedUser
-    val fullName = s"${assignedUser.getFirstName} ${assignedUser.getLastName}"
-
+    val fullName = s"${assignedUser.getFullName}"
 
     val subject = s"eHour: All allotted hours used for project ${project.getFullName} by $fullName"
 

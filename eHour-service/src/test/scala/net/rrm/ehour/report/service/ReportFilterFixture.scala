@@ -1,6 +1,6 @@
 package net.rrm.ehour.report.service
 
-import net.rrm.ehour.domain.{UserDepartmentObjectMother, ProjectObjectMother, UserObjectMother, CustomerObjectMother}
+import net.rrm.ehour.domain.{CustomerObjectMother, ProjectObjectMother, UserObjectMother}
 
 
 object ReportFilterFixture {
@@ -25,7 +25,7 @@ object ReportFilterFixture {
 
   val otherPm = UserObjectMother.createUser()
   otherPm.setUserId(2)
-  otherPm.setFirstName("other")
+  otherPm.setName("other")
   val otherPmCustomer = CustomerObjectMother.createCustomer(5)
   val otherPmProject = otherPmCustomer.getProjects.iterator().next
   otherPmProject.setProjectManager(otherPm)
@@ -40,6 +40,4 @@ object ReportFilterFixture {
   val inactiveButBillableSecondProject = ProjectObjectMother.createProject(6, activeWithInactiveBillableCustomer)
   inactiveButBillableSecondProject.setActive(false)
   inactiveButBillableSecondProject.setBillable(true)
-
-  val department = UserDepartmentObjectMother.createUserDepartment()
 }

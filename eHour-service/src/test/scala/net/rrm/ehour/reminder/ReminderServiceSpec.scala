@@ -42,8 +42,7 @@ class ReminderServiceSpec extends AbstractSpec {
 
     "replace $name with the user full name" in {
       val user = UserObjectMother.createUser
-      user.setFirstName("a")
-      user.setLastName("b")
+      user.setName("a b")
 
       config.setReminderBody("hello $name")
 

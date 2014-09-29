@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.domain;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -76,6 +75,11 @@ public class User extends DomainObject<Integer, User> {
     }
 
     public User(String username) {
+        this.username = username;
+    }
+
+    public User(Integer userId, String username) {
+        this.userId = userId;
         this.username = username;
     }
 
@@ -142,6 +146,21 @@ public class User extends DomainObject<Integer, User> {
         this.userRoles = userRoles;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
+    }
 
     /**
      * @return the active
@@ -164,6 +183,8 @@ public class User extends DomainObject<Integer, User> {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
     @Override
     public Integer getPK() {

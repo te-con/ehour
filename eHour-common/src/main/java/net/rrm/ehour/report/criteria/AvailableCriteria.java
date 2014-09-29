@@ -18,7 +18,10 @@ package net.rrm.ehour.report.criteria;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.*;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.TimesheetLock;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.sort.ProjectComparator;
 import net.rrm.ehour.sort.UserComparator;
@@ -35,7 +38,7 @@ import java.util.List;
 
 public class AvailableCriteria implements Serializable {
     private static final long serialVersionUID = -6687214845760958691L;
-    private static final UserComparator USER_COMPARATOR = new UserComparator(false);
+    private static final UserComparator USER_COMPARATOR = new UserComparator();
     private DateRange reportRange;
     private List<Customer> customers = Lists.newArrayList();
     private List<Project> projects = Lists.newArrayList();

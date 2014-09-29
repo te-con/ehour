@@ -1,6 +1,6 @@
 package net.rrm.ehour.persistence.backup.dao
 
-import net.rrm.ehour.domain.User
+import net.rrm.ehour.domain.UserRole
 import org.junit.Assert
 import org.junit.Test
 
@@ -14,33 +14,30 @@ import org.junit.Test
 class BackupEntityTypeTest
 {
 
-  @Test
-  void shouldReturnOrderedTypes()
-  {
-    def values = BackupEntityType.orderedValues()
+    @Test
+    void shouldReturnOrderedTypes()
+    {
+        def values = BackupEntityType.orderedValues()
 
-    Assert.assertEquals 0, values[0].order
-    Assert.assertEquals 1, values[1].order
-    Assert.assertEquals 2, values[2].order
-  }
+        Assert.assertEquals 0, values[0].order
+        Assert.assertEquals 1, values[1].order
+        Assert.assertEquals 2, values[2].order
+    }
 
-  @Test
-  void shouldReturnReverserOrderedTypes()
-  {
-    def values = BackupEntityType.reverseOrderedValues();
+    @Test
+    void shouldReturnReverserOrderedTypes()
+    {
+        def values = BackupEntityType.reverseOrderedValues();
 
-    assert 8 == values[0].order
-    assert 7 == values[1].order
-  }
 
-  @Test
-  void shouldFetchForClazz()
-  {
-<<<<<<< HEAD:eHour-persistence/src/test/groovy/net/rrm/ehour/persistence/backup/dao/BackupEntityTypeTest.groovy
-    Assert.assertEquals BackupEntityType.USER_DEPARTMENT, BackupEntityType.forClass(UserDepartment.class)
-=======
-    Assert.assertEquals ExportType.USERS, ExportType.forClass(User.class)
->>>>>>> 9f7e93a... EHV-52 - changed concept, User will be combination of db user and LDAP and UserService combines UserDao and LDAP - always enriching the User object:eHour-persistence/src/test/groovy/net/rrm/ehour/persistence/export/dao/ExportTypeTest.groovy
-  }
+        assert 10 == values[0].order
+        assert 9 == values[1].order
+    }
+
+    @Test
+    void shouldFetchForClazz()
+    {
+        Assert.assertEquals BackupEntityType.USER_ROLE, BackupEntityType.forClass(UserRole.class)
+    }
 
 }

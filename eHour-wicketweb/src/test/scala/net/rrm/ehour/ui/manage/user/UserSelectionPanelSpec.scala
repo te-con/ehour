@@ -22,7 +22,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
     }
 
     "render" in {
-      when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
+      when(service.getUsers).thenReturn(util.Arrays.asList(new User("thies")))
 
       startPanel()
       tester.assertNoErrorMessage()
@@ -31,7 +31,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
     }
 
     "handle updated list event" in {
-      when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
+      when(service.getUsers).thenReturn(util.Arrays.asList(new User("thies")))
 
       val component = startPanel()
 
@@ -46,7 +46,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
     }
 
     "handle inactive filter event" in {
-      when(service.getActiveUsers).thenReturn(util.Arrays.asList(new User("thies", "thies")))
+      when(service.getUsers).thenReturn(util.Arrays.asList(new User("thies")))
 
       val component = startPanel()
 

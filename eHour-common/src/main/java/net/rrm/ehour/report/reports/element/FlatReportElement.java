@@ -110,6 +110,10 @@ public class FlatReportElement implements ProjectStructuredReportElement {
         this.rate = rate;
     }
 
+    public void setUserFullname(String userFullname) {
+        this.userFullname = userFullname;
+    }
+
     public String getUserFullname() {
         return userFullname;
     }

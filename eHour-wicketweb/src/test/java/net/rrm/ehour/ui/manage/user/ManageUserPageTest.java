@@ -18,12 +18,9 @@ package net.rrm.ehour.ui.manage.user;
 
 import com.google.common.collect.Sets;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.user.service.UserService;
-import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,15 +50,13 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
 
         List<User> users = new ArrayList<User>();
         user = new User();
-        user.setFirstName("thies");
         user.setUserId(1);
-        user.setLastName("Edeling");
+        user.setName("Edeling");
         user.setUserRoles(Sets.newHashSet(UserRole.ADMIN));
         users.add(user);
 
-        when(userService.getActiveUsers()).thenReturn(users);
+        when(userService.getUsers()).thenReturn(users);
         when(userService.getUserRoles()).thenReturn(new ArrayList<UserRole>());
-        when(userService.getUserDepartments()).thenReturn(new ArrayList<UserDepartment>());
     }
 
     @Test
@@ -72,35 +67,4 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
         tester.assertRenderedPage(ManageUserPage.class);
         tester.assertNoErrorMessage();
     }
-
-    @Test
-    public void use_read_only_when_manager_views_admin() throws ObjectNotFoundException {
-        getConfig().setSplitAdminRole(true);
-        when(userService.getUserAndCheckDeletability(1)).thenReturn(user);
-
-        webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER));
-        super.startTester();
-
-        tester.startPage(ManageUserPage.class);
-
-        tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
-
-        tester.assertComponent("tabs:panel", ManageUserReadOnlyPanel.class);
-    }
-
-    @Test
-    public void use_edit_when_manager_views_non_admins() throws ObjectNotFoundException {
-        getConfig().setSplitAdminRole(true);
-        user.setUserRoles(Sets.newHashSet(UserRole.USER));
-        when(userService.getUserAndCheckDeletability(1)).thenReturn(user);
-
-        webApp.setAuthorizedRoles(new Roles(UserRole.ROLE_MANAGER));
-        super.startTester();
-
-        tester.startPage(ManageUserPage.class);
-
-        tester.executeAjaxEvent("userSelection:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", "click");
-
-        tester.assertComponent("tabs:panel", ManageUserFormPanel.class);
-    }
-}PP
+}

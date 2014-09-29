@@ -24,25 +24,25 @@ import net.rrm.ehour.user.service.LdapUser;
  * Backing bean for users
  */
 
-public class ManageUserBackingBean extends AdminBackingBeanImpl<User> {
+public class LdapUserBackingBean extends AdminBackingBeanImpl<User> {
     private static final long serialVersionUID = 2781902854421696575L;
-    private final LdapUser user;
+    private LdapUser user;
 
-    public ManageUserBackingBean(LdapUser user) {
-        this.user = user;
+    public LdapUserBackingBean(LdapUser ldapUser) {
+        this.user = ldapUser;
 
-        if (user.getUser() == null) {
-            user.setUser(new User());
+        // set a dummy user in case the ldapuser is not authorized yet
+        if (ldapUser.getUser() == null) {
+            ldapUser.setUser(new User());
         }
-
     }
 
-    public User getUser() {
-        return user.getUser();
+    public LdapUser getUser() {
+        return user;
     }
 
     @Override
     public User getDomainObject() {
-        return getUser();
+        return getUser().getUser();
     }
 }

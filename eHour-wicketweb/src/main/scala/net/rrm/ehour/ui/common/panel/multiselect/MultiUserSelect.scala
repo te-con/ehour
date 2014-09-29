@@ -43,7 +43,7 @@ class MultiUserSelect(id: String, model: IModel[ju.List[User]] = new ListModel[U
 
     userToItemId.clear()
 
-    val users = userService.getActiveUsers
+    val users = userService.getUsers
     ju.Collections.sort(users)
 
     val allBorder = new GreyBlueRoundedBorder(AllUsersBorderId)

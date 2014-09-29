@@ -54,7 +54,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Activi
 
     @Autowired
     public AggregateReportServiceImpl(ActivityService activityService, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
-        super(userDao, projectDao, lockService, reportAggregatedDAO);
+        super(projectDao, lockService, reportAggregatedDAO);
         this.reportAggregatedDAO = reportAggregatedDAO;
         this.activityService = activityService;
     }

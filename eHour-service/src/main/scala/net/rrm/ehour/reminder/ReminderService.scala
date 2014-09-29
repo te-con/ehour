@@ -75,7 +75,7 @@ class ReminderService @Autowired()(config: EhourConfig, userFinder: IFindUsersWi
   }
 
   private[reminder] def enrichMailBody(user: User): String = {
-    val fullName = user.getFirstName + " " + user.getLastName
+    val fullName = user.getFullName
     val template = config.getReminderBody
 
     if (StringUtils.isNotBlank(template))

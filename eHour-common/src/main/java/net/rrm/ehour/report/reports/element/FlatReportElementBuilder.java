@@ -23,8 +23,7 @@ public class FlatReportElementBuilder {
 
         User user = activity.getAssignedUser();
         element.setUserId(user.getUserId());
-        element.setUserFirstName(user.getFirstName());
-        element.setUserLastName(user.getLastName());
+        element.setUserFullname(user.getFullName());
 
         element.setDisplayOrder(1);
 

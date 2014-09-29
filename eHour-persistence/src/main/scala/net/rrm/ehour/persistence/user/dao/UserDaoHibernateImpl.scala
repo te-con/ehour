@@ -2,7 +2,7 @@ package net.rrm.ehour.persistence.user.dao
 
 import java.util
 
-import net.rrm.ehour.domain.{User, UserDepartment, UserRole}
+import net.rrm.ehour.domain.{User, UserRole}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import org.springframework.stereotype.Repository

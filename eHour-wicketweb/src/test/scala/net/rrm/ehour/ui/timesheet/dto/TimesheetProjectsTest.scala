@@ -1,12 +1,12 @@
 package net.rrm.ehour.ui.timesheet.dto
 
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import java.util.Arrays
+
+import net.rrm.ehour.config.EhourConfigStub
+import net.rrm.ehour.domain.{ActivityMother, Project}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import net.rrm.ehour.config.EhourConfigStub
-import java.util.Arrays
-import net.rrm.ehour.domain.{Project, ActivityMother}
+import org.scalatest.{BeforeAndAfter, FunSuite, ShouldMatchers}
 
 @RunWith(classOf[JUnitRunner])
 class TimesheetProjectsTest extends FunSuite with ShouldMatchers with BeforeAndAfter {
@@ -59,20 +59,20 @@ class TimesheetProjectsTest extends FunSuite with ShouldMatchers with BeforeAndA
   }
 
   test("should filter project list on activity name") {
-    val prjs = projects.get(Some("A")).iterator()
+    val prjs = projects.get().iterator()
     prjs.next() should be(prjB)
     prjs.next() should be(prjA)
     prjs.hasNext should be (false)
   }
 
   test("should filter timesheet rows on activity name") {
-    val prjs = projects.getTimesheetRow(prjA, Some("D"))
+    val prjs = projects.getTimesheetRow(prjA)
     prjs.get(0).getActivity.getName should be ("CDE")
     prjs.size() should be (1)
   }
 
   test("should filter and sort timesheet rows on activity name") {
-    val prjs = projects.getTimesheetRow(prjA, Some("C"))
+    val prjs = projects.getTimesheetRow(prjA)
     prjs.get(0).getActivity.getName should be ("ABC")
     prjs.get(1).getActivity.getName should be ("CDE")
     prjs.size() should be (2)

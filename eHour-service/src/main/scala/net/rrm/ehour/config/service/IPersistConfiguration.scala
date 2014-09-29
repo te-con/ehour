@@ -31,7 +31,7 @@ class ConfigurationPersistence @Autowired()(configurationService: ConfigurationS
       val managers = userService.getUsers(UserRole.MANAGER)
       WrapAsScala.asScalaBuffer(managers).foreach(user => {
         user.deleteUserRole(UserRole.MANAGER).addUserRole(newManagerRole)
-        userService.persistEditedUser(user)
+        userService.editUser(user)
       })
     }
   }

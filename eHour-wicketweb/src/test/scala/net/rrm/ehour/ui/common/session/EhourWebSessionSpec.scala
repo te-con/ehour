@@ -23,7 +23,7 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
   }
 
   "Ehour Web Session should" should {
-    val User = new User("thies", "password").addUserRole(USER)
+    val User = new User("thies").addUserRole(USER)
 
     "throw exception when not allowed to impersonate" in {
       val session = new EhourWebSession(req)  {

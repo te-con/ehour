@@ -150,23 +150,6 @@ public class DetailedReportServiceImplTest {
         userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
     }
 
-    @Test
-    public void should_filter_on_user_department() {
-        provideNoLocks();
-        provideNoActivitiesWithoutBookings();
-        singleProjectSelected();
-        List<UserDepartment> departments = Arrays.asList(new UserDepartment(1));
-        userSelectedCriteria.setDepartments(departments);
-
-        expect(userDao.findUsersForDepartments(departments, true)).andReturn(Arrays.asList(new User(1)));
-
-        expect(detailedReportDao.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
-                .andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDao, userDao);
-        detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDao, userDao);
-    }
-
     private void singleProjectSelected() {
         userSelectedCriteria.setProjects(Arrays.asList(new Project(1)));
     }

@@ -30,7 +30,7 @@ class ConfigurationPersistenceSpec extends AbstractSpec {
 
       user.getUserRoles.iterator().next() should be (UserRole.USER)
 
-      verify(userService).persistEditedUser(user)
+      verify(userService).editUser(user)
 
       verify(scheduler).rescheduleReminders(config)
     }

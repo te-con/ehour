@@ -20,7 +20,7 @@ class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
   "Lock Form Panel" should {
 
-    when(userService.getActiveUsers).thenReturn(Lists.newArrayList(UserObjectMother.createUser()))
+    when(userService.getUsers).thenReturn(Lists.newArrayList(UserObjectMother.createUser()))
 
     def createPanel = new LockFormPanel("id", new Model(LockAdminBackingBeanObjectMother.create))
 

@@ -16,7 +16,7 @@ class MultiUserSelectSpec extends AbstractSpringWebAppSpec {
     super.beforeEach()
     reset(userService)
 
-    when(userService.getActiveUsers).thenReturn(toJava(List(user)))
+    when(userService.getUsers).thenReturn(toJava(List(user)))
   }
 
   "MultiUser Select" should {

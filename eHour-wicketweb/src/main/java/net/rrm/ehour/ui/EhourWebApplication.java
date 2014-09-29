@@ -31,7 +31,6 @@ import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.manage.customer.CustomerManagePage;
-import net.rrm.ehour.ui.manage.department.DepartmentManagePage;
 import net.rrm.ehour.ui.manage.lock.LockManagePage;
 import net.rrm.ehour.ui.manage.project.ProjectManagePage;
 import net.rrm.ehour.ui.manage.user.ImpersonateUserPage;
