@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.manage.user;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
+import net.rrm.ehour.user.service.LdapUser;
 
 /**
  * Backing bean for users
@@ -25,22 +26,20 @@ import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
 
 public class ManageUserBackingBean extends AdminBackingBeanImpl<User> {
     private static final long serialVersionUID = 2781902854421696575L;
-    private final User user;
-    private String originalUsername;
+    private final LdapUser user;
     private final boolean editMode;
 
     private boolean showAssignments;
 
-    public ManageUserBackingBean(User user) {
+    public ManageUserBackingBean(LdapUser user) {
         this(user, true);
-
-        this.originalUsername = user.getUsername();
     }
 
-    public ManageUserBackingBean() {
-        this(new User(), false);
 
-        user.setActive(true);
+    private ManageUserBackingBean(LdapUser user, boolean editMode) {
+        this.editMode = editMode;
+        this.user = user;
+
     }
 
     public boolean isShowAssignments() {
@@ -51,22 +50,12 @@ public class ManageUserBackingBean extends AdminBackingBeanImpl<User> {
         this.showAssignments = showAssignments;
     }
 
-    private ManageUserBackingBean(User user, boolean editMode) {
-        this.editMode = editMode;
-        this.user = user;
-
-    }
-
     public boolean isEditMode() {
         return editMode;
     }
 
     public User getUser() {
-        return user;
-    }
-
-    public String getOriginalUsername() {
-        return originalUsername;
+        return user.getUser();
     }
 
     @Override
