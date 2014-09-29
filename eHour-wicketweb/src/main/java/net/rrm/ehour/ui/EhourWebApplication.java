@@ -168,7 +168,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
         mountPage("/admin", MainConfigPage.class);
         mountPage("/admin/employee", ManageUserPage.class);
-        mountPage("/admin/department", DepartmentManagePage.class);
         mountPage("/admin/customer", CustomerManagePage.class);
         mountPage("/admin/project", ProjectManagePage.class);
         mountPage("/admin/activity", ActivityAdmin.class);
