@@ -8,19 +8,30 @@
         <sec:filter-chain-map path-type="ant">
             <sec:filter-chain pattern="/eh/**"
                               filters="
-	           securityContextPersistenceFilter" />
+	           securityContextPersistenceFilter"/>
         </sec:filter-chain-map>
     </bean>
 
     <bean id="securityContextPersistenceFilter"
           class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
-        <property name="forceEagerSessionCreation" value="true" />
+        <property name="forceEagerSessionCreation" value="true"/>
     </bean>
 
-    <sec:ldap-server url="${ldap.url}" />
+    <sec:ldap-server url="${ldap.url}"/>
 
     <sec:authentication-manager alias="authenticationManager">
         <sec:ldap-authentication-provider user-search-filter="(&amp;(uid={0})(objectClass=person))"
-                                          user-search-base="o=ptc"/>
+                                          user-search-base="${ldap.basedn}"/>
     </sec:authentication-manager>
+
+    <!-- set up LDAP template -->
+    <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+        <property name="url" value="${ldap.url}"/>
+        <property name="base" value="${ldap.basedn}"/>
+        <property name="anonymousReadOnly" value="true" />
+    </bean>
+
+    <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+        <constructor-arg ref="contextSource"/>
+    </bean>
 </beans>

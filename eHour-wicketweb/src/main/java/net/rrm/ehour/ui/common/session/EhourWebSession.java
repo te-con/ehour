@@ -27,6 +27,7 @@ import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.security.SecurityRules;
+import net.rrm.ehour.report.criteria.UserCriteria;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.util.WebUtils;
@@ -67,7 +68,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
     private AuditService auditService;
 
     @SpringBean
-    private UserService userService;
+    private AuthorizationService authorizationService;
 
     private Calendar navCalendar;
     private UserSelectedCriteria userSelectedCriteria;
@@ -166,7 +167,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
                 String uid = principal.getUsername();
 
-                User authorizedUser = userService.getAuthorizedUser(uid);
+                User authorizedUser = authorizationService.getAuthorizedUser(uid);
 
                 if (authorizedUser == null) {
                     LOGGER.info(String.format("%s succesfully authenticated but not found in local eHour database.", uid));
