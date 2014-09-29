@@ -416,7 +416,8 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
                 Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
                 item.add(new Label("project", project.getName()));
-                item.add(new TimesheetRowList("rows", new LazyListModel(timesheet, project), grandTotals, form, isModerating));
+
+                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this));
             }
         };
         projects.setReuseItems(true);

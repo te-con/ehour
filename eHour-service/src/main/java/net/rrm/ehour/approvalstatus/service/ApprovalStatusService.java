@@ -1,11 +1,11 @@
 package net.rrm.ehour.approvalstatus.service;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ApprovalStatus;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
+
+import java.util.List;
 
 public interface ApprovalStatusService {
 	
@@ -32,4 +32,5 @@ public interface ApprovalStatusService {
 	 */
 	void persist(ApprovalStatus approvalStatus);
 
+    void markReadyForApproval(User user, Customer customer, DateRange month);
 }

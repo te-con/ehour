@@ -1,12 +1,5 @@
 package net.rrm.ehour.ui.timesheet.panel.monthlyapproval;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ApprovalStatus;
@@ -19,9 +12,9 @@ import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -30,120 +23,114 @@ import java.util.*;
 
 /**
  * Monthly Approval Panel For Users
- **/
+ */
 
 public class MonthlyApprovalPanel extends Panel {
 
-	private static final long serialVersionUID = 7854272569953832030L;
+    private static final long serialVersionUID = 7854272569953832030L;
 
-	private CustomTitledGreyRoundedBorder greyBorder;
+    private CustomTitledGreyRoundedBorder greyBorder;
 
-	private static final String APPROVALSTATUS_RESOURCEKEY_PREFIX = "monthlyTimeSheet.approvalStatus.";
+    private static final String APPROVALSTATUS_RESOURCEKEY_PREFIX = "monthlyTimeSheet.approvalStatus.";
+    private static final String ACTION_ID = "action";
 
-	@SpringBean
-	private ApprovalStatusService approvalStatusService;
+    @SpringBean
+    private ApprovalStatusService approvalStatusService;
 
-	private User user;
+    private User user;
 
-	private DateRange monthRange;
+    private DateRange monthRange;
 
-	public MonthlyApprovalPanel(String id, Calendar overviewFor, SortedSet<UserProjectStatus> userProjectStatuses, User user) {
-		super(id);
-		setOutputMarkupId(true);
-		this.user = user;
-		overviewFor.set(Calendar.DAY_OF_MONTH, 1);
-		this.monthRange = DateUtil.calendarToMonthRange(overviewFor);
+    public MonthlyApprovalPanel(String id, Calendar overviewFor, SortedSet<UserProjectStatus> userProjectStatuses, User user) {
+        super(id);
+        setOutputMarkupId(true);
+        this.user = user;
+        overviewFor.set(Calendar.DAY_OF_MONTH, 1);
+        this.monthRange = DateUtil.calendarToMonthRange(overviewFor);
 
-		addPanelComponents(overviewFor, userProjectStatuses);
-	}
+        addPanelComponents(userProjectStatuses);
+    }
 
-	private void addPanelComponents(Calendar overviewFor, SortedSet<UserProjectStatus> userProjectStatuses) {
+    private void addPanelComponents(SortedSet<UserProjectStatus> userProjectStatuses) {
 
-		greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", new Label("title", new ResourceModel("monthlyapproval.title")));
+        greyBorder = new CustomTitledGreyRoundedBorder("greyBorder", new Label(CustomTitledGreyRoundedBorder.TITLE_ID, new ResourceModel("monthlyapproval.title")));
         greyBorder.setOutputMarkupId(true);
 
-		List<Customer> customers = getAllCustomersForWhichThisUserWorks(userProjectStatuses);
+        List<Customer> customers = getAllCustomersForWhichThisUserWorks(userProjectStatuses);
 
-		ListView<Customer> customerListView = new ListView<Customer>("monthlyApprovalStatus", customers) {
-			private static final long serialVersionUID = 9021357186561428730L;
+        ListView<Customer> customerListView = new ListView<Customer>("monthlyApprovalStatus", customers) {
+            private static final long serialVersionUID = 9021357186561428730L;
 
-			@Override
-			protected void populateItem(final ListItem<Customer> item) {
-				Customer customer = item.getModelObject();
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void populateItem(final ListItem<Customer> item) {
+                Customer customer = item.getModelObject();
 
-				Label customerLabel = new Label("customerName", customer.getName());
-				item.add(customerLabel);
+                Label customerLabel = new Label("customerName", customer.getName());
+                item.add(customerLabel);
 
                 List<ApprovalStatus> statuses = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(user, customer, monthRange);
 
                 String currentApprovalStatus = statuses.isEmpty() ? "in_progress" : statuses.get(0).getStatus().toString();
 
-				String currentApprovalStatusResourceBundleKey = APPROVALSTATUS_RESOURCEKEY_PREFIX + currentApprovalStatus.toLowerCase();
-				
-				final Label approvalStatusLabel = new Label("approvalStatus", new ResourceModel(currentApprovalStatusResourceBundleKey));
-				item.add(approvalStatusLabel);
-				approvalStatusLabel.setOutputMarkupId(true);
+                String currentApprovalStatusResourceBundleKey = APPROVALSTATUS_RESOURCEKEY_PREFIX + currentApprovalStatus.toLowerCase();
 
-				Form monthlyApprovalStatusForm = new Form<Customer>("monthlyApprovalStatusForm", item.getModel());
+                final Label approvalStatusLabel = new Label("approvalStatus", new ResourceModel(currentApprovalStatusResourceBundleKey));
+                item.add(approvalStatusLabel);
+                approvalStatusLabel.setOutputMarkupId(true);
 
-				AjaxLink<Void> requestApprovalLink = new AjaxLink<Void>("monthlyApproveLink") {
-					private static final long serialVersionUID = -3337416577258168873L;
+                item.add(isActionVisible(customer) ? createRequestApprovalFragment(item) : new Fragment(ACTION_ID, "noAction", this));
+            }
 
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						target.add(this);
-						target.add(greyBorder);
-						Customer customer = item.getModelObject();
-						changeApprovalStatus(customer);
-						setVisibilityOfApprovalLinkAndUpdateStatus(customer, this);
-					}
+        };
+        greyBorder.add(customerListView);
+        add(greyBorder);
+    }
 
-					private void changeApprovalStatus(Customer customer) {
-						List<ApprovalStatus> currentApprovalStatus = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(user,
-								customer, monthRange);
-						// TODO Can be handled in better way.
-						// Should get only element in the list
-						ApprovalStatus approvalStatus = currentApprovalStatus.get(0);
-						approvalStatus.setStatus(ApprovalStatusType.READY_FOR_APPROVAL);
-						approvalStatusService.persist(approvalStatus);
-					}
-				};
+    private Fragment createRequestApprovalFragment(final ListItem<Customer> item) {
+        Fragment requestApprovalFragment = new Fragment(ACTION_ID, "requestApprovalLink", this);
 
-				setVisibilityOfApprovalLinkAndUpdateStatus(item.getModelObject(), requestApprovalLink);
+        AjaxLink<Void> requestApprovalLink = new AjaxLink<Void>("monthlyApproveLink") {
+            private static final long serialVersionUID = -3337416577258168873L;
 
-				monthlyApprovalStatusForm.add(requestApprovalLink);
-				item.add(monthlyApprovalStatusForm);
-			}
-		};
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                target.add(this);
+                target.add(greyBorder);
+                Customer customer = item.getModelObject();
+                approvalStatusService.markReadyForApproval(user, customer, monthRange);
 
-		greyBorder.add(customerListView);
-		add(greyBorder);
-	}
+                setVisible(isActionVisible(item.getModelObject()));
+                target.add(this);
+            }
+        };
 
-    private void setVisibilityOfApprovalLinkAndUpdateStatus(Customer customer, AjaxLink<Void> requestApprovalLink) {
+        requestApprovalLink.setOutputMarkupPlaceholderTag(true);
+
+        requestApprovalFragment.add(requestApprovalLink);
+        return requestApprovalFragment;
+    }
+
+    private boolean isActionVisible(Customer customer) {
         List<ApprovalStatus> approvalStatusForCustomer = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(this.user,
                 customer, this.monthRange);
         Iterator<ApprovalStatus> iterator = approvalStatusForCustomer.iterator();
 
         ApprovalStatusType approvalStatusType = iterator.hasNext() ? iterator.next().getStatus() : ApprovalStatusType.IN_PROGRESS;
 
-        if (approvalStatusType.equals(ApprovalStatusType.IN_PROGRESS) || approvalStatusType.equals(ApprovalStatusType.REJECTED)) {
-            requestApprovalLink.setVisible(true);
-        } else {
-            requestApprovalLink.setVisible(false);
-        }
+        return (approvalStatusType.equals(ApprovalStatusType.IN_PROGRESS) || approvalStatusType.equals(ApprovalStatusType.REJECTED));
     }
 
-	private List<Customer> getAllCustomersForWhichThisUserWorks(SortedSet<UserProjectStatus> userProjectStatuses) {
-		Set<Customer> customers = new HashSet<Customer>();
-		List<Customer> customerList = new ArrayList<Customer>();
+    private List<Customer> getAllCustomersForWhichThisUserWorks(SortedSet<UserProjectStatus> userProjectStatuses) {
+        Set<Customer> customers = new HashSet<Customer>();
+        List<Customer> customerList = new ArrayList<Customer>();
 
-		for (UserProjectStatus userProjectStatus : userProjectStatuses) {
-			customers.add(userProjectStatus.getActivity().getProject().getCustomer());
-		}
+        for (UserProjectStatus userProjectStatus : userProjectStatuses) {
+            customers.add(userProjectStatus.getActivity().getProject().getCustomer());
+        }
 
-		customerList.addAll(customers);
+        customerList.addAll(customers);
 
-		return customerList;
-	}
+        return customerList;
+    }
 }

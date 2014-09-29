@@ -1,30 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
+      xmlns:wicket="http://wicket.sourceforge.net/" xml:lang="en" lang="en">
 <body>
-	<wicket:panel>
-		<span wicket:id="greyBorder" >
+<wicket:panel>
+		<span wicket:id="greyBorder">
 		<div class="MonthAggregateTable">
-			<div class="AggregateHeader">
-				<div class="textCell" style="width: 30%;margin-top:0;"><wicket:message key="overview.customer" /></div>
-				<div class="textCell" style="width: 30%;margin-top:0;"><wicket:message key="overview.approvalStatus" /></div>
-				<div class="textCell" style="width: 30%; float:right;margin-top:0;"><wicket:message key="monthlyapproval.action" /></div>				
-			</div>
-			<wicket:container wicket:id="monthlyApprovalStatus">
-				<div class="AggregateRow">
-					<div class="textCell" style="width: 30%" wicket:id="customerName">[customerName]</div>
-					<div class="textCell" style="width: 30%" wicket:id="approvalStatus">[approvalStatus]</div>
-					<form wicket:id="monthlyApprovalStatusForm" style="padding: 0;margin:0">
-						<a style="width: 30%; float:right; font-size: 10px" wicket:id="monthlyApproveLink" >
-							<span><wicket:message key="overview.approvalStatus.requestForApproval" /></span>
-						</a>
-					</form>	
-				</div>
-			</wicket:container>
-		</div>
-	</span>	
-	</wicket:panel>
+            <div class="AggregateHeader">
+                <div class="foldCell"></div>
+                <div class="textCell" style="margin-top:0;">
+                    <wicket:message key="overview.customer"/>
+                </div>
+                <div class="textCell" style="margin-top:0;">
+                    <wicket:message key="overview.approvalStatus"/>
+                </div>
+                <div class="textCell" style="float:right;margin-top:0;">
+                    <wicket:message key="monthlyapproval.action"/>
+                </div>
+            </div>
+            <wicket:container wicket:id="monthlyApprovalStatus">
+                <div class="AggregateRow">
+                    <div class="foldCell"></div>
+                    <div class="textCell" wicket:id="customerName">[customerName]</div>
+                    <div class="textCell" wicket:id="approvalStatus">[approvalStatus]</div>
+                    <div class="textCell" style="float:right;margin-top:0;" wicket:id="action">
+                    </div>
+                </div>
+            </wicket:container>
+        </div>
+	</span>
+
+    <wicket:fragment wicket:id="requestApprovalLink">
+        <a wicket:id="monthlyApproveLink"><wicket:message key="overview.approvalStatus.requestForApproval"/><div class="ui-icon ui-icon-check" style="float:left"></div></a>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="noAction">
+        No action possible
+    </wicket:fragment>
+
+
+
+</wicket:panel>
 </body>
 </html>

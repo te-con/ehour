@@ -17,21 +17,32 @@
 package net.rrm.ehour.ui.common.border;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 
 /**
  * Grey rounded border with custom title
- **/
+ */
 
-public class CustomTitledGreyRoundedBorder extends Border
-{
-	private static final long serialVersionUID = -7069112450640627111L;
+public class CustomTitledGreyRoundedBorder extends Border {
+    private static final long serialVersionUID = -7069112450640627111L;
 
-	public CustomTitledGreyRoundedBorder(String id, Component title)
-	{
-		super(id);
+    public static final String TITLE_ID = "title";
+    public static final String RIGHT_ID = "right";
 
-        addToBorder(title);
-	}
+    public CustomTitledGreyRoundedBorder(String id, Component title) {
+        this(id, title, new WebMarkupContainer(RIGHT_ID).setVisible(false));
+    }
 
+    public CustomTitledGreyRoundedBorder(String id, Component title, Component right) {
+        super(id);
+
+        WebMarkupContainer greyFrame = new WebMarkupContainer("greyFrame");
+
+        greyFrame.add(title);
+        greyFrame.add(right);
+        add(greyFrame);
+
+        greyFrame.add(getBodyContainer());
+    }
 }

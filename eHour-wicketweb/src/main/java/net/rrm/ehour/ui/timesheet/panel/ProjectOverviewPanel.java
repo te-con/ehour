@@ -141,7 +141,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
                 Number hours = projectStatus.getHours();
 
-                Label bookedHoursLabel = new Label("monthHours", new Model<Float>(projectStatus.getHours().floatValue()));
+                Label bookedHoursLabel = new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f));
                 item.add(bookedHoursLabel);
 
                 Float activityAllottedHours = projectStatus.getActivity().getAllottedHours();
