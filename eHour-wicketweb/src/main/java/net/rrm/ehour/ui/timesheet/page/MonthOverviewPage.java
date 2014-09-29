@@ -80,7 +80,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
 
     private void init(OpenPanel panelToOpen, User user) {
         // add calendar panel
-        calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser());
+        calendarPanel = new CalendarPanel("sidePanel", EhourWebSession.getUser());
         add(calendarPanel);
 
         WebMarkupContainer contentContainer;
@@ -174,7 +174,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
      */
     private TimesheetPanel getTimesheetPanel() {
         return new TimesheetPanel(ID_CONTENT_CONTAINER,
-                getEhourWebSession().getUser(),
+                EhourWebSession.getUser(),
                 getEhourWebSession().getNavCalendar());
     }
 

@@ -24,11 +24,13 @@ import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.util.WebUtils;
+import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Session;
@@ -44,6 +46,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -63,6 +66,9 @@ public class EhourWebSession extends AuthenticatedWebSession {
     @SpringBean
     private AuditService auditService;
 
+    @SpringBean
+    private UserService userService;
+
     private Calendar navCalendar;
     private UserSelectedCriteria userSelectedCriteria;
     private Boolean hideInactiveSelections = true;
@@ -70,6 +76,8 @@ public class EhourWebSession extends AuthenticatedWebSession {
     private Optional<AuthUser> impersonatingAuthUser = Optional.absent();
 
     private static final Logger LOGGER = Logger.getLogger(EhourWebSession.class);
+
+    private User user;
 
     public EhourWebSession(Request req) {
         super(req);
@@ -84,8 +92,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     public static User getUser() {
         EhourWebSession session = EhourWebSession.getSession();
-        AuthUser authUser = session.getAuthUser();
-        return (authUser != null) ? authUser.getUser() : null;
+        return  session.getAuthUser();
     }
 
 
@@ -128,25 +135,8 @@ public class EhourWebSession extends AuthenticatedWebSession {
         this.navCalendar = navCalendar;
     }
 
-    /**
-     * Get authenticated user
-     */
-    public AuthUser getAuthUser() {
-        AuthUser authUser = null;
-
-        if (isSignedIn()) {
-            if (impersonatingAuthUser.isPresent()) {
-                authUser = impersonatingAuthUser.get();
-            } else {
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-                if (authentication != null) {
-                    authUser = (AuthUser) authentication.getPrincipal();
-                }
-            }
-        }
-
-        return authUser;
+    public User getAuthUser() {
+        return isSignedIn() ? user : null;
     }
 
     /**
@@ -170,20 +160,37 @@ public class EhourWebSession extends AuthenticatedWebSession {
             Authentication authResult = authenticationManager.authenticate(authRequest);
             setAuthentication(authResult);
 
-            User user = ((AuthUser) authResult.getPrincipal()).getUser();
+            if (authResult.isAuthenticated()) {
 
-            auditService.doAudit(new Audit()
-                    .setAuditActionType(AuditActionType.LOGIN)
-                    .setUser(user)
-                    .setUserFullName(user.getFullName())
-                    .setDate(new Date())
-                    .setSuccess(Boolean.TRUE));
+                LdapUserDetails principal = (LdapUserDetails) authResult.getPrincipal();
 
-            LOGGER.info("Login by user '" + username + "'.");
-            return true;
+                String uid = principal.getUsername();
+
+                User authorizedUser = userService.getAuthorizedUser(uid);
+
+                if (authorizedUser == null) {
+                    LOGGER.info(String.format("%s succesfully authenticated but not found in local eHour database.", uid));
+                    return false;
+                } else {
+                    user = authorizedUser;
+
+                    auditService.doAudit(new Audit()
+                            .setAuditActionType(AuditActionType.LOGIN)
+                            .setUserFullName(user.getFullName())
+                            .setDate(new Date())
+                            .setSuccess(Boolean.TRUE));
+
+                    LOGGER.info(String.format("Login by user %s (%s).'", user.getUsername(), user.getFullName()));
+                    return true;
+                }
+            } else {
+                LOGGER.info("Failed to authenticate " + username);
+
+                return false;
+            }
 
         } catch (BadCredentialsException e) {
-            LOGGER.info("Failed to login for user '" + username + "': " + e.getMessage());
+            LOGGER.info("Failed login by user '" + username + "'.");
             setAuthentication(null);
             return false;
 
@@ -198,50 +205,23 @@ public class EhourWebSession extends AuthenticatedWebSession {
             throw e;
         }
     }
-
     @Override
     public Roles getRoles() {
         if (isSignedIn()) {
-            if (impersonatingAuthUser.isPresent()) {
-                Roles roles = new Roles();
-
-                Set<UserRole> userRoles = getAuthUser().getUser().getUserRoles();
-
-                for (UserRole userRole : userRoles) {
-                    roles.add(userRole.getRole());
-                }
-
-                return roles;
-            }
-
-            return getRolesForSignedInUser();
-        }
-        return null;
-    }
-
-    private Roles getRolesForSignedInUser() {
-        // Retrieve the granted authorities from the current authentication. These correspond one on
-        // one with user roles.
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth != null) {
             Roles roles = new Roles();
 
-            Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+            Set<UserRole> userRoles = user.getUserRoles();
 
-            for (GrantedAuthority grantedAuthority : authorities) {
-                roles.add(grantedAuthority.getAuthority());
-            }
-
-            if (roles.size() == 0) {
-                LOGGER.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
+            for (UserRole userRole : userRoles) {
+                roles.add(userRole.getAuthority());
             }
 
             return roles;
         } else {
             LOGGER.warn("User is signed in but authentication is not set!");
-            return null;
         }
+
+        return null;
     }
 
     public boolean isReporter() {
@@ -264,22 +244,8 @@ public class EhourWebSession extends AuthenticatedWebSession {
      * Invalidate authenticated user
      */
     public void signOut() {
-        AuthUser user = getAuthUser();
-
-        getSession().clear();
-
         setAuthentication(null);
-        setUserSelectedCriteria(null);
-
         super.signOut();
-
-        auditService.doAudit(new Audit()
-                .setAuditActionType(AuditActionType.LOGOUT)
-                .setUser(((user != null) ? user.getUser() : null))
-                .setUserFullName(((user != null) ? user.getUser().getFullName() : "N/A"))
-                .setDate(new Date())
-                .setSuccess(Boolean.TRUE));
-        Session.get().replaceSession();
     }
 
     public void impersonateUser(User userToImpersonate) throws UnauthorizedToImpersonateException {

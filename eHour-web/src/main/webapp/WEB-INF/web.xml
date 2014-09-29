@@ -12,7 +12,7 @@
             classpath:context-dbconnectivity.xml
             classpath:context-scanner.xml
             classpath:context-service.xml
-            classpath:context-security.xml
+            classpath:context-security-ldap.xml
             classpath:context-cache.xml
             classpath:context-wicket.xml
 

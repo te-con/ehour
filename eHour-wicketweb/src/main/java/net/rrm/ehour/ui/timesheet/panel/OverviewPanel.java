@@ -81,7 +81,7 @@ public class OverviewPanel extends Panel implements IHeaderContributor {
         MarkupContainer markupContainer = projectOverviewPanel.getLabel().getParent();
 
         Label label = new Label("title", new MessageResourceModel("projectoverview.aggregatedPerMonthforuser", this,
-                user.getFullName(), new DateModel(overviewFor, EhourWebSession.getSession().getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
+                user.getFullName(), new DateModel(overviewFor, EhourWebSession.getEhourConfig(), DateModel.DATESTYLE_MONTHONLY)));
 
         markupContainer.addOrReplace(label);
 

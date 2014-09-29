@@ -16,9 +16,11 @@
 
 package net.rrm.ehour.ui.common;
 
+import com.richemont.windchill.WindChillService;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.update.UpdateService;
 import org.apache.wicket.spring.test.ApplicationContextMock;
@@ -38,6 +40,8 @@ public abstract class AbstractSpringTester {
     private EhourConfigStub config;
     private AuditService auditService;
     private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
+    private UserDao userDao;
+    private WindChillService windChillService;
 
     private void createContextSetup() {
         mockContext = new ApplicationContextMock();
@@ -55,6 +59,12 @@ public abstract class AbstractSpringTester {
 
         UpdateService updateService = createMock(UpdateService.class);
         mockContext.putBean(updateService);
+
+        windChillService = createMock(WindChillService.class);
+        mockContext.putBean("windChillService", windChillService);
+
+        userDao = createMock(UserDao.class);
+        mockContext.putBean("userDao", userDao);
 
         expect(updateService.isLatestVersion()).andReturn(Boolean.TRUE).atLeastOnce();
         replay(updateService);
