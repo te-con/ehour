@@ -97,7 +97,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         this.beingModerated = beingModerated;
 
-		config = EhourWebSession.getSession().getEhourConfig();
+		config = EhourWebSession.getEhourConfig();
 		hideWeekend = isHideWeekendForUser();
 	}
 
@@ -316,12 +316,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 	private boolean isDayInputApprovedOrRequestedForApproval(TimesheetRow row, int index) {
 		boolean enabled = true;
 
-        if (beingModerated) {
-            return enabled;
-        }
-
-		ApprovalStatus approvalStatus = null;
-
+        ApprovalStatus approvalStatus = null;
 
         Activity activity = row.getActivity();
         TimesheetCell[] timesheetCells = row.getTimesheetCells();
@@ -332,12 +327,9 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         List<ApprovalStatus> approvalStatusesForActivity = approvalStatusService.getApprovalStatusForUserWorkingForCustomer(activity
                 .getAssignedUser(), activity.getProject().getCustomer(), monthRange);
 
-		if (approvalStatus != null) {
-            ApprovalStatusType status = approvalStatus.getStatus();
-            if (status == ApprovalStatusType.APPROVED || status == ApprovalStatusType.READY_FOR_APPROVAL) {
-				enabled = false;
-			}
-		}
+        if (approvalStatusesForActivity != null && approvalStatusesForActivity.size() != 0) {
+            approvalStatus = approvalStatusesForActivity.iterator().next();
+        }
 
         if (approvalStatus != null) {
             ApprovalStatusType status = approvalStatus.getStatus();
