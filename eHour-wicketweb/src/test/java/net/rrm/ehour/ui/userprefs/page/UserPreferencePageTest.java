@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
 
-public class UserPreferencePageTest extends AbstractSpringWebAppTester {
+public class UserPreferencePageTest extends BaseSpringWebAppTester {
 	@Test
 	public void testReportPageRender() throws ObjectNotFoundException {
         IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);

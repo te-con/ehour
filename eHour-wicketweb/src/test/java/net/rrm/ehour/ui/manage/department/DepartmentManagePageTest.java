@@ -14,11 +14,11 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.admin.department.page;
+package net.rrm.ehour.ui.manage.department;
 
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.ui.common.AbstractSpringWebAppTester;
+import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 
-public class DepartmentAdminTest extends AbstractSpringWebAppTester
+public class DepartmentManagePageTest extends BaseSpringWebAppTester
 {
     @Before
     public void before() throws Exception
@@ -47,8 +47,8 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
     {
         replay(userService);
 
-        getTester().startPage(DepartmentAdmin.class);
-        getTester().assertRenderedPage(DepartmentAdmin.class);
+        getTester().startPage(DepartmentManagePage.class);
+        getTester().assertRenderedPage(DepartmentManagePage.class);
         getTester().assertNoErrorMessage();
 
         verify(userService);
@@ -59,8 +59,8 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
     {
         replay(userService);
 
-        getTester().startPage(DepartmentAdmin.class);
-        getTester().assertRenderedPage(DepartmentAdmin.class);
+        getTester().startPage(DepartmentManagePage.class);
+        getTester().assertRenderedPage(DepartmentManagePage.class);
         getTester().assertNoErrorMessage();
 
         getTester().clickLink("tabs:tabs-container:tabs:1:link", true);
@@ -75,8 +75,8 @@ public class DepartmentAdminTest extends AbstractSpringWebAppTester
 
         replay(userService);
 
-        getTester().startPage(DepartmentAdmin.class);
-        getTester().assertRenderedPage(DepartmentAdmin.class);
+        getTester().startPage(DepartmentManagePage.class);
+        getTester().assertRenderedPage(DepartmentManagePage.class);
         getTester().assertNoErrorMessage();
 
         getTester().clickLink("entrySelectorFrame:deptSelector:entrySelectorFrame:blueBorder:itemListHolder:itemList:0:itemLink", true);

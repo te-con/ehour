@@ -48,7 +48,7 @@ import static org.junit.Assert.*;
 
 // TODO FIXME THIES
 @Ignore
-public class TimesheetPanelTest extends AbstractSpringWebAppTester {
+public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
     private static final String DAY1_PATH = "blueFrame:blueFrame_body:projects:0:rows:0:day1";
     private static final String DAY1_FULL_PATH = TIMESHEET_PATH + ":" + DAY1_PATH;
@@ -63,7 +63,7 @@ public class TimesheetPanelTest extends AbstractSpringWebAppTester {
     public void setup() {
         getConfig().setCompleteDayHours(8l);
         EhourWebSession.getSession().reloadConfig();
-U
+
         persistTimesheet = createMock(IPersistTimesheet.class);
         getMockContext().putBean(persistTimesheet);
 

@@ -35,12 +35,12 @@ import static org.easymock.EasyMock.createMock;
  * @author Thies Edeling (thies@te-con.nl)
  */
 public abstract class AbstractSpringTester {
-    private ApplicationContextMock mockContext;
+    protected ApplicationContextMock mockContext;
     private EhourConfigStub config;
     private AuditService auditService;
     private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
-    private WindChillService windChillService;
-    private UserService userService;
+    protected WindChillService windChillService;
+    protected UserService userService;
 
     private void createContextSetup() {
         mockContext = new ApplicationContextMock();
