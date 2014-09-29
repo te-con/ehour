@@ -18,27 +18,24 @@ package net.rrm.ehour.ui.timesheet.page;
 
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
-import org.apache.wicket.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 
 /**
  * Overview page
  */
-
 @AuthorizeInstantiation("ROLE_CONSULTANT")
 public class UserModerationPage extends MonthOverviewPage {
-	
-	private User user;
 
-	public UserModerationPage(User user) {
-		super(OpenPanel.OVERVIEW, user);
+    private User user;
+
+    public UserModerationPage(User user) {
+        super(OpenPanel.OVERVIEW, user);
 
         this.user = user;
-	}
-	
-	protected TimesheetPanel getTimesheetPanel()
+    }
+
+    protected TimesheetPanel getTimesheetPanel()
     {
-        TimesheetPanel timesheetPanel = new TimesheetPanel(ID_CONTENT_CONTAINER, user, getEhourWebSession().getNavCalendar(), true);
-//        timesheetPanel.getTimesheetForm().setEnabled(false);
-		return timesheetPanel;
+        return new TimesheetPanel(ID_CONTENT_CONTAINER, user, getEhourWebSession().getNavCalendar(), true);
     }
 }

@@ -18,10 +18,11 @@ package net.rrm.ehour.ui.timesheet.dto;
 
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.domain.*;
-import scala.Option;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Representation of a timesheet
@@ -55,8 +56,6 @@ public class Timesheet implements Serializable {
 
     /**
      * Update failed projects
-     *
-     * @param failedProjectStatusses
      */
     public void updateFailedProjects(List<ActivityStatus> failedProjectStatusses) {
         clearAssignmentStatus();
@@ -73,9 +72,9 @@ public class Timesheet implements Serializable {
      */
     private void setAssignmentStatus(ActivityStatus status)
     {
-        for (Project project : projects.get(activityFilterOption()))
+        for (Project project : projects.get())
         {
-            for (TimesheetRow row : projects.getTimesheetRow(project, activityFilterOption()))
+            for (TimesheetRow row : projects.getTimesheetRow(project))
             {
                 if (row.getActivity().equals(status.getAggregate().getActivity()))
                 {
@@ -86,18 +85,14 @@ public class Timesheet implements Serializable {
         }
     }
 
-    private Option<String> activityFilterOption() {
-        return Option.apply(activityFilter);
-    }
-
     /**
      * Clear each assignment status
      */
     private void clearAssignmentStatus()
     {
-        for (Project project : projects.get(activityFilterOption()))
+        for (Project project : projects.get())
         {
-            for (TimesheetRow row : projects.getTimesheetRow(project, activityFilterOption()))
+            for (TimesheetRow row : projects.getTimesheetRow(project))
             {
                 row.setActivityStatus(null);
             }
@@ -151,9 +146,9 @@ public class Timesheet implements Serializable {
     {
         float totalHours = 0;
 
-        for (Project project : projects.get(activityFilterOption()))
+        for (Project project : projects.get())
         {
-            for (TimesheetRow row: projects.getTimesheetRow(project, activityFilterOption()))
+            for (TimesheetRow row: projects.getTimesheetRow(project))
             {
                 for (TimesheetCell cell : row.getTimesheetCells())
                 {
@@ -213,7 +208,7 @@ public class Timesheet implements Serializable {
      */
     public List<Project> getProjectList()
     {
-        return getProjects().get(activityFilterOption());
+        return getProjects().get();
     }
 
     /**
@@ -267,7 +262,7 @@ public class Timesheet implements Serializable {
      */
     public List<TimesheetRow> getTimesheetRows(Project project)
     {
-        return projects.getTimesheetRow(project, activityFilterOption());
+        return projects.getTimesheetRow(project);
     }
 
 

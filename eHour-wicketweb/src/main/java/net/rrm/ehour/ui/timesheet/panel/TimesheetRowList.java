@@ -35,7 +35,6 @@ import net.rrm.ehour.userpref.UserPreferenceService;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -85,11 +84,14 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 	private Form<?> form;
 	private boolean hideWeekend = false;
     private boolean beingModerated = false;
-	
-	public TimesheetRowList(String id, ListModel<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, boolean beingModerated) {
+
+    private MarkupContainer provider;
+
+    public TimesheetRowList(String id, ListModel<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, boolean beingModerated, MarkupContainer provider) {
 		super(id, model);
-        
-		setReuseItems(true);
+        this.provider = provider;
+
+        setReuseItems(true);
 		this.grandTotals = grandTotals;
 		this.form = form;
 

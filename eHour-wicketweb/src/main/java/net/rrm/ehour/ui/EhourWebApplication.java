@@ -17,8 +17,8 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.ui.admin.activity.page.ActivityAdmin;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
+import net.rrm.ehour.ui.admin.activity.page.ActivityAdmin;
 import net.rrm.ehour.ui.admin.audit.AuditReportPage;
 import net.rrm.ehour.ui.admin.backup.BackupDbPage;
 import net.rrm.ehour.ui.admin.config.MainConfigPage;
@@ -40,7 +40,6 @@ import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource$;
 import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
-import net.rrm.ehour.ui.timesheet.export.TimesheetExportPage;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.timesheet.page.UserModerationPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
@@ -175,10 +174,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/admin/activity", ActivityAdmin.class);
         mountPage("/consultant/overview", MonthOverviewPage.class);
 
-        mount(new HybridUrlCodingStrategy("/consultant/customerReviewer", CustomerReviewerPage.class));
-        mount(new HybridUrlCodingStrategy("/consultant/customeReviewer/useroverview", UserModerationPage.class));
-        
-        mount(new HybridUrlCodingStrategy("/consultant/overview", MonthOverviewPage.class));
+        mountPage("/consultant/customerReviewer", CustomerReviewerPage.class);
+        mountPage("/consultant/customeReviewer/useroverview", UserModerationPage.class);
+
+        mountPage("/consultant/overview", MonthOverviewPage.class);
 
         mountPage("/report", ReportPage.class);
         mountPage("/report/summary/project", ProjectSummaryPage.class);

@@ -1,15 +1,17 @@
 package net.rrm.ehour.ui.timesheet.dto
 
-import net.rrm.ehour.domain.Project
-import scalaj.collection.Imports._
-import collection.immutable.TreeMap
-
-import collection.mutable.{ListBuffer, Map => MutableMap}
 import java.lang.Iterable
-import java.util.{ArrayList => JavaArrayList, List => JavaList}
+import java.util
+
+import net.rrm.ehour.domain.Project
+
+import scala.collection.JavaConversions._
+import scala.collection.convert.WrapAsJava
+import scala.collection.immutable
+import scala.collection.mutable.{ListBuffer, Map => MutableMap}
 
 protected object TimesheetProjects {
-  def apply(rows: JavaList[TimesheetRow]): TimesheetProjects = {
+  def apply(rows: util.List[TimesheetRow]): TimesheetProjects = {
 
     val projects = MutableMap[Project, ListBuffer[TimesheetRow]]()
 
@@ -20,39 +22,29 @@ protected object TimesheetProjects {
       projects.put(project, projectRows)
     })
 
-    val projectMap = for (prj <- projects.toArray) yield (prj._1, prj._2.toList.asJava)
+    val projectMap = for (prj <- projects.toArray) yield (prj._1, prj._2.toList)
 
-    val activityOrder = new Ordering[Project] {
-      def compare(a: Project, b: Project) = a.getName.compareToIgnoreCase(b.getName)
-    }
+    def compare(a: (Project, _), b: (Project, _)) = a._1.getName < b._1.getName
 
-    new TimesheetProjects(TreeMap(projectMap: _*)(activityOrder))
+    new TimesheetProjects(projectMap.toSeq.sortWith(compare).toMap)
   }
 }
 
-class TimesheetProjects(projectMap: Map[Project, JavaList[TimesheetRow]]) extends Serializable {
+class TimesheetProjects(projectMap: Map[Project, immutable.List[TimesheetRow]]) extends Serializable {
   type Predicate[T] = (T => Boolean)
 
-  def get(activityNameFilter: Option[String] = None): JavaList[Project] = {
-    val name = activityNameFilter.getOrElse("").toLowerCase
-    
-    val activityNamePredicate: Predicate[Project] = (project: Project) =>
-      project.getActivities.asScala.find(_ contains name).isDefined
-
-    new JavaArrayList(projectMap.keySet.filter(activityNamePredicate).toList.sortWith((a: Project, b: Project) => a.getName.compareToIgnoreCase(b.getName) < 0) asJava)
+  def get(): util.List[Project] = {
+    new util.ArrayList(projectMap.keySet
+      .toList
+      .sortWith((a: Project, b: Project) => a.getName.compareToIgnoreCase(b.getName) < 0)
+      )
   }
 
-  def getTimesheetRow(project: Project, activityNameFilter: Option[String] = None): JavaList[TimesheetRow] = {
+  def getTimesheetRow(project: Project): util.List[TimesheetRow] = {
+    val rows = projectMap.getOrElse(project, List())
 
-    val name = activityNameFilter.getOrElse("").toLowerCase
-    println("filtering getTimesheetRow on " + name)
-
-    val rows = projectMap.getOrElse(project, new JavaArrayList[TimesheetRow]).asScala
-
-    rows.filter(_.getActivity contains name)
-      .sortWith((a: TimesheetRow, b: TimesheetRow) => a.getActivity.getName.compareToIgnoreCase(b.getActivity.getName) < 0)
-      .asJava
+    rows.sortWith((a: TimesheetRow, b: TimesheetRow) => a.getActivity.getName.compareToIgnoreCase(b.getActivity.getName) < 0)
   }
 
-  def getTimesheetRows: Iterable[JavaList[TimesheetRow]] = projectMap.values.asJava
+  def getTimesheetRows: Iterable[util.List[TimesheetRow]] = projectMap.toSeq.map(p => WrapAsJava.seqAsJavaList(p._2))
 }

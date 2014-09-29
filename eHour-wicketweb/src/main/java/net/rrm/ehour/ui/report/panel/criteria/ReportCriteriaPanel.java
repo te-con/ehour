@@ -42,8 +42,6 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.ui.report.panel.criteria.quick.*;
-import net.rrm.ehour.ui.report.panel.criteria.type.ReportType;
-import net.rrm.ehour.ui.report.panel.criteria.type.ReportTypeRenderer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -165,11 +163,11 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                             criteria.setReportTypeToGlobal();
                             break;
                         case PM:
-                            criteria.setReportTypeToPM(getEhourWebSession().getUser());
+                            criteria.setReportTypeToPM(EhourWebSession.getUser());
                             break;
                         case INDIVIDUAL_USER:
                         default:
-                            criteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
+                            criteria.setReportTypeToIndividualUser(EhourWebSession.getUser());
                             break;
                     }
 
