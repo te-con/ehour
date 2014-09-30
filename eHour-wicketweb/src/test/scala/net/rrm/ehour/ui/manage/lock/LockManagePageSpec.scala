@@ -3,7 +3,6 @@ package net.rrm.ehour.ui.manage.lock
 import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.timesheet.service.TimesheetLockService
-import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.Component
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
@@ -14,8 +13,6 @@ import org.scalatest.BeforeAndAfter
 class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
   "Lock Manage Page" should {
     val service = mockService[TimesheetLockService]
-
-    mockService[UserService]
 
     val lock = LockAdminBackingBeanObjectMother.create.lock
 

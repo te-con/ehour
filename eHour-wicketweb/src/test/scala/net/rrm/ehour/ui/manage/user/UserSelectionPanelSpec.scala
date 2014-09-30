@@ -1,28 +1,23 @@
 package net.rrm.ehour.ui.manage.user
 
-import java.util
-
+import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.domain.User
+import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.ui.common.panel.entryselector.{EntryListUpdatedEvent, HideInactiveFilter, InactiveFilterChangedEvent}
-import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.list.ListItem
 import org.apache.wicket.markup.html.panel.Fragment
+import org.easymock.EasyMock
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import org.scalatest.BeforeAndAfter
 
-class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
+class UserSelectionPanelSpec extends AbstractSpringWebAppSpec  {
   "User Selection Panel" should {
-    val service = mockService[UserService]
-
-    before {
-      reset(service)
-    }
 
     "render" in {
-      when(service.getUsers).thenReturn(util.Arrays.asList(new User("thies")))
+      EasyMock.reset(springTester.userService)
+      EasyMock.expect(springTester.userService.getUsers).andReturn(Lists.newArrayList(UserObjectMother.createUser()))
+      EasyMock.replay(springTester.userService)
 
       startPanel()
       tester.assertNoErrorMessage()
@@ -31,7 +26,9 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
     }
 
     "handle updated list event" in {
-      when(service.getUsers).thenReturn(util.Arrays.asList(new User("thies")))
+      EasyMock.reset(springTester.userService)
+      EasyMock.expect(springTester.userService.getUsers).andReturn(Lists.newArrayList(UserObjectMother.createUser())).times(2)
+      EasyMock.replay(springTester.userService)
 
       val component = startPanel()
 
@@ -46,7 +43,9 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
     }
 
     "handle inactive filter event" in {
-      when(service.getUsers).thenReturn(util.Arrays.asList(new User("thies")))
+      EasyMock.reset(springTester.userService)
+      EasyMock.expect(springTester.userService.getUsers).andReturn(Lists.newArrayList(UserObjectMother.createUser())).times(2)
+      EasyMock.replay(springTester.userService)
 
       val component = startPanel()
 

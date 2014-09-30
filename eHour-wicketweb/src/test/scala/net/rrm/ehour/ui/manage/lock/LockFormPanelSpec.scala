@@ -6,21 +6,21 @@ import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.timesheet.service.TimesheetLockService
 import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.manage.lock.LockFormPanel._
-import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.model.Model
-import org.mockito.Mockito._
+import org.easymock.EasyMock
 
 class LockFormPanelSpec extends AbstractSpringWebAppSpec {
 
   val formPath = s"id:$OuterBorderId:greySquaredFrame:outerBorder_body:$FormId"
   def createPath(path: String) = s"$formPath:$path"
 
-  val userService = mockService[UserService]
   val timesheetLockService = mockService[TimesheetLockService]
 
   "Lock Form Panel" should {
+    EasyMock.reset(springTester.userService)
+    EasyMock.expect(springTester.userService.getUsers).andReturn(Lists.newArrayList(UserObjectMother.createUser()))
 
-    when(userService.getUsers).thenReturn(Lists.newArrayList(UserObjectMother.createUser()))
+    EasyMock.replay(springTester.userService)
 
     def createPanel = new LockFormPanel("id", new Model(LockAdminBackingBeanObjectMother.create))
 

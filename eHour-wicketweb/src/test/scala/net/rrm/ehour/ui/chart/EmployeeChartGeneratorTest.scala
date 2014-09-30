@@ -22,7 +22,7 @@ class EmployeeChartGeneratorTest extends FunSuite with Matchers with BeforeAndAf
   }
 
   test("should have x axis with employees") {
-    chart should include("""xAxis:[{"categories":["last name 3","last name 2","last name 1"]}]""")
+    chart should include("""xAxis:[{"categories":["Rosalie Edeling","Thies Edeling"]}]""")
   }
 
   test("should have one axises with hour") {

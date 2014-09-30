@@ -76,11 +76,12 @@ public class User extends DomainObject<Integer, User> {
 
     public User(String username) {
         this.username = username;
+        this.name = username;
     }
 
     public User(Integer userId, String username) {
+        this(username);
         this.userId = userId;
-        this.username = username;
     }
 
     public User addUserRole(UserRole role) {

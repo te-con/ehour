@@ -41,7 +41,7 @@ public abstract class AbstractSpringTester {
     private AuditService auditService;
     private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
     protected WindChillService windChillService;
-    protected UserService userService;
+    public UserService userService;
     private WindChillUpdateService windChillUpdateService;
 
     private void createContextSetup() {

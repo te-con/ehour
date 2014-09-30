@@ -45,7 +45,10 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
       val session = new EhourWebSession(req)  {
         override def allowedToImpersonate(userToImpersonate: User) = true
 
-        override def authenticate(username: String, password: String): Boolean = true
+        override def authenticate(username: String, password: String): Boolean = {
+          user = User
+          true
+        }
 
         override def isAdmin: Boolean = true
       }
@@ -77,6 +80,8 @@ class EhourWebSessionSpec extends AbstractSpringWebAppSpec {
       ThreadContext.setSession(session)
 
       session.signIn("a", "b")
+
+      session.isSignedIn should be (true)
 
       session.impersonateUser(User)
 

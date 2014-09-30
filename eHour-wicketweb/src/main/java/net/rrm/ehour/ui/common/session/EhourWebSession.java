@@ -73,7 +73,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     private static final Logger LOGGER = Logger.getLogger(EhourWebSession.class);
 
-    private User user;
+    protected User user;
 
     public EhourWebSession(Request req) {
         super(req);
@@ -132,7 +132,15 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     public User getAuthUser() {
-        return isSignedIn() ? user : null;
+        if (isSignedIn()) {
+            if (impersonatingAuthUser.isPresent()) {
+                return impersonatingAuthUser.get();
+            } else {
+                return user;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -251,7 +259,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
             throw new UnauthorizedToImpersonateException();
         }
 
-        User originalUser = getUser();
+        User originalUser = getAuthUser();
 
         impersonatingAuthUser = Optional.of(userToImpersonate);
 

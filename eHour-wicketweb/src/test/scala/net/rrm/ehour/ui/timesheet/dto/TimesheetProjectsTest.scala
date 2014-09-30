@@ -57,25 +57,4 @@ class TimesheetProjectsTest extends FunSuite with ShouldMatchers with BeforeAndA
 
     projects.get().iterator().next() should be(prjB)
   }
-
-  test("should filter project list on activity name") {
-    val prjs = projects.get().iterator()
-    prjs.next() should be(prjB)
-    prjs.next() should be(prjA)
-    prjs.hasNext should be (false)
-  }
-
-  test("should filter timesheet rows on activity name") {
-    val prjs = projects.getTimesheetRow(prjA)
-    prjs.get(0).getActivity.getName should be ("CDE")
-    prjs.size() should be (1)
-  }
-
-  test("should filter and sort timesheet rows on activity name") {
-    val prjs = projects.getTimesheetRow(prjA)
-    prjs.get(0).getActivity.getName should be ("ABC")
-    prjs.get(1).getActivity.getName should be ("CDE")
-    prjs.size() should be (2)
-  }
-
 }

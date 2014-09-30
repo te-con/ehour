@@ -5,7 +5,6 @@ import net.rrm.ehour.customer.service.CustomerService
 import net.rrm.ehour.domain.ProjectObjectMother
 import net.rrm.ehour.project.service.ProjectService
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester
-import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.model.CompoundPropertyModel
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -19,7 +18,6 @@ class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter wi
   val springTester = new BaseSpringWebAppTester()
 
   var projectService: ProjectService = _
-  var userService: UserService = _
   var customerService: CustomerService = _
   var activityService: ActivityService = _
 
@@ -28,9 +26,6 @@ class ProjectFormPanelTest extends FunSuite with Matchers with BeforeAndAfter wi
 
     projectService = mock[ProjectService]
     springTester.getMockContext.putBean("projectService", projectService)
-
-    userService = mock[UserService]
-    springTester.getMockContext.putBean("userService", userService)
 
     customerService = mock[CustomerService]
     springTester.getMockContext.putBean("customerService", customerService)
