@@ -452,15 +452,17 @@ public class WindChillServiceImpl implements WindChillService {
         return allAssignedActivities;
     }
 
-
+    @Override
     public HashMap<String, Activity> getAllAssignedActivitiesByCode(User assignedUser) {
         HashMap<String, Activity> allAssignedActivitiesByCode = new HashMap<String, Activity>();
-        Iterator<Activity> it = getAllAssignedActivities(assignedUser).iterator();
-        Activity anActivity;
-        while (it.hasNext()) {
-            anActivity = (Activity) it.next();
-            allAssignedActivitiesByCode.put(anActivity.getCode(), anActivity);
+
+        List<Activity> allAssignedActivities = getAllAssignedActivities(assignedUser);
+
+        for (Activity allAssignedActivity : allAssignedActivities) {
+            allAssignedActivitiesByCode.put(allAssignedActivity.getCode(), allAssignedActivity);
+
         }
+
         return allAssignedActivitiesByCode;
     }
 

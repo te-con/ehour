@@ -1,16 +1,15 @@
 package net.rrm.ehour.activity.status;
 
-import java.util.Date;
-
 import net.rrm.ehour.activity.status.ActivityStatus.Status;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.util.DateUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service("activityStatusService")
 public class ActivityStatusServiceImpl implements ActivityStatusService {
@@ -66,7 +65,7 @@ public class ActivityStatusServiceImpl implements ActivityStatusService {
 			
 			float alreadyBookedHours = (alreadyBookedHoursNumber == null) ? 0 : alreadyBookedHoursNumber.floatValue();
 			
-			float allottedHours = (activity.getAllottedHours() == null) ? 0 : activity.getAllottedHours().floatValue();
+			float allottedHours = (activity.getAllottedHours() == null) ? 0 : activity.getAllottedHours();
 			
 			if (alreadyBookedHours > allottedHours) {
 				result.setValid(false);

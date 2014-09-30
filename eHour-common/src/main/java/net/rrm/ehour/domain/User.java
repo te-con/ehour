@@ -211,20 +211,18 @@ public class User extends DomainObject<Integer, User> {
     }
 
     @Override
-    public boolean equals(final Object other) {
-        if (!(other instanceof User)) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        User castOther = (User) other;
-        return new EqualsBuilder().append(username, castOther.username)
-                .append(name, castOther.name)
-                .append(dn, castOther.dn).append(
-                        active, castOther.active).isEquals();
+        User user = (User) o;
+
+        return username.equals(user.username);
+
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(username).append(name).append(dn).append(active).toHashCode();
+        return username.hashCode();
     }
 }
