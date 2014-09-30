@@ -1,13 +1,13 @@
 package net.rrm.ehour.activity.service;
 
-import java.util.List;
-
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
+
+import java.util.List;
 
 /**
  * 
@@ -41,6 +41,16 @@ public interface ActivityService {
 	 * @return
 	 */
 	Activity persistActivity(Activity activity);
+
+    /**
+     * Saves or Updates an already persisted {@link Activity} in underlying
+     * data-storage without auditing
+     *
+     * @param activity
+     * @return
+     */
+    Activity noAuditPersistActivity(Activity activity);
+
 
 	/**
 	 * Archives and not hard delete the passed {@link Activity} in underlying

@@ -2,6 +2,7 @@ package net.rrm.ehour.activity.service;
 
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.activity.status.ActivityStatusService;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
@@ -41,6 +42,13 @@ public class ActivityServiceImpl implements ActivityService
     public Activity persistActivity(Activity activity)
     {
         return activityDao.persist(activity);
+    }
+
+    @Override
+    @Transactional
+    @NonAuditable
+    public Activity noAuditPersistActivity(Activity activity) {
+        return persistActivity(activity);
     }
 
     @Override
