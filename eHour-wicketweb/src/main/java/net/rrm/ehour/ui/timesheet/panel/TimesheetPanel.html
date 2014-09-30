@@ -17,12 +17,14 @@
                     <thead>
                         <tr class="weekColumnRow">
 
-                            <td class="projectCode" colspan="3" style="padding-left: 20px;vertical-align: middle">
-                                <input type="text" id="activityFilter" class="filter" placeholder="Filter..."/>
-                                &nbsp;
-                                &nbsp;
-                                Page: <select wicket:id="pagination"/>
-                            </td>
+                                <td class="projectCode" colspan="3" style="padding-left: 20px;vertical-align: middle">
+                                    <input type="text" wicket:id="activityFilter" class="filter" placeholder="Filter..."/>
+                                    <wicket:enclosure child="pagination">
+                                    &nbsp;
+                                    &nbsp;
+                                    Page: <select wicket:id="pagination"/></wicket:enclosure>
+                                </td>
+                                <td class="spacer">&nbsp;</td>
 
                             <td class="spacer">&nbsp;</td>
 

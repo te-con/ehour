@@ -30,6 +30,8 @@ import java.util.List;
 
 public class Timesheet implements Serializable {
     private static final long serialVersionUID = -547682050331580675L;
+    private static final Integer PROJECTS_PER_PAGE = 20;
+
     private TimesheetProjects projects;
     private Date[] dateSequence;
     private Date weekStart;
@@ -39,7 +41,21 @@ public class Timesheet implements Serializable {
     private float maxHoursPerDay;
     private List<Date> lockedDays;
     private Integer page = 1;
-    private static final Integer PROJECTS_PER_PAGE = 20;
+    private String filter;
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
+
+    public int getMaxPages() {
+        int size = getProjects().get().size();
+        double pages = (double) size / PROJECTS_PER_PAGE;
+        return (int) Math.floor(pages);
+    }
 
     public Integer getPage() {
         return page;
@@ -219,10 +235,15 @@ public class Timesheet implements Serializable {
     @SuppressWarnings("UnusedDeclaration")
     public List<Project> getProjectList() {
         int start = (page - 1) * PROJECTS_PER_PAGE;
+        int end = start + PROJECTS_PER_PAGE;
 
         List<Project> projects = getProjects().get();
 
-        return projects.size() > PROJECTS_PER_PAGE ? projects.subList(start, start + PROJECTS_PER_PAGE) : projects;
+        if (end > projects.size()) {
+            end = projects.size();
+        }
+
+        return projects.size() > PROJECTS_PER_PAGE ? projects.subList(start, end) : projects;
     }
 
     /**

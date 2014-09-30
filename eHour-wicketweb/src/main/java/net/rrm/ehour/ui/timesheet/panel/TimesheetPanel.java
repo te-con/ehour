@@ -66,6 +66,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -166,7 +167,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         timesheetForm.add(blueBorder);
 
         // add activity filter
-        blueBorder.add(createActivityFilter("activityFilter", timesheet));
+//        blueBorder.add(createActivityFilter("activityFilter", timesheet));
 
         // setup form
         grandTotals = buildForm(timesheetForm, blueBorder);
@@ -194,57 +195,29 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         commentsFrame.add(serverMsgLabel);
 
         // create paginator
-        List<Integer> options = new ArrayList<Integer>();
-        for (int i = 1; i < 10; i++) {
-            options.add(i);
-        }
+        blueBorder.add(createPaginationDropdown(timesheet));
 
-        final DropDownChoice<Integer> pagination = new DropDownChoice<Integer>("pagination", new PropertyModel<Integer>(timesheet, "page"), options);
-        pagination.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                Form<TimesheetModel> replacementForm = buildForm(timesheet);
-                pagination.getForm().replaceWith(replacementForm);
-
-                target.add(replacementForm);
-            }
-
-            @Override
-            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-                super.updateAjaxAttributes(attributes);
-
-                attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
-            }
-        });
-        blueBorder.add(pagination);
-
+        // create filter
+        TextField activityFilter = new TextField<String>("activityFilter", new PropertyModel<String>(timesheet, "filter"));
+        activityFilter.add(new OnChangeFormReloadBehavior(timesheet, activityFilter));
+        blueBorder.add(activityFilter);
         return timesheetForm;
     }
 
-    private TextField<String> createActivityFilter(String id, final TimesheetModel timesheetModel) {
-        final TextField<String> filterField = new TextField<String>(id, new Model<String>());
+    private DropDownChoice<Integer> createPaginationDropdown(final TimesheetModel timesheetModel) {
+        List<Integer> options = new ArrayList<Integer>();
+        int maxPages = timesheetModel.getObject().getMaxPages() + 1;
+        for (int i = 1; i <= maxPages; i++) {
+            options.add(i);
+        }
 
-        OnChangeAjaxBehavior behavior = new OnChangeAjaxBehavior() {
+        final DropDownChoice<Integer> pagination = new DropDownChoice<Integer>("pagination", new PropertyModel<Integer>(timesheetModel, "page"), options);
+        pagination.add(new OnChangeFormReloadBehavior(timesheetModel, pagination));
 
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                String filter = filterField.getDefaultModelObjectAsString();
-
-                timesheetModel.getObject().setActivityFilter(filter);
-                target.add(timesheetForm);
-            }
-
-            @Override
-            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-                super.updateAjaxAttributes(attributes);
-                attributes.setThrottlingSettings(new ThrottlingSettings(UUID.randomUUID().toString(), Duration.milliseconds(500), true));
-            }
-        };
-
-        filterField.add(behavior);
-
-        return filterField;
+        pagination.setVisible(maxPages > 1);
+        return pagination;
     }
+
 
     @Override
     public void renderHead(IHeaderResponse response) {
@@ -816,4 +789,31 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 	public void setTimesheetForm(Form<TimesheetModel> timesheetForm) {
 		this.timesheetForm = timesheetForm;
 	}
+
+    private class OnChangeFormReloadBehavior extends AjaxFormComponentUpdatingBehavior {
+        private final TimesheetModel timesheetModel;
+        private final FormComponent<?> parent;
+
+        public OnChangeFormReloadBehavior(TimesheetModel timesheetModel, FormComponent<?> parent) {
+            super("onchange");
+            this.timesheetModel = timesheetModel;
+            this.parent = parent;
+        }
+
+        @Override
+        protected void onUpdate(AjaxRequestTarget target) {
+            Form<TimesheetModel> replacementForm = buildForm(timesheetModel);
+            parent.getForm().replaceWith(replacementForm);
+
+            target.add(replacementForm);
+        }
+
+        @Override
+        protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+            super.updateAjaxAttributes(attributes);
+
+            attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+        }
+
+    }
 }
