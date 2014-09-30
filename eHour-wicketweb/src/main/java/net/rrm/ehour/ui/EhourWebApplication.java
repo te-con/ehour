@@ -83,6 +83,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     @Value("${richemont.projectlinkUrl}")
     private String projectLinkUrl;
 
+    // TODO move to EhourSystemConfig
+    @Value("${richemont.jira.url}")
+    private String jiraUrl;
+
     public void init() {
         if (!initialized) {
             super.init();
@@ -314,5 +318,14 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
     public String getProjectLinkUrl() {
         return projectLinkUrl;
+    }
+
+    /**
+     * LLI for Richemont
+     * 14/03/2013
+     * @return
+     */
+    public String getJiraUrl() {
+        return jiraUrl;
     }
 }

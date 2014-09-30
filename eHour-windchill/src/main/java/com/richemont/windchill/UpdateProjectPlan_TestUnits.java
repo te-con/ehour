@@ -153,7 +153,7 @@ public class UpdateProjectPlan_TestUnits {
     /**
      * From a dummy SOAP response, get the ProxyWindActivity
      *
-     * @throws javax.xml.soap.SOAPException
+     * @throws SOAPException
      */
     public static void test1() throws SOAPException {
         SOAPMessage aResponse = createDummyJiraSoapResponse();
@@ -179,8 +179,8 @@ public class UpdateProjectPlan_TestUnits {
      * Create a dummy SOAP request
      * Paste a Soap request here
      * @return
-     * @throws javax.xml.soap.SOAPException
-     * @throws java.io.IOException
+     * @throws SOAPException
+     * @throws IOException
      */
     public static SOAPMessage createDummySoapJiraRequest() throws SOAPException, IOException {
         String xml = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mes=\"http://www.ptc.com/infoengine/soap/rpc/message/\" xmlns:urn=\"http://www.ptc.com/infoengine/soap/rpc/message/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n" +
@@ -201,8 +201,8 @@ public class UpdateProjectPlan_TestUnits {
      * Create a dummy SOAP request
      * paste a soap response here
      * @return
-     * @throws javax.xml.soap.SOAPException
-     * @throws java.io.IOException
+     * @throws SOAPException
+     * @throws IOException
      */
     public static SOAPMessage createDummyJiraSoapResponse() {
         SOAPMessage soapResponse = null;
@@ -256,7 +256,7 @@ public class UpdateProjectPlan_TestUnits {
         String eHourAction="updateProjectPlan";
 
         String authentication= "wcadmin" + ":" + "password";
-        String encodedAuth = new String(Base64.encodeBase64(authentication.getBytes()));
+        String encodedAuth = new String(Base64.encodeBase64( authentication.getBytes() ));
         String endpoint="https://grutlink.ch.rccad.net/Windchill/servlet/SimpleTaskDispatcher";
 
         //List<HashMap<String,Comparable>> listToSend = createDummyComplexlistToSend();

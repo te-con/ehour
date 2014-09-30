@@ -253,8 +253,7 @@ public class UserServiceImpl implements UserService {
         String filter = String.format("(&(uid=%s)(objectClass=person)(isMemberOf=%s))", userId, groupDn);
 
         List<LdapUser> ldapUser = (List<LdapUser> )ldapTemplate.search("", filter, contextMapper);
-        if ( ldapUser.size() == 1 ) return true;
-        else return false;
+        return ldapUser.size() == 1;
     }
 
 

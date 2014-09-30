@@ -32,7 +32,7 @@ public class CallWindchillWS_tests {
      * @param ehourAction
      * @param listToSend
      * @return
-     * @throws javax.xml.soap.SOAPException
+     * @throws SOAPException
      */
     public static SOAPMessage createSOAPRequestForUpdate(String localName, String ehourUserName, String ehourAction, List<String> listToSend, String encodedAuth ) throws SOAPException, IOException {
 

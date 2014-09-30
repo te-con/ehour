@@ -1,29 +1,31 @@
 package com.richemont.windchill;
 
+
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 /**
- * @author thies (Thies Edeling - thies@te-con.nl)
- *         Created on: 3/14/11 - 4:11 PM
+ * @author laurent.linck
  */
-public interface WindChillService
-{
-    void checkUserExist(String username);
+public interface WindChillService {
 
-    void initDataForUser(String username, HttpServletRequest request);
+    boolean updateDataForUser(HashMap<String, Activity> allAssignedActivitiesByCode , String username);
 
-    List<Customer> getCustomersFromEhour();
+    Project checkProject (String projectCode, String newProjectName);
+    Project createProject(String projectCode, String projectName,
+                          String customerCode, String customerName,
+                          HashMap<String, Customer> hmAllCustomerByCode) ;
 
-    List<Activity> getProjectsFromEhour(User user);
+    HashMap<String, Activity> getAllAssignedActivitiesByCode(User assignedUser);
+    HashMap<String, Customer> getAllCustomersByCode();
 
-    List<Activity> getAssignmentsFromEhours(int projectID, User userID);
+    Activity createNewActivity(HashMap <String, Object > hm, HashMap<String, Activity> allAssignedActivitiesByCode, String assignedUserName, SimpleDateFormat dateFormat);
 
-    Float getBookedHours(Activity assignement, User user);
+    void desactivateObsoleteActivity(HashMap<String, Activity> hmAllAssignedActivitiesByCode, HashMap<String, Activity> hmDealedActivities);
 
-    void updateAssignments(String username, HttpServletRequest r);
 }

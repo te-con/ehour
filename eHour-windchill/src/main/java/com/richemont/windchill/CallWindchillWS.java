@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
+
 /**
  * @author laurent.linck
  *
@@ -22,15 +23,15 @@ import java.util.List;
  */
 @Component
 public class CallWindchillWS {
-	
-	private static Logger LOGGER = Logger.getLogger("ext.service.WindchillServiceImpl");
 
-	private static final String SOAP_VALUES_PAIR_SEPARATOR = "="; // used in the ProjectConnectionHelper.xml car la reponse soap renvoie VALUE et NAME comme 2 noeuds quelconque
-	
-	private static final String SOAPUtils_XSI="xsi";
-	private static final String SOAPUtils_XSI_NS="http://www.w3.org/2001/XMLSchema-instance";
-	private static final String SOAPUtils_XSD_NS="http://www.w3.org/2001/XMLSchema";
-	private static final String SOAPUtils_XSD="xsd";
+    private static Logger LOGGER = Logger.getLogger("ext.service.WindchillServiceImpl");
+
+    private static final String SOAP_VALUES_PAIR_SEPARATOR = "="; // used in the ProjectConnectionHelper.xml car la reponse soap renvoie VALUE et NAME comme 2 noeuds quelconque
+
+    private static final String SOAPUtils_XSI="xsi";
+    private static final String SOAPUtils_XSI_NS="http://www.w3.org/2001/XMLSchema-instance";
+    private static final String SOAPUtils_XSD_NS="http://www.w3.org/2001/XMLSchema";
+    private static final String SOAPUtils_XSD="xsd";
 
     private String encodedAuth;
 
@@ -53,58 +54,58 @@ public class CallWindchillWS {
      * @param ehourAction
      * @param listToSend
      * @return
-     * @throws javax.xml.soap.SOAPException
+     * @throws SOAPException
      */
     public SOAPMessage createSOAPRequestForUpdate(String localName, String ehourUserName, String ehourAction, List<String> listToSend  ) throws SOAPException, IOException {
 
-		SOAPFactory soapFactory = SOAPFactory.newInstance();
-		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
-		SOAPPart soapPart = soapMessage.getSOAPPart();
-		SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
+        SOAPFactory soapFactory = SOAPFactory.newInstance();
+        SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
+        SOAPPart soapPart = soapMessage.getSOAPPart();
+        SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
 
-		soapEnvelope.getHeader().detachNode();
+        soapEnvelope.getHeader().detachNode();
 
-		soapEnvelope.addNamespaceDeclaration(SOAPUtils_XSI, SOAPUtils_XSI_NS);
-		soapEnvelope.addNamespaceDeclaration(SOAPUtils_XSD, SOAPUtils_XSD_NS);
-		//soapEnvelope.addNamespaceDeclaration(SOAPUtils_TARGET_NAMESPACE_ID, SOAPUtils.getUrn());
-		//soapEnvelope.addNamespaceDeclaration(SOAPUtils.SOAP_ENC, SOAPUtils.SOAP_ENC_NS);
+        soapEnvelope.addNamespaceDeclaration(SOAPUtils_XSI, SOAPUtils_XSI_NS);
+        soapEnvelope.addNamespaceDeclaration(SOAPUtils_XSD, SOAPUtils_XSD_NS);
+        //soapEnvelope.addNamespaceDeclaration(SOAPUtils_TARGET_NAMESPACE_ID, SOAPUtils.getUrn());
+        //soapEnvelope.addNamespaceDeclaration(SOAPUtils.SOAP_ENC, SOAPUtils.SOAP_ENC_NS);
 
-		soapEnvelope.addNamespaceDeclaration("mes", "http://www.ptc.com/infoengine/soap/rpc/message/");
-		soapEnvelope.addNamespaceDeclaration("urn", "http://www.ptc.com/infoengine/soap/rpc/message/");
-
-
-		MimeHeaders hd = soapMessage.getMimeHeaders();
-		hd.addHeader("Authorization", "Basic " + encodedAuth);
-
-		SOAPHeader header = soapMessage.getSOAPHeader();
-		if (header == null) header = soapEnvelope.addHeader();
-
-		soapMessage.getMimeHeaders().setHeader("SOAPAction", "urn:ie-soap-rpc:ext.richemont.ws!TimeSheetMgt");
-
-		SOAPBody soapBody = soapEnvelope.getBody();
-		Name msgName = soapEnvelope.createName(localName, "mes", "");
-		SOAPBodyElement soapBodyElement = soapBody.addBodyElement(msgName);
-
-		SOAPElement soapElement = soapBodyElement.addChildElement(soapFactory.createName("ehourUsername"));
-		soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
-		soapElement.addTextNode(ehourUserName);
-
-		soapElement = soapBodyElement.addChildElement(soapFactory.createName("ehourAction"));
-		soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
-		soapElement.addTextNode(ehourAction);
-
-		soapElement = soapBodyElement.addChildElement(soapFactory.createName("eHourActivitiesTobeUpdated"));
-		soapElement.addAttribute( soapFactory.createName( "xsi:type"), "mes:ArrayOfstring");
-		//soapElement.addAttribute( soapFactory.createName( "soapenc:arrayType"), "xsd:string[]");
-
-		for (String item: listToSend){
-			soapElement = soapBodyElement.addChildElement(soapFactory.createName("activity"));
-			soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
-			soapElement.addTextNode(item);
-		}
+        soapEnvelope.addNamespaceDeclaration("mes", "http://www.ptc.com/infoengine/soap/rpc/message/");
+        soapEnvelope.addNamespaceDeclaration("urn", "http://www.ptc.com/infoengine/soap/rpc/message/");
 
 
-		soapMessage.saveChanges();
+        MimeHeaders hd = soapMessage.getMimeHeaders();
+        hd.addHeader("Authorization", "Basic " + encodedAuth);
+
+        SOAPHeader header = soapMessage.getSOAPHeader();
+        if (header == null) header = soapEnvelope.addHeader();
+
+        soapMessage.getMimeHeaders().setHeader("SOAPAction", "urn:ie-soap-rpc:ext.richemont.ws!TimeSheetMgt");
+
+        SOAPBody soapBody = soapEnvelope.getBody();
+        Name msgName = soapEnvelope.createName(localName, "mes", "");
+        SOAPBodyElement soapBodyElement = soapBody.addBodyElement(msgName);
+
+        SOAPElement soapElement = soapBodyElement.addChildElement(soapFactory.createName("ehourUsername"));
+        soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
+        soapElement.addTextNode(ehourUserName);
+
+        soapElement = soapBodyElement.addChildElement(soapFactory.createName("ehourAction"));
+        soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
+        soapElement.addTextNode(ehourAction);
+
+        soapElement = soapBodyElement.addChildElement(soapFactory.createName("eHourActivitiesTobeUpdated"));
+        soapElement.addAttribute( soapFactory.createName( "xsi:type"), "mes:ArrayOfstring");
+        //soapElement.addAttribute( soapFactory.createName( "soapenc:arrayType"), "xsd:string[]");
+
+        for (String item: listToSend){
+            soapElement = soapBodyElement.addChildElement(soapFactory.createName("activity"));
+            soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
+            soapElement.addTextNode(item);
+        }
+
+
+        soapMessage.saveChanges();
 
         System.out.println("\n");
         soapMessage.writeTo(System.out);
@@ -112,86 +113,86 @@ public class CallWindchillWS {
 
         return soapMessage;
 
-	}
+    }
 
 
-	/**
-	 * 
-	 * @param ieDelegateName (nom du service. Ex: TimeSheetMgt)
-	 * @param ehourUserName
-	 * @return
-	 * @throws Exception
-	 */
-	public SOAPMessage createSOAPRequest(String ieDelegateName, String ehourUserName, String ehourAction) throws Exception {
-		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
-		SOAPPart soapPart = soapMessage.getSOAPPart();
-		SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
+    /**
+     *
+     * @param ieDelegateName (nom du service. Ex: TimeSheetMgt)
+     * @param ehourUserName
+     * @return
+     * @throws Exception
+     */
+    public SOAPMessage createSOAPRequest(String ieDelegateName, String ehourUserName, String ehourAction) throws Exception {
+        SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
+        SOAPPart soapPart = soapMessage.getSOAPPart();
+        SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
 
-		soapEnvelope.getHeader().detachNode();
-		
-		soapEnvelope.addNamespaceDeclaration(SOAPUtils_XSI, SOAPUtils_XSI_NS);
-		soapEnvelope.addNamespaceDeclaration(SOAPUtils_XSD, SOAPUtils_XSD_NS);
-		//soapEnvelope.addNamespaceDeclaration(SOAPUtils_TARGET_NAMESPACE_ID, SOAPUtils.getUrn());
-		//soapEnvelope.addNamespaceDeclaration(SOAPUtils.SOAP_ENC, SOAPUtils.SOAP_ENC_NS);
+        soapEnvelope.getHeader().detachNode();
 
-		soapEnvelope.addNamespaceDeclaration("mes", "http://www.ptc.com/infoengine/soap/rpc/message/");
-		soapEnvelope.addNamespaceDeclaration("urn", "http://www.ptc.com/infoengine/soap/rpc/message/");
+        soapEnvelope.addNamespaceDeclaration(SOAPUtils_XSI, SOAPUtils_XSI_NS);
+        soapEnvelope.addNamespaceDeclaration(SOAPUtils_XSD, SOAPUtils_XSD_NS);
+        //soapEnvelope.addNamespaceDeclaration(SOAPUtils_TARGET_NAMESPACE_ID, SOAPUtils.getUrn());
+        //soapEnvelope.addNamespaceDeclaration(SOAPUtils.SOAP_ENC, SOAPUtils.SOAP_ENC_NS);
 
-
-		MimeHeaders hd = soapMessage.getMimeHeaders();
-		hd.addHeader("Authorization", "Basic " + encodedAuth);
-
-		SOAPHeader header = soapMessage.getSOAPHeader();
-		if (header == null) header = soapEnvelope.addHeader();
-
-		soapMessage.getMimeHeaders().setHeader("SOAPAction", "urn:ie-soap-rpc:ext.richemont.ws!TimeSheetMgt");
-
-		SOAPBody soapBody = soapEnvelope.getBody();
-		Name msgName = soapEnvelope.createName(ieDelegateName, "mes", "");
-		SOAPBodyElement soapBodyElement = soapBody.addBodyElement(msgName);
-
-		SOAPFactory soapFactory = SOAPFactory.newInstance();
-
-		SOAPElement soapElement = soapBodyElement.addChildElement(soapFactory.createName("ehourUsername"));
-		soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
-		soapElement.addTextNode(ehourUserName);
-
-		soapElement = soapBodyElement.addChildElement(soapFactory.createName("ehourAction"));
-		soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
-		soapElement.addTextNode(ehourAction);
-		
-		soapMessage.saveChanges();
-		soapMessage.writeTo(System.out); 
-
-		return soapMessage;
-	}
+        soapEnvelope.addNamespaceDeclaration("mes", "http://www.ptc.com/infoengine/soap/rpc/message/");
+        soapEnvelope.addNamespaceDeclaration("urn", "http://www.ptc.com/infoengine/soap/rpc/message/");
 
 
-	
-	public void getItemValue (Node n, HashMap<String, Comparable> h) {
-		if (n.getNodeName().equalsIgnoreCase("#text") ){
+        MimeHeaders hd = soapMessage.getMimeHeaders();
+        hd.addHeader("Authorization", "Basic " + encodedAuth);
 
-			if (n.getNodeValue().contains("=")){
-				log("Node " + n.getNodeName() + " --> value=[" + n.getNodeValue() + "]");
-				String[] nameValuePair = n.getNodeValue().split(SOAP_VALUES_PAIR_SEPARATOR);
-				String name = nameValuePair[0];
-				String value = nameValuePair[1];
-				if (value.equalsIgnoreCase("null")) value = "";
-				h.put(name, value );
-			}
-		}
+        SOAPHeader header = soapMessage.getSOAPHeader();
+        if (header == null) header = soapEnvelope.addHeader();
 
-		// Now traverse the rest of the tree in depth-first order.
-		if (n.hasChildNodes()) {
-			NodeList nl = n.getChildNodes();
-			for (int i=0; i<nl.getLength(); i++)
-				getItemValue (nl.item(i), h);
-		}
-	}
+        soapMessage.getMimeHeaders().setHeader("SOAPAction", "urn:ie-soap-rpc:ext.richemont.ws!TimeSheetMgt");
+
+        SOAPBody soapBody = soapEnvelope.getBody();
+        Name msgName = soapEnvelope.createName(ieDelegateName, "mes", "");
+        SOAPBodyElement soapBodyElement = soapBody.addBodyElement(msgName);
+
+        SOAPFactory soapFactory = SOAPFactory.newInstance();
+
+        SOAPElement soapElement = soapBodyElement.addChildElement(soapFactory.createName("ehourUsername"));
+        soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
+        soapElement.addTextNode(ehourUserName);
+
+        soapElement = soapBodyElement.addChildElement(soapFactory.createName("ehourAction"));
+        soapElement.addAttribute(soapFactory.createName( "xsi:type"), "xsd:string");
+        soapElement.addTextNode(ehourAction);
+
+        soapMessage.saveChanges();
+        soapMessage.writeTo(System.out);
+
+        return soapMessage;
+    }
 
 
-	private void log(String aMessage) {
-		LOGGER.debug(aMessage);
-	}
-	
+
+    public void getItemValue (Node n, HashMap<String, Comparable> h) {
+        if (n.getNodeName().equalsIgnoreCase("#text") ){
+
+            if (n.getNodeValue().contains("=")){
+                log("Node " + n.getNodeName() + " --> value=[" + n.getNodeValue() + "]");
+                String[] nameValuePair = n.getNodeValue().split(SOAP_VALUES_PAIR_SEPARATOR);
+                String name = nameValuePair[0];
+                String value = nameValuePair[1];
+                if (value.equalsIgnoreCase("null")) value = "";
+                h.put(name, value );
+            }
+        }
+
+        // Now traverse the rest of the tree in depth-first order.
+        if (n.hasChildNodes()) {
+            NodeList nl = n.getChildNodes();
+            for (int i=0; i<nl.getLength(); i++)
+                getItemValue (nl.item(i), h);
+        }
+    }
+
+
+    private void log(String aMessage) {
+        LOGGER.debug(aMessage);
+    }
+
 }

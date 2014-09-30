@@ -16,6 +16,11 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
+import com.richemont.jira.JiraConst;
+import com.richemont.jira.JiraHelper;
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.CallWindchillWS;
+import com.richemont.windchill.ProxyWindActivity;
 import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
@@ -42,6 +47,7 @@ import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.util.DateUtil;
+import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -70,7 +76,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.json.JsonArray;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -80,6 +89,8 @@ import java.util.*;
 
 public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     private static final long serialVersionUID = 7704288648724599187L;
+
+    private static Logger LOGGER = Logger.getLogger(TimesheetPanel.class);
 
     private static final JavaScriptResourceReference GUARDFORM_JS = new JavaScriptResourceReference(TimesheetPanel.class, "guardform.js");
     private static final CssResourceReference TIMESHEET_CSS = new CssResourceReference(TimesheetPanel.class, "css/timesheetForm.css");
@@ -103,6 +114,12 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
     @SpringBean
     private WindChillUpdateService windChillUpdateService;
+
+    @SpringBean
+    private JiraService jiraService;
+
+    @SpringBean
+    private CallWindchillWS callWindchillWS;
 
     private boolean isModerating = false;
 
@@ -309,6 +326,16 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         parent.add(resetButton);
     }
 
+    /**
+     *
+     * @param resourceName
+     * @return
+     */
+    private String getStringResource(String resourceName){
+        IModel<String> model = new StringResourceModel(resourceName, TimesheetPanel.this, null, new Object[]{});
+        return  model.getObject();
+    }
+
     private void addFailedProjectMessages(List<ActivityStatus> failedProjects, final AjaxRequestTarget target)
     {
         ((Timesheet) getDefaultModelObject()).updateFailedProjects(failedProjects);
@@ -340,14 +367,64 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     }
 
     private Label updateErrorMessage() {
-        IModel<String> model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null);
+        IModel<String> model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null, new Object[]{});
+        return updateServerMessage_err(model);
+    }
 
-        return updateServerMessage(model);
+
+    private Label updateErrorMessageWaiting() {
+        IModel<String> model = new StringResourceModel("timesheet.waiting", TimesheetPanel.this, null, new Object[]{});
+        Label label = new Label("serverMessage", model);
+        String styleAttr = "color: #006400;";  // green
+        label.add(AttributeModifier.replace("style", styleAttr));
+        //label.add(new SimpleAttributeModifier("style", "timesheetPersisted"));
+        label.setOutputMarkupId(true);
+        /**
+         label.add (new AjaxEventBehavior("beforeRender") {
+         protected void onEvent(AjaxRequestTarget target) {
+         System.out.println("ajax here!");
+         }
+         });
+         **/
+        serverMsgLabel.replaceWith(label);
+        serverMsgLabel = label;
+
+        return label;
+
+    }
+
+
+    private Label updateMultiLineErrorMessage(String errorDesc) {
+        Label label = new Label("serverMessage", errorDesc);
+        String styleAttr = "color: #8B0000;";  // red
+        label.add(AttributeModifier.replace("style", styleAttr));
+        label.setOutputMarkupId(true);
+        serverMsgLabel.replaceWith(label);
+        serverMsgLabel = label;
+        return label;
+    }
+
+
+
+    /**
+     * Update server message
+     *
+     * @param model
+     */
+    private Label updateServerMessage_err(IModel<String> model) {
+        Label label = new Label("serverMessage", model);
+        //String styleAttr = "color: #8B0000;";  // red
+        label.add(AttributeModifier.replace("style", "serverMessage"));
+        label.setOutputMarkupId(true);
+        serverMsgLabel.replaceWith(label);
+        serverMsgLabel = label;
+        return label;
     }
 
     private Label updateServerMessage(IModel<String> model) {
         Label label = new Label("serverMessage", model);
-        label.add(AttributeModifier.replace("style", "timesheetPersisted"));
+        String styleAttr = "color: #006400;";  // green
+        label.add(AttributeModifier.replace("style", styleAttr));
         label.setOutputMarkupId(true);
         serverMsgLabel.replaceWith(label);
         serverMsgLabel = label;
@@ -470,11 +547,41 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
             List<ActivityStatus> failedProjects = persistTimesheetEntries();
 
-            if (failedProjects.isEmpty()) {
-                sendToProjectLink();
-                target.add(updatePostPersistMessage());
-            } else {
-                target.add(updateErrorMessage());
+            List<String> failedActivities = sendDataToThirdParty();
+            String err_msg = "";
+            String err_msg_style = "style='color: #8B0000';";
+
+            LOGGER.info("Nb of failed activities : " + failedActivities.size());
+            boolean feedback_msg_err_jira = false;
+            boolean feedback_msg_err_pjl = false;
+            if (failedActivities.size() > 0) { // KO
+                LOGGER.info("" + failedActivities.size() + " failed activities...");
+                for (String s : failedActivities) {
+                    LOGGER.debug("\t" + s);
+                    if (s.contains(JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA)) {
+                        feedback_msg_err_jira = true;
+                    } else {
+                        feedback_msg_err_pjl = true;
+                    }
+                }
+            }
+            LOGGER.debug("feedback_msg_err_pjl=" + feedback_msg_err_pjl);
+            LOGGER.debug("feedback_msg_err_jira=" + feedback_msg_err_jira);
+            if (feedback_msg_err_jira) err_msg += getStringResource("timesheet.errorPersist.jira") + "<br>";
+            if (feedback_msg_err_pjl) err_msg += getStringResource("timesheet.errorPersist.pjl") + "<br>";
+            err_msg = "<p " + err_msg_style + " >" + err_msg + "<p>";
+            LOGGER.debug("err_msg=" + err_msg.replace("\n", "\t"));
+            target.add(updateMultiLineErrorMessage(err_msg).setEscapeModelStrings(false));
+
+            //target.addComponent(updateErrorMessage("timesheet.errorPersist.pjl"));
+
+            if (!feedback_msg_err_jira && !feedback_msg_err_pjl) {
+                // success
+                if (failedProjects.isEmpty()) {   // OK
+                    target.add(updatePostPersistMessage());
+                } else {  // KO
+                    target.add(updateErrorMessage());
+                }
             }
 
             addFailedProjectMessages(failedProjects, target);
@@ -515,6 +622,144 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         }
 
     }
+
+    /**
+     * LLI
+     * 01/05/2012
+     */
+    private List<String> sendDataToThirdParty() {
+        TimesheetModel model = (TimesheetModel) getDefaultModel();
+        Timesheet timesheet = model.getObject();
+
+        HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
+        User user = EhourWebSession.getUser();
+
+        List<TimesheetEntry> entries = timesheet.getTimesheetEntries();
+        List<Activity> pjlActivities = new ArrayList<Activity>();
+        List<Activity> jiraActivities = new ArrayList<Activity>();
+        List<TimesheetEntry> jiraEntries = new ArrayList<TimesheetEntry>();
+        List<String> jiraFailedActivitieslist = new ArrayList<String>();     // Jira Activities
+        List<ProxyWindActivity> newWindActivitieslist = new ArrayList<ProxyWindActivity>(); // Activities created in PJL for Jira
+        List<String> windFailedActivitieslist = new ArrayList<String>();   // Native PJL actvities
+
+        LOGGER.info("\n\n");
+        LOGGER.info("*****************************************************************");
+        LOGGER.info("****************** START UPDATE PROCESS  ************************");
+        LOGGER.info("*****************************************************************");
+
+        LOGGER.info("\n\n");
+        LOGGER.info("****************** UPDATE STEP 1 : IDENTIFY all updated activities in ehour  ************************");
+
+        LOGGER.debug("Get a total of activities " + entries.size() + " for user " + user.getName());
+        Activity a;
+        for (TimesheetEntry entry : entries) {
+            if (entry.getUpdatedHours() != null){
+
+                if (entry.getEntryId().getActivity().getCode().toString().startsWith(JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA)){
+                    // Jira activities
+                    a = entry.getEntryId().getActivity();
+                    if (!jiraActivities.contains(a) ) jiraActivities.add(entry.getEntryId().getActivity());
+                    // Jira Timesheet entries
+                    jiraEntries.add(entry);
+                } else {
+                    // PJL activities
+                    pjlActivities.add(entry.getEntryId().getActivity());
+                }
+                //LOGGER.debug("sendToProjectLink: " + entry.getEntryId().getActivity().getName() + " ADDED for " + entry.getUpdatedHours());
+            }
+        }
+        entries.clear();
+
+        LOGGER.info("\n\n");
+        LOGGER.info("****************** UPDATE STEP 2 : Update JIRA from eHour ************************");
+        if (jiraEntries != null){
+            try {
+                jiraFailedActivitieslist = jiraService.updateJiraIssues(user, jiraEntries);
+            } catch (Exception e) {
+                e.printStackTrace();
+                for (Activity activity :jiraActivities){
+                    jiraFailedActivitieslist.add( activity.getCode() );    //// LLI : TBD
+                }
+            }
+            jiraEntries.clear();
+        }else {
+            LOGGER.info("Nothing to do.");
+        }
+
+        LOGGER.info("\n\n");
+        LOGGER.info("****************** UPDATE STEP 3 : Update WINDCHILL from eHour for Jira ************************");
+        JsonArray jSonNewJiraActivities = (JsonArray) request.getSession().getAttribute("MissingPjlActivity");
+
+        if (jSonNewJiraActivities != null){
+            try {
+                newWindActivitieslist = windChillUpdateService.createMissingPjlActivities ( user, jSonNewJiraActivities, jiraActivities );
+                //LOGGER.info("jSonNewJiraActivities has been updated with latest modification:");
+                //LOGGER.debug(jSonNewJiraActivities);
+
+                windFailedActivitieslist = JiraHelper.updateActivityId(newWindActivitieslist);
+
+                LOGGER.info("\n\n");
+                LOGGER.info("****************** UPDATE STEP 3bis :  Update eHour user session with latest modifications ************************");
+
+                //List<ProxyWindActivity> resultActivitiesList, JsonArray jSonAllJiraActivities
+                jSonNewJiraActivities = windChillUpdateService.updateSessionParam ( newWindActivitieslist, jSonNewJiraActivities ) ;
+                request.getSession().setAttribute("MissingPjlActivity" , jSonNewJiraActivities );
+
+                LOGGER.info("user session has been updated");
+                LOGGER.debug("" + jSonNewJiraActivities);
+                LOGGER.debug("\n\n");
+                LOGGER.debug("" + (JsonArray) request.getSession().getAttribute("MissingPjlActivity"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                LOGGER.error( "ERROR !!!!! No response from PJL: createMissingPjlActivities() returned null");
+                LOGGER.error(e.getMessage());
+                for (Activity activity :jiraActivities){
+                    windFailedActivitieslist.add( activity.getCode() );    //// LLI : TBD
+                }
+            }
+
+            LOGGER.error("\n");
+            LOGGER.error( "Update Windchill from eHour for Jira: Are there any failed activities ?");
+            LOGGER.error("jira Failed Activities list = " + windFailedActivitieslist);
+
+        } else {
+            LOGGER.info("Nothing to do.");
+        }
+
+
+
+        LOGGER.info("\n\n");
+        LOGGER.info("****************** UPDATE STEP 4 :  Update WINDCHILL from eHour ************************");
+        if ( pjlActivities != null & pjlActivities.size() >0 ){
+            try {
+                windFailedActivitieslist.addAll( windChillUpdateService.updateProjectLink(user, pjlActivities) );
+
+            } catch (Exception e) {
+                LOGGER.error( "ERROR !!!!! Update PJL from eHour: updateProjectLink()");
+                LOGGER.error(e.getMessage());
+                for (Activity activity :pjlActivities){
+                    windFailedActivitieslist.add(activity.getCode());    //// LLI : TBD
+                }
+            }
+
+            LOGGER.error("\n");
+            LOGGER.error( "Update Windchill from eHour for otheractivities (just PJL, not Jira): Are there any failed activities ?");
+            LOGGER.error("wind Failed Activities list = " + jiraFailedActivitieslist);
+        }
+
+        // all failed activities
+        if ( windFailedActivitieslist.size()>0 ) jiraFailedActivitieslist.addAll(windFailedActivitieslist);
+
+        LOGGER.error("\n");
+        LOGGER.error( "Are there any failed activities ?");
+        LOGGER.error("ALL FailedActivities list = " + jiraFailedActivitieslist);
+
+        return jiraFailedActivitieslist;
+
+    }
+
 
 
     private class GuardedWeekLink extends GuardedAjaxLink<Void> {

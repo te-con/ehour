@@ -10,6 +10,7 @@ import javax.json.JsonArray;
 import javax.xml.namespace.QName;
 import javax.xml.soap.*;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -113,8 +114,8 @@ public class SoapHelper {
      * @param ehourAction
      * @param listToSend
      * @return
-     * @throws javax.xml.soap.SOAPException
-     * @throws java.io.IOException
+     * @throws SOAPException
+     * @throws IOException
      */
     public static SOAPMessage createSOAPRequestForUpdate(String ieDelegateName, String ehourUserName, String ehourAction, List<String> listToSend, String auth  ) throws SOAPException, IOException {
 
@@ -187,8 +188,8 @@ public class SoapHelper {
      * @param ehourAction
      * @param listToSend
      * @return
-     * @throws javax.xml.soap.SOAPException
-     * @throws java.io.IOException
+     * @throws SOAPException
+     * @throws IOException
      */
     public static SOAPMessage createSOAPRequestForUpdateProjectPlan(String ieDelegateName, String ehourUserName, String ehourAction,  JsonArray listToSend, String auth  ) throws SOAPException {
 
@@ -241,7 +242,7 @@ public class SoapHelper {
      * @param localName     eHourActivitiesTobeUpdated
      * @param listToSend
      * @return
-     * @throws javax.xml.soap.SOAPException
+     * @throws SOAPException
      */
     public static SOAPElement addArrayToSoapElement(SOAPBodyElement soapBodyElement, String localName, JsonArray listToSend) throws SOAPException {
         SOAPFactory soapFactory = SOAPFactory.newInstance();
@@ -468,6 +469,7 @@ public class SoapHelper {
         System.getProperties().setProperty("javax.net.ssl.keyStorePassword", storePass );
         System.getProperties().setProperty("javax.net.ssl.keyStoreType", storeType);
 
+        System.out.println("Does keystore exist ? " + new File(keyStore).exists()) ;
         LOGGER.debug("javax.net.ssl.trustStore=" + trustStore);
         LOGGER.debug("javax.net.ssl.keyStore=" + keyStore);
         LOGGER.debug("javax.net.ssl.keyStoreType=" + storeType);

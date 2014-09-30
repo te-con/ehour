@@ -18,6 +18,7 @@
             classpath:context-wicket.xml
 
             classpath:context-windchill.xml
+            classpath:context-jira.xml
         </param-value>
     </context-param>
 

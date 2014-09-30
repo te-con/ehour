@@ -250,10 +250,13 @@ td.lockeddaynocomment {
     width: 100%;
 }
 
-.timesheetPersisted {
-    font: 0.9em Geneva, Arial, Helvetica, sans-serif;
-    color: #233e55;
+
+.timesheetPersisted
+{
+	font: 0.9em Geneva, Arial, Helvetica, sans-serif;
+	color: #8B0000;
 }
+
 
 .timesheetCommentsTable td {
     color: #536e87;

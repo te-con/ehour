@@ -20,6 +20,7 @@
         <module>eHour-standalone</module>
         <module>eHour-war</module>
         <module>eHour-windchill</module>
+        <module>eHour-jira</module>
     </modules>
     <description>
         eHour - web-based time registration for consultancy companies
@@ -77,7 +78,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-security.version>3.2.4.RELEASE</spring-security.version>
 
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
     </properties>
 
@@ -212,14 +213,14 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
-<!--
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.jboss.spec.javax.transaction</groupId>
-                        <artifactId>jboss-transaction-api_1.2_spec</artifactId>
-                    </exclusion>
-                </exclusions>
--->
+                <!--
+                                <exclusions>
+                                    <exclusion>
+                                        <groupId>org.jboss.spec.javax.transaction</groupId>
+                                        <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+                                    </exclusion>
+                                </exclusions>
+                -->
             </dependency>
 
             <dependency>
@@ -407,7 +408,7 @@
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
-                <version>1.2.15</version>
+                <version>1.2.17</version>
                 <exclusions>
                     <exclusion>
                         <groupId>com.sun.jmx</groupId>
@@ -453,12 +454,6 @@
                 <groupId>xerces</groupId>
                 <artifactId>xercesImpl</artifactId>
                 <version>2.8.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>3.0.2.RELEASE</version>
             </dependency>
 
             <dependency>
@@ -535,19 +530,31 @@
                 <artifactId>wnc4ehour</artifactId>
                 <version>1.0</version>
             </dependency>
-            
-                        <dependency>
+
+            <dependency>
                 <groupId>nl.tecon.ehevo</groupId>
                 <artifactId>ehevo-windchill</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
 
+            <dependency>
+                <groupId>nl.tecon.ehevo</groupId>
+                <artifactId>ehevo-jira</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>15.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.oracle.jdbc</groupId>
+                <artifactId>ojdbc</artifactId>
+                <version>11.2.0.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -616,6 +623,11 @@
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc</artifactId>
         </dependency>
     </dependencies>
 
@@ -837,7 +849,8 @@
                         <artifactId>maven-clover2-plugin</artifactId>
                         <version>4.0.0</version>
                         <configuration>
-                            <snapshot>${user.home}/.clover/${project.groupId}-${project.artifactId}/clover.snapshot</snapshot>
+                            <snapshot>${user.home}/.clover/${project.groupId}-${project.artifactId}/clover.snapshot
+                            </snapshot>
                             <singleCloverDatabase>true</singleCloverDatabase>
                         </configuration>
                         <executions>
@@ -870,9 +883,31 @@
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
+<!--
+        <repository>
+            <id>Windchill Nexus</id>
+            <name>Windchill Nexus</name>
+            <url>http://ismjira.ch.rccad.net:8081/nexus/content/groups/public</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>springsource-repo</id>
+            <name>SpringSource Repository</name>
+            <url>http://repo.springsource.org/release</url>
+        </repository>-->
+
     </repositories>
-    
-	<distributionManagement>
+
+    <distributionManagement>
         <repository>
             <id>releases</id>
             <url>http://nexus.te-con.nl/content/repositories/releases</url>
@@ -884,5 +919,19 @@
             <url>http://nexus.te-con.nl/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+<!--
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>http://ismjira.ch.rccad.net:8081/nexus/repositories/releases</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Internal Snapshots</name>
+            <url>http://ismjira.ch.rccad.net:8081/nexus/repositories/snapshots</url>
+        </snapshotRepository>
+
+    </distributionManagement>-->
 
 </project>

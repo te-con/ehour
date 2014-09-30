@@ -4,6 +4,7 @@
         <artifactId>ehevo</artifactId>
         <version>1.4.2-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ehevo-persistence</artifactId>
     <packaging>jar</packaging>
@@ -11,6 +12,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
@@ -98,6 +100,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc</artifactId>
         </dependency>
 
         <dependency>

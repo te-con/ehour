@@ -57,7 +57,7 @@ public class WindChillUpdateServiceImpl implements WindChillUpdateService {
     public List<String> updateProjectLink(User user, List<Activity> activities) throws Exception {
         List<String> windFailedActivitieslist  = new ArrayList<String>();
         List<HashMap<String,Comparable>> updatedActivitiesList = null;
-        updatedActivitiesList = updateProjectLink2(user, activities);
+            updatedActivitiesList = updateProjectLink2(user, activities);
         return windFailedActivitieslist;
     }
 
@@ -129,13 +129,13 @@ public class WindChillUpdateServiceImpl implements WindChillUpdateService {
     }
 
 
-    /**
-     * @param ehourUserName : the user for the ehour session
-     * @param jSonAllJiraActivities  : Json ProxyWindActivity : all the Jira activities from the eHour user session
-     * @param modifiedJiraActivities : eHour Activity : the Jira activities the eHour user has just modified
-     * @return resultActivitiesList : ProxyWindActivity : just modified Jira activities sync wih PJL
-     * @throws Exception
-     */
+        /**
+         * @param ehourUserName : the user for the ehour session
+         * @param jSonAllJiraActivities  : Json ProxyWindActivity : all the Jira activities from the eHour user session
+         * @param modifiedJiraActivities : eHour Activity : the Jira activities the eHour user has just modified
+         * @return resultActivitiesList : ProxyWindActivity : just modified Jira activities sync wih PJL
+         * @throws Exception
+         */
     public List<ProxyWindActivity> createMissingPjlActivities (User ehourUserName, JsonArray jSonAllJiraActivities, List<Activity> modifiedJiraActivities, String auth, String endpoint) throws Exception {
         List<ProxyWindActivity> resultActivitiesList = new ArrayList();
 
@@ -166,7 +166,7 @@ public class WindChillUpdateServiceImpl implements WindChillUpdateService {
             if (jsonArrayStr != null) {
                 resultActivitiesList = JsonHelper.convertJsonArrayStringToArrayList(jsonArrayStr) ;
             } else {
-                LOGGER.debug("SOAP Response is empty : SoapHelper.getAttributeValue() returns null");
+                    LOGGER.debug("SOAP Response is empty : SoapHelper.getAttributeValue() returns null");
                 return null;
             }
         } else {

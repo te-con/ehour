@@ -86,5 +86,14 @@ trait ReportAggregatedDao {
    * Get assignments without bookings for a particular range
    */
   def getActivitiesWithoutBookings(dateRange: DateRange): util.List[Activity]
+
+  /**
+   * Added by LLI for Richemont
+   * Get the min/max timesheet date for a assignment of a User
+   * @param user
+   * @param activity
+   * @return
+   */
+  def getMinMaxDateTimesheetEntryForUserAndAssignment(user: User, activity: Activity):DateRange
 }
 

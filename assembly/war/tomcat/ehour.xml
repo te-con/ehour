@@ -1,20 +1,20 @@
-<Context path="/ehour" reloadable="false" cookies="true" docBase="${EHOUR_HOME}/app/ehevo-@VERSION@.war">
+<Context path="/ehour" reloadable="false" cookies="true" docBase="D:/ehour/ehour1.0/app/ehevo-1.0-SNAPSHOT.war">
     <Resource name="jdbc/eHourDS"
               auth="Container"
               type="javax.sql.DataSource"
               maxActive="100"
               maxIdle="30"
               maxWait="10000"
-              username="%ehour.db.username%"
-              password="%ehour.db.password%"
+              username="EHOUR10"
+              password="eNetAppIsNice10-T"
               driverClassName="oracle.jdbc.driver.OracleDriver"
-              url="jdbc:oracle:thin:@localhost:1521/%ehour.db.name%"/>
+              url="jdbc:oracle:thin:@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = chcxchsap1010-vip.ch.rccad.net)(PORT = 1521)) (ADDRESS = (PROTOCOL = TCP)(HOST = chcxchsap1140-vip.ch.rccad.net)(PORT = 1521)) (LOAD_BALANCE = yes) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = RACX20)))"/>
 
     <!-- Rather than defining an environment variable you can also specify the EHOUR_HOME here
          Remove the comment tags and set the absolute path to your eHour home dir as the value.
          Please use forward slashes (/) in the path rather than backslashes (\) as is standard on Windows -->
 
-    <!--<Parameter name="EHOUR_HOME" value="" override="true" />-->
+    <Parameter name="EHOUR_HOME" value="D:/ptc/windchill_10.0/apache-tomcat-7.0.27/webapps/ehevo/ehour-1.0-SNAPSHOT" override="true" />
 
     <ResourceParams name="jdbc/eHourDS">
         <parameter>

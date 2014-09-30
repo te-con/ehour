@@ -91,6 +91,21 @@ class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Im
     getFirstOr(results, new DateRange)
   }
 
+  /**
+   * Added by LLI for Richemont
+   * Get the min/max timesheet date for a assignment of a User
+   * @param user
+   * @param activity
+   * @return
+   */
+  override def getMinMaxDateTimesheetEntryForUserAndAssignment(user: User, activity: Activity): DateRange = {
+    val keys = List("user", "activity")
+    val params = List(user, activity)
+
+    val results = findByNamedQuery[DateRange]("Report.getMinMaxTimesheetEntryDateForUserAndAssignment",  keys, params)
+    getFirstOr(results, new DateRange)
+  }
+
   override def getActivitiesWithoutBookings(dateRange: DateRange): util.List[Activity] = {
     val keys = List("dateStart", "dateEnd")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd)

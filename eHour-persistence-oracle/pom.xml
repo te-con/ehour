@@ -5,6 +5,7 @@
         <artifactId>ehevo</artifactId>
         <version>1.4.2-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ehevo-persistence-oracle</artifactId>
     <packaging>jar</packaging>
@@ -14,7 +15,6 @@
         <dependency>
             <groupId>com.oracle.jdbc</groupId>
             <artifactId>ojdbc</artifactId>
-            <version>10.1.0.5</version>
         </dependency>
 
         <dependency>

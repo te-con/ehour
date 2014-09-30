@@ -59,11 +59,21 @@
     </build>
 
 	<dependencies>
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.0</version>
+        </dependency>
 
         <!-- Inter project deps -->
         <dependency>
             <groupId>nl.tecon.ehevo</groupId>
             <artifactId>ehevo-windchill</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.tecon.ehevo</groupId>
+            <artifactId>ehevo-jira</artifactId>
         </dependency>
 
         <dependency>

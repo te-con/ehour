@@ -101,4 +101,12 @@
                   (act.dateStart IS NULL OR act.dateStart < :dateEnd) AND
                   (act.dateEnd IS NULL or act.dateEnd > :dateStart)]]>
     </query>
+
+
+    <query name="Report.getMinMaxTimesheetEntryDateForUserAndAssignment">
+        SELECT new net.rrm.ehour.data.DateRange(min(entry.entryId.entryDate), max(entry.entryId.entryDate))
+        FROM TimesheetEntry entry
+        WHERE entry.entryId.activity.assignedUser = :user AND
+        entry.entryId.activity = :activity
+    </query>
 </hibernate-mapping>

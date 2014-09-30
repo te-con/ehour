@@ -50,15 +50,14 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
     @Column(name = "UPDATE_DATE")
     @NotNull
-    private Date updateDate;
+	private Date updateDate;
 
-    /**
-     * full constructor
-     */
-    public TimesheetEntry(TimesheetEntryId entryId, Float hours) {
-        this.entryId = entryId;
-        this.hours = hours;
-    }
+	/** full constructor */
+	public TimesheetEntry(TimesheetEntryId entryId, Float hours)
+	{
+		this.entryId = entryId;
+		this.hours = hours;
+	}
 
     /**
      * default constructor
@@ -100,9 +99,13 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
         Float mutation = previousHours - (updatedHours == null ? 0 : updatedHours);
 
+        // LLI for Richemont
+        // to identify when cumulated hours has been set to 0
+        if (previousHours > 0 && updatedHours == null)  setHours(new Float(0));
+
         entryId.getActivity().mutateAvailableHours(mutation);
     }
-
+    
     public Float getUpdatedHours() {
         return this.hours;
     }

@@ -6,7 +6,6 @@
         <version>1.4.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>nl.tecon.ehevo</groupId>
     <artifactId>ehevo-windchill</artifactId>
     <packaging>jar</packaging>
     <name>eHour Evolutions Windchill integration</name>

@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
+import com.richemont.jira.JiraConst;
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
@@ -178,18 +179,75 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         }
     }
 
+    /**
+     * Mod LLI for Richemont
+     * 14/05/2013
+     *
+     * @param row
+     * @return
+     */
     private ExternalLink createProjectLinkLink(final TimesheetRow row) {
 
         String activityCode = row.getActivity().getCode();
+        String projectLinkUrl = "";
+        String updatedUrl = "";
+        ExternalLink link = null;
+        if (activityCode.startsWith(JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA)) {
+            link = createJiraLink (activityCode, row.getActivity().getName().toString());
+        } else {
+            link = createPjlLink (activityCode);
+        }
 
+        return link;
+    }
+
+    /**
+     * LLI for Richemont
+     * 14/05/2013
+     * @param activityCode
+     * @return
+     */
+    private ExternalLink createPjlLink(String activityCode) {
         String projectLinkUrl = ((EhourWebApplication) getApplication()).getProjectLinkUrl();
-
         String updatedUrl = projectLinkUrl.replace("!{WORKITEM}", activityCode);
-
         ExternalLink link = new ExternalLink("projectLinkLink", updatedUrl);
-        ContextImage img = new ContextImage("projectLinkLinkImg", new Model<String>("img/external_link.gif"));
+        ContextImage img = new ContextImage("projectLinkLinkImg", new Model<String>("img/resource_assigned.gif"));
         link.add(img);
+        return link;
+    }
 
+    /**
+     * LLI for Richemont
+     * 14/05/2013
+     * @param activityCode
+     * @return
+     */
+    private ExternalLink createJiraLink(String activityCode, String activityName) {
+        activityCode = activityCode.replace( JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA, "");
+        String projectLinkUrl = ((EhourWebApplication) getApplication()).getJiraUrl();
+        String updatedUrl = projectLinkUrl.replace("!{ISSUE}", activityCode );
+        ExternalLink link = new ExternalLink("projectLinkLink", updatedUrl);
+        Model<String> model = new Model<String>("img/jira.gif");
+        //System.out.println("\tcreateJiraLink() for " + activityCode + " :" + activityName);
+
+        // Demande de support
+        if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_6)) {
+            model = new Model<String>("img/icon-jira-orang.gif");
+            // Epic
+        } else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_9)) {
+            model = new Model<String>("img/icone-jira-epic.png");
+            //Story
+        } else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_10)) {
+            model = new Model<String>("img/icon-jira-story.png");
+            //Tache technique
+        } else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_11)) {
+            model = new Model<String>("img/icon-jira-task.png");
+        }else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_15)) {
+            model = new Model<String>("img/icon-jira-bug.png");
+        }else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_10100)) {
+            model = new Model<String>("img/icon-jira-improvement.png");
+        }
+        link.add( new ContextImage("projectLinkLinkImg", model ));
         return link;
     }
 
