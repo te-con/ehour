@@ -16,13 +16,17 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.domain.*;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Representation of a timesheet
@@ -51,8 +55,9 @@ public class Timesheet implements Serializable {
         this.filter = filter;
     }
 
+
     public int getMaxPages() {
-        int size = getProjects().get().size();
+        int size = filterProjects().size();
         double pages = (double) size / PROJECTS_PER_PAGE;
         return (int) Math.floor(pages);
     }
@@ -228,22 +233,75 @@ public class Timesheet implements Serializable {
         return projects;
     }
 
-    /**
-     *
-     * @return
-     */
     @SuppressWarnings("UnusedDeclaration")
     public List<Project> getProjectList() {
-        int start = (page - 1) * PROJECTS_PER_PAGE;
-        int end = start + PROJECTS_PER_PAGE;
+        int start = page * PROJECTS_PER_PAGE;
 
-        List<Project> projects = getProjects().get();
+        List<Project> filteredProjects = filterProjects();
 
-        if (end > projects.size()) {
-            end = projects.size();
+        if (start > filteredProjects.size()) {
+            setPage(getMaxPages());
+            return getProjectList();
         }
 
-        return projects.size() > PROJECTS_PER_PAGE ? projects.subList(start, end) : projects;
+        int end = start + PROJECTS_PER_PAGE;
+
+        if (end > filteredProjects.size()) {
+            end = filteredProjects.size();
+        }
+
+
+        return filteredProjects.size() > PROJECTS_PER_PAGE ? filteredProjects.subList(start, end) : filteredProjects;
+    }
+
+    private List<Project> filterProjects() {
+        List<Project> projects = getProjects().get();
+
+        if (StringUtils.isNotBlank(filter)) {
+            String lowerCaseFilter = filter.toLowerCase();
+
+            List<Project> matchingProjects = filterOnProjectNameAndCode(projects, lowerCaseFilter);
+
+            projects.removeAll(matchingProjects);
+
+            filterOnActivityNameAndCode(projects, lowerCaseFilter, matchingProjects);
+
+            return matchingProjects;
+        } else {
+            return projects;
+        }
+    }
+
+    private void filterOnActivityNameAndCode(List<Project> projects, String lowerCaseFilter, List<Project> matchingProjects) {
+        for (Project project : projects) {
+            Set<Activity> matchingActivities = Sets.newHashSet();
+
+            for (Activity activity : project.getActivities()) {
+                if (activity.getName().toLowerCase().contains(lowerCaseFilter) ||
+                        activity.getCode().toLowerCase().contains(lowerCaseFilter)) {
+                    matchingActivities.add(activity);
+                }
+            }
+
+            if (matchingActivities.size() > 0) {
+                Project clonedProject = new Project(project);
+                clonedProject.setActivities(matchingActivities);
+                matchingProjects.add(clonedProject);
+            }
+        }
+    }
+
+    private List<Project> filterOnProjectNameAndCode(List<Project> projects, String lowerCaseFilter) {
+        List<Project> filteredProjects = Lists.newArrayList();
+
+        for (Project project : projects) {
+            if (project.getName().toLowerCase().contains(lowerCaseFilter)
+                    || project.getProjectCode().toLowerCase().contains(lowerCaseFilter)) {
+                filteredProjects.add(project);
+            }
+        }
+
+        return filteredProjects;
     }
 
     /**

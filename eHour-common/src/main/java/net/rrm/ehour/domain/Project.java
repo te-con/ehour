@@ -106,6 +106,20 @@ public class Project extends DomainObject<Integer, Project> {
         this.customer = customer;
     }
 
+    public Project(Project cloneProject) {
+        this(cloneProject.getProjectId(), cloneProject.getCustomer());
+
+        projectCode = cloneProject.getProjectCode();
+        contact = cloneProject.getContact();
+        description = cloneProject.getDescription();
+        name = cloneProject.getName();
+        defaultProject = cloneProject.isDefaultProject();
+        active = cloneProject.isActive();
+        activities = new HashSet<Activity>(cloneProject.getActivities());
+        projectManager = cloneProject.getProjectManager();
+        deletable = cloneProject.isDeletable();
+        billable = cloneProject.isBillable();
+    }
 
     public String getFullName() {
         return (StringUtils.isBlank(projectCode)) ? name : projectCode + " - " + name;

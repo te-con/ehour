@@ -206,9 +206,9 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
     private DropDownChoice<Integer> createPaginationDropdown(final TimesheetModel timesheetModel) {
         List<Integer> options = new ArrayList<Integer>();
-        int maxPages = timesheetModel.getObject().getMaxPages() + 1;
-        for (int i = 1; i <= maxPages; i++) {
-            options.add(i);
+        int maxPages = timesheetModel.getObject().getMaxPages();
+        for (int i = 0; i <= maxPages; i++) {
+            options.add(i + 1);
         }
 
         final DropDownChoice<Integer> pagination = new DropDownChoice<Integer>("pagination", new PropertyModel<Integer>(timesheetModel, "page"), options);
