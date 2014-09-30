@@ -29,9 +29,8 @@ class BackupEntityTypeTest
     {
         def values = BackupEntityType.reverseOrderedValues();
 
-
-        assert 10 == values[0].order
-        assert 9 == values[1].order
+        assert 8 == values[0].order
+        assert 7 == values[1].order
     }
 
     @Test

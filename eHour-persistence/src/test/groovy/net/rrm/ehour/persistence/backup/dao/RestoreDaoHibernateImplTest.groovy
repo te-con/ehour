@@ -1,7 +1,6 @@
 package net.rrm.ehour.persistence.backup.dao
 
 import net.rrm.ehour.domain.User
-import net.rrm.ehour.domain.UserObjectMother
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,17 +15,6 @@ class RestoreDaoHibernateImplTest extends AbstractAnnotationDaoTest
 {
     @Autowired
     private RestoreDao importDao
-
-    @Test
-    void shouldPersist()
-    {
-        def user = UserObjectMother.createUser()
-        user.userId = null
-
-        importDao.persist user
-
-        assertNotNull user.userId
-    }
 
     @Test
     void shouldFind()

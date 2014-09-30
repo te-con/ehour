@@ -2,6 +2,7 @@ package net.rrm.ehour.persistence.project.dao
 
 import net.rrm.ehour.domain.*
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest
+import org.junit.Ignore
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -29,6 +30,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     }
 
     @Test
+    @Ignore
     void shouldFindAll() {
         def projects = projectDAO.findAll();
 

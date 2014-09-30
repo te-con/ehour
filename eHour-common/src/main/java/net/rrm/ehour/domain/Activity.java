@@ -2,8 +2,6 @@ package net.rrm.ehour.domain;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -179,27 +177,36 @@ public class Activity extends DomainObject<Integer, Activity> {
     }
 
     @Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
-		Activity other = (Activity) obj;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		return new EqualsBuilder().append(this.getName(), other.getName())
-		                          .append(this.getAllottedHours(), other.getAllottedHours())
-		                          .append(this.getActive(), other.getActive())
-		                          .append(this.getDateStart(), other.getDateStart())
-		                          .append(this.getDateEnd(), other.getDateEnd())
-		                          .append(this.getProject(), other.getProject())
-		                          .append(this.getAssignedUser(), other.getAssignedUser())
-		                          .isEquals();
-	}
+        Activity activity = (Activity) o;
+
+        if (!active.equals(activity.active)) return false;
+        if (allottedHours != null ? !allottedHours.equals(activity.allottedHours) : activity.allottedHours != null)
+            return false;
+        if (!assignedUser.equals(activity.assignedUser)) return false;
+        if (dateEnd != null ? !dateEnd.equals(activity.dateEnd) : activity.dateEnd != null) return false;
+        if (dateStart != null ? !dateStart.equals(activity.dateStart) : activity.dateStart != null) return false;
+        if (!name.equals(activity.name)) return false;
+        if (!project.equals(activity.project)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (dateStart != null ? dateStart.hashCode() : 0);
+        result = 31 * result + (dateEnd != null ? dateEnd.hashCode() : 0);
+        result = 31 * result + (allottedHours != null ? allottedHours.hashCode() : 0);
+        result = 31 * result + (assignedUser != null ? assignedUser.hashCode() : 0);
+        result = 31 * result + (project != null ? project.hashCode() : 0);
+        result = 31 * result + active.hashCode();
+        return result;
+    }
+
 
 	@Override
 	public String getFullName() {
@@ -211,10 +218,6 @@ public class Activity extends DomainObject<Integer, Activity> {
 		return id;
 	}
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(name).append(dateStart).append(dateEnd).append(allottedHours).append(active).toHashCode();
-	}
 
 	@Override
 	public int compareTo(Activity activity) {

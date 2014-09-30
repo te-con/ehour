@@ -14,7 +14,6 @@
 		       ACT.PROJECT_ID AS "projectId",
 		       ACT.USER_ID AS "userId",
 		       USR.FULLNAME AS "userFullname",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
@@ -39,7 +38,6 @@
 				ACT.PROJECT_ID,
 				ACT.USER_ID,
 				USR.FULLNAME,
-				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
@@ -58,7 +56,6 @@
 		       ACT.PROJECT_ID AS "projectId",
 		       ACT.USER_ID AS "userId",
                USR.FULLNAME AS "userFullname",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
@@ -83,7 +80,6 @@
 				ACT.PROJECT_ID,
 				ACT.USER_ID,
 				USR.FULLNAME,
-				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
@@ -101,7 +97,6 @@
 		       ACT.PROJECT_ID AS "projectId",
 		       ACT.USER_ID AS "userId",
                USR.FULLNAME AS "userFullname",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
@@ -127,7 +122,6 @@
 				ACT.PROJECT_ID,
 				ACT.USER_ID,
 				USR.FULLNAME,
-				PRJ.PROJECT_ID,
 				PRJ.NAME,
 				PRJ.PROJECT_CODE,
 				ENTRY.COMMENT_TEXT
@@ -146,7 +140,6 @@
 		       ACT.PROJECT_ID AS "projectId",
 		       ACT.USER_ID AS "userId",
                USR.FULLNAME AS "userFullname",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
@@ -170,7 +163,6 @@
 				ACT.PROJECT_ID,
 				ACT.USER_ID,
 				USR.FULLNAME,
-				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
