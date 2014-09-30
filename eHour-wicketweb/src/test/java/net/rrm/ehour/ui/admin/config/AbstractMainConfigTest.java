@@ -83,4 +83,13 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
         getTester().assertRenderedPage(MainConfigPage.class);
         getTester().assertNoErrorMessage();
     }
+
+    protected EhourConfigStub getConfigStub() {
+        return config;
+    }
+
+    protected ConfigurationServiceImpl getConfigService() {
+        return configService;
+    }
+
 }

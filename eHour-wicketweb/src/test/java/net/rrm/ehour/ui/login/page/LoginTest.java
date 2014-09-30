@@ -20,6 +20,8 @@ import com.google.common.base.Optional;
 import com.richemont.jira.JiraService;
 import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.config.service.ConfigurationService;
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
@@ -34,6 +36,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
+
+import static org.easymock.EasyMock.expect;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
@@ -78,6 +83,13 @@ public class LoginTest extends BaseSpringWebAppTester {
         tester.startPage(Login.class);
         tester.assertRenderedPage(Login.class);
         tester.assertNoErrorMessage();
+
+        User user = new User(1);
+        expect(userService.getAuthorizedUser("thies")).andReturn(user);
+        expect(userService.isLdapUserMemberOf("thies", "cn=timesheet-tracking,ou=people,cn=AdministrativeLdap,cn=Windchill,o=ptc")).andReturn(true);
+        HashMap<String, Activity> activityHashMap = new HashMap<String, Activity>();
+        expect(windChillService.getAllAssignedActivitiesByCode(user)).andReturn(activityHashMap);
+        expect(windChillService.updateDataForUser(activityHashMap, "thies")).andReturn(true);
 
         when(infoService.info()).thenReturn(new SystemInfo("a", "b", "c"));
         when(authUtil.getHomepageForRole(any(Roles.class))).thenReturn(new AuthUtil.Homepage(DummyPage.class, Optional.<PageParameters>absent()));

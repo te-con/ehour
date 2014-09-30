@@ -42,7 +42,6 @@ public abstract class AbstractSpringTester {
     private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
     protected WindChillService windChillService;
     public UserService userService;
-    private WindChillUpdateService windChillUpdateService;
 
     private void createContextSetup() {
         mockContext = new ApplicationContextMock();

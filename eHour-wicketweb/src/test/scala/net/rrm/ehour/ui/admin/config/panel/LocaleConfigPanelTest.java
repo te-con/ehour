@@ -25,6 +25,8 @@ import org.apache.wicket.util.tester.FormTester;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Locale;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
@@ -33,8 +35,6 @@ import static org.mockito.Mockito.verify;
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-// FIXME LATER TO DO
-@Ignore
 public class LocaleConfigPanelTest extends AbstractMainConfigTest {
     @Test
     public void shouldSubmit() {
@@ -52,9 +52,9 @@ public class LocaleConfigPanelTest extends AbstractMainConfigTest {
 
         tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":submitButton", "onclick");
 
-        assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), config.getCurrency());
-        assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), config.getFormattingLocale());
+        getTester().assertNoErrorMessage();
 
-        verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
+        assertEquals(new Locale("ar", "DZ"), getConfigStub().getCurrency());
+        assertEquals(new Locale("sq", "AL"), getConfigStub().getLocale());
     }
 }
