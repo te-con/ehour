@@ -1,27 +1,24 @@
 package net.rrm.ehour.activity.service;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import net.rrm.ehour.activity.status.ActivityStatus;
+import net.rrm.ehour.activity.status.ActivityStatusService;
+import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.domain.Activity;
+import net.rrm.ehour.domain.ActivityMother;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.persistence.activity.dao.ActivityDao;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import net.rrm.ehour.activity.status.ActivityStatus;
-import net.rrm.ehour.activity.status.ActivityStatusService;
-import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.Activity;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.exception.ObjectNotFoundException;
-import net.rrm.ehour.persistence.activity.dao.ActivityDao;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.test.util.ReflectionTestUtils;
+import static org.easymock.EasyMock.*;
 
 /**
  * 
@@ -151,13 +148,13 @@ public class ActivityServiceTest {
 	public void shouldGetAllActivitiesForaUserWithinSpecifiedDateRange() {
 		DateRange dateRange = new DateRange(new GregorianCalendar(2010, 1, 1).getTime(), new GregorianCalendar(2010, 11, 1).getTime());
 
-		ArrayList<Activity> validActivities = new ArrayList<Activity>();
-		validActivities.add(new Activity());
-		validActivities.add(new Activity());
-		
+		List<Activity> validActivities = new ArrayList<Activity>();
+		validActivities.add(ActivityMother.createActivity(1));
+		validActivities.add(ActivityMother.createActivity(1));
+
 		expect(activityDao.findActivitiesForUser(1, dateRange)).andReturn(validActivities);
 		
-		expect(activityStatusService.getActivityStatus(new Activity(), dateRange)).andReturn(new ActivityStatus()).times(2);
+		expect(activityStatusService.getActivityStatus(ActivityMother.createActivity(1), dateRange)).andReturn(new ActivityStatus()).times(2);
 		
 		replay(activityDao, activityStatusService);
 		

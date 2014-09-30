@@ -98,6 +98,8 @@ public class UserServiceImplTest {
 
         expect (userRoleDAO.findById(UserRole.CUSTOMERREVIEWER.getRole())).andReturn(UserRole.CUSTOMERREVIEWER);
 
+        userDAO.cleanRedundantRoleInformation(UserRole.CUSTOMERREVIEWER);
+
         replay(userDAO);
         replay(userRoleDAO);
 

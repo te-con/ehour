@@ -56,7 +56,6 @@ class DomainObjectParserTest {
     void shouldParseEnum() {
         def resolver = createResolver(""" <AUDITS CLASS="net.rrm.ehour.domain.Audit"><AUDIT>
    <AUDIT_ID>173</AUDIT_ID>
-   <USER_ID>2</USER_ID>
    <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>
    <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>
    <SUCCESS>Y</SUCCESS>
@@ -79,7 +78,6 @@ class DomainObjectParserTest {
 
         def resolver = createResolver(""" <AUDITS CLASS="net.rrm.ehour.domain.Audit"><AUDIT>
    <AUDIT_ID>173</AUDIT_ID>
-   <USER_ID>2</USER_ID>
    <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>
    <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>
    <SUCCESS>Y</SUCCESS>
@@ -97,7 +95,6 @@ class DomainObjectParserTest {
 
         assertEquals AuditActionType.LOGIN, result[0].auditActionType
         assertEquals 1, daoValidator.totalPersistCount
-        assertEquals user, result[0].user
     }
 
     private class DomainObjectParserDaoTestValidator<T> extends DomainObjectParserDaoValidatorImpl {
