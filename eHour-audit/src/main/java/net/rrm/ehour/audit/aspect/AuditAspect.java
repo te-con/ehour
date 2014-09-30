@@ -131,12 +131,11 @@ public class AuditAspect {
 
         boolean isAuditable = isAuditable(pjp) && isAuditEnabled(auditActionType);
 
-        User user = getUser();
-
         try {
             returnObject = pjp.proceed();
         } catch (Exception t) {
             if (isAuditable) {
+                User user = getUser();
                 auditService.doAudit(createAudit(user, Boolean.FALSE, auditActionType, pjp));
             }
 
@@ -144,6 +143,7 @@ public class AuditAspect {
         }
 
         if (isAuditable) {
+            User user = getUser();
             auditService.doAudit(createAudit(user, Boolean.TRUE, auditActionType, pjp));
         }
 

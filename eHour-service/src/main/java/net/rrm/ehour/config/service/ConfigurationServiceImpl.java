@@ -31,6 +31,9 @@ import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +62,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CacheManager ehCache;
 
     private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
 
@@ -168,6 +174,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     @Transactional
     @NonAuditable
+    @Cacheable(value = "service.config")
     public EhourConfigStub getConfiguration() {
         List<Configuration> configs = configDao.findAll();
         EhourConfigStub config = new EhourConfigStub();
@@ -245,6 +252,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
+    @CacheEvict(value = "service.config", allEntries=true)
     public void persistConfiguration(EhourConfig config) {
         LOGGER.debug("Persisting config");
         persistConfig(ConfigurationItem.LOCALE_CURRENCY.getDbField(), LocaleUtil.toLanguageTag((config.getCurrency())));
