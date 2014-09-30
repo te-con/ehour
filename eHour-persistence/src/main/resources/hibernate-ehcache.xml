@@ -28,14 +28,14 @@
             />
 
     <cache name="org.hibernate.cache.StandardQueryCache"
-           maxElementsInMemory="20"
+           maxElementsInMemory="2000"
            eternal="false"
            timeToLiveSeconds="3600"
            overflowToDisk="false"
             />
 
     <cache name="query.ProjectAssignment"
-           maxElementsInMemory="20"
+           maxElementsInMemory="2000"
            eternal="false"
            timeToLiveSeconds="600"
            overflowToDisk="false"
@@ -70,7 +70,7 @@
             />
 
     <cache name="query.Activity"
-           maxElementsInMemory="20"
+           maxElementsInMemory="5000"
            eternal="false"
            timeToLiveSeconds="600"
            overflowToDisk="false"
