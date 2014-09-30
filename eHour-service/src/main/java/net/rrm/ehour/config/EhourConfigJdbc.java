@@ -43,6 +43,7 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     private String[] availableTranslations;
     private Boolean initialized;
     private AuditType auditType;
+    private Boolean     ldapSynced;
 
     private String systemConfiguredTimezone = DateTimeZone.getDefault().getID();
 
@@ -180,6 +181,16 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
 
         return auditType;
     }
+
+    @Override
+    public boolean isLdapSynced() {
+        if (ldapSynced == null) {
+            ldapSynced = this.getBoolean("ldapSynced", false);
+        }
+
+        return ldapSynced;
+    }
+
 
     @Override
     public PmPrivilege getPmPrivilege() {

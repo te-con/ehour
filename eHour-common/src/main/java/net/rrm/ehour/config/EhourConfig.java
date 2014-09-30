@@ -161,4 +161,10 @@ public interface EhourConfig {
      * The reminder mail body
      */
     String getReminderBody();
+
+    /**
+     * Is LDAP synced
+     * @return
+     */
+    boolean isLdapSynced();
 }

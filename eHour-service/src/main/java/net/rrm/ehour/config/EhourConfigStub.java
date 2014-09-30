@@ -58,6 +58,8 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     private String reminderBody;
     private String reminderCC;
 
+    private boolean     ldapSynced;
+
     @Override
     public TimeZone getTzAsTimeZone() {
         return EhourConfigUtil.getTzAsTimeZone(this);
@@ -304,5 +306,13 @@ public class EhourConfigStub implements EhourConfig, Serializable {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public boolean isLdapSynced() {
+        return ldapSynced;
+    }
+
+    public void setLdapSynced(boolean ldapSynced) {
+        this.ldapSynced = ldapSynced;
     }
 }
