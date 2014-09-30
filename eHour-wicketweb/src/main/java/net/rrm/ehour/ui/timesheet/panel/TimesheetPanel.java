@@ -19,7 +19,6 @@ package net.rrm.ehour.ui.timesheet.panel;
 import com.richemont.jira.JiraConst;
 import com.richemont.jira.JiraHelper;
 import com.richemont.jira.JiraService;
-import com.richemont.windchill.CallWindchillWS;
 import com.richemont.windchill.ProxyWindActivity;
 import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.activity.status.ActivityStatus;
@@ -78,7 +77,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.json.JsonArray;
 import javax.servlet.http.HttpServletRequest;
@@ -209,6 +207,13 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
                 pagination.getForm().replaceWith(replacementForm);
 
                 target.add(replacementForm);
+            }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
             }
         });
         blueBorder.add(pagination);
