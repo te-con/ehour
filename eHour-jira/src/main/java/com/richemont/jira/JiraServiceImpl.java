@@ -154,7 +154,8 @@ public class JiraServiceImpl implements JiraService {
                         e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                     }
 
-                    Activity currentActivity = windchillservice.createNewActivity(hm , allAssignedActivitiesByCode, assigneeUserName, JiraConst.JIRA_DATE_FORMAT);
+                    User assignedUser = userService.getAuthorizedUser(assigneeUserName);
+                    Activity currentActivity = windchillservice.createNewActivity(hm , allAssignedActivitiesByCode, assignedUser, JiraConst.JIRA_DATE_FORMAT);
 
                     // toutes les activites nouvelles ou mises a jour dans eHour
                     if (currentActivity != null) {

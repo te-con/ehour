@@ -14,20 +14,10 @@ import java.util.Map;
  */
 public interface WindChillService {
 
-    boolean updateDataForUser(Map<String, Activity> allAssignedActivitiesByCode, String username);
-
-    Project checkProject(String projectCode, String newProjectName);
-
-    Project createProject(String projectCode, String projectName,
-                          String customerCode, String customerName,
-                          Map<String, Customer> hmAllCustomerByCode);
+    boolean updateDataForUser(Map<String, Activity> allAssignedActivitiesByCode , String username);
 
     Map<String, Activity> getAllAssignedActivitiesByCode(User assignedUser);
-
     Map<String, Customer> getAllCustomersByCode();
 
-    Activity createNewActivity(Map<String, Comparable> hm, Map<String, Activity> allAssignedActivitiesByCode, User assignedUserName, SimpleDateFormat dateFormat);
-
-    void desactivateObsoleteActivity(Map<String, Activity> hmAllAssignedActivitiesByCode, Map<String, Activity> hmDealedActivities);
-
+    Activity createNewActivity(Map <String, Comparable> hm, Map<String, Activity> allAssignedActivitiesByCode, String assignedUserName, SimpleDateFormat dateFormat);
 }
