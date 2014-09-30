@@ -234,6 +234,7 @@ td.lockeddaynocomment {
     background-color: white;
     width: 3em;
     text-align: right;
+    padding: 0;
 }
 
 .timesheetTable tr.totalRow {
