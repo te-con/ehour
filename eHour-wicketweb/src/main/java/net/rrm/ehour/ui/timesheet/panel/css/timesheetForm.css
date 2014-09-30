@@ -199,8 +199,9 @@ div.timesheet {
     color: #536e87;
     background-color: #fefeff;
     margin: 0;
-    padding: 6px;
+    padding: 10px 0 0 5px;
     text-align: left;
+    cursor: pointer;
     border-right: 0;
 }
 
