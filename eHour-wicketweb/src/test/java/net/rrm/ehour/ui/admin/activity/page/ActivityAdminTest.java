@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.admin.activity.page;
 
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.Project;
@@ -24,13 +25,14 @@ public class ActivityAdminTest extends BaseSpringWebAppTester {
 
     @Test
     public void testActivityAdminRender() {
+        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
+        getMockContext().putBean(windChillUpdateService);
 
         activityService = createMock(ActivityService.class);
         userService = createMock(UserService.class);
         projectService = createMock(ProjectService.class);
 
         getMockContext().putBean("activityService", activityService);
-        getMockContext().putBean("userService", userService);
         getMockContext().putBean("projectService", projectService);
 
         expect(activityService.getActivities()).andReturn(new ArrayList<Activity>());

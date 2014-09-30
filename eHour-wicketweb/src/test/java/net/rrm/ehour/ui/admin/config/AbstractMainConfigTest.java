@@ -67,7 +67,6 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
         when(infoService.info()).thenReturn(new SystemInfo("a", "b", "c"));
 
         getMockContext().putBean("mailMan", mailMan);
-        getMockContext().putBean("userService", userService);
         getMockContext().putBean("configurationPersistence", iPersistConfiguration);
 
     }

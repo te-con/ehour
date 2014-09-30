@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.header.HeaderPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.ui.common.update.LatestVersionLinkPanel;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -33,7 +32,6 @@ import org.apache.wicket.model.ResourceModel;
 
 public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventListener {
     private static final long serialVersionUID = 7090746921483608658L;
-    public static final String NEW_VERSION_ID = "newVersion";
 
     public AbstractBasePage(ResourceModel pageTitle) {
         super();
@@ -50,7 +48,6 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     private void setupPage(ResourceModel pageTitle) {
         add(new HeaderPanel("mainNav", false));
         add(new Label("pageTitle", pageTitle));
-        add(new LatestVersionLinkPanel(NEW_VERSION_ID));
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {

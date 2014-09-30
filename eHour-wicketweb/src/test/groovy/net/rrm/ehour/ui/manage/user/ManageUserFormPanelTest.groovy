@@ -26,8 +26,6 @@ public class ManageUserFormPanelTest extends BaseSpringWebAppTester {
     @Before
     void "set up"() {
         MockitoAnnotations.initMocks this
-        getMockContext().putBean("userService", userService);
-
         when(userService.getUserRoles()).thenReturn(Lists.newArrayList(UserRole.ADMIN, UserRole.MANAGER, UserRole.PROJECTMANAGER, UserRole.REPORT, UserRole.USER))
     }
 

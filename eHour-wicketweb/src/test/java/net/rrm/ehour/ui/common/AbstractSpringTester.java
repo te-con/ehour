@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.common;
 
 import com.richemont.windchill.WindChillService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
@@ -41,6 +42,7 @@ public abstract class AbstractSpringTester {
     private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
     protected WindChillService windChillService;
     protected UserService userService;
+    private WindChillUpdateService windChillUpdateService;
 
     private void createContextSetup() {
         mockContext = new ApplicationContextMock();
@@ -54,14 +56,16 @@ public abstract class AbstractSpringTester {
         windChillService = createMock(WindChillService.class);
         mockContext.putBean("windChillService", windChillService);
 
+        windChillUpdateService = createMock(WindChillUpdateService.class);
+        mockContext.putBean("windChillUpdateService", windChillUpdateService);
+
         auditService = createMock(AuditService.class);
         mockContext.putBean("auditService", auditService);
+
+        mockContext.putBean("authUtil", buildAuthUtil());
 
         userService = createMock(UserService.class);
         mockContext.putBean("userService", userService);
-
-        auditService = createMock(AuditService.class);
-        mockContext.putBean("auditService", auditService);
     }
 
     public final ApplicationContextMock getMockContext() {

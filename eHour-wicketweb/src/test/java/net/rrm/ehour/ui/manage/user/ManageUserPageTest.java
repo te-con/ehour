@@ -20,11 +20,9 @@ import com.google.common.collect.Sets;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
-import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -34,8 +32,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ManageUserPageTest extends BaseSpringWebAppTester {
-    @Mock
-    private UserService userService;
     private User user;
 
     @Override
@@ -46,7 +42,6 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
     @Before
     public void setup_userservice() throws Exception {
         super.setUp();
-        getMockContext().putBean("userService", userService);
 
         List<User> users = new ArrayList<User>();
         user = new User();
