@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 import javax.json.JsonArray;
 
 import static net.rrm.ehour.ui.common.util.AuthUtil.Homepage;
@@ -178,7 +179,7 @@ public class Login extends WebPage {
                 // eHour: Chargement des activites
                 LOGGER.info("\n\n");
                 LOGGER.info("****************** GET ALL ACTIVITIES from login ****************************");
-                HashMap<String, Activity> allAssignedActivitiesByCode = chillService.getAllAssignedActivitiesByCode(assignedUser);
+                Map<String, Activity> allAssignedActivitiesByCode = chillService.getAllAssignedActivitiesByCode(assignedUser);
 
                 // JIRA --> eHour
                 LOGGER.info("\n\n");
@@ -187,7 +188,7 @@ public class Login extends WebPage {
                 boolean isJiraUser = userService.isLdapUserMemberOf(username, JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF);
                 LOGGER.info("Found user in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " createJiraIssuesForUser() for user " + username);
 
-                HashMap<JiraIssue, Activity> activitiesMasteredByJira = null;
+                Map<JiraIssue, Activity> activitiesMasteredByJira = null;
                 try {
                     if (isJiraUser){
                         activitiesMasteredByJira = jiraService.createJiraIssuesForUser(allAssignedActivitiesByCode, username);

@@ -81,7 +81,8 @@ public class JiraServiceImpl implements JiraService {
      * @return
      * @throws Exception
      */
-    public HashMap<JiraIssue, Activity> createJiraIssuesForUser (HashMap<String, Activity> allAssignedActivitiesByCode, String assigneeUserName) {
+    @Override
+    public Map<JiraIssue, Activity> createJiraIssuesForUser (Map<String, Activity> allAssignedActivitiesByCode, String assigneeUserName) {
         boolean isSync = false;
         HashMap<String, Activity>  hmDealedActivities =  new HashMap<String, Activity>();
         HashMap<JiraIssue, Activity>  hmJiraDealedActivities =  new HashMap<JiraIssue, Activity>();
@@ -99,8 +100,7 @@ public class JiraServiceImpl implements JiraService {
                 LOGGER.info("\n\n");
                 LOGGER.info("*************** STEP #1.1 : GET JIRA ISSUES FOR " + assigneeUserName + " ***************");
                 arrListIssues = getAllJiraIssuesForUser(assigneeUserName);
-                //HashMap<String, Project> hmAllProjectsByCode = getAllProjectsByCode();
-                HashMap<String, Customer> hmAllCustomerByCode = windchillservice.getAllCustomersByCode();
+                Map<String, Customer> hmAllCustomerByCode = windchillservice.getAllCustomersByCode();
 
                 int compte = 0;
 
@@ -112,7 +112,7 @@ public class JiraServiceImpl implements JiraService {
                     LOGGER.info("\t\t*********** Create ehour activity " + compte + "/" + arrListIssues.size() + " for user " + assigneeUserName + " ***********");
                     LOGGER.debug("\t\tgetJiraObjPath(): " + issue.getJiraObjPath());
 
-                    HashMap<String, Object> hm = new HashMap <String, Object> () ;
+                    Map<String, Comparable> hm = new HashMap <String, Comparable> () ;
                     String projectId = issue.getFields().getProjectLinkAttributes().getPjlProjectId();
                     String projectName = issue.getFields().getProjectLinkAttributes().getPjlProjectName();
                     String projectDesc = "";
@@ -146,7 +146,9 @@ public class JiraServiceImpl implements JiraService {
                     hm.put(WindchillConst.ACTIVITY_END_DATE , DateUtils.getEndOfCurrentFiscalYearStr( JiraConst.JIRA_DATE_FORMAT) );
 
                     LOGGER.info("\t" + issue.getKey());
-                    LOGGER.debug(Utilities.getHashMapContentForDisplay(hm));
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug(Utilities.getHashMapContentForDisplay(hm));
+                    }
 
                     try {
                         Project prj = checkProject(projectId, projectName, OrgId);
@@ -377,7 +379,7 @@ public class JiraServiceImpl implements JiraService {
      * @param hmAllAssignedActivitiesByCode  all the activities from ehour
      * @param hmDealedActivities  all the new and modified activities from windchill to be updated in Ehour
      */
-    public void desactivateObsoleteJiraActivity(HashMap<String, Activity> hmAllAssignedActivitiesByCode, HashMap<String, Activity> hmDealedActivities) {
+    public void desactivateObsoleteJiraActivity(Map<String, Activity> hmAllAssignedActivitiesByCode, Map<String, Activity> hmDealedActivities) {
 
         List<Activity> list1 =  new ArrayList<Activity> (hmAllAssignedActivitiesByCode.values());
         List<Activity> list2 =  new ArrayList<Activity> (hmDealedActivities.values());
@@ -426,7 +428,8 @@ public class JiraServiceImpl implements JiraService {
      * @param activitiesMasteredByJira
      * @return
      */
-    public JsonArray identifyMissingPjlActivity(HashMap<JiraIssue, Activity> activitiesMasteredByJira){
+    @Override
+    public JsonArray identifyMissingPjlActivity(Map<JiraIssue, Activity> activitiesMasteredByJira){
         //ArrayList< HashMap<String, Comparable> > listToSend = new ArrayList <HashMap<String, Comparable> >();
         JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 

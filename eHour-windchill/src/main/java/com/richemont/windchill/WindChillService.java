@@ -19,5 +19,5 @@ public interface WindChillService {
     Map<String, Activity> getAllAssignedActivitiesByCode(User assignedUser);
     Map<String, Customer> getAllCustomersByCode();
 
-    Activity createNewActivity(Map <String, Comparable> hm, Map<String, Activity> allAssignedActivitiesByCode, String assignedUserName, SimpleDateFormat dateFormat);
+    Activity createNewActivity(Map <String, Comparable> hm, Map<String, Activity> allAssignedActivitiesByCode, User assignedUser, SimpleDateFormat dateFormat);
 }

@@ -7,8 +7,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author laurent.linck
@@ -62,7 +62,7 @@ public class Utilities {
      * @param hm
      * @return
      */
-    public static StringBuilder getHashMapContentForDisplay(HashMap<String, Object> hm) {
+    public static StringBuilder getHashMapContentForDisplay(Map<String, Comparable> hm) {
         StringBuilder sb = new StringBuilder("");
         if  (hm != null ) {
             for( Iterator it = hm.keySet().iterator(); it.hasNext();) {

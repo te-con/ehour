@@ -29,6 +29,8 @@ import org.apache.wicket.model.Model
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.util.time.Duration
 
+import java.util
+
 class LoggedInAsPanel(id: String, showSyncLink: Boolean ) extends AbstractBasePanel(id) {
   @SpringBean protected var authUtil: AuthUtil = _
 
@@ -98,12 +100,12 @@ class LoggedInAsPanel(id: String, showSyncLink: Boolean ) extends AbstractBasePa
 
         LOGGER.info("\n\n")
         LOGGER.info("****************** STEP# 1 : GET ALL ACTIVITIES from HeaderPanel ******************")
-        val allAssignedActivitiesByCode: HashMap[String, Activity] = windChillService.getAllAssignedActivitiesByCode(user)
+        val allAssignedActivitiesByCode: util.Map[String, Activity] = windChillService.getAllAssignedActivitiesByCode(user)
         LOGGER.info("\n\n")
         LOGGER.info("****************** START JIRA SYNC (get Jira issues) ****************************")
         val isJiraUser: Boolean = userService.isLdapUserMemberOf(user.getUsername, JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF)
         LOGGER.info("User in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " createJiraIssuesForUser() for user " + user.getUsername + " = " + isJiraUser)
-        var activitiesMasteredByJira: HashMap[JiraIssue, Activity] = null
+        var activitiesMasteredByJira: util.Map[JiraIssue, Activity] = null
 
         try {
           if (isJiraUser) {

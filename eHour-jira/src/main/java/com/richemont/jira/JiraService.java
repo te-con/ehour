@@ -9,8 +9,8 @@ import javax.json.JsonArray;
 import javax.naming.AuthenticationException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author laurent.linck
@@ -19,13 +19,13 @@ import java.util.List;
 
 public interface JiraService {
 
-    HashMap<JiraIssue, Activity> createJiraIssuesForUser(HashMap<String, Activity> allAssignedActivitiesByCode, String assigneeUsername) throws Exception;
+    Map<JiraIssue, Activity> createJiraIssuesForUser(Map<String, Activity> allAssignedActivitiesByCode, String assigneeUsername) throws Exception;
 
     ArrayList<String> updateJiraIssues(User user, List<TimesheetEntry> entries) throws Exception;
 
     ArrayList<JiraIssue> getAllJiraIssuesForUser(String assigneeUserName) throws AuthenticationException, JSONException, IOException ;
 
-    void desactivateObsoleteJiraActivity(HashMap<String, Activity> hmAllAssignedActivitiesByCode, HashMap<String, Activity> hmDealedActivities);
+    void desactivateObsoleteJiraActivity(Map<String, Activity> hmAllAssignedActivitiesByCode, Map<String, Activity> hmDealedActivities);
 
-    JsonArray identifyMissingPjlActivity(HashMap<JiraIssue, Activity> activitiesMasteredByJira);
+    JsonArray identifyMissingPjlActivity(Map<JiraIssue, Activity> activitiesMasteredByJira);
 }
