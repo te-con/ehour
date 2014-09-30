@@ -178,31 +178,37 @@ public class Activity extends DomainObject<Integer, Activity> {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        Activity other = (Activity) obj;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return (getName().equals(other.getName()) &&
-                getAllottedHours().equals(other.getAllottedHours()) &&
-                getActive().booleanValue() == other.getActive().booleanValue() &&
-                getDateStart().equals(other.getDateStart()) &&
-                getDateEnd().equals(other.getDateEnd()) &&
-                getProject().equals(other.getProject()) &&
-                getAssignedUser().equals(other.getAssignedUser()));
+        Activity activity = (Activity) o;
 
+        if (active != null ? !active.equals(activity.active) : activity.active != null) return false;
+        if (allottedHours != null ? !allottedHours.equals(activity.allottedHours) : activity.allottedHours != null)
+            return false;
+        if (assignedUser != null ? !assignedUser.equals(activity.assignedUser) : activity.assignedUser != null)
+            return false;
+        if (!code.equals(activity.code)) return false;
+        if (dateEnd != null ? !dateEnd.equals(activity.dateEnd) : activity.dateEnd != null) return false;
+        if (dateStart != null ? !dateStart.equals(activity.dateStart) : activity.dateStart != null) return false;
+        if (name != null ? !name.equals(activity.name) : activity.name != null) return false;
+        if (!project.equals(activity.project)) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name).append(dateStart).append(dateEnd).append(allottedHours).append(active).toHashCode();
+        int result = code.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (dateStart != null ? dateStart.hashCode() : 0);
+        result = 31 * result + (dateEnd != null ? dateEnd.hashCode() : 0);
+        result = 31 * result + (allottedHours != null ? allottedHours.hashCode() : 0);
+        result = 31 * result + (assignedUser != null ? assignedUser.hashCode() : 0);
+        result = 31 * result + project.hashCode();
+        result = 31 * result + (active != null ? active.hashCode() : 0);
+        return result;
     }
 
     @Override

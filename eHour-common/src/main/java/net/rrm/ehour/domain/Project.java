@@ -268,26 +268,24 @@ public class Project extends DomainObject<Integer, Project> {
 
         Project project = (Project) o;
 
-        if (active != null ? !active.equals(project.active) : project.active != null) return false;
+        if (!active.equals(project.active)) return false;
         if (billable != null ? !billable.equals(project.billable) : project.billable != null) return false;
-        if (customer != null ? !customer.equals(project.customer) : project.customer != null) return false;
+        if (!customer.equals(project.customer)) return false;
         if (defaultProject != null ? !defaultProject.equals(project.defaultProject) : project.defaultProject != null)
             return false;
-        if (name != null ? !name.equals(project.name) : project.name != null) return false;
-        if (projectCode != null ? !projectCode.equals(project.projectCode) : project.projectCode != null) return false;
-        if (projectId != null ? !projectId.equals(project.projectId) : project.projectId != null) return false;
+        if (!name.equals(project.name)) return false;
+        if (!projectCode.equals(project.projectCode)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = projectId != null ? projectId.hashCode() : 0;
-        result = 31 * result + (projectCode != null ? projectCode.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = projectCode.hashCode();
+        result = 31 * result + name.hashCode();
         result = 31 * result + (defaultProject != null ? defaultProject.hashCode() : 0);
-        result = 31 * result + (active != null ? active.hashCode() : 0);
-        result = 31 * result + (customer != null ? customer.hashCode() : 0);
+        result = 31 * result + active.hashCode();
+        result = 31 * result + customer.hashCode();
         result = 31 * result + (billable != null ? billable.hashCode() : 0);
         return result;
     }

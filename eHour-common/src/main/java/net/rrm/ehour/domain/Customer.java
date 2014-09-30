@@ -233,16 +233,6 @@ public class Customer extends DomainObject<Integer, Customer> {
 		this.reporters.add(reporter);
 	}
 
-	
-	@Override
-	public boolean equals(final Object other)
-	{
-		if (!(other instanceof Customer))
-			return false;
-		Customer castOther = (Customer) other;
-		return new EqualsBuilder().append(code, castOther.code).append(name, castOther.name).append(description, castOther.description).append(active, castOther.active).isEquals();
-	}
-
     /**
      * @param active the active to set
      */
@@ -299,9 +289,27 @@ public class Customer extends DomainObject<Integer, Customer> {
         project.setCustomer(this);
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Customer customer = (Customer) o;
+
+        if (!active.equals(customer.active)) return false;
+        if (!code.equals(customer.code)) return false;
+        if (!name.equals(customer.name)) return false;
+
+        return true;
+    }
+
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(code).append(name).append(description).append(active).toHashCode();
+        int result = code.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + active.hashCode();
+        return result;
     }
 
 }
