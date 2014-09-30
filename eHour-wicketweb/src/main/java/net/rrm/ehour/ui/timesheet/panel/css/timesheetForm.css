@@ -197,7 +197,7 @@ div.timesheet {
 .timesheetTable tr.customerRow td.customerCell {
     font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
-    background-color: #fefeff;
+    background-color: #f9fbfe;
     margin: 0;
     padding: 10px 0 0 5px;
     text-align: left;
@@ -235,11 +235,11 @@ td.lockeddaynocomment {
     background-color: white;
     width: 3em;
     text-align: right;
-    padding: 0;
+    padding: 0 1em 0 0;
 }
 
 .timesheetTable tr.totalRow {
-    background-color: #fefeff;
+    background-color: #f9fbfe;
 }
 
 .timesheetTable tr.totalRow td {
