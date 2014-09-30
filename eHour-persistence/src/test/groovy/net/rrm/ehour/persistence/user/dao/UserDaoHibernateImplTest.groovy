@@ -48,7 +48,7 @@ class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest
         User user = UserObjectMother.createUser()
         user.setUserId 5
 
-        Activity activity = new Activity(assignedUser: user, id: 1, name: "AA", code: "aa", project: new Project(1))
+        Activity activity = new Activity(assignedUser: user, id: 1, code: "aa", project: new Project(1))
 
         def activities = [activity] as Set
 
