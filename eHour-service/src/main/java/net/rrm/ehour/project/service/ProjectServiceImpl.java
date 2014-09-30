@@ -18,6 +18,7 @@ package net.rrm.ehour.project.service;
 
 import net.rrm.ehour.activity.service.ActivityService;
 import net.rrm.ehour.audit.annot.Auditable;
+import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
@@ -78,6 +79,11 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDAO.findByProjectCode(projectCode);
     }
 
+    @Override
+    @NonAuditable
+    public Project nonAuditGetProject(String projectCode) {
+        return getProject(projectCode);
+    }
 
     public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException
 	{

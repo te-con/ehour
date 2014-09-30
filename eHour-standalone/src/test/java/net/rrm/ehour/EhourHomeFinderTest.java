@@ -1,12 +1,14 @@
 package net.rrm.ehour;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
+@Ignore
 public class EhourHomeFinderTest {
 
     @Test

@@ -81,7 +81,8 @@ public class WindChillServiceImpl implements WindChillService {
      *
      * @param username
      */
-    public boolean updateDataForUser(HashMap<String, Activity> allAssignedActivitiesByCode, String username) {
+    @Override
+    public boolean updateDataForUser(Map<String, Activity> allAssignedActivitiesByCode, String username) {
         boolean isSync = false;
         if (!isEnabled()) {
             LOGGER.info("Windchill sync is disabled");
@@ -104,14 +105,15 @@ public class WindChillServiceImpl implements WindChillService {
      * @param username
      * @return
      */
-    public boolean updateProjectForUser(HashMap<String, Activity> allAssignedActivitiesByCode, String username) {
+    public boolean updateProjectForUser(Map<String, Activity> allAssignedActivitiesByCode, String username) {
         boolean isSync = false;
         LOGGER.info("***** Initialisation des donnees de l'utilisateur " + username );
-        User assignedUser = userService.getAuthorizedUser(username);
 
         // DISPLAY FOR DEBUG ONLY !!!
-        displayAllCustomers(getAllCustomers());
-        displayAllAssignedActivities( allAssignedActivitiesByCode );
+        if (LOGGER.isDebugEnabled()) {
+            displayAllCustomers(getAllCustomers());
+            displayAllAssignedActivities(allAssignedActivitiesByCode);
+        }
 
         // liste des activites  eHour que l on va creer ou mettre a jour
         HashMap<String, Activity>  hmDealedActivities =  new HashMap<String, Activity>();
@@ -126,25 +128,31 @@ public class WindChillServiceImpl implements WindChillService {
         List< HashMap<String, Comparable> > listeDesActiviteesDepuisGrutlink;
         int compte=0;
 
+        User assignedUser = userService.getAuthorizedUser(username);
+
+        Map<String, Customer> hmAllCustomersByCode = getAllCustomersByCode();
+
         try {
             // FROM Windchill: get allProjectActivities for a given user
             listeDesActiviteesDepuisGrutlink = queryTimeSheets.getTimeSheets(username, "getTimeSheets", endpoint);
             if (listeDesActiviteesDepuisGrutlink != null){
 
                 // TO eHour: update/create allProjectActivities for a given user from Windchill
-                LOGGER.debug("\n\n");
-                LOGGER.info("***** Mise a jour de " + listeDesActiviteesDepuisGrutlink.size() + " activites dans eHour a partir de ProjectLink pour " + username );
 
-                Iterator itListeDesActiviteesDepuisGrutlink = listeDesActiviteesDepuisGrutlink.iterator();
-                while (itListeDesActiviteesDepuisGrutlink.hasNext()) {
-
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("\n\n");
+                    LOGGER.info("***** Mise a jour de " + listeDesActiviteesDepuisGrutlink.size() + " activites dans eHour a partir de ProjectLink pour " + username);
+                }
+                for (HashMap<String, Comparable> aListeDesActiviteesDepuisGrutlink : listeDesActiviteesDepuisGrutlink) {
                     compte++;
-                    LOGGER.debug("--> Activity #" + compte + "/" + listeDesActiviteesDepuisGrutlink.size() + " for user " + username  );
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("--> Activity #" + compte + "/" + listeDesActiviteesDepuisGrutlink.size() + " for user " + username);
+                    }
 
-                    HashMap<String, Object> hm = ( HashMap <String, Object> ) itListeDesActiviteesDepuisGrutlink.next();
+                    HashMap<String, Comparable> hm = aListeDesActiviteesDepuisGrutlink;
                     displayHashMapContent(hm); // trace for debug
 
-                    Activity currentActivity = createNewActivity(hm , allAssignedActivitiesByCode, username, WindchillConst.WIND_DATE_FORMAT );
+                    Activity currentActivity = createNewActivity(hm, allAssignedActivitiesByCode, assignedUser, WindchillConst.WIND_DATE_FORMAT, hmAllCustomersByCode);
                     // toutes les activites nouvelles ou mises a jour dans eHour
                     if (currentActivity != null) {
                         hmDealedActivities.put( currentActivity.getCode(), currentActivity );
@@ -164,42 +172,30 @@ public class WindChillServiceImpl implements WindChillService {
         return isSync;
     }
 
-    /**
-     *
-     * @param hm
-     * @param allAssignedActivitiesByCode
-     * @param assignedUserName
-     * @param dateFormat
-     * @return
-     */
-    public Activity createNewActivity(HashMap <String, Object > hm, HashMap<String, Activity> allAssignedActivitiesByCode, String assignedUserName, SimpleDateFormat dateFormat ){
+    @Override
+    public Activity createNewActivity(Map<String, Comparable> hm, Map<String, Activity> allAssignedActivitiesByCode, User assignedUser, SimpleDateFormat dateFormat) {
+        Map<String, Customer> hmAllCustomersByCode = getAllCustomersByCode();
+
+        return createNewActivity(hm, allAssignedActivitiesByCode, assignedUser, dateFormat, hmAllCustomersByCode);
+    }
+
+    private Activity createNewActivity(Map<String, Comparable> attributeMap, Map<String, Activity> allAssignedActivitiesByCode, User assignedUser, SimpleDateFormat dateFormat, Map<String, Customer> customerOnCode) {
         Activity currentActivity = null;
-        User assignedUser = userService.getAuthorizedUser(assignedUserName);
 
-        HashMap<String, Customer> hmAllCustomersByCode = getAllCustomersByCode();
+        String orgId = (String) attributeMap.get(WindchillConst.ORG_ID);
+        String orgName = (String) attributeMap.get(WindchillConst.ORG_NAME);
+        String projectID = (String) attributeMap.get(WindchillConst.PROJECT_ID); // ProjectId de Windchill = projectCode de eHour
+        String projectName = (String) attributeMap.get(WindchillConst.PROJECT_NAME);
+        String activityId = (String) attributeMap.get(WindchillConst.ACTIVITY_ID); // ActivityId de Windchill = activityCode de eHour
+        String activityName = (String) attributeMap.get(WindchillConst.ACTIVITY_NAME);
 
-        String orgId = (String) hm.get( WindchillConst.ORG_ID);
-        String orgName = (String) hm.get(WindchillConst.ORG_NAME);
-        String projectID = (String) hm.get(WindchillConst.PROJECT_ID); // ProjectId de Windchill = projectCode de eHour
-        String projectName = (String) hm.get(WindchillConst.PROJECT_NAME);
-        String projectDescription = (String) hm.get(WindchillConst.PROJECT_DESCRIPTION);
-        String activityId = (String) hm.get(WindchillConst.ACTIVITY_ID); // ActivityId de Windchill = activityCode de eHour
-        String activityName = (String) hm.get(WindchillConst.ACTIVITY_NAME);
-        //String activityDescription = (String) hm.get(WindchillConst.ACTIVITY_DESCRIPTION);
-        //String projectManager = (String) hm.get(WindchillConst.PROJECT_MANAGER);
+        Float projectAllocatedHours = new Float((String) attributeMap.get(WindchillConst.REMAINING_WORK)); // Remaining Work
+        Float projectPerformedHours = new Float((String) attributeMap.get(WindchillConst.PERWORMED_WORK)); //Actual Work
 
-        Float projectAllocatedHours = new Float((String) hm.get(WindchillConst.REMAINING_WORK)); // Remaining Work
-        Float projectPerformedHours = new Float((String) hm.get(WindchillConst.PERWORMED_WORK)); //Actual Work
+        Date projectActivityStartDate = DateUtils.convertStringToDate((String) attributeMap.get(WindchillConst.ACTIVITY_START_DATE), dateFormat);
+        Date projectActivityEndDate = DateUtils.convertStringToDate((String) attributeMap.get(WindchillConst.ACTIVITY_END_DATE), dateFormat);
 
-        Date projectActivityStartDate = DateUtils.convertStringToDate ( (String)hm.get(WindchillConst.ACTIVITY_START_DATE), dateFormat );
-        Date projectActivityEndDate = DateUtils.convertStringToDate ( (String) hm.get(WindchillConst.ACTIVITY_END_DATE), dateFormat );
-        //if ((String) hm.get("projectTrackEffort") != null && ((String) hm.get("isTrackEffort")).equals("1")) trackEffort = true;
-        //boolean isProjectEhour = Boolean.parseBoolean((String) hm.get("isProjectEhour"));
-        //logger.debug("\tisProjectEhour = " + isProjectEhour);
-
-        //
         Project prj = checkProject(projectID, projectName);
-
         // activites a creer dans ehour
         if (!isAssignedActivityExist(activityId, allAssignedActivitiesByCode)) {
             LOGGER.debug("\tisAssignedActivityExist = false --> creation dans eHour de " + activityId);
@@ -207,38 +203,48 @@ public class WindChillServiceImpl implements WindChillService {
             try {
                 currentActivity = createAssignedActivity(assignedUser, activityId, activityName,
                         projectAllocatedHours, projectPerformedHours, projectActivityStartDate, projectActivityEndDate, projectID,
-                        projectName, projectDescription, prj, orgId, orgName,
+                        projectName, prj, orgId, orgName,
                         allAssignedActivitiesByCode,
-                        hmAllCustomersByCode);
+                        customerOnCode);
             } catch (OverBudgetException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
             // activites deja existantes dans ehour
         } else {
             LOGGER.debug("\tisAssignedActivityExist = true --> synchronisation des modifs...");
-            currentActivity = updateAssignedActivity(assignedUser, prj, activityId, activityName, projectAllocatedHours, projectPerformedHours, projectActivityStartDate, projectActivityEndDate, allAssignedActivitiesByCode);
+            currentActivity = updateAssignedActivity(assignedUser, prj, activityId, activityName, projectAllocatedHours, projectActivityStartDate, projectActivityEndDate, allAssignedActivitiesByCode);
             LOGGER.debug("\tcurrentActivity --> maj " + currentActivity.getName() );
         }
         return currentActivity;
     }
 
-    public Project checkProject (String projectCode, String newProjectName){
-        Project prj = projectService.getProject(projectCode);
-        if ( prj == null){
-            LOGGER.debug("\tThis project does not exist: " + projectCode  );
+    public Project checkProject(String projectCode, String newProjectName) {
+        Project prj = projectService.nonAuditGetProject(projectCode);
+        if (prj == null) {
+            LOGGER.debug("\tThis project does not exist: " + projectCode);
         } else {
             // on s assure que le projet est actif
-            LOGGER.debug("\tActive projet: " + prj.getName() );
-            prj.setActive(true);
+            LOGGER.debug("\tActive projet: " + prj.getName());
+
+            boolean modified = false;
+
+            if (!prj.isActive()) {
+                prj.setActive(true);
+                modified = true;
+            }
 
             // verifie si le projet PJl a ete renomme depuis la derniere mise a jour dans e-Hour
-            if (! newProjectName.equals( prj.getName() ) ) {
-                LOGGER.debug("\tMise a jour du nom du projet: " + prj.getName() + " --> " + newProjectName );
+            if (!newProjectName.equals(prj.getName())) {
+                LOGGER.debug("\tMise a jour du nom du projet: " + prj.getName() + " --> " + newProjectName);
                 prj.setName(newProjectName);
+                modified = true;
             }
 
             LOGGER.debug("\tproject name=ok");
-            prj = projectService.updateProject(prj);
+
+            if (modified) {
+                prj = projectService.updateProject(prj);
+            }
         }
         return prj;
     }
@@ -251,7 +257,7 @@ public class WindChillServiceImpl implements WindChillService {
      * @param hmAllAssignedActivitiesByCode  all the activities from ehour
      * @param hmDealedActivities  all the new and modified activities from windchill to be updated in Ehour
      */
-    public void desactivateObsoleteActivity(HashMap<String, Activity> hmAllAssignedActivitiesByCode, HashMap<String, Activity> hmDealedActivities) {
+    public void desactivateObsoleteActivity(Map<String, Activity> hmAllAssignedActivitiesByCode, Map<String, Activity> hmDealedActivities) {
 
         List<Activity> list1 =  new ArrayList<Activity> (hmAllAssignedActivitiesByCode.values());
         List<Activity> list2 =  new ArrayList<Activity> (hmDealedActivities.values());
@@ -328,19 +334,17 @@ public class WindChillServiceImpl implements WindChillService {
     //
 
     private List<Customer> getAllCustomers() {
-        List<Customer> allCustomers;
-        allCustomers = customerService.getCustomers();
-        return allCustomers;
+        return customerService.getCustomers();
     }
 
-    public HashMap<String, Customer>  getAllCustomersByCode() {
-        HashMap<String, Customer> allCustomersCode = new HashMap<String, Customer>();
-        Iterator<Customer> it = getAllCustomers().iterator();
-        Customer aCustomer;
-        while (it.hasNext()) {
-            aCustomer = (Customer) it.next();
+    public Map<String, Customer> getAllCustomersByCode() {
+        Map<String, Customer> allCustomersCode = new HashMap<String, Customer>();
+        List<Customer> allCustomers = getAllCustomers();
+
+        for (Customer aCustomer : allCustomers) {
             allCustomersCode.put(aCustomer.getCode(), aCustomer);
         }
+
         return allCustomersCode;
     }
 
@@ -356,14 +360,14 @@ public class WindChillServiceImpl implements WindChillService {
     }
 
     private Customer isCustomerExist(String customerCode,
-                                     HashMap<String, Customer> hmAllCustomerByCode) {
+                                     Map<String, Customer> hmAllCustomerByCode) {
         if (hmAllCustomerByCode.containsKey(customerCode))
             return hmAllCustomerByCode.get(customerCode);
         return null;
     }
 
     private Customer createCustomer(String customerCode, String customerName,
-                                    HashMap<String, Customer> hmAllCustomerByCode) {
+                                    Map<String, Customer> hmAllCustomerByCode) {
         Customer newCustomer = new Customer();
         newCustomer.setCode(customerCode);
         newCustomer.setName(customerName);
@@ -415,7 +419,7 @@ public class WindChillServiceImpl implements WindChillService {
     }
 
     private Project isProjectExist(String projectCode,
-                                   HashMap<String, Project> hmAllProjectsByCode) {
+                                   Map<String, Project> hmAllProjectsByCode) {
         if (hmAllProjectsByCode.containsKey(projectCode))
             return hmAllProjectsByCode.get(projectCode);
         return null;
@@ -424,7 +428,7 @@ public class WindChillServiceImpl implements WindChillService {
 
     public Project createProject(String projectCode, String projectName,
                                  String customerCode, String customerName,
-                                 HashMap<String, Customer> hmAllCustomerByCode) {
+                                 Map<String, Customer> hmAllCustomerByCode) {
 
         Project newProject = new Project();
         Customer customer = isCustomerExist(customerCode, hmAllCustomerByCode);
@@ -462,21 +466,18 @@ public class WindChillServiceImpl implements WindChillService {
     }
 
 
-    private void displayAllAssignedActivities(HashMap<String, Activity> allAssignedActivitiesByCode) {
-        if (!LOGGER.getLevel().toString().toLowerCase().equals("debug")) return;
+    private void displayAllAssignedActivities(Map<String, Activity> allAssignedActivitiesByCode) {
         Activity theValue;
-        String theKey;
-        if  (allAssignedActivitiesByCode != null ) {
+        if (allAssignedActivitiesByCode != null) {
             LOGGER.debug("\tdisplayAllAssignedActivities from eHour [" + allAssignedActivitiesByCode.size() + "]:");
-            for( Iterator it = allAssignedActivitiesByCode.keySet().iterator(); it.hasNext();) {
-                theKey = (String)it.next();
-                theValue = (Activity)allAssignedActivitiesByCode.get(theKey);
-                LOGGER.debug("\t" + theValue.getCode() + " --> " + theValue.getFullName() + " [active=" + theValue.getActive() +  "/ locked=" + theValue.getLocked() + "]");
+            for (String theKey : allAssignedActivitiesByCode.keySet()) {
+                theValue = allAssignedActivitiesByCode.get(theKey);
+                LOGGER.debug("\t" + theValue.getCode() + " --> " + theValue.getFullName() + " [active=" + theValue.getActive() + "/ locked=" + theValue.getLocked() + "]");
             }
         }
     }
 
-    private boolean isAssignedActivityExist(String activityCode, HashMap<String, Activity> hmAllAssignedActivitiestByCode) {
+    private boolean isAssignedActivityExist(String activityCode, Map<String, Activity> hmAllAssignedActivitiestByCode) {
         LOGGER.debug("\tTest existence of " + activityCode + " : " + hmAllAssignedActivitiestByCode.containsKey(activityCode));
         return hmAllAssignedActivitiestByCode.containsKey(activityCode);
     }
@@ -493,16 +494,15 @@ public class WindChillServiceImpl implements WindChillService {
      * @param dateEnd : date de fin de l'activite PJL
      * @param projectCode : ida2a2 du projet
      * @param projectName : Nom du projet PJL
-     * @param projectDescription : Desc du projet PJL
      * @param orgID : ida2a2 de l'organisation PJL
      * @param orgName : Nom de l'org dans PJL
      * @param hmAllAssignedActivitiesByCode : toutes les activites assignees a l'utilisateur de e-Hour
      * @param hmAllCustomersByCode : tous les customers de e-Hour
      * @return
      */
-    private Activity createAssignedActivity(User assignedUser, String activityCode, String activityName, Float allocatedHours,Float performedHours,
-                                            Date dateStart, Date dateEnd, String projectCode, String projectName, String projectDescription, Project project,String orgID, String orgName,
-                                            HashMap<String, Activity> hmAllAssignedActivitiesByCode, HashMap<String, Customer> hmAllCustomersByCode) throws OverBudgetException {
+    private Activity createAssignedActivity(User assignedUser, String activityCode, String activityName, Float allocatedHours, Float performedHours,
+                                            Date dateStart, Date dateEnd, String projectCode, String projectName, Project project, String orgID, String orgName,
+                                            Map<String, Activity> hmAllAssignedActivitiesByCode, Map<String, Customer> hmAllCustomersByCode) throws OverBudgetException {
 
         if (project == null) {
             project = createProject(projectCode, projectName, orgID, orgName, hmAllCustomersByCode);
@@ -593,48 +593,42 @@ public class WindChillServiceImpl implements WindChillService {
      * @param activityCode
      * @param activityName
      * @param allocatedHours (heures estimees windchill = work hours)
-     * @param performedHours (heures bookées windchill)
      * @param dateStart
      * @param dateEnd
-     * @param hmAllAssignedActivitiesByCode: liste des activites dans ehour
+     * @param hmAllAssignedActivitiesByCode : liste des activites dans ehour
      * @return
      */
     private Activity updateAssignedActivity(User assignedUser, Project prj, String activityCode, String activityName, Float allocatedHours,
-                                            Float performedHours, Date dateStart, Date dateEnd, HashMap<String, Activity> hmAllAssignedActivitiesByCode) {
+                                            Date dateStart, Date dateEnd, Map<String, Activity> hmAllAssignedActivitiesByCode) {
 
-        LOGGER.debug("\tSynchro de l activite : " + activityName + " [" + activityCode + "]");
         boolean modified = false;
         Activity activity = hmAllAssignedActivitiesByCode.get(activityCode);
 
         if (!activity.getName().equals(activityName)) {
-            LOGGER.debug("\t\tMise a jour du name: " + activityName);
             activity.setName(activityName);
             modified = true;
         }
-        if (activity.getAssignedUser()!= assignedUser) {
-            LOGGER.debug("\t\tMise a jour du assignedUser: " + assignedUser.getFullName());
+        if (activity.getAssignedUser() != assignedUser) {
             activity.setAssignedUser(assignedUser);
             modified = true;
         }
-        if (activity.getDateStart() == null || activity.getDateStart().compareTo(dateStart)!=0) {
-            LOGGER.debug("\t\tMise a jour du dateStart: " + DateUtils.convertDateToString(dateStart, WindchillConst.WIND_DATE_FORMAT));
+
+        if (activity.getDateStart() == null || activity.getDateStart().getTime() != dateStart.getTime()) {
             activity.setDateStart(dateStart);
             modified = true;
         }
-        if (activity.getDateEnd() == null || activity.getDateEnd().compareTo(dateEnd)!=0) {
-            LOGGER.debug("\t\tMise a jour du dateEnd: " + DateUtils.convertDateToString(dateEnd, WindchillConst.WIND_DATE_FORMAT));
+
+        if (activity.getDateEnd() == null || activity.getDateEnd().getTime() != dateEnd.getTime()) {
             activity.setDateEnd(dateEnd);
             modified = true;
         }
 
-        if (activity.getAllottedHours().compareTo(allocatedHours)!= 0) {
-            LOGGER.debug("\t\tMise a jour du allocatedHours: " + activity.getAllottedHours() + " --> " + allocatedHours);
+        if (activity.getAllottedHours().floatValue() != allocatedHours.floatValue()) {
             activity.setAllottedHours(allocatedHours);
             modified = true;
         }
 
-        if (activity.getProject().getProjectCode().compareTo(prj.getProjectCode())!= 0) {
-            LOGGER.debug("\t\tMise a jour du Code projet: " + activity.getProject().getProjectCode() + " --> " + prj.getProjectCode());
+        if (!activity.getProject().getProjectCode().equals(prj.getProjectCode())) {
             activity.setProject(prj);
             modified = true;
         }
@@ -652,25 +646,21 @@ public class WindChillServiceImpl implements WindChillService {
         */
 
 
-        if (!activity.getActive().booleanValue()) {
-            LOGGER.debug("\tReactiver activity : " + activity.getName());
+
+        if (!activity.getActive()) {
             activity.setActive(true);
             modified = true;
         }
 
-        //if (!activity.getLocked().booleanValue()) {
-        //    logger.debug("\tUnlock activity : " + activity.getName());
-        activity.setLocked(false);
-        modified = true;
-        //}
+        if (!activity.getLocked()) {
+            activity.setLocked(false);
+            modified = true;
+        }
 
         if (modified) {
             hmAllAssignedActivitiesByCode.remove(activity.getCode());
-            activity = activityService.persistActivity(activity);
+            activity = activityService.noAuditPersistActivity(activity);
             hmAllAssignedActivitiesByCode.put(activity.getCode(), activity);
-
-        } else {
-            LOGGER.debug("\tNO modification done in PJL");
         }
         return activity;
     }
@@ -684,16 +674,15 @@ public class WindChillServiceImpl implements WindChillService {
 
     }
 
-    private void displayHashMapContent(HashMap<String, Object> hm) {
-        if (!LOGGER.getLevel().toString().toLowerCase().equals("debug")) return;
-        if  (hm != null ) {
-            for( Iterator it = hm.keySet().iterator(); it.hasNext();) {
-                String theKey = (String)it.next();
-                String theValue = "null";
+    private void displayHashMapContent(HashMap<String, Comparable> hm) {
+        if (LOGGER.isDebugEnabled() && hm != null) {
+            for (String theKey : hm.keySet()) {
+                String theValue;
                 String theClass = "null";
-                if (hm.get(theKey)!= null) theClass = hm.get(theKey).getClass().toString();
-                if (hm.get(theKey) instanceof  String) theValue= (String)hm.get(theKey);
-                else if (hm.get(theKey) instanceof  Date) theValue= DateUtils.convertDateToString( (Date) hm.get(theKey), WindchillConst.WIND_DATE_FORMAT);
+                if (hm.get(theKey) != null) theClass = hm.get(theKey).getClass().toString();
+                if (hm.get(theKey) instanceof String) theValue = (String) hm.get(theKey);
+                else if (hm.get(theKey) instanceof Date)
+                    theValue = DateUtils.convertDateToString((Date) hm.get(theKey), WindchillConst.WIND_DATE_FORMAT);
                 else theValue = "?";
                 LOGGER.debug("\t" + theKey + " = " + theValue + " [" + theClass + "]");
 

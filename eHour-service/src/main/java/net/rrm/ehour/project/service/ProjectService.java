@@ -49,6 +49,8 @@ public interface ProjectService {
 	 */
 	public Project getProject(String projectCode);
 
+    Project nonAuditGetProject(String projectCode);
+
 	/**
 	 * Get project and check deletability
 	 * @param projectId

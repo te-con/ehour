@@ -7,25 +7,27 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author laurent.linck
  */
 public interface WindChillService {
 
-    boolean updateDataForUser(HashMap<String, Activity> allAssignedActivitiesByCode , String username);
+    boolean updateDataForUser(Map<String, Activity> allAssignedActivitiesByCode, String username);
 
-    Project checkProject (String projectCode, String newProjectName);
+    Project checkProject(String projectCode, String newProjectName);
+
     Project createProject(String projectCode, String projectName,
                           String customerCode, String customerName,
-                          HashMap<String, Customer> hmAllCustomerByCode) ;
+                          Map<String, Customer> hmAllCustomerByCode);
 
-    HashMap<String, Activity> getAllAssignedActivitiesByCode(User assignedUser);
-    HashMap<String, Customer> getAllCustomersByCode();
+    Map<String, Activity> getAllAssignedActivitiesByCode(User assignedUser);
 
-    Activity createNewActivity(HashMap <String, Object > hm, HashMap<String, Activity> allAssignedActivitiesByCode, String assignedUserName, SimpleDateFormat dateFormat);
+    Map<String, Customer> getAllCustomersByCode();
 
-    void desactivateObsoleteActivity(HashMap<String, Activity> hmAllAssignedActivitiesByCode, HashMap<String, Activity> hmDealedActivities);
+    Activity createNewActivity(Map<String, Comparable> hm, Map<String, Activity> allAssignedActivitiesByCode, User assignedUserName, SimpleDateFormat dateFormat);
+
+    void desactivateObsoleteActivity(Map<String, Activity> hmAllAssignedActivitiesByCode, Map<String, Activity> hmDealedActivities);
 
 }
