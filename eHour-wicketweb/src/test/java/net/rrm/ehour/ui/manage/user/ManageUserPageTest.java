@@ -16,10 +16,11 @@
 
 package net.rrm.ehour.ui.manage.user;
 
-import com.google.common.collect.Sets;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
+import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,12 +29,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ManageUserPageTest extends BaseSpringWebAppTester {
-    private User user;
-
     @Override
     protected void afterSetup() {
         // dont start it
@@ -41,17 +41,15 @@ public class ManageUserPageTest extends BaseSpringWebAppTester {
 
     @Before
     public void setup_userservice() throws Exception {
-        super.setUp();
-
         List<User> users = new ArrayList<User>();
-        user = new User();
-        user.setUserId(1);
-        user.setName("Edeling");
-        user.setUserRoles(Sets.newHashSet(UserRole.ADMIN));
-        users.add(user);
+        users.add(UserObjectMother.createUser());
 
-        when(userService.getUsers()).thenReturn(users);
-        when(userService.getUserRoles()).thenReturn(new ArrayList<UserRole>());
+        UserService service = getMockContext().getBean(UserService.class);
+        expect(userService.getUserRoles()).andReturn(new ArrayList<UserRole>());
+        expect(userService.getUsers()).andReturn(users);
+        replay(service);
+
+        super.setUp();
     }
 
     @Test

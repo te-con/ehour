@@ -5,14 +5,12 @@ import net.rrm.ehour.config.EhourConfigStub
 import net.rrm.ehour.config.service.{ConfigurationService, IPersistConfiguration}
 import net.rrm.ehour.mail.service.MailMan
 import net.rrm.ehour.sysinfo.{SystemInfo, SystemInfoService}
-import net.rrm.ehour.user.service.UserService
 import org.mockito.Mockito._
 
 class MainConfigPageSpec extends AbstractSpringWebAppSpec {
   "Main Config page"  should {
     val sysInfoService = mockService[SystemInfoService]
     val configService = mockService[ConfigurationService]
-    mockService[UserService]
     mockService[IPersistConfiguration]
     mockService[MailMan]
 

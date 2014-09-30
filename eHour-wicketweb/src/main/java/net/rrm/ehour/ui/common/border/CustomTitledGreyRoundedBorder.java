@@ -41,7 +41,7 @@ public class CustomTitledGreyRoundedBorder extends Border {
 
         greyFrame.add(title);
         greyFrame.add(right);
-        add(greyFrame);
+        addToBorder(greyFrame);
 
         greyFrame.add(getBodyContainer());
     }

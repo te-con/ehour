@@ -49,6 +49,7 @@ public class TimesheetFactoryTest {
         Activity activity01 = ActivityMother.createActivity(user, project);
         Activity activity02 = ActivityMother.createActivity(user, project);
         activity02.setId(2);
+        activity02.setName("2");
 
         WeekOverview weekOverview = new WeekOverview(Collections.<TimesheetEntry>emptyList(), null, Arrays.asList(activity01, activity02), RANGE, null, Lists.<Date>newArrayList());
 

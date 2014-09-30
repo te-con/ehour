@@ -24,7 +24,6 @@ import net.rrm.ehour.mail.service.MailMan;
 import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
-import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -46,9 +45,6 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
     protected MailMan mailMan;
 
     protected EhourConfigStub config;
-
-    @Mock
-    protected UserService userService;
 
     @Mock
     protected IPersistConfiguration iPersistConfiguration;

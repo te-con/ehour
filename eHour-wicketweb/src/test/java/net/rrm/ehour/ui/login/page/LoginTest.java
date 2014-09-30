@@ -17,15 +17,12 @@
 package net.rrm.ehour.ui.login.page;
 
 import com.google.common.base.Optional;
-import com.richemont.windchill.WindChillService;
-import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.sysinfo.SystemInfo;
 import net.rrm.ehour.sysinfo.SystemInfoService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.page.DummyPage;
 import net.rrm.ehour.ui.common.util.AuthUtil;
-import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.FormTester;
@@ -50,15 +47,6 @@ public class LoginTest extends BaseSpringWebAppTester {
     @Mock
     private SystemInfoService infoService;
 
-    @Mock
-    private WindChillService chillService;
-
-    @Mock
-    private UserService userService;
-
-    @Mock
-    private WindChillUpdateService windChillUpdateService;
-    
     @Override
     protected AuthUtil buildAuthUtil() {
         return authUtil;
@@ -68,8 +56,6 @@ public class LoginTest extends BaseSpringWebAppTester {
     public void setupMocks() throws Exception {
         getMockContext().putBean("configService", configService);
         getMockContext().putBean(infoService);
-        getMockContext().putBean(chillService);
-        getMockContext().putBean(windChillUpdateService);
         getMockContext().putBean(userService);
     }
 

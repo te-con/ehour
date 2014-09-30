@@ -5,10 +5,10 @@ public class ActivityMother {
     public static Activity createActivity(User user, Project project) {
         Activity activity = new Activity();
         activity.setAssignedUser(user);
+        activity.setName("1");
         activity.setProject(project);
 
         activity.setActive(true);
-        activity.setName("1");
         activity.setId(1);
         activity.setCode("1");
         activity.setAllottedHours(100.0f);
