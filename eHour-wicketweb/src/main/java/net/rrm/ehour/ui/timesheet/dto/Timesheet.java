@@ -38,6 +38,16 @@ public class Timesheet implements Serializable {
     private TimesheetComment comment;
     private float maxHoursPerDay;
     private List<Date> lockedDays;
+    private Integer page = 0;
+    private Integer projectsPerPage = 20;
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
 
     public boolean isLocked(int seq) {
         return lockedDays.contains(dateSequence[seq]);
@@ -206,9 +216,12 @@ public class Timesheet implements Serializable {
      *
      * @return
      */
-    public List<Project> getProjectList()
-    {
-        return getProjects().get();
+    public List<Project> getProjectList() {
+        int start = page * projectsPerPage;
+
+        List<Project> projects = getProjects().get();
+
+        return projects.size() > projectsPerPage ? projects.subList(start, start + projectsPerPage) : projects;
     }
 
     /**

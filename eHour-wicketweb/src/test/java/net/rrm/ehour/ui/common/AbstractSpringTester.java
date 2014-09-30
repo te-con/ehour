@@ -26,6 +26,7 @@ import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.spring.test.ApplicationContextMock;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import static org.easymock.EasyMock.createMock;
 

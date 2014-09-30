@@ -55,6 +55,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.attributes.ThrottlingSettings;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -64,6 +65,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -118,8 +120,6 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     @SpringBean
     private JiraService jiraService;
 
-    @SpringBean
-    private CallWindchillWS callWindchillWS;
 
     private boolean isModerating = false;
 
@@ -152,11 +152,17 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", weekNavigation);
         add(greyBorder);
 
-        // add form
-        timesheetForm = new Form<TimesheetModel>("timesheetForm");
+        Form<TimesheetModel> timesheetForm = buildForm(timesheet);
+        this.timesheetForm = timesheetForm;
+        greyBorder.add(timesheetForm);
+
+    }
+
+    private Form<TimesheetModel> buildForm(final TimesheetModel timesheet) {
+        GrandTotal grandTotals;// add form
+        Form<TimesheetModel> timesheetForm = new Form<TimesheetModel>("timesheetForm");
         timesheetForm.setMarkupId("timesheetForm");
         timesheetForm.setOutputMarkupId(true);
-        greyBorder.add(timesheetForm);
 
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
         timesheetForm.add(blueBorder);
@@ -188,6 +194,26 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         serverMsgLabel = new WebComponent("serverMessage");
         serverMsgLabel.setOutputMarkupId(true);
         commentsFrame.add(serverMsgLabel);
+
+        // create paginator
+        List<Integer> options = new ArrayList<Integer>();
+        for (int i = 1; i < 10; i++) {
+            options.add(i);
+        }
+
+        final DropDownChoice<Integer> pagination = new DropDownChoice<Integer>("pagination", new PropertyModel<Integer>(timesheet, "page"), options);
+        pagination.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                Form<TimesheetModel> replacementForm = buildForm(timesheet);
+                pagination.getForm().replaceWith(replacementForm);
+
+                target.add(replacementForm);
+            }
+        });
+        blueBorder.add(pagination);
+
+        return timesheetForm;
     }
 
     private TextField<String> createActivityFilter(String id, final TimesheetModel timesheetModel) {

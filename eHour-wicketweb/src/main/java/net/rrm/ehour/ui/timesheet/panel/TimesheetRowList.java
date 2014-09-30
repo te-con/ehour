@@ -189,16 +189,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private ExternalLink createProjectLinkLink(final TimesheetRow row) {
 
         String activityCode = row.getActivity().getCode();
-        String projectLinkUrl = "";
-        String updatedUrl = "";
-        ExternalLink link = null;
-        if (activityCode.startsWith(JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA)) {
-            link = createJiraLink (activityCode, row.getActivity().getName().toString());
-        } else {
-            link = createPjlLink (activityCode);
-        }
 
-        return link;
+        return activityCode.startsWith(JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA) ? createJiraLink(activityCode, row.getActivity().getName()) : createPjlLink(activityCode);
     }
 
     /**
