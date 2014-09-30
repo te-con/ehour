@@ -63,7 +63,6 @@ public class MiscConfigPanel extends AbstractConfigPanel {
     protected void addFormComponents(Form<?> form) {
         addMiscComponents(form);
 
-        form.add(new MailServerConfigPanel("smtpConfig", getPanelModel()));
         form.add(new ReminderConfigPanel("reminderConfig", getPanelModel()));
     }
 

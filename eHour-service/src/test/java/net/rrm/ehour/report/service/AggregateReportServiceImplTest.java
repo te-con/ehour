@@ -22,7 +22,6 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
@@ -45,7 +44,6 @@ import static org.junit.Assert.assertEquals;
 @SuppressWarnings("unchecked")
 public class AggregateReportServiceImplTest {
     private AggregateReportServiceImpl aggregateReportService;
-    private UserDao userDao;
     private ProjectDao projectDao;
     private ReportAggregatedDao reportAggregatedDao;
     private ActivityService ActivityService;
@@ -55,10 +53,9 @@ public class AggregateReportServiceImplTest {
         reportAggregatedDao = createMock(ReportAggregatedDao.class);
         ActivityService = createMock(ActivityService.class);
         projectDao = createMock(ProjectDao.class);
-        userDao = createMock(UserDao.class);
         TimesheetLockService timesheetLockService = createMock(TimesheetLockService.class);
 
-        aggregateReportService = new AggregateReportServiceImpl(ActivityService, userDao, projectDao, timesheetLockService, reportAggregatedDao);
+        aggregateReportService = new AggregateReportServiceImpl(ActivityService, projectDao, timesheetLockService, reportAggregatedDao);
 
         expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
                 .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
@@ -205,13 +202,12 @@ public class AggregateReportServiceImplTest {
 
         expect(reportAggregatedDao.getCumulatedHoursPerActivityForUsers(isA(List.class), isA(DateRange.class))).andReturn(elements);
 
-        replay(reportAggregatedDao, userDao, projectDao);
+        replay(reportAggregatedDao, projectDao);
 
         ReportData reportData = aggregateReportService.getAggregateReportData(reportCriteria);
         assertEquals(1, reportData.getReportElements().size());
 
         verify(reportAggregatedDao);
-        verify(userDao);
         verify(projectDao);
     }
 }

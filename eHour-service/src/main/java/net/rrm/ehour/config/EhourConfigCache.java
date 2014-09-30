@@ -51,7 +51,11 @@ public class EhourConfigCache implements EhourConfig, Serializable {
         cache.setReminderMinimalHours(config.getReminderMinimalHours());
         cache.setReminderSubject(config.getReminderSubject());
         cache.setReminderTime(config.getReminderTime());
+
+        cache.setLdapSynced(config.isLdapSynced());
     }
+
+
 
     @Override
     public float getCompleteDayHours() {
@@ -181,6 +185,11 @@ public class EhourConfigCache implements EhourConfig, Serializable {
     @Override
     public String getReminderBody() {
         return cache.getReminderBody();
+    }
+
+    @Override
+    public boolean isLdapSynced() {
+        return cache.isLdapSynced();
     }
 
     @Override
