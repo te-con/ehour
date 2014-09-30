@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.admin.config;
 
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationServiceImpl;
@@ -49,8 +51,17 @@ public abstract class AbstractMainConfigTest extends BaseSpringWebAppTester impl
     @Mock
     protected IPersistConfiguration iPersistConfiguration;
 
+    @Mock
+    protected WindChillUpdateService windChillUpdateService;
+
+    @Mock
+    protected JiraService jiraService;
+
     @Before
     public void before() throws Exception {
+        getMockContext().putBean(windChillUpdateService);
+        getMockContext().putBean(jiraService);
+
         EhourHomeUtil.setEhourHome("src/test/resources");
 
         config = new EhourConfigStub();

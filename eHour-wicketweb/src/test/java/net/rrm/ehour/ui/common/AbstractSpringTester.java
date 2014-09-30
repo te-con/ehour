@@ -56,9 +56,6 @@ public abstract class AbstractSpringTester {
         windChillService = createMock(WindChillService.class);
         mockContext.putBean("windChillService", windChillService);
 
-        windChillUpdateService = createMock(WindChillUpdateService.class);
-        mockContext.putBean("windChillUpdateService", windChillUpdateService);
-
         auditService = createMock(AuditService.class);
         mockContext.putBean("auditService", auditService);
 

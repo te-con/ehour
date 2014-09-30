@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.admin.audit;
 
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
@@ -32,6 +34,12 @@ public class AuditReportPageTest extends BaseSpringWebAppTester
 	@Before
 	public void before() throws Exception
 	{
+        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
+        getMockContext().putBean(windChillUpdateService);
+
+        JiraService jiraService = createMock(JiraService.class);
+        getMockContext().putBean(jiraService);
+
 		expect(getAuditService().getAuditCount(isA(AuditReportRequest.class)))
 			.andReturn(5)
 			.anyTimes();

@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.manage.user;
 
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.domain.UserRole;
@@ -24,6 +26,7 @@ import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -34,6 +37,19 @@ import static org.easymock.EasyMock.replay;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ManageUserPageTest extends BaseSpringWebAppTester {
+    @Mock
+    private WindChillUpdateService windChillUpdateService;
+
+    @Mock
+    private JiraService jiraService;
+
+
+    @Before
+    public void setUpDeps() throws Exception {
+        getMockContext().putBean(windChillUpdateService);
+        getMockContext().putBean(jiraService);
+    }
+
     @Override
     protected void afterSetup() {
         // dont start it

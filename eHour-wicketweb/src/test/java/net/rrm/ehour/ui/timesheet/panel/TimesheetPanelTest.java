@@ -17,6 +17,7 @@
 package net.rrm.ehour.ui.timesheet.panel;
 
 import com.google.common.collect.Lists;
+import com.richemont.jira.JiraService;
 import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
@@ -46,8 +47,6 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
 
-// TODO FIXME THIES
-@Ignore
 public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
     private static final String DAY1_PATH = "blueFrame:blueFrame_body:projects:0:rows:0:day1";
@@ -56,11 +55,10 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     private IPersistTimesheet persistTimesheet;
     private IOverviewTimesheet overviewTimesheet;
-    private UserService userService;
     private ApprovalStatusService approvalStatusService;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         getConfig().setCompleteDayHours(8l);
         EhourWebSession.getSession().reloadConfig();
 
@@ -78,6 +76,13 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
         getMockContext().putBean("windChillUpdateService", windChillUpdateService);
+
+        JiraService jiraService = createMock(JiraService.class);
+        getMockContext().putBean(jiraService);
+
+        expect(jiraService.updateJiraIssues(anyObject(User.class), anyObject(List.class))).andReturn(new ArrayList<String>());
+        replay(jiraService);
+
     }
 
     @Test

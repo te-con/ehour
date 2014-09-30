@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.manage.customer;
 
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
@@ -39,6 +41,12 @@ public class CustomerManagePageTest extends BaseSpringWebAppTester
 	@Test
 	public void testCustomerAdminRender()
 	{
+        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
+        getMockContext().putBean(windChillUpdateService);
+
+        JiraService jiraService = createMock(JiraService.class);
+        getMockContext().putBean(jiraService);
+
 		CustomerService customerService = createMock(CustomerService.class);
 
 		getMockContext().putBean("customerService", customerService);

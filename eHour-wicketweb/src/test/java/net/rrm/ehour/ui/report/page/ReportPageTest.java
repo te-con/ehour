@@ -1,6 +1,8 @@
 package net.rrm.ehour.ui.report.page;
 
 import com.google.common.collect.Sets;
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -47,6 +49,12 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         mockReportTabCommand = new MockReportTabBuilder();
 
         getMockContext().putBean("reportTabBuilder", mockReportTabCommand);
+
+        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
+        getMockContext().putBean(windChillUpdateService);
+
+        JiraService jiraService = createMock(JiraService.class);
+        getMockContext().putBean(jiraService);
     }
 
     @Test

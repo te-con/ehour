@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.userprefs.page;
 
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
@@ -29,6 +31,12 @@ import static org.easymock.EasyMock.*;
 public class UserPreferencePageTest extends BaseSpringWebAppTester {
 	@Test
 	public void testReportPageRender() throws ObjectNotFoundException {
+        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
+        getMockContext().putBean(windChillUpdateService);
+
+        JiraService jiraService = createMock(JiraService.class);
+        getMockContext().putBean(jiraService);
+
         IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
         getMockContext().putBean(overviewTimesheet);
 

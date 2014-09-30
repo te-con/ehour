@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.manage.project;
 
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectObjectMother;
@@ -38,11 +40,14 @@ public class ProjectManagePageTest extends BaseSpringWebAppTester {
 
     @Before
     public void before() throws Exception {
+        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
+        getMockContext().putBean(windChillUpdateService);
+
+        JiraService jiraService = createMock(JiraService.class);
+        getMockContext().putBean(jiraService);
+
         projectService = createMock(ProjectService.class);
         getMockContext().putBean("projectService", projectService);
-
-//        userService = createMock(UserService.class);
-//        getMockContext().putBean("userService", userService);
 
         customerService = createMock(CustomerService.class);
         getMockContext().putBean("customerService", customerService);
@@ -52,9 +57,6 @@ public class ProjectManagePageTest extends BaseSpringWebAppTester {
     public void shouldRender() {
         expect(customerService.getActiveCustomers())
                 .andReturn(new ArrayList<Customer>());
-
-//        expect(userService.getUsersWithEmailSet())
-//                .andReturn(new ArrayList<User>());
 
         expect(projectService.getActiveProjects())
                 .andReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
