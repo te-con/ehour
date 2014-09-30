@@ -193,9 +193,8 @@ public class Activity extends DomainObject<Integer, Activity> {
         if (dateEnd != null ? !dateEnd.equals(activity.dateEnd) : activity.dateEnd != null) return false;
         if (dateStart != null ? !dateStart.equals(activity.dateStart) : activity.dateStart != null) return false;
         if (name != null ? !name.equals(activity.name) : activity.name != null) return false;
-        if (!project.equals(activity.project)) return false;
+        return !(project != null ? !project.equals(activity.project) : project != null);
 
-        return true;
     }
 
     @Override
@@ -206,7 +205,7 @@ public class Activity extends DomainObject<Integer, Activity> {
         result = 31 * result + (dateEnd != null ? dateEnd.hashCode() : 0);
         result = 31 * result + (allottedHours != null ? allottedHours.hashCode() : 0);
         result = 31 * result + (assignedUser != null ? assignedUser.hashCode() : 0);
-        result = 31 * result + project.hashCode();
+        result = 31 * result + (project != null ? project.hashCode() : 0);
         result = 31 * result + (active != null ? active.hashCode() : 0);
         return result;
     }
