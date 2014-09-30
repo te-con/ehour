@@ -7,7 +7,12 @@
     <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
         <property name="url" value="${ldap.url}"/>
         <property name="base" value="${ldap.basedn}"/>
-        <property name="anonymousReadOnly" value="true" />
+        <property name="authenticationSource" ref="authenticationSource"/>
+    </bean>
+
+    <bean id="authenticationSource" class="net.rrm.ehour.user.service.LdapAuthenticationSource">
+        <constructor-arg index="0" value="${ldap.default.username}"/>
+        <constructor-arg index="1" value="${ldap.default.password}"/>
     </bean>
 
     <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
