@@ -42,8 +42,11 @@ div.timesheet {
     vertical-align: bottom;
 }
 
-.timesheetTable tr.weekColumnRow td.spacer,
-.timesheetTable tr.weekColumnRow td.spacer,
+.timesheetTable tr.weekColumnRow td.spacer {
+    border-right: 0;
+    width: 10em;
+}
+
 .timesheetTable tr.projectRow td.spacer {
     border-right: 0;
     width: 10px;
@@ -198,6 +201,7 @@ div.timesheet {
     margin: 0;
     padding: 6px;
     text-align: left;
+    border-right: 0;
 }
 
 .timesheetTable tr.projectRow td.weekday {
