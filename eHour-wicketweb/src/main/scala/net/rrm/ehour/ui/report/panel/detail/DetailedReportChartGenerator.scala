@@ -14,7 +14,7 @@ object DetailedReportChartGenerator {
   def generateHourBasedDetailedChartData(reportData: ReportData): List[SparseDateSeries] = {
     val reportRange = reportData.getReportRange
 
-    buildSeries(reportData, reportRange, f => if (f.getTotalHours == null) 0 else f.getTotalHours.floatValue())
+    buildSeries(reportData, reportRange, f => if (f.getTotalHours == null) 0 else scala.math.round(f.getTotalHours.doubleValue()))
   }
 
   private def buildSeries(reportData: ReportData, reportRange: DateRange, f: FlatReportElement => Float) = {
