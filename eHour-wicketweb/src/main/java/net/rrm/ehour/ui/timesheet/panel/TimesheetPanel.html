@@ -16,9 +16,12 @@
 				<table class="timesheetTable" cellpadding="0" cellspacing="0">
                     <thead>
                         <tr class="weekColumnRow">
-                            <td class="projectCode" colspan="3" style="padding-left: 20px">
-                                <input type="text" id="activityFilter" style="text-align:left;width:10em;border: 1px solid #9ABBD9;"/>
-                                <select wicket:id="pagination"/>
+
+                            <td class="projectCode" colspan="3" style="padding-left: 20px;vertical-align: middle">
+                                <input type="text" id="activityFilter" class="filter" placeholder="Filter..."/>
+                                &nbsp;
+                                &nbsp;
+                                Page: <select wicket:id="pagination"/>
                             </td>
 
                             <td class="spacer">&nbsp;</td>
