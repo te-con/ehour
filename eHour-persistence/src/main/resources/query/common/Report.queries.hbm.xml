@@ -63,11 +63,11 @@
         ]]>
 	</query>
     
-    <query name="Report.getCumulatedHoursForAssignment">
+    <query name="Report.getCumulatedHoursForActivity">
          <![CDATA[
          SELECT new net.rrm.ehour.report.reports.element.ActivityAggregateReportElement(entry.entryId.activity, SUM(entry.hours))
                 FROM TimesheetEntry entry
-                WHERE entry.entryId.activity = :assignment
+                WHERE entry.entryId.activity = :activity
                 GROUP BY entry.entryId.activity.id                
         ]]>
 	</query>

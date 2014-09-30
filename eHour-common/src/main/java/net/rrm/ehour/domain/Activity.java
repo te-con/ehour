@@ -191,8 +191,7 @@ public class Activity extends DomainObject<Integer, Activity> {
 		}
 		Activity other = (Activity) obj;
 
-		return new EqualsBuilder().append(this.getId(), other.getId())
-		                          .append(this.getName(), other.getName())
+		return new EqualsBuilder().append(this.getName(), other.getName())
 		                          .append(this.getAllottedHours(), other.getAllottedHours())
 		                          .append(this.getActive(), other.getActive())
 		                          .append(this.getDateStart(), other.getDateStart())

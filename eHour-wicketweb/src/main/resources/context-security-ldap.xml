@@ -5,10 +5,9 @@
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
-        <sec:filter-chain-map path-type="ant">
+        <sec:filter-chain-map request-matcher="ant">
             <sec:filter-chain pattern="/eh/**"
-                              filters="
-	           securityContextPersistenceFilter"/>
+                              filters="securityContextPersistenceFilter"/>
         </sec:filter-chain-map>
     </bean>
 
@@ -17,7 +16,11 @@
         <property name="forceEagerSessionCreation" value="true"/>
     </bean>
 
-    <sec:ldap-server url="${ldap.url}"/>
+    <bean id="contextSource" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
+        <constructor-arg value="${ldap.url}"/>
+        <property name="userDn" value="${ldap.default.username}"/>
+        <property name="password" value="${ldap.default.password}"/>
+    </bean>
 
     <sec:authentication-manager alias="authenticationManager">
         <sec:ldap-authentication-provider user-search-filter="(&amp;(uid={0})(objectClass=person))"
