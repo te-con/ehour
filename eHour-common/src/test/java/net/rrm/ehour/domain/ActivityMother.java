@@ -8,6 +8,7 @@ public class ActivityMother {
         activity.setProject(project);
 
         activity.setActive(true);
+        activity.setName("1");
         activity.setId(1);
         activity.setCode("1");
         activity.setAllottedHours(100.0f);
@@ -57,12 +58,13 @@ public class ActivityMother {
         prj = ProjectObjectMother.createProject(projectId, cust);
 
         activity = new Activity();
-        activity.setProject(prj);
+        activity.setName(String.valueOf(activityId));
         activity.setId(activityId);
         activity.setCode(String.valueOf(activityId));
         activity.setAllottedHours((float) activityId);
         activity.setAvailableHours((float) activityId);
         activity.setLocked(Boolean.FALSE);
+        activity.setProject(prj);
 
         prj.addActivity(activity);
 
