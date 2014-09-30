@@ -344,7 +344,6 @@ public class WindChillServiceImpl implements WindChillService {
         for (Customer aCustomer : allCustomers) {
             allCustomersCode.put(aCustomer.getCode(), aCustomer);
         }
-
         return allCustomersCode;
     }
 
