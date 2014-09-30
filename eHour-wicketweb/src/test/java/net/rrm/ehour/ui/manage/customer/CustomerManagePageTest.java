@@ -20,7 +20,6 @@ import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
-import net.rrm.ehour.user.service.UserService;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -42,11 +41,9 @@ public class CustomerManagePageTest extends BaseSpringWebAppTester
 	{
 		CustomerService customerService = createMock(CustomerService.class);
 
-		UserService userService = createMock(UserService.class);
-
 		getMockContext().putBean("customerService", customerService);
 
-		expect(userService.getUsers()).andReturn(new ArrayList<User>()).times(2);
+		expect(userService.getUsers()).andReturn(new ArrayList<User>());
 		expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
 
 		replay(customerService);

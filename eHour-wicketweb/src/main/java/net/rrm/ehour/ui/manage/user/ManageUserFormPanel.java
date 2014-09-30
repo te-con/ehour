@@ -79,7 +79,7 @@ public class ManageUserFormPanel extends AbstractFormSubmittingPanel<LdapUserBac
         form.add(new Label("user.dn"));
 
         // user roles
-        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", getUserRoles(), new UserRoleRenderer());
+        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.user.userRoles", getUserRoles(), new UserRoleRenderer());
         userRoles.setMaxRows(4);
         userRoles.setLabel(new ResourceModel("admin.user.roles"));
         userRoles.setRequired(true);
@@ -88,7 +88,7 @@ public class ManageUserFormPanel extends AbstractFormSubmittingPanel<LdapUserBac
         form.add(new AjaxFormComponentFeedbackIndicator("rolesValidationError", userRoles));
 
         // active
-        form.add(new CheckBox("user.active"));
+        form.add(new CheckBox("user.user.active"));
 
 
         // data save label
