@@ -44,8 +44,8 @@ import java.util.Date;
 /**
  * Auditable Aspect
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class AuditAspect {
     @Autowired
     private AuditService auditService;
