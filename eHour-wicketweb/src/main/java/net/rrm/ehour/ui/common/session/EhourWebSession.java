@@ -241,6 +241,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
      */
     public void signOut() {
         setAuthentication(null);
+        invalidate();
         super.signOut();
     }
 
