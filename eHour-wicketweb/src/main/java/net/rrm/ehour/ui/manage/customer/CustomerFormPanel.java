@@ -42,6 +42,8 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
+import java.util.List;
+
 /**
  * Customer admin form panel
  */
@@ -90,12 +92,13 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
         form.add(textArea);
 
         //Reviewer
-        ListMultipleChoice<User> reviewersChoices = new ListMultipleChoice<User>("customer.reviewers", userService.getUsers(), new ChoiceRenderer<User>("fullName"));
+        List<User> users = userService.getUsers();
+        ListMultipleChoice<User> reviewersChoices = new ListMultipleChoice<User>("customer.reviewers", users, new ChoiceRenderer<User>("fullName"));
         reviewersChoices.setLabel(new ResourceModel("admin.customer.reviewers"));
         form.add(reviewersChoices);
 
         //Reporter
-        ListMultipleChoice<User> reportersChoices = new ListMultipleChoice<User>("customer.reporters", userService.getUsers(), new ChoiceRenderer<User>("fullName"));
+        ListMultipleChoice<User> reportersChoices = new ListMultipleChoice<User>("customer.reporters", users, new ChoiceRenderer<User>("fullName"));
         reportersChoices.setLabel(new ResourceModel("admin.customer.reporters"));
         form.add(reportersChoices);
 

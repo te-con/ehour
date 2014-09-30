@@ -24,7 +24,6 @@ import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
@@ -53,7 +52,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Activi
     }
 
     @Autowired
-    public AggregateReportServiceImpl(ActivityService activityService, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
+    public AggregateReportServiceImpl(ActivityService activityService, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
         super(projectDao, lockService, reportAggregatedDAO);
         this.reportAggregatedDAO = reportAggregatedDAO;
         this.activityService = activityService;

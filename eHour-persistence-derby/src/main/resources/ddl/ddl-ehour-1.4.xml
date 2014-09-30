@@ -257,74 +257,56 @@
 
     <table name="users">
         <column name="USER_ID" primaryKey="true" required="true" type="INTEGER"
-                size="10" autoIncrement="true"/>
+                size="10" autoIncrement="true" />
         <column name="USERNAME" primaryKey="false" required="true"
-                type="VARCHAR" size="64" autoIncrement="false"/>
-        <column name="PASSWORD" primaryKey="false" required="true"
-                type="VARCHAR" size="128" autoIncrement="false"/>
-        <column name="FIRST_NAME" primaryKey="false" required="false"
-                type="VARCHAR" size="64" autoIncrement="false"/>
-        <column name="LAST_NAME" primaryKey="false" required="true"
-                type="VARCHAR" size="64" autoIncrement="false"/>
-        <column name="DEPARTMENT_ID" primaryKey="false" required="true"
-                type="INTEGER" size="10" autoIncrement="false"/>
-        <column name="EMAIL" primaryKey="false" required="false" type="VARCHAR"
-                size="128" autoIncrement="false"/>
-        <column name="SALT" primaryKey="false" required="false" type="INTEGER"
-                size="64" autoIncrement="false"/>
+                type="VARCHAR" size="64" autoIncrement="false" />
+        <column name="DN" primaryKey="false" required="false"
+                type="VARCHAR" size="255" autoIncrement="false" />
+        <column name="FULLNAME" primaryKey="false" required="false"
+                type="VARCHAR" size="255" autoIncrement="false" />
         <column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
-                size="1" default="Y" autoIncrement="false"/>
-        <foreign-key foreignTable="user_department" name="USER_fk">
-            <reference local="DEPARTMENT_ID" foreign="DEPARTMENT_ID"/>
-        </foreign-key>
+                size="1" default="Y" autoIncrement="false" />
         <unique name="USER_ID">
-            <unique-column name="USER_ID"/>
+            <unique-column name="USER_ID" />
         </unique>
         <unique name="USERNAME">
-            <unique-column name="USERNAME"/>
+            <unique-column name="USERNAME" />
         </unique>
         <unique name="USERNAME_ACTIVE">
-            <unique-column name="USERNAME"/>
-            <unique-column name="ACTIVE"/>
+            <unique-column name="USERNAME" />
+            <unique-column name="ACTIVE" />
         </unique>
-        <index name="IDX_USERNAME_PASSWORD">
-            <index-column name="USERNAME"/>
-            <index-column name="PASSWORD"/>
-        </index>
-        <index name="ORGANISATION_ID">
-            <index-column name="DEPARTMENT_ID"/>
-        </index>
     </table>
     <table name="auditlog">
         <column name="AUDIT_ID" primaryKey="true" required="true" type="INTEGER"
-                size="10" autoIncrement="true"/>
+                size="10" autoIncrement="true" />
         <column name="USER_ID" primaryKey="false" required="false"
-                type="INTEGER" size="10" autoIncrement="false"/>
+                type="INTEGER" size="10" autoIncrement="false" />
         <column name="USER_FULLNAME" primaryKey="false" required="false"
-                type="VARCHAR" size="256" autoIncrement="false"/>
+                type="VARCHAR" size="256" autoIncrement="false" />
         <column name="AUDIT_DATE" primaryKey="false" required="true"
-                type="TIMESTAMP" autoIncrement="false"/>
+                type="TIMESTAMP" autoIncrement="false" />
         <column name="PAGE" primaryKey="false" required="false" type="VARCHAR"
-                size="256" autoIncrement="false"/>
+                size="256" autoIncrement="false" />
         <column name="ACTION" primaryKey="false" required="false" type="VARCHAR"
-                size="256" autoIncrement="false"/>
+                size="256" autoIncrement="false" />
         <column name="PARAMETERS" primaryKey="false" required="false"
-                type="VARCHAR" size="4096" autoIncrement="false"/>
+                type="VARCHAR" size="4096" autoIncrement="false" />
         <column name="SUCCESS" primaryKey="false" required="false"
-                type="CHAR" size="1" autoIncrement="false"/>
+                type="CHAR" size="1" autoIncrement="false" />
         <column name="AUDIT_ACTION_TYPE" primaryKey="false" required="false"
-                type="VARCHAR" size="32" autoIncrement="false"/>
+                type="VARCHAR" size="32" autoIncrement="false" />
 
         <index name="IDX_AUDIT_DATE">
-            <index-column name="AUDIT_DATE"/>
+            <index-column name="AUDIT_DATE" />
         </index>
 
         <index name="IDX_AUDIT_USER_FULLNAME">
-            <index-column name="USER_FULLNAME"/>
+            <index-column name="USER_FULLNAME" />
         </index>
 
         <index name="IDX_AUDIT_ACTION_TYPE">
-            <index-column name="AUDIT_ACTION_TYPE"/>
+            <index-column name="AUDIT_ACTION_TYPE" />
         </index>
     </table>
 

@@ -104,6 +104,9 @@ public class User extends DomainObject<Integer, User> {
         return getName();
     }
 
+    public boolean isNewUser() {
+        return userId == null;
+    }
 
     public String getDn() {
         return dn;
