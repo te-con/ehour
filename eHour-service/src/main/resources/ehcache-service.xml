@@ -11,6 +11,7 @@
     <cache name="service.config"
            maxElementsInMemory="50"
            timeToLiveSeconds="300"
+           eternal="true"
            overflowToDisk="false"
             />
 </ehcache>
