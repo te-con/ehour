@@ -27,6 +27,7 @@ public enum ConfigurationItem {
     REMINDER_BODY("reminderBody"),
     REMINDER_MIN_HOURS("reminderMinimalHours"),
     REMINDER_CC("reminderCC"),
+    LDAP_SYNC("ldapSynced")
     ;
     private String dbField;
 

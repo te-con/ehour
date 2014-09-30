@@ -206,6 +206,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 config.setSmtpPort(value);
             } else if (key.equalsIgnoreCase(ConfigurationItem.DEMO_MODE.getDbField())) {
                 config.setDemoMode(Boolean.parseBoolean(value));
+            } else if (key.equalsIgnoreCase((ConfigurationItem.LDAP_SYNC.getDbField()))) {
+                config.setLdapSynced(Boolean.parseBoolean(value));
             } else if (key.equalsIgnoreCase((ConfigurationItem.INITIALIZED.getDbField()))) {
                 config.setInitialized(Boolean.parseBoolean(value));
             } else if (key.equalsIgnoreCase((ConfigurationItem.FIRST_DAY_OF_WEEK.getDbField()))) {
@@ -267,7 +269,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(ConfigurationItem.PM_PRIVILEGE.getDbField(), getPmPrivilege(config).name());
 
         persistConfig(ConfigurationItem.SPLIT_ADMIN_ROLE.getDbField(), config.isSplitAdminRole());
-
+        persistConfig(ConfigurationItem.LDAP_SYNC.getDbField(), config.isLdapSynced());
         persistConfig(ConfigurationItem.REMINDER_BODY.getDbField(), config.getReminderBody());
         persistConfig(ConfigurationItem.REMINDER_CC.getDbField(), config.getReminderCC());
         persistConfig(ConfigurationItem.REMINDER_ENABLED.getDbField(), config.isReminderEnabled());

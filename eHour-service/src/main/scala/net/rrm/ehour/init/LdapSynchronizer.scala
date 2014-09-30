@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import net.rrm.ehour.config.service.ConfigurationService
 import org.apache.log4j.Logger
 import net.rrm.ehour.persistence.user.dao.UserDao
-import scalaj.collection.Imports._
 import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.config.EhourConfig
 
@@ -43,11 +42,12 @@ class LdapSynchronizer {
     }
   }
 
+  import scala.collection.JavaConversions._
   private[init] def syncWithLdap() {
-    val users = userDao.findAll().asScala
+    val users = userDao.findAll()
 
     users.foreach(u => {
-      val ldapUsers = userService.getLdapUser(u.getUsername).asScala
+      val ldapUsers = userService.getLdapUser(u.getUsername)
 
       if (!ldapUsers.isEmpty) {
         if (ldapUsers.size == 1) {
