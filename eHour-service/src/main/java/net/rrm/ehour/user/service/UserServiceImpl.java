@@ -31,6 +31,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.DirContextAdapter;
@@ -61,6 +62,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private LdapTemplate ldapTemplate;
+
+    @Autowired
+    @Value("${ldap.basedn}")
+    private String baseDn;
 
     public List<User> getUsers() {
         return userDAO.findActiveUsers();
@@ -110,7 +115,7 @@ public class UserServiceImpl implements UserService {
         ContextMapper contextMapper = new LdapContextMapper();
 
         String filter = String.format("(&(uid=%s)(objectClass=person))", ldapUid);
-        return (List<LdapUser>) ldapTemplate.search("", filter, contextMapper);
+        return (List<LdapUser>) ldapTemplate.search(baseDn, filter, contextMapper);
 
     }
 
