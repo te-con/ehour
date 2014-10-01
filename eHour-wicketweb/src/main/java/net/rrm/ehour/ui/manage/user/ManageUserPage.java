@@ -65,6 +65,8 @@ public class ManageUserPage extends AbstractTabbedManagePage<LdapUserBackingBean
             try {
                 User user = userService.getUser(userId);
                 LdapUser ldapUser = userService.getLdapUser(user.getUsername()).get(0);
+                ldapUser.setUser(user);
+
                 getTabbedPanel().setEditBackingBean(new LdapUserBackingBean(ldapUser));
                 getTabbedPanel().switchTabOnAjaxTarget(entrySelectedEvent.target(), AddEditTabbedPanel.TABPOS_EDIT);
             } catch (ObjectNotFoundException e) {
