@@ -3,6 +3,7 @@ package net.rrm.ehour.domain;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created on Feb 7, 2010 2:25:08 PM
@@ -29,7 +30,7 @@ public class UserObjectMother {
         user.setPassword("abc");
 
         user.setUserDepartment(department);
-        HashSet<UserRole> userRoles = new HashSet<UserRole>();
+        Set<UserRole> userRoles = new HashSet<UserRole>();
         userRoles.add(UserRole.ADMIN);
         user.setUserRoles(userRoles);
 
@@ -47,7 +48,7 @@ public class UserObjectMother {
         user.setPassword("abc");
 
         user.setUserDepartment(department);
-        HashSet<UserRole> userRoles = new HashSet<UserRole>();
+        Set<UserRole> userRoles = new HashSet<UserRole>();
         userRoles.add(UserRole.ADMIN);
         user.setUserRoles(userRoles);
 
