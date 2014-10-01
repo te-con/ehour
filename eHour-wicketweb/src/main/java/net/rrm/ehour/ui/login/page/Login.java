@@ -164,7 +164,6 @@ public class Login extends WebPage {
             SimpleUser user = getModelObject();
             String username = user.getUsername();
             String password = user.getPassword();
-            boolean isSyncLink = false;
 
             EhourWebSession session = EhourWebSession.getSession();
 
@@ -190,9 +189,7 @@ public class Login extends WebPage {
                     if (isJiraUser){
                         activitiesMasteredByJira = jiraService.createJiraIssuesForUser(allAssignedActivitiesByCode, username);
                         if (activitiesMasteredByJira == null) {
-                            isSyncLink = false;
                         }else{
-                            isSyncLink = true;
                             LOGGER.info("\n\n");
                             LOGGER.info("****************** Identify missing activity in PJL from JIRA->EHOUR ********************");
                             JsonArray activitiesPjlToBeCreated = jiraService.identifyMissingPjlActivity (activitiesMasteredByJira);
@@ -203,12 +200,10 @@ public class Login extends WebPage {
                         }
                     }else{
                         LOGGER.info("User do not exist in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " : skip createJiraIssuesForUser() for user " + username);
-                        isSyncLink = true;
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    isSyncLink = false;
                 }
 
 
@@ -219,7 +214,6 @@ public class Login extends WebPage {
                     LOGGER.info("WARNING: Windchill sync is disabled");
                 } else {
                     try {
-                        isSyncLink = chillService.updateDataForUser(allAssignedActivitiesByCode , username);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

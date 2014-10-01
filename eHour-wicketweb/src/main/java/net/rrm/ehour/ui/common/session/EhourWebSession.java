@@ -91,8 +91,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
         return  session.getAuthUser();
     }
 
-
-
     public final void reloadConfig() {
         WebUtils.springInjection(this);
 
