@@ -109,7 +109,7 @@ public class EhourServer {
 
             dbcpDataSource.setMaxActive(100);
             dbcpDataSource.setMaxIdle(30);
-            dbcpDataSource.setValidationQuery("SELECT 1");
+            dbcpDataSource.setValidationQuery("SELECT 1 FROM DUAL");
             dbcpDataSource.setTestOnBorrow(true);
             dbcpDataSource.setTestWhileIdle(true);
             dbcpDataSource.setPoolPreparedStatements(true);
