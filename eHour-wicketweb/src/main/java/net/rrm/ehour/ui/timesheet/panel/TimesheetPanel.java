@@ -198,10 +198,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         // create paginator
         blueBorder.add(createPaginationDropdown(timesheet));
 
-        // create filter
-        TextField activityFilter = new TextField<String>("activityFilter", new PropertyModel<String>(timesheet, "filter"));
-        activityFilter.add(new OnChangeFormReloadBehavior(timesheet, activityFilter));
-        blueBorder.add(activityFilter);
+
         return timesheetForm;
     }
 
@@ -213,7 +210,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         }
 
         final DropDownChoice<Integer> pagination = new DropDownChoice<Integer>("pagination", new PropertyModel<Integer>(timesheetModel, "page"), options);
-        pagination.add(new OnChangeFormReloadBehavior(timesheetModel, pagination));
+        pagination.add(new FormReloadBehavior(timesheetModel, pagination, "onchange"));
 
         pagination.setVisible(maxPages > 1);
         return pagination;
@@ -805,11 +802,12 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         private final TimesheetModel timesheetModel;
         private final FormComponent<?> parent;
 
-        public FormReloadBehavior(TimesheetModel timesheetModel, FormComponent<?> parent) {
-            super("onkeyup");
+        public FormReloadBehavior(TimesheetModel timesheetModel, FormComponent<?> parent, String event) {
+            super(event);
             this.timesheetModel = timesheetModel;
             this.parent = parent;
         }
+
 
         @Override
         protected void onUpdate(AjaxRequestTarget target) {
@@ -824,7 +822,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             super.updateAjaxAttributes(attributes);
 
             attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
-            attributes.setThrottlingSettings(new ThrottlingSettings("id", Duration.ONE_SECOND, true));
+            attributes.setThrottlingSettings(new ThrottlingSettings("id", Duration.milliseconds(1500), true));
         }
 
     }
