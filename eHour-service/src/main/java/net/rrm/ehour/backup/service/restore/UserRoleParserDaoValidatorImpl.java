@@ -21,7 +21,7 @@ public class UserRoleParserDaoValidatorImpl implements UserRoleParserDao
     public User findUser(Integer userId)
     {
         findUserCount++;
-        return new User(userId);
+        return new User(userId, "dummy");
     }
 
     @Override

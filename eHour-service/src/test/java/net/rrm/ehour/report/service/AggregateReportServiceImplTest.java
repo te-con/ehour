@@ -59,7 +59,7 @@ public class AggregateReportServiceImplTest {
         aggregateReportService = new AggregateReportServiceImpl(ActivityService, projectDao, timesheetLockService, reportAggregatedDao);
 
         expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
-                .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
+                .andReturn(WrapAsScala$.MODULE$.asScalaBuffer(Lists.<Interval>newArrayList()));
         replay(timesheetLockService);
     }
 
@@ -69,7 +69,7 @@ public class AggregateReportServiceImplTest {
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         List<User> l = new ArrayList<User>();
-        l.add(new User(1));
+        l.add(new User(1, "thies"));
         uc.setUsers(l);
         List<ActivityAggregateReportElement> pags = new ArrayList<ActivityAggregateReportElement>();
         ReportCriteria rc = new ReportCriteria(uc);
@@ -177,12 +177,12 @@ public class AggregateReportServiceImplTest {
     public void should_create_pm_report() {
         UserSelectedCriteria criteria = new UserSelectedCriteria();
 
-        User projectManager = new User(2);
+        User projectManager = new User(2, "thoos");
         criteria.setReportTypeToPM(projectManager);
         Project pmProject = ProjectObjectMother.createProject(1);
         expect(projectDao.findActiveProjectsWhereUserIsPM(projectManager)).andReturn(Lists.newArrayList(pmProject));
 
-        User user = new User(1);
+        User user = new User(1, "thies");
 
         Activity activity = ActivityMother.createActivity(1);
         activity.getProject().setProjectId(1);

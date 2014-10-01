@@ -153,14 +153,14 @@ public class CustomerServiceImplTest {
         cust.setCustomerId(1);
 
         List<User> reviewers = new ArrayList<User>();
-        reviewers.add(new User(1));
-        reviewers.add(new User(2));
+        reviewers.add(new User(1, "thies"));
+        reviewers.add(new User(2, "morgan"));
         cust.setReviewers(reviewers);
 
         expect(customerDAO.persist(cust)).andReturn(cust);
 
-        expect(userService.addRole(1, UserRole.CUSTOMERREVIEWER)).andReturn(new User(1));
-        expect(userService.addRole(2, UserRole.CUSTOMERREVIEWER)).andReturn(new User(1));
+        expect(userService.addRole(1, UserRole.CUSTOMERREVIEWER)).andReturn(new User(1, "thies"));
+        expect(userService.addRole(2, UserRole.CUSTOMERREVIEWER)).andReturn(new User(1, "thies"));
 
         replay(customerDAO, userService);
 
@@ -176,14 +176,14 @@ public class CustomerServiceImplTest {
         cust.setCustomerId(1);
 
         List<User> reporters = new ArrayList<User>();
-        reporters.add(new User(1));
-        reporters.add(new User(2));
+        reporters.add(new User(1, "thies"));
+        reporters.add(new User(2, "morgan"));
         cust.setReporters(reporters);
 
         expect(customerDAO.persist(cust)).andReturn(cust);
 
-        expect(userService.addRole(1, UserRole.CUSTOMERREPORTER)).andReturn(new User(1));
-        expect(userService.addRole(2, UserRole.CUSTOMERREPORTER)).andReturn(new User(1));
+        expect(userService.addRole(1, UserRole.CUSTOMERREPORTER)).andReturn(new User(1, "thies"));
+        expect(userService.addRole(2, UserRole.CUSTOMERREPORTER)).andReturn(new User(1, "thies"));
 
         replay(customerDAO, userService);
 
@@ -199,20 +199,19 @@ public class CustomerServiceImplTest {
         cust.setCustomerId(1);
 
         List<User> reporters = new ArrayList<User>();
-        reporters.add(new User(1));
-        reporters.add(new User(2));
+        reporters.add(new User(1, "thies"));
+        reporters.add(new User(2, "morgan"));
         cust.setReporters(reporters);
 
         List<User> reviewers = new ArrayList<User>();
-        reviewers.add(new User(3));
+        reviewers.add(new User(3, "laurent"));
         cust.setReviewers(reviewers);
 
         expect(customerDAO.persist(cust)).andReturn(cust);
 
-        expect(userService.addRole(1, UserRole.CUSTOMERREPORTER)).andReturn(new User(1));
-        expect(userService.addRole(2, UserRole.CUSTOMERREPORTER)).andReturn(new User(1));
-
-        expect(userService.addRole(3, UserRole.CUSTOMERREVIEWER)).andReturn(new User(3));
+        expect(userService.addRole(1, UserRole.CUSTOMERREPORTER)).andReturn(new User(1, "thies"));
+        expect(userService.addRole(2, UserRole.CUSTOMERREPORTER)).andReturn(new User(1, "thies"));
+        expect(userService.addRole(3, UserRole.CUSTOMERREVIEWER)).andReturn(new User(3, "laurent"));
 
         replay(customerDAO, userService);
 

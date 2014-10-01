@@ -70,7 +70,7 @@ public class ReportCriteriaServiceImplTest {
     public void should_sync_criteria_for_single_user() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
         userSelectedCriteria.setSelectedReportType(UserSelectedCriteria.ReportType.INDIVIDUAL_USER);
-        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1, "thies")));
         ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
         reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_ALL);
@@ -83,7 +83,7 @@ public class ReportCriteriaServiceImplTest {
     public void should_sync_criteria_for_global_for_all_customers() {
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
         userSelectedCriteria.setSelectedReportType(UserSelectedCriteria.ReportType.REPORT);
-        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1, "thies")));
 
         Tuple2<List<Customer>, List<Project>> apply = new Tuple2<List<Customer>, List<Project>>(Lists.<Customer>newArrayList(), Lists.<Project>newArrayList());
         when(customerAndProjectCriteriaFilter.getAvailableCustomers(userSelectedCriteria)).thenReturn(apply);

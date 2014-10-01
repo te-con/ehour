@@ -30,12 +30,12 @@ trait ReportAggregatedDao {
   /**
    * Get cumulated hours per project assignment for user in a date range
    */
-  def getCumulatedHoursPerActivityForUsers(users: util.List[User], dateRange: DateRange): util.List[ActivityAggregateReportElement]
+  def getCumulatedHoursPerActivityForUsers(userIds: util.List[Integer], dateRange: DateRange): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for users
    */
-  def getCumulatedHoursPerActivityForUsers(users: util.List[User]): util.List[ActivityAggregateReportElement]
+  def getCumulatedHoursPerActivityForUsers(userIds: util.List[Integer]): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for assignments
@@ -45,17 +45,17 @@ trait ReportAggregatedDao {
   /**
    * Get cumulated hours per project assignment for users, projects
    */
-  def getCumulatedHoursPerActivityForUsers(users: util.List[User], projects: util.List[Project]): util.List[ActivityAggregateReportElement]
+  def getCumulatedHoursPerActivityForUsers(userIds: util.List[Integer], projectIds: util.List[Integer]): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for users, projects in a date range
    */
-  def getCumulatedHoursPerActivityForUsers(users: util.List[User], projects: util.List[Project], dateRange: DateRange): util.List[ActivityAggregateReportElement]
+  def getCumulatedHoursPerActivityForUsers(userIds: util.List[Integer], projectIds: util.List[Integer], dateRange: DateRange): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours per project assignment for all users, projects in a date range
    */
-  def getCumulatedHoursPerActivityForProjects(projects: util.List[Project], dateRange: DateRange): util.List[ActivityAggregateReportElement]
+  def getCumulatedHoursPerActivityForProjects(projectIds: util.List[Integer], dateRange: DateRange): util.List[ActivityAggregateReportElement]
 
   /**
    * Get cumulated hours for a project assignment

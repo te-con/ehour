@@ -87,7 +87,7 @@ class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest {
   @Test
   public void shouldFindActiveProjectsWhereUserIsPM()
   {
-    def res = projectDAO.findActiveProjectsWhereUserIsPM(new User(1))
+    def res = projectDAO.findActiveProjectsWhereUserIsPM(new User(1, "thies"))
     assertEquals(10, res.iterator().next().getPK())
   }
   

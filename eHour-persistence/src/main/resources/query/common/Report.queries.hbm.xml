@@ -7,14 +7,14 @@
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
-                      entry.entryId.activity.assignedUser IN (:users)
+                      entry.entryId.activity.assignedUser.userId IN (:userIds)
                 GROUP BY entry.entryId.activity.id
         ]]></query>
 
     <query name="Report.getCumulatedHoursPerAssignmentForUsers">
         SELECT new net.rrm.ehour.report.reports.element.ActivityAggregateReportElement(entry.entryId.activity, SUM(entry.hours))
         FROM TimesheetEntry entry
-        WHERE entry.entryId.activity.assignedUser IN (:users)
+        WHERE entry.entryId.activity.assignedUser.userId IN (:userIds)
         GROUP BY entry.entryId.activity.id
 	</query>
 
@@ -28,8 +28,8 @@
     <query name="Report.getCumulatedHoursPerAssignmentForUsersAndProjects">
 		SELECT new net.rrm.ehour.report.reports.element.ActivityAggregateReportElement(entry.entryId.activity, SUM(entry.hours))
         FROM TimesheetEntry entry
-        WHERE entry.entryId.activity.assignedUser IN (:users) AND
-        	  entry.entryId.activity.project IN (:projects)
+        WHERE entry.entryId.activity.assignedUser.userId IN (:userIds) AND
+        	  entry.entryId.activity.project.projectId IN (:projectIds)
         GROUP BY entry.entryId.activity.id
 	</query>
 
@@ -38,8 +38,8 @@
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
-                      entry.entryId.activity.assignedUser IN (:users) AND
-                	  entry.entryId.activity.project IN (:projects)
+                      entry.entryId.activity.assignedUser.userId IN (:userIds) AND
+                	  entry.entryId.activity.project.projectId IN (:projectIds)
                 GROUP BY entry.entryId.activity.id
         ]]></query>
         
@@ -58,7 +58,7 @@
                 FROM TimesheetEntry entry
                 WHERE entry.entryId.entryDate >= :dateStart AND
                       entry.entryId.entryDate <= :dateEnd AND
-                	  entry.entryId.activity.project IN (:projects)
+                	  entry.entryId.activity.project.projectId IN (:projectIds)
                 GROUP BY entry.entryId.activity.id
         ]]>
 	</query>

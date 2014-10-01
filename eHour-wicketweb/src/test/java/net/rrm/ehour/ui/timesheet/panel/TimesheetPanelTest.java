@@ -51,7 +51,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
     private static final String DAY1_PATH = "blueFrame:blueFrame_body:projects:0:rows:0:day1";
     private static final String DAY1_FULL_PATH = TIMESHEET_PATH + ":" + DAY1_PATH;
-    private static final User USER = new User(1);
+    private static final User USER = new User(1, "thies");
 
     private IPersistTimesheet persistTimesheet;
     private IOverviewTimesheet overviewTimesheet;

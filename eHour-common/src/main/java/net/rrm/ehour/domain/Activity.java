@@ -184,29 +184,27 @@ public class Activity extends DomainObject<Integer, Activity> {
 
         Activity activity = (Activity) o;
 
-        if (active != null ? !active.equals(activity.active) : activity.active != null) return false;
-        if (assignedUser != null ? !assignedUser.equals(activity.assignedUser) : activity.assignedUser != null)
+        if (!active.equals(activity.active)) return false;
+        if (allottedHours != null ? !allottedHours.equals(activity.allottedHours) : activity.allottedHours != null)
             return false;
-        if (code != null ? !code.equals(activity.code) : activity.code != null) return false;
+        if (!assignedUser.equals(activity.assignedUser)) return false;
         if (dateEnd != null ? !dateEnd.equals(activity.dateEnd) : activity.dateEnd != null) return false;
         if (dateStart != null ? !dateStart.equals(activity.dateStart) : activity.dateStart != null) return false;
-        if (locked != null ? !locked.equals(activity.locked) : activity.locked != null) return false;
-        if (name != null ? !name.equals(activity.name) : activity.name != null) return false;
-        if (project != null ? !project.equals(activity.project) : activity.project != null) return false;
+        if (!name.equals(activity.name)) return false;
+        if (!project.equals(activity.project)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = code != null ? code.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = name.hashCode();
         result = 31 * result + (dateStart != null ? dateStart.hashCode() : 0);
         result = 31 * result + (dateEnd != null ? dateEnd.hashCode() : 0);
+        result = 31 * result + (allottedHours != null ? allottedHours.hashCode() : 0);
         result = 31 * result + (assignedUser != null ? assignedUser.hashCode() : 0);
         result = 31 * result + (project != null ? project.hashCode() : 0);
-        result = 31 * result + (active != null ? active.hashCode() : 0);
-        result = 31 * result + (locked != null ? locked.hashCode() : 0);
+        result = 31 * result + active.hashCode();
         return result;
     }
 

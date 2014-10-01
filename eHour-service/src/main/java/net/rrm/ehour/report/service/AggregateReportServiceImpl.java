@@ -29,6 +29,7 @@ import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import net.rrm.ehour.util.DomainUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,10 +48,6 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Activi
 
     private ActivityService activityService;
 
-    AggregateReportServiceImpl() {
-        super();
-    }
-
     @Autowired
     public AggregateReportServiceImpl(ActivityService activityService, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
         super(projectDao, lockService, reportAggregatedDAO);
@@ -67,9 +64,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Activi
     public List<ActivityAggregateReportElement> getHoursPerActivityInRange(Integer userId, DateRange dateRange) {
         List<ActivityAggregateReportElement> activityAggregateReportElements;
 
-        List<User> users = new ArrayList<User>();
-        users.add(new User(userId));
-        activityAggregateReportElements = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, dateRange);
+        activityAggregateReportElements = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(Lists.newArrayList(userId), dateRange);
 
         return activityAggregateReportElements;
     }
@@ -91,15 +86,15 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Activi
             aggregates = reportAggregatedDAO.getCumulatedHoursPerActivity(reportRange);
         } else if (projects == null) {
             if (!CollectionUtils.isEmpty(users)) {
-                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, reportRange);
+                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(DomainUtil.getIdsFromDomainObjects(users), reportRange);
             }
         } else if (users == null) {
             if (!CollectionUtils.isEmpty(projects)) {
-                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(projects, reportRange);
+                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(DomainUtil.getIdsFromDomainObjects(projects), reportRange);
             }
         } else {
             if (!CollectionUtils.isEmpty(users) && !CollectionUtils.isEmpty(projects)) {
-                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(users, projects, reportRange);
+                aggregates = reportAggregatedDAO.getCumulatedHoursPerActivityForUsers(DomainUtil.getIdsFromDomainObjects(users), DomainUtil.getIdsFromDomainObjects(projects), reportRange);
             }
         }
 
@@ -119,8 +114,8 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Activi
         report.setReportRange(reportRange);
 
         // get all aggregates
-        List<Project> projects = Arrays.asList(project);
-        SortedSet<ActivityAggregateReportElement> aggregates = new TreeSet<ActivityAggregateReportElement>(reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(projects, reportRange));
+        List<Integer> projectIds = Lists.newArrayList(project.getProjectId());
+        SortedSet<ActivityAggregateReportElement> aggregates = new TreeSet<ActivityAggregateReportElement>(reportAggregatedDAO.getCumulatedHoursPerActivityForProjects(projectIds, reportRange));
 
         // filter out just the id's
         List<Integer> activityIds = new ArrayList<Integer>();

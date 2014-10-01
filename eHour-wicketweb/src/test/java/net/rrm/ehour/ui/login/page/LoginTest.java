@@ -84,7 +84,7 @@ public class LoginTest extends BaseSpringWebAppTester {
         tester.assertRenderedPage(Login.class);
         tester.assertNoErrorMessage();
 
-        User user = new User(1);
+        User user = new User(1, "thies");
         expect(userService.getAuthorizedUser("thies")).andReturn(user);
         expect(userService.isLdapUserMemberOf("thies", "cn=timesheet-tracking,ou=people,cn=AdministrativeLdap,cn=Windchill,o=ptc")).andReturn(true);
         HashMap<String, Activity> activityHashMap = new HashMap<String, Activity>();

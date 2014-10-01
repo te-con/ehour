@@ -147,7 +147,7 @@ public class DetailedReportServiceImplTest {
     }
 
     private void singleUserSelected() {
-        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
+        userSelectedCriteria.setUsers(Arrays.asList(new User(1, "thies")));
     }
 
     private void singleProjectSelected() {

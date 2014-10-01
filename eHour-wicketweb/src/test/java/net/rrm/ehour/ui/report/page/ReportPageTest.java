@@ -149,7 +149,7 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         availCriteria.setProjects(projects);
 
         Set<User> usrs = Sets.newHashSet();
-        usrs.add(new User(2));
+        usrs.add(new User(2, "thoos"));
         availCriteria.setUsers(usrs);
 
         reportCriteria = new ReportCriteria(availCriteria);
@@ -157,7 +157,7 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         List<ActivityAggregateReportElement> agg = new ArrayList<ActivityAggregateReportElement>();
         ActivityAggregateReportElement pag = new ActivityAggregateReportElement();
         Activity activity = ActivityMother.createActivity(1);
-        User user = new User(1);
+        User user = new User(1, "thies");
         activity.setAssignedUser(user);
 
         Customer cust = new Customer(1);

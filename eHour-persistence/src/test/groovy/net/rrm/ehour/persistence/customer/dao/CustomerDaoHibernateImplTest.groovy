@@ -210,7 +210,7 @@ class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest
 	
 	@Test
 	public void shouldReturnEmptyListWhenCustomersAreHavingPassedUserAsReviewer() {
-		def user = new User(2);
+		def user = new User(2, "thoos");
 		
 		def customers = customerDao.findAllCustomersForWhichUserIsaReviewer(user);
 		

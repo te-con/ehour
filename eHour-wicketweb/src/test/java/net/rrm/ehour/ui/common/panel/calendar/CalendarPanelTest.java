@@ -57,7 +57,7 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
         AjaxEventHook hook = new AjaxEventHook();
         EventPublisher.listenerHook = hook;
 
-        Calendar requestedMonth = new ComparableGreggieCalendar(2009, 1 - 1, 2);
+        Calendar requestedMonth = new ComparableGreggieCalendar(2009, Calendar.JANUARY, 2);
         EhourWebSession session = getWebApp().getSession();
         requestedMonth.setFirstDayOfWeek(requestedMonth.getFirstDayOfWeek());
 
@@ -137,7 +137,7 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
     }
 
     private void startPanel() {
-        tester.startComponentInPage(new CalendarPanel("panel", new User(1)));
+        tester.startComponentInPage(new CalendarPanel("panel", new User(1, "thies")));
     }
 
     @SuppressWarnings("serial")

@@ -123,7 +123,7 @@ public class TimesheetServiceImplTest {
         when(timesheetDAO.getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal))).thenReturn(daoResults);
         when(aggregateReportService.getHoursPerActivityInRange(1, DateUtil.calendarToMonthRange(cal))).thenReturn(reportResults);
 
-        timesheetService.getTimesheetOverview(new User(1), cal);
+        timesheetService.getTimesheetOverview(new User(1, "thies"), cal);
 
         verify(timesheetDAO).getTimesheetEntriesInRange(1, DateUtil.calendarToMonthRange(cal));
         verify(aggregateReportService).getHoursPerActivityInRange(1, DateUtil.calendarToMonthRange(cal));
@@ -143,7 +143,7 @@ public class TimesheetServiceImplTest {
         when(config.getFirstDayOfWeek()).thenReturn(1);
         when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class))).thenReturn(new Vector<Interval>(0, 0, 1));
 
-        timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, Calendar.JANUARY, 1));
+        timesheetService.getWeekOverview(new User(1, "thies"), new GregorianCalendar(2007, Calendar.JANUARY, 1));
 
         verify(timesheetDAO).getTimesheetEntriesInRange(1, range);
         verify(timesheetCommentDAO).findById(new TimesheetCommentId(1, range.getDateStart()));

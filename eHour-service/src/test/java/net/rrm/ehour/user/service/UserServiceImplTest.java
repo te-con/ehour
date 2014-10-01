@@ -87,8 +87,7 @@ public class UserServiceImplTest {
 
     @Test
     public void shouldAddCustomerReviewerRoleCorrectly() {
-        User earlierPersistedUser = new User();
-        earlierPersistedUser.setUserId(1);
+        User earlierPersistedUser = new User(1, "thies");
 
         expect(userDAO.findById(1)).andReturn(earlierPersistedUser);
 
