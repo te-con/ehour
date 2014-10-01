@@ -1,4 +1,4 @@
-<ehcache updateCheck="false">
+<ehcache updateCheck="false" name="hibernateCache">
 
     <defaultCache maxElementsInMemory="5000"
                   eternal="false"
