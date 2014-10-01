@@ -119,8 +119,6 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         setRateWidthOrHide(rateLabel);
         container.add(rateLabel);
 
-        container.add(new Label("bookedHoursLabel", new ResourceModel("overview.hours")));
-
         Label turnOverLabel = new Label("turnoverLabel", new ResourceModel("overview.turnover"));
         setTurnoverWidthOrHide(turnOverLabel);
         container.add(turnOverLabel);

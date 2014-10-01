@@ -79,8 +79,6 @@ public class Login extends WebPage {
     }
 
     private void setupForm() {
-        addOrReplace(new Label("pageTitle", new ResourceModel("login.login.header")));
-
         SignInForm loginForm = new SignInForm("loginform", new SimpleUser());
         addOrReplace(loginForm);
 
