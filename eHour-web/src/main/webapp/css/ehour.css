@@ -526,7 +526,7 @@ div.NavHeader div.LoadingSpinner {
 
 div.LoggedInAs {
     text-align: right;
-    margin-right: 7px;
+    margin: 0 7px 7px 0;
     font: 0.8em Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
 }
@@ -1006,4 +1006,9 @@ hr {
 
 .error {
     color: #ff3333;
+}
+
+.customTitleRightComponent {
+    float: right;
+    margin: 0 15px 5px 0;
 }

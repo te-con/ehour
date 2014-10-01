@@ -58,7 +58,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
         this.setOutputMarkupId(true);
 
         // this should be easier..
-        label = new Label("title", new MessageResourceModel("projectoverview.aggregatedPerMonth", this, new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY)));
+        label = new Label(CustomTitledGreyRoundedBorder.TITLE_ID, new MessageResourceModel("projectoverview.aggregatedPerMonth", this, new DateModel(overviewFor, getConfig(), DateModel.DATESTYLE_MONTHONLY)));
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder(ID_GREY_BORDER, label);
 
         addGrandTotals(greyBorder, projectStatusses, getConfig());

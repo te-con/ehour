@@ -130,7 +130,7 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     }
 
     private Label newTitleLabel(Calendar cal) {
-        Label label = new Label("title", new StringResourceModel("printMonth.header",
+        Label label = new Label(CustomTitledGreyRoundedBorder.TITLE_ID, new StringResourceModel("printMonth.header",
                 this, null,
                 new Object[]{new DateModel(cal, getConfig(), DateModel.DATESTYLE_MONTHONLY)}));
         label.setOutputMarkupId(true);

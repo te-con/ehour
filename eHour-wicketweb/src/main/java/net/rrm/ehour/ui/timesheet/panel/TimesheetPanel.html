@@ -17,14 +17,10 @@
                     <thead>
                         <tr class="weekColumnRow">
 
-                                <td class="projectCode" colspan="3" style="padding-left: 20px;vertical-align: middle">
-                                    <input type="text" wicket:id="activityFilter" class="filter" placeholder="Filter..."/>
-                                    <wicket:enclosure child="pagination">
-                                    &nbsp;
-                                    &nbsp;
+                            <td class="projectCode" colspan="3" style="padding-left: 20px;vertical-align: middle">
+                                <wicket:enclosure child="pagination">
                                     Page: <select wicket:id="pagination"/></wicket:enclosure>
-                                </td>
-                                <td class="spacer">&nbsp;</td>
+                            </td>
 
                             <td class="spacer">&nbsp;</td>
 
@@ -178,6 +174,10 @@
         <div class="lockSpace ui-state-default" title="This day is locked" wicket:id="lockedContainer">
             <i class="fa fa-lock"></i>
         </div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="filter">
+        <input type="text" wicket:id="activityFilter" class="activityFilter" placeholder="Filter..."/>
     </wicket:fragment>
 </wicket:panel>
 

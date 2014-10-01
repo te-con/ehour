@@ -137,23 +137,22 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         this.isModerating = isModerating;
 
-        EhourWebSession session = (EhourWebSession) getSession();
-        GrandTotal grandTotals;
-
         config = EhourWebSession.getEhourConfig();
 
         this.setOutputMarkupId(true);
 
         // set the model
-        TimesheetModel timesheet = new TimesheetModel(user, forWeek);
-        setDefaultModel(timesheet);
+        TimesheetModel timesheetModel = new TimesheetModel(user, forWeek);
+        setDefaultModel(timesheetModel);
 
         // grey & blue frame border
-        WebMarkupContainer weekNavigation = getWeekNavigation(timesheet.getWeekStart(), timesheet.getWeekEnd(), user);
-        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", weekNavigation);
+        WebMarkupContainer weekNavigation = getWeekNavigation(timesheetModel.getWeekStart(), timesheetModel.getWeekEnd(), user);
+        WebMarkupContainer filter = createFilter(CustomTitledGreyRoundedBorder.RIGHT_ID, timesheetModel);
+
+        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", weekNavigation, filter);
         add(greyBorder);
 
-        Form<TimesheetModel> timesheetForm = buildForm(timesheet);
+        Form<TimesheetModel> timesheetForm = buildForm(timesheetModel);
         this.timesheetForm = timesheetForm;
         greyBorder.add(timesheetForm);
 
@@ -232,13 +231,23 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
     }
 
+    private WebMarkupContainer createFilter(String id, TimesheetModel timesheetModel) {
+        Fragment f = new Fragment(id, "filter", this);
 
+        // create filter
+        TextField activityFilter = new TextField<String>("activityFilter", new PropertyModel<String>(timesheetModel, "filter"));
+        activityFilter.add(new FormReloadBehavior(timesheetModel, activityFilter, "onkeyup"));
+        activityFilter.setOutputMarkupId(true);
+        f.add(activityFilter);
+
+        return f;
+    }
     /**
      * Add week navigation to title
      */
     @SuppressWarnings("serial")
     private WebMarkupContainer getWeekNavigation(final Date weekStart, final Date weekEnd, User user) {
-        Fragment titleFragment = new Fragment("title", "title", TimesheetPanel.this);
+        Fragment titleFragment = new Fragment("title", CustomTitledGreyRoundedBorder.TITLE_ID, TimesheetPanel.this);
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", config.getFormattingLocale());
 
         int weekOfYear = DateUtil.getWeekNumberForDate(weekStart, config.getFirstDayOfWeek());
@@ -792,11 +801,11 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 		this.timesheetForm = timesheetForm;
 	}
 
-    private class OnChangeFormReloadBehavior extends AjaxFormComponentUpdatingBehavior {
+    private class FormReloadBehavior extends AjaxFormComponentUpdatingBehavior {
         private final TimesheetModel timesheetModel;
         private final FormComponent<?> parent;
 
-        public OnChangeFormReloadBehavior(TimesheetModel timesheetModel, FormComponent<?> parent) {
+        public FormReloadBehavior(TimesheetModel timesheetModel, FormComponent<?> parent) {
             super("onkeyup");
             this.timesheetModel = timesheetModel;
             this.parent = parent;
