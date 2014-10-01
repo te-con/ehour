@@ -28,6 +28,10 @@ import org.apache.wicket.model.Model
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.util.time.Duration
 
+object LoggedInAsPanel {
+  private val LOGGER: Logger = Logger.getLogger(classOf[HeaderPanel])
+}
+
 class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePanel(id) {
   def this(id: String) {
     this(id, false)
@@ -39,9 +43,6 @@ class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePan
   @SpringBean protected var chillUpdateService: WindChillUpdateService = _
   @SpringBean protected var userService: UserService = _
   @SpringBean protected var jiraService: JiraService = _
-
-  private val LOGGER: Logger = Logger.getLogger(classOf[HeaderPanel])
-
 
   override def onInitialize() = {
     super.onInitialize()
@@ -99,13 +100,13 @@ class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePan
         var isJiraSync: Boolean = false
         var isWindSync: Boolean = false
 
-        LOGGER.info("\n\n")
-        LOGGER.info("****************** STEP# 1 : GET ALL ACTIVITIES from HeaderPanel ******************")
+        LoggedInAsPanel.LOGGER.info("\n\n")
+        LoggedInAsPanel.LOGGER.info("****************** STEP# 1 : GET ALL ACTIVITIES from HeaderPanel ******************")
         val allAssignedActivitiesByCode: util.Map[String, Activity] = windChillService.getAllAssignedActivitiesByCode(user)
-        LOGGER.info("\n\n")
-        LOGGER.info("****************** START JIRA SYNC (get Jira issues) ****************************")
+        LoggedInAsPanel.LOGGER.info("\n\n")
+        LoggedInAsPanel.LOGGER.info("****************** START JIRA SYNC (get Jira issues) ****************************")
         val isJiraUser: Boolean = userService.isLdapUserMemberOf(user.getUsername, JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF)
-        LOGGER.info("User in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " createJiraIssuesForUser() for user " + user.getUsername + " = " + isJiraUser)
+        LoggedInAsPanel.LOGGER.info("User in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " createJiraIssuesForUser() for user " + user.getUsername + " = " + isJiraUser)
         var activitiesMasteredByJira: util.Map[JiraIssue, Activity] = null
 
         try {
@@ -116,18 +117,16 @@ class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePan
             }
             else {
               isJiraSync = true
-              LOGGER.info("\n\n")
-              LOGGER.info("****************** Identify missing activity in PJL from JIRA->EHOUR ********************")
+              LoggedInAsPanel.LOGGER.info("\n\n")
+              LoggedInAsPanel.LOGGER.info("****************** Identify missing activity in PJL from JIRA->EHOUR ********************")
               val activitiesPjlToBeCreated: JsonArray = jiraService.identifyMissingPjlActivity(activitiesMasteredByJira)
-              LOGGER.debug("JsonArray for activitiesPjlToBeCreated:")
-              LOGGER.debug(activitiesPjlToBeCreated)
 
               val request: HttpServletRequest = getRequest.getContainerRequest.asInstanceOf[HttpServletRequest]
               request.getSession.setAttribute("MissingPjlActivity", activitiesPjlToBeCreated)
             }
           }
           else {
-            LOGGER.info("User do not exist in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " : skip createJiraIssuesForUser() for user " + user.getUsername)
+            LoggedInAsPanel.LOGGER.info("User do not exist in " + JiraConst.GET_JIRA_ISSUES_FOR_USER_MEMBER_OF + " : skip createJiraIssuesForUser() for user " + user.getUsername)
             isJiraSync = true
           }
         }
@@ -136,10 +135,10 @@ class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePan
             isJiraSync = false
           }
         }
-        LOGGER.info("\n\n")
-        LOGGER.info("****************** START WINDCHILL SYNC (get PJL activities) ************************")
+        LoggedInAsPanel.LOGGER.info("\n\n")
+        LoggedInAsPanel.LOGGER.info("****************** START WINDCHILL SYNC (get PJL activities) ************************")
         if (!isEnabled) {
-          LOGGER.info("WARNING: Windchill sync is disabled")
+          LoggedInAsPanel.LOGGER.info("WARNING: Windchill sync is disabled")
         }
         else {
           try {
