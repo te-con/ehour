@@ -37,8 +37,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
@@ -87,12 +89,14 @@ public class LoginTest extends BaseSpringWebAppTester {
         User user = new User(1, "thies");
         expect(userService.getAuthorizedUser("thies")).andReturn(user);
         expect(userService.isLdapUserMemberOf("thies", "cn=timesheet-tracking,ou=people,cn=AdministrativeLdap,cn=Windchill,o=ptc")).andReturn(true);
-        HashMap<String, Activity> activityHashMap = new HashMap<String, Activity>();
+        Map<String, Activity> activityHashMap = new HashMap<String, Activity>();
         expect(windChillService.getAllAssignedActivitiesByCode(user)).andReturn(activityHashMap);
         expect(windChillService.updateDataForUser(activityHashMap, "thies")).andReturn(true);
 
         when(infoService.info()).thenReturn(new SystemInfo("a", "b", "c"));
         when(authUtil.getHomepageForRole(any(Roles.class))).thenReturn(new AuthUtil.Homepage(DummyPage.class, Optional.<PageParameters>absent()));
+
+        replay(userService, windChillService);
 
         FormTester form = tester.newFormTester("loginform");
         form.setValue("username", "thies");

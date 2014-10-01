@@ -48,15 +48,12 @@ import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.attributes.ThrottlingSettings;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -71,12 +68,13 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.time.Duration;
-import org.joda.time.DateTime;
 import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
@@ -520,31 +518,6 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         parent.add(projects);
 
         return grandTotals;
-    }
-
-    private Component createToggleLink(final TimesheetRowList activityRows) {
-        // set relative URL to image and set id
-        Fold fold = Fold.SHOW;
-
-        final WebMarkupContainer foldClass = new WebMarkupContainer("foldClass");
-        foldClass.add(AttributeModifier.replace("class", fold.jqueryClass));
-        foldClass.setOutputMarkupId(true);
-
-        AjaxLink<String> foldLink = new AjaxLink<String>("foldLink") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                boolean isVisible = activityRows.isVisible();
-
-                foldClass.removeAll();
-                foldClass.add(AttributeModifier.replace("class", isVisible ? Fold.SHOW.jqueryClass : Fold.HIDE.jqueryClass));
-
-                activityRows.setVisible(!isVisible);
-                target.add(timesheetForm);
-            }
-        };
-
-        foldLink.add(foldClass);
-        return foldLink;
     }
 
     private class SubmitButton extends AjaxButton {

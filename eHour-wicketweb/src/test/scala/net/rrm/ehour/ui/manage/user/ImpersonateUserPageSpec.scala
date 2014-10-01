@@ -3,6 +3,8 @@ package net.rrm.ehour.ui.manage.user
 import java.util.Calendar
 
 import com.google.common.collect.Lists
+import com.richemont.jira.JiraService
+import com.richemont.windchill.WindChillUpdateService
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.timesheet.dto.WeekOverview
@@ -25,6 +27,8 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     val overviewTimesheet = mockService[IOverviewTimesheet]
 
     mockService[IPersistTimesheet]
+    mockService[WindChillUpdateService]
+    mockService[JiraService]
 
     before {
       reset(overviewTimesheet)

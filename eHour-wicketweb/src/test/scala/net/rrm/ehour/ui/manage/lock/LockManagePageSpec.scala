@@ -1,6 +1,8 @@
 package net.rrm.ehour.ui.manage.lock
 
 import com.google.common.collect.Lists
+import com.richemont.jira.JiraService
+import com.richemont.windchill.WindChillUpdateService
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.timesheet.service.TimesheetLockService
 import org.apache.wicket.Component
@@ -13,6 +15,9 @@ import org.scalatest.BeforeAndAfter
 class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
   "Lock Manage Page" should {
     val service = mockService[TimesheetLockService]
+
+    mockService[WindChillUpdateService]
+    mockService[JiraService]
 
     val lock = LockAdminBackingBeanObjectMother.create.lock
 

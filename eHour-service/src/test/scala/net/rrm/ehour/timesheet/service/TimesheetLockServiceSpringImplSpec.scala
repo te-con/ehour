@@ -86,8 +86,8 @@ class TimesheetLockServiceSpringImplSpec extends AbstractSpec {
       val affectedUsers = service.findAffectedUsers(startDate, endDate, Nil)
 
       affectedUsers should have size 2
-      affectedUsers.head.hoursBooked should be (13)
-      affectedUsers(1).hoursBooked should be (4)
+      affectedUsers.head.hoursBooked should be (4)
+      affectedUsers(1).hoursBooked should be (13)
     }
 
     "aggregate the booked hours per affected user in a date range excluding users" in {

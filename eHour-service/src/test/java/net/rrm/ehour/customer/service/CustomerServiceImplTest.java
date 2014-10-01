@@ -16,10 +16,7 @@
 
 package net.rrm.ehour.customer.service;
 
-import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserRole;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -54,7 +51,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testDeleteCustomerWithConstraintViolation() {
-        Customer cust = new Customer();
+        Customer cust = CustomerObjectMother.createCustomer();
         Project proj = new Project();
         Set<Project> projs = new HashSet<Project>();
         proj.setProjectId(1);
@@ -80,8 +77,8 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testDeleteCustomer() throws ParentChildConstraintException {
-        Customer cust = new Customer();
-        cust.setCustomerId(1);
+        Customer cust = CustomerObjectMother.createCustomer(1);
+        cust.getProjects().clear();
 
         customerDAO.findById(1);
         expectLastCall().andReturn(cust);
@@ -134,9 +131,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testPersistCustomer() throws ObjectNotUniqueException {
-        Customer cust = new Customer();
-        cust.setCustomerId(1);
-
+        Customer cust = CustomerObjectMother.createCustomer(1);
         customerDAO.persist(cust);
         expectLastCall().andReturn(cust);
 
@@ -149,8 +144,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testPersistCustomerContainingReviewers() throws ObjectNotUniqueException {
-        Customer cust = new Customer();
-        cust.setCustomerId(1);
+        Customer cust = CustomerObjectMother.createCustomer(1);
 
         List<User> reviewers = new ArrayList<User>();
         reviewers.add(new User(1, "thies"));
@@ -172,8 +166,7 @@ public class CustomerServiceImplTest {
     @Test
     public void testPersistCustomerContainingReporters() throws ObjectNotUniqueException
     {
-        Customer cust = new Customer();
-        cust.setCustomerId(1);
+        Customer cust = CustomerObjectMother.createCustomer(1);
 
         List<User> reporters = new ArrayList<User>();
         reporters.add(new User(1, "thies"));
@@ -195,8 +188,7 @@ public class CustomerServiceImplTest {
     @Test
     public void testPersistCustomerContainingBothReportersAndReviewers() throws ObjectNotUniqueException
     {
-        Customer cust = new Customer();
-        cust.setCustomerId(1);
+        Customer cust = CustomerObjectMother.createCustomer(1);
 
         List<User> reporters = new ArrayList<User>();
         reporters.add(new User(1, "thies"));

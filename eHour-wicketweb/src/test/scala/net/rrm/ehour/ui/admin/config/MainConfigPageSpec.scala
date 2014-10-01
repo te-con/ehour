@@ -1,5 +1,7 @@
 package net.rrm.ehour.ui.admin.config
 
+import com.richemont.jira.JiraService
+import com.richemont.windchill.WindChillUpdateService
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.config.EhourConfigStub
 import net.rrm.ehour.config.service.{ConfigurationService, IPersistConfiguration}
@@ -13,6 +15,9 @@ class MainConfigPageSpec extends AbstractSpringWebAppSpec {
     val configService = mockService[ConfigurationService]
     mockService[IPersistConfiguration]
     mockService[MailMan]
+
+    mockService[WindChillUpdateService]
+    mockService[JiraService]
 
     "render" in {
       when(sysInfoService.info).thenReturn(SystemInfo("mysql", "..", "jdbc.Driver"))

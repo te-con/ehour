@@ -16,7 +16,7 @@ class HeaderPanel(id: String, showSyncLink: Boolean = false) extends AbstractBas
     val homepage = authUtil.getHomepageForRole(EhourWebSession.getSession.getRoles)
     add(new BookmarkablePageLink("homeLink", homepage.homePage, homepage.parameters))
     add(createNav("nav"))
-    add(new LoggedInAsPanel("loggedInAs", showSyncLink))
+    add(new LoggedInAsPanel("loggedInAs"))
   }
 
   private def createNav(id: String) = new TreeBasedMenu(id, MenuDefinition.createMenuDefinition)

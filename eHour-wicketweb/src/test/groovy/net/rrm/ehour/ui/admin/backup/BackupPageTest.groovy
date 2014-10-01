@@ -1,5 +1,7 @@
 package net.rrm.ehour.ui.admin.backup
 
+import com.richemont.jira.JiraService
+import com.richemont.windchill.WindChillUpdateService
 import net.rrm.ehour.backup.domain.ParseSession
 import net.rrm.ehour.backup.service.DatabaseBackupService
 import net.rrm.ehour.backup.service.RestoreService
@@ -23,88 +25,88 @@ import static org.mockito.Mockito.when
  * @author thies (Thies Edeling - thies@te-con.nl)
  * Created on: Nov 12, 2010 - 11:42:00 PM
  */
-class BackupPageTest extends BaseSpringWebAppTester
-{
-  @Mock
-  private DatabaseBackupService exportService
+class BackupPageTest extends BaseSpringWebAppTester {
+    @Mock
+    private DatabaseBackupService exportService
 
-  @Mock
-  private RestoreService importService
+    @Mock
+    private RestoreService importService
 
-  @Before
-  void initMock()
-  {
-    MockitoAnnotations.initMocks this
-    getMockContext().putBean("databaseBackupService", exportService);
-    getMockContext().putBean("restoreService", importService);
-  }
+    @Mock
+    private WindChillUpdateService windChillUpdateService
 
-  @Test
-  void shouldRenderPage()
-  {
-    startPage()
-    tester.assertRenderedPage BackupDbPage
-    tester.assertNoErrorMessage()
-  }
+    @Mock
+    private JiraService jiraService
 
-  private Page startPage()
-  {
+    @Before
+    void initMock() {
+        MockitoAnnotations.initMocks this
+        getMockContext().putBean("databaseBackupService", exportService);
+        getMockContext().putBean("restoreService", importService);
+        getMockContext().putBean("windChillUpdateService", windChillUpdateService);
+        getMockContext().putBean("jiraService", jiraService);
+    }
 
-    def page = getTester().startPage(BackupDbPage)
+    @Test
+    void shouldRenderPage() {
+        startPage()
+        tester.assertRenderedPage BackupDbPage
+        tester.assertNoErrorMessage()
+    }
 
-    MockHttpServletRequest request = tester.getRequest()
-    request.setUseMultiPartContentType true
+    private Page startPage() {
 
-    return page
-  }
+        def page = getTester().startPage(BackupDbPage)
 
-  @Test
-  void shouldClickBackupLink()
-  {
-    when(exportService.exportDatabase()).thenReturn("this should be xml");
+        MockHttpServletRequest request = tester.getRequest()
+        request.setUseMultiPartContentType true
 
-    startPage()
+        return page
+    }
 
-    tester.clickLink "frame:frame_body:backupBorder:backupBorder_body:backupLink"
-    tester.assertNoErrorMessage()
-  }
+    @Test
+    void shouldClickBackupLink() {
+        when(exportService.exportDatabase()).thenReturn("this should be xml");
 
-  @Test
-  void shouldUploadXML()
-  {
-    startPage()
+        startPage()
 
-    FormTester formTester = tester.newFormTester("frame:frame_body:restoreBorder:restoreBorder_body:form")
+        tester.clickLink "frame:frame_body:backupBorder:backupBorder_body:backupLink"
+        tester.assertNoErrorMessage()
+    }
 
-    when(importService.prepareImportDatabase(Mockito.any())).thenReturn(new ParseSession());
+    @Test
+    void shouldUploadXML() {
+        startPage()
 
-    formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "text/xml"
-    tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
-    tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", AjaxLazyLoadPanel.class
-  }
+        FormTester formTester = tester.newFormTester("frame:frame_body:restoreBorder:restoreBorder_body:form")
 
-  @Test
-  void shouldFailForWrongContentType()
-  {
-    startPage()
+        when(importService.prepareImportDatabase(Mockito.any())).thenReturn(new ParseSession());
 
-    FormTester formTester = tester.newFormTester("frame:frame_body:restoreBorder:restoreBorder_body:form")
-    formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "application/zip"
+        formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "text/xml"
+        tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
+        tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", AjaxLazyLoadPanel.class
+    }
 
-    tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
-    tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", Label.class
+    @Test
+    void shouldFailForWrongContentType() {
+        startPage()
 
-    verifyZeroInteractions(importService)
-  }
+        FormTester formTester = tester.newFormTester("frame:frame_body:restoreBorder:restoreBorder_body:form")
+        formTester.setFile "file", new File("src/test/resources/import_ok.xml"), "application/zip"
 
-  @Test
-  void shouldFailForNoFile()
-  {
-    startPage()
+        tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
+        tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", Label.class
 
-    tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
-    tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", Label.class
+        verifyZeroInteractions(importService)
+    }
 
-    verifyZeroInteractions(importService)
-  }
+    @Test
+    void shouldFailForNoFile() {
+        startPage()
+
+        tester.executeAjaxEvent "frame:frame_body:restoreBorder:restoreBorder_body:form:ajaxSubmit", "onclick"
+        tester.assertComponent "frame:frame_body:restoreBorder:restoreBorder_body:form:parseStatus", Label.class
+
+        verifyZeroInteractions(importService)
+    }
 }

@@ -19,15 +19,10 @@ package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
-import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Locale;
-
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -48,13 +43,14 @@ public class LocaleConfigPanelTest extends AbstractMainConfigTest {
 
         miscFormTester.select("config.currency", 1);
         miscFormTester.select("localeCountry", 0);
-        miscFormTester.select("localeLanguage", 0);
+        miscFormTester.select("localeLanguage", 1);
+
 
         tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":submitButton", "onclick");
 
-        getTester().assertNoErrorMessage();
+        tester.assertNoErrorMessage();
+        tester.assertNoInfoMessage();
 
-        assertEquals(new Locale("ar", "DZ"), getConfigStub().getCurrency());
-        assertEquals(new Locale("sq", "AL"), getConfigStub().getLocale());
+        verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
     }
 }

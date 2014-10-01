@@ -1,12 +1,11 @@
 package net.rrm.ehour.ui.common.header
 
 import java.util
-import java.util.HashMap
 import javax.json.JsonArray
 import javax.servlet.http.HttpServletRequest
 
-import com.richemont.jira.{JiraService, JiraIssue, JiraConst}
-import com.richemont.windchill.{WindChillUpdateService, WindChillService}
+import com.richemont.jira.{JiraConst, JiraIssue, JiraService}
+import com.richemont.windchill.{WindChillService, WindChillUpdateService}
 import net.rrm.ehour.domain.{Activity, User}
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator
 import net.rrm.ehour.ui.common.event.{AjaxEvent, EventPublisher}
@@ -18,8 +17,8 @@ import net.rrm.ehour.ui.userprefs.page.UserPreferencePage
 import net.rrm.ehour.user.service.UserService
 import org.apache.log4j.Logger
 import org.apache.wicket.Component
-import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
 import org.apache.wicket.ajax.markup.html.AjaxLink
+import org.apache.wicket.ajax.{AbstractAjaxTimerBehavior, AjaxRequestTarget}
 import org.apache.wicket.behavior.Behavior
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.basic.Label
@@ -29,9 +28,11 @@ import org.apache.wicket.model.Model
 import org.apache.wicket.spring.injection.annot.SpringBean
 import org.apache.wicket.util.time.Duration
 
-import java.util
+class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePanel(id) {
+  def this(id: String) {
+    this(id, false)
+  }
 
-class LoggedInAsPanel(id: String, showSyncLink: Boolean ) extends AbstractBasePanel(id) {
   @SpringBean protected var authUtil: AuthUtil = _
 
   @SpringBean protected var windChillService: WindChillService = _

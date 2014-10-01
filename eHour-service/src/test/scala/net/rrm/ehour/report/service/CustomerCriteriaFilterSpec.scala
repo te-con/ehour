@@ -1,14 +1,14 @@
 package net.rrm.ehour.report.service
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfterEach, WordSpec, Matchers}
-import org.scalatest.mock.MockitoSugar
 import net.rrm.ehour.persistence.customer.dao.CustomerDao
-import org.mockito.Mockito._
 import net.rrm.ehour.report.criteria.UserSelectedCriteria
-import ReportFilterFixture._
+import net.rrm.ehour.report.service.ReportFilterFixture._
 import net.rrm.ehour.util._
+import org.junit.runner.RunWith
+import org.mockito.Mockito._
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 
 @RunWith(classOf[JUnitRunner])
 class CustomerCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
@@ -58,17 +58,6 @@ class CustomerCriteriaFilterSpec extends WordSpec with MockitoSugar with Matcher
       val (_, projects) = subject.getAvailableCustomers(criteria)
 
       projects should be ('empty)
-    }
-
-    "find only customers which have this PM" in {
-      when(dao.findAllActive()).thenReturn(toJava(List(billableCustomer, pmCustomer, otherPmCustomer)))
-
-      val criteria = new UserSelectedCriteria
-      criteria.setReportTypeToPM(pm)
-      val (customers, _) = subject.getAvailableCustomers(criteria)
-
-      customers should have size 1
-      customers.get(0) should be (pmCustomer)
     }
 
     "default to show all when current customer selection is invalid" in {

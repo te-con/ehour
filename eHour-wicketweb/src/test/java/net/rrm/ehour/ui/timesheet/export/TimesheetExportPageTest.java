@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.ui.timesheet.export;
 
+import com.richemont.jira.JiraService;
+import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.ProjectObjectMother;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
@@ -50,11 +52,10 @@ public class TimesheetExportPageTest extends BaseSpringWebAppTester
 	private ReportCriteriaService reportCriteriaService;
 	private DetailedReportService detailedReportService;
 	private ReportCriteria reportCriteria;
-    private ConfigurationService configurationService;
 
-	@Before
+    @Before
 	public void before() throws Exception {
-        configurationService = createMock(ConfigurationService.class);
+        ConfigurationService configurationService = createMock(ConfigurationService.class);
         getMockContext().putBean("configurationService", configurationService);
 
         overviewTimesheet = createMock(IOverviewTimesheet.class);
@@ -65,6 +66,13 @@ public class TimesheetExportPageTest extends BaseSpringWebAppTester
 
         detailedReportService = createMock(DetailedReportService.class);
         getMockContext().putBean("detailedReportService", detailedReportService);
+
+        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
+        getMockContext().putBean("windChillUpdateService", windChillUpdateService);
+
+        JiraService jiraService = createMock(JiraService.class);
+        getMockContext().putBean("jiraService", jiraService);
+
 
         reportCriteria = createReportCriteria();
 

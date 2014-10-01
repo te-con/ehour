@@ -3,6 +3,8 @@ package net.rrm.ehour.ui.common.header
 import java.util.Calendar
 
 import com.google.common.collect.Lists
+import com.richemont.jira.JiraService
+import com.richemont.windchill.WindChillUpdateService
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.timesheet.dto.{TimesheetOverview, WeekOverview}
@@ -14,6 +16,9 @@ import org.mockito.Mockito._
 
 class LoggedInAsPanelSpec extends AbstractSpringWebAppSpec {
   "Logged In As Panel" should {
+    mockService[WindChillUpdateService]
+    mockService[JiraService]
+
     "render" in {
       startPanel()
 
@@ -22,7 +27,6 @@ class LoggedInAsPanelSpec extends AbstractSpringWebAppSpec {
 
     "show impersonate notification" in {
       impersonate()
-
       tester.assertComponent("impersonatingNotification", classOf[Fragment])
     }
 
