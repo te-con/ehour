@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<sql-query name="Report.getHoursPerDayForUsers">
 	<![CDATA[
@@ -14,7 +13,6 @@
 		       ACT.PROJECT_ID AS "projectId",
 		       ACT.USER_ID AS "userId",
 		       USR.FULLNAME AS "userFullname",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.NAME AS "projectName",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       ENTRY.COMMENT_TEXT AS "comment"
@@ -39,7 +37,6 @@
 				ACT.PROJECT_ID,
 				ACT.USER_ID,
 				USR.FULLNAME,
-				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
@@ -58,7 +55,6 @@
 		       ACT.PROJECT_ID AS "projectId",
 		       ACT.USER_ID AS "userId",
 		       USR.FULLNAME AS "userFullname",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT_TEXT AS "comment"
@@ -83,7 +79,6 @@
 				ACT.PROJECT_ID,
 				ACT.USER_ID,
 				USR.FULLNAME,
-				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
@@ -102,7 +97,6 @@
 		       ACT.PROJECT_ID AS "projectId",
 		       ACT.USER_ID AS "userId",
 		       USR.FULLNAME AS "userFullname",
-		       PRJ.PROJECT_ID AS "projectId",
 		       PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT_TEXT AS "comment"
@@ -128,7 +122,6 @@
 				ACT.PROJECT_ID,
 				ACT.USER_ID,
 				USR.FULLNAME,
-				PRJ.PROJECT_ID,
 				PRJ.PROJECT_CODE,
 				PRJ.NAME,
 				ENTRY.COMMENT_TEXT
@@ -147,7 +140,6 @@
 		       ACT.PROJECT_ID AS "projectId",
 		       ACT.USER_ID AS "userId",
 		       USR.FULLNAME AS "userFullname",
-		       PRJ.PROJECT_ID AS "projectId",
 		        PRJ.PROJECT_CODE as "projectCode",
 		       PRJ.NAME AS "projectName",
 		       ENTRY.COMMENT_TEXT AS "comment"
