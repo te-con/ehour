@@ -111,8 +111,6 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         }
     }
 
-    private boolean showAll;
-
     @SpringBean
     private WindChillUpdateService windChillUpdateService;
 
@@ -165,9 +163,6 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
         timesheetForm.add(blueBorder);
 
-        // add activity filter
-//        blueBorder.add(createActivityFilter("activityFilter", timesheet));
-
         // setup form
         grandTotals = buildForm(timesheetForm, blueBorder);
 
@@ -195,7 +190,6 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         // create paginator
         blueBorder.add(createPaginationDropdown(timesheet));
-
 
         return timesheetForm;
     }
@@ -510,7 +504,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
                 Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
                 item.add(new Label("project", project.getName()));
 
-                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, TimesheetPanel.this));
+                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(project), grandTotals, form, isModerating, TimesheetPanel.this));
             }
         };
         projects.setReuseItems(true);
@@ -587,30 +581,10 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         }
     }
 
-    private void sendToProjectLink() {
-        TimesheetModel model = (TimesheetModel) getDefaultModel();
-        Timesheet timesheet = model.getObject();
-
-        User user = EhourWebSession.getUser();
-
-        List<TimesheetEntry> entries = timesheet.getTimesheetEntries();
-        List<Activity> activities = new ArrayList<Activity>();
-
-        for (TimesheetEntry entry : entries) {
-            activities.add(entry.getEntryId().getActivity());
-        }
-
-        try {
-            windChillUpdateService.updateProjectLink(user, activities);
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
-    }
-
     /**
      * LLI
      * 01/05/2012
+     * TODO: Thies, move this to a separate class
      */
     private List<String> sendDataToThirdParty() {
         TimesheetModel model = (TimesheetModel) getDefaultModel();
@@ -745,8 +719,6 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
     }
 
-
-
     private class GuardedWeekLink extends GuardedAjaxLink<Void> {
         private int delta;
         private Date weekStart;
@@ -763,14 +735,6 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         }
     }
 
-	public Form<TimesheetModel> getTimesheetForm() {
-		return timesheetForm;
-	}
-
-	public void setTimesheetForm(Form<TimesheetModel> timesheetForm) {
-		this.timesheetForm = timesheetForm;
-	}
-
     private class FormReloadBehavior extends AjaxFormComponentUpdatingBehavior {
         private final TimesheetModel timesheetModel;
         private final FormComponent<?> parent;
@@ -781,11 +745,11 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             this.parent = parent;
         }
 
-
         @Override
         protected void onUpdate(AjaxRequestTarget target) {
             Form<TimesheetModel> replacementForm = buildForm(timesheetModel);
-            parent.getForm().replaceWith(replacementForm);
+            timesheetForm.replaceWith(replacementForm);
+            timesheetForm = replacementForm;
 
             target.add(replacementForm);
         }

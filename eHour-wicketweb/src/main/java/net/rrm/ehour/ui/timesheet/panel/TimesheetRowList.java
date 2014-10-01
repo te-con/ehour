@@ -55,7 +55,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
@@ -88,7 +87,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
     private MarkupContainer provider;
 
-    public TimesheetRowList(String id, ListModel<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, boolean beingModerated, MarkupContainer provider) {
+    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, boolean beingModerated, MarkupContainer provider) {
 		super(id, model);
         this.provider = provider;
 
@@ -101,17 +100,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 		config = EhourWebSession.getEhourConfig();
 		hideWeekend = isHideWeekendForUser();
 	}
-
-    public TimesheetRowList(String id, final List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider) {
-        super(id, model);
-        this.provider = provider;
-        setReuseItems(true);
-        this.grandTotals = grandTotals;
-        this.form = form;
-
-        config = EhourWebSession.getEhourConfig();
-        hideWeekend = isHideWeekendForUser();
-    }
 
     private boolean isHideWeekendForUser() {
         boolean result = false;
