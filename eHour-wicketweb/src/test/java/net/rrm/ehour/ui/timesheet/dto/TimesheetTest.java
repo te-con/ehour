@@ -17,7 +17,7 @@ public class TimesheetTest {
     public void should_return_2_max_pages_for_35_projects() {
         Timesheet timesheet = createTimesheet(35);
 
-        assertEquals(1, timesheet.getMaxPages());
+        assertEquals(2, timesheet.getMaxPages());
     }
 
     @Test
@@ -129,7 +129,7 @@ public class TimesheetTest {
         Timesheet timesheet = createTimesheet(26);
         timesheet.setFilter("an_A");
 
-        assertEquals(0, timesheet.getMaxPages());
+        assertEquals(1, timesheet.getMaxPages());
     }
 
     @Test

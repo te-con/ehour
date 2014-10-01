@@ -46,6 +46,8 @@ public class Timesheet implements Serializable {
     private List<Date> lockedDays;
     private Integer page = 1;
     private String filter;
+    private transient List<Project> filteredProjects;
+    private transient String filteredFor;
 
     public String getFilter() {
         return filter;
@@ -59,7 +61,7 @@ public class Timesheet implements Serializable {
     public int getMaxPages() {
         int size = filterProjects().size();
         double pages = (double) size / PROJECTS_PER_PAGE;
-        return (int) Math.floor(pages);
+        return (int) Math.ceil(pages);
     }
 
     public Integer getPage() {
@@ -240,7 +242,7 @@ public class Timesheet implements Serializable {
         List<Project> filteredProjects = filterProjects();
 
         if (start > filteredProjects.size()) {
-            setPage(getMaxPages());
+            setPage(getMaxPages() - 1);
             return getProjectList();
         }
 
@@ -254,22 +256,30 @@ public class Timesheet implements Serializable {
         return filteredProjects.size() > PROJECTS_PER_PAGE ? filteredProjects.subList(start, end) : filteredProjects;
     }
 
-    private List<Project> filterProjects() {
-        List<Project> projects = getProjects().get();
+    private synchronized List<Project> filterProjects() {
+        if (filteredProjects == null ||
+                (filter == null && null == filteredFor) ||
+                (filter != null && !filter.equalsIgnoreCase(filteredFor))) {
+            List<Project> projects = getProjects().get();
 
-        if (StringUtils.isNotBlank(filter)) {
-            String lowerCaseFilter = filter.toLowerCase();
+            if (StringUtils.isNotBlank(filter)) {
+                String lowerCaseFilter = filter.toLowerCase();
 
-            List<Project> matchingProjects = filterOnProjectNameAndCode(projects, lowerCaseFilter);
+                List<Project> matchingProjects = filterOnProjectNameAndCode(projects, lowerCaseFilter);
 
-            projects.removeAll(matchingProjects);
+                projects.removeAll(matchingProjects);
 
-            filterOnActivityNameAndCode(projects, lowerCaseFilter, matchingProjects);
+                filterOnActivityNameAndCode(projects, lowerCaseFilter, matchingProjects);
 
-            return matchingProjects;
-        } else {
-            return projects;
+                filteredProjects = matchingProjects;
+            } else {
+                filteredProjects = projects;
+            }
+
+            filteredFor = filter;
         }
+
+        return filteredProjects;
     }
 
     private void filterOnActivityNameAndCode(List<Project> projects, String lowerCaseFilter, List<Project> matchingProjects) {
