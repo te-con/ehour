@@ -31,6 +31,7 @@ import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -64,6 +65,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private UserService userService;
 
     @Autowired
+    @Qualifier("serviceCacheManager")
     private CacheManager ehCache;
 
     private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
@@ -174,7 +176,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     @Transactional
     @NonAuditable
-    @Cacheable(value = "service.config")
+    @Cacheable("service.config")
     public EhourConfigStub getConfiguration() {
         List<Configuration> configs = configDao.findAll();
         EhourConfigStub config = new EhourConfigStub();

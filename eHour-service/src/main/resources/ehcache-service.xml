@@ -1,4 +1,4 @@
-<ehcache updateCheck="false">
+<ehcache updateCheck="false" name="service.cache">
 
     <defaultCache maxElementsInMemory="5000"
                   eternal="false"
@@ -10,7 +10,6 @@
 
     <cache name="service.config"
            maxElementsInMemory="50"
-           timeToLiveSeconds="300"
            eternal="true"
            overflowToDisk="false"
             />

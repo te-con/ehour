@@ -12,5 +12,5 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
 	</context:component-scan>
 
-    <context:component-scan  base-package="net.rrm.ehour.config.service" />
+    <context:component-scan  base-package="net.rrm.ehour.reminder" />
 </beans>
