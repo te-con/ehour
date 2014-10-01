@@ -2,8 +2,6 @@ package net.rrm.ehour.ui.common.header;
 
 import java.util
 
-import net.rrm.ehour.ui.admin.audit.AuditReportPage
-import net.rrm.ehour.ui.admin.backup.BackupDbPage
 import net.rrm.ehour.ui.admin.config.MainConfigPage
 import net.rrm.ehour.ui.customerreviewer.CustomerReviewerPage
 import net.rrm.ehour.ui.manage.customer.CustomerManagePage
@@ -36,9 +34,7 @@ object MenuDefinition {
     val manageDropdown = DropdownMenu("nav.admin.manage", util.Arrays.asList(userAdmin, customerAdmin, projectAdmin, lockAdmin, impersonate))
 
     val mainConfig = LinkItem("nav.admin.config", classOf[MainConfigPage])
-    val auditReport = LinkItem("nav.admin.audit", classOf[AuditReportPage])
-    val export = LinkItem("nav.admin.export", classOf[BackupDbPage])
-    val systemDropdown = DropdownMenu("nav.admin", util.Arrays.asList(mainConfig, auditReport, export))
+    val systemDropdown = DropdownMenu("nav.admin", util.Arrays.asList(mainConfig))
 
     val customerReviewer = LinkItem("nav.customerreviewer.usertimesheet", classOf[CustomerReviewerPage])
     val customerReviewerParent = DropdownMenu("nav.customerreviewer", util.Arrays.asList(customerReviewer))
