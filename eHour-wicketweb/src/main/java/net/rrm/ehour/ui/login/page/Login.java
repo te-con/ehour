@@ -44,11 +44,10 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.json.JsonArray;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
-import javax.json.JsonArray;
 
 import static net.rrm.ehour.ui.common.util.AuthUtil.Homepage;
 
@@ -114,8 +113,6 @@ public class Login extends WebPage {
     }
 
     private void setupForm() {
-        addOrReplace(new Label("pageTitle", new ResourceModel("login.login.header")));
-
         SignInForm loginForm = new SignInForm("loginform", new SimpleUser());
         addOrReplace(loginForm);
 
