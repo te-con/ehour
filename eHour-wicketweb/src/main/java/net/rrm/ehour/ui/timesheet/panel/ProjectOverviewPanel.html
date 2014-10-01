@@ -9,14 +9,12 @@
 <wicket:panel>
 	<div wicket:id="greyBorder"  style="min-width: 800px">
 		<div class="MonthAggregateTable">
-
             <div class="AggregateHeader">
                 <div class="foldCell">&nbsp;</div>
-                <div class="textCell" style="margin-top:0;"><wicket:message key="overview.customer" /></div>
-                <div class="textCell" style="margin-top:0;"><wicket:message key="overview.project" /></div>
-                <div class="textCell" style="width: 34%;margin-top:0;"><wicket:message key="overview.activityName" /></div>
-                <div class="numbCell" style="width: 14%;margin-top:0"><wicket:message key="overview.hours" /></div>
-                <div class="numbCell" style="width: 14%;margin-top:0"><wicket:message key="overview.totalHours" /></div>
+                <div class="textCell header customer" wicket:id="customerLabel">Customer</div>
+                <div class="textCell header projectCode"><wicket:message key="overview.projectCode" /></div>
+                <div class="textCell header project" wicket:id="projectLabel">Project</div>
+                <div class="numbCell header bookedHours"><wicket:message key="overview.hours"/></div>
             </div>
 
 			<wicket:container wicket:id="projectStatus">
@@ -42,7 +40,7 @@
 			<div class="TotalRow">
 				<div class="foldCell">&nbsp;</div>
 				<div class="textCell customer" wicket:id="grandCustomer">&nbsp;</div>
-				<div class="textCell project">&nbsp;</div>
+                <div class="textCell projectCode" wicket:id="grandProject">&nbsp;</div>
                 <div class="textCell" style="width: 34%">&nbsp;</div>
 				<div class="numbCell bookedHours" style="width: 14%;" wicket:id="grandTotalHours"></div>
                 <div class="numbCell" style="width: 14%; margin-top:2px" wicket:id="grandTotalAllottedHours"></div>

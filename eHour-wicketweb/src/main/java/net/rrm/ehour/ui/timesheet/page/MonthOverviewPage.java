@@ -57,7 +57,6 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
     public MonthOverviewPage(PageParameters parameters) {
         super(new ResourceModel("overview.title"), null);
 
-
         StringValue param = parameters.get(PARAM_OPEN);
 
         if (param != null) {
