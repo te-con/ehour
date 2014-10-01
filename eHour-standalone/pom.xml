@@ -2,7 +2,7 @@
     <parent>
         <artifactId>ehevo</artifactId>
         <groupId>nl.tecon.ehevo</groupId>
-        <version>1.4.2-SNAPSHOT</version>
+        <version>1.0.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ehevo-standalone</artifactId>

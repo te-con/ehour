@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.tecon.ehevo</groupId>
     <artifactId>ehevo</artifactId>
-    <version>1.4.2-SNAPSHOT</version>
+    <version>1.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>eHour Evolutions</name>
     <url>http://www.ehour.nl/</url>
