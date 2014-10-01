@@ -10,16 +10,39 @@
     <wicket:container wicket:id="impersonatingNotification" />
 
     <div class="LoggedInAs">
-        <wicket:message key="nav.loggedinas" />
-        <a wicket:id="prefsLink"><span wicket:id="loggedInUser">Thies Edeling</span></a>
-        &nbsp;-&nbsp;
-        <a wicket:id="logoffLink"><wicket:message key="nav.logoff" /></a>
+        <div style="float:right">
+            <wicket:enclosure child="syncLink">
+                <span wicket:id="syncFailContainer" style="float:left;position:absolute;z-index: 100;margin: 2px 5px"/>
+
+                <a href="#" title="Sync with ProjectLink" wicket:id="syncLink">
+                    <div style="float:left;margin-right:5px;">
+                        <div class="fa fa-refresh"></div>
+                    </div>
+                </a>
+            </wicket:enclosure>
+
+            <wicket:message key="nav.loggedinas" />
+            <a wicket:id="prefsLink"><span wicket:id="loggedInUser">Thies Edeling</span></a>
+            &nbsp;-&nbsp;
+            <a wicket:id="logoffLink"><wicket:message key="nav.logoff" /></a>
+        </div>
+
+        <br clear="all" />
     </div>
 
     <wicket:fragment wicket:id="impersonating">
         <div class="impersonatingNotification">
             <i class="fa fa-exclamation-circle"></i> <wicket:message key="admin.impersonate.notification.signedinas"/> <span wicket:id="name"></span>,
             <a wicket:id="stop"><wicket:message key="admin.impersonate.notification.buttonlabel" /></a>
+        </div>
+    </wicket:fragment>
+
+    <wicket:fragment wicket:id="syncFail">
+        <div class="ui-widget">
+            <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+                <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                    Failed to synchronize with ProjectLink or Jira</p>
+            </div>
         </div>
     </wicket:fragment>
 

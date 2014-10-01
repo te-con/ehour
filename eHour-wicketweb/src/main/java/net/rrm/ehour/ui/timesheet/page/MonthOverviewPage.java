@@ -20,6 +20,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
+import net.rrm.ehour.ui.common.header.HeaderPanel;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
@@ -102,6 +103,11 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
 
         add(helpPanel);
         addOrReplaceContentContainer(contentContainer);
+    }
+
+    @Override
+    protected HeaderPanel createHeaderPanel(String id) {
+        return new HeaderPanel(id, true);
     }
 
     @Override

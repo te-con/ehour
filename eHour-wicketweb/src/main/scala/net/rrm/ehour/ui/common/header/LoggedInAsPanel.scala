@@ -56,6 +56,8 @@ class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePan
     addOrReplace(new BookmarkablePageLink("logoffLink", classOf[Logout]))
 
     addOrReplace(createImpersonatingPanel("impersonatingNotification"))
+
+    addSyncLink(showSyncLink)
   }
 
   private def createImpersonatingPanel(id: String) = {
@@ -91,9 +93,9 @@ class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePan
     fragment.setOutputMarkupId(true)
     fragment.setOutputMarkupPlaceholderTag(true)
     fragment.setVisible(false)
-    add(fragment)
+    addOrReplace(fragment)
 
-    val link: AjaxLink[Void] = new AjaxLink[Void](("syncLink")) {
+    val link: AjaxLink[Void] = new AjaxLink[Void]("syncLink") {
       def onClick(target: AjaxRequestTarget) {
         val user: User = EhourWebSession.getUser
 
@@ -168,7 +170,7 @@ class LoggedInAsPanel(id: String, showSyncLink: Boolean) extends AbstractBasePan
     }
 
     link.setVisible(visible)
-    add(link)
+    addOrReplace(link)
   }
 
 

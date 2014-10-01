@@ -46,8 +46,12 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     }
 
     private void setupPage(ResourceModel pageTitle) {
-        add(new HeaderPanel("mainNav", false));
+        add(createHeaderPanel("mainNav"));
         add(new Label("pageTitle", pageTitle));
+    }
+
+    protected HeaderPanel createHeaderPanel(String id) {
+        return new HeaderPanel(id, false);
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
