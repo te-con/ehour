@@ -17,8 +17,6 @@
 package net.rrm.ehour.domain;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -311,5 +309,4 @@ public class Customer extends DomainObject<Integer, Customer> {
         result = 31 * result + active.hashCode();
         return result;
     }
-
 }

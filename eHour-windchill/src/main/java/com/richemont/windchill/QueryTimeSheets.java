@@ -25,7 +25,7 @@ public class QueryTimeSheets {
     private CallWindchillWS callWindchillWS;
 
     @Value("${richemont.windchill.soap.endpoint}")
-    private static String endpoint;
+    private String endpoint;
 
     List<HashMap<String, Comparable>> getTimeSheets(String ehourUserName, String ehourAction, String endPoint) throws Exception {
 
