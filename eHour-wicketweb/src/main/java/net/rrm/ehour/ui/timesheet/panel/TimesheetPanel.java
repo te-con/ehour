@@ -76,6 +76,8 @@ import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
+import org.joda.time.DateTime;
+import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
@@ -795,7 +797,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         private final FormComponent<?> parent;
 
         public OnChangeFormReloadBehavior(TimesheetModel timesheetModel, FormComponent<?> parent) {
-            super("onchange");
+            super("onkeyup");
             this.timesheetModel = timesheetModel;
             this.parent = parent;
         }
@@ -813,6 +815,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             super.updateAjaxAttributes(attributes);
 
             attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
+            attributes.setThrottlingSettings(new ThrottlingSettings("id", Duration.ONE_SECOND, true));
         }
 
     }
