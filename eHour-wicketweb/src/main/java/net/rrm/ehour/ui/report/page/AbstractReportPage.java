@@ -78,9 +78,9 @@ public abstract class AbstractReportPage<T> extends AbstractBasePage<T> {
         if (getEhourWebSession().isReporter()) {
             userSelectedCriteria.setReportTypeToGlobal();
         } else if (isReportForPm()) {
-            userSelectedCriteria.setReportTypeToPM(getEhourWebSession().getUser());
+            userSelectedCriteria.setReportTypeToPM(EhourWebSession.getUser());
         } else {
-            userSelectedCriteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
+            userSelectedCriteria.setReportTypeToIndividualUser(EhourWebSession.getUser());
         }
     }
     private boolean isReportForPm() {
