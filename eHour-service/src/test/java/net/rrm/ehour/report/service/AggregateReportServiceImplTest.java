@@ -33,36 +33,46 @@ import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import scala.collection.convert.WrapAsScala$;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
+@RunWith(MockitoJUnitRunner.class)
 public class AggregateReportServiceImplTest {
     private AggregateReportServiceImpl aggregateReportService;
+    
+    @Mock
     private UserDao userDao;
+
+    @Mock
     private ProjectDao projectDao;
+    
+    @Mock
     private ReportAggregatedDao reportAggregatedDao;
+    
+    @Mock
     private ProjectAssignmentService assignmentService;
 
+    @Mock
+    private TimesheetLockService timesheetLockService;
+    
     @Before
     public void setUp() {
-        reportAggregatedDao = createMock(ReportAggregatedDao.class);
-        assignmentService = createMock(ProjectAssignmentService.class);
-        projectDao = createMock(ProjectDao.class);
-        userDao = createMock(UserDao.class);
-        TimesheetLockService timesheetLockService = createMock(TimesheetLockService.class);
-
         aggregateReportService = new AggregateReportServiceImpl(assignmentService, userDao, projectDao, timesheetLockService, reportAggregatedDao);
 
-        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
-                .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
-        replay(timesheetLockService);
+        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
+                .thenReturn(WrapAsScala$.MODULE$.asScalaBuffer(Lists.<Interval>newArrayList()));
     }
 
     @Test
@@ -70,22 +80,20 @@ public class AggregateReportServiceImplTest {
         DateRange dr = new DateRange();
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
-        List<User> l = new ArrayList<User>();
-        l.add(new User(1));
-        uc.setUsers(l);
-        List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
+
+        List<User> users = Lists.newArrayList(UserObjectMother.createUser());
+        uc.setUsers(users);
         ReportCriteria rc = new ReportCriteria(uc);
 
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
+        List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
 
-        expect(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
-                .andReturn(pags);
-        replay(reportAggregatedDao);
-        aggregateReportService.getAggregateReportData(rc);
-        verify(reportAggregatedDao);
+        when(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(eq(users), any(DateRange.class))).thenReturn(pags);
+
+        ReportData data = aggregateReportService.getAggregateReportData(rc);
+
+        assertEquals(3, data.getReportElements().size());
     }
+
 
     @Test
     public void should_create_global_report() {
@@ -93,23 +101,18 @@ public class AggregateReportServiceImplTest {
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         ReportCriteria rc = new ReportCriteria(uc);
-        List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
+        List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
 
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
+        when(reportAggregatedDao.getCumulatedHoursPerAssignment(any(DateRange.class))).thenReturn(pags);
 
-        expect(reportAggregatedDao.getCumulatedHoursPerAssignment(isA(DateRange.class))).andReturn(pags);
-        replay(reportAggregatedDao);
-        aggregateReportService.getAggregateReportData(rc);
-        verify(reportAggregatedDao);
+        ReportData data = aggregateReportService.getAggregateReportData(rc);
+
+        assertEquals(3, data.getReportElements().size());
     }
 
     @Test
     public void should_create_report_for_department() {
-        List<User> users = new ArrayList<User>();
-        User user = new User(1);
-        users.add(user);
+        List<User> users = Lists.newArrayList(UserObjectMother.createUser());
 
         DateRange dr = new DateRange();
         UserSelectedCriteria uc = new UserSelectedCriteria();
@@ -120,61 +123,52 @@ public class AggregateReportServiceImplTest {
         uc.setDepartments(l);
         uc.setOnlyActiveUsers(true);
         ReportCriteria rc = new ReportCriteria(uc);
-        List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
+        List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
 
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
-        pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
+        when(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(eq(users), any(DateRange.class))).thenReturn(pags);
+        when(userDao.findUsersForDepartments(l, true)).thenReturn(users);
 
-        expect(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class)))
-                .andReturn(pags);
+        ReportData data = aggregateReportService.getAggregateReportData(rc);
 
-        expect(userDao.findUsersForDepartments(l, true)).andReturn(users);
-
-        replay(reportAggregatedDao);
-        replay(userDao);
-        aggregateReportService.getAggregateReportData(rc);
-        verify(reportAggregatedDao);
-        verify(userDao);
+        assertEquals(3, data.getReportElements().size());
     }
 
     @Test
     public void should_create_report_for_specific_project() {
-        Customer cust = new Customer(1);
-        List<Customer> customers = new ArrayList<Customer>();
-        customers.add(cust);
-
-        List<Project> prjs = new ArrayList<Project>();
-        Project prj = new Project(1);
-        prjs.add(prj);
+        List<Customer> customers = Lists.newArrayList(CustomerObjectMother.createCustomer(1));
+        List<Project> projects = Lists.newArrayList(ProjectObjectMother.createProject(1));
 
         DateRange dr = new DateRange();
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         uc.setCustomers(customers);
+
         ReportCriteria rc = new ReportCriteria(uc);
+        List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
+
+        when(reportAggregatedDao.getCumulatedHoursPerAssignmentForProjects(eq(projects), any(DateRange.class))).thenReturn(pags);
+        when(projectDao.findProjectForCustomers(customers, true)).thenReturn(projects);
+
+        ReportData data = aggregateReportService.getAggregateReportData(rc);
+
+        assertEquals(3, data.getReportElements().size());
+    }
+
+    private List<AssignmentAggregateReportElement> createAssignmentAggregateReportElements() {
         List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
 
         pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
         pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
         pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
-
-        expect(reportAggregatedDao.getCumulatedHoursPerAssignmentForProjects(isA(List.class), isA(DateRange.class)))
-                .andReturn(pags);
-        expect(projectDao.findProjectForCustomers(customers, true)).andReturn(prjs);
-
-        replay(reportAggregatedDao);
-        replay(projectDao);
-
-        aggregateReportService.getAggregateReportData(rc);
-        verify(reportAggregatedDao);
-        verify(projectDao);
+        return pags;
     }
 
     @Test
     public void should_create_pm_detailed_report() {
         Project project = new Project(1);
         project.setProjectCode("PRJ");
+        DateRange dr = new DateRange(new Date(), new Date());
+        when(reportAggregatedDao.getMinMaxDateTimesheetEntry(project)).thenReturn(dr);
 
         List<AssignmentAggregateReportElement> elms = new ArrayList<AssignmentAggregateReportElement>();
 
@@ -184,24 +178,16 @@ public class AggregateReportServiceImplTest {
             }
         }
 
-        expect(reportAggregatedDao.getCumulatedHoursPerAssignmentForProjects(isA(List.class), isA(DateRange.class)))
-                .andReturn(elms);
+        when(reportAggregatedDao.getCumulatedHoursPerAssignmentForProjects(any(List.class), any(DateRange.class)))
+                .thenReturn(elms);
 
-        DateRange dr = new DateRange(new Date(), new Date());
-        expect(reportAggregatedDao.getMinMaxDateTimesheetEntry(project)).andReturn(dr);
 
         List<ProjectAssignment> assignments = new ArrayList<ProjectAssignment>();
-
         assignments.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
 
-        expect(assignmentService.getProjectAssignments(project, dr)).andReturn(assignments);
-
-        replay(reportAggregatedDao);
-        replay(assignmentService);
+        when(assignmentService.getProjectAssignments(project, dr)).thenReturn(assignments);
 
         ProjectManagerReport report = aggregateReportService.getProjectManagerDetailedReport(project);
-        verify(reportAggregatedDao);
-        verify(assignmentService);
 
         assertEquals(new Integer(1), report.getProject().getPK());
         assertEquals(16, report.getAggregates().size());
@@ -214,7 +200,7 @@ public class AggregateReportServiceImplTest {
         User projectManager = new User(2);
         criteria.setReportTypeToPM(projectManager);
         Project pmProject = ProjectObjectMother.createProject(1);
-        expect(projectDao.findActiveProjectsWhereUserIsPM(projectManager)).andReturn(Lists.newArrayList(pmProject));
+        when(projectDao.findActiveProjectsWhereUserIsPM(projectManager)).thenReturn(Lists.newArrayList(pmProject));
 
         User user = new User(1);
 
@@ -225,7 +211,7 @@ public class AggregateReportServiceImplTest {
         List<User> users = Lists.newArrayList(user);
         List<UserDepartment> departments = Lists.newArrayList(new UserDepartment(2));
 
-        expect(userDao.findUsersForDepartments(departments, true)).andReturn(users);
+        when(userDao.findUsersForDepartments(departments, true)).thenReturn(users);
         criteria.setDepartments(departments);
 
         DateRange dateRange = new DateRange();
@@ -242,16 +228,11 @@ public class AggregateReportServiceImplTest {
         elements.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
         elements.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
 
-        expect(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(isA(List.class), isA(DateRange.class))).andReturn(elements);
-
-        replay(reportAggregatedDao, userDao, projectDao);
+        when(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(any(List.class), any(DateRange.class))).thenReturn(elements);
 
         ReportData reportData = aggregateReportService.getAggregateReportData(reportCriteria);
-        assertEquals(1, reportData.getReportElements().size());
 
-        verify(reportAggregatedDao);
-        verify(userDao);
-        verify(projectDao);
+        assertEquals(1, reportData.getReportElements().size());
     }
 }
 

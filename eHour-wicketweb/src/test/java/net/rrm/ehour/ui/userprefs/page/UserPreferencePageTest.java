@@ -22,53 +22,30 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.MockExpectations;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UserPreferencePageTest extends BaseSpringWebAppTester
 {
-	@Test
+    @Mock
+    IOverviewTimesheet overviewTimesheet;
+
+    @Test
 	public void shouldRenderPreferencePage() throws ObjectNotFoundException
 	{
-		IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
 		getMockContext().putBean(overviewTimesheet);
 
-		MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
+		MockExpectations.navCalendarMockito(overviewTimesheet, getWebApp());
 
 		UserService userService = createMock(UserService.class);
 		getMockContext().putBean("userService", userService);
 
-		replay(userService);
-		replay(overviewTimesheet);
-
 		tester.startPage(UserPreferencePage.class);
 		tester.assertRenderedPage(UserPreferencePage.class);
 		tester.assertNoErrorMessage();
-
-		verify(userService);
-		verify(overviewTimesheet);
 	}
-
-    @Test
-    public void shouldChangePasswordForUserWithPm12() throws ObjectNotFoundException
-    {
-        IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
-        getMockContext().putBean(overviewTimesheet);
-
-        MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
-
-        UserService userService = createMock(UserService.class);
-        getMockContext().putBean("userService", userService);
-
-        replay(userService);
-        replay(overviewTimesheet);
-
-        tester.startPage(UserPreferencePage.class);
-        tester.assertRenderedPage(UserPreferencePage.class);
-        tester.assertNoErrorMessage();
-
-        verify(userService);
-        verify(overviewTimesheet);
-    }
-
 }

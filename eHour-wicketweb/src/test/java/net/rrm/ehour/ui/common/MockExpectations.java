@@ -35,17 +35,17 @@ import static org.mockito.Mockito.when;
 
 public abstract class MockExpectations {
 
-    public static void navCalendarEasyMock(IOverviewTimesheet IOverviewTimesheet, TestEhourWebApplication webApp) {
+    public static void navCalendarEasyMock(IOverviewTimesheet iOverviewTimesheet, TestEhourWebApplication webApp) {
         LocalDate bookedDay = getDate(webApp);
 
-        expect(IOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
+        expect(iOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
                 .andReturn(Arrays.asList(bookedDay));
     }
 
-    public static void navCalendarMockito(IOverviewTimesheet IOverviewTimesheet, TestEhourWebApplication webApp) {
+    public static void navCalendarMockito(IOverviewTimesheet iOverviewTimesheet, TestEhourWebApplication webApp) {
         LocalDate bookedDay = getDate(webApp);
 
-        when(IOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
+        when(iOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
                 .thenReturn(Arrays.asList(bookedDay));
     }
 
