@@ -28,50 +28,50 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class ProjectAssignmentServiceImplTest {
+    @Mock
     private ProjectAssignmentServiceImpl projectAssignmentService;
+
+    @Mock
     private ProjectAssignmentDao projectAssignmentDAO;
+
+    @Mock
     private ReportAggregatedDao reportAggregatedDAO;
+
+    @Mock
     private ProjectAssignmentStatusService statusService;
 
     @Before
     public void setUp() {
-        projectAssignmentDAO = createMock(ProjectAssignmentDao.class);
-        reportAggregatedDAO = createMock(ReportAggregatedDao.class);
-        statusService = createMock(ProjectAssignmentStatusService.class);
-
         projectAssignmentService = new ProjectAssignmentServiceImpl(projectAssignmentDAO, statusService, reportAggregatedDAO);
     }
 
     @Test
     public void should_find_project_assignment() throws ObjectNotFoundException {
-        ProjectAssignment pa = new ProjectAssignment();
+        ProjectAssignment pa = ProjectAssignmentObjectMother.createProjectAssignment(1);
 
-        expect(projectAssignmentDAO.findById(1)).andReturn(pa);
+        when(projectAssignmentDAO.findById(1)).thenReturn(pa);
 
         List<Integer> ids = Lists.newArrayList();
         ids.add(1);
 
-        expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids))
-                .andReturn(new ArrayList<AssignmentAggregateReportElement>());
+        when(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(ids)).thenReturn(new ArrayList<AssignmentAggregateReportElement>());
 
-        replay(projectAssignmentDAO);
-        replay(reportAggregatedDAO);
+        ProjectAssignment assignment = projectAssignmentService.getProjectAssignment(1);
 
-        projectAssignmentService.getProjectAssignment(1);
-
-        verify(projectAssignmentDAO);
-        verify(reportAggregatedDAO);
+        assertEquals(pa, assignment);
     }
 
     @Test
@@ -81,20 +81,15 @@ public class ProjectAssignmentServiceImplTest {
         ProjectAssignment deleteableAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         ProjectAssignment nondeleteableAssignment = ProjectAssignmentObjectMother.createProjectAssignment(2);
 
-        expect(projectAssignmentDAO.findAllProjectAssignmentsForProject(project)).andReturn(Arrays.asList(deleteableAssignment, nondeleteableAssignment));
+        when(projectAssignmentDAO.findAllProjectAssignmentsForProject(project)).thenReturn(Arrays.asList(deleteableAssignment, nondeleteableAssignment));
 
-        expect(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(Lists.newArrayList(deleteableAssignment.getPK(), nondeleteableAssignment.getPK())))
-                .andReturn(Lists.newArrayList(new AssignmentAggregateReportElement(nondeleteableAssignment, 5)));
-
-        replay(projectAssignmentDAO);
-        replay(reportAggregatedDAO);
+        when(reportAggregatedDAO.getCumulatedHoursPerAssignmentForAssignments(Lists.newArrayList(deleteableAssignment.getPK(), nondeleteableAssignment.getPK())))
+                .thenReturn(Lists.newArrayList(new AssignmentAggregateReportElement(nondeleteableAssignment, 5)));
 
         List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignmentsAndCheckDeletability(project);
+
         assertTrue(assignments.get(0).isDeletable());
         assertFalse(assignments.get(1).isDeletable());
-
-        verify(projectAssignmentDAO);
-        verify(reportAggregatedDAO);
     }
 
 }

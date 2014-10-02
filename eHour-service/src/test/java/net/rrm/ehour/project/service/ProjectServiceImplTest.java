@@ -16,104 +16,97 @@
 
 package net.rrm.ehour.project.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
+import net.rrm.ehour.domain.ProjectObjectMother;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProjectServiceImplTest {
     private ProjectServiceImpl projectService;
+    
+    @Mock
     private ProjectDao projectDao;
+
+    @Mock
     private UserService userService;
+
+    @Mock
     private AggregateReportService aggregateReportService;
+
+    @Mock
     private ProjectAssignmentManagementService projectAssignmentManagementService;
 
     @Before
     public void setUp() {
-        projectDao = createMock(ProjectDao.class);
-        userService = createMock(UserService.class);
-        aggregateReportService = createMock(AggregateReportService.class);
-        projectAssignmentManagementService = createMock(ProjectAssignmentManagementService.class);
-
         projectService = new ProjectServiceImpl(projectDao, projectAssignmentManagementService, aggregateReportService, userService);
     }
 
     @Test
     public void should_get_all_active_projects() {
-        expect(projectDao.findAllActive()).andReturn(new ArrayList<Project>());
+        when(projectDao.findAllActive()).thenReturn(Lists.newArrayList(ProjectObjectMother.createProject(1)));
 
-        replay(projectDao);
+        List<Project> activeProjects = projectService.getActiveProjects();
 
-        projectService.getActiveProjects();
-
-        verify(projectDao);
+        assertEquals(1, activeProjects.size());
     }
 
     @Test
     public void should_get_all_projects() {
-        expect(projectDao.findAll()).andReturn(new ArrayList<Project>());
+        when(projectDao.findAll()).thenReturn(Lists.newArrayList(ProjectObjectMother.createProject(1)));
 
-        replay(projectDao);
+        List<Project> projects = projectService.getProjects();
 
-        projectService.getProjects();
-
-        verify(projectDao);
+        assertEquals(1, projects.size());
     }
+
 
     @Test
     public void should_get_project_on_id() throws ObjectNotFoundException {
-        expect(projectDao.findById(1)).andReturn(new Project());
+        Project project = ProjectObjectMother.createProject(1);
+        when(projectDao.findById(1)).thenReturn(project);
 
-        replay(projectDao);
-
-        projectService.getProject(1);
-
-        verify(projectDao);
+        assertEquals(project, projectService.getProject(1));
     }
 
     @Test
-    public void should_create_project() {
-        Project project = new Project(1);
-
-        expect(projectDao.persist(project)).andReturn(project);
-        expect(userService.validateProjectManagementRoles(null)).andReturn(null);
-
-        replay(userService, projectDao);
-
-        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-        assignment.setProject(null);
+    public void should_create_or_update_project() {
+        Project project = ProjectObjectMother.createProject(1);
+        User pm = UserObjectMother.createUser();
+        project.setProjectManager(pm);
 
         projectService.createProject(project);
 
-        verify(userService);
-        verify(projectDao);
+        verify(projectDao).persist(project);
+        verify(userService).validateProjectManagementRoles(pm.getPK());
     }
 
     @Test
-    public void should_update_project() {
-        Project project = new Project(1);
-
-        expect(projectDao.persist(project)).andReturn(project);
-        expect(userService.validateProjectManagementRoles(null)).andReturn(null);
-
-        replay(userService, projectDao);
-
-        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-        assignment.setProject(project);
+    public void should_create_project_and_assign_to_default_project() {
+        Project project = ProjectObjectMother.createProject(1);
+        User pm = UserObjectMother.createUser();
+        project.setProjectManager(pm);
+        project.setDefaultProject(true);
 
         projectService.createProject(project);
 
-        verify(userService);
-        verify(projectDao);
+        verify(projectDao).persist(project);
+        verify(projectAssignmentManagementService).assignAllUsersToProject(project);
     }
-
 }
