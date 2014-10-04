@@ -16,7 +16,6 @@
             classpath:context-security-ldap.xml
             classpath:context-cache.xml
             classpath:context-wicket.xml
-
             classpath:context-windchill.xml
             classpath:context-jira.xml
         </param-value>

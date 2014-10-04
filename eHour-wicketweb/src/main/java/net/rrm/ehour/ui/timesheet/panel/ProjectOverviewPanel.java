@@ -154,7 +154,8 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
                 Component projectSummaryRow = createProjectSummaryRow(ID_SUMMARY_ROW, projectStatus);
                 item.add(projectSummaryRow);
 
-                item.add(createFoldLink(projectSummaryRow));
+                AjaxLink foldLink = createFoldLink(projectSummaryRow);
+                item.add(foldLink);
             }
         };
 
@@ -169,7 +170,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
      * Create fold link (also contains the creation of the summary row)
      */
     @SuppressWarnings("serial")
-    private Component createFoldLink(final Component original) {
+    private AjaxLink createFoldLink(final Component original) {
         AjaxLink<String> foldLink = new AjaxLink<String>(ID_FOLD_LINK) {
             @Override
             public void onClick(AjaxRequestTarget target) {

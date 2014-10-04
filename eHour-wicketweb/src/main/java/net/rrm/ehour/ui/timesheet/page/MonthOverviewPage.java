@@ -85,18 +85,15 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
 
         WebMarkupContainer contentContainer;
 
-        if (panelToOpen == OpenPanel.OVERVIEW)
-        {
+        if (panelToOpen == OpenPanel.OVERVIEW) {
             helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
-            
+
             if (user != null) {
                 contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER, user);
             } else {
-                contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);    
+                contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);
             }
-            contentContainer.setEnabled(false);
-        } else
-        {
+        } else {
             helpPanel = getTimesheetHelpPanel();
             contentContainer = getTimesheetPanel();
         }
