@@ -74,7 +74,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
 
     private void init(OpenPanel panelToOpen) {
         // add calendar panel
-        calendarPanel = new CalendarPanel("sidePanel", getEhourWebSession().getUser());
+        calendarPanel = new CalendarPanel("sidePanel", EhourWebSession.getUser());
         add(calendarPanel);
 
         WebMarkupContainer contentContainer;
