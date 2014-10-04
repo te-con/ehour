@@ -26,7 +26,8 @@ import org.apache.wicket.spring.test.ApplicationContextMock;
 
 import java.util.Calendar;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created on Mar 17, 2009, 5:31:37 AM
@@ -36,6 +37,7 @@ import static org.easymock.EasyMock.*;
 public abstract class AbstractSpringTester {
     private ApplicationContextMock mockContext;
     private EhourConfigStub config;
+
     private AuditService auditService;
     private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
 
@@ -48,18 +50,17 @@ public abstract class AbstractSpringTester {
         config.setFirstDayOfWeek(Calendar.SUNDAY);
         mockContext.putBean("EhourConfig", config);
 
-        auditService = createMock(AuditService.class);
+        auditService = mock(AuditService.class);
         mockContext.putBean("auditService", auditService);
 
         mockContext.putBean("authUtil", buildAuthUtil());
 
-        UpdateService updateService = createMock(UpdateService.class);
+        UpdateService updateService = mock(UpdateService.class);
         mockContext.putBean(updateService);
 
         mockContext.putBean("menuDefinition", Lists.newArrayList());
 
-        expect(updateService.isLatestVersion()).andReturn(Boolean.TRUE).atLeastOnce();
-        replay(updateService);
+        when(updateService.isLatestVersion()).thenReturn(Boolean.TRUE);
     }
 
     public final ApplicationContextMock getMockContext() {
