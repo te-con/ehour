@@ -77,6 +77,14 @@ public class Audit extends DomainObject<Number, Audit> {
                 .toString();
     }
 
+    public Audit() {
+    }
+
+    public Audit(User user, Date date) {
+        this.user = user;
+        this.date = date;
+    }
+
     /**
      * @return the page
      */

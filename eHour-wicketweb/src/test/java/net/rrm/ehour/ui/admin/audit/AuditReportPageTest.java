@@ -16,55 +16,39 @@
 
 package net.rrm.ehour.ui.admin.audit;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.AuditReportRequest;
 import net.rrm.ehour.domain.Audit;
+import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Date;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class AuditReportPageTest extends BaseSpringWebAppTester
 {
 	@Before
-	public void before() throws Exception
-	{
-		expect(getAuditService().getAuditCount(isA(AuditReportRequest.class)))
-			.andReturn(5)
-			.anyTimes();
+	public void before() throws Exception {
+        when(getAuditService().getAuditCount(any(AuditReportRequest.class))).thenReturn(5);
 
-		expect(getAuditService().findAudits(isA(AuditReportRequest.class), isA(Integer.class), isA(Integer.class)))
-			.andReturn(new ArrayList<Audit>())
-			.anyTimes();
-	}
-	
-	@After
-	public void tearDown()
-	{
-		verify(getAuditService());
-	}
-	
-	private void startPage()
-	{
-		tester.startPage(AuditReportPage.class);
-		tester.assertRenderedPage(AuditReportPage.class);
-	}
-	
-	@Test
+        Audit audit = new Audit(UserObjectMother.createUser(), new Date());
+        when(getAuditService().findAudits(any(AuditReportRequest.class), any(Integer.class), any(Integer.class))).thenReturn(Lists.newArrayList(audit));
+    }
+
+    @Test
 	public void shouldSubmit()
 	{
-		replay(getAuditService());
-		startPage();
+        tester.startPage(AuditReportPage.class);
 
         tester.executeAjaxEvent("frame:frame_body:reportCriteria:border:border_body:criteriaForm:submitButton", "onclick");
 		
 		tester.assertRenderedPage(AuditReportPage.class);
 		
 		tester.assertNoErrorMessage();
+        tester.assertNoInfoMessage();
 	}
-	
-	
 }
