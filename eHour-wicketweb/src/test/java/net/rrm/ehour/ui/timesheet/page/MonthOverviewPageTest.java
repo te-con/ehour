@@ -51,7 +51,7 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester
 	{
 		getMockContext().putBean(overviewTimesheet);
 
-		MockExpectations.navCalendarMockito(overviewTimesheet, getWebApp());
+		MockExpectations.navCalendar(overviewTimesheet, getWebApp());
 
 		TimesheetOverview overview = new TimesheetOverview();
         AssignmentAggregateReportElement aggregate = AssignmentAggregateReportElementMother.createProjectAssignmentAggregate();

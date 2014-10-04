@@ -30,54 +30,53 @@ import org.apache.wicket.util.tester.FormTester;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
-
-/**
- * Created on Feb 3, 2009, 11:10:24 PM
- * @author Thies Edeling (thies@te-con.nl)
- *
- */
+@RunWith(MockitoJUnitRunner.class)
 public class TimesheetExportPageTest extends BaseSpringWebAppTester
 {
+    @Mock
 	private IOverviewTimesheet overviewTimesheet;
+    @Mock
 	private ReportCriteriaService reportCriteriaService;
+    @Mock
 	private DetailedReportService detailedReportService;
+
 	private ReportCriteria reportCriteria;
+    @Mock
     private ConfigurationService configurationService;
 
 	@Before
 	public void before() throws Exception {
-        configurationService = createMock(ConfigurationService.class);
         getMockContext().putBean("configurationService", configurationService);
-
-        overviewTimesheet = createMock(IOverviewTimesheet.class);
         getMockContext().putBean(overviewTimesheet);
-
-        reportCriteriaService = createMock(ReportCriteriaService.class);
         getMockContext().putBean("reportCriteriaService", reportCriteriaService);
-
-        detailedReportService = createMock(DetailedReportService.class);
         getMockContext().putBean("detailedReportService", detailedReportService);
 
         reportCriteria = createReportCriteria();
 
-        expect(overviewTimesheet.getBookedDaysMonthOverview(isA(Integer.class), isA(Calendar.class))).andReturn(new ArrayList<LocalDate>());
+        when(overviewTimesheet.getBookedDaysMonthOverview(any(Integer.class), any(Calendar.class))).thenReturn(new ArrayList<LocalDate>());
 
-        expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
-                .andReturn(reportCriteria);
+        when(reportCriteriaService.syncUserReportCriteria(any(ReportCriteria.class), any(ReportCriteriaUpdateType.class)))
+                .thenReturn(reportCriteria);
 
-        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
-        replay(overviewTimesheet, reportCriteriaService, detailedReportService);
+        when(detailedReportService.getDetailedReportData(any(ReportCriteria.class)))
+                .thenReturn(DetailedReportDataObjectMother.getFlatReportData());
 
         tester.startPage(TimesheetExportPage.class);
+
+        tester.assertNoErrorMessage();
+        tester.assertNoInfoMessage();
     }
 
     @Test
@@ -101,16 +100,6 @@ public class TimesheetExportPageTest extends BaseSpringWebAppTester
 		{
 			fail("id should be 0 or 2");
 		}
-		verifyMocks();
-	}
-
-	// don't put these in the teardown (@After) as failed expectations will hide any earlier thrown exceptions
-	public void verifyMocks()
-	{
-		verify(overviewTimesheet);
-		verify(reportCriteriaService);
-		verify(detailedReportService);
-
 	}
 
 	private ReportCriteria createReportCriteria()

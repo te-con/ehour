@@ -25,8 +25,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.notNull;
+import static org.mockito.Matchers.isNotNull;
 import static org.mockito.Mockito.when;
 
 /**
@@ -35,18 +34,10 @@ import static org.mockito.Mockito.when;
 
 public abstract class MockExpectations {
 
-    public static void navCalendarEasyMock(IOverviewTimesheet iOverviewTimesheet, TestEhourWebApplication webApp) {
+    public static void navCalendar(IOverviewTimesheet iOverviewTimesheet, TestEhourWebApplication webApp) {
         LocalDate bookedDay = getDate(webApp);
 
-        expect(iOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
-                .andReturn(Arrays.asList(bookedDay));
-    }
-
-    public static void navCalendarMockito(IOverviewTimesheet iOverviewTimesheet, TestEhourWebApplication webApp) {
-        LocalDate bookedDay = getDate(webApp);
-
-        when(iOverviewTimesheet.getBookedDaysMonthOverview((Integer) notNull(), (Calendar) notNull()))
-                .thenReturn(Arrays.asList(bookedDay));
+        when(iOverviewTimesheet.getBookedDaysMonthOverview(isNotNull(Integer.class), isNotNull(Calendar.class))).thenReturn(Arrays.asList(bookedDay));
     }
 
     @SuppressWarnings("deprecation")

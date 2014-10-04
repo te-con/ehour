@@ -26,26 +26,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.easymock.EasyMock.createMock;
-
 @RunWith(MockitoJUnitRunner.class)
-public class UserPreferencePageTest extends BaseSpringWebAppTester
-{
+public class UserPreferencePageTest extends BaseSpringWebAppTester {
     @Mock
     IOverviewTimesheet overviewTimesheet;
 
+    @Mock
+    UserService userService;
+
     @Test
-	public void shouldRenderPreferencePage() throws ObjectNotFoundException
-	{
-		getMockContext().putBean(overviewTimesheet);
+    public void shouldRenderPreferencePage() throws ObjectNotFoundException {
+        getMockContext().putBean(overviewTimesheet);
+        getMockContext().putBean(userService);
+        MockExpectations.navCalendar(overviewTimesheet, getWebApp());
 
-		MockExpectations.navCalendarMockito(overviewTimesheet, getWebApp());
-
-		UserService userService = createMock(UserService.class);
-		getMockContext().putBean("userService", userService);
-
-		tester.startPage(UserPreferencePage.class);
-		tester.assertRenderedPage(UserPreferencePage.class);
-		tester.assertNoErrorMessage();
-	}
+        tester.startPage(UserPreferencePage.class);
+        tester.assertRenderedPage(UserPreferencePage.class);
+        tester.assertNoErrorMessage();
+    }
 }

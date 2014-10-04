@@ -28,7 +28,6 @@ import java.util.Calendar;
 
 import static org.easymock.EasyMock.*;
 
-
 /**
  * Created on Mar 17, 2009, 5:31:37 AM
  *

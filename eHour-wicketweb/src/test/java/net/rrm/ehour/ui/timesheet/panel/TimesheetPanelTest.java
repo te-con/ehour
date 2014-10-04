@@ -32,23 +32,32 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.tester.FormTester;
 import org.joda.time.LocalDate;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
     private static final String DAY1_PATH = "blueFrame:blueFrame_body:customers:0:rows:0:day1";
     private static final String DAY1_FULL_PATH = TIMESHEET_PATH + ":" + DAY1_PATH;
     private static final User USER = new User(1);
 
+    @Mock
     private IPersistTimesheet persistTimesheet;
+
+    @Mock
     private IOverviewTimesheet overviewTimesheet;
+
+    @Mock
     private UserService userService;
 
     @Before
@@ -56,13 +65,8 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         getConfig().setCompleteDayHours(8l);
         EhourWebSession.getSession().reloadConfig();
 
-        persistTimesheet = createMock(IPersistTimesheet.class);
         getMockContext().putBean(persistTimesheet);
-
-        overviewTimesheet = createMock(IOverviewTimesheet.class);
         getMockContext().putBean(overviewTimesheet);
-
-        userService = createMock(UserService.class);
         getMockContext().putBean("userService", userService);
     }
 
@@ -207,8 +211,8 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     @SuppressWarnings("unchecked")
     @Test
     public void shouldSubmitSuccessful() {
-        expect(persistTimesheet.persistTimesheetWeek(isA(Collection.class), isA(TimesheetComment.class), isA(DateRange.class)))
-                .andReturn(new ArrayList<ProjectAssignmentStatus>());
+        when(persistTimesheet.persistTimesheetWeek(any(Collection.class), any(TimesheetComment.class), any(DateRange.class)))
+                .thenReturn(new ArrayList<ProjectAssignmentStatus>());
 
         startAndReplayWithDefaultWeekOverview();
 
@@ -221,7 +225,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     public void shouldDisableInputForLockedDays() {
         Date lockedDay = new LocalDate().plusDays(1).toDate();
 
-        startAndReplayWithLockedDays(Arrays.asList(lockedDay));
+        startWithLockedDays(Arrays.asList(lockedDay));
 
         tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:day", Label.class);
         tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day3:day", TimesheetTextField.class);
@@ -230,7 +234,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    public void shouldDisableCommentInputForLockedDaysWithExistingComment() {
+    public void shouldDanybleCommentInputForLockedDaysWithExistingComment() {
         // given
         Date lockedDay = new LocalDate().plusDays(1).toDate();
         List<Date> lockedDates = Arrays.asList(lockedDay);
@@ -248,11 +252,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         WeekOverview overview = new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
 
-        expectDefaultWeekOverview(overview);
-
-        replay(overviewTimesheet);
-        replay(userService);
-        replay(persistTimesheet);
+        whenDefaultWeekOverview(overview);
 
         // when
         tester.startComponentInPage(new TimesheetPanel("panel", USER, new GregorianCalendar()));
@@ -263,14 +263,14 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:dayWin:content:comment", Label.class);
 
         tester.assertNoErrorMessage();
-        verify(overviewTimesheet, userService, persistTimesheet);
+        tester.assertNoInfoMessage();
     }
 
     @Test
     public void shouldHideCommentInputLinkForLockedDaysWithoutComment() {
         Date lockedDay = new LocalDate().plusDays(1).toDate();
 
-        startAndReplayWithLockedDays(Arrays.asList(lockedDay));
+        startWithLockedDays(Arrays.asList(lockedDay));
 
         Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:commentLink");
         assertNull(commentLink); // null = not visible...
@@ -282,7 +282,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     public void shouldAddLockedIconInDayForLockedDay() {
         Date lockedDay = new LocalDate().plusDays(1).toDate();
 
-        startAndReplayWithLockedDays(Arrays.asList(lockedDay));
+        startWithLockedDays(Arrays.asList(lockedDay));
 
         String path = TIMESHEET_PATH + ":blueFrame:blueFrame_body:day2Label:lock:lockedContainer";
         tester.assertVisible(path);
@@ -291,7 +291,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    public void shouldHideBookWholeWeekIconWhenDisabledInConfig() {
+    public void shouldHideBookWholeWeekIconWhenDanybledInConfig() {
         webApp.setEnableBookWholeWeek(false);
 
         startAndReplayWithDefaultWeekOverview();
@@ -301,31 +301,18 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         assertNull(book);
     }
 
-
-    @After
-    public void verifyMocks() {
-        verify(overviewTimesheet);
-        verify(userService);
-        verify(persistTimesheet);
-
-    }
-
     private void startAndReplayWithDefaultWeekOverview() {
-        startAndReplayWithLockedDays(Lists.<Date>newArrayList());
+        startWithLockedDays(Lists.<Date>newArrayList());
     }
 
-    private void startAndReplayWithLockedDays(List<Date> lockedDays) {
-        expectDefaultWeekOverview(withDefaultWeekOverview(lockedDays));
-
-        replay(overviewTimesheet);
-        replay(userService);
-        replay(persistTimesheet);
+    private void startWithLockedDays(List<Date> lockedDays) {
+        whenDefaultWeekOverview(withDefaultWeekOverview(lockedDays));
 
         tester.startComponentInPage(new TimesheetPanel("panel", USER, new GregorianCalendar()));
     }
 
-    private void expectDefaultWeekOverview(WeekOverview overview) {
-        expect(overviewTimesheet.getWeekOverview(isA(User.class), isA(Calendar.class))).andReturn(overview);
+    private void whenDefaultWeekOverview(WeekOverview overview) {
+        when(overviewTimesheet.getWeekOverview(any(User.class), any(Calendar.class))).thenReturn(overview);
     }
 
     private WeekOverview withDefaultWeekOverview(List<Date> lockedDates) {
