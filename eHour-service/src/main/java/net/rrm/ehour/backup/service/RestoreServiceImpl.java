@@ -20,23 +20,27 @@ import javax.xml.stream.XMLEventReader;
 public class RestoreServiceImpl implements RestoreService {
     private static final Logger LOG = Logger.getLogger(RestoreServiceImpl.class);
 
-    @Autowired
     private ConfigurationDao configurationDao;
 
-    @Autowired
     private ConfigurationParserDao configurationParserDao;
 
-    @Autowired
     private DomainObjectParserDao domainObjectParserDao;
 
-    @Autowired
     private UserRoleParserDao userRoleParserDao;
 
-    @Autowired
     private DatabaseTruncater databaseTruncater;
 
-    @Autowired
     private EhourConfig ehourConfig;
+
+    @Autowired
+    public RestoreServiceImpl(ConfigurationDao configurationDao, ConfigurationParserDao configurationParserDao, DomainObjectParserDao domainObjectParserDao, UserRoleParserDao userRoleParserDao, DatabaseTruncater databaseTruncater, EhourConfig ehourConfig) {
+        this.configurationDao = configurationDao;
+        this.configurationParserDao = configurationParserDao;
+        this.domainObjectParserDao = domainObjectParserDao;
+        this.userRoleParserDao = userRoleParserDao;
+        this.databaseTruncater = databaseTruncater;
+        this.ehourConfig = ehourConfig;
+    }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)

@@ -27,6 +27,14 @@ public class EhourSystemConfig {
     @Value("${ehour.disableAuth:false}")
     private boolean disableAuth = false;
 
+    public EhourSystemConfig() {
+    }
+
+    public EhourSystemConfig(String eHourHome, String translationsDir) {
+        this.eHourHome = eHourHome;
+        this.translationsDir = translationsDir;
+    }
+
     public boolean isDisableAuth() {
         return disableAuth;
     }

@@ -2,6 +2,7 @@ package net.rrm.ehour.persistence.backup.dao;
 
 import net.rrm.ehour.domain.*;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +27,7 @@ public enum BackupEntityType
     USER_TO_USERROLE(10);
 
     private String parentName;
-    private Class<? extends DomainObject<?, ?>> domainObjectClass;
+    private Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass;
     private int order;
     private BackupRowProcessor processor;
 
@@ -35,21 +36,21 @@ public enum BackupEntityType
         this(null, order);
     }
 
-    private BackupEntityType(Class<? extends DomainObject<?, ?>> domainObjectClass, int order)
+    private BackupEntityType(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, int order)
     {
         this.domainObjectClass = domainObjectClass;
         this.parentName = name() + "S";
         this.order = order;
     }
 
-    private BackupEntityType(Class<? extends DomainObject<?, ?>> domainObjectClass, String parentName, int order)
+    private BackupEntityType(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, String parentName, int order)
     {
         this.domainObjectClass = domainObjectClass;
         this.parentName = parentName;
         this.order = order;
     }
 
-    private BackupEntityType(Class<? extends DomainObject<?, ?>> domainObjectClass, String parentName, int order, BackupRowProcessor processor)
+    private BackupEntityType(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, String parentName, int order, BackupRowProcessor processor)
     {
         this(domainObjectClass, parentName, order);
         this.processor = processor;
@@ -65,7 +66,7 @@ public enum BackupEntityType
         return parentName;
     }
 
-    public Class<? extends DomainObject<?, ?>> getDomainObjectClass()
+    public Class<? extends DomainObject<? extends Serializable, ?>> getDomainObjectClass()
     {
         return domainObjectClass;
     }

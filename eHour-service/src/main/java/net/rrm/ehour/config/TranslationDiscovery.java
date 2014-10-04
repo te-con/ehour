@@ -20,10 +20,14 @@ public class TranslationDiscovery {
     private static final Logger LOG = Logger.getLogger(TranslationDiscovery.class);
     private static final Map<String, Locale> LOCALE_MAP = createLocaleMap();
 
-    @Autowired
     private EhourSystemConfig systemConfig;
 
     private List<String> translations;
+
+    @Autowired
+    public TranslationDiscovery(EhourSystemConfig systemConfig) {
+        this.systemConfig = systemConfig;
+    }
 
     @PostConstruct
     public void scanTranslations() {
@@ -104,5 +108,9 @@ public class TranslationDiscovery {
         }
 
         return map;
+    }
+
+    public void setTranslations(List<String> translations) {
+        this.translations = translations;
     }
 }
