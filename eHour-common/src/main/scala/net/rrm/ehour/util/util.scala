@@ -1,8 +1,11 @@
 package net.rrm.ehour
 
 import java.{util => ju}
-import scala.collection.convert.{WrapAsJava, WrapAsScala}
+
 import com.google.common.collect.Lists
+
+import scala.collection.convert.{WrapAsJava, WrapAsScala}
+import scala.language.implicitConversions
 
 package object util {
   def toScala[T](xs: ju.List[T]): List[T] = WrapAsScala.asScalaBuffer(xs).toList
