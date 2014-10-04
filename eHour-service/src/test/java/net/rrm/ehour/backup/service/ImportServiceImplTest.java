@@ -9,7 +9,6 @@ import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.commons.io.FileUtils;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,7 +80,7 @@ public class ImportServiceImplTest {
         ParseSession session = importService.prepareImportDatabase(xml);
 
         assertFalse(session.isImportable());
-        assertTrue(DefaultGroovyMethods.contains(session.getGlobalErrorMessage(), "version"));
+        assertTrue(session.getGlobalErrorMessage().contains("version"));
     }
 
     @Test
