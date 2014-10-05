@@ -46,7 +46,7 @@ public class DerbyDbValidator {
     private static final String DML_FILE = "ddl/dml-ehour-%s.xml";
     private static final String DML_DIFF_FILE = "ddl/dml-ehour-%s-diff.xml";
 
-    enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE}
+    public enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE}
 
     private static final Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
 
