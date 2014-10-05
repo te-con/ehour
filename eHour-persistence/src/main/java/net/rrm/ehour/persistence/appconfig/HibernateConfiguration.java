@@ -39,6 +39,15 @@ public class HibernateConfiguration {
     private static final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
     private static final Logger LOGGER = Logger.getLogger(HibernateConfiguration.class);
 
+    public HibernateConfiguration() {
+    }
+
+    public HibernateConfiguration(DataSource dataSource, String databaseName,  String caching) {
+        this.dataSource = dataSource;
+        this.databaseName = databaseName;
+        this.caching = caching;
+    }
+
     @Bean(name = "sessionFactory")
     public SessionFactory getSessionFactory() throws Exception {
         validateAndSetCaching();

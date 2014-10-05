@@ -59,13 +59,11 @@
         </developer>
     </developers>
     <properties>
-        <spring.version>4.0.7.RELEASE</spring.version>
+        <spring.version>4.1.1.RELEASE</spring.version>
         <wicket.version>6.17.0</wicket.version>
         <jetty.version>8.1.14.v20131031</jetty.version>
         <derbydb.version>10.10.2.0</derbydb.version>
         <aspectj.version>1.6.12</aspectj.version>
-        <gmaven.version>1.5</gmaven.version>
-        <groovy.version>1.8.8</groovy.version>
         <slf4j.version>1.6.4</slf4j.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
         <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
@@ -543,13 +541,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
-                <version>${groovy.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.0</version>
@@ -740,36 +731,6 @@
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>2.3</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.gmaven</groupId>
-                    <artifactId>gmaven-plugin</artifactId>
-                    <version>${gmaven.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>generateStubs</goal>
-                                <goal>compile</goal>
-                                <goal>generateTestStubs</goal>
-                                <goal>testCompile</goal>
-                            </goals>
-                            <configuration>
-                                <providerSelection>1.8</providerSelection>
-                            </configuration>
-                        </execution>
-                    </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.codehaus.gmaven.runtime</groupId>
-                            <artifactId>gmaven-runtime-1.8</artifactId>
-                            <version>${gmaven.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.codehaus.groovy</groupId>
-                            <artifactId>groovy-all</artifactId>
-                            <version>${groovy.version}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
 
                 <plugin>
