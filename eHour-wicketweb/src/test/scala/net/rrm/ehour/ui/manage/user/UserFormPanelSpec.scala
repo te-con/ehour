@@ -25,7 +25,7 @@ class UserFormPanelSpec extends AbstractSpringWebAppSpec {
 
   "user Manage Form Panel" should {
     "render" in {
-      super.startTester
+      super.startTester()
 
       startPanel()
 
@@ -34,7 +34,7 @@ class UserFormPanelSpec extends AbstractSpringWebAppSpec {
     }
 
     "create new user" in {
-      super.startTester
+      super.startTester()
 
       startPanel()
 

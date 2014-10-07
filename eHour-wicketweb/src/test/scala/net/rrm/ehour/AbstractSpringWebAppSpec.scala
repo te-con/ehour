@@ -13,10 +13,10 @@ abstract class AbstractSpringWebAppSpec extends AbstractSpec with BeforeAndAfter
   def tester = springTester.getTester
 
   override def beforeEach() {
-    startTester
+    startTester()
   }
 
-  def startTester {
+  def startTester() {
     springTester.setUp()
   }
 

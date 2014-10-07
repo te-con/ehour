@@ -36,7 +36,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -101,9 +100,9 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
         for (Customer customer : customers) {
             boolean active = customer.isActive();
 
-            List<? extends Serializable> cells = Lists.newArrayList(customer.getName(),
-                                                                    customer.getCode(),
-                                                                    customer.getProjects() == null ? 0 : customer.getProjects().size());
+            List<String> cells = Lists.newArrayList(customer.getName(),
+                    customer.getCode(),
+                    Integer.toString(customer.getProjects() == null ? 0 : customer.getProjects().size()));
             rows.add(new EntrySelectorData.EntrySelectorRow(cells, customer.getCustomerId(),  active));
         }
 
