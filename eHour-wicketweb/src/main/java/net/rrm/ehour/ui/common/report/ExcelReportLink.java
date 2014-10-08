@@ -5,11 +5,11 @@ import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
 import net.rrm.ehour.ui.common.util.Function;
 import org.apache.wicket.markup.html.link.Link;
 
-public abstract class ExcelLink extends Link<Void> {
+public abstract class ExcelReportLink extends Link<Void> {
 
     private final ReportCriteria reportCriteria;
 
-    public ExcelLink(String id, ReportCriteria reportCriteria) {
+    public ExcelReportLink(String id, ReportCriteria reportCriteria) {
         super(id);
         this.reportCriteria = reportCriteria;
     }

@@ -24,8 +24,8 @@ import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.HoverPagingNavigator;
 import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
-import net.rrm.ehour.ui.common.report.ExcelLink;
 import net.rrm.ehour.ui.common.report.ExcelReport;
+import net.rrm.ehour.ui.common.report.ExcelReportLink;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackHeadersToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
@@ -71,7 +71,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
     }
 
     private void addExcelLink() {
-        Link<?> excelLink = new ExcelLink("excelLink", getPanelModel().getObject()) {
+        Link<?> excelLink = new ExcelReportLink("excelLink", getPanelModel().getObject()) {
             @Override
             protected ExcelReport createReportBuilder() {
                 return new AuditReportExcel();
