@@ -15,7 +15,6 @@ import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util._
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
-import org.easymock.EasyMock
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
@@ -33,13 +32,11 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     before {
       reset(overviewTimesheet)
 
-      EasyMock.reset(springTester.userService)
-      EasyMock.expect(springTester.userService.getUsers).andReturn(toJava(List(UserObjectMother.createUser())))
+      reset(springTester.userService)
+      when(springTester.userService.getUsers).thenReturn(toJava(List(UserObjectMother.createUser())))
     }
 
     "render" in {
-      EasyMock.replay(springTester.userService)
-
       tester.startPage(classOf[ImpersonateUserPage])
 
       tester.assertNoErrorMessage()
@@ -48,9 +45,8 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
 
     "handle entryselectedevent by showing that user in the content panel" in {
       val user = UserObjectMother.createUser
-      EasyMock.expect(springTester.userService.getUser(1)).andReturn(user)
+      when(springTester.userService.getUser(1)).thenReturn(user)
 
-      EasyMock.replay(springTester.userService)
       tester.startPage(classOf[ImpersonateUserPage])
 
       val target = mock[AjaxRequestTarget]
@@ -61,16 +57,14 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
       tester.assertNoErrorMessage()
       tester.assertNoInfoMessage()
 
-      EasyMock.verify(springTester.userService)
       verify(target).add(any())
     }
 
     "impersonate user" in {
       prepare(springTester.userService, overviewTimesheet)
       val user = UserObjectMother.createUser
-      EasyMock.expect(springTester.userService.getUser(1)).andReturn(user)
+      when(springTester.userService.getUser(1)).thenReturn(user)
 
-      EasyMock.replay(springTester.userService)
       tester.startPage(classOf[ImpersonateUserPage])
 
       val target = mock[AjaxRequestTarget]
@@ -86,10 +80,9 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     "cannot impersonate user when user is already impersonating" in {
       prepare(springTester.userService, overviewTimesheet)
       val user = UserObjectMother.createUser
-      EasyMock.expect(springTester.userService.getUser(1)).andReturn(user)
-      EasyMock.expect(springTester.userService.getUsers).andReturn(toJava(List(UserObjectMother.createUser())))
+      when(springTester.userService.getUser(1)).thenReturn(user)
+      when(springTester.userService.getUsers).thenReturn(toJava(List(UserObjectMother.createUser())))
 
-      EasyMock.replay(springTester.userService)
       tester.startPage(classOf[ImpersonateUserPage])
 
       val target = mock[AjaxRequestTarget]
@@ -112,6 +105,6 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
 
     when(overviewTimesheet.getWeekOverview(any[User], any[Calendar])).thenReturn(new WeekOverview(Lists.newArrayList(), Lists.newArrayList()))
 
-    EasyMock.expect(springTester.userService.getUser(1)).andReturn(user)
+    when(springTester.userService.getUser(1)).thenReturn(user)
   }
 }

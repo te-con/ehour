@@ -5,7 +5,7 @@ import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.util._
 import org.apache.wicket.model.util.ListModel
-import org.easymock.EasyMock
+import org.mockito.Mockito._
 
 class MultiUserSelectSpec extends AbstractSpringWebAppSpec {
   val user = UserObjectMother.createUser()
@@ -13,9 +13,8 @@ class MultiUserSelectSpec extends AbstractSpringWebAppSpec {
   override def beforeEach() {
     super.beforeEach()
 
-    EasyMock.reset(springTester.userService)
-    EasyMock.expect(springTester.userService.getUsers).andReturn(toJava(List(user)))
-    EasyMock.replay(springTester.userService)
+    reset(springTester.userService)
+    when(springTester.userService.getUsers).thenReturn(toJava(List(user)))
   }
 
   "MultiUser Select" should {

@@ -1,7 +1,6 @@
 package net.rrm.ehour.persistence.customer.dao;
 
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.domain.CustomerObjectMother;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -48,18 +46,6 @@ public class CustomerDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 	public void shouldFindOnId() {
 		Customer customer = customerDao.findById(2);
 		assertEquals("BA", customer.getName());
-	}
-
-	@Test
-	public void shouldPersist() {
-		Customer customer = CustomerObjectMother.createCustomer();
-		customer.setName("aa");
-		customer.setCode("bb");
-		customer.setCustomerId(null);
-
-		customerDao.persist(customer);
-
-		assertNotNull(customer.getCustomerId());
 	}
 
 	@Test
