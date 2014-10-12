@@ -22,6 +22,7 @@ import org.apache.wicket.model.{IModel, Model => WModel}
 import org.apache.wicket.util.convert.IConverter
 
 import scala.collection.convert.WrapAsJava
+import scala.language.{existentials, implicitConversions}
 
 case class NonDemoAjaxButton(id: String, form: Form[_], success: AjaxButton.Callback, error: AjaxButton.Callback = (a, f) => {}) extends WicketAjaxButton(id, form) {
   private def inDemoMode = EhourWebSession.getEhourConfig.isInDemoMode

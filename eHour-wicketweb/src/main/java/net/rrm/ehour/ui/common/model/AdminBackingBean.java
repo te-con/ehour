@@ -19,24 +19,29 @@ package net.rrm.ehour.ui.common.model;
 import java.io.Serializable;
 
 /**
- * Backing bean interface for the admin screens. 
- **/
+ * Backing bean interface for the admin screens.
+ */
 
-public interface AdminBackingBean<T> extends Serializable
-{
-	/**
-	 * @return the serverMessage
-	 */
-	String getServerMessage();
+public interface AdminBackingBean<T> extends Serializable {
+    /**
+     * @return the serverMessage
+     */
+    String getServerMessage();
 
-	/**
-	 * @param serverMessage the serverMessage to set
-	 */
-	void setServerMessage(String serverMessage);
-	
-	/**
-	 * Get the domain object behind the backing bean
-	 * @return
-	 */
-	T getDomainObject();
+    /**
+     * @param serverMessage the serverMessage to set
+     */
+    void setServerMessage(String serverMessage);
+
+    /**
+     * Get the domain object behind the backing bean
+     *
+     * @return
+     */
+    T getDomainObject();
+
+    /**
+     * Is the underlying domain object deletable?
+     */
+    boolean isDeletable();
 }

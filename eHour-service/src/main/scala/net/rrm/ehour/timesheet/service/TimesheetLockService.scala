@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+import scala.language.implicitConversions
+
 trait TimesheetLockService {
   def createNew(name: Option[String] = None, startDate: Date, endDate: Date, excludedUsers: ju.List[User]): TimesheetLock
 

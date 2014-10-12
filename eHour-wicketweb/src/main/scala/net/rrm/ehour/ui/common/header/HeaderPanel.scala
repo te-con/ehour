@@ -1,5 +1,7 @@
 package net.rrm.ehour.ui.common.header
 
+import java.util
+
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.util.AuthUtil
@@ -10,6 +12,9 @@ class HeaderPanel(id: String, showSyncLink: Boolean = false) extends AbstractBas
   @SpringBean
   protected var authUtil: AuthUtil = _
 
+  @SpringBean(name = "menuDefinition")
+  protected var menuDefinition: util.List[_ <: MenuItem] = _
+
   override def onInitialize(): Unit = {
     super.onInitialize()
 
@@ -19,8 +24,5 @@ class HeaderPanel(id: String, showSyncLink: Boolean = false) extends AbstractBas
     add(new LoggedInAsPanel("loggedInAs", showSyncLink))
   }
 
-  private def createNav(id: String) = new TreeBasedMenu(id, MenuDefinition.createMenuDefinition)
-
-
-
+  private def createNav(id: String) = new TreeBasedMenu(id, menuDefinition)
 }

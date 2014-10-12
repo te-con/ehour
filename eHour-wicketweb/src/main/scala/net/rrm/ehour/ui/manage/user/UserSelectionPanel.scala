@@ -3,21 +3,17 @@ package net.rrm.ehour.ui.manage.user
 import java.util
 import java.util.Collections
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.sort.UserComparator
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
-import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.ITEM_LIST_HOLDER_ID
 import net.rrm.ehour.ui.common.panel.entryselector._
 import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.user.service.UserService
-import org.apache.wicket.AttributeModifier
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.{Broadcast, IEvent}
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.list.ListItem
-import org.apache.wicket.markup.html.panel.Fragment
-import org.apache.wicket.model.{IModel, ResourceModel}
+import org.apache.wicket.model.ResourceModel
 import org.apache.wicket.spring.injection.annot.SpringBean
 
 class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUsers: (util.List[User]) => util.List[User]) extends AbstractBasePanel[LdapUserBackingBean](id) {
@@ -27,7 +23,7 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
 
   val hideInactiveFilter = new HideInactiveFilter()
 
-  var container: Fragment = _
+  var entrySelectorPanel:EntrySelectorPanel = _
 
   @SpringBean
   protected var userService: UserService = _
@@ -42,52 +38,47 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
 
     addOrReplace(greyBorder)
 
-    container = createListView()
-    val selectorPanel = new EntrySelectorPanel("entrySelectorFrame", container, new ResourceModel("admin.user.hideInactive"))
+    val clickHandler = new EntrySelectorPanel.ClickHandler {
+      def onClick(row: EntrySelectorData.EntrySelectorRow, target: AjaxRequestTarget) {
+        val id = row.getId.asInstanceOf[Integer]
 
-    greyBorder.add(selectorPanel)
-  }
-
-  def createListView() = {
-    val userListView = new EntrySelectorListView[User]("itemList", users) {
-      protected def onPopulate(item: ListItem[User], itemModel: IModel[User]) {
-        val user = item.getModelObject
-
-        if (!user.isActive) {
-          item.add(AttributeModifier.append("class", "inactive"))
-        }
-
-        item.add(new Label("name", user.getName))
-        item.add(new Label("userName", user.getUsername))
-      }
-
-      protected def onClick(item: ListItem[User], target: AjaxRequestTarget) {
-        val userId = item.getModelObject.getUserId
-
-        send(Self.getPage, Broadcast.BREADTH, EntrySelectedEvent(userId, target))
+        send(Self.getPage, Broadcast.BREADTH, EntrySelectedEvent(id, target))
       }
     }
 
-    val fragment = new Fragment(ITEM_LIST_HOLDER_ID, "userSelection", UserSelectionPanel.this)
-    fragment.add(userListView)
-    fragment.setOutputMarkupId(true)
-    fragment
+    entrySelectorPanel = new EntrySelectorPanel("entrySelectorFrame",
+                                                createSelectorData(users),
+                                                clickHandler,
+                                                new ResourceModel("admin.user.hideInactive"))
+
+    greyBorder.add(entrySelectorPanel)
+  }
+
+  private def createSelectorData(users: util.List[User]): EntrySelectorData = {
+    val headers = Lists.newArrayList(new EntrySelectorData.Header("admin.user.lastName"),
+                                    new EntrySelectorData.Header("admin.user.firstName"))
+
+    import scala.collection.JavaConversions._
+    val rows = for (user <- users) yield {
+      val cells = Lists.newArrayList(user.getName, user.getUsername)
+      new EntrySelectorData.EntrySelectorRow(cells, user.getUserId, user.isActive)
+    }
+
+
+    new EntrySelectorData(headers, rows)
   }
 
   override def onEvent(event: IEvent[_]) {
     def refresh(event: Event) {
-      val component = container.get("itemList")
-      component.asInstanceOf[EntrySelectorListView[User]].setList(users)
-
-      event.refresh(container)
+      entrySelectorPanel.updateData(createSelectorData(users))
+      entrySelectorPanel.reRender(event.target)
     }
 
     event.getPayload match {
       case event: EntryListUpdatedEvent => refresh(event)
-      case event: InactiveFilterChangedEvent => {
+      case event: InactiveFilterChangedEvent =>
         hideInactiveFilter.setHideInactive(event.hideInactiveFilter.isHideInactive)
         refresh(event)
-      }
       case _ =>
     }
   }

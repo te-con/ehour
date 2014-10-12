@@ -17,6 +17,10 @@
 package net.rrm.ehour.customer.service;
 
 import net.rrm.ehour.domain.*;
+import com.google.common.collect.Lists;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.CustomerObjectMother;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
@@ -24,122 +28,97 @@ import net.rrm.ehour.persistence.customer.dao.CustomerDao;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceImplTest {
     private CustomerServiceImpl customerService;
 
+    @Mock
     private UserService userService;
 
+    @Mock
     private CustomerDao customerDAO;
+    private Customer customer;
 
     @Before
     public void setUp() {
         customerService = new CustomerServiceImpl();
-        userService = createMock(UserService.class);
-        customerDAO = createMock(CustomerDao.class);
         customerService.setCustomerDAO(customerDAO);
         customerService.setUserService(userService);
+
+        customer = CustomerObjectMother.createCustomer(1);
     }
 
     @Test
-    public void testDeleteCustomerWithConstraintViolation() {
-        Customer cust = CustomerObjectMother.createCustomer();
+    public void should_delete_customer_with_projects_throw_a_constraint_violation() {
+        Customer cust = CustomerObjectMother.createCustomer(1);
         Project proj = new Project();
         Set<Project> projs = new HashSet<Project>();
         proj.setProjectId(1);
-        cust.setCustomerId(1);
 
         projs.add(proj);
         cust.setProjects(projs);
 
-        customerDAO.findById(1);
-        expectLastCall().andReturn(cust);
-
-        replay(customerDAO);
+        when(customerDAO.findById(1)).thenReturn(cust);
 
         try {
             customerService.deleteCustomer(1);
             fail("no ParentChildConstraintException thrown");
-
-        } catch (ParentChildConstraintException ignored) {
+        } catch (ParentChildConstraintException e) {
         }
-
-        verify(customerDAO);
     }
 
     @Test
-    public void testDeleteCustomer() throws ParentChildConstraintException {
-        Customer cust = CustomerObjectMother.createCustomer(1);
-        cust.getProjects().clear();
+    public void should_delete_customer() throws ParentChildConstraintException {
+        int customerId = 2;
+        Customer customer2 = CustomerObjectMother.createCustomer(customerId);
+        customer2.getProjects().clear();
 
-        customerDAO.findById(1);
-        expectLastCall().andReturn(cust);
+        when(customerDAO.findById(customerId)).thenReturn(customer2);
 
-        customerDAO.delete(cust);
+        customerService.deleteCustomer(customerId);
 
-        replay(customerDAO);
-
-        customerService.deleteCustomer(1);
-
-        verify(customerDAO);
-    }
-
-
-    @Test
-    public void testGetCustomer() throws ObjectNotFoundException {
-        customerDAO.findById(1);
-        expectLastCall().andReturn(new Customer(1));
-
-        replay(customerDAO);
-
-        customerService.getCustomer(1);
-
-        verify(customerDAO);
+        verify(customerDAO).delete(customer2);
     }
 
     @Test
-    public void testGetCustomers() {
-        customerDAO.findAll();
-        expectLastCall().andReturn(null);
+    public void should_get_customer() throws ObjectNotFoundException {
+        when(customerDAO.findById(1)).thenReturn(customer);
 
-        replay(customerDAO);
-
-        customerService.getCustomers();
-
-        verify(customerDAO);
+        assertEquals(customer, customerService.getCustomer(1));
     }
 
     @Test
-    public void testGetActiveCustomers() {
-        customerDAO.findAllActive();
-        expectLastCall().andReturn(null);
+    public void should_get_all_customers() {
+        when(customerDAO.findAll()).thenReturn(Lists.newArrayList(customer));
 
-        replay(customerDAO);
-
-        customerService.getActiveCustomers();
-
-        verify(customerDAO);
+        assertEquals(1, customerService.getCustomers().size());
     }
 
     @Test
-    public void testPersistCustomer() throws ObjectNotUniqueException {
-        Customer cust = CustomerObjectMother.createCustomer(1);
-        customerDAO.persist(cust);
-        expectLastCall().andReturn(cust);
+    public void should_get_only_active_customers() {
+        when(customerDAO.findAllActive()).thenReturn(Lists.newArrayList(customer));
+        assertEquals(1, customerService.getActiveCustomers().size());
+    }
+    
+    @Test
+    public void should_persist_customer() throws ObjectNotUniqueException {
+        customerService.persistCustomer(customer);
 
-        replay(customerDAO);
-
-        customerService.persistCustomer(cust);
-
-        verify(customerDAO);
+        verify(customerDAO).persist(customer);
     }
 
     @Test
@@ -151,16 +130,12 @@ public class CustomerServiceImplTest {
         reviewers.add(new User(2, "morgan"));
         cust.setReviewers(reviewers);
 
-        expect(customerDAO.persist(cust)).andReturn(cust);
+        when(customerDAO.persist(cust)).thenReturn(cust);
 
-        expect(userService.addRole(1, UserRole.CUSTOMERREVIEWER)).andReturn(new User(1, "thies"));
-        expect(userService.addRole(2, UserRole.CUSTOMERREVIEWER)).andReturn(new User(1, "thies"));
-
-        replay(customerDAO, userService);
+        when(userService.addRole(1, UserRole.CUSTOMERREVIEWER)).thenReturn(new User(1, "thies"));
+        when(userService.addRole(2, UserRole.CUSTOMERREVIEWER)).thenReturn(new User(1, "thies"));
 
         customerService.persistCustomer(cust);
-
-        verify(customerDAO, userService);
     }
 
     @Test
@@ -173,43 +148,11 @@ public class CustomerServiceImplTest {
         reporters.add(new User(2, "morgan"));
         cust.setReporters(reporters);
 
-        expect(customerDAO.persist(cust)).andReturn(cust);
+        when(customerDAO.persist(cust)).thenReturn(cust);
 
-        expect(userService.addRole(1, UserRole.CUSTOMERREPORTER)).andReturn(new User(1, "thies"));
-        expect(userService.addRole(2, UserRole.CUSTOMERREPORTER)).andReturn(new User(1, "thies"));
-
-        replay(customerDAO, userService);
+        when(userService.addRole(1, UserRole.CUSTOMERREPORTER)).thenReturn(new User(1, "thies"));
+        when(userService.addRole(2, UserRole.CUSTOMERREPORTER)).thenReturn(new User(1, "thies"));
 
         customerService.persistCustomer(cust);
-
-        verify(customerDAO, userService);
     }
-
-    @Test
-    public void testPersistCustomerContainingBothReportersAndReviewers() throws ObjectNotUniqueException
-    {
-        Customer cust = CustomerObjectMother.createCustomer(1);
-
-        List<User> reporters = new ArrayList<User>();
-        reporters.add(new User(1, "thies"));
-        reporters.add(new User(2, "morgan"));
-        cust.setReporters(reporters);
-
-        List<User> reviewers = new ArrayList<User>();
-        reviewers.add(new User(3, "laurent"));
-        cust.setReviewers(reviewers);
-
-        expect(customerDAO.persist(cust)).andReturn(cust);
-
-        expect(userService.addRole(1, UserRole.CUSTOMERREPORTER)).andReturn(new User(1, "thies"));
-        expect(userService.addRole(2, UserRole.CUSTOMERREPORTER)).andReturn(new User(1, "thies"));
-        expect(userService.addRole(3, UserRole.CUSTOMERREVIEWER)).andReturn(new User(3, "laurent"));
-
-        replay(customerDAO, userService);
-
-        customerService.persistCustomer(cust);
-
-        verify(customerDAO, userService);
-    }
-
 }

@@ -47,11 +47,6 @@
 
         <plugins>
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
             </plugin>
@@ -109,7 +104,7 @@
         <dependency>
             <groupId>nl.tecon.scalahighcharts</groupId>
             <artifactId>highcharts</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
         </dependency>
 
         <dependency>
@@ -230,10 +225,6 @@
             <groupId>org.springframework.ldap</groupId>
             <artifactId>spring-ldap-core</artifactId>
             <version>1.3.1.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
         </dependency>
 
         <dependency>

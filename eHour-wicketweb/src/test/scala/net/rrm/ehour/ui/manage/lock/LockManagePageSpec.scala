@@ -10,9 +10,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
 import org.mockito.Matchers._
 import org.mockito.Mockito._
-import org.scalatest.BeforeAndAfter
 
-class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
+class LockManagePageSpec extends AbstractSpringWebAppSpec {
   "Lock Manage Page" should {
     val service = mockService[TimesheetLockService]
 
@@ -21,11 +20,10 @@ class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
 
     val lock = LockAdminBackingBeanObjectMother.create.lock
 
-    when(service.findAll()).thenReturn(List(lock))
-
     before {
       lock.setLockId(null)
       reset(service)
+      when(service.findAll()).thenReturn(List(lock))
     }
 
     "render" in {
@@ -39,7 +37,7 @@ class LockManagePageSpec extends AbstractSpringWebAppSpec with BeforeAndAfter {
       lock.setLockId(5)
       tester.startPage(classOf[LockManagePage])
 
-      tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:lockSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder", "click")
+      tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:lockSelector:entrySelectorFrame:blueBorder:blueBorder_body", "click")
       tester.assertNoErrorMessage()
       tester.assertNoInfoMessage()
     }

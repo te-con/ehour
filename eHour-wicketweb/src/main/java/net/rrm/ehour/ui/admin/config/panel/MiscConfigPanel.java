@@ -119,8 +119,6 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         form.add(withManagerCheckbox);
     }
 
-
-
     private static final class WeekDayRenderer extends ChoiceRenderer<Date> {
         private static final long serialVersionUID = -2044803875511515992L;
         SimpleDateFormat formatter;
@@ -141,6 +139,4 @@ public class MiscConfigPanel extends AbstractConfigPanel {
             return Integer.toString(cal.get(Calendar.DAY_OF_WEEK));
         }
     }
-
-
 }

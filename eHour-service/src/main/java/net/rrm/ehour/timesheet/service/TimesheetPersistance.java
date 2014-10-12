@@ -70,6 +70,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     }
 
     @Transactional
+    @Override
     public List<ActivityStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
                                                               TimesheetComment comment,
                                                               DateRange weekRange) {
@@ -218,8 +219,8 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         }
     }
 
-    private void persistEntry(boolean onlyLessThanExisting, TimesheetEntry newEntry, TimesheetEntry existingEntry) throws OverBudgetException {
-        if (onlyLessThanExisting &&
+    private void persistEntry(boolean bookOnlyLessHoursThanExistingHours, TimesheetEntry newEntry, TimesheetEntry existingEntry) throws OverBudgetException {
+        if (bookOnlyLessHoursThanExistingHours &&
                 (existingEntry == null ||
                         (newEntry.getHours().compareTo(existingEntry.getHours()) > 0))) {
             throw new OverBudgetException();

@@ -51,7 +51,7 @@ import java.util.List;
  * Project admin form
  */
 
-public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBackingBean> {
+public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends AbstractFormSubmittingPanel<T> {
     @SpringBean
     private ProjectService projectService;
 
@@ -62,7 +62,7 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
 
     private boolean editMode;
 
-    public ProjectFormPanel(String id, IModel<ProjectAdminBackingBean> model) {
+    public ProjectFormPanel(String id, IModel<T> model) {
         super(id, model);
 
         setOutputMarkupId(true);
@@ -77,14 +77,14 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         setUpPage(getPanelModel());
     }
 
-    private void setUpPage(IModel<ProjectAdminBackingBean> model) {
+    private void setUpPage(IModel<T> model) {
         GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
         add(greyBorder);
 
-        Form<ProjectAdminBackingBean> form = new Form<ProjectAdminBackingBean>("projectForm", model);
+        Form<T> form = new Form<T>("projectForm", model);
         addFormComponents(form);
 
-        boolean deletable = model.getObject().getProject().isDeletable();
+        boolean deletable = model.getObject().isDeletable();
 
         ProjectAjaxEventType submitEventType = editMode ? ProjectAjaxEventType.PROJECT_UPDATED : ProjectAjaxEventType.PROJECT_CREATED;
 
@@ -97,9 +97,15 @@ public class ProjectFormPanel extends AbstractFormSubmittingPanel<ProjectAdminBa
         FormUtil.setSubmitActions(formConfig);
 
         greyBorder.addOrReplace(form);
+
+        onFormCreated(form);
     }
 
-    private void addFormComponents(Form<ProjectAdminBackingBean> form) {
+    protected void onFormCreated(Form<T> form) {
+
+    }
+
+    private void addFormComponents(Form<T> form) {
         addCustomer(form);
         addDescriptionAndContact(form);
         addGeneralInfo(form);

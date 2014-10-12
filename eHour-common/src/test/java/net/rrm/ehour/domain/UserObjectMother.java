@@ -3,6 +3,7 @@ package net.rrm.ehour.domain;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created on Feb 7, 2010 2:25:08 PM

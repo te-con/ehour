@@ -28,27 +28,30 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 /**
  * @author thies
  */
 @SuppressWarnings("deprecation")
+@RunWith(MockitoJUnitRunner.class)
 public class CalendarPanelTest extends BaseSpringWebAppTester {
+    @Mock
     private IOverviewTimesheet overviewTimesheet;
 
     @Before
     public void before() throws Exception {
-        overviewTimesheet = createMock(IOverviewTimesheet.class);
         getMockContext().putBean(overviewTimesheet);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -57,22 +60,19 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
         AjaxEventHook hook = new AjaxEventHook();
         EventPublisher.listenerHook = hook;
 
-        Calendar requestedMonth = new ComparableGreggieCalendar(2009, Calendar.JANUARY, 2);
+        Calendar requestedMonth = new ComparableGregorianCalendar(2009, Calendar.JANUARY, 2);
         EhourWebSession session = getWebApp().getSession();
         requestedMonth.setFirstDayOfWeek(requestedMonth.getFirstDayOfWeek());
 
         session.setNavCalendar(requestedMonth);
 
-        expect(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth)).andReturn(generateBookDays());
-
-        replay(overviewTimesheet);
+        when(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth)).thenReturn(generateBookDays());
 
         startPanel();
 
         tester.executeAjaxEvent("panel:calendarFrame:weeks:0", "onclick");
 
         assertEquals(1, hook.events.size());
-
 
         for (AjaxEvent event : hook.events) {
             assertEquals(CalendarAjaxEventType.WEEK_CLICK, event.getEventType());
@@ -83,51 +83,47 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
             assertEquals(2008, pae.getPayload().get(Calendar.YEAR));
             assertEquals(28, pae.getPayload().get(Calendar.DAY_OF_MONTH));
         }
-
-
-        verify(overviewTimesheet);
     }
 
     @Test
     public void shouldRender() {
-        Calendar requestedMonth = new ComparableGreggieCalendar(2009, 10 - 1, 22);
+        Calendar requestedMonth = new ComparableGregorianCalendar(2009, 10 - 1, 22);
 
         EhourWebSession session = getWebApp().getSession();
         session.setNavCalendar(requestedMonth);
 
-        expect(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth)).andReturn(generateBookDays());
-
-        replay(overviewTimesheet);
+        when(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth)).thenReturn(generateBookDays());
 
         startPanel();
 
-        verify(overviewTimesheet);
+        tester.assertNoErrorMessage();
+        tester.assertNoInfoMessage();
     }
-
 
     @Test
     public void shouldMoveToNextMonth() {
-        Calendar requestedMonth = new ComparableGreggieCalendar(2009, 10 - 1, 22);
-        Calendar nextMonth = new ComparableGreggieCalendar(2009, 11 - 1, 1);
+        Calendar requestedMonth = new ComparableGregorianCalendar(2009, 10 - 1, 22);
+        Calendar nextMonth = new ComparableGregorianCalendar(2009, 11 - 1, 1);
 
         EhourWebSession session = getWebApp().getSession();
         session.setNavCalendar(requestedMonth);
 
         List<LocalDate> bookedDays = generateBookDays();
 
-        expect(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth))
-                .andReturn(bookedDays);
+        when(overviewTimesheet.getBookedDaysMonthOverview(1, requestedMonth))
+                .thenReturn(bookedDays);
 
-        expect(overviewTimesheet.getBookedDaysMonthOverview(1, nextMonth))
-                .andReturn(bookedDays);
-
-        replay(overviewTimesheet);
+        when(overviewTimesheet.getBookedDaysMonthOverview(1, nextMonth))
+                .thenReturn(bookedDays);
 
         startPanel();
 
         tester.executeAjaxEvent("panel:calendarFrame:nextMonthLink", "onclick");
 
-        verify(overviewTimesheet);
+        tester.assertNoErrorMessage();
+        tester.assertNoInfoMessage();
+
+        assertEquals(nextMonth, session.getNavCalendar());
     }
 
     private List<LocalDate> generateBookDays() {
@@ -141,8 +137,8 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
     }
 
     @SuppressWarnings("serial")
-    class ComparableGreggieCalendar extends GregorianCalendar {
-        public ComparableGreggieCalendar(int year, int month, int day) {
+    class ComparableGregorianCalendar extends GregorianCalendar {
+        public ComparableGregorianCalendar(int year, int month, int day) {
             super(year, month, day);
         }
 
@@ -151,7 +147,7 @@ public class CalendarPanelTest extends BaseSpringWebAppTester {
             boolean equals = super.equals(obj);
 
             if (equals) {
-                return equals;
+                return true;
             } else {
                 GregorianCalendar cal = (GregorianCalendar) obj;
 

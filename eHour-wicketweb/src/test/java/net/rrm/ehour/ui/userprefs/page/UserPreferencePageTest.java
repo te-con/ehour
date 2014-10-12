@@ -25,33 +25,36 @@ import net.rrm.ehour.ui.common.MockExpectations;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.userpref.UserPreferenceService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.easymock.EasyMock.*;
-
+@RunWith(MockitoJUnitRunner.class)
 public class UserPreferencePageTest extends BaseSpringWebAppTester {
-	@Test
-	public void testReportPageRender() throws ObjectNotFoundException {
-        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
+    @Mock
+    IOverviewTimesheet overviewTimesheet;
+
+    @Mock
+    WindChillUpdateService windChillUpdateService;
+    
+    @Mock
+    JiraService jiraService;
+    
+    @Mock
+    UserPreferenceService userPreferenceService;
+
+    @Test
+	public void shouldRenderPreferencePage() throws ObjectNotFoundException
+	{
+		getMockContext().putBean(overviewTimesheet);
         getMockContext().putBean(windChillUpdateService);
-
-        JiraService jiraService = createMock(JiraService.class);
         getMockContext().putBean(jiraService);
+        getMockContext().putBean(userPreferenceService);
+        
+        MockExpectations.navCalendar(overviewTimesheet, getWebApp());
 
-        IOverviewTimesheet overviewTimesheet = createMock(IOverviewTimesheet.class);
-        getMockContext().putBean(overviewTimesheet);
-
-        getMockContext().putBean(createMock(UserPreferenceService.class));
-
-        MockExpectations.navCalendarEasyMock(overviewTimesheet, getWebApp());
-
-        replay(userService);
-        replay(overviewTimesheet);
-
-        tester.startPage(UserPreferencePage.class);
-        tester.assertRenderedPage(UserPreferencePage.class);
-        tester.assertNoErrorMessage();
-
-        verify(userService);
-        verify(overviewTimesheet);
+		tester.startPage(UserPreferencePage.class);
+		tester.assertRenderedPage(UserPreferencePage.class);
+		tester.assertNoErrorMessage();
 	}
 }

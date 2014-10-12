@@ -26,16 +26,6 @@
             <groupId>nl.tecon.ehevo</groupId>
             <artifactId>ehevo-common</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

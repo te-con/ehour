@@ -61,15 +61,13 @@
         </developer>
     </developers>
     <properties>
-        <spring.version>4.0.6.RELEASE</spring.version>
-        <wicket.version>6.16.0</wicket.version>
+        <spring.version>4.1.1.RELEASE</spring.version>
+        <wicket.version>6.17.0</wicket.version>
         <jetty.version>8.1.14.v20131031</jetty.version>
         <derbydb.version>10.10.2.0</derbydb.version>
         <aspectj.version>1.6.12</aspectj.version>
-        <gmaven.version>1.5</gmaven.version>
-        <groovy.version>1.8.8</groovy.version>
         <slf4j.version>1.6.4</slf4j.version>
-        <hibernate.version>4.3.5.Final</hibernate.version>
+        <hibernate.version>4.3.6.Final</hibernate.version>
         <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
         <scala.major.version>2.10</scala.major.version>
         <scala.minor.version>4</scala.minor.version>
@@ -107,6 +105,12 @@
                 <artifactId>mockito-core</artifactId>
                 <version>1.9.5</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hamcrest</groupId>
+                        <artifactId>hamcrest-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -123,7 +127,7 @@
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
-                <version>3.9</version>
+                <version>3.11-beta2</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -213,14 +217,6 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
-                <!--
-                                <exclusions>
-                                    <exclusion>
-                                        <groupId>org.jboss.spec.javax.transaction</groupId>
-                                        <artifactId>jboss-transaction-api_1.2_spec</artifactId>
-                                    </exclusion>
-                                </exclusions>
-                -->
             </dependency>
 
             <dependency>
@@ -249,90 +245,7 @@
                 </exclusions>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${spring-security.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-beans</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-expression</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
 
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>${spring-security.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-tx</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>${spring-security.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-ldap</artifactId>
-                <version>${spring-security.version}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>${spring.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-orm</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
@@ -404,7 +317,21 @@
                 <artifactId>junit</artifactId>
                 <version>4.11</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hamcrest</groupId>
+                        <artifactId>hamcrest-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
+
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-library</artifactId>
+                <version>1.3</version>
+                <scope>test</scope>
+            </dependency>
+
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
@@ -507,10 +434,11 @@
             </dependency>
 
             <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
-                <version>${groovy.version}</version>
+                <groupId>net.rrm.ehour</groupId>
+                <artifactId>eHour-common</artifactId>
+                <version>${project.version}</version>
                 <scope>test</scope>
+                <classifier>tests</classifier>
             </dependency>
 
             <dependency>
@@ -556,6 +484,56 @@
                 <artifactId>ojdbc</artifactId>
                 <version>11.2.0.4</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring-security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-expression</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring-security.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-tx</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-ldap</artifactId>
+                <version>${spring-security.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -574,6 +552,10 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -608,16 +590,17 @@
             <groupId>javax.annotation</groupId>
             <artifactId>jsr250-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.3</version>
+            <version>2.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.nscala-time</groupId>
             <artifactId>nscala-time_2.10</artifactId>
-            <version>0.6.0</version>
+            <version>1.4.0</version>
         </dependency>
 
         <dependency>
@@ -736,41 +719,11 @@
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>2.3</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.codehaus.gmaven</groupId>
-                    <artifactId>gmaven-plugin</artifactId>
-                    <version>${gmaven.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>generateStubs</goal>
-                                <goal>compile</goal>
-                                <goal>generateTestStubs</goal>
-                                <goal>testCompile</goal>
-                            </goals>
-                            <configuration>
-                                <providerSelection>1.8</providerSelection>
-                            </configuration>
-                        </execution>
-                    </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.codehaus.gmaven.runtime</groupId>
-                            <artifactId>gmaven-runtime-1.8</artifactId>
-                            <version>${gmaven.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.codehaus.groovy</groupId>
-                            <artifactId>groovy-all</artifactId>
-                            <version>${groovy.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
 
                 <plugin>
                     <groupId>net.alchim31.maven</groupId>
                     <artifactId>scala-maven-plugin</artifactId>
-                    <version>3.1.6</version>
+                    <version>3.2.0</version>
                     <executions>
                         <execution>
                             <id>scala-compile-first</id>

@@ -14,9 +14,10 @@
     margin-top:7px;
     border:none;
     z-index: 100;
+    cursor: pointer;
 }
 
-#menu li:hover {
+#menu li:hover, #menu .activeli {
     background: #bfd8f6;
     background: -moz-linear-gradient(top, #bfd8f6, #a3bed9);
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#bfd8f6), to(#a3bed9));
@@ -36,14 +37,14 @@
     text-decoration:none;
 }
 
-#menu li a:hover {
+#menu li a:hover, #menu .active {
     color: #536E87;
 }
 #menu li .drop {
     padding-right:21px;
     background:url("img/drop.png") no-repeat right 5px;
 }
-#menu li:hover .drop {
+#menu li:hover .drop, #menu .activeli .drop {
     background:url("img/drop.png") no-repeat right 5px;
 }
 

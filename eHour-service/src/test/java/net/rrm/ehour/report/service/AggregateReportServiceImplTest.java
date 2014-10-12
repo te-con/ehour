@@ -22,45 +22,56 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
-import net.rrm.ehour.report.reports.ProjectManagerReport;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ActivityAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ActivityAggregateReportElementMother;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import org.joda.time.Interval;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import scala.collection.convert.WrapAsScala$;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
+@RunWith(MockitoJUnitRunner.class)
 public class AggregateReportServiceImplTest {
     private AggregateReportServiceImpl aggregateReportService;
+
+    @Mock
+    private UserDao userDao;
+
+    @Mock
     private ProjectDao projectDao;
+
+    @Mock
     private ReportAggregatedDao reportAggregatedDao;
+
+    @Mock
     private ActivityService ActivityService;
+
+    @Mock
+    private TimesheetLockService timesheetLockService;
 
     @Before
     public void setUp() {
-        reportAggregatedDao = createMock(ReportAggregatedDao.class);
-        ActivityService = createMock(ActivityService.class);
-        projectDao = createMock(ProjectDao.class);
-        TimesheetLockService timesheetLockService = createMock(TimesheetLockService.class);
-
         aggregateReportService = new AggregateReportServiceImpl(ActivityService, projectDao, timesheetLockService, reportAggregatedDao);
 
-        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
-                .andReturn(WrapAsScala$.MODULE$.asScalaBuffer(Lists.<Interval>newArrayList()));
-        replay(timesheetLockService);
+        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
+                .thenReturn(WrapAsScala$.MODULE$.asScalaBuffer(Lists.<Interval>newArrayList()));
     }
 
     @Test
@@ -68,22 +79,20 @@ public class AggregateReportServiceImplTest {
         DateRange dr = new DateRange();
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
-        List<User> l = new ArrayList<User>();
-        l.add(new User(1, "thies"));
-        uc.setUsers(l);
-        List<ActivityAggregateReportElement> pags = new ArrayList<ActivityAggregateReportElement>();
+
+        List<User> users = Lists.newArrayList(UserObjectMother.createUser());
+        uc.setUsers(users);
         ReportCriteria rc = new ReportCriteria(uc);
 
-        pags.add(ActivityAggregateReportElementMother.createActivityAggregate(1, 1, 1));
-        pags.add(ActivityAggregateReportElementMother.createActivityAggregate(2, 2, 2));
-        pags.add(ActivityAggregateReportElementMother.createActivityAggregate(3, 3, 3));
+        List<ActivityAggregateReportElement> pags = createAggregateReportElements();
 
-        expect(reportAggregatedDao.getCumulatedHoursPerActivityForUsers(isA(List.class), isA(DateRange.class)))
-                .andReturn(pags);
-        replay(reportAggregatedDao);
-        aggregateReportService.getAggregateReportData(rc);
-        verify(reportAggregatedDao);
+        when(reportAggregatedDao.getCumulatedHoursPerActivityForUsers(eq(Lists.newArrayList(1)), any(DateRange.class))).thenReturn(pags);
+
+        ReportData data = aggregateReportService.getAggregateReportData(rc);
+
+        assertEquals(3, data.getReportElements().size());
     }
+
 
     @Test
     public void should_create_global_report() {
@@ -91,126 +100,43 @@ public class AggregateReportServiceImplTest {
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         ReportCriteria rc = new ReportCriteria(uc);
-        List<ActivityAggregateReportElement> pags = new ArrayList<ActivityAggregateReportElement>();
 
-        pags.add(ActivityAggregateReportElementMother.createActivityAggregate(1, 1, 1));
-        pags.add(ActivityAggregateReportElementMother.createActivityAggregate(2, 2, 2));
-        pags.add(ActivityAggregateReportElementMother.createActivityAggregate(3, 3, 3));
+        List<ActivityAggregateReportElement> pags = createAggregateReportElements();
 
-        expect(reportAggregatedDao.getCumulatedHoursPerActivity(isA(DateRange.class))).andReturn(pags);
-        replay(reportAggregatedDao);
-        aggregateReportService.getAggregateReportData(rc);
-        verify(reportAggregatedDao);
+        when(reportAggregatedDao.getCumulatedHoursPerActivity(any(DateRange.class))).thenReturn(pags);
+
+        ReportData data = aggregateReportService.getAggregateReportData(rc);
+
+        assertEquals(3, data.getReportElements().size());
     }
 
     @Test
     public void should_create_report_for_specific_project() {
-        Customer cust = new Customer(1);
-        List<Customer> customers = new ArrayList<Customer>();
-        customers.add(cust);
-
-        List<Project> prjs = new ArrayList<Project>();
-        Project prj = new Project(1);
-        prjs.add(prj);
+        List<Customer> customers = Lists.newArrayList(CustomerObjectMother.createCustomer(1));
+        List<Project> projects = Lists.newArrayList(ProjectObjectMother.createProject(1));
 
         DateRange dr = new DateRange();
         UserSelectedCriteria uc = new UserSelectedCriteria();
         uc.setReportRange(dr);
         uc.setCustomers(customers);
+
         ReportCriteria rc = new ReportCriteria(uc);
+        List<ActivityAggregateReportElement> pags = createAggregateReportElements();
+        when(reportAggregatedDao.getCumulatedHoursPerActivityForProjects(eq(Lists.newArrayList(1)), any(DateRange.class))).thenReturn(pags);
+        when(projectDao.findProjectForCustomers(customers, true)).thenReturn(projects);
+
+        ReportData data = aggregateReportService.getAggregateReportData(rc);
+
+        assertEquals(3, data.getReportElements().size());
+    }
+
+    private List<ActivityAggregateReportElement> createAggregateReportElements() {
         List<ActivityAggregateReportElement> pags = new ArrayList<ActivityAggregateReportElement>();
 
         pags.add(ActivityAggregateReportElementMother.createActivityAggregate(1, 1, 1));
         pags.add(ActivityAggregateReportElementMother.createActivityAggregate(2, 2, 2));
         pags.add(ActivityAggregateReportElementMother.createActivityAggregate(3, 3, 3));
 
-        expect(reportAggregatedDao.getCumulatedHoursPerActivityForProjects(isA(List.class), isA(DateRange.class)))
-                .andReturn(pags);
-        expect(projectDao.findProjectForCustomers(customers, true)).andReturn(prjs);
-
-        replay(reportAggregatedDao);
-        replay(projectDao);
-
-        aggregateReportService.getAggregateReportData(rc);
-        verify(reportAggregatedDao);
-        verify(projectDao);
-    }
-
-    @Test
-    public void should_create_pm_detailed_report() {
-        Project project = new Project(1);
-        project.setProjectCode("PRJ");
-
-        List<ActivityAggregateReportElement> elms = new ArrayList<ActivityAggregateReportElement>();
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                elms.add(ActivityAggregateReportElementMother.createActivityAggregate(j, i, i));
-            }
-        }
-
-        expect(reportAggregatedDao.getCumulatedHoursPerActivityForProjects(isA(List.class), isA(DateRange.class)))
-                .andReturn(elms);
-
-        DateRange dr = new DateRange(new Date(), new Date());
-        expect(reportAggregatedDao.getMinMaxDateTimesheetEntry(project)).andReturn(dr);
-
-        List<Activity> Activitys = new ArrayList<Activity>();
-
-        Activitys.add(ActivityMother.createActivity(2));
-
-        expect(ActivityService.getActivities(project, dr)).andReturn(Activitys);
-
-        replay(reportAggregatedDao);
-        replay(ActivityService);
-
-        ProjectManagerReport report = aggregateReportService.getProjectManagerDetailedReport(project);
-        verify(reportAggregatedDao);
-        verify(ActivityService);
-
-        assertEquals(new Integer(1), report.getProject().getPK());
-        assertEquals(16, report.getAggregates().size());
-    }
-
-    @Test
-    @Ignore
-    public void should_create_pm_report() {
-        UserSelectedCriteria criteria = new UserSelectedCriteria();
-
-        User projectManager = new User(2, "thoos");
-        criteria.setReportTypeToPM(projectManager);
-        Project pmProject = ProjectObjectMother.createProject(1);
-        expect(projectDao.findActiveProjectsWhereUserIsPM(projectManager)).andReturn(Lists.newArrayList(pmProject));
-
-        User user = new User(1, "thies");
-
-        Activity activity = ActivityMother.createActivity(1);
-        activity.getProject().setProjectId(1);
-        activity.setAssignedUser(user);
-
-        DateRange dateRange = new DateRange();
-        criteria.setReportRange(dateRange);
-
-        criteria.setOnlyActiveUsers(true);
-
-        ReportCriteria reportCriteria = new ReportCriteria(criteria);
-        List<ActivityAggregateReportElement> elements = Lists.newArrayList();
-
-        ActivityAggregateReportElement aggregate = ActivityAggregateReportElementMother.createActivityAggregate(1, 1, 1);
-        aggregate.getActivity().setProject(pmProject);
-        elements.add(aggregate);
-        elements.add(ActivityAggregateReportElementMother.createActivityAggregate(2, 2, 2));
-        elements.add(ActivityAggregateReportElementMother.createActivityAggregate(3, 3, 3));
-
-//        expect(reportAggregatedDao.getCumulatedHoursForActivity(isA(List.class), isA(DateRange.class))).andReturn(elements);
-
-        replay(reportAggregatedDao, projectDao);
-
-        ReportData reportData = aggregateReportService.getAggregateReportData(reportCriteria);
-        assertEquals(1, reportData.getReportElements().size());
-
-        verify(reportAggregatedDao);
-        verify(projectDao);
+        return pags;
     }
 }
-

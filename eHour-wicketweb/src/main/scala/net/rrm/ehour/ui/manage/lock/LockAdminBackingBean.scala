@@ -20,6 +20,8 @@ class LockAdminBackingBean(val lock: TimesheetLock) extends AdminBackingBeanImpl
     lock.setName(LockAdminBackingBean.determineName(lock.getDateStart, lock.getDateEnd, formattingLocale))
     this
   }
+
+  override def isDeletable = !isNew
 }
 
 object LockAdminBackingBean {

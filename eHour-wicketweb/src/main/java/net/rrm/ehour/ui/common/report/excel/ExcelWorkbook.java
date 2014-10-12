@@ -4,6 +4,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.util.WorkbookUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class ExcelWorkbook {
     }
 
     public HSSFSheet createSheet(String sheetName) {
-        return workbook.createSheet(sheetName);
+        return workbook.createSheet(WorkbookUtil.createSafeSheetName(sheetName));
     }
 
     public int addPicture(byte[] image, int imageType) {

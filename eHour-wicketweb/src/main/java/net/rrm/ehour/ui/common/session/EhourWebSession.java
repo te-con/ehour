@@ -17,7 +17,6 @@
 package net.rrm.ehour.ui.common.session;
 
 import com.google.common.base.Optional;
-import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigCache;
 import net.rrm.ehour.domain.Audit;
@@ -58,9 +57,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
     private EhourConfig unCachedEhourConfig;
 
     private EhourConfig ehourConfig;
-
-    @SpringBean
-    private AuditService auditService;
 
     @SpringBean
     private UserService userService;
@@ -176,12 +172,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
                 } else {
                     user = authorizedUser;
 
-                    auditService.doAudit(new Audit()
-                            .setAuditActionType(AuditActionType.LOGIN)
-                            .setUserFullName(user.getFullName())
-                            .setDate(new Date())
-                            .setSuccess(Boolean.TRUE));
-
                     LOGGER.info(String.format("Login by user %s (%s).'", user.getUsername(), user.getFullName()));
                     return true;
                 }
@@ -277,12 +267,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
         auditMsg.append(impersonatingAuthUser.get().getFullName());
 
         LOGGER.info(auditMsg.toString());
-
-        auditService.doAudit(new Audit()
-                .setAuditActionType(AuditActionType.IMPERSONATE)
-                .setUserFullName(auditMsg.toString())
-                .setDate(new Date())
-                .setSuccess(true));
     }
 
     public void stopImpersonating() {
@@ -312,12 +296,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
         auditMsg.append(impUser.getFullName());
 
         LOGGER.info(auditMsg.toString());
-
-        auditService.doAudit(new Audit()
-                .setAuditActionType(AuditActionType.STOP_IMPERSONATE)
-                .setUserFullName(auditMsg.toString())
-                .setDate(new Date())
-                .setSuccess(true));
     }
 
     private void setAuthentication(Authentication authentication) {

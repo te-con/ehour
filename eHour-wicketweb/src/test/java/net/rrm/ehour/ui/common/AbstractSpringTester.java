@@ -16,20 +16,17 @@
 
 package net.rrm.ehour.ui.common;
 
+import com.google.common.collect.Lists;
 import com.richemont.windchill.WindChillService;
-import com.richemont.windchill.WindChillUpdateService;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
-import net.rrm.ehour.audit.service.AuditService;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.ui.common.util.AuthUtil;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.spring.test.ApplicationContextMock;
 
 import java.util.Calendar;
-import java.util.Locale;
 
-import static org.easymock.EasyMock.createMock;
-
+import static org.mockito.Mockito.mock;
 
 /**
  * Created on Mar 17, 2009, 5:31:37 AM
@@ -39,7 +36,7 @@ import static org.easymock.EasyMock.createMock;
 public abstract class AbstractSpringTester {
     protected ApplicationContextMock mockContext;
     private EhourConfigStub config;
-    private AuditService auditService;
+
     private EhourSystemConfig ehourSystemConfig = new EhourSystemConfig();
     protected WindChillService windChillService;
     public UserService userService;
@@ -53,15 +50,14 @@ public abstract class AbstractSpringTester {
         config.setFirstDayOfWeek(Calendar.SUNDAY);
         mockContext.putBean("EhourConfig", config);
 
-        windChillService = createMock(WindChillService.class);
+        windChillService = mock(WindChillService.class);
         mockContext.putBean("windChillService", windChillService);
-
-        auditService = createMock(AuditService.class);
-        mockContext.putBean("auditService", auditService);
 
         mockContext.putBean("authUtil", buildAuthUtil());
 
-        userService = createMock(UserService.class);
+        mockContext.putBean("menuDefinition", Lists.newArrayList());
+
+        userService = mock(UserService.class);
         mockContext.putBean("userService", userService);
     }
 
@@ -83,10 +79,6 @@ public abstract class AbstractSpringTester {
 
     public final EhourConfigStub getConfig() {
         return config;
-    }
-
-    public final AuditService getAuditService() {
-        return auditService;
     }
 
     public EhourSystemConfig getEhourSystemConfig() {

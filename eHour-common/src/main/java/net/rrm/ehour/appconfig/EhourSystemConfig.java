@@ -2,12 +2,12 @@ package net.rrm.ehour.appconfig;
 
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Ehour System Config represents the config found in ehour.properties, a more low-level config for eHour
  */
-@Component
+@Service
 public class EhourSystemConfig {
     @Value("${ehour.enableBookWholeWeek:true}")
     private boolean bookWholeWeekEnabled = true;
@@ -26,6 +26,14 @@ public class EhourSystemConfig {
 
     @Value("${ehour.disableAuth:false}")
     private boolean disableAuth = false;
+
+    public EhourSystemConfig() {
+    }
+
+    public EhourSystemConfig(String eHourHome, String translationsDir) {
+        this.eHourHome = eHourHome;
+        this.translationsDir = translationsDir;
+    }
 
     public boolean isDisableAuth() {
         return disableAuth;

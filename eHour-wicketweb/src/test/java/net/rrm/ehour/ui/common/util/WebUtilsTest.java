@@ -19,9 +19,6 @@ package net.rrm.ehour.ui.common.util;
 import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanelTest;
 import org.junit.Test;
 
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
 /**
  * Created on Mar 17, 2009, 7:04:03 AM
  *
@@ -32,10 +29,9 @@ public class WebUtilsTest extends ProjectReportPanelTest {
     public void testFindComponent() {
         setupExpectations();
 
-        replay(getAggregateReportService());
+        startReportPanel();
 
-        getTester().assertNoErrorMessage();
-
-        verify(getAggregateReportService());
+        tester.assertNoErrorMessage();
+        tester.assertNoInfoMessage();
     }
 }

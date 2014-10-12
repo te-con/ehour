@@ -14,6 +14,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ActivityAdminTest extends BaseSpringWebAppTester {
 
@@ -23,8 +25,8 @@ public class ActivityAdminTest extends BaseSpringWebAppTester {
 
     @Test
     public void testActivityAdminRender() {
-        activityService = createMock(ActivityService.class);
-        projectService = createMock(ProjectService.class);
+        activityService = mock(ActivityService.class);
+        projectService = mock(ProjectService.class);
 
         getMockContext().putBean("activityService", activityService);
         getMockContext().putBean("projectService", projectService);
@@ -35,22 +37,12 @@ public class ActivityAdminTest extends BaseSpringWebAppTester {
         WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
         getMockContext().putBean(windChillUpdateService);
 
-        expect(activityService.getActivities()).andReturn(new ArrayList<Activity>());
-        expect(projectService.getActiveProjects()).andReturn(new ArrayList<Project>());
-        expect(userService.getUsers()).andReturn(Lists.newArrayList(UserObjectMother.createUser()));
-
-        replay(activityService);
-        replay(userService);
-        replay(projectService);
+        when(activityService.getActivities()).thenReturn(new ArrayList<Activity>());
+        when(projectService.getActiveProjects()).thenReturn(new ArrayList<Project>());
+        when(userService.getUsers()).thenReturn(Lists.newArrayList(UserObjectMother.createUser()));
 
         getTester().startPage(ActivityAdmin.class);
         getTester().assertRenderedPage(ActivityAdmin.class);
         getTester().assertNoErrorMessage();
-
-        verify(activityService);
-
-        verify(userService);
-
-        verify(projectService);
     }
 }

@@ -2,33 +2,35 @@ package net.rrm.ehour.ui.manage.user
 
 import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.domain.UserObjectMother
+import net.rrm.ehour.domain.{UserObjectMother, User}
+import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import net.rrm.ehour.ui.common.panel.entryselector.{EntryListUpdatedEvent, HideInactiveFilter, InactiveFilterChangedEvent}
+import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.list.ListItem
 import org.apache.wicket.markup.html.panel.Fragment
-import org.easymock.EasyMock
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 
 class UserSelectionPanelSpec extends AbstractSpringWebAppSpec  {
   "User Selection Panel" should {
+    val service = mockService[UserService]
+
+    before {
+      reset(service)
+    }
 
     "render" in {
-      EasyMock.reset(springTester.userService)
-      EasyMock.expect(springTester.userService.getUsers).andReturn(Lists.newArrayList(UserObjectMother.createUser()))
-      EasyMock.replay(springTester.userService)
+      when(service.getUsers).thenReturn(Lists.newArrayList(UserObjectMother.createUser()))
 
       startPanel()
       tester.assertNoErrorMessage()
 
-      tester.assertComponent("id:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemListHolder:itemList:0", classOf[ListItem[_]])
+      tester.assertComponent("id:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemList:0", classOf[ListItem[_]])
     }
 
     "handle updated list event" in {
-      EasyMock.reset(springTester.userService)
-      EasyMock.expect(springTester.userService.getUsers).andReturn(Lists.newArrayList(UserObjectMother.createUser())).times(2)
-      EasyMock.replay(springTester.userService)
+      when(service.getUsers).thenReturn(Lists.newArrayList(UserObjectMother.createUser()))
 
       val component = startPanel()
 
@@ -39,13 +41,11 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec  {
 
       tester.assertNoErrorMessage()
 
-      verify(target).add(isA(classOf[Fragment]))
+      verify(target).add(isA(classOf[GreyBlueRoundedBorder]))
     }
 
     "handle inactive filter event" in {
-      EasyMock.reset(springTester.userService)
-      EasyMock.expect(springTester.userService.getUsers).andReturn(Lists.newArrayList(UserObjectMother.createUser())).times(2)
-      EasyMock.replay(springTester.userService)
+      when(service.getUsers).thenReturn(Lists.newArrayList(UserObjectMother.createUser()))
 
       val component = startPanel()
 
@@ -56,7 +56,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec  {
 
       tester.assertNoErrorMessage()
 
-      verify(target).add(isA(classOf[Fragment]))
+      verify(target).add(isA(classOf[GreyBlueRoundedBorder]))
     }
   }
 

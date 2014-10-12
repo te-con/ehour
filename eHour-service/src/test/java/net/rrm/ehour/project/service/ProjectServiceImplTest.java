@@ -16,92 +16,81 @@
 
 package net.rrm.ehour.project.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.activity.service.ActivityService;
-import net.rrm.ehour.domain.Activity;
-import net.rrm.ehour.domain.ActivityMother;
 import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectObjectMother;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProjectServiceImplTest {
     private ProjectServiceImpl projectService;
+    
+    @Mock
     private ProjectDao projectDao;
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private ActivityService activityService;
 
     @Before
     public void setUp() {
-        projectDao = createMock(ProjectDao.class);
-        UserService userService = createMock(UserService.class);
-        ActivityService activityService = createMock(ActivityService.class);
-
         projectService = new ProjectServiceImpl(projectDao, activityService, userService);
     }
 
     @Test
     public void should_get_all_active_projects() {
-        expect(projectDao.findAllActive()).andReturn(new ArrayList<Project>());
+        when(projectDao.findAllActive()).thenReturn(Lists.newArrayList(ProjectObjectMother.createProject(1)));
 
-        replay(projectDao);
+        List<Project> activeProjects = projectService.getActiveProjects();
 
-        projectService.getActiveProjects();
-
-        verify(projectDao);
+        assertEquals(1, activeProjects.size());
     }
 
     @Test
     public void should_get_all_projects() {
-        expect(projectDao.findAll()).andReturn(new ArrayList<Project>());
+        when(projectDao.findAll()).thenReturn(Lists.newArrayList(ProjectObjectMother.createProject(1)));
 
-        replay(projectDao);
+        List<Project> projects = projectService.getProjects();
 
-        projectService.getProjects();
-
-        verify(projectDao);
+        assertEquals(1, projects.size());
     }
+
 
     @Test
     public void should_get_project_on_id() throws ObjectNotFoundException {
-        expect(projectDao.findById(1)).andReturn(new Project());
+        Project project = ProjectObjectMother.createProject(1);
+        when(projectDao.findById(1)).thenReturn(project);
 
-        replay(projectDao);
-
-        projectService.getProject(1);
-
-        verify(projectDao);
+        assertEquals(project, projectService.getProject(1));
     }
 
     @Test
-    public void should_create_project() {
-        Project project = new Project(1);
+    public void should_create_or_update_project() {
+        Project project = ProjectObjectMother.createProject(1);
+        User pm = UserObjectMother.createUser();
+        project.setProjectManager(pm);
 
-        expect(projectDao.persist(project)).andReturn(project);
-        replay(projectDao);
-
-        projectService.createProject(project);
-
-        verify(projectDao);
-    }
-
-    @Test
-    public void should_update_project() {
-        Project project = new Project(1);
-
-        expect(projectDao.persist(project)).andReturn(project);
-
-        replay(projectDao);
-
-        Activity activity = ActivityMother.createActivity(1);
-        activity.setProject(project);
 
         projectService.createProject(project);
 
-        verify(projectDao);
+        verify(projectDao).persist(project);
     }
-
 }

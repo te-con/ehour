@@ -23,29 +23,30 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DetailedReportTest extends BaseSpringWebAppTester {
+    @Mock
     private DetailedReportService detailedReportService;
 
     @Before
     public void setup() throws Exception {
-        detailedReportService = createMock(DetailedReportService.class);
         getMockContext().putBean("detailedReportService", detailedReportService);
     }
 
     @Test
     public void testCreateDetailedReport() {
-        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
-
-        replay(detailedReportService);
+        when(detailedReportService.getDetailedReportData(any(ReportCriteria.class)))
+                .thenReturn(DetailedReportDataObjectMother.getFlatReportData());
 
         DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
         assertEquals(5, detailedReport.getReportData().getReportElements().size());
-
-        verify(detailedReportService);
-    }
+   }
 }

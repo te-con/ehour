@@ -2,7 +2,6 @@ package net.rrm.ehour.ui.common.report;
 
 import net.rrm.ehour.ui.common.converter.CurrencyConverter;
 import net.rrm.ehour.ui.common.converter.DateConverter;
-import net.rrm.ehour.ui.common.converter.LockableDateConverter;
 
 import static net.rrm.ehour.ui.common.report.ReportColumn.DisplayType.*;
 

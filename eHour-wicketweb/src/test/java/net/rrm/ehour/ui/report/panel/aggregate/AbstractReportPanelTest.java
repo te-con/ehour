@@ -25,7 +25,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created on Mar 17, 2009, 6:39:39 AM
@@ -35,10 +37,9 @@ import static org.easymock.EasyMock.*;
 public abstract class AbstractReportPanelTest extends BaseSpringWebAppTester {
     private AggregateReportService aggregateReportService;
 
-
     @Before
     public void setup() {
-        aggregateReportService = createMock(AggregateReportService.class);
+        aggregateReportService = mock(AggregateReportService.class);
         getMockContext().putBean("aggregateReportService", aggregateReportService);
     }
 
@@ -46,19 +47,15 @@ public abstract class AbstractReportPanelTest extends BaseSpringWebAppTester {
     public void shouldRenderReportPanel() {
         setupExpectations();
 
-        replay(aggregateReportService);
-
         startReportPanel();
 
         tester.assertNoErrorMessage();
-
-        verify(aggregateReportService);
+        tester.assertNoInfoMessage();
     }
 
     protected void setupExpectations() {
-        expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-                .andReturn(AggregateReportDataObjectMother.getReportData())
-                .anyTimes();
+        when(aggregateReportService.getAggregateReportData(any(ReportCriteria.class)))
+                .thenReturn(AggregateReportDataObjectMother.getReportData());
     }
 
     protected void startReportPanel() {

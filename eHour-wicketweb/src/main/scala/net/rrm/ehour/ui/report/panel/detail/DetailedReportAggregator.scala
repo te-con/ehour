@@ -1,13 +1,15 @@
 package net.rrm.ehour.ui.report.panel.detail
 
-import java.{util => ju}
-import net.rrm.ehour.report.reports.element.FlatReportElement
-import org.joda.time.LocalDate
 import java.util.Date
-import scala.collection.convert.{WrapAsJava, WrapAsScala}
-import org.apache.commons.lang.builder.HashCodeBuilder
+import java.{util => ju}
+
+import net.rrm.ehour.report.reports.element.FlatReportElement
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.util.DateUtil
+import org.apache.commons.lang.builder.HashCodeBuilder
+import org.joda.time.LocalDate
+
+import scala.collection.convert.{WrapAsJava, WrapAsScala}
 
 sealed trait AggregateConverter {
   def toDate(date: Date): Date
@@ -88,7 +90,7 @@ object DetailedReportAggregator {
 }
 
 private case class AggregateKey(aggregatedOn: String, baseElement: FlatReportElement) {
-  override def hashCode() = new HashCodeBuilder().append(aggregatedOn, baseElement.getActivityId).toHashCode
+  override def hashCode() = new HashCodeBuilder().append(aggregatedOn).append(baseElement.getActivityId).toHashCode
 
   override def equals(other: Any) = other match {
     case that: AggregateKey =>

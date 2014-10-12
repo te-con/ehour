@@ -198,11 +198,12 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
     }
   }
 
+  
   def `user has activity B`(user: User) {
     when(activityService.getActivitiesForUser(mockitoEq(user.getUserId), any(classOf[DateRange]))).thenReturn(List(activityB))
   }
 
-  def `user A is active` {
+  def `user A is active`  {
     when(userService.getUsers(UserRole.USER)).thenReturn(List(userA))
   }
 

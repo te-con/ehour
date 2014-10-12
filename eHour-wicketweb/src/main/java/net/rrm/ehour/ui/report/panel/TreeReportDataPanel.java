@@ -210,7 +210,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
     private Component createExcelLink(final TreeReportModel reportModel, final ExcelReport excelReport) {
         if (excelReport != null) {
-            return new ExcelLink("excelLink", reportModel.getReportCriteria()) {
+            return new ExcelReportLink("excelLink", reportModel.getReportCriteria()) {
                 @Override
                 protected ExcelReport createReportBuilder() {
                     return excelReport;

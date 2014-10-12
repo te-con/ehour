@@ -30,7 +30,20 @@
 	
 		<div wicket:id="blueBorder" class="inline" style="padding-top: 0; margin-top: 10px;">
             <div class="listScroll inline" id="listContents">
-                <span wicket:id="itemListHolder"></span>
+                <table class="entrySelectorTable">
+
+                    <thead>
+                        <tr>
+                            <th wicket:id="headers"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr wicket:id="itemList" class="filterRow">
+                            <td wicket:id="child"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 	</span>

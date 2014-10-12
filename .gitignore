@@ -12,3 +12,5 @@ atlassian-ide-plugin.xml
 /dist/md5sums
 /dist/output.txt
 /dist/updates.xml
+
+pom.xml

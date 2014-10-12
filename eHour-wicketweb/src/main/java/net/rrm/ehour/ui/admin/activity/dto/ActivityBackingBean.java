@@ -21,6 +21,11 @@ public class ActivityBackingBean extends AdminBackingBeanImpl {
 		return getActivity();
 	}
 
+	@Override
+	public boolean isDeletable() {
+		return true;
+	}
+
 	public Activity getActivity() {
 		return activity;
 	}

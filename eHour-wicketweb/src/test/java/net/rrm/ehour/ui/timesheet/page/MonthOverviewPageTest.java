@@ -44,8 +44,8 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester {
         getMockContext().putBean(windChillUpdateService);
         getMockContext().putBean(jiraService);
 
-        MockExpectations.navCalendarMockito(overviewTimesheet, getWebApp());
-
+        MockExpectations.navCalendar(overviewTimesheet, getWebApp());
+        
         TimesheetOverview overview = new TimesheetOverview();
         ActivityAggregateReportElement aggregate = ActivityAggregateReportElementMother.createActivityAggregate(1, 1, 1);
 
@@ -57,7 +57,5 @@ public class MonthOverviewPageTest extends BaseSpringWebAppTester {
         getTester().startPage(MonthOverviewPage.class);
         getTester().assertRenderedPage(MonthOverviewPage.class);
         getTester().assertNoErrorMessage();
-
-        tester.debugComponentTrees();
     }
 }

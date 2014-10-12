@@ -21,16 +21,14 @@ import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
-import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Created on Apr 22, 2009, 4:20:02 PM
@@ -62,9 +60,7 @@ public class MiscConfigPanelTest extends AbstractMainConfigTest {
 
     @Test
     public void should_show_convert_to_dropdown_when_manager_is_disabled() {
-        UserService service = getMockContext().getBean(UserService.class);
-        expect(userService.getUsers(UserRole.MANAGER)).andReturn(Lists.newArrayList(UserObjectMother.createUser()));
-        replay(service);
+        when(userService.getUsers(UserRole.MANAGER)).thenReturn(Lists.newArrayList(UserObjectMother.createUser()));
 
         startPage();
 

@@ -19,7 +19,7 @@ package net.rrm.ehour.ui.manage;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
-import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
@@ -106,15 +106,10 @@ public abstract class AbstractTabbedManagePage<T extends AdminBackingBean> exten
         if (payload instanceof InactiveFilterChangedEvent) {
             InactiveFilterChangedEvent inactiveFilterChangedEvent = (InactiveFilterChangedEvent) payload;
 
-            Component component = onFilterChanged(inactiveFilterChangedEvent);
-
-            if (component != null) {
-                inactiveFilterChangedEvent.refresh(component);
-            }
+            onFilterChanged(inactiveFilterChangedEvent, inactiveFilterChangedEvent.target());
         }
     }
 
-    protected Component onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent) {
-        return null;
+    protected void onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent, AjaxRequestTarget target) {
     }
 }

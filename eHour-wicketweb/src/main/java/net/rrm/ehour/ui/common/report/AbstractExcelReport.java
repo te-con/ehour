@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
@@ -66,7 +67,7 @@ public abstract class AbstractExcelReport implements ExcelReport {
     protected ExcelWorkbook createWorkbook(Report treeReport) {
         ExcelWorkbook wb = new ExcelWorkbook();
 
-        HSSFSheet sheet = wb.createSheet(getExcelReportName().getObject());
+        HSSFSheet sheet = wb.createSheet(WorkbookUtil.createSafeSheetName(getExcelReportName().getObject()));
         int rowNumber = 0;
         short column;
 

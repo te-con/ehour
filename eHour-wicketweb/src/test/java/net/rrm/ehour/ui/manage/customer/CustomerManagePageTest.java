@@ -26,68 +26,33 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 /**
  * Customer admin test render
- **/
+ */
 
-public class CustomerManagePageTest extends BaseSpringWebAppTester
-{
-	/**
-	 * Test render
-	 */
-	@Test
-	public void testCustomerAdminRender()
-	{
+public class CustomerManagePageTest extends BaseSpringWebAppTester {
+    @Test
+    public void testCustomerAdminRender() {
         WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
         getMockContext().putBean(windChillUpdateService);
 
-        JiraService jiraService = createMock(JiraService.class);
+        JiraService jiraService = mock(JiraService.class);
         getMockContext().putBean(jiraService);
 
-		CustomerService customerService = createMock(CustomerService.class);
+        CustomerService customerService = mock(CustomerService.class);
 
-		getMockContext().putBean("customerService", customerService);
+        getMockContext().putBean("customerService", customerService);
 
-		expect(userService.getUsers()).andReturn(new ArrayList<User>());
-		expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
+        when(userService.getUsers()).thenReturn(new ArrayList<User>());
+        when(customerService.getActiveCustomers()).thenReturn(new ArrayList<Customer>());
 
-		replay(customerService);
-		replay(userService);
-
-		getTester().startPage(CustomerManagePage.class);
-		getTester().assertRenderedPage(CustomerManagePage.class);
-		getTester().assertNoErrorMessage();
-		
-		verify(customerService);
-		verify(userService);
-	}
-	
-//	@Test
-//	@Ignore
-//	public void testFormSubmit()
-//	{
-//		CustomerService customerService = createMock(CustomerService.class);
-//		getMockContext().putBean("customerService", customerService);
-//
-//		UserService userService = createMock(UserService.class);
-//
-//		expect(customerService.getCustomers(true)).andReturn(new ArrayList<Customer>());
-//		getMockContext().putBean("userService", userService);
-//
-//		replay(customerService);
-//		replay(userService);
-//
-//		FormTester form = getTester().newFormTester("tabs.customerForm");
-//		form.submit();
-//
-//		getTester().startPage(CustomerAdmin.class);
-//		getTester().assertRenderedPage(CustomerAdmin.class);
-//		getTester().assertNoErrorMessage();
-//
-//		verify(customerService);
-//		verify(userService);
-//	}
+        getTester().startPage(CustomerManagePage.class);
+        getTester().assertRenderedPage(CustomerManagePage.class);
+        getTester().assertNoErrorMessage();
+    }
 }

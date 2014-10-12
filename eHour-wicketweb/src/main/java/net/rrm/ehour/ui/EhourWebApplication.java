@@ -19,8 +19,6 @@ package net.rrm.ehour.ui;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.ui.admin.activity.page.ActivityAdmin;
-import net.rrm.ehour.ui.admin.audit.AuditReportPage;
-import net.rrm.ehour.ui.admin.backup.BackupDbPage;
 import net.rrm.ehour.ui.admin.config.MainConfigPage;
 import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.i18n.EhourHomeResourceLoader;
@@ -34,7 +32,7 @@ import net.rrm.ehour.ui.manage.customer.CustomerManagePage;
 import net.rrm.ehour.ui.manage.lock.LockManagePage;
 import net.rrm.ehour.ui.manage.project.ProjectManagePage;
 import net.rrm.ehour.ui.manage.user.ImpersonateUserPage;
-import net.rrm.ehour.ui.manage.user.ManageUserPage;
+import net.rrm.ehour.ui.manage.user.UserManagePage;
 import net.rrm.ehour.ui.report.page.ReportPage;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportRESTResource$;
@@ -44,6 +42,7 @@ import net.rrm.ehour.ui.timesheet.page.UserModerationPage;
 import net.rrm.ehour.ui.userprefs.page.UserPreferencePage;
 import org.apache.log4j.Logger;
 import org.apache.wicket.*;
+import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
@@ -79,6 +78,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private EhourSystemConfig ehourSystemConfig;
 
     private String build;
+    private IAuthorizationStrategy authorizationStrategy;
 
     @Value("${richemont.projectlinkUrl}")
     private String projectLinkUrl;
@@ -165,12 +165,12 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         return RuntimeConfigurationType.valueOf(configurationType.toUpperCase());
     }
 
-    private void mountPages() {
+    protected void mountPages() {
         mountPage("/login", Login.class);
         mountPage("/logout", Logout.class);
 
         mountPage("/admin", MainConfigPage.class);
-        mountPage("/admin/employee", ManageUserPage.class);
+        mountPage("/admin/employee", UserManagePage.class);
         mountPage("/admin/customer", CustomerManagePage.class);
         mountPage("/admin/project", ProjectManagePage.class);
         mountPage("/admin/activity", ActivityAdmin.class);
@@ -184,11 +184,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         mountPage("/report", ReportPage.class);
         mountPage("/report/summary/project", ProjectSummaryPage.class);
 
-        mountPage("/audit", AuditReportPage.class);
-
         mountPage("/prefs", UserPreferencePage.class);
-
-        mountPage("/backup", BackupDbPage.class);
 
         mountPage("/op/lock", LockManagePage.class);
 
@@ -214,7 +210,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     protected void setupSecurity() {
         getApplicationSettings().setPageExpiredErrorPage(SessionExpiredPage.class);
 
-        getSecuritySettings().setAuthorizationStrategy(new RoleAuthorizationStrategy(this));
+        authorizationStrategy = getAuthorizationStrategy();
+        getSecuritySettings().setAuthorizationStrategy(authorizationStrategy);
 
         getSecuritySettings().setUnauthorizedComponentInstantiationListener(new IUnauthorizedComponentInstantiationListener() {
             public void onUnauthorizedInstantiation(final Component component) {
@@ -225,6 +222,10 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
                 }
             }
         });
+    }
+
+    public IAuthorizationStrategy getAuthorizationStrategy() {
+        return new RoleAuthorizationStrategy(this);
     }
 
     @Override
@@ -265,10 +266,6 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         return authenticationManager;
     }
 
-    /*
-      * (non-Javadoc)
-      * @see org.apache.wicket.authentication.AuthenticatedWebApplication#getWebSessionClass()
-      */
     @Override
     protected Class<? extends AuthenticatedWebSession> getWebSessionClass() {
         return EhourWebSession.class;

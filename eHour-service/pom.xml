@@ -44,11 +44,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.gmaven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
             </plugin>
@@ -127,11 +122,6 @@
         <dependency>
             <groupId>stax</groupId>
             <artifactId>stax</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
         </dependency>
 
         <dependency>

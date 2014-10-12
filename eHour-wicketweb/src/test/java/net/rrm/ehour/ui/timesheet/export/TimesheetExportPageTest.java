@@ -32,101 +32,90 @@ import org.apache.wicket.util.tester.FormTester;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
+public class TimesheetExportPageTest extends BaseSpringWebAppTester {
+    @Mock
+    private IOverviewTimesheet overviewTimesheet;
+    @Mock
+    private ReportCriteriaService reportCriteriaService;
+    @Mock
+    private DetailedReportService detailedReportService;
 
-/**
- * Created on Feb 3, 2009, 11:10:24 PM
- * @author Thies Edeling (thies@te-con.nl)
- *
- */
-public class TimesheetExportPageTest extends BaseSpringWebAppTester
-{
-	private IOverviewTimesheet overviewTimesheet;
-	private ReportCriteriaService reportCriteriaService;
-	private DetailedReportService detailedReportService;
-	private ReportCriteria reportCriteria;
+    private ReportCriteria reportCriteria;
+
+    @Mock
+    private ConfigurationService configurationService;
+
+    @Mock
+    private WindChillUpdateService windChillUpdateService;
+    @Mock
+    private JiraService jiraService;
+
 
     @Before
-	public void before() throws Exception {
-        ConfigurationService configurationService = createMock(ConfigurationService.class);
+    public void before() throws Exception {
         getMockContext().putBean("configurationService", configurationService);
-
-        overviewTimesheet = createMock(IOverviewTimesheet.class);
         getMockContext().putBean(overviewTimesheet);
-
-        reportCriteriaService = createMock(ReportCriteriaService.class);
         getMockContext().putBean("reportCriteriaService", reportCriteriaService);
-
-        detailedReportService = createMock(DetailedReportService.class);
         getMockContext().putBean("detailedReportService", detailedReportService);
 
-        WindChillUpdateService windChillUpdateService = createMock(WindChillUpdateService.class);
         getMockContext().putBean("windChillUpdateService", windChillUpdateService);
 
-        JiraService jiraService = createMock(JiraService.class);
         getMockContext().putBean("jiraService", jiraService);
-
 
         reportCriteria = createReportCriteria();
 
-        expect(overviewTimesheet.getBookedDaysMonthOverview(isA(Integer.class), isA(Calendar.class))).andReturn(new ArrayList<LocalDate>());
+        when(overviewTimesheet.getBookedDaysMonthOverview(any(Integer.class), any(Calendar.class))).thenReturn(new ArrayList<LocalDate>());
 
-        expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), isA(ReportCriteriaUpdateType.class)))
-                .andReturn(reportCriteria);
+        when(reportCriteriaService.syncUserReportCriteria(any(ReportCriteria.class), any(ReportCriteriaUpdateType.class)))
+                .thenReturn(reportCriteria);
 
-        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
-        replay(overviewTimesheet, reportCriteriaService, detailedReportService);
+        when(detailedReportService.getDetailedReportData(any(ReportCriteria.class)))
+                .thenReturn(DetailedReportDataObjectMother.getFlatReportData());
 
         tester.startPage(TimesheetExportPage.class);
+
+        tester.assertNoErrorMessage();
+        tester.assertNoInfoMessage();
     }
 
     @Test
-	public void submit()
-	{
-        tester.debugComponentTrees();
+    public void submit() {
         FormTester formTester = tester.newFormTester("printSelectionFrame:greyFrame:printSelectionFrame_body:blueBorder:blueBorder_body:selectionForm:criteriaForm");
-		formTester.selectMultiple("billableProjectGroup", new int[]{0, 2});
-		formTester.setValue("signOff", "true");
+        formTester.selectMultiple("billableProjectGroup", new int[]{0, 2});
+        formTester.setValue("signOff", "true");
 
-		formTester.submit("store");
+        formTester.submit("store");
 
-		tester.assertNoErrorMessage();
-		assertEquals(Boolean.TRUE, reportCriteria.getUserSelectedCriteria().getCustomParameters().get(TimesheetExportParameter.INCL_SIGN_OFF.name()));
+        tester.assertNoErrorMessage();
+        assertEquals(Boolean.TRUE, reportCriteria.getUserSelectedCriteria().getCustomParameters().get(TimesheetExportParameter.INCL_SIGN_OFF.name()));
 
-		assertEquals(2, reportCriteria.getUserSelectedCriteria().getProjects().size());
+        assertEquals(2, reportCriteria.getUserSelectedCriteria().getProjects().size());
 
-		Integer id =  reportCriteria.getUserSelectedCriteria().getProjects().get(1).getProjectId();
+        Integer id = reportCriteria.getUserSelectedCriteria().getProjects().get(1).getProjectId();
 
-		// order is unknown
-		if (id != 0 && id != 2)
-		{
-			fail("id should be 0 or 2");
-		}
-		verifyMocks();
-	}
+        // order is unknown
+        if (id != 0 && id != 2) {
+            fail("id should be 0 or 2");
+        }
+    }
 
-	// don't put these in the teardown (@After) as failed expectations will hide any earlier thrown exceptions
-	public void verifyMocks()
-	{
-		verify(overviewTimesheet);
-		verify(reportCriteriaService);
-		verify(detailedReportService);
+    private ReportCriteria createReportCriteria() {
+        AvailableCriteria availableCriteria = new AvailableCriteria();
+        availableCriteria.setProjects(ProjectObjectMother.createProjects(5));
 
-	}
-
-	private ReportCriteria createReportCriteria()
-	{
-		AvailableCriteria availableCriteria = new AvailableCriteria();
-		availableCriteria.setProjects(ProjectObjectMother.createProjects(5));
-
-		return new ReportCriteria(availableCriteria);
-	}
+        return new ReportCriteria(availableCriteria);
+    }
 }

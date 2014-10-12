@@ -8,9 +8,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class LatestVersionFetcherHttpImpl implements LatestVersionFetcher {
 
     private static final Logger LOGGER = Logger.getLogger(LatestVersionFetcherHttpImpl.class);

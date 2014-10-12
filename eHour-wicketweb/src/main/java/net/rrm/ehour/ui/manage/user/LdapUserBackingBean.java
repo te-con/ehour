@@ -45,4 +45,9 @@ public class LdapUserBackingBean extends AdminBackingBeanImpl<User> {
     public User getDomainObject() {
         return getUser().getUser();
     }
+
+    @Override
+    public boolean isDeletable() {
+        return false;
+    }
 }

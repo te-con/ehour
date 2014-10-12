@@ -39,6 +39,12 @@ public class Audit extends DomainObject<Number, Audit> {
     @Column(name = "AUDIT_ID")
     private Integer auditId;
 
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    @Basic(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    private User user;
+
     @Column(name = "AUDIT_DATE")
     private Date date;
 
@@ -69,6 +75,14 @@ public class Audit extends DomainObject<Number, Audit> {
                 .append("date", date)
                 .append("action", action)
                 .toString();
+    }
+
+    public Audit() {
+    }
+
+    public Audit(User user, Date date) {
+        this.user = user;
+        this.date = date;
     }
 
     /**
