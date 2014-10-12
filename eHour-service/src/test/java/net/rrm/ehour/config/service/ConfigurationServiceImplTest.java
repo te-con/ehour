@@ -97,7 +97,7 @@ public class ConfigurationServiceImplTest {
         configurationService.persistConfiguration(stub);
         ArgumentCaptor<Configuration> configCapture = ArgumentCaptor.forClass(Configuration.class);
 
-        verify(configDAO, times(24)).persist(configCapture.capture());
+        verify(configDAO, times(23)).persist(configCapture.capture());
 
         List<Configuration> configurations = configCapture.getAllValues();
 
