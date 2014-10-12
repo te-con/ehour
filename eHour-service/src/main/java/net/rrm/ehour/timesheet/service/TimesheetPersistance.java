@@ -19,7 +19,6 @@ package net.rrm.ehour.timesheet.service;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.activity.status.ActivityStatusService;
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
-import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
@@ -117,7 +116,6 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     }
 
     @Transactional(rollbackFor = OverBudgetException.class, propagation = Propagation.REQUIRES_NEW)
-    @NonAuditable
     public void validateAndPersist(Activity activity,
                                    List<TimesheetEntry> entries,
                                    DateRange weekRange) throws OverBudgetException {

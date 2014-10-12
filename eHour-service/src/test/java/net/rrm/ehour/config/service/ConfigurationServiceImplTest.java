@@ -5,7 +5,6 @@ import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.LocaleUtil;
 import net.rrm.ehour.config.TranslationDiscovery;
-import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
@@ -94,7 +93,6 @@ public class ConfigurationServiceImplTest {
         stub.setShowTurnover(true);
         stub.setMailFrom("re");
         stub.setMailSmtp("ee");
-        stub.setAuditType(AuditType.WRITE);
 
         configurationService.persistConfiguration(stub);
         ArgumentCaptor<Configuration> configCapture = ArgumentCaptor.forClass(Configuration.class);

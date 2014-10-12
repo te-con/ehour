@@ -51,7 +51,6 @@ public class ExtractDataset
 //        partialDataSet.addTable("mail_type");
 //        partialDataSet.addTable("mail_log");
 //        partialDataSet.addTable("mail_log_assignment");
-        partialDataSet.addTable("AUDITLOG");
 
         FlatXmlDataSet.write(partialDataSet,
                 new FileOutputStream("src/test/resources/test-dataset-20081112.xml"));		

@@ -1,7 +1,5 @@
 package net.rrm.ehour.config;
 
-import net.rrm.ehour.domain.AuditType;
-
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -39,7 +37,6 @@ public class EhourConfigCache implements EhourConfig, Serializable {
         cache.setDontForceLanguage(config.isDontForceLanguage());
         cache.setInitialized(config.isInitialized());
         cache.setFirstDayOfWeek(config.getFirstDayOfWeek());
-        cache.setAuditType(config.getAuditType());
 
         cache.setPmPrivilege(config.getPmPrivilege());
 
@@ -150,11 +147,6 @@ public class EhourConfigCache implements EhourConfig, Serializable {
     @Override
     public int getFirstDayOfWeek() {
         return cache.getFirstDayOfWeek();
-    }
-
-    @Override
-    public AuditType getAuditType() {
-        return cache.getAuditType();
     }
 
     @Override

@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.config;
 
-import net.rrm.ehour.domain.AuditType;
 import org.joda.time.DateTimeZone;
 
 import java.io.Serializable;
@@ -46,7 +45,6 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     private String smtpPassword;
     private String smtpPort = "25";
     private int firstDayOfWeek = 1;
-    private AuditType auditType;
     private String version;
     private PmPrivilege pmPrivilege;
     private boolean splitAdminRole;
@@ -220,11 +218,6 @@ public class EhourConfigStub implements EhourConfig, Serializable {
     }
 
     @Override
-    public AuditType getAuditType() {
-        return auditType;
-    }
-
-    @Override
     public PmPrivilege getPmPrivilege() {
         return pmPrivilege;
     }
@@ -294,10 +287,6 @@ public class EhourConfigStub implements EhourConfig, Serializable {
 
     public void setPmPrivilege(PmPrivilege pmPrivilege) {
         this.pmPrivilege = pmPrivilege;
-    }
-
-    public void setAuditType(AuditType auditType) {
-        this.auditType = auditType;
     }
 
     public String getVersion() {

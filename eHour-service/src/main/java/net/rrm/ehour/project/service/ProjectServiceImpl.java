@@ -17,10 +17,7 @@
 package net.rrm.ehour.project.service;
 
 import net.rrm.ehour.activity.service.ActivityService;
-import net.rrm.ehour.audit.annot.Auditable;
-import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.domain.Activity;
-import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
@@ -79,12 +76,6 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDAO.findByProjectCode(projectCode);
     }
 
-    @Override
-    @NonAuditable
-    public Project nonAuditGetProject(String projectCode) {
-        return getProject(projectCode);
-    }
-
     public Project getProjectAndCheckDeletability(Integer projectId) throws ObjectNotFoundException
 	{
 		Project project = getProject(projectId);
@@ -100,7 +91,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Transactional
-    @Auditable(actionType = AuditActionType.CREATE)
     @Override
     public Project createProject(Project project) {
         return updateProject(project);
@@ -116,7 +106,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Transactional
-    @Auditable(actionType = AuditActionType.DELETE)
     public void deleteProject(Integer projectId) throws ParentChildConstraintException {
         Project project;
 

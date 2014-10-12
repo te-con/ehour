@@ -16,7 +16,6 @@ public enum ConfigurationItem {
     DEMO_MODE("demoMode"),
     INITIALIZED("initialized"),
     FIRST_DAY_OF_WEEK("firstDayOfWeek"),
-    AUDIT_TYPE("auditType"),
     VERSION("version"),
     DONT_FORCE_LANGUAGE("dontForceLanguage"),
     PM_PRIVILEGE("pmPrivilege"),

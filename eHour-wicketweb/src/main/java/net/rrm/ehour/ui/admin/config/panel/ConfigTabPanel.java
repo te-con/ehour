@@ -27,7 +27,6 @@ public class ConfigTabPanel extends MultiTabbedPanel {
         addTab(ConfigTab.MISC, new MiscConfigPanelFactory(), model);
         addTab(ConfigTab.LOCALE, new LocaleConfigPanelFactory(), model);
         addTab(ConfigTab.SKIN, new SkinConfigPanelFactory(), model);
-        addTab(ConfigTab.AUDIT, new AuditConfigPanelFactory(), model);
     }
 
     @SuppressWarnings({"serial"})
@@ -42,13 +41,6 @@ public class ConfigTabPanel extends MultiTabbedPanel {
         };
 
         getTabs().add(tabDefinition.getTabIndex(), tab);
-    }
-
-    @SuppressWarnings("serial")
-    private static class AuditConfigPanelFactory implements TabFactory {
-        public Panel createTab(String panelId, IModel<MainConfigBackingBean> model) {
-            return new AuditConfigPanel(panelId, model);
-        }
     }
 
     @SuppressWarnings("serial")

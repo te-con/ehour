@@ -17,11 +17,7 @@
 package net.rrm.ehour.config.service;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.audit.annot.Auditable;
-import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.config.*;
-import net.rrm.ehour.domain.AuditActionType;
-import net.rrm.ehour.domain.AuditType;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
@@ -71,7 +67,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class);
 
     @Transactional
-    @Auditable(actionType = AuditActionType.UPDATE)
     public void persistExcelLogo(ImageLogo logo) {
         persistLogo("excelHeader", logo);
     }
@@ -91,7 +86,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configDao.persist(logoHeight);
     }
 
-    @NonAuditable
     @Transactional
     public ImageLogo getExcelLogo() {
         ImageLogo logo = getPersistedLogo("excelHeader");
@@ -175,7 +169,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     @Transactional
-    @NonAuditable
     @Cacheable("service.config")
     public EhourConfigStub getConfiguration() {
         List<Configuration> configs = configDao.findAll();
@@ -221,8 +214,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                 config.setInitialized(Boolean.parseBoolean(value));
             } else if (key.equalsIgnoreCase((ConfigurationItem.FIRST_DAY_OF_WEEK.getDbField()))) {
                 config.setFirstDayOfWeek((int) (Float.parseFloat(value)));
-            } else if (key.equalsIgnoreCase((ConfigurationItem.AUDIT_TYPE.getDbField()))) {
-                config.setAuditType(AuditType.fromString(value));
             } else if (key.equalsIgnoreCase((ConfigurationItem.VERSION.getDbField()))) {
                 config.setVersion(value);
             } else if (key.equalsIgnoreCase(ConfigurationItem.PM_PRIVILEGE.getDbField())) {
@@ -253,7 +244,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     @Transactional
-    @Auditable(actionType = AuditActionType.UPDATE)
     @CacheEvict(value = "service.config", allEntries=true)
     public void persistConfiguration(EhourConfig config) {
         LOGGER.debug("Persisting config");
@@ -274,7 +264,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(ConfigurationItem.MAIL_SMTP_PORT.getDbField(), config.getSmtpPort());
         persistConfig(ConfigurationItem.INITIALIZED.getDbField(), config.isInitialized());
         persistConfig(ConfigurationItem.FIRST_DAY_OF_WEEK.getDbField(), config.getFirstDayOfWeek());
-        persistConfig(ConfigurationItem.AUDIT_TYPE.getDbField(), getAuditType(config).getValue());
 
         persistConfig(ConfigurationItem.PM_PRIVILEGE.getDbField(), getPmPrivilege(config).name());
 
@@ -288,14 +277,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         persistConfig(ConfigurationItem.REMINDER_TIME.getDbField(), config.getReminderTime());
 
         persistConfig(ConfigurationItem.TIMEZONE.getDbField(), config.getTimeZone());
-    }
-
-    private AuditType getAuditType(EhourConfig config) {
-        if (config.getAuditType() == null) {
-            return AuditType.WRITE;
-        } else {
-            return config.getAuditType();
-        }
     }
 
     private PmPrivilege getPmPrivilege(EhourConfig config) {

@@ -16,17 +16,13 @@
 
 package net.rrm.ehour.customer.service;
 
-import net.rrm.ehour.audit.annot.Auditable;
-import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
-import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.customer.dao.CustomerDao;
 import net.rrm.ehour.user.service.UserService;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -69,7 +65,6 @@ public class CustomerServiceImpl implements CustomerService
         return customerDAO.findByCustomerCode(customerCode);
     }
 
-    @Auditable(actionType = AuditActionType.DELETE)
     @Transactional
     public void deleteCustomer(Integer customerId) throws ParentChildConstraintException {
         Customer customer = customerDAO.findById(customerId);

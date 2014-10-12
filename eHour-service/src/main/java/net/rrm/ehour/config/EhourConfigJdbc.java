@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.config;
 
-import net.rrm.ehour.domain.AuditType;
 import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -42,7 +41,6 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     private Boolean demoMode;
     private String[] availableTranslations;
     private Boolean initialized;
-    private AuditType auditType;
     private Boolean     ldapSynced;
 
     private String systemConfiguredTimezone = DateTimeZone.getDefault().getID();
@@ -171,15 +169,6 @@ public class EhourConfigJdbc extends DatabaseConfiguration implements EhourConfi
     @Override
     public int getFirstDayOfWeek() {
         return (int) this.getFloat(FIRST_DAY_OF_WEEK.getDbField(), 1);
-    }
-
-    @Override
-    public AuditType getAuditType() {
-        if (auditType == null) {
-            auditType = AuditType.fromString(this.getString(AUDIT_TYPE.getDbField(), "WRITE"));
-        }
-
-        return auditType;
     }
 
     @Override

@@ -17,7 +17,6 @@
 package net.rrm.ehour.project.service;
 
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 
@@ -49,8 +48,6 @@ public interface ProjectService {
 	 */
 	public Project getProject(String projectCode);
 
-    Project nonAuditGetProject(String projectCode);
-
 	/**
 	 * Get project and check deletability
 	 * @param projectId
@@ -80,12 +77,4 @@ public interface ProjectService {
 	 * @return
 	 */
 	public void deleteProject(Integer projectId) throws ParentChildConstraintException;
-
-	/**
-	 * Get project's where user is project manager
-	 *
-     * @param user
-     * @return
-	 */
-	List<Project> getProjectManagerProjects(User user);
 }

@@ -19,8 +19,6 @@ package net.rrm.ehour.ui.common.session;
 import com.google.common.base.Optional;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.config.EhourConfigCache;
-import net.rrm.ehour.domain.Audit;
-import net.rrm.ehour.domain.AuditActionType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
@@ -45,7 +43,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 
 /**

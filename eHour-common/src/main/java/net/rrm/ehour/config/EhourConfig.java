@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.config;
 
-import net.rrm.ehour.domain.AuditType;
 
 import java.util.Locale;
 import java.util.TimeZone;
@@ -116,11 +115,6 @@ public interface EhourConfig {
      * @return 1 = sunday, 2 = monday, Calendar.<WEEKDAY />etc.
      */
     int getFirstDayOfWeek();
-
-    /**
-     * Get audit type (NONE, WRITE, ALL)
-     */
-    AuditType getAuditType();
 
     /**
      * Get rights a PM has

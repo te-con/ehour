@@ -16,7 +16,6 @@
         <module>eHour-service</module>
         <module>eHour-wicketweb</module>
         <module>eHour-web</module>
-        <module>eHour-audit</module>
         <module>eHour-standalone</module>
         <module>eHour-war</module>
         <module>eHour-windchill</module>
@@ -424,12 +423,6 @@
             <dependency>
                 <groupId>nl.tecon.ehevo</groupId>
                 <artifactId>ehevo-wicketweb</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>nl.tecon.ehevo</groupId>
-                <artifactId>ehevo-audit</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

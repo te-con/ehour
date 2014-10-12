@@ -17,7 +17,6 @@
 package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.TimesheetLock;
@@ -40,7 +39,6 @@ import static net.rrm.ehour.report.criteria.ReportCriteriaUpdateType.UPDATE_CUST
 /**
  * Report Criteria services
  */
-@NonAuditable
 @Service("reportCriteriaService")
 public class ReportCriteriaServiceImpl implements ReportCriteriaService {
     private ReportAggregatedDao reportAggregatedDAO;

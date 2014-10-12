@@ -101,10 +101,6 @@
             <artifactId>ehevo-persistence-oracle</artifactId>
         </dependency>
         <dependency>
-            <groupId>nl.tecon.ehevo</groupId>
-            <artifactId>ehevo-audit</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>

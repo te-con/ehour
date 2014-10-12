@@ -42,15 +42,6 @@ public interface ActivityService {
 	 */
 	Activity persistActivity(Activity activity);
 
-    /**
-     * Saves or Updates an already persisted {@link Activity} in underlying
-     * data-storage without auditing
-     *
-     * @param activity
-     * @return
-     */
-    Activity noAuditPersistActivity(Activity activity);
-
 
 	/**
 	 * Archives and not hard delete the passed {@link Activity} in underlying

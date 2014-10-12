@@ -219,7 +219,7 @@ public class WindChillServiceImpl implements WindChillService {
     }
 
     public Project checkProject(String projectCode, String newProjectName) {
-        Project prj = projectService.nonAuditGetProject(projectCode);
+        Project prj = projectService.getProject(projectCode);
         if (prj == null) {
             LOGGER.debug("\tThis project does not exist: " + projectCode);
         } else {
@@ -660,7 +660,7 @@ public class WindChillServiceImpl implements WindChillService {
 
         if (modified) {
             hmAllAssignedActivitiesByCode.remove(activity.getCode());
-            activity = activityService.noAuditPersistActivity(activity);
+            activity = activityService.persistActivity(activity);
             hmAllAssignedActivitiesByCode.put(activity.getCode(), activity);
         }
         return activity;

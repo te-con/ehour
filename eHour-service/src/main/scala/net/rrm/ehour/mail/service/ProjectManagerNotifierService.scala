@@ -3,7 +3,6 @@ package net.rrm.ehour.mail.service
 import java.text.SimpleDateFormat
 import java.util.Date
 
-import net.rrm.ehour.audit.annot.NonAuditable
 import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.domain.{Activity, MailLog, User}
 import net.rrm.ehour.persistence.mail.dao.MailLogDao
@@ -30,7 +29,6 @@ trait ProjectManagerNotifierService {
   def mailPMFlexAllottedReached(assignment: ActivityAggregateReportElement, bookDate: Date, mailToUser: User)
 }
 
-@NonAuditable
 @Service("mailService")
 class ProjectManagerNotifierServiceMailImpl @Autowired()(mailMan: MailMan, config: EhourConfig, mailLogDao: MailLogDao) extends ProjectManagerNotifierService {
   override def mailPMFixedAllottedReached(aggregate: ActivityAggregateReportElement, bookDate: Date, mailToUser: User) {
