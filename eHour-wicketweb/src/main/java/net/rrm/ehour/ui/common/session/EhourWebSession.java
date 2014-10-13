@@ -112,6 +112,12 @@ public class EhourWebSession extends AuthenticatedWebSession {
         this.hideInactiveSelections = hideInactiveSelections;
     }
 
+    public Boolean toggleHideInactiveSelections() {
+        this.hideInactiveSelections = !this.hideInactiveSelections;
+
+        return this.hideInactiveSelections;
+    }
+
     public static EhourConfig getEhourConfig() {
         return EhourWebSession.getSession().ehourConfig;
     }

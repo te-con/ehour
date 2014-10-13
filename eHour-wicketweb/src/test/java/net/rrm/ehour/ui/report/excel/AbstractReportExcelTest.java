@@ -4,31 +4,44 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
+import net.rrm.ehour.ui.common.report.AbstractExcelReport;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.junit.After;
 import org.junit.Before;
 
-import static org.easymock.EasyMock.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class AbstractReportExcelTest extends BaseSpringWebAppTester {
-    protected ReportCriteria criteria;
+    protected IModel<ReportCriteria> criteriaModel;
     private AggregateReportService aggregateReportService;
 
     @Before
     public void before() throws Exception {
-        aggregateReportService = createMock(AggregateReportService.class);
+        aggregateReportService = mock(AggregateReportService.class);
         getMockContext().putBean("aggregateReportService", aggregateReportService);
 
-        criteria = DetailedReportDataObjectMother.getReportCriteria();
+        criteriaModel = new Model<ReportCriteria>(DetailedReportDataObjectMother.getReportCriteria());
 
-        expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-                .andReturn(AggregateReportDataObjectMother.getAssignmentReportData());
-
-        replay(aggregateReportService);
+        when(aggregateReportService.getAggregateReportData(criteriaModel.getObject()))
+                .thenReturn(AggregateReportDataObjectMother.getAssignmentReportData());
     }
 
     @After
     public void tearDown() {
-        verify(aggregateReportService);
+        verify(aggregateReportService).getAggregateReportData(criteriaModel.getObject());
+
+    }
+
+    void generateAndAssert(AbstractExcelReport report) throws IOException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        report.write(stream);
+        byte[] excelData = stream.toByteArray();
+        assertTrue(excelData.length > 0);
     }
 }

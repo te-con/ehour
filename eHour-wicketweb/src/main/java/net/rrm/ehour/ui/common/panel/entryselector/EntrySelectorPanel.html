@@ -7,7 +7,7 @@
 <body>
 
 <wicket:panel>
-	<span wicket:id="entrySelectorFrame">
+	<span wicket:id="entrySelectorFrame" class="entrySelector">
 	
 		<form onsubmit="return false;" wicket:id="filterForm" style="margin: 0; padding: 0">
             <p>
@@ -16,13 +16,11 @@
                     <br/>
 				</span>
 
-                <span wicket:enclosure="filterToggle">
-
-                <label wicket:for="filterToggle" style="margin-left: 0.2em"><span
-                        wicket:id="filterToggleText"></span></label>&nbsp;&nbsp;&nbsp;<input class="borderLess"
-                                                                                             wicket:id="filterToggle"
-                                                                                             type="checkbox"/>
-                    </span>
+                <span class="filters floatRight">
+                    <a wicket:id="filterToggle"><span wicket:id="filterIcon" class="fa fa-toggle-on"></span></a>
+                    &nbsp;
+                    <a wicket:id="toExcel"><span class="fa fa-file-excel-o"></span></a>
+                </span>
             </p>
         </form>
 

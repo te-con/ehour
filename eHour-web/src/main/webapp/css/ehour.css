@@ -865,6 +865,10 @@ hr {
     padding-right: 2em;
 }
 
+.entrySelector .filters {
+    padding: 2px 20px 0 0;
+}
+
 .alignRight {
     text-align: right !important;
 }

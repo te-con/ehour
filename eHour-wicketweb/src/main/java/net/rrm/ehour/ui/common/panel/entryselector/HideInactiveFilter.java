@@ -20,20 +20,25 @@ import java.io.Serializable;
 
 /**
  * Value object for entry selection
- **/
+ * (not quite clear why this Boolean wrapper exists..)
+ */
 
-public class HideInactiveFilter implements Serializable
-{
-	private static final long serialVersionUID = -7713534314686523511L;
-	private	boolean hideInactive = true;
+public class HideInactiveFilter implements Serializable {
+    private static final long serialVersionUID = -7713534314686523511L;
+    private boolean hideInactive = true;
 
-	public boolean isHideInactive()
-	{
-		return hideInactive;
+	public HideInactiveFilter() {
 	}
-	
-	public void setHideInactive(boolean hideInactive)
-	{
+
+	public HideInactiveFilter(boolean hideInactive) {
 		this.hideInactive = hideInactive;
 	}
+
+	public boolean isHideInactive() {
+        return hideInactive;
+    }
+
+    public void setHideInactive(boolean hideInactive) {
+        this.hideInactive = hideInactive;
+    }
 }

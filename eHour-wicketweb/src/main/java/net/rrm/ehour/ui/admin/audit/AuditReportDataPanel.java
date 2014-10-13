@@ -71,10 +71,10 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
     }
 
     private void addExcelLink() {
-        Link<?> excelLink = new ExcelReportLink("excelLink", getPanelModel().getObject()) {
+        Link<?> excelLink = new ExcelReportLink("excelLink") {
             @Override
             protected ExcelReport createReportBuilder() {
-                return new AuditReportExcel();
+                return new AuditReportExcel(getPanelModel());
             }
         };
 

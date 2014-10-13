@@ -8,6 +8,7 @@ import org.apache.poi.ss.util.WorkbookUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +58,7 @@ public class ExcelWorkbook {
         return workbook.addPicture(image, imageType);
     }
 
-    public void write(ByteArrayOutputStream output) throws IOException {
+    public void write(OutputStream output) throws IOException {
         workbook.write(output);
     }
 }

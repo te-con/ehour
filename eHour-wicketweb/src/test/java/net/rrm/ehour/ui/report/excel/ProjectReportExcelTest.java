@@ -7,6 +7,6 @@ import static org.junit.Assert.assertNotNull;
 public class ProjectReportExcelTest extends AbstractReportExcelTest {
     @Test
     public void should_generate() throws Exception {
-        assertNotNull(ProjectReportExcel.getInstance().getExcelData(criteria));
+        generateAndAssert(new ProjectReportExcel(criteriaModel));
     }
 }

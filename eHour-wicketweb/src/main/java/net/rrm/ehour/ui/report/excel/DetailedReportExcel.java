@@ -27,10 +27,8 @@ import org.apache.wicket.model.ResourceModel;
 public class DetailedReportExcel extends AbstractExcelReport {
     private static final long serialVersionUID = 7211392869328367507L;
 
-    private static final DetailedReportExcel INSTANCE = new DetailedReportExcel();
-
-    private DetailedReportExcel() {
-        super(DetailedReportConfig.DETAILED_REPORT_BY_DAY);
+    public DetailedReportExcel(IModel<ReportCriteria> reportCriteriaModel) {
+        super(DetailedReportConfig.DETAILED_REPORT_BY_DAY, reportCriteriaModel);
     }
 
     @Override
@@ -46,9 +44,5 @@ public class DetailedReportExcel extends AbstractExcelReport {
     @Override
     protected IModel<String> getHeaderReportName() {
         return new ResourceModel("report.title.detailed");
-    }
-
-    public static DetailedReportExcel getInstance() {
-        return INSTANCE;
     }
 }

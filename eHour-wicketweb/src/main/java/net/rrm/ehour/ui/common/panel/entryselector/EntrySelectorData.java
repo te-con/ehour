@@ -22,7 +22,6 @@ public class EntrySelectorData implements IClusterable {
         return rows;
     }
 
-
     public static class EntrySelectorRow implements IClusterable {
         private List<? extends Serializable> cells;
         private Serializable id;

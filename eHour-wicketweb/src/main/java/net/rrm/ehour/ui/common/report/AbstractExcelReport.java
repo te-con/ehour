@@ -21,7 +21,6 @@ import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.CellStyle;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.report.TreeReportElement;
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -30,6 +29,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -39,25 +39,19 @@ import java.util.List;
 public abstract class AbstractExcelReport implements ExcelReport {
     private static final long serialVersionUID = 1L;
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractExcelReport.class);
-
     private ReportConfig reportConfig;
+    private IModel<ReportCriteria> reportCriteriaModel;
 
-    public AbstractExcelReport(ReportConfig reportConfig) {
+    public AbstractExcelReport(ReportConfig reportConfig, IModel<ReportCriteria> reportCriteriaModel) {
         this.reportConfig = reportConfig;
+        this.reportCriteriaModel = reportCriteriaModel;
     }
 
     @Override
-    public final byte[] getExcelData(ReportCriteria reportCriteria)  {
-        ExcelWorkbook workbook = createWorkbook(createReport(reportCriteria));
-
-        try {
-            return PoiUtil.getWorkbookAsBytes(workbook);
-        } catch (IOException e) {
-            LOGGER.warn(e);
-            return new byte[0];
-        }
-    }
+    public void write(OutputStream stream) throws IOException {
+        ExcelWorkbook workbook = createWorkbook(createReport(reportCriteriaModel.getObject()));
+        workbook.write(stream);
+   }
 
     protected abstract Report createReport(ReportCriteria reportCriteria);
 
