@@ -25,22 +25,19 @@ import org.apache.wicket.model.ResourceModel;
 
 /**
  * Excel export of audit report
- **/
+ */
 
-public class AuditReportExcel extends AbstractExcelReport
-{
-	private static final long serialVersionUID = 1597838144702980437L;
-	
-	public AuditReportExcel()
-	{
-		super(AggregatedReportConfig.AUDIT_REPORT);
-	}
-	
-	@Override
-	public String getFilename()
-	{
-		return "audit_report.xls";
-	}
+public class AuditReportExcel extends AbstractExcelReport {
+    private static final long serialVersionUID = 1597838144702980437L;
+
+    public AuditReportExcel(IModel<ReportCriteria> reportCriteriaModel) {
+        super(AggregatedReportConfig.AUDIT_REPORT, reportCriteriaModel);
+    }
+
+    @Override
+    public String getFilename() {
+        return "audit_report.xls";
+    }
 
     @Override
     protected Report createReport(ReportCriteria reportCriteria) {
@@ -48,15 +45,12 @@ public class AuditReportExcel extends AbstractExcelReport
     }
 
     @Override
-	protected IModel<String> getExcelReportName()
-	{
-		return new ResourceModel("audit.report.title");
-	}
+    protected IModel<String> getExcelReportName() {
+        return new ResourceModel("audit.report.title");
+    }
 
-
-	@Override
-	protected IModel<String> getHeaderReportName()
-	{
-		return new ResourceModel("audit.report.title");
-	}
+    @Override
+    protected IModel<String> getHeaderReportName() {
+        return new ResourceModel("audit.report.title");
+    }
 }

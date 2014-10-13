@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.report.panel
 package detail
 
-import net.rrm.ehour.report.criteria.{AggregateBy, UserSelectedCriteria}
+import net.rrm.ehour.report.criteria.{ReportCriteria, AggregateBy, UserSelectedCriteria}
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer
@@ -43,7 +43,9 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
 
     val reportConfig = DetailedReportPanel.AggregateToConfigMap.getOrElse(report.getReportCriteria.getUserSelectedCriteria.getAggregateBy, DetailedReportConfig.DETAILED_REPORT_BY_DAY)
 
-    frame.add(new TreeReportDataPanel("reportTable", report, reportConfig, DetailedReportExcel.getInstance()) {
+    val excel = new DetailedReportExcel(new PropertyModel[ReportCriteria](report, "reportCriteria"))
+
+    frame.add(new TreeReportDataPanel("reportTable", report, reportConfig, excel) {
       protected override def createAdditionalOptions(id: String): WebMarkupContainer = new AggregateByDatePanel(id, report.getReportCriteria.getUserSelectedCriteria)
     })
 

@@ -5,12 +5,7 @@
 derby.log
 atlassian-ide-plugin.xml
 /bench/generated.sql
-/dist/ehour_macos_1_2_1.dmg
-/dist/ehour_unix_1_2_1.sh
-/dist/ehour_windows_1_2_1.exe
-/dist/ehour_windows-x64_1_2_1.exe
 /dist/md5sums
 /dist/output.txt
 /dist/updates.xml
-
-pom.xml
+log.txt

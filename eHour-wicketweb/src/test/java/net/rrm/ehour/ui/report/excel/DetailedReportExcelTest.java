@@ -3,13 +3,18 @@ package net.rrm.ehour.ui.report.excel;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
+import net.rrm.ehour.ui.common.wicket.Model;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
+import net.rrm.ehour.ui.timesheet.export.TimesheetExcelExport;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.ByteArrayOutputStream;
+
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 public class DetailedReportExcelTest extends BaseSpringWebAppTester {
@@ -29,6 +34,9 @@ public class DetailedReportExcelTest extends BaseSpringWebAppTester {
 
         when(detailedReportService.getDetailedReportData(criteria)).thenReturn(DetailedReportDataObjectMother.getFlatReportData());
 
-        assertNotNull(DetailedReportExcel.getInstance().getExcelData(criteria));
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        new DetailedReportExcel(new Model<ReportCriteria>(criteria)).write(stream);
+        byte[] excelData = stream.toByteArray();
+        assertTrue(excelData.length > 0);
     }
 }

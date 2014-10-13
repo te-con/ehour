@@ -23,7 +23,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;
 import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
-import net.rrm.ehour.ui.common.util.Function;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -139,17 +138,12 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
 
         @Override
         protected void onSubmit() {
-            final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport();
             final ReportCriteria reportCriteria = mergeBillablesAndUnbillables();
+            final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport(reportCriteria);
 
             String filename = createFilename(reportCriteria);
 
-            getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(filename, new Function<byte[]>() {
-                @Override
-                public byte[] apply() {
-                    return timesheetExcelExport.getExcelData(reportCriteria);
-                }
-            }));
+            getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(filename, timesheetExcelExport));
         }
 
         private ReportCriteria mergeBillablesAndUnbillables() {

@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -80,7 +81,9 @@ public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
 
         when(detailedReportService.getDetailedReportData(criteria)).thenReturn(data);
 
-        byte[] excelData = new TimesheetExcelExport().getExcelData(criteria);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        new TimesheetExcelExport(criteria).write(stream);
+        byte[] excelData = stream.toByteArray();
         assertTrue(excelData.length > 0);
     }
 
@@ -96,7 +99,9 @@ public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
 
         when(detailedReportService.getDetailedReportData(criteria)).thenReturn(data);
 
-        byte[] excelData = new TimesheetExcelExport().getExcelData(criteria);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        new TimesheetExcelExport(criteria).write(stream);
+        byte[] excelData = stream.toByteArray();
         assertTrue(excelData.length > 0);
     }
 
