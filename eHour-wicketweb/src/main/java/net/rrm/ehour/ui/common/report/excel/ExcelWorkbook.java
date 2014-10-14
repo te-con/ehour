@@ -1,9 +1,6 @@
 package net.rrm.ehour.ui.common.report.excel;
 
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -60,5 +57,13 @@ public class ExcelWorkbook {
 
     public void write(OutputStream output) throws IOException {
         workbook.write(output);
+    }
+
+    public CreationHelper getCreationHelper() {
+        return workbook.getCreationHelper();
+    }
+
+    public Workbook getWorkbook() {
+        return workbook;
     }
 }
