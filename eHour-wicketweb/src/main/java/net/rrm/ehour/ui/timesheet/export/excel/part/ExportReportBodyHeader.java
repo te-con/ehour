@@ -18,10 +18,10 @@ package net.rrm.ehour.ui.timesheet.export.excel.part;
 
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
-import net.rrm.ehour.ui.common.report.excel.CellStyle;
+import net.rrm.ehour.ui.common.report.excel.ExcelStyle;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.wicket.model.ResourceModel;
 
 /**
@@ -31,7 +31,7 @@ import org.apache.wicket.model.ResourceModel;
  */
 public class ExportReportBodyHeader extends AbstractExportReportPart
 {
-	public ExportReportBodyHeader(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	public ExportReportBodyHeader(int cellMargin, Sheet sheet, Report report, ExcelWorkbook workbook)
 	{
 		super(cellMargin, sheet, report, workbook);
 	}
@@ -39,20 +39,20 @@ public class ExportReportBodyHeader extends AbstractExportReportPart
 	
 	public int createPart(int rowNumber)
 	{
-		HSSFSheet sheet = getSheet();
+		Sheet sheet = getSheet();
         ExcelWorkbook workbook = getWorkbook();
 		int cellMargin = getCellMargin();
 		
-		HSSFRow row = sheet.createRow(rowNumber);
+		Row row = sheet.createRow(rowNumber);
 		
-        CellFactory.createCell(row, cellMargin + ExportReportColumn.DATE.getColumn(), new ResourceModel("excelMonth.body.date"), workbook, CellStyle.BOLD_BORDER_SOUTH);
-        CellFactory.createCell(row, cellMargin + ExportReportColumn.CUSTOMER_CODE.getColumn(), new ResourceModel("excelMonth.body.customerCode"), workbook, CellStyle.BOLD_BORDER_SOUTH);
-        CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT.getColumn(), new ResourceModel("excelMonth.body.project"), workbook, CellStyle.BOLD_BORDER_SOUTH);
-        CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT_CODE.getColumn(), new ResourceModel("excelMonth.body.projectCode"), workbook, CellStyle.BOLD_BORDER_SOUTH);
+        CellFactory.createCell(row, cellMargin + ExportReportColumn.DATE.getColumn(), new ResourceModel("excelMonth.body.date"), workbook, ExcelStyle.BOLD_BORDER_SOUTH);
+        CellFactory.createCell(row, cellMargin + ExportReportColumn.CUSTOMER_CODE.getColumn(), new ResourceModel("excelMonth.body.customerCode"), workbook, ExcelStyle.BOLD_BORDER_SOUTH);
+        CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT.getColumn(), new ResourceModel("excelMonth.body.project"), workbook, ExcelStyle.BOLD_BORDER_SOUTH);
+        CellFactory.createCell(row, cellMargin + ExportReportColumn.PROJECT_CODE.getColumn(), new ResourceModel("excelMonth.body.projectCode"), workbook, ExcelStyle.BOLD_BORDER_SOUTH);
 
-		createEmptyCells(row, CellStyle.BORDER_SOUTH);
+		createEmptyCells(row, ExcelStyle.BORDER_SOUTH);
 
-		CellFactory.createCell(row, cellMargin + ExportReportColumn.HOURS.getColumn(), new ResourceModel("excelMonth.body.hours"), workbook, CellStyle.BOLD_BORDER_SOUTH);
+		CellFactory.createCell(row, cellMargin + ExportReportColumn.HOURS.getColumn(), new ResourceModel("excelMonth.body.hours"), workbook, ExcelStyle.BOLD_BORDER_SOUTH);
 		
 		rowNumber++;
 		

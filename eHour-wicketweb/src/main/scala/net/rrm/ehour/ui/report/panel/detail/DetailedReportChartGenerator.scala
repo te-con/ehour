@@ -30,7 +30,7 @@ object DetailedReportChartGenerator {
 
     type f = DateTime => DateTime
 
-    val (dateIncreaseMethod: (DateTime => DateTime), converter: AggregateConverter) = reportData.getCriteria.getAggregateBy match {
+    val (dateIncreaseMethod: (DateTime => DateTime), converter: AggregateConverter) = reportData.getReportCriteria.getAggregateBy match {
       case AggregateBy.WEEK=> ((d: DateTime) => d.plusWeeks(1), new ByWeek)
       case AggregateBy.MONTH => ((d: DateTime) => d.plusMonths(1), new ByMonth)
       case AggregateBy.QUARTER => ((d: DateTime) => d.plusMonths(3), new ByQuarter)

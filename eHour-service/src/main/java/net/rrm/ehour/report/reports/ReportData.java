@@ -65,7 +65,7 @@ public class ReportData implements Serializable {
         return reportElements;
     }
 
-    public UserSelectedCriteria getCriteria() {
+    public UserSelectedCriteria getReportCriteria() {
         return criteria;
     }
 }

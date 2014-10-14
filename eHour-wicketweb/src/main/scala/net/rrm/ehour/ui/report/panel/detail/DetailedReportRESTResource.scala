@@ -34,7 +34,7 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
   def getHourlyData(cacheKey: String): DetailedReportResponse = {
     cacheService.retrieveReportData(cacheKey) match {
       case Some(data) =>
-        val aggregateBy = data.getCriteria.getAggregateBy
+        val aggregateBy = data.getReportCriteria.getAggregateBy
         val reportRange = data.getReportRange
         val unprocessedSeries = DetailedReportChartGenerator.generateHourBasedDetailedChartData(data)
 
@@ -57,7 +57,7 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
   def getTurnoverData(cacheKey: String): DetailedReportResponse = {
     cacheService.retrieveReportData(cacheKey) match {
       case Some(data) =>
-        val aggregateBy = data.getCriteria.getAggregateBy
+        val aggregateBy = data.getReportCriteria.getAggregateBy
         val reportRange = data.getReportRange
         val unprocessedSeries = DetailedReportChartGenerator.generateTurnoverBasedDetailedChartData(data)
 
