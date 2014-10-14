@@ -14,7 +14,7 @@ public abstract class ExcelReportLink extends Link<Void> {
     @Override
     public void onClick() {
         ExcelReport reportBuilder = createReportBuilder();
-        getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(reportBuilder.getFilename(), reportBuilder));
+        getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(reportBuilder.getFilename(), reportBuilder, ExcelRequestHandler.Format.XLSX));
     }
 
     protected abstract ExcelReport createReportBuilder();

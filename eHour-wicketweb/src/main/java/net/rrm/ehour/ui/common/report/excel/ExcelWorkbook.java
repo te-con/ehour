@@ -1,12 +1,12 @@
 package net.rrm.ehour.ui.common.report.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.WorkbookUtil;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -15,42 +15,42 @@ import java.util.Map;
 public class ExcelWorkbook {
     private static final String FONT_NAME = "Arial";
 
-    private Map<CellStyle, HSSFCellStyle> pregeneratedStyles;
+    private Map<ExcelStyle, CellStyle> pregeneratedStyles;
 
-    private HSSFWorkbook workbook;
+    private Workbook workbook;
 
     public ExcelWorkbook() {
         init();
     }
 
     private void init() {
-        workbook = new HSSFWorkbook();
+        workbook = new XSSFWorkbook();
 
         pregenerateStyles(workbook);
     }
-    private void pregenerateStyles(HSSFWorkbook workbook) {
-        pregeneratedStyles = new HashMap<CellStyle, HSSFCellStyle>();
+    private void pregenerateStyles(Workbook workbook) {
+        pregeneratedStyles = new HashMap<ExcelStyle, CellStyle>();
 
-        CellStyle[] styleses = CellStyle.values();
+        ExcelStyle[] styles = ExcelStyle.values();
 
-        HSSFFont font = workbook.createFont();
+        Font font = workbook.createFont();
         font.setFontName(FONT_NAME);
 
-        for (CellStyle stylese : styleses) {
-            HSSFCellStyle cellStyle = workbook.createCellStyle();
+        for (ExcelStyle style : styles) {
+            CellStyle cellStyle = workbook.createCellStyle();
             cellStyle.setFont(font);
 
-            stylese.apply(workbook, cellStyle);
+            style.apply(workbook, cellStyle, font);
 
-            pregeneratedStyles.put(stylese, cellStyle);
+            pregeneratedStyles.put(style, cellStyle);
         }
     }
 
-    public HSSFCellStyle getCellStyle(CellStyle forCellStyle) {
-        return pregeneratedStyles.get(forCellStyle);
+    public CellStyle getCellStyle(ExcelStyle forExcelStyle) {
+        return pregeneratedStyles.get(forExcelStyle);
     }
 
-    public HSSFSheet createSheet(String sheetName) {
+    public Sheet createSheet(String sheetName) {
         return workbook.createSheet(WorkbookUtil.createSafeSheetName(sheetName));
     }
 

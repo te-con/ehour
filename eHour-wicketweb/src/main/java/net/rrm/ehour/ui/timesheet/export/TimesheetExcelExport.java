@@ -22,9 +22,8 @@ import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.export.excel.part.*;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.WorkbookUtil;
-import org.apache.wicket.model.IModel;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -56,7 +55,7 @@ public class TimesheetExcelExport implements ExcelReport {
         ExcelWorkbook workbook = new ExcelWorkbook();
 
         String sheetName = WebUtils.formatDate("MMMM yyyy", report.getReportRange().getDateStart());
-        HSSFSheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName(sheetName));
+        Sheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName(sheetName));
 
         sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.DATE.getColumn()));
         sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.CUSTOMER_CODE.getColumn()));

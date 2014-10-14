@@ -27,14 +27,16 @@ import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
 
 /**
  * Created on Mar 25, 2009, 6:37:20 AM
@@ -46,8 +48,7 @@ public class ExportReportHeader extends AbstractExportReportPart
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
 
-
-    public ExportReportHeader(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+    public ExportReportHeader(int cellMargin, Sheet sheet, Report report, ExcelWorkbook workbook)
     {
         super(cellMargin, sheet, report, workbook);
     }
@@ -76,9 +77,9 @@ public class ExportReportHeader extends AbstractExportReportPart
 
         int index = getWorkbook().addPicture(image, PoiUtil.getImageType(excelLogo.getImageType()));
 
-        HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 0, (short) 1, 0, (short) 8, 7);
+        ClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) 1, 0, (short) 8, 7);
 
-        HSSFPatriarch patriarch = getSheet().createDrawingPatriarch();
+        Drawing patriarch = getSheet().createDrawingPatriarch();
         patriarch.createPicture(anchor, index);
         anchor.setAnchorType(0); // 0 = Move and size with Cells, 2 = Move but don't size with cells, 3 = Don't move or size with cells.
 
@@ -88,7 +89,7 @@ public class ExportReportHeader extends AbstractExportReportPart
 
     private int addTitleRow(int rowNumber)
     {
-        HSSFRow row = getSheet().createRow(rowNumber++);
+        Row row = getSheet().createRow(rowNumber++);
 
         CellFactory.createCell(row, getCellMargin(), getExcelReportName(getReport().getReportRange()), getWorkbook());
         return rowNumber;
@@ -96,7 +97,7 @@ public class ExportReportHeader extends AbstractExportReportPart
 
     private int addTitleDateRow(int rowNumber)
     {
-        HSSFRow row = getSheet().createRow(rowNumber++);
+        Row row = getSheet().createRow(rowNumber++);
 
         CellFactory.createCell(row, getCellMargin(), new ResourceModel("excelMonth.date"), getWorkbook());
         CellFactory.createCell(row, getCellMargin() + 2, WebUtils.formatDate("MMMM yyyy", getReport().getReportRange().getDateStart()), getWorkbook());
@@ -106,12 +107,11 @@ public class ExportReportHeader extends AbstractExportReportPart
 
     private IModel<String> getExcelReportName(DateRange dateRange)
     {
-        EhourWebSession session = EhourWebSession.getSession();
-        EhourConfig config = session.getEhourConfig();
+        EhourConfig config = EhourWebSession.getEhourConfig();
 
         return new StringResourceModel("excelMonth.reportName",
                 null,
-                new Object[]{session.getUser().getFullName(),
+                new Object[]{EhourWebSession.getUser().getFullName(),
                              new DateModel(dateRange.getDateStart(), config, DateModel.DATESTYLE_MONTHONLY)});
     }
 

@@ -18,6 +18,7 @@ package net.rrm.ehour.report.reports;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
+import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.element.ReportElement;
 
@@ -36,6 +37,7 @@ public class ReportData implements Serializable {
     private List<? extends ReportElement> reportElements;
     private DateRange reportRange;
     private final UserSelectedCriteria criteria;
+    private final ReportCriteria reportCriteria;
 
     public ReportData(List<? extends ReportElement> reportElements, DateRange reportRange, UserSelectedCriteria criteria) {
         this(Lists.<Date>newArrayList(), reportElements, reportRange, criteria);
@@ -46,6 +48,7 @@ public class ReportData implements Serializable {
         this.reportElements = reportElements;
         this.reportRange = reportRange;
         this.criteria = criteria;
+        this.reportCriteria = new ReportCriteria(criteria);
     }
 
     public boolean isEmpty() {
@@ -67,5 +70,9 @@ public class ReportData implements Serializable {
 
     public UserSelectedCriteria getCriteria() {
         return criteria;
+    }
+
+    public ReportCriteria getReportCriteria() {
+        return reportCriteria;
     }
 }

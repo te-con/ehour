@@ -18,9 +18,9 @@ package net.rrm.ehour.ui.common.report.excel;
 
 import net.rrm.ehour.report.reports.element.LockableDate;
 import net.rrm.ehour.ui.common.util.WebUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.wicket.model.IModel;
 
 import java.util.Date;
@@ -31,24 +31,24 @@ import java.util.Date;
  * @author Thies Edeling (thies@te-con.nl)
  */
 public class CellFactory {
-    public static HSSFCell createCell(HSSFRow row, int column, String value, ExcelWorkbook workbook) {
-        return CellFactory.createCell(row, column, value, workbook, CellStyle.NORMAL_FONT);
+    public static Cell createCell(Row row, int column, String value, ExcelWorkbook workbook) {
+        return CellFactory.createCell(row, column, value, workbook, ExcelStyle.NORMAL_FONT);
     }
 
-    public static HSSFCell createCell(HSSFRow row, int column, IModel<String> valueModel, ExcelWorkbook workbook) {
-        return CellFactory.createCell(row, column, valueModel, workbook, CellStyle.NORMAL_FONT);
+    public static Cell createCell(Row row, int column, IModel<String> valueModel, ExcelWorkbook workbook) {
+        return CellFactory.createCell(row, column, valueModel, workbook, ExcelStyle.NORMAL_FONT);
     }
 
-    public static HSSFCell createCell(HSSFRow row, int column, ExcelWorkbook workbook, CellStyle cellStyle) {
-        return createCell(row, column, "", workbook, cellStyle);
+    public static Cell createCell(Row row, int column, ExcelWorkbook workbook, ExcelStyle excelStyle) {
+        return createCell(row, column, "", workbook, excelStyle);
     }
 
-    public static HSSFCell createCell(HSSFRow row, int column, IModel<String> valueModel, ExcelWorkbook workbook, CellStyle cellStyle) {
-        return createCell(row, column, WebUtils.getResourceModelString(valueModel), workbook, cellStyle);
+    public static Cell createCell(Row row, int column, IModel<String> valueModel, ExcelWorkbook workbook, ExcelStyle excelStyle) {
+        return createCell(row, column, WebUtils.getResourceModelString(valueModel), workbook, excelStyle);
     }
 
-    public static HSSFCell createCell(HSSFRow row, int column, Object value, ExcelWorkbook workbook, CellStyle cellStyle) {
-        HSSFCell cell = row.createCell(column);
+    public static Cell createCell(Row row, int column, Object value, ExcelWorkbook workbook, ExcelStyle excelStyle) {
+        Cell cell = row.createCell(column);
 
         if (value instanceof Float) {
             cell.setCellValue((Float) value);
@@ -59,10 +59,10 @@ public class CellFactory {
         } else if (value instanceof LockableDate) {
             cell.setCellValue(((LockableDate) value).getDate());
         } else {
-            cell.setCellValue(new HSSFRichTextString(value.toString()));
+            cell.setCellValue(new XSSFRichTextString(value.toString()));
         }
 
-        cell.setCellStyle(workbook.getCellStyle(cellStyle));
+        cell.setCellStyle(workbook.getCellStyle(excelStyle));
 
         return cell;
     }
