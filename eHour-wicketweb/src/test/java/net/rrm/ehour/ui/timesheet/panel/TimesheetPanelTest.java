@@ -103,8 +103,6 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         final String comment = "commentaar";
 
-        tester.debugComponentTrees();
-
         clickDay1();
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);

@@ -95,11 +95,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
         ehourConfig = new EhourConfigCache(unCachedEhourConfig);
 
-        if (ehourConfig.isDontForceLanguage()) {
-            LOGGER.debug("Not forcing locale, using browser's locale");
-        } else {
-            LOGGER.debug("Setting locale to " + ehourConfig.getLanguageLocale().getDisplayLanguage());
-
+        if (!ehourConfig.isDontForceLanguage()) {
             setLocale(ehourConfig.getLanguageLocale());
         }
     }
