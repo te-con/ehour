@@ -90,6 +90,12 @@
             <groupId>nl.tecon.scalahighcharts</groupId>
             <artifactId>highcharts</artifactId>
             <version>1.6</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scalap</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
