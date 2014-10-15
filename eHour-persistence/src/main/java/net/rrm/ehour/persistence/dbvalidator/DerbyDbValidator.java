@@ -42,9 +42,9 @@ import java.sql.Statement;
  * Derby database accessor methods
  */
 public class DerbyDbValidator {
-    private static final String DDL_FILE = "ddl/ddl-ehour-%s.xml";
-    private static final String DML_FILE = "ddl/dml-ehour-%s.xml";
-    private static final String DML_DIFF_FILE = "ddl/dml-ehour-%s-diff.xml";
+    private static final String DDL_FILE = "derby/ddl/ddl-ehour-%s.xml";
+    private static final String DML_FILE = "derby/ddl/dml-ehour-%s.xml";
+    private static final String DML_DIFF_FILE = "derby/ddl/dml-ehour-%s-diff.xml";
 
     public enum DdlType {NONE, CREATE_TABLE, ALTER_TABLE}
 

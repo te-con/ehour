@@ -1,4 +1,4 @@
-package dbvalidator;
+package net.rrm.ehour.persistence.dbvalidator;
 
 import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
