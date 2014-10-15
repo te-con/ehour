@@ -82,10 +82,6 @@
             <artifactId>jetty-deploy</artifactId>
         </dependency>
         <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-        </dependency>
-        <dependency>
             <groupId>net.rrm.ehour</groupId>
             <artifactId>eHour-wicketweb</artifactId>
         </dependency>
