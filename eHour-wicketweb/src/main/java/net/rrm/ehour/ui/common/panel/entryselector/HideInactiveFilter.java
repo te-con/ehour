@@ -28,6 +28,7 @@ public class HideInactiveFilter implements Serializable {
     private boolean hideInactive = true;
 
 	public HideInactiveFilter() {
+
 	}
 
 	public HideInactiveFilter(boolean hideInactive) {
