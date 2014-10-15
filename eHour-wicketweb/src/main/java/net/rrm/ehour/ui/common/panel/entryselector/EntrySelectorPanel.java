@@ -57,7 +57,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     private static final String HEADER_ID = "headers";
     private final ClickHandler clickHandler;
 
-    private IModel<String> hideInactiveCheckboxTooltip;
+    private IModel<String> hideInactiveLinkTooltip;
     private boolean showHideInactiveLink = false;
     private GreyBlueRoundedBorder blueBorder;
 
@@ -71,7 +71,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         this.clickHandler = clickHandler;
 
         if (checkboxTooltip != null) {
-            this.hideInactiveCheckboxTooltip = checkboxTooltip;
+            this.hideInactiveLinkTooltip = checkboxTooltip;
             showHideInactiveLink = true;
         }
 
@@ -236,7 +236,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     }
 
     private void addFilterIconAttributes(WebMarkupContainer filterIcon, boolean active) {
-        filterIcon.add(AttributeModifier.replace("title", hideInactiveCheckboxTooltip));
+        filterIcon.add(AttributeModifier.replace("title", hideInactiveLinkTooltip));
         filterIcon.add(AttributeModifier.replace("class", active ? "fa fa-toggle-on" : "fa fa-toggle-off"));
     }
 
