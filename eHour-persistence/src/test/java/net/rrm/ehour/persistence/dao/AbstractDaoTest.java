@@ -29,6 +29,7 @@ public abstract class AbstractDaoTest {
     private List<String> datasetFilenames = Lists.newArrayList("dataset-users.xml");
 
     public AbstractDaoTest() {
+        System.setProperty("EHOUR_TEST", "true");
     }
 
     public AbstractDaoTest(String dataSetFileName) {
@@ -36,6 +37,7 @@ public abstract class AbstractDaoTest {
     }
 
     public AbstractDaoTest(List<String> additionalDataSets) {
+        this();
         this.datasetFilenames.addAll(additionalDataSets);
     }
 
