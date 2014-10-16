@@ -42,8 +42,7 @@ public class UserManagePage extends AbstractUserManagePageTemplate<LdapUserBacki
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
-        return new UserFormPanel(panelId,
-                new CompoundPropertyModel<LdapUserBackingBean>(getTabbedPanel().getAddBackingBean()));
+        return new UserAddPlaceholderPanel(panelId);
     }
 
     @Override
