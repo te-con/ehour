@@ -336,13 +336,8 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         parent.add(resetButton);
     }
 
-    /**
-     *
-     * @param resourceName
-     * @return
-     */
     private String getStringResource(String resourceName){
-        IModel<String> model = new StringResourceModel(resourceName, TimesheetPanel.this, null, new Object[]{});
+        IModel<String> model = new StringResourceModel(resourceName, TimesheetPanel.this, null);
         return  model.getObject();
     }
 
@@ -377,13 +372,13 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     }
 
     private Label updateErrorMessage() {
-        IModel<String> model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null, new Object[]{});
+        IModel<String> model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null);
         return updateServerMessage_err(model);
     }
 
 
     private Label updateErrorMessageWaiting() {
-        IModel<String> model = new StringResourceModel("timesheet.waiting", TimesheetPanel.this, null, new Object[]{});
+        IModel<String> model = new StringResourceModel("timesheet.waiting", TimesheetPanel.this, null);
         Label label = new Label("serverMessage", model);
         String styleAttr = "color: #006400;";  // green
         label.add(AttributeModifier.replace("style", styleAttr));
@@ -604,7 +599,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         List<Activity> jiraActivities = new ArrayList<Activity>();
         List<TimesheetEntry> jiraEntries = new ArrayList<TimesheetEntry>();
         List<String> jiraFailedActivitieslist = new ArrayList<String>();     // Jira Activities
-        List<ProxyWindActivity> newWindActivitieslist = new ArrayList<ProxyWindActivity>(); // Activities created in PJL for Jira
+        List<ProxyWindActivity> newWindActivitieslist; // Activities created in PJL for Jira
         List<String> windFailedActivitieslist = new ArrayList<String>();   // Native PJL actvities
 
         LOGGER.info("\n\n");
@@ -620,7 +615,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         for (TimesheetEntry entry : entries) {
             if (entry.getUpdatedHours() != null){
 
-                if (entry.getEntryId().getActivity().getCode().toString().startsWith(JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA)){
+                if (entry.getEntryId().getActivity().getCode().startsWith(JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA)){
                     // Jira activities
                     a = entry.getEntryId().getActivity();
                     if (!jiraActivities.contains(a) ) jiraActivities.add(entry.getEntryId().getActivity());
@@ -673,7 +668,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
                 LOGGER.info("user session has been updated");
                 LOGGER.debug("" + jSonNewJiraActivities);
                 LOGGER.debug("\n\n");
-                LOGGER.debug("" + (JsonArray) request.getSession().getAttribute("MissingPjlActivity"));
+                LOGGER.debug("" + request.getSession().getAttribute("MissingPjlActivity"));
 
             } catch (Exception e) {
                 e.printStackTrace();
