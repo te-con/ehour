@@ -1,17 +1,16 @@
-package net.rrm.ehour;
+package net.rrm.ehour.appconfig;
 
-import net.rrm.ehour.appconfig.EhourHomeUtil;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 
-final class EhourHomeFinder {
+public class EhourHomeFinder {
 
     private EhourHomeFinder() {
     }
 
-    static void fixEhourHome() throws IOException {
+    public static void fixEhourHome() throws IOException {
         convertBackwardSlashesInEhourHome();
         setDefaultEhourHome();
         defineDerbyHome();
@@ -21,7 +20,6 @@ final class EhourHomeFinder {
         String derbyHome = System.getProperty("derby.system.home");
 
         if (StringUtils.isBlank(derbyHome)) {
-
             System.getProperties().put("derby.system.home", String.format("%s/db", EhourHomeUtil.getEhourHome()));
         }
     }

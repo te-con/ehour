@@ -1,6 +1,7 @@
-package net.rrm.ehour;
+package net.rrm.ehour.appconfig;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
+import net.rrm.ehour.appconfig.EhourHomeFinder;
 import org.junit.Test;
 
 import java.io.IOException;

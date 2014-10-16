@@ -101,6 +101,10 @@
             <artifactId>eHour-audit</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.rrm.ehour</groupId>
+            <artifactId>eHour-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
