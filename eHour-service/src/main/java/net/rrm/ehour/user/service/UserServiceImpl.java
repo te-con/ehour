@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
             @Override
             public int compare(LdapUser o1, LdapUser o2) {
                 return (o1.fullName == null && o2 != null) ? 1 :
-                        (o1.fullName == null && o2 == null) ? 0 :
+                        (o1.fullName == null) ? 0 :
                                 (o1.fullName != null && o2 == null) ? -1 :
                                         o1.fullName.compareTo(o2.fullName);
             }
