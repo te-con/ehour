@@ -16,11 +16,11 @@ import static org.junit.Assert.fail;
  *         Created on: Nov 16, 2010 - 4:26:50 PM
  */
 public class HibernateConfigurationTest {
+    private DataSource dataSource;
+
     @Before
     public void setUp() throws IOException {
-        DerbyDataSourceFactory sourceFactory = new DerbyDataSourceFactory();
-
-        dataSource = sourceFactory.createDataSource("memory:db");
+        dataSource = DerbyDataSourceFactory.createDataSource("memory:db");
     }
 
     @Test
@@ -41,6 +41,4 @@ public class HibernateConfigurationTest {
 
         return configuration.getSessionFactory();
     }
-
-    private DataSource dataSource;
 }

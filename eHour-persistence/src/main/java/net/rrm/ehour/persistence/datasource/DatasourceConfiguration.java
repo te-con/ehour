@@ -9,25 +9,29 @@ import java.io.IOException;
 
 @Configuration
 public class DatasourceConfiguration {
+    public static final String DERBY_DB = "ehourDb";
+
+    public static final String DERBY_IN_MEMORY_DB = "memory:ehourDb";
+
     @Value("${ehour.database}")
     private String databaseType;
 
-    @Value("${ehour.database.driver}")
+    @Value("${ehour.database.driver:}")
     private String driver;
 
-    @Value("${ehour.database.url}")
+    @Value("${ehour.database.url:}")
     private String url;
 
-    @Value("${ehour.database.username}")
+    @Value("${ehour.database.username:}")
     private String username;
 
-    @Value("${ehour.database.password}")
+    @Value("${ehour.database.password:}")
     private String password;
 
     @Bean
     public DataSource createDatasource() throws IOException {
         if ("derby".equalsIgnoreCase(databaseType)) {
-            return new DerbyDataSourceFactory().createDataSource(isInTestMode() ? "memory:ehourDb" : "ehourDb");
+            return DerbyDataSourceFactory.createDataSource(isInTestMode() ? DERBY_IN_MEMORY_DB : DERBY_DB);
         } else {
             org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
             ds.setDriverClassName(driver);

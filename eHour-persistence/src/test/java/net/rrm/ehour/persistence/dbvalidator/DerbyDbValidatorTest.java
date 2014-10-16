@@ -1,8 +1,9 @@
 package net.rrm.ehour.persistence.dbvalidator;
 
-import net.rrm.ehour.persistence.dbvalidator.DerbyDbValidator;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,13 +13,16 @@ import static org.junit.Assert.assertEquals;
  */
 public class DerbyDbValidatorTest  {
     @Test
-    public void shouldCreate() {
+    public void shouldAlter() throws IOException {
         EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
-        dataSource.setDatabaseName("memory:db");
+        dataSource.setDatabaseName("memory:db;create=true");
+
+        DerbyDbValidator prevalidator = new DerbyDbValidator("1.4", dataSource);
+        prevalidator.checkDatabaseState();
 
         DerbyDbValidator validator = new DerbyDbValidator("99", dataSource);
         DerbyDbValidator.DdlType state = validator.checkDatabaseState();
 
-        assertEquals(DerbyDbValidator.DdlType.CREATE_TABLE, state);
+        assertEquals(DerbyDbValidator.DdlType.ALTER_TABLE, state);
     }
 }
