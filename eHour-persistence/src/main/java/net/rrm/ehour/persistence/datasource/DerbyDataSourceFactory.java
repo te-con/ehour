@@ -14,7 +14,7 @@ public class DerbyDataSourceFactory {
     /**
      * Create datasource and validate database
      */
-    public DataSource createDataSource(String databaseName) throws IOException {
+    public static DataSource createDataSource(String databaseName) throws IOException {
         EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
         dataSource.setDatabaseName(databaseName);
 

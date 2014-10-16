@@ -11,7 +11,6 @@
     <modules>
         <module>eHour-common</module>
         <module>eHour-persistence</module>
-        <module>eHour-persistence-derby</module>
         <module>eHour-persistence-mysql</module>
         <module>eHour-persistence-postgresql</module>
         <module>eHour-service</module>
@@ -62,7 +61,7 @@
         <spring.version>4.1.1.RELEASE</spring.version>
         <wicket.version>6.17.0</wicket.version>
         <jetty.version>8.1.14.v20131031</jetty.version>
-        <derbydb.version>10.10.2.0</derbydb.version>
+        <derbydb.version>10.11.1.1</derbydb.version>
         <aspectj.version>1.6.12</aspectj.version>
         <slf4j.version>1.6.4</slf4j.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
@@ -157,11 +156,6 @@
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-servlet</artifactId>
-                <version>${jetty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-jndi</artifactId>
                 <version>${jetty.version}</version>
             </dependency>
             <dependency>

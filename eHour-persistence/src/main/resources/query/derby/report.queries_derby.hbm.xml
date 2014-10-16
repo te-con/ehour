@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <sql-query name="Report.getHoursPerDayForUsers">
+	<![CDATA[	
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
+		       ENTRY_DATE AS "dayDate",
+		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       PAG.PROJECT_ID AS "projectId",
+		       PAG.USER_ID AS "userId",
+		       USR.FIRST_NAME AS "userFirstName",
+		       USR.LAST_NAME AS "userLastName",
+		       PAG.ROLE AS "role",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       PRJ.NAME AS "projectName",
+		       ENTRY.COMMENT AS "comment"
+		FROM TIMESHEET_ENTRY ENTRY,
+		     CUSTOMER CUST,
+		     PROJECT PRJ,
+		     PROJECT_ASSIGNMENT PAG,
+		     USERS USR
+		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
+		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
+		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
+		      PAG.USER_ID = USR.USER_ID AND
+		      PAG.USER_ID IN (:userIds) AND
+		      (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd)
+		GROUP BY PAG.ASSIGNMENT_ID,
+				ENTRY_DATE,
+				CUST.CUSTOMER_ID,
+				CUST.NAME,
+				CUST.CODE,
+				PAG.PROJECT_ID,
+				PAG.USER_ID,
+				USR.FIRST_NAME,
+				USR.LAST_NAME,
+				PAG.ROLE,
+				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
+				PRJ.NAME,
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
+         ]]>         
+	</sql-query>	
+         
+    <sql-query name="Report.getHoursPerDayForProjects">
+	<![CDATA[	
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
+		       ENTRY_DATE AS "dayDate",
+		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       PAG.PROJECT_ID AS "projectId",
+		       PAG.USER_ID AS "userId",
+		       USR.FIRST_NAME AS "userFirstName",
+		       USR.LAST_NAME AS "userLastName",
+		       PAG.ROLE AS "role",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       PRJ.NAME AS "projectName",
+		       ENTRY.COMMENT AS "comment"
+		FROM TIMESHEET_ENTRY ENTRY,
+		     CUSTOMER CUST,
+		     PROJECT PRJ,
+		     PROJECT_ASSIGNMENT PAG,
+		     USERS USR
+		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
+		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
+		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
+		      PAG.USER_ID = USR.USER_ID AND
+		      PAG.PROJECT_ID IN (:projectIds) AND
+		      (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd)
+		GROUP BY PAG.ASSIGNMENT_ID,
+				ENTRY_DATE,
+				CUST.CUSTOMER_ID,
+				CUST.NAME,
+				CUST.CODE,
+				PAG.PROJECT_ID,
+				PAG.USER_ID,
+				USR.FIRST_NAME,
+				USR.LAST_NAME,
+				PAG.ROLE,
+				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
+				PRJ.NAME,
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
+         ]]>         
+	</sql-query>	
+	
+    <sql-query name="Report.getHoursPerDayForProjectsAndUsers">
+	<![CDATA[	
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
+		       ENTRY_DATE AS "dayDate",
+		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       PAG.PROJECT_ID AS "projectId",
+		       PAG.USER_ID AS "userId",
+		       USR.FIRST_NAME AS "userFirstName",
+		       USR.LAST_NAME AS "userLastName",
+		       PAG.ROLE AS "role",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       PRJ.NAME AS "projectName",
+		       ENTRY.COMMENT AS "comment"
+		FROM TIMESHEET_ENTRY ENTRY,
+		     CUSTOMER CUST,
+		     PROJECT PRJ,
+		     PROJECT_ASSIGNMENT PAG,
+		     USERS USR
+		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
+		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
+		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
+		      PAG.USER_ID = USR.USER_ID AND
+		      PAG.PROJECT_ID IN (:projectIds) AND
+		      PAG.USER_ID IN (:userIds) AND
+		      (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd)
+		GROUP BY PAG.ASSIGNMENT_ID,
+				ENTRY_DATE,
+				CUST.CUSTOMER_ID,
+				CUST.NAME,
+				CUST.CODE,
+				PAG.PROJECT_ID,
+				PAG.USER_ID,
+				USR.FIRST_NAME,
+				USR.LAST_NAME,
+				PAG.ROLE,
+				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
+				PRJ.NAME,
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
+         ]]>
+	</sql-query>	
+	
+    <sql-query name="Report.getHoursPerDay">
+	<![CDATA[	
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       SUM(ENTRY.HOURS * PAG.HOURLY_RATE) AS "totalTurnOver",
+		       PAG.HOURLY_RATE AS "rate",
+		       ENTRY_DATE AS "dayDate",
+		       PAG.ASSIGNMENT_ID AS "assignmentId",
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       PAG.PROJECT_ID AS "projectId",
+		       PAG.USER_ID AS "userId",
+		       USR.FIRST_NAME AS "userFirstName",
+		       USR.LAST_NAME AS "userLastName",
+		       PAG.ROLE AS "role",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       PRJ.NAME AS "projectName",
+		       ENTRY.COMMENT AS "comment"
+		FROM TIMESHEET_ENTRY ENTRY,
+		     CUSTOMER CUST,
+		     PROJECT PRJ,
+		     PROJECT_ASSIGNMENT PAG,
+		     USERS USR
+		WHERE ENTRY.ASSIGNMENT_ID = PAG.ASSIGNMENT_ID AND
+		      PAG.PROJECT_ID = PRJ.PROJECT_ID AND
+		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
+		      PAG.USER_ID = USR.USER_ID AND
+		      (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd)
+		GROUP BY PAG.ASSIGNMENT_ID,
+				ENTRY_DATE,
+				CUST.CUSTOMER_ID,
+				CUST.NAME,
+				CUST.CODE,
+				PAG.PROJECT_ID,
+				PAG.USER_ID,
+				USR.FIRST_NAME,
+				USR.LAST_NAME,
+				PAG.ROLE,
+				PRJ.PROJECT_ID,
+				PRJ.PROJECT_CODE,
+				PRJ.NAME,
+				ENTRY.COMMENT,
+				PAG.HOURLY_RATE
+         ]]>         
+	</sql-query>
+</hibernate-mapping>
