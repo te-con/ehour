@@ -58,6 +58,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -94,22 +95,12 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     private static Logger LOGGER = Logger.getLogger(TimesheetPanel.class);
 
     private static final JavaScriptResourceReference GUARDFORM_JS = new JavaScriptResourceReference(TimesheetPanel.class, "guardform.js");
+    private static final JavaScriptResourceReference TIMESHEET_JS = new JavaScriptResourceReference(TimesheetPanel.class, "timesheet.js");
     private static final CssResourceReference TIMESHEET_CSS = new CssResourceReference(TimesheetPanel.class, "css/timesheetForm.css");
 
     private EhourConfig config;
     private WebComponent serverMsgLabel;
     private Form<TimesheetModel> timesheetForm;
-
-    public enum Fold {
-        SHOW("ui-icon ui-icon-arrowthick-1-s"),
-        HIDE("ui-icon ui-icon-arrowthick-1-n");
-
-        public final String jqueryClass;
-
-        private Fold(String jqueryClass) {
-            this.jqueryClass = jqueryClass;
-        }
-    }
 
     @SpringBean
     private WindChillUpdateService windChillUpdateService;
@@ -224,12 +215,15 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     @Override
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(GUARDFORM_JS));
+        response.render(JavaScriptHeaderItem.forReference(TIMESHEET_JS));
         response.render(CssHeaderItem.forReference(TIMESHEET_CSS));
 
         String msg = new ResourceModel("timesheet.dirtyForm").getObject();
         String escapedMsg = msg.replace("'", "\\\'");
 
         response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
+
+        response.render(OnDomReadyHeaderItem.forScript("initializeFoldLinks();"));
     }
 
     private WebMarkupContainer createFilter(String id, TimesheetModel timesheetModel) {
