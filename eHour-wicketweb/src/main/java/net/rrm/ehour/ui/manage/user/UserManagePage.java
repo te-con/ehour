@@ -36,6 +36,7 @@ public class UserManagePage extends AbstractUserManagePageTemplate<LdapUserBacki
     protected LdapUserBackingBean createEditBean(Integer userId) throws ObjectNotFoundException {
         User user = userService.getUser(userId);
         LdapUser ldapUser = userService.getLdapUser(user.getUsername()).get(0);
+        ldapUser.setUser(user);
         return new LdapUserBackingBean(ldapUser);
     }
 
