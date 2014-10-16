@@ -63,7 +63,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -198,13 +198,25 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         List<Integer> options = new ArrayList<Integer>();
         int maxPages = timesheetModel.getObject().getMaxPages();
         for (int i = 0; i <= maxPages; i++) {
-            options.add(i + 1);
+            options.add(i);
         }
 
-        final DropDownChoice<Integer> pagination = new DropDownChoice<Integer>("pagination", new PropertyModel<Integer>(timesheetModel, "page"), options);
-        pagination.add(new FormReloadBehavior(timesheetModel, pagination, "onchange"));
+        final DropDownChoice<Integer> pagination = new DropDownChoice<Integer>("pagination", new PropertyModel<Integer>(timesheetModel, "page"), options,
+                new IChoiceRenderer<Integer>() {
+                    @Override
+                    public Object getDisplayValue(Integer object) {
+                        return (object + 1);
+                    }
 
-        pagination.setVisible(maxPages > 1);
+                    @Override
+                    public String getIdValue(Integer object, int index) {
+                        return Integer.toString(object - 1);
+                    }
+                }
+        );
+        pagination.add(new FormReloadBehavior(timesheetModel, "onchange"));
+
+        pagination.setVisible(maxPages > 0);
         return pagination;
     }
 
@@ -225,7 +237,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         // create filter
         TextField activityFilter = new TextField<String>("activityFilter", new PropertyModel<String>(timesheetModel, "filter"));
-        activityFilter.add(new FormReloadBehavior(timesheetModel, activityFilter, "onkeyup"));
+        activityFilter.add(new FormReloadBehavior(timesheetModel, "onkeyup"));
         activityFilter.setOutputMarkupId(true);
         f.add(activityFilter);
 
@@ -737,12 +749,10 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
     private class FormReloadBehavior extends AjaxFormComponentUpdatingBehavior {
         private final TimesheetModel timesheetModel;
-        private final FormComponent<?> parent;
 
-        public FormReloadBehavior(TimesheetModel timesheetModel, FormComponent<?> parent, String event) {
+        public FormReloadBehavior(TimesheetModel timesheetModel, String event) {
             super(event);
             this.timesheetModel = timesheetModel;
-            this.parent = parent;
         }
 
         @Override

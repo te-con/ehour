@@ -44,7 +44,7 @@ public class Timesheet implements Serializable {
     private TimesheetComment comment;
     private float maxHoursPerDay;
     private List<Date> lockedDays;
-    private Integer page = 1;
+    private Integer page = 0;
     private String filter;
     private transient List<Project> filteredProjects;
     private transient String filteredFor;
@@ -57,11 +57,10 @@ public class Timesheet implements Serializable {
         this.filter = filter;
     }
 
-
     public int getMaxPages() {
         int size = filterProjects().size();
         double pages = (double) size / PROJECTS_PER_PAGE;
-        return (int) Math.ceil(pages);
+        return (int) Math.ceil(pages) - 1; // zero based
     }
 
     public Integer getPage() {
@@ -81,7 +80,6 @@ public class Timesheet implements Serializable {
     }
 
     private String activityFilter;
-
 
     public void setActivityFilter(String activityFilter) {
         this.activityFilter = activityFilter;
@@ -242,7 +240,7 @@ public class Timesheet implements Serializable {
         List<Project> filteredProjects = filterProjects();
 
         if (start > filteredProjects.size()) {
-            setPage(getMaxPages() - 1);
+            setPage(getMaxPages());
             return getProjectList();
         }
 
