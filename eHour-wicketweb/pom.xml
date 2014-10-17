@@ -89,7 +89,7 @@
         <dependency>
             <groupId>nl.tecon.scalahighcharts</groupId>
             <artifactId>highcharts</artifactId>
-            <version>1.6</version>
+            <version>1.7-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.scala-lang</groupId>

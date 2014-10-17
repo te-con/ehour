@@ -9,9 +9,9 @@ import java.io.IOException;
 
 @Configuration
 public class DatasourceConfiguration {
-    public static final String DERBY_DB = "ehourDb";
-
-    public static final String DERBY_IN_MEMORY_DB = "memory:ehourDb";
+    public static final String DB_DERBY = "derby";
+    public static final String DB_MYSQL = "mysql";
+    public static final String DB_POSTGRESQL = "postgresql";
 
     @Value("${ehour.database}")
     private String databaseType;
@@ -30,8 +30,8 @@ public class DatasourceConfiguration {
 
     @Bean
     public DataSource createDatasource() throws IOException {
-        if ("derby".equalsIgnoreCase(databaseType)) {
-            return DerbyDataSourceFactory.createDataSource(isInTestMode() ? DERBY_IN_MEMORY_DB : DERBY_DB);
+        if (DB_DERBY.equalsIgnoreCase(databaseType)) {
+            return DerbyDataSourceFactory.createDataSource(isInTestMode() ? "memory:ehourDb;create=true" : "derby");
         } else {
             org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
             ds.setDriverClassName(driver);

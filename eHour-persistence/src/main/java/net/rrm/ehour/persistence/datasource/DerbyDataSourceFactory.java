@@ -18,9 +18,6 @@ public class DerbyDataSourceFactory {
         EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
         dataSource.setDatabaseName(databaseName);
 
-        DerbyDbValidator validator = new DerbyDbValidator(PersistenceConfig.DB_VERSION, dataSource);
-        validator.checkDatabaseState();
-
         return dataSource;
     }
 }
