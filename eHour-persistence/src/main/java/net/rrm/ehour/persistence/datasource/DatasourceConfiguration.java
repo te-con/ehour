@@ -1,10 +1,12 @@
 package net.rrm.ehour.persistence.datasource;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 
 @Configuration
@@ -29,19 +31,16 @@ public class DatasourceConfiguration {
     private String password;
 
     @Bean
-    public DataSource createDatasource() throws IOException {
+    public DataSource createDatasource() throws IOException, PropertyVetoException {
         if (DB_DERBY.equalsIgnoreCase(databaseType)) {
             return DerbyDataSourceFactory.createDataSource(isInTestMode() ? "memory:ehourDb;create=true" : "derby");
         } else {
-            org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
-            ds.setDriverClassName(driver);
-            ds.setUrl(url);
-            ds.setUsername(username);
+            ComboPooledDataSource ds = new ComboPooledDataSource();
+            ds.setDriverClass(driver);
+            ds.setJdbcUrl(url);
+            ds.setUser(username);
             ds.setPassword(password);
-            ds.setInitialSize(5);
-            ds.setMaxActive(10);
-            ds.setMaxIdle(5);
-            ds.setMinIdle(2);
+            ds.setInitialPoolSize(5);
             return ds;
         }
     }
