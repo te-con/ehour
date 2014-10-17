@@ -4,8 +4,6 @@ import net.rrm.ehour.config.PersistenceConfig;
 import net.rrm.ehour.persistence.datasource.DatasourceConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
