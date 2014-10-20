@@ -79,7 +79,6 @@ public class TimesheetModel implements IModel<Timesheet> {
         return getObject().getWeekEnd();
     }
 
-
     private Timesheet load() {
         EhourConfig config = EhourWebSession.getEhourConfig();
         WeekOverview weekOverview = overviewTimesheet.getWeekOverview(user, forWeek);
@@ -102,7 +101,6 @@ public class TimesheetModel implements IModel<Timesheet> {
 
     public void setObject(Timesheet sheet) {
         this.timesheet = sheet;
-
     }
 
     public void detach() {

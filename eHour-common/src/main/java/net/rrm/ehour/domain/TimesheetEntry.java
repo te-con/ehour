@@ -101,7 +101,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
         // LLI for Richemont
         // to identify when cumulated hours has been set to 0
-        if (previousHours > 0 && updatedHours == null)  setHours(new Float(0));
+        if (previousHours > 0 && updatedHours == null)  setHours(0f);
 
         entryId.getActivity().mutateAvailableHours(mutation);
     }

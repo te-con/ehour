@@ -194,10 +194,6 @@ div.timesheet {
     color: #536e87;
 }
 
-.timesheetTable tr.customerRow td.foldIcon a {
-    color: red;
-}
-
 .timesheetTable tr.customerRow td.customerCell {
     font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
