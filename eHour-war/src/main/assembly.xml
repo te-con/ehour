@@ -96,12 +96,12 @@
     <dependencySets>
         <dependencySet>
             <includes>
-                <include>${pom.groupId}:eHour-web</include>
+                <include>${pom.groupId}:ehevo-web</include>
             </includes>
             <outputDirectory>/app</outputDirectory>
             <directoryMode>0775</directoryMode>
             <unpack>false</unpack>
-            <outputFileNameMapping>ehour-${project.version}.war</outputFileNameMapping>
+            <outputFileNameMapping>ehevo-${project.version}.war</outputFileNameMapping>
         </dependencySet>
     </dependencySets>
 </assembly>
