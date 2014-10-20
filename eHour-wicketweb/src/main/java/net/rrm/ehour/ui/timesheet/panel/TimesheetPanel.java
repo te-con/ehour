@@ -48,6 +48,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -78,6 +79,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
     private static final long serialVersionUID = 7704288648724599187L;
 
     private static final JavaScriptResourceReference GUARDFORM_JS = new JavaScriptResourceReference(TimesheetPanel.class, "guardform.js");
+    private static final JavaScriptResourceReference TIMESHEET_JS = new JavaScriptResourceReference(TimesheetPanel.class, "timesheet.js");
     private static final CssResourceReference TIMESHEET_CSS = new CssResourceReference(TimesheetPanel.class, "css/timesheetForm.css");
 
     private EhourConfig config;
@@ -147,6 +149,9 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         String escapedMsg = msg.replace("'", "\\\'");
 
         response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
+
+        response.render(JavaScriptHeaderItem.forReference(TIMESHEET_JS));
+        response.render(OnDomReadyHeaderItem.forScript("initializeFoldLinks();"));
     }
 
     /**

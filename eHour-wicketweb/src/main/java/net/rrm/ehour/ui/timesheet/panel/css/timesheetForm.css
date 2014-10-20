@@ -187,8 +187,8 @@ div.timesheet {
     width: 9px
 }
 
-.timesheetTable tr.customerRow td.foldIcon a {
-    color: red;
+.timesheetTable .customerCell a, .timesheetTable .customerCell a:visited {
+    color: #536e87;
 }
 
 .timesheetTable tr.customerRow td.customerCell {
