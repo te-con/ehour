@@ -157,7 +157,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
 
         formTester.setValue(DAY1_PATH + ":day", "12");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onchange");
         tester.assertNoErrorMessage();
         tester.assertContains(DAY1_PATH + ":day");
 
@@ -204,19 +204,19 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
 
         formTester.setValue(DAY1_PATH + ":day", "12");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onchange");
         tester.assertNoErrorMessage();
         tester.assertContains(DAY1_PATH + ":day");
         tester.assertContainsNot("color: #ff0000");
 
         formTester.setValue(DAY1_PATH + ":day", "ff");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onchange");
         tester.assertContains(DAY1_PATH + ":day");
         tester.assertContains("color: #ff0000");
         tester.assertErrorMessages("day.IConverter.Float");
 
         formTester.setValue(DAY1_PATH + ":day", "1");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onchange");
         tester.assertContains(DAY1_PATH + ":day");
         tester.assertContainsNot("color: #ff0000");
     }
