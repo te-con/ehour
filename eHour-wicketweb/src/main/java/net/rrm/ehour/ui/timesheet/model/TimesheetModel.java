@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.model;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
@@ -66,9 +67,18 @@ public class TimesheetModel implements IModel<Timesheet> {
 
         Timesheet timesheet = getObject();
 
+        Optional<User> moderator;
+
+        if (EhourWebSession.getSession().isImpersonating()) {
+            moderator = EhourWebSession.getSession().getAdminWhenImpersonating();
+        } else {
+            moderator = Optional.absent();
+        }
+
         return persistTimesheet.persistTimesheetWeek(timesheet.getTimesheetEntries(),
                 timesheet.getCommentForPersist(),
-                new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
+                new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()),
+                moderator);
     }
 
     public Date getWeekStart() {

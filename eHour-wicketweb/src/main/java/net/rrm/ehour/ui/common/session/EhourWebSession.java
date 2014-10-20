@@ -288,11 +288,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     private void logAndAuditStopImpersonation(User originalUser, User impUser) {
-        StringBuilder auditMsg = new StringBuilder((originalUser != null) ? originalUser.getFullName() : "N/A");
-        auditMsg.append(" stopped impersonating as ");
-        auditMsg.append(impUser.getFullName());
-
-        LOGGER.info(auditMsg.toString());
+        LOGGER.info((originalUser != null) ? originalUser.getFullName() : "N/A" + " stopped impersonating as " + impUser.getFullName());
     }
 
     private void setAuthentication(Authentication authentication) {
@@ -305,6 +301,10 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     public void setUserSelectedCriteria(UserSelectedCriteria userSelectedCriteria) {
         this.userSelectedCriteria = userSelectedCriteria;
+    }
+
+    public Optional<User> getAdminWhenImpersonating() {
+        return isImpersonating() ? Optional.of(user) : Optional.<User>absent();
     }
 
     private static final long serialVersionUID = 93189812483240412L;

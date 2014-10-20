@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.activity.status.ActivityStatusService;
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
@@ -28,6 +29,9 @@ import net.rrm.ehour.util.DateUtil;
 import net.rrm.ehour.util.DomainUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -73,13 +77,23 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     public List<ActivityStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
                                                               TimesheetComment comment,
                                                               DateRange weekRange) {
+        return persistTimesheet(timesheetEntries, comment, weekRange, Optional.<User>absent());
+    }
+
+    @Transactional
+    @Override
+    public List<ActivityStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment, DateRange weekRange, Optional<User> moderator) {
+        return persistTimesheet(timesheetEntries, comment, weekRange, moderator);
+    }
+
+    private List<ActivityStatus> persistTimesheet(Collection<TimesheetEntry> timesheetEntries, TimesheetComment comment, DateRange weekRange, Optional<User> moderator) {
         Map<Activity, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
 
         List<ActivityStatus> errorStatusses = new ArrayList<ActivityStatus>();
 
         for (Map.Entry<Activity, List<TimesheetEntry>> entry : timesheetRows.entrySet()) {
             try {
-                getTimesheetPersister().validateAndPersist(entry.getKey(), entry.getValue(), weekRange);
+                getTimesheetPersister().validateAndPersist(entry.getKey(), entry.getValue(), weekRange, moderator);
             } catch (OverBudgetException e) {
                 errorStatusses.add(e.getStatus());
             }
@@ -92,7 +106,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         return errorStatusses;
     }
 
-    // get an instance to ourselves for cheap new transactions
+    // get an instance to ourselves for new transactions
     private IPersistTimesheet getTimesheetPersister() {
         return context.getBean(IPersistTimesheet.class);
     }
@@ -118,13 +132,14 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     @Transactional(rollbackFor = OverBudgetException.class, propagation = Propagation.REQUIRES_NEW)
     public void validateAndPersist(Activity activity,
                                    List<TimesheetEntry> entries,
-                                   DateRange weekRange) throws OverBudgetException {
+                                   DateRange weekRange,
+                                   Optional<User> moderator) throws OverBudgetException {
         ActivityStatus beforeStatus = activityStatusService.getActivityStatus(activity);
 
         boolean checkAfterStatus = beforeStatus.isValid();
 
         try {
-            persistEntries(activity, entries, weekRange, !beforeStatus.isValid());
+            persistEntries(activity, entries, weekRange, !beforeStatus.isValid(), moderator);
         } catch (OverBudgetException obe) {
             // make sure it's retrown by checking the after status
             checkAfterStatus = true;
@@ -184,8 +199,8 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         return doesWeekSpanMonths;
     }
 
-    private void persistEntries(Activity activity, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException {
-        List<TimesheetEntry> previousEntries = timesheetDAO.getTimesheetEntriesInRange(activity, weekRange);
+    private void persistEntries(Activity activity, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting, Optional<User> moderator) throws OverBudgetException {
+        List<TimesheetEntry> attachedEntries = timesheetDAO.getTimesheetEntriesInRange(activity, weekRange);
 
         for (TimesheetEntry entry : entries) {
             if (!entry.getEntryId().getActivity().equals(activity)) {
@@ -193,16 +208,34 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
                 continue;
             }
 
+            TimesheetEntry attachedEntry = getEntry(attachedEntries, entry);
             if (entry.isEmptyEntry()) {
-                deleteEntry(getEntry(previousEntries, entry));
+                if (moderator.isPresent() && attachedEntry != null) {
+                    entry.setComment(appendModeratorComment(moderator, attachedEntry.getComment()));
+                    entry.setHours(0f);
+                    persistEntry(false, entry, attachedEntry);
+                } else {
+                    deleteEntry(attachedEntry);
+                }
             } else {
-                persistEntry(onlyLessThanExisting, entry, getEntry(previousEntries, entry));
+                if (moderator.isPresent()) {
+                    entry.setComment(appendModeratorComment(moderator, (attachedEntry != null ? attachedEntry.getComment() : "")));
+                }
+
+                persistEntry(onlyLessThanExisting, entry, attachedEntry);
             }
 
-            previousEntries.remove(entry);
+            attachedEntries.remove(entry);
         }
 
-        removeOldEntries(previousEntries);
+        removeOldEntries(attachedEntries);
+    }
+
+    private String appendModeratorComment(Optional<User> moderator, String existingComment) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MMMyyyy HH:mm");
+        String now = formatter.withLocale(Locale.FRANCE).print(DateTime.now());
+
+        return String.format("%ssaisie par '%s' le '%s'", existingComment == null ? "" : existingComment + "\r\n", moderator.get().getFullName(), now);
     }
 
     private void removeOldEntries(List<TimesheetEntry> previousEntries) {

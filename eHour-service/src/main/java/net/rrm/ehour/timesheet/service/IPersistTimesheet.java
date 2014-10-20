@@ -16,11 +16,13 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Activity;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 
 import java.util.Collection;
@@ -31,19 +33,18 @@ import java.util.List;
  */
 
 public interface IPersistTimesheet {
-    /**
-     * Persist timesheet entries and comment
-     *
-     * @param timesheetEntries
-     * @param timesheetComment
-     * @param weekRange
-     */
     List<ActivityStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
                                               TimesheetComment timesheetComment,
                                               DateRange weekRange);
 
+    List<ActivityStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
+                                              TimesheetComment timesheetComment,
+                                              DateRange weekRange,
+                                              Optional<User> moderator);
+
     void validateAndPersist(Activity activity,
                             List<TimesheetEntry> entries,
-                            DateRange weekRange) throws OverBudgetException;
+                            DateRange weekRange,
+                            Optional<User> moderator) throws OverBudgetException;
 
 }

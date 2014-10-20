@@ -155,7 +155,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             int index = currentDate.get(Calendar.DAY_OF_WEEK) - 1;
             TimesheetCell timesheetCell = row.getTimesheetCells()[index];
 
-
             boolean isWithinRange = DateUtil.isDateWithinRange(currentDate, range);
             boolean isWeekend = DateUtil.isWeekend(currentDate) && hideWeekend;
 
@@ -316,7 +315,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         dayInput.setOutputMarkupId(true);
         
         // add validation
-        AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onblur") {
+        AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onchange") {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -330,7 +329,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                 MarkupContainer blueFrame = (MarkupContainer) dayInput.findParent(Form.class).get("blueFrame");
                 target.add(blueFrame.get("grandTotal"));
                 target.add(blueFrame.get("day" + grandTotals.getOrderForIndex(index) + "Total"));
-
 
                 form.visitFormComponents(new FormHighlighter(target));
             }

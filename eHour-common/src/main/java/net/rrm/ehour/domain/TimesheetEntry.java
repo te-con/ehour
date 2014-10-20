@@ -52,6 +52,8 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     @NotNull
 	private Date updateDate;
 
+    private transient boolean modified = false;
+
 	/** full constructor */
 	public TimesheetEntry(TimesheetEntryId entryId, Float hours)
 	{
@@ -102,6 +104,8 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
         // LLI for Richemont
         // to identify when cumulated hours has been set to 0
         if (previousHours > 0 && updatedHours == null)  setHours(0f);
+
+        modified = mutation != 0;
 
         entryId.getActivity().mutateAvailableHours(mutation);
     }

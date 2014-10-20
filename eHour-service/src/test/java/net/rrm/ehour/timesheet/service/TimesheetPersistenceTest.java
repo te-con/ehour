@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import com.google.common.base.Optional;
 import net.rrm.ehour.activity.status.ActivityStatus;
 import net.rrm.ehour.activity.status.ActivityStatusService;
 import net.rrm.ehour.approvalstatus.service.ApprovalStatusService;
@@ -25,6 +26,7 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.util.DateUtil;
+import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -132,8 +134,40 @@ public class TimesheetPersistenceTest {
         replay(timesheetDAO);
         replay(approvalStatusService);
 
-        persister.validateAndPersist(activity, newEntries, dateRange);
+        persister.validateAndPersist(activity, newEntries, dateRange, Optional.<User>absent());
 
+        verify(timesheetDAO);
+        verify(statusService);
+        verify(approvalStatusService);
+    }
+
+
+    @Test
+    public void shouldPersistValidatedTimesheetAndAppendModeratorComment() throws OverBudgetException {
+        DateRange dateRange = DateUtil.getDateRangeForMonth(new Date());
+
+        expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
+
+        Capture<TimesheetEntry> captor = new Capture<TimesheetEntry>();
+        expect(timesheetDAO.merge((capture(captor)))).andReturn(null);
+
+        expect(timesheetDAO.getTimesheetEntriesInRange(activity, dateRange)).andReturn(existingEntries);
+
+        expect(statusService.getActivityStatus(activity)).andReturn(new ActivityStatus()).times(2);
+
+        expect(approvalStatusService.getApprovalStatusForUserWorkingForCustomer(isA(User.class), isA(Customer.class), isA(DateRange.class))).andReturn(null);
+
+        approvalStatusService.persist(isA(ApprovalStatus.class));
+
+        replay(statusService);
+        replay(timesheetDAO);
+        replay(approvalStatusService);
+
+        User user = UserObjectMother.createUser();
+        persister.validateAndPersist(activity, newEntries, dateRange, Optional.of(user));
+
+        TimesheetEntry value = captor.getValue();
+        System.out.println(value.getComment());
         verify(timesheetDAO);
         verify(statusService);
         verify(approvalStatusService);
@@ -157,7 +191,7 @@ public class TimesheetPersistenceTest {
         replay(statusService);
         replay(timesheetDAO);
 
-        persister.validateAndPersist(activity, newEntries, new DateRange());
+        persister.validateAndPersist(activity, newEntries, new DateRange(), Optional.<User>absent());
 
         verify(timesheetDAO);
         verify(statusService);
@@ -212,7 +246,7 @@ public class TimesheetPersistenceTest {
         weekRange.setDateStart(dateStart);
         weekRange.setDateEnd(dateStart);
 
-        persister.validateAndPersist(activity, newEntries, weekRange);
+        persister.validateAndPersist(activity, newEntries, weekRange, Optional.<User>absent());
 
         verify(timesheetDAO);
         verify(statusService);
@@ -236,7 +270,7 @@ public class TimesheetPersistenceTest {
         replay(statusService);
         replay(timesheetDAO);
 
-        persister.validateAndPersist(activity, newEntries, new DateRange());
+        persister.validateAndPersist(activity, newEntries, new DateRange(), Optional.<User>absent());
 
         verify(timesheetDAO);
         verify(statusService);
