@@ -4,8 +4,8 @@ import java.util
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.User
-import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder
 import net.rrm.ehour.ui.common.panel.entryselector.{EntryListUpdatedEvent, HideInactiveFilter, InactiveFilterChangedEvent}
+import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.markup.html.list.ListItem
@@ -42,7 +42,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
 
       tester.assertNoErrorMessage()
 
-      verify(target).add(isA(classOf[GreyBlueRoundedBorder]))
+      verify(target).add(isA(classOf[Container]))
     }
 
     "handle inactive filter event" in {
@@ -57,7 +57,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
 
       tester.assertNoErrorMessage()
 
-      verify(target).add(isA(classOf[GreyBlueRoundedBorder]))
+      verify(target).add(isA(classOf[Container]))
     }
   }
 

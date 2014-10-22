@@ -22,6 +22,7 @@ import net.rrm.ehour.ui.common.component.XlsxLink;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.excel.IWriteBytes;
+import net.rrm.ehour.ui.common.wicket.Container;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -133,8 +134,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         border.setOutputMarkupId(true);
         selectorFrame.add(border);
 
-        listContainer = new WebMarkupContainer("listScroll");
-        listContainer.setOutputMarkupId(true);
+        listContainer = new Container("listScroll");
         listContainer.setMarkupId("listContents");
 
         if (!wide) {
