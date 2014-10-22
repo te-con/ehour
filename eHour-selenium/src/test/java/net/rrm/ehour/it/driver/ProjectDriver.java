@@ -73,7 +73,7 @@ public abstract class ProjectDriver {
         listFilter.clear();
         listFilter.sendKeys(projectName);
 
-        findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemList_0").click();
+        findElement("entrySelectorFrame_entrySelectorFrame__body_projectSelector_entrySelectorFrame_blueBorder_blueBorder__body_listScroll_itemList_0").click();
         sleep();
         waitForValue("tabs_panel_projectFormPanel_border_greySquaredFrame_border__body_projectForm_project.name", projectName);
     }

@@ -60,7 +60,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
     private IModel<String> hideInactiveLinkTooltip;
     private boolean showHideInactiveLink = false;
-    private GreyBlueRoundedBorder blueBorder;
+    private WebMarkupContainer listContainer;
 
 
     public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler) {
@@ -96,11 +96,11 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     public void updateData(EntrySelectorData entrySelectorData) {
         setDefaultModelObject(entrySelectorData);
 
-        blueBorder.addOrReplace(createListView(ITEM_LIST_ID));
+        listContainer.addOrReplace(createListView(ITEM_LIST_ID));
     }
 
     public void reRender(AjaxRequestTarget target) {
-        target.add(blueBorder);
+        target.add(listContainer);
         target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
     }
 
@@ -119,7 +119,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
         selectorFrame.add(createForm());
 
-        blueBorder = new GreyBlueRoundedBorder("blueBorder") {
+        GreyBlueRoundedBorder border = new GreyBlueRoundedBorder("blueBorder") {
             @Override
             protected WebMarkupContainer createComponent() {
                 WebMarkupContainer component = super.createComponent();
@@ -130,19 +130,21 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
             }
         };
 
-        blueBorder.setOutputMarkupId(true);
-        selectorFrame.add(blueBorder);
+        border.setOutputMarkupId(true);
+        selectorFrame.add(border);
 
-        WebMarkupContainer listScroll= new WebMarkupContainer("listScroll");
+        listContainer = new WebMarkupContainer("listScroll");
+        listContainer.setOutputMarkupId(true);
+        listContainer.setMarkupId("listContents");
 
         if (!wide) {
-            listScroll.add(AttributeModifier.append("class", "limitWidth"));
+            listContainer.add(AttributeModifier.append("class", "limitWidth"));
         }
 
-        blueBorder.add(listScroll);
+        border.add(listContainer);
 
-        listScroll.add(createHeaders(HEADER_ID));
-        listScroll.add(createListView(ITEM_LIST_ID));
+        listContainer.add(createHeaders(HEADER_ID));
+        listContainer.add(createListView(ITEM_LIST_ID));
     }
 
     private RepeatingView createHeaders(String id) {

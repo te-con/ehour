@@ -30,7 +30,7 @@ public class TimesheetLockDriver {
     }
 
     public static void editLock(int index, String name) {
-        findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_lockSelector_entrySelectorFrame_blueBorder_blueBorder__body_itemList_" + index)).click();
+        findElement(WicketBy.wicketPath("entrySelectorFrame_entrySelectorFrame__body_lockSelector_entrySelectorFrame_blueBorder_blueBorder__body_listScroll_itemList_" + index)).click();
         waitForValue("tabs_panel_outerBorder_greySquaredFrame_outerBorder__body_lockForm_name", name);
     }
 

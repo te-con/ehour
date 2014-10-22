@@ -64,7 +64,7 @@ public abstract class UserManagementDriver {
         listFilter.clear();
         listFilter.sendKeys(name);
 
-        findElement("userSelection_border_border__body_entrySelectorFrame_entrySelectorFrame_blueBorder_blueBorder__body_itemList_1").click();
+        findElement("userSelection_border_border__body_entrySelectorFrame_entrySelectorFrame_blueBorder_blueBorder__body_listScroll_itemList_1").click();
     }
 
     public static void loadUserManagement() {
