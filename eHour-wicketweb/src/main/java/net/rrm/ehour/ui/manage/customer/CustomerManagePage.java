@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.EntrySelectorBuilder;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
@@ -77,11 +78,11 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
         };
 
 
-        entrySelectorPanel = new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
-                createSelectorData(getCustomers()),
-                clickHandler,
-                new ResourceModel("admin.customer.hideInactive")
-        );
+        entrySelectorPanel = EntrySelectorBuilder.startAs(CUSTOMER_SELECTOR_ID)
+                .withData(createSelectorData(getCustomers()))
+                .onClick(clickHandler)
+                .withInactiveTooltip(new ResourceModel("admin.customer.hideInactive"))
+                .build();
 
         greyBorder.add(entrySelectorPanel);
     }

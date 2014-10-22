@@ -56,6 +56,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     private static final String ITEM_LIST_ID = "itemList";
     private static final String HEADER_ID = "headers";
     private final ClickHandler clickHandler;
+    private final boolean wide;
 
     private IModel<String> hideInactiveLinkTooltip;
     private boolean showHideInactiveLink = false;
@@ -66,16 +67,19 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         this(id, entrySelectorData, clickHandler, null);
     }
 
-    public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> checkboxTooltip) {
+    public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> hideInactiveLinkTooltip) {
+        this(id, entrySelectorData, clickHandler, hideInactiveLinkTooltip, false);
+    }
+
+    public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> hideInactiveLinkTooltip, boolean wide) {
         super(id, new Model<EntrySelectorData>(entrySelectorData));
         this.clickHandler = clickHandler;
+        this.wide = wide;
 
-        if (checkboxTooltip != null) {
-            this.hideInactiveLinkTooltip = checkboxTooltip;
+        if (hideInactiveLinkTooltip != null) {
+            this.hideInactiveLinkTooltip = hideInactiveLinkTooltip;
             showHideInactiveLink = true;
         }
-
-        setUpPanel();
     }
 
     @Override
@@ -106,8 +110,14 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         response.render(OnDomReadyHeaderItem.forScript("window.entrySelector = new EntrySelector('#listFilter', '.entrySelectorTable');"));
     }
 
-    private void setUpPanel() {
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
         WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
+        addOrReplace(selectorFrame);
+
+        selectorFrame.add(createForm());
 
         blueBorder = new GreyBlueRoundedBorder("blueBorder") {
             @Override
@@ -123,12 +133,16 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         blueBorder.setOutputMarkupId(true);
         selectorFrame.add(blueBorder);
 
-        selectorFrame.add(createForm());
+        WebMarkupContainer listScroll= new WebMarkupContainer("listScroll");
 
-        add(selectorFrame);
+        if (!wide) {
+            listScroll.add(AttributeModifier.append("class", "limitWidth"));
+        }
 
-        blueBorder.add(createHeaders(HEADER_ID));
-        blueBorder.add(createListView(ITEM_LIST_ID));
+        blueBorder.add(listScroll);
+
+        listScroll.add(createHeaders(HEADER_ID));
+        listScroll.add(createListView(ITEM_LIST_ID));
     }
 
     private RepeatingView createHeaders(String id) {
@@ -244,5 +258,45 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
     public interface ClickHandler extends Serializable {
         void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException;
+    }
+
+    public static class EntrySelectorBuilder {
+        private EntrySelectorData entrySelectorData;
+        private final String id;
+        private ClickHandler clickHandler;
+        private IModel<String> hideInactiveLinkTooltip;
+        private boolean wide = false;
+
+        public EntrySelectorBuilder(String id) {
+            this.id = id;
+        }
+
+        public static EntrySelectorBuilder startAs(String id) {
+            return new EntrySelectorBuilder(id);
+        }
+
+        public EntrySelectorBuilder withData(EntrySelectorData entrySelectorData) {
+            this.entrySelectorData = entrySelectorData;
+            return this;
+        }
+
+        public EntrySelectorBuilder onClick(ClickHandler clickHandler) {
+            this.clickHandler = clickHandler;
+            return this;
+        }
+
+        public EntrySelectorBuilder withInactiveTooltip(IModel<String> hideInactiveLinkTooltip) {
+            this.hideInactiveLinkTooltip = hideInactiveLinkTooltip;
+            return this;
+        }
+
+        public EntrySelectorBuilder isWide() {
+            this.wide = true;
+            return this;
+        }
+
+        public EntrySelectorPanel build() {
+            return new EntrySelectorPanel(id, entrySelectorData, clickHandler, hideInactiveLinkTooltip, wide);
+        }
     }
 }

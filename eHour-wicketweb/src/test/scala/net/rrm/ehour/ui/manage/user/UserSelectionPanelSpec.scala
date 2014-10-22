@@ -27,7 +27,7 @@ class UserSelectionPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAfte
       startPanel()
       tester.assertNoErrorMessage()
 
-      tester.assertComponent("id:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:itemList:0", classOf[ListItem[_]])
+      tester.assertComponent("id:border:border_body:entrySelectorFrame:entrySelectorFrame:blueBorder:blueBorder_body:listScroll:itemList:0", classOf[ListItem[_]])
     }
 
     "handle updated list event" in {

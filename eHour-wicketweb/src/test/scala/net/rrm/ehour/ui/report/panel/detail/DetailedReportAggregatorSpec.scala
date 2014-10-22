@@ -1,13 +1,20 @@
 package net.rrm.ehour.ui.report.panel.detail
 
 import net.rrm.ehour.report.reports.element.FlatReportElement
+import org.apache.wicket.markup.html.panel.EmptyPanel
 import org.joda.time.LocalDate
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import net.rrm.ehour.AbstractSpec
+import net.rrm.ehour.{AbstractSpringWebAppSpec, AbstractSpec}
 
 @RunWith(classOf[JUnitRunner])
-class DetailedReportAggregatorSpec extends AbstractSpec {
+class DetailedReportAggregatorSpec extends AbstractSpringWebAppSpec {
+  override def beforeEach() {
+    super.beforeEach()
+
+    tester.startComponentInPage(classOf[EmptyPanel])
+  }
+
   "Detailed Report Aggregator" should {
     val baseDate = new LocalDate(2014, 1, 1)
 
@@ -142,5 +149,4 @@ class DetailedReportAggregatorSpec extends AbstractSpec {
     element.setTotalHours(hours)
     element
   }
-
 }

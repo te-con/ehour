@@ -42,7 +42,7 @@ class ProjectManagerPageSpec extends AbstractSpringWebAppSpec {
 
       tester.startPage(classOf[ProjectManagerPage])
 
-      tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:projectSelector:entrySelectorFrame:blueBorder:blueBorder_body:itemList:0", "click")
+      tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:projectSelector:entrySelectorFrame:blueBorder:blueBorder_body:listScroll:itemList:0", "click")
 
       tester.assertNoErrorMessage()
     }
