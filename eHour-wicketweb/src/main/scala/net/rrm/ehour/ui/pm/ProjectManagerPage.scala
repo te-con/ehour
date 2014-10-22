@@ -31,6 +31,8 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
 
   val Css = new CssResourceReference(classOf[ProjectManagerPage], "projectManagement.css")
 
+  var selector:EntrySelectorPanel = _
+
   @SpringBean
   protected var projectService: ProjectService = _
 
@@ -40,7 +42,8 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
     val greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"))
     addOrReplace(greyBorder)
 
-    greyBorder.add(buildEntrySelector().build())
+    selector = buildEntrySelector().build()
+    greyBorder.add(selector)
 
     addOrReplace(new Container(ContainerId))
     addOrReplace(new Container(StatusId))
