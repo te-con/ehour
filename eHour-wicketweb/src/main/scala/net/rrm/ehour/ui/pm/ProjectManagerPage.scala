@@ -10,6 +10,7 @@ import net.rrm.ehour.project.service.ProjectService
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.event.AjaxEvent
 import net.rrm.ehour.ui.common.page.AbstractBasePage
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.EntrySelectorBuilder
 import net.rrm.ehour.ui.common.panel.entryselector.{EntrySelectorData, EntrySelectorPanel}
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.wicket.Container
@@ -39,6 +40,13 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
     val greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"))
     addOrReplace(greyBorder)
 
+    greyBorder.add(buildEntrySelector().build())
+
+    addOrReplace(new Container(ContainerId))
+    addOrReplace(new Container(StatusId))
+  }
+
+  protected def buildEntrySelector(): EntrySelectorBuilder = {
     val clickHandler = new EntrySelectorPanel.ClickHandler {
       def onClick(row: EntrySelectorData.EntrySelectorRow, target: AjaxRequestTarget) {
         val id = row.getId.asInstanceOf[Integer]
@@ -49,15 +57,11 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
       }
     }
 
-    val entrySelectorPanel = new EntrySelectorPanel("projectSelector",
-      createSelectorData(projects),
-      clickHandler,
-      new ResourceModel("admin.user.hideInactive"))
+    EntrySelectorBuilder.startAs("projectSelector")
+      .onClick(clickHandler)
+      .withData(createSelectorData(projects))
+      .withInactiveTooltip(new ResourceModel("admin.user.hideInactive"))
 
-    greyBorder.add(entrySelectorPanel)
-
-    addOrReplace(new Container(ContainerId))
-    addOrReplace(new Container(StatusId))
   }
 
   def onProjectSelected(id: Integer, project: Project, target: AjaxRequestTarget) {
