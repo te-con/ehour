@@ -79,12 +79,6 @@ public class Timesheet implements Serializable {
         this.lockedDays = lockedDays;
     }
 
-    private String activityFilter;
-
-    public void setActivityFilter(String activityFilter) {
-        this.activityFilter = activityFilter;
-    }
-
     /**
      * Update failed projects
      */
@@ -256,7 +250,7 @@ public class Timesheet implements Serializable {
 
     private synchronized List<Project> filterProjects() {
         if (filteredProjects == null ||
-                (filter == null && null == filteredFor) ||
+                (filter == null && null != filteredFor) ||
                 (filter != null && !filter.equalsIgnoreCase(filteredFor))) {
             List<Project> projects = getProjects().get();
 
