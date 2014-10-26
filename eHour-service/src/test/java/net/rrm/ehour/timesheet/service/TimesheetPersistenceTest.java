@@ -146,7 +146,7 @@ public class TimesheetPersistenceTest {
     public void shouldPersistValidatedTimesheetAndAppendModeratorComment() throws OverBudgetException {
         DateRange dateRange = DateUtil.getDateRangeForMonth(new Date());
 
-        expect(timesheetDAO.merge(isA(TimesheetEntry.class))).andReturn(null);
+        timesheetDAO.delete(isA(TimesheetEntry.class));
 
         Capture<TimesheetEntry> captor = new Capture<TimesheetEntry>();
         expect(timesheetDAO.merge((capture(captor)))).andReturn(null);
