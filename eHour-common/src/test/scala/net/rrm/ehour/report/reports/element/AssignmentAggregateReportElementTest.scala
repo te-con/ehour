@@ -1,11 +1,12 @@
 package net.rrm.ehour.report.reports.element
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.FunSuite
+import java.util.{Calendar, GregorianCalendar}
+
 import net.rrm.ehour.domain.ProjectAssignment
 import net.rrm.ehour.util.EhourConstants
-import java.util.{Calendar, GregorianCalendar}
+import org.junit.runner.RunWith
+import org.scalatest.FunSuite
+import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class AssignmentAggregateReportElementTest extends FunSuite {
@@ -56,12 +57,13 @@ class AssignmentAggregateReportElementTest extends FunSuite {
     val assignment = new ProjectAssignment()
     assignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE)
 
-    val now = new GregorianCalendar()
-    now.add(Calendar.DAY_OF_YEAR, -1)
+    val start = new GregorianCalendar()
+    start.add(Calendar.DAY_OF_YEAR, -1)
+    assignment.setDateStart(start.getTime)
 
-    assignment.setDateStart(now.getTime)
-    now.add(Calendar.DAY_OF_YEAR, 2)
-    assignment.setDateEnd(now.getTime)
+    val end= new GregorianCalendar()
+    end.add(Calendar.DAY_OF_YEAR, 1)
+    assignment.setDateEnd(end.getTime)
 
     val e = new AssignmentAggregateReportElement(assignment, 10)
     assert(50 == e.getProgressPercentage.get)

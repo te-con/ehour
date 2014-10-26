@@ -21,8 +21,8 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-
-import java.util.Date;
+import org.joda.time.Days;
+import org.joda.time.LocalDateTime;
 
 /**
  * ReportElement for aggregate reports
@@ -76,12 +76,20 @@ public class AssignmentAggregateReportElement implements Comparable<AssignmentAg
         } else if (projectAssignment.getAssignmentType().isDateType() &&
                 projectAssignment.getDateStart() != null &&
                 projectAssignment.getDateEnd() != null) {
-            currentTime = new Date().getTime() - projectAssignment.getDateStart().getTime();
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime start = new LocalDateTime(projectAssignment.getDateStart());
+            LocalDateTime end = new LocalDateTime(projectAssignment.getDateEnd());
 
-            dateRangeLength = projectAssignment.getDateEnd().getTime() -
-                    projectAssignment.getDateStart().getTime();
+            if (now.isBefore(start)) {
+                percentage = Optional.of(0f);
+            } else if (now.isAfter(end)) {
+                percentage = Optional.of(100f);
+            } else {
+                float totalRange = Days.daysBetween(start, end).getDays();
+                float daysConsumed = Days.daysBetween(start, now).getDays();
 
-            percentage = Optional.of((currentTime / dateRangeLength) * 100);
+                percentage = Optional.of((daysConsumed / totalRange) * 100);
+            }
 
             // if percentage is above 100 for daterange the user can't book anymore hours
             // so don't display more than 100%
