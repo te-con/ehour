@@ -749,6 +749,9 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
             timesheetForm = replacementForm;
 
             target.add(replacementForm);
+
+            target.appendJavaScript("initializeFoldLinks();");
+
         }
 
         @Override
