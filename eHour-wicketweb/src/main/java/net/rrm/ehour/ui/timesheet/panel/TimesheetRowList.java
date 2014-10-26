@@ -45,6 +45,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.AbstractLink;
@@ -335,11 +336,13 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                 target.add(parent.get(TOTAL_ID));
                 target.add(parent.get(AVAILABLE_HOURS_ID));
 
-
                 // update the grand total & day total
-                MarkupContainer blueFrame = (MarkupContainer) dayInput.findParent(Form.class).get("blueFrame");
-                target.add(blueFrame.get("grandTotal"));
-                target.add(blueFrame.get("day" + grandTotals.getOrderForIndex(index) + "Total"));
+                Border blueFrame = (Border) dayInput.findParent(Form.class).get("blueFrame");
+                Border.BorderBodyContainer bodyContainer = blueFrame.getBodyContainer();
+                Component grandTotal = bodyContainer.get("grandTotal");
+                target.add(grandTotal);
+                Component dayTotal = bodyContainer.get("day" + grandTotals.getOrderForIndex(index) + "Total");
+                target.add(dayTotal);
 
                 form.visitFormComponents(new FormHighlighter(target));
             }
