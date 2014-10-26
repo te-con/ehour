@@ -58,8 +58,6 @@ public class AssignmentAggregateReportElement implements Comparable<AssignmentAg
      */
     public Optional<Float> getProgressPercentage() {
         Optional<Float> percentage = Optional.absent();
-        float currentTime;
-        float dateRangeLength;
 
         if (projectAssignment == null) {
             return Optional.absent();
