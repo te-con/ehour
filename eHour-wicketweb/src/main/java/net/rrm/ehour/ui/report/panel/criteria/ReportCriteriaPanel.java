@@ -162,11 +162,11 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                             criteria.setReportTypeToGlobal();
                             break;
                         case PM:
-                            criteria.setReportTypeToPM(getEhourWebSession().getUser());
+                            criteria.setReportTypeToPM(EhourWebSession.getUser());
                             break;
                         case INDIVIDUAL_USER:
                         default:
-                            criteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
+                            criteria.setReportTypeToIndividualUser(EhourWebSession.getUser());
                             break;
                     }
 
