@@ -32,6 +32,7 @@ import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetCell;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
+import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.userpref.UserPreferenceService;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
@@ -79,27 +80,27 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     @SpringBean
     private UserPreferenceService userPreferenceService;
 
-	private EhourConfig config;
-	private final GrandTotal grandTotals;
-	private Form<?> form;
-	private boolean hideWeekend = false;
+    private EhourConfig config;
+    private final GrandTotal grandTotals;
+    private Form<TimesheetModel> form;
+    private boolean hideWeekend = false;
     private boolean beingModerated = false;
 
     private MarkupContainer provider;
 
-    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, boolean beingModerated, MarkupContainer provider) {
-		super(id, model);
+    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<TimesheetModel> form, boolean beingModerated, MarkupContainer provider) {
+        super(id, model);
         this.provider = provider;
 
         setReuseItems(true);
-		this.grandTotals = grandTotals;
-		this.form = form;
+        this.grandTotals = grandTotals;
+        this.form = form;
 
         this.beingModerated = beingModerated;
 
-		config = EhourWebSession.getEhourConfig();
-		hideWeekend = isHideWeekendForUser();
-	}
+        config = EhourWebSession.getEhourConfig();
+        hideWeekend = isHideWeekendForUser();
+    }
 
     private boolean isHideWeekendForUser() {
         boolean result = false;
@@ -119,12 +120,20 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     protected void populateItem(ListItem<TimesheetRow> item) {
         final TimesheetRow row = item.getModelObject();
 
-        item.add(createProjectLinkLink(row));
-        item.add(new Label("activityName", row.getActivity().getName()));
-        item.add(createRemainingHoursLabel(row));
-        item.add(createStatusLabel(item));
-        addInputCells(item, row);
-        item.add(createTotalHoursLabel(row));
+        WebMarkupContainer projectRow = new WebMarkupContainer("projectRow");
+        item.add(projectRow);
+
+        if (StringUtils.isBlank(form.getModelObject().getObject().getFilter())) {
+            projectRow.add(AttributeModifier.append("class", "hidden"));
+
+        }
+
+        projectRow.add(createProjectLinkLink(row));
+        projectRow.add(new Label("activityName", row.getActivity().getName()));
+        projectRow.add(createRemainingHoursLabel(row));
+        projectRow.add(createStatusLabel(item));
+        addInputCells(projectRow, row);
+        projectRow.add(createTotalHoursLabel(row));
     }
 
     private Label createRemainingHoursLabel(TimesheetRow row) {
@@ -140,7 +149,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return totalHours;
     }
 
-    private void addInputCells(ListItem<TimesheetRow> item, final TimesheetRow row) {
+    private void addInputCells(WebMarkupContainer parent, final TimesheetRow row) {
         Calendar currentDate = (Calendar) row.getFirstDayOfWeekDate().clone();
 
         DateRange range = new DateRange(row.getActivity().getDateStart(),
@@ -159,9 +168,9 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             boolean isWeekend = DateUtil.isWeekend(currentDate) && hideWeekend;
 
             if (isWithinRange && !isWeekend) {
-                item.add(timesheetCell.isLocked() ? createLockedTimesheetEntry(id, row, index) : createInputTimesheetEntry(id, row, item, index));
+                parent.add(timesheetCell.isLocked() ? createLockedTimesheetEntry(id, row, index) : createInputTimesheetEntry(id, row, parent, index));
             } else {
-                item.add(createEmptyTimesheetEntry(id));
+                parent.add(createEmptyTimesheetEntry(id));
             }
         }
     }
@@ -183,6 +192,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     /**
      * LLI for Richemont
      * 14/05/2013
+     *
      * @param activityCode
      * @return
      */
@@ -198,13 +208,14 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     /**
      * LLI for Richemont
      * 14/05/2013
+     *
      * @param activityCode
      * @return
      */
     private ExternalLink createJiraLink(String activityCode, String activityName) {
-        activityCode = activityCode.replace( JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA, "");
+        activityCode = activityCode.replace(JiraConst.ACTIVITY_CODE_PREFIX_FOR_JIRA, "");
         String projectLinkUrl = ((EhourWebApplication) getApplication()).getJiraUrl();
-        String updatedUrl = projectLinkUrl.replace("!{ISSUE}", activityCode );
+        String updatedUrl = projectLinkUrl.replace("!{ISSUE}", activityCode);
         ExternalLink link = new ExternalLink("projectLinkLink", updatedUrl);
         Model<String> model = new Model<String>("img/jira.gif");
         //System.out.println("\tcreateJiraLink() for " + activityCode + " :" + activityName);
@@ -221,12 +232,12 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             //Tache technique
         } else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_11)) {
             model = new Model<String>("img/icon-jira-task.png");
-        }else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_15)) {
+        } else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_15)) {
             model = new Model<String>("img/icon-jira-bug.png");
-        }else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_10100)) {
+        } else if (activityName.startsWith(JiraConst.JIRA_ISSUE_TYPE_SHORTNAME_10100)) {
             model = new Model<String>("img/icon-jira-improvement.png");
         }
-        link.add( new ContextImage("projectLinkLinkImg", model ));
+        link.add(new ContextImage("projectLinkLinkImg", model));
         return link;
     }
 
@@ -267,11 +278,11 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     }
 
 
-    private Fragment createInputTimesheetEntry(String id, TimesheetRow row, ListItem<TimesheetRow> item, final int index) {
+    private Fragment createInputTimesheetEntry(String id, TimesheetRow row, WebMarkupContainer parent, final int index) {
         boolean isActivityBookable = isActivityBookable(row);
 
         Fragment fragment = createAndAddFragment(id, "dayInput");
-        fragment.add(createTextFieldWithValidation(row, index, item, isActivityBookable));
+        fragment.add(createTextFieldWithValidation(row, index, parent, isActivityBookable));
 
         createTimesheetEntryComment(row, index, fragment, DayStatus.OPEN, isActivityBookable);
 
@@ -297,7 +308,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return result;
     }
 
-    private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index,  final WebMarkupContainer parent, boolean isActivityBookable) {
+    private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index, final WebMarkupContainer parent, boolean isActivityBookable) {
         PropertyModel<Float> cellModel = new PropertyModel<Float>(row, "timesheetCells[" + index + "].timesheetEntry.updatedHours");
         // make sure it's added to the grandtotal
         grandTotals.addValue(index, cellModel);
@@ -313,7 +324,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         dayInput.setEnabled(isEditable);
         dayInput.setOutputMarkupId(true);
-        
+
         // add validation
         AjaxFormComponentUpdatingBehavior behavior = new AjaxFormComponentUpdatingBehavior("onchange") {
             private static final long serialVersionUID = 1L;
@@ -349,8 +360,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         LOCKED
     }
 
-	private boolean isDayInputApprovedOrRequestedForApproval(TimesheetRow row, int index) {
-		boolean enabled = true;
+    private boolean isDayInputApprovedOrRequestedForApproval(TimesheetRow row, int index) {
+        boolean enabled = true;
 
         ApprovalStatus approvalStatus = null;
 

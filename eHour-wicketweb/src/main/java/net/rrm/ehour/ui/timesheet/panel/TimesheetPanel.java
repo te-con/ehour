@@ -69,10 +69,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -150,6 +147,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         Form<TimesheetModel> timesheetForm = new Form<TimesheetModel>("timesheetForm");
         timesheetForm.setMarkupId("timesheetForm");
         timesheetForm.setOutputMarkupId(true);
+        timesheetForm.setModel(new Model<TimesheetModel>(timesheet));
 
         GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
         timesheetForm.add(blueBorder);
@@ -492,7 +490,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         return ((TimesheetModel) getDefaultModel()).persistTimesheet();
     }
 
-    private GrandTotal buildForm(final Form<?> form, WebMarkupContainer parent) {
+    private GrandTotal buildForm(final Form<TimesheetModel> form, WebMarkupContainer parent) {
         final GrandTotal grandTotals = new GrandTotal();
 
         ListView<Project> projects = new ListView<Project>("projects", new PropertyModel<List<Project>>(getDefaultModelObject(), "projectList")) {

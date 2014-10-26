@@ -529,6 +529,7 @@ div.LoggedInAs {
     margin: 0 7px 7px 0;
     font: 0.8em Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
+    padding-top: 1px;
 }
 
 div.LoggedInAs a:link, div.LoggedInAs a:visited {
