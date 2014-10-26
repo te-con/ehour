@@ -94,3 +94,7 @@ input:focus {
     color: #ff3333;
     padding-top: 2em;
 }
+
+.form-control {
+    padding: 0 12px !important;
+}
