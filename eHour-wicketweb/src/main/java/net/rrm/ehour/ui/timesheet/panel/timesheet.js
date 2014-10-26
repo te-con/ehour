@@ -1,6 +1,7 @@
 function initializeFoldLinks() {
     $(".foldLink").click(function() {
         foldProjectRow(this);
+        return false;
     });
 }
 
