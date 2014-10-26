@@ -109,7 +109,11 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
         entryId.getActivity().mutateAvailableHours(mutation);
     }
-    
+
+    public boolean isModified() {
+        return modified;
+    }
+
     public Float getUpdatedHours() {
         return this.hours;
     }

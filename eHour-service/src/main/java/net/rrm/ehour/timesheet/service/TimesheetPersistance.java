@@ -210,7 +210,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
 
             TimesheetEntry attachedEntry = getEntry(attachedEntries, entry);
             if (entry.isEmptyEntry()) {
-                if (moderator.isPresent() && attachedEntry != null) {
+                if (moderator.isPresent() && attachedEntry != null  && entry.isModified()) {
                     entry.setComment(appendModeratorComment(moderator, attachedEntry.getComment()));
                     entry.setHours(0f);
                     persistEntry(false, entry, attachedEntry);
@@ -218,7 +218,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
                     deleteEntry(attachedEntry);
                 }
             } else {
-                if (moderator.isPresent()) {
+                if (moderator.isPresent() && entry.isModified()) {
                     entry.setComment(appendModeratorComment(moderator, (attachedEntry != null ? attachedEntry.getComment() : "")));
                 }
 
@@ -235,7 +235,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MMMyyyy HH:mm");
         String now = formatter.withLocale(Locale.FRANCE).print(DateTime.now());
 
-        return String.format("%ssaisie par '%s' le '%s'", existingComment == null ? "" : existingComment + "\r\n", moderator.get().getFullName(), now);
+        return String.format("%ssaisie par '%s' le '%s'", StringUtils.isBlank(existingComment) ? "" : existingComment + "\r\n", moderator.get().getFullName(), now);
     }
 
     private void removeOldEntries(List<TimesheetEntry> previousEntries) {
