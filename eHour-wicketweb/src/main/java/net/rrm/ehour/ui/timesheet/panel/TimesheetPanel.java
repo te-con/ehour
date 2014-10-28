@@ -523,7 +523,10 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         @Override
         protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            LOGGER.fatal("Start persisting");
+
             List<ActivityStatus> failedProjects = persistTimesheetEntries();
+            LOGGER.fatal("End persisting");
 
             List<String> failedActivities = sendDataToThirdParty();
             String err_msg = "";
