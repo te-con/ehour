@@ -116,6 +116,11 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         super.onInitialize();
 
         WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
+
+        if (wide) {
+            selectorFrame.add(AttributeModifier.append("style", "width: 97%;"));
+        }
+
         addOrReplace(selectorFrame);
 
         selectorFrame.add(createForm());
@@ -127,9 +132,18 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
                 component.add(AttributeModifier.append("class", "inline"));
 
+                if (wide) {
+                    component.add(AttributeModifier.append("style", "width: 100%;"));
+                }
+
+
                 return component;
             }
         };
+
+        if (wide) {
+            border.add(AttributeModifier.append("style", "width: 100%;"));
+        }
 
         border.setOutputMarkupId(true);
         selectorFrame.add(border);
@@ -139,6 +153,8 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
         if (!wide) {
             listContainer.add(AttributeModifier.append("class", "limitWidth"));
+        } else {
+            listContainer.add(AttributeModifier.append("style", "width: 100%"));
         }
 
         border.add(listContainer);
