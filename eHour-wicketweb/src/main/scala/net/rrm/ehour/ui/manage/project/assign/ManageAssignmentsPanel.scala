@@ -89,7 +89,7 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
       new EntrySelectorData.Header("admin.project.assignments.rate", ColumnType.NUMERIC)
     )
 
-    val formatter = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm")
+    val formatter = DateTimeFormat.forPattern("dd-MM-yyyy")
 
     val rows = for (assignment <- assignments) yield {
       val start = formatter.print(new LocalDateTime(assignment.getDateStart))
