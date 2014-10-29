@@ -4,30 +4,37 @@ import java.lang.Boolean
 import java.{util => ju}
 
 import com.google.common.collect.Lists
-import net.rrm.ehour.domain.User
+import net.rrm.ehour.domain.{Project, ProjectAssignment, User}
 import net.rrm.ehour.project.service.{ProjectAssignmentManagementService, ProjectAssignmentService}
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.event.{AjaxEvent, PayloadAjaxEvent}
 import net.rrm.ehour.ui.common.model.AdminBackingBean
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.{ColumnType, EntrySelectorRow}
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.ClickHandler
 import net.rrm.ehour.ui.common.panel.multiselect.MultiUserSelect
 import net.rrm.ehour.ui.common.wicket.Container
 import net.rrm.ehour.ui.manage.assignment.form.AssignmentFormComponentContainerPanel.DisplayOption
 import net.rrm.ehour.ui.manage.assignment.{AssignmentAdminBackingBean, AssignmentAjaxEventType, AssignmentFormPanel}
 import net.rrm.ehour.ui.manage.project.ProjectAdminBackingBean
+import net.rrm.ehour.util._
 import org.apache.wicket.MarkupContainer
-import org.apache.wicket.event.IEvent
+import org.apache.wicket.ajax.AjaxRequestTarget
+import org.apache.wicket.event.{Broadcast, IEvent}
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
 import org.apache.wicket.markup.html.border.Border
 import org.apache.wicket.model.{CompoundPropertyModel, IModel, ResourceModel}
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
+import org.joda.time.LocalDateTime
+import org.joda.time.format.DateTimeFormat
 
-class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IModel[T], panelConfig: ManagementPanelConfig = ManagementPanelConfig(onlyDeactivation = false, borderless = false)) extends AbstractAjaxPanel(id, model) {
-  val BORDER_ID = "border"
-  val LIST_ID = "list"
-  val FORM_ID = "form"
-  val AFFECTED_USER_ID = "affectedUser"
+class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IModel[T], panelConfig: ManagementPanelConfig = ManagementPanelConfig(onlyDeactivation = false, borderless = false, wide = false)) extends AbstractAjaxPanel(id, model) {
+  val BorderId = "border"
+  val ListId = "list"
+  val FormId = "form"
+  val AffectedUserId = "affectedUser"
 
   val Self = this
 
@@ -44,7 +51,7 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
   override def onInitialize() {
     super.onInitialize()
 
-    val greyBorder = if (panelConfig.borderless) new Container(BORDER_ID) else new GreyRoundedBorder(BORDER_ID, new ResourceModel("admin.projects.assignments.header"))
+    val greyBorder = if (panelConfig.borderless) new Container(BorderId) else new GreyRoundedBorder(BorderId, new ResourceModel("admin.projects.assignments.header"))
     addOrReplace(greyBorder)
 
     greyBorder.add(createCurrentAssignmentsList)
@@ -52,15 +59,54 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
     greyBorder.add(createFormContainer)
   }
 
-  def createAffectedUserContainer = new Container(AFFECTED_USER_ID)
+  def createAffectedUserContainer = new Container(AffectedUserId)
 
-  def createFormContainer = new Container(FORM_ID)
+  def createFormContainer = new Container(FormId)
 
   def createCurrentAssignmentsList = {
-    val view = new CurrentAssignmentsListView[T](LIST_ID, model, panelConfig.onlyDeactivation)
-    view.setOutputMarkupId(true)
-    view
+    val p = model.getObject.getProject
+    val xs = sort(fetchProjectAssignments(p))
+
+    val ch = new ClickHandler {
+      override def onClick(row: EntrySelectorRow, target: AjaxRequestTarget) = {
+
+        val assignmentId = row.getId.asInstanceOf[Integer]
+        val assignment = assignmentService.getProjectAssignment(assignmentId)
+
+        send(Self, Broadcast.BUBBLE, EditAssignmentEvent(assignment, target))
+      }
+    }
+
+    val selector = new AssignmentSelector(ListId, createSelectorData(xs), ch, panelConfig.onlyDeactivation, true)
+    selector.setOutputMarkupId(true)
+    selector
   }
+
+  private def createSelectorData(assignments: List[ProjectAssignment]): EntrySelectorData = {
+    val headers = Lists.newArrayList(new EntrySelectorData.Header("admin.project.assignments.user"),
+      new EntrySelectorData.Header("admin.project.assignments.role"),
+      new EntrySelectorData.Header("admin.project.assignments.date"),
+      new EntrySelectorData.Header("admin.project.assignments.rate", ColumnType.NUMERIC)
+    )
+
+    val formatter = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm")
+
+    val rows = for (assignment <- assignments) yield {
+      val start = formatter.print(new LocalDateTime(assignment.getDateStart))
+      val end = formatter.print(new LocalDateTime(assignment.getDateEnd))
+
+      val cells = Lists.newArrayList(assignment.getUser.getFullName, assignment.getRole, s"$start - $end", assignment.getHourlyRate)
+      new EntrySelectorData.EntrySelectorRow(cells, assignment.getPK)
+    }
+
+    import scala.collection.JavaConversions._
+    new EntrySelectorData(headers, rows)
+  }
+
+  private def fetchProjectAssignments(project: Project) = if (project.getPK == null) List() else toScala(assignmentService.getProjectAssignmentsAndCheckDeletability(project))
+
+  private def sort(assignments: List[ProjectAssignment]) = assignments.sortWith((a, b) => a.getUser.compareTo(b.getUser) < 0)
+
 
   // Wicket 6 event system
   override def onEvent(event: IEvent[_]) {
@@ -76,7 +122,7 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
     case _ => Lists.newArrayList()
   }
 
-  def findListPanel = getBorderContainer.get(LIST_ID)
+  def findListPanel = getBorderContainer.get(ListId)
 
   private def initializeNewAssignment(event: NewAssignmentEvent) {
     val bean = AssignmentAdminBackingBean.createAssignmentAdminBackingBean(getPanelModelObject.getDomainObject)
@@ -89,7 +135,7 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
     }
 
     def replaceUserListPanel: MultiUserSelect = {
-      val view = new MultiUserSelect(LIST_ID)
+      val view = new MultiUserSelect(ListId)
       view.setOutputMarkupId(true)
       getBorderContainer.addOrReplace(view)
       view
@@ -99,13 +145,13 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
   }
 
   def createAssignmentFormPanel(model: CompoundPropertyModel[AssignmentAdminBackingBean]): AssignmentFormPanel = {
-    val formPanel = new AssignmentFormPanel(FORM_ID, model, ju.Arrays.asList(DisplayOption.NO_BORDER, DisplayOption.SHOW_CANCEL_BUTTON))
+    val formPanel = new AssignmentFormPanel(FormId, model, ju.Arrays.asList(DisplayOption.NO_BORDER, DisplayOption.SHOW_CANCEL_BUTTON))
     formPanel.setOutputMarkupId(true)
     formPanel
   }
 
   def replaceAffectedUserPanel = {
-    val affectedUsersPanel = new Container(AFFECTED_USER_ID)
+    val affectedUsersPanel = new Container(AffectedUserId)
     getBorderContainer.addOrReplace(affectedUsersPanel)
     affectedUsersPanel
   }
@@ -118,7 +164,7 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
       formPanel
     }
     def replaceAffectedUserPanel: AffectedUserPanel = {
-      val affectedUserLabel = new AffectedUserPanel(AFFECTED_USER_ID, event.assignment.getUser)
+      val affectedUserLabel = new AffectedUserPanel(AffectedUserId, event.assignment.getUser)
       getBorderContainer.addOrReplace(affectedUserLabel)
       affectedUserLabel
     }
@@ -126,7 +172,7 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
     event.refresh(replaceFormPanel, replaceAffectedUserPanel)
   }
 
-  private[assign] def getBorderContainer:MarkupContainer = if (panelConfig.borderless) get(BORDER_ID).asInstanceOf[Container] else get(BORDER_ID).asInstanceOf[Border].getBodyContainer
+  private[assign] def getBorderContainer:MarkupContainer = if (panelConfig.borderless) get(BorderId).asInstanceOf[Container] else get(BorderId).asInstanceOf[Border].getBodyContainer
 
   // own legacy event system...
   override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {
@@ -183,5 +229,5 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
   }
 }
 
-case class ManagementPanelConfig(onlyDeactivation: Boolean = false, borderless: Boolean = false)
+case class ManagementPanelConfig(onlyDeactivation: Boolean = false, borderless: Boolean = false, wide: Boolean = false)
 

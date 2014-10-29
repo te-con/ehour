@@ -63,6 +63,7 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
     EntrySelectorBuilder.startAs("projectSelector")
       .onClick(clickHandler)
       .withData(createSelectorData(projects))
+      .isWide
       .withInactiveTooltip(new ResourceModel("admin.user.hideInactive"))
 
   }
@@ -84,13 +85,14 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
   def projects = projectService.getProjectManagerProjects(EhourWebSession.getUser)
 
   def createSelectorData(projects: util.List[Project]): EntrySelectorData = {
-    val headers = Lists.newArrayList(new EntrySelectorData.Header("admin.project.code.short"),
+    val headers = Lists.newArrayList(new EntrySelectorData.Header("admin.project.customer"),
+                                     new EntrySelectorData.Header("admin.project.code"),
                                      new EntrySelectorData.Header("admin.project.name"))
 
     import scala.collection.JavaConversions._
     val rows = for (project <- projects) yield {
-      val cells = Lists.newArrayList(project.getName, project.getProjectCode)
-      new EntrySelectorData.EntrySelectorRow(cells, project.getProjectId, project.isActive)
+      val cells = Lists.newArrayList(project.getCustomer.getFullName, project.getName, project.getProjectCode)
+      new EntrySelectorData.EntrySelectorRow(cells,  project.getProjectId, project.isActive)
     }
 
     new EntrySelectorData(headers, rows)

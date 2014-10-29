@@ -5,20 +5,12 @@
       xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" xml:lang="en" lang="en">
 
 <body>
-<wicket:panel>
-    <div wicket:id="border">
-        <div wicket:id="list"></div>
 
-        <div wicket:id="affectedUser"></div>
+<wicket:extend>
+    <a class="button floatRight" onclick="this.blur();" wicket:id="addUsers">
+        <span><wicket:message key="admin.project.assignments.addUsers"/></span></a>
 
-        <br />
-
-        <div wicket:id="form"></div>
-
-        <br />
-    </div>
-
-</wicket:panel>
+</wicket:extend>
 
 </body>
 
