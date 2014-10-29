@@ -89,7 +89,7 @@ public abstract class ProjectDriver {
     }
 
     public static void newAssignment() {
-        findElement("tabs_panel_assignedUserPanel_border_border__body_list_addUsers").click();
+        findElement("tabs_panel_assignedUserPanel_border_border__body_list_entrySelectorFrame_filterForm_filterInputContainer_addUsers").click();
     }
 
     public static void selectUser(int index) {
