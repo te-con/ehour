@@ -153,7 +153,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         if (!wide) {
             listContainer.add(AttributeModifier.append("class", "limitWidth"));
         } else {
-            listContainer.add(AttributeModifier.append("style", "width: 100%"));
+            listContainer.add(AttributeModifier.append("style", "width: 99%"));
         }
 
         border.add(listContainer);
