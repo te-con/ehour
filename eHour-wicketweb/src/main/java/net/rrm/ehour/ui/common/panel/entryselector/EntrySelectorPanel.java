@@ -63,7 +63,6 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     private boolean showHideInactiveLink = false;
     private WebMarkupContainer listContainer;
 
-
     public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler) {
         this(id, entrySelectorData, clickHandler, null);
     }
@@ -225,7 +224,13 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
         form.add(excelLink);
 
+        onFiltersCreated(filterInputContainer);
+
         return form;
+    }
+
+    protected void onFiltersCreated(WebMarkupContainer filterInputContainer) {
+
     }
 
     private XlsxLink createExcelLink() {
