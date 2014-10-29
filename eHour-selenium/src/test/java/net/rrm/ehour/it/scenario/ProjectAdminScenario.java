@@ -56,6 +56,7 @@ public class ProjectAdminScenario extends AbstractScenario {
         loadProjectAdmin();
         editProject(ACTIVE_PROJECT.name);
 
-        selectAssignment(0);
+        // FIXME
+//        selectAssignment(0);
     }
 }

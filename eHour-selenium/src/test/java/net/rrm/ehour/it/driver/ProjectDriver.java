@@ -107,7 +107,7 @@ public abstract class ProjectDriver {
     }
 
     public static void selectAssignment(int index) {
-        findElement("tabs_panel_assignedUserPanel_border_border__body_list_assignments_border_border__body_row_" + index + "_name").click();
+        findElement("tabs_panel_assignedUserPanel_border_border__body_list_entrySelectorFrame_blueBorder_blueBorder__body_listScroll_itemList_" + index + "_name").click();
     }
 
     public static void selectProjectManager(String name) {
