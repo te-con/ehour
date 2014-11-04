@@ -279,14 +279,7 @@ public class DateUtil {
      * Set the time of a date to 23:59:59.999
      */
     public static Date maximizeTime(Date date) {
-        return new LocalDate(date).toDateTime(new LocalTime(23, 59, 59, 59)).toDate();
-
-//        nullifyTime(date).;
-//        Calendar cal = new GregorianCalendar();
-//        cal.setTime(date);
-//        maximizeTime(cal);
-
-//        return cal.getTime();
+        return new LocalDate(date).toDateTime(new LocalTime(23, 59, 59, 999)).toDate();
     }
 
     /**

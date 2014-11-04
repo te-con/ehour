@@ -210,11 +210,11 @@ public class DateUtilTest {
         cal.set(Calendar.MINUTE, 10);
         Date date = DateUtil.nullifyTime(cal.getTime());
 
-        System.out.println(date);
+        DateTime dateTime = new DateTime(date);
 
-        assertEquals(0, cal.get(Calendar.MINUTE));
-        assertEquals(0, cal.get(Calendar.SECOND));
-        assertEquals(0, cal.get(Calendar.HOUR_OF_DAY));
+        assertEquals(0, dateTime.getMinuteOfHour());
+        assertEquals(0, dateTime.getSecondOfMinute());
+        assertEquals(0, dateTime.getHourOfDay());
     }
 
 
