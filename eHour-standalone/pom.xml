@@ -86,6 +86,10 @@
         </dependency>
         <dependency>
             <groupId>nl.tecon.ehevo</groupId>
+            <artifactId>ehevo-windchill</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>nl.tecon.ehevo</groupId>
             <artifactId>ehevo-persistence-oracle</artifactId>
         </dependency>
         <dependency>

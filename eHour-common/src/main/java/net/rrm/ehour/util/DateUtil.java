@@ -239,11 +239,13 @@ public class DateUtil {
      */
 
     public static Date nullifyTime(Date date) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        nullifyTime(cal);
+//        System.out.println(date);
+        long ts = date.getTime() - date.getTimezoneOffset()*60000L;
+        Date myDate = new Date(ts - ts % (3600000L*24L));
+        myDate.setTime(myDate.getTime() + myDate.getTimezoneOffset()*60000L);
 
-        return cal.getTime();
+//        long truncatedTimestamp = date.getTime() - date.getTime() % (3600000L * 24L);
+        return myDate;
     }
 
     /**
@@ -277,11 +279,14 @@ public class DateUtil {
      * Set the time of a date to 23:59:59.999
      */
     public static Date maximizeTime(Date date) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        maximizeTime(cal);
+        return new LocalDate(date).toDateTime(new LocalTime(23, 59, 59, 59)).toDate();
 
-        return cal.getTime();
+//        nullifyTime(date).;
+//        Calendar cal = new GregorianCalendar();
+//        cal.setTime(date);
+//        maximizeTime(cal);
+
+//        return cal.getTime();
     }
 
     /**

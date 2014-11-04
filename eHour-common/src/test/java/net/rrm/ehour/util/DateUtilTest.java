@@ -189,19 +189,34 @@ public class DateUtilTest {
         assertEquals(6, range.getDateEnd().getDate());
     }
 
-    /**
-     *
-     *
-     */
     @Test
     public void testNullifyTime() {
         Calendar cal = new GregorianCalendar();
+        cal.set(Calendar.HOUR, 10);
+        cal.set(Calendar.SECOND, 10);
         cal.set(Calendar.MINUTE, 10);
         DateUtil.nullifyTime(cal);
 
         assertEquals(0, cal.get(Calendar.MINUTE));
+        assertEquals(0, cal.get(Calendar.SECOND));
         assertEquals(0, cal.get(Calendar.HOUR_OF_DAY));
     }
+
+    @Test
+    public void testNullifyTimeOnDate() {
+        Calendar cal = new GregorianCalendar();
+        cal.set(Calendar.HOUR, 10);
+        cal.set(Calendar.SECOND, 10);
+        cal.set(Calendar.MINUTE, 10);
+        Date date = DateUtil.nullifyTime(cal.getTime());
+
+        System.out.println(date);
+
+        assertEquals(0, cal.get(Calendar.MINUTE));
+        assertEquals(0, cal.get(Calendar.SECOND));
+        assertEquals(0, cal.get(Calendar.HOUR_OF_DAY));
+    }
+
 
     @Test
     public void testMaximizeTime() {

@@ -16,14 +16,15 @@
 
 package net.rrm.ehour.data;
 
+import com.google.common.collect.Maps;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import org.joda.time.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Object containing a range of dates.
@@ -32,8 +33,17 @@ import java.util.Date;
  */
 public class DateRange implements Serializable {
     private static final long serialVersionUID = 4901436851703213753L;
+
+    private static final Map<Date, DateTime> CACHE_START = Maps.newHashMap();
+    private static final Map<Date, DateTime> CACHE_END = Maps.newHashMap();
+
     private Date dateStart;
+    private Date dateStartCached;
+    private DateTime localDateStart;
+
     private Date dateEnd;
+    private Date dateEndCached;
+    private DateTime localDateEnd;
 
     public DateRange() {
     }
@@ -49,7 +59,11 @@ public class DateRange implements Serializable {
     }
 
     public Date getDateEnd() {
-        return dateEnd;
+        if (dateEndCached == null && dateEnd != null) {
+            this.dateEndCached = DateUtil.maximizeTime(dateEnd);
+        }
+
+        return dateEndCached;
     }
 
     public boolean isOpenEnded() {
@@ -57,11 +71,7 @@ public class DateRange implements Serializable {
     }
 
     public Interval toInterval() {
-        Date start = getDateStart();
-        Date end = getDateEnd();
-        return new Interval(start != null ? new DateTime(start) : new DateTime().minusYears(100),
-                end != null ? new DateTime(end) : new DateTime().plusYears(100));
-
+        return new Interval(localDateStart, localDateEnd);
     }
 
     /**
@@ -81,16 +91,22 @@ public class DateRange implements Serializable {
     public final void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
 
-        if (dateEnd != null) {
-            this.dateEnd = DateUtil.maximizeTime(dateEnd);
-        }
+        this.localDateEnd = new LocalDate(dateEnd).toDateTime(new LocalTime(23, 59, 59));
+//
+//        if (localDateEnd == null) {
+//            this.localDateEnd = new LocalDate(dateEnd).toDateTimeAtStartOfDay().plusDays(1);
+//            CACHE_END.put(dateEnd, localDateEnd);
+//        }
     }
 
     /**
      * @return
      */
     public Date getDateStart() {
-        return dateStart;
+        if (dateStartCached == null && dateStart != null) {
+            this.dateStartCached = DateUtil.nullifyTime(dateStart);
+        }
+        return dateStartCached;
     }
 
     /**
@@ -98,12 +114,19 @@ public class DateRange implements Serializable {
      *
      * @param dateStart
      */
-    public final void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
+    public final void setDateStart(Date date) {
+        long ts = date.getTime() - date.getTimezoneOffset()*60000L;
+        this.dateStart = new Date(ts - ts % (3600000L*24L));
+        long time = dateStart.getTime() + dateStart.getTimezoneOffset() * 60000L;
+        this.dateStart.setTime(time);
 
-        if (dateStart != null) {
-            this.dateStart = DateUtil.nullifyTime(dateStart);
-        }
+        this.localDateStart = new DateTime(time);
+//
+//        if (localDateStart == null) {
+//            this.localDateStart = new LocalDate(dateStart).toDateTimeAtStartOfDay();
+//            CACHE_START.put(dateStart, localDateStart);
+//            System.out.println("miss: " + dateStart.toString() + ", " +  CACHE_START.size());
+//        }
     }
 
     public String toString() {

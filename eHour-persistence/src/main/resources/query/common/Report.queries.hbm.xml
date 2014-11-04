@@ -62,6 +62,12 @@
                 GROUP BY entry.entryId.activity.id
         ]]>
 	</query>
+
+    <sql-query name="Report.getCumulatedHoursForActivitySQL">
+        SELECT SUM(HOURS)
+        FROM TIMESHEET_ENTRY
+        WHERE ACTIVITY_ID = :id
+    </sql-query>
     
     <query name="Report.getCumulatedHoursForActivity">
          <![CDATA[

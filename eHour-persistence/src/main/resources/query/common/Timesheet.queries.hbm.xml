@@ -33,8 +33,8 @@
         <![CDATA[FROM TimesheetEntry entry
                  WHERE entry.entryId.entryDate > :date AND
                        entry.entryId.activity = :activity
-        ]]></query>        
-        
+        ]]></query>
+
     <query name="Timesheet.getBookedDaysInRangeForUserId">
         <![CDATA[SELECT new net.rrm.ehour.timesheet.dto.BookedDay(entry.entryId.entryDate, SUM(entry.hours))
         		 FROM TimesheetEntry entry
@@ -42,7 +42,7 @@
                        entry.entryId.entryDate <= :dateEnd AND
                        entry.entryId.activity.assignedUser.userId = :userId
 				 GROUP BY entry.entryId.entryDate                       
-        ]]></query>   
+        ]]></query>
 
     <query name="TimesheetComment.getCommentsForUserIdInRange">
 	    <![CDATA[

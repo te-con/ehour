@@ -5,7 +5,7 @@ import net.rrm.ehour.domain.Activity;
 
 public interface ActivityStatusService {
 
-	public ActivityStatus getActivityStatus(Activity activity);
+	ActivityStatus getActivityStatus(Activity activity);
 
-	public ActivityStatus getActivityStatus(Activity activity, DateRange period);
+	ActivityStatus getActivityStatus(Activity activity, DateRange period);
 }

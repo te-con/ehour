@@ -78,8 +78,16 @@ class ReportAggregatedDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Im
   }
 
   override def getCumulatedHoursForActivity(activity: Activity): ActivityAggregateReportElement = {
-    val results = findByNamedQuery[ActivityAggregateReportElement]("Report.getCumulatedHoursForActivity", "activity", List(activity))
-    getFirstOr(results, null)
+    val q = getSession.getNamedQuery("Report.getCumulatedHoursForActivitySQL")
+    q.setParameter("id", activity.getId)
+//    q.setCacheable(true)
+//    q.setCacheRegion(CacheRegion.get)
+
+    val list = q.list()
+
+    val h: Number = if (list.isEmpty) 0 else list.get(0).asInstanceOf[Number]
+
+    new ActivityAggregateReportElement(activity, h)
   }
 
   override def getCumulatedHoursPerActivityForActivities(projectActivityIds: util.List[Integer]): util.List[ActivityAggregateReportElement] = {

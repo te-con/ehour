@@ -26,5 +26,10 @@
 			<groupId>nl.tecon.ehevo</groupId>
 			<artifactId>ehevo-wicketweb</artifactId>
 		</dependency>
+
+        <dependency>
+            <groupId>nl.tecon.ehevo</groupId>
+            <artifactId>ehevo-windchill</artifactId>
+        </dependency>
 	</dependencies>
 </project>

@@ -107,6 +107,14 @@ public class TimesheetFactory {
                                                    List<TimesheetDate> timesheetDates,
                                                    List<Activity> validActivities,
                                                    Timesheet timesheet) {
+
+        List<Integer> activityIds = Lists.newArrayList();
+
+        for (Activity activity : validActivities) {
+            activityIds.add(activity.getId());
+        }
+
+
         List<TimesheetRow> timesheetRows = new ArrayList<TimesheetRow>();
         Calendar firstDate = DateUtil.getCalendar(config);
 
@@ -130,7 +138,7 @@ public class TimesheetFactory {
                     entry = new TimesheetEntry(new TimesheetEntryId(timesheetDate.date, activity));
                 }
                 timesheetRow.addTimesheetCell(timesheetDate.dayInWeek,
-                        createTimesheetCell(activity, entry, timesheetDate.date, timesheetDate.locked, validActivities));
+                        createTimesheetCell(activity, entry, timesheetDate.date, timesheetDate.locked, activityIds));
             }
 
             timesheetRows.add(timesheetRow);
@@ -146,11 +154,11 @@ public class TimesheetFactory {
                                               TimesheetEntry entry,
                                               Date date,
                                               Boolean locked,
-                                              List<Activity> validActivities) {
+                                              List<Integer> validActivitiesId) {
         TimesheetCell cell = new TimesheetCell();
 
         cell.setTimesheetEntry(entry);
-        cell.setValid(isCellValid(activity, validActivities, date));
+        cell.setValid(isCellValid(activity, validActivitiesId, date));
 
         cell.setLocked(locked);
         cell.setDate(date);
@@ -163,11 +171,11 @@ public class TimesheetFactory {
      * assignments are over their budget or default assignments are de-activated
      */
     private boolean isCellValid(Activity activity,
-                                List<Activity> validActivities,
+                                List<Integer> validActivities,
                                 Date date) {
         // first check if it's in valid project assignments (time allotted can have values
         // but not be valid anymore)
-        boolean isValid = validActivities.contains(activity);
+        boolean isValid = validActivities.contains(activity.getPK());
 
         DateRange dateRange = new DateRange(activity.getDateStart(), activity.getDateEnd());
 
