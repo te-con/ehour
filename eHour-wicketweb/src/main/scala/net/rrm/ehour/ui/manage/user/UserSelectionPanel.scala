@@ -9,6 +9,7 @@ import net.rrm.ehour.sort.UserComparator
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.panel.entryselector._
+import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.ajax.AjaxRequestTarget
@@ -20,8 +21,6 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
   def this(id: String, titleResourceKey: Option[String]) = this(id, titleResourceKey, xs => xs)
 
   val Self = this
-
-  val hideInactiveFilter = new HideInactiveFilter()
 
   var entrySelectorPanel:EntrySelectorPanel = _
 
@@ -47,7 +46,7 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
     }
 
     entrySelectorPanel = new EntrySelectorPanel("entrySelectorFrame",
-                                                createSelectorData(users),
+                                                createSelectorData(users(EhourWebSession.getSession.getHideInactiveSelections)),
                                                 clickHandler,
                                                 new ResourceModel("admin.user.hideInactive"))
 
@@ -70,21 +69,19 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
 
   override def onEvent(event: IEvent[_]) {
     def refresh(event: Event) {
-      entrySelectorPanel.updateData(createSelectorData(users))
+      entrySelectorPanel.updateData(createSelectorData(users(EhourWebSession.getSession.getHideInactiveSelections)))
       entrySelectorPanel.reRender(event.target)
     }
 
     event.getPayload match {
       case event: EntryListUpdatedEvent => refresh(event)
-      case event: InactiveFilterChangedEvent =>
-        hideInactiveFilter.setHideInactive(event.hideInactiveFilter.isHideInactive)
-        refresh(event)
+      case event: InactiveFilterChangedEvent => refresh(event)
       case _ =>
     }
   }
 
-  private def users: util.List[User] = {
-    val users: util.List[User] = filterUsers(if (hideInactiveFilter.isHideInactive) userService.getUsers() else userService.getUsers)
+  private def users(hideInactive: Boolean): util.List[User] = {
+    val users: util.List[User] = filterUsers(if (hideInactive) userService.getUsers() else userService.getUsers)
     Collections.sort(users, new UserComparator())
     users
   }

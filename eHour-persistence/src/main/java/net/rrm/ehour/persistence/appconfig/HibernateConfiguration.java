@@ -36,7 +36,7 @@ public class HibernateConfiguration {
     @Value("${ehour.db.cache:true}")
     private String caching;
 
-    private static final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    protected static final PathMatchingResourcePatternResolver RESOLVER = new PathMatchingResourcePatternResolver();
     private static final Logger LOGGER = Logger.getLogger(HibernateConfiguration.class);
 
     public HibernateConfiguration() {
@@ -112,8 +112,8 @@ public class HibernateConfiguration {
         }
     }
 
-    private List<Resource> getMappingResources(Properties configProperties) throws IOException {
-        Resource[] queryResources = resolver.getResources("classpath:query/common/*.hbm.xml");
+    protected List<Resource> getMappingResources(Properties configProperties) throws IOException {
+        Resource[] queryResources = RESOLVER.getResources("classpath:query/common/*.hbm.xml");
         ClassPathResource dbQueryResource = new ClassPathResource("query/" + configProperties.getProperty("reportquery.filename"));
         return Lists.asList(dbQueryResource, queryResources);
     }

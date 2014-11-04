@@ -103,11 +103,15 @@ class TreeBasedMenu(id: String, items: JList[_ <: MenuItem]) extends Panel(id) {
               def populateItem(item: ListItem[LinkItem]) {
                 val linkItem = item.getModelObject
 
-                if (onSamePage(linkItem)) {
-                  item.add(createActiveLinkFragment("subItem", linkItem))
+                item.setVisible(linkItem.isVisibleForLoggedInUser)
+
+                item.add(if (onSamePage(linkItem)) {
+                  createActiveLinkFragment("subItem", linkItem)
                 } else {
-                  item.add(createLinkFragment("subItem", linkItem))
-                }
+                  createLinkFragment("subItem", linkItem)
+                })
+
+
               }
             })
         }

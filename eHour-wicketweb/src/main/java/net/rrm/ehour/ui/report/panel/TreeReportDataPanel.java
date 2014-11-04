@@ -120,7 +120,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     private Fragment withDataReport(String id, final TreeReportModel reportModel, final ExcelReport excelReport) {
         Fragment fragment = new Fragment(id, "withDataReport", this);
 
-        fragment.add(createExcelLink(reportModel, excelReport));
+        fragment.add(createExcelLink(excelReport));
 
         fragment.add(createZeroBookingSelector("reportOptionsPlaceholder"));
         fragment.add(createAdditionalOptions("additionalOptions"));
@@ -208,9 +208,9 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
         return nav;
     }
 
-    private Component createExcelLink(final TreeReportModel reportModel, final ExcelReport excelReport) {
+    private Component createExcelLink(final ExcelReport excelReport) {
         if (excelReport != null) {
-            return new ExcelReportLink("excelLink", reportModel.getReportCriteria()) {
+            return new ExcelReportLink("excelLink") {
                 @Override
                 protected ExcelReport createReportBuilder() {
                     return excelReport;

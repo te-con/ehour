@@ -61,26 +61,6 @@
             <filtered>false</filtered>
         </fileSet>
 
-        <!-- tomcat -->
-        <fileSet>
-            <useDefaultExcludes/>
-            <outputDirectory>/tomcat/tomcat6</outputDirectory>
-            <fileMode>0644</fileMode>
-            <directoryMode>0775</directoryMode>
-            <directory>../assembly/war/tomcat6</directory>
-            <filtered>true</filtered>
-        </fileSet>
-
-        <fileSet>
-            <useDefaultExcludes/>
-            <outputDirectory>/tomcat/tomcat7</outputDirectory>
-            <fileMode>0644</fileMode>
-            <directoryMode>0775</directoryMode>
-            <directory>../assembly/war/tomcat7</directory>
-            <filtered>true</filtered>
-        </fileSet>
-
-
         <!-- create empty log dir -->
         <!-- this is a trick for creating an empty dir -->
         <fileSet>

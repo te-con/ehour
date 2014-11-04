@@ -18,10 +18,14 @@ package net.rrm.ehour.ui.common.panel.entryselector;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
+import net.rrm.ehour.ui.common.component.XlsxLink;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
+import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
+import net.rrm.ehour.ui.common.report.excel.IWriteBytes;
+import net.rrm.ehour.ui.common.wicket.Container;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -33,10 +37,12 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.EntrySelectorRow;
@@ -45,32 +51,35 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Entr
  * Selector with autocompletion filter
  */
 
-public class EntrySelectorPanel extends AbstractBasePanel<Void> {
+public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
     private static final String ITEM_LIST_ID = "itemList";
     private static final String HEADER_ID = "headers";
     private final ClickHandler clickHandler;
+    private final boolean wide;
 
-    private IModel<String> hideInactiveCheckboxPrefix;
-    private boolean showHideInactiveCheckbox = false;
-    private GreyBlueRoundedBorder blueBorder;
+    private IModel<String> hideInactiveLinkTooltip;
+    private boolean showHideInactiveLink = false;
+    private WebMarkupContainer listContainer;
 
-
-    public  EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler) {
+    public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler) {
         this(id, entrySelectorData, clickHandler, null);
     }
 
-    public  EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> checkboxPrefix) {
-        super(id);
+    public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> hideInactiveLinkTooltip) {
+        this(id, entrySelectorData, clickHandler, hideInactiveLinkTooltip, false);
+    }
+
+    public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> hideInactiveLinkTooltip, boolean wide) {
+        super(id, new Model<EntrySelectorData>(entrySelectorData));
         this.clickHandler = clickHandler;
+        this.wide = wide;
 
-        if (checkboxPrefix != null) {
-            this.hideInactiveCheckboxPrefix = checkboxPrefix;
-            showHideInactiveCheckbox = true;
+        if (hideInactiveLinkTooltip != null) {
+            this.hideInactiveLinkTooltip = hideInactiveLinkTooltip;
+            showHideInactiveLink = true;
         }
-
-        setUpPanel(entrySelectorData);
     }
 
     @Override
@@ -85,11 +94,13 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
     }
 
     public void updateData(EntrySelectorData entrySelectorData) {
-        blueBorder.addOrReplace(createListView(ITEM_LIST_ID, entrySelectorData));
+        setDefaultModelObject(entrySelectorData);
+
+        listContainer.addOrReplace(createListView(ITEM_LIST_ID));
     }
 
     public void reRender(AjaxRequestTarget target) {
-        target.add(blueBorder);
+        target.add(listContainer);
         target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
     }
 
@@ -99,43 +110,70 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         response.render(OnDomReadyHeaderItem.forScript("window.entrySelector = new EntrySelector('#listFilter', '.entrySelectorTable');"));
     }
 
-    private  void setUpPanel(EntrySelectorData entrySelectorData) {
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
         WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
 
-        blueBorder = new GreyBlueRoundedBorder("blueBorder") {
+        if (wide) {
+            selectorFrame.add(AttributeModifier.append("style", "width: 97%;"));
+        }
+
+        addOrReplace(selectorFrame);
+
+        selectorFrame.add(createForm());
+
+        GreyBlueRoundedBorder border = new GreyBlueRoundedBorder("blueBorder") {
             @Override
             protected WebMarkupContainer createComponent() {
                 WebMarkupContainer component = super.createComponent();
 
                 component.add(AttributeModifier.append("class", "inline"));
 
+                if (wide) {
+                    component.add(AttributeModifier.append("style", "width: 100%;"));
+                }
+
+
                 return component;
             }
         };
 
-        blueBorder.setOutputMarkupId(true);
-        selectorFrame.add(blueBorder);
+        if (wide) {
+            border.add(AttributeModifier.append("style", "width: 100%;"));
+        }
 
-        selectorFrame.add(createForm());
+        border.setOutputMarkupId(true);
+        selectorFrame.add(border);
 
-        add(selectorFrame);
+        listContainer = new Container("listScroll");
+        listContainer.setMarkupId("listContents");
 
-        blueBorder.add(createHeaders(HEADER_ID, entrySelectorData));
-        blueBorder.add(createListView(ITEM_LIST_ID, entrySelectorData));
+        if (!wide) {
+            listContainer.add(AttributeModifier.append("class", "limitWidth"));
+        } else {
+            listContainer.add(AttributeModifier.append("style", "width: 99%"));
+        }
+
+        border.add(listContainer);
+
+        listContainer.add(createHeaders(HEADER_ID));
+        listContainer.add(createListView(ITEM_LIST_ID));
     }
 
-    private RepeatingView createHeaders(String id, EntrySelectorData entrySelectorData) {
+    private RepeatingView createHeaders(String id) {
         RepeatingView cells = new RepeatingView(id);
 
-        for (EntrySelectorData.Header header : entrySelectorData.getColumnHeaders()) {
+        for (EntrySelectorData.Header header : getPanelModelObject().getColumnHeaders()) {
             cells.add(new Label(cells.newChildId(), new ResourceModel(header.getResourceLabel())));
         }
 
         return cells;
     }
 
-    private  EntrySelectorListView createListView(String id, final EntrySelectorData entrySelectorData) {
-        return new EntrySelectorListView(id, entrySelectorData.getRows(), clickHandler) {
+    private EntrySelectorListView createListView(String id) {
+        return new EntrySelectorListView(id, getPanelModelObject().getRows(), clickHandler) {
 
             @Override
             protected void onPopulate(ListItem<EntrySelectorRow> item, IModel<EntrySelectorRow> itemModel) {
@@ -149,7 +187,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
                     Label label = new Label(cells.newChildId(), serializable);
                     cells.add(label);
 
-                    EntrySelectorData.Header header = entrySelectorData.getColumnHeaders().get(index);
+                    EntrySelectorData.Header header = getPanelModelObject().getColumnHeaders().get(index);
 
                     if (header.getColumnType() == EntrySelectorData.ColumnType.NUMERIC) {
                         label.add(AttributeModifier.replace("class", "numeric"));
@@ -180,33 +218,108 @@ public class EntrySelectorPanel extends AbstractBasePanel<Void> {
         listFilter.add(AttributeModifier.replace("placeholder", new ResourceModel("report.filter").getObject()));
         filterInputContainer.add(listFilter);
 
+        addHideInactiveFilter(form);
+
+        XlsxLink excelLink = createExcelLink();
+
+        form.add(excelLink);
+
+        onFiltersCreated(filterInputContainer);
+
+        return form;
+    }
+
+    protected void onFiltersCreated(WebMarkupContainer filterInputContainer) {
+
+    }
+
+    private XlsxLink createExcelLink() {
+        return new XlsxLink("toExcel", "out.xlsx", new IWriteBytes() {
+                @Override
+                public void write(OutputStream stream) throws IOException {
+                    EntrySelectorExcelGenerator excelGenerator = new EntrySelectorExcelGenerator();
+                    ExcelWorkbook workbook = excelGenerator.create(getPanelModelObject(), "Export");
+                    workbook.write(stream);
+                }
+            });
+    }
+
+    private void addHideInactiveFilter(Form<Void> form) {
         final HideInactiveFilter hideInactiveFilter = new HideInactiveFilter();
         hideInactiveFilter.setHideInactive(getEhourWebSession().getHideInactiveSelections());
-        final AjaxCheckBox hideInactiveCheckbox = new AjaxCheckBox("filterToggle", new PropertyModel<Boolean>(hideInactiveFilter, "hideInactive")) {
-            private static final long serialVersionUID = 2585047163449150793L;
 
+        final WebMarkupContainer filterIcon = new WebMarkupContainer("filterIcon");
+        addFilterIconAttributes(filterIcon, getEhourWebSession().getHideInactiveSelections());
+        filterIcon.setOutputMarkupId(true);
+
+        final AjaxLink<Void> hideInactiveLink = new AjaxLink<Void>("filterToggle") {
             @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                getEhourWebSession().setHideInactiveSelections(hideInactiveFilter.isHideInactive());
-
-                send(getPage(), Broadcast.DEPTH, new InactiveFilterChangedEvent(hideInactiveFilter, target));
+            public void onClick(AjaxRequestTarget target) {
+                Boolean hideInactiveSelections = getEhourWebSession().toggleHideInactiveSelections();
+                HideInactiveFilter inactiveFilter = new HideInactiveFilter(hideInactiveSelections);
+                send(getPage(), Broadcast.DEPTH, new InactiveFilterChangedEvent(inactiveFilter, target));
 
                 target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
+
+                filterIcon.removeAll();
+                addFilterIconAttributes(filterIcon, getEhourWebSession().getHideInactiveSelections());
+                target.add(filterIcon);
             }
         };
 
-        hideInactiveCheckbox.setVisible(showHideInactiveCheckbox);
-        form.add(hideInactiveCheckbox);
+        hideInactiveLink.setVisible(showHideInactiveLink);
+        hideInactiveLink.add(filterIcon);
+        form.add(hideInactiveLink);
+    }
 
-        Label filterToggleText = new Label("filterToggleText", hideInactiveCheckboxPrefix);
-        form.add(filterToggleText);
-
-        return form;
+    private void addFilterIconAttributes(WebMarkupContainer filterIcon, boolean active) {
+        filterIcon.add(AttributeModifier.replace("title", hideInactiveLinkTooltip));
+        filterIcon.add(AttributeModifier.replace("class", active ? "fa fa-toggle-on" : "fa fa-toggle-off"));
     }
 
     private static final long serialVersionUID = -7928428437664050056L;
 
     public interface ClickHandler extends Serializable {
         void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException;
+    }
+
+    public static class EntrySelectorBuilder {
+        private EntrySelectorData entrySelectorData;
+        private final String id;
+        private ClickHandler clickHandler;
+        private IModel<String> hideInactiveLinkTooltip;
+        private boolean wide = false;
+
+        public EntrySelectorBuilder(String id) {
+            this.id = id;
+        }
+
+        public static EntrySelectorBuilder startAs(String id) {
+            return new EntrySelectorBuilder(id);
+        }
+
+        public EntrySelectorBuilder withData(EntrySelectorData entrySelectorData) {
+            this.entrySelectorData = entrySelectorData;
+            return this;
+        }
+
+        public EntrySelectorBuilder onClick(ClickHandler clickHandler) {
+            this.clickHandler = clickHandler;
+            return this;
+        }
+
+        public EntrySelectorBuilder withInactiveTooltip(IModel<String> hideInactiveLinkTooltip) {
+            this.hideInactiveLinkTooltip = hideInactiveLinkTooltip;
+            return this;
+        }
+
+        public EntrySelectorBuilder isWide() {
+            this.wide = true;
+            return this;
+        }
+
+        public EntrySelectorPanel build() {
+            return new EntrySelectorPanel(id, entrySelectorData, clickHandler, hideInactiveLinkTooltip, wide);
+        }
     }
 }

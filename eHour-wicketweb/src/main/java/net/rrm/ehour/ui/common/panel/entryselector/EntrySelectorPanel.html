@@ -7,29 +7,29 @@
 <body>
 
 <wicket:panel>
-	<span wicket:id="entrySelectorFrame">
+	<div wicket:id="entrySelectorFrame" class="entrySelector">
 	
 		<form onsubmit="return false;" wicket:id="filterForm" style="margin: 0; padding: 0">
             <p>
                 <span wicket:id="filterInputContainer" class="floatLeft">
 					<input class="textInput searchInput" wicket:id="listFilter" type="text"/>
+
+                    <wicket:child></wicket:child>
                     <br/>
 				</span>
 
-                <span wicket:enclosure="filterToggle">
-
-                <label wicket:for="filterToggle" style="margin-left: 0.2em"><span
-                        wicket:id="filterToggleText"></span></label>&nbsp;&nbsp;&nbsp;<input class="borderLess"
-                                                                                             wicket:id="filterToggle"
-                                                                                             type="checkbox"/>
-                    </span>
+                <span class="filters floatRight">
+                    <a wicket:id="filterToggle"><span wicket:id="filterIcon" class="fa fa-toggle-on"></span></a>
+                    &nbsp;
+                    <a wicket:id="toExcel"><span class="fa fa-file-excel-o"></span></a>
+                </span>
             </p>
         </form>
 
         <br clear="all" style="line-height: 0.2em"/>
 	
 		<div wicket:id="blueBorder" class="inline" style="padding-top: 0; margin-top: 10px;">
-            <div class="listScroll inline" id="listContents">
+            <div class="listScroll inline" id="listContents" wicket:id="listScroll">
                 <table class="entrySelectorTable">
 
                     <thead>
@@ -46,7 +46,7 @@
                 </table>
             </div>
         </div>
-	</span>
+	</div>
 </wicket:panel>
 
 </body>

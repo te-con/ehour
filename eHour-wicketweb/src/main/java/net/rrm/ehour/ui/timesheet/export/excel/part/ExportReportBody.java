@@ -21,13 +21,13 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
-import net.rrm.ehour.ui.common.report.excel.CellStyle;
+import net.rrm.ehour.ui.common.report.excel.ExcelStyle;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.util.*;
@@ -38,7 +38,7 @@ import java.util.*;
  * @author Thies Edeling (thies@te-con.nl)
  */
 public class ExportReportBody extends AbstractExportReportPart {
-    public ExportReportBody(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook) {
+    public ExportReportBody(int cellMargin, Sheet sheet, Report report, ExcelWorkbook workbook) {
         super(cellMargin, sheet, report, workbook);
     }
 
@@ -71,11 +71,11 @@ public class ExportReportBody extends AbstractExportReportPart {
     }
 
     private int addEmptyRow(int rowNumber, Date date, boolean isBorder) {
-        HSSFRow row = getSheet().createRow(rowNumber++);
+        Row row = getSheet().createRow(rowNumber++);
         createDateCell(date, row, isBorder);
 
         if (isBorder) {
-            CellStyle border = CellStyle.BORDER_NORTH_THIN;
+            ExcelStyle border = ExcelStyle.BORDER_NORTH_THIN;
 
             createEmptyCells(row, border);
 
@@ -92,7 +92,7 @@ public class ExportReportBody extends AbstractExportReportPart {
         boolean addedForDate = false;
 
         for (FlatReportElement flatReportElement : elements) {
-            HSSFRow row = getSheet().createRow(rowNumber);
+            Row row = getSheet().createRow(rowNumber);
 
             if (flatReportElement.getTotalHours() != null && flatReportElement.getTotalHours().doubleValue() >= 0.0) {
                 createDateCell(date, row, isBorder);
@@ -102,7 +102,7 @@ public class ExportReportBody extends AbstractExportReportPart {
                 createCustomerCodeCell(flatReportElement.getCustomerCode(), row, isBorder);
 
                 if (isBorder) {
-                    createEmptyCells(row, CellStyle.BORDER_NORTH_THIN);
+                    createEmptyCells(row, ExcelStyle.BORDER_NORTH_THIN);
 
                     getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber, getCellMargin() + 3, getCellMargin() + 5));
                 }
@@ -113,7 +113,7 @@ public class ExportReportBody extends AbstractExportReportPart {
         }
 
         if (!addedForDate) {
-            HSSFRow row = getSheet().createRow(rowNumber++);
+            Row row = getSheet().createRow(rowNumber++);
             createDateCell(date, row, isBorder);
         }
 
@@ -121,24 +121,24 @@ public class ExportReportBody extends AbstractExportReportPart {
 
     }
 
-    private HSSFCell createHoursCell(Number hours, HSSFRow row, boolean isBorder) {
-        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.HOURS.getColumn(), hours, getWorkbook(), (isBorder) ? CellStyle.DIGIT_BORDER_NORTH_THIN : CellStyle.DIGIT);
+    private Cell createHoursCell(Number hours, Row row, boolean isBorder) {
+        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.HOURS.getColumn(), hours, getWorkbook(), (isBorder) ? ExcelStyle.DIGIT_BORDER_NORTH_THIN : ExcelStyle.DIGIT);
     }
 
-    private HSSFCell createActivityCell(String project, HSSFRow row, boolean isBorder) {
+    private Cell createActivityCell(String project, Row row, boolean isBorder) {
         return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), project, getWorkbook(), (isBorder) ? CellStyle.BORDER_NORTH_THIN : CellStyle.NORMAL_FONT);
     }
 
-    private HSSFCell createProjectCodeCell(String project, HSSFRow row, boolean isBorder) {
-        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT_CODE.getColumn(), project, getWorkbook(), (isBorder) ? CellStyle.BORDER_NORTH_THIN : CellStyle.NORMAL_FONT);
+    private Cell createProjectCodeCell(String project, Row row, boolean isBorder) {
+        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT_CODE.getColumn(), project, getWorkbook(), (isBorder) ? ExcelStyle.BORDER_NORTH_THIN : ExcelStyle.NORMAL_FONT);
     }
 
-    private HSSFCell createCustomerCodeCell(String customerCode, HSSFRow row, boolean isBorder) {
-        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER_CODE.getColumn(), customerCode, getWorkbook(), (isBorder) ? CellStyle.BORDER_NORTH_THIN : CellStyle.NORMAL_FONT);
+    private Cell createCustomerCodeCell(String customerCode, Row row, boolean isBorder) {
+        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.CUSTOMER_CODE.getColumn(), customerCode, getWorkbook(), (isBorder) ? ExcelStyle.BORDER_NORTH_THIN : ExcelStyle.NORMAL_FONT);
     }
 
-    private HSSFCell createDateCell(Date date, HSSFRow row, boolean isBorder) {
-        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.DATE.getColumn(), getFormatter().format(date), getWorkbook(), (isBorder) ? CellStyle.DATE_BORDER_NORTH_THIN : CellStyle.DATE);
+    private Cell createDateCell(Date date, Row row, boolean isBorder) {
+        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.DATE.getColumn(), getFormatter().format(date), getWorkbook(), (isBorder) ? ExcelStyle.DATE_BORDER_NORTH_THIN : ExcelStyle.DATE);
     }
 
     /**

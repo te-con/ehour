@@ -11,7 +11,6 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.common.panel.entryselector.HideInactiveFilter;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -34,8 +33,6 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
 
     @SpringBean
     private ProjectService projectService;
-
-    private HideInactiveFilter currentFilter = new HideInactiveFilter();
 
     public AbstractProjectManagePageTemplate() {
         super(new ResourceModel("admin.project.title"),
@@ -61,7 +58,7 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
         };
 
         entrySelectorPanel = new EntrySelectorPanel(PROJECT_SELECTOR_ID,
-                createSelectorData(getProjects()),
+                createSelectorData(getProjects(isHideInactive())),
                 clickHandler,
                 new ResourceModel("admin.project.hideInactive"));
         greyBorder.addOrReplace(entrySelectorPanel);
@@ -78,7 +75,7 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
                 || type == ProjectAjaxEventType.PROJECT_CREATED
                 || type == ProjectAjaxEventType.PROJECT_DELETED) {
             // update project list
-            entrySelectorPanel.updateData(createSelectorData(getProjects()));
+            entrySelectorPanel.updateData(createSelectorData(getProjects(isHideInactive())));
             entrySelectorPanel.reRender(ajaxEvent.getTarget());
             getTabbedPanel().succesfulSave(ajaxEvent.getTarget());
         }
@@ -88,9 +85,7 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
 
     @Override
     protected void onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent, AjaxRequestTarget target) {
-        currentFilter = inactiveFilterChangedEvent.hideInactiveFilter();
-
-        entrySelectorPanel.updateData(createSelectorData(getProjects()));
+        entrySelectorPanel.updateData(createSelectorData(getProjects(inactiveFilterChangedEvent.hideInactiveFilter().isHideInactive())));
         entrySelectorPanel.reRender(target);
     }
 
@@ -116,8 +111,14 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
         return new EntrySelectorData(headers, rows);
     }
 
-    private List<Project> getProjects() {
-        List<Project> projects = currentFilter == null || currentFilter.isHideInactive() ? projectService.getActiveProjects() : projectService.getProjects();
+    private List<Project> getProjects(boolean hideInactive) {
+        List<Project> projects;
+
+        if (hideInactive) {
+            projects = projectService.getActiveProjects();
+        } else {
+            projects = projectService.getProjects();
+        }
 
         Collections.sort(projects, new ProjectComparator());
 

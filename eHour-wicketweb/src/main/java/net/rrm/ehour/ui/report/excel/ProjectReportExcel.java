@@ -30,10 +30,8 @@ import org.apache.wicket.model.ResourceModel;
 public class ProjectReportExcel extends AbstractExcelReport {
     private static final long serialVersionUID = 1L;
 
-    private static final ProjectReportExcel INSTANCE = new ProjectReportExcel();
-
-    private ProjectReportExcel() {
-        super(AggregatedReportConfig.AGGREGATE_PROJECT);
+    public ProjectReportExcel(IModel<ReportCriteria> reportCriteriaModel) {
+        super(AggregatedReportConfig.AGGREGATE_PROJECT, reportCriteriaModel);
     }
 
     @Override
@@ -49,9 +47,5 @@ public class ProjectReportExcel extends AbstractExcelReport {
     @Override
     protected IModel<String> getHeaderReportName() {
         return new ResourceModel("report.title.project");
-    }
-
-    public static ProjectReportExcel getInstance() {
-        return INSTANCE;
     }
 }

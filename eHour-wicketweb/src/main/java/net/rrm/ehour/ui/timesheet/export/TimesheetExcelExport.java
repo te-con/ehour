@@ -18,16 +18,15 @@ package net.rrm.ehour.ui.timesheet.export;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.ExcelReport;
-import net.rrm.ehour.ui.common.report.PoiUtil;
 import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.export.excel.part.*;
-import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.WorkbookUtil;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created on Mar 23, 2009, 1:30:04 PM
@@ -38,27 +37,25 @@ public class TimesheetExcelExport implements ExcelReport {
     private static final long serialVersionUID = -4841781257347819473L;
 
     private static final int CELL_BORDER = 1;
+    private final ReportCriteria reportCriteria;
 
-    private static final Logger LOGGER = Logger.getLogger(TimesheetExcelExport.class);
+    public TimesheetExcelExport(ReportCriteria reportCriteria) {
+        this.reportCriteria = reportCriteria;
+    }
 
     @Override
-    public byte[] getExcelData(ReportCriteria reportCriteria) {
+    public void write(OutputStream stream) throws IOException {
         ExcelExportReportModel report = new ExcelExportReportModel(reportCriteria);
         ExcelWorkbook workbook = createWorkbook(report);
 
-        try {
-            return PoiUtil.getWorkbookAsBytes(workbook);
-        } catch (IOException e) {
-            LOGGER.warn(e);
-            return new byte[0];
-        }
+        workbook.write(stream);
     }
 
     private ExcelWorkbook createWorkbook(Report report) {
         ExcelWorkbook workbook = new ExcelWorkbook();
 
         String sheetName = WebUtils.formatDate("MMMM yyyy", report.getReportRange().getDateStart());
-        HSSFSheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName(sheetName));
+        Sheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName(sheetName));
 
         sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.DATE.getColumn()));
         sheet.autoSizeColumn((short) (CELL_BORDER + ExportReportColumn.CUSTOMER_CODE.getColumn()));

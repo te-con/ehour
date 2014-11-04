@@ -127,14 +127,9 @@ public class SkinConfigPanel extends AbstractConfigPanel {
         userSelectedCriteria.setReportRange(TimesheetExportDummyDataGenerator.getDateRangeForCurrentMonth());
         final ReportCriteria criteria = new ReportCriteria(userSelectedCriteria);
 
-        final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport();
+        final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport(criteria);
 
-        getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(timesheetExcelExport.getFilename(), new Function<byte[]>() {
-            @Override
-            public byte[] apply() {
-                return timesheetExcelExport.getExcelData(criteria);
-            }
-        }));
+        getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(timesheetExcelExport.getFilename(), timesheetExcelExport));
     }
 
     public static class TimesheetExportDummyDataGenerator {

@@ -63,13 +63,13 @@
         <spring.version>4.1.1.RELEASE</spring.version>
         <wicket.version>6.17.0</wicket.version>
         <jetty.version>8.1.14.v20131031</jetty.version>
-        <derbydb.version>10.10.2.0</derbydb.version>
+        <derbydb.version>10.11.1.1</derbydb.version>
         <aspectj.version>1.6.12</aspectj.version>
         <slf4j.version>1.6.4</slf4j.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
         <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
-        <scala.major.version>2.10</scala.major.version>
-        <scala.minor.version>4</scala.minor.version>
+        <scala.major.version>2.11</scala.major.version>
+        <scala.minor.version>3</scala.minor.version>
         <scala.version>${scala.major.version}.${scala.minor.version}</scala.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -77,6 +77,7 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
+        <poi.version>3.11-beta2</poi.version>
     </properties>
 
     <dependencyManagement>
@@ -92,6 +93,12 @@
                 <artifactId>scalatest_${scala.major.version}</artifactId>
                 <version>2.2.0</version>
                 <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>scala-reflect</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -126,7 +133,12 @@
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
-                <version>3.11-beta2</version>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -146,11 +158,6 @@
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-servlet</artifactId>
-                <version>${jetty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-jndi</artifactId>
                 <version>${jetty.version}</version>
             </dependency>
             <dependency>
@@ -179,12 +186,32 @@
                         <artifactId>commons-dbcp</artifactId>
                     </exclusion>
                     <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>xerces</groupId>
                         <artifactId>xercesImpl</artifactId>
                     </exclusion>
                     <exclusion>
                         <groupId>stax</groupId>
                         <artifactId>stax-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>commons-pool</artifactId>
+                        <groupId>commons-pool</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>dom4j</artifactId>
+                        <groupId>dom4j</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -246,6 +273,18 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.3.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
                 <version>2.4</version>
@@ -275,6 +314,18 @@
                     <exclusion>
                         <artifactId>xml-apis</artifactId>
                         <groupId>xml-apis</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>commons-pool</artifactId>
+                        <groupId>commons-pool</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>dom4j</artifactId>
+                        <groupId>dom4j</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -592,7 +643,7 @@
 
         <dependency>
             <groupId>com.github.nscala-time</groupId>
-            <artifactId>nscala-time_2.10</artifactId>
+            <artifactId>nscala-time_2.11</artifactId>
             <version>1.4.0</version>
         </dependency>
 

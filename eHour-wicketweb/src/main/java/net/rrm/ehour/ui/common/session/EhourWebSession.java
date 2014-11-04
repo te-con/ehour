@@ -89,11 +89,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
         ehourConfig = new EhourConfigCache(unCachedEhourConfig);
 
-        if (ehourConfig.isDontForceLanguage()) {
-            LOGGER.debug("Not forcing locale, using browser's locale");
-        } else {
-            LOGGER.debug("Setting locale to " + ehourConfig.getLanguageLocale().getDisplayLanguage());
-
+        if (!ehourConfig.isDontForceLanguage()) {
             setLocale(ehourConfig.getLanguageLocale());
         }
     }
@@ -104,6 +100,12 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
     public void setHideInactiveSelections(Boolean hideInactiveSelections) {
         this.hideInactiveSelections = hideInactiveSelections;
+    }
+
+    public Boolean toggleHideInactiveSelections() {
+        this.hideInactiveSelections = !this.hideInactiveSelections;
+
+        return this.hideInactiveSelections;
     }
 
     public static EhourConfig getEhourConfig() {

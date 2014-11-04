@@ -27,8 +27,9 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
-import net.rrm.ehour.ui.common.panel.entryselector.HideInactiveFilter;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.EntrySelectorBuilder;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -56,8 +57,6 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
     @SpringBean
     private CustomerService customerService;
 
-    private HideInactiveFilter currentFilter = new HideInactiveFilter();
-
     public CustomerManagePage() {
         super(new ResourceModel("admin.customer.title"),
                 new ResourceModel("admin.customer.addCustomer"),
@@ -79,11 +78,11 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
         };
 
 
-        entrySelectorPanel = new EntrySelectorPanel(CUSTOMER_SELECTOR_ID,
-                createSelectorData(getCustomers()),
-                clickHandler,
-                new ResourceModel("admin.customer.hideInactive")
-        );
+        entrySelectorPanel = EntrySelectorBuilder.startAs(CUSTOMER_SELECTOR_ID)
+                .withData(createSelectorData(getCustomers()))
+                .onClick(clickHandler)
+                .withInactiveTooltip(new ResourceModel("admin.customer.hideInactive"))
+                .build();
 
         greyBorder.add(entrySelectorPanel);
     }
@@ -132,8 +131,6 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
 
     @Override
     protected void onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent, AjaxRequestTarget target) {
-        currentFilter = inactiveFilterChangedEvent.hideInactiveFilter();
-
         entrySelectorPanel.updateData(createSelectorData(getCustomers()));
         entrySelectorPanel.reRender(target);
     }
@@ -155,7 +152,7 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
     }
 
     private List<Customer> getCustomers() {
-        List<Customer> customers = currentFilter != null && !currentFilter.isHideInactive() ? customerService.getCustomers() : customerService.getActiveCustomers();
+        List<Customer> customers = isHideInactive() ? customerService.getActiveCustomers() : customerService.getCustomers();
         Collections.sort(customers, new CustomerComparator());
 
         return customers;

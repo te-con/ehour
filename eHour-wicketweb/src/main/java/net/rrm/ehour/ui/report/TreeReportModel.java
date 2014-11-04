@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.ui.report;
 
-
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractReportModel;

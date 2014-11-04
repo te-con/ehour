@@ -17,31 +17,19 @@
 
 package net.rrm.ehour.ui.common.report;
 
-import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import org.apache.poi.ss.usermodel.Workbook;
 
 public class PoiUtil
 {
-	public static byte[] getWorkbookAsBytes(ExcelWorkbook workbook) throws IOException
-	{
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		workbook.write(output);
-		
-		return output.toByteArray();
-	}
-	
 	public static int getImageType(String type)
 	{
 		if (type.equalsIgnoreCase("png"))
 		{
-			return HSSFWorkbook.PICTURE_TYPE_PNG;
+			return Workbook.PICTURE_TYPE_PNG;
 		}
 		else
 		{
-			return HSSFWorkbook.PICTURE_TYPE_JPEG;
+			return Workbook.PICTURE_TYPE_JPEG;
 		}
 	}
 }

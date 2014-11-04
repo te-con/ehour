@@ -7,6 +7,7 @@ function initializeFoldLinks() {
 
 function foldProjectRow(link) {
     var children = $(link).children();
+    var isFolded = children.data('folded');
 
     var prj = $(link).closest('.customerRow');
 
@@ -16,9 +17,11 @@ function foldProjectRow(link) {
         $(acts[i]).toggle();
     }
 
+    children.data('folded', !isFolded);
+
     var icon = $(children[0])
 
-    if (icon.attr('class').indexOf("fa-angle-double-up") >= 0) {
+    if (isFolded) {
         icon.removeClass('fa-angle-double-up');
         icon.addClass('fa-angle-double-down');
 

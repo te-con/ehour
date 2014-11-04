@@ -221,6 +221,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
 
         response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
 
+        response.render(JavaScriptHeaderItem.forReference(TIMESHEET_JS));
         response.render(OnDomReadyHeaderItem.forScript("initializeFoldLinks();"));
     }
 

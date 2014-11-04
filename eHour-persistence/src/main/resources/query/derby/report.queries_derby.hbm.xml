@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <sql-query name="Report.getHoursPerDayForUsers">
+	<![CDATA[	
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       ENTRY_DATE AS "dayDate",
+		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.NAME AS "activityName",
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       ACT.PROJECT_ID AS "projectId",
+		       ACT.USER_ID AS "userId",
+		       USR.FULLNAME AS "userFullname",
+		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       ENTRY.COMMENT_TEXT AS "comment"
+		FROM TIMESHEET_ENTRY ENTRY,
+		     CUSTOMER CUST,
+		     PROJECT PRJ,
+		     ACTIVITIES ACT,
+		     USERS USR
+		WHERE ENTRY.ACTIVITY_ID = ACT.ACTIVITY_ID AND
+		      ACT.PROJECT_ID = PRJ.PROJECT_ID AND
+		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
+		      ACT.USER_ID = USR.USER_ID AND
+		      ACT.USER_ID IN (:userIds) AND
+		      (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd)
+		GROUP BY ACT.ACTIVITY_ID,
+		        ACT.NAME,
+				ENTRY_DATE,
+				CUST.CUSTOMER_ID,
+				CUST.NAME,
+				CUST.CODE,
+				ACT.PROJECT_ID,
+				ACT.USER_ID,
+				USR.FULLNAME,
+				PRJ.PROJECT_CODE,
+				PRJ.NAME,
+				ENTRY.COMMENT_TEXT
+         ]]>         
+	</sql-query>
+	
+    <sql-query name="Report.getHoursPerDayForProjects">
+	<![CDATA[	
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       ENTRY_DATE AS "dayDate",
+		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.NAME AS "activityName",		       
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       ACT.PROJECT_ID AS "projectId",
+		       ACT.USER_ID AS "userId",
+               USR.FULLNAME AS "userFullname",
+		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       ENTRY.COMMENT_TEXT AS "comment"
+		FROM TIMESHEET_ENTRY ENTRY,
+		     CUSTOMER CUST,
+		     PROJECT PRJ,
+		     ACTIVITIES ACT,
+		     USERS USR
+		WHERE ENTRY.ACTIVITY_ID = ACT.ACTIVITY_ID AND
+		      ACT.PROJECT_ID = PRJ.PROJECT_ID AND
+		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
+		      ACT.USER_ID = USR.USER_ID AND
+		      ACT.PROJECT_ID IN (:projectIds) AND
+		      (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd)
+		GROUP BY ACT.ACTIVITY_ID,
+		        ACT.NAME,		
+				ENTRY_DATE,
+				CUST.CUSTOMER_ID,
+				CUST.NAME,
+				CUST.CODE,
+				ACT.PROJECT_ID,
+				ACT.USER_ID,
+				USR.FULLNAME,
+				PRJ.PROJECT_CODE,
+				PRJ.NAME,
+				ENTRY.COMMENT_TEXT
+         ]]>         
+	</sql-query>
+    <sql-query name="Report.getHoursPerDayForProjectsAndUsers">
+	<![CDATA[	
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       ENTRY_DATE AS "dayDate",
+		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.NAME AS "activityName",		       
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       ACT.PROJECT_ID AS "projectId",
+		       ACT.USER_ID AS "userId",
+               USR.FULLNAME AS "userFullname",
+		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       ENTRY.COMMENT_TEXT AS "comment"
+		FROM TIMESHEET_ENTRY ENTRY,
+		     CUSTOMER CUST,
+		     PROJECT PRJ,
+		     ACTIVITIES ACT,
+		     USERS USR
+		WHERE ENTRY.ACTIVITY_ID = ACT.ACTIVITY_ID AND
+		      ACT.PROJECT_ID = PRJ.PROJECT_ID AND
+		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
+		      ACT.USER_ID = USR.USER_ID AND
+		      ACT.PROJECT_ID IN (:projectIds) AND
+		      ACT.USER_ID IN (:userIds) AND
+		      (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd)
+		GROUP BY ACT.ACTIVITY_ID,
+		        ACT.NAME,		
+				ENTRY_DATE,
+				CUST.CUSTOMER_ID,
+				CUST.NAME,
+				CUST.CODE,
+				ACT.PROJECT_ID,
+				ACT.USER_ID,
+				USR.FULLNAME,
+				PRJ.NAME,
+				PRJ.PROJECT_CODE,
+				ENTRY.COMMENT_TEXT
+         ]]>         
+	</sql-query>
+
+    <sql-query name="Report.getHoursPerDay">
+	<![CDATA[	
+		SELECT SUM(ENTRY.HOURS) AS "totalHours",
+		       ENTRY_DATE AS "dayDate",
+		       ACT.ACTIVITY_ID AS "activityId",
+		       ACT.NAME AS "activityName",		       
+		       CUST.CUSTOMER_ID AS "customerId",
+		       CUST.NAME AS "customerName",
+		       CUST.CODE AS "customerCode",
+		       ACT.PROJECT_ID AS "projectId",
+		       ACT.USER_ID AS "userId",
+               USR.FULLNAME AS "userFullname",
+		       PRJ.NAME AS "projectName",
+		       PRJ.PROJECT_CODE as "projectCode",
+		       ENTRY.COMMENT_TEXT AS "comment"
+		FROM TIMESHEET_ENTRY ENTRY,
+		     CUSTOMER CUST,
+		     PROJECT PRJ,
+		     ACTIVITIES ACT,
+		     USERS USR
+		WHERE ENTRY.ACTIVITY_ID = ACT.ACTIVITY_ID AND
+		      ACT.PROJECT_ID = PRJ.PROJECT_ID AND
+		      PRJ.CUSTOMER_ID = CUST.CUSTOMER_ID AND
+		      ACT.USER_ID = USR.USER_ID AND
+		      (ENTRY.ENTRY_DATE >= :dateStart AND
+		      ENTRY.ENTRY_DATE <= :dateEnd)
+		GROUP BY ACT.ACTIVITY_ID,
+		        ACT.NAME,		
+				ENTRY_DATE,
+				CUST.CUSTOMER_ID,
+				CUST.NAME,
+				CUST.CODE,
+				ACT.PROJECT_ID,
+				ACT.USER_ID,
+				USR.FULLNAME,
+				PRJ.PROJECT_CODE,
+				PRJ.NAME,
+				ENTRY.COMMENT_TEXT
+         ]]>         
+	</sql-query>
+</hibernate-mapping>

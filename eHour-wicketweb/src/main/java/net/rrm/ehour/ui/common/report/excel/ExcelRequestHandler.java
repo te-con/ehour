@@ -1,6 +1,5 @@
 package net.rrm.ehour.ui.common.report.excel;
 
-import net.rrm.ehour.ui.common.util.Function;
 import org.apache.wicket.request.IRequestCycle;
 import org.apache.wicket.request.IRequestHandler;
 
@@ -8,13 +7,30 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 public class ExcelRequestHandler implements IRequestHandler {
+    public enum Format {
+        XLS("application/vnd.ms-excel"),
+        XLSX("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        final String mimetype;
+
+        Format(String mimetype) {
+            this.mimetype = mimetype;
+        }
+    }
 
     private String filename;
-    private Function<byte[]> reportConstructionFunction;
+    private final IWriteBytes byteWriter;
+    private final Format format;
 
-    public ExcelRequestHandler(String filename, Function<byte[]> reportConstructionFunction) {
+    public ExcelRequestHandler(String filename, IWriteBytes byteWriter) {
+        this(filename, byteWriter, Format.XLS);
+    }
+
+
+    public ExcelRequestHandler(String filename, IWriteBytes byteWriter, Format format) {
         this.filename = filename;
-        this.reportConstructionFunction = reportConstructionFunction;
+        this.byteWriter = byteWriter;
+        this.format = format;
     }
 
     @Override
@@ -24,13 +40,12 @@ public class ExcelRequestHandler implements IRequestHandler {
     @Override
     public void respond(IRequestCycle requestCycle) {
         try {
-
             HttpServletResponse httpResponse = (HttpServletResponse) requestCycle.getResponse().getContainerResponse();
-            httpResponse.setContentType("application/vnd.ms-excel");
+            httpResponse.setContentType(format.mimetype);
             httpResponse.setHeader("Content-disposition", "attachment; filename=" + filename);
             ServletOutputStream outputStream = httpResponse.getOutputStream();
 
-            outputStream.write(reportConstructionFunction.apply());
+            byteWriter.write(outputStream);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

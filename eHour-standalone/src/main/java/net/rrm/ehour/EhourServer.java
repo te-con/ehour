@@ -17,27 +17,19 @@
 package net.rrm.ehour;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.persistence.datasource.DerbyDataSourceFactory;
 import net.rrm.ehour.util.IoUtil;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.jetty.plus.jndi.Resource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.xml.XmlConfiguration;
 
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 
 /**
- * Start jetty
+ * Start Jetty
  */
 
 public class EhourServer {
-
-    private DataSource dataSource;
 
     public void start(String configurationFilename) throws Exception {
         ServerPropertiesConfigurator configuration = new ServerPropertiesConfigurator();
@@ -69,8 +61,6 @@ public class EhourServer {
             XmlConfiguration configuration = new XmlConfiguration(stream);
             configuration.configure(server);
 
-            registerJndiDS(config);
-
             server.start();
 
             if (!isInTestMode()) {
@@ -81,41 +71,7 @@ public class EhourServer {
         }
     }
 
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
     private boolean isInTestMode() {
         return Boolean.parseBoolean(System.getProperty("EHOUR_TEST", "false"));
-    }
-
-    private void registerJndiDS(ServerConfig config) throws IOException, NamingException {
-        dataSource = createDataSource(config);
-        new Resource("jdbc/eHourDS", dataSource);
-    }
-
-    private DataSource createDataSource(ServerConfig config) throws IOException {
-        DataSource dataSource;
-
-        if ("derby".equalsIgnoreCase(config.getDataBase())) {
-            dataSource = new DerbyDataSourceFactory().createDataSource(isInTestMode() ? "memory:ehourDb" : "ehourDb");
-        } else {
-            BasicDataSource dbcpDataSource = new BasicDataSource();
-
-            dbcpDataSource.setDriverClassName(config.getDataBaseDriver());
-            dbcpDataSource.setUrl(config.getDataBaseURL());
-            dbcpDataSource.setUsername(config.getDataBaseUsername());
-            dbcpDataSource.setPassword(config.getDataBasePassword());
-
-            dbcpDataSource.setMaxActive(100);
-            dbcpDataSource.setMaxIdle(30);
-            dbcpDataSource.setValidationQuery("SELECT 1 FROM DUAL");
-            dbcpDataSource.setTestOnBorrow(true);
-            dbcpDataSource.setTestWhileIdle(true);
-            dbcpDataSource.setPoolPreparedStatements(true);
-
-            dataSource = dbcpDataSource;
-        }
-        return dataSource;
     }
 }

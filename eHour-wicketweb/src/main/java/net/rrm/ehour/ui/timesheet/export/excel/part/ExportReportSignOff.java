@@ -21,8 +21,8 @@ import net.rrm.ehour.ui.common.report.Report;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -35,7 +35,7 @@ import org.apache.wicket.model.StringResourceModel;
  */
 public class ExportReportSignOff extends AbstractExportReportPart
 {
-	public ExportReportSignOff(int cellMargin, HSSFSheet sheet, Report report, ExcelWorkbook workbook)
+	public ExportReportSignOff(int cellMargin, Sheet sheet, Report report, ExcelWorkbook workbook)
 	{
 		super(cellMargin, sheet, report, workbook);
 	}
@@ -43,11 +43,11 @@ public class ExportReportSignOff extends AbstractExportReportPart
 	@Override
 	public int createPart(int rowNumber)
 	{
-		HSSFSheet sheet = getSheet();
+		Sheet sheet = getSheet();
 		ExcelWorkbook workbook = getWorkbook();
 		int cellMargin = getCellMargin();
 		
-		HSSFRow row = sheet.createRow(rowNumber);
+		Row row = sheet.createRow(rowNumber);
 		
 		createCustomerSignature(workbook, cellMargin, row);
 		createUserSignature(workbook, cellMargin, row);
@@ -58,12 +58,12 @@ public class ExportReportSignOff extends AbstractExportReportPart
 		return rowNumber;
 	}
 
-	private void createCustomerSignature(ExcelWorkbook workbook, int cellMargin, HSSFRow row)
+	private void createCustomerSignature(ExcelWorkbook workbook, int cellMargin, Row row)
 	{
 		CellFactory.createCell(row, cellMargin, new ResourceModel("excelMonth.managerSignature"), workbook);
 	}
 
-	private void createUserSignature(ExcelWorkbook workbook, int cellMargin, HSSFRow row)
+	private void createUserSignature(ExcelWorkbook workbook, int cellMargin, Row row)
 	{
 		IModel<String> userSignature = new StringResourceModel("excelMonth.userSignature",
 				null,
@@ -81,7 +81,7 @@ public class ExportReportSignOff extends AbstractExportReportPart
 		getSheet().addMergedRegion(new CellRangeAddress(rowNumber, rowNumber + 2, cellMargin + 4, cellMargin + 6));
 
 		// doesn't work properly, box is not around the whole merged cells
-//		HSSFRow boxRow = getSheet().createRow(rowNumber);
+//		Row boxRow = getSheet().createRow(rowNumber);
 //		CellFactory.createCell(boxRow, cellMargin, getWorkbook(), BORDER_THIN);
 //		CellFactory.createCell(boxRow, cellMargin  + 4, getWorkbook(), BORDER_THIN);
 		

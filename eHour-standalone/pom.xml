@@ -74,21 +74,13 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-jndi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-plus</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-deploy</artifactId>
         </dependency>
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-        </dependency>
-        <dependency>
+         <dependency>
             <groupId>nl.tecon.ehevo</groupId>
             <artifactId>ehevo-wicketweb</artifactId>
         </dependency>
@@ -99,6 +91,18 @@
         <dependency>
             <groupId>nl.tecon.ehevo</groupId>
             <artifactId>ehevo-persistence-oracle</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.rrm.ehour</groupId>
+            <artifactId>eHour-persistence-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.rrm.ehour</groupId>
+            <artifactId>eHour-audit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.rrm.ehour</groupId>
+            <artifactId>eHour-common</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

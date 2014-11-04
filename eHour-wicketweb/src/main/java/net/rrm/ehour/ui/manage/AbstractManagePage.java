@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.manage;
 
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -36,4 +37,9 @@ public abstract class AbstractManagePage<T> extends AbstractBasePage<T> {
     public AbstractManagePage(ResourceModel pageTitle, IModel<T> model) {
         super(pageTitle, model);
     }
+
+    protected Boolean isHideInactive() {
+        return EhourWebSession.getSession().getHideInactiveSelections();
+    }
+
 }
