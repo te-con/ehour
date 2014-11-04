@@ -91,6 +91,8 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
 
         List<ActivityStatus> errorStatusses = new ArrayList<ActivityStatus>();
 
+        LOGGER.fatal("Iterating over timesheet");
+
         for (Map.Entry<Activity, List<TimesheetEntry>> entry : timesheetRows.entrySet()) {
             try {
                 getTimesheetPersister().validateAndPersist(entry.getKey(), entry.getValue(), weekRange, moderator);
@@ -98,6 +100,8 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
                 errorStatusses.add(e.getStatus());
             }
         }
+
+        LOGGER.fatal("Done iterating over timesheet");
 
         if (comment.getNewComment() == Boolean.FALSE || StringUtils.isNotBlank(comment.getComment())) {
             timesheetCommentDAO.persist(comment);
@@ -134,24 +138,31 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
                                    List<TimesheetEntry> entries,
                                    DateRange weekRange,
                                    Optional<User> moderator) throws OverBudgetException {
+        LOGGER.fatal("Checking status before");
         ActivityStatus beforeStatus = activityStatusService.getActivityStatus(activity);
 
         boolean checkAfterStatus = beforeStatus.isValid();
 
         try {
+            LOGGER.fatal("Persist");
             persistEntries(activity, entries, weekRange, !beforeStatus.isValid(), moderator);
         } catch (OverBudgetException obe) {
             // make sure it's retrown by checking the after status
             checkAfterStatus = true;
         }
 
+        LOGGER.fatal("Checking status after");
         ActivityStatus afterStatus = activityStatusService.getActivityStatus(activity);
 
         if (checkAfterStatus && !afterStatus.isValid()) {
             throw new OverBudgetException(afterStatus);
         }
 
+        LOGGER.fatal("Updating approval status");
+
         updateApprovalStatusForActivityWithinWeekRange(activity, weekRange);
+
+        LOGGER.fatal("done");
     }
 
     private void updateApprovalStatusForActivityWithinWeekRange(Activity activity, DateRange weekRange) {
