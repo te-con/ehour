@@ -1,8 +1,7 @@
 package net.rrm.ehour.appconfig;
 
-import net.rrm.ehour.appconfig.EhourHomeUtil;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.IOException;
 

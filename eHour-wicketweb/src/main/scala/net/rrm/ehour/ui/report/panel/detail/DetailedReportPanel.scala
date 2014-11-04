@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.report.panel
 package detail
 
-import net.rrm.ehour.report.criteria.{ReportCriteria, AggregateBy, UserSelectedCriteria}
+import net.rrm.ehour.report.criteria.{AggregateBy, ReportCriteria, UserSelectedCriteria}
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer

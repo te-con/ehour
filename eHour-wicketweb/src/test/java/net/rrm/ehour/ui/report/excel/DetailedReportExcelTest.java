@@ -5,7 +5,6 @@ import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.wicket.Model;
 import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
-import net.rrm.ehour.ui.timesheet.export.TimesheetExcelExport;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -13,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.ByteArrayOutputStream;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 

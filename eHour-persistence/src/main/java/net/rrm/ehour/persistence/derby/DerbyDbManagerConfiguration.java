@@ -1,7 +1,6 @@
 package net.rrm.ehour.persistence.derby;
 
 import net.rrm.ehour.appconfig.DatabaseType;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

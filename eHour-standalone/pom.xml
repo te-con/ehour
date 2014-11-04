@@ -86,23 +86,7 @@
         </dependency>
         <dependency>
             <groupId>nl.tecon.ehevo</groupId>
-            <artifactId>ehevo-persistence-derby</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>nl.tecon.ehevo</groupId>
             <artifactId>ehevo-persistence-oracle</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-persistence-postgresql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-audit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-common</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

@@ -42,11 +42,6 @@
 
         <dependency>
             <groupId>nl.tecon.ehevo</groupId>
-            <artifactId>ehevo-persistence-derby</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>nl.tecon.ehevo</groupId>
             <artifactId>ehevo-persistence-oracle</artifactId>
         </dependency>
 

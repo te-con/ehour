@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.timesheet.export;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
-import net.rrm.ehour.project.util.ProjectUtil;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.panel.datepicker.LocalizedDatePicker;

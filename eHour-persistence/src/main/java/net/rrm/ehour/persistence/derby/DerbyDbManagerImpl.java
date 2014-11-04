@@ -17,13 +17,13 @@
 
 package net.rrm.ehour.persistence.derby;
 
-import javax.sql.DataSource;
-
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
+
+import javax.sql.DataSource;
 
 /**
  * Shutdowns the Derby database gracefully when the application goes down

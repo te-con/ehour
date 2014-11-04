@@ -126,7 +126,7 @@ public class ExportReportBody extends AbstractExportReportPart {
     }
 
     private Cell createActivityCell(String project, Row row, boolean isBorder) {
-        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), project, getWorkbook(), (isBorder) ? CellStyle.BORDER_NORTH_THIN : CellStyle.NORMAL_FONT);
+        return CellFactory.createCell(row, getCellMargin() + ExportReportColumn.PROJECT.getColumn(), project, getWorkbook(), (isBorder) ? ExcelStyle.BORDER_NORTH_THIN : ExcelStyle.NORMAL_FONT);
     }
 
     private Cell createProjectCodeCell(String project, Row row, boolean isBorder) {

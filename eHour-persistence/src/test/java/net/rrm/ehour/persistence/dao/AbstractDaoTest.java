@@ -2,9 +2,6 @@ package net.rrm.ehour.persistence.dao;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.config.PersistenceConfig;
-import net.rrm.ehour.persistence.datasource.DatasourceConfiguration;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +15,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
