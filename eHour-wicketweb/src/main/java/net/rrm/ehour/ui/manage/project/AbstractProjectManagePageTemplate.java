@@ -11,6 +11,7 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.EntrySelectorBuilder;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -48,6 +49,13 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"));
         addOrReplace(greyBorder);
 
+        EntrySelectorBuilder builder = constructEntrySelectorBuilder();
+
+        entrySelectorPanel = builder.build();
+        greyBorder.addOrReplace(entrySelectorPanel);
+    }
+
+    protected EntrySelectorBuilder constructEntrySelectorBuilder() {
         ClickHandler clickHandler = new ClickHandler() {
             @Override
             public void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException {
@@ -57,11 +65,10 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
             }
         };
 
-        entrySelectorPanel = new EntrySelectorPanel(PROJECT_SELECTOR_ID,
-                createSelectorData(getProjects(isHideInactive())),
-                clickHandler,
-                new ResourceModel("admin.project.hideInactive"));
-        greyBorder.addOrReplace(entrySelectorPanel);
+        return EntrySelectorBuilder.startAs(PROJECT_SELECTOR_ID)
+                .onClick(clickHandler)
+                .withData(createSelectorData(getProjects(isHideInactive())))
+                .withInactiveTooltip(new ResourceModel("admin.project.hideInactive"));
     }
 
     protected abstract T createEditBean(Integer projectId) throws ObjectNotFoundException;
@@ -96,7 +103,7 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
         }
     }
 
-    private EntrySelectorData createSelectorData(List<Project> projects) {
+    protected EntrySelectorData createSelectorData(List<Project> projects) {
         List<Header> headers = Lists.newArrayList(new Header("admin.project.code.short"), new Header("admin.project.name"));
 
         List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
