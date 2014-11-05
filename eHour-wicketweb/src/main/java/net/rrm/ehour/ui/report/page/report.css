@@ -41,29 +41,6 @@
     margin-right: 15px;
     padding-top: 10px
 }
-
-.dateContainer {
-    float: left;
-    vertical-align: bottom;
-    padding-left: 20px;
-    margin: 0;
-}
-
-.dateCriteria {
-    width: 10em;
-    float: left;
-}
-
-.dateInput {
-    width: 5em;
-    clear: both
-}
-
-.dateInputLoc {
-    float: left;
-    margin-bottom: 5px;
-}
-
 .byReport {
     float: left;
 }
