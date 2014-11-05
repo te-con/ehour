@@ -34,4 +34,6 @@ trait GenericDao[PK <: io.Serializable, T <: DomainObject[PK, _]] {
    * Merge the domain object
    */
   def merge(domoj: T): T
+
+  def flush()
 }

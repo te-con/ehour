@@ -37,6 +37,9 @@ abstract class AbstractGenericDaoHibernateImpl[PK <: io.Serializable, T <: Domai
     domObj
   }
 
+
+  override def flush() { getSession.flush()}
+
   @Transactional(readOnly = true)
   override def findById(id: PK): T = ExponentialBackoffRetryPolicy retry getSession.get(entityType, id).asInstanceOf[T]
 
