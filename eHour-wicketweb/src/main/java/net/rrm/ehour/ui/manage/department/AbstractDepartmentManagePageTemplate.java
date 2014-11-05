@@ -11,6 +11,7 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
+import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.EntrySelectorBuilder;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import net.rrm.ehour.user.service.UserService;
@@ -46,6 +47,11 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
         GreyRoundedBorder greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.dept.title"));
         addOrReplace(greyBorder);
 
+        entrySelectorPanel = constructEntrySelectorBuilder().build();
+        greyBorder.addOrReplace(entrySelectorPanel);
+    }
+
+    protected EntrySelectorBuilder constructEntrySelectorBuilder() {
         EntrySelectorPanel.ClickHandler clickHandler = new EntrySelectorPanel.ClickHandler() {
             @Override
             public void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException {
@@ -55,13 +61,12 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
             }
         };
 
-        entrySelectorPanel = new EntrySelectorPanel(DEPT_SELECTOR_ID,
-                createSelectorData(getUserDepartments()),
-                clickHandler);
-        greyBorder.addOrReplace(entrySelectorPanel);
+        return EntrySelectorBuilder.startAs(DEPT_SELECTOR_ID)
+                .withData(createSelectorData(getUserDepartments()))
+                .onClick(clickHandler);
     }
 
-    private EntrySelectorData createSelectorData(List<UserDepartment> userDepartments) {
+    protected EntrySelectorData createSelectorData(List<UserDepartment> userDepartments) {
         List<Header> headers = Lists.newArrayList(new Header("admin.dept.code"),
                                                   new Header("admin.dept.name"),
                                                   new Header("admin.dept.users", EntrySelectorData.ColumnType.NUMERIC));
