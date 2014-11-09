@@ -40,11 +40,6 @@
 
         <dependency>
             <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-persistence-derby</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>net.rrm.ehour</groupId>
             <artifactId>eHour-persistence-mysql</artifactId>
         </dependency>
 
