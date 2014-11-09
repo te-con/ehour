@@ -29,4 +29,8 @@
         <module>eHour-war</module>
         <module>eHour-selenium</module>
     </modules>
+
+    <properties>
+        <ehour.version>1.4.2-SNAPSHOT</ehour.version>
+    </properties>
 </project>
