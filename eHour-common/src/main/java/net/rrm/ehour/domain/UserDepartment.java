@@ -64,7 +64,7 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
     @JoinColumn(name = "PARENT_DEPARTMENT_ID")
     private UserDepartment parentUserDepartment;
 
-    @OneToMany(mappedBy = "userDepartment")
+    @ManyToMany(mappedBy = "userDepartments")
     private Set<User> users;
 
     public UserDepartment() {

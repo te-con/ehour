@@ -27,10 +27,7 @@ import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * User selected criteria
@@ -56,7 +53,7 @@ public class UserSelectedCriteria implements Serializable {
     private List<Customer> customers;
     private Sort customerSort;
     private Sort projectSort;
-    private List<UserDepartment> userDepartments;
+    private Collection<UserDepartment> userDepartments;
     private boolean infiniteStartDate;
     private boolean infiniteEndDate;
     private ReportType selectedReportType;
@@ -260,11 +257,11 @@ public class UserSelectedCriteria implements Serializable {
         this.customers = customers;
     }
 
-    public List<UserDepartment> getDepartments() {
+    public Collection<UserDepartment> getDepartments() {
         return userDepartments;
     }
 
-    public void setDepartments(List<UserDepartment> departments) {
+    public void setDepartments(Collection<UserDepartment> departments) {
         this.userDepartments = departments;
     }
 

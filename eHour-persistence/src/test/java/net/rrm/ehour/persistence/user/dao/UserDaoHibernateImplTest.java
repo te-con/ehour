@@ -7,8 +7,6 @@ import net.rrm.ehour.util.EhourConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -55,7 +53,6 @@ public class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
         ProjectAssignment assignment = new ProjectAssignment();
 
-
         assignment.setUser(user);
         assignment.setAssignmentId(1);
         assignment.setProject(new Project(1));
@@ -68,15 +65,6 @@ public class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         userDao.persist(user);
 
         assertNotNull(user.getUserId());
-    }
-
-    @Test
-    public void shouldFindUsersForDepartments() {
-        List<UserDepartment> ids = new ArrayList<UserDepartment>(Arrays.asList(new UserDepartment(10)));
-
-        List<User> results = userDao.findUsersForDepartments(ids, false);
-
-        assertEquals(5, results.size());
     }
 
     @Test
@@ -101,5 +89,4 @@ public class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
         assertThat(user.getUserRoles(), not(hasItem(UserRole.PROJECTMANAGER)));
     }
-
 }

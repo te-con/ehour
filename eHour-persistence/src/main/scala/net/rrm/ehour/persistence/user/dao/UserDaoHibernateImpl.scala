@@ -3,7 +3,7 @@ package net.rrm.ehour.persistence.user.dao
 import java.util
 
 import net.rrm.ehour.data.LegacyUserDepartment
-import net.rrm.ehour.domain.{User, UserDepartment}
+import net.rrm.ehour.domain.User
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import org.hibernate.transform.Transformers
@@ -31,12 +31,6 @@ class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, User
 
   @Transactional(readOnly = true)
   override def findActiveUsers(): util.List[User] = findUsers(onlyActive = true)
-
-  @Transactional(readOnly = true)
-  override def findUsersForDepartments(departments: util.List[UserDepartment], onlyActive: Boolean): util.List[User] = {
-    val hql = if (onlyActive) "User.findActiveForDepartment" else "User.findForDepartment"
-    findByNamedQuery(hql, "departments", departments, CacheRegion)
-  }
 
   @Transactional(readOnly = true)
   override def findAllActiveUsersWithEmailSet(): util.List[User] = findByNamedQuery("User.findAllActiveUsersWithEmailSet", CacheRegion)

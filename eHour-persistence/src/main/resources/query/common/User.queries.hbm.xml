@@ -35,21 +35,6 @@
 	    	
 	</query>	
 
-	<query name="User.findActiveForDepartment">
-		SELECT DISTINCT user
-		FROM User as user
-	    WHERE active = true
-	    		AND user.userDepartment IN (:departments)
-	    ORDER BY lastName, firstName	    
-	</query>
-
-	<query name="User.findForDepartment">
-		SELECT DISTINCT user
-		FROM User as user
-	    WHERE user.userDepartment IN (:departments)
-	    ORDER BY lastName, firstName	    
-	</query>
-	
 	<sql-query name="User.deletePMsWithoutProject">
 		DELETE 
 		FROM USER_TO_USERROLE

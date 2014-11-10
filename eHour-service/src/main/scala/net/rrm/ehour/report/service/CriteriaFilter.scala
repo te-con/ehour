@@ -1,20 +1,23 @@
 package net.rrm.ehour.report.service
 
-import net.rrm.ehour.domain.{UserDepartment, User, Project, Customer}
-import net.rrm.ehour.report.criteria.UserSelectedCriteria
-import org.springframework.beans.factory.annotation.Autowired
-import net.rrm.ehour.persistence.customer.dao.CustomerDao
 import java.{util => ju}
-import org.springframework.stereotype.Service
+
+import net.rrm.ehour.domain.{Customer, Project, User, UserDepartment}
+import net.rrm.ehour.persistence.customer.dao.CustomerDao
 import net.rrm.ehour.persistence.user.dao.UserDao
-import scala.collection.convert.WrapAsScala
+import net.rrm.ehour.report.criteria.UserSelectedCriteria
 import net.rrm.ehour.util._
+import org.apache.commons.collections.CollectionUtils
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+
+import scala.collection.convert.WrapAsScala
 
 @Service
 class CustomerAndProjectCriteriaFilter @Autowired()(customerDao: CustomerDao) {
   def getAvailableCustomers(userSelectedCriteria: UserSelectedCriteria): (ju.List[Customer], ju.List[Project]) = {
     def fetchCustomers(userSelectedCriteria: UserSelectedCriteria): List[Customer] =
-      toScala(if (userSelectedCriteria.isOnlyActiveCustomers) customerDao.findAllActive else customerDao.findAll)
+      toScala(if (userSelectedCriteria.isOnlyActiveCustomers) customerDao.findAllActive() else customerDao.findAll())
 
     def filterProjectsOnBillable(xs: List[Project]): List[Project] =
       if (userSelectedCriteria.isOnlyBillableProjects) xs.filter(ProjectPredicate.billablePredicate) else xs
@@ -91,18 +94,17 @@ class UserAndDepartmentCriteriaFilter @Autowired()(userDao: UserDao) {
     val filteredUsers = if (userSelectedCriteria.isForPm) {
       users.filter(u => {
         val i = WrapAsScala.asScalaIterator(u.getProjectAssignments.iterator())
-        !i.filter(p => userSelectedCriteria.getPm.equals(p.getProject.getProjectManager)).isEmpty
+        i.filter(p => userSelectedCriteria.getPm.equals(p.getProject.getProjectManager)).nonEmpty
       })
     }
     else
       users
-
-    val departments = filteredUsers.map(_.getUserDepartment).toSet.toList
+    val departments = filteredUsers.flatMap(_.getUserDepartments)
 
     val xs = if (userSelectedCriteria.isEmptyDepartments)
       filteredUsers
     else
-     filteredUsers.filter(u => userSelectedCriteria.getDepartments.contains(u.getUserDepartment))
+     filteredUsers.filter(u => CollectionUtils.containsAny(userSelectedCriteria.getDepartments, u.getUserDepartments))
 
     (toJava(departments), toJava(xs))
   }

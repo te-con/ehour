@@ -87,10 +87,6 @@ public class User extends DomainObject<Integer, User> {
             inverseJoinColumns = @JoinColumn(name = "DEPARTMENT_ID"))
     private Set<UserDepartment> userDepartments = new HashSet<UserDepartment>();
 
-    @ManyToOne
-    @JoinColumn(name = "DEPARTMENT_ID")
-    private UserDepartment userDepartment;
-
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<ProjectAssignment> projectAssignments;
 
@@ -101,10 +97,6 @@ public class User extends DomainObject<Integer, User> {
     private boolean deletable;
 
     public User() {
-    }
-
-    public User(UserDepartment userDepartment) {
-        this.userDepartment = userDepartment;
     }
 
     public User(Integer userId) {
@@ -156,9 +148,24 @@ public class User extends DomainObject<Integer, User> {
         return fullName.toString();
     }
 
+    public void addUserDepartment(UserDepartment userDepartment) {
+        getUserDepartments().add(userDepartment);
+    }
+
+    public void setUserDepartment(UserDepartment userDepartment) {
+        getUserDepartments().clear();
+        getUserDepartments().add(userDepartment);
+    }
+
     public Set<UserDepartment> getUserDepartments() {
         return userDepartments;
     }
+
+    @Deprecated
+    public UserDepartment getUserDepartment() {
+        return (userDepartments.size() > 0) ? userDepartments.iterator().next() : null;
+    }
+
 
     public void setUserDepartments(Set<UserDepartment> userDepartments) {
         this.userDepartments = userDepartments;
@@ -236,20 +243,6 @@ public class User extends DomainObject<Integer, User> {
     }
 
     /**
-     * @return the userDepartment
-     */
-    public UserDepartment getUserDepartment() {
-        return userDepartment;
-    }
-
-    /**
-     * @param userDepartment the userDepartment to set
-     */
-    public void setUserDepartment(UserDepartment userDepartment) {
-        this.userDepartment = userDepartment;
-    }
-
-    /**
      * @return the projectAssignments
      */
     public Set<ProjectAssignment> getProjectAssignments() {
@@ -307,7 +300,6 @@ public class User extends DomainObject<Integer, User> {
         return new CompareToBuilder()
                 .append(this.getLastName(), object.getLastName())
                 .append(this.getFirstName(), object.getFirstName())
-                .append(this.getUserDepartment(), object.getUserDepartment())
                 .append(this.getUserId(), object.getUserId())
                 .toComparison();
     }

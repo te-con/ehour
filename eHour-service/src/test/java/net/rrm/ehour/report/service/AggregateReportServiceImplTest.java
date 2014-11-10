@@ -126,7 +126,7 @@ public class AggregateReportServiceImplTest {
         List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
 
         when(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(eq(users), any(DateRange.class))).thenReturn(pags);
-        when(userDao.findUsersForDepartments(l, true)).thenReturn(users);
+        when(userDao.findUsers(true)).thenReturn(users);
 
         ReportData data = aggregateReportService.getAggregateReportData(rc);
 
@@ -202,16 +202,18 @@ public class AggregateReportServiceImplTest {
         Project pmProject = ProjectObjectMother.createProject(1);
         when(projectDao.findActiveProjectsWhereUserIsPM(projectManager)).thenReturn(Lists.newArrayList(pmProject));
 
+        UserDepartment userDepartment = new UserDepartment(2);
         User user = new User(1);
+        user.setUserDepartment(userDepartment);
 
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.getProject().setProjectId(1);
         user.addProjectAssignment(assignment);
 
         List<User> users = Lists.newArrayList(user);
-        List<UserDepartment> departments = Lists.newArrayList(new UserDepartment(2));
+        List<UserDepartment> departments = Lists.newArrayList(userDepartment);
 
-        when(userDao.findUsersForDepartments(departments, true)).thenReturn(users);
+        when(userDao.findUsers(true)).thenReturn(users);
         criteria.setDepartments(departments);
 
         DateRange dateRange = new DateRange();
