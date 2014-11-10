@@ -29,11 +29,11 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.report.reports.element.FlatReportElementBuilder;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
-import org.easymock.Capture;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import scala.collection.convert.WrapAsScala$;
 
 import java.util.ArrayList;
@@ -41,9 +41,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * DetailedReportServiceImplTest
@@ -61,26 +62,25 @@ public class DetailedReportServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        detailedReportDao = createMock(DetailedReportDao.class);
-        projectDao = createMock(ProjectDao.class);
-        userDao = createMock(UserDao.class);
+        detailedReportDao = mock(DetailedReportDao.class);
+        projectDao = mock(ProjectDao.class);
+        userDao = mock(UserDao.class);
 
         userSelectedCriteria = new UserSelectedCriteria();
         userSelectedCriteria.setShowZeroBookings(true);
 
         reportCriteria = new ReportCriteria(userSelectedCriteria);
 
-        timesheetLockService = createMock(TimesheetLockService.class);
+        timesheetLockService = mock(TimesheetLockService.class);
 
-        reportAggregatedDao = createMock(ReportAggregatedDao.class);
+        reportAggregatedDao = mock(ReportAggregatedDao.class);
 
         detailedReportService = new DetailedReportServiceImpl(userDao, projectDao, timesheetLockService, detailedReportDao, reportAggregatedDao);
     }
 
     private void provideNoLocks() {
-        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
-                .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
-        replay(timesheetLockService);
+        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
+                .thenReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
     }
 
     @Test
@@ -90,17 +90,14 @@ public class DetailedReportServiceImplTest {
 
         provideNoData();
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDao);
     }
 
     private void provideNoAssignmentsWithoutBookings() {
-        expect(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).andReturn(Lists.<ProjectAssignment>newArrayList());
-        replay(reportAggregatedDao);
+        when(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).thenReturn(Lists.<ProjectAssignment>newArrayList());
     }
 
     private void provideNoData() {
-        expect(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).andReturn(Arrays.asList(createFlatReportElement()));
-        replay(detailedReportDao);
+        when(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).thenReturn(Arrays.asList(createFlatReportElement()));
     }
 
     @Test
@@ -109,10 +106,8 @@ public class DetailedReportServiceImplTest {
         singleUserSelected();
         provideNoAssignmentsWithoutBookings();
 
-        expect(detailedReportDao.getHoursPerDayForUsers(isA(List.class), isA(DateRange.class))).andReturn(Arrays.asList(createFlatReportElement()));
-        replay(detailedReportDao);
+        when(detailedReportDao.getHoursPerDayForUsers(any(List.class), any(DateRange.class))).thenReturn(Arrays.asList(createFlatReportElement()));
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDao);
     }
 
     private FlatReportElement createFlatReportElement() {
@@ -126,10 +121,9 @@ public class DetailedReportServiceImplTest {
         provideNoAssignmentsWithoutBookings();
         singleProjectSelected();
 
-        expect(detailedReportDao.getHoursPerDayForProjects(isA(List.class), isA(DateRange.class))).andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDao);
+        when(detailedReportDao.getHoursPerDayForProjects(any(List.class), any(DateRange.class))).thenReturn(new ArrayList<FlatReportElement>());
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDao);
+        verify(detailedReportDao).getHoursPerDayForProjects(any(List.class), any(DateRange.class));
     }
 
     @Test
@@ -139,11 +133,10 @@ public class DetailedReportServiceImplTest {
         singleUserSelected();
         provideNoAssignmentsWithoutBookings();
 
-        expect(detailedReportDao.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
-                .andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDao);
+        when(detailedReportDao.getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class)))
+                .thenReturn(new ArrayList<FlatReportElement>());
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDao);
+        verify(detailedReportDao).getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class));
     }
 
     private void singleUserSelected() {
@@ -158,13 +151,15 @@ public class DetailedReportServiceImplTest {
         List<UserDepartment> departments = Arrays.asList(new UserDepartment(1));
         userSelectedCriteria.setDepartments(departments);
 
-        expect(userDao.findUsersForDepartments(departments, true)).andReturn(Arrays.asList(new User(1)));
+        when(userDao.findUsersForDepartments(departments, true)).thenReturn(Arrays.asList(new User(1)));
 
-        expect(detailedReportDao.getHoursPerDayForProjectsAndUsers(isA(List.class), isA(List.class), isA(DateRange.class)))
-                .andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDao, userDao);
+        when(detailedReportDao.getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class)))
+                .thenReturn(new ArrayList<FlatReportElement>());
+
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDao, userDao);
+
+        verify(userDao).findUsersForDepartments(departments, true);
+        verify(detailedReportDao).getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class));
     }
 
     private void singleProjectSelected() {
@@ -177,24 +172,22 @@ public class DetailedReportServiceImplTest {
         Interval interval = new Interval(dateTime, dateTime);
         provideNoAssignmentsWithoutBookings();
 
-        expect(timesheetLockService.findLockedDatesInRange(anyObject(Date.class), anyObject(Date.class)))
-                .andReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.newArrayList(interval)));
-        replay(timesheetLockService);
+        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
+                .thenReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.newArrayList(interval)));
 
         FlatReportElement reportElement = new FlatReportElement();
         reportElement.setDayDate(dateTime.toDate());
 
-        expect(detailedReportDao.getHoursPerDay(isA(DateRange.class)))
-                .andReturn(Arrays.asList(reportElement));
-
-        replay(detailedReportDao, userDao);
+        when(detailedReportDao.getHoursPerDay(any(DateRange.class)))
+                .thenReturn(Arrays.asList(reportElement));
 
         ReportData reportData = detailedReportService.getDetailedReportData(reportCriteria);
 
         FlatReportElement flat = (FlatReportElement) reportData.getReportElements().get(0);
         assertTrue(flat.getLockableDate().isLocked());
 
-        verify(detailedReportDao, userDao, timesheetLockService);
+        verify(detailedReportDao).getHoursPerDay(any(DateRange.class));
+        verify(timesheetLockService).findLockedDatesInRange(any(Date.class), any(Date.class));
     }
 
     @Test
@@ -210,27 +203,23 @@ public class DetailedReportServiceImplTest {
         Project notBillableProject = ProjectObjectMother.createProject(2);
         notBillableProject.setBillable(false);
 
-        expect(projectDao.findAllActive()).andReturn(Arrays.asList(billableProject, notBillableProject));
+        when(projectDao.findAllActive()).thenReturn(Arrays.asList(billableProject, notBillableProject));
 
-        Capture<List<Integer>> projectIdListCapture = new Capture<List<Integer>>();
-        expect(detailedReportDao.getHoursPerDayForProjects(capture(projectIdListCapture), isA(DateRange.class)))
-                .andReturn(new ArrayList<FlatReportElement>());
-        replay(detailedReportDao, projectDao);
+        ArgumentCaptor<List> projectIdListCapture = ArgumentCaptor.forClass(List.class);
+        when(detailedReportDao.getHoursPerDayForProjects(projectIdListCapture.capture(), any(DateRange.class)))
+                .thenReturn(new ArrayList<FlatReportElement>());
 
         detailedReportService.getDetailedReportData(reportCriteria);
 
         assertEquals(1, projectIdListCapture.getValue().size());
         assertEquals(billableProject.getPK(), projectIdListCapture.getValue().get(0));
-
-        verify(detailedReportDao);
     }
 
     @Test
     public void should_provide_assignments_without_bookings() {
         provideNoLocks();
 
-        expect(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).andReturn(Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1)));
-        replay(reportAggregatedDao);
+        when(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).thenReturn(Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1)));
 
         userSelectedCriteria.setShowZeroBookings(true);
 
@@ -240,16 +229,17 @@ public class DetailedReportServiceImplTest {
         Project notBillableProject = ProjectObjectMother.createProject(2);
         notBillableProject.setBillable(false);
 
-        expect(projectDao.findAllActive()).andReturn(Arrays.asList(billableProject, notBillableProject));
+        when(projectDao.findAllActive()).thenReturn(Arrays.asList(billableProject, notBillableProject));
 
-        expect(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).andReturn(Arrays.asList(createFlatReportElement()));
-        replay(detailedReportDao, projectDao);
+        when(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).thenReturn(Arrays.asList(createFlatReportElement()));
 
         ReportData reportData = detailedReportService.getDetailedReportData(reportCriteria);
+
         FlatReportElement element = (FlatReportElement) reportData.getReportElements().get(0);
+
         assertTrue(element.isEmptyEntry());
 
-        verify(detailedReportDao, reportAggregatedDao);
+        verify(detailedReportDao).getHoursPerDay(reportCriteria.getReportRange());
+        verify(reportAggregatedDao).getAssignmentsWithoutBookings(reportCriteria.getReportRange());
     }
-
 }
