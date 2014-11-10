@@ -2,6 +2,7 @@ package net.rrm.ehour.persistence.user.dao
 
 import java.util
 
+import net.rrm.ehour.data.LegacyUserDepartment
 import net.rrm.ehour.domain.{User, UserDepartment}
 import net.rrm.ehour.persistence.dao.GenericDao
 
@@ -35,6 +36,11 @@ trait UserDao extends GenericDao[Integer, User] {
    * Delete users with PM role but are not PM anymore
    */
   def deletePmWithoutProject()
+
+  /**
+   * Returns a list of user id & department id tuple for users with the one-to-many user department
+   */
+  def findLegacyUserDepartments(): util.List[LegacyUserDepartment]
 }
 
 

@@ -79,9 +79,16 @@ public class User extends DomainObject<Integer, User> {
             inverseJoinColumns = @JoinColumn(name = "ROLE"))
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
+    @ManyToMany(targetEntity = UserDepartment.class,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
+    )
+    @JoinTable(name = "USER_TO_DEPARTMENT",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "DEPARTMENT_ID"))
+    private Set<UserDepartment> userDepartments = new HashSet<UserDepartment>();
+
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID")
-    @NotNull
     private UserDepartment userDepartment;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
@@ -113,17 +120,6 @@ public class User extends DomainObject<Integer, User> {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.active = active;
-        this.userRoles = userRoles;
-        this.userDepartment = userDepartment;
     }
 
     public User addUserRole(UserRole role) {
@@ -160,7 +156,13 @@ public class User extends DomainObject<Integer, User> {
         return fullName.toString();
     }
 
-    // Property accessors
+    public Set<UserDepartment> getUserDepartments() {
+        return userDepartments;
+    }
+
+    public void setUserDepartments(Set<UserDepartment> userDepartments) {
+        this.userDepartments = userDepartments;
+    }
 
     public Integer getUserId() {
         return this.userId;
