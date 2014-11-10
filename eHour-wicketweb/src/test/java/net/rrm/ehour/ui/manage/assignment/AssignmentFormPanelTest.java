@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
-
+import static org.mockito.Mockito.*;
 
 public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
     private AssignmentAdminBackingBean backingBean;
@@ -29,35 +28,34 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
         backingBean = new AssignmentAdminBackingBean();
         backingBean.setProjectAssignment(DummyUIDataGenerator.getProjectAssignment(1));
 
-        assignmentService = createMock(ProjectAssignmentService.class);
+        assignmentService = mock(ProjectAssignmentService.class);
         getMockContext().putBean(assignmentService);
 
-        customerService = createMock(CustomerService.class);
+        customerService = mock(CustomerService.class);
         getMockContext().putBean(customerService);
 
-        projectService = createMock(ProjectService.class);
+        projectService = mock(ProjectService.class);
         getMockContext().putBean(projectService);
     }
 
     @Test
     public void should_render() {
-        expect(assignmentService.getProjectAssignmentTypes())
-                .andReturn(DummyUIDataGenerator.getProjectAssignmentTypes());
+        when(assignmentService.getProjectAssignmentTypes())
+                .thenReturn(DummyUIDataGenerator.getProjectAssignmentTypes());
 
         List<Customer> customers = new ArrayList<Customer>();
         customers.add(DummyUIDataGenerator.getCustomer(1));
 
-        expect(customerService.getActiveCustomers()).andReturn(customers);
+        when(customerService.getActiveCustomers()).thenReturn(customers);
 
-        expect(projectService.getActiveProjects()).andReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
-        expectLastCall().anyTimes();
+        when(projectService.getActiveProjects()).thenReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
 
-        replay(customerService, assignmentService, projectService);
         startPanel();
 
         tester.assertNoErrorMessage();
 
-        verify(customerService, assignmentService);
+        verify(customerService).getActiveCustomers();
+        verify(projectService, times(4)).getActiveProjects();
     }
 
     private void startPanel() {
