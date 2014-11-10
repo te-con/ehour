@@ -14,10 +14,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.sort;
+package net.rrm.ehour.sort;
 
 import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
-import net.rrm.ehour.sort.ProjectAssignmentComparator;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
