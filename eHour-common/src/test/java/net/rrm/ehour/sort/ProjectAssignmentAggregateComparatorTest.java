@@ -14,11 +14,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.sort;
+package net.rrm.ehour.sort;
 
 import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.sort.ProjectAssignmentAggregateComparator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,9 +38,6 @@ public class ProjectAssignmentAggregateComparatorTest
 		a2.setProjectAssignment(ProjectAssignmentObjectMother.createProjectAssignment(2));
 	}
 
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.sort.ProjectAssignmentAggregateComparator#compare(net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement, net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement)}.
-	 */
 	@Test
 	public void testCompareProject()
 	{

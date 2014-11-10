@@ -14,33 +14,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.sort;
+package net.rrm.ehour.sort;
 
 import net.rrm.ehour.domain.Customer;
-import net.rrm.ehour.sort.CustomerComparator;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * TODO 
- **/
+public class CustomerComparatorTest {
+    @Test
+    public void testCompare() {
+        Customer c1 = new Customer();
+        c1.setName("aa");
+        Customer c2 = new Customer();
+        c2.setName("bb");
 
-public class CustomerComparatorTest
-{
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.ui.common.sort.CustomerComparator#compare(net.rrm.ehour.persistence.persistence.domain.Customer, net.rrm.ehour.persistence.persistence.domain.Customer)}.
-	 */
-	@Test
-	public void testCompare()
-	{
-		Customer c1 = new Customer();
-		c1.setName("aa");
-		Customer c2 = new Customer();
-		c2.setName("bb");
-		
-		assertEquals(-1, new CustomerComparator().compare(c1, c2));
-		
-	}
+        assertEquals(-1, new CustomerComparator().compare(c1, c2));
+
+    }
 
 }
