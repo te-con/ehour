@@ -30,23 +30,23 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import java.util.*;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class UserServiceImplTest {
     private UserServiceImpl userService;
     private UserDao userDAO;
     private UserDepartmentDao userDepartmentDAO;
-    private UserRoleDao userRoleDAO;
     private ProjectAssignmentManagementService assignmentService;
 
     @Before
     public void setUp() {
         userService = new UserServiceImpl();
-        userDAO = createMock(UserDao.class);
-        userDepartmentDAO = createMock(UserDepartmentDao.class);
-        userRoleDAO = createMock(UserRoleDao.class);
-        assignmentService = createMock(ProjectAssignmentManagementService.class);
+        userDAO = mock(UserDao.class);
+        userDepartmentDAO = mock(UserDepartmentDao.class);
+        UserRoleDao userRoleDAO = mock(UserRoleDao.class);
+        assignmentService = mock(ProjectAssignmentManagementService.class);
 
 
         userService.setUserDAO(userDAO);
@@ -59,13 +59,11 @@ public class UserServiceImplTest {
 
     @Test
     public void shouldGetActiveUsers() {
-        expect(userDAO.findActiveUsers()).andReturn(new ArrayList<User>());
-
-        replay(userDAO);
+        when(userDAO.findActiveUsers()).thenReturn(new ArrayList<User>());
 
         userService.getActiveUsers();
 
-        verify(userDAO);
+        verify(userDAO).findActiveUsers();
     }
 
     @Test
@@ -109,14 +107,12 @@ public class UserServiceImplTest {
 
         user.setProjectAssignments(assignments);
 
-        expect(userDAO.findById(1))
-                .andReturn(user);
-
-        replay(userDAO);
+        when(userDAO.findById(1))
+                .thenReturn(user);
 
         user = userService.getUser(1);
 
-        verify(userDAO);
+        verify(userDAO).findById(1);
 
         assertEquals("thies", user.getUsername());
         assertEquals(1, user.getProjectAssignments().size());
@@ -127,14 +123,12 @@ public class UserServiceImplTest {
     public void testGetUserDepartment() throws ObjectNotFoundException {
         UserDepartment ud;
 
-        expect(userDepartmentDAO.findById(1))
-                .andReturn(new UserDepartment(1, "bla", "ble"));
-
-        replay(userDepartmentDAO);
+        when(userDepartmentDAO.findById(1))
+                .thenReturn(new UserDepartment(1, "bla", "ble"));
 
         ud = userService.getUserDepartment(1);
 
-        verify(userDepartmentDAO);
+        verify(userDepartmentDAO).findById(1);
 
         assertEquals("bla", ud.getName());
     }
@@ -153,19 +147,15 @@ public class UserServiceImplTest {
         user.setSalt(2);
         user.setUsername("user");
 
-        expect(userDAO.findById(1))
-                .andReturn(user);
+        when(userDAO.findById(1))
+                .thenReturn(user);
 
-        expect(userDAO.persist(user))
-                .andReturn(user);
+        when(userDAO.persist(user))
+                .thenReturn(user);
 
         userDAO.deletePmWithoutProject();
 
-        replay(userDAO);
-
         userService.validateProjectManagementRoles(1);
-
-        verify(userDAO);
 
         assertEquals("aa", user.getPassword());
     }
@@ -178,14 +168,10 @@ public class UserServiceImplTest {
         user.setPassword("aa");
         user.setUsername("user");
 
-        expect(userDAO.findByUsername("user")).andReturn(user);
-        expect(userDAO.persist(and(isA(User.class), capture(capturer)))).andReturn(user);
-
-        replay(userDAO);
+        when(userDAO.findByUsername("user")).thenReturn(user);
+        when(userDAO.persist(any(User.class))).thenReturn(user);
 
         userService.changePassword("user", "pwd");
-
-        verify(userDAO);
 
         assertFalse(user.getPassword().equals("pwd"));
     }
@@ -194,15 +180,13 @@ public class UserServiceImplTest {
     public void shouldCreateNewUser() throws ObjectNotUniqueException {
         User user = UserObjectMother.createUser();
 
-        expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
-        expect(userDAO.persist(user)).andReturn(user);
-        expect(assignmentService.assignUserToDefaultProjects(user)).andReturn(user);
-
-        replay(userDAO, assignmentService);
+        when(userDAO.findByUsername(user.getUsername())).thenReturn(null);
+        when(userDAO.persist(user)).thenReturn(user);
+        when(assignmentService.assignUserToDefaultProjects(user)).thenReturn(user);
 
         userService.persistNewUser(user, "password");
 
-        verify(userDAO, assignmentService);
+        verify(assignmentService).assignUserToDefaultProjects(user);
 
         assertNotSame("password", user.getPassword());
     }
@@ -212,14 +196,12 @@ public class UserServiceImplTest {
         User user = UserObjectMother.createUser();
         User persistedUser = new User();
 
-        expect(userDAO.findByUsername(user.getUsername())).andReturn(null);
-        expect(userDAO.findById(user.getUserId())).andReturn(persistedUser);
-        expect(userDAO.persist(persistedUser)).andReturn(persistedUser);
-
-        replay(userDAO, assignmentService);
+        when(userDAO.findByUsername(user.getUsername())).thenReturn(null);
+        when(userDAO.findById(user.getUserId())).thenReturn(persistedUser);
+        when(userDAO.persist(persistedUser)).thenReturn(persistedUser);
 
         userService.persistEditedUser(user);
 
-        verify(userDAO, assignmentService);
+        verify(userDAO).persist(persistedUser);
     }
 }

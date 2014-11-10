@@ -29,9 +29,10 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ProjectAssignmentStatusServiceTest
 {
@@ -44,8 +45,8 @@ public class ProjectAssignmentStatusServiceTest
 	{
 		util = new ProjectAssignmentStatusServiceImpl();
 
-		raDAO = createMock(ReportAggregatedDao.class);
-		timesheetDAO = createMock(TimesheetDao.class);
+		raDAO = mock(ReportAggregatedDao.class);
+		timesheetDAO = mock(TimesheetDao.class);
 		util.setTimesheetDAO(timesheetDAO);
 		util.setReportAggregatedDAO(raDAO);
 	}
@@ -70,15 +71,13 @@ public class ProjectAssignmentStatusServiceTest
 		Date endDate = endCal.getTime();
 		assignment.setDateEnd(endDate);
 
-		expect(timesheetDAO.getTimesheetEntriesBefore(assignment, startDate))
-			.andReturn(new ArrayList<TimesheetEntry>());
+		when(timesheetDAO.getTimesheetEntriesBefore(assignment, startDate))
+			.thenReturn(new ArrayList<TimesheetEntry>());
 
-		expect(timesheetDAO.getTimesheetEntriesAfter(assignment, endDate))
-			.andReturn(new ArrayList<TimesheetEntry>());
+		when(timesheetDAO.getTimesheetEntriesAfter(assignment, endDate))
+			.thenReturn(new ArrayList<TimesheetEntry>());
 		
-		replay(timesheetDAO);
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
-		verify(timesheetDAO);
 
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
 		assertEquals(1, status.getStatusses().size());
@@ -103,17 +102,15 @@ public class ProjectAssignmentStatusServiceTest
 		assignment.setDateEnd(endCal.getTime());
 		Date end = endCal.getTime();
 		
-		expect(timesheetDAO.getTimesheetEntriesBefore(assignment, start))
-		.andReturn(new ArrayList<TimesheetEntry>());
+		when(timesheetDAO.getTimesheetEntriesBefore(assignment, start))
+		.thenReturn(new ArrayList<TimesheetEntry>());
 
 		List<TimesheetEntry> entry = new ArrayList<TimesheetEntry>();
 		entry.add(new TimesheetEntry());
-		expect(timesheetDAO.getTimesheetEntriesAfter(assignment, end))
-			.andReturn(entry);
+		when(timesheetDAO.getTimesheetEntriesAfter(assignment, end))
+			.thenReturn(entry);
 
-		replay(timesheetDAO);
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
-		verify(timesheetDAO);
 
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE));
 		assertEquals(1, status.getStatusses().size());
@@ -123,23 +120,19 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusFixed()
 	{
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
-		pag.setHours(new Double(25));
+		pag.setHours((double) 25);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED);
 		assignment.setAssignmentType(type);
-		assignment.setAllottedHours(new Float(250f));
+		assignment.setAllottedHours(250f);
 		
-		expect(raDAO.getCumulatedHoursForAssignment(assignment))
-				.andReturn(pag);
-		
-		replay(raDAO);
+		when(raDAO.getCumulatedHoursForAssignment(assignment))
+				.thenReturn(pag);
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
-		verify(raDAO);
-
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_ALLOTTED));
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
 		assertEquals(2, status.getStatusses().size());
@@ -149,22 +142,18 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusFixedOverAllotted()
 	{
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
-		pag.setHours(new Double(260));
+		pag.setHours((double) 260);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED);
 		assignment.setAssignmentType(type);
-		assignment.setAllottedHours(new Float(250f));
+		assignment.setAllottedHours(250f);
 		
-		expect(raDAO.getCumulatedHoursForAssignment(assignment))
-				.andReturn(pag);
-		
-		replay(raDAO);
+		when(raDAO.getCumulatedHoursForAssignment(assignment))
+				.thenReturn(pag);
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
-		
-		verify(raDAO);
 		
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED));
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
@@ -175,23 +164,19 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusFlex()
 	{
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
-		pag.setHours(new Double(25));
+		pag.setHours((double) 25);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX);
 		assignment.setAssignmentType(type);
-		assignment.setAllottedHours(new Float(250f));
-		assignment.setAllowedOverrun(new Float(200f));
+		assignment.setAllottedHours(250f);
+		assignment.setAllowedOverrun(200f);
 		
-		expect(raDAO.getCumulatedHoursForAssignment(assignment))
-				.andReturn(pag);
-		
-		replay(raDAO);
+		when(raDAO.getCumulatedHoursForAssignment(assignment))
+				.thenReturn(pag);
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
-		
-		verify(raDAO);
 		
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_ALLOTTED));
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
@@ -202,23 +187,19 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusFlexOverrun()
 	{
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
-		pag.setHours(new Double(260));
+		pag.setHours((double) 260);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX);
 		assignment.setAssignmentType(type);
-		assignment.setAllottedHours(new Float(250f));
-		assignment.setAllowedOverrun(new Float(200f));
+		assignment.setAllottedHours(250f);
+		assignment.setAllowedOverrun(200f);
 		
-		expect(raDAO.getCumulatedHoursForAssignment(assignment))
-				.andReturn(pag);
-		
-		replay(raDAO);
+		when(raDAO.getCumulatedHoursForAssignment(assignment))
+				.thenReturn(pag);
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
-		
-		verify(raDAO);
 		
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN));
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
@@ -229,36 +210,22 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusFlexOverOverrun()
 	{
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
-		pag.setHours(new Double(560));
+		pag.setHours((double) 560);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
 		ProjectAssignmentType type = new ProjectAssignmentType();
 		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX);
 		assignment.setAssignmentType(type);
-		assignment.setAllottedHours(new Float(250f));
-		assignment.setAllowedOverrun(new Float(200f));
+		assignment.setAllottedHours(250f);
+		assignment.setAllowedOverrun(200f);
 		
-		expect(raDAO.getCumulatedHoursForAssignment(assignment))
-				.andReturn(pag);
-		
-		replay(raDAO);
+		when(raDAO.getCumulatedHoursForAssignment(assignment))
+				.thenReturn(pag);
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
-		
-		verify(raDAO);
 		
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN));
 		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
 		assertEquals(2, status.getStatusses().size());
 	}	
-
-//	@Test
-//	public void testGetAssignmentStatusFixed()
-//	{
-//		ProjectAssignment assignment = new ProjectAssignment();
-//		ProjectAssignmentType type = new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED);
-//		assignment.setAssignmentType(type);
-//		
-//	}
-
 }
