@@ -24,8 +24,10 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * CustomerAggregateReport Tester.
@@ -41,7 +43,7 @@ public class CustomerAggregateReportTest extends BaseSpringWebAppTester
 	@Before
 	public void setup() throws Exception
 	{
-		aggregateReportService = createMock(AggregateReportService.class);
+		aggregateReportService = mock(AggregateReportService.class);
 		getMockContext().putBean("aggregateReportService", aggregateReportService);
 
 	}
@@ -49,9 +51,8 @@ public class CustomerAggregateReportTest extends BaseSpringWebAppTester
 	@Test
     public void should_create_report() throws Exception
     {
-		expect(aggregateReportService.getAggregateReportData(isA(ReportCriteria.class)))
-			.andReturn(AggregateReportDataObjectMother.getAssignmentReportData());
-		replay(aggregateReportService);
+		when(aggregateReportService.getAggregateReportData(any(ReportCriteria.class)))
+			.thenReturn(AggregateReportDataObjectMother.getAssignmentReportData());
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
 
         ReportCriteria rc = new ReportCriteria(userSelectedCriteria);
@@ -59,7 +60,5 @@ public class CustomerAggregateReportTest extends BaseSpringWebAppTester
         CustomerAggregateReportModel aggReport = new CustomerAggregateReportModel(rc);
 
         assertEquals(6, aggReport.getReportData().getReportElements().size());
-        
-        verify(aggregateReportService);
     }
 }

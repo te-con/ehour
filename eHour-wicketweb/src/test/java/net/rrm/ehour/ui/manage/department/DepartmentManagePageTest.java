@@ -26,7 +26,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.*;
 
 public class DepartmentManagePageTest extends BaseSpringWebAppTester
 {
@@ -35,13 +35,13 @@ public class DepartmentManagePageTest extends BaseSpringWebAppTester
 	@Before
 	public void before() throws Exception
 	{
-		userService = createMock(UserService.class);
+		userService = mock(UserService.class);
 		getMockContext().putBean("userService", userService);
 
 		List<UserDepartment> depts = new ArrayList<UserDepartment>();
 		depts.add(new UserDepartment(1, "user", "DPT"));
 		
-		expect(userService.getUserDepartments()).andReturn(depts);
+		when(userService.getUserDepartments()).thenReturn(depts);
 	}
 	
 	/**
@@ -50,41 +50,31 @@ public class DepartmentManagePageTest extends BaseSpringWebAppTester
 	@Test
 	public void testDepartmentAdminRender()
 	{
-		replay(userService);
-		
 		tester.startPage(DepartmentManagePage.class);
 		tester.assertRenderedPage(DepartmentManagePage.class);
 		tester.assertNoErrorMessage();
-		
-		verify(userService);
 	}
 	
 	@Test
 	public void testEditTabClick()
 	{
-		replay(userService);
-
 		tester.startPage(DepartmentManagePage.class);
 		tester.assertRenderedPage(DepartmentManagePage.class);
 		tester.assertNoErrorMessage();
 		
 		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
-		verify(userService);
 	}
 	
 	@Test
 	public void testSelectDepartment() throws ObjectNotFoundException
 	{
-		expect(userService.getUserDepartment(1))
-			.andReturn(new UserDepartment(1, "user", "DPT"));	
-		
-		replay(userService);
+		when(userService.getUserDepartment(1)).thenReturn(new UserDepartment(1, "user", "DPT"));
 
 		tester.startPage(DepartmentManagePage.class);
 		tester.assertRenderedPage(DepartmentManagePage.class);
 		tester.assertNoErrorMessage();
 
         tester.executeAjaxEvent("entrySelectorFrame:entrySelectorFrame_body:deptSelector:entrySelectorFrame:blueBorder:blueBorder_body:listScroll:itemList:0", "click");
-		verify(userService);
+		verify(userService).getUserDepartment(1);
 	}	
 }

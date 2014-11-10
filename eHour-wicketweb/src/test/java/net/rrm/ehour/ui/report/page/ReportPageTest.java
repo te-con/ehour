@@ -46,8 +46,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("serial")
 public class ReportPageTest extends BaseSpringWebAppTester implements Serializable {
@@ -67,14 +69,12 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
 
     @Test
     public void shouldRender() {
-        expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class), eq(ReportCriteriaUpdateType.UPDATE_ALL)))
-                .andReturn(reportCriteria);
-
-        replay(reportCriteriaService);
+        when(reportCriteriaService.syncUserReportCriteria(any(ReportCriteria.class), eq(ReportCriteriaUpdateType.UPDATE_ALL)))
+                .thenReturn(reportCriteria);
 
         startPage();
 
-        verify(reportCriteriaService);
+        tester.assertNoErrorMessage();
     }
 
     @Test
@@ -87,26 +87,20 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
     }
 
     private void updateTabs() {
-        expect(reportCriteriaService.syncUserReportCriteria(isA(ReportCriteria.class),
+        when(reportCriteriaService.syncUserReportCriteria(any(ReportCriteria.class),
                 eq(ReportCriteriaUpdateType.UPDATE_ALL)))
-                .andReturn(reportCriteria);
-
-        replay(reportCriteriaService);
+                .thenReturn(reportCriteria);
 
         startPage();
 
         ReportPage page = (ReportPage) tester.getLastRenderedPage();
 
-        AjaxRequestTarget target = createMock(AjaxRequestTarget.class);
+        AjaxRequestTarget target = mock(AjaxRequestTarget.class);
         AjaxEvent event = new AjaxEvent(ReportCriteriaAjaxEventType.CRITERIA_UPDATED, target);
-
-        target.add(isA(ReportTabbedPanel.class));
-        replay(target);
 
         page.ajaxEventReceived(event);
 
-        verify(target);
-        verify(reportCriteriaService);
+        verify(target).add(any(ReportTabbedPanel.class));
     }
 
     private List<ITab> createTabs(int amount) {
@@ -137,13 +131,13 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
 
     @Before
     public final void before() throws Exception {
-        reportCriteriaService = createMock(ReportCriteriaService.class);
+        reportCriteriaService = mock(ReportCriteriaService.class);
         getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 
-        aggregateReportService = createMock(AggregateReportService.class);
+        aggregateReportService = mock(AggregateReportService.class);
         getMockContext().putBean("aggregatedReportService", aggregateReportService);
 
-        detailedReportService = createMock(DetailedReportService.class);
+        detailedReportService = mock(DetailedReportService.class);
         getMockContext().putBean("detailedReportService", detailedReportService);
 
         AvailableCriteria availCriteria = new AvailableCriteria();

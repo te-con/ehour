@@ -26,7 +26,9 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Detailed report panel test
@@ -37,22 +39,20 @@ public class DetailedReportPanelTest extends BaseSpringWebAppTester {
 
     @Before
     public void setup() {
-        detailedReportService = createMock(DetailedReportService.class);
+        detailedReportService = mock(DetailedReportService.class);
         getMockContext().putBean("detailedReportService", detailedReportService);
 
-        ReportCacheService reportCacheService = createMock(ReportCacheService.class);
+        ReportCacheService reportCacheService = mock(ReportCacheService.class);
         getMockContext().putBean("reportCacheService", reportCacheService);
     }
 
     @Test
     @SuppressWarnings("serial")
     public void shouldRenderPanel() {
-        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
-        expect(detailedReportService.getDetailedReportData(isA(ReportCriteria.class)))
-                .andReturn(DetailedReportDataObjectMother.getFlatReportData());
-
-        replay(detailedReportService);
+        when(detailedReportService.getDetailedReportData(any(ReportCriteria.class)))
+                .thenReturn(DetailedReportDataObjectMother.getFlatReportData());
+        when(detailedReportService.getDetailedReportData(any(ReportCriteria.class)))
+                .thenReturn(DetailedReportDataObjectMother.getFlatReportData());
 
         DetailedReportModel detailedReport = new DetailedReportModel(DetailedReportDataObjectMother.getReportCriteria());
 
