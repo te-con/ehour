@@ -17,6 +17,7 @@
 package net.rrm.ehour.sort;
 
 import net.rrm.ehour.domain.User;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
 import java.util.Comparator;
 
@@ -28,22 +29,14 @@ public class UserComparator implements Comparator<User> {
     }
 
     public int compare(User o1, User o2) {
-        int cmp;
-
         if (firstNameFirst) {
-            cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
-
-            if (cmp == 0) {
-                cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
-            }
+            return new CompareToBuilder().append(o1.getFirstName(), o2.getFirstName())
+                    .append(o1.getLastName(), o2.getLastName())
+                    .toComparison();
         } else {
-            cmp = o1.getLastName().compareToIgnoreCase(o2.getLastName());
-
-            if (cmp == 0) {
-                cmp = o1.getFirstName().compareToIgnoreCase(o2.getFirstName());
-            }
+            return new CompareToBuilder().append(o1.getLastName(), o2.getLastName())
+                    .append(o1.getFirstName(), o2.getFirstName())
+                    .toComparison();
         }
-
-        return cmp;
     }
 }
