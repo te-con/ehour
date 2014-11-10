@@ -2,10 +2,12 @@ package net.rrm.ehour.persistence.user.dao
 
 import java.util
 
+import com.google.common.collect.Lists
 import net.rrm.ehour.data.LegacyUserDepartment
 import net.rrm.ehour.domain.User
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
+import org.hibernate.exception.SQLGrammarException
 import org.hibernate.transform.Transformers
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -42,9 +44,13 @@ class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, User
 
   @Transactional
   override def findLegacyUserDepartments(): util.List[LegacyUserDepartment] = {
-    getSession.createSQLQuery("SELECT USER_ID as userId, DEPARTMENT_ID as departmentId FROM USERS WHERE DEPARTMENT_ID IS NOT NULL")
-              .setResultTransformer(Transformers.aliasToBean(classOf[LegacyUserDepartment]))
-              .list()
-              .asInstanceOf[util.List[LegacyUserDepartment]]
+    try {
+      getSession.createSQLQuery("SELECT USER_ID as userId, DEPARTMENT_ID as departmentId FROM USERS WHERE DEPARTMENT_ID IS NOT NULL")
+        .setResultTransformer(Transformers.aliasToBean(classOf[LegacyUserDepartment]))
+        .list()
+        .asInstanceOf[util.List[LegacyUserDepartment]]
+    } catch {
+      case grammar: SQLGrammarException => Lists.newArrayList()
+    }
   }
 }

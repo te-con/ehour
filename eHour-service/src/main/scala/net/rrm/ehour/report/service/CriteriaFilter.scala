@@ -99,6 +99,8 @@ class UserAndDepartmentCriteriaFilter @Autowired()(userDao: UserDao) {
     }
     else
       users
+
+    import scala.collection.JavaConversions._
     val departments = filteredUsers.flatMap(_.getUserDepartments)
 
     val xs = if (userSelectedCriteria.isEmptyDepartments)
