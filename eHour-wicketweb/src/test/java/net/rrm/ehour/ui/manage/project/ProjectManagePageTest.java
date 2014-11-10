@@ -31,7 +31,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ProjectManagePageTest extends BaseSpringWebAppTester {
     private ProjectService projectService;
@@ -40,40 +41,36 @@ public class ProjectManagePageTest extends BaseSpringWebAppTester {
 
     @Before
     public void before() throws Exception {
-        projectService = createMock(ProjectService.class);
+        projectService = mock(ProjectService.class);
         getMockContext().putBean("projectService", projectService);
 
-        userService = createMock(UserService.class);
+        userService = mock(UserService.class);
         getMockContext().putBean("userService", userService);
 
-        customerService = createMock(CustomerService.class);
+        customerService = mock(CustomerService.class);
         getMockContext().putBean("customerService", customerService);
 
-        ProjectAssignmentService projectAssignmentService = createMock(ProjectAssignmentService.class);
+        ProjectAssignmentService projectAssignmentService = mock(ProjectAssignmentService.class);
         getMockContext().putBean(projectAssignmentService);
 
-        ProjectAssignmentManagementService assignmentManagementService = createMock(ProjectAssignmentManagementService.class);
+        ProjectAssignmentManagementService assignmentManagementService = mock(ProjectAssignmentManagementService.class);
         getMockContext().putBean(assignmentManagementService);
 
     }
 
     @Test
     public void shouldRender() {
-        expect(customerService.getActiveCustomers())
-                .andReturn(new ArrayList<Customer>());
+        when(customerService.getActiveCustomers())
+                .thenReturn(new ArrayList<Customer>());
 
-        expect(userService.getUsersWithEmailSet())
-                .andReturn(new ArrayList<User>());
+        when(userService.getUsersWithEmailSet())
+                .thenReturn(new ArrayList<User>());
 
-        expect(projectService.getActiveProjects())
-                .andReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
-
-        replay(projectService, userService, customerService);
+        when(projectService.getActiveProjects())
+                .thenReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
 
         tester.startPage(ProjectManagePage.class);
         tester.assertRenderedPage(ProjectManagePage.class);
         tester.assertNoErrorMessage();
-
-        verify(projectService, userService, customerService);
     }
 }

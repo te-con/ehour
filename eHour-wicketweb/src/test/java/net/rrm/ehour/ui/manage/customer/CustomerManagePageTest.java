@@ -23,52 +23,24 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.easymock.EasyMock.*;
-
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Customer admin test render
  */
 
 public class CustomerManagePageTest extends BaseSpringWebAppTester {
-    /**
-     * Test render
-     */
     @Test
     public void testCustomerAdminRender() {
-        CustomerService customerService = createMock(CustomerService.class);
+        CustomerService customerService = mock(CustomerService.class);
         getMockContext().putBean("customerService", customerService);
 
-        expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
-
-        replay(customerService);
+        when(customerService.getActiveCustomers()).thenReturn(new ArrayList<Customer>());
 
         getTester().startPage(CustomerManagePage.class);
         getTester().assertRenderedPage(CustomerManagePage.class);
         getTester().assertNoErrorMessage();
-
-        verify(customerService);
     }
 
-//	/**
-//	 * Test render
-//	 */
-//	public void testFormSubmit()
-//	{
-//		CustomerService customerService = createMock(CustomerService.class);
-//		getMockContext().putBean("customerService", customerService);
-//		
-//		expect(customerService.getActiveCustomers()).andReturn(new ArrayList<Customer>());
-//
-//		replay(customerService);
-//		
-//		FormTester form = getTester().newFormTester("tabs.customerForm");
-//		form.submit();
-//		
-//		getTester().startPage(CustomerAdminPage.class);
-//		getTester().assertRenderedPage(CustomerAdminPage.class);
-//		getTester().assertNoErrorMessage();
-//		
-//		verify(customerService);
-//	}	
 }

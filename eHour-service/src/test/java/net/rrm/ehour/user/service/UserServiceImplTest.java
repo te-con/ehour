@@ -23,7 +23,6 @@ import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.persistence.user.dao.UserRoleDao;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
-import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -162,8 +161,6 @@ public class UserServiceImplTest {
 
     @Test
     public void shouldUpdatePassword() throws ObjectNotUniqueException {
-        Capture<User> capturer = new Capture<User>();
-
         User user = new User(1);
         user.setPassword("aa");
         user.setUsername("user");
