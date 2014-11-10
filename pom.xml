@@ -33,4 +33,11 @@
     <properties>
         <ehour.version>1.4.2-SNAPSHOT</ehour.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+        </dependency>
+    </dependencies>
 </project>
