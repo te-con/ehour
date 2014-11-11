@@ -55,7 +55,7 @@ public abstract class UserManagementDriver {
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_password").sendKeys(user.password);
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_confirmPassword").clear();
         findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_confirmPassword").sendKeys(user.password);
-        new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.userDepartment")).selectByVisibleText("Internal");
+        new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_dept_user.userDepartment")).selectByVisibleText("Internal");
         new Select(findElement("tabs_panel_border_greySquaredFrame_border__body_userForm_user.userRoles")).selectByVisibleText(role);
     }
 
