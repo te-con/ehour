@@ -79,9 +79,7 @@ public class User extends DomainObject<Integer, User> {
             inverseJoinColumns = @JoinColumn(name = "ROLE"))
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
-    @ManyToMany(targetEntity = UserDepartment.class,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST}
-    )
+    @ManyToMany(targetEntity = UserDepartment.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "USER_TO_DEPARTMENT",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "DEPARTMENT_ID"))
@@ -89,6 +87,10 @@ public class User extends DomainObject<Integer, User> {
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<ProjectAssignment> projectAssignments;
+
+    @ManyToOne
+    @JoinColumn(name = "DEPARTMENT_ID")
+    private UserDepartment legacyDepartment;
 
     @Transient
     private Set<ProjectAssignment> inactiveProjectAssignments;
@@ -155,6 +157,10 @@ public class User extends DomainObject<Integer, User> {
     public void setUserDepartment(UserDepartment userDepartment) {
         getUserDepartments().clear();
         getUserDepartments().add(userDepartment);
+    }
+
+    public void clearLegacyDepartment() {
+        this.legacyDepartment = null;
     }
 
     public Set<UserDepartment> getUserDepartments() {

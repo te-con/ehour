@@ -46,6 +46,8 @@ class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, User
   override def findLegacyUserDepartments(): util.List[LegacyUserDepartment] = {
     try {
       getSession.createSQLQuery("SELECT USER_ID as userId, DEPARTMENT_ID as departmentId FROM USERS WHERE DEPARTMENT_ID IS NOT NULL")
+        .addScalar("userId")
+        .addScalar("departmentId")
         .setResultTransformer(Transformers.aliasToBean(classOf[LegacyUserDepartment]))
         .list()
         .asInstanceOf[util.List[LegacyUserDepartment]]

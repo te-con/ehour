@@ -1,6 +1,7 @@
 package net.rrm.ehour.persistence.user.dao;
 
 import com.google.common.collect.Sets;
+import net.rrm.ehour.data.LegacyUserDepartment;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.util.EhourConstants;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -88,5 +90,11 @@ public class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         User user = userDao.findById(2);
 
         assertThat(user.getUserRoles(), not(hasItem(UserRole.PROJECTMANAGER)));
+    }
+
+    @Test
+    public void shouldFindWithLegacyUserDepartment() {
+        List<LegacyUserDepartment> legacyUserDepartments = userDao.findLegacyUserDepartments();
+        assertThat(legacyUserDepartments.size(), greaterThan(0));
     }
 }

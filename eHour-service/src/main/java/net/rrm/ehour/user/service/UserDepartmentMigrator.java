@@ -36,8 +36,8 @@ public class UserDepartmentMigrator {
 
         for (LegacyUserDepartment legacyUserDepartment : legacyUserDepartments) {
             User user = userDao.findById(legacyUserDepartment.getUserId());
-            user.setUserDepartment(null);
-//            user.getUserDepartments().clear();
+            user.clearLegacyDepartment();
+            user.getUserDepartments().clear();
             user.getUserDepartments().add(new UserDepartment(legacyUserDepartment.getDepartmentId()));
 
             userDao.persist(user);
