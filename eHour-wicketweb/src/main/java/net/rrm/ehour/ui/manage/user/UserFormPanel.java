@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -71,59 +72,13 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
 
         final Form<T> form = new Form<T>(FORM, userModel);
 
-        // username
-        RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
-        form.add(usernameField);
-        usernameField.add(new StringValidator(0, 32));
-        usernameField.add(new DuplicateUsernameValidator());
-        usernameField.setLabel(new ResourceModel("admin.user.username"));
-        usernameField.add(new ValidatingFormComponentAjaxBehavior());
-        form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
-
-        // user info
-        TextField<String> firstNameField = new TextField<String>("user.firstName");
-        form.add(firstNameField);
-
-        TextField<String> lastNameField = new RequiredTextField<String>("user.lastName");
-        form.add(lastNameField);
-        lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
-        lastNameField.add(new ValidatingFormComponentAjaxBehavior());
-        form.add(new AjaxFormComponentFeedbackIndicator("lastNameValidationError", lastNameField));
-
-
-        // email
-        TextField<String> emailField = new TextField<String>("user.email");
-        emailField.add(EmailAddressValidator.getInstance());
-        emailField.add(new ValidatingFormComponentAjaxBehavior());
-        form.add(emailField);
-        form.add(new AjaxFormComponentFeedbackIndicator("emailValidationError", emailField));
-
-        // password
-        Label label = new Label("passwordEditLabel", new ResourceModel("admin.user.editPassword"));
-        label.setVisible(manageUserBackingBean.isEditMode());
-        form.add(label);
-
-        PasswordFieldFactory.createOptionalPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
-
-        // department
-        DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", getUserDepartments(), new ChoiceRenderer<UserDepartment>("name"));
-        userDepartment.setRequired(true);
-        userDepartment.setLabel(new ResourceModel("admin.user.department"));
-        userDepartment.add(new ValidatingFormComponentAjaxBehavior());
-        form.add(userDepartment);
-        form.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
-
-        // user roles
-        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", getUserRoles(), new UserRoleRenderer());
-        userRoles.setMaxRows(4);
-        userRoles.setLabel(new ResourceModel("admin.user.roles"));
-        userRoles.setRequired(true);
-        userRoles.add(new ValidatingFormComponentAjaxBehavior());
-        form.add(userRoles);
-        form.add(new AjaxFormComponentFeedbackIndicator("rolesValidationError", userRoles));
-
-        // active
-        form.add(new CheckBox("user.active"));
+        createUsernameInput(form);
+        createNameInput(form);
+        createMailInput(form);
+        createPasswordInput(userModel, manageUserBackingBean, form);
+        createDepartmentInput(form);
+        createRoleInput(form);
+        createActiveInput(form);
 
         // show assignments
         CheckBox showAssignments = new CheckBox("showAssignments");
@@ -147,6 +102,69 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
         greyBorder.add(form);
 
         onFormCreated(form);
+    }
+
+    private void createActiveInput(Form<T> form) {
+        form.add(new CheckBox("user.active"));
+    }
+
+    private void createRoleInput(Form<T> form) {
+        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", getUserRoles(), new UserRoleRenderer());
+        userRoles.setMaxRows(4);
+        userRoles.setLabel(new ResourceModel("admin.user.roles"));
+        userRoles.setRequired(true);
+        userRoles.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(userRoles);
+        form.add(new AjaxFormComponentFeedbackIndicator("rolesValidationError", userRoles));
+    }
+
+    protected void createDepartmentInput(Form<T> form) {
+        Fragment f = new Fragment("dept", "department", this);
+
+        DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", getUserDepartments(), new ChoiceRenderer<UserDepartment>("name"));
+        userDepartment.setRequired(true);
+        userDepartment.setLabel(new ResourceModel("admin.user.department"));
+        userDepartment.add(new ValidatingFormComponentAjaxBehavior());
+        f.add(userDepartment);
+        f.add(new AjaxFormComponentFeedbackIndicator("departmentValidationError", userDepartment));
+        form.add(f);
+    }
+
+    private void createPasswordInput(IModel<T> userModel, T manageUserBackingBean, Form<T> form) {
+        Label label = new Label("passwordEditLabel", new ResourceModel("admin.user.editPassword"));
+        label.setVisible(manageUserBackingBean.isEditMode());
+        form.add(label);
+
+        PasswordFieldFactory.createOptionalPasswordFields(form, new PropertyModel<String>(userModel, "user.password"));
+    }
+
+    private void createMailInput(Form<T> form) {
+        TextField<String> emailField = new TextField<String>("user.email");
+        emailField.add(EmailAddressValidator.getInstance());
+        emailField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(emailField);
+        form.add(new AjaxFormComponentFeedbackIndicator("emailValidationError", emailField));
+    }
+
+    private void createNameInput(Form<T> form) {
+        TextField<String> firstNameField = new TextField<String>("user.firstName");
+        form.add(firstNameField);
+
+        TextField<String> lastNameField = new RequiredTextField<String>("user.lastName");
+        form.add(lastNameField);
+        lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
+        lastNameField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(new AjaxFormComponentFeedbackIndicator("lastNameValidationError", lastNameField));
+    }
+
+    private void createUsernameInput(Form<T> form) {
+        RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
+        form.add(usernameField);
+        usernameField.add(new StringValidator(0, 32));
+        usernameField.add(new DuplicateUsernameValidator());
+        usernameField.setLabel(new ResourceModel("admin.user.username"));
+        usernameField.add(new ValidatingFormComponentAjaxBehavior());
+        form.add(new AjaxFormComponentFeedbackIndicator("userValidationError", usernameField));
     }
 
     protected void onFormCreated(Form<T> form) {
@@ -221,7 +239,7 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
         }
     }
 
-    private List<UserDepartment> getUserDepartments() {
+    protected List<UserDepartment> getUserDepartments() {
         List<UserDepartment> departments = userService.getUserDepartments();
 
         Collections.sort(departments, new UserDepartmentComparator());
