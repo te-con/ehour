@@ -59,10 +59,11 @@ public class DepartmentManagePageTest extends BaseSpringWebAppTester
 	public void testEditTabClick()
 	{
 		tester.startPage(DepartmentManagePage.class);
+
+		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
+
 		tester.assertRenderedPage(DepartmentManagePage.class);
 		tester.assertNoErrorMessage();
-		
-		tester.clickLink("tabs:tabs-container:tabs:1:link", true);
 	}
 	
 	@Test
