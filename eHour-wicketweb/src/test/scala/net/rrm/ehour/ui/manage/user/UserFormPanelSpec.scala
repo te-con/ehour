@@ -44,7 +44,7 @@ class UserFormPanelSpec extends AbstractSpringWebAppSpec {
       formTester.setValue("user.username", "john")
       formTester.setValue("user.firstName", "john")
       formTester.setValue("user.lastName", "john")
-      formTester.select("user.userDepartment", 0)
+      formTester.select("dept:user.userDepartment", 0)
       formTester.select("user.userRoles", 0)
       formTester.setValue("password", "abc")
       formTester.setValue("confirmPassword", "abc")
@@ -62,6 +62,8 @@ class UserFormPanelSpec extends AbstractSpringWebAppSpec {
     }
 
     "should edit user and not have the assignments checkbox" in {
+      super.startTester()
+
       startPanel(new UserManageBackingBean(UserObjectMother.createUser()))
 
       tester.isVisible(FormPath + ":showAssignments").wasFailed() should be (true)
@@ -71,7 +73,7 @@ class UserFormPanelSpec extends AbstractSpringWebAppSpec {
       formTester.setValue("user.username", "john")
       formTester.setValue("user.firstName", "john")
       formTester.setValue("user.lastName", "john")
-      formTester.select("user.userDepartment", 0)
+      formTester.select("dept:user.userDepartment", 0)
       formTester.select("user.userRoles", 0)
       formTester.setValue("password", "abc")
       formTester.setValue("confirmPassword", "abc")

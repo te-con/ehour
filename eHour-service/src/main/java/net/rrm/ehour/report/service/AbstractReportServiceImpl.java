@@ -21,6 +21,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.user.dao.UserDao;
@@ -30,9 +31,11 @@ import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ProjectStructuredReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.timesheet.service.TimesheetLockService$;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.Interval;
 import scala.collection.Seq;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -179,7 +182,9 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
         if (userSelectedCriteria.isEmptyUsers()) {
             if (!userSelectedCriteria.isEmptyDepartments()) {
-                users = userDAO.findUsersForDepartments(userSelectedCriteria.getDepartments(), userSelectedCriteria.isOnlyActiveUsers());
+                Collection<UserDepartment> departments = userSelectedCriteria.getDepartments();
+
+                return findUsersInDepartments(userSelectedCriteria, departments);
             } else {
                 users = null;
             }
@@ -188,6 +193,18 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         }
 
         return users;
+    }
+
+    private List<User> findUsersInDepartments(UserSelectedCriteria userSelectedCriteria, Collection<UserDepartment> departments) {
+        List<User> allActiveUsers = userDAO.findUsers(userSelectedCriteria.isOnlyActiveUsers());
+
+        List<User> matchingUsers = Lists.newArrayList();
+        for (User activeUser : allActiveUsers) {
+            if (CollectionUtils.containsAny(activeUser.getUserDepartments(), departments)) {
+                matchingUsers.add(activeUser);
+            }
+        }
+        return matchingUsers;
     }
 
     protected List<ProjectAssignment> getAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {

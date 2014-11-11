@@ -21,6 +21,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTimeZone;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,7 +34,7 @@ import java.util.Set;
 @Table(name = "USER_DEPARTMENT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserDepartment extends DomainObject<Integer, UserDepartment> {
-    private static final long serialVersionUID = 7802944013593352L;
+    private static final long serialVersionUID = 7802944013593353L;
 
     @Transient
     private boolean deletable;
@@ -50,7 +52,19 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
     @Column(name = "CODE", nullable = false, length = 64)
     private String code;
 
-    @OneToMany(mappedBy = "userDepartment")
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "MANAGER_USER_ID")
+    private User manager;
+
+    @Column(name = "timezone", nullable = true)
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTimeZoneAsString")
+    private DateTimeZone timeZone;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "PARENT_DEPARTMENT_ID")
+    private UserDepartment parentUserDepartment;
+
+    @ManyToMany(mappedBy = "userDepartments")
     private Set<User> users;
 
     public UserDepartment() {
@@ -90,6 +104,57 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
         return getName();
     }
 
+    @Override
+    public Integer getPK() {
+        return departmentId;
+    }
+
+
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof UserDepartment)) {
+            return false;
+        }
+
+        UserDepartment o = (UserDepartment) object;
+
+        return new EqualsBuilder()
+                .append(getCode(), o.getCode())
+                .append(getName(), o.getName())
+                .append(getManager(), o.getManager())
+                .append(getTimeZone(), o.getTimeZone())
+                .append(getParentUserDepartment(), o.getParentUserDepartment())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getCode())
+                .append(getName())
+                .append(getManager())
+                .append(getTimeZone())
+                .append(getParentUserDepartment())
+                .toHashCode();
+    }
+
+    @Override
+    public int compareTo(UserDepartment o) {
+        return new CompareToBuilder()
+                .append(getCode(), o.getCode())
+                .append(getName(), o.getName())
+                .append(getManager(), o.getManager())
+                .append(getTimeZone(), o.getTimeZone())
+                .append(getParentUserDepartment(), o.getParentUserDepartment())
+                .toComparison();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s", code, name);
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -110,11 +175,6 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
         this.users = users;
     }
 
-    @Override
-    public Integer getPK() {
-        return departmentId;
-    }
-
     public boolean isDeletable() {
         return deletable;
     }
@@ -123,28 +183,27 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
         this.deletable = deletable;
     }
 
-    public int compareTo(UserDepartment object) {
-        return new CompareToBuilder()
-                .append(this.getName(), object.getName())
-                .append(this.getCode(), object.getCode())
-                .append(this.getDepartmentId(), object.getDepartmentId()).toComparison();
+    public User getManager() {
+        return manager;
     }
 
-    @Override
-    public boolean equals(final Object other) {
-        if (!(other instanceof UserDepartment))
-            return false;
-        UserDepartment castOther = (UserDepartment) other;
-        return new EqualsBuilder().append(name, castOther.name).append(code, castOther.code).isEquals();
+    public void setManager(User manager) {
+        this.manager = manager;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(name).append(code).toHashCode();
+    public DateTimeZone getTimeZone() {
+        return timeZone;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s - %s", code, name);
+    public void setTimeZone(DateTimeZone timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public UserDepartment getParentUserDepartment() {
+        return parentUserDepartment;
+    }
+
+    public void setParentUserDepartment(UserDepartment parentUserDepartment) {
+        this.parentUserDepartment = parentUserDepartment;
     }
 }

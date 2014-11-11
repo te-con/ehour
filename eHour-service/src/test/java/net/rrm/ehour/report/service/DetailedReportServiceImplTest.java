@@ -151,14 +151,14 @@ public class DetailedReportServiceImplTest {
         List<UserDepartment> departments = Arrays.asList(new UserDepartment(1));
         userSelectedCriteria.setDepartments(departments);
 
-        when(userDao.findUsersForDepartments(departments, true)).thenReturn(Arrays.asList(new User(1)));
+        when(userDao.findUsers(true)).thenReturn(Arrays.asList(new User(1)));
 
         when(detailedReportDao.getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class)))
                 .thenReturn(new ArrayList<FlatReportElement>());
 
         detailedReportService.getDetailedReportData(reportCriteria);
 
-        verify(userDao).findUsersForDepartments(departments, true);
+        verify(userDao).findUsers(true);
         verify(detailedReportDao).getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class));
     }
 

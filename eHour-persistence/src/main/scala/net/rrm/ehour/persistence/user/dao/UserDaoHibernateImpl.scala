@@ -2,9 +2,13 @@ package net.rrm.ehour.persistence.user.dao
 
 import java.util
 
-import net.rrm.ehour.domain.{User, UserDepartment}
+import com.google.common.collect.Lists
+import net.rrm.ehour.data.LegacyUserDepartment
+import net.rrm.ehour.domain.User
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
+import org.hibernate.exception.SQLGrammarException
+import org.hibernate.transform.Transformers
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -31,16 +35,24 @@ class UserDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, User
   override def findActiveUsers(): util.List[User] = findUsers(onlyActive = true)
 
   @Transactional(readOnly = true)
-  override def findUsersForDepartments(departments: util.List[UserDepartment], onlyActive: Boolean): util.List[User] = {
-    val hql = if (onlyActive) "User.findActiveForDepartment" else "User.findForDepartment"
-    findByNamedQuery(hql, "departments", departments, CacheRegion)
-  }
-
-  @Transactional(readOnly = true)
   override def findAllActiveUsersWithEmailSet(): util.List[User] = findByNamedQuery("User.findAllActiveUsersWithEmailSet", CacheRegion)
 
   @Transactional
   override def deletePmWithoutProject() {
     ExponentialBackoffRetryPolicy retry getSession.getNamedQuery("User.deletePMsWithoutProject").executeUpdate
+  }
+
+  @Transactional
+  override def findLegacyUserDepartments(): util.List[LegacyUserDepartment] = {
+    try {
+      getSession.createSQLQuery("SELECT USER_ID as userId, DEPARTMENT_ID as departmentId FROM USERS WHERE DEPARTMENT_ID IS NOT NULL")
+        .addScalar("userId")
+        .addScalar("departmentId")
+        .setResultTransformer(Transformers.aliasToBean(classOf[LegacyUserDepartment]))
+        .list()
+        .asInstanceOf[util.List[LegacyUserDepartment]]
+    } catch {
+      case grammar: SQLGrammarException => Lists.newArrayList()
+    }
   }
 }

@@ -66,12 +66,7 @@
                 <td colspan="2"><br/></td>
             </tr>
 
-            <tr>
-                <td valign="top"><wicket:message key="admin.user.department"/>:</td>
-                <td><select class="textInputSmall" wicket:id="user.userDepartment"></select>
-                    <span wicket:id="departmentValidationError"></span>
-                </td>
-            </tr>
+            <wicket:container wicket:id="dept"></wicket:container>
 
             <tr>
                 <td colspan="2">
@@ -143,6 +138,15 @@
         </table>
     </form>
 </div>
+
+    <wicket:fragment wicket:id="department">
+        <tr>
+            <td valign="top"><wicket:message key="admin.user.department"/>:</td>
+            <td><select class="textInputSmall" wicket:id="user.userDepartment"></select>
+                <span wicket:id="departmentValidationError"></span>
+            </td>
+        </tr>
+    </wicket:fragment>
 
 </wicket:panel>
 

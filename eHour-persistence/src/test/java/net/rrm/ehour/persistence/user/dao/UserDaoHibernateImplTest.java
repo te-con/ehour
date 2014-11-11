@@ -1,19 +1,19 @@
 package net.rrm.ehour.persistence.user.dao;
 
 import com.google.common.collect.Sets;
+import net.rrm.ehour.data.LegacyUserDepartment;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import net.rrm.ehour.util.EhourConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -55,7 +55,6 @@ public class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
         ProjectAssignment assignment = new ProjectAssignment();
 
-
         assignment.setUser(user);
         assignment.setAssignmentId(1);
         assignment.setProject(new Project(1));
@@ -68,15 +67,6 @@ public class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         userDao.persist(user);
 
         assertNotNull(user.getUserId());
-    }
-
-    @Test
-    public void shouldFindUsersForDepartments() {
-        List<UserDepartment> ids = new ArrayList<UserDepartment>(Arrays.asList(new UserDepartment(10)));
-
-        List<User> results = userDao.findUsersForDepartments(ids, false);
-
-        assertEquals(5, results.size());
     }
 
     @Test
@@ -102,4 +92,9 @@ public class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         assertThat(user.getUserRoles(), not(hasItem(UserRole.PROJECTMANAGER)));
     }
 
+    @Test
+    public void shouldFindWithLegacyUserDepartment() {
+        List<LegacyUserDepartment> legacyUserDepartments = userDao.findLegacyUserDepartments();
+        assertThat(legacyUserDepartments.size(), greaterThan(0));
+    }
 }

@@ -1,13 +1,13 @@
 package net.rrm.ehour.report.service
 
-import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
-import org.scalatest.mock.MockitoSugar
-import org.mockito.Mockito._
-import net.rrm.ehour.report.service.ReportFilterFixture._
-import net.rrm.ehour.report.criteria.UserSelectedCriteria
+import net.rrm.ehour.domain.{ProjectAssignmentObjectMother, ProjectObjectMother, UserDepartmentObjectMother, UserObjectMother}
 import net.rrm.ehour.persistence.user.dao.UserDao
-import net.rrm.ehour.domain.{UserDepartmentObjectMother, UserObjectMother, ProjectObjectMother, ProjectAssignmentObjectMother}
+import net.rrm.ehour.report.criteria.UserSelectedCriteria
+import net.rrm.ehour.report.service.ReportFilterFixture._
 import net.rrm.ehour.util._
+import org.mockito.Mockito._
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfterEach, Matchers, WordSpec}
 
 class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers with BeforeAndAfterEach {
   val dao = mock[UserDao]
@@ -44,7 +44,7 @@ class UserCriteriaFilterSpec extends WordSpec with MockitoSugar with Matchers wi
       when(dao.findAll()).thenReturn(toJava(List(pm, userFromOtherDepartment)))
 
       val criteria = new UserSelectedCriteria
-      criteria.setDepartments(toJava(List(pm.getUserDepartment)))
+      criteria.setDepartments(pm.getUserDepartments)
       criteria.setOnlyActiveUsers(false)
       val (_, users) = subject.getAvailableUsers(criteria)
 

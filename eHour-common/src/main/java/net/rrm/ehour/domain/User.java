@@ -79,13 +79,18 @@ public class User extends DomainObject<Integer, User> {
             inverseJoinColumns = @JoinColumn(name = "ROLE"))
     private Set<UserRole> userRoles = new HashSet<UserRole>();
 
-    @ManyToOne
-    @JoinColumn(name = "DEPARTMENT_ID")
-    @NotNull
-    private UserDepartment userDepartment;
+    @ManyToMany(targetEntity = UserDepartment.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "USER_TO_DEPARTMENT",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "DEPARTMENT_ID"))
+    private Set<UserDepartment> userDepartments = new HashSet<UserDepartment>();
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<ProjectAssignment> projectAssignments;
+
+    @ManyToOne
+    @JoinColumn(name = "DEPARTMENT_ID")
+    private UserDepartment legacyDepartment;
 
     @Transient
     private Set<ProjectAssignment> inactiveProjectAssignments;
@@ -94,10 +99,6 @@ public class User extends DomainObject<Integer, User> {
     private boolean deletable;
 
     public User() {
-    }
-
-    public User(UserDepartment userDepartment) {
-        this.userDepartment = userDepartment;
     }
 
     public User(Integer userId) {
@@ -113,17 +114,6 @@ public class User extends DomainObject<Integer, User> {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public User(String username, String password, String firstName, String lastName, String email, boolean active, Set<UserRole> userRoles, UserDepartment userDepartment) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.active = active;
-        this.userRoles = userRoles;
-        this.userDepartment = userDepartment;
     }
 
     public User addUserRole(UserRole role) {
@@ -160,7 +150,32 @@ public class User extends DomainObject<Integer, User> {
         return fullName.toString();
     }
 
-    // Property accessors
+    public void addUserDepartment(UserDepartment userDepartment) {
+        getUserDepartments().add(userDepartment);
+    }
+
+    public void setUserDepartment(UserDepartment userDepartment) {
+        getUserDepartments().clear();
+        getUserDepartments().add(userDepartment);
+    }
+
+    public void clearLegacyDepartment() {
+        this.legacyDepartment = null;
+    }
+
+    public Set<UserDepartment> getUserDepartments() {
+        return userDepartments;
+    }
+
+    @Deprecated
+    public UserDepartment getUserDepartment() {
+        return (userDepartments.size() > 0) ? userDepartments.iterator().next() : null;
+    }
+
+
+    public void setUserDepartments(Set<UserDepartment> userDepartments) {
+        this.userDepartments = userDepartments;
+    }
 
     public Integer getUserId() {
         return this.userId;
@@ -234,20 +249,6 @@ public class User extends DomainObject<Integer, User> {
     }
 
     /**
-     * @return the userDepartment
-     */
-    public UserDepartment getUserDepartment() {
-        return userDepartment;
-    }
-
-    /**
-     * @param userDepartment the userDepartment to set
-     */
-    public void setUserDepartment(UserDepartment userDepartment) {
-        this.userDepartment = userDepartment;
-    }
-
-    /**
      * @return the projectAssignments
      */
     public Set<ProjectAssignment> getProjectAssignments() {
@@ -305,7 +306,6 @@ public class User extends DomainObject<Integer, User> {
         return new CompareToBuilder()
                 .append(this.getLastName(), object.getLastName())
                 .append(this.getFirstName(), object.getFirstName())
-                .append(this.getUserDepartment(), object.getUserDepartment())
                 .append(this.getUserId(), object.getUserId())
                 .toComparison();
     }

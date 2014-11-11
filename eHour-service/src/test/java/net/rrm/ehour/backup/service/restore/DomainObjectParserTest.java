@@ -34,10 +34,6 @@ public class DomainObjectParserTest {
         status = new ParseSession();
     }
 
-    private DomainObjectParser createResolver(String xmlData) throws XMLStreamException {
-        return createResolver(xmlData, null, null);
-    }
-
     private DomainObjectParser createResolver(String xmlData, DomainObject<Integer, ?> returnOnFind, Integer onFind) throws XMLStreamException {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
@@ -74,7 +70,7 @@ public class DomainObjectParserTest {
     public void shouldParseUserAndStoreNewKeyInCacheMap() throws XMLStreamException, InstantiationException, IllegalAccessException {
         UserDepartment department = UserDepartmentObjectMother.createUserDepartment();
 
-        DomainObjectParser resolver = createResolver("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n   <DEPARTMENT_ID>1</DEPARTMENT_ID>\n   <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n   <DEPARTMENT_ID>1</DEPARTMENT_ID>\n   <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);
+        DomainObjectParser resolver = createResolver("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n     <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n    <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);
 
         BackupEntityType type = BackupEntityType.USERS;
 
@@ -89,7 +85,6 @@ public class DomainObjectParserTest {
         assertEquals("1d798ca9dba7df61bf399a02695f9f50034bad66", user.getPassword());
         assertEquals("eHour", user.getFirstName());
         assertEquals("Admin", user.getLastName());
-        assertEquals(department, user.getUserDepartment());
         assertEquals("t@t.net", user.getEmail());
         assertTrue(user.isActive());
 

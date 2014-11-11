@@ -30,7 +30,5 @@ public class CustomerComparatorTest {
         c2.setName("bb");
 
         assertEquals(-1, new CustomerComparator().compare(c1, c2));
-
     }
-
 }

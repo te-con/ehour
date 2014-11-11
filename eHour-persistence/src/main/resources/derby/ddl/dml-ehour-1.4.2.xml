@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <hibernate_unique_key next_hi="1000"></hibernate_unique_key>
+    <configuration config_key="completeDayHours" config_value="8"></configuration>
+    <configuration config_key="showTurnOver" config_value="true"></configuration>
+    <configuration config_key="localeLanguage" config_value="en"></configuration>
+    <configuration config_key="localeCountry" config_value="en-US"></configuration>
+    <configuration config_key="localeCurrency" config_value="en-US"></configuration>
+    <configuration config_key="availableTranslations" config_value="en,nl,fr,it"></configuration>
+    <configuration config_key="mailFrom" config_value="admin@localhost.net"></configuration>
+    <configuration config_key="mailSmtp" config_value="127.0.0.1"></configuration>
+    <configuration config_key="smtpPort" config_value="25"></configuration>
+    <configuration config_key="version" config_value="1.4.2"></configuration>
+    <configuration config_key="demoMode" config_value="false"></configuration>
+    <configuration config_key="initialized" config_value="false"></configuration>
+    <configuration config_key="auditType" config_value="WRITE"></configuration>
+    <project_assignment_type ASSIGNMENT_TYPE_ID="0" ASSIGNMENT_TYPE="DATE_TYPE"></project_assignment_type>
+    <project_assignment_type ASSIGNMENT_TYPE_ID="2" ASSIGNMENT_TYPE="TIME_ALLOTTED_FIXED"></project_assignment_type>
+    <project_assignment_type ASSIGNMENT_TYPE_ID="3" ASSIGNMENT_TYPE="TIME_ALLOTTED_FLEX"></project_assignment_type>
+    <user_department DEPARTMENT_ID="1" NAME="Internal" CODE="INT"></user_department>
+    <user_role ROLE="ROLE_ADMIN" NAME="Administrator"></user_role>
+    <user_role ROLE="ROLE_CONSULTANT" NAME="Consultant"></user_role>
+    <user_role ROLE="ROLE_PROJECTMANAGER" NAME="PM"></user_role>
+    <user_role ROLE="ROLE_REPORT" NAME="Report role"></user_role>
+    <user_role ROLE="ROLE_MANAGER" NAME="Manager"></user_role>
+    <users USER_ID="1" USERNAME="admin" PASSWORD="admin" FIRST_NAME="eHour" LAST_NAME="Admin" DEPARTMENT_ID="1" ACTIVE="Y"></users>
+    <user_to_userrole ROLE="ROLE_ADMIN" USER_ID="1"></user_to_userrole>
+
+    <configuration config_key="reminderEnabled" config_value="false"></configuration>
+    <configuration config_key="reminderBody" config_value="Hello $name,
+    This is an automated message.
+
+    Our records show that you have not posted your weekly hours online.
+
+    Please be sure to post your hours by 5:30PM Friday.
+
+    Thank You,
+
+    eHour"></configuration>
+    <configuration config_key="reminderTime" config_value="0 30 17 * * FRI"></configuration>
+    <configuration config_key="reminderSubject" config_value="Missing hours"></configuration>
+    <configuration config_key="reminderMinimalHours" config_value="32"></configuration>
+</data>

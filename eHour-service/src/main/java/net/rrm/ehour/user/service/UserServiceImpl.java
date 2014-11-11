@@ -191,7 +191,8 @@ public class UserServiceImpl implements UserService {
         dbUser.setEmail(user.getEmail());
         dbUser.setFirstName(user.getFirstName());
         dbUser.setLastName(user.getLastName());
-        dbUser.setUserDepartment(user.getUserDepartment());
+        dbUser.getUserDepartments().clear();
+        dbUser.getUserDepartments().addAll(user.getUserDepartments());
         dbUser.setUsername(user.getUsername());
 
         boolean reAddPm = dbUser.getUserRoles().contains(UserRole.PROJECTMANAGER);
