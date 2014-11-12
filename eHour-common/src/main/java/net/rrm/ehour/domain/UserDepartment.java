@@ -90,6 +90,10 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
         this.users = users;
     }
 
+    public boolean isRoot() {
+        return parentUserDepartment == null;
+    }
+
     public Integer getDepartmentId() {
         return this.departmentId;
     }

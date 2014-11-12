@@ -167,11 +167,9 @@ public class User extends DomainObject<Integer, User> {
         return userDepartments;
     }
 
-    @Deprecated
     public UserDepartment getUserDepartment() {
         return (userDepartments.size() > 0) ? userDepartments.iterator().next() : null;
     }
-
 
     public void setUserDepartments(Set<UserDepartment> userDepartments) {
         this.userDepartments = userDepartments;
