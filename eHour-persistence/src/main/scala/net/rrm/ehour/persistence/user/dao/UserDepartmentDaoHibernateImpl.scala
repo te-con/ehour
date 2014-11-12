@@ -1,5 +1,7 @@
 package net.rrm.ehour.persistence.user.dao
 
+import java.util
+
 import net.rrm.ehour.domain.UserDepartment
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
@@ -16,4 +18,6 @@ class UserDepartmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Int
 
     if (results.size > 0) results.get(0) else null
   }
+
+  override def findAllWithoutParent(): util.List[UserDepartment] = ExponentialBackoffRetryPolicy retry findByNamedQuery("UserDepartment.findAllWithoutParent", CacheRegion)
 }

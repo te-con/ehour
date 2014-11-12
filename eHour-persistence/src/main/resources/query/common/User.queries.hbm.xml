@@ -32,8 +32,12 @@
 	<query name="UserDepartment.findByNameAndCode"> 
 		FROM UserDepartment as userDepartment
 	    WHERE lower(name) like :name  AND lower(code) LIKE :code 
-	    	
-	</query>	
+	</query>
+
+	<query name="UserDepartment.findAllWithoutParent">
+		FROM UserDepartment as userDepartment
+		WHERE parentUserDepartment != null
+	</query>
 
 	<sql-query name="User.deletePMsWithoutProject">
 		DELETE 

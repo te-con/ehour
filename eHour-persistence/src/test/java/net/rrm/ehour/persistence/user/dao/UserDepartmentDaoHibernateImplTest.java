@@ -50,4 +50,22 @@ public class UserDepartmentDaoHibernateImplTest extends AbstractAnnotationDaoTes
         assertNotNull(userDepartmentDao.findOnNameAndCode("TE-CON", "TEC"));
     }
 
+    @Test
+    public void shouldFindAllWithoutParent() {
+        int baseline = userDepartmentDao.findAllWithoutParent().size();
+
+        UserDepartment child = userDepartmentDao.findById(10);
+        UserDepartment parent = userDepartmentDao.findById(20);
+        child.setParentUserDepartment(parent);
+
+        userDepartmentDao.persist(parent);
+        userDepartmentDao.persist(child);
+
+        UserDepartment userDepartment = UserDepartmentObjectMother.createUserDepartment();
+        userDepartment.setDepartmentId(null);
+        userDepartmentDao.persist(userDepartment);
+        userDepartmentDao.flush();
+
+        assertEquals(1, userDepartmentDao.findAllWithoutParent().size() - baseline);
+    }
 }

@@ -20,6 +20,4 @@ public class UserDepartmentObjectMother {
         department.setUsers(Sets.newHashSet(UserObjectMother.createUsers(department)));
         return department;
     }
-
-
 }
