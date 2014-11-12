@@ -33,6 +33,7 @@ public abstract class AbstractDaoTest {
 
     private List<String> datasetFilenames = Lists.newArrayList("dataset-users.xml");
 
+
     public AbstractDaoTest() {
         System.setProperty("EHOUR_TEST", "true");
     }
