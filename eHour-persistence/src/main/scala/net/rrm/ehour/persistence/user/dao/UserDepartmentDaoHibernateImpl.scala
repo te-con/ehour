@@ -19,5 +19,6 @@ class UserDepartmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Int
     if (results.size > 0) results.get(0) else null
   }
 
-  override def findAllWithoutParent(): util.List[UserDepartment] = ExponentialBackoffRetryPolicy retry findByNamedQuery("UserDepartment.findAllWithoutParent", CacheRegion)
+  override def findAllWithoutParent(): util.List[UserDepartment] =
+    ExponentialBackoffRetryPolicy retry findByNamedQuery("UserDepartment.findAllWithoutParent", CacheRegion)
 }
