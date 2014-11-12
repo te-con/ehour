@@ -64,6 +64,9 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
     @JoinColumn(name = "PARENT_DEPARTMENT_ID")
     private UserDepartment parentUserDepartment;
 
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "parentUserDepartment", orphanRemoval = true)
+    private Set<UserDepartment> childrenUserDepartments;
+
     @ManyToMany(mappedBy = "userDepartments")
     private Set<User> users;
 
@@ -205,5 +208,13 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
 
     public void setParentUserDepartment(UserDepartment parentUserDepartment) {
         this.parentUserDepartment = parentUserDepartment;
+    }
+
+    public Set<UserDepartment> getChildrenUserDepartments() {
+        return childrenUserDepartments;
+    }
+
+    public void setChildrenUserDepartments(Set<UserDepartment> childrenUserDepartments) {
+        this.childrenUserDepartments = childrenUserDepartments;
     }
 }
