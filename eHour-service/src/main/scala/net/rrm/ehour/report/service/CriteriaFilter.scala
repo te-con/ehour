@@ -99,15 +99,18 @@ class UserAndDepartmentCriteriaFilter @Autowired()(userDao: UserDao) {
     }
     else
       users
+    implicit object TermOrdering extends Ordering[UserDepartment] {
+      def compare(t1: UserDepartment, t2: UserDepartment): Int =
+        t1.compareTo(t2)
+    }
+    val map = filteredUsers.flatMap(_.getUserDepartments)
+    val departments = map.toSet.toList.sorted
 
-    import scala.collection.JavaConversions._
-    val departments = filteredUsers.flatMap(_.getUserDepartments).toSet.toList
-
-    val xs = if (userSelectedCriteria.isEmptyDepartments)
+    val filterUsersOnDepartments = if (userSelectedCriteria.isEmptyDepartments)
       filteredUsers
     else
      filteredUsers.filter(u => CollectionUtils.containsAny(userSelectedCriteria.getDepartments, u.getUserDepartments))
 
-    (toJava(departments), toJava(xs))
+    (toJava(departments), toJava(filterUsersOnDepartments))
   }
 }

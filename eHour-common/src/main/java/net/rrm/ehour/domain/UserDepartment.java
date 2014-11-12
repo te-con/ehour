@@ -104,7 +104,7 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
 
     @Override
     public String getFullName() {
-        return getName();
+        return getCode() + " - " + getName();
     }
 
     @Override
@@ -147,9 +147,6 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
         return new CompareToBuilder()
                 .append(getCode(), o.getCode())
                 .append(getName(), o.getName())
-                .append(getManager(), o.getManager())
-                .append(getTimeZone(), o.getTimeZone())
-                .append(getParentUserDepartment(), o.getParentUserDepartment())
                 .toComparison();
     }
 
