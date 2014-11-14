@@ -17,8 +17,6 @@
 package net.rrm.ehour.domain;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -63,6 +61,13 @@ public class User extends DomainObject<Integer, User> {
     @ManyToMany(targetEntity = UserRole.class, cascade = { CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = "USER_TO_USERROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE"))
     private Set<UserRole> userRoles = new HashSet<UserRole>();
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "MANAGER_USER_ID")
+    private User manager;
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "manager", orphanRemoval = true)
+    private Set<User> managing;
 
     @Transient
     private String email;
@@ -188,7 +193,21 @@ public class User extends DomainObject<Integer, User> {
         this.name = name;
     }
 
+    public User getManager() {
+        return manager;
+    }
 
+    public void setManager(User manager) {
+        this.manager = manager;
+    }
+
+    public Set<User> getManaging() {
+        return managing;
+    }
+
+    public void setManaging(Set<User> managing) {
+        this.managing = managing;
+    }
 
     @Override
     public Integer getPK() {
