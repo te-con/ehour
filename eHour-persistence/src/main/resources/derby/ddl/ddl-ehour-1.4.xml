@@ -266,6 +266,8 @@
                 type="VARCHAR" size="255" autoIncrement="false" />
         <column name="ACTIVE" primaryKey="false" required="true" type="CHAR"
                 size="1" default="Y" autoIncrement="false" />
+        <column name="MANAGER_USER_ID" primaryKey="false" required="false"
+                type="INTEGER" size="1" autoIncrement="false" />
         <unique name="USER_ID">
             <unique-column name="USER_ID" />
         </unique>
