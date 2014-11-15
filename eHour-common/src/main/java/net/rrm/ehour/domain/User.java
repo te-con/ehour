@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.domain;
 
+import com.google.common.base.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -24,6 +25,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
+import org.joda.time.DateTimeZone;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -130,6 +132,16 @@ public class User extends DomainObject<Integer, User> {
             userRoles.remove(role);
         }
         return this;
+    }
+
+    public Optional<DateTimeZone> getTimezone() {
+        for (UserDepartment userDepartment : userDepartments) {
+            if (userDepartment.getTimeZone() != null) {
+                return Optional.of(userDepartment.getTimeZone());
+            }
+        }
+
+        return Optional.absent();
     }
 
     public String getFullName() {
