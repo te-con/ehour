@@ -101,7 +101,7 @@ class UserAndDepartmentCriteriaFilter @Autowired()(userDao: UserDao) {
       users
 
     import scala.collection.JavaConversions._
-    implicit object TermOrdering extends Ordering[UserDepartment] {
+    implicit object DepartmentOrdering extends Ordering[UserDepartment] {
       def compare(t1: UserDepartment, t2: UserDepartment): Int =
         t1.compareTo(t2)
     }
