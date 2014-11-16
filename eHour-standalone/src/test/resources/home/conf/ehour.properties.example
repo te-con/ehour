@@ -4,9 +4,9 @@ ehour.database=mysql
 
 # for mysql uncomment the following lines (and make sure postgresql lines below are commented out)
 ehour.database.driver=com.mysql.jdbc.Driver
-ehour.database.url=jdbc:mysql://127.0.0.1:3306/ehour_vu?zeroDateTimeBehavior=convertToNull&amp
-ehour.database.username=root
-ehour.database.password=sa
+ehour.database.url=jdbc:mysql://127.0.0.1:3306/ehour?zeroDateTimeBehavior=convertToNull&amp
+ehour.database.username=
+ehour.database.password=
 
 # for postgresql uncomment the following lines (and make sure mysql lines above are commented out)
 #ehour.database.driver=org.postgresql.Driver
