@@ -114,11 +114,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     protected void onInitialize() {
         super.onInitialize();
 
-        WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
-
-        if (wide) {
-            selectorFrame.add(AttributeModifier.append("style", "width: 97%;"));
-        }
+        WebMarkupContainer selectorFrame = createSelectorFrame();
 
         addOrReplace(selectorFrame);
 
@@ -160,6 +156,15 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
         listContainer.add(createHeaders(HEADER_ID));
         listContainer.add(createListView(ITEM_LIST_ID));
+    }
+
+    private WebMarkupContainer createSelectorFrame() {
+        WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
+
+        if (wide) {
+            selectorFrame.add(AttributeModifier.append("style", "width: 97%;"));
+        }
+        return selectorFrame;
     }
 
     private RepeatingView createHeaders(String id) {

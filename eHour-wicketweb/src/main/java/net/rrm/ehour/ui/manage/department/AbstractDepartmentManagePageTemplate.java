@@ -1,6 +1,7 @@
 package net.rrm.ehour.ui.manage.department;
 
 import com.google.common.collect.Lists;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.sort.UserDepartmentComparator;
@@ -21,6 +22,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Header;
 
@@ -74,15 +76,31 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
         List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
 
         for (UserDepartment department : userDepartments) {
-            List<String> cells = Lists.newArrayList(department.getName(),
-                                                    department.getCode(),
-                                                    Integer.toString(department.getUsers() == null ? 0 : department.getUsers().size()));
+            List<EntrySelectorData.EntrySelectorRow> userRows = createChildren(department);
 
-            rows.add(new EntrySelectorData.EntrySelectorRow(cells, department.getDepartmentId()));
+            List<String> cells = Lists.newArrayList(department.getName(),
+                    department.getCode(),
+                    Integer.toString(department.getUsers() == null ? 0 : department.getUsers().size()));
+
+            rows.add(new EntrySelectorData.EntrySelectorRow(cells, department.getDepartmentId(), userRows));
         }
 
         return new EntrySelectorData(headers, rows);
     }
+
+    private List<EntrySelectorData.EntrySelectorRow> createChildren(UserDepartment department) {
+        List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
+
+        Set<User> users = department.getUsers();
+
+        for (User user : users) {
+            List<String> cells = Lists.newArrayList(user.getLastName(), user.getFirstName(), user.getUsername());
+            rows.add(new EntrySelectorData.EntrySelectorRow(cells, department.getDepartmentId()));
+        }
+
+        return rows;
+    }
+
 
     @Override
     protected void onFilterChanged(InactiveFilterChangedEvent inactiveFilterChangedEvent, AjaxRequestTarget target) {
