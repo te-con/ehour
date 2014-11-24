@@ -106,7 +106,11 @@ public class DateUtil {
      */
 
     public static boolean isDateWithinRange(Date date, DateRange dateRange) {
-        return dateRange.isOpenEnded() || dateRange.toInterval().contains(new DateTime(date));
+        return dateRange.isOpenEnded() || isDateWithinRange(new DateTime(date), dateRange);
+    }
+
+    public static boolean isDateWithinRange(DateTime date, DateRange dateRange) {
+        return dateRange.isOpenEnded() || dateRange.toInterval().contains(date);
     }
 
     /**
