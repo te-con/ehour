@@ -21,22 +21,16 @@ import net.rrm.ehour.domain.ProjectAssignment;
 
 /**
  * Status service
- **/
+ */
 
-public interface ProjectAssignmentStatusService
-{
-	/**
-	 * Get overall assignment status
-	 * @param assignment
-	 * @return
-	 */
-	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment);
-	
-	/**
-	 * Get assignment status for a period
-	 * @param assignment
-	 * @param period
-	 * @return
-	 */
-	public ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment, DateRange period);
+public interface ProjectAssignmentStatusService {
+    /**
+     * Get overall assignment status
+     */
+    ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment);
+
+    /**
+     * Get assignment status for a period
+     */
+    ProjectAssignmentStatus getAssignmentStatus(ProjectAssignment assignment, DateRange period);
 }
