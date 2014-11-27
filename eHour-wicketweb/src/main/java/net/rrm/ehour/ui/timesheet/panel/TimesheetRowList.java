@@ -147,7 +147,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
             if (DateUtil.isDateWithinRange(currentDate, range)) {
                 item.add(timesheetCell.isLocked() ? createLockedTimesheetEntry(id, row, index) : createInputTimesheetEntry(id, row, index));
             } else {
-                item.add(createEmptyTimesheetEntry(id));
+                item.add(timesheetCell.isWithHours() ? createLockedTimesheetEntry(id, row, index) : createEmptyTimesheetEntry(id) );
             }
         }
     }
