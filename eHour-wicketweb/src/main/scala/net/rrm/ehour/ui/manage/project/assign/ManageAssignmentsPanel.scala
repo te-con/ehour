@@ -182,7 +182,7 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
       if (backingBean.isNewAssignment) {
         assignmentManagementService.assignUsersToProjects(selectedAffectedUsers, assignment)
       } else {
-        assignmentManagementService.persist(assignment)
+        assignmentManagementService.persistNewProjectAssignment(assignment)
       }
     }
 

@@ -49,7 +49,7 @@ class ProjectManagerModifyPanelSpec extends AbstractSpringWebAppSpec with Before
       tester.executeAjaxEvent("id:border:border_body:assignments:border:border_body:assignmentFormPanel:border:greySquaredFrame:border_body:assignmentForm:submitButton", "onclick")
 
       tester.assertNoErrorMessage();
-      verify(assignmentMgmtService).persist(assignment)
+      verify(assignmentMgmtService).persistNewProjectAssignment(assignment)
     }
 
     "delete an assignment" ignore {

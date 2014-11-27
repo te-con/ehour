@@ -1,23 +1,33 @@
 package net.rrm.ehour.project.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.user.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class ProjectAssignmentManagementServiceImplTest {
     private ProjectAssignmentManagementServiceImpl service;
 
@@ -27,26 +37,27 @@ public class ProjectAssignmentManagementServiceImplTest {
     @Mock
     private ProjectDao projectDao;
 
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private TimesheetDao timesheetDao;
+
     @Before
     public void setUp() {
-        service = new ProjectAssignmentManagementServiceImpl();
-
-        MockitoAnnotations.initMocks(this);
-
-        service.setProjectAssignmentDAO(projectAssignmentDao);
-        service.setProjectDAO(projectDao);
+        service = new ProjectAssignmentManagementServiceImpl(userService, projectDao, projectAssignmentDao, timesheetDao);
     }
 
     @Test
-    public void shouldAssignUserToProject() throws ProjectAlreadyAssignedException {
+    public void should_assign_user_to_project() throws ProjectAlreadyAssignedException {
         ProjectAssignment projectAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-        service.persist(projectAssignment);
+        service.persistNewProjectAssignment(projectAssignment);
 
         verify(projectAssignmentDao).persist(projectAssignment);
     }
 
     @Test
-    public void shouldAssignUserToDefaultProjects() {
+    public void should_assign_user_to_default_projects() {
         Project project = ProjectObjectMother.createProject(1);
 
         when(projectDao.findDefaultProjects()).thenReturn(Arrays.asList(project));
@@ -59,7 +70,7 @@ public class ProjectAssignmentManagementServiceImplTest {
     }
 
     @Test
-    public void shouldAssignUsersToProjectUsingTemplateAssignment() {
+    public void should_assign_users_to_project_using_template_assignment() {
         ProjectAssignment templateAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         templateAssignment.setAllottedHours(5f);
 
@@ -83,4 +94,39 @@ public class ProjectAssignmentManagementServiceImplTest {
         assertEquals(userA, assignment.getUser());
         assertEquals(5f, assignment.getAllottedHours(), 0);
     }
+
+    @Test
+    public void should_not_update_assignment_when_there_is_data_before_the_start() {
+        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        Date dateStart = new Date();
+        assignment.setDateStart(dateStart);
+
+        when(timesheetDao.getTimesheetEntriesBefore(assignment, dateStart)).thenReturn(Lists.newArrayList(TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5f)));
+
+        try {
+            service.persistUpdatedProjectAssignment(assignment);
+            fail();
+        } catch (ProjectAssignmentValidationException e) {
+            List<ProjectAssignmentValidationException.Issue> issues = e.getIssues();
+            assertThat(issues, contains(ProjectAssignmentValidationException.Issue.EXISTING_DATA_BEFORE_START));
+        }
+    }
+
+    @Test
+    public void should_not_update_assignment_when_there_is_data_after_the_end() {
+        ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        Date date = new Date();
+        assignment.setDateEnd(date);
+
+        when(timesheetDao.getTimesheetEntriesAfter(assignment, date)).thenReturn(Lists.newArrayList(TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5f)));
+
+        try {
+            service.persistUpdatedProjectAssignment(assignment);
+            fail();
+        } catch (ProjectAssignmentValidationException e) {
+            List<ProjectAssignmentValidationException.Issue> issues = e.getIssues();
+            assertThat(issues, contains(ProjectAssignmentValidationException.Issue.EXISTING_DATA_AFTER_END));
+        }
+    }
+
 }
