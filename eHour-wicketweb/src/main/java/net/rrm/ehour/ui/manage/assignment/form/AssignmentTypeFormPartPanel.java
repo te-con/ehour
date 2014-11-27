@@ -152,10 +152,19 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
 
     private void addDates(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model) {
         DatePickerPanel dateStart = new DatePickerPanel("dateStart", new PropertyModel<Date>(model, "projectAssignment.dateStart"), new PropertyModel<Boolean>(model, "infiniteStartDate"));
-        DatePickerPanel dateEnd = new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "projectAssignment.dateEnd"), new PropertyModel<Boolean>(model, "infiniteEndDate"));
+        FormComponent<Date> dateFormComponent = dateStart.getDateInputFormComponent();
+        dateFormComponent.add(new AjaxFormComponentUpdatingBehavior("change") {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
 
+            }
+        });
         add(dateStart);
-        add(dateEnd);
+
+
+
+        DatePickerPanel dateEnd = new DatePickerPanel("dateEnd", new PropertyModel<Date>(model, "projectAssignment.dateEnd"), new PropertyModel<Boolean>(model, "infiniteEndDate"));
+           add(dateEnd);
 
         form.add(new DateOverlapValidator("dateStartDateEnd", dateStart.getDateInputFormComponent(), dateEnd.getDateInputFormComponent()));
     }

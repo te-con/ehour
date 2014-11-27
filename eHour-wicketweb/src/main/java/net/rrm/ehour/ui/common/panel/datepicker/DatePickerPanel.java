@@ -17,17 +17,9 @@ public class DatePickerPanel extends AbstractBasePanel<Date> {
     private static final long serialVersionUID = -7769909552498244968L;
 
     private LocalizedDatePicker datePicker;
-    private IModel<Boolean> infiniteModel;
 
     public DatePickerPanel(String id, IModel<Date> dateModel, IModel<Boolean> infiniteModel) {
         super(id, dateModel);
-
-        this.infiniteModel = infiniteModel;
-    }
-
-    @Override
-    protected void onConfigure() {
-        super.onConfigure();
 
         addDates(getPanelModel(), infiniteModel);
     }

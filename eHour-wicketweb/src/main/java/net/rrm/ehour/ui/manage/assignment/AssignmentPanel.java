@@ -22,6 +22,7 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectAssignmentManagementService;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
+import net.rrm.ehour.project.service.ProjectAssignmentValidationException;
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
@@ -29,6 +30,8 @@ import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.AdminBackingBean;
 import net.rrm.ehour.ui.common.panel.AbstractFormSubmittingPanel;
 import org.apache.log4j.Logger;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -51,13 +54,10 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void> {
     @SpringBean
     private ProjectAssignmentManagementService projectAssignmentManagementService;
 
-
     private AddEditTabbedPanel<AssignmentAdminBackingBean> tabbedPanel;
     private AssignmentListPanel listPanel;
 
-
-    public AssignmentPanel(String id,
-                           final User user) {
+    public AssignmentPanel(String id, final User user) {
         super(id);
 
         setOutputMarkupId(true);
@@ -127,30 +127,40 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void> {
     private void modifyAssignment(AjaxEvent ajaxEvent, AjaxEventType type) {
         AssignmentAdminBackingBean backingBean = (AssignmentAdminBackingBean) ((PayloadAjaxEvent<AdminBackingBean>) ajaxEvent).getPayload();
 
-        if (type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
-            persistAssignment(backingBean);
-        } else {
-            try {
+        AjaxRequestTarget target = ajaxEvent.getTarget();
+
+        try {
+            if (type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
+                persistAssignment(backingBean);
+            } else {
                 deleteAssignment(backingBean);
-            } catch (Exception e) {
-                LOGGER.error("While deleting assignment", e);
             }
+
+            listPanel.updateList(target, backingBean.getUser());
+            tabbedPanel.succesfulSave(target);
+        } catch (ProjectAssignmentValidationException e) {
+            AssignmentPersistenceError persistenceError = new AssignmentPersistenceError(target);
+            send(this, Broadcast.BREADTH, persistenceError);
+
+            LOGGER.warn("Cannot persist assignment", e);
+        } catch (Exception e) {
+            AssignmentPersistenceError persistenceError = new AssignmentPersistenceError(target);
+            send(this, Broadcast.BREADTH, persistenceError);
+
+            LOGGER.warn("While deleting assignment", e);
         }
 
-        listPanel.updateList(ajaxEvent.getTarget(), backingBean.getUser());
-
-        tabbedPanel.succesfulSave(ajaxEvent.getTarget());
     }
 
-    private void persistAssignment(AssignmentAdminBackingBean backingBean) {
+    private void persistAssignment(AssignmentAdminBackingBean backingBean) throws ProjectAssignmentValidationException {
         if (backingBean.isNewAssignment()) {
             List<ProjectAssignment> projectAssignmentsForSave = backingBean.getProjectAssignmentsForSave();
 
             for (ProjectAssignment projectAssignment : projectAssignmentsForSave) {
-                projectAssignmentManagementService.persist(projectAssignment);
+                projectAssignmentManagementService.persistNewProjectAssignment(projectAssignment);
             }
         } else {
-            projectAssignmentManagementService.persist(backingBean.getProjectAssignmentForSave());
+            projectAssignmentManagementService.persistUpdatedProjectAssignment(backingBean.getProjectAssignmentForSave());
         }
     }
 

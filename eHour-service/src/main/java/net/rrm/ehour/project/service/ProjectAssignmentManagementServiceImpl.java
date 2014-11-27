@@ -1,9 +1,12 @@
 package net.rrm.ehour.project.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.Auditable;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.project.service.ProjectAssignmentValidationException.Issue;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +20,23 @@ import java.util.List;
 public class ProjectAssignmentManagementServiceImpl implements ProjectAssignmentManagementService {
     private static final Logger LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final ProjectDao projectDao;
+
+    private final ProjectAssignmentDao projectAssignmentDao;
+    private final TimesheetDao timesheetDao;
 
     @Autowired
-    private ProjectDao projectDAO;
-
-    @Autowired
-    private ProjectAssignmentDao projectAssignmentDAO;
+    public ProjectAssignmentManagementServiceImpl(UserService userService,
+                                                  ProjectDao projectDao,
+                                                  ProjectAssignmentDao projectAssignmentDao,
+                                                  TimesheetDao timesheetDao) {
+        this.userService = userService;
+        this.projectDao = projectDao;
+        this.projectAssignmentDao = projectAssignmentDao;
+        this.timesheetDao = timesheetDao;
+    }
 
     @Transactional
     @Auditable(actionType = AuditActionType.CREATE)
@@ -36,7 +48,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
 
             if (!isAlreadyAssigned(assignment, user.getProjectAssignments())) {
                 LOGGER.debug("Assigning user " + user + " to " + project);
-                persist(assignment);
+                persistNewProjectAssignment(assignment);
             }
         }
     }
@@ -47,8 +59,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     public void assignUsersToProjects(List<User> users, ProjectAssignment assignmentTemplate) {
         for (User user : users) {
             ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(assignmentTemplate, user);
-
-            projectAssignmentDAO.persist(assignment);
+            persistNewProjectAssignment(assignment);
         }
     }
 
@@ -57,10 +68,29 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
      */
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
-    public ProjectAssignment persist(ProjectAssignment projectAssignment) {
-        projectAssignmentDAO.persist(projectAssignment);
+    public ProjectAssignment persistUpdatedProjectAssignment(ProjectAssignment projectAssignment) throws ProjectAssignmentValidationException {
+        if (!projectAssignment.isNew()) {
+            List<Issue> issues = Lists.newArrayList();
 
-        return projectAssignment;
+            if (!timesheetDao.getTimesheetEntriesAfter(projectAssignment, projectAssignment.getDateEnd()).isEmpty()) {
+                issues.add(Issue.EXISTING_DATA_AFTER_END);
+            }
+
+            if (!timesheetDao.getTimesheetEntriesBefore(projectAssignment, projectAssignment.getDateStart()).isEmpty()) {
+                issues.add(Issue.EXISTING_DATA_BEFORE_START);
+            }
+
+            if (!issues.isEmpty()) {
+                throw new ProjectAssignmentValidationException(issues);
+            }
+        }
+
+        return projectAssignmentDao.persist(projectAssignment);
+    }
+
+    @Override
+    public ProjectAssignment persistNewProjectAssignment(ProjectAssignment assignment) {
+        return projectAssignmentDao.persist(assignment);
     }
 
     /**
@@ -69,7 +99,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     @Transactional
     @Auditable(actionType = AuditActionType.UPDATE)
     public User assignUserToDefaultProjects(User user) {
-        List<Project> defaultProjects = projectDAO.findDefaultProjects();
+        List<Project> defaultProjects = projectDao.findDefaultProjects();
 
         for (Project project : defaultProjects) {
             ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(project, user);
@@ -78,7 +108,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
                 LOGGER.debug("Assigning user " + user.getUserId() + " to default project " + project.getName());
                 user.addProjectAssignment(assignment);
 
-                projectAssignmentDAO.persist(assignment);
+                persistNewProjectAssignment(assignment);
             }
         }
 
@@ -112,15 +142,6 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     @Transactional
     @Auditable(actionType = AuditActionType.DELETE)
     public void deleteProjectAssignment(ProjectAssignment assignment) {
-        projectAssignmentDAO.delete(assignment);
+        projectAssignmentDao.delete(assignment);
     }
-
- public void setProjectDAO(ProjectDao projectDAO) {
-        this.projectDAO = projectDAO;
-    }
-
-    public void setProjectAssignmentDAO(ProjectAssignmentDao projectAssignmentDAO) {
-        this.projectAssignmentDAO = projectAssignmentDAO;
-    }
-
 }
