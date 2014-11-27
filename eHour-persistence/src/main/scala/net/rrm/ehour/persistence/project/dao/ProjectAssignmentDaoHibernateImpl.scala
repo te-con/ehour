@@ -39,8 +39,6 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
 
   override def findAllProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment] = findProjectAssignmentsForProject(project, onlyActive = false)
 
-  override def findAllActiveProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment] = findProjectAssignmentsForProject(project, onlyActive = true)
-
   private def findProjectAssignmentsForProject(project: Project, onlyActive: Boolean): util.List[ProjectAssignment] = {
     val crit = getSession.createCriteria(classOf[ProjectAssignment])
 
