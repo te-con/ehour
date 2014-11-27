@@ -66,9 +66,6 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     public TimesheetEntry() {
     }
 
-    /**
-     * minimal constructor
-     */
     public TimesheetEntry(TimesheetEntryId entryId) {
         this.entryId = entryId;
     }
