@@ -67,13 +67,6 @@ public interface ProjectAssignmentService
 	 */
 	List<ProjectAssignment> getProjectAssignmentsAndCheckDeletability(Project project);
 
-    /**
-     * Get all active project assignments for project
-     * @param project
-     * @return
-     */
-    List<ProjectAssignment> getActiveProjectAssignments(Project project);
-	
 	/**
 	 * Get available project assignment types
 	 * @return

@@ -44,11 +44,6 @@ trait ProjectAssignmentDao extends GenericDao[Integer, ProjectAssignment] {
    * Find all project assignments for project
    */
   def findAllProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment]
-
-  /**
-   * Find all active project assignments for project
-   */
-  def findAllActiveProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment]
 }
 
 

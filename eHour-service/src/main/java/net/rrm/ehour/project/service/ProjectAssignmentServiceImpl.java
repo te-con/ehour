@@ -48,14 +48,8 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
         this.reportAggregatedDAO = reportAggregatedDAO;
     }
 
-    /**
-     * Get active projects for user in date range
-     *
-     * @param userId
-     * @param dateRange
-     * @return
-     */
-
+    @Override
+    @Transactional(readOnly = true)
     public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange) {
         List<ProjectAssignment> assignments;
         List<ProjectAssignment> validAssignments = new ArrayList<ProjectAssignment>();
@@ -71,6 +65,8 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
         return validAssignments;
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive) {
         List<ProjectAssignment> results;
         List<ProjectAssignment> filteredResults;
@@ -96,10 +92,8 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
         return results;
     }
 
-
-    /**
-     * Get project assignment on id
-     */
+    @Override
+    @Transactional(readOnly = true)
     public ProjectAssignment getProjectAssignment(Integer assignmentId) throws ObjectNotFoundException {
         ProjectAssignment assignment = projectAssignmentDAO.findById(assignmentId);
 
@@ -114,12 +108,14 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
         return assignment;
     }
 
+    @Override
+    @Transactional(readOnly = true)
     public List<ProjectAssignment> getProjectAssignments(Project project, DateRange range) {
         return projectAssignmentDAO.findProjectAssignmentsForProject(project, range);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ProjectAssignment> getProjectAssignmentsAndCheckDeletability(Project project) {
         List<ProjectAssignment> assignmentsForProject = projectAssignmentDAO.findAllProjectAssignmentsForProject(project);
 
@@ -142,10 +138,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
     }
 
     @Override
-    public List<ProjectAssignment> getActiveProjectAssignments(Project project) {
-        return projectAssignmentDAO.findAllActiveProjectAssignmentsForProject(project);
-    }
-
+    @Transactional(readOnly = true)
     public List<ProjectAssignmentType> getProjectAssignmentTypes() {
         return projectAssignmentDAO.findProjectAssignmentTypes();
     }
