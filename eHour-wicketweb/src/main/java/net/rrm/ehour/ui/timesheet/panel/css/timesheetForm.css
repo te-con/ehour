@@ -140,7 +140,7 @@ div.timesheet {
 }
 
 .timesheetTable tr.projectRow td.saturday {
-    font: bold 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
+    font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     margin: 0;
     border-right: 0;

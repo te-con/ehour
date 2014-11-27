@@ -162,30 +162,11 @@ public class TimesheetFactory {
         TimesheetCell cell = new TimesheetCell();
 
         cell.setTimesheetEntry(entry);
-        cell.setValid(isCellValid(assignment, validProjectAssignments, date));
 
         cell.setLocked(locked);
         cell.setDate(date);
 
         return cell;
-    }
-
-    /**
-     * Check if the cell is still valid. Even if they're in the timesheet entries it can be that time allotted
-     * assignments are over their budget or default assignments are de-activated
-     */
-    private boolean isCellValid(ProjectAssignment assignment,
-                                List<ProjectAssignment> validProjectAssignments,
-                                Date date) {
-        // first check if it's in valid project assignments (time allotted can have values
-        // but not be valid anymore)
-        boolean isValid = validProjectAssignments.contains(assignment);
-
-        DateRange dateRange = new DateRange(assignment.getDateStart(), assignment.getDateEnd());
-
-        isValid = isValid && DateUtil.isDateWithinRange(date, dateRange);
-
-        return isValid;
     }
 
     private static class TimesheetDate implements Serializable {
