@@ -11,7 +11,6 @@ div.timesheet {
     color: #536e87;
     height: 18px;
     width: 70px;
-    border-right: 1px solid #a1bcd7;
 }
 
 .timesheetTable tr.weekColumnRow td {
@@ -45,12 +44,10 @@ div.timesheet {
 .timesheetTable tr.weekColumnRow td.spacer,
 .timesheetTable tr.weekColumnRow td.spacer,
 .timesheetTable tr.projectRow td.spacer {
-    border-right: 0;
     width: 10px;
 }
 
 .timesheetTable tr.projectRow td.fold {
-    border-right: 0;
     width: 16px;
     vertical-align: top;
     padding: 11px 2px 0 5px;
@@ -59,7 +56,6 @@ div.timesheet {
 .timesheetTable tr.projectRow td.project {
     width: 220px;
     text-align: left;
-    border-right: 0;
     font: 1em/1.1 Geneva, Arial, Helvetica, sans-serif;
     padding: 8px 0 0 0;
     vertical-align: top;
@@ -68,7 +64,6 @@ div.timesheet {
 .timesheetTable tr.projectRow td.projectCode {
     text-align: left;
     font-weight: normal;
-    border-right: 0;
     padding: 8px 0 0 0;
     vertical-align: top;
 }
@@ -77,7 +72,6 @@ div.timesheet {
     font-weight: normal;
     text-align: left;
     padding-left: 3px;
-    border-right: 0;
 }
 
 .timesheetTable tr.projectRow td.project a:link {
@@ -143,7 +137,6 @@ div.timesheet {
     font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     margin: 0;
-    border-right: 0;
     text-align: center;
     padding: 1px 0 0 0;
     vertical-align: top;
@@ -157,7 +150,6 @@ div.timesheet {
     font: 0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     margin: 0;
-    border-right: 0;
     text-align: right;
     padding: 0 23px 0 0;
     vertical-align: middle;
@@ -176,13 +168,11 @@ div.timesheet {
 .timesheetTable tr.customerRow td.saturday {
     margin-top: 10px;
     background-color: #fefeff;
-    border-right-width: 0;
 }
 
 .timesheetTable tr.customerRow td.foldIcon {
     margin-top: 10px;
     background-color: #fefeff;
-    border-right-width: 0;
     padding-left: 3px;
     width: 9px
 }
@@ -310,6 +300,16 @@ div.wicket-modal div.w_content_3 {
     padding: 0;
     margin: -2px 5px 0 0;
     color: #6d87a1;
+}
+
+.commentLink {
+    font-size: 75%;
+    color: #999da1;
+}
+
+.commentLink:hover, .commentLinkOn {
+    color: #5190c5;
+    font-size: 75%;
 }
 
 

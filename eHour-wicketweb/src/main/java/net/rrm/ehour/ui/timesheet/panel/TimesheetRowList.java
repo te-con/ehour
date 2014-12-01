@@ -42,13 +42,11 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.image.ContextImage;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 
@@ -61,6 +59,9 @@ import java.util.List;
 
 public class TimesheetRowList extends ListView<TimesheetRow> {
     private static final long serialVersionUID = -6905022018110510887L;
+
+    private static final String COMMENT_LINK_IMG_ID = "commentLinkImg";
+    private static final String PLACEHOLDER_ID = "placeholder";
 
     private EhourConfig config;
     private final GrandTotal grandTotals;
@@ -152,12 +153,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         }
     }
 
-    private Fragment createAndAddFragment(String id, String fragmentId) {
-        return new Fragment(id, fragmentId, provider);
-    }
-
     private Fragment createLockedTimesheetEntry(String id, TimesheetRow row, int index) {
-        Fragment fragment = createAndAddFragment(id, "dayLocked");
+        Fragment fragment = new Fragment(id, "dayLocked", provider);
 
         TimesheetCell timesheetCell = row.getTimesheetCells()[index];
         PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
@@ -172,24 +169,32 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         createTimesheetEntryComment(row, index, fragment, DayStatus.LOCKED);
 
+        fragment.add(createPlaceholder(PLACEHOLDER_ID, timesheetCell, DayStatus.LOCKED));
+
         return fragment;
     }
 
     private Fragment createEmptyTimesheetEntry(String id) {
-        return createAndAddFragment(id, "dayInputHidden");
+        return new Fragment(id, "dayInputHidden", provider);
     }
 
     private Fragment createInputTimesheetEntry(String id, TimesheetRow row, final int index) {
-        Fragment fragment = createAndAddFragment(id, "dayInput");
-        fragment.add(createTextFieldWithValidation(row, index));
+        TimesheetCell timesheetCell = row.getTimesheetCells()[index];
+
+        Fragment fragment = new Fragment(id, "dayInput", provider);
+        fragment.add(createTextFieldWithValidation(timesheetCell, index));
 
         createTimesheetEntryComment(row, index, fragment, DayStatus.OPEN);
+        fragment.add(createPlaceholder(PLACEHOLDER_ID, timesheetCell, DayStatus.LOCKED));
 
         return fragment;
     }
 
-    private TimesheetTextField createTextFieldWithValidation(TimesheetRow row, final int index) {
-        TimesheetCell timesheetCell = row.getTimesheetCells()[index];
+    protected WebMarkupContainer createPlaceholder(String id, TimesheetCell cell, DayStatus status) {
+        return new WebMarkupContainer(id);
+    }
+
+    private TimesheetTextField createTextFieldWithValidation(TimesheetCell timesheetCell, final int index) {
         PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
 
         // make sure it's added to the grandtotal
@@ -257,9 +262,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
             @Override
             protected void onBeforeRender() {
-                ContextImage img = createContextImage(commentModel);
-
-                addOrReplace(img);
+                addOrReplace(createContextImage(commentModel));
                 super.onBeforeRender();
             }
         };
@@ -282,15 +285,13 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         parent.add(commentLink);
     }
 
-    private ContextImage createContextImage(PropertyModel<String> commentModel) {
-        ContextImage img;
+    private WebMarkupContainer createContextImage(PropertyModel<String> commentModel) {
+        WebMarkupContainer container = new WebMarkupContainer(COMMENT_LINK_IMG_ID);
 
-        if (StringUtils.isBlank(commentModel.getObject())) {
-            img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_off.gif"));
-        } else {
-            img = new ContextImage("commentLinkImg", new Model<String>("img/comment/comment_blue_on.gif"));
+        if (StringUtils.isNotBlank(commentModel.getObject())) {
+            container.add(AttributeModifier.replace("class", "fa fa-pencil commentLinkOn"));
         }
-        return img;
+        return container;
     }
 
     private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink) {
