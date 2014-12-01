@@ -17,7 +17,7 @@
 package net.rrm.ehour.ui.report.panel.criteria;
 
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.TimesheetLock;
+import net.rrm.ehour.domain.TimesheetLockDomain;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.ui.report.panel.criteria.quick.QuickMonth;
@@ -39,7 +39,7 @@ public class ReportCriteriaBackingBean implements Serializable {
     private QuickWeek quickWeek;
     private QuickMonth quickMonth;
     private QuickQuarter quickQuarter;
-    private TimesheetLock reportForLock;
+    private TimesheetLockDomain reportForLock;
 
     public ReportCriteriaBackingBean(ReportCriteria reportCriteria) {
         this.reportCriteria = reportCriteria;
@@ -114,11 +114,11 @@ public class ReportCriteriaBackingBean implements Serializable {
         this.reportCriteria = reportCriteria;
     }
 
-    public TimesheetLock getReportForLock() {
+    public TimesheetLockDomain getReportForLock() {
         return reportForLock;
     }
 
-    public void setReportForLock(TimesheetLock reportForLock) {
+    public void setReportForLock(TimesheetLockDomain reportForLock) {
         this.reportForLock = reportForLock;
 
         quickWeek = null;

@@ -141,7 +141,7 @@ public class TimesheetServiceImplTest {
         when(timesheetCommentDAO.findById(new TimesheetCommentId(1, range.getDateStart()))).thenReturn(new TimesheetComment());
         when(projectAssignmentService.getProjectAssignmentsForUser(1, rangeB)).thenReturn(new ArrayList<ProjectAssignment>());
         when(config.getFirstDayOfWeek()).thenReturn(1);
-        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class))).thenReturn(new Vector<Interval>(0, 0, 1));
+        when(timesheetLockService.findLockedDates(any(Interval.class), any(User.class))).thenReturn(new Vector<Interval>(0, 0, 1));
 
         timesheetService.getWeekOverview(new User(1), new GregorianCalendar(2007, Calendar.JANUARY, 1));
 
@@ -149,6 +149,6 @@ public class TimesheetServiceImplTest {
         verify(timesheetCommentDAO).findById(new TimesheetCommentId(1, range.getDateStart()));
         verify(projectAssignmentService).getProjectAssignmentsForUser(1, rangeB);
         verify(config).getFirstDayOfWeek();
-        verify(timesheetLockService).findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class));
+        verify(timesheetLockService).findLockedDates(any(Interval.class), any(User.class));
     }
 }

@@ -169,6 +169,7 @@ public class DateUtil {
         return weekRange;
     }
 
+
     public static DateRange getDateRangeForMonth(Date date) {
         return getDateRangeForMonth(getCalendar(date));
     }

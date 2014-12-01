@@ -43,6 +43,13 @@ public class DateRange implements Serializable {
         setDateEnd(dateEnd);
     }
 
+
+    public DateRange(DateTime dateStart, DateTime dateEnd) {
+        setDateStart(dateStart.toDate());
+        setDateEnd(dateEnd.toDate());
+    }
+
+
     public DateRange(Interval range) {
         setDateStart(range.getStart().toDate());
         setDateEnd(range.getEnd().toDate());

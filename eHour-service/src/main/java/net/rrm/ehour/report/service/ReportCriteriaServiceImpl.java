@@ -24,6 +24,7 @@ import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
+import net.rrm.ehour.timesheet.dto.TimesheetLock;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,8 +73,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         UserSelectedCriteria userSelectedCriteria = reportCriteria.getUserSelectedCriteria();
         AvailableCriteria availCriteria = reportCriteria.getAvailableCriteria();
 
-        List<TimesheetLock> timesheetLocks = Lists.newArrayList(WrapAsJava$.MODULE$.asJavaCollection(lockService.findAll()));
-        availCriteria.setTimesheetLocks(timesheetLocks);
+        List<TimesheetLock> allLocks = Lists.newArrayList(WrapAsJava$.MODULE$.asJavaCollection(lockService.findAll()));
+        availCriteria.setTimesheetLocks(allLocks);
 
         if (userSelectedCriteria.isForGlobalReport() || userSelectedCriteria.isForPm()) {
             if (updateType == UPDATE_CUSTOMERS_AND_PROJECTS ||

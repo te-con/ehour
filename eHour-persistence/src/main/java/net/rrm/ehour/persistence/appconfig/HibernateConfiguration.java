@@ -62,6 +62,8 @@ public class HibernateConfiguration {
         List<Resource> mappingResources = getMappingResources(configProperties);
         sessionFactoryBean.setMappingLocations(mappingResources.toArray(new Resource[mappingResources.size()]));
 
+        sessionFactoryBean.setAnnotatedPackages();
+
         sessionFactoryBean.setPackagesToScan(getPackagesToScan());
 
         Properties properties = new Properties();
@@ -89,6 +91,7 @@ public class HibernateConfiguration {
     protected void beforeFinalizingSessionFactoryBean(LocalSessionFactoryBean bean) {
 
     }
+
 
     protected String[] getPackagesToScan() {
         return new String[]{"net.rrm.ehour.domain"};

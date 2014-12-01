@@ -14,7 +14,7 @@ import net.rrm.ehour.user.service.UserService
 import net.rrm.ehour.util.JodaDateUtil
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
-import org.joda.time.LocalDate
+import org.joda.time.{Interval, LocalDate}
 import org.joda.time.format.DateTimeFormat
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -96,8 +96,9 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
 
     val reminderEndDate = new LocalDate()
     val reminderStartDate = reminderEndDate.minusWeeks(1).plusDays(1)
+    val reminderInterval = new Interval(reminderStartDate.toDateTimeAtStartOfDay, reminderEndDate.toDateTimeAtCurrentTime)
 
-    val correctedMinimumHours = subtractLockedDaysFromMinimumHours(minimumHours, workHoursPerDay, reminderStartDate, reminderEndDate)
+    val correctedMinimumHours = subtractLockedDaysFromMinimumHours(minimumHours, workHoursPerDay, reminderInterval)
 
     val activeUsers = findActiveUsersWithAssignments(reminderStartDate, reminderEndDate)
 
@@ -117,8 +118,8 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
 
   // for every locked day in the range, subtract the work hours per day from the minimum hours
   // excluded locked days that fall in the weekend
-  private def subtractLockedDaysFromMinimumHours(minimumHours: Int, workHoursPerDay: Float, reminderStartDate: LocalDate, reminderEndDate: LocalDate): Int = {
-    val lockedDatesInRange = lockService.findLockedDatesInRange(reminderStartDate.toDate, reminderEndDate.toDate)
+  private def subtractLockedDaysFromMinimumHours(minimumHours: Int, workHoursPerDay: Float, remindAbout: Interval): Int = {
+    val lockedDatesInRange = lockService.findLockedDates(remindAbout)
 
     val correction = lockedDatesInRange.foldLeft(0f)((v, interval) => v + (JodaDateUtil.findWorkDays(interval).size * workHoursPerDay))
 

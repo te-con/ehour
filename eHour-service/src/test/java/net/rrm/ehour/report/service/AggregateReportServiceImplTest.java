@@ -71,7 +71,7 @@ public class AggregateReportServiceImplTest {
     public void setUp() {
         aggregateReportService = new AggregateReportServiceImpl(assignmentService, userDao, projectDao, timesheetLockService, reportAggregatedDao);
 
-        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
+        when(timesheetLockService.findLockedDates(any(Interval.class)))
                 .thenReturn(WrapAsScala$.MODULE$.asScalaBuffer(Lists.<Interval>newArrayList()));
     }
 

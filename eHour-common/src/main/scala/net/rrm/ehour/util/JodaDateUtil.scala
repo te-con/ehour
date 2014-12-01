@@ -1,9 +1,37 @@
 package net.rrm.ehour.util
 
-import org.joda.time.{DateTimeConstants, Interval, LocalDate}
+import java.util.Calendar
+
+import org.joda.time.{DateTime, DateTimeConstants, Interval, LocalDate}
 
 object JodaDateUtil {
-  def findWorkDays(interval: Interval):List[LocalDate] = {
+  val calendarToJodaWeekDays = Map(Calendar.SUNDAY -> DateTimeConstants.SUNDAY,
+    Calendar.MONDAY -> DateTimeConstants.MONDAY,
+    Calendar.TUESDAY -> DateTimeConstants.TUESDAY,
+    Calendar.WEDNESDAY -> DateTimeConstants.WEDNESDAY,
+    Calendar.THURSDAY -> DateTimeConstants.THURSDAY,
+    Calendar.FRIDAY -> DateTimeConstants.FRIDAY,
+    Calendar.SATURDAY -> DateTimeConstants.SATURDAY)
+
+  /**
+   * get interval for week the calendar is in
+   * @param cal should fall in the interval
+   * @param firstDayOfWeek (java.util.Calendar) first day of week
+   * @return interval containing @cal
+   */
+  def intervalForWeek(cal: Calendar, firstDayOfWeek: Integer): Interval = {
+    val jodaWeekDay = JodaDateUtil.calendarToJodaWeekDays(firstDayOfWeek)
+
+    val s = new LocalDate(cal).toDateTimeAtStartOfDay
+    val start: DateTime = s.withDayOfWeek(jodaWeekDay)
+
+    val adjustedStart = if (start.isAfter(s)) start.minusWeeks(1) else start
+
+    val end: DateTime = adjustedStart.plusWeeks(1).minusMillis(1)
+    new Interval(adjustedStart, end)
+  }
+
+  def findWorkDays(interval: Interval): List[LocalDate] = {
     val dates = enumerate(interval.getStart.toLocalDate, interval.getEnd.toLocalDate)
 
     dates.filterNot(isWeekend)

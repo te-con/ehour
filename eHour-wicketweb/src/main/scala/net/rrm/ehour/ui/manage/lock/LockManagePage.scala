@@ -3,7 +3,7 @@ package net.rrm.ehour.ui.manage.lock
 import java.text.SimpleDateFormat
 
 import com.google.common.collect.Lists
-import net.rrm.ehour.domain.TimesheetLock
+import net.rrm.ehour.domain.TimesheetLockDomain
 import net.rrm.ehour.timesheet.service.TimesheetLockService
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder
 import net.rrm.ehour.ui.common.component.AddEditTabbedPanel
@@ -64,7 +64,7 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
     greyBorder.addOrReplace(entrySelectorPanel)
   }
 
-  private def createSelectorData(locks: List[TimesheetLock]): EntrySelectorData = {
+  private def createSelectorData(locks: List[TimesheetLockDomain]): EntrySelectorData = {
     val headers = Lists.newArrayList(new EntrySelectorData.Header("op.lock.admin.name.label"),
                                      new EntrySelectorData.Header("op.lock.admin.start.label"),
                                      new EntrySelectorData.Header("op.lock.admin.end.label"))
@@ -91,27 +91,23 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
     event.getPayload match {
       case event: LockAddedEvent =>
         val lock = event.lock
-        lockService.createNew(Option.apply(lock.getName), lock.getDateStart, lock.getDateEnd, lock.getExcludedUsers)
+        lockService.createNew(Option.apply(lock.name), lock.dateStart, lock.dateEnd, lock.getExcludedUsers)
         update(event)
       case event: LockEditedEvent =>
         val lock = event.lock
-        lockService.updateExisting(lock.getLockId, lock.getDateStart, lock.getDateEnd, lock.getName, lock.getExcludedUsers)
+        lockService.updateExisting(lock.id.get, lock.dateStart, lock.dateEnd, lock.name, lock.getExcludedUsers)
         update(event)
       case event: UnlockedEvent =>
         val lock = event.lock
-        lockService.deleteLock(lock.getLockId)
+        lockService.deleteLock(lock.id.get)
         update(event)
       case _ =>
     }
   }
 
-  protected def getNewAddBaseBackingBean: LockAdminBackingBean = {
-    val start = new DateTime().withDayOfMonth(1).toDate
-    val end = new DateTime().withDayOfMonth(1).plusMonths(1).minusDays(1).toDate
-    new LockAdminBackingBean(new TimesheetLock(start, end)).updateName(EhourWebSession.getEhourConfig.getFormattingLocale)
-  }
+  protected def getNewAddBaseBackingBean: LockAdminBackingBean = LockAdminBackingBean(EhourWebSession.getEhourConfig.getFormattingLocale)
 
-  protected def getNewEditBaseBackingBean: LockAdminBackingBean = new LockAdminBackingBean(new TimesheetLock())
+  protected def getNewEditBaseBackingBean: LockAdminBackingBean = LockAdminBackingBean(EhourWebSession.getEhourConfig.getFormattingLocale)
 
   protected def getBaseAddPanel(panelId: String): Panel = new LockFormPanel(panelId, new Model(getTabbedPanel.getAddBackingBean))
 
@@ -121,7 +117,6 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
     response.render(CssHeaderItem.forReference(Css))
   }
 }
-
 
 object LockManagePage {
   val FrameId = "frame"

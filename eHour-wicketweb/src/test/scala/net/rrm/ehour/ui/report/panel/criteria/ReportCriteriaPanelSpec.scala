@@ -43,7 +43,7 @@ class ReportCriteriaPanelSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     }
 
     "render with locks available" in {
-      availableCriteria.setTimesheetLocks(Lists.newArrayList(new TimesheetLock(new Date(), new Date(), "period", Lists.newArrayList())))
+      availableCriteria.setTimesheetLockDomains(Lists.newArrayList(new TimesheetLockDomain(new Date(), new Date(), "period", Lists.newArrayList())))
 
       tester.startComponentInPage(new ReportCriteriaPanel("testObject", model))
       tester.assertNoErrorMessage()

@@ -576,7 +576,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private WebMarkupContainer createLockedPeriodRangeDropdown(String id) {
         ReportCriteriaBackingBean panelModelObject = getPanelModelObject();
 
-        List<TimesheetLock> locks = panelModelObject.getReportCriteria().getAvailableCriteria().getTimesheetLocks();
+        List<TimesheetLockDomain> locks = panelModelObject.getReportCriteria().getAvailableCriteria().getTimesheetLockDomains();
 
         if (locks == null || locks.isEmpty()) {
             Container placeholder = new Container(id);
@@ -584,16 +584,16 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             return placeholder;
         }
 
-        DateDropDownChoice<TimesheetLock> lockedDateDropDown = new DateDropDownChoice<TimesheetLock>(id, new PropertyModel<TimesheetLock>(getPanelModel(), "reportForLock"),
+        DateDropDownChoice<TimesheetLockDomain> lockedDateDropDown = new DateDropDownChoice<TimesheetLockDomain>(id, new PropertyModel<TimesheetLockDomain>(getPanelModel(), "reportForLock"),
                 locks,
-                new IChoiceRenderer<TimesheetLock>() {
+                new IChoiceRenderer<TimesheetLockDomain>() {
                     @Override
-                    public Object getDisplayValue(TimesheetLock object) {
+                    public Object getDisplayValue(TimesheetLockDomain object) {
                         return object.getName();
                     }
 
                     @Override
-                    public String getIdValue(TimesheetLock object, int index) {
+                    public String getIdValue(TimesheetLockDomain object, int index) {
                         return Integer.toString(index);
                     }
                 }

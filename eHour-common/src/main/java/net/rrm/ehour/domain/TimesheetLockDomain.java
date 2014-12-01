@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "TIMESHEET_LOCK")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
+public class TimesheetLockDomain extends DomainObject<Integer, TimesheetLockDomain> {
     private static final long serialVersionUID = 2546435367535412269L;
 
     @Id
@@ -40,27 +40,27 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
             inverseJoinColumns = @JoinColumn(name = "USER_ID"))
     private List<User> excludedUsers = Lists.newArrayList();
 
-    public TimesheetLock() {
+    public TimesheetLockDomain() {
     }
 
-    public TimesheetLock(Date dateStart, Date dateEnd) {
+    public TimesheetLockDomain(Date dateStart, Date dateEnd) {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
     }
 
-    public TimesheetLock(Date dateStart, Date dateEnd, List<User> excludedUsers) {
+    public TimesheetLockDomain(Date dateStart, Date dateEnd, List<User> excludedUsers) {
         this(dateStart, dateEnd);
         this.excludedUsers = excludedUsers;
     }
 
-    public TimesheetLock(Date dateStart, Date dateEnd, String name, List<User> excludedUsers) {
+    public TimesheetLockDomain(Date dateStart, Date dateEnd, String name, List<User> excludedUsers) {
         this(dateStart, dateEnd, excludedUsers);
 
         this.name = name;
     }
 
 
-    public TimesheetLock(Integer lockId, Date dateStart, Date dateEnd, String name, List<User> excludedUsers) {
+    public TimesheetLockDomain(Integer lockId, Date dateStart, Date dateEnd, String name, List<User> excludedUsers) {
         this(dateStart, dateEnd, name, excludedUsers);
         this.lockId = lockId;
     }
@@ -112,10 +112,10 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof TimesheetLock)) {
+        if (!(other instanceof TimesheetLockDomain)) {
             return false;
         }
-        TimesheetLock castOther = (TimesheetLock) other;
+        TimesheetLockDomain castOther = (TimesheetLockDomain) other;
 
         return new EqualsBuilder()
                 .append(dateStart, castOther.dateStart)
@@ -133,7 +133,7 @@ public class TimesheetLock extends DomainObject<Integer, TimesheetLock> {
     }
 
     @Override
-    public int compareTo(TimesheetLock other) {
+    public int compareTo(TimesheetLockDomain other) {
         return new CompareToBuilder()
                 .append(dateStart, other.dateStart)
                 .append(dateEnd, other.dateEnd)

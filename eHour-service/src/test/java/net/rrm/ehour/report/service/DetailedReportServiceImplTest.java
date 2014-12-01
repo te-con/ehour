@@ -38,7 +38,6 @@ import scala.collection.convert.WrapAsScala$;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -79,7 +78,7 @@ public class DetailedReportServiceImplTest {
     }
 
     private void provideNoLocks() {
-        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
+        when(timesheetLockService.findLockedDates(any(Interval.class)))
                 .thenReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
     }
 
@@ -172,7 +171,7 @@ public class DetailedReportServiceImplTest {
         Interval interval = new Interval(dateTime, dateTime);
         provideNoAssignmentsWithoutBookings();
 
-        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
+        when(timesheetLockService.findLockedDates(any(Interval.class)))
                 .thenReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.newArrayList(interval)));
 
         FlatReportElement reportElement = new FlatReportElement();
@@ -187,7 +186,7 @@ public class DetailedReportServiceImplTest {
         assertTrue(flat.getLockableDate().isLocked());
 
         verify(detailedReportDao).getHoursPerDay(any(DateRange.class));
-        verify(timesheetLockService).findLockedDatesInRange(any(Date.class), any(Date.class));
+        verify(timesheetLockService).findLockedDates(any(Interval.class));
     }
 
     @Test

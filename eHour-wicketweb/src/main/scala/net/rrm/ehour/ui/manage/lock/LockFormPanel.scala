@@ -2,7 +2,8 @@ package net.rrm.ehour.ui.manage.lock
 
 import java.util.Date
 
-import net.rrm.ehour.domain.{TimesheetLock, User}
+import net.rrm.ehour.domain.{TimesheetLockDomain, User}
+import net.rrm.ehour.timesheet.dto.TimesheetLock
 import net.rrm.ehour.ui.common.border.GreySquaredRoundedBorder
 import net.rrm.ehour.ui.common.component._
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator
@@ -98,12 +99,12 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
         form.addOrReplace(label)
         target.add(label)
 
-        val lock = getPanelModelObject.getLock
+        val lockBean = getPanelModelObject
 
         val event = if (modelObject.isNew)
-          LockAddedEvent(lock, target)
+          LockAddedEvent(lockBean, target)
         else
-          LockEditedEvent(lock, target)
+          LockEditedEvent(lockBean, target)
 
         send(getPage, Broadcast.BREADTH, event)
       }
@@ -114,7 +115,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
     def createUnlockButton: NonDemoAjaxLink = {
       val unlockButton = NonDemoAjaxLink(LockFormPanel.UnlockId, (target) => {
-        send(getPage, Broadcast.BREADTH, UnlockedEvent(getPanelModelObject.getLock, target))
+        send(getPage, Broadcast.BREADTH, UnlockedEvent(getPanelModelObject, target))
       }, List(new JavaScriptConfirmation(new ResourceModel("general.deleteConfirmation"))))
 
       unlockButton.setVisible(!getPanelModelObject.isNew)
@@ -153,7 +154,7 @@ class LockFormPanel(id: String, model: IModel[LockAdminBackingBean]) extends Abs
 
   // ugly..
   private def addUserSelection(form: Form[_]): Fragment = {
-    val users = getPanelModelObject.getLock.getExcludedUsers
+    val users = getPanelModelObject.getExcludedUsers
 
     val fragment: Fragment = if (users.isEmpty) {
       new Fragment(LockFormPanel.ExcludedUsersId, "noExcludedUsers", self)
@@ -253,8 +254,8 @@ object LockFormPanel {
   val ExcludedUsersId = "excludedUsers"
 }
 
-case class LockAddedEvent(lock: TimesheetLock, override val target: AjaxRequestTarget) extends Event(target)
+case class LockAddedEvent(lock: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
 
-case class LockEditedEvent(lock: TimesheetLock, override val target: AjaxRequestTarget) extends Event(target)
+case class LockEditedEvent(lock: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)
 
-case class UnlockedEvent(lock: TimesheetLock, override val target: AjaxRequestTarget) extends Event(target)
+case class UnlockedEvent(lock: LockAdminBackingBean, override val target: AjaxRequestTarget) extends Event(target)

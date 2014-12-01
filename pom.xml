@@ -22,6 +22,7 @@
         <module>eHour-persistence-mysql</module>
         <module>eHour-persistence-postgresql</module>
         <module>eHour-service</module>
+        <module>eHour-service-port</module>
         <module>eHour-wicketweb</module>
         <module>eHour-web</module>
         <module>eHour-audit</module>

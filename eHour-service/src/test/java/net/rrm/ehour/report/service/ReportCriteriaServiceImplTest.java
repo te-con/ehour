@@ -23,6 +23,7 @@ import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
+import net.rrm.ehour.timesheet.dto.TimesheetLock;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import org.junit.Before;
 import org.junit.Test;

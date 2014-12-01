@@ -4,29 +4,37 @@ import java.text.SimpleDateFormat
 import java.util.{Date, Locale}
 
 import com.github.nscala_time.time.Imports._
-import net.rrm.ehour.domain.TimesheetLock
+import net.rrm.ehour.domain.TimesheetLockDomain
+import net.rrm.ehour.timesheet.dto.TimesheetLock
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl
+import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.ui.common.wicket.AdminFormBean
 import net.rrm.ehour.util.DateUtil
 import org.joda.time.Days
 
-class LockAdminBackingBean(val lock: TimesheetLock) extends AdminBackingBeanImpl[TimesheetLock] {
-  override def getDomainObject: TimesheetLock = lock
-
-  def getLock = lock
-
-  def isNew = lock.getPK == null
+case class LockAdminBackingBean(id: Option[Int], var name: String, var dateStart: DateTime, var dateEnd: DateTime)  {
+  def isNew = id.isEmpty
 
   def updateName(formattingLocale: Locale) = {
-    lock.setName(LockAdminBackingBean.determineName(lock.getDateStart, lock.getDateEnd, formattingLocale))
+    name = LockAdminBackingBean.determineName(dateStart, dateEnd, formattingLocale)
     this
   }
 
-  override def isDeletable = !isNew
+  def isDeletable = !isNew
 }
 
 object LockAdminBackingBean {
-  def determineName(startDate: Date, endDate: Date, formattingLocale: Locale): String = {
-    def formatForMonth(date: Date): String = DateTimeFormat.forPattern("MMMM, yyyy").withLocale(formattingLocale).print(new DateTime(date))
+  def apply(locale: Locale): LockAdminBackingBean = {
+    val start = new DateTime().withDayOfMonth(1)
+    val end = new DateTime().withDayOfMonth(1).plusMonths(1).minusDays(1)
+
+    val name = LockAdminBackingBean.determineName(start, end, locale)
+
+    LockAdminBackingBean(id = None, name = name, dateStart = start, dateEnd = end)
+  }
+
+  def determineName(startDate: DateTime, endDate: DateTime, formattingLocale: Locale): String = {
+    def formatForMonth(date: DateTime): String = DateTimeFormat.forPattern("MMMM, yyyy").withLocale(formattingLocale).print(date)
 
     if (startDate == null && endDate == null) {
       ""

@@ -2,11 +2,11 @@ package net.rrm.ehour.ui.manage.lock
 
 import java.util.Date
 
-import net.rrm.ehour.domain.TimesheetLock
+import net.rrm.ehour.domain.TimesheetLockDomain
 
 object LockAdminBackingBeanObjectMother {
   def create = {
-    val lock = new TimesheetLock()
+    val lock = new TimesheetLockDomain()
     lock.setDateStart(new Date())
     lock.setDateEnd(new Date)
 

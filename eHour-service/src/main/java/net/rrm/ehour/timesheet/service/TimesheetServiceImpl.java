@@ -31,6 +31,7 @@ import net.rrm.ehour.timesheet.dto.TimesheetOverview;
 import net.rrm.ehour.timesheet.dto.UserProjectStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.util.JodaDateUtil;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
      * requested month and a list with all timesheet entries for that month.
      *
-     * @param userId
+     * @param user
      * @param requestedMonth only the month and year of the calendar is used
      * @return TimesheetOverviewAction
      * @throws ObjectNotFoundException
@@ -206,15 +207,18 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      */
     public WeekOverview getWeekOverview(User user, Calendar requestedWeek) {
         Calendar reqWeek = (Calendar) requestedWeek.clone();
-        reqWeek.setFirstDayOfWeek(configuration.getFirstDayOfWeek());
+        int firstDayOfWeek = configuration.getFirstDayOfWeek();
+        reqWeek.setFirstDayOfWeek(firstDayOfWeek);
 
         DateRange range = DateUtil.getDateRangeForWeek(reqWeek);
+
 
         List<TimesheetEntry> timesheetEntries = timesheetDAO.getTimesheetEntriesInRange(user.getUserId(), range);
         TimesheetComment comment = timesheetCommentDAO.findById(new TimesheetCommentId(user.getUserId(), range.getDateStart()));
         List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range);
 
-        Seq<Interval> lockedDatesAsIntervals = timesheetLockService.findLockedDatesInRange(range.getDateStart(), range.getDateEnd(), user);
+        Interval forWeek = JodaDateUtil.intervalForWeek(requestedWeek, firstDayOfWeek);
+        Seq<Interval> lockedDatesAsIntervals = timesheetLockService.findLockedDates(forWeek, user);
         List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);
 
         return new WeekOverview(timesheetEntries, comment, assignments, range, user, lockedDates);

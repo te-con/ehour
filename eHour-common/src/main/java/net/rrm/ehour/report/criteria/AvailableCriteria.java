@@ -22,6 +22,7 @@ import net.rrm.ehour.domain.*;
 import net.rrm.ehour.sort.CustomerComparator;
 import net.rrm.ehour.sort.ProjectComparator;
 import net.rrm.ehour.sort.UserComparator;
+import net.rrm.ehour.timesheet.dto.TimesheetLock;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -55,14 +56,6 @@ public class AvailableCriteria implements Serializable {
         this.projects = projects;
         this.users = users;
         this.userDepartments = userDepartments;
-    }
-
-    public List<TimesheetLock> getTimesheetLocks() {
-        return timesheetLocks;
-    }
-
-    public void setTimesheetLocks(List<TimesheetLock> timesheetLocks) {
-        this.timesheetLocks = timesheetLocks;
     }
 
     public List<UserDepartment> getUserDepartments() {
@@ -127,5 +120,13 @@ public class AvailableCriteria implements Serializable {
 
     private void sortProjects() {
         Collections.sort(this.projects, new ProjectComparator(projectSort));
+    }
+
+    public List<TimesheetLock> getTimesheetLocks() {
+        return timesheetLocks;
+    }
+
+    public void setTimesheetLocks(List<TimesheetLock> timesheetLocks) {
+        this.timesheetLocks = timesheetLocks;
     }
 }

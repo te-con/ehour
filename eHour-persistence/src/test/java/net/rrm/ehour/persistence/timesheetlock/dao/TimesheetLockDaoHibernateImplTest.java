@@ -1,7 +1,7 @@
 package net.rrm.ehour.persistence.timesheetlock.dao;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.domain.TimesheetLock;
+import net.rrm.ehour.domain.TimesheetLockDomain;
 import net.rrm.ehour.domain.UserObjectMother;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import org.joda.time.DateTime;
@@ -26,31 +26,31 @@ public class TimesheetLockDaoHibernateImplTest extends AbstractAnnotationDaoTest
     @Test
     public void shouldPersistWithoutExclusions() {
         Date startDate = new Date();
-        TimesheetLock timesheetLock = new TimesheetLock(startDate, new Date());
-        TimesheetLock id = timesheetLockDao.persist(timesheetLock);
+        TimesheetLockDomain timesheetLockDomain = new TimesheetLockDomain(startDate, new Date());
+        TimesheetLockDomain id = timesheetLockDao.persist(timesheetLockDomain);
         Assert.assertNotNull(id);
 
-        TimesheetLock persistedLock = timesheetLockDao.findById(id.getLockId());
+        TimesheetLockDomain persistedLock = timesheetLockDao.findById(id.getLockId());
         assertEquals(startDate, persistedLock.getDateStart());
     }
 
     @Test
     public void shouldPersistWithExclusions() {
         Date startDate = new Date();
-        TimesheetLock timesheetLock = new TimesheetLock(startDate, new Date());
+        TimesheetLockDomain timesheetLockDomain = new TimesheetLockDomain(startDate, new Date());
 
-        timesheetLock.setExcludedUsers(Lists.newArrayList(UserObjectMother.createUser()));
-        TimesheetLock id = timesheetLockDao.persist(timesheetLock);
+        timesheetLockDomain.setExcludedUsers(Lists.newArrayList(UserObjectMother.createUser()));
+        TimesheetLockDomain id = timesheetLockDao.persist(timesheetLockDomain);
         Assert.assertNotNull(id);
 
-        TimesheetLock persistedLock = timesheetLockDao.findById(id.getLockId());
+        TimesheetLockDomain persistedLock = timesheetLockDao.findById(id.getLockId());
         assertEquals(startDate, persistedLock.getDateStart());
     }
 
     @Test
     public void shouldFindMatching() {
         DateTime start = new DateTime(2013, DateTimeConstants.NOVEMBER, 3, 0, 0, 0, 0);
-        List<TimesheetLock> locks = timesheetLockDao.findMatchingLock(start.plusDays(1).toDate(), start.plusDays(3).toDate());
+        List<TimesheetLockDomain> locks = timesheetLockDao.findMatchingLock(start.plusDays(1).toDate(), start.plusDays(3).toDate());
 
         assertEquals(10, locks.get(0).getLockId().intValue());
     }
@@ -58,7 +58,7 @@ public class TimesheetLockDaoHibernateImplTest extends AbstractAnnotationDaoTest
     @Test
     public void shouldNotFindMatchingBefore() {
         DateTime start = new DateTime(2013, DateTimeConstants.OCTOBER, 3, 0, 0, 0, 0);
-        List<TimesheetLock> locks = timesheetLockDao.findMatchingLock(start.plusDays(1).toDate(), start.plusDays(3).toDate());
+        List<TimesheetLockDomain> locks = timesheetLockDao.findMatchingLock(start.plusDays(1).toDate(), start.plusDays(3).toDate());
 
         Assert.assertTrue(locks.isEmpty());
     }
@@ -66,7 +66,7 @@ public class TimesheetLockDaoHibernateImplTest extends AbstractAnnotationDaoTest
     @Test
     public void shouldNotFindMatchingAfter() {
         DateTime start = new DateTime(2013, DateTimeConstants.DECEMBER, 3, 0, 0, 0, 0);
-        List<TimesheetLock> locks = timesheetLockDao.findMatchingLock(start.plusDays(1).toDate(), start.plusDays(3).toDate());
+        List<TimesheetLockDomain> locks = timesheetLockDao.findMatchingLock(start.plusDays(1).toDate(), start.plusDays(3).toDate());
 
         Assert.assertTrue(locks.isEmpty());
     }
@@ -75,7 +75,7 @@ public class TimesheetLockDaoHibernateImplTest extends AbstractAnnotationDaoTest
     public void shouldFindMatchingOverlap() {
         DateTime start = new DateTime(2013, DateTimeConstants.DECEMBER, 31, 0, 0, 0, 0);
         DateTime end = new DateTime(2014, DateTimeConstants.JANUARY, 31, 23, 59, 59, 0);
-        List<TimesheetLock> locks = timesheetLockDao.findMatchingLock(start.toDate(), end.toDate());
+        List<TimesheetLockDomain> locks = timesheetLockDao.findMatchingLock(start.toDate(), end.toDate());
 
         assertEquals(20, locks.get(0).getLockId().intValue());
     }

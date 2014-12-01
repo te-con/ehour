@@ -189,10 +189,6 @@ public class DateUtilTest {
         assertEquals(6, range.getDateEnd().getDate());
     }
 
-    /**
-     *
-     *
-     */
     @Test
     public void testNullifyTime() {
         Calendar cal = new GregorianCalendar();

@@ -136,5 +136,11 @@
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_${scala.major.version}</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>net.rrm.ehour</groupId>
+            <artifactId>eHour-service-port</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

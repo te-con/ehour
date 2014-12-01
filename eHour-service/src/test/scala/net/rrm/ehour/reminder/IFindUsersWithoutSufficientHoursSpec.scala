@@ -162,7 +162,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
 
       val nonWeekendDate = findWorkDay(currentDate)
       val lockedInterval = new Interval(nonWeekendDate.toDateTimeAtStartOfDay, nonWeekendDate.toDateTimeAtStartOfDay)
-      when(lockService.findLockedDatesInRange(any(), any())).thenReturn(List(lockedInterval))
+      when(lockService.findLockedDates(any(), any())).thenReturn(List(lockedInterval))
 
       val timesheetEntrySufficient = `create a timesheet entry for user`(userA, 30)
       val timesheetEntryInsufficient = `create a timesheet entry for user`(userB, 20)
@@ -184,7 +184,7 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
 
       val weekendDate = findDateInWeekend(currentDate)
       val lockedInterval = new Interval(weekendDate.toDateTimeAtStartOfDay, weekendDate.toDateTimeAtStartOfDay)
-      when(lockService.findLockedDatesInRange(any(), any())).thenReturn(List(lockedInterval))
+      when(lockService.findLockedDates(any(), any())).thenReturn(List(lockedInterval))
 
       val timesheetEntrySufficient = `create a timesheet entry for user`(userA, 30)
       val timesheetEntryInsufficient = `create a timesheet entry for user`(userB, 20)
@@ -251,6 +251,6 @@ class IFindUsersWithoutSufficientHoursSpec extends AbstractSpec {
   }
 
   def `no locked days are in the range` {
-    when(lockService.findLockedDatesInRange(any(), any())).thenReturn(List())
+    when(lockService.findLockedDates(any(), any())).thenReturn(List())
   }
 }

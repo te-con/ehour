@@ -1,7 +1,10 @@
 package net.rrm.ehour.util
 
+import java.util.{Calendar, GregorianCalendar}
+
 import net.rrm.ehour.AbstractSpec
-import org.joda.time.{Interval, LocalDate}
+import org.joda.time.chrono.GJChronology
+import org.joda.time.{DateTime, Interval, LocalDate}
 
 class JodaDateUtilSpec extends AbstractSpec {
   "Joda Date Util" should {
@@ -44,6 +47,24 @@ class JodaDateUtilSpec extends AbstractSpec {
       val days = JodaDateUtil.findWorkDays(new Interval(start.toDateTimeAtStartOfDay, end.toDateTimeAtStartOfDay))
 
       days should be ('empty)
+    }
+
+    "get week for calendar with week starting on Sunday" in {
+      val cal = new GregorianCalendar(2014, Calendar.DECEMBER, 1)
+
+      val i = JodaDateUtil.intervalForWeek(cal, Calendar.SUNDAY)
+
+      i.getStart should equal (new DateTime(2014, 11, 30, 0, 0, 0, 0, GJChronology.getInstance()))
+      i.getEnd should equal (new DateTime(2014, 12, 6, 23, 59, 59, 999, GJChronology.getInstance()))
+    }
+
+    "get week for calendar with week starting on Monday" in {
+      val cal = new GregorianCalendar(2014, Calendar.DECEMBER, 1)
+
+      val i = JodaDateUtil.intervalForWeek(cal, Calendar.MONDAY)
+
+      i.getStart should equal (new DateTime(2014, 12, 1, 0, 0, 0, 0, GJChronology.getInstance()))
+      i.getEnd should equal (new DateTime(2014, 12, 7, 23, 59, 59, 999, GJChronology.getInstance()))
     }
   }
 }
