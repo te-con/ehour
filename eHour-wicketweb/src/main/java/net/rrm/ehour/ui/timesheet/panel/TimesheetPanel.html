@@ -146,15 +146,13 @@
 	</wicket:fragment>
 
    	<wicket:fragment wicket:id="dayInput">
-   		<input wicket:id="day"/><a wicket:id="commentLink"><i class="fa fa-pencil commentLink"  wicket:id="commentLinkImg"  /></a><wicket:container wicket:id="placeholder" />
-   		<div wicket:id="dayWin"></div>
+   		<input wicket:id="day"/>
+        <wicket:container wicket:id="options"></wicket:container>
 	</wicket:fragment>
 
     <wicket:fragment wicket:id="dayLocked">
         <wicket:container wicket:id="day" />
-        <a wicket:id="commentLink"><i class="fa fa-pencil commentLinkOn" wicket:id="commentLinkImg" /></a>
-        <wicket:container wicket:id="placeholder" />
-        <div wicket:id="dayWin"></div>
+        <wicket:container wicket:id="options"></wicket:container>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="dayInputHidden">

@@ -26,6 +26,7 @@ import net.rrm.ehour.timesheet.service.IPersistTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
+import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -68,6 +69,8 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         getMockContext().putBean(persistTimesheet);
         getMockContext().putBean(overviewTimesheet);
         getMockContext().putBean("userService", userService);
+
+        getMockContext().putBean("timesheetOptionRenderFactory", Lists.newArrayList(new DailyCommentPanelFactory()));
     }
 
     @Test
@@ -80,20 +83,21 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         assertTrue(window.isShown());
 
         FormTester timesheetFormTester = tester.newFormTester(TIMESHEET_PATH);
-        timesheetFormTester.setValue(DAY1_PATH + ":dayWin:content:comment", comment);
+        timesheetFormTester.setValue(DAY1_PATH + ":options:1:dayWin:content:comment", comment);
 
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayWin:content:comment", "onchange");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayWin:content:submit", "onclick");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":options:1:dayWin:content:comment", "onchange");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":options:1:dayWin:content:submit", "onclick");
 
-        Timesheet timesheet = (Timesheet) tester.getComponentFromLastRenderedPage("panel").getDefaultModelObject();
+        Timesheet timesheet = ((TimesheetContainer) tester.getComponentFromLastRenderedPage("panel").getDefaultModelObject()).getTimesheet();
         assertEquals(comment, timesheet.getTimesheetEntries().get(0).getComment());
 
         tester.assertNoErrorMessage();
     }
 
     private ModalWindow openCommentWindow(String path) {
-        ModalWindow window = (ModalWindow) tester.getComponentFromLastRenderedPage(path + ":dayWin");
-        tester.executeAjaxEvent(path + ":commentLink", "onclick");
+        tester.debugComponentTrees();
+        ModalWindow window = (ModalWindow) tester.getComponentFromLastRenderedPage(path + ":options:1:dayWin");
+        tester.executeAjaxEvent(path + ":options:1:commentLink", "onclick");
         return window;
     }
 
@@ -106,19 +110,19 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         clickDay1();
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
-        formTester.setValue(DAY1_PATH + ":dayWin:content:comment", comment);
+        formTester.setValue(DAY1_PATH + ":options:1:dayWin:content:comment", comment);
 
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayWin:content:comment", "onchange");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":dayWin:content:cancel", "onclick");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":options:1:dayWin:content:comment", "onchange");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":options:1:dayWin:content:cancel", "onclick");
 
-        Timesheet timesheet = (Timesheet) tester.getComponentFromLastRenderedPage("panel").getDefaultModelObject();
+        Timesheet timesheet = ((TimesheetContainer) tester.getComponentFromLastRenderedPage("panel").getDefaultModelObject()).getTimesheet();
         assertNull(timesheet.getTimesheetEntries().get(0).getComment());
 
         tester.assertNoErrorMessage();
     }
 
     private void clickDay1() {
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":commentLink", "onclick");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + ":options:1:commentLink", "onclick");
     }
 
     @Test
@@ -258,7 +262,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         // then
         openCommentWindow(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2");
 
-        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:dayWin:content:comment", Label.class);
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:options:1:dayWin:content:comment", Label.class);
 
         tester.assertNoErrorMessage();
         tester.assertNoInfoMessage();
@@ -270,7 +274,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startWithLockedDays(Arrays.asList(lockedDay));
 
-        Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:commentLink");
+        Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:options:1:commentLink");
         assertNull(commentLink); // null = not visible...
 
         tester.assertNoErrorMessage();

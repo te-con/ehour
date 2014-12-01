@@ -16,16 +16,10 @@
 
 package net.rrm.ehour.ui.timesheet.panel;
 
-import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.ui.EhourWebApplication;
-import net.rrm.ehour.ui.common.component.CommonModifiers;
-import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.form.FormHighlighter;
-import net.rrm.ehour.ui.common.model.DateModel;
-import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetCell;
@@ -38,17 +32,14 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.IModel;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
 import java.util.List;
@@ -60,14 +51,13 @@ import java.util.List;
 public class TimesheetRowList extends ListView<TimesheetRow> {
     private static final long serialVersionUID = -6905022018110510887L;
 
-    private static final String COMMENT_LINK_IMG_ID = "commentLinkImg";
-    private static final String PLACEHOLDER_ID = "placeholder";
-
-    private EhourConfig config;
     private final GrandTotal grandTotals;
     private Form<?> form;
 
     private MarkupContainer provider;
+
+    @SpringBean(name = "timesheetOptionRenderFactory")
+    private List<TimesheetOptionRenderFactory> optionRenderers;
 
     public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider) {
         super(id, model);
@@ -75,8 +65,6 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         setReuseItems(true);
         this.grandTotals = grandTotals;
         this.form = form;
-
-        config = EhourWebSession.getEhourConfig();
     }
 
     @Override
@@ -167,11 +155,19 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         fragment.add(new Label("day", cellModel));
 
-        createTimesheetEntryComment(row, index, fragment, DayStatus.LOCKED);
-
-        fragment.add(createPlaceholder(PLACEHOLDER_ID, timesheetCell, DayStatus.LOCKED));
+        fragment.add(renderOptions(timesheetCell, DayStatus.LOCKED));
 
         return fragment;
+    }
+
+    private RepeatingView renderOptions(TimesheetCell timesheetCell, DayStatus status) {
+        RepeatingView options = new RepeatingView("options");
+
+        for (TimesheetOptionRenderFactory renderFactory : optionRenderers) {
+            options.add(renderFactory.renderForId(options.newChildId(), timesheetCell, status));
+        }
+
+        return options;
     }
 
     private Fragment createEmptyTimesheetEntry(String id) {
@@ -183,15 +179,9 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
 
         Fragment fragment = new Fragment(id, "dayInput", provider);
         fragment.add(createTextFieldWithValidation(timesheetCell, index));
-
-        createTimesheetEntryComment(row, index, fragment, DayStatus.OPEN);
-        fragment.add(createPlaceholder(PLACEHOLDER_ID, timesheetCell, DayStatus.LOCKED));
+        fragment.add(renderOptions(timesheetCell, DayStatus.OPEN));
 
         return fragment;
-    }
-
-    protected WebMarkupContainer createPlaceholder(String id, TimesheetCell cell, DayStatus status) {
-        return new WebMarkupContainer(id);
     }
 
     private TimesheetTextField createTextFieldWithValidation(TimesheetCell timesheetCell, final int index) {
@@ -233,161 +223,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         return dayInput;
     }
 
-    private enum DayStatus {
+    public static enum DayStatus {
         OPEN,
         LOCKED
-    }
-
-    @SuppressWarnings("serial")
-    private void createTimesheetEntryComment(final TimesheetRow row, final int index, WebMarkupContainer parent, DayStatus status) {
-        final PropertyModel<String> commentModel = new PropertyModel<String>(row, "timesheetCells[" + index + "].timesheetEntry.comment");
-
-        final ModalWindow modalWindow = new ModalWindow("dayWin");
-        modalWindow.setResizable(false);
-        modalWindow.setInitialWidth(500);
-        modalWindow.setInitialHeight(325);
-
-        modalWindow.setTitle(new StringResourceModel("timesheet.dayCommentsTitle", this, null));
-
-        Component panel = status == DayStatus.OPEN ? new TimesheetEntryCommentPanel(modalWindow.getContentId(), commentModel, row, index, modalWindow) :
-                new TimesheetEntryLockedCommentPanel(modalWindow.getContentId(), commentModel, row, index, modalWindow);
-        modalWindow.setContent(panel);
-
-        final AjaxLink<Void> commentLink = new AjaxLink<Void>("commentLink") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                target.prependJavaScript("Wicket.Window.unloadConfirmation = false;");
-                modalWindow.show(target);
-            }
-
-            @Override
-            protected void onBeforeRender() {
-                addOrReplace(createContextImage(commentModel));
-                super.onBeforeRender();
-            }
-        };
-
-        commentLink.setVisible(status == DayStatus.OPEN || StringUtils.isNotBlank(commentModel.getObject()));
-
-        modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
-            public void onClose(AjaxRequestTarget target) {
-                setCommentLinkClass(commentModel, commentLink);
-
-                target.add(commentLink);
-            }
-        });
-
-        parent.add(modalWindow);
-
-        commentLink.setOutputMarkupId(true);
-        commentLink.add(CommonModifiers.tabIndexModifier(255));
-
-        parent.add(commentLink);
-    }
-
-    private WebMarkupContainer createContextImage(PropertyModel<String> commentModel) {
-        WebMarkupContainer container = new WebMarkupContainer(COMMENT_LINK_IMG_ID);
-
-        if (StringUtils.isNotBlank(commentModel.getObject())) {
-            container.add(AttributeModifier.replace("class", "fa fa-pencil commentLinkOn"));
-        }
-        return container;
-    }
-
-    private void setCommentLinkClass(IModel<String> commentModel, AjaxLink<Void> commentLink) {
-        commentLink.add(AttributeModifier.replace("class", StringUtils.isBlank(commentModel.getObject()) ? "timesheetEntryComment" : "timesheetEntryCommented"));
-    }
-
-    abstract class AbstractTimesheetEntryCommentPanel extends AbstractBasePanel<String> {
-        private static final long serialVersionUID = 1L;
-        private final TimesheetRow row;
-        private final int index;
-        protected final ModalWindow window;
-
-        public AbstractTimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
-            super(id, model);
-
-            this.row = row;
-            this.index = index;
-            this.window = window;
-        }
-
-        @Override
-        protected void onBeforeRender() {
-            super.onBeforeRender();
-
-
-            Calendar thisDate = (Calendar) row.getFirstDayOfWeekDate().clone();
-            // Use the render order, not the index order, when calculating the date
-            thisDate.add(Calendar.DAY_OF_YEAR, grandTotals.getOrderForIndex(index) - 1);
-
-            final String previousModel = getPanelModelObject();
-            addOrReplace(new Label("dayComments",
-                    new StringResourceModel("timesheet.dayComments",
-                            this,
-                            null,
-                            new Object[]{row.getProjectAssignment().getFullName(),
-                                    new DateModel(thisDate, config, DateModel.DATESTYLE_DAYONLY_LONG)})));
-
-            AbstractLink cancelButton = new AjaxLink<Void>("cancel") {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void onClick(AjaxRequestTarget target) {
-                    AbstractTimesheetEntryCommentPanel.this.getPanelModel().setObject(previousModel);
-                    window.close(target);
-                }
-            };
-            addOrReplace(cancelButton);
-        }
-    }
-
-    class TimesheetEntryCommentPanel extends AbstractTimesheetEntryCommentPanel {
-        public TimesheetEntryCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
-            super(id, model, row, index, window);
-        }
-
-        @Override
-        protected void onBeforeRender() {
-            super.onBeforeRender();
-
-            final KeepAliveTextArea textArea = new KeepAliveTextArea("comment", getPanelModel());
-            textArea.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                protected void onUpdate(AjaxRequestTarget target) {
-                    // simple hack to get around IE's prob with nested forms in a modalwindow
-                }
-            });
-            textArea.setOutputMarkupId(true);
-
-            addOrReplace(textArea);
-
-            AjaxLink<Void> submitButton = new AjaxLink<Void>("submit") {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void onClick(AjaxRequestTarget target) {
-                    window.close(target);
-                }
-            };
-            addOrReplace(submitButton);
-        }
-    }
-
-    class TimesheetEntryLockedCommentPanel extends AbstractTimesheetEntryCommentPanel {
-        private static final long serialVersionUID = 14343L;
-
-        public TimesheetEntryLockedCommentPanel(String id, final IModel<String> model, TimesheetRow row, int index, final ModalWindow window) {
-            super(id, model, row, index, window);
-        }
-
-        @Override
-        protected void onBeforeRender() {
-            super.onBeforeRender();
-
-            addOrReplace(new Label("comment", getPanelModel()));
-        }
     }
 }

@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.timesheet.dto;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.config.EhourConfig;
-import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
@@ -141,32 +140,14 @@ public class TimesheetFactory {
             for (TimesheetDate timesheetDate : timesheetDates) {
                 TimesheetEntry entry = assignmentEntry.getValue().get(timesheetDate.formatted);
 
-                timesheetRow.addTimesheetCell(timesheetDate.dayInWeek,
-                        createTimesheetCell(assignment, entry, timesheetDate.date, timesheetDate.locked, validProjectAssignments));
+                TimesheetCell cell = new TimesheetCell(entry, timesheetDate.locked, timesheetDate.date, assignment);
+                timesheetRow.addTimesheetCell(timesheetDate.dayInWeek, cell);
             }
 
             timesheetRows.add(timesheetRow);
         }
 
         return timesheetRows;
-    }
-
-    /**
-     * Create timesheet cell, a cell is valid when the timesheetDate is within the assignment valid range
-     */
-    private TimesheetCell createTimesheetCell(ProjectAssignment assignment,
-                                              TimesheetEntry entry,
-                                              Date date,
-                                              Boolean locked,
-                                              List<ProjectAssignment> validProjectAssignments) {
-        TimesheetCell cell = new TimesheetCell();
-
-        cell.setTimesheetEntry(entry);
-
-        cell.setLocked(locked);
-        cell.setDate(date);
-
-        return cell;
     }
 
     private static class TimesheetDate implements Serializable {

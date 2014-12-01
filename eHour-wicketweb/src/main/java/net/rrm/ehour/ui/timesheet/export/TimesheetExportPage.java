@@ -81,7 +81,7 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
     }
 
     private CalendarPanel createCalendarPanel(String id) {
-        return new CalendarPanel(id, getEhourWebSession().getUser(), false);
+        return new CalendarPanel(id, EhourWebSession.getUser(), false);
     }
 
     private CompoundPropertyModel<ReportCriteria> createModelForMonth(Calendar forMonth) {

@@ -39,7 +39,7 @@ import java.util.List;
  * Model that holds the timesheet
  */
 
-public class TimesheetModel implements IModel<Timesheet> {
+public class TimesheetModel implements ITimesheetModel<TimesheetContainer> {
     private static final long serialVersionUID = 4134613450587087107L;
 
     @SpringBean
@@ -50,7 +50,7 @@ public class TimesheetModel implements IModel<Timesheet> {
 
     private User user;
     private Calendar forWeek;
-    private Timesheet timesheet;
+    private TimesheetContainer timesheetContainer;
 
     public TimesheetModel(User user, Calendar forWeek) {
         WebUtils.springInjection(this);
@@ -58,13 +58,14 @@ public class TimesheetModel implements IModel<Timesheet> {
         this.user = user;
         this.forWeek = forWeek;
 
-        timesheet = load();
+        timesheetContainer = load();
     }
 
-    public List<ProjectAssignmentStatus> persistTimesheet() {
+    @Override
+    public List<ProjectAssignmentStatus> persist() {
         WebUtils.springInjection(this);
 
-        Timesheet timesheet = getObject();
+        Timesheet timesheet = getObject().getTimesheet();
 
         return persistTimesheet.persistTimesheetWeek(timesheet.getTimesheetEntries(),
                 timesheet.getCommentForPersist(),
@@ -72,15 +73,14 @@ public class TimesheetModel implements IModel<Timesheet> {
     }
 
     public Date getWeekStart() {
-        return getObject().getWeekStart();
+        return getObject().getTimesheet().getWeekStart();
     }
 
     public Date getWeekEnd() {
-        return getObject().getWeekEnd();
+        return getObject().getTimesheet().getWeekEnd();
     }
 
-
-    private Timesheet load() {
+    private TimesheetContainer load() {
         EhourConfig config = EhourWebSession.getEhourConfig();
         WeekOverview weekOverview = overviewTimesheet.getWeekOverview(user, forWeek);
 
@@ -92,20 +92,19 @@ public class TimesheetModel implements IModel<Timesheet> {
             timesheet.setComment(comment);
         }
 
-        return timesheet;
+        return new TimesheetContainer(timesheet);
     }
 
-
-    public Timesheet getObject() {
-        return timesheet;
+    public TimesheetContainer getObject() {
+        return timesheetContainer;
     }
 
-    public void setObject(Timesheet sheet) {
-        this.timesheet = sheet;
-
+    public void setObject(TimesheetContainer sheet) {
+        this.timesheetContainer = sheet;
     }
 
     public void detach() {
         overviewTimesheet = null;
+        persistTimesheet = null;
     }
 }
