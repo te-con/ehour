@@ -109,6 +109,11 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
         }
 
+        LOGGER.info(String.format("*** %s version %s started!", getAppName(), version));
+    }
+
+    protected String getAppName() {
+        return "eHour";
     }
 
     private boolean isInTestMode() {
