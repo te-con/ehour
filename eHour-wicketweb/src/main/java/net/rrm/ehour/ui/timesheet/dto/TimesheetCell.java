@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetEntry;
 
 import java.io.Serializable;
@@ -30,6 +31,14 @@ public class TimesheetCell implements Comparable<TimesheetCell>, Serializable {
     private TimesheetEntry timesheetEntry;
     private boolean locked;
     private Date date;
+    private ProjectAssignment projectAssignment;
+
+    public TimesheetCell(TimesheetEntry timesheetEntry, boolean locked, Date date, ProjectAssignment projectAssignment) {
+        this.timesheetEntry = timesheetEntry;
+        this.locked = locked;
+        this.date = date;
+        this.projectAssignment = projectAssignment;
+    }
 
     public boolean isLocked() {
         return locked;
@@ -43,18 +52,16 @@ public class TimesheetCell implements Comparable<TimesheetCell>, Serializable {
         return timesheetEntry != null && !timesheetEntry.isEmptyEntry();
     }
 
-    /**
-     * @return the timesheetEntry
-     */
     public TimesheetEntry getTimesheetEntry() {
         return timesheetEntry;
     }
 
-    /**
-     * @param timesheetEntry the timesheetEntry to set
-     */
     public void setTimesheetEntry(TimesheetEntry timesheetEntry) {
         this.timesheetEntry = timesheetEntry;
+    }
+
+    public ProjectAssignment getProjectAssignment() {
+        return projectAssignment;
     }
 
     @Override

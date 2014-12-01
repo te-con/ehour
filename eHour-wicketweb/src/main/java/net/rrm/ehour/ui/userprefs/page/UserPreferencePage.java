@@ -23,6 +23,7 @@ import net.rrm.ehour.ui.common.event.AjaxEventType;
 import net.rrm.ehour.ui.common.page.AbstractBasePage;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarAjaxEventType;
 import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.page.MonthOverviewPage;
 import net.rrm.ehour.ui.userprefs.panel.ChangePasswordBackingBean;
@@ -41,7 +42,7 @@ public class UserPreferencePage extends AbstractBasePage<Void>
 		super(new ResourceModel("userprefs.title"));
 		
 		// add calendar panel
-		add(new CalendarPanel("sidePanel", getEhourWebSession().getUser()));
+		add(new CalendarPanel("sidePanel", EhourWebSession.getUser()));
 
 		// add 
 		add(new ChangePasswordPanel("preferenceForm", new ChangePasswordBackingBean()));

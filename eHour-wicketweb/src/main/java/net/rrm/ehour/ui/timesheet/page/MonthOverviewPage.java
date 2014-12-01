@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.timesheet.page;
 
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.AjaxEventType;
@@ -34,6 +35,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
+
+import java.util.Calendar;
 
 @AuthorizeInstantiation(UserRole.ROLE_USER)
 public class MonthOverviewPage extends AbstractBasePage<Void> {
@@ -85,7 +88,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
         } else {
             calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
             helpPanel = getTimesheetHelpPanel();
-            contentContainer = getTimesheetPanel();
+            contentContainer = createTimesheetPanel(ID_CONTENT_CONTAINER, EhourWebSession.getUser(), getEhourWebSession().getNavCalendar());
         }
 
         add(helpPanel);
@@ -117,7 +120,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
      * @param target
      */
     private void calendarWeekClicked(AjaxRequestTarget target) {
-        TimesheetPanel panel = getTimesheetPanel();
+        TimesheetPanel panel = createTimesheetPanel(ID_CONTENT_CONTAINER, EhourWebSession.getUser(), getEhourWebSession().getNavCalendar());
         addOrReplaceContentContainer(panel, target);
 
         ContextualHelpPanel replacementHelp = getTimesheetHelpPanel();
@@ -136,7 +139,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
         WebMarkupContainer replacementPanel;
 
         if (this.get(ID_CONTENT_CONTAINER) instanceof TimesheetPanel) {
-            replacementPanel = getTimesheetPanel();
+            replacementPanel = createTimesheetPanel(ID_CONTENT_CONTAINER, EhourWebSession.getUser(), getEhourWebSession().getNavCalendar());
         } else {
             replacementPanel = new OverviewPanel(ID_CONTENT_CONTAINER);
         }
@@ -156,13 +159,12 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
 
     /**
      * Get timesheet panel for current user & current month
-     *
-     * @return
+     * @param id
+     * @param user
+     * @param forWeek
      */
-    private TimesheetPanel getTimesheetPanel() {
-        return new TimesheetPanel(ID_CONTENT_CONTAINER,
-                getEhourWebSession().getUser(),
-                getEhourWebSession().getNavCalendar());
+    protected TimesheetPanel createTimesheetPanel(String id, User user, Calendar forWeek) {
+        return new TimesheetPanel(id, user, forWeek);
     }
 
     /**

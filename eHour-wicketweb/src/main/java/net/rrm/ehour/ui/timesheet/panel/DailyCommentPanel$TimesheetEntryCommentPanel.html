@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+
+<head>
+</head>
+
+<body>
+<wicket:panel>
+
+	<div class="commentBody">
+	
+		<p>
+			<span wicket:id="dayComments"></span>:<br /><br />
+			
+			<textarea name="comment" wicket:id="comment"
+						rows="8" style="width: 460px;background-color: #e5f3fe" class="timesheetTextarea"
+						wrap="virtual"></textarea>
+		</p>		
+	
+		<p>
+			<a wicket:id="cancel" class="button floatLeft"><span><wicket:message key="general.cancel" /></span></a>
+			<a wicket:id="submit" class="button floatRight"><span><wicket:message key="general.ok" /></span></a>
+			<br clear="both" />
+			
+			<br />
+			<wicket:message key="timesheet.commentNotice" />
+		</p>
+		
+		</div>
+</wicket:panel>
+</body>	
+	
+</html>
