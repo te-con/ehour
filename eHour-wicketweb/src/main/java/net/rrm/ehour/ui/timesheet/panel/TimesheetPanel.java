@@ -37,6 +37,7 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
+import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
@@ -356,7 +357,7 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
                 Timesheet timesheet = (Timesheet) TimesheetPanel.this.getDefaultModelObject();
                 item.add(new Label("customer", customer.getName()));
 
-                item.add(new TimesheetRowList("rows", timesheet.getTimesheetRows(customer), grandTotals, form, TimesheetPanel.this));
+                item.add(createTimesheetRows("rows", grandTotals, form, timesheet.getTimesheetRows(customer)));
             }
         };
         customers.setReuseItems(true);
@@ -364,6 +365,10 @@ public class TimesheetPanel extends AbstractBasePanel<Timesheet> {
         parent.add(customers);
 
         return grandTotals;
+    }
+
+    protected TimesheetRowList createTimesheetRows(String id, GrandTotal grandTotals, Form<?> form, List<TimesheetRow> customers) {
+        return new TimesheetRowList(id, customers, grandTotals, form, TimesheetPanel.this);
     }
 
     private class SubmitButton extends AjaxButton {
