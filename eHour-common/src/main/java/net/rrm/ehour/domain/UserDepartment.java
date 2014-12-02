@@ -19,6 +19,7 @@ package net.rrm.ehour.domain;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -154,10 +155,6 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
                 .toComparison();
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s - %s", code, name);
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -217,5 +214,10 @@ public class UserDepartment extends DomainObject<Integer, UserDepartment> {
 
     public void setChildrenUserDepartments(Set<UserDepartment> childrenUserDepartments) {
         this.childrenUserDepartments = childrenUserDepartments;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
