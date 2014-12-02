@@ -10,6 +10,7 @@ import net.rrm.ehour.timesheet.dto.WeekOverview
 import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet}
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent
 import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.ui.timesheet.model.TimesheetModel
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
@@ -23,6 +24,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
   "Impersonate User Page" should {
     val service = mockService[UserService]
     val overviewTimesheet = mockService[IOverviewTimesheet]
+    springTester.getMockContext.putBean(new TimesheetModel())
 
     mockService[IPersistTimesheet]
 

@@ -8,6 +8,7 @@ import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.timesheet.dto.{TimesheetOverview, WeekOverview}
 import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet}
 import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.ui.timesheet.model.{TimesheetModel, TimesheetContainer, PersistableTimesheetModel}
 import org.apache.wicket.markup.html.panel.Fragment
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -27,6 +28,7 @@ class LoggedInAsPanelSpec extends AbstractSpringWebAppSpec {
     }
 
     "stop impersonating" in {
+      springTester.getMockContext.putBean(new TimesheetModel())
       mockService[IPersistTimesheet]
       val overviewTimesheet = mockService[IOverviewTimesheet]
 

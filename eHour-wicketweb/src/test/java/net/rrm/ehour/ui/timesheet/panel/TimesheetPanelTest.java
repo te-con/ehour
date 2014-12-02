@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
+import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -69,6 +70,12 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         getMockContext().putBean(persistTimesheet);
         getMockContext().putBean(overviewTimesheet);
         getMockContext().putBean("userService", userService);
+
+        getMockContext().putBean(new TimesheetModel());
+        TimesheetIconRenderer bean = new TimesheetIconRenderer();
+        bean.getRenderFactories().add(new DailyCommentPanelFactory());
+        
+        getMockContext().putBean(bean);
 
         getMockContext().putBean("timesheetOptionRenderFactory", Lists.newArrayList(new DailyCommentPanelFactory()));
     }
