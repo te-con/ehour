@@ -43,11 +43,11 @@ public class DailyCommentPanel extends Panel {
         Component panel = status == DayStatus.OPEN ? new TimesheetEntryCommentPanel(modalWindow.getContentId(), commentModel, cell, modalWindow) :
                 new TimesheetEntryLockedCommentPanel(modalWindow.getContentId(), commentModel, cell, modalWindow);
         modalWindow.setContent(panel);
+        modalWindow.showUnloadConfirmation(false);
 
         final AjaxLink<Void> commentLink = new AjaxLink<Void>("commentLink") {
             @Override
             public void onClick(AjaxRequestTarget target) {
-                target.prependJavaScript("Wicket.Window.unloadConfirmation = false;");
                 modalWindow.show(target);
             }
 
