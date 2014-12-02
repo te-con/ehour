@@ -28,18 +28,16 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetFactory;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Model that holds the timesheet
  */
 
-public class TimesheetModel implements ITimesheetModel<TimesheetContainer> {
+public class TimesheetModel implements PersistableTimesheetModel<TimesheetContainer> {
     private static final long serialVersionUID = 4134613450587087107L;
 
     @SpringBean
@@ -48,39 +46,30 @@ public class TimesheetModel implements ITimesheetModel<TimesheetContainer> {
     @SpringBean
     private transient IOverviewTimesheet overviewTimesheet;
 
-    private User user;
-    private Calendar forWeek;
     private TimesheetContainer timesheetContainer;
 
-    public TimesheetModel(User user, Calendar forWeek) {
+    public TimesheetModel() {
+    }
+
+    public void init(User user, Calendar forWeek) {
         WebUtils.springInjection(this);
-
-        this.user = user;
-        this.forWeek = forWeek;
-
-        timesheetContainer = load();
+        timesheetContainer = load(user, forWeek);
     }
 
     @Override
     public List<ProjectAssignmentStatus> persist() {
         WebUtils.springInjection(this);
 
-        Timesheet timesheet = getObject().getTimesheet();
+        return persistTimesheet(getObject().getTimesheet());
+    }
 
+    public List<ProjectAssignmentStatus> persistTimesheet(Timesheet timesheet) {
         return persistTimesheet.persistTimesheetWeek(timesheet.getTimesheetEntries(),
                 timesheet.getCommentForPersist(),
                 new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
     }
 
-    public Date getWeekStart() {
-        return getObject().getTimesheet().getWeekStart();
-    }
-
-    public Date getWeekEnd() {
-        return getObject().getTimesheet().getWeekEnd();
-    }
-
-    private TimesheetContainer load() {
+    private TimesheetContainer load(User user, Calendar forWeek) {
         EhourConfig config = EhourWebSession.getEhourConfig();
         WeekOverview weekOverview = overviewTimesheet.getWeekOverview(user, forWeek);
 

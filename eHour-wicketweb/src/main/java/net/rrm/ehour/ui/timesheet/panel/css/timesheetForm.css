@@ -302,12 +302,12 @@ div.wicket-modal div.w_content_3 {
     color: #6d87a1;
 }
 
-.commentLink {
+.iconLink {
     font-size: 75%;
-    color: #999da1;
+    color: #9fa0a1;
 }
 
-.commentLink:hover, .commentLinkOn {
+.iconLink:hover, .iconLinkOn {
     color: #5190c5;
     font-size: 75%;
 }

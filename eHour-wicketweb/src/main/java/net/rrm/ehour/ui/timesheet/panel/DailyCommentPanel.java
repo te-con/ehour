@@ -80,7 +80,7 @@ public class DailyCommentPanel extends Panel {
         WebMarkupContainer container = new WebMarkupContainer(COMMENT_LINK_IMG_ID);
 
         if (StringUtils.isNotBlank(commentModel.getObject())) {
-            container.add(AttributeModifier.replace("class", "fa fa-pencil commentLinkOn"));
+            container.add(AttributeModifier.replace("class", "fa fa-pencil iconLinkOn"));
         }
         return container;
     }
