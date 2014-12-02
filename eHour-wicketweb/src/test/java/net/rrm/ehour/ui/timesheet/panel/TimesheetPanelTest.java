@@ -73,8 +73,8 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         getMockContext().putBean(new TimesheetModel());
         TimesheetIconRenderer bean = new TimesheetIconRenderer();
-        bean.getRenderFactories().add(new DailyCommentPanelFactory());
-        
+        bean.addRenderFactory(new DailyCommentPanelFactory());
+
         getMockContext().putBean(bean);
 
         getMockContext().putBean("timesheetOptionRenderFactory", Lists.newArrayList(new DailyCommentPanelFactory()));
