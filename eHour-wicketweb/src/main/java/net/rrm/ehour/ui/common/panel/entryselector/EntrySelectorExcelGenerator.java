@@ -58,5 +58,4 @@ public class EntrySelectorExcelGenerator {
 
         return rowIndex;
     }
-
 }
