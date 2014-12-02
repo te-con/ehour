@@ -22,8 +22,8 @@ import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
 import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
+import net.rrm.ehour.ui.timesheet.model.PersistableTimesheetModel;
 import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
-import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
@@ -48,6 +48,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
@@ -66,7 +67,10 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
 
     private EhourConfig config;
     private WebComponent serverMsgLabel;
-    private Form<TimesheetModel> timesheetForm;
+    private Form<PersistableTimesheetModel> timesheetForm;
+
+    @SpringBean
+    private PersistableTimesheetModel<TimesheetContainer> model;
 
     public AbstractTimesheetPanel(String id, User user, Calendar forWeek) {
         super(id);
@@ -78,8 +82,10 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
         this.setOutputMarkupId(true);
 
         // set the model
-        TimesheetModel timesheet = new TimesheetModel(user, forWeek);
-        setDefaultModel(timesheet);
+        model.init(user, forWeek);
+        setDefaultModel(model);
+
+        Timesheet timesheet = model.getObject().getTimesheet();
 
         // grey & blue frame border
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame",
@@ -88,7 +94,7 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
         add(greyBorder);
 
         // add form
-        timesheetForm = new Form<TimesheetModel>("timesheetForm");
+        timesheetForm = new Form<PersistableTimesheetModel>("timesheetForm");
         timesheetForm.setMarkupId("timesheetForm");
         timesheetForm.setOutputMarkupId(true);
         greyBorder.add(timesheetForm);
@@ -321,8 +327,9 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
         EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.WEEK_NAV));
     }
 
+    @SuppressWarnings("unchecked")
     private List<ProjectAssignmentStatus> persistTimesheetEntries() {
-        return ((TimesheetModel) getDefaultModel()).persist();
+        return ((PersistableTimesheetModel) getPanelModel()).persist();
     }
 
     private GrandTotal buildForm(final Form<?> form, WebMarkupContainer parent) {
@@ -349,7 +356,7 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
     }
 
     protected TimesheetRowList createTimesheetRows(String id, GrandTotal grandTotals, Form<?> form, List<TimesheetRow> rows) {
-        return new TimesheetRowList(id, rows, grandTotals, form, AbstractTimesheetPanel.this);
+        return new TimesheetRowList(id, rows, grandTotals, getPanelModelObject(), form, AbstractTimesheetPanel.this);
     }
 
     private class SubmitButton extends AjaxButton {

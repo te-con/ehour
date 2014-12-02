@@ -24,6 +24,7 @@ import net.rrm.ehour.ui.timesheet.dto.GrandTotal;
 import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetCell;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
+import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
@@ -54,13 +55,15 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private final GrandTotal grandTotals;
     private Form<?> form;
 
+    private final TimesheetContainer timesheetContainer;
     private MarkupContainer provider;
 
-    @SpringBean(name = "timesheetOptionRenderFactory")
-    private List<TimesheetOptionRenderFactory> optionRenderers;
+    @SpringBean
+    private TimesheetIconRenderer iconRenderer;
 
-    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, Form<?> form, MarkupContainer provider) {
+    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, TimesheetContainer timesheetContainer, Form<?> form, MarkupContainer provider) {
         super(id, model);
+        this.timesheetContainer = timesheetContainer;
         this.provider = provider;
         setReuseItems(true);
         this.grandTotals = grandTotals;
@@ -163,8 +166,8 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private RepeatingView renderOptions(TimesheetCell timesheetCell, DayStatus status) {
         RepeatingView options = new RepeatingView("options");
 
-        for (TimesheetOptionRenderFactory renderFactory : optionRenderers) {
-            options.add(renderFactory.renderForId(options.newChildId(), timesheetCell, status));
+        for (TimesheetIconRenderFactory renderFactory : iconRenderer.getRenderFactories()) {
+            options.add(renderFactory.renderForId(options.newChildId(), timesheetCell, status, timesheetContainer));
         }
 
         return options;
