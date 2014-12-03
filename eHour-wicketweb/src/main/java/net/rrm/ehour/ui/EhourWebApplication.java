@@ -82,6 +82,7 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     private String build;
     private IAuthorizationStrategy authorizationStrategy;
 
+    @Override
     public void init() {
         if (!initialized) {
             super.init();
