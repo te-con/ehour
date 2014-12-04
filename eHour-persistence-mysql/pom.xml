@@ -5,7 +5,6 @@
 		<version>1.4.2-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.rrm.ehour</groupId>
 	<artifactId>eHour-persistence-mysql</artifactId>
 	<packaging>jar</packaging>
 	<name>eHour DB MySQL connectivity</name>
