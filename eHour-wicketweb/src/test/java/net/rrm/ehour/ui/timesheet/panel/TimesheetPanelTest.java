@@ -102,7 +102,6 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     private ModalWindow openCommentWindow(String path) {
-        tester.debugComponentTrees();
         ModalWindow window = (ModalWindow) tester.getComponentFromLastRenderedPage(path + ":options:1:dayWin");
         tester.executeAjaxEvent(path + ":options:1:commentLink", "onclick");
         return window;
