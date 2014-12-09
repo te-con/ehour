@@ -110,7 +110,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
             getResourceSettings().setResourcePollFrequency(Duration.ONE_SECOND);
         }
 
-        LOGGER.info(String.format("*** %s version %s started!", getAppName(), version));
+        if (version != null) { // dont spoil the log during junit tests
+            LOGGER.info(String.format("*** %s version %s started!", getAppName(), version));
+        }
     }
 
     protected String getAppName() {
