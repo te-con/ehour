@@ -64,27 +64,27 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
         configForm.setOutputMarkupId(true);
 
         // currency dropdown
-        currencyDropDownChoice = new DropDownChoice<Locale>("config.currency",
+        currencyDropDownChoice = new DropDownChoice<>("config.currency",
                 new PropertyModel<List<Locale>>(configBackingBean, "availableCurrencies"),
                 new LocaleChoiceRenderer(2));
         currencyDropDownChoice.setOutputMarkupId(true);
         configForm.add(currencyDropDownChoice);
 
         // date format example
-        dateFormat = new Label("dateFormat", new DateModel(new Model<Date>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG));
+        dateFormat = new Label("dateFormat", new DateModel(new Model<>(new Date()), configBackingBean.getLocaleCountry(), DateModel.DATESTYLE_LONG));
         dateFormat.setOutputMarkupId(true);
         configForm.add(dateFormat);
 
         // language selection
-        languageDropDownChoice = new DropDownChoice<Locale>("localeLanguage",
-                new PropertyModel<Locale>(configBackingBean, "localeLanguage"),
+        languageDropDownChoice = new DropDownChoice<>("localeLanguage",
+                new PropertyModel<>(configBackingBean, "localeLanguage"),
                 new PropertyModel<List<Locale>>(configBackingBean, "availableLanguages"),
                 new LocaleChoiceRenderer(1));
 
 
         // locale selection
-        localeDropDownChoice = new DropDownChoice<Locale>("localeCountry",
-                new PropertyModel<Locale>(configBackingBean, "localeCountry"),
+        localeDropDownChoice = new DropDownChoice<>("localeCountry",
+                new PropertyModel<>(configBackingBean, "localeCountry"),
                 new PropertyModel<List<Locale>>(configBackingBean, "availableLocales"),
                 new LocaleChoiceRenderer(0));
         localeDropDownChoice.setOutputMarkupId(true);
@@ -93,7 +93,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
             protected void onUpdate(AjaxRequestTarget target) {
                 // update the date format example
                 Locale localeCountry = configBackingBean.getLocaleCountry();
-                dateFormat.setDefaultModel(new DateModel(new Model<Date>(new Date()), localeCountry, DateModel.DATESTYLE_LONG));
+                dateFormat.setDefaultModel(new DateModel(new Model<>(new Date()), localeCountry, DateModel.DATESTYLE_LONG));
                 target.add(dateFormat);
 
 
@@ -121,7 +121,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
         configForm.add(languageDropDownChoice);
 
         // only translations
-        onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel<Boolean>(configBackingBean, "translationsOnly")) {
+        onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel<>(configBackingBean, "translationsOnly")) {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 target.add(languageDropDownChoice);

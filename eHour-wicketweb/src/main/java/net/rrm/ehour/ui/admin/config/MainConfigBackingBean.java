@@ -109,7 +109,7 @@ public class MainConfigBackingBean implements Serializable {
     @SuppressWarnings("UnusedDeclaration")
     public List<Locale> getAvailableLanguages() {
         Locale[] locales = Locale.getAvailableLocales();
-        Map<String, Locale> localeMap = new HashMap<String, Locale>();
+        Map<String, Locale> localeMap = new HashMap<>();
 
         // remove all variants
         for (Locale locale : locales) {
@@ -125,13 +125,13 @@ public class MainConfigBackingBean implements Serializable {
             localeMap.put(locale.getLanguage(), locale);
         }
 
-        SortedSet<Locale> localeSet = new TreeSet<Locale>(new LocaleComparator(LocaleComparator.CompareType.LANGUAGE));
+        SortedSet<Locale> localeSet = new TreeSet<>(new LocaleComparator(LocaleComparator.CompareType.LANGUAGE));
 
         for (Locale locale : localeMap.values()) {
             localeSet.add(locale);
         }
 
-        return new ArrayList<Locale>(localeSet);
+        return new ArrayList<>(localeSet);
     }
 
     public boolean isTranslationsOnly() {
@@ -143,7 +143,7 @@ public class MainConfigBackingBean implements Serializable {
     }
 
     public static List<Locale> getAvailableLocales() {
-        List<Locale> locales = new ArrayList<Locale>();
+        List<Locale> locales = new ArrayList<>();
 
         for (Locale locale : Locale.getAvailableLocales()) {
             if (!StringUtils.isBlank(locale.getDisplayCountry())) {
@@ -158,7 +158,7 @@ public class MainConfigBackingBean implements Serializable {
 
     public static List<Locale> getAvailableCurrencies() {
         List<Locale> locales = getAvailableLocales();
-        SortedSet<Locale> currencyLocales = new TreeSet<Locale>(new Comparator<Locale>() {
+        SortedSet<Locale> currencyLocales = new TreeSet<>(new Comparator<Locale>() {
             public int compare(Locale o1, Locale o2) {
                 Currency curr1 = Currency.getInstance(o1);
                 Currency curr2 = Currency.getInstance(o2);
@@ -175,7 +175,7 @@ public class MainConfigBackingBean implements Serializable {
             }
         }
 
-        return new ArrayList<Locale>(currencyLocales);
+        return new ArrayList<>(currencyLocales);
     }
 
     public Locale getLocaleLanguage() {
