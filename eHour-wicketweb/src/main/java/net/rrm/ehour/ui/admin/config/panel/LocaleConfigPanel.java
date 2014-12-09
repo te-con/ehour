@@ -76,15 +76,15 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
         configForm.add(dateFormat);
 
         // language selection
-        languageDropDownChoice = new DropDownChoice<>("localeLanguage",
-                new PropertyModel<>(configBackingBean, "localeLanguage"),
+        languageDropDownChoice = new DropDownChoice<Locale>("localeLanguage",
+                new PropertyModel<Locale>(configBackingBean, "localeLanguage"),
                 new PropertyModel<List<Locale>>(configBackingBean, "availableLanguages"),
                 new LocaleChoiceRenderer(1));
 
 
         // locale selection
-        localeDropDownChoice = new DropDownChoice<>("localeCountry",
-                new PropertyModel<>(configBackingBean, "localeCountry"),
+        localeDropDownChoice = new DropDownChoice<Locale>("localeCountry",
+                new PropertyModel<Locale>(configBackingBean, "localeCountry"),
                 new PropertyModel<List<Locale>>(configBackingBean, "availableLocales"),
                 new LocaleChoiceRenderer(0));
         localeDropDownChoice.setOutputMarkupId(true);
@@ -121,7 +121,7 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
         configForm.add(languageDropDownChoice);
 
         // only translations
-        onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel<>(configBackingBean, "translationsOnly")) {
+        onlyTranslationsBox = new AjaxCheckBox("onlyTranslations", new PropertyModel<Boolean>(configBackingBean, "translationsOnly")) {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 target.add(languageDropDownChoice);
