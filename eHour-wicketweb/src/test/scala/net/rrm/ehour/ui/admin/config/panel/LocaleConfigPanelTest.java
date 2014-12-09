@@ -19,10 +19,11 @@ package net.rrm.ehour.ui.admin.config.panel;
 
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.ui.admin.config.AbstractMainConfigTest;
-import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
+
+import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -43,14 +44,18 @@ public class LocaleConfigPanelTest extends AbstractMainConfigTest {
 
         FormTester miscFormTester = tester.newFormTester(AbstractMainConfigTest.FORM_PATH);
 
+
         miscFormTester.select("config.currency", 1);
         miscFormTester.select("localeCountry", 0);
-        miscFormTester.select("localeLanguage", 0);
+        miscFormTester.select("localeLanguage", 1);
 
         tester.executeAjaxEvent(AbstractMainConfigTest.FORM_PATH + ":submitButton", "onclick");
 
-        assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(1), config.getCurrency());
-        assertEquals(MainConfigBackingBean.getAvailableCurrencies().get(0), config.getFormattingLocale());
+        Locale currency = (Locale)tester.getComponentFromLastRenderedPage(AbstractMainConfigTest.FORM_PATH + ":config.currency").getDefaultModelObject();
+        Locale formatting = (Locale)tester.getComponentFromLastRenderedPage(AbstractMainConfigTest.FORM_PATH + ":localeCountry").getDefaultModelObject();
+        assertEquals(currency, config.getCurrency());
+        assertEquals(formatting, config.getFormattingLocale());
+        tester.assertNoErrorMessage();
 
         verify(iPersistConfiguration).persistAndCleanUp(config, UserRole.ADMIN);
     }
