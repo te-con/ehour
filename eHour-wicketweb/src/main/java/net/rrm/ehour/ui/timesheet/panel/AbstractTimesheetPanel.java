@@ -94,7 +94,7 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
         add(greyBorder);
 
         // add form
-        timesheetForm = new Form<PersistableTimesheetModel>("timesheetForm");
+        timesheetForm = new Form<>("timesheetForm");
         timesheetForm.setMarkupId("timesheetForm");
         timesheetForm.setOutputMarkupId(true);
         greyBorder.add(timesheetForm);
@@ -290,7 +290,7 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
 
             Fragment headerFragment = new Fragment(id, "dayHeader", AbstractTimesheetPanel.this);
 
-            PropertyModel<Date> model = new PropertyModel<Date>(getDefaultModelObject(), "timesheet.dateSequence[" + j + "]");
+            PropertyModel<Date> model = new PropertyModel<>(getDefaultModelObject(), "timesheet.dateSequence[" + j + "]");
             headerFragment.add(new Label("weekDay", new DateModel(model, config, DateModel.DATESTYLE_TIMESHEET_DAYONLY)));
             headerFragment.add(new Label("day", new DateModel(model, config, DateModel.DATESTYLE_DAYONLY)));
 
