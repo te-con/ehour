@@ -5,6 +5,6 @@ import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetRowList;
 import org.apache.wicket.markup.html.panel.Panel;
 
-public interface TimesheetIconRenderFactory {
+public interface TimesheetIconRenderFactory extends PrioritizedRenderFactory {
     Panel renderForId(String id, TimesheetCell cell, TimesheetRowList.DayStatus status, TimesheetContainer timesheetContainer);
 }
