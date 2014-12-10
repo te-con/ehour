@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.timesheet.panel;
+package net.rrm.ehour.ui.timesheet.panel.dailycomments;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.component.CommonModifiers;

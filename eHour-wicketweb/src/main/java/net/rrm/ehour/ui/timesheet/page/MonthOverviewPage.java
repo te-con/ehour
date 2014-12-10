@@ -26,7 +26,6 @@ import net.rrm.ehour.ui.common.panel.calendar.CalendarPanel;
 import net.rrm.ehour.ui.common.panel.contexthelp.ContextualHelpPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.common.TimesheetAjaxEventType;
-import net.rrm.ehour.ui.timesheet.panel.AbstractTimesheetPanel;
 import net.rrm.ehour.ui.timesheet.panel.OverviewPanel;
 import net.rrm.ehour.ui.timesheet.panel.TimesheetPanel;
 import net.rrm.ehour.util.DateUtil;
@@ -121,7 +120,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
      * @param target
      */
     private void calendarWeekClicked(AjaxRequestTarget target) {
-        AbstractTimesheetPanel panel = createTimesheetPanel(ID_CONTENT_CONTAINER, EhourWebSession.getUser(), getEhourWebSession().getNavCalendar());
+        TimesheetPanel panel = createTimesheetPanel(ID_CONTENT_CONTAINER, EhourWebSession.getUser(), getEhourWebSession().getNavCalendar());
         addOrReplaceContentContainer(panel, target);
 
         ContextualHelpPanel replacementHelp = getTimesheetHelpPanel();
@@ -161,7 +160,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
     /**
      * Get timesheet panel for current user & current month
      */
-    protected AbstractTimesheetPanel createTimesheetPanel(String id, User user, Calendar forWeek) {
+    protected TimesheetPanel createTimesheetPanel(String id, User user, Calendar forWeek) {
         return new TimesheetPanel(id, user, forWeek);
     }
 
