@@ -148,7 +148,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         Fragment fragment = new Fragment(id, "dayLocked", provider);
 
         TimesheetCell timesheetCell = row.getTimesheetCells()[index];
-        PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
+        PropertyModel<Float> cellModel = new PropertyModel<>(timesheetCell, "timesheetEntry.hours");
 
         String css = timesheetCell.getTimesheetEntry() != null && StringUtils.isNotBlank(timesheetCell.getTimesheetEntry().getComment()) ? "lockedday" : "lockeddaynocomment";
         fragment.add(AttributeModifier.append("class", css));
@@ -188,7 +188,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     }
 
     private TimesheetTextField createTextFieldWithValidation(TimesheetCell timesheetCell, final int index) {
-        PropertyModel<Float> cellModel = new PropertyModel<Float>(timesheetCell, "timesheetEntry.hours");
+        PropertyModel<Float> cellModel = new PropertyModel<>(timesheetCell, "timesheetEntry.hours");
 
         // make sure it's added to the grandtotal
         grandTotals.addValue(index, cellModel);

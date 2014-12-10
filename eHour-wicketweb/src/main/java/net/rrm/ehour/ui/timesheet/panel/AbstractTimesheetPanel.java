@@ -112,10 +112,10 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
         addDateLabels(blueBorder);
 
         // add comments section
-        MarkupContainer commentsFrame = createCommentsInput(timesheetForm);
+        createCommentsInput(timesheetForm);
 
         // attach onsubmit ajax events
-        setSubmitActions(timesheetForm, commentsFrame);
+        setSubmitActions(timesheetForm, timesheetForm);
 
         SubmitButton submitButtonTop = new SubmitButton("submitButtonTop", timesheetForm);
         submitButtonTop.setOutputMarkupId(true);
@@ -125,7 +125,7 @@ public class AbstractTimesheetPanel extends AbstractBasePanel<TimesheetContainer
         // server message
         serverMsgLabel = new WebComponent("serverMessage");
         serverMsgLabel.setOutputMarkupId(true);
-        commentsFrame.add(serverMsgLabel);
+        timesheetForm.add(serverMsgLabel);
     }
 
     @Override

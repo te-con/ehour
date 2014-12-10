@@ -9,6 +9,7 @@
 <wicket:panel>
 
 	<div wicket:id="timesheetFrame">
+        <h3 class="timesheetSectionHeader">Timesheet</h3>
 		<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
 
 		<div wicket:id="blueFrame">
@@ -29,7 +30,7 @@
                             <td wicket:id="day6Label">Friday</td>
                             <td class="borderless" wicket:id="day7Label">Saturday</td>
                             <td class="borderless" >
-                                <a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButtonTop" >
+                                <a class="bluebutton store" style="float:right" onclick="this.blur();" wicket:id="submitButtonTop" >
                                     <span><wicket:message key="timesheet.store" /></span>
                                     </a>
                             </td>
@@ -97,44 +98,31 @@
 
 		<br />
 
+        <h3 class="timesheetSectionHeader">Week comments</h3>
+
 		<div wicket:id="commentsFrame">
 			<div class="timesheet">
-				<table class="timesheetCommentsTable" style="margin:0; padding:0" cellpadding="0" cellspacing="0">
-
-				<tr>
-					<td valign="top">
-						<wicket:message key="timesheet.comments" />:
-					</td>
-
-					<td align="right" colspan="2">
-						<textarea name="comment" wicket:id="commentsArea"
-									rows="3" style="width: 400px" class="timesheetTextarea"
-									wrap="virtual"></textarea>
-					</td>
-				</tr>
-
-				</table>
-
-				<table class="timesheetCommentsTable" style="margin:0 padding:0" cellpadding="0" cellspacing="0">
-
-				<tr>
-					<td width="20%">
-						<a class="bluebutton" onclick="this.blur();" wicket:id="resetButton" >
-							<span><wicket:message key="timesheet.reset" /></span>
-						</a>
-					</td>
-					<td style="text-align: center"><span wicket:id="serverMessage"></span></td>
-					<td  width="20%" align="right">
-						<a class="bluebutton" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
-							<span><wicket:message key="timesheet.store" /></span>
-						</a>
-					</td>
-				</tr>
-
-				</table>
+                <textarea name="comment" wicket:id="commentsArea" placeholder="Comments" rows="3" class="timesheetTextarea" wrap="virtual"></textarea>
 			</div>
 		</div>
-		</form>
+
+        <table class="timesheetSubmitTable" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="20%">
+                    <a class="button" onclick="this.blur();" wicket:id="resetButton" >
+                        <span><wicket:message key="timesheet.reset" /></span>
+                    </a>
+                </td>
+                <td class="feedback"><span wicket:id="serverMessage"></span></td>
+                <td  width="20%" class="storeTd">
+                    <a class="button store" style="float:right" onclick="this.blur();" wicket:id="submitButton" >
+                        <span><wicket:message key="timesheet.store" /></span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+        </form>
 	</div>
 
    	<wicket:fragment wicket:id="title">
