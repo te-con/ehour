@@ -8,7 +8,8 @@ import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.timesheet.dto.{TimesheetOverview, WeekOverview}
 import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet}
 import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.ui.timesheet.model.{TimesheetModel, TimesheetContainer, PersistableTimesheetModel}
+import net.rrm.ehour.ui.timesheet.model.TimesheetModel
+import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactoryCollection
 import org.apache.wicket.markup.html.panel.Fragment
 import org.mockito.Matchers._
 import org.mockito.Mockito._
@@ -30,11 +31,10 @@ class LoggedInAsPanelSpec extends AbstractSpringWebAppSpec {
     "stop impersonating" in {
       springTester.getMockContext.putBean(new TimesheetModel())
       mockService[IPersistTimesheet]
+      mockService[SectionRenderFactoryCollection]
       val overviewTimesheet = mockService[IOverviewTimesheet]
 
       when(overviewTimesheet.getWeekOverview(any[User], any[Calendar])).thenReturn(new WeekOverview(Lists.newArrayList(), Lists.newArrayList()))
-
-
       when(overviewTimesheet.getTimesheetOverview(any[User], any[Calendar])).thenReturn(new TimesheetOverview)
 
       impersonate()
