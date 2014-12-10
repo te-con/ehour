@@ -28,6 +28,7 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
+import net.rrm.ehour.ui.timesheet.panel.dailycomments.DailyCommentPanelFactory;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -224,7 +225,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startAndReplayWithDefaultWeekOverview();
 
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":commentsFrame:commentsFrame_body:submitButton", "onclick");
+        tester.executeAjaxEvent(TIMESHEET_PATH + ":submitButton", "onclick");
 
         tester.assertNoErrorMessage();
     }
