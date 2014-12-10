@@ -6,9 +6,7 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
-import net.rrm.ehour.ui.common.component.CommonModifiers;
 import net.rrm.ehour.ui.common.component.JavaScriptConfirmation;
-import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
@@ -24,6 +22,8 @@ import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.model.PersistableTimesheetModel;
 import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
+import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactory;
+import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactoryCollection;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
@@ -42,6 +42,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
@@ -71,6 +72,9 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
 
     @SpringBean
     private PersistableTimesheetModel<TimesheetContainer> model;
+
+    @SpringBean
+    private SectionRenderFactoryCollection sectionFactory;
 
     public TimesheetPanel(String id, User user, Calendar forWeek) {
         super(id);
@@ -111,9 +115,6 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         // add label dates
         addDateLabels(blueBorder);
 
-        // add comments section
-        createCommentsInput(timesheetForm);
-
         // attach onsubmit ajax events
         setSubmitActions(timesheetForm, timesheetForm);
 
@@ -126,6 +127,8 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         serverMsgLabel = new WebComponent("serverMessage");
         serverMsgLabel.setOutputMarkupId(true);
         timesheetForm.add(serverMsgLabel);
+
+        timesheetForm.add(renderSections());
     }
 
     @Override
@@ -140,6 +143,16 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
 
         response.render(JavaScriptHeaderItem.forReference(TIMESHEET_JS));
         response.render(OnDomReadyHeaderItem.forScript("initializeFoldLinks();"));
+    }
+
+    private RepeatingView renderSections() {
+        RepeatingView options = new RepeatingView("sections");
+
+        for (SectionRenderFactory renderFactory : sectionFactory.getRenderFactories()) {
+            options.add(renderFactory.renderForId(options.newChildId(), getPanelModel()));
+        }
+
+        return options;
     }
 
     /**
@@ -163,19 +176,6 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         titleFragment.add(nextWeekLink);
 
         return titleFragment;
-    }
-
-    private MarkupContainer createCommentsInput(WebMarkupContainer parent) {
-        GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("commentsFrame");
-
-        Timesheet timesheet = getPanelModelObject().getTimesheet();
-
-        KeepAliveTextArea textArea = new KeepAliveTextArea("commentsArea", new PropertyModel<String>(timesheet, "comment.comment"));
-        textArea.add(CommonModifiers.tabIndexModifier(2));
-        blueBorder.add(textArea);
-        parent.add(blueBorder);
-
-        return blueBorder;
     }
 
     private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals, Date weekStart) {

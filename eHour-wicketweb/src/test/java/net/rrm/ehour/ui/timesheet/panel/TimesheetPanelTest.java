@@ -29,6 +29,10 @@ import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.ui.timesheet.panel.dailycomments.DailyCommentPanelFactory;
+import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactory;
+import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactoryCollection;
+import net.rrm.ehour.ui.timesheet.panel.renderer.TimesheetIconRenderFactoryCollection;
+import net.rrm.ehour.ui.timesheet.panel.weeklycomment.WeeklyCommentPanelRenderFactory;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -73,12 +77,11 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         getMockContext().putBean("userService", userService);
 
         getMockContext().putBean(new TimesheetModel());
-        TimesheetIconRenderer bean = new TimesheetIconRenderer();
-        bean.addRenderFactory(new DailyCommentPanelFactory());
+        TimesheetIconRenderFactoryCollection iconRenderFactoryCollection = new TimesheetIconRenderFactoryCollection(Lists.newArrayList(new DailyCommentPanelFactory()));
+        getMockContext().putBean(iconRenderFactoryCollection);
 
-        getMockContext().putBean(bean);
-
-        getMockContext().putBean("timesheetOptionRenderFactory", Lists.newArrayList(new DailyCommentPanelFactory()));
+        SectionRenderFactoryCollection sectionRenderFactoryCollection = new SectionRenderFactoryCollection(Lists.<SectionRenderFactory>newArrayList(new WeeklyCommentPanelRenderFactory()));
+        getMockContext().putBean(sectionRenderFactoryCollection);
     }
 
     @Test
