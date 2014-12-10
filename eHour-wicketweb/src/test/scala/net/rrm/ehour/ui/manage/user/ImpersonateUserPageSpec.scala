@@ -11,6 +11,7 @@ import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet}
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel
+import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactoryCollection
 import net.rrm.ehour.user.service.UserService
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.event.Broadcast
@@ -27,6 +28,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     springTester.getMockContext.putBean(new TimesheetModel())
 
     mockService[IPersistTimesheet]
+    mockService[SectionRenderFactoryCollection]
 
     before {
       reset(service, overviewTimesheet)
