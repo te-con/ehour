@@ -25,6 +25,8 @@ import net.rrm.ehour.ui.timesheet.dto.ProjectTotalModel;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetCell;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
+import net.rrm.ehour.ui.timesheet.panel.renderer.TimesheetIconRenderFactory;
+import net.rrm.ehour.ui.timesheet.panel.renderer.TimesheetIconRenderFactoryCollection;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
@@ -59,7 +61,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private MarkupContainer provider;
 
     @SpringBean
-    private TimesheetIconRenderer iconRenderer;
+    private TimesheetIconRenderFactoryCollection iconRenderer;
 
     public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, TimesheetContainer timesheetContainer, Form<?> form, MarkupContainer provider) {
         super(id, model);
