@@ -47,6 +47,7 @@ public class DatasourceConfiguration {
             ds.setMaxStatements(0);
             ds.setMinPoolSize(10);
             ds.setCheckoutTimeout(100);
+            ds.setPreferredTestQuery("SELECT 1");
             return ds;
 
         }
