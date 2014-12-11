@@ -11,6 +11,7 @@
     color: #536e87;
     height: 18px;
     width: 70px;
+    min-width: 5em;
 }
 
 .timesheetTable tr.weekColumnRow td {
