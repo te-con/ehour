@@ -67,7 +67,7 @@
 .timesheetTable tr.projectRow td.projectCode {
     text-align: left;
     font-weight: normal;
-    padding: 8px 0 0 2em;
+    padding: 8px 0 0 7px;
     vertical-align: top;
     width: 8em;
 }
