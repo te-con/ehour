@@ -38,6 +38,7 @@
 .timesheetTable tr.weekColumnRow td.projectCode {
     border: 0;
     padding-bottom: 1px;
+    padding-left: 1.5em
     text-align: left;
     vertical-align: bottom;
 }
@@ -46,6 +47,7 @@
 .timesheetTable tr.weekColumnRow td.spacer,
 .timesheetTable tr.projectRow td.spacer {
     width: 10px;
+    min-width: 0;
 }
 
 .timesheetTable tr.projectRow td.fold {
@@ -65,8 +67,9 @@
 .timesheetTable tr.projectRow td.projectCode {
     text-align: left;
     font-weight: normal;
-    padding: 8px 0 0 0;
+    padding: 8px 0 0 2em;
     vertical-align: top;
+    width: 8em;
 }
 
 .timesheetTable tr.projectRow td.customer {
@@ -152,7 +155,8 @@
     color: #536e87;
     margin: 0;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: top;
+    padding-top: 1em;
 }
 
 .timesheetTable tr.customerRow td {

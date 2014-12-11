@@ -31,7 +31,7 @@ public class DailyCommentPanel extends Panel {
     public DailyCommentPanel(String id, TimesheetCell cell, DayStatus status) {
         super(id);
 
-        final PropertyModel<String> commentModel = new PropertyModel<String>(cell, "timesheetEntry.comment");
+        final PropertyModel<String> commentModel = new PropertyModel<>(cell, "timesheetEntry.comment");
 
         final ModalWindow modalWindow = new ModalWindow("dayWin");
         modalWindow.setResizable(false);
