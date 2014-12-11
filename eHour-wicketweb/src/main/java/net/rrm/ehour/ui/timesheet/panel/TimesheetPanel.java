@@ -356,7 +356,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     }
 
     protected TimesheetRowList createTimesheetRows(String id, GrandTotal grandTotals, Form<?> form, List<TimesheetRow> rows) {
-        return new TimesheetRowList(id, rows, grandTotals, getPanelModelObject(), form, TimesheetPanel.this);
+        return new TimesheetRowList(id, rows, grandTotals, getPanelModel(), form, TimesheetPanel.this);
     }
 
     private class SubmitButton extends AjaxButton {

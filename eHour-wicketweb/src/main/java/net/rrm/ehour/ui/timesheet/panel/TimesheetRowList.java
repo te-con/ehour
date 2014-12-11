@@ -41,6 +41,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -57,15 +58,15 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
     private final GrandTotal grandTotals;
     private Form<?> form;
 
-    private final TimesheetContainer timesheetContainer;
+    private final IModel<TimesheetContainer> timesheetContainerModel;
     private MarkupContainer provider;
 
     @SpringBean
     private TimesheetIconRenderFactoryCollection iconRenderer;
 
-    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, TimesheetContainer timesheetContainer, Form<?> form, MarkupContainer provider) {
+    public TimesheetRowList(String id, List<TimesheetRow> model, GrandTotal grandTotals, IModel<TimesheetContainer> timesheetContainerModel, Form<?> form, MarkupContainer provider) {
         super(id, model);
-        this.timesheetContainer = timesheetContainer;
+        this.timesheetContainerModel = timesheetContainerModel;
         this.provider = provider;
         setReuseItems(true);
         this.grandTotals = grandTotals;
@@ -169,7 +170,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
         RepeatingView options = new RepeatingView("options");
 
         for (TimesheetIconRenderFactory renderFactory : iconRenderer.getRenderFactories()) {
-            options.add(renderFactory.renderForId(options.newChildId(), timesheetCell, status, timesheetContainer));
+            options.add(renderFactory.renderForId(options.newChildId(), timesheetCell, status, timesheetContainerModel));
         }
 
         return options;
