@@ -39,8 +39,7 @@ div.Calendar div.CalendarHeader {
     line-height: 1.1em;
     padding-bottom: 4px;
     background-color: #d1e5f9;
-    /*border-top-left-radius: 3px;*/
-    border-radius: 3px;
+    border-radius: 6px 6px 0 0;
     margin-bottom: 1px;
 }
 
@@ -112,23 +111,10 @@ div.Calendar div.CalendarHeader div.CurrentMonth {
     border: 0 !important;
 }
 
-.Calendar .FirstDayOfFirstRow {
-    border-top-left-radius: 3px;
-    border-color: #b8d1ed;
-}
-
-.Calendar .LastDayOfFirstRow {
-    border-top-right-radius: 3px;
-    border-color: #b8d1ed;
-}
-
-.Calendar .FirstDayOfLastRow {
-    border-bottom-left-radius: 3px;
-    border-color: #b8d1ed;
-}
-
 .Calendar .LastDayOfLastRow {
-    border-bottom-right-radius: 3px;
-    border-color: #b8d1ed;
+    border-radius: 0 0 6px 0;
 }
 
+.Calendar .LastWeek {
+    border-radius: 0 0 6px 6px;
+}

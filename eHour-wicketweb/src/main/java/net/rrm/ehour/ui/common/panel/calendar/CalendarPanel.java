@@ -130,7 +130,7 @@ public class CalendarPanel extends SidePanel {
     }
 
     @SuppressWarnings("serial")
-    private void addCalendarWeeks(WebMarkupContainer container, List<CalendarWeek> weeks) {
+    private void addCalendarWeeks(WebMarkupContainer container, final List<CalendarWeek> weeks) {
         ListView<CalendarWeek> view = new ListView<CalendarWeek>("weeks", weeks) {
             public void populateItem(final ListItem<CalendarWeek> item) {
                 CalendarWeek week = item.getModelObject();
@@ -157,6 +157,10 @@ public class CalendarPanel extends SidePanel {
                 } else {
                     item.add(AttributeModifier.replace("class", "CalendarWeek other"));
                     item.add(AttributeModifier.replace("style", "cursor:default"));
+                }
+
+                if (item.getIndex() == weeks.size() - 1) {
+                    item.add(AttributeModifier.append("class", "LastWeek"));
                 }
             }
 
@@ -186,18 +190,10 @@ public class CalendarPanel extends SidePanel {
                 // first day doesn't have margin-left
                 if (dayOfWeek == 1) {
                     cssClass.append(" FirstDay");
-
-                    if (week.getLocation() == ElementLocation.FIRST) {
-                        cssClass.append(" FirstDayOfFirstRow");
-                    } else if (week.getLocation() == ElementLocation.LAST) {
-                        cssClass.append(" FirstDayOfLastRow");
-                    }
                 }
 
                 if (dayOfWeek == 7) {
-                    if (week.getLocation() == ElementLocation.FIRST) {
-                        cssClass.append(" LastDayOfFirstRow");
-                    } else if (week.getLocation() == ElementLocation.LAST) {
+                    if (week.getLocation() == ElementLocation.LAST) {
                         cssClass.append(" LastDayOfLastRow");
                     }
                 }
