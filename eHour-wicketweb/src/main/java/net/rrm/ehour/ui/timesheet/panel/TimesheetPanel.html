@@ -17,7 +17,6 @@
 				<table class="timesheetTable" cellpadding="0" cellspacing="0">
                     <thead>
                         <tr class="weekColumnRow">
-                            <td class="borderless" style="width: 16px">&nbsp;</td>
                             <td class="projectCode">&nbsp;</td>
                             <td class="project">&nbsp;</td>
                             <td class="spacer">&nbsp;</td>
@@ -39,7 +38,7 @@
 
                     <tfoot>
                         <tr class="totalRow">
-                            <td colspan="4" style="border: 0" >&nbsp;</td>
+                            <td colspan="3" style="border: 0" >&nbsp;</td>
 
                             <td wicket:id="day1Total"></td>
                             <td wicket:id="day2Total"></td>
@@ -55,7 +54,7 @@
                     <tbody>
                         <wicket:container wicket:id="customers">
                             <tr class="customerRow">
-                                <td class="customerCell" colspan="5">
+                                <td class="customerCell" colspan="4">
                                     <a href="#" class="foldLink"><span style="float:left;" class="fa fa-angle-double-down"></span>&nbsp;<strong><wicket:container wicket:id="customer"/></strong></a>
                                 </td>
 
@@ -70,8 +69,10 @@
 
                             <wicket:container wicket:id="rows">
                                 <tr class="projectRow">
-                                    <td class="fold"><a wicket:id="bookWholeWeek" wicket:message="title:timesheet.bookall"><i class="fa fa-check-circle bookAll"></i></a></td>
-                                    <td class="projectCode" wicket:id="projectCode">projectCode</td>
+                                    <td class="projectCode">
+                                        <a wicket:id="bookWholeWeek" wicket:message="title:timesheet.bookall"><i class="fa fa-check-circle bookAll"></i></a>
+                                        <wicket:container wicket:id="projectCode">projectCode</wicket:container>
+                                    </td>
                                     <td class="project"><span wicket:id="project"></span>
                                         <span wicket:id="role" style="font-size: 0.7em"></span>
                                             <span class="statusMsg" wicket:id="status"></span>
