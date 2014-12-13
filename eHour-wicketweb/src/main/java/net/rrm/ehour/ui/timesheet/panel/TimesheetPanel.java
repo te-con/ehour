@@ -31,6 +31,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -179,22 +180,41 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     }
 
     private void addGrandTotals(WebMarkupContainer parent, GrandTotal grandTotals, Date weekStart) {
-        Label total;
-
         Calendar dateIterator = new GregorianCalendar();
         dateIterator.setTime(weekStart);
 
         for (int i = 1; i <= 7; i++, dateIterator.add(Calendar.DAY_OF_YEAR, 1)) {
-            total = new Label("day" + i + "Total", new PropertyModel<Float>(grandTotals, "getValues[" + (dateIterator.get(Calendar.DAY_OF_WEEK) - 1) + "]"));
+            final int index = dateIterator.get(Calendar.DAY_OF_WEEK) - 1;
+
+            Label total = new Label("day" + i + "Total", new PropertyModel<Float>(grandTotals, "getValues[" + index + "]")) {
+                @Override
+                public void onEvent(IEvent<?> event) {
+                    if (event.getPayload() instanceof TimesheetInputModifiedEvent) {
+                        TimesheetInputModifiedEvent payload = (TimesheetInputModifiedEvent) event.getPayload();
+
+                        if (payload.getForDayOfWeek() == index) {
+                            payload.getTarget().add(this);
+                        }
+                    }
+                }
+            };
+
             total.setOutputMarkupId(true);
             parent.add(total);
-
-            grandTotals.addOrder(i, dateIterator.get(Calendar.DAY_OF_WEEK) - 1);
         }
 
-        total = new Label("grandTotal", new PropertyModel<Float>(grandTotals, "grandTotal"));
-        total.setOutputMarkupId(true);
-        parent.add(total);
+        Label grandTotal = new Label("grandTotal", new PropertyModel<Float>(grandTotals, "grandTotal")) {
+            @Override
+            public void onEvent(IEvent<?> event) {
+                if (event.getPayload() instanceof TimesheetInputModifiedEvent) {
+                    TimesheetInputModifiedEvent payload = (TimesheetInputModifiedEvent) event.getPayload();
+                    payload.getTarget().add(this);
+                }
+            }
+        };
+
+        grandTotal.setOutputMarkupId(true);
+        parent.add(grandTotal);
     }
 
     private void setSubmitActions(Form<?> form, MarkupContainer parent) {

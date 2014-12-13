@@ -21,6 +21,7 @@ import net.rrm.ehour.domain.TimesheetEntry;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Representation of a cell (day in a project) in the timesheet
@@ -76,8 +77,8 @@ public class TimesheetCell implements Comparable<TimesheetCell>, Serializable {
 
         TimesheetCell that = (TimesheetCell) o;
 
-        if (!date.equals(that.date)) return false;
-        if (!timesheetEntry.equals(that.timesheetEntry)) return false;
+        if (!Objects.equals(date, that.date)) return false;
+        if (!Objects.equals(timesheetEntry, that.timesheetEntry)) return false;
 
         return true;
     }

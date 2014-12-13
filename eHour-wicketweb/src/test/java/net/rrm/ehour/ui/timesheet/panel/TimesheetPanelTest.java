@@ -54,9 +54,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
-    private static final String DAY1_PATH = "blueFrame:blueFrame_body:customers:0:rows:0:day1";
+    private static final String DAY1_PATH = "blueFrame:blueFrame_body:customers:0:rows:0:days:0";
     private static final String DAY1_FULL_PATH = TIMESHEET_PATH + ":" + DAY1_PATH;
     private static final User USER = new User(1);
+    private static final String DAY_INPUT = ":day:day";
 
     @Mock
     private IPersistTimesheet persistTimesheet;
@@ -154,10 +155,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
 
-        formTester.setValue(DAY1_PATH + ":day", "12");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        formTester.setValue(DAY1_PATH + DAY_INPUT, "12");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + DAY_INPUT, "onblur");
         tester.assertNoErrorMessage();
-        tester.assertContains(DAY1_PATH + ":day");
 
         Label grandTotalLabel = (Label) tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:grandTotal");
         assertEquals(12f, (Float) grandTotalLabel.getDefaultModelObject(), 0.01f);
@@ -183,16 +183,16 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
 
-        formTester.setValue(DAY1_PATH + ":day", "12");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        formTester.setValue(DAY1_PATH + DAY_INPUT, "12");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + DAY_INPUT, "onblur");
         tester.assertNoErrorMessage();
-        tester.assertContains(DAY1_PATH + ":day");
+        tester.assertContains(DAY1_PATH + DAY_INPUT);
 
         //changing another field should not resend the unmodified day1
-        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:day2:day", "8");
-        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:day", "onblur");
+        formTester.setValue("blueFrame:blueFrame_body:customers:0:rows:0:days:1:day:day", "8");
+        tester.executeAjaxEvent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:1:day:day", "onblur");
         tester.assertNoErrorMessage();
-        tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:day2:day");
+        tester.assertContains("blueFrame:blueFrame_body:customers:0:rows:0:days:1:day:day");
     }
 
     @Test
@@ -201,21 +201,21 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         FormTester formTester = tester.newFormTester(TIMESHEET_PATH);
 
-        formTester.setValue(DAY1_PATH + ":day", "12");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
+        formTester.setValue(DAY1_PATH + DAY_INPUT, "12");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + DAY_INPUT, "onblur");
         tester.assertNoErrorMessage();
-        tester.assertContains(DAY1_PATH + ":day");
+        tester.assertContains(DAY1_PATH + DAY_INPUT);
         tester.assertContainsNot("color: #ff0000");
 
-        formTester.setValue(DAY1_PATH + ":day", "ff");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
-        tester.assertContains(DAY1_PATH + ":day");
+        formTester.setValue(DAY1_PATH + DAY_INPUT, "ff");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + DAY_INPUT, "onblur");
+        tester.assertContains(DAY1_PATH + DAY_INPUT);
         tester.assertContains("color: #ff0000");
         tester.assertErrorMessages("day.IConverter.Float");
 
-        formTester.setValue(DAY1_PATH + ":day", "1");
-        tester.executeAjaxEvent(DAY1_FULL_PATH + ":day", "onblur");
-        tester.assertContains(DAY1_PATH + ":day");
+        formTester.setValue(DAY1_PATH + DAY_INPUT, "1");
+        tester.executeAjaxEvent(DAY1_FULL_PATH + DAY_INPUT, "onblur");
+        tester.assertContains(DAY1_PATH + DAY_INPUT);
         tester.assertContainsNot("color: #ff0000");
     }
 
@@ -239,14 +239,14 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startWithLockedDays(Arrays.asList(lockedDay));
 
-        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:day", Label.class);
-        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day3:day", TimesheetTextField.class);
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:1:day:day", Label.class);
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:2:day:day", TimesheetTextField.class);
 
         tester.assertNoErrorMessage();
     }
 
     @Test
-    public void shouldDanybleCommentInputForLockedDaysWithExistingComment() {
+    public void shouldDisableDailyCommentInputForLockedDaysWithExistingComment() {
         // given
         Date lockedDay = new LocalDate().plusDays(1).toDate();
         List<Date> lockedDates = Arrays.asList(lockedDay);
@@ -270,9 +270,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         tester.startComponentInPage(new TimesheetPanel("panel", USER, new GregorianCalendar()));
 
         // then
-        openCommentWindow(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2");
+        openCommentWindow(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:1");
 
-        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:options:1:dayWin:content:comment", Label.class);
+        tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:1:options:1:dayWin:content:comment", Label.class);
 
         tester.assertNoErrorMessage();
         tester.assertNoInfoMessage();
@@ -284,7 +284,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startWithLockedDays(Arrays.asList(lockedDay));
 
-        Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:day2:options:1:commentLink");
+        Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:1:options:1:commentLink");
         assertNull(commentLink); // null = not visible...
 
         tester.assertNoErrorMessage();

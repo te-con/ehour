@@ -97,15 +97,12 @@ public class TimesheetRow implements Serializable
 
             Localizer localizer = Application.get().getResourceSettings().getLocalizer();
 
-            return localizer.getString("timesheet.errorNoHours", null, new Model<AvailableHours>(hours));
+            return localizer.getString("timesheet.errorNoHours", null, new Model<>(hours));
         }
 
         return "<br />";
     }
 
-	/**
-	 * 
-	 */
 	public void bookRemainingHoursOnRow()
 	{
 		// only for monday - friday
@@ -192,7 +189,7 @@ public class TimesheetRow implements Serializable
 	 */
 	public List<TimesheetEntry> getTimesheetEntries()
 	{
-		List<TimesheetEntry> entries = new ArrayList<TimesheetEntry>();
+		List<TimesheetEntry> entries = new ArrayList<>();
 
         if (timesheetCells != null)
 		{

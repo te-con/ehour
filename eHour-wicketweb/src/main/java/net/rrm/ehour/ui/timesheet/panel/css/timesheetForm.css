@@ -7,19 +7,19 @@
     width: 100%;
 }
 
-.timesheetTable tbody tr:first-child td:first-child{
+.timesheetTable tbody tr:first-child td:first-child {
     border-radius: 6px 0 0 0;
 }
 
-.timesheetTable tbody tr:first-child td:last-child{
+.timesheetTable tbody tr:first-child td:last-child {
     border-radius: 0 6px 0 0;
 }
 
-.timesheetTable thead td:first-child{
+.timesheetTable thead td:first-child {
     border-radius: 6px 0 0 0;
 }
 
-.timesheetTable tfoot tr:last-child td:last-child{
+.timesheetTable tfoot tr:last-child td:last-child {
     border-radius: 0 0 6px 0;
 }
 
@@ -30,8 +30,6 @@
 .timesheetTable td {
     color: #536e87;
     height: 18px;
-    width: 70px;
-    min-width: 5em;
 }
 
 .timesheetTable tr.weekColumnRow td {
@@ -39,7 +37,7 @@
     color: #536e87;
     margin: 0;
     padding: 0;
-    text-align: center;
+    text-align: right;
 }
 
 .timesheetTable tr.weekColumnRow td.borderless {
@@ -58,8 +56,7 @@
 .timesheetTable tr.weekColumnRow td.projectCode {
     border: 0;
     padding-bottom: 1px;
-    padding-left: 1.5em
-    text-align: left;
+    padding-left: 1.5em text-align : left;
     vertical-align: bottom;
 }
 
@@ -89,7 +86,7 @@
     font-weight: normal;
     padding: 8px 0 0 7px;
     vertical-align: top;
-    width: 8em;
+    width: 6em;
 }
 
 .timesheetTable tr.projectRow td.customer {
@@ -147,34 +144,28 @@
     background-color: #eef6fe;
 }
 
-.timesheetTable tr.projectRow td.sunday {
+.timesheetTable tr.projectRow td.sunday,
+.timesheetTable tr.projectRow td.saturday,
+.timesheetTable tr.projectRow td.weekday{
     font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     margin: 0;
-    text-align: center;
-    background-color: #eef6fe;
+    text-align: right;
     padding: 1px 0 0 0;
     vertical-align: top;
-}
-
-.timesheetTable tr.projectRow td.saturday {
-    font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
-    color: #536e87;
-    margin: 0;
-    text-align: center;
-    padding: 1px 0 0 0;
-    vertical-align: top;
+    width: 4em;
 }
 
 .timesheetTable .lastColumn {
-    width: 0.5em;
+    width: 4em;
+    padding: 1em 1em 0 0 !important;
 }
 
 .timesheetTable tr.projectRow td.total {
     font: 0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     margin: 0;
-    text-align: center;
+    text-align: right;
     vertical-align: top;
     padding-top: 1em;
 }
@@ -214,15 +205,6 @@
     text-align: left;
 }
 
-.timesheetTable tr.projectRow td.weekday {
-    font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
-    color: #536e87;
-    margin: 0;
-    text-align: center;
-    padding: 1px 0 0 0;
-    vertical-align: top;
-}
-
 td.lockedday, td.lockeddaynocomment {
     vertical-align: middle !important;
     text-align: right !important;
@@ -242,7 +224,6 @@ td.lockeddaynocomment {
     font: 1em/1.5em Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     background-color: white;
-    width: 3em;
     text-align: center;
 }
 
@@ -253,8 +234,8 @@ td.lockeddaynocomment {
 .timesheetTable tr.totalRow td {
     font: 0.9em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
-    margin: 5px 0 0 0;
-    text-align: center;
+    margin: 5px 5px 0 0;
+    text-align: right;
 }
 
 .timesheetCommentsTable {
@@ -306,11 +287,6 @@ div.wicket-modal div.w_content_3 {
     min-height: 1px;
 }
 
-.weekColumnRow .day {
-    width: 50%;
-    float: left;
-}
-
 .previousWeek {
     margin-right: 0.5em;
 }
@@ -350,7 +326,6 @@ div.wicket-modal div.w_content_3 {
     margin-right: 0 !important;
 }
 
-
 .timesheetSubmitTable .storeTd {
     text-align: right;
 }
@@ -362,5 +337,49 @@ div.wicket-modal div.w_content_3 {
 
 .locked {
     opacity: 0.5;
+}
+
+.timesheetTable .options {
+    width: 20px;
+    min-width: 20px;
+    vertical-align: top;
+    padding-top: 1em !important;
+    text-align: left !important;
+}
+
+.timesheetTable thead .day {
+    text-align: right;
+}
+
+.timesheetTable thead .day .container,
+.timesheetTable tfoot .container {
+    float: right;
+    padding-right: 2px;
+}
+
+.timesheetTable thead .day .container .name {
+    text-align: center;
+}
+
+.timesheetTable thead .day .container .date {
+    width: 50%;
+    float: left;
+    text-align: center;
+}
+
+.timesheetTable input,
+.timesheetTable thead .day .container,
+.timesheetTable tfoot .container {
+    width: 3em;
+}
+
+.timesheetTable thead .day .container,
+.timesheetTable tfoot .container {
+    text-align: center;
+
+}
+
+.timesheetTable .lockSpace .fa:hover {
+    color: #555;
 }
 
