@@ -170,6 +170,11 @@
     padding-top: 1em;
 }
 
+.timesheetTable tfoot .totalRow .grandTotal {
+    font-weight: bold;
+    padding-top: 0 !important;
+}
+
 .timesheetTable tr.customerRow td {
     margin-top: 10px;
     border-bottom: 1px solid #b9d3ef;
@@ -201,7 +206,7 @@
     color: #536e87;
     background-color: #fefeff;
     margin: 0;
-    padding: 6px;
+    padding: 6px 6px 0 6px;
     text-align: left;
 }
 
