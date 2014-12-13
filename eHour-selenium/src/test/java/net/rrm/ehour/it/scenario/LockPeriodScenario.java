@@ -61,7 +61,7 @@ public class LockPeriodScenario extends AbstractScenario {
 
         assertFalse(isBookingHoursPossible(1));
         assertFalse(isBookingHoursPossible(2));
-        assertFalse(isBookingHoursPossible(3));
+        assertTrue(isBookingHoursPossible(3));
         assertTrue(isBookingHoursPossible(4));
         assertTrue(isBookingHoursPossible(5));
     }

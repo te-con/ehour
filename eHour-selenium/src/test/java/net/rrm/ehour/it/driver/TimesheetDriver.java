@@ -37,7 +37,8 @@ public abstract class TimesheetDriver {
     public static boolean isBookingHoursPossible(int day) {
         try {
             AbstractScenario.Driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-            Driver.findElement(WicketBy.wicketPath("contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_blueFrame_blueFrame__body_customers_0_rows_0_day" + day + "_day"));
+            String wicketPath = "contentContainer_timesheetFrame_timesheetFrame__body_timesheetForm_blueFrame_blueFrame__body_customers_0_rows_0_days_" + day + "_day_day";
+            Driver.findElement(WicketBy.wicketPath(wicketPath));
             return true;
         } catch (org.openqa.selenium.NoSuchElementException nse) {
             return false;
