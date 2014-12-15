@@ -56,19 +56,6 @@ public class TimesheetModel implements PersistableTimesheetModel<TimesheetContai
         timesheetContainer = load(user, forWeek);
     }
 
-    @Override
-    public List<ProjectAssignmentStatus> persist() {
-        WebUtils.springInjection(this);
-
-        return persistTimesheet(getObject().getTimesheet());
-    }
-
-    public List<ProjectAssignmentStatus> persistTimesheet(Timesheet timesheet) {
-        return persistTimesheet.persistTimesheetWeek(timesheet.getTimesheetEntries(),
-                timesheet.getCommentForPersist(),
-                new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
-    }
-
     private TimesheetContainer load(User user, Calendar forWeek) {
         EhourConfig config = EhourWebSession.getEhourConfig();
         WeekOverview weekOverview = overviewTimesheet.getWeekOverview(user, forWeek);
@@ -82,6 +69,21 @@ public class TimesheetModel implements PersistableTimesheetModel<TimesheetContai
         }
 
         return new TimesheetContainer(timesheet);
+    }
+
+    @Override
+    public List<ProjectAssignmentStatus> persist() {
+        WebUtils.springInjection(this);
+
+        return persistTimesheet(getObject().getTimesheet());
+    }
+
+    public List<ProjectAssignmentStatus> persistTimesheet(Timesheet timesheet) {
+        WebUtils.springInjection(this);
+
+        return persistTimesheet.persistTimesheetWeek(timesheet.getTimesheetEntries(),
+                timesheet.getCommentForPersist(),
+                new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
     }
 
     public TimesheetContainer getObject() {
