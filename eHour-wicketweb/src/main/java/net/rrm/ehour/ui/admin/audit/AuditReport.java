@@ -24,7 +24,7 @@ import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.ui.common.report.AbstractReportModel;
 import net.rrm.ehour.ui.common.util.WebUtils;
-import net.rrm.ehour.ui.report.TreeReportElement;
+import net.rrm.ehour.ui.report.model.TreeReportElement;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.io.Serializable;

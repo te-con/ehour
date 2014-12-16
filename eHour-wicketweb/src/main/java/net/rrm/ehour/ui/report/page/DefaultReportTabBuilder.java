@@ -2,15 +2,15 @@ package net.rrm.ehour.ui.report.page;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
-import net.rrm.ehour.ui.report.aggregate.CustomerAggregateReportModel;
-import net.rrm.ehour.ui.report.aggregate.ProjectAggregateReportModel;
-import net.rrm.ehour.ui.report.aggregate.UserAggregateReportModel;
-import net.rrm.ehour.ui.report.panel.aggregate.CustomerReportPanel;
-import net.rrm.ehour.ui.report.panel.aggregate.EmployeeReportPanel;
-import net.rrm.ehour.ui.report.panel.aggregate.ProjectReportPanel;
+import net.rrm.ehour.ui.report.customer.CustomerAggregateReportModel;
+import net.rrm.ehour.ui.report.customer.CustomerReportPanel;
+import net.rrm.ehour.ui.report.detailed.DetailedReportModel;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.detail.DetailedReportPanel;
-import net.rrm.ehour.ui.report.trend.DetailedReportModel;
+import net.rrm.ehour.ui.report.project.ProjectAggregateReportModel;
+import net.rrm.ehour.ui.report.project.ProjectReportPanel;
+import net.rrm.ehour.ui.report.user.UserAggregateReportModel;
+import net.rrm.ehour.ui.report.user.UserReportPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -82,6 +82,6 @@ public class DefaultReportTabBuilder implements ReportTabBuilder {
 
     private Panel getUserReportPanel(String id, ReportCriteria reportCriteria) {
         UserAggregateReportModel aggregateReport = new UserAggregateReportModel(reportCriteria);
-        return new EmployeeReportPanel(id, aggregateReport);
+        return new UserReportPanel(id, aggregateReport);
     }
 }

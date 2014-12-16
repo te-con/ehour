@@ -21,31 +21,37 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.sort.ProjectAssignmentComparator;
+import net.rrm.ehour.ui.common.report.AbstractReportModel;
 import net.rrm.ehour.ui.common.util.WebUtils;
-import net.rrm.ehour.ui.report.trend.TrendReportModel;
+import net.rrm.ehour.util.DateUtil;
+import org.apache.log4j.Logger;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.text.ParseException;
-import java.util.Comparator;
-import java.util.Date;
+import java.util.*;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * Print report for printing a timesheet
  */
 
-public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> {
+public class ExcelExportReportModel extends AbstractReportModel {
+    private static final long serialVersionUID = -8062083697181324496L;
+    private static final Logger LOGGER = Logger.getLogger(ExcelExportReportModel.class);
+
     @SpringBean
     private DetailedReportService detailedReportService;
+
+    private transient SortedMap<ProjectAssignment, Map<Date, FlatReportElement>> rowMap;
 
     public ExcelExportReportModel(ReportCriteria criteria) {
         super(criteria);
     }
 
-    private static final long serialVersionUID = 6099016674849151669L;
-
-    @Override
     protected ProjectAssignment getRowKey(FlatReportElement aggregate) {
         ProjectAssignment pa = new ProjectAssignment();
 
@@ -66,17 +72,14 @@ public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> 
      *
      * @throws ParseException
      */
-    @Override
     protected Date getAggregateDate(FlatReportElement aggregate) throws ParseException {
         return aggregate.getDayDate();
     }
 
-    @Override
     protected Comparator<ProjectAssignment> getRKComparator() {
         return new ProjectAssignmentComparator();
     }
 
-    @Override
     protected ReportData fetchReportData(ReportCriteria reportCriteria) {
         return getDetailedReportService().getDetailedReportData(reportCriteria);
     }
@@ -87,5 +90,108 @@ public class ExcelExportReportModel extends TrendReportModel<ProjectAssignment> 
         }
 
         return detailedReportService;
+    }
+
+    @Override
+    protected ReportData getReportData(ReportCriteria reportCriteria) {
+        Map<Date, FlatReportElement> rowAggregates;
+        Date aggregateDate;
+        ProjectAssignment rowKey;
+
+        ReportData aggregateData = getValidReportData(reportCriteria);
+
+        rowMap = new TreeMap<ProjectAssignment, Map<Date, FlatReportElement>>(getRKComparator());
+
+        for (ReportElement element : aggregateData.getReportElements()) {
+            FlatReportElement aggregate = (FlatReportElement) element;
+
+            rowKey = getRowKey(aggregate);
+
+            if (rowMap.containsKey(rowKey)) {
+                rowAggregates = rowMap.get(rowKey);
+            } else {
+                rowAggregates = new HashMap<Date, FlatReportElement>();
+            }
+
+            aggregateDate = getValidAggregateDate(aggregate);
+            aggregateDate = DateUtil.nullifyTime(aggregateDate);
+
+            rowAggregates.put(aggregateDate, aggregate);
+
+            rowMap.put(rowKey, rowAggregates);
+        }
+
+        return aggregateData;
+    }
+
+    private ReportData getValidReportData(ReportCriteria reportCriteria) {
+        ReportData reportData = fetchReportData(reportCriteria);
+
+        notNull(reportData);
+        notNull(reportData.getReportElements());
+
+        return reportData;
+    }
+
+    /**
+     * Get grand total hours
+     *
+     * @return
+     */
+    public float getGrandTotalHours() {
+        float total = 0;
+        Map<Date, FlatReportElement> aggMap;
+
+        for (ProjectAssignment key : rowMap.keySet()) {
+            aggMap = rowMap.get(key);
+
+            for (Map.Entry<Date, FlatReportElement> entry : aggMap.entrySet()) {
+                Number n = entry.getValue().getTotalHours();
+
+                if (n != null) {
+                    total += n.floatValue();
+                }
+            }
+        }
+
+        return total;
+    }
+
+    /**
+     * Get the values
+     *
+     * @return
+     */
+    public SortedMap<ProjectAssignment, Map<Date, FlatReportElement>> getValues() {
+        if (rowMap == null) {
+            lazyInitRowMap();
+        }
+        return rowMap;
+    }
+
+    private void lazyInitRowMap() {
+        load();
+    }
+
+    private Date getValidAggregateDate(FlatReportElement aggregate) {
+        Date date;
+
+        try {
+            date = getAggregateDate(aggregate);
+        } catch (ParseException e) {
+            LOGGER.warn("failed to parse date of " + aggregate, e);
+            date = new Date();
+        }
+
+        return date;
+    }
+
+    /*
+          * (non-Javadoc)
+          * @see org.apache.wicket.model.LoadableDetachableModel#onDetach()
+          */
+    @Override
+    protected void onDetach() {
+        rowMap = null;
     }
 }

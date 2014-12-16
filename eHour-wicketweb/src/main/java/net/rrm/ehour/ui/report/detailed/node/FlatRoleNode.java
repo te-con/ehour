@@ -14,24 +14,28 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.util;
+package net.rrm.ehour.ui.report.detailed.node;
 
-import net.rrm.ehour.ui.report.project.ProjectReportPanelTest;
-import org.junit.Test;
+import net.rrm.ehour.report.reports.element.FlatReportElement;
+import net.rrm.ehour.report.reports.element.ReportElement;
+import net.rrm.ehour.ui.report.model.ReportNode;
+
+import java.io.Serializable;
 
 /**
- * Created on Mar 17, 2009, 7:04:03 AM
- *
- * @author Thies Edeling (thies@te-con.nl)
+ * User node
  */
-public class WebUtilsTest extends ProjectReportPanelTest {
-    @Test
-    public void testFindComponent() {
-        setupExpectations();
 
-        startReportPanel();
+public class FlatRoleNode extends ReportNode {
+    private static final long serialVersionUID = 7854152602780377915L;
 
-        tester.assertNoErrorMessage();
-        tester.assertNoInfoMessage();
+    public FlatRoleNode(FlatReportElement element) {
+        super(element.getAssignmentId(), element.isEmptyEntry());
+        this.columnValues = new String[]{element.getRole()};
+    }
+
+    @Override
+    protected Serializable getElementId(ReportElement element) {
+        return ((FlatReportElement) element).getAssignmentId();
     }
 }

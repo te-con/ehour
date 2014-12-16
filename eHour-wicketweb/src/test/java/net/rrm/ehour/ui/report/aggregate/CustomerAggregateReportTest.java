@@ -21,6 +21,7 @@ import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
+import net.rrm.ehour.ui.report.customer.CustomerAggregateReportModel;
 import org.junit.Before;
 import org.junit.Test;
 

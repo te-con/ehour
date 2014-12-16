@@ -14,24 +14,27 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.util;
+package net.rrm.ehour.ui.report.project;
 
-import net.rrm.ehour.ui.report.project.ProjectReportPanelTest;
-import org.junit.Test;
+
+import net.rrm.ehour.ui.report.AbstractReportPanelTest;
+import net.rrm.ehour.ui.report.model.TreeReportModel;
+import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * Created on Mar 17, 2009, 7:04:03 AM
+ * Created on Mar 17, 2009, 6:44:27 AM
  *
  * @author Thies Edeling (thies@te-con.nl)
  */
-public class WebUtilsTest extends ProjectReportPanelTest {
-    @Test
-    public void testFindComponent() {
-        setupExpectations();
+public class ProjectReportPanelTest extends AbstractReportPanelTest {
+    @Override
+    protected Panel createReportPanel(String panelId, TreeReportModel reportModel) {
+        return new ProjectReportPanel(panelId, reportModel);
+    }
 
-        startReportPanel();
-
-        tester.assertNoErrorMessage();
-        tester.assertNoInfoMessage();
+    @Override
+    protected TreeReportModel getAggregateReport() {
+        return new ProjectAggregateReportModel(DetailedReportDataObjectMother.getReportCriteria());
     }
 }

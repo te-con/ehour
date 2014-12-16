@@ -1,18 +1,18 @@
 package net.rrm.ehour.ui.report.panel.aggregate
 
 import net.rrm.ehour.report.reports.ReportData
-import nl.tecon.highcharts.HighChart
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
+import nl.tecon.highcharts.HighChart
 import nl.tecon.highcharts.config._
-import java.lang.String
-import collection.Seq
+
+import scala.collection.Seq
 import scala.collection.convert.WrapAsScala
 
 case class ChartContext(renderToId: String, reportData: ReportData, currencySymbol: String, withTurnover: Boolean)
 
 object AggregateReportChartGenerator {
 
-  def generateEmployeeReportChart(chartContext: ChartContext): String =
+  def generateUserReportChart(chartContext: ChartContext): String =
     generateReportChart(chartContext, _.getProjectAssignment.getUser.getFullName, "Users in hours")
 
   def generateCustomerReportChart(chartContext: ChartContext): String =

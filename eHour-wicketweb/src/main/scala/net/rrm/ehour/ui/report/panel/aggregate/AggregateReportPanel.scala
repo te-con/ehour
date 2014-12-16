@@ -5,8 +5,8 @@ import net.rrm.ehour.ui.chart.HighChartContainer
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.report.{AbstractExcelReport, ReportConfig}
 import net.rrm.ehour.ui.common.session.EhourWebSession
+import net.rrm.ehour.ui.report.model.{TreeReportData, TreeReportModel}
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel
-import net.rrm.ehour.ui.report.{TreeReportData, TreeReportModel}
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.Model

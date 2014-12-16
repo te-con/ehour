@@ -14,24 +14,30 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.common.util;
+package net.rrm.ehour.ui.report.model;
 
-import net.rrm.ehour.ui.report.project.ProjectReportPanelTest;
-import org.junit.Test;
+import net.rrm.ehour.report.reports.element.ReportElement;
+
+import java.io.Serializable;
 
 /**
- * Created on Mar 17, 2009, 7:04:03 AM
+ * Factory for report nodes
+ * @author Thies
  *
- * @author Thies Edeling (thies@te-con.nl)
  */
-public class WebUtilsTest extends ProjectReportPanelTest {
-    @Test
-    public void testFindComponent() {
-        setupExpectations();
+public interface ReportNodeFactory<T extends ReportElement>
+{
+    /**
+     * Create report node for hierarchy level
+     * @param hierarchyLevel
+     * @return
+     */
+    ReportNode createReportNode(T aggregate, int hierarchyLevel);
 
-        startReportPanel();
-
-        tester.assertNoErrorMessage();
-        tester.assertNoInfoMessage();
-    }
+    /**
+     * Get the id of a report importer
+     * @param aggregate
+     * @return
+     */
+    Serializable getElementId(T aggregate);
 }

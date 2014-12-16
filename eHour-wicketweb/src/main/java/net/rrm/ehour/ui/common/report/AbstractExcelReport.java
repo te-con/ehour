@@ -20,7 +20,7 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.ui.common.report.excel.CellFactory;
 import net.rrm.ehour.ui.common.report.excel.ExcelStyle;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
-import net.rrm.ehour.ui.report.TreeReportElement;
+import net.rrm.ehour.ui.report.model.TreeReportElement;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;

@@ -32,10 +32,9 @@ import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.HtmlUtil;
 import net.rrm.ehour.ui.common.wicket.Container;
 import net.rrm.ehour.ui.report.GreyReportBorder;
-import net.rrm.ehour.ui.report.TreeReportDataProvider;
-import net.rrm.ehour.ui.report.TreeReportElement;
-import net.rrm.ehour.ui.report.TreeReportModel;
-import net.rrm.ehour.ui.report.summary.ProjectSummaryPage;
+import net.rrm.ehour.ui.report.model.TreeReportDataProvider;
+import net.rrm.ehour.ui.report.model.TreeReportElement;
+import net.rrm.ehour.ui.report.model.TreeReportModel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -234,7 +233,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
                 switch (column.getColumnType()) {
                     case HOUR:
-                        label = new Label(childId, new Model<Float>(reportModel.getTotalHours()));
+                        label = new Label(childId, new Model<>(reportModel.getTotalHours()));
                         break;
                     case TURNOVER:
                         label = new CurrencyLabel(childId, reportModel.getTotalTurnover());
@@ -314,7 +313,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
                 item.add(AttributeModifier.append("class", "emptyRow"));
             }
 
-            List<Serializable> thisCellValues = new ArrayList<Serializable>();
+            List<Serializable> thisCellValues = new ArrayList<>();
 
             boolean newValueInPreviousColumn = false;
 
@@ -327,14 +326,14 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
                 ReportColumn reportColumn = reportConfig.getReportColumns()[column];
 
                 if (reportColumn.isVisible()) {
-                    List<String> cssClasses = new ArrayList<String>();
+                    List<String> cssClasses = new ArrayList<>();
 
                     Label cellLabel;
 
                     final String id = Integer.toString(column);
 
                     if (isDuplicate(column, cellValue) && !newValueInPreviousColumn) {
-                        cellLabel = new Label(id, new Model<String>(""));
+                        cellLabel = new Label(id, new Model<>(""));
                         newValueInPreviousColumn = false;
 
                         cells.add(cellLabel);
@@ -348,20 +347,19 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
                             public void onClick() {
                                 PageParameters pageParameters = new PageParameters();
                                 pageParameters.add("id", cellValue);
-
-                                setResponsePage(ProjectSummaryPage.class, pageParameters);
+// unused for now
                             }
                         };
 
                         linkFragment.add(link);
 
-                        cellLabel = new Label("linkLabel", new Model<Serializable>(cellValue));
+                        cellLabel = new Label("linkLabel", new Model<>(cellValue));
                         link.add(cellLabel);
 
                     } else if (reportColumn.getConverter() != null) {
                         final IConverter converter = reportColumn.getConverter();
 
-                        cellLabel = new Label(id, new Model<Serializable>(cellValue)) {
+                        cellLabel = new Label(id, new Model<>(cellValue)) {
                             @SuppressWarnings("unchecked")
                             @Override
                             public <C> IConverter<C> getConverter(Class<C> type) {
@@ -381,7 +379,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
                     } else {
                         newValueInPreviousColumn = true;
 
-                        cellLabel = new Label(id, new Model<Serializable>(cellValue));
+                        cellLabel = new Label(id, new Model<>(cellValue));
                         Optional<String> optionalClass = addColumnTypeStyling(reportColumn.getColumnType());
                         if (optionalClass.isPresent()) {
                             cssClasses.add(optionalClass.get());

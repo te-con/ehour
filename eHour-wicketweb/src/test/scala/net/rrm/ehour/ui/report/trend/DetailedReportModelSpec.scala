@@ -1,14 +1,16 @@
 package net.rrm.ehour.ui.report.trend
 
-import net.rrm.ehour.AbstractSpringWebAppSpec
-import net.rrm.ehour.report.service.ReportCriteriaService
-import org.scalatest.BeforeAndAfterAll
-import net.rrm.ehour.report.criteria.{AggregateBy, UserSelectedCriteria, ReportCriteria}
 import java.util
-import net.rrm.ehour.report.reports.element.FlatReportElement
-import net.rrm.ehour.report.reports.ReportData
+
+import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.data.DateRange
+import net.rrm.ehour.report.criteria.{AggregateBy, ReportCriteria, UserSelectedCriteria}
+import net.rrm.ehour.report.reports.ReportData
+import net.rrm.ehour.report.reports.element.FlatReportElement
+import net.rrm.ehour.report.service.ReportCriteriaService
+import net.rrm.ehour.ui.report.detailed.DetailedReportModel
 import org.joda.time.{DateTimeConstants, LocalDate}
+import org.scalatest.BeforeAndAfterAll
 
 class DetailedReportModelSpec extends AbstractSpringWebAppSpec with BeforeAndAfterAll {
   val service = mock[ReportCriteriaService]

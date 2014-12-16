@@ -1,16 +1,15 @@
 package net.rrm.ehour.ui.report.panel
 package detail
 
-import net.rrm.ehour.report.criteria.{ReportCriteria, AggregateBy, UserSelectedCriteria}
+import net.rrm.ehour.report.criteria.{AggregateBy, ReportCriteria, UserSelectedCriteria}
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer
 import net.rrm.ehour.ui.common.report.{DetailedReportConfig, ReportConfig}
 import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.ui.report.cache.ReportCacheService
-import net.rrm.ehour.ui.report.excel.DetailedReportExcel
-import net.rrm.ehour.ui.report.trend.DetailedReportModel
-import net.rrm.ehour.ui.report.{TreeReportData, TreeReportModel}
+import net.rrm.ehour.ui.report.detailed.{DetailedReportExcel, DetailedReportModel}
+import net.rrm.ehour.ui.report.model.{TreeReportData, TreeReportModel}
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
 import org.apache.wicket.event.{Broadcast, IEvent}

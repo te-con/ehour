@@ -18,7 +18,7 @@ package net.rrm.ehour.ui.report.aggregate.node;
 
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.reports.element.ReportElement;
-import net.rrm.ehour.ui.report.node.ReportNode;
+import net.rrm.ehour.ui.report.model.ReportNode;
 
 import java.io.Serializable;
 
