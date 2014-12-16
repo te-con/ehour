@@ -16,25 +16,27 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.rrm.ehour.domain.*;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
-import net.rrm.ehour.report.reports.ReportData;
-import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
+import net.rrm.ehour.ui.report.builder.ReportTabFactory;
+import net.rrm.ehour.ui.report.builder.ReportTabs;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
-import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.junit.Before;
@@ -46,25 +48,21 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings("serial")
 public class ReportPageTest extends BaseSpringWebAppTester implements Serializable {
-    private MockReportTabBuilder mockReportTabCommand;
-    protected ReportCriteriaService reportCriteriaService;
-    protected AggregateReportService aggregateReportService;
-    protected DetailedReportService detailedReportService;
-    protected ReportData data;
-    protected ReportCriteria reportCriteria;
+    private ReportCriteriaService reportCriteriaService;
+    private ReportCriteria reportCriteria;
+
+    private ReportTabs reportTabs;
 
     @Before
     public void setup() {
-        mockReportTabCommand = new MockReportTabBuilder();
-
-        getMockContext().putBean("reportTabBuilder", mockReportTabCommand);
+        reportTabs = new ReportTabs(Lists.<ReportTabFactory>newArrayList());
+        getMockContext().putBean(reportTabs);
     }
 
     @Test
@@ -79,11 +77,23 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
 
     @Test
     public void shouldUpdateTabs() {
-        mockReportTabCommand.returnTabs = createTabs(3);
+        ReportTabFactory factory = mock(ReportTabFactory.class);
+
+        when(factory.createReportTab(any(ReportCriteria.class))).thenReturn(
+                new AbstractTab(new KeyResourceModel("a")) {
+
+                    @Override
+                    public Panel getPanel(String panelId) {
+                        return new EmptyPanel(panelId);
+                    }
+                }
+        );
+
+        reportTabs.setFactories(Lists.newArrayList(factory));
 
         updateTabs();
 
-        assertNotNull(mockReportTabCommand.argBean);
+        verify(factory).createReportTab(any(ReportCriteria.class));
     }
 
     private void updateTabs() {
@@ -103,25 +113,6 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         verify(target).add(any(ReportTabbedPanel.class));
     }
 
-    private List<ITab> createTabs(int amount) {
-        List<ITab> tabs = new ArrayList<ITab>();
-
-        for (int i = 0; i < amount; i++) {
-            AbstractTab tab = new AbstractTab(new KeyResourceModel(Integer.toString(i))) {
-
-                @Override
-                public Panel getPanel(String panelId) {
-                    return new EmptyPanel(panelId);
-                }
-            };
-
-            tabs.add(tab);
-        }
-
-        return tabs;
-
-    }
-
     private void startPage() {
         tester.startPage(ReportPage.class);
 
@@ -134,10 +125,10 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         reportCriteriaService = mock(ReportCriteriaService.class);
         getMockContext().putBean("reportCriteriaService", reportCriteriaService);
 
-        aggregateReportService = mock(AggregateReportService.class);
+        AggregateReportService aggregateReportService = mock(AggregateReportService.class);
         getMockContext().putBean("aggregatedReportService", aggregateReportService);
 
-        detailedReportService = mock(DetailedReportService.class);
+        DetailedReportService detailedReportService = mock(DetailedReportService.class);
         getMockContext().putBean("detailedReportService", detailedReportService);
 
         AvailableCriteria availCriteria = new AvailableCriteria();
@@ -150,7 +141,7 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         projects.add(new Project(2));
         availCriteria.setProjects(projects);
 
-        List<UserDepartment> depts = new ArrayList<UserDepartment>();
+        List<UserDepartment> depts = new ArrayList<>();
         depts.add(new UserDepartment(2));
         availCriteria.setUserDepartments(depts);
 
@@ -159,32 +150,5 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         availCriteria.setUsers(usrs);
 
         reportCriteria = new ReportCriteria(availCriteria);
-
-        List<AssignmentAggregateReportElement> agg = new ArrayList<AssignmentAggregateReportElement>();
-        AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
-        ProjectAssignment ass = new ProjectAssignment(1);
-        User user = new User(1);
-        ass.setUser(user);
-
-        Customer cust = new Customer(1);
-        Project prj = new Project(1);
-        prj.setCustomer(cust);
-        ass.setProject(prj);
-        pag.setProjectAssignment(ass);
-
-        agg.add(pag);
-
-        data = new ReportData(agg, reportCriteria.getReportRange(), reportCriteria.getUserSelectedCriteria());
-    }
-
-    private class MockReportTabBuilder implements ReportTabBuilder {
-        ReportCriteriaBackingBean argBean;
-        List<ITab> returnTabs;
-
-        public List<ITab> createReportTabs(ReportCriteriaBackingBean backingBean) {
-            this.argBean = backingBean;
-            return returnTabs;
-        }
-
     }
 }

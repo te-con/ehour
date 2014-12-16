@@ -41,7 +41,7 @@ public class CustomerAggregateReportModel extends AbstractAggregateReportModel {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
+    public ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
         List<AssignmentAggregateReportElement> reportElements = (List<AssignmentAggregateReportElement>) reportData.getReportElements();
 
         Collections.sort(reportElements, new Comparator<AssignmentAggregateReportElement>() {

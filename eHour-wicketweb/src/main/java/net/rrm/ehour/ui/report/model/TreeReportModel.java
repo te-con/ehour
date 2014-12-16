@@ -56,7 +56,7 @@ public abstract class TreeReportModel extends AbstractReportModel {
         return new TreeReportData(matrix, reportCriteria.getReportRange(), processedReportData, reportCriteria.getUserSelectedCriteria());
     }
 
-    protected ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
+    public ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
         return reportData;
     }
 

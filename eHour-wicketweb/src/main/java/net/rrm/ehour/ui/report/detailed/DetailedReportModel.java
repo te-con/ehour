@@ -67,7 +67,7 @@ public class DetailedReportModel extends TreeReportModel {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
+    public  ReportData preprocess(ReportData reportData, ReportCriteria reportCriteria) {
         AggregateBy aggregateBy = reportCriteria.getUserSelectedCriteria().getAggregateBy();
 
         List<FlatReportElement> elements;

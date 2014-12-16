@@ -16,12 +16,16 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.model.KeyResourceModel;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import net.rrm.ehour.ui.report.builder.ReportTabFactory;
+import net.rrm.ehour.ui.report.builder.ReportTabs;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaBackingBean;
 import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaPanel;
@@ -52,7 +56,7 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     private ReportTabbedPanel tabPanel;
 
     @SpringBean
-    private ReportTabBuilder reportTabCreationBuilder;
+    private ReportTabs reportTabs;
 
     public ReportPage() {
         super(new ResourceModel("report.global.title"));
@@ -83,10 +87,10 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
 
     private void reset() {
         final ReportCriteria reportCriteria = getReportCriteria();
-        final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<ReportCriteriaBackingBean>(new ReportCriteriaBackingBean(reportCriteria));
+        final IModel<ReportCriteriaBackingBean> model = new CompoundPropertyModel<>(new ReportCriteriaBackingBean(reportCriteria));
         setDefaultModel(model);
 
-        List<ITab> tabList = new ArrayList<ITab>();
+        List<ITab> tabList = new ArrayList<>();
 
         tabList.add(new AbstractTab(getReportTitle(reportCriteria.getUserSelectedCriteria())) {
             private static final long serialVersionUID = 1L;
@@ -108,7 +112,7 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
         } else if (userSelectedCriteria.isForGlobalReport()) {
             return new KeyResourceModel("report.criteria.title.global");
         } else {
-            return new MessageResourceModel("report.criteria.title.user", this, getEhourWebSession().getUser().getFullName());
+            return new MessageResourceModel("report.criteria.title.user", this, EhourWebSession.getUser().getFullName());
         }
 
     }
@@ -155,7 +159,13 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     }
 
     private void addReportTabs(ReportCriteriaBackingBean backingBean) {
-        List<ITab> tabs = reportTabCreationBuilder.createReportTabs(backingBean);
+        List<ReportTabFactory> tabFactories = reportTabs.getTabFactories();
+
+        List<ITab> tabs = Lists.newArrayList();
+
+        for (ReportTabFactory tabFactory : tabFactories) {
+            tabs.add(tabFactory.createReportTab(backingBean.getReportCriteria()));
+        }
 
         addTabs(tabs);
 
