@@ -67,12 +67,12 @@ public class UserManagePage extends AbstractUserManagePageTemplate<UserManageBac
                 EhourWebSession.getEhourConfig().isSplitAdminRole());
 
         if (editableUser) {
-            return new UserFormPanel<UserManageBackingBean>(panelId,
-                    new CompoundPropertyModel<UserManageBackingBean>(bean)
+            return new UserFormPanel<>(panelId,
+                    new CompoundPropertyModel<>(bean)
             );
         } else {
             return new UserManageReadOnlyPanel(panelId,
-                    new CompoundPropertyModel<UserManageBackingBean>(bean));
+                    new CompoundPropertyModel<>(bean));
         }
     }
 }
