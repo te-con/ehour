@@ -56,7 +56,7 @@ public class DetailedReportPanelTest extends BaseSpringWebAppTester {
 
         tester.startComponentInPage(new DetailedReportPanel("id", detailedReport));
 
-        tester.assertComponent("id:frame:reportTable:greyFrame:greyFrame_body:reportContent:reportFrame:reportFrame_body:reportFrameContainer:cell:2", Label.class);
+        tester.assertComponent("id:reportTable:greyFrame:greyFrame_body:reportContent:reportFrame:reportFrame_body:reportFrameContainer:cell:2", Label.class);
 
         tester.assertNoErrorMessage();
     }
