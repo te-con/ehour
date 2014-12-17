@@ -2,10 +2,10 @@ package net.rrm.ehour.ui
 package chart
 
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother
+import net.rrm.ehour.ui.report.aggregate.{ChartContext, AggregateReportChartGenerator}
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
-import report.panel.aggregate.{ChartContext, AggregateReportChartGenerator}
 
 @RunWith(classOf[JUnitRunner])
 class CustomerChartGeneratorTest extends FunSuite with Matchers with BeforeAndAfter {

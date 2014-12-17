@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.chart
 
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.ui.common.session.EhourWebSession
-import net.rrm.ehour.ui.report.panel.aggregate.ChartContext
+import net.rrm.ehour.ui.report.aggregate.ChartContext
 import org.apache.wicket.markup.head.{IHeaderResponse, OnLoadHeaderItem}
 import org.apache.wicket.markup.html.IHeaderContributor
 import org.apache.wicket.markup.html.panel.Panel

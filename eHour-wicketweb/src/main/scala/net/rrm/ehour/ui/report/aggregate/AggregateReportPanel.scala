@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.report.panel.aggregate
+package net.rrm.ehour.ui.report.aggregate
 
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.ui.chart.HighChartContainer

@@ -2,7 +2,7 @@ package net.rrm.ehour.ui
 package chart
 
 import net.rrm.ehour.report.reports.AggregateReportDataObjectMother
-import net.rrm.ehour.ui.report.panel.aggregate.{AggregateReportChartGenerator, ChartContext}
+import net.rrm.ehour.ui.report.aggregate.{ChartContext, AggregateReportChartGenerator}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}

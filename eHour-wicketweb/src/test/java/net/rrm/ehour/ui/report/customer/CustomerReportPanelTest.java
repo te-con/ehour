@@ -23,24 +23,17 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * Created on Mar 17, 2009, 6:33:02 AM
- * 
+ *
  * @author Thies Edeling (thies@te-con.nl)
- * 
  */
-public class CustomerReportPanelTest extends AbstractReportPanelTest
-{
-	@Override
-	protected Panel createReportPanel(String panelId, TreeReportModel reportModel)
-	{
-		return new CustomerReportPanel(panelId, reportModel);
-	}
+public class CustomerReportPanelTest extends AbstractReportPanelTest {
+    @Override
+    protected Panel createReportPanel(String panelId, TreeReportModel reportModel) {
+        return new CustomerReportPanel(panelId, reportModel);
+    }
 
-	/* (non-Javadoc)
-	 * @see net.rrm.ehour.persistence.persistence.ui.report.panel.aggregate.AbstractReportPanelTest#getAggregateReport()
-	 */
-	@Override
-	protected TreeReportModel getAggregateReport()
-	{
-		return new CustomerAggregateReportModel(DetailedReportDataObjectMother.getReportCriteria());
-	}
+    @Override
+    protected TreeReportModel getAggregateReport() {
+        return new CustomerAggregateReportModel(DetailedReportDataObjectMother.getReportCriteria());
+    }
 }

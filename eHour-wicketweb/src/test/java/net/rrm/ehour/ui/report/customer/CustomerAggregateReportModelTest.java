@@ -14,7 +14,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.report.aggregate;
+package net.rrm.ehour.ui.report.customer;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
  * @since <pre>09/11/2007</pre>
  * @version 1.0
  */
-public class CustomerAggregateReportTest extends BaseSpringWebAppTester
+public class CustomerAggregateReportModelTest extends BaseSpringWebAppTester
 {
 	private AggregateReportService aggregateReportService;
 
