@@ -38,7 +38,7 @@ public class TreeReportDataProvider implements IDataProvider<TreeReportElement> 
 
     @Override
     public IModel<TreeReportElement> model(TreeReportElement object) {
-        return new Model<TreeReportElement>(object);
+        return new Model<>(object);
     }
 
     @Override
