@@ -1,5 +1,8 @@
 package net.rrm.ehour.persistence.timesheet.dao
 
+import java.util
+
+import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.domain.{TimesheetComment, TimesheetCommentId}
 import net.rrm.ehour.persistence.dao.AbstractGenericDaoHibernateImpl
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
@@ -16,5 +19,18 @@ class TimesheetCommentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[T
     query.setParameter("userId", userId)
 
     ExponentialBackoffRetryPolicy retry query.executeUpdate
+  }
+
+  override def findCommentBetween(dateRange: DateRange): util.List[TimesheetComment] = {
+    val keys = List("dateStart", "dateEnd")
+    val params = List(dateRange.getDateStart, dateRange.getDateEnd)
+    findByNamedQuery("TimesheetComment.findCommentsIn", keys, params)
+  }
+
+  override def findCommentBetweenForUsers(users: util.List[Integer], dateRange: DateRange): util.List[TimesheetComment] = {
+    val keys = List("dateStart", "dateEnd", "userIDs")
+    val params = List(dateRange.getDateStart, dateRange.getDateEnd, users)
+    findByNamedQuery("TimesheetComment.findCommentsForUsersIn", keys, params)
+
   }
 }

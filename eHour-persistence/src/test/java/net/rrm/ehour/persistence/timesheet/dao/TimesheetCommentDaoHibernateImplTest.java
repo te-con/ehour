@@ -1,15 +1,20 @@
 package net.rrm.ehour.persistence.timesheet.dao;
 
+import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
-import org.junit.Assert;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -26,15 +31,24 @@ public class TimesheetCommentDaoHibernateImplTest extends AbstractAnnotationDaoT
 
     @SuppressWarnings("deprecation")
     @Test
-    public void shouldGetTimesheetEntriesInRange() {
+    public void should_get_timesheet_comments_for_date() {
         TimesheetComment comment = timesheetCommentDao.findById(new TimesheetCommentId(1, new Date(2007 - 1900, Calendar.JANUARY, 7)));
-
         assertNotNull(comment);
     }
 
     @Test
-    public void shouldDeleteOnUser() {
+    public void should_delete_comments_for_user() {
         int rowCount = timesheetCommentDao.deleteCommentsForUser(1);
-        Assert.assertEquals(2, rowCount);
+        assertEquals(2, rowCount);
     }
+
+    @Test
+    public void should_find_entries_in_range() {
+        Interval i = new Interval(new LocalDate(2007, DateTimeConstants.JANUARY, 13).toDateTimeAtCurrentTime(),
+                new LocalDate(2007, DateTimeConstants.JANUARY, 22).toDateTimeAtCurrentTime());
+
+        List<TimesheetComment> comment = timesheetCommentDao.findCommentBetween(new DateRange(i));
+        assertEquals(2, comment.size());
+    }
+
 }
