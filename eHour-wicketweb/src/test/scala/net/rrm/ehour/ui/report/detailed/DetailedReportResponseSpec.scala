@@ -1,9 +1,9 @@
-package net.rrm.ehour.ui.report.panel.detail
+package net.rrm.ehour.ui.report.detailed
 
-import net.rrm.ehour.AbstractSpec
-import org.joda.time.{DateTimeConstants, LocalDate}
-import net.rrm.ehour.report.criteria.AggregateBy
 import com.google.common.collect.Lists
+import net.rrm.ehour.AbstractSpec
+import net.rrm.ehour.report.criteria.AggregateBy
+import org.joda.time.{DateTimeConstants, LocalDate}
 
 class DetailedReportResponseSpec extends AbstractSpec {
   "Detailed Report Response" should {

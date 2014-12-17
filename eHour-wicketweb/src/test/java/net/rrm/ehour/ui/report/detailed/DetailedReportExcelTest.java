@@ -4,7 +4,6 @@ import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.wicket.Model;
-import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

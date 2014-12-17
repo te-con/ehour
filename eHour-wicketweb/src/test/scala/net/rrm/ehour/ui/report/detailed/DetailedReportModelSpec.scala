@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.report.trend
+package net.rrm.ehour.ui.report.detailed
 
 import java.util
 
@@ -8,7 +8,6 @@ import net.rrm.ehour.report.criteria.{AggregateBy, ReportCriteria, UserSelectedC
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import net.rrm.ehour.report.service.ReportCriteriaService
-import net.rrm.ehour.ui.report.detailed.DetailedReportModel
 import org.joda.time.{DateTimeConstants, LocalDate}
 import org.scalatest.BeforeAndAfterAll
 

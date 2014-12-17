@@ -25,7 +25,7 @@ import net.rrm.ehour.report.service.DetailedReportService;
 import net.rrm.ehour.report.service.ReportCriteriaService;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
-import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
+import net.rrm.ehour.ui.report.detailed.DetailedReportDataObjectMother;
 import org.apache.wicket.util.tester.FormTester;
 import org.joda.time.LocalDate;
 import org.junit.Before;

@@ -5,7 +5,7 @@ import net.rrm.ehour.report.reports.AggregateReportDataObjectMother;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.report.AbstractExcelReport;
-import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
+import net.rrm.ehour.ui.report.detailed.DetailedReportDataObjectMother;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.junit.After;

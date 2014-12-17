@@ -18,8 +18,8 @@ package net.rrm.ehour.ui.report.user;
 
 
 import net.rrm.ehour.ui.report.AbstractReportPanelTest;
+import net.rrm.ehour.ui.report.detailed.DetailedReportDataObjectMother;
 import net.rrm.ehour.ui.report.model.TreeReportModel;
-import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**

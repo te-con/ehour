@@ -1,5 +1,4 @@
-package net.rrm.ehour.ui.report.panel
-package detail
+package net.rrm.ehour.ui.report.detailed
 
 import net.rrm.ehour.report.criteria.{AggregateBy, ReportCriteria, UserSelectedCriteria}
 import net.rrm.ehour.report.reports.ReportData
@@ -8,8 +7,8 @@ import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer
 import net.rrm.ehour.ui.common.report.{DetailedReportConfig, ReportConfig}
 import net.rrm.ehour.ui.common.wicket.Event
 import net.rrm.ehour.ui.report.cache.ReportCacheService
-import net.rrm.ehour.ui.report.detailed.{DetailedReportExcel, DetailedReportModel}
 import net.rrm.ehour.ui.report.model.{TreeReportData, TreeReportModel}
+import net.rrm.ehour.ui.report.panel.{TreeReportDataPanel, UpdateReportDataEvent}
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
 import org.apache.wicket.event.{Broadcast, IEvent}
@@ -37,28 +36,25 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
   var reportCacheService: ReportCacheService = _
 
   protected override def onBeforeRender() {
-    val frame = new WebMarkupContainer("frame")
-    addOrReplace(frame)
-
     val reportConfig = DetailedReportPanel.AggregateToConfigMap.getOrElse(report.getReportCriteria.getUserSelectedCriteria.getAggregateBy, DetailedReportConfig.DETAILED_REPORT_BY_DAY)
 
     val excel = new DetailedReportExcel(new PropertyModel[ReportCriteria](report, "reportCriteria"))
 
-    frame.add(new TreeReportDataPanel("reportTable", report, reportConfig, excel) {
+    addOrReplace(new TreeReportDataPanel("reportTable", report, reportConfig, excel) {
       protected override def createAdditionalOptions(id: String): WebMarkupContainer = new AggregateByDatePanel(id, report.getReportCriteria.getUserSelectedCriteria)
     })
 
-    val reportData: ReportData = recalculateReportData()
+    val reportData: ReportData = rawReportData()
     val cacheKey = storeReportData(reportData)
 
     val chartContainer = new DetailedReportChartContainer("chart", cacheKey)
     chartContainer.setVisible(!reportData.isEmpty)
-    frame.add(chartContainer)
+    addOrReplace(chartContainer)
 
     super.onBeforeRender()
   }
 
-  private def recalculateReportData():ReportData = {
+  private def rawReportData():ReportData = {
     val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
     val treeReportData = reportModel.getReportData.asInstanceOf[TreeReportData]
     treeReportData.getRawReportData
@@ -69,7 +65,7 @@ class DetailedReportPanel(id: String, report: DetailedReportModel) extends Abstr
   override def onEvent(event: IEvent[_]) = {
     event.getPayload match {
       case aggregateByChangedEvent: AggregateByChangedEvent =>
-        val cacheKey = storeReportData(recalculateReportData())
+        val cacheKey = storeReportData(rawReportData())
 
         val reportDataEvent = new UpdateReportDataEvent(aggregateByChangedEvent.target, cacheKey, aggregateByChangedEvent.reportConfig)
 

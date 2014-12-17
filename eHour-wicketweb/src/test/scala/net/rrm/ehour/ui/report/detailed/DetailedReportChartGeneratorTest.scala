@@ -1,9 +1,8 @@
-package net.rrm.ehour.ui.report.panel.detail
+package net.rrm.ehour.ui.report.detailed
 
-import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
-import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 
 @RunWith(classOf[JUnitRunner])
 class DetailedReportChartGeneratorTest extends FunSuite with Matchers with BeforeAndAfter {

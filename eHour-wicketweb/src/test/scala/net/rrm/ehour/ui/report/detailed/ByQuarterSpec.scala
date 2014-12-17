@@ -1,7 +1,7 @@
-package net.rrm.ehour.ui.report.panel.detail
+package net.rrm.ehour.ui.report.detailed
 
 import net.rrm.ehour.AbstractSpec
-import org.joda.time.{LocalDate, DateTimeConstants}
+import org.joda.time.{DateTimeConstants, LocalDate}
 
 class ByQuarterSpec extends AbstractSpec {
   "By Quarter" should {

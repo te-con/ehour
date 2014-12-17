@@ -1,11 +1,11 @@
-package net.rrm.ehour.ui.report.panel.detail
+package net.rrm.ehour.ui.report.detailed
 
+import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.report.reports.element.FlatReportElement
 import org.apache.wicket.markup.html.panel.EmptyPanel
 import org.joda.time.LocalDate
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import net.rrm.ehour.{AbstractSpringWebAppSpec, AbstractSpec}
 
 @RunWith(classOf[JUnitRunner])
 class DetailedReportAggregatorSpec extends AbstractSpringWebAppSpec {

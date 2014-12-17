@@ -28,7 +28,6 @@ import net.rrm.ehour.ui.report.detailed.node.*;
 import net.rrm.ehour.ui.report.model.ReportNode;
 import net.rrm.ehour.ui.report.model.ReportNodeFactory;
 import net.rrm.ehour.ui.report.model.TreeReportModel;
-import net.rrm.ehour.ui.report.panel.detail.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.io.Serializable;

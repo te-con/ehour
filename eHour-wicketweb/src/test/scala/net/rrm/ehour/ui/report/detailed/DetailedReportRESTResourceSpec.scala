@@ -1,12 +1,8 @@
-package net.rrm.ehour.ui.report.panel.detail
+package net.rrm.ehour.ui.report.detailed
 
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.ui.report.cache.ReportCacheService
 import org.mockito.Mockito._
-import net.rrm.ehour.ui.report.panel.DetailedReportDataObjectMother
-import net.rrm.ehour.report.criteria.AggregateBy
-import net.rrm.ehour.data.DateRange
-import org.joda.time.{LocalDate, DateTimeConstants, DateTime}
 
 class DetailedReportRESTResourceSpec extends AbstractSpringWebAppSpec {
   "Detailed Report REST resource" should {

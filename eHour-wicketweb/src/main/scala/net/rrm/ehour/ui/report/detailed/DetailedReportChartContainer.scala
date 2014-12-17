@@ -1,10 +1,10 @@
-package net.rrm.ehour.ui.report.panel.detail
+package net.rrm.ehour.ui.report.detailed
 
-import org.apache.wicket.markup.html.panel.Panel
-import org.apache.wicket.markup.html.IHeaderContributor
-import org.apache.wicket.markup.head.{OnLoadHeaderItem, IHeaderResponse}
-import org.apache.wicket.event.IEvent
 import net.rrm.ehour.ui.report.panel.UpdateReportDataEvent
+import org.apache.wicket.event.IEvent
+import org.apache.wicket.markup.head.{IHeaderResponse, OnLoadHeaderItem}
+import org.apache.wicket.markup.html.IHeaderContributor
+import org.apache.wicket.markup.html.panel.Panel
 
 class DetailedReportChartContainer(id: String, cacheKey: String) extends Panel(id) with IHeaderContributor {
   setOutputMarkupId(true)

@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.report.panel.detail
+package net.rrm.ehour.ui.report.detailed
 
 import net.rrm.ehour.AbstractSpec
 import org.joda.time.{DateTimeConstants, LocalDate}

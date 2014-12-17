@@ -1,14 +1,14 @@
-package net.rrm.ehour.ui.report.panel.detail
+package net.rrm.ehour.ui.report.detailed
 
+import net.rrm.ehour.data.DateRange
+import net.rrm.ehour.report.criteria.AggregateBy
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.report.reports.element.FlatReportElement
-import collection.Seq
-import java.lang.String
-import org.joda.time.DateTime
-import scala.collection.convert.WrapAsScala
-import net.rrm.ehour.data.DateRange
 import net.rrm.ehour.ui.common.chart.{DateFloatValue, SparseDateSeries}
-import net.rrm.ehour.report.criteria.AggregateBy
+import org.joda.time.DateTime
+
+import scala.collection.Seq
+import scala.collection.convert.WrapAsScala
 
 object DetailedReportChartGenerator {
   def generateHourBasedDetailedChartData(reportData: ReportData): List[SparseDateSeries] = {
