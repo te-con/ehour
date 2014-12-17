@@ -1,5 +1,6 @@
 package net.rrm.ehour.persistence.timesheet.dao;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetCommentId;
@@ -14,8 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.*;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -47,8 +48,20 @@ public class TimesheetCommentDaoHibernateImplTest extends AbstractAnnotationDaoT
         Interval i = new Interval(new LocalDate(2007, DateTimeConstants.JANUARY, 13).toDateTimeAtCurrentTime(),
                 new LocalDate(2007, DateTimeConstants.JANUARY, 22).toDateTimeAtCurrentTime());
 
-        List<TimesheetComment> comment = timesheetCommentDao.findCommentBetween(new DateRange(i));
-        assertEquals(2, comment.size());
+        List<TimesheetComment> comments = timesheetCommentDao.findCommentBetween(new DateRange(i));
+
+        assertEquals(2, comments.size());
+        assertThat(comments.get(0).getCommentId().getCommentDate().toString(), startsWith("2007-01-14"));
+        assertThat(comments.get(1).getCommentId().getCommentDate().toString(), startsWith("2007-01-21"));
     }
 
+    @Test
+    public void should_find_entries_in_range_for_users() {
+        Interval i = new Interval(new LocalDate(2007, DateTimeConstants.JANUARY, 1).toDateTimeAtCurrentTime(),
+                new LocalDate(2007, DateTimeConstants.JANUARY, 30).toDateTimeAtCurrentTime());
+
+        List<TimesheetComment> comments = timesheetCommentDao.findCommentBetweenForUsers(Lists.newArrayList(2, 3), new DateRange(i));
+        assertEquals(2, comments.get(0).getCommentId().getUserId().intValue());
+        assertEquals(3, comments.get(1).getCommentId().getUserId().intValue());
+    }
 }

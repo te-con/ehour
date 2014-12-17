@@ -28,9 +28,8 @@ class TimesheetCommentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[T
   }
 
   override def findCommentBetweenForUsers(users: util.List[Integer], dateRange: DateRange): util.List[TimesheetComment] = {
-    val keys = List("dateStart", "dateEnd", "userIDs")
+    val keys = List("dateStart", "dateEnd", "userIds")
     val params = List(dateRange.getDateStart, dateRange.getDateEnd, users)
     findByNamedQuery("TimesheetComment.findCommentsForUsersIn", keys, params)
-
   }
 }
