@@ -75,7 +75,6 @@ public class DetailedReportModel extends TreeReportModel {
 
         if (AGGREGATE_MAP.containsKey(aggregateBy)) {
             AggregateConverter aggregateFunction = AGGREGATE_MAP.get(aggregateBy);
-
             elements = DetailedReportAggregator.aggregate(originalElements, aggregateFunction);
         } else {
             elements = originalElements;
