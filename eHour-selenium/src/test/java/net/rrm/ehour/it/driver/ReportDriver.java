@@ -118,7 +118,7 @@ public abstract class ReportDriver {
     }
 
     public static void clickZeroBookings() {
-        findElement("reportContainer_panel_frame_reportTable_greyFrame_greyFrame__body_reportContent_reportOptionsPlaceholder_toggleShowZeroBookings").click();
+        findElement("reportContainer_panel_reportTable_greyFrame_greyFrame__body_reportContent_reportOptionsPlaceholder_toggleShowZeroBookings").click();
     }
 
 }
