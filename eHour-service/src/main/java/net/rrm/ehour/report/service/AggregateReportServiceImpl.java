@@ -23,7 +23,6 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ProjectManagerReport;
@@ -53,8 +52,8 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     }
 
     @Autowired
-    public AggregateReportServiceImpl(ProjectAssignmentService projectAssignmentService, UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
-        super(userDao, projectDao, lockService, reportAggregatedDAO);
+    public AggregateReportServiceImpl(ProjectAssignmentService projectAssignmentService, ReportCriteriaService reportCriteriaService, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDAO) {
+        super(reportCriteriaService, projectDao, lockService, reportAggregatedDAO);
         this.reportAggregatedDAO = reportAggregatedDAO;
         this.projectAssignmentService = projectAssignmentService;
     }
@@ -110,13 +109,13 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     private List<AssignmentAggregateReportElement> findAggregates(List<User> users, List<Project> projects, DateRange reportRange) {
         List<AssignmentAggregateReportElement> aggregates = new ArrayList<AssignmentAggregateReportElement>();
 
-        if (users == null && projects == null) {
+        if (users.isEmpty() && projects.isEmpty()) {
             aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignment(reportRange);
-        } else if (projects == null) {
+        } else if (projects.isEmpty()) {
             if (!CollectionUtils.isEmpty(users)) {
                 aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, reportRange);
             }
-        } else if (users == null) {
+        } else if (users.isEmpty()) {
             if (!CollectionUtils.isEmpty(projects)) {
                 aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, reportRange);
             }

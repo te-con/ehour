@@ -21,7 +21,6 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
@@ -53,7 +52,7 @@ public class AggregateReportServiceImplTest {
     private AggregateReportServiceImpl aggregateReportService;
     
     @Mock
-    private UserDao userDao;
+    private ReportCriteriaService reportCriteriaService;
 
     @Mock
     private ProjectDao projectDao;
@@ -69,7 +68,7 @@ public class AggregateReportServiceImplTest {
     
     @Before
     public void setUp() {
-        aggregateReportService = new AggregateReportServiceImpl(assignmentService, userDao, projectDao, timesheetLockService, reportAggregatedDao);
+        aggregateReportService = new AggregateReportServiceImpl(assignmentService, reportCriteriaService, projectDao, timesheetLockService, reportAggregatedDao);
 
         when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
                 .thenReturn(WrapAsScala$.MODULE$.asScalaBuffer(Lists.<Interval>newArrayList()));
@@ -77,85 +76,78 @@ public class AggregateReportServiceImplTest {
 
     @Test
     public void should_create_report_for_single_user() {
-        DateRange dr = new DateRange();
-        UserSelectedCriteria uc = new UserSelectedCriteria();
-        uc.setReportRange(dr);
+        DateRange dateRange = new DateRange();
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setReportRange(dateRange);
 
-        List<User> users = Lists.newArrayList(UserObjectMother.createUser());
-        uc.setUsers(users);
-        ReportCriteria rc = new ReportCriteria(uc);
+        List<User> users = filterOnSingleUser(userSelectedCriteria);
+        userSelectedCriteria.setUsers(users);
+
+        ReportCriteria criteria = new ReportCriteria(userSelectedCriteria);
 
         List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
 
         when(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(eq(users), any(DateRange.class))).thenReturn(pags);
 
-        ReportData data = aggregateReportService.getAggregateReportData(rc);
+        ReportData data = aggregateReportService.getAggregateReportData(criteria);
 
         assertEquals(3, data.getReportElements().size());
     }
 
+    private List<User> filterOnSingleUser(UserSelectedCriteria userSelectedCriteria) {
+        List<User> users = Lists.newArrayList(UserObjectMother.createUser());
+        List<Project> projects = Lists.newArrayList();
+        UsersAndProjects usersAndProjects = new UsersAndProjects(users, projects);
+        when(reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria)).thenReturn(usersAndProjects);
+
+        return users;
+    }
 
     @Test
     public void should_create_global_report() {
-        DateRange dr = new DateRange();
-        UserSelectedCriteria uc = new UserSelectedCriteria();
-        uc.setReportRange(dr);
-        ReportCriteria rc = new ReportCriteria(uc);
+        DateRange dateRange = new DateRange();
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setReportRange(dateRange);
+        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
         List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
 
         when(reportAggregatedDao.getCumulatedHoursPerAssignment(any(DateRange.class))).thenReturn(pags);
+        when(reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria)).thenReturn(new UsersAndProjects());
 
-        ReportData data = aggregateReportService.getAggregateReportData(rc);
-
-        assertEquals(3, data.getReportElements().size());
-    }
-
-    @Test
-    public void should_create_report_for_department() {
-        List<User> users = Lists.newArrayList(UserObjectMother.createUser());
-
-        DateRange dr = new DateRange();
-        UserSelectedCriteria uc = new UserSelectedCriteria();
-        uc.setReportRange(dr);
-        List<UserDepartment> l = new ArrayList<UserDepartment>();
-        l.add(new UserDepartment(2));
-
-        uc.setDepartments(l);
-        uc.setOnlyActiveUsers(true);
-        ReportCriteria rc = new ReportCriteria(uc);
-        List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
-
-        when(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(eq(users), any(DateRange.class))).thenReturn(pags);
-        when(userDao.findUsers(true)).thenReturn(users);
-
-        ReportData data = aggregateReportService.getAggregateReportData(rc);
+        ReportData data = aggregateReportService.getAggregateReportData(reportCriteria);
 
         assertEquals(3, data.getReportElements().size());
     }
 
     @Test
     public void should_create_report_for_specific_project() {
-        List<Customer> customers = Lists.newArrayList(CustomerObjectMother.createCustomer(1));
-        List<Project> projects = Lists.newArrayList(ProjectObjectMother.createProject(1));
+        DateRange dateRange = new DateRange();
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setReportRange(dateRange);
 
-        DateRange dr = new DateRange();
-        UserSelectedCriteria uc = new UserSelectedCriteria();
-        uc.setReportRange(dr);
-        uc.setCustomers(customers);
+        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
 
-        ReportCriteria rc = new ReportCriteria(uc);
+        List<Project> projects = filterOnSingleProject(userSelectedCriteria);
         List<AssignmentAggregateReportElement> pags = createAssignmentAggregateReportElements();
 
         when(reportAggregatedDao.getCumulatedHoursPerAssignmentForProjects(eq(projects), any(DateRange.class))).thenReturn(pags);
-        when(projectDao.findProjectForCustomers(customers, true)).thenReturn(projects);
 
-        ReportData data = aggregateReportService.getAggregateReportData(rc);
+        ReportData data = aggregateReportService.getAggregateReportData(reportCriteria);
 
         assertEquals(3, data.getReportElements().size());
     }
 
+    private List<Project> filterOnSingleProject(UserSelectedCriteria userSelectedCriteria) {
+        List<User> users = Lists.newArrayList();
+        List<Project> projects = Lists.newArrayList(ProjectObjectMother.createProject(1));
+        UsersAndProjects usersAndProjects = new UsersAndProjects(users, projects);
+        when(reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria)).thenReturn(usersAndProjects);
+
+        return projects;
+    }
+
     private List<AssignmentAggregateReportElement> createAssignmentAggregateReportElements() {
-        List<AssignmentAggregateReportElement> pags = new ArrayList<AssignmentAggregateReportElement>();
+        List<AssignmentAggregateReportElement> pags = new ArrayList<>();
 
         pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1));
         pags.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
@@ -170,7 +162,7 @@ public class AggregateReportServiceImplTest {
         DateRange dr = new DateRange(new Date(), new Date());
         when(reportAggregatedDao.getMinMaxDateTimesheetEntry(project)).thenReturn(dr);
 
-        List<AssignmentAggregateReportElement> elms = new ArrayList<AssignmentAggregateReportElement>();
+        List<AssignmentAggregateReportElement> elms = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -182,7 +174,7 @@ public class AggregateReportServiceImplTest {
                 .thenReturn(elms);
 
 
-        List<ProjectAssignment> assignments = new ArrayList<ProjectAssignment>();
+        List<ProjectAssignment> assignments = new ArrayList<>();
         assignments.add(ProjectAssignmentObjectMother.createProjectAssignment(2));
 
         when(assignmentService.getProjectAssignments(project, dr)).thenReturn(assignments);
@@ -195,33 +187,23 @@ public class AggregateReportServiceImplTest {
 
     @Test
     public void should_create_pm_report() {
-        UserSelectedCriteria criteria = new UserSelectedCriteria();
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
 
         User projectManager = new User(2);
-        criteria.setReportTypeToPM(projectManager);
+        userSelectedCriteria.setReportTypeToPM(projectManager);
+
         Project pmProject = ProjectObjectMother.createProject(1);
         when(projectDao.findActiveProjectsWhereUserIsPM(projectManager)).thenReturn(Lists.newArrayList(pmProject));
 
-        UserDepartment userDepartment = new UserDepartment(2);
-        User user = new User(1);
-        user.setUserDepartment(userDepartment);
-
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
         assignment.getProject().setProjectId(1);
-        user.addProjectAssignment(assignment);
-
-        List<User> users = Lists.newArrayList(user);
-        List<UserDepartment> departments = Lists.newArrayList(userDepartment);
-
-        when(userDao.findUsers(true)).thenReturn(users);
-        criteria.setDepartments(departments);
 
         DateRange dateRange = new DateRange();
-        criteria.setReportRange(dateRange);
+        userSelectedCriteria.setReportRange(dateRange);
 
-        criteria.setOnlyActiveUsers(true);
+        userSelectedCriteria.setOnlyActiveUsers(true);
 
-        ReportCriteria reportCriteria = new ReportCriteria(criteria);
+        ReportCriteria reportCriteria = new ReportCriteria(userSelectedCriteria);
         List<AssignmentAggregateReportElement> elements = Lists.newArrayList();
 
         AssignmentAggregateReportElement aggregate = AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(1, 1, 1);
@@ -230,7 +212,9 @@ public class AggregateReportServiceImplTest {
         elements.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(2, 2, 2));
         elements.add(AssignmentAggregateReportElementMother.createProjectAssignmentAggregate(3, 3, 3));
 
-        when(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(any(List.class), any(DateRange.class))).thenReturn(elements);
+        List<User> userList = filterOnSingleUser(userSelectedCriteria);
+
+        when(reportAggregatedDao.getCumulatedHoursPerAssignmentForUsers(eq(userList), any(DateRange.class))).thenReturn(elements);
 
         ReportData reportData = aggregateReportService.getAggregateReportData(reportCriteria);
 

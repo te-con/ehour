@@ -24,7 +24,6 @@ import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.FlatReportElement;
@@ -49,8 +48,8 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
     }
 
     @Autowired
-    public DetailedReportServiceImpl(UserDao userDao, ProjectDao projectDao, TimesheetLockService lockService, DetailedReportDao detailedReportDao, ReportAggregatedDao reportAggregatedDAO) {
-        super(userDao, projectDao, lockService, reportAggregatedDAO);
+    public DetailedReportServiceImpl(ReportCriteriaService reportCriteriaService, ProjectDao projectDao, TimesheetLockService lockService, DetailedReportDao detailedReportDao, ReportAggregatedDao reportAggregatedDAO) {
+        super(reportCriteriaService, projectDao, lockService, reportAggregatedDAO);
         this.detailedReportDao = detailedReportDao;
     }
 
@@ -100,11 +99,11 @@ public class DetailedReportServiceImpl extends AbstractReportServiceImpl<FlatRep
     private List<FlatReportElement> getElements(List<Integer> userIds, List<Integer> projectIds, DateRange reportRange) {
         List<FlatReportElement> elements;
 
-        if (userIds == null && projectIds == null) {
+        if (userIds.isEmpty() && projectIds.isEmpty()) {
             elements = detailedReportDao.getHoursPerDay(reportRange);
-        } else if (projectIds == null) {
+        } else if (projectIds.isEmpty()) {
             elements = detailedReportDao.getHoursPerDayForUsers(userIds, reportRange);
-        } else if (userIds == null) {
+        } else if (userIds.isEmpty()) {
             elements = detailedReportDao.getHoursPerDayForProjects(projectIds, reportRange);
         } else {
             elements = detailedReportDao.getHoursPerDayForProjectsAndUsers(projectIds, userIds, reportRange);

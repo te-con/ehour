@@ -22,7 +22,6 @@ import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.DetailedReportDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
@@ -55,7 +54,7 @@ public class DetailedReportServiceImplTest {
     private DetailedReportServiceImpl detailedReportService;
     private ReportCriteria reportCriteria;
     private UserSelectedCriteria userSelectedCriteria;
-    private UserDao userDao;
+    private ReportCriteriaService reportCriteriaService;
     private TimesheetLockService timesheetLockService;
     private ProjectDao projectDao;
     private ReportAggregatedDao reportAggregatedDao;
@@ -64,7 +63,7 @@ public class DetailedReportServiceImplTest {
     public void setUp() throws Exception {
         detailedReportDao = mock(DetailedReportDao.class);
         projectDao = mock(ProjectDao.class);
-        userDao = mock(UserDao.class);
+        reportCriteriaService = mock(ReportCriteriaService.class);
 
         userSelectedCriteria = new UserSelectedCriteria();
         userSelectedCriteria.setShowZeroBookings(true);
@@ -75,21 +74,12 @@ public class DetailedReportServiceImplTest {
 
         reportAggregatedDao = mock(ReportAggregatedDao.class);
 
-        detailedReportService = new DetailedReportServiceImpl(userDao, projectDao, timesheetLockService, detailedReportDao, reportAggregatedDao);
+        detailedReportService = new DetailedReportServiceImpl(reportCriteriaService, projectDao, timesheetLockService, detailedReportDao, reportAggregatedDao);
     }
 
     private void provideNoLocks() {
         when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
-                .thenReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.<Interval>newArrayList()));
-    }
-
-    @Test
-    public void should_get_all() {
-        provideNoLocks();
-        provideNoAssignmentsWithoutBookings();
-
-        provideNoData();
-        detailedReportService.getDetailedReportData(reportCriteria);
+                .thenReturn(WrapAsScala$.MODULE$.asScalaBuffer(Lists.<Interval>newArrayList()));
     }
 
     private void provideNoAssignmentsWithoutBookings() {
@@ -101,13 +91,36 @@ public class DetailedReportServiceImplTest {
     }
 
     @Test
-    public void should_filter_on_user() {
+    public void should_get_all() {
         provideNoLocks();
-        singleUserSelected();
         provideNoAssignmentsWithoutBookings();
 
-        when(detailedReportDao.getHoursPerDayForUsers(any(List.class), any(DateRange.class))).thenReturn(Arrays.asList(createFlatReportElement()));
+        provideNoData();
+        noFilteringOnUserOrProject();
+
         detailedReportService.getDetailedReportData(reportCriteria);
+    }
+
+    @Test
+    public void should_filter_on_user() {
+        provideNoLocks();
+        provideNoAssignmentsWithoutBookings();
+
+        filterOnSingleUser();
+
+        List<Integer> userIds = Lists.newArrayList(1);
+        when(detailedReportDao.getHoursPerDayForUsers(eq(userIds), any(DateRange.class))).thenReturn(Lists.newArrayList(createFlatReportElement()));
+
+        detailedReportService.getDetailedReportData(reportCriteria);
+
+        verify(detailedReportDao).getHoursPerDayForUsers(eq(userIds), any(DateRange.class));
+    }
+
+    private void filterOnSingleUser() {
+        List<User> users = Lists.newArrayList(UserObjectMother.createUser());
+        List<Project> projects = Lists.newArrayList();
+        UsersAndProjects usersAndProjects = new UsersAndProjects(users, projects);
+        when(reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria)).thenReturn(usersAndProjects);
     }
 
     private FlatReportElement createFlatReportElement() {
@@ -119,51 +132,68 @@ public class DetailedReportServiceImplTest {
     public void should_filter_on_project() {
         provideNoLocks();
         provideNoAssignmentsWithoutBookings();
-        singleProjectSelected();
 
-        when(detailedReportDao.getHoursPerDayForProjects(any(List.class), any(DateRange.class))).thenReturn(new ArrayList<FlatReportElement>());
+        filterOnSingleProject();
+
+        List<Integer> projectIds = Lists.newArrayList(2);
+        when(detailedReportDao.getHoursPerDayForProjects(eq(projectIds), any(DateRange.class))).thenReturn(new ArrayList<FlatReportElement>());
+
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDao).getHoursPerDayForProjects(any(List.class), any(DateRange.class));
+
+        verify(detailedReportDao).getHoursPerDayForProjects(eq(projectIds), any(DateRange.class));
+    }
+
+    protected void filterOnSingleProject() {
+        List<User> users = Lists.newArrayList();
+        List<Project> projects = Lists.newArrayList(new Project(2));
+
+        UsersAndProjects usersAndProjects = new UsersAndProjects(users, projects);
+        when(reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria)).thenReturn(usersAndProjects);
     }
 
     @Test
     public void should_filter_on_project_and_user() {
         provideNoLocks();
-        singleProjectSelected();
-        singleUserSelected();
         provideNoAssignmentsWithoutBookings();
 
-        when(detailedReportDao.getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class)))
+        filterOnSingleUserAndSingleProject();
+
+        List<Integer> userIds = Lists.newArrayList(1);
+        List<Integer> projectIds = Lists.newArrayList(2);
+
+        when(detailedReportDao.getHoursPerDayForProjectsAndUsers(eq(projectIds), eq(userIds), any(DateRange.class)))
                 .thenReturn(new ArrayList<FlatReportElement>());
         detailedReportService.getDetailedReportData(reportCriteria);
-        verify(detailedReportDao).getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class));
+        verify(detailedReportDao).getHoursPerDayForProjectsAndUsers(eq(projectIds), eq(userIds), any(DateRange.class));
     }
 
-    private void singleUserSelected() {
-        userSelectedCriteria.setUsers(Arrays.asList(new User(1)));
+    protected void filterOnSingleUserAndSingleProject() {
+        List<User> users = Lists.newArrayList(UserObjectMother.createUser());
+        List<Project> projects = Lists.newArrayList(new Project(2));
+
+        UsersAndProjects usersAndProjects = new UsersAndProjects(users, projects);
+        when(reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria)).thenReturn(usersAndProjects);
     }
 
     @Test
     public void should_filter_on_user_department() {
         provideNoLocks();
         provideNoAssignmentsWithoutBookings();
-        singleProjectSelected();
+
         List<UserDepartment> departments = Arrays.asList(new UserDepartment(1));
         userSelectedCriteria.setDepartments(departments);
 
-        when(userDao.findUsers(true)).thenReturn(Arrays.asList(new User(1)));
+        filterOnSingleUserAndSingleProject();
 
-        when(detailedReportDao.getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class)))
-                .thenReturn(new ArrayList<FlatReportElement>());
+        List<Integer> userIds = Lists.newArrayList(1);
+        List<Integer> projectIds = Lists.newArrayList(2);
+
+        when(detailedReportDao.getHoursPerDayForProjectsAndUsers(eq(projectIds), eq(userIds), any(DateRange.class)))
+                .thenReturn(Lists.<FlatReportElement>newArrayList());
 
         detailedReportService.getDetailedReportData(reportCriteria);
 
-        verify(userDao).findUsers(true);
-        verify(detailedReportDao).getHoursPerDayForProjectsAndUsers(any(List.class), any(List.class), any(DateRange.class));
-    }
-
-    private void singleProjectSelected() {
-        userSelectedCriteria.setProjects(Arrays.asList(new Project(1)));
+        verify(detailedReportDao).getHoursPerDayForProjectsAndUsers(eq(projectIds), eq(userIds), any(DateRange.class));
     }
 
     @Test
@@ -173,13 +203,15 @@ public class DetailedReportServiceImplTest {
         provideNoAssignmentsWithoutBookings();
 
         when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class)))
-                .thenReturn(WrapAsScala$.MODULE$.<Interval>asScalaBuffer(Lists.newArrayList(interval)));
+                .thenReturn(WrapAsScala$.MODULE$.asScalaBuffer(Lists.newArrayList(interval)));
 
         FlatReportElement reportElement = new FlatReportElement();
         reportElement.setDayDate(dateTime.toDate());
 
         when(detailedReportDao.getHoursPerDay(any(DateRange.class)))
                 .thenReturn(Arrays.asList(reportElement));
+
+        noFilteringOnUserOrProject();
 
         ReportData reportData = detailedReportService.getDetailedReportData(reportCriteria);
 
@@ -188,6 +220,10 @@ public class DetailedReportServiceImplTest {
 
         verify(detailedReportDao).getHoursPerDay(any(DateRange.class));
         verify(timesheetLockService).findLockedDatesInRange(any(Date.class), any(Date.class));
+    }
+
+    protected void noFilteringOnUserOrProject() {
+        when(reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria)).thenReturn(new UsersAndProjects());
     }
 
     @Test
@@ -205,6 +241,12 @@ public class DetailedReportServiceImplTest {
 
         when(projectDao.findAllActive()).thenReturn(Arrays.asList(billableProject, notBillableProject));
 
+        List<User> users = Lists.newArrayList();
+        List<Project> projects = Lists.newArrayList(billableProject);
+
+        UsersAndProjects usersAndProjects = new UsersAndProjects(users, projects);
+        when(reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria)).thenReturn(usersAndProjects);
+
         ArgumentCaptor<List> projectIdListCapture = ArgumentCaptor.forClass(List.class);
         when(detailedReportDao.getHoursPerDayForProjects(projectIdListCapture.capture(), any(DateRange.class)))
                 .thenReturn(new ArrayList<FlatReportElement>());
@@ -218,6 +260,7 @@ public class DetailedReportServiceImplTest {
     @Test
     public void should_provide_assignments_without_bookings() {
         provideNoLocks();
+        noFilteringOnUserOrProject();
 
         when(reportAggregatedDao.getAssignmentsWithoutBookings(reportCriteria.getReportRange())).thenReturn(Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1)));
 
@@ -229,7 +272,8 @@ public class DetailedReportServiceImplTest {
         Project notBillableProject = ProjectObjectMother.createProject(2);
         notBillableProject.setBillable(false);
 
-        when(projectDao.findAllActive()).thenReturn(Arrays.asList(billableProject, notBillableProject));
+        when(projectDao.findAllActive()).thenReturn(Arrays.asList(billableProject));
+
 
         when(detailedReportDao.getHoursPerDay(reportCriteria.getReportRange())).thenReturn(Arrays.asList(createFlatReportElement()));
 

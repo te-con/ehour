@@ -19,17 +19,21 @@ package net.rrm.ehour.report.service;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.domain.*;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.AvailableCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import scala.Tuple2;
 import scala.collection.convert.WrapAsJava$;
 
+import java.util.Collection;
 import java.util.List;
 
 import static net.rrm.ehour.report.criteria.ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS;
@@ -48,6 +52,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
 
     private IndividualUserCriteriaSync individualUserCriteriaSync;
     private TimesheetLockService lockService;
+    private UserDao userDao;
+    private ProjectDao projectDao;
 
     protected ReportCriteriaServiceImpl() {
     }
@@ -57,12 +63,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
                                      CustomerAndProjectCriteriaFilter customerAndProjectCriteriaFilter,
                                      UserAndDepartmentCriteriaFilter userAndDepartmentCriteriaFilter,
                                      IndividualUserCriteriaSync individualUserCriteriaSync,
-                                     TimesheetLockService lockService) {
+                                     TimesheetLockService lockService,
+                                     UserDao userDao,
+                                     ProjectDao projectDao) {
         this.reportAggregatedDAO = reportAggregatedDAO;
         this.customerAndProjectCriteriaFilter = customerAndProjectCriteriaFilter;
         this.userAndDepartmentCriteriaFilter = userAndDepartmentCriteriaFilter;
         this.individualUserCriteriaSync = individualUserCriteriaSync;
         this.lockService = lockService;
+        this.userDao = userDao;
+        this.projectDao = projectDao;
     }
 
     /**
@@ -134,5 +144,95 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService {
         }
 
         userSelectedCriteria.setCustomers(updatedSelectedCustomers);
+    }
+
+    @Override
+    public UsersAndProjects criteriaToUsersAndProjects(UserSelectedCriteria userSelectedCriteria) {
+        boolean noUserRestrictionProvided = userSelectedCriteria.isEmptyDepartments() && userSelectedCriteria.isEmptyUsers();
+        boolean noProjectRestrictionProvided = userSelectedCriteria.isEmptyCustomers() && userSelectedCriteria.isEmptyProjects();
+
+        List<Project> projects;
+        List<User> users;
+
+        if (!noProjectRestrictionProvided || !noUserRestrictionProvided) {
+            if (noProjectRestrictionProvided) {
+                users = getUsersForSelectedDepartments(userSelectedCriteria);
+                projects = Lists.newArrayList();
+            } else if (noUserRestrictionProvided) {
+                projects = getProjects(userSelectedCriteria);
+                users = Lists.newArrayList();
+            } else {
+                users = getUsersForSelectedDepartments(userSelectedCriteria);
+                projects = getProjects(userSelectedCriteria);
+            }
+        } else {
+            users = Lists.newArrayList();
+            projects = Lists.newArrayList();
+        }
+
+        if (userSelectedCriteria.isOnlyBillableProjects() && projects.isEmpty()) {
+            projects = getBillableProjects(userSelectedCriteria);
+        }
+
+        return new UsersAndProjects(users, projects);
+    }
+
+    private List<User> getUsersForSelectedDepartments(UserSelectedCriteria userSelectedCriteria) {
+        if (userSelectedCriteria.isEmptyUsers()) {
+            if (!userSelectedCriteria.isEmptyDepartments()) {
+                Collection<UserDepartment> departments = userSelectedCriteria.getDepartments();
+
+                return findUsersInDepartments(userSelectedCriteria, departments);
+            } else {
+                return Lists.newArrayList();
+            }
+        } else {
+            return userSelectedCriteria.getUsers();
+        }
+    }
+
+    private List<User> findUsersInDepartments(UserSelectedCriteria userSelectedCriteria, Collection<UserDepartment> departments) {
+        List<User> allActiveUsers = userDao.findUsers(userSelectedCriteria.isOnlyActiveUsers());
+
+        List<User> matchingUsers = Lists.newArrayList();
+        for (User activeUser : allActiveUsers) {
+            if (CollectionUtils.containsAny(activeUser.getUserDepartments(), departments)) {
+                matchingUsers.add(activeUser);
+            }
+        }
+        return matchingUsers;
+    }
+
+    /**
+     * Get project id's based on selected customers
+     */
+    private List<Project> getProjects(UserSelectedCriteria userSelectedCriteria) {
+        // No projects selected by the user, use any given customer limitation
+        if (userSelectedCriteria.isEmptyProjects()) {
+            if (!userSelectedCriteria.isEmptyCustomers()) {
+                return projectDao.findProjectForCustomers(userSelectedCriteria.getCustomers(), userSelectedCriteria.isOnlyActiveProjects());
+            } else {
+                return Lists.newArrayList();
+            }
+        } else {
+            return userSelectedCriteria.getProjects();
+        }
+    }
+
+    private List<Project> getBillableProjects(UserSelectedCriteria criteria) {
+        List<Project> projects = criteria.isOnlyActiveProjects() ? projectDao.findAllActive() : projectDao.findAll();
+
+        List<Project> filteredProjects = Lists.newArrayList();
+
+        for (Project project : projects) {
+            boolean billableFilter = project.isBillable();
+            boolean customerFilter = !criteria.isOnlyActiveCustomers() || project.getCustomer().isActive();
+
+            if (billableFilter && customerFilter) {
+                filteredProjects.add(project);
+            }
+        }
+
+        return filteredProjects;
     }
 }

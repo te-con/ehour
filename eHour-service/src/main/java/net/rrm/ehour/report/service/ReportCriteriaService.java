@@ -18,7 +18,10 @@ package net.rrm.ehour.report.service;
 
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
+import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 
 public interface ReportCriteriaService {
     ReportCriteria syncUserReportCriteria(ReportCriteria reportCriteria, ReportCriteriaUpdateType updateType);
+
+    UsersAndProjects criteriaToUsersAndProjects(UserSelectedCriteria userSelectedCriteria);
 }

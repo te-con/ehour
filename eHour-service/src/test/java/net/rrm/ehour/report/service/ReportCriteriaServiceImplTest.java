@@ -18,7 +18,9 @@ package net.rrm.ehour.report.service;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.*;
+import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.persistence.user.dao.UserDepartmentDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.ReportCriteriaUpdateType;
@@ -35,6 +37,10 @@ import scala.collection.immutable.List$;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,9 +66,17 @@ public class ReportCriteriaServiceImplTest {
     @Mock
     private TimesheetLockService timesheetLockService;
 
+    @Mock
+    private UserDao userDao;
+
+    @Mock
+    private ProjectDao projectDao;
+
     @Before
     public void setup() {
-        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO, customerAndProjectCriteriaFilter, userAndDepartmentCriteriaFilter, individualUserCriteriaSync, timesheetLockService);
+        reportCriteriaService = new ReportCriteriaServiceImpl(reportAggregatedDAO,
+                customerAndProjectCriteriaFilter, userAndDepartmentCriteriaFilter, individualUserCriteriaSync, timesheetLockService,
+                userDao, projectDao);
 
         when(timesheetLockService.findAll()).thenReturn(List$.MODULE$.<TimesheetLock>empty());
     }
@@ -107,5 +121,99 @@ public class ReportCriteriaServiceImplTest {
         reportCriteriaService.syncUserReportCriteria(reportCriteria, ReportCriteriaUpdateType.UPDATE_CUSTOMERS_AND_PROJECTS);
 
         verify(customerAndProjectCriteriaFilter).getAvailableCustomers(userSelectedCriteria);
+    }
+
+    @Test
+    public void should_return_empty_users_and_projects_when_no_filter_is_provided() {
+        UsersAndProjects usersAndProjects = reportCriteriaService.criteriaToUsersAndProjects(new UserSelectedCriteria());
+
+        assertTrue("Users should be empty", usersAndProjects.getUsers().isEmpty());
+        assertTrue("Projects should be empty", usersAndProjects.getProjects().isEmpty());
+    }
+
+    @Test
+    public void should_return_single_user_when_its_provided() {
+        User user = UserObjectMother.createUser();
+
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setUsers(Lists.newArrayList(user));
+
+        UsersAndProjects usersAndProjects = reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria);
+
+        assertThat(userSelectedCriteria.getUsers(), contains(user));
+        assertTrue("Projects should be empty", usersAndProjects.getProjects().isEmpty());
+    }
+
+    @Test
+    public void should_find_users_when_a_department_is_provided() {
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        UserDepartment userDepartment = UserDepartmentObjectMother.createUserDepartment(1);
+        userSelectedCriteria.setDepartments(Lists.newArrayList(userDepartment));
+
+        User matchingUser = UserObjectMother.createUser();
+        matchingUser.setUserDepartment(userDepartment);
+
+        User nonMatchingUser = UserObjectMother.createUser();
+        UserDepartment wrongDepartment = UserDepartmentObjectMother.createUserDepartment(2);
+        wrongDepartment.setCode("cc");
+        nonMatchingUser.setUserDepartment(wrongDepartment);
+
+        when(userDao.findUsers(true)).thenReturn(Lists.newArrayList(matchingUser, nonMatchingUser));
+
+        UsersAndProjects usersAndProjects = reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria);
+
+        assertEquals(1, usersAndProjects.getUsers().size());
+        assertThat(usersAndProjects.getUsers(), contains(matchingUser));
+        assertTrue("Projects should be empty", usersAndProjects.getProjects().isEmpty());
+    }
+
+    @Test
+    public void should_find_projects_when_project_is_provided() {
+        Project project = ProjectObjectMother.createProject(1);
+
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        userSelectedCriteria.setProjects(Lists.newArrayList(project));
+
+        UsersAndProjects usersAndProjects = reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria);
+
+        assertThat(userSelectedCriteria.getProjects(), contains(project));
+        assertTrue("Users should be empty", usersAndProjects.getUsers().isEmpty());
+    }
+
+    @Test
+    public void should_find_projects_when_customer_is_provided() {
+        Customer customer = CustomerObjectMother.createCustomer();
+
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+        List<Customer> customers = Lists.newArrayList(customer);
+        userSelectedCriteria.setCustomers(customers);
+
+        Project project = ProjectObjectMother.createProject(1);
+        when(projectDao.findProjectForCustomers(customers, true)).thenReturn(Lists.newArrayList(project));
+
+        UsersAndProjects usersAndProjects = reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria);
+
+        assertThat(usersAndProjects.getProjects(), contains(project));
+        assertTrue("Users should be empty", usersAndProjects.getUsers().isEmpty());
+    }
+
+    @Test
+    public void should_find_only_billable_projects() {
+        UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();
+
+        Project billableProject = ProjectObjectMother.createProject(1);
+        billableProject.setBillable(true);
+
+        Project notBillableProject = ProjectObjectMother.createProject(2);
+        notBillableProject.setBillable(false);
+
+        when(projectDao.findAllActive()).thenReturn(Lists.newArrayList(billableProject, notBillableProject));
+        userSelectedCriteria.setOnlyBillableProjects(true);
+
+        UsersAndProjects usersAndProjects = reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria);
+
+        assertEquals(1, usersAndProjects.getProjects().size());
+        assertThat(usersAndProjects.getProjects(), contains(billableProject));
+        assertTrue("Users should be empty", usersAndProjects.getUsers().isEmpty());
     }
 }

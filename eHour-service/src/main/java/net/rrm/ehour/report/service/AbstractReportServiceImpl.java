@@ -21,21 +21,17 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.domain.UserDepartment;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
-import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
 import net.rrm.ehour.report.reports.ReportData;
 import net.rrm.ehour.report.reports.element.ProjectStructuredReportElement;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.timesheet.service.TimesheetLockService$;
-import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.Interval;
 import scala.collection.Seq;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -45,19 +41,18 @@ import java.util.List;
  */
 
 public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredReportElement> {
-    private UserDao userDAO;
-
-    private ProjectDao projectDAO;
-
+    private ProjectDao projectDao;
     private TimesheetLockService lockService;
     protected ReportAggregatedDao reportAggregatedDao;
+    private ReportCriteriaService reportCriteriaService;
+
 
     AbstractReportServiceImpl() {
     }
 
-    protected AbstractReportServiceImpl(UserDao userDAO, ProjectDao projectDAO, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDao) {
-        this.userDAO = userDAO;
-        this.projectDAO = projectDAO;
+    protected AbstractReportServiceImpl(ReportCriteriaService reportCriteriaService, ProjectDao projectDao, TimesheetLockService lockService, ReportAggregatedDao reportAggregatedDao) {
+        this.reportCriteriaService = reportCriteriaService;
+        this.projectDao = projectDao;
         this.lockService = lockService;
         this.reportAggregatedDao = reportAggregatedDao;
     }
@@ -94,7 +89,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
     }
 
     private List<Integer> fetchAllowedProjectIds(UserSelectedCriteria userSelectedCriteria) {
-        List<Project> allowedProjects = projectDAO.findActiveProjectsWhereUserIsPM(userSelectedCriteria.getPm());
+        List<Project> allowedProjects = projectDao.findActiveProjectsWhereUserIsPM(userSelectedCriteria.getPm());
 
         List<Integer> projectIds = Lists.newArrayList();
 
@@ -106,28 +101,13 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
 
 
     private List<RE> generateReport(UserSelectedCriteria userSelectedCriteria, List<Date> lockedDates, DateRange reportRange) {
-        boolean noUserRestrictionProvided = userSelectedCriteria.isEmptyDepartments() && userSelectedCriteria.isEmptyUsers();
-        boolean noProjectRestrictionProvided = userSelectedCriteria.isEmptyCustomers() && userSelectedCriteria.isEmptyProjects();
+        UsersAndProjects usersAndProjects = reportCriteriaService.criteriaToUsersAndProjects(userSelectedCriteria);
 
-        List<Project> projects = null;
-        List<User> users = null;
-
-        if (!noProjectRestrictionProvided || !noUserRestrictionProvided) {
-            if (noProjectRestrictionProvided) {
-                users = getUsersForSelectedDepartments(userSelectedCriteria);
-            } else if (noUserRestrictionProvided) {
-                projects = getProjects(userSelectedCriteria);
-            } else {
-                users = getUsersForSelectedDepartments(userSelectedCriteria);
-                projects = getProjects(userSelectedCriteria);
-            }
-        }
-
-        if (userSelectedCriteria.isOnlyBillableProjects() && projects == null) {
-            projects = getBillableProjects(userSelectedCriteria);
-        }
-
-        return getReportElements(users, projects, lockedDates, reportRange, userSelectedCriteria.isShowZeroBookings());
+        return getReportElements(usersAndProjects.getUsers(),
+                usersAndProjects.getProjects(),
+                lockedDates,
+                reportRange,
+                userSelectedCriteria.isShowZeroBookings());
     }
 
     /**
@@ -139,73 +119,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
                                                   DateRange reportRange,
                                                   boolean showZeroBookings);
 
-    /**
-     * Get project id's based on selected customers
-     */
-    private List<Project> getProjects(UserSelectedCriteria userSelectedCriteria) {
-        List<Project> projects;
 
-        // No projects selected by the user, use any given customer limitation
-        if (userSelectedCriteria.isEmptyProjects()) {
-            if (!userSelectedCriteria.isEmptyCustomers()) {
-                projects = projectDAO.findProjectForCustomers(userSelectedCriteria.getCustomers(),
-                        userSelectedCriteria.isOnlyActiveProjects());
-            } else {
-                projects = null;
-            }
-        } else {
-            projects = userSelectedCriteria.getProjects();
-        }
-
-        return projects;
-    }
-
-    private List<Project> getBillableProjects(UserSelectedCriteria criteria) {
-        List<Project> projects = criteria.isOnlyActiveProjects() ? projectDAO.findAllActive() : projectDAO.findAll();
-
-        List<Project> filteredProjects = Lists.newArrayList();
-
-        for (Project project : projects) {
-            boolean billableFilter = project.isBillable();
-            boolean customerFilter = !criteria.isOnlyActiveCustomers() || project.getCustomer().isActive();
-
-            if (billableFilter && customerFilter) {
-                filteredProjects.add(project);
-            }
-        }
-
-        return filteredProjects;
-    }
-
-    private List<User> getUsersForSelectedDepartments(UserSelectedCriteria userSelectedCriteria) {
-        List<User> users;
-
-        if (userSelectedCriteria.isEmptyUsers()) {
-            if (!userSelectedCriteria.isEmptyDepartments()) {
-                Collection<UserDepartment> departments = userSelectedCriteria.getDepartments();
-
-                return findUsersInDepartments(userSelectedCriteria, departments);
-            } else {
-                users = null;
-            }
-        } else {
-            users = userSelectedCriteria.getUsers();
-        }
-
-        return users;
-    }
-
-    private List<User> findUsersInDepartments(UserSelectedCriteria userSelectedCriteria, Collection<UserDepartment> departments) {
-        List<User> allActiveUsers = userDAO.findUsers(userSelectedCriteria.isOnlyActiveUsers());
-
-        List<User> matchingUsers = Lists.newArrayList();
-        for (User activeUser : allActiveUsers) {
-            if (CollectionUtils.containsAny(activeUser.getUserDepartments(), departments)) {
-                matchingUsers.add(activeUser);
-            }
-        }
-        return matchingUsers;
-    }
 
     protected List<ProjectAssignment> getAssignmentsWithoutBookings(DateRange reportRange, List<Integer> userIds, List<Integer> projectIds) {
         List<ProjectAssignment> assignmentsWithoutBookings = reportAggregatedDao.getAssignmentsWithoutBookings(reportRange);
