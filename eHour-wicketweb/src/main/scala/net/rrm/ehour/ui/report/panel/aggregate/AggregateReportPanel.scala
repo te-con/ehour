@@ -7,7 +7,6 @@ import net.rrm.ehour.ui.common.report.{AbstractExcelReport, ReportConfig}
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.report.model.{TreeReportData, TreeReportModel}
 import net.rrm.ehour.ui.report.panel.TreeReportDataPanel
-import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.Model
 
@@ -20,23 +19,20 @@ abstract class AggregateReportPanel(id: String, reportModel: TreeReportModel, re
 
   protected override def onBeforeRender() {
 
-    val greyBorder = new WebMarkupContainer("frame")
-    addOrReplace(greyBorder)
-
     val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
 
-    greyBorder.add(new TreeReportDataPanel(ReportTableId, reportModel, reportConfig, excelReport))
+    add(new TreeReportDataPanel(ReportTableId, reportModel, reportConfig, excelReport))
 
     val reportData: ReportData = reportModel.getReportData
-    val chartPanel = addCharts(reportData, greyBorder)
+    val chartPanel = addCharts(reportData)
     chartPanel.setVisible(!reportData.isEmpty)
 
-    greyBorder.add(chartPanel)
+    add(chartPanel)
 
     super.onBeforeRender()
   }
 
-  private def addCharts(data: ReportData, parent: WebMarkupContainer): Panel = {
+  private def addCharts(data: ReportData): Panel = {
     val rawData: ReportData = data.asInstanceOf[TreeReportData].getRawReportData
     implicit val withTurnover = EhourWebSession.getSession.isReporter
 
