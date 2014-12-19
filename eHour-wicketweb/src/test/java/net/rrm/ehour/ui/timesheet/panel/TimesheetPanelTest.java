@@ -223,7 +223,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     @SuppressWarnings("unchecked")
     @Test
     public void shouldSubmitSuccessful() {
-        when(persistTimesheet.persistTimesheetWeek(any(Collection.class), any(TimesheetComment.class), any(DateRange.class)))
+        when(persistTimesheet.persistTimesheetWeek(any(Collection.class), any(TimesheetComment.class), any(DateRange.class), any(User.class)))
                 .thenReturn(new ArrayList<ProjectAssignmentStatus>());
 
         startAndReplayWithDefaultWeekOverview();
