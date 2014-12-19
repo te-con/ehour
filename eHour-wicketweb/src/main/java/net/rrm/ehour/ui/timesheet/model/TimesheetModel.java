@@ -83,7 +83,7 @@ public class TimesheetModel implements PersistableTimesheetModel<TimesheetContai
 
         return persistTimesheet.persistTimesheetWeek(timesheet.getTimesheetEntries(),
                 timesheet.getCommentForPersist(),
-                new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()));
+                new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()), timesheet.getUser());
     }
 
     public TimesheetContainer getObject() {
