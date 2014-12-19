@@ -32,11 +32,13 @@ import net.rrm.ehour.util.DomainUtil;
 import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import scala.collection.Seq;
 
 import java.util.*;
 
@@ -48,14 +50,21 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     private TimesheetCommentDao timesheetCommentDAO;
     private ProjectAssignmentStatusService projectAssignmentStatusService;
     private ProjectManagerNotifierService projectManagerNotifierService;
+    private TimesheetLockService timesheetLockService;
     private ApplicationContext context;
 
     @Autowired
-    public TimesheetPersistance(TimesheetDao timesheetDAO, TimesheetCommentDao timesheetCommentDAO, ProjectAssignmentStatusService projectAssignmentStatusService, ProjectManagerNotifierService projectManagerNotifierService, ApplicationContext context) {
+    public TimesheetPersistance(TimesheetDao timesheetDAO,
+                                TimesheetCommentDao timesheetCommentDAO,
+                                ProjectAssignmentStatusService projectAssignmentStatusService,
+                                ProjectManagerNotifierService projectManagerNotifierService,
+                                TimesheetLockService timesheetLockService,
+                                ApplicationContext context) {
         this.timesheetDAO = timesheetDAO;
         this.timesheetCommentDAO = timesheetCommentDAO;
         this.projectAssignmentStatusService = projectAssignmentStatusService;
         this.projectManagerNotifierService = projectManagerNotifierService;
+        this.timesheetLockService = timesheetLockService;
         this.context = context;
     }
 
@@ -72,10 +81,19 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     @Override
     public List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
                                                               TimesheetComment comment,
-                                                              DateRange weekRange) {
+                                                              DateRange weekRange,
+                                                              User forUser) {
         Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = getTimesheetAsRows(timesheetEntries);
 
-        List<ProjectAssignmentStatus> errorStatusses = new ArrayList<ProjectAssignmentStatus>();
+        List<ProjectAssignmentStatus> errorStatusses = new ArrayList<>();
+
+        Seq<Interval> lockedDatesInRange = timesheetLockService.findLockedDatesInRange(weekRange.getDateStart(), weekRange.getDateEnd(), forUser);
+
+
+        if (timesheetLockService.isRangeLocked(weekRange.getDateStart(), weekRange.getDateEnd(), lockedDatesInRange)) {
+            LOGGER.info("Persist is called but whole date range is locked " + forUser + ", " + weekRange);
+            return errorStatusses;
+        }
 
         for (Map.Entry<ProjectAssignment, List<TimesheetEntry>> entry : timesheetRows.entrySet()) {
             try {

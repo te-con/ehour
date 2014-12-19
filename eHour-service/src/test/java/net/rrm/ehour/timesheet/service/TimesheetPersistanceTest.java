@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
+import scala.collection.Seq;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,9 +58,8 @@ public class TimesheetPersistanceTest {
     @Mock
     private ProjectAssignmentStatusService statusService;
 
-    private ProjectAssignment assignment;
-    private List<TimesheetEntry> newEntries;
-    private List<TimesheetEntry> existingEntries;
+    @Mock
+    private TimesheetLockService timesheetLockService;
 
     @Mock
     private TimesheetCommentDao commentDao;
@@ -67,9 +67,13 @@ public class TimesheetPersistanceTest {
     @Mock
     private ApplicationContext context;
 
+    private ProjectAssignment assignment;
+    private List<TimesheetEntry> newEntries;
+    private List<TimesheetEntry> existingEntries;
+
     @Before
     public void setUp() {
-        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, projectManagerNotifierService, context);
+        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
 
         initData();
     }
@@ -82,7 +86,7 @@ public class TimesheetPersistanceTest {
 
         assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX));
 
-        newEntries = new ArrayList<TimesheetEntry>();
+        newEntries = new ArrayList<>();
 
         Date dateA = new Date(2008 - 1900, 4 - 1, 1);
         Date dateB = new Date(2008 - 1900, 4 - 1, 2);
@@ -107,7 +111,7 @@ public class TimesheetPersistanceTest {
             newEntries.add(entryDel);
         }
 
-        existingEntries = new ArrayList<TimesheetEntry>();
+        existingEntries = new ArrayList<>();
         {
             TimesheetEntry entry = new TimesheetEntry();
             TimesheetEntryId id = new TimesheetEntryId();
@@ -283,8 +287,28 @@ public class TimesheetPersistanceTest {
 
         when(statusService.getAssignmentStatus(assignment)).thenReturn(new ProjectAssignmentStatus());
 
-        persister.persistTimesheetWeek(newEntries, comment, new DateRange());
+        persister.persistTimesheetWeek(newEntries, comment, new DateRange(), UserObjectMother.createUser());
 
         verify(commentDao).persist(comment);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void should_not_persist_when_whole_week_is_locked() throws OverBudgetException {
+        TimesheetCommentId commentId = new TimesheetCommentId(1, new Date());
+        TimesheetComment comment = new TimesheetComment(commentId, "comment");
+
+        Date s = new Date();
+        Date e = new Date();
+        User user = UserObjectMother.createUser();
+        IPersistTimesheet mockPersister = mock(IPersistTimesheet.class);
+
+        when(context.getBean(IPersistTimesheet.class)).thenReturn(mockPersister);
+
+        when(timesheetLockService.isRangeLocked(any(Date.class), any(Date.class), any(Seq.class))).thenReturn(true);
+
+        persister.persistTimesheetWeek(newEntries, comment, new DateRange(s, e), user);
+
+        verify(mockPersister, never()).validateAndPersist(any(ProjectAssignment.class), any(List.class), any(DateRange.class));
     }
 }

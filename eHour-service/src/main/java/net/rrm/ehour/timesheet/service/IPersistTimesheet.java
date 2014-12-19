@@ -20,6 +20,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.TimesheetEntry;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
@@ -40,7 +41,8 @@ public interface IPersistTimesheet {
      */
     List<ProjectAssignmentStatus> persistTimesheetWeek(Collection<TimesheetEntry> timesheetEntries,
                                                        TimesheetComment timesheetComment,
-                                                       DateRange weekRange);
+                                                       DateRange weekRange,
+                                                       User forUser);
 
     void validateAndPersist(ProjectAssignment assignment,
                             List<TimesheetEntry> entries,
