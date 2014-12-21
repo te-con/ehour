@@ -88,16 +88,11 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         List<ProjectAssignmentStatus> errorStatusses = new ArrayList<>();
 
         Seq<Interval> lockedDatesInRange = timesheetLockService.findLockedDatesInRange(weekRange.getDateStart(), weekRange.getDateEnd(), forUser);
-
-
-        if (timesheetLockService.isRangeLocked(weekRange.getDateStart(), weekRange.getDateEnd(), lockedDatesInRange)) {
-            LOGGER.info("Persist is called but whole date range is locked " + forUser + ", " + weekRange);
-            return errorStatusses;
-        }
+        List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaDates(lockedDatesInRange);
 
         for (Map.Entry<ProjectAssignment, List<TimesheetEntry>> entry : timesheetRows.entrySet()) {
             try {
-                getTimesheetPersister().validateAndPersist(entry.getKey(), entry.getValue(), weekRange);
+                getTimesheetPersister().validateAndPersist(entry.getKey(), entry.getValue(), weekRange, lockedDates);
             } catch (OverBudgetException e) {
                 errorStatusses.add(e.getStatus());
             }
@@ -136,13 +131,14 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     @NonAuditable
     public void validateAndPersist(ProjectAssignment assignment,
                                    List<TimesheetEntry> entries,
-                                   DateRange weekRange) throws OverBudgetException {
+                                   DateRange weekRange,
+                                   List<Date> lockedDates) throws OverBudgetException {
         ProjectAssignmentStatus beforeStatus = projectAssignmentStatusService.getAssignmentStatus(assignment);
 
         boolean checkAfterStatus = beforeStatus.isValid();
 
         try {
-            persistEntries(assignment, entries, weekRange, !beforeStatus.isValid());
+            persistEntries(assignment, entries, weekRange, !beforeStatus.isValid(), lockedDates);
         } catch (OverBudgetException obe) {
             // make sure it's retrown by checking the after status
             checkAfterStatus = true;
@@ -157,12 +153,19 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         }
     }
 
-    private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting) throws OverBudgetException {
+    private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting, List<Date> lockedDates) throws OverBudgetException {
         List<TimesheetEntry> previousEntries = timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange);
 
         for (TimesheetEntry entry : entries) {
             if (!entry.getEntryId().getProjectAssignment().equals(assignment)) {
                 LOGGER.error("Invalid entry in assignment list, skipping: " + entry);
+                continue;
+            }
+
+            if (lockedDates.contains(entry.getEntryId().getEntryDate())) {
+                LOGGER.error("Date is locked, " + entry);
+
+                previousEntries.remove(entry);
                 continue;
             }
 

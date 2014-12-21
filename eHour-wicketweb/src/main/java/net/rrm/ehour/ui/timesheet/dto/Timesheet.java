@@ -37,6 +37,17 @@ public class Timesheet implements Serializable {
     private float maxHoursPerDay;
     private List<Date> lockedDays;
 
+    public boolean isAllLocked() {
+        boolean allLocked = true;
+
+        for (int i = 0; i < dateSequence.length; i++) {
+            allLocked &= isLocked(i);
+        }
+
+        return allLocked;
+
+    }
+
     public boolean isLocked(int seq) {
         return lockedDays.contains(dateSequence[seq]);
     }

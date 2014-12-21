@@ -215,7 +215,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
         List<ProjectAssignment> assignments = projectAssignmentService.getProjectAssignmentsForUser(user.getUserId(), range);
 
         Seq<Interval> lockedDatesAsIntervals = timesheetLockService.findLockedDatesInRange(range.getDateStart(), range.getDateEnd(), user);
-        List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);
+        List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaDates(lockedDatesAsIntervals);
 
         return new WeekOverview(timesheetEntries, comment, assignments, range, user, lockedDates);
     }

@@ -63,7 +63,7 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         DateRange reportRange = reportCriteria.getReportRange();
 
         Seq<Interval> lockedDatesAsIntervals = lockService.findLockedDatesInRange(reportRange.getDateStart(), reportRange.getDateEnd());
-        List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaList(lockedDatesAsIntervals);
+        List<Date> lockedDates = TimesheetLockService$.MODULE$.intervalToJavaDates(lockedDatesAsIntervals);
 
         List<RE> allReportElements = generateReport(userSelectedCriteria, lockedDates, reportRange);
 

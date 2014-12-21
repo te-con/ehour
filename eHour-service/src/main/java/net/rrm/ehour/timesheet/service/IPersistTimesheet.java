@@ -25,6 +25,7 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +47,7 @@ public interface IPersistTimesheet {
 
     void validateAndPersist(ProjectAssignment assignment,
                             List<TimesheetEntry> entries,
-                            DateRange weekRange) throws OverBudgetException;
+                            DateRange weekRange,
+                            List<Date> dates) throws OverBudgetException;
 
 }

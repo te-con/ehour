@@ -4,6 +4,7 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.domain.Customer;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.ui.common.border.CustomTitledGreyRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.JavaScriptConfirmation;
@@ -77,8 +78,12 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     @SpringBean
     private SectionRenderFactoryCollection sectionFactory;
 
+    @SpringBean
+    private TimesheetLockService timesheetLockService;
+
     public TimesheetPanel(String id, User user, Calendar forWeek) {
         super(id);
+
 
         GrandTotal grandTotals;
 
@@ -117,11 +122,12 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         addDateLabels(blueBorder);
 
         // attach onsubmit ajax events
-        setSubmitActions(timesheetForm, timesheetForm);
+        setSubmitActions(timesheetForm, timesheetForm, timesheet);
 
-        SubmitButton submitButtonTop = new SubmitButton("submitButtonTop", timesheetForm);
+        SubmitButton submitButtonTop = new SubmitButton("submitButtonTop", timesheetForm, timesheet);
         submitButtonTop.setOutputMarkupId(true);
         submitButtonTop.setMarkupId("submitButtonTop");
+        submitButtonTop.setVisible(timesheet.isAllLocked());
         blueBorder.add(submitButtonTop);
 
         // server message
@@ -217,9 +223,9 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         parent.add(grandTotal);
     }
 
-    private void setSubmitActions(Form<?> form, MarkupContainer parent) {
+    private void setSubmitActions(Form<?> form, MarkupContainer parent, Timesheet timesheet) {
         // default submit
-        SubmitButton submitButton = new SubmitButton("submitButton", form);
+        SubmitButton submitButton = new SubmitButton("submitButton", form, timesheet);
         submitButton.setOutputMarkupId(true);
         submitButton.setMarkupId("submit");
         parent.add(submitButton);
@@ -382,9 +388,11 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     private class SubmitButton extends AjaxButton {
 
         private static final long serialVersionUID = 1L;
+        private final Timesheet timesheet;
 
-        public SubmitButton(String id, Form<?> form) {
+        public SubmitButton(String id, Form<?> form, Timesheet timesheet) {
             super(id, form);
+            this.timesheet = timesheet;
         }
 
         @Override
@@ -412,6 +420,11 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         @Override
         protected void onError(final AjaxRequestTarget target, Form<?> form) {
             form.visitFormComponents(new FormHighlighter(target));
+        }
+
+        @Override
+        public boolean isVisible() {
+            return !timesheet.isAllLocked();
         }
     }
 

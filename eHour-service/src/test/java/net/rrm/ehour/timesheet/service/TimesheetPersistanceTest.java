@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
@@ -27,13 +28,16 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.EhourConstants;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
-import scala.collection.Seq;
+import scala.collection.JavaConversions;
+import scala.collection.mutable.Buffer;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +75,8 @@ public class TimesheetPersistanceTest {
     private List<TimesheetEntry> newEntries;
     private List<TimesheetEntry> existingEntries;
 
+    private DateTime baseDate = DateTime.now().withTimeAtStartOfDay();
+
     @Before
     public void setUp() {
         persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
@@ -88,8 +94,8 @@ public class TimesheetPersistanceTest {
 
         newEntries = new ArrayList<>();
 
-        Date dateA = new Date(2008 - 1900, 4 - 1, 1);
-        Date dateB = new Date(2008 - 1900, 4 - 1, 2);
+        Date dateA = baseDate.toDate();
+        Date dateB = baseDate.plusDays(1).toDate();
 
         {
             TimesheetEntry entry = new TimesheetEntry();
@@ -137,9 +143,9 @@ public class TimesheetPersistanceTest {
     public void should_persist_new_timesheet() throws OverBudgetException {
         DateRange dateRange = new DateRange();
 
-        when(statusService.getAssignmentStatus(assignment)).thenReturn(new ProjectAssignmentStatus());
+        okStatus();
 
-        persister.validateAndPersist(assignment, newEntries, dateRange);
+        persister.validateAndPersist(assignment, newEntries, dateRange, Lists.<Date>newArrayList());
 
         verify(statusService, times(2)).getAssignmentStatus(assignment);
         verify(timesheetDAO).persist(any(TimesheetEntry.class));
@@ -150,10 +156,10 @@ public class TimesheetPersistanceTest {
     public void should_update_existing_timesheet() throws OverBudgetException {
         DateRange dateRange = new DateRange();
 
-        when(timesheetDAO.getTimesheetEntriesInRange(any(ProjectAssignment.class), eq(dateRange))).thenReturn(existingEntries);
-        when(statusService.getAssignmentStatus(assignment)).thenReturn(new ProjectAssignmentStatus());
+        withExistingEntries(dateRange);
+        okStatus();
 
-        persister.validateAndPersist(assignment, newEntries, dateRange);
+        persister.validateAndPersist(assignment, newEntries, dateRange, Lists.<Date>newArrayList());
 
         verify(statusService, times(2)).getAssignmentStatus(assignment);
         verify(timesheetDAO).delete(any(TimesheetEntry.class));
@@ -165,7 +171,7 @@ public class TimesheetPersistanceTest {
     public void should_not_persist_an_timesheet_that_went_overbudget() {
         DateRange dateRange = new DateRange();
 
-        when(timesheetDAO.getTimesheetEntriesInRange(any(ProjectAssignment.class), eq(dateRange))).thenReturn(existingEntries);
+        withExistingEntries(dateRange);
 
         // before persist
         ProjectAssignmentStatus validStatus = new ProjectAssignmentStatus();
@@ -179,12 +185,16 @@ public class TimesheetPersistanceTest {
         when(statusService.getAssignmentStatus(assignment)).thenReturn(validStatus, invalidStatus);
 
         try {
-            persister.validateAndPersist(assignment, newEntries, dateRange);
+            persister.validateAndPersist(assignment, newEntries, dateRange, Lists.<Date>newArrayList());
             fail();
         } catch (OverBudgetException e) {
             verify(timesheetDAO).merge(any(TimesheetEntry.class));
             verify(timesheetDAO).delete(any(TimesheetEntry.class));
         }
+    }
+
+    protected void withExistingEntries(DateRange dateRange) {
+        when(timesheetDAO.getTimesheetEntriesInRange(any(ProjectAssignment.class), eq(dateRange))).thenReturn(existingEntries);
     }
 
     @SuppressWarnings("deprecation")
@@ -227,7 +237,7 @@ public class TimesheetPersistanceTest {
 
         when(statusService.getAssignmentStatus(assignment)).thenReturn(beforeStatus, afterStatus);
 
-        persister.validateAndPersist(assignment, newEntries, new DateRange());
+        persister.validateAndPersist(assignment, newEntries, new DateRange(), Lists.<Date>newArrayList());
 
         verify(timesheetDAO).merge(any(TimesheetEntry.class));
     }
@@ -246,7 +256,7 @@ public class TimesheetPersistanceTest {
         when(statusService.getAssignmentStatus(assignment)).thenReturn(beforeStatus, afterStatus);
 
         try {
-            persister.validateAndPersist(assignment, newEntries, new DateRange());
+            persister.validateAndPersist(assignment, newEntries, new DateRange(), Lists.<Date>newArrayList());
             fail();
         } catch (OverBudgetException ignored) {
 
@@ -271,7 +281,7 @@ public class TimesheetPersistanceTest {
 
         when(statusService.getAssignmentStatus(assignment)).thenReturn(beforeStatus, afterStatus);
 
-        persister.validateAndPersist(assignment, newEntries, new DateRange());
+        persister.validateAndPersist(assignment, newEntries, new DateRange(), Lists.<Date>newArrayList());
 
         verify(timesheetDAO).delete(any(TimesheetEntry.class));
         verify(timesheetDAO).merge(any(TimesheetEntry.class));
@@ -285,7 +295,9 @@ public class TimesheetPersistanceTest {
 
         when(context.getBean(IPersistTimesheet.class)).thenReturn(persister); // through Spring for new TX per entr=y
 
-        when(statusService.getAssignmentStatus(assignment)).thenReturn(new ProjectAssignmentStatus());
+        okStatus();
+
+        noLocks();
 
         persister.persistTimesheetWeek(newEntries, comment, new DateRange(), UserObjectMother.createUser());
 
@@ -295,20 +307,71 @@ public class TimesheetPersistanceTest {
     @SuppressWarnings("unchecked")
     @Test
     public void should_not_persist_when_whole_week_is_locked() throws OverBudgetException {
+        okStatus();
+
         TimesheetCommentId commentId = new TimesheetCommentId(1, new Date());
         TimesheetComment comment = new TimesheetComment(commentId, "comment");
 
-        Date s = new Date();
-        Date e = new Date();
+        Date s = baseDate.toDate();
+        DateTime end = baseDate.plusWeeks(1);
+        Date e = end.toDate();
+
+
         User user = UserObjectMother.createUser();
-        IPersistTimesheet mockPersister = mock(IPersistTimesheet.class);
 
-        when(context.getBean(IPersistTimesheet.class)).thenReturn(mockPersister);
+        when(context.getBean(IPersistTimesheet.class)).thenReturn(persister);
 
-        when(timesheetLockService.isRangeLocked(any(Date.class), any(Date.class), any(Seq.class))).thenReturn(true);
+        withLock(new Interval(baseDate, end));
 
         persister.persistTimesheetWeek(newEntries, comment, new DateRange(s, e), user);
 
-        verify(mockPersister, never()).validateAndPersist(any(ProjectAssignment.class), any(List.class), any(DateRange.class));
+        verify(timesheetDAO, never()).persist((any(TimesheetEntry.class)));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void should_not_persist_for_locked_day() throws OverBudgetException {
+        okStatus();
+
+        TimesheetCommentId commentId = new TimesheetCommentId(1, new Date());
+        TimesheetComment comment = new TimesheetComment(commentId, "comment");
+
+        Date s = baseDate.toDate();
+        DateTime end = baseDate.plusWeeks(1);
+        Date e = end.toDate();
+
+        User user = UserObjectMother.createUser();
+
+        when(context.getBean(IPersistTimesheet.class)).thenReturn(persister);
+
+        TimesheetEntry entry = new TimesheetEntry();
+        TimesheetEntryId id = new TimesheetEntryId();
+        id.setProjectAssignment(assignment);
+        id.setEntryDate(baseDate.plusDays(2).toDate());
+        entry.setEntryId(id);
+        entry.setHours(5f);
+        newEntries.add(entry);
+
+        withLock(new Interval(baseDate.plusDays(2), end));// cancelling out the just created entry
+        persister.persistTimesheetWeek(newEntries, comment, new DateRange(s, e), user);
+
+        verify(timesheetDAO, times(1)).persist((any(TimesheetEntry.class)));
+        verify(timesheetDAO, never()).delete((any(TimesheetEntry.class)));
+    }
+
+    protected void okStatus() {
+        when(statusService.getAssignmentStatus(assignment)).thenReturn(new ProjectAssignmentStatus());
+    }
+
+    private void withLock(Interval... lockedRange) {
+        Buffer<Interval> scalaBuffer = JavaConversions.asScalaBuffer(Lists.newArrayList(lockedRange));
+        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class))).thenReturn(scalaBuffer.toList());
+    }
+
+    private void noLocks() {
+        Buffer<Interval> scalaBuffer = JavaConversions.asScalaBuffer(Lists.<Interval>newArrayList());
+        scala.collection.immutable.List<Interval> intervals = scalaBuffer.toList();
+
+        when(timesheetLockService.findLockedDatesInRange(any(Date.class), any(Date.class), any(User.class))).thenReturn(intervals);
     }
 }

@@ -1,14 +1,16 @@
 package net.rrm.ehour.timesheet.service
 
-import org.scalatest.{Matchers, WordSpec}
 import java.{util => ju}
-import org.joda.time.{LocalDate, Interval}
+
+import org.joda.time.{Interval, LocalDate}
+import org.scalatest.{Matchers, WordSpec}
+
 import scala.collection.convert.WrapAsScala
 
 class TimesheetLockServiceTest extends WordSpec with Matchers {
   "Timesheet Lock Service" should {
     "should extract 3 dates from single interval" in {
-      val x: ju.Collection[ju.Date] = TimesheetLockService.intervalToJavaList(Seq(new Interval(LocalDate.parse("2013-01-01").toDateTimeAtStartOfDay, LocalDate.parse("2013-01-03").toDateTimeAtStartOfDay)))
+      val x: ju.Collection[ju.Date] = TimesheetLockService.intervalToJavaDates(Seq(new Interval(LocalDate.parse("2013-01-01").toDateTimeAtStartOfDay, LocalDate.parse("2013-01-03").toDateTimeAtStartOfDay)))
 
       val y = WrapAsScala.collectionAsScalaIterable(x).toList
 
