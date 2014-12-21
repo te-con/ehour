@@ -35,6 +35,8 @@ trait TimesheetLockService {
 
   def findLockedDatesInRange(startDate: Date, endDate: Date, user: User): Seq[Interval]
 
+  def isRangeLocked(startDate: Date, endDate: Date, user: User): Boolean
+
   def findAffectedUsers(startDate: Date, endDate: Date, excludedUsers: Seq[User]): Seq[AffectedUser]
 }
 
@@ -117,6 +119,11 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
 
     mergeDatesToInterval(startDate, endDate, filteredLocks)
   }
+
+
+  override def isRangeLocked(startDate: Date, endDate: Date, user: User): Boolean =
+    TimesheetLockService.isRangeLocked(startDate, endDate, findLockedDatesInRange(startDate, endDate, user))
+
 
 
   import scala.collection.JavaConversions._

@@ -1,7 +1,12 @@
-<wicket:panel><h3 class="timesheetSectionHeader">Week comments</h3>
+<wicket:panel>
+    <h3 class="timesheetSectionHeader">Week comments</h3>
 
-<div wicket:id="commentsFrame">
-    <div class="section">
-        <textarea name="comment" wicket:id="commentsArea" placeholder="Comments" rows="3" class="timesheetTextarea" wrap="virtual"></textarea>
+    <div wicket:id="commentsFrame">
+        <div class="section" wicket:id="weeklyComment">
+        </div>
     </div>
-</div></wicket:panel>
+
+    <wicket:fragment wicket:id="input">
+        <textarea name="comment" wicket:id="commentsArea" placeholder="Comments" rows="3" class="timesheetTextarea" wrap="virtual"></textarea>
+    </wicket:fragment>
+</wicket:panel>

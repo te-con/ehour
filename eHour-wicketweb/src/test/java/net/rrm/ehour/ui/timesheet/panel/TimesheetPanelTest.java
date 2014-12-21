@@ -39,7 +39,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.tester.FormTester;
-import org.joda.time.LocalDate;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,6 +71,13 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     @Mock
     private TimesheetLockService lockService;
+
+
+    private DateTime jodaNow = DateTime.now().withTimeAtStartOfDay();
+    private Date dateNow = jodaNow.toDate();
+    private GregorianCalendar calNow = jodaNow.toGregorianCalendar();
+    private Date tomorrow = jodaNow.plusDays(1).toDate();
+    private final ArrayList<Date> tomorrowAsList = Lists.newArrayList(tomorrow);
 
     @Before
     public void setup() {
@@ -240,9 +247,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     @Test
     public void shouldDisableInputForLockedDays() {
-        Date lockedDay = new LocalDate().plusDays(1).toDate();
-
-        startWithLockedDays(Arrays.asList(lockedDay));
+        startWithLockedDays(Arrays.asList(tomorrow));
 
         tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:1:day:day", Label.class);
         tester.assertComponent(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:2:day:day", TimesheetTextField.class);
@@ -253,21 +258,18 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     @Test
     public void shouldDisableDailyCommentInputForLockedDaysWithExistingComment() {
         // given
-        Date lockedDay = new LocalDate().plusDays(1).toDate();
-        List<Date> lockedDates = Arrays.asList(lockedDay);
+        List<Date> lockedDays = tomorrowAsList;
+        startWithLockedDays(lockedDays);
 
-        Calendar now = GregorianCalendar.getInstance();
-        now.add(Calendar.DAY_OF_WEEK, 7);
+        DateRange nextWeekRange = new DateRange(dateNow, jodaNow.plusWeeks(1).toDate());
 
-        DateRange nextWeekRange = new DateRange(new Date(), now.getTime());
-
-        TimesheetEntry timesheetEntry = TimesheetEntryObjectMother.createTimesheetEntry(1, lockedDay, 5);
+        TimesheetEntry timesheetEntry = TimesheetEntryObjectMother.createTimesheetEntry(1, tomorrow, 5);
         timesheetEntry.setComment("Comment");
 
         List<TimesheetEntry> entries = Arrays.asList(timesheetEntry);
         List<ProjectAssignment> assignments = Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1));
 
-        WeekOverview overview = new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
+        WeekOverview overview = new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDays);
 
         whenDefaultWeekOverview(overview);
 
@@ -285,9 +287,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     @Test
     public void shouldHideCommentInputLinkForLockedDaysWithoutComment() {
-        Date lockedDay = new LocalDate().plusDays(1).toDate();
-
-        startWithLockedDays(Arrays.asList(lockedDay));
+        startWithLockedDays(tomorrowAsList);
 
         Component commentLink = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:days:1:options:1:commentLink");
         assertNull(commentLink); // null = not visible...
@@ -297,9 +297,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
     @Test
     public void shouldAddLockedIconInDayForLockedDay() {
-        Date lockedDay = new LocalDate().plusDays(1).toDate();
-
-        startWithLockedDays(Arrays.asList(lockedDay));
+        startWithLockedDays(tomorrowAsList);
 
         String path = TIMESHEET_PATH + ":blueFrame:blueFrame_body:day2Label:lock:lockedContainer";
         tester.assertVisible(path);
@@ -308,7 +306,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    public void shouldHideBookWholeWeekIconWhenDanybledInConfig() {
+    public void shouldHideBookWholeWeekIconWhenDisabledInConfig() {
         webApp.setEnableBookWholeWeek(false);
 
         startAndReplayWithDefaultWeekOverview();
@@ -318,6 +316,29 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         assertNull(book);
     }
 
+    @Test
+    public void shouldHideBookWholeWeekIconWhenADayIsLocked() {
+        startWithLockedDays(tomorrowAsList);
+
+        Component book = tester.getComponentFromLastRenderedPage("panel:timesheetFrame:timesheetFrame_body:timesheetForm:blueFrame:blueFrame_body:customers:0:rows:0:bookWholeWeek");
+        // not visible = null
+        assertNull(book);
+    }
+
+    @Test
+    public void shouldHideStoreButtonsWhenWholeWeekIsLocked() {
+        List<Date> dates = Lists.newArrayList();
+
+        for (int i = 0; i < 8; i++) {
+            dates.add(jodaNow.plusDays(i).toDate());
+        }
+
+        startWithLockedDays(dates);
+
+        assertNull(tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":submitButton"));
+        assertNull(tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:submitButtonTop"));
+    }
+
     private void startAndReplayWithDefaultWeekOverview() {
         startWithLockedDays(Lists.<Date>newArrayList());
     }
@@ -325,7 +346,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     private void startWithLockedDays(List<Date> lockedDays) {
         whenDefaultWeekOverview(withDefaultWeekOverview(lockedDays));
 
-        tester.startComponentInPage(new TimesheetPanel("panel", USER, new GregorianCalendar()));
+        tester.startComponentInPage(new TimesheetPanel("panel", USER, calNow));
     }
 
     private void whenDefaultWeekOverview(WeekOverview overview) {
@@ -333,12 +354,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     private WeekOverview withDefaultWeekOverview(List<Date> lockedDates) {
-        Calendar now = GregorianCalendar.getInstance();
-        now.add(Calendar.DAY_OF_WEEK, 7);
+        DateRange nextWeekRange = new DateRange(dateNow, jodaNow.plusWeeks(1).toDate());
 
-        DateRange nextWeekRange = new DateRange(new Date(), now.getTime());
-
-        List<TimesheetEntry> entries = Arrays.asList(TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5));
+        List<TimesheetEntry> entries = Arrays.asList(TimesheetEntryObjectMother.createTimesheetEntry(1, dateNow, 5));
         List<ProjectAssignment> assignments = Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1));
 
         return new WeekOverview(entries, null, assignments, nextWeekRange, USER, lockedDates);
