@@ -13,6 +13,7 @@ import net.rrm.ehour.util._
 import org.joda.time.Days
 
 //import org.joda.time._
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -34,8 +35,6 @@ trait TimesheetLockService {
 
   def findLockedDatesInRange(startDate: Date, endDate: Date, user: User): Seq[Interval]
 
-  def isRangeLocked(startDate: Date, endDate: Date, lockedDatesInRange: Seq[Interval]): Boolean
-
   def findAffectedUsers(startDate: Date, endDate: Date, excludedUsers: Seq[User]): Seq[AffectedUser]
 }
 
@@ -51,6 +50,13 @@ object TimesheetLockService {
 
     toJava(xs.map(i => inc(i.start, i, Nil)).flatten)
   }
+
+  def isRangeLocked(startDate: Date, endDate: Date, lockedDates: Seq[Interval]): Boolean = {
+    val s = new DateTime(startDate).withTimeAtStartOfDay()
+    val e = new DateTime(endDate).withTimeAtStartOfDay()
+    lockedDates.size == 1 && lockedDates(0).getStart.withTimeAtStartOfDay().compareTo(s) == 0 && lockedDates(0).getEnd.withTimeAtStartOfDay().compareTo(e) == 0
+  }
+
 }
 
 @Service("timesheetLockService")
@@ -169,12 +175,6 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
 
       AffectedUser(k, aggregatedProjects)
     }).toSeq.sortWith((a, b) => a.user.compareTo(b.user) < 0)
-  }
-
-  override def isRangeLocked(startDate: Date, endDate: Date, lockedDates:  Seq[Interval]): Boolean = {
-    val s = new DateTime(startDate).withTimeAtStartOfDay()
-    val e = new DateTime(endDate).withTimeAtStartOfDay()
-    lockedDates.size == 1 && lockedDates(0).getStart.withTimeAtStartOfDay().compareTo(s) == 0 && lockedDates(0).getEnd.withTimeAtStartOfDay().compareTo(e) == 0
   }
 }
 

@@ -98,7 +98,14 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
             }
         }
 
-        if (comment.getNewComment() == Boolean.FALSE || StringUtils.isNotBlank(comment.getComment())) {
+        // only update the comment when
+        // - the whole week is not locked
+        // - comment is an update
+        // - or the comment is empty
+        boolean wholeWeekLocked = TimesheetLockService$.MODULE$.isRangeLocked(weekRange.getDateStart(), weekRange.getDateEnd(), lockedDatesInRange);
+
+        if (!wholeWeekLocked &&
+                (comment.getNewComment() == Boolean.FALSE || StringUtils.isNotBlank(comment.getComment()))) {
             timesheetCommentDAO.persist(comment);
         }
 
@@ -110,7 +117,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     }
 
     private Map<ProjectAssignment, List<TimesheetEntry>> getTimesheetAsRows(Collection<TimesheetEntry> entries) {
-        Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = new HashMap<ProjectAssignment, List<TimesheetEntry>>();
+        Map<ProjectAssignment, List<TimesheetEntry>> timesheetRows = new HashMap<>();
 
         for (TimesheetEntry timesheetEntry : entries) {
             ProjectAssignment assignment = timesheetEntry.getEntryId().getProjectAssignment();
@@ -163,7 +170,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
             }
 
             if (lockedDates.contains(entry.getEntryId().getEntryDate())) {
-                LOGGER.error("Date is locked, " + entry);
+                LOGGER.error("Date is locked but still trying to update " + entry);
 
                 previousEntries.remove(entry);
                 continue;

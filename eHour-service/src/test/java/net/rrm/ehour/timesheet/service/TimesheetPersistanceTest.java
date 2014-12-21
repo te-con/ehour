@@ -193,7 +193,7 @@ public class TimesheetPersistanceTest {
         }
     }
 
-    protected void withExistingEntries(DateRange dateRange) {
+    private void withExistingEntries(DateRange dateRange) {
         when(timesheetDAO.getTimesheetEntriesInRange(any(ProjectAssignment.class), eq(dateRange))).thenReturn(existingEntries);
     }
 
@@ -304,7 +304,6 @@ public class TimesheetPersistanceTest {
         verify(commentDao).persist(comment);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void should_not_persist_when_whole_week_is_locked() throws OverBudgetException {
         okStatus();
@@ -328,7 +327,6 @@ public class TimesheetPersistanceTest {
         verify(timesheetDAO, never()).persist((any(TimesheetEntry.class)));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void should_not_persist_for_locked_day() throws OverBudgetException {
         okStatus();
@@ -357,9 +355,34 @@ public class TimesheetPersistanceTest {
 
         verify(timesheetDAO, times(1)).persist((any(TimesheetEntry.class)));
         verify(timesheetDAO, never()).delete((any(TimesheetEntry.class)));
+        verify(commentDao, times(1)).persist(any(TimesheetComment.class));
     }
 
-    protected void okStatus() {
+    @Test
+    public void should_not_persist_comment_when_whole_week_is_locked() throws OverBudgetException {
+        okStatus();
+
+        TimesheetCommentId commentId = new TimesheetCommentId(1, new Date());
+        TimesheetComment comment = new TimesheetComment(commentId, "comment");
+
+        Date s = baseDate.toDate();
+        DateTime end = baseDate.plusWeeks(1);
+        Date e = end.toDate();
+
+
+        User user = UserObjectMother.createUser();
+
+        when(context.getBean(IPersistTimesheet.class)).thenReturn(persister);
+
+        withLock(new Interval(baseDate, end));
+
+        persister.persistTimesheetWeek(newEntries, comment, new DateRange(s, e), user);
+
+        verify(timesheetDAO, never()).persist((any(TimesheetEntry.class)));
+        verify(commentDao, never()).persist(any(TimesheetComment.class));
+    }
+
+    private void okStatus() {
         when(statusService.getAssignmentStatus(assignment)).thenReturn(new ProjectAssignmentStatus());
     }
 

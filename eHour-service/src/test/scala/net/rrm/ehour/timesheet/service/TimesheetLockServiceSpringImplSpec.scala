@@ -264,14 +264,14 @@ class TimesheetLockServiceSpringImplSpec extends AbstractSpec {
       val s = startDate.toDate
       val e = endDate.plusWeeks(1).toDate
 
-      service.isRangeLocked(s, e, Seq(new Interval(startDate.toDateTimeAtStartOfDay, endDate.plusWeeks(1).toDateTimeAtStartOfDay))) should be (true)
+      TimesheetLockService.isRangeLocked(s, e, Seq(new Interval(startDate.toDateTimeAtStartOfDay, endDate.plusWeeks(1).toDateTimeAtStartOfDay))) should be (true)
     }
 
     "check whether a week is not completely locked" in {
       val s = startDate.toDate
       val e = endDate.plusWeeks(1).toDate
 
-      service.isRangeLocked(s, e, Seq(new Interval(startDate.toDateTimeAtStartOfDay, startDate.plusDays(5).toDateTimeAtStartOfDay))) should be (false)
+      TimesheetLockService.isRangeLocked(s, e, Seq(new Interval(startDate.toDateTimeAtStartOfDay, startDate.plusDays(5).toDateTimeAtStartOfDay))) should be (false)
     }
   }
 }
