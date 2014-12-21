@@ -6,7 +6,7 @@ import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.timesheet.dto.{TimesheetOverview, WeekOverview}
-import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet}
+import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet, TimesheetLockService}
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel
 import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactoryCollection
@@ -30,6 +30,7 @@ class LoggedInAsPanelSpec extends AbstractSpringWebAppSpec {
 
     "stop impersonating" in {
       springTester.getMockContext.putBean(new TimesheetModel())
+      mockService[TimesheetLockService]
       mockService[IPersistTimesheet]
       mockService[SectionRenderFactoryCollection]
       val overviewTimesheet = mockService[IOverviewTimesheet]

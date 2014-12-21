@@ -23,6 +23,7 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.timesheet.dto.WeekOverview;
 import net.rrm.ehour.timesheet.service.IOverviewTimesheet;
 import net.rrm.ehour.timesheet.service.IPersistTimesheet;
+import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
@@ -68,6 +69,9 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     @Mock
     private UserService userService;
 
+    @Mock
+    private TimesheetLockService lockService;
+
     @Before
     public void setup() {
         getConfig().setCompleteDayHours(8l);
@@ -76,6 +80,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
         getMockContext().putBean(persistTimesheet);
         getMockContext().putBean(overviewTimesheet);
         getMockContext().putBean("userService", userService);
+        getMockContext().putBean(lockService);
 
         getMockContext().putBean(new TimesheetModel());
         TimesheetIconRenderFactoryCollection iconRenderFactoryCollection = new TimesheetIconRenderFactoryCollection(Lists.newArrayList(new DailyCommentPanelFactory()));

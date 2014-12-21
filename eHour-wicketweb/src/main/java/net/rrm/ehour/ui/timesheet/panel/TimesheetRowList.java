@@ -105,7 +105,7 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                 target.add(form);
             }
         };
-        link.setVisible(EhourWebApplication.get().isBookWholeWeekEnabled());
+        link.setVisible(EhourWebApplication.get().isBookWholeWeekEnabled() && !row.getTimesheet().isAnyLocked());
         return link;
     }
 

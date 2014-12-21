@@ -7,7 +7,7 @@ import com.google.common.collect.Lists
 import net.rrm.ehour.AbstractSpringWebAppSpec
 import net.rrm.ehour.domain.{User, UserObjectMother}
 import net.rrm.ehour.timesheet.dto.WeekOverview
-import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet}
+import net.rrm.ehour.timesheet.service.{IOverviewTimesheet, IPersistTimesheet, TimesheetLockService}
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectedEvent
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.timesheet.model.TimesheetModel
@@ -27,6 +27,7 @@ class ImpersonateUserPageSpec extends AbstractSpringWebAppSpec with BeforeAndAft
     val overviewTimesheet = mockService[IOverviewTimesheet]
     springTester.getMockContext.putBean(new TimesheetModel())
 
+    mockService[TimesheetLockService]
     mockService[IPersistTimesheet]
     mockService[SectionRenderFactoryCollection]
 
