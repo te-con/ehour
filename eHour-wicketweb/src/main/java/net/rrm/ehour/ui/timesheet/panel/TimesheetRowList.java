@@ -182,12 +182,15 @@ public class TimesheetRowList extends ListView<TimesheetRow> {
                     case LOCKED:
                         day = createLockedTimesheetEntry(DAY_ID, row, index);
                         item.add(renderOptions(DAY_OPTIONS_ID, timesheetCell, dayStatus));
+                        item.add(AttributeModifier.append("class", "locked"));
                         break;
                 }
 
                 String cssClass = "weekday";
 
-                if (item.getIndex() == 0) {
+                if (dayStatus == DayStatus.LOCKED) {
+                    cssClass += " lockedCell";
+                } else if (item.getIndex() == 0) {
                     cssClass = "sunday";
                 } else if (item.getIndex() == 6) {
                     cssClass = "saturday";
