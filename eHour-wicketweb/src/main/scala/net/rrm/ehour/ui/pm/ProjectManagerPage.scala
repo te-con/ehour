@@ -63,7 +63,6 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
     EntrySelectorBuilder.startAs("projectSelector")
       .onClick(clickHandler)
       .withData(createSelectorData(projects))
-      .isWide
       .withInactiveTooltip(new ResourceModel("admin.user.hideInactive"))
 
   }

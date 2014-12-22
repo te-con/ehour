@@ -10,17 +10,21 @@
 <wicket:extend>
     <div class="mainColumn" style="width:100%;">
         <div class="content">
-            <div wicket:id="entrySelectorFrame" id="entrySelector">
+            <div wicket:id="entrySelectorFrame" id="entrySelector" class="floatLeft">
                 <div wicket:id="projectSelector" class="floatLeft" style="width:100%"></div>
                 <br clear="all">
             </div>
 
-            <br/>
-            <br/>
-
-            <div wicket:id="content"></div>
-            <div wicket:id="status"></div>
+            <div class="floatLeft" style="width: 60%">
+                <div wicket:id="content"></div>
+                <div wicket:id="status"></div>
+            </div>
         </div>
+
+        <br />
+        <br />
+        <br />
+
     </div>
 </wicket:extend>
 </body>

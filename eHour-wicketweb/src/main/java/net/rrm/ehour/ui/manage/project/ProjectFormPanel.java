@@ -84,7 +84,7 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
         GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
         add(greyBorder);
 
-        Form<T> form = new Form<T>("projectForm", model);
+        Form<T> form = new Form<>("projectForm", model);
         addFormComponents(form);
 
         boolean deletable = model.getObject().isDeletable();
@@ -120,7 +120,7 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
 
     private void addGeneralInfo(WebMarkupContainer parent) {
         // name
-        RequiredTextField<String> nameField = new RequiredTextField<String>("project.name");
+        RequiredTextField<String> nameField = new RequiredTextField<>("project.name");
         parent.add(nameField);
         nameField.add(StringValidator.maximumLength(64));
         nameField.setLabel(new ResourceModel("admin.project.name"));
@@ -128,7 +128,7 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
         parent.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 
         // project code
-        RequiredTextField<String> codeField = new RequiredTextField<String>("project.projectCode");
+        RequiredTextField<String> codeField = new RequiredTextField<>("project.projectCode");
         parent.add(codeField);
         codeField.add(StringValidator.maximumLength(16));
         codeField.setLabel(new ResourceModel("admin.project.code"));
@@ -138,7 +138,7 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
 
     private void addCustomer(WebMarkupContainer parent) {
         // customers
-        DropDownChoice<Customer> customerDropdown = new DropDownChoice<Customer>("project.customer", getCustomers(), new ChoiceRenderer<Customer>("fullName"));
+        DropDownChoice<Customer> customerDropdown = new DropDownChoice<>("project.customer", getCustomers(), new ChoiceRenderer<Customer>("fullName"));
         customerDropdown.setRequired(true);
         customerDropdown.setLabel(new ResourceModel("admin.project.customer"));
         customerDropdown.add(new ValidatingFormComponentAjaxBehavior());
@@ -148,7 +148,7 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
 
     private DropDownChoice<User> getProjectManager() {
         // project manager
-        DropDownChoice<User> projectManager = new DropDownChoice<User>("project.projectManager", getEligablePms(), new ChoiceRenderer<User>("fullName"));
+        DropDownChoice<User> projectManager = new DropDownChoice<>("project.projectManager", getEligablePms(), new ChoiceRenderer<User>("fullName"));
         projectManager.setNullValid(true);
         projectManager.setLabel(new ResourceModel("admin.project.projectManager"));
 
@@ -162,7 +162,7 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
         parent.add(textArea);
 
         // contact
-        TextField<String> contactField = new TextField<String>("project.contact");
+        TextField<String> contactField = new TextField<>("project.contact");
         parent.add(contactField);
     }
 
@@ -209,7 +209,7 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
         if (customers != null) {
             Collections.sort(customers, new CustomerComparator());
         } else {
-            customers = new ArrayList<Customer>();
+            customers = new ArrayList<>();
         }
 
         return customers;
@@ -222,7 +222,7 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
         if (users != null) {
             Collections.sort(users, new UserComparator(false));
         } else {
-            users = new ArrayList<User>();
+            users = new ArrayList<>();
         }
 
         return users;

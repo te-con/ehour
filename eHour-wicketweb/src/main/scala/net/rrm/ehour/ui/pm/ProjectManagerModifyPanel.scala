@@ -23,7 +23,7 @@ class ProjectManagerModifyPanel(id: String, project: Project) extends AbstractBa
     val adminBackingBean = new ProjectAdminBackingBean(project)
     val privilege = getConfig.getPmPrivilege
 
-    val panelConfig = ManagementPanelConfig(onlyDeactivation = privilege == PmPrivilege.DEACTIVATE_ONLY, borderless = true, wide = true)
+    val panelConfig = ManagementPanelConfig(onlyDeactivation = privilege == PmPrivilege.DEACTIVATE_ONLY, borderless = true, wide = false)
     val assignedUsersPanel = new ManageAssignmentsPanel("assignments", new Model(adminBackingBean), panelConfig)
     border.add(assignedUsersPanel)
   }
