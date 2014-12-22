@@ -59,6 +59,6 @@ public class WeeklyCommentPanelTest extends BaseSpringWebAppTester {
 
         tester.startComponentInPage(new WeeklyCommentPanel("id", Model.of(container)));
 
-        tester.assertComponent("id:commentsFrame:commentsFrame_body:weeklyComment", Label.class);
+        tester.assertComponent("id:commentsFrame:commentsFrame_body:weeklyComment:lockedComment", Label.class);
     }
 }

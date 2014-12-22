@@ -32,8 +32,10 @@ public class WeeklyCommentPanel extends AbstractBasePanel<TimesheetContainer> {
         PropertyModel<String> commentModel = new PropertyModel<>(timesheet, "comment.comment");
 
         if (isWeekLocked) {
-            Label commentLabel = new Label(COMMENT_ID, commentModel);
-            blueBorder.add(commentLabel);
+            Fragment fragment = new Fragment(COMMENT_ID, "locked", this);
+            Label commentLabel = new Label("lockedComment", commentModel);
+            fragment.add(commentLabel);
+            blueBorder.add(fragment);
         } else {
             Fragment fragment = new Fragment(COMMENT_ID, "input", this);
             KeepAliveTextArea textArea = new KeepAliveTextArea("commentsArea", commentModel);
