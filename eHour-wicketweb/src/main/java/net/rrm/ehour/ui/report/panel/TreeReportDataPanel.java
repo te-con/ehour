@@ -394,7 +394,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
                     String cssClass = Joiner.on(" ").join(cssClasses);
 
                     if (StringUtils.isNotEmpty(cssClass)) {
-                        cellLabel.add(AttributeModifier.replace("class", cssClass));
+                        cellLabel.add(AttributeModifier.replace("class", cssClass.trim()));
                     }
                 }
 
