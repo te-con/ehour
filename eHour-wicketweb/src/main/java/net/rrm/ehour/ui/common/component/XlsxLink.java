@@ -2,6 +2,7 @@ package net.rrm.ehour.ui.common.component;
 
 import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
 import net.rrm.ehour.ui.common.report.excel.IWriteBytes;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.link.Link;
 
 public class XlsxLink extends Link<Void> {
@@ -13,6 +14,8 @@ public class XlsxLink extends Link<Void> {
         super(id);
         this.filename = filename;
         this.byteWriter = byteWriter;
+
+        add(AttributeModifier.append("title", getString("excel.export.tooltip")));
     }
 
     @Override
