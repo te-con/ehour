@@ -54,7 +54,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TimesheetPanelTest extends BaseSpringWebAppTester {
-    private static final String TIMESHEET_PATH = "panel:timesheetFrame:timesheetFrame_body:timesheetForm";
+    private static final String TIMESHEET_PATH = "panel:timesheetFrame:greyFrame:timesheetFrame_body:timesheetForm";
     private static final String DAY1_PATH = "blueFrame:blueFrame_body:customers:0:rows:0:days:0";
     private static final String DAY1_FULL_PATH = TIMESHEET_PATH + ":" + DAY1_PATH;
     private static final User USER = new User(1);
@@ -179,7 +179,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     public void moveToNextWeek() {
         startAndReplayWithDefaultWeekOverview();
 
-        tester.executeAjaxEvent("panel:timesheetFrame:title:nextWeek", "onclick");
+        tester.executeAjaxEvent("panel:timesheetFrame:greyFrame:title:nextWeek", "onclick");
 
         Calendar cal = getWebApp().getSession().getNavCalendar();
 
@@ -311,7 +311,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
 
         startAndReplayWithDefaultWeekOverview();
 
-        Component book = tester.getComponentFromLastRenderedPage("panel:timesheetFrame:timesheetFrame_body:timesheetForm:blueFrame:blueFrame_body:customers:0:rows:0:bookWholeWeek");
+        Component book = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:bookWholeWeek");
         // not visible = null
         assertNull(book);
     }
@@ -320,7 +320,7 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     public void shouldHideBookWholeWeekIconWhenADayIsLocked() {
         startWithLockedDays(tomorrowAsList);
 
-        Component book = tester.getComponentFromLastRenderedPage("panel:timesheetFrame:timesheetFrame_body:timesheetForm:blueFrame:blueFrame_body:customers:0:rows:0:bookWholeWeek");
+        Component book = tester.getComponentFromLastRenderedPage(TIMESHEET_PATH + ":blueFrame:blueFrame_body:customers:0:rows:0:bookWholeWeek");
         // not visible = null
         assertNull(book);
     }

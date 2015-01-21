@@ -9,7 +9,14 @@
 <wicket:panel>
 
 	<div wicket:id="timesheetFrame">
-        <h3 class="timesheetSectionHeader">Timesheet</h3>
+        <h3 class="timesheetSectionHeader" style="float: left;">Timesheet</h3>
+        <div class="filterContainer">
+            <input type="text" wicket:id="filter" class="filter" placeholder="Filter..."/>
+        </div>
+
+        <br clear="all"/>
+
+
 		<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
 
 		<div wicket:id="blueFrame">

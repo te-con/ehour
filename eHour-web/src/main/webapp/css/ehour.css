@@ -1041,3 +1041,9 @@ hr {
     float: left;
     margin-bottom: 5px;
 }
+
+.customTitleRightComponent {
+    float: right;
+    margin: 0 15px 5px 0;
+}
+
