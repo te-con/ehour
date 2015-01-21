@@ -35,7 +35,7 @@ jQuery.fn.filterOn = function (filterId) {
 };
 
 function toggleFilter(id) {
-    $(id).toggle('fast');
+    $(id).slideToggle('fast');
     return false;
 }
 
