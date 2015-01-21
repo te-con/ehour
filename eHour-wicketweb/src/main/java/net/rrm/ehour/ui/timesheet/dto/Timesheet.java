@@ -36,7 +36,6 @@ public class Timesheet implements Serializable {
     private TimesheetComment comment;
     private float maxHoursPerDay;
     private List<Date> lockedDays;
-    private String filter;
 
     public boolean isAnyLocked() {
         for (int i = 0; i < dateSequence.length; i++) {
@@ -229,7 +228,7 @@ public class Timesheet implements Serializable {
      * @return
      */
     public List<Customer> getCustomerList() {
-        return new ArrayList<Customer>(getCustomers().keySet());
+        return new ArrayList<>(getCustomers().keySet());
     }
 
     /**
@@ -289,13 +288,5 @@ public class Timesheet implements Serializable {
 
     public void setWeekEnd(Date weekEnd) {
         this.weekEnd = weekEnd;
-    }
-
-    public String getFilter() {
-        return filter;
-    }
-
-    public void setFilter(String filter) {
-        this.filter = filter;
     }
 }

@@ -11,11 +11,10 @@
 	<div wicket:id="timesheetFrame">
         <h3 class="timesheetSectionHeader" style="float: left;">Timesheet</h3>
         <div class="filterContainer">
-            <input type="text" wicket:id="filter" class="filter" placeholder="Filter..."/>
+            <input type="text" id="filter" class="filter" placeholder="Filter..."/>
         </div>
 
         <br clear="all"/>
-
 
 		<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
 
@@ -97,7 +96,7 @@
                         <wicket:container wicket:id="customers">
                             <tr class="customerRow">
                                 <td class="customerCell" colspan="4">
-                                    <a href="#" class="foldLink"><span style="float:left;" class="fa fa-angle-double-down"></span>&nbsp;<strong><wicket:container wicket:id="customer"/></strong></a>
+                                    <a href="#" class="foldLink"><span style="float:left;" class="fa fa-angle-double-down"></span>&nbsp;<strong><span class="customerName" wicket:id="customer"></span></strong></a>
                                 </td>
 
                                 <td class="weekday" colspan="2">&nbsp;</td>
@@ -115,7 +114,7 @@
                                         <a wicket:id="bookWholeWeek" wicket:message="title:timesheet.bookall"><i class="fa fa-check-circle bookAll"></i></a>
                                         <wicket:container wicket:id="projectCode">projectCode</wicket:container>
                                     </td>
-                                    <td class="project"><span wicket:id="project"></span>
+                                    <td class="project"><span class="projectName" wicket:id="project"></span>
                                         <span wicket:id="role" style="font-size: 0.7em"></span>
                                             <span class="statusMsg" wicket:id="status"></span>
                                     </td>

@@ -31,8 +31,6 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
-import org.apache.wicket.ajax.attributes.ThrottlingSettings;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -43,7 +41,6 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -55,7 +52,6 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.time.Duration;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 
@@ -104,10 +100,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", weekNavigation);
         add(greyBorder);
 
-        greyBorder.add(createFilter("filter", model));
-
-        Form<TimesheetContainer> timesheetForm = buildForm(model);
-        this.timesheetForm = timesheetForm;
+        this.timesheetForm = buildForm(model);
         greyBorder.add(timesheetForm);
     }
 
@@ -122,7 +115,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
 
         response.render(JavaScriptHeaderItem.forReference(TIMESHEET_JS));
-        response.render(OnDomReadyHeaderItem.forScript("initializeFoldLinks();"));
+        response.render(OnDomReadyHeaderItem.forScript("initialize();"));
     }
 
     private RepeatingView renderSections() {
@@ -134,16 +127,6 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
 
         return options;
     }
-
-    private WebMarkupContainer createFilter(String id, PersistableTimesheetModel<?> timesheetModel) {
-        // create filter
-        TextField filter = new TextField<>(id, new PropertyModel<String>(timesheetModel, "timesheet.filter"));
-        filter.add(new FormReloadBehavior(timesheetModel, "onkeyup"));
-        filter.setOutputMarkupId(true);
-
-        return filter;
-    }
-
 
     /**
      * Add week navigation to title
@@ -464,37 +447,6 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         @Override
         public void onClick(AjaxRequestTarget target) {
             moveWeek(weekStart, delta);
-        }
-    }
-
-    private class FormReloadBehavior extends AjaxFormComponentUpdatingBehavior {
-        private final PersistableTimesheetModel<?> timesheetModel;
-
-        public FormReloadBehavior(PersistableTimesheetModel<?> timesheetModel, String event) {
-            super(event);
-            this.timesheetModel = timesheetModel;
-        }
-
-        @Override
-        protected void onUpdate(AjaxRequestTarget target) {
-//            buildForm(timesheetForm, blueBorder);
-
-//            Form<TimesheetModel> replacementForm = buildForm(timesheetModel);
-//            timesheetForm.replaceWith(replacementForm);
-//            timesheetForm = replacementForm;
-
-//            target.add(replacementForm);
-
-            target.appendJavaScript("initializeFoldLinks();");
-
-        }
-
-        @Override
-        protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-            super.updateAjaxAttributes(attributes);
-
-            attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
-            attributes.setThrottlingSettings(new ThrottlingSettings("id", Duration.milliseconds(1500), true));
         }
     }
 }
