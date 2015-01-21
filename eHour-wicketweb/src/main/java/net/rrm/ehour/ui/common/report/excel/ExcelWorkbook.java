@@ -26,7 +26,7 @@ public class ExcelWorkbook {
         pregenerateStyles(workbook);
     }
     private void pregenerateStyles(Workbook workbook) {
-        pregeneratedStyles = new HashMap<ExcelStyle, CellStyle>();
+        pregeneratedStyles = new HashMap<>();
 
         ExcelStyle[] styles = ExcelStyle.values();
 
