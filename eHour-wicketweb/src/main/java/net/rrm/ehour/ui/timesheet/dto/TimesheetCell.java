@@ -79,6 +79,7 @@ public class TimesheetCell implements Comparable<TimesheetCell>, Serializable {
 
         if (!Objects.equals(date, that.date)) return false;
         if (!Objects.equals(timesheetEntry, that.timesheetEntry)) return false;
+        if (!Objects.equals(projectAssignment, that.projectAssignment)) return false;
 
         return true;
     }
