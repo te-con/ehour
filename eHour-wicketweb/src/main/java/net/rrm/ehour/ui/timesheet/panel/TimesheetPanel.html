@@ -10,11 +10,19 @@
 
 	<div wicket:id="timesheetFrame">
         <h3 class="timesheetSectionHeader" style="float: left;"><wicket:message key="timesheet.header" /></h3>
-        <div class="filterContainer">
+        <div class="filterContainer border_inlet_right">
             <input type="text" id="filter" class="filter" placeholder="Filter..."/>
+
+            <a href="#" id="toggleOptions">
+                <i class="fa fa-wrench timesheet_options_icon"></i>
+            </a>
         </div>
 
         <br clear="all"/>
+
+        <div id="timesheetOptions" class="timesheet_options border_inlet_right">
+             <input type="checkbox" id="hideCheckbox"> hide projects without any hours
+        </div>
 
 		<form wicket:id="timesheetForm" style="margin: 0; overflow: hidden; padding:0">
 
@@ -193,7 +201,6 @@
     <wicket:fragment wicket:id="unlockedDay">
         <div class="lockSpace">&nbsp;</div>
     </wicket:fragment>
-
 
     <wicket:fragment wicket:id="lockedDay">
         <div class="lockSpace ui-state-default" title="This day is locked" wicket:id="lockedContainer">

@@ -399,13 +399,28 @@ div.wicket-modal div.w_content_3 {
 
 .filterContainer {
     float: right;
-    margin-right: 15px;
     margin-bottom: 1px;
+    font-size: 0.9em;
 }
 
 .filter {
     text-align: left;
     width: 15em;
     border: 1px solid #9ABBD9;
-    font-size: 0.9em;
+}
+
+.timesheet_options_icon {
+    color: #7d7d7d;
+}
+
+.timesheet_options {
+    display: none;
+    text-align: right;
+    font: 1em/1.1 Geneva, Arial, Helvetica, sans-serif;
+    color: #536e87;
+    margin: 5px 0;
+}
+
+.border_inlet_right {
+    margin-right: 15px;
 }

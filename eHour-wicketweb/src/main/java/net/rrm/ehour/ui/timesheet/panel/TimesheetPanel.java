@@ -115,7 +115,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
 
         response.render(JavaScriptHeaderItem.forReference(TIMESHEET_JS));
-        response.render(OnDomReadyHeaderItem.forScript("initialize();"));
+        response.render(OnDomReadyHeaderItem.forScript("window.timesheet = new Timesheet();window.timesheet.init();"));
     }
 
     private RepeatingView renderSections() {

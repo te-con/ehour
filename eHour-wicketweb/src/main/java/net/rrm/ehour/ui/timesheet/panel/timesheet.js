@@ -1,91 +1,129 @@
-function initialize() {
-    $(".foldLink").click(function() {
-        foldProjectRow(this);
-        return false;
-    });
-
-    initializeFilter();
-}
-
-function foldProjectRow(link) {
-    var children = $(link).children();
-    var isFolded = children.data('folded');
-
-    var prj = $(link).closest('.customerRow');
-
-    var acts = findActivitiesForProject(prj);
-
-    for (var i = 0; i < acts.length; i++) {
-        $(acts[i]).toggle();
-    }
-
-    children.data('folded', !isFolded);
-
-    var icon = $(children[0])
-
-    if (isFolded) {
-        icon.removeClass('fa-angle-double-up');
-        icon.addClass('fa-angle-double-down');
-
-    } else {
-        icon.removeClass('fa-angle-double-down');
-        icon.addClass('fa-angle-double-up');
-    }
-}
-
-function findActivitiesForProject(element) {
-    var activities = [];
-
-    $(element).nextAll('tr').each(function(i, row) {
-        var r = $(row);
-        if (r.attr('class').indexOf("projectRow") < 0) {
+function Timesheet() {
+    this.init = function () {
+        $(".foldLink").click(function () {
+            foldProjectRow(this);
             return false;
+        });
+
+        $("#filter").keyup(function () {
+            filter()
+        });
+
+        filter();
+
+        $("#toggleOptions").click(function () {
+            $("#timesheetOptions").slideToggle('fast');
+        });
+
+        var checkbox = $("#hideCheckbox");
+        checkbox.click(function () {
+            if ($(this).is(':checked')) {
+                $(".projectRow > .total").each(function () {
+                        var item = $(this);
+                        var val = item.html();
+                        var sanitized = val.replace(/\D/g, '');
+
+                        if (parseInt(sanitized) === 0) {
+                            var e = $(item.closest('.projectRow'));
+                            e.hide();
+                            e.data("visible", false);
+                        }
+                    }
+                );
+            } else {
+                $(".projectRow > .total").each(function () {
+                    var item = $(this);
+                    var e = $(item.closest('.projectRow'));
+                    e.show();
+                    e.data("visible", true);
+                });
+
+                filter();
+            }
+
+            hideCustomersWithoutProjects();
+        });
+    };
+
+    function foldProjectRow(link) {
+        var children = $(link).children();
+        var isFolded = children.data('folded');
+
+        var customerRow = $(link).closest('.customerRow');
+
+        var projects = findProjects(customerRow);
+
+        for (var i = 0; i < projects.length; i++) {
+            $(projects[i]).slideToggle('fast');
+        }
+
+        children.data('folded', !isFolded);
+
+        var icon = $(children[0]);
+
+        if (isFolded) {
+            icon.removeClass('fa-angle-double-up');
+            icon.addClass('fa-angle-double-down');
         } else {
-            activities.push(r);
+            icon.removeClass('fa-angle-double-down');
+            icon.addClass('fa-angle-double-up');
         }
-    });
-
-    return activities;
-}
-
-function initializeFilter() {
-    $("#filter").keyup(function () {
-        filter()
-    });
-
-    filter();
-}
+    }
 
 
-function filter() {
-    var q = $.trim($("#filter").val()).toLowerCase();
+    function findProjects(element) {
+        var projects = [];
 
-    $(".timesheetTable").find(".projectName").each(function (idx, element) {
-        var e = $(element).closest('.projectRow')
+        $(element).nextAll('tr').each(function (i, row) {
+            var r = $(row);
+            if (r.attr('class').indexOf("projectRow") < 0) {
+                return false;
+            } else {
+                projects.push(r);
+            }
+        });
 
-        if ($(element).text().toLowerCase().indexOf(q) >= 0) {
-            e.data("visible", true);
-            e.show();
-        } else {
-            e.data("visible", false);
-            e.hide();
-        }
-    });
+        return projects;
+    }
 
-    $(".timesheetTable").find(".customerRow").each(function (idx, element) {
-        var isVisible = false;
+    function filter() {
+        var q = $.trim($("#filter").val()).toLowerCase();
 
-        var acts = findActivitiesForProject(element);
+        var timesheetTable = $(".timesheetTable");
 
-        for (var i = 0; i < acts.length; i++) {
-            isVisible |= $(acts[i]).data("visible");
-        }
+        timesheetTable.find(".projectName").each(function (idx, element) {
+            var e = $(element).closest('.projectRow');
 
-        if (isVisible) {
-            $(element).show();
-        } else {
-            $(element).hide();
-        }
+            if ($(element).text().toLowerCase().indexOf(q) >= 0) {
+                e.data("visible", true);
+                e.show();
+            } else {
+                e.data("visible", false);
+                e.hide();
+            }
+        });
 
-    });
+        hideCustomersWithoutProjects();
+    }
+
+    function hideCustomersWithoutProjects() {
+        var timesheetTable = $(".timesheetTable");
+
+        timesheetTable.find(".customerRow").each(function (idx, element) {
+            var isVisible = false;
+
+            var acts = findProjects(element);
+
+            for (var i = 0; i < acts.length; i++) {
+                isVisible |= $(acts[i]).data("visible");
+            }
+
+            if (isVisible) {
+                $(element).show();
+            } else {
+                $(element).hide();
+            }
+        });
+
+    }
 }
