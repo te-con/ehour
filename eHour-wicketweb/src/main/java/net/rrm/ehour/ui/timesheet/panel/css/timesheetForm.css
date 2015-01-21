@@ -146,7 +146,7 @@
 
 .timesheetTable tr.projectRow td.sunday,
 .timesheetTable tr.projectRow td.saturday,
-.timesheetTable tr.projectRow td.weekday{
+.timesheetTable tr.projectRow td.weekday {
     font: 1.0em/1.1 Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     margin: 0;
@@ -395,4 +395,17 @@ div.wicket-modal div.w_content_3 {
 .lockedCell {
     vertical-align: middle !important;
     padding: 4px 6px 0 0 !important;
+}
+
+.filterContainer {
+    float: right;
+    margin-right: 15px;
+    margin-bottom: 1px;
+}
+
+.filter {
+    text-align: left;
+    width: 15em;
+    border: 1px solid #9ABBD9;
+    font-size: 0.9em;
 }

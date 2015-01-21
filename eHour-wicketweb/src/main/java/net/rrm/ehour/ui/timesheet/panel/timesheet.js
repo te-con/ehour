@@ -1,8 +1,10 @@
-function initializeFoldLinks() {
+function initialize() {
     $(".foldLink").click(function() {
         foldProjectRow(this);
         return false;
     });
+
+    initializeFilter();
 }
 
 function foldProjectRow(link) {
@@ -44,4 +46,46 @@ function findActivitiesForProject(element) {
     });
 
     return activities;
+}
+
+function initializeFilter() {
+    $("#filter").keyup(function () {
+        filter()
+    });
+
+    filter();
+}
+
+
+function filter() {
+    var q = $.trim($("#filter").val()).toLowerCase();
+
+    $(".timesheetTable").find(".projectName").each(function (idx, element) {
+        var e = $(element).closest('.projectRow')
+
+        if ($(element).text().toLowerCase().indexOf(q) >= 0) {
+            e.data("visible", true);
+            e.show();
+        } else {
+            e.data("visible", false);
+            e.hide();
+        }
+    });
+
+    $(".timesheetTable").find(".customerRow").each(function (idx, element) {
+        var isVisible = false;
+
+        var acts = findActivitiesForProject(element);
+
+        for (var i = 0; i < acts.length; i++) {
+            isVisible |= $(acts[i]).data("visible");
+        }
+
+        if (isVisible) {
+            $(element).show();
+        } else {
+            $(element).hide();
+        }
+
+    });
 }

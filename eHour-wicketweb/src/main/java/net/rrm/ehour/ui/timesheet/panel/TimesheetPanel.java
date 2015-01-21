@@ -70,7 +70,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
 
     private EhourConfig config;
     private WebComponent serverMsgLabel;
-    private Form<PersistableTimesheetModel> timesheetForm;
+    private Form<TimesheetContainer> timesheetForm;
 
     @SpringBean
     private PersistableTimesheetModel<TimesheetContainer> model;
@@ -84,9 +84,6 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     public TimesheetPanel(String id, User user, Calendar forWeek) {
         super(id);
 
-
-        GrandTotal grandTotals;
-
         config = EhourWebSession.getEhourConfig();
 
         this.setOutputMarkupId(true);
@@ -98,44 +95,13 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         Timesheet timesheet = model.getObject().getTimesheet();
 
         // grey & blue frame border
-        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame",
-                getWeekNavigation(timesheet.getWeekStart(), timesheet.getWeekEnd())
-        );
+        WebMarkupContainer weekNavigation = getWeekNavigation(timesheet.getWeekStart(), timesheet.getWeekEnd());
+
+        CustomTitledGreyRoundedBorder greyBorder = new CustomTitledGreyRoundedBorder("timesheetFrame", weekNavigation);
         add(greyBorder);
 
-        // add form
-        timesheetForm = new Form<>("timesheetForm");
-        timesheetForm.setMarkupId("timesheetForm");
-        timesheetForm.setOutputMarkupId(true);
+        this.timesheetForm = buildForm(model);
         greyBorder.add(timesheetForm);
-
-        GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
-        timesheetForm.add(blueBorder);
-
-        // setup form
-        grandTotals = buildForm(timesheetForm, blueBorder);
-
-        // add last row with grand totals
-        addGrandTotals(blueBorder, grandTotals, timesheet.getWeekStart());
-
-        // add label dates
-        addDateLabels(blueBorder);
-
-        // attach onsubmit ajax events
-        setSubmitActions(timesheetForm, timesheetForm, timesheet);
-
-        SubmitButton submitButtonTop = new SubmitButton("submitButtonTop", timesheetForm, timesheet);
-        submitButtonTop.setOutputMarkupId(true);
-        submitButtonTop.setMarkupId("submitButtonTop");
-        submitButtonTop.setVisible(timesheet.isAllLocked());
-        blueBorder.add(submitButtonTop);
-
-        // server message
-        serverMsgLabel = new WebComponent("serverMessage");
-        serverMsgLabel.setOutputMarkupId(true);
-        timesheetForm.add(serverMsgLabel);
-
-        timesheetForm.add(renderSections());
     }
 
     @Override
@@ -149,7 +115,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         response.render(JavaScriptHeaderItem.forScript(String.format("var WARNING_MSG = '%s';", escapedMsg), "msg"));
 
         response.render(JavaScriptHeaderItem.forReference(TIMESHEET_JS));
-        response.render(OnDomReadyHeaderItem.forScript("initializeFoldLinks();"));
+        response.render(OnDomReadyHeaderItem.forScript("initialize();"));
     }
 
     private RepeatingView renderSections() {
@@ -357,6 +323,46 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     private List<ProjectAssignmentStatus> persistTimesheetEntries() {
         return ((PersistableTimesheetModel) getPanelModel()).persist();
     }
+
+    private Form<TimesheetContainer> buildForm(IModel<TimesheetContainer> timesheetModel) {
+        // add form
+        Form<TimesheetContainer> timesheetForm = new Form<>("timesheetForm");
+        timesheetForm.setMarkupId("timesheetForm");
+        timesheetForm.setOutputMarkupId(true);
+        timesheetForm.setModel(timesheetModel);
+
+        GreyBlueRoundedBorder blueBorder = new GreyBlueRoundedBorder("blueFrame");
+        timesheetForm.add(blueBorder);
+
+        // setup form
+        GrandTotal grandTotals = buildForm(timesheetForm, blueBorder);
+
+        // add last row with grand totals
+        Timesheet timesheet = timesheetModel.getObject().getTimesheet();
+        addGrandTotals(blueBorder, grandTotals, timesheet.getWeekStart());
+
+        // add label dates
+        addDateLabels(blueBorder);
+
+        // attach onsubmit ajax events
+        setSubmitActions(timesheetForm, timesheetForm, timesheet);
+
+        SubmitButton submitButtonTop = new SubmitButton("submitButtonTop", timesheetForm, timesheet);
+        submitButtonTop.setOutputMarkupId(true);
+        submitButtonTop.setMarkupId("submitButtonTop");
+        submitButtonTop.setVisible(timesheet.isAllLocked());
+        blueBorder.add(submitButtonTop);
+
+        // server message
+        serverMsgLabel = new WebComponent("serverMessage");
+        serverMsgLabel.setOutputMarkupId(true);
+        timesheetForm.add(serverMsgLabel);
+
+        timesheetForm.add(renderSections());
+
+        return timesheetForm;
+    }
+
 
     private GrandTotal buildForm(final Form<?> form, WebMarkupContainer parent) {
         final GrandTotal grandTotals = new GrandTotal();

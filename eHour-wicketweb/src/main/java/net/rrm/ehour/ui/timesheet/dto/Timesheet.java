@@ -228,7 +228,7 @@ public class Timesheet implements Serializable {
      * @return
      */
     public List<Customer> getCustomerList() {
-        return new ArrayList<Customer>(getCustomers().keySet());
+        return new ArrayList<>(getCustomers().keySet());
     }
 
     /**
@@ -289,5 +289,4 @@ public class Timesheet implements Serializable {
     public void setWeekEnd(Date weekEnd) {
         this.weekEnd = weekEnd;
     }
-
 }
