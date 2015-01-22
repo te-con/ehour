@@ -189,7 +189,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         parent.add(grandTotal);
     }
 
-    private void setSubmitActions(Form<?> form, MarkupContainer parent, Timesheet timesheet) {
+    private void setSubmitActions(Form<?> form, MarkupContainer parent, final Timesheet timesheet) {
         // default submit
         SubmitButton submitButton = new SubmitButton("submitButton", form, timesheet);
         submitButton.setOutputMarkupId(true);
@@ -219,6 +219,12 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
 
                 callListeners.add(new JavaScriptConfirmation(new ResourceModel("timesheet.confirmReset")));
                 callListeners.add(new LoadingSpinnerDecorator());
+            }
+
+
+            @Override
+            public boolean isVisible() {
+                return !timesheet.isAllLocked();
             }
         };
 
@@ -350,7 +356,6 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         SubmitButton submitButtonTop = new SubmitButton("submitButtonTop", timesheetForm, timesheet);
         submitButtonTop.setOutputMarkupId(true);
         submitButtonTop.setMarkupId("submitButtonTop");
-        submitButtonTop.setVisible(timesheet.isAllLocked());
         blueBorder.add(submitButtonTop);
 
         // server message

@@ -7,6 +7,7 @@ import net.rrm.ehour.ui.common.component.KeepAliveTextArea;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
@@ -18,7 +19,6 @@ public class WeeklyCommentPanel extends AbstractBasePanel<TimesheetContainer> {
 
     @SpringBean
     private TimesheetLockService lockService;
-
 
     public WeeklyCommentPanel(String id, IModel<TimesheetContainer> model) {
         super(id, model);
@@ -36,6 +36,10 @@ public class WeeklyCommentPanel extends AbstractBasePanel<TimesheetContainer> {
             Label commentLabel = new Label("lockedComment", commentModel);
             fragment.add(commentLabel);
             blueBorder.add(fragment);
+
+            if (StringUtils.isBlank(timesheet.getComment().getComment())) {
+                setVisible(false);
+            }
         } else {
             Fragment fragment = new Fragment(COMMENT_ID, "input", this);
             KeepAliveTextArea textArea = new KeepAliveTextArea("commentsArea", commentModel);
