@@ -18,6 +18,7 @@ import net.rrm.ehour.ui.manage.assignment.AssignmentAjaxEventType
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation
 import org.apache.wicket.markup.head.{CssHeaderItem, IHeaderResponse}
+import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.model.ResourceModel
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
@@ -25,7 +26,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean
 @AuthorizeInstantiation(Array(UserRole.ROLE_PROJECTMANAGER))
 class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmReport.title")) {
 
-  val ContainerId = "content"
+  val ContainerId = "contentContainer"
+  val ContentId = "content"
   val StatusId = "status"
   val Self = this
 
@@ -39,14 +41,25 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
   override def onInitialize() {
     super.onInitialize()
 
-    val greyBorder = new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"))
+    val greyBorder = createEntrySelectorFrame
     addOrReplace(greyBorder)
 
     selector = buildEntrySelector().build()
     greyBorder.add(selector)
 
-    addOrReplace(new Container(ContainerId))
-    addOrReplace(new Container(StatusId))
+    val container: WebMarkupContainer = createContentContainer
+    addOrReplace(container)
+    container.add(new Container(ContentId))
+    container.add(new Container(StatusId))
+  }
+
+  protected def createContentContainer: WebMarkupContainer = {
+    val container = new WebMarkupContainer(ContainerId)
+    container
+  }
+
+  protected def createEntrySelectorFrame: GreyRoundedBorder = {
+    new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"))
   }
 
   protected def buildEntrySelector(): EntrySelectorBuilder = {
@@ -68,18 +81,22 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
   }
 
   def onProjectSelected(id: Integer, project: Project, target: AjaxRequestTarget) {
+    val container = findContentContainer
+
     if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
-      val projectInfoPanel = new ProjectManagerModifyPanel(ContainerId, project)
+      val projectInfoPanel = new ProjectManagerModifyPanel(ContentId, project)
       projectInfoPanel.setOutputMarkupId(true)
-      Self.addOrReplace(projectInfoPanel)
+      container.addOrReplace(projectInfoPanel)
       target.add(projectInfoPanel)
     }
 
     val statusPanel = new ProjectManagerStatusPanel(StatusId, project)
     statusPanel.setOutputMarkupId(true)
-    Self.addOrReplace(statusPanel)
+    container.addOrReplace(statusPanel)
     target.add(statusPanel)
   }
+
+  protected def findContentContainer: WebMarkupContainer = Self.get(ContainerId).asInstanceOf[WebMarkupContainer]
 
   def projects = projectService.getProjectManagerProjects(EhourWebSession.getUser)
 
