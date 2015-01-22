@@ -36,10 +36,6 @@ public class WeeklyCommentPanel extends AbstractBasePanel<TimesheetContainer> {
             Label commentLabel = new Label("lockedComment", commentModel);
             fragment.add(commentLabel);
             blueBorder.add(fragment);
-
-            if (StringUtils.isBlank(timesheet.getComment().getComment())) {
-                setVisible(false);
-            }
         } else {
             Fragment fragment = new Fragment(COMMENT_ID, "input", this);
             KeepAliveTextArea textArea = new KeepAliveTextArea("commentsArea", commentModel);
@@ -49,5 +45,10 @@ public class WeeklyCommentPanel extends AbstractBasePanel<TimesheetContainer> {
         }
 
         add(blueBorder);
+
+        if (isWeekLocked && (timesheet.getComment() == null || StringUtils.isBlank(timesheet.getComment().getComment()))) {
+            setVisible(false);
+        }
+
     }
 }

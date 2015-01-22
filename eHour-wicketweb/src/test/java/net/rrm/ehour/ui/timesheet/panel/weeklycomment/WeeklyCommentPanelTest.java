@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.timesheet.panel.weeklycomment;
 
+import net.rrm.ehour.domain.TimesheetComment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.timesheet.service.TimesheetLockService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
@@ -17,6 +18,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Date;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -40,6 +43,7 @@ public class WeeklyCommentPanelTest extends BaseSpringWebAppTester {
 
         timesheet.setWeekStart(s);
         timesheet.setWeekEnd(e);
+        timesheet.setComment(new TimesheetComment(null, "hi"));
 
         container = new TimesheetContainer(timesheet);
     }
@@ -57,8 +61,21 @@ public class WeeklyCommentPanelTest extends BaseSpringWebAppTester {
     public void should_render_label_when_whole_week_is_locked() {
         when(lockService.isRangeLocked(eq(s), eq(e), any(User.class))).thenReturn(true);
 
-        tester.startComponentInPage(new WeeklyCommentPanel("id", Model.of(container)));
+        WeeklyCommentPanel panel = tester.startComponentInPage(new WeeklyCommentPanel("id", Model.of(container)));
 
         tester.assertComponent("id:commentsFrame:commentsFrame_body:weeklyComment:lockedComment", Label.class);
+
+        assertTrue(panel.isVisible());
+    }
+
+    @Test
+    public void should_hide_comments_when_when_whole_week_is_locked_and_there_is_no_comment() {
+        when(lockService.isRangeLocked(eq(s), eq(e), any(User.class))).thenReturn(true);
+
+        container.getTimesheet().getComment().setComment("");
+
+        WeeklyCommentPanel panel = tester.startComponentInPage(new WeeklyCommentPanel("id", Model.of(container)));
+
+        assertFalse(panel.isVisible());
     }
 }
