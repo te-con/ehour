@@ -47,11 +47,13 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
     selector = buildEntrySelector().build()
     greyBorder.add(selector)
 
-    val container: WebMarkupContainer = createContentContainer
+    val container = createContentContainer
     addOrReplace(container)
-    container.add(new Container(ContentId))
+    container.add(createPlaceholderContainer(ContentId))
     container.add(new Container(StatusId))
   }
+
+  protected def createPlaceholderContainer(id: String):WebMarkupContainer = new Container(id)
 
   protected def createContentContainer: WebMarkupContainer = {
     val container = new WebMarkupContainer(ContainerId)
