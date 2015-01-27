@@ -72,7 +72,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     }
 
     public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> hideInactiveLinkTooltip, boolean wide) {
-        super(id, new Model<EntrySelectorData>(entrySelectorData));
+        super(id, new Model<>(entrySelectorData));
         this.clickHandler = clickHandler;
         this.wide = wide;
 
@@ -206,7 +206,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     }
 
     private Form<Void> createForm() {
-        Form<Void> form = new Form<Void>("filterForm");
+        Form<Void> form = new Form<>("filterForm");
 
         WebMarkupContainer filterInputContainer = new WebMarkupContainer("filterInputContainer");
         add(filterInputContainer);
