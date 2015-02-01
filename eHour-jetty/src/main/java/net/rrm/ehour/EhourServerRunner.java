@@ -1,7 +1,7 @@
 package net.rrm.ehour;
 
-import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.appconfig.EhourHomeFinder;
+import net.rrm.ehour.appconfig.EhourHomeUtil;
 import org.apache.log4j.PropertyConfigurator;
 
 public class EhourServerRunner {
