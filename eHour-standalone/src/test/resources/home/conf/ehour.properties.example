@@ -1,4 +1,4 @@
-ehour.standalone.port=8000
+ehour.standalone.port=9000
 # derby, mysql and postgresql are supported. When derby is selected you can ignore the ehour.database lines
 ehour.database=mysql
 
