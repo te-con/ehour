@@ -13,7 +13,7 @@
             <outputDirectory>/conf</outputDirectory>
             <fileMode>0644</fileMode>
             <directoryMode>0775</directoryMode>
-            <directory>../assembly/war/conf</directory>
+            <directory>src/main/conf</directory>
             <filtered>false</filtered>
         </fileSet>
         <fileSet>
@@ -40,7 +40,7 @@
             <useDefaultExcludes/>
             <outputDirectory>/</outputDirectory>
             <fileMode>0644</fileMode>
-            <directory>../assembly/war/txt</directory>
+            <directory>src/main/txt</directory>
             <filtered>false</filtered>
         </fileSet>
         <fileSet>
