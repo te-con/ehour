@@ -1,6 +1,5 @@
 package net.rrm.ehour;
 
-import net.rrm.ehour.util.IoUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -45,14 +44,9 @@ class ServerPropertiesConfigurator {
 
         if (file.exists()) {
             Properties props = new Properties();
-            FileInputStream stream = null;
-
-            try {
-                stream = new FileInputStream(file);
+            try (FileInputStream stream = new FileInputStream(file)) {
                 props.load(stream);
                 return props;
-            } finally {
-                IoUtil.close(stream);
             }
         } else {
             throw new FileNotFoundException(String.format("Configuration file %s not found.", filename));
