@@ -84,14 +84,20 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
 
   def onProjectSelected(id: Integer, project: Project, target: AjaxRequestTarget) {
     val container = findContentContainer
+    updateContentPanel(project, target, container)
+    updateStatusPanel(project, target, container)
+  }
 
+  def updateContentPanel(project: Project, target: AjaxRequestTarget, container: WebMarkupContainer): Unit = {
     if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
       val projectInfoPanel = new ProjectManagerModifyPanel(ContentId, project)
       projectInfoPanel.setOutputMarkupId(true)
       container.addOrReplace(projectInfoPanel)
       target.add(projectInfoPanel)
     }
+  }
 
+  def updateStatusPanel(project: Project, target: AjaxRequestTarget, container: WebMarkupContainer): Unit = {
     val statusPanel = new ProjectManagerStatusPanel(StatusId, project)
     statusPanel.setOutputMarkupId(true)
     container.addOrReplace(statusPanel)
