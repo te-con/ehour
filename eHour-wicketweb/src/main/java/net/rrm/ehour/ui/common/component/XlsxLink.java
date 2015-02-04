@@ -14,6 +14,11 @@ public class XlsxLink extends Link<Void> {
         super(id);
         this.filename = filename;
         this.byteWriter = byteWriter;
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
 
         add(AttributeModifier.append("title", getString("excel.export.tooltip")));
     }
