@@ -168,7 +168,11 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         RepeatingView cells = new RepeatingView(id);
 
         for (EntrySelectorData.Header header : getPanelModelObject().getColumnHeaders()) {
-            cells.add(new Label(cells.newChildId(), new ResourceModel(header.getResourceLabel())));
+            Label label = new Label(cells.newChildId(), new ResourceModel(header.getResourceLabel()));
+            if (header.getColumnType() == EntrySelectorData.ColumnType.NUMERIC) {
+                label.add(AttributeModifier.replace("class", "numeric"));
+            }
+            cells.add(label);
         }
 
         return cells;
