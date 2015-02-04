@@ -19,12 +19,14 @@ package net.rrm.ehour.ui.common.panel.entryselector;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.XlsxLink;
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.excel.IWriteBytes;
 import net.rrm.ehour.ui.common.wicket.Container;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
@@ -72,7 +74,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     }
 
     public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> hideInactiveLinkTooltip, boolean wide) {
-        super(id, new Model<EntrySelectorData>(entrySelectorData));
+        super(id, new Model<>(entrySelectorData));
         this.clickHandler = clickHandler;
         this.wide = wide;
 
@@ -166,7 +168,11 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         RepeatingView cells = new RepeatingView(id);
 
         for (EntrySelectorData.Header header : getPanelModelObject().getColumnHeaders()) {
-            cells.add(new Label(cells.newChildId(), new ResourceModel(header.getResourceLabel())));
+            Label label = new Label(cells.newChildId(), new ResourceModel(header.getResourceLabel()));
+            if (header.getColumnType() == EntrySelectorData.ColumnType.NUMERIC) {
+                label.add(AttributeModifier.replace("class", "numeric"));
+            }
+            cells.add(label);
         }
 
         return cells;
@@ -206,7 +212,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     }
 
     private Form<Void> createForm() {
-        Form<Void> form = new Form<Void>("filterForm");
+        Form<Void> form = new Form<>("filterForm");
 
         WebMarkupContainer filterInputContainer = new WebMarkupContainer("filterInputContainer");
         add(filterInputContainer);
@@ -264,6 +270,13 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
                 filterIcon.removeAll();
                 addFilterIconAttributes(filterIcon, getEhourWebSession().getHideInactiveSelections());
                 target.add(filterIcon);
+            }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
             }
         };
 
