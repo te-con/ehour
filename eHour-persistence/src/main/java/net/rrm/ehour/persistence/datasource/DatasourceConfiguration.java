@@ -52,7 +52,6 @@ public class DatasourceConfiguration {
             ds.setMinPoolSize(10);
             ds.setCheckoutTimeout(100);
             return ds;
-
         }
     }
 
