@@ -47,8 +47,9 @@ public class DatasourceConfiguration {
             if (StringUtils.isBlank(username) && StringUtils.isBlank(password)) {
                 URI dbUri = new URI(url);
 
-                username = dbUri.getUserInfo().split(":")[0];
-                password = dbUri.getUserInfo().split(":")[1];
+                String[] splitted = dbUri.getUserInfo().split(":");
+                username = splitted[0];
+                password = splitted[1];
 
                 String db = dbUri.getScheme();
 
@@ -59,9 +60,10 @@ public class DatasourceConfiguration {
                 ds.setJdbcUrl(dbUrl);
             } else {
                 ds.setJdbcUrl(url);
-                ds.setUser(username);
-                ds.setPassword(password);
             }
+
+            ds.setUser(username);
+            ds.setPassword(password);
 
             ds.setDriverClass(driver);
             ds.setInitialPoolSize(5);
