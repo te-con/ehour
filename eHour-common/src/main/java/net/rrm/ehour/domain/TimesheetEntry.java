@@ -16,7 +16,8 @@
 
 package net.rrm.ehour.domain;
 
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -30,8 +31,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "TIMESHEET_ENTRY")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -43,7 +47,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     private TimesheetEntryId entryId;
 
     @Column(name = "HOURS")
-    private Float hours;
+    private BigDecimal hours;
 
     @Column(name = "COMMENT", length = 2048)
     private String comment;
@@ -55,15 +59,9 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     /**
      * full constructor
      */
-    public TimesheetEntry(TimesheetEntryId entryId, Float hours) {
+    public TimesheetEntry(TimesheetEntryId entryId, BigDecimal hours) {
         this.entryId = entryId;
         this.hours = hours;
-    }
-
-    /**
-     * default constructor
-     */
-    public TimesheetEntry() {
     }
 
     public TimesheetEntry(TimesheetEntryId entryId) {
@@ -73,23 +71,6 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     public boolean isEmptyEntry() {
         return getHours() == null;
     }
-
-    public TimesheetEntryId getEntryId() {
-        return this.entryId;
-    }
-
-    public void setEntryId(TimesheetEntryId entryId) {
-        this.entryId = entryId;
-    }
-
-    public Float getHours() {
-        return this.hours;
-    }
-
-    public void setHours(Float hours) {
-        this.hours = hours;
-    }
-
 
     @Override
     public TimesheetEntryId getPK() {
@@ -108,22 +89,6 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
                 .append("comment", this.getComment())
                 .append("updateDate", this.getUpdateDate())
                 .toString();
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
     }
 
     @Override

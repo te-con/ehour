@@ -176,8 +176,8 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
 
       val byProject: Map[Project, List[TimesheetEntry]] = v.groupBy(_.getPK.getProjectAssignment.getProject)
 
-      val aggregatedProjects: Map[Project, Float] = for ((p, xs) <- byProject) yield {
-        (p, xs.foldLeft(0f)(_ + _.getHours))
+      val aggregatedProjects: Map[Project, BigDecimal] = for ((p, xs) <- byProject) yield {
+        (p, xs.foldLeft(BigDecimal(0))(_ + _.getHours))
       }
 
       AffectedUser(k, aggregatedProjects)
@@ -185,11 +185,11 @@ class TimesheetLockServiceSpringImpl @Autowired()(lockDao: TimesheetLockDao, tim
   }
 }
 
-case class AffectedUser(user: User = null, projects: Map[Project, Float] = Map()) {
+case class AffectedUser(user: User = null, projects: Map[Project, BigDecimal] = Map()) {
   def getJavaProjects = toJava(projects.toList)
 
   def getUser = user
 
-  def hoursBooked = projects.foldLeft(0f)(_ + _._2)
+  def hoursBooked = projects.foldLeft(BigDecimal(0))(_ + _._2)
 }
 

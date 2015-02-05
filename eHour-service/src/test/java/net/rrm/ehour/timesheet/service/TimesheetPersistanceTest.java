@@ -39,6 +39,7 @@ import org.springframework.context.ApplicationContext;
 import scala.collection.JavaConversions;
 import scala.collection.mutable.Buffer;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -103,7 +104,7 @@ public class TimesheetPersistanceTest {
             id.setProjectAssignment(assignment);
             id.setEntryDate(dateA);
             entry.setEntryId(id);
-            entry.setHours(8f);
+            entry.setHours(new BigDecimal(8));
             newEntries.add(entry);
         }
 
@@ -124,7 +125,7 @@ public class TimesheetPersistanceTest {
             id.setProjectAssignment(assignment);
             id.setEntryDate(dateA);
             entry.setEntryId(id);
-            entry.setHours(5f);
+            entry.setHours(new BigDecimal(5));
             existingEntries.add(entry);
         }
 
@@ -134,7 +135,7 @@ public class TimesheetPersistanceTest {
             idDel.setProjectAssignment(assignment);
             idDel.setEntryDate(dateB);
             entryDel.setEntryId(idDel);
-            entryDel.setHours(5f);
+            entryDel.setHours(new BigDecimal(5));
             existingEntries.add(entryDel);
         }
     }
@@ -211,7 +212,7 @@ public class TimesheetPersistanceTest {
             idDel.setProjectAssignment(assignment);
             idDel.setEntryDate(dateC);
             entryDel.setEntryId(idDel);
-            entryDel.setHours(7f);
+            entryDel.setHours(new BigDecimal(7));
             newEntries.add(entryDel);
         }
 
@@ -221,7 +222,7 @@ public class TimesheetPersistanceTest {
             idDel.setProjectAssignment(assignment);
             idDel.setEntryDate(dateC);
             entryDel.setEntryId(idDel);
-            entryDel.setHours(8f);
+            entryDel.setHours(new BigDecimal(8));
             existingEntries.add(entryDel);
         }
 
@@ -347,7 +348,7 @@ public class TimesheetPersistanceTest {
         id.setProjectAssignment(assignment);
         id.setEntryDate(baseDate.plusDays(2).toDate());
         entry.setEntryId(id);
-        entry.setHours(5f);
+        entry.setHours(new BigDecimal(5));
         newEntries.add(entry);
 
         withLock(new Interval(baseDate.plusDays(2), end));// cancelling out the just created entry

@@ -12,6 +12,7 @@
 
     <properties>
         <build>--</build>
+        <sonar.sources>src/main</sonar.sources>
     </properties>
 
     <build>

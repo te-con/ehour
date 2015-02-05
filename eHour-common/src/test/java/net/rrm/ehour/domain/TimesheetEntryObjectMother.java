@@ -1,5 +1,6 @@
 package net.rrm.ehour.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -8,7 +9,12 @@ import java.util.Date;
  * @author thies (www.te-con.nl)
  */
 public class TimesheetEntryObjectMother {
+    @Deprecated
     public static TimesheetEntry createTimesheetEntry(int prjId, Date date, float hours) {
+        return createTimesheetEntry(prjId, date, new BigDecimal((double) hours));
+    }
+
+    public static TimesheetEntry createTimesheetEntry(int prjId, Date date, BigDecimal hours) {
         TimesheetEntryId id = new TimesheetEntryId();
         id.setEntryDate(date);
         id.setProjectAssignment(ProjectAssignmentObjectMother.createProjectAssignment(prjId, prjId, 1));
@@ -20,7 +26,12 @@ public class TimesheetEntryObjectMother {
         return entry;
     }
 
+    @Deprecated
     public static TimesheetEntry createTimesheetEntry(User user, Date date, float hours) {
+        return createTimesheetEntry(user, date, new BigDecimal((double) hours));
+    }
+
+    public static TimesheetEntry createTimesheetEntry(User user, Date date, BigDecimal hours) {
         TimesheetEntryId id = new TimesheetEntryId();
         id.setEntryDate(date);
 

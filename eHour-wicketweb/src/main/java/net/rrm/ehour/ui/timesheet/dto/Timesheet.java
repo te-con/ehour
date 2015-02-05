@@ -20,6 +20,7 @@ import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -151,19 +152,19 @@ public class Timesheet implements Serializable {
      * @return
      */
     public Float getRemainingHoursForDay(int day) {
-        float remainingHours = maxHoursPerDay;
+        BigDecimal remainingHours = BigDecimal.valueOf(maxHoursPerDay);
 
         for (Customer customer : customers.keySet()) {
             for (TimesheetRow row : customers.get(customer)) {
                 TimesheetCell cell = row.getTimesheetCells()[day];
 
                 if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null) {
-                    remainingHours -= cell.getTimesheetEntry().getHours();
+                    remainingHours = remainingHours.subtract(cell.getTimesheetEntry().getHours());
                 }
             }
         }
 
-        return remainingHours;
+        return remainingHours.floatValue();
     }
 
     /**
@@ -172,7 +173,7 @@ public class Timesheet implements Serializable {
      * @return
      */
     public Float getTotalBookedHours() {
-        float totalHours = 0;
+        BigDecimal totalHours = BigDecimal.ZERO;
 
         for (Customer customer : customers.keySet()) {
             for (TimesheetRow row : customers.get(customer)) {
@@ -180,13 +181,13 @@ public class Timesheet implements Serializable {
                     if (cell != null
                             && cell.getTimesheetEntry() != null
                             && cell.getTimesheetEntry().getHours() != null) {
-                        totalHours += cell.getTimesheetEntry().getHours();
+                        totalHours = totalHours.add(cell.getTimesheetEntry().getHours());
                     }
                 }
             }
         }
 
-        return totalHours;
+        return totalHours.floatValue();
     }
 
     /**
