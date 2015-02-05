@@ -41,13 +41,16 @@ public class DatasourceConfiguration {
             ds.setUser(username);
             ds.setPassword(password);
             ds.setInitialPoolSize(5);
-            ds.setAcquireIncrement(1);
-            ds.setIdleConnectionTestPeriod(100);
+            ds.setAcquireIncrement(2);
+
+            ds.setIdleConnectionTestPeriod(30);
+            ds.setTestConnectionOnCheckout(false);
+            ds.setTestConnectionOnCheckin(true);
+
             ds.setMaxPoolSize(100);
             ds.setMaxStatements(0);
             ds.setMinPoolSize(10);
             ds.setCheckoutTimeout(100);
-            ds.setPreferredTestQuery("SELECT 1");
             return ds;
 
         }
