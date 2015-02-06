@@ -12,22 +12,28 @@ import java.util.Properties;
 
 class ServerPropertiesConfigurator {
     private static final Logger LOGGER = Logger.getLogger(ServerPropertiesConfigurator.class);
+    private static final String EHOUR_STANDALONE_PORT = "ehour.standalone.port";
 
     ServerConfig configureFromProperties(String filename) throws IOException {
         Properties props = loadProperties(filename);
 
         return new ServerConfig()
-                .setDataBase(props.getProperty("ehour.database"))
-                .setDataBaseDriver(props.getProperty("ehour.database.driver"))
-                .setDataBaseURL(props.getProperty("ehour.database.url"))
-                .setDataBaseUsername(props.getProperty("ehour.database.username"))
-                .setDataBasePassword(props.getProperty("ehour.database.password"))
                 .setPort(parseServerPort(props))
                 .setDefaultConfigFileName(props.getProperty("jetty.config.location"));
     }
 
     private Integer parseServerPort(Properties props) {
-        String serverPort = props.getProperty("ehour.standalone.port");
+
+        String serverPort = System.getenv(EHOUR_STANDALONE_PORT);
+
+        if (serverPort == null) {
+            serverPort = System.getProperty(EHOUR_STANDALONE_PORT);
+        }
+
+        if (serverPort == null) {
+            serverPort = props.getProperty(EHOUR_STANDALONE_PORT);
+        }
+
         Integer port = null;
 
         if (StringUtils.isNotBlank(serverPort)) {
