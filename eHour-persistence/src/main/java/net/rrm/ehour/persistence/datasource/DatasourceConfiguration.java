@@ -53,6 +53,10 @@ public class DatasourceConfiguration {
 
                 String db = dbUri.getScheme();
 
+                if (db.toLowerCase().startsWith("postgres")) {
+                    db = DB_POSTGRESQL; // postgres is the schema while it should be postgresql
+                }
+
                 String dbUrl = String.format("jdbc:%s://%s:%d%s", db, dbUri.getHost(), dbUri.getPort(), dbUri.getPath());
 
                 LOGGER.info("Only a DB URL was provided, stripped of username and password and connecting to " + dbUrl);
