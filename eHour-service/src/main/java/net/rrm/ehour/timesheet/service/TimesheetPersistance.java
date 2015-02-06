@@ -26,6 +26,7 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetEntrySegmentDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.util.DomainUtil;
@@ -47,6 +48,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     private static final Logger LOGGER = Logger.getLogger(TimesheetPersistance.class);
 
     private TimesheetDao timesheetDAO;
+    private TimesheetEntrySegmentDao timesheetEntrySegmentDAO;
     private TimesheetCommentDao timesheetCommentDAO;
     private ProjectAssignmentStatusService projectAssignmentStatusService;
     private ProjectManagerNotifierService projectManagerNotifierService;
@@ -55,12 +57,14 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
 
     @Autowired
     public TimesheetPersistance(TimesheetDao timesheetDAO,
+                                TimesheetEntrySegmentDao timesheetEntrySegmentDAO,
                                 TimesheetCommentDao timesheetCommentDAO,
                                 ProjectAssignmentStatusService projectAssignmentStatusService,
                                 ProjectManagerNotifierService projectManagerNotifierService,
                                 TimesheetLockService timesheetLockService,
                                 ApplicationContext context) {
         this.timesheetDAO = timesheetDAO;
+        this.timesheetEntrySegmentDAO = timesheetEntrySegmentDAO;
         this.timesheetCommentDAO = timesheetCommentDAO;
         this.projectAssignmentStatusService = projectAssignmentStatusService;
         this.projectManagerNotifierService = projectManagerNotifierService;

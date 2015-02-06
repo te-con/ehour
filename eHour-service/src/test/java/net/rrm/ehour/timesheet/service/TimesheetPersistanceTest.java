@@ -23,6 +23,7 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetEntrySegmentDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
@@ -58,6 +59,9 @@ public class TimesheetPersistanceTest {
     private TimesheetDao timesheetDAO;
 
     @Mock
+    private TimesheetEntrySegmentDao timesheetEntrySegmentDao;
+
+    @Mock
     private ProjectManagerNotifierService projectManagerNotifierService;
 
     @Mock
@@ -80,7 +84,8 @@ public class TimesheetPersistanceTest {
 
     @Before
     public void setUp() {
-        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
+        persister = new TimesheetPersistance(timesheetDAO, timesheetEntrySegmentDao,
+                commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
 
         initData();
     }

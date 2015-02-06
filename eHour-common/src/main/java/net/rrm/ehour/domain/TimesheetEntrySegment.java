@@ -3,6 +3,7 @@ package net.rrm.ehour.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,7 +20,7 @@ import java.util.Date;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @EqualsAndHashCode
 @ToString
-public class TimesheetEntrySegment {
+public class TimesheetEntrySegment extends DomainObject<TimesheetEntryId, TimesheetEntrySegment> {
 
     @Id
     @Valid
@@ -30,4 +31,14 @@ public class TimesheetEntrySegment {
 
     @Column(name = "END_WORK_TIME")
     private Date endWorkTime;
+
+    @Override
+    public TimesheetEntryId getPK() {
+        return entryId;
+    }
+
+    @Override
+    public int compareTo(TimesheetEntrySegment object) {
+        return new CompareToBuilder().append(this, object).toComparison();
+    }
 }

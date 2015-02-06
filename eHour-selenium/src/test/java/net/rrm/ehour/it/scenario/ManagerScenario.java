@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class ManagerScenario extends AbstractScenario {
 
     @Test
-    public void should_show_manager_role_in_user_admin_when_split_manager_is_toggled() {
+    public void shouldShowManagerRoleInUserAdminWhenSplitManagerIsToggled() {
         loginAdmin();
 
         checkSplitAdminRole();
@@ -25,7 +25,7 @@ public class ManagerScenario extends AbstractScenario {
     }
 
     @Test
-    public void with_just_manager_role_the_user_should_not_have_access_to_system_setup() {
+    public void withJustManagerRoleTheUserShouldNotHaveAccessToSystemSetup() {
         loginAdmin();
         checkSplitAdminRole();
         UserManagementDriver.ItUser user = new UserManagementDriver.ItUser("thies", "pass");

@@ -87,7 +87,7 @@ public class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     @Test
     public void shouldGetLatestTimesheetEntryForAssignment() {
         TimesheetEntry entry = timesheetDAO.getLatestTimesheetEntryForAssignment(1);
-        assertEquals(new BigDecimal("9.2"), entry.getHours());
+        assertEquals(new BigDecimal("9.2").doubleValue(), entry.getHours().doubleValue(), 0.01);
     }
 
     @Test

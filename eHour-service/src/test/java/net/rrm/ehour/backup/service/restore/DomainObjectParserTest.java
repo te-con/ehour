@@ -49,7 +49,6 @@ public class DomainObjectParserTest {
     }
 
     @Test
-    @Ignore
     public void shouldParseTwoTimesheetEntries() throws XMLStreamException, InstantiationException, IllegalAccessException {
         DomainObjectParser resolver = createResolver("<TIMESHEET_ENTRIES CLASS=\"net.rrm.ehour.domain.TimesheetEntry\">\n<TIMESHEET_ENTRY>\n<ASSIGNMENT_ID>1</ASSIGNMENT_ID>\n<ENTRY_DATE>2007-03-26</ENTRY_DATE>\n<HOURS>8.0</HOURS>\n   <COMMENT>jaja</COMMENT>\n  </TIMESHEET_ENTRY>\n  <TIMESHEET_ENTRY>\n   <ASSIGNMENT_ID>2</ASSIGNMENT_ID>\n   <ENTRY_DATE>2007-03-26</ENTRY_DATE>\n   <HOURS>0.0</HOURS>\n  </TIMESHEET_ENTRY>\n  </TIMESHEET_ENTRIES>\n", ProjectAssignmentObjectMother.createProjectAssignment(1), 1);
 

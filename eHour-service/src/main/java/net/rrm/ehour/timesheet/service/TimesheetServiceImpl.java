@@ -23,6 +23,7 @@ import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetEntrySegmentDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
@@ -49,6 +50,8 @@ import java.util.*;
 public class TimesheetServiceImpl implements IOverviewTimesheet {
     private TimesheetDao timesheetDAO;
 
+    private TimesheetEntrySegmentDao timesheetEntrySegmentDao;
+
     private TimesheetCommentDao timesheetCommentDAO;
 
     private TimesheetLockService timesheetLockService;
@@ -61,12 +64,14 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
 
     @Autowired
     public TimesheetServiceImpl(TimesheetDao timesheetDAO,
+                                TimesheetEntrySegmentDao timesheetEntrySegmentDao,
                                 TimesheetCommentDao timesheetCommentDAO,
                                 TimesheetLockService timesheetLockService,
                                 AggregateReportService aggregateReportService,
                                 ProjectAssignmentService projectAssignmentService,
                                 EhourConfig configuration) {
         this.timesheetDAO = timesheetDAO;
+        this.timesheetEntrySegmentDao = timesheetEntrySegmentDao;
         this.timesheetCommentDAO = timesheetCommentDAO;
         this.timesheetLockService = timesheetLockService;
         this.aggregateReportService = aggregateReportService;
@@ -78,7 +83,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
      * requested month and a list with all timesheet entries for that month.
      *
-     * @param userId
+     * @param user
      * @param requestedMonth only the month and year of the calendar is used
      * @return TimesheetOverviewAction
      * @throws ObjectNotFoundException

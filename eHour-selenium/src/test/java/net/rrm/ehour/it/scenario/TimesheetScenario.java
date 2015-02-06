@@ -11,11 +11,9 @@ import static net.rrm.ehour.it.driver.ItUtil.sleep;
 import static net.rrm.ehour.it.driver.TimesheetDriver.*;
 import static org.junit.Assert.assertEquals;
 
-// TODO should be re-enabled
-@Ignore
 public abstract class TimesheetScenario extends AbstractScenario {
     @Test
-    public void should_book_hours() {
+    public void shouldBookHours() {
         createUserAndAssign();
 
         loginRegularUser();
@@ -26,7 +24,7 @@ public abstract class TimesheetScenario extends AbstractScenario {
     }
 
     @Test
-    public void should_not_delete_previous_day_comment_when_cancelling_edit_comment() {
+    public void shouldNotDeletePreviousDayCommentWhenCancellingEditComment() {
         createUserAndAssign();
 
         loginRegularUser();

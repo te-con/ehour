@@ -55,7 +55,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
     }
 
     @Test
-    public void should_use_active_project_flags_and_customer_filter_to_manipulate_customer_criteria() {
+    public void shouldUseActiveProjectFlagsAndCustomerFilterToManipulateCustomerCriteria() {
         loadReportSection();
 
         assertEquals(1, countShownCustomers());
@@ -70,7 +70,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
     }
 
     @Test
-    public void filter_customers_should_still_work_after_reloading_customer_list() {
+    public void filterCustomersShouldStillWorkAfterReloadingCustomerList() {
         loadReportSection();
 
         toggleActiveProjects();
@@ -86,7 +86,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
     }
 
     @Test
-    public void should_retain_customer_filter_after_modifying_sort_order() {
+    public void shouldRetainCustomerFilterAfterModifyingSortOrder() {
         loadReportSection();
 
         toggleActiveProjects();
@@ -104,7 +104,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
     }
 
     @Test
-    public void filter_projects_should_still_work_after_reloading_project_list() {
+    public void filterProjectsShouldStillWorkAfterReloadingProjectList() {
         loadReportSection();
 
         toggleActiveProjects();
@@ -118,7 +118,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
     }
 
     @Test
-    public void should_retain_project_filter_after_modifying_sort_order() {
+    public void shouldRetainProjectFilterAfterModifyingSortOrder() {
         loadReportSection();
 
         toggleActiveProjects();
@@ -134,7 +134,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
     }
 
     @Test
-    public void should_clear_customer_filter() {
+    public void shouldClearCustomerFilter() {
         loadReportSection();
 
         toggleCustomerFilters();
@@ -147,7 +147,7 @@ public class ReportCriteriaScenario extends AbstractScenario {
     }
 
     @Test
-    public void should_clear_project_filter() {
+    public void shouldClearProjectFilter() {
         loadReportSection();
 
         toggleProjectFilters();

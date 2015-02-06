@@ -21,6 +21,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetEntrySegmentDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
@@ -51,6 +52,9 @@ public class TimesheetServiceImplTest {
     private TimesheetDao timesheetDAO;
 
     @Mock
+    private TimesheetEntrySegmentDao timesheetEntrySegmentDao;
+
+    @Mock
     private TimesheetCommentDao timesheetCommentDAO;
 
     @Mock
@@ -67,8 +71,8 @@ public class TimesheetServiceImplTest {
 
     @Before
     public void setUp() {
-        timesheetService = new TimesheetServiceImpl(timesheetDAO, timesheetCommentDAO, timesheetLockService,
-                aggregateReportService, projectAssignmentService, config);
+        timesheetService = new TimesheetServiceImpl(timesheetDAO, timesheetEntrySegmentDao, timesheetCommentDAO,
+                timesheetLockService, aggregateReportService, projectAssignmentService, config);
     }
 
     @Test
