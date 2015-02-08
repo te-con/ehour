@@ -1,4 +1,4 @@
-package net.rrm.ehour.backup.service;
+package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.util.IoUtil;
 
@@ -11,32 +11,28 @@ import java.io.*;
  * @author thies (thies@te-con.nl)
  *         Date: 1/20/11 5:36 PM
  */
-public final class BackupFileUtil
-{
-    private BackupFileUtil()
-    {
+public final class BackupFileUtil {
+    private BackupFileUtil() {
     }
 
     /**
-     *  Write XML to temp file
+     * Write XML to temp file
+     *
      * @param xmlData
      * @return
      * @throws IOException
      */
-    static String writeToTempFile(String xmlData) throws IOException
-    {
+    static String writeToTempFile(String xmlData) throws IOException {
         FileWriter writer = null;
         File file;
 
-        try
-        {
+        try {
             file = File.createTempFile("import", "xml");
             file.deleteOnExit();
 
             writer = new FileWriter(file);
             writer.write(xmlData);
-        } finally
-        {
+        } finally {
             IoUtil.close(writer);
         }
 
@@ -51,8 +47,7 @@ public final class BackupFileUtil
      * @throws XMLStreamException
      */
     static XMLEventReader createXmlReader(String xmlData)
-            throws XMLStreamException
-    {
+            throws XMLStreamException {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         return inputFactory.createXMLEventReader(new StringReader(xmlData));
     }
@@ -65,34 +60,29 @@ public final class BackupFileUtil
      * @throws IOException
      * @throws XMLStreamException
      */
-    static XMLEventReader createXmlReaderFromFile(String filename) throws IOException, XMLStreamException
-    {
+    static XMLEventReader createXmlReaderFromFile(String filename) throws IOException, XMLStreamException {
         String data = getXmlDataFromFile(filename);
         return createXmlReader(data);
     }
 
-    private static String getXmlDataFromFile(String filename) throws IOException
-    {
+    private static String getXmlDataFromFile(String filename) throws IOException {
         FileReader reader = null;
         BufferedReader bufferedReader = null;
 
-        try
-        {
+        try {
             File file = new File(filename);
             reader = new FileReader(file);
             bufferedReader = new BufferedReader(reader);
 
             String line;
-            StringBuffer xmlData = new StringBuffer();
+            StringBuilder xmlData = new StringBuilder();
 
-            while ((line = bufferedReader.readLine()) != null)
-            {
+            while ((line = bufferedReader.readLine()) != null) {
                 xmlData.append(line);
             }
 
             return xmlData.toString();
-        } finally
-        {
+        } finally {
             IoUtil.close(bufferedReader);
             IoUtil.close(reader);
         }

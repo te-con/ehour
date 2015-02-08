@@ -1,4 +1,4 @@
-package net.rrm.ehour.backup.service;
+package net.rrm.ehour.backup.service.backup;
 
 /**
  * Service which exports the whole database to XML

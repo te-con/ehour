@@ -1,6 +1,6 @@
 package net.rrm.ehour.ui.admin.backup;
 
-import net.rrm.ehour.backup.service.DatabaseBackupService;
+import net.rrm.ehour.backup.service.backup.DatabaseBackupService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.WebUtils;
 import org.apache.log4j.Logger;

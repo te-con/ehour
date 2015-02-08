@@ -1,8 +1,9 @@
 package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
+import net.rrm.ehour.backup.service.backup.BackupEntity;
 import net.rrm.ehour.domain.User;
-import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
+import net.rrm.ehour.domain.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class UserRoleParserTest {
     private XMLEventReader eventReader;
     private UserRoleParser parser;
     private ParseSession status;
+    private BackupEntity userRoleBackupEntity = new BackupEntity(UserRole.class, "USER_ROLE", 0);
 
     @Before
     public void setUp() throws XMLStreamException {
@@ -38,13 +40,13 @@ public class UserRoleParserTest {
         cache.putKey(User.class, 1, 1);
         cache.putKey(User.class, 2, 2);
 
-        parser = new UserRoleParser(daoValidator, cache);
+        parser = new UserRoleParser(daoValidator, cache, userRoleBackupEntity);
     }
 
     @Test
     public void shouldParseUserRoles() throws XMLStreamException {
         parser.parseUserRoles(eventReader, status);
         assertEquals(6, daoValidator.getPersistCount());
-        assertEquals(6, status.getInsertions().get(BackupEntityType.USER_ROLE).intValue());
+        assertEquals(6, status.getInsertions().get(userRoleBackupEntity).intValue());
     }
 }

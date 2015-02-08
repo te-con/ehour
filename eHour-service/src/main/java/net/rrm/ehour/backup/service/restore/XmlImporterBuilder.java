@@ -1,5 +1,7 @@
 package net.rrm.ehour.backup.service.restore;
 
+import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.springframework.util.Assert;
 
@@ -18,6 +20,7 @@ public class XmlImporterBuilder
     private DomainObjectParserDao domainObjectParserDao;
     private UserRoleParserDao userRoleParserDao;
     private boolean skipValidation = false;
+    private BackupEntityLocator backupEntityLocator;
 
     public XmlImporter build() throws XMLStreamException
     {
@@ -25,12 +28,13 @@ public class XmlImporterBuilder
         Assert.notNull(configurationDao);
         Assert.notNull(domainObjectParserDao);
         Assert.notNull(userRoleParserDao);
+        Assert.notNull(backupEntityLocator);
 
         PrimaryKeyCache keyCache = new PrimaryKeyCache();
 
-        DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache);
+        DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache, backupEntityLocator);
         ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
-        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache);
+        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache, backupEntityLocator.forClass(UserRole.class));
 
         return new XmlImporter(configurationDao, parser, configurationParser, userRoleParser, skipValidation);
     }
@@ -68,6 +72,11 @@ public class XmlImporterBuilder
     public XmlImporterBuilder setUserRoleParserDao(UserRoleParserDao userRoleParserDao)
     {
         this.userRoleParserDao = userRoleParserDao;
+        return this;
+    }
+
+    public XmlImporterBuilder setBackupEntityLocator(BackupEntityLocator backupEntityLocator) {
+        this.backupEntityLocator = backupEntityLocator;
         return this;
     }
 }

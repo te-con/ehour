@@ -1,9 +1,9 @@
-package net.rrm.ehour.backup.service;
+package net.rrm.ehour.backup.service.restore;
 
+import net.rrm.ehour.backup.config.EhourBackupEntityLocator;
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.backup.service.restore.ConfigurationParserDao;
-import net.rrm.ehour.backup.service.restore.DomainObjectParserDao;
-import net.rrm.ehour.backup.service.restore.UserRoleParserDaoValidatorImpl;
+import net.rrm.ehour.backup.service.DatabaseTruncater;
+import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.User;
@@ -27,20 +27,24 @@ import static org.mockito.Mockito.when;
  *         Created on: Nov 13, 2010 - 6:02:34 PM
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ImportServiceImplTest {
+public class RestoreServiceImplTest {
     @Mock
     private ConfigurationDao configurationDao;
+
     @Mock
     private DatabaseTruncater truncater;
+
     @Mock
     private ConfigurationParserDao configurationParserDao;
 
     @Mock
     private DomainObjectParserDao domainObjectParserDao;
 
+    private BackupEntityLocator backupEntityLocator;
+
     private UserRoleParserDaoValidatorImpl userRoleParserDao;
 
-    private RestoreServiceImpl importService;
+    private RestoreServiceImpl restoreService;
 
     private EhourConfigStub configStub;
 
@@ -48,10 +52,12 @@ public class ImportServiceImplTest {
     public void setUp() {
         userRoleParserDao = new UserRoleParserDaoValidatorImpl();
 
+        backupEntityLocator = new EhourBackupEntityLocator();
+
         configStub = new EhourConfigStub();
-        importService = new RestoreServiceImpl(configurationDao, configurationParserDao, domainObjectParserDao, userRoleParserDao, truncater, configStub);
-        importService.setConfigurationDao(configurationDao);
-        importService.setDatabaseTruncater(truncater);
+        restoreService = new RestoreServiceImpl(configurationDao, configurationParserDao, domainObjectParserDao, userRoleParserDao, truncater, configStub, backupEntityLocator);
+        restoreService.setConfigurationDao(configurationDao);
+        restoreService.setDatabaseTruncater(truncater);
 
         when(domainObjectParserDao.persist(any(User.class))).thenReturn(10);
     }
@@ -64,7 +70,7 @@ public class ImportServiceImplTest {
 
         String file = "src/test/resources/import/import_data.xml";
         String xml = FileUtils.readFileToString(new File(file));
-        ParseSession status = importService.prepareImportDatabase(xml);
+        ParseSession status = restoreService.prepareImportDatabase(xml);
 
         assertTrue(status.isImportable());
     }
@@ -77,7 +83,7 @@ public class ImportServiceImplTest {
 
         String file = "src/test/resources/import/import_data.xml";
         String xml = FileUtils.readFileToString(new File(file));
-        ParseSession session = importService.prepareImportDatabase(xml);
+        ParseSession session = restoreService.prepareImportDatabase(xml);
 
         assertFalse(session.isImportable());
         assertTrue(session.getGlobalErrorMessage().contains("version"));
@@ -98,7 +104,7 @@ public class ImportServiceImplTest {
 
         session.setFilename(destFile.getAbsolutePath());
 
-        ParseSession status = importService.importDatabase(session);
+        ParseSession status = restoreService.importDatabase(session);
 
         assertFalse(status.isImportable());
 
@@ -123,7 +129,7 @@ public class ImportServiceImplTest {
 
         configStub.setDemoMode(true);
 
-        ParseSession status = importService.importDatabase(session);
+        ParseSession status = restoreService.importDatabase(session);
 
         assertFalse(status.isImportable());
 

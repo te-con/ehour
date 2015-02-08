@@ -1,7 +1,8 @@
-package net.rrm.ehour.backup.service;
+package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.backup.service.restore.*;
+import net.rrm.ehour.backup.service.DatabaseTruncater;
+import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
@@ -30,16 +31,19 @@ public class RestoreServiceImpl implements RestoreService {
 
     private DatabaseTruncater databaseTruncater;
 
+    private BackupEntityLocator backupEntityLocator;
+
     private EhourConfig ehourConfig;
 
     @Autowired
-    public RestoreServiceImpl(ConfigurationDao configurationDao, ConfigurationParserDao configurationParserDao, DomainObjectParserDao domainObjectParserDao, UserRoleParserDao userRoleParserDao, DatabaseTruncater databaseTruncater, EhourConfig ehourConfig) {
+    public RestoreServiceImpl(ConfigurationDao configurationDao, ConfigurationParserDao configurationParserDao, DomainObjectParserDao domainObjectParserDao, UserRoleParserDao userRoleParserDao, DatabaseTruncater databaseTruncater, EhourConfig ehourConfig, BackupEntityLocator backupEntityLocator) {
         this.configurationDao = configurationDao;
         this.configurationParserDao = configurationParserDao;
         this.domainObjectParserDao = domainObjectParserDao;
         this.userRoleParserDao = userRoleParserDao;
         this.databaseTruncater = databaseTruncater;
         this.ehourConfig = ehourConfig;
+        this.backupEntityLocator = backupEntityLocator;
     }
 
     @Override
@@ -60,6 +64,7 @@ public class RestoreServiceImpl implements RestoreService {
                         .setUserRoleParserDao(userRoleParserDao)
                         .setXmlReader(eventReader)
                         .setSkipValidation(true)
+                        .setBackupEntityLocator(backupEntityLocator)
                         .build();
 
                 importer.importXml(session, eventReader);
@@ -108,6 +113,7 @@ public class RestoreServiceImpl implements RestoreService {
                 .setConfigurationParserDao(configurationParserDaoValidator)
                 .setDomainObjectParserDao(domainObjectParserDaoValidator)
                 .setUserRoleParserDao(userRoleParserDaoValidator)
+                .setBackupEntityLocator(backupEntityLocator)
                 .setXmlReader(eventReader)
                 .build();
 
