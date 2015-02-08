@@ -17,52 +17,43 @@ import java.io.Serializable;
  * Date: 11/29/10
  * Time: 11:28 PM
  */
-public class UserRoleParser
-{
+public class UserRoleParser {
     private UserRoleParserDao dao;
     private PrimaryKeyCache keyCache;
 
-    public UserRoleParser(UserRoleParserDao dao, PrimaryKeyCache keyCache)
-    {
+    public UserRoleParser(UserRoleParserDao dao, PrimaryKeyCache keyCache) {
         this.dao = dao;
         this.keyCache = keyCache;
     }
 
-    public void parseUserRoles(XMLEventReader reader, ParseSession status) throws XMLStreamException
-    {
-        while (reader.nextTag().isStartElement())
-        {
+    public void parseUserRoles(XMLEventReader reader, ParseSession status) throws XMLStreamException {
+        while (reader.nextTag().isStartElement()) {
             parseUserRole(reader, status);
         }
     }
 
-    private void parseUserRole(XMLEventReader reader, ParseSession status) throws XMLStreamException
-    {
+    private void parseUserRole(XMLEventReader reader, ParseSession status) throws XMLStreamException {
         XMLEvent event;
         String role = null;
         String userId = null;
 
-        while ((event = reader.nextTag()).isStartElement())
-        {
+        while ((event = reader.nextTag()).isStartElement()) {
             StartElement element = event.asStartElement();
             String name = element.getName().getLocalPart();
             String data = ParserUtil.parseNextEventAsCharacters(reader);
 
-            if (name.equalsIgnoreCase("ROLE"))
-            {
+            if (name.equalsIgnoreCase("ROLE")) {
                 role = data;
-            } else if (name.equalsIgnoreCase("USER_ID"))
-            {
+            } else if (name.equalsIgnoreCase("USER_ID")) {
                 userId = data;
             }
         }
 
-        if (userId != null && role != null)
-        {
+        if (userId != null && role != null) {
             Serializable newUserId = keyCache.getKey(User.class, Integer.parseInt(userId));
 
             // validate = string, actual import = integer
-            Integer castedUserId = newUserId instanceof String ? Integer.parseInt((String)newUserId) : (Integer)newUserId;
+            Integer castedUserId = newUserId instanceof String ? Integer.parseInt((String) newUserId) : (Integer) newUserId;
 
             User user = dao.findUser(castedUserId);
             UserRole userRole = dao.findUserRole(role);
@@ -71,8 +62,7 @@ public class UserRoleParser
             dao.persistUser(user);
 
             status.addInsertion(BackupEntityType.USER_ROLE);
-        } else
-        {
+        } else {
             status.addError(BackupEntityType.USER_ROLE, "No userID (" + userId + ") or role (" + role + ") found");
         }
 

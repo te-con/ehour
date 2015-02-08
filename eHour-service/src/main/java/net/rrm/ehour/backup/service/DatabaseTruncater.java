@@ -16,20 +16,16 @@ import java.util.List;
  *         Created on: 1/18/11 - 7:30 PM
  */
 @Service
-public class DatabaseTruncater
-{
+public class DatabaseTruncater {
     @Autowired
     private RestoreDao restoreDao;
 
     @Transactional
-    public void truncateDatabase()
-    {
+    public void truncateDatabase() {
         List<BackupEntityType> types = BackupEntityType.reverseOrderedValues();
 
-        for (BackupEntityType type : types)
-        {
-            if (type.getDomainObjectClass() != null)
-            {
+        for (BackupEntityType type : types) {
+            if (type.getDomainObjectClass() != null) {
                 restoreDao.delete(type.getDomainObjectClass());
             }
         }
@@ -39,8 +35,7 @@ public class DatabaseTruncater
         restoreDao.delete(MailLog.class);
     }
 
-    public void setRestoreDao(RestoreDao restoreDao)
-    {
+    public void setRestoreDao(RestoreDao restoreDao) {
         this.restoreDao = restoreDao;
     }
 }
