@@ -25,15 +25,9 @@ public class TimesheetRowComparator implements Comparator<TimesheetRow>, Seriali
 {
     public static final TimesheetRowComparator INSTANCE = new TimesheetRowComparator();
 
-    private TimesheetRowComparator()
-    {
-
+    public int compare(TimesheetRow o1, TimesheetRow o2) {
+        return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
+                o2.getProjectAssignment().getProject().getName());
     }
-
-	public int compare(TimesheetRow o1, TimesheetRow o2)
-	{
-		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
-				o2.getProjectAssignment().getProject().getName());
-	}
 
 }

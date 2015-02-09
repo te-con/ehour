@@ -16,6 +16,9 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
@@ -26,63 +29,26 @@ import java.util.*;
 /**
  * Representation of a timesheet
  */
-
 public class Timesheet implements Serializable {
     private static final long serialVersionUID = -547682050331580675L;
+    @Getter(AccessLevel.PACKAGE) @Setter(AccessLevel.PACKAGE)
     private SortedMap<Customer, List<TimesheetRow>> customers;
+    @Setter
     private Date[] dateSequence;
+    @Getter @Setter
     private Date weekStart;
+    @Getter @Setter
     private Date weekEnd;
+    @Getter @Setter
     private User user;
+    @Getter @Setter
     private TimesheetComment comment;
+    @Setter
     private float maxHoursPerDay;
     private List<Date> lockedDays;
 
-    public boolean isAnyLocked() {
-        for (int i = 0; i < dateSequence.length; i++) {
-            if (isLocked(i)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean isAllLocked() {
-        boolean allLocked = true;
-
-        for (int i = 0; i < dateSequence.length; i++) {
-            allLocked &= isLocked(i);
-        }
-
-        return allLocked;
-
-    }
-
-    public boolean isLocked(int seq) {
-        return lockedDays.contains(dateSequence[seq]);
-    }
-
-    public void setLockedDays(List<Date> lockedDays) {
-        this.lockedDays = lockedDays;
-    }
-
-    /**
-     * Update failed projects
-     *
-     * @param failedProjectStatusses
-     */
-    public void updateFailedProjects(List<ProjectAssignmentStatus> failedProjectStatusses) {
-        clearAssignmentStatus();
-
-        for (ProjectAssignmentStatus projectAssignmentStatus : failedProjectStatusses) {
-            setAssignmentStatus(projectAssignmentStatus);
-        }
-    }
-
     /**
      * Set assignment status
-     *
      * @param status
      */
     private void setAssignmentStatus(ProjectAssignmentStatus status) {
@@ -107,10 +73,49 @@ public class Timesheet implements Serializable {
         }
     }
 
+    public void setMappedTimesheetRows(List<TimesheetRow> rows, Comparator<TimesheetRow> comparator) {
+        this.setCustomers(new TimeSheetMapBuilder(comparator).buildMap(rows));
+    }
+
+    public boolean isAnyLocked() {
+        for (int i = 0; i < dateSequence.length; i++) {
+            if (isLocked(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isAllLocked() {
+        boolean allLocked = true;
+        for (int i = 0; i < dateSequence.length; i++) {
+            allLocked &= isLocked(i);
+        }
+        return allLocked;
+    }
+
+    public boolean isLocked(int seq) {
+        return lockedDays.contains(dateSequence[seq]);
+    }
+
+    public void setLockedDays(List<Date> lockedDays) {
+        this.lockedDays = lockedDays;
+    }
+
+    /**
+     * Update failed projects
+     * @param failedProjectStatusses
+     */
+    public void updateFailedProjects(List<ProjectAssignmentStatus> failedProjectStatusses) {
+        clearAssignmentStatus();
+
+        for (ProjectAssignmentStatus projectAssignmentStatus : failedProjectStatusses) {
+            setAssignmentStatus(projectAssignmentStatus);
+        }
+    }
 
     /**
      * Get comment for persist
-     *
      * @return
      */
     public TimesheetComment getCommentForPersist() {
@@ -128,7 +133,6 @@ public class Timesheet implements Serializable {
 
     /**
      * Get the timesheet entries of this timesheet
-     *
      * @return
      */
     public List<TimesheetEntry> getTimesheetEntries() {
@@ -147,7 +151,6 @@ public class Timesheet implements Serializable {
 
     /**
      * Get remaining hours for a day based on maxHoursPerDay
-     *
      * @param day
      * @return
      */
@@ -169,9 +172,9 @@ public class Timesheet implements Serializable {
 
     /**
      * Get total booked hours
-     *
      * @return
      */
+    @SuppressWarnings({ "unused" })
     public Float getTotalBookedHours() {
         BigDecimal totalHours = BigDecimal.ZERO;
 
@@ -190,44 +193,7 @@ public class Timesheet implements Serializable {
         return totalHours.floatValue();
     }
 
-    /**
-     * @return the weekStart
-     */
-    public Date getWeekStart() {
-        return weekStart;
-    }
-
-    /**
-     * @param weekStart the weekStart to set
-     */
-    public void setWeekStart(Date weekStart) {
-        this.weekStart = weekStart;
-    }
-
-    /**
-     * @return the comment
-     */
-    public TimesheetComment getComment() {
-        return comment;
-    }
-
-    /**
-     * @param comment the comment to set
-     */
-    public void setComment(TimesheetComment comment) {
-        this.comment = comment;
-    }
-
-    /**
-     * @return the customers
-     */
-    public SortedMap<Customer, List<TimesheetRow>> getCustomers() {
-        return customers;
-    }
-
-    /**
-     * @return
-     */
+    @SuppressWarnings({ "unused" })
     public List<Customer> getCustomerList() {
         return new ArrayList<>(getCustomers().keySet());
     }
@@ -240,54 +206,36 @@ public class Timesheet implements Serializable {
         return customers.get(customer);
     }
 
-    /**
-     * @param customers the customers to set
-     */
-    public void setCustomers(SortedMap<Customer, List<TimesheetRow>> customers) {
-        this.customers = customers;
-    }
+    private static class TimeSheetMapBuilder {
+        private final Comparator<TimesheetRow> comparator;
 
-    /**
-     * @return the dateSequence
-     */
-    public Date[] getDateSequence() {
-        return dateSequence;
-    }
+        TimeSheetMapBuilder(final Comparator<TimesheetRow> comparator) {
+            this.comparator = comparator;
+        }
 
-    /**
-     * @param dateSequence the dateSequence to set
-     */
-    public void setDateSequence(Date[] dateSequence) {
-        this.dateSequence = dateSequence.clone();
-    }
+        private SortedMap<Customer, List<TimesheetRow>> buildMap(List<TimesheetRow> rows) {
+            SortedMap<Customer, List<TimesheetRow>> customerMap = new TreeMap<Customer, List<TimesheetRow>>();
 
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
-    }
+            for (TimesheetRow timesheetRow : rows) {
+                Customer customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
 
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
+                List<TimesheetRow> timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new ArrayList<TimesheetRow>();
+                timesheetRows.add(timesheetRow);
 
-    public float getMaxHoursPerDay() {
-        return maxHoursPerDay;
-    }
+                customerMap.put(customer, timesheetRows);
+            }
 
-    public void setMaxHoursPerDay(float maxHoursPerDay) {
-        this.maxHoursPerDay = maxHoursPerDay;
-    }
+            sortRows(customerMap);
 
-    public Date getWeekEnd() {
-        return weekEnd;
-    }
+            return customerMap;
+        }
 
-    public void setWeekEnd(Date weekEnd) {
-        this.weekEnd = weekEnd;
+        private void sortRows(SortedMap<Customer, List<TimesheetRow>> rows) {
+            Set<Map.Entry<Customer, List<TimesheetRow>>> entries = rows.entrySet();
+
+            for (Map.Entry<Customer, List<TimesheetRow>> entry : entries) {
+                Collections.sort(entry.getValue(), comparator);
+            }
+        }
     }
 }
