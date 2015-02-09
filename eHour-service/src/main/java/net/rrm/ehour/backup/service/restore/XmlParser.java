@@ -20,8 +20,8 @@ import javax.xml.stream.events.XMLEvent;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 12/6/10 - 3:40 PM
  */
-public class XmlImporter {
-    private static final Logger LOG = Logger.getLogger(XmlImporter.class);
+public class XmlParser {
+    private static final Logger LOG = Logger.getLogger(XmlParser.class);
 
     private ConfigurationDao configurationDao;
     private DomainObjectParser domainObjectParser;
@@ -30,7 +30,7 @@ public class XmlImporter {
 
     private boolean skipValidation;
 
-    public XmlImporter(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser, boolean skipValidation) {
+    public XmlParser(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser, boolean skipValidation) {
         this.configurationDao = configurationDao;
         this.domainObjectParser = domainObjectParser;
         this.configurationParser = configurationParser;
@@ -39,7 +39,7 @@ public class XmlImporter {
         this.skipValidation = skipValidation;
     }
 
-    public void importXml(final ParseSession status, final XMLEventReader eventReader) throws Exception {
+    public void parseXml(final ParseSession status, final XMLEventReader eventReader) throws Exception {
         while (eventReader.hasNext()) {
             final XMLEvent event = eventReader.nextTag();
 

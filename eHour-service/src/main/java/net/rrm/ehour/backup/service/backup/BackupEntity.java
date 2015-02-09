@@ -5,6 +5,7 @@ import net.rrm.ehour.persistence.backup.dao.BackupRowProcessor;
 
 import java.io.Serializable;
 
+// TODO Rename to BackupType
 public interface BackupEntity extends Comparable<BackupEntity> {
     public String getParentName();
 

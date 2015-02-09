@@ -57,7 +57,7 @@ public class RestoreServiceImpl implements RestoreService {
 
                 XMLEventReader eventReader = BackupFileUtil.createXmlReaderFromFile(session.getFilename());
 
-                XmlImporter importer = new XmlImporterBuilder()
+                XmlParser parser = new XmlParserBuilder()
                         .setConfigurationDao(configurationDao)
                         .setConfigurationParserDao(configurationParserDao)
                         .setDomainObjectParserDao(domainObjectParserDao)
@@ -67,7 +67,7 @@ public class RestoreServiceImpl implements RestoreService {
                         .setBackupEntityLocator(backupEntityLocator)
                         .build();
 
-                importer.importXml(session, eventReader);
+                parser.parseXml(session, eventReader);
             }
         } catch (Exception e) {
             session.setGlobalError(true);
@@ -108,7 +108,7 @@ public class RestoreServiceImpl implements RestoreService {
         ConfigurationParserDaoValidatorImpl configurationParserDaoValidator = new ConfigurationParserDaoValidatorImpl();
         UserRoleParserDaoValidatorImpl userRoleParserDaoValidator = new UserRoleParserDaoValidatorImpl();
 
-        XmlImporter importer = new XmlImporterBuilder()
+        XmlParser importer = new XmlParserBuilder()
                 .setConfigurationDao(configurationDao)
                 .setConfigurationParserDao(configurationParserDaoValidator)
                 .setDomainObjectParserDao(domainObjectParserDaoValidator)
@@ -117,7 +117,7 @@ public class RestoreServiceImpl implements RestoreService {
                 .setXmlReader(eventReader)
                 .build();
 
-        importer.importXml(status, eventReader);
+        importer.parseXml(status, eventReader);
 
         return status;
     }

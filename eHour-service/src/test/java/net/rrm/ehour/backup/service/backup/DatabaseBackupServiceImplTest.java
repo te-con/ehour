@@ -46,7 +46,7 @@ public class DatabaseBackupServiceImplTest {
         map.put("ENTRY_DATE", new Date());
         List<Map<String, Object>> rows = Lists.newArrayList(map);
 
-        when(exportDao.findForType("TIMESHEET_ENTRY")).thenReturn(rows);
+        when(exportDao.findAll("TIMESHEET_ENTRY")).thenReturn(rows);
 
         EhourConfigStub configuration = new EhourConfigStub();
         configuration.setVersion("0.9");

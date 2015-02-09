@@ -4,7 +4,7 @@ import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.persistence.backup.dao.BackupRowProcessor;
 
 import java.io.Serializable;
-
+// TODO merge with BackupEntity
 public class BackupEntitySingleTable implements BackupEntity {
     private String parentName;
     private Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass;

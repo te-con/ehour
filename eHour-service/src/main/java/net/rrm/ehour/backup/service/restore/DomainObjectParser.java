@@ -55,7 +55,7 @@ public class DomainObjectParser {
     }
 
     public <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parse(Class<T> clazz, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
-        Map<String, FieldDefinition> fieldMap = createFieldMap(clazz);
+        Map<String, FieldDefinition> fieldMap = extractFieldMapFromDomainObject(clazz);
         this.status = status;
 
         return parseDomainObjects(clazz, fieldMap, status);
@@ -71,7 +71,7 @@ public class DomainObjectParser {
             XMLEvent event = reader.nextTag();
 
             if (event.isStartElement()) {
-                T domainObject = parseDomainObject(clazz, fieldMap);
+                T domainObject = parseAndPersistDomainObject(clazz, fieldMap);
 
                 domainObjects.add(domainObject);
 
@@ -86,8 +86,8 @@ public class DomainObjectParser {
     }
 
     @SuppressWarnings("unchecked")
-    private <PK extends Serializable, T extends DomainObject<PK, ?>> T parseDomainObject(Class<T> clazz, Map<String, FieldDefinition> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException {
-        T domainObject = clazz.newInstance();
+    private <PK extends Serializable, T extends DomainObject<PK, ?>> T parseAndPersistDomainObject(Class<T> clazz, Map<String, FieldDefinition> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException {
+        T targetObject = clazz.newInstance();
 
         Map<Class<?>, Object> embeddables = new HashMap<>();
 
@@ -102,37 +102,37 @@ public class DomainObjectParser {
             String dbField = startElement.getName().getLocalPart();
             FieldDefinition fieldDefinition = fieldMap.get(dbField.toLowerCase());
 
-            String data = ParserUtil.parseNextEventAsCharacters(reader);
+            Field targetField = fieldDefinition.getField();
+            Class<? extends Serializable> type = (Class<? extends Serializable>) targetField.getType();
 
-            Field field = fieldDefinition.getField();
-            Class<? extends Serializable> type = (Class<? extends Serializable>) field.getType();
-            Object parsedValue = parseValue(type, data, fieldDefinition.isIgnorable());
+            String columnValue = ParserUtil.parseNextEventAsCharacters(reader);
+            Object parsedColumnValue = parseColumn(type, columnValue, fieldDefinition.isIgnorable());
 
-            if (parsedValue != null) {
+            if (parsedColumnValue != null) {
                 // check whether the field is part of a composite pk (ie. a different class)
-                if (field.getDeclaringClass() != domainObject.getClass()) {
-                    Object embeddable = resolveEmbeddable(embeddables, field);
+                if (targetField.getDeclaringClass() != targetObject.getClass()) {
+                    Object embeddable = resolveEmbeddable(embeddables, targetField);
 
-                    field.set(embeddable, parsedValue);
+                    targetField.set(embeddable, parsedColumnValue);
                 } else {
-                    field.set(domainObject, parsedValue);
+                    targetField.set(targetObject, parsedColumnValue);
                 }
             }
         }
 
-        boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, domainObject, embeddables);
+        boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, targetObject, embeddables);
 
-        PK originalKey = domainObject.getPK();
+        PK originalKey = targetObject.getPK();
 
-        resetId(fieldMap, domainObject);
+        resetId(fieldMap, targetObject);
 
-        Serializable primaryKey = parserDao.persist(domainObject);
+        Serializable primaryKey = parserDao.persist(targetObject);
 
         if (!hasCompositeKey) {
-            keyCache.putKey(domainObject.getClass(), originalKey, primaryKey);
+            keyCache.putKey(targetObject.getClass(), originalKey, primaryKey);
         }
 
-        return domainObject;
+        return targetObject;
     }
 
     private Object resolveEmbeddable(Map<Class<?>, Object> embeddables, Field field)
@@ -176,31 +176,31 @@ public class DomainObjectParser {
     }
 
     @SuppressWarnings("unchecked")
-    private Serializable parseValue(Class<? extends Serializable> type, String value, boolean canBeIgnored)
+    private Serializable parseColumn(Class<? extends Serializable> columnType, String value, boolean canBeIgnored)
             throws IllegalAccessException, InstantiationException {
         Serializable parsedValue = null;
 
-        if (type.isAnnotationPresent(Entity.class)) {
-            Serializable castToFk = castToFkType(type, value);
-            Serializable persistedKey = keyCache.getKey(type, castToFk);
+        if (columnType.isAnnotationPresent(Entity.class)) {
+            Serializable castToFk = castToFkType(columnType, value);
+            Serializable persistedKey = keyCache.getKey(columnType, castToFk);
 
             if (persistedKey != null) {
-                parsedValue = parserDao.find(persistedKey, type);
+                parsedValue = parserDao.find(persistedKey, columnType);
             }
 
             if (parsedValue == null && !canBeIgnored) {
-                status.addError(entityLocator.forClass(type), "ManyToOne relation not resolved");
+                status.addError(entityLocator.forClass(columnType), "ManyToOne relation not resolved");
             }
-        } else if (type == String.class) {
+        } else if (columnType == String.class) {
             parsedValue = value;
-        } else if (type.isEnum()) {
-            parsedValue = Enum.valueOf((Class<Enum>) type, value);
+        } else if (columnType.isEnum()) {
+            parsedValue = Enum.valueOf((Class<Enum>) columnType, value);
         } else {
-            if (transformerMap.containsKey(type)) {
-                parsedValue = transformerMap.get(type).transform(value);
+            if (transformerMap.containsKey(columnType)) {
+                parsedValue = transformerMap.get(columnType).transform(value);
             } else {
-                status.addError(entityLocator.forClass(type), "unknown type: " + type);
-                LOG.error("no transformer for type " + type);
+                status.addError(entityLocator.forClass(columnType), "unknown type: " + columnType);
+                LOG.error("no transformer for type " + columnType);
             }
         }
         return parsedValue;
@@ -212,14 +212,20 @@ public class DomainObjectParser {
 
         for (Field field : fields) {
             if (field.isAnnotationPresent(Id.class)) {
-                return parseValue((Class<? extends Serializable>) field.getType(), value, false);
+                return parseColumn((Class<? extends Serializable>) field.getType(), value, false);
             }
         }
 
         return value;
     }
 
-    private <T> Map<String, FieldDefinition> createFieldMap(Class<T> clazz) {
+    /**
+     * Iterate over the domain object and extract any JPA annotated fields
+     * @param clazz
+     * @param <T>
+     * @return a Map with lowercase annotated field names from domain object and matching
+     */
+    private <T> Map<String, FieldDefinition> extractFieldMapFromDomainObject(Class<T> clazz) {
         Map<String, FieldDefinition> fieldMap = new HashMap<>();
 
         Field[] fields = clazz.getDeclaredFields();
@@ -229,23 +235,11 @@ public class DomainObjectParser {
             field.setAccessible(true);
 
             if (field.isAnnotationPresent(Column.class)) {
-                Column column = field.getAnnotation(Column.class);
-                String columnName = column.name();
-
-                fieldMap.put(columnName.toLowerCase(), new FieldDefinition(field));
+                parseColumn(fieldMap, field);
             } else if (field.isAnnotationPresent(JoinColumn.class)) {
-                JoinColumn column = field.getAnnotation(JoinColumn.class);
-                String columnName = column.name();
+                parseManyToOne(fieldMap, field);
+            } else if (field.isAnnotationPresent(ManyToMany.class)) {
 
-                FieldDefinition definition;
-                if (field.isAnnotationPresent(NotFound.class)) {
-                    NotFound notFoundAnnotation = field.getAnnotation(NotFound.class);
-                    definition = notFoundAnnotation.action() == NotFoundAction.IGNORE ? new IgnorableFieldDefinition(field) : new FieldDefinition(field);
-                } else {
-                    definition = new FieldDefinition(field);
-                }
-
-                fieldMap.put(columnName.toLowerCase(), definition);
             } else {
                 Class<?> fieldType = field.getType();
 
@@ -253,7 +247,7 @@ public class DomainObjectParser {
                 if (fieldType.isAnnotationPresent(Embeddable.class)) {
                     fieldMap.put(Integer.toString(seq++), new FieldDefinition(field));
 
-                    Map<String, FieldDefinition> embeddableFieldMap = createFieldMap(fieldType);
+                    Map<String, FieldDefinition> embeddableFieldMap = extractFieldMapFromDomainObject(fieldType);
 
                     fieldMap.putAll(embeddableFieldMap);
                 }
@@ -261,6 +255,49 @@ public class DomainObjectParser {
         }
 
         return fieldMap;
+    }
+
+    private void parseColumn(Map<String, FieldDefinition> fieldMap, Field field) {
+        Column column = field.getAnnotation(Column.class);
+        String columnName = column.name();
+
+        fieldMap.put(columnName.toLowerCase(), new FieldDefinition(field));
+    }
+
+    private void parseManyToOne(Map<String, FieldDefinition> fieldMap, Field field) {
+        JoinColumn column = field.getAnnotation(JoinColumn.class);
+        String columnName = column.name();
+
+        FieldDefinition definition;
+        if (field.isAnnotationPresent(NotFound.class)) {
+            NotFound notFoundAnnotation = field.getAnnotation(NotFound.class);
+            definition = notFoundAnnotation.action() == NotFoundAction.IGNORE ? new IgnorableFieldDefinition(field) : new FieldDefinition(field);
+        } else {
+            definition = new FieldDefinition(field);
+        }
+
+        fieldMap.put(columnName.toLowerCase(), definition);
+    }
+
+    private void parseManyToMany(Map<String, FieldDefinition> fieldMap, Field field) {
+//        JoinTable joinTable = field.getAnnotation(JoinTable.class);
+//        String joinTableName = joinTable.name();
+//
+//        BackupEntity backupEntity = entityLocator.forName(joinTableName);
+//
+//
+//
+////        String columnName = column.name();
+//
+//        FieldDefinition definition;
+//        if (field.isAnnotationPresent(NotFound.class)) {
+//            NotFound notFoundAnnotation = field.getAnnotation(NotFound.class);
+//            definition = notFoundAnnotation.action() == NotFoundAction.IGNORE ? new IgnorableFieldDefinition(field) : new FieldDefinition(field);
+//        } else {
+//            definition = new FieldDefinition(field);
+//        }
+//
+//        fieldMap.put(columnName.toLowerCase(), definition);
     }
 
     PrimaryKeyCache getKeyCache() {

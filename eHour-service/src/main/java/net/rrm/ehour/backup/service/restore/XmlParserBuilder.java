@@ -1,7 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
-import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.springframework.util.Assert;
 
@@ -12,8 +11,7 @@ import javax.xml.stream.XMLStreamException;
  * @author thies (thies@te-con.nl)
  *         Date: 12/6/10 11:59 PM
  */
-public class XmlImporterBuilder
-{
+public class XmlParserBuilder {
     private XMLEventReader xmlReader;
     private ConfigurationDao configurationDao;
     private ConfigurationParserDao configurationParserDao;
@@ -22,8 +20,7 @@ public class XmlImporterBuilder
     private boolean skipValidation = false;
     private BackupEntityLocator backupEntityLocator;
 
-    public XmlImporter build() throws XMLStreamException
-    {
+    public XmlParser build() throws XMLStreamException {
         Assert.notNull(xmlReader);
         Assert.notNull(configurationDao);
         Assert.notNull(domainObjectParserDao);
@@ -36,46 +33,40 @@ public class XmlImporterBuilder
         ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
         UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache, backupEntityLocator.userRoleBackupEntity());
 
-        return new XmlImporter(configurationDao, parser, configurationParser, userRoleParser, skipValidation);
+        return new XmlParser(configurationDao, parser, configurationParser, userRoleParser, skipValidation);
     }
 
-    public XmlImporterBuilder setSkipValidation(boolean skipValidation)
-    {
+    public XmlParserBuilder setSkipValidation(boolean skipValidation) {
         this.skipValidation = skipValidation;
         return this;
     }
 
-    public XmlImporterBuilder setXmlReader(XMLEventReader xmlReader)
-    {
+    public XmlParserBuilder setXmlReader(XMLEventReader xmlReader) {
         this.xmlReader = xmlReader;
         return this;
     }
 
-    public XmlImporterBuilder setConfigurationDao(ConfigurationDao configurationDao)
-    {
+    public XmlParserBuilder setConfigurationDao(ConfigurationDao configurationDao) {
         this.configurationDao = configurationDao;
         return this;
     }
 
-    public XmlImporterBuilder setConfigurationParserDao(ConfigurationParserDao configurationParserDao)
-    {
+    public XmlParserBuilder setConfigurationParserDao(ConfigurationParserDao configurationParserDao) {
         this.configurationParserDao = configurationParserDao;
         return this;
     }
 
-    public XmlImporterBuilder setDomainObjectParserDao(DomainObjectParserDao domainObjectParserDao)
-    {
+    public XmlParserBuilder setDomainObjectParserDao(DomainObjectParserDao domainObjectParserDao) {
         this.domainObjectParserDao = domainObjectParserDao;
         return this;
     }
 
-    public XmlImporterBuilder setUserRoleParserDao(UserRoleParserDao userRoleParserDao)
-    {
+    public XmlParserBuilder setUserRoleParserDao(UserRoleParserDao userRoleParserDao) {
         this.userRoleParserDao = userRoleParserDao;
         return this;
     }
 
-    public XmlImporterBuilder setBackupEntityLocator(BackupEntityLocator backupEntityLocator) {
+    public XmlParserBuilder setBackupEntityLocator(BackupEntityLocator backupEntityLocator) {
         this.backupEntityLocator = backupEntityLocator;
         return this;
     }

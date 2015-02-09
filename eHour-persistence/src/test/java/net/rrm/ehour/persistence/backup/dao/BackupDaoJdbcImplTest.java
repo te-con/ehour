@@ -20,7 +20,7 @@ public class BackupDaoJdbcImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     public void shouldFindAllTimesheetEntries() {
-        List<Map<String, Object>> list = exportDao.findForType("TIMESHEET_ENTRY");
+        List<Map<String, Object>> list = exportDao.findAll("TIMESHEET_ENTRY");
 
         assertEquals(12, list.size());
     }

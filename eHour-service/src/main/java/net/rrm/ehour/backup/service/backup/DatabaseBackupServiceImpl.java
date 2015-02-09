@@ -42,25 +42,44 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
         String xmlDocument = null;
 
         StringWriter stringWriter = new StringWriter();
-        XMLOutputFactory factory = XMLOutputFactory.newInstance();
+
+        XMLStreamWriter writer = null;
 
         try {
-            XMLStreamWriter writer = factory.createXMLStreamWriter(stringWriter);
-            PrettyPrintHandler handler = new PrettyPrintHandler(writer);
+            writer = createXmlWriter(stringWriter);
 
-            XMLStreamWriter prettyPrintWriter = (XMLStreamWriter) Proxy.newProxyInstance(
-                    XMLStreamWriter.class.getClassLoader(),
-                    new Class[]{XMLStreamWriter.class},
-                    handler);
-
-            exportDatabase(prettyPrintWriter);
+            exportDatabase(writer);
 
             xmlDocument = stringWriter.toString();
         } catch (XMLStreamException e) {
             LOGGER.error(e);
+        } finally {
+/* @TODO add after load test
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (XMLStreamException e) {
+
+                }
+            }
+*/
         }
 
+
         return xmlDocument;
+    }
+
+    protected XMLStreamWriter createXmlWriter(StringWriter stringWriter) throws XMLStreamException {
+        XMLOutputFactory factory = XMLOutputFactory.newInstance();
+
+        XMLStreamWriter writer;
+        writer = factory.createXMLStreamWriter(stringWriter);
+        PrettyPrintHandler handler = new PrettyPrintHandler(writer);
+
+        return (XMLStreamWriter) Proxy.newProxyInstance(
+                XMLStreamWriter.class.getClassLoader(),
+                new Class[]{XMLStreamWriter.class},
+                handler);
     }
 
     private void exportDatabase(XMLStreamWriter writer) throws XMLStreamException {
@@ -71,15 +90,15 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
         writer.writeStartElement(ExportElements.EHOUR.name());
         writer.writeAttribute(ExportElements.DB_VERSION.name(), stub.getVersion());
 
-        writeConfigEntries(writer);
-        writeEntries(writer);
+        backupConfiguration(writer);
+        backupJoinTables(writer);
+        backupTypes(writer);
 
         writer.writeEndElement();
-
         writer.writeEndDocument();
     }
 
-    private void writeConfigEntries(XMLStreamWriter writer) throws XMLStreamException {
+    private void backupConfiguration(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(ExportElements.CONFIGURATION.name());
 
         List<Configuration> configurationList = configurationService.findAllConfiguration();
@@ -94,20 +113,47 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
         writer.writeEndElement();
     }
 
-    private void writeEntries(XMLStreamWriter writer) throws XMLStreamException {
-        for (BackupEntity entity : backupEntityLocator.findBackupEntities()) {
-            writeTypeEntries(entity, writer);
+    private void backupJoinTables(XMLStreamWriter writer) throws XMLStreamException {
+        List<BackupJoinTable> joinTables = backupEntityLocator.joinTables();
+
+
+        for (BackupJoinTable joinTable : joinTables) {
+            String container = joinTable.getContainer();
+            writer.writeStartElement(container);
+
+            String tableName = joinTable.getTableName();
+            List<Map<String, Object>> rows = backupDao.findAll(tableName);
+
+            for (Map<String, Object> row : rows) {
+                writer.writeStartElement(tableName);
+
+                Object source = row.get(joinTable.getAttributeSource());
+                Object target = row.get(joinTable.getAttributeTarget());
+
+                writer.writeAttribute(joinTable.getAttributeSource(), source.toString());
+                writer.writeAttribute(joinTable.getAttributeTarget(), target.toString());
+
+                writer.writeEndElement();
+            }
+
+            writer.writeEndElement();
         }
     }
 
-    private void writeTypeEntries(BackupEntity entity, XMLStreamWriter writer) throws XMLStreamException {
+    private void backupTypes(XMLStreamWriter writer) throws XMLStreamException {
+        for (BackupEntity type : backupEntityLocator.backupEntities()) {
+            backupType(type, writer);
+        }
+    }
+
+    private void backupType(BackupEntity entity, XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(entity.getParentName());
 
         if (entity.getDomainObjectClass() != null) {
             writer.writeAttribute("CLASS", entity.getDomainObjectClass().getName());
         }
 
-        List<Map<String, Object>> rows = backupDao.findForType(entity.name());
+        List<Map<String, Object>> rows = backupDao.findAll(entity.name());
 
         if (entity.getProcessor() != null) {
             rows = entity.getProcessor().processRows(rows);

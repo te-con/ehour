@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  * Time: 2:14 AM
  * To change this template use File | Settings | File Templates.
  */
-public class XmlImporterTest {
+public class XmlParserTest {
 
     private XMLEventReader eventReader;
 
@@ -41,8 +41,8 @@ public class XmlImporterTest {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
-        XmlImporter importer = new XmlImporter(configurationDao, null, null, null, false);
-        importer.importXml(null, eventReader);
+        XmlParser importer = new XmlParser(configurationDao, null, null, null, false);
+        importer.parseXml(null, eventReader);
     }
 
     @Test(expected = ImportException.class)
@@ -58,7 +58,7 @@ public class XmlImporterTest {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
-        XmlImporter importer = new XmlImporter(configurationDao, null, null, null, false);
-        importer.importXml(null, eventReader);
+        XmlParser importer = new XmlParser(configurationDao, null, null, null, false);
+        importer.parseXml(null, eventReader);
     }
 }
