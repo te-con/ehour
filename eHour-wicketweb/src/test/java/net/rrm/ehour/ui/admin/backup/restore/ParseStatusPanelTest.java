@@ -34,8 +34,9 @@ public class ParseStatusPanelTest extends BaseSpringWebAppTester {
     @Test
     public void shouldDisplayInsertions() {
         ParseSession status = new ParseSession();
-        status.addInsertion(mock(BackupEntity.class));
-        status.addInsertion(mock(BackupEntity.class));
+
+        status.addInsertion(new BackupEntity("USERS", 1));
+        status.addInsertion(new BackupEntity("USERS", 1));
 
         startPanel(status);
 
