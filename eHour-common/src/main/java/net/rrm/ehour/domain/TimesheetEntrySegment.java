@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -23,9 +24,11 @@ public class TimesheetEntrySegment extends DomainObject<TimesheetEntryId, Timesh
     private TimesheetEntryId entryId;
 
     @Column(name = "START_WORK_TIME")
+    @NotNull
     private Date startWorkTime;
 
     @Column(name = "END_WORK_TIME")
+    @NotNull
     private Date endWorkTime;
 
     @Override

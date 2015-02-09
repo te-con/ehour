@@ -47,15 +47,13 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     /**
      * full constructor
      */
-    public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment)
-    {
+    public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment) {
         this.setEntryDate(entryDate);
         this.setProjectAssignment(projectAssignment);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return new ToStringBuilder(this).append("entryDate", getEntryDate())
                 .append("assignment", getProjectAssignment())
                 .toString();
@@ -64,12 +62,10 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     @Override
     public boolean equals(Object other)
     {
-        if ((this == other))
-        {
+        if ((this == other)) {
             return true;
         }
-        if (!(other instanceof TimesheetEntryId))
-        {
+        if (!(other instanceof TimesheetEntryId)) {
             return false;
         }
         TimesheetEntryId castOther = (TimesheetEntryId) other;
@@ -78,8 +74,7 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return new HashCodeBuilder().append(getEntryDate())
                 .append(getProjectAssignment()).toHashCode();
     }
@@ -87,8 +82,7 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     /**
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public int compareTo(TimesheetEntryId object)
-    {
+    public int compareTo(TimesheetEntryId object) {
         return new CompareToBuilder()
                 .append(this.getProjectAssignment(), object.getProjectAssignment())
                 .append(this.getEntryDate(), object.getEntryDate())
