@@ -17,11 +17,14 @@ import static org.mockito.Mockito.mock;
  *         Created on: 12/5/10 - 12:32 AM
  */
 public class ParseStatusPanelTest extends BaseSpringWebAppTester {
+
+    private static final BackupEntitySingleTable USERS = new BackupEntitySingleTable("USERS", 1);
+
     @Test
     public void shouldDisplayErrors() {
         ParseSession status = new ParseSession();
-        status.addError(mock(BackupEntity.class), "failed");
-        status.addError(mock(BackupEntity.class), "failed again");
+        status.addError(USERS, "failed");
+        status.addError(USERS, "failed again");
 
         startPanel(status);
 
@@ -36,8 +39,8 @@ public class ParseStatusPanelTest extends BaseSpringWebAppTester {
     public void shouldDisplayInsertions() {
         ParseSession status = new ParseSession();
 
-        status.addInsertion(new BackupEntitySingleTable("USERS", 1));
-        status.addInsertion(new BackupEntitySingleTable("USERS", 1));
+        status.addInsertion(USERS);
+        status.addInsertion(USERS);
 
         startPanel(status);
 
