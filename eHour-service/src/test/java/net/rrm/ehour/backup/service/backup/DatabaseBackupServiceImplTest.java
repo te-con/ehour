@@ -53,7 +53,8 @@ public class DatabaseBackupServiceImplTest {
 
         when(configurationService.getConfiguration()).thenReturn(configuration);
 
-        when(backupEntityLocator.findBackupEntities()).thenReturn(Lists.newArrayList(new BackupEntity(TimesheetEntry.class, "TIMESHEET_ENTRY", 0)));
+        List<BackupEntity> timesheet_entry = Lists.<BackupEntity>newArrayList(new BackupEntitySingleTable(TimesheetEntry.class, "TIMESHEET_ENTRY", 0));
+        when(backupEntityLocator.findBackupEntities()).thenReturn(timesheet_entry);
 
         List<Configuration> configurationList = new ArrayList<>(Arrays.asList(new Configuration(ConfigurationItem.AVAILABLE_TRANSLATIONS.getDbField(), "nl")));
         when(configurationService.findAllConfiguration()).thenReturn(configurationList);

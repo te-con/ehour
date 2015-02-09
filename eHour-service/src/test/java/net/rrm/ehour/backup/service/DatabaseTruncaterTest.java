@@ -3,6 +3,7 @@ package net.rrm.ehour.backup.service;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.backup.service.backup.BackupEntity;
 import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.backup.BackupEntitySingleTable;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.persistence.backup.dao.RestoreDao;
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class DatabaseTruncaterTest {
 
     @Test
     public void shouldTruncate() {
-        BackupEntity entity = new BackupEntity(TimesheetEntry.class, "timesheet_entry", 0);
+        BackupEntity entity = new BackupEntitySingleTable(TimesheetEntry.class, "timesheet_entry", 0);
         when(backupEntityLocator.reverseOrderedValues()).thenReturn(Lists.newArrayList(entity));
 
         truncater.truncateDatabase();

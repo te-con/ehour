@@ -2,6 +2,7 @@ package net.rrm.ehour.ui.admin.backup.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.backup.BackupEntity;
+import net.rrm.ehour.backup.service.backup.BackupEntitySingleTable;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.list.ListView;
@@ -35,8 +36,8 @@ public class ParseStatusPanelTest extends BaseSpringWebAppTester {
     public void shouldDisplayInsertions() {
         ParseSession status = new ParseSession();
 
-        status.addInsertion(new BackupEntity("USERS", 1));
-        status.addInsertion(new BackupEntity("USERS", 1));
+        status.addInsertion(new BackupEntitySingleTable("USERS", 1));
+        status.addInsertion(new BackupEntitySingleTable("USERS", 1));
 
         startPanel(status);
 

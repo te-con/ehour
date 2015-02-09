@@ -54,7 +54,7 @@ public class UserRoleParser {
         if (userId != null && role != null) {
             Serializable newUserId = keyCache.getKey(User.class, Integer.parseInt(userId));
 
-            // validate = string, actual import = integer
+            // during validation phase the type is a string, during actual import the type is an integer, hmm okay
             Integer castedUserId = newUserId instanceof String ? Integer.parseInt((String) newUserId) : (Integer) newUserId;
 
             User user = dao.findUser(castedUserId);
