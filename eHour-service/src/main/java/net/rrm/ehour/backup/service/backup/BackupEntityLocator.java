@@ -8,4 +8,6 @@ public interface BackupEntityLocator {
     BackupEntity forClass(Class clazz);
 
     List<BackupEntity> reverseOrderedValues();
+
+    BackupEntity userRoleBackupEntity();
 }

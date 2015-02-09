@@ -60,4 +60,9 @@ public class EhourBackupEntityLocator implements BackupEntityLocator {
     public List<BackupEntity> reverseOrderedValues() {
         return REVERSE_ORDER;
     }
+
+    @Override
+    public BackupEntity userRoleBackupEntity() {
+        return userToUserRole;
+    }
 }

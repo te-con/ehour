@@ -34,7 +34,7 @@ public class XmlImporterBuilder
 
         DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache, backupEntityLocator);
         ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
-        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache, backupEntityLocator.forClass(UserRole.class));
+        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache, backupEntityLocator.userRoleBackupEntity());
 
         return new XmlImporter(configurationDao, parser, configurationParser, userRoleParser, skipValidation);
     }
