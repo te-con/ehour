@@ -16,9 +16,6 @@
 
 package net.rrm.ehour.ui.timesheet.dto;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
@@ -31,19 +28,12 @@ import java.util.*;
  */
 public class Timesheet implements Serializable {
     private static final long serialVersionUID = -547682050331580675L;
-    @Getter(AccessLevel.PACKAGE) @Setter(AccessLevel.PACKAGE)
     private SortedMap<Customer, List<TimesheetRow>> customers;
-    @Setter
     private Date[] dateSequence;
-    @Getter @Setter
     private Date weekStart;
-    @Getter @Setter
     private Date weekEnd;
-    @Getter @Setter
     private User user;
-    @Getter @Setter
     private TimesheetComment comment;
-    @Setter
     private float maxHoursPerDay;
     private List<Date> lockedDays;
 
@@ -52,8 +42,8 @@ public class Timesheet implements Serializable {
      * @param status
      */
     private void setAssignmentStatus(ProjectAssignmentStatus status) {
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Customer customer : getCustomers().keySet()) {
+            for (TimesheetRow row : getCustomers().get(customer)) {
                 if (row.getProjectAssignment().equals(status.getAggregate().getProjectAssignment())) {
                     row.setAssignmentStatus(status);
                     return;
@@ -66,8 +56,8 @@ public class Timesheet implements Serializable {
      * Clear each assignment status
      */
     private void clearAssignmentStatus() {
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Customer customer : getCustomers().keySet()) {
+            for (TimesheetRow row : getCustomers().get(customer)) {
                 row.setAssignmentStatus(null);
             }
         }
@@ -157,8 +147,8 @@ public class Timesheet implements Serializable {
     public Float getRemainingHoursForDay(int day) {
         BigDecimal remainingHours = BigDecimal.valueOf(maxHoursPerDay);
 
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Customer customer : getCustomers().keySet()) {
+            for (TimesheetRow row : getCustomers().get(customer)) {
                 TimesheetCell cell = row.getTimesheetCells()[day];
 
                 if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null) {
@@ -178,8 +168,8 @@ public class Timesheet implements Serializable {
     public Float getTotalBookedHours() {
         BigDecimal totalHours = BigDecimal.ZERO;
 
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Customer customer : getCustomers().keySet()) {
+            for (TimesheetRow row : getCustomers().get(customer)) {
                 for (TimesheetCell cell : row.getTimesheetCells()) {
                     if (cell != null
                             && cell.getTimesheetEntry() != null
@@ -203,7 +193,55 @@ public class Timesheet implements Serializable {
      * @return
      */
     public List<TimesheetRow> getTimesheetRows(Customer customer) {
-        return customers.get(customer);
+        return getCustomers().get(customer);
+    }
+
+    SortedMap<Customer, List<TimesheetRow>> getCustomers() {
+        return customers;
+    }
+
+    void setCustomers(SortedMap<Customer, List<TimesheetRow>> customers) {
+        this.customers = customers;
+    }
+
+    public void setDateSequence(Date[] dateSequence) {
+        this.dateSequence = dateSequence;
+    }
+
+    public Date getWeekStart() {
+        return weekStart;
+    }
+
+    public void setWeekStart(Date weekStart) {
+        this.weekStart = weekStart;
+    }
+
+    public Date getWeekEnd() {
+        return weekEnd;
+    }
+
+    public void setWeekEnd(Date weekEnd) {
+        this.weekEnd = weekEnd;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public TimesheetComment getComment() {
+        return comment;
+    }
+
+    public void setComment(TimesheetComment comment) {
+        this.comment = comment;
+    }
+
+    public void setMaxHoursPerDay(float maxHoursPerDay) {
+        this.maxHoursPerDay = maxHoursPerDay;
     }
 
     private static class TimeSheetMapBuilder {

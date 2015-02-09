@@ -15,13 +15,9 @@ public class TimesheetEntryObjectMother {
     }
 
     public static TimesheetEntry createTimesheetEntry(int prjId, Date date, BigDecimal hours) {
-        TimesheetEntryId id = new TimesheetEntryId();
-        id.setEntryDate(date);
-        id.setProjectAssignment(ProjectAssignmentObjectMother.createProjectAssignment(prjId, prjId, 1));
-
-        TimesheetEntry entry = new TimesheetEntry();
-        entry.setEntryId(id);
-        entry.setHours(hours);
+        TimesheetEntryId id = new TimesheetEntryId(
+                date, ProjectAssignmentObjectMother.createProjectAssignment(prjId, prjId, 1));
+        TimesheetEntry entry = new TimesheetEntry(id, hours);
 
         return entry;
     }
@@ -32,11 +28,9 @@ public class TimesheetEntryObjectMother {
     }
 
     public static TimesheetEntry createTimesheetEntry(User user, Date date, BigDecimal hours) {
-        TimesheetEntryId id = new TimesheetEntryId();
-        id.setEntryDate(date);
-
         ProjectAssignment projectAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1, 1, 1);
         projectAssignment.setUser(user);
+        TimesheetEntryId id = new TimesheetEntryId(date, projectAssignment);
 
         id.setProjectAssignment(projectAssignment);
 

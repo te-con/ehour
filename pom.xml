@@ -35,15 +35,6 @@
         <ehour.version>1.5.0-SNAPSHOT</ehour.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.0</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
     <repositories>
         <repository>
             <id>eHour</id>

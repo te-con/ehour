@@ -29,7 +29,6 @@ import java.util.List;
 /**
  * Backing bean for project assignments
  */
-
 public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssignment> {
     private static final long serialVersionUID = 487430742116953930L;
     private ProjectAssignment projectAssignment;

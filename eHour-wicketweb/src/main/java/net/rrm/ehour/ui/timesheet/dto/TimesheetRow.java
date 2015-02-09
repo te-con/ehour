@@ -200,11 +200,7 @@ public class TimesheetRow implements Serializable
                         && timesheetCell.getTimesheetEntry() != null) {
                     // new entries got empty entry id
                     if (timesheetCell.getTimesheetEntry().getEntryId() == null) {
-                        TimesheetEntryId id = new TimesheetEntryId();
-
-                        id.setProjectAssignment(getProjectAssignment());
-                        id.setEntryDate(timesheetCell.getDate());
-
+                        TimesheetEntryId id = new TimesheetEntryId(timesheetCell.getDate(), getProjectAssignment());
                         timesheetCell.getTimesheetEntry().setEntryId(id);
                     } else {
                         timesheetCell.getTimesheetEntry().getEntryId().setProjectAssignment(getProjectAssignment());

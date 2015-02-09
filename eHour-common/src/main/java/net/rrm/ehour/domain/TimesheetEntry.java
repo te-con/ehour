@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -34,8 +32,6 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "TIMESHEET_ENTRY")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -56,16 +52,17 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     @NotNull
     private Date updateDate;
 
+    public TimesheetEntry() { }
     /**
      * full constructor
      */
     public TimesheetEntry(TimesheetEntryId entryId, BigDecimal hours) {
-        this.entryId = entryId;
-        this.hours = hours;
+        this.setEntryId(entryId);
+        this.setHours(hours);
     }
 
     public TimesheetEntry(TimesheetEntryId entryId) {
-        this.entryId = entryId;
+        this.setEntryId(entryId);
     }
 
     public boolean isEmptyEntry() {
@@ -74,7 +71,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
     @Override
     public TimesheetEntryId getPK() {
-        return entryId;
+        return getEntryId();
     }
 
     public int compareTo(TimesheetEntry object) {
@@ -101,6 +98,38 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(entryId).toHashCode();
+        return new HashCodeBuilder().append(getEntryId()).toHashCode();
+    }
+
+    public TimesheetEntryId getEntryId() {
+        return entryId;
+    }
+
+    public void setEntryId(TimesheetEntryId entryId) {
+        this.entryId = entryId;
+    }
+
+    public BigDecimal getHours() {
+        return hours;
+    }
+
+    public void setHours(BigDecimal hours) {
+        this.hours = hours;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

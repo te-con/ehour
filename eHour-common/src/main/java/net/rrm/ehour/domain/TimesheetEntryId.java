@@ -16,8 +16,6 @@
 
 package net.rrm.ehour.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -28,8 +26,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-@Data
-@NoArgsConstructor
 @Embeddable
 public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntryId>
 {
@@ -45,13 +41,16 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     @NotNull
     private ProjectAssignment projectAssignment;
 
+    @Deprecated
+    public TimesheetEntryId() { }
+
     /**
      * full constructor
      */
     public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment)
     {
-        this.entryDate = entryDate;
-        this.projectAssignment = projectAssignment;
+        this.setEntryDate(entryDate);
+        this.setProjectAssignment(projectAssignment);
     }
 
     @Override
@@ -94,5 +93,21 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
                 .append(this.getProjectAssignment(), object.getProjectAssignment())
                 .append(this.getEntryDate(), object.getEntryDate())
                 .toComparison();
+    }
+
+    public Date getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    public ProjectAssignment getProjectAssignment() {
+        return projectAssignment;
+    }
+
+    public void setProjectAssignment(ProjectAssignment projectAssignment) {
+        this.projectAssignment = projectAssignment;
     }
 }
