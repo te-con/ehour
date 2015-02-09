@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.domain;
 
-import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -119,7 +118,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
      */
     public static ProjectAssignment createProjectAssignment(Project project, User user) {
         ProjectAssignment assignment = new ProjectAssignment();
-        assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
+        assignment.setAssignmentType(ProjectAssignmentType.newAssignmentDate());
         assignment.setProject(project);
         assignment.setUser(user);
         assignment.setActive(true);

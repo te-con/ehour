@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.domain;
 
-import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -36,6 +35,9 @@ import javax.persistence.Table;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignmentType> {
     private static final long serialVersionUID = -4306635642163206242L;
+    private static final int ASSIGNMENT_DATE = 0;
+    private static final int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
+    private static final int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
 
     @Id
     @Column(name = "ASSIGNMENT_TYPE_ID")
@@ -44,28 +46,52 @@ public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignme
     @Column(name = "ASSIGNMENT_TYPE", length = 64)
     private String assignmentType;
 
-    public ProjectAssignmentType() {
+    @Deprecated
+    public ProjectAssignmentType() { }
 
-    }
-
-    public ProjectAssignmentType(Integer assignmentTypeId) {
+    private ProjectAssignmentType(Integer assignmentTypeId) {
         this.assignmentTypeId = assignmentTypeId;
     }
 
+    public static ProjectAssignmentType newAssignmentDate() {
+        return new ProjectAssignmentType(ASSIGNMENT_DATE);
+    }
+
+    public static ProjectAssignmentType newAssignmentTimeAllottedFixed() {
+        return new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FIXED);
+    }
+
+    public static ProjectAssignmentType newAssignmentTimeAllottedFlex() {
+        return new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FLEX);
+    }
+
     public boolean isDateType() {
-        return assignmentTypeId == EhourConstants.ASSIGNMENT_DATE;
+        return assignmentTypeId == ASSIGNMENT_DATE;
     }
 
     public boolean isFixedAllottedType() {
-        return assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED;
+        return assignmentTypeId == ASSIGNMENT_TIME_ALLOTTED_FIXED;
     }
 
     public boolean isFlexAllottedType() {
-        return assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX;
+        return assignmentTypeId == ASSIGNMENT_TIME_ALLOTTED_FLEX;
     }
 
     public boolean isAllottedType() {
         return isFixedAllottedType() || isFlexAllottedType();
+    }
+
+    public String getResourceKeyForProjectAssignmentType() {
+        switch (getAssignmentTypeId()) {
+            case ASSIGNMENT_DATE:
+                return "assignment.dateRange";
+            case ASSIGNMENT_TIME_ALLOTTED_FIXED:
+                return "assignment.allottedFixed";
+            case ASSIGNMENT_TIME_ALLOTTED_FLEX:
+                return "assignment.allottedFlex";
+            default:
+                return "assignment.allotted";
+        }
     }
 
     /**

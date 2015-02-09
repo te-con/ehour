@@ -28,7 +28,7 @@ public class ProjectAssignmentTypeRenderer extends LocalizedDomainObjectResource
 
     @Override
     protected String getResourceKey(ProjectAssignmentType pat) {
-        return WebUtils.getResourceKeyForProjectAssignmentType(pat);
+        return pat.getResourceKeyForProjectAssignmentType();
     }
 
 }
