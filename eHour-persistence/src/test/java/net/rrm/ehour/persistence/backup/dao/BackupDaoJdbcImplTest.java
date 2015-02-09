@@ -13,14 +13,14 @@ import static org.junit.Assert.assertEquals;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: Nov 16, 2010 - 4:47:00 PM
  */
-public class BackupDaoJbcImplTest extends AbstractAnnotationDaoTest {
-    public BackupDaoJbcImplTest() {
+public class BackupDaoJdbcImplTest extends AbstractAnnotationDaoTest {
+    public BackupDaoJdbcImplTest() {
         super("dataset-timesheet.xml");
     }
 
     @Test
     public void shouldFindAllTimesheetEntries() {
-        List<Map<String, Object>> list = exportDao.findForType(BackupEntityType.TIMESHEET_ENTRY);
+        List<Map<String, Object>> list = exportDao.findForType("TIMESHEET_ENTRY");
 
         assertEquals(12, list.size());
     }

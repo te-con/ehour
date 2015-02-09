@@ -1,5 +1,4 @@
-package net.rrm.ehour.backup.service;
-
+package net.rrm.ehour.backup.service.restore;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -10,14 +9,13 @@ import java.io.*;
  * @author thies (thies@te-con.nl)
  *         Date: 1/20/11 5:36 PM
  */
-public final class BackupFileUtil
-{
-    private BackupFileUtil()
-    {
+public final class BackupFileUtil {
+    private BackupFileUtil() {
     }
 
     /**
-     *  Write XML to temp file
+     * Write XML to temp file
+     *
      * @param xmlData
      * @return
      * @throws IOException
@@ -27,8 +25,7 @@ public final class BackupFileUtil
         File file = File.createTempFile("import", "xml");
         file.deleteOnExit();
 
-        try (FileWriter writer = new FileWriter(file))
-        {
+        try (FileWriter writer = new FileWriter(file)) {
             writer.write(xmlData);
         }
 
@@ -43,8 +40,7 @@ public final class BackupFileUtil
      * @throws XMLStreamException
      */
     static XMLEventReader createXmlReader(String xmlData)
-            throws XMLStreamException
-    {
+            throws XMLStreamException {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         return inputFactory.createXMLEventReader(new StringReader(xmlData));
     }
@@ -57,25 +53,19 @@ public final class BackupFileUtil
      * @throws IOException
      * @throws XMLStreamException
      */
-    static XMLEventReader createXmlReaderFromFile(String filename) throws IOException, XMLStreamException
-    {
+    static XMLEventReader createXmlReaderFromFile(String filename) throws IOException, XMLStreamException {
         String data = getXmlDataFromFile(filename);
         return createXmlReader(data);
     }
 
-    private static String getXmlDataFromFile(String filename) throws IOException
-    {
+    private static String getXmlDataFromFile(String filename) throws IOException {
         File file = new File(filename);
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file)))
-        {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
-            StringBuffer xmlData = new StringBuffer();
-
-            while ((line = bufferedReader.readLine()) != null)
-            {
+            StringBuilder xmlData = new StringBuilder();
+            while ((line = bufferedReader.readLine()) != null) {
                 xmlData.append(line);
             }
-
             return xmlData.toString();
         }
     }

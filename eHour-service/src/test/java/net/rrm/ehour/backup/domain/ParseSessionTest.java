@@ -1,10 +1,11 @@
-package net.rrm.ehour.backup.service;
+package net.rrm.ehour.backup.domain;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
+import net.rrm.ehour.backup.service.backup.BackupEntity;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.mockito.Mockito.mock;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -30,7 +31,7 @@ public class ParseSessionTest {
 
     @Test
     public void shouldNotBeImportableWhenErrorOccured() {
-        session.addError(BackupEntityType.USER_ROLE, "fe");
+        session.addError(mock(BackupEntity.class), "fe");
         TestCase.assertFalse(session.isImportable());
     }
 

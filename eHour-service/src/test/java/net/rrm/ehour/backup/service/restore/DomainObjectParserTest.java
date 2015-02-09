@@ -1,12 +1,14 @@
 package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
+import net.rrm.ehour.backup.service.backup.BackupEntity;
+import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
 import net.rrm.ehour.domain.*;
-import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.xml.stream.XMLEventReader;
@@ -18,6 +20,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -29,6 +33,9 @@ public class DomainObjectParserTest {
     private DomainObjectParserDaoTestValidator daoValidator;
     private PrimaryKeyCache keyCache;
     private ParseSession status;
+
+    @Mock
+    private BackupEntityLocator backupEntityLocator;
 
     @Before
     public void setUp() {
@@ -45,19 +52,17 @@ public class DomainObjectParserTest {
 
         daoValidator = (DomainObjectParserDaoTestValidator) (returnOnFind == null ? new DomainObjectParserDaoValidatorImpl() : new DomainObjectParserDaoTestValidator(returnOnFind, onFind));
 
-        return new DomainObjectParser(eventReader, daoValidator, keyCache);
+        return new DomainObjectParser(eventReader, daoValidator, keyCache, backupEntityLocator);
     }
 
     @Test
     public void shouldParseTwoTimesheetEntries() throws XMLStreamException, InstantiationException, IllegalAccessException {
         DomainObjectParser resolver = createResolver("<TIMESHEET_ENTRIES CLASS=\"net.rrm.ehour.domain.TimesheetEntry\">\n<TIMESHEET_ENTRY>\n<ASSIGNMENT_ID>1</ASSIGNMENT_ID>\n<ENTRY_DATE>2007-03-26</ENTRY_DATE>\n<HOURS>8.0</HOURS>\n   <COMMENT>jaja</COMMENT>\n  </TIMESHEET_ENTRY>\n  <TIMESHEET_ENTRY>\n   <ASSIGNMENT_ID>2</ASSIGNMENT_ID>\n   <ENTRY_DATE>2007-03-26</ENTRY_DATE>\n   <HOURS>0.0</HOURS>\n  </TIMESHEET_ENTRY>\n  </TIMESHEET_ENTRIES>\n", ProjectAssignmentObjectMother.createProjectAssignment(1), 1);
 
-        BackupEntityType type = BackupEntityType.TIMESHEET_ENTRY;
-
         keyCache.putKey(ProjectAssignment.class, 1, 1);
         keyCache.putKey(ProjectAssignment.class, 2, 2);
 
-        List<TimesheetEntry> result = resolver.parse((Class<TimesheetEntry>) type.getDomainObjectClass(), status);
+        List<TimesheetEntry> result = resolver.parse(TimesheetEntry.class, status);
 
         assertEquals(2, result.size());
 
@@ -74,11 +79,9 @@ public class DomainObjectParserTest {
 
         DomainObjectParser resolver = createResolver("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n     <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n    <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);
 
-        BackupEntityType type = BackupEntityType.USERS;
-
         keyCache.putKey(UserDepartment.class, 1, 1);
 
-        List<User> result = resolver.parse((Class<User>) type.getDomainObjectClass(), status);
+        List<User> result = resolver.parse(User.class, status);
 
         assertEquals(2, result.size());
 
@@ -101,9 +104,9 @@ public class DomainObjectParserTest {
     public void shouldParseEnum() throws IllegalAccessException, XMLStreamException, InstantiationException {
         DomainObjectParser resolver = createResolver(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", UserObjectMother.createUser(), 2);
 
-        BackupEntityType type = BackupEntityType.AUDIT;
+        when(backupEntityLocator.forClass(Audit.class)).thenReturn(mock(BackupEntity.class));
 
-        List<Audit> result = resolver.parse((Class<Audit>) type.getDomainObjectClass(), status);
+        List<Audit> result = resolver.parse(Audit.class, status);
 
         assertEquals(1, result.size());
 
@@ -116,11 +119,11 @@ public class DomainObjectParserTest {
 
         DomainObjectParser resolver = createResolver(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", user, 2);
 
-        BackupEntityType type = BackupEntityType.AUDIT;
+        when(backupEntityLocator.forClass(Audit.class)).thenReturn(mock(BackupEntity.class));
 
         keyCache.putKey(User.class, 2, 2);
 
-        List<Audit> result = resolver.parse((Class<Audit>) type.getDomainObjectClass(), status);
+        List<Audit> result = resolver.parse(Audit.class, status);
 
         assertEquals(1, result.size());
 

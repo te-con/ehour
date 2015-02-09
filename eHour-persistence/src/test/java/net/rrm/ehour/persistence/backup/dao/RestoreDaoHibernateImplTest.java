@@ -7,9 +7,8 @@ import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -35,14 +34,11 @@ public class RestoreDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     public void shouldDelete() {
-        List<BackupEntityType> values = BackupEntityType.reverseOrderedValues();
+        importDao.delete(User.class);
 
-        for (BackupEntityType value : values) {
-            if (value.getDomainObjectClass() != null) {
-                importDao.delete(value.getDomainObjectClass());
-            }
+        User user = importDao.find(3, User.class);
 
-        }
+        assertNull(user);
     }
 
     @Autowired

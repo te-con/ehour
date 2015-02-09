@@ -2,8 +2,9 @@ package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.domain.ParserUtil;
+import net.rrm.ehour.backup.service.backup.BackupEntity;
+import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.NotFound;
@@ -34,10 +35,11 @@ public class DomainObjectParser {
 
     private static final Logger LOG = Logger.getLogger(DomainObjectParser.class);
 
-    private static final Map<Class<?>, TypeTransformer<?>> transformerMap = new HashMap<Class<?>, TypeTransformer<?>>();
+    private static final Map<Class<?>, TypeTransformer<?>> transformerMap = new HashMap<>();
     private ParseSession status;
 
     private PrimaryKeyCache keyCache;
+    private final BackupEntityLocator entityLocator;
 
     static {
         transformerMap.put(Integer.class, new IntegerTransformer());
@@ -47,10 +49,11 @@ public class DomainObjectParser {
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
-    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, PrimaryKeyCache keyCache) {
+    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, PrimaryKeyCache keyCache, BackupEntityLocator entityLocator) {
         this.parserDao = parserDao;
         this.reader = reader;
         this.keyCache = keyCache;
+        this.entityLocator = entityLocator;
     }
 
     public <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parse(Class<T> clazz, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
@@ -64,7 +67,7 @@ public class DomainObjectParser {
      * Parse domain object with reader pointing on the table name tag
      */
     private <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parseDomainObjects(Class<T> clazz, Map<String, FieldDefinition> fieldMap, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException {
-        List<T> domainObjects = new ArrayList<T>();
+        List<T> domainObjects = new ArrayList<>();
 
         while (reader.hasNext()) {
             XMLEvent event = reader.nextTag();
@@ -74,7 +77,8 @@ public class DomainObjectParser {
 
                 domainObjects.add(domainObject);
 
-                status.addInsertion(BackupEntityType.forClass(clazz));
+                BackupEntity backupEntity = entityLocator.forClass(clazz);
+                status.addInsertion(backupEntity);
             } else if (event.isEndElement()) {
                 break;
             }
@@ -87,7 +91,7 @@ public class DomainObjectParser {
     private <PK extends Serializable, T extends DomainObject<PK, ?>> T parseDomainObject(Class<T> clazz, Map<String, FieldDefinition> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException {
         T domainObject = clazz.newInstance();
 
-        Map<Class<?>, Object> embeddables = new HashMap<Class<?>, Object>();
+        Map<Class<?>, Object> embeddables = new HashMap<>();
 
         while (reader.hasNext()) {
             XMLEvent event = reader.nextTag();
@@ -187,7 +191,7 @@ public class DomainObjectParser {
             }
 
             if (parsedValue == null && !canBeIgnored) {
-                status.addError(BackupEntityType.forClass(type), "ManyToOne relation not resolved");
+                status.addError(entityLocator.forClass(type), "ManyToOne relation not resolved");
             }
         } else if (type == String.class) {
             parsedValue = value;
@@ -197,7 +201,7 @@ public class DomainObjectParser {
             if (transformerMap.containsKey(type)) {
                 parsedValue = transformerMap.get(type).transform(value);
             } else {
-                status.addError(BackupEntityType.forClass(type), "unknown type: " + type);
+                status.addError(entityLocator.forClass(type), "unknown type: " + type);
                 LOG.error("no transformer for type " + type);
             }
         }
@@ -218,7 +222,7 @@ public class DomainObjectParser {
     }
 
     private <T> Map<String, FieldDefinition> createFieldMap(Class<T> clazz) {
-        Map<String, FieldDefinition> fieldMap = new HashMap<String, FieldDefinition>();
+        Map<String, FieldDefinition> fieldMap = new HashMap<>();
 
         Field[] fields = clazz.getDeclaredFields();
         int seq = 0;
@@ -309,5 +313,4 @@ public class DomainObjectParser {
             }
         }
     }
-
 }

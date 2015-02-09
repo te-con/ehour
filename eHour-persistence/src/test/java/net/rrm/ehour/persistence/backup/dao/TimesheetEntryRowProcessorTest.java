@@ -17,17 +17,16 @@ public class TimesheetEntryRowProcessorTest {
     @SuppressWarnings("unchecked")
     @Test
     public void processRow() {
-        Map<String, Object> map = new LinkedHashMap<String, Object>(1);
+        Map<String, Object> map = new LinkedHashMap<>(1);
         map.put("ENTRY_DATE", "12");
-        Map<String, Object> map1 = new LinkedHashMap<String, Object>(2);
+        Map<String, Object> map1 = new LinkedHashMap<>(2);
         map1.put("ENTRY_DATE", "13");
         map1.put("UPDATE_DATE", "14");
         List<Map<String, Object>> rows = Arrays.asList(map, map1);
 
-        BackupEntityType.TIMESHEET_ENTRY.getProcessor().processRows(rows);
+        new TimesheetEntryRowProcessor().processRows(rows);
 
         assertEquals("12", rows.get(0).get("UPDATE_DATE"));
         assertEquals("14", rows.get(1).get("UPDATE_DATE"));
     }
-
 }
