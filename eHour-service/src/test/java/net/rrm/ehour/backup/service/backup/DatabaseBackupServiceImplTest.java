@@ -1,11 +1,11 @@
 package net.rrm.ehour.backup.service.backup;
 
 import com.google.common.collect.Lists;
+import net.rrm.ehour.backup.config.EhourBackupEntityLocator;
 import net.rrm.ehour.config.ConfigurationItem;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
 import net.rrm.ehour.domain.Configuration;
-import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.persistence.backup.dao.BackupDao;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,13 +28,13 @@ public class DatabaseBackupServiceImplTest {
     @Mock
     private ConfigurationService configurationService;
 
-    @Mock
     private BackupEntityLocator backupEntityLocator;
 
     private DatabaseBackupServiceImpl service;
 
     @Before
     public void setUp() {
+        backupEntityLocator = new EhourBackupEntityLocator();
         service = new DatabaseBackupServiceImpl(exportDao, configurationService, backupEntityLocator);
     }
 
@@ -53,9 +53,6 @@ public class DatabaseBackupServiceImplTest {
 
         when(configurationService.getConfiguration()).thenReturn(configuration);
 
-        List<BackupEntity> timesheet_entry = Lists.<BackupEntity>newArrayList(new BackupEntitySingleTable(TimesheetEntry.class, "TIMESHEET_ENTRY", 0));
-        when(backupEntityLocator.findBackupEntities()).thenReturn(timesheet_entry);
-
         List<Configuration> configurationList = new ArrayList<>(Arrays.asList(new Configuration(ConfigurationItem.AVAILABLE_TRANSLATIONS.getDbField(), "nl")));
         when(configurationService.findAllConfiguration()).thenReturn(configurationList);
 
@@ -67,5 +64,4 @@ public class DatabaseBackupServiceImplTest {
 
         assertTrue(xml.startsWith("<?xml version="));
     }
-
 }

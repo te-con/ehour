@@ -3,6 +3,7 @@ package net.rrm.ehour.backup.config;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.backup.service.backup.BackupEntity;
 import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.backup.BackupEntityManyToManyTable;
 import net.rrm.ehour.backup.service.backup.BackupEntitySingleTable;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.backup.dao.TimesheetEntryRowProcessor;
@@ -19,10 +20,13 @@ public class EhourBackupEntityLocator implements BackupEntityLocator {
     private static final BackupEntity projectAssignment = new BackupEntitySingleTable(ProjectAssignment.class, "PROJECT_ASSIGNMENT", 6);
     private static final BackupEntity timesheetEntry = new BackupEntitySingleTable(ProjectAssignment.class, "TIMESHEET_ENTRY", "TIMESHEET_ENTRIES", new TimesheetEntryRowProcessor(), 7);
     private static final BackupEntity timesheetComment = new BackupEntitySingleTable(TimesheetComment.class, "TIMESHEET_COMMENT", 8);
-    private static final BackupEntity userToUserRole = new BackupEntitySingleTable("USER_TO_USERROLE", 8);
-    private static final BackupEntity timesheetLock = new BackupEntitySingleTable(TimesheetLock.class, "TIMESHEET_LOCK", 8);
+    private static final BackupEntity userToUserRole = new BackupEntityManyToManyTable("USER_TO_USERROLE", "ROLE", "USER_ID", null, 9);
+    private static final BackupEntity userToDepartmentRole = new BackupEntityManyToManyTable("USER_TO_DEPARTMENT", "DEPARTMENT_ID", "USER_ID", null, 10);
+    private static final BackupEntity timesheetLock = new BackupEntitySingleTable(TimesheetLock.class, "TIMESHEET_LOCK", 11);
 
-    private static final List<BackupEntity> ENTITIES = Lists.newArrayList(userDepartment, userRole, users, customer, project, projectAssignmentType, projectAssignment, timesheetEntry, timesheetComment, userToUserRole, timesheetLock);
+    private static final List<BackupEntity> ENTITIES = Lists.newArrayList(userDepartment, userRole, users, userToUserRole, userToDepartmentRole,
+                                                                            customer, project, projectAssignmentType, projectAssignment,
+                                                                            timesheetEntry, timesheetComment, timesheetLock);
 
     private static final List<BackupEntity> REVERSE_ORDER;
 

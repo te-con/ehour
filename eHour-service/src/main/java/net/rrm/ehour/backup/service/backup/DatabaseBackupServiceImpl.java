@@ -56,9 +56,7 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
             exportDatabase(prettyPrintWriter);
 
             xmlDocument = stringWriter.toString();
-
         } catch (XMLStreamException e) {
-
             LOGGER.error(e);
         }
 
@@ -130,13 +128,5 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
         }
 
         writer.writeEndElement();
-    }
-
-    public void setBackupDao(BackupDao backupDao) {
-        this.backupDao = backupDao;
-    }
-
-    public void setConfigurationService(ConfigurationService configurationService) {
-        this.configurationService = configurationService;
     }
 }
