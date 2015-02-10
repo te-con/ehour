@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class FieldDefinition {
     private Field field;
-    private final FieldProcessor processor;
+    private FieldProcessor processor;
 
     public FieldDefinition(Field field) {
         this(field, new FieldProcessorSetterImpl());
@@ -19,6 +19,9 @@ public class FieldDefinition {
         this.processor = processor;
     }
 
+    void setProcessor(FieldProcessor processor) {
+        this.processor = processor;
+    }
 
     public <PK extends Serializable, T extends DomainObject<PK, ?>> void process(T targetObject,
                                                                           Map<Class<?>, Object> embeddableCache,

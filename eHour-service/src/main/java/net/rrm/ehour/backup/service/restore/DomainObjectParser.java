@@ -42,7 +42,7 @@ public class DomainObjectParser {
     private ParseSession status;
 
     private PrimaryKeyCache keyCache;
-    private final BackupConfig entityLocator;
+    private final BackupConfig backupConfig;
 
     static {
         transformerMap.put(Integer.class, new IntegerTransformer());
@@ -51,11 +51,11 @@ public class DomainObjectParser {
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
-    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, PrimaryKeyCache keyCache, BackupConfig entityLocator) {
+    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, PrimaryKeyCache keyCache, BackupConfig backupConfig) {
         this.parserDao = parserDao;
         this.reader = reader;
         this.keyCache = keyCache;
-        this.entityLocator = entityLocator;
+        this.backupConfig = backupConfig;
     }
 
     public <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parse(Class<T> clazz, JoinTables joinTables, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
@@ -79,7 +79,7 @@ public class DomainObjectParser {
 
                 domainObjects.add(domainObject);
 
-                BackupEntityType backupEntityType = entityLocator.entityForClass(clazz);
+                BackupEntityType backupEntityType = backupConfig.entityForClass(clazz);
                 status.addInsertion(backupEntityType);
             } else if (event.isEndElement()) {
                 break;
@@ -132,14 +132,6 @@ public class DomainObjectParser {
         return targetObject;
     }
 
-    private <T> void resetId(Map<String, FieldDefinition> fieldMap, T domainObject) throws IllegalAccessException {
-        for (FieldDefinition fieldDefinition : fieldMap.values()) {
-            Field field = fieldDefinition.getField();
-            if (field.isAnnotationPresent(Id.class) && field.isAnnotationPresent(GeneratedValue.class)) {
-                field.set(domainObject, null);
-            }
-        }
-    }
 
     private <T> boolean setEmbeddablesInDomainObject(Map<String, FieldDefinition> fieldMap, T domainObject, Map<Class<?>, Object> embeddables)
             throws IllegalAccessException {
@@ -159,6 +151,17 @@ public class DomainObjectParser {
         return hasCompositeKey;
     }
 
+    private <T> void resetId(Map<String, FieldDefinition> fieldMap, T domainObject) throws IllegalAccessException {
+        for (FieldDefinition fieldDefinition : fieldMap.values()) {
+            Field field = fieldDefinition.getField();
+
+            // only reset generated value id's as they're re-generated. Composite key's should be left alone
+            if (field.isAnnotationPresent(Id.class) && field.isAnnotationPresent(GeneratedValue.class)) {
+                field.set(domainObject, null);
+            }
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private Serializable parseColumn(Class<? extends Serializable> columnType, String value, boolean canBeIgnored)
             throws IllegalAccessException, InstantiationException {
@@ -173,7 +176,7 @@ public class DomainObjectParser {
             }
 
             if (parsedValue == null && !canBeIgnored) {
-                status.addError(entityLocator.entityForClass(columnType), "ManyToOne relation not resolved");
+                status.addError(backupConfig.entityForClass(columnType), "ManyToOne relation not resolved");
             }
         } else if (columnType == String.class) {
             parsedValue = value;
@@ -183,7 +186,7 @@ public class DomainObjectParser {
             if (transformerMap.containsKey(columnType)) {
                 parsedValue = transformerMap.get(columnType).transform(value);
             } else {
-                status.addError(entityLocator.entityForClass(columnType), "unknown type: " + columnType);
+                status.addError(backupConfig.entityForClass(columnType), "unknown type: " + columnType);
                 LOG.error("no transformer for type " + columnType);
             }
         }

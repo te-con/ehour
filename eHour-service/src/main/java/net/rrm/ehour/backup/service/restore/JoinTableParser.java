@@ -14,17 +14,15 @@ public class JoinTableParser {
     private static final Logger LOG = Logger.getLogger(JoinTableParser.class);
 
     private final XMLEventReader xmlReader;
-    private final BackupConfig locator;
+    private final BackupConfig backupConfig;
 
-    public JoinTableParser(XMLEventReader xmlReader, BackupConfig locator) {
+    public JoinTableParser(XMLEventReader xmlReader, BackupConfig backupConfig) {
         this.xmlReader = xmlReader;
-        this.locator = locator;
+        this.backupConfig = backupConfig;
     }
 
-    public JoinTables parseJoinTables() throws XMLStreamException {
+    public JoinTables parseJoinTables(JoinTables joinTables) throws XMLStreamException {
         LOG.info("Join tables found, parsing");
-
-        JoinTables joinTables = new JoinTables();
 
         while (xmlReader.hasNext()) {
             XMLEvent containerEvent = xmlReader.nextTag();
@@ -51,7 +49,7 @@ public class JoinTableParser {
                 StartElement startElement = event.asStartElement();
                 String joinTableName = startElement.getName().getLocalPart();
 
-                BackupJoinTable backupJoinTable = locator.joinTableForName(joinTableName);
+                BackupJoinTable backupJoinTable = backupConfig.joinTableForName(joinTableName);
 
                 if (backupJoinTable == null) {
                     throw new IllegalArgumentException("Unknown join table name: " + joinTableName);

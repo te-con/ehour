@@ -64,18 +64,16 @@ public class FieldMapFactoryTest {
     public void should_process_column_with_embeddable() throws InstantiationException, IllegalAccessException {
         Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(TimesheetEntry.class);
 
-        FieldDefinition fieldDef = fieldDefinitionMap.get("entryId");
+        FieldDefinition fieldDef = fieldDefinitionMap.get("assignment_id");
 
         TimesheetEntry timesheetEntry = TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5f);
         timesheetEntry.setEntryId(null);
 
-        TimesheetEntryId entryId = new TimesheetEntryId();
-
         Map<Class<?>, Object> embeddables = Maps.newHashMap();
-        embeddables.put(TimesheetEntryId.class, entryId);
 
-        fieldDef.process(timesheetEntry, embeddables, "1");
+        ProjectAssignment projectAssignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
+        fieldDef.process(timesheetEntry, embeddables, projectAssignment);
 
-        assertEquals(entryId, timesheetEntry.getEntryId());
+        assertEquals(projectAssignment, ((TimesheetEntryId) embeddables.get(TimesheetEntryId.class)).getProjectAssignment());
     }
 }

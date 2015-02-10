@@ -27,8 +27,6 @@ public class RestoreServiceImpl implements RestoreService {
 
     private DomainObjectParserDao domainObjectParserDao;
 
-    private UserRoleParserDao userRoleParserDao;
-
     private DatabaseTruncater databaseTruncater;
 
     private BackupConfig backupConfig;
@@ -40,7 +38,6 @@ public class RestoreServiceImpl implements RestoreService {
         this.configurationDao = configurationDao;
         this.configurationParserDao = configurationParserDao;
         this.domainObjectParserDao = domainObjectParserDao;
-        this.userRoleParserDao = userRoleParserDao;
         this.databaseTruncater = databaseTruncater;
         this.ehourConfig = ehourConfig;
         this.backupConfig = backupConfig;
@@ -61,7 +58,6 @@ public class RestoreServiceImpl implements RestoreService {
                         .setConfigurationDao(configurationDao)
                         .setConfigurationParserDao(configurationParserDao)
                         .setDomainObjectParserDao(domainObjectParserDao)
-                        .setUserRoleParserDao(userRoleParserDao)
                         .setXmlReader(xmlEventReader)
                         .setSkipValidation(true)
                         .setBackupConfig(backupConfig)
@@ -106,13 +102,11 @@ public class RestoreServiceImpl implements RestoreService {
 
         DomainObjectParserDaoValidatorImpl domainObjectParserDaoValidator = new DomainObjectParserDaoValidatorImpl();
         ConfigurationParserDaoValidatorImpl configurationParserDaoValidator = new ConfigurationParserDaoValidatorImpl();
-        UserRoleParserDaoValidatorImpl userRoleParserDaoValidator = new UserRoleParserDaoValidatorImpl();
 
         XmlParser importer = new XmlParserBuilder()
                 .setConfigurationDao(configurationDao)
                 .setConfigurationParserDao(configurationParserDaoValidator)
                 .setDomainObjectParserDao(domainObjectParserDaoValidator)
-                .setUserRoleParserDao(userRoleParserDaoValidator)
                 .setBackupConfig(backupConfig)
                 .setXmlReader(eventReader)
                 .build();

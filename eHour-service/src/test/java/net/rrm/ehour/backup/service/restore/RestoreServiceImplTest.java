@@ -6,6 +6,7 @@ import net.rrm.ehour.backup.service.DatabaseTruncater;
 import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.Configuration;
+import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.commons.io.FileUtils;
@@ -20,7 +21,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -109,7 +110,8 @@ public class RestoreServiceImplTest {
         assertFalse(status.isImportable());
 
         assertFalse(destFile.exists());
-        assertEquals(6, userRoleParserDao.getFindUserCount());
+
+        verify(domainObjectParserDao, times(10)).persist(any(DomainObject.class));
     }
 
     @Test

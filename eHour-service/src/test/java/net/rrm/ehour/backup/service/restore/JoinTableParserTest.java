@@ -20,7 +20,7 @@ public class JoinTableParserTest {
 
         reader.nextTag();
 
-        JoinTables joinTables = parser.parseJoinTables();
+        JoinTables joinTables = parser.parseJoinTables(new JoinTables());
 
         assertEquals(2, joinTables.size());
 

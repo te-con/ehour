@@ -19,7 +19,7 @@ public class EhourBackupConfig implements BackupConfig {
     private static final BackupEntityType project = new BackupEntityType(Project.class, "PROJECT", 4);
     private static final BackupEntityType projectAssignmentType = new BackupEntityType(ProjectAssignmentType.class, "PROJECT_ASSIGNMENT_TYPE", 5);
     private static final BackupEntityType projectAssignment = new BackupEntityType(ProjectAssignment.class, "PROJECT_ASSIGNMENT", 6);
-    private static final BackupEntityType timesheetEntry = new BackupEntityType(ProjectAssignment.class, "TIMESHEET_ENTRY", "TIMESHEET_ENTRIES", new TimesheetEntryRowProcessor(), 7);
+    private static final BackupEntityType timesheetEntry = new BackupEntityType(TimesheetEntry.class, "TIMESHEET_ENTRY", "TIMESHEET_ENTRIES", new TimesheetEntryRowProcessor(), 7);
     private static final BackupEntityType timesheetComment = new BackupEntityType(TimesheetComment.class, "TIMESHEET_COMMENT", 8);
     private static final BackupEntityType timesheetLock = new BackupEntityType(TimesheetLock.class, "TIMESHEET_LOCK", 11);
 

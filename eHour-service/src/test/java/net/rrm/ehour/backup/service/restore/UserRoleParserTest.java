@@ -2,7 +2,6 @@ package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.backup.BackupEntityType;
-import net.rrm.ehour.backup.service.backup.BackupTypeSingleTable;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 import org.junit.Before;
@@ -24,7 +23,7 @@ public class UserRoleParserTest {
     private XMLEventReader eventReader;
     private UserRoleParser parser;
     private ParseSession status;
-    private BackupEntityType userRoleBackupEntityType = new BackupTypeSingleTable(UserRole.class, "USER_ROLE", 0);
+    private BackupEntityType userRoleBackupEntityType = new BackupEntityType(UserRole.class, "USER_ROLE", 0);
 
     @Before
     public void setUp() throws XMLStreamException {

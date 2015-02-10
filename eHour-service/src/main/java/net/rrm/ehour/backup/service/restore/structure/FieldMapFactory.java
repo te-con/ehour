@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service.restore.structure;
 
+import com.google.common.collect.Maps;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -29,23 +30,38 @@ public class FieldMapFactory {
                 column(fieldMap, field);
             } else if (field.isAnnotationPresent(JoinColumn.class)) {
                 manyToOne(fieldMap, field);
-            } else if (field.isAnnotationPresent(ManyToMany.class)) {
+            } else if (field.isAnnotationPresent(ManyToMany.class) && field.isAnnotationPresent(JoinTable.class)) {
                 manyToMany(fieldMap, field);
             } else {
-                Class<?> fieldType = field.getType();
-
-                // do we need to go a level deeper with composite primary keys marked as Embeddable?
-                if (fieldType.isAnnotationPresent(Embeddable.class)) {
-                    fieldMap.put(field.getName(), new FieldDefinition(field));
-
-                    Map<String, FieldDefinition> embeddableFieldMap = buildFieldMapForDomainObject(fieldType);
-
-                    fieldMap.putAll(embeddableFieldMap);
-                }
+                embeddable(fieldMap, field);
             }
         }
 
         return fieldMap;
+    }
+
+    private static void embeddable(Map<String, FieldDefinition> fieldMap, Field field) {
+        Class<?> fieldType = field.getType();
+
+        // do we need to go a level deeper with composite primary keys marked as Embeddable?
+        if (fieldType.isAnnotationPresent(Embeddable.class)) {
+            String prefix = fieldType.getName();
+            fieldMap.put(field.getName(), new FieldDefinition(field));
+
+            Map<String, FieldDefinition> embeddableFieldMap = buildFieldMapForDomainObject(fieldType);
+
+            for (FieldDefinition fieldDefinition : embeddableFieldMap.values()) {
+                fieldDefinition.setProcessor(new FieldProcessorEmbeddableImpl());
+            }
+
+            Map<String, FieldDefinition> prefixedMap = Maps.newHashMap();
+
+            for (Map.Entry<String, FieldDefinition> entry : embeddableFieldMap.entrySet()) {
+                prefixedMap.put(prefix + "@" + entry.getKey(), entry.getValue());
+            }
+
+            fieldMap.putAll(embeddableFieldMap);
+        }
     }
 
     private static void column(Map<String, FieldDefinition> fieldMap, Field field) {

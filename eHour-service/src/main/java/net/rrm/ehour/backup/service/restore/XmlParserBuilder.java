@@ -16,7 +16,6 @@ public class XmlParserBuilder {
     private ConfigurationDao configurationDao;
     private ConfigurationParserDao configurationParserDao;
     private DomainObjectParserDao domainObjectParserDao;
-    private UserRoleParserDao userRoleParserDao;
     private boolean skipValidation = false;
     private BackupConfig backupConfig;
 
@@ -24,18 +23,19 @@ public class XmlParserBuilder {
         Assert.notNull(xmlReader);
         Assert.notNull(configurationDao);
         Assert.notNull(domainObjectParserDao);
-        Assert.notNull(userRoleParserDao);
         Assert.notNull(backupConfig);
 
         PrimaryKeyCache keyCache = new PrimaryKeyCache();
 
         JoinTableParser joinTableParser = new JoinTableParser(xmlReader, backupConfig);
-
         DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache, backupConfig);
-        ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
-        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache, backupConfig.userRoleBackupEntity());
 
-        return new XmlParser(configurationDao, parser, configurationParser, joinTableParser, userRoleParser, skipValidation);
+        EntityTableParser entityTableParser = new EntityTableParser(xmlReader, parser);
+
+        ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
+
+        ParseContext ctx = new ParseContext(configurationDao, parser, configurationParser, joinTableParser, entityTableParser, skipValidation);
+        return new XmlParser(ctx);
     }
 
     public XmlParserBuilder setSkipValidation(boolean skipValidation) {
@@ -60,11 +60,6 @@ public class XmlParserBuilder {
 
     public XmlParserBuilder setDomainObjectParserDao(DomainObjectParserDao domainObjectParserDao) {
         this.domainObjectParserDao = domainObjectParserDao;
-        return this;
-    }
-
-    public XmlParserBuilder setUserRoleParserDao(UserRoleParserDao userRoleParserDao) {
-        this.userRoleParserDao = userRoleParserDao;
         return this;
     }
 

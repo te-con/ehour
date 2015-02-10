@@ -5,8 +5,6 @@ import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.config.ConfigurationItem;
 import net.rrm.ehour.domain.Configuration;
-import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.log4j.Logger;
 
 import javax.xml.namespace.QName;
@@ -22,31 +20,20 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class XmlParser {
     private static final Logger LOG = Logger.getLogger(XmlParser.class);
+    private final ParseContext ctx;
 
-    private ConfigurationDao configurationDao;
-    private DomainObjectParser domainObjectParser;
-    private ConfigurationParser configurationParser;
-    private JoinTableParser joinTableParser;
-    private UserRoleParser userRoleParser;
-
-    private boolean skipValidation;
-
-    public XmlParser(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, JoinTableParser joinTableParser, UserRoleParser userRoleParser, boolean skipValidation) {
-        this.configurationDao = configurationDao;
-        this.domainObjectParser = domainObjectParser;
-        this.configurationParser = configurationParser;
-        this.joinTableParser = joinTableParser;
-        this.userRoleParser = userRoleParser;
-
-        this.skipValidation = skipValidation;
+    public XmlParser(ParseContext ctx) {
+        this.ctx = ctx;
     }
 
     public void parseXml(final ParseSession status, final XMLEventReader eventReader) throws Exception {
+        JoinTables joinTables = new JoinTables();
+
         while (eventReader.hasNext()) {
             final XMLEvent event = eventReader.nextTag();
 
             if (event.isStartElement()) {
-                parseEvent(status, eventReader, event);
+                parseEvent(status, eventReader, event, joinTables);
 
             } else if (event.isEndDocument() || event.isEndElement()) {
                 break;
@@ -54,36 +41,31 @@ public class XmlParser {
         }
     }
 
-    private void parseEvent(ParseSession status, XMLEventReader eventReader, XMLEvent event)
+    private void parseEvent(ParseSession status, XMLEventReader eventReader, XMLEvent event, JoinTables joinTables)
             throws ImportException, XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         StartElement startElement = event.asStartElement();
 
         String startName = startElement.getName().getLocalPart();
+        System.out.println(startName);
 
         ExportElements element = safelyGetExportElements(startName);
 
         LOG.info("Element found in backup file: " + element.name() + " = " + startName);
 
-        JoinTables joinTables = null;
-
         switch (element) {
             case EHOUR:
-                if (!skipValidation) {
+                if (!ctx.skipValidation) {
                     checkDatabaseVersion(startElement);
                 }
                 break;
             case CONFIGURATION:
-                configurationParser.parseConfiguration(eventReader);
+                ctx.configurationParser.parseConfiguration(eventReader);
                 break;
-//            case USER_TO_USERROLES:
-//                userRoleParser.parseUserRoles(eventReader, status);
-//                break;
             case JOIN_TABLES:
-                joinTables = parseJoinTables();
+                parseJoinTables(joinTables);
                 break;
             case ENTITY_TABLES:
-                // yes order is important, joinTables should have been parsed first - basically first in the XML
-                parseEntity(startElement, domainObjectParser, joinTables, status);
+                parseEntityTables(joinTables, status);
                 break;
             default:
                 break;
@@ -98,30 +80,19 @@ public class XmlParser {
         }
     }
 
-    private JoinTables parseJoinTables() throws XMLStreamException {
-        return joinTableParser.parseJoinTables();
+    private JoinTables parseJoinTables(JoinTables joinTables) throws XMLStreamException {
+        return ctx.joinTableParser.parseJoinTables(joinTables);
     }
 
-    @SuppressWarnings("unchecked")
-    private void parseEntity(StartElement element, DomainObjectParser entityParser, JoinTables joinTables, ParseSession status) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException, ImportException {
-        Attribute attribute = element.getAttributeByName(new QName("CLASS"));
-
-        if (attribute != null) {
-            String aClass = attribute.getValue();
-
-            Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
-
-            entityParser.parse(doClass, joinTables, status);
-        } else {
-            throw new ImportException("Invalid XML, no attribute found for element: " + element.getName().getLocalPart());
-        }
+    private void parseEntityTables(JoinTables joinTables, ParseSession status) throws XMLStreamException, ClassNotFoundException, ImportException, InstantiationException, IllegalAccessException {
+        ctx.entityTableParser.parseEntityTables(joinTables, status);
     }
 
     private void checkDatabaseVersion(StartElement element) throws ImportException {
         Attribute attribute = element.getAttributeByName(new QName(ExportElements.DB_VERSION.name()));
         String dbVersion = attribute.getValue();
 
-        Configuration version = configurationDao.findById(ConfigurationItem.VERSION.getDbField());
+        Configuration version = ctx.configurationDao.findById(ConfigurationItem.VERSION.getDbField());
 
         isDatabaseCompatible(version.getConfigValue(), dbVersion);
     }

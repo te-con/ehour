@@ -9,29 +9,9 @@ import java.util.Map;
 public class FieldProcessorSetterImpl implements FieldProcessor {
     @Override
     public <PK extends Serializable, T extends DomainObject<PK, ?>> void process(Field targetField, T targetObject, Map<Class<?>, Object> embeddables, Object parsedColumnValue) throws IllegalAccessException, InstantiationException {
-        if (targetField.getType() != parsedColumnValue.getClass()) {
-            Object embeddable = resolveEmbeddable(embeddables, targetField);
-
-            targetField.set(targetObject, embeddable);
-        } else {
+        // ignore embeddables
+        if (targetField.getType() == parsedColumnValue.getClass()) {
             targetField.set(targetObject, parsedColumnValue);
         }
-
-    }
-
-    private Object resolveEmbeddable(Map<Class<?>, Object> embeddables, Field field) throws InstantiationException, IllegalAccessException {
-        Class<?> type = field.getType();
-
-        if (embeddables.containsKey(type)) {
-            return embeddables.get(type);
-        } else {
-            Object embeddable = instantiateEmbeddable(field);
-            embeddables.put(type, embeddable);
-            return embeddable;
-        }
-    }
-
-    private Object instantiateEmbeddable(Field field) throws InstantiationException, IllegalAccessException {
-        return field.getDeclaringClass().newInstance();
     }
 }

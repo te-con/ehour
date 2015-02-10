@@ -44,8 +44,8 @@ public class DatabaseBackupServiceImplTest {
         Map<String, Object> map = new HashMap<>();
         map.put("ASSIGNMENT_ID", 1);
         map.put("ENTRY_DATE", new Date());
-        List<Map<String, Object>> rows = Lists.newArrayList(map);
 
+        List<Map<String, Object>> rows = Lists.newArrayList(map);
         when(exportDao.findAll("TIMESHEET_ENTRY")).thenReturn(rows);
 
         EhourConfigStub configuration = new EhourConfigStub();
@@ -63,5 +63,7 @@ public class DatabaseBackupServiceImplTest {
         assertThat(xml, containsString("CONFIG"));
 
         assertTrue(xml.startsWith("<?xml version="));
+
+        System.out.println(xml);
     }
 }
