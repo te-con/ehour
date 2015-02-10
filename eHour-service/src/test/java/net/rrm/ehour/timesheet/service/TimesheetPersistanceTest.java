@@ -23,11 +23,11 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetEntrySegmentDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.util.EhourConstants;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Before;
@@ -39,6 +39,7 @@ import org.springframework.context.ApplicationContext;
 import scala.collection.JavaConversions;
 import scala.collection.mutable.Buffer;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +56,9 @@ public class TimesheetPersistanceTest {
 
     @Mock
     private TimesheetDao timesheetDAO;
+
+    @Mock
+    private TimesheetEntrySegmentDao timesheetEntrySegmentDao;
 
     @Mock
     private ProjectManagerNotifierService projectManagerNotifierService;
@@ -79,7 +83,8 @@ public class TimesheetPersistanceTest {
 
     @Before
     public void setUp() {
-        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
+        persister = new TimesheetPersistance(timesheetDAO, timesheetEntrySegmentDao,
+                commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
 
         initData();
     }
@@ -90,7 +95,7 @@ public class TimesheetPersistanceTest {
         assignment.getProject().setProjectManager(UserObjectMother.createUser());
         assignment.setNotifyPm(true);
 
-        assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX));
+        assignment.setAssignmentType(ProjectAssignmentType.newAssignmentTimeAllottedFlex());
 
         newEntries = new ArrayList<>();
 
@@ -99,19 +104,15 @@ public class TimesheetPersistanceTest {
 
         {
             TimesheetEntry entry = new TimesheetEntry();
-            TimesheetEntryId id = new TimesheetEntryId();
-            id.setProjectAssignment(assignment);
-            id.setEntryDate(dateA);
+            TimesheetEntryId id = new TimesheetEntryId(dateA, assignment);
             entry.setEntryId(id);
-            entry.setHours(8f);
+            entry.setHours(new BigDecimal(8));
             newEntries.add(entry);
         }
 
         {
             TimesheetEntry entryDel = new TimesheetEntry();
-            TimesheetEntryId idDel = new TimesheetEntryId();
-            idDel.setProjectAssignment(assignment);
-            idDel.setEntryDate(dateB);
+            TimesheetEntryId idDel = new TimesheetEntryId(dateB, assignment);
             entryDel.setEntryId(idDel);
             entryDel.setHours(null);
             newEntries.add(entryDel);
@@ -120,27 +121,23 @@ public class TimesheetPersistanceTest {
         existingEntries = new ArrayList<>();
         {
             TimesheetEntry entry = new TimesheetEntry();
-            TimesheetEntryId id = new TimesheetEntryId();
-            id.setProjectAssignment(assignment);
-            id.setEntryDate(dateA);
+            TimesheetEntryId id = new TimesheetEntryId(dateA, assignment);
             entry.setEntryId(id);
-            entry.setHours(5f);
+            entry.setHours(new BigDecimal(5));
             existingEntries.add(entry);
         }
 
         {
             TimesheetEntry entryDel = new TimesheetEntry();
-            TimesheetEntryId idDel = new TimesheetEntryId();
-            idDel.setProjectAssignment(assignment);
-            idDel.setEntryDate(dateB);
+            TimesheetEntryId idDel = new TimesheetEntryId(dateB, assignment);
             entryDel.setEntryId(idDel);
-            entryDel.setHours(5f);
+            entryDel.setHours(new BigDecimal(5));
             existingEntries.add(entryDel);
         }
     }
 
     @Test
-    public void should_persist_new_timesheet() throws OverBudgetException {
+    public void shouldPersistNewTimesheet() throws OverBudgetException {
         DateRange dateRange = new DateRange();
 
         okStatus();
@@ -153,7 +150,7 @@ public class TimesheetPersistanceTest {
     }
 
     @Test
-    public void should_update_existing_timesheet() throws OverBudgetException {
+    public void shouldUpdateExistingTimesheet() throws OverBudgetException {
         DateRange dateRange = new DateRange();
 
         withExistingEntries(dateRange);
@@ -168,7 +165,7 @@ public class TimesheetPersistanceTest {
 
 
     @Test
-    public void should_not_persist_an_timesheet_that_went_overbudget() {
+    public void shouldNot_persistAnTimesheetThatWentOverbudget() {
         DateRange dateRange = new DateRange();
 
         withExistingEntries(dateRange);
@@ -199,7 +196,7 @@ public class TimesheetPersistanceTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void should_allow_to_decrease_existing_hours_even_when_project_is_over_budget() throws OverBudgetException {
+    public void shouldAllowToDecreaseExistingHoursEvenWhenProjectIsOverBudget() throws OverBudgetException {
         Date dateC = new Date(2008 - 1900, Calendar.APRIL, 3);
 
         newEntries.clear();
@@ -207,21 +204,17 @@ public class TimesheetPersistanceTest {
 
         {
             TimesheetEntry entryDel = new TimesheetEntry();
-            TimesheetEntryId idDel = new TimesheetEntryId();
-            idDel.setProjectAssignment(assignment);
-            idDel.setEntryDate(dateC);
+            TimesheetEntryId idDel = new TimesheetEntryId(dateC, assignment);
             entryDel.setEntryId(idDel);
-            entryDel.setHours(7f);
+            entryDel.setHours(new BigDecimal(7));
             newEntries.add(entryDel);
         }
 
         {
             TimesheetEntry entryDel = new TimesheetEntry();
-            TimesheetEntryId idDel = new TimesheetEntryId();
-            idDel.setProjectAssignment(assignment);
-            idDel.setEntryDate(dateC);
+            TimesheetEntryId idDel = new TimesheetEntryId(dateC, assignment);
             entryDel.setEntryId(idDel);
-            entryDel.setHours(8f);
+            entryDel.setHours(new BigDecimal(8));
             existingEntries.add(entryDel);
         }
 
@@ -243,7 +236,7 @@ public class TimesheetPersistanceTest {
     }
 
     @Test
-    public void should_not_allow_to_book_more_hours_when_the_project_is_overbudget() {
+    public void shouldNotAllowToBookMoreHoursWhenTheProjectIsOverbudget() {
         when(timesheetDAO.getTimesheetEntriesInRange(any(ProjectAssignment.class), any(DateRange.class))).thenReturn(existingEntries);
 
         ProjectAssignmentStatus beforeStatus = new ProjectAssignmentStatus();
@@ -264,7 +257,7 @@ public class TimesheetPersistanceTest {
     }
 
     @Test
-    public void should_mail_pm_when_status_of_project_changes() throws OverBudgetException {
+    public void shouldMailPmWhenStatusOfProjectChanges() throws OverBudgetException {
         when(timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId())).thenReturn(newEntries.get(0));
         when(timesheetDAO.getTimesheetEntriesInRange(any(ProjectAssignment.class), any(DateRange.class))).thenReturn(existingEntries);
 
@@ -289,7 +282,7 @@ public class TimesheetPersistanceTest {
     }
 
     @Test
-    public void should_persist_individual_timesheet_entries_for_a_week() {
+    public void shouldPersistIndividualTimesheetEntriesForAWeek() {
         TimesheetCommentId commentId = new TimesheetCommentId(1, new Date());
         TimesheetComment comment = new TimesheetComment(commentId, "comment");
 
@@ -305,7 +298,7 @@ public class TimesheetPersistanceTest {
     }
 
     @Test
-    public void should_not_persist_when_whole_week_is_locked() throws OverBudgetException {
+    public void shouldNotPersistWhenWholeWeekIsLocked() throws OverBudgetException {
         okStatus();
 
         TimesheetCommentId commentId = new TimesheetCommentId(1, new Date());
@@ -328,7 +321,7 @@ public class TimesheetPersistanceTest {
     }
 
     @Test
-    public void should_not_persist_for_locked_day() throws OverBudgetException {
+    public void shouldNotPersistForLockedDay() throws OverBudgetException {
         okStatus();
 
         TimesheetCommentId commentId = new TimesheetCommentId(1, new Date());
@@ -343,11 +336,9 @@ public class TimesheetPersistanceTest {
         when(context.getBean(IPersistTimesheet.class)).thenReturn(persister);
 
         TimesheetEntry entry = new TimesheetEntry();
-        TimesheetEntryId id = new TimesheetEntryId();
-        id.setProjectAssignment(assignment);
-        id.setEntryDate(baseDate.plusDays(2).toDate());
+        TimesheetEntryId id = new TimesheetEntryId(baseDate.plusDays(2).toDate(), assignment);
         entry.setEntryId(id);
-        entry.setHours(5f);
+        entry.setHours(new BigDecimal(5));
         newEntries.add(entry);
 
         withLock(new Interval(baseDate.plusDays(2), end));// cancelling out the just created entry
@@ -359,7 +350,7 @@ public class TimesheetPersistanceTest {
     }
 
     @Test
-    public void should_not_persist_comment_when_whole_week_is_locked() throws OverBudgetException {
+    public void shouldNotPersistCommentWhenWholeWeekIsLocked() throws OverBudgetException {
         okStatus();
 
         TimesheetCommentId commentId = new TimesheetCommentId(1, new Date());

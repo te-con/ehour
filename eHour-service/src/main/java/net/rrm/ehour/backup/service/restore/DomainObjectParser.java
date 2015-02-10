@@ -20,6 +20,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -47,6 +48,7 @@ public class DomainObjectParser {
     static {
         transformerMap.put(Integer.class, new IntegerTransformer());
         transformerMap.put(Float.class, new FloatTransformer());
+        transformerMap.put(BigDecimal.class, new BigDecimalTransformer());
         transformerMap.put(Date.class, new DateTransformer());
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
@@ -232,6 +234,14 @@ public class DomainObjectParser {
         @Override
         public Float transform(String value) {
             return StringUtils.isNotBlank(value) ? Float.parseFloat(value) : null;
+        }
+    }
+
+    private static class BigDecimalTransformer implements TypeTransformer<BigDecimal> {
+
+        @Override
+        public BigDecimal transform(String value) {
+            return StringUtils.isNotBlank(value) ? new BigDecimal(value) : null;
         }
     }
 

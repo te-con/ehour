@@ -5,6 +5,7 @@ import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.domain.*;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -15,6 +16,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -66,7 +68,7 @@ public class DomainObjectParserTest {
 
         assertNotNull(result.get(0).getEntryId().getEntryDate());
         assertNotNull(result.get(0).getEntryId().getProjectAssignment());
-        assertEquals(8.0, result.get(0).getHours(), 0);
+        assertEquals(new BigDecimal("8.0"), result.get(0).getHours());
         assertEquals("jaja", result.get(0).getComment());
         assertEquals(2, daoValidator.getTotalPersistCount());
     }

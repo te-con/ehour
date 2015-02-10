@@ -20,12 +20,12 @@ import net.rrm.ehour.domain.*;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * Representation of a timesheet
  */
-
 public class Timesheet implements Serializable {
     private static final long serialVersionUID = -547682050331580675L;
     private SortedMap<Customer, List<TimesheetRow>> customers;
@@ -37,56 +37,13 @@ public class Timesheet implements Serializable {
     private float maxHoursPerDay;
     private List<Date> lockedDays;
 
-    public boolean isAnyLocked() {
-        for (int i = 0; i < dateSequence.length; i++) {
-            if (isLocked(i)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean isAllLocked() {
-        boolean allLocked = true;
-
-        for (int i = 0; i < dateSequence.length; i++) {
-            allLocked &= isLocked(i);
-        }
-
-        return allLocked;
-
-    }
-
-    public boolean isLocked(int seq) {
-        return lockedDays.contains(dateSequence[seq]);
-    }
-
-    public void setLockedDays(List<Date> lockedDays) {
-        this.lockedDays = lockedDays;
-    }
-
-    /**
-     * Update failed projects
-     *
-     * @param failedProjectStatusses
-     */
-    public void updateFailedProjects(List<ProjectAssignmentStatus> failedProjectStatusses) {
-        clearAssignmentStatus();
-
-        for (ProjectAssignmentStatus projectAssignmentStatus : failedProjectStatusses) {
-            setAssignmentStatus(projectAssignmentStatus);
-        }
-    }
-
     /**
      * Set assignment status
-     *
      * @param status
      */
     private void setAssignmentStatus(ProjectAssignmentStatus status) {
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Customer customer : getCustomers().keySet()) {
+            for (TimesheetRow row : getCustomers().get(customer)) {
                 if (row.getProjectAssignment().equals(status.getAggregate().getProjectAssignment())) {
                     row.setAssignmentStatus(status);
                     return;
@@ -99,17 +56,56 @@ public class Timesheet implements Serializable {
      * Clear each assignment status
      */
     private void clearAssignmentStatus() {
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Customer customer : getCustomers().keySet()) {
+            for (TimesheetRow row : getCustomers().get(customer)) {
                 row.setAssignmentStatus(null);
             }
         }
     }
 
+    public void setMappedTimesheetRows(List<TimesheetRow> rows, Comparator<TimesheetRow> comparator) {
+        this.setCustomers(new TimeSheetMapBuilder(comparator).buildMap(rows));
+    }
+
+    public boolean isAnyLocked() {
+        for (int i = 0; i < dateSequence.length; i++) {
+            if (isLocked(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isAllLocked() {
+        boolean allLocked = true;
+        for (int i = 0; i < dateSequence.length; i++) {
+            allLocked &= isLocked(i);
+        }
+        return allLocked;
+    }
+
+    public boolean isLocked(int seq) {
+        return lockedDays.contains(dateSequence[seq]);
+    }
+
+    public void setLockedDays(List<Date> lockedDays) {
+        this.lockedDays = lockedDays;
+    }
+
+    /**
+     * Update failed projects
+     * @param failedProjectStatusses
+     */
+    public void updateFailedProjects(List<ProjectAssignmentStatus> failedProjectStatusses) {
+        clearAssignmentStatus();
+
+        for (ProjectAssignmentStatus projectAssignmentStatus : failedProjectStatusses) {
+            setAssignmentStatus(projectAssignmentStatus);
+        }
+    }
 
     /**
      * Get comment for persist
-     *
      * @return
      */
     public TimesheetComment getCommentForPersist() {
@@ -127,7 +123,6 @@ public class Timesheet implements Serializable {
 
     /**
      * Get the timesheet entries of this timesheet
-     *
      * @return
      */
     public List<TimesheetEntry> getTimesheetEntries() {
@@ -146,87 +141,49 @@ public class Timesheet implements Serializable {
 
     /**
      * Get remaining hours for a day based on maxHoursPerDay
-     *
      * @param day
      * @return
      */
     public Float getRemainingHoursForDay(int day) {
-        float remainingHours = maxHoursPerDay;
+        BigDecimal remainingHours = BigDecimal.valueOf(maxHoursPerDay);
 
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Customer customer : getCustomers().keySet()) {
+            for (TimesheetRow row : getCustomers().get(customer)) {
                 TimesheetCell cell = row.getTimesheetCells()[day];
 
                 if (cell != null && cell.getTimesheetEntry() != null && cell.getTimesheetEntry().getHours() != null) {
-                    remainingHours -= cell.getTimesheetEntry().getHours();
+                    remainingHours = remainingHours.subtract(cell.getTimesheetEntry().getHours());
                 }
             }
         }
 
-        return remainingHours;
+        return remainingHours.floatValue();
     }
 
     /**
      * Get total booked hours
-     *
      * @return
      */
+    @SuppressWarnings({ "unused" })
     public Float getTotalBookedHours() {
-        float totalHours = 0;
+        BigDecimal totalHours = BigDecimal.ZERO;
 
-        for (Customer customer : customers.keySet()) {
-            for (TimesheetRow row : customers.get(customer)) {
+        for (Customer customer : getCustomers().keySet()) {
+            for (TimesheetRow row : getCustomers().get(customer)) {
                 for (TimesheetCell cell : row.getTimesheetCells()) {
                     if (cell != null
                             && cell.getTimesheetEntry() != null
                             && cell.getTimesheetEntry().getHours() != null) {
-                        totalHours += cell.getTimesheetEntry().getHours();
+                        totalHours = totalHours.add(cell.getTimesheetEntry().getHours());
                     }
                 }
             }
         }
 
-        return totalHours;
+        return totalHours.floatValue();
     }
 
-    /**
-     * @return the weekStart
-     */
-    public Date getWeekStart() {
-        return weekStart;
-    }
-
-    /**
-     * @param weekStart the weekStart to set
-     */
-    public void setWeekStart(Date weekStart) {
-        this.weekStart = weekStart;
-    }
-
-    /**
-     * @return the comment
-     */
-    public TimesheetComment getComment() {
-        return comment;
-    }
-
-    /**
-     * @param comment the comment to set
-     */
-    public void setComment(TimesheetComment comment) {
-        this.comment = comment;
-    }
-
-    /**
-     * @return the customers
-     */
-    public SortedMap<Customer, List<TimesheetRow>> getCustomers() {
-        return customers;
-    }
-
-    /**
-     * @return
-     */
+    @SuppressWarnings({ "unused" })
     public List<Customer> getCustomerList() {
         return new ArrayList<>(getCustomers().keySet());
     }
@@ -236,50 +193,27 @@ public class Timesheet implements Serializable {
      * @return
      */
     public List<TimesheetRow> getTimesheetRows(Customer customer) {
-        return customers.get(customer);
+        return getCustomers().get(customer);
     }
 
-    /**
-     * @param customers the customers to set
-     */
-    public void setCustomers(SortedMap<Customer, List<TimesheetRow>> customers) {
+    SortedMap<Customer, List<TimesheetRow>> getCustomers() {
+        return customers;
+    }
+
+    void setCustomers(SortedMap<Customer, List<TimesheetRow>> customers) {
         this.customers = customers;
     }
 
-    /**
-     * @return the dateSequence
-     */
-    public Date[] getDateSequence() {
-        return dateSequence;
-    }
-
-    /**
-     * @param dateSequence the dateSequence to set
-     */
     public void setDateSequence(Date[] dateSequence) {
-        this.dateSequence = dateSequence.clone();
+        this.dateSequence = dateSequence;
     }
 
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
+    public Date getWeekStart() {
+        return weekStart;
     }
 
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public float getMaxHoursPerDay() {
-        return maxHoursPerDay;
-    }
-
-    public void setMaxHoursPerDay(float maxHoursPerDay) {
-        this.maxHoursPerDay = maxHoursPerDay;
+    public void setWeekStart(Date weekStart) {
+        this.weekStart = weekStart;
     }
 
     public Date getWeekEnd() {
@@ -288,5 +222,58 @@ public class Timesheet implements Serializable {
 
     public void setWeekEnd(Date weekEnd) {
         this.weekEnd = weekEnd;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public TimesheetComment getComment() {
+        return comment;
+    }
+
+    public void setComment(TimesheetComment comment) {
+        this.comment = comment;
+    }
+
+    public void setMaxHoursPerDay(float maxHoursPerDay) {
+        this.maxHoursPerDay = maxHoursPerDay;
+    }
+
+    private static class TimeSheetMapBuilder {
+        private final Comparator<TimesheetRow> comparator;
+
+        TimeSheetMapBuilder(final Comparator<TimesheetRow> comparator) {
+            this.comparator = comparator;
+        }
+
+        private SortedMap<Customer, List<TimesheetRow>> buildMap(List<TimesheetRow> rows) {
+            SortedMap<Customer, List<TimesheetRow>> customerMap = new TreeMap<Customer, List<TimesheetRow>>();
+
+            for (TimesheetRow timesheetRow : rows) {
+                Customer customer = timesheetRow.getProjectAssignment().getProject().getCustomer();
+
+                List<TimesheetRow> timesheetRows = customerMap.containsKey(customer) ? customerMap.get(customer) : new ArrayList<TimesheetRow>();
+                timesheetRows.add(timesheetRow);
+
+                customerMap.put(customer, timesheetRows);
+            }
+
+            sortRows(customerMap);
+
+            return customerMap;
+        }
+
+        private void sortRows(SortedMap<Customer, List<TimesheetRow>> rows) {
+            Set<Map.Entry<Customer, List<TimesheetRow>>> entries = rows.entrySet();
+
+            for (Map.Entry<Customer, List<TimesheetRow>> entry : entries) {
+                Collections.sort(entry.getValue(), comparator);
+            }
+        }
     }
 }

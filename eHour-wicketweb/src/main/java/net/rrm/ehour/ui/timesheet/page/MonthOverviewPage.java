@@ -44,7 +44,7 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
     private static final String ID_CONTENT_CONTAINER = "contentContainer";
 
     public enum OpenPanel {
-        OVERVIEW, TIMESHEET
+        OVERVIEW, TIMESHEET, TIME_TRACKER
     }
 
     public static final String PARAM_OPEN = "openPanel";
@@ -85,9 +85,12 @@ public class MonthOverviewPage extends AbstractBasePage<Void> {
         if (panelToOpen == OpenPanel.OVERVIEW) {
             helpPanel = new ContextualHelpPanel("contextHelp", "overview.help.header", "overview.help.body");
             contentContainer = new OverviewPanel(ID_CONTENT_CONTAINER);
-        } else {
+        } else if (panelToOpen == OpenPanel.TIMESHEET) {
             calendarPanel.setHighlightWeekStartingAt(DateUtil.getDateRangeForWeek(EhourWebSession.getSession().getNavCalendar()));
             helpPanel = getTimesheetHelpPanel();
+            contentContainer = createTimesheetPanel(ID_CONTENT_CONTAINER, EhourWebSession.getUser(), getEhourWebSession().getNavCalendar());
+        } else {
+            // TODO: Add new OpenPanel option to Time tracking
             contentContainer = createTimesheetPanel(ID_CONTENT_CONTAINER, EhourWebSession.getUser(), getEhourWebSession().getNavCalendar());
         }
 

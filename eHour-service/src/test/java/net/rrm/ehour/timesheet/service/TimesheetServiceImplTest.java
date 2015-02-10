@@ -21,6 +21,7 @@ import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetEntrySegmentDao;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.report.service.AggregateReportService;
@@ -35,6 +36,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import scala.collection.immutable.Vector;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -48,6 +50,9 @@ public class TimesheetServiceImplTest {
 
     @Mock
     private TimesheetDao timesheetDAO;
+
+    @Mock
+    private TimesheetEntrySegmentDao timesheetEntrySegmentDao;
 
     @Mock
     private TimesheetCommentDao timesheetCommentDAO;
@@ -66,8 +71,8 @@ public class TimesheetServiceImplTest {
 
     @Before
     public void setUp() {
-        timesheetService = new TimesheetServiceImpl(timesheetDAO, timesheetCommentDAO, timesheetLockService,
-                aggregateReportService, projectAssignmentService, config);
+        timesheetService = new TimesheetServiceImpl(timesheetDAO, timesheetEntrySegmentDao, timesheetCommentDAO,
+                timesheetLockService, aggregateReportService, projectAssignmentService, config);
     }
 
     @Test
@@ -106,13 +111,13 @@ public class TimesheetServiceImplTest {
         idA = new TimesheetEntryId(new Date(2006 - 1900, Calendar.OCTOBER, 2), null);
         entryA = new TimesheetEntry();
         entryA.setEntryId(idA);
-        entryA.setHours((float) 5);
+        entryA.setHours(new BigDecimal(5));
         daoResults.add(entryA);
 
         idB = new TimesheetEntryId(new Date(2006 - 1900, Calendar.OCTOBER, 6), null);
         entryB = new TimesheetEntry();
         entryB.setEntryId(idB);
-        entryB.setHours((float) 3);
+        entryB.setHours(new BigDecimal(3));
         daoResults.add(entryB);
 
         AssignmentAggregateReportElement agg = new AssignmentAggregateReportElement();

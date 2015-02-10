@@ -26,10 +26,10 @@ import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.persistence.timesheet.dao.TimesheetEntrySegmentDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.util.DomainUtil;
-import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.Interval;
@@ -47,6 +47,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
     private static final Logger LOGGER = Logger.getLogger(TimesheetPersistance.class);
 
     private TimesheetDao timesheetDAO;
+    private TimesheetEntrySegmentDao timesheetEntrySegmentDAO;
     private TimesheetCommentDao timesheetCommentDAO;
     private ProjectAssignmentStatusService projectAssignmentStatusService;
     private ProjectManagerNotifierService projectManagerNotifierService;
@@ -55,12 +56,14 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
 
     @Autowired
     public TimesheetPersistance(TimesheetDao timesheetDAO,
+                                TimesheetEntrySegmentDao timesheetEntrySegmentDAO,
                                 TimesheetCommentDao timesheetCommentDAO,
                                 ProjectAssignmentStatusService projectAssignmentStatusService,
                                 ProjectManagerNotifierService projectManagerNotifierService,
                                 TimesheetLockService timesheetLockService,
                                 ApplicationContext context) {
         this.timesheetDAO = timesheetDAO;
+        this.timesheetEntrySegmentDAO = timesheetEntrySegmentDAO;
         this.timesheetCommentDAO = timesheetCommentDAO;
         this.projectAssignmentStatusService = projectAssignmentStatusService;
         this.projectManagerNotifierService = projectManagerNotifierService;
@@ -232,22 +235,22 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 
         // over alloted - fixed
-        if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
-                && status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) {
+        if (assignment.getAssignmentType().isFixedAllottedType() &&
+                status.getStatuses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) {
             projectManagerNotifierService.mailPMFixedAllottedReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());
         }
         // over overrun - flex
-        else if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX
-                && status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) {
+        else if (assignment.getAssignmentType().isFlexAllottedType() &&
+                status.getStatuses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) {
             projectManagerNotifierService.mailPMFlexOverrunReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());
         }
         // in overrun - flex
-        else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN)
-                && assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX) {
+        else if (status.getStatuses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN)
+                && assignment.getAssignmentType().isFlexAllottedType()) {
             projectManagerNotifierService.mailPMFlexAllottedReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());

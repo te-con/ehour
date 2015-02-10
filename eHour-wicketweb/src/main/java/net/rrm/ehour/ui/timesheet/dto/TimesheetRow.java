@@ -28,6 +28,7 @@ import org.apache.wicket.Localizer;
 import org.apache.wicket.model.Model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -121,11 +122,11 @@ public class TimesheetRow implements Serializable
 				
 				if (entry.getHours() == null)
 				{
-					entry.setHours(remaining);
+					entry.setHours(BigDecimal.valueOf(remaining));
 				}
 				else
 				{
-					entry.setHours(entry.getHours() + remaining);
+					entry.setHours(entry.getHours().add(BigDecimal.valueOf(remaining)));
 				}
 				
 				timesheetCells[day].setTimesheetEntry(entry);
@@ -199,11 +200,7 @@ public class TimesheetRow implements Serializable
                         && timesheetCell.getTimesheetEntry() != null) {
                     // new entries got empty entry id
                     if (timesheetCell.getTimesheetEntry().getEntryId() == null) {
-                        TimesheetEntryId id = new TimesheetEntryId();
-
-                        id.setProjectAssignment(getProjectAssignment());
-                        id.setEntryDate(timesheetCell.getDate());
-
+                        TimesheetEntryId id = new TimesheetEntryId(timesheetCell.getDate(), getProjectAssignment());
                         timesheetCell.getTimesheetEntry().setEntryId(id);
                     } else {
                         timesheetCell.getTimesheetEntry().getEntryId().setProjectAssignment(getProjectAssignment());
