@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AssignmentAdminScenario extends AbstractScenario {
     @Test
-    public void assignUserToMultipleProjectsAtOnce() {
+    public void assign_user_to_multiple_projects_at_once() {
         loginAdmin();
 
         ItUser user = createRegularUser();

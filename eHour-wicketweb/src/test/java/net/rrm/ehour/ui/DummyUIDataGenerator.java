@@ -1,6 +1,7 @@
 package net.rrm.ehour.ui;
 
 import net.rrm.ehour.domain.*;
+import net.rrm.ehour.util.EhourConstants;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +12,7 @@ public class DummyUIDataGenerator {
     public static List<ProjectAssignmentType> getProjectAssignmentTypes() {
         List<ProjectAssignmentType> list = new ArrayList<ProjectAssignmentType>();
 
-        list.add(ProjectAssignmentType.newAssignmentDate());
+        list.add(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
 
         return list;
     }
@@ -62,7 +63,7 @@ public class DummyUIDataGenerator {
         user = getUser();
         user.setUserId(userId);
 
-        prjAsg.setAssignmentType(ProjectAssignmentType.newAssignmentDate());
+        prjAsg.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
 
         prjAsg.setUser(user);
         prjAsg.setActive(true);

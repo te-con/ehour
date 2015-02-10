@@ -17,14 +17,19 @@
 package net.rrm.ehour.ui.manage.assignment;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.domain.*;
+import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
+import net.rrm.ehour.domain.ProjectAssignment;
+import net.rrm.ehour.domain.User;
 import net.rrm.ehour.ui.common.model.AdminBackingBeanImpl;
+import net.rrm.ehour.util.EhourConstants;
 
 import java.util.List;
 
 /**
  * Backing bean for project assignments
  */
+
 public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssignment> {
     private static final long serialVersionUID = 487430742116953930L;
     private ProjectAssignment projectAssignment;
@@ -54,7 +59,7 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
 
     public static AssignmentAdminBackingBean createAssignmentAdminBackingBean(Project project) {
         ProjectAssignment projectAssignment = new ProjectAssignment();
-        projectAssignment.setAssignmentType(ProjectAssignmentType.newAssignmentDate());
+        projectAssignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
         projectAssignment.setProject(project);
         projectAssignment.setActive(true);
 

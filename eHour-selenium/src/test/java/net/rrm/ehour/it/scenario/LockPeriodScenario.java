@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 public class LockPeriodScenario extends AbstractScenario {
     @Test
-    public void shouldCreateLock() {
+    public void should_create_lock() {
         loginAdmin();
 
         newLock(new LocalDate(2013, DateTimeConstants.DECEMBER, 1), new LocalDate(2013, DateTimeConstants.DECEMBER, 31));
@@ -23,7 +23,7 @@ public class LockPeriodScenario extends AbstractScenario {
     }
 
     @Test
-    public void shouldCreateLockWithExcludedUsers() {
+    public void should_create_lock_with_excluded_users() {
         loginAdmin();
 
         newLock(new LocalDate(2013, DateTimeConstants.DECEMBER, 1), new LocalDate(2013, DateTimeConstants.DECEMBER, 31));
@@ -42,7 +42,7 @@ public class LockPeriodScenario extends AbstractScenario {
     }
 
     @Test
-    public void shouldNotBeAbleToEnterHoursInLockedPeriod() {
+    public void should_not_be_able_to_enter_hours_in_locked_period() {
         loginAdmin();
 
         newLock(new LocalDate(2013, DateTimeConstants.DECEMBER, 1), new LocalDate(2013, DateTimeConstants.DECEMBER, 31));

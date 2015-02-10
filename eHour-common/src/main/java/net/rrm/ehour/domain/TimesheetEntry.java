@@ -16,6 +16,7 @@
 
     package net.rrm.ehour.domain;
 
+
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -29,7 +30,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -43,7 +43,7 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     private TimesheetEntryId entryId;
 
     @Column(name = "HOURS")
-    private BigDecimal hours;
+    private Float hours;
 
     @Column(name = "COMMENT", length = 2048)
     private String comment;
@@ -52,26 +52,48 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
     @NotNull
     private Date updateDate;
 
-    public TimesheetEntry() { }
     /**
      * full constructor
      */
-    public TimesheetEntry(TimesheetEntryId entryId, BigDecimal hours) {
-        this.setEntryId(entryId);
-        this.setHours(hours);
+    public TimesheetEntry(TimesheetEntryId entryId, Float hours) {
+        this.entryId = entryId;
+        this.hours = hours;
+    }
+
+    /**
+     * default constructor
+     */
+    public TimesheetEntry() {
     }
 
     public TimesheetEntry(TimesheetEntryId entryId) {
-        this.setEntryId(entryId);
+        this.entryId = entryId;
     }
 
     public boolean isEmptyEntry() {
         return getHours() == null;
     }
 
+    public TimesheetEntryId getEntryId() {
+        return this.entryId;
+    }
+
+    public void setEntryId(TimesheetEntryId entryId) {
+        this.entryId = entryId;
+    }
+
+    public Float getHours() {
+        return this.hours;
+    }
+
+    public void setHours(Float hours) {
+        this.hours = hours;
+    }
+
+
     @Override
     public TimesheetEntryId getPK() {
-        return getEntryId();
+        return entryId;
     }
 
     public int compareTo(TimesheetEntry object) {
@@ -88,35 +110,6 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
                 .toString();
     }
 
-    @Override
-    public boolean equals(final Object other) {
-        if (!(other instanceof TimesheetEntry))
-            return false;
-        TimesheetEntry castOther = (TimesheetEntry) other;
-        return new EqualsBuilder().append(getEntryId(), castOther.getEntryId()).isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getEntryId()).toHashCode();
-    }
-
-    public TimesheetEntryId getEntryId() {
-        return entryId;
-    }
-
-    public void setEntryId(TimesheetEntryId entryId) {
-        this.entryId = entryId;
-    }
-
-    public BigDecimal getHours() {
-        return hours;
-    }
-
-    public void setHours(BigDecimal hours) {
-        this.hours = hours;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -131,5 +124,18 @@ public class TimesheetEntry extends DomainObject<TimesheetEntryId, TimesheetEntr
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (!(other instanceof TimesheetEntry))
+            return false;
+        TimesheetEntry castOther = (TimesheetEntry) other;
+        return new EqualsBuilder().append(getEntryId(), castOther.getEntryId()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(entryId).toHashCode();
     }
 }

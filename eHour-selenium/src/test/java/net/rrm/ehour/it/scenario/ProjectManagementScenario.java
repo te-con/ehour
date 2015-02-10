@@ -14,7 +14,7 @@ import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 
 public class ProjectManagementScenario  extends AbstractScenario {
     @Test
-    public void accessPmReport() {
+    public void access_pm_report() {
         ItUser pm = createProjectWithRegularUserAsPM();
 
         login(pm);
@@ -24,7 +24,7 @@ public class ProjectManagementScenario  extends AbstractScenario {
 
     @Test
     @Ignore
-    public void modifyAssignment() {
+    public void modify_assignment() {
         loginAdmin();
         loadUserManagement();
         createRegularUser();

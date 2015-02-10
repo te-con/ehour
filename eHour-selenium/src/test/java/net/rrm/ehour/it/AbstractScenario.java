@@ -1,5 +1,6 @@
 package net.rrm.ehour.it;
 
+import net.rrm.ehour.EhourServer;
 import net.rrm.ehour.persistence.datasource.SpringContext;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 

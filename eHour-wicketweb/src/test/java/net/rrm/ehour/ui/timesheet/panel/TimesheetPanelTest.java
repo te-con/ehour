@@ -41,7 +41,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.util.tester.FormTester;
 import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -150,7 +149,6 @@ public class TimesheetPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    @Ignore
     public void shouldBookAllHours() {
         startAndReplayWithDefaultWeekOverview();
 

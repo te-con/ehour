@@ -12,7 +12,6 @@ public class DatabaseTruncater {
         connection.prepareCall("DELETE FROM MAIL_LOG").execute();
         connection.prepareCall("DELETE FROM TIMESHEET_COMMENT").execute();
         connection.prepareCall("DELETE FROM TIMESHEET_ENTRY").execute();
-        connection.prepareCall("DELETE FROM TIMESHEET_ENTRY_SEGMENT").execute();
 
         connection.prepareCall("DELETE FROM PROJECT_ASSIGNMENT").execute();
 

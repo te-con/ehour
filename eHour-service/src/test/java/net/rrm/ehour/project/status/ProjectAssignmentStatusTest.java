@@ -40,7 +40,7 @@ public class ProjectAssignmentStatusTest
 		statusses.add(ProjectAssignmentStatus.Status.RUNNING);
 		statusses.add(ProjectAssignmentStatus.Status.IN_ALLOTTED);
 		
-		status.setStatuses(statusses);
+		status.setStatusses(statusses);
 
 		assertTrue(status.isAssignmentBookable());
 	}

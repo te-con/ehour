@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ChangeExcelLogoScenario extends AbstractScenario {
     @Test
-    public void shouldUploadExcel() {
+    public void should_upload_excel() {
         EhourApplicationDriver.loginAdmin();
 
         clickCustomizeTab();

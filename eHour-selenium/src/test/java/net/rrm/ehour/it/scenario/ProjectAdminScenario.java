@@ -12,7 +12,7 @@ import static net.rrm.ehour.it.driver.UserManagementDriver.createUser;
 
 public class ProjectAdminScenario extends AbstractScenario {
     @Test
-    public void createAndEditProject() {
+    public void create_and_edit_project() {
         loginAdmin();
 
         createActiveCustomer();
@@ -29,7 +29,7 @@ public class ProjectAdminScenario extends AbstractScenario {
     }
 
     @Test
-    public void createAndAssignOneUserAndDeleteIt() {
+    public void create_and_assign_one_user_and_delete_it() {
         // setup users, csutomers and project
         loginAdmin();
 

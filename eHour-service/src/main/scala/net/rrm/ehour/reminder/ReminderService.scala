@@ -106,9 +106,9 @@ class IFindUsersWithoutSufficientHours @Autowired()(userService: UserService,
     import scala.collection.JavaConversions._
     val entriesByUser: Map[User, mutable.Buffer[TimesheetEntry]] = timesheetEntriesInRange groupBy (_.getEntryId.getProjectAssignment.getUser)
     val entriesByActiveUsers = entriesByUser.filterKeys(activeUsers.contains)
-    val hoursPerUser: Map[User, BigDecimal] = entriesByActiveUsers.map(f => (f._1, f._2.foldLeft(BigDecimal(0))(_ + _.getHours))).toMap
+    val hoursPerUser: Map[User, Float] = entriesByActiveUsers.map(f => (f._1, f._2.foldLeft(0f)(_ + _.getHours))).toMap
 
-    val userNotMeetingMinimalHours: Map[User, BigDecimal] = hoursPerUser.filter(p => p._2 < correctedMinimumHours)
+    val userNotMeetingMinimalHours: Map[User, Float] = hoursPerUser.filter(p => p._2 < correctedMinimumHours)
 
     val usersWithoutAnyHours: Set[User] = activeUsers.toSet.diff(entriesByUser.keySet)
 

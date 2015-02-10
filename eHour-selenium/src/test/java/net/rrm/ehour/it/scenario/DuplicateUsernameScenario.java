@@ -8,7 +8,7 @@ import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 
 public class DuplicateUsernameScenario extends AbstractScenario {
     @Test
-    public void shouldAttemptToCreateUserWithDuplicateUsername() {
+    public void should_attempt_to_create_user_with_duplicate_username() {
         loginAdmin();
         String lastName = "Edeling3";
 

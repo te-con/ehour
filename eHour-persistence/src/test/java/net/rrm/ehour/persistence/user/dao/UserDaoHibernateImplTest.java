@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import net.rrm.ehour.data.LegacyUserDepartment;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.util.EhourConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,7 +58,7 @@ public class UserDaoHibernateImplTest extends AbstractAnnotationDaoTest {
         assignment.setUser(user);
         assignment.setAssignmentId(1);
         assignment.setProject(new Project(1));
-        assignment.setAssignmentType(ProjectAssignmentType.newAssignmentDate());
+        assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
 
         Set<ProjectAssignment> assignments = Sets.newHashSet(assignment);
 

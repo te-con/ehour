@@ -18,12 +18,12 @@ package net.rrm.ehour.project.status;
 
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
 import net.rrm.ehour.util.DateUtil;
+import net.rrm.ehour.util.EhourConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -84,13 +84,13 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 
 	private void addStatusForAssignmentType(ProjectAssignment assignment, ProjectAssignmentStatus status)
 	{
-		ProjectAssignmentType projectAssignmentType = assignment.getAssignmentType();
+		int assignmentTypeId = assignment.getAssignmentType().getAssignmentTypeId();
 		
-		if (projectAssignmentType.isFixedAllottedType())
+		if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED)
 		{
 			addFixedAssignmentStatus(assignment, status);
 		}
-		else if (projectAssignmentType.isFlexAllottedType())
+		else if (assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX)
 		{
 			addFlexAssignmentStatus(assignment, status);
 		}

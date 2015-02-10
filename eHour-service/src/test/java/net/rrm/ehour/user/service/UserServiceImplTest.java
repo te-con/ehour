@@ -70,8 +70,9 @@ public class UserServiceImplTest {
         User user;
         ProjectAssignment assignmentA, assignmentB;
         Project projectA, projectB;
-        Set<ProjectAssignment> assignments = new HashSet<>();
+        Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
         Calendar calA, calB;
+
 
         user = new User("thies", "pwd");
 
@@ -79,7 +80,7 @@ public class UserServiceImplTest {
         projectA.setActive(true);
         assignmentA = new ProjectAssignment();
         assignmentA.setAssignmentId(1);
-        assignmentA.setAssignmentType(ProjectAssignmentType.newAssignmentDate());
+        assignmentA.setAssignmentType(new ProjectAssignmentType(0));
         calA = new GregorianCalendar();
         calA.add(Calendar.MONTH, -5);
         assignmentA.setDateStart(calA.getTime());
@@ -93,7 +94,7 @@ public class UserServiceImplTest {
 
         assignmentB = new ProjectAssignment();
         assignmentB.setAssignmentId(2);
-        assignmentB.setAssignmentType(ProjectAssignmentType.newAssignmentDate());
+        assignmentB.setAssignmentType(new ProjectAssignmentType(0));
         calB = new GregorianCalendar();
         calB.add(Calendar.MONTH, -2);
         assignmentB.setDateStart(calB.getTime());
