@@ -29,11 +29,13 @@ public class XmlParserBuilder {
 
         PrimaryKeyCache keyCache = new PrimaryKeyCache();
 
+        JoinTableParser joinTableParser = new JoinTableParser(xmlReader, backupEntityLocator);
+
         DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache, backupEntityLocator);
         ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
         UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache, backupEntityLocator.userRoleBackupEntity());
 
-        return new XmlParser(configurationDao, parser, configurationParser, userRoleParser, skipValidation);
+        return new XmlParser(configurationDao, parser, configurationParser, joinTableParser, userRoleParser, skipValidation);
     }
 
     public XmlParserBuilder setSkipValidation(boolean skipValidation) {
