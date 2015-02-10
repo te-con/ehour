@@ -139,7 +139,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
                 item.add(dateEnd);
 
                 item.add(new Label("assignmentType",
-                        new ResourceModel(assignment.getAssignmentType().getResourceKeyForProjectAssignmentType())));
+                        new ResourceModel(WebUtils.getResourceKeyForProjectAssignmentType(assignment.getAssignmentType()))));
 
                 item.add(new Label("role",
                         (StringUtils.isBlank(assignment.getRole()))

@@ -18,8 +18,6 @@ package net.rrm.ehour.ui.timesheet.dto;
 
 import org.apache.wicket.model.Model;
 
-import java.math.BigDecimal;
-
 public class ProjectTotalModel extends Model<Float>
 {
 	private static final long serialVersionUID = -4141505357937939279L;
@@ -33,7 +31,7 @@ public class ProjectTotalModel extends Model<Float>
 	@Override
 	public Float getObject()
 	{
-		BigDecimal totalHours = BigDecimal.ZERO;
+		float	totalHours = 0;
 
 		for (int i = 0;
 				i < row.getTimesheetCells().length;
@@ -43,10 +41,10 @@ public class ProjectTotalModel extends Model<Float>
 					&& row.getTimesheetCells()[i].getTimesheetEntry() != null
 					&& row.getTimesheetCells()[i].getTimesheetEntry().getHours() != null)
 			{
-				totalHours = totalHours.add(row.getTimesheetCells()[i].getTimesheetEntry().getHours());
+				totalHours += row.getTimesheetCells()[i].getTimesheetEntry().getHours();
 			}
 		}
 
-		return totalHours.floatValue();
+		return totalHours;
 	}
 }

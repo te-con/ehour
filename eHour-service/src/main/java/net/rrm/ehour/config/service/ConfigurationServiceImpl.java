@@ -28,6 +28,7 @@ import net.rrm.ehour.persistence.config.dao.BinaryConfigurationDao;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import net.rrm.ehour.persistence.value.ImageLogo;
 import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,14 +135,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     private byte[] getDefaultExcelLogoBytes() {
         byte[] bytes;
-        File file = EhourHomeUtil.getFileInConfDir(EXCEL_DEFAULT_LOGO);
 
-        if (!file.exists()) {
-            LOGGER.error("default logo not found");
-        }
 
-        try (FileInputStream is = new FileInputStream(file)) {
+        FileInputStream is = null;
+
+        try {
+
+            File file = EhourHomeUtil.getFileInConfDir(EXCEL_DEFAULT_LOGO);
+
+            if (!file.exists()) {
+                LOGGER.error("default logo not found");
+            }
+
+            is = new FileInputStream(file);
+
             bytes = new byte[(int) file.length()];
+
             int offset = 0;
             int numRead;
             while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
@@ -150,6 +159,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         } catch (IOException e) {
             LOGGER.error("Could not fetch default logo", e);
             bytes = new byte[0];
+        } finally {
+            IoUtil.close(is);
         }
 
         return bytes;

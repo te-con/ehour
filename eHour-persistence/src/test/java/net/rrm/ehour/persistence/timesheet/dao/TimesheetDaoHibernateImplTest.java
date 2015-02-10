@@ -8,7 +8,6 @@ import net.rrm.ehour.timesheet.dto.BookedDay;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -87,12 +86,12 @@ public class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     @Test
     public void shouldGetLatestTimesheetEntryForAssignment() {
         TimesheetEntry entry = timesheetDAO.getLatestTimesheetEntryForAssignment(1);
-        assertEquals(new BigDecimal("9.2").doubleValue(), entry.getHours().doubleValue(), 0.01);
+        assertEquals(9.2f, entry.getHours(), 0.01f);
     }
 
     @Test
     public void shouldDeleteTimesheetEntries() {
-        List<Integer> ids = new ArrayList<>(Arrays.asList(5));
+        List<Integer> ids = new ArrayList<Integer>(Arrays.asList(5));
 
         int deleted = timesheetDAO.deleteTimesheetEntries(ids);
 

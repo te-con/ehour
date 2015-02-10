@@ -3,6 +3,7 @@ package net.rrm.ehour.persistence.project.dao;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoTest;
+import net.rrm.ehour.util.EhourConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -60,7 +61,7 @@ public class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDao
         ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(new User(5), new Project(1));
         assignment.setDateStart(new Date());
         assignment.setDateEnd(cal.getTime());
-        assignment.setAssignmentType(ProjectAssignmentType.newAssignmentDate());
+        assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
         assignment.setAssignmentId(25);
 
         projectAssignmentDAO.persist(assignment);

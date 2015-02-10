@@ -14,26 +14,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package net.rrm.ehour.ui.timesheet.util;
+package net.rrm.ehour.util;
 
-import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
+import net.rrm.ehour.domain.ProjectAssignmentType;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
-public class TimesheetRowComparator implements Comparator<TimesheetRow>, Serializable
+public class EhourConstants
 {
-    public static final TimesheetRowComparator INSTANCE = new TimesheetRowComparator();
+	// update ProjectAssignmentType as well!
+	public static final int ASSIGNMENT_DATE = 0;
+	public static final int ASSIGNMENT_TIME_ALLOTTED_FIXED = 2;
+	public static final int ASSIGNMENT_TIME_ALLOTTED_FLEX = 3;
 
-    private TimesheetRowComparator()
-    {
-
-    }
-
-	public int compare(TimesheetRow o1, TimesheetRow o2)
-	{
-		return o1.getProjectAssignment().getProject().getName().compareToIgnoreCase(
-				o2.getProjectAssignment().getProject().getName());
-	}
-
+	public static final ProjectAssignmentType ASSIGNMENT_TYPE_DATE = new ProjectAssignmentType(ASSIGNMENT_DATE);
+	public static final ProjectAssignmentType ASSIGNMENT_TYPE_TIME_ALLOTTED_FIXED = new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FIXED);
+	public static final ProjectAssignmentType ASSIGNMENT_TYPE_TIME_ALLOTTED_FLEX = new ProjectAssignmentType(ASSIGNMENT_TIME_ALLOTTED_FLEX);
 }
+

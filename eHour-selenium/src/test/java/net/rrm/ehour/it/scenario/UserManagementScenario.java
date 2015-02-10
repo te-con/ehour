@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class UserManagementScenario extends AbstractScenario {
     // EHO-339
     @Test
-    public void shouldChangeUsername() {
+    public void should_change_username() {
         String lastName = "Edeling2";
 
         loginAdmin();
@@ -32,7 +32,7 @@ public class UserManagementScenario extends AbstractScenario {
     }
 
     @Test
-    public void shouldMoveToAssignmentsAfterCreatingUserWhenTickingShowAssignments() {
+    public void should_move_to_assignments_after_creating_user_when_ticking_show_assignments() {
         loginAdmin();
 
         loadUserManagement();
@@ -44,7 +44,7 @@ public class UserManagementScenario extends AbstractScenario {
     }
 
     @Test
-    public void shouldStayInUserAdminAfterCreatingUserWithoutTickingShowAssignments() {
+    public void should_stay_in_user_admin_after_creating_user_without_ticking_show_assignments() {
         loginAdmin();
 
         loadUserManagement();

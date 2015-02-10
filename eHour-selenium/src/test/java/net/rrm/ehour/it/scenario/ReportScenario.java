@@ -13,7 +13,7 @@ import static net.rrm.ehour.it.driver.UserManagementDriver.createReportUser;
 
 public class ReportScenario extends AbstractScenario {
     @Test
-    public void shouldAccessReportAsIndividualUser() {
+    public void should_access_report_as_individual_user() {
         createUserAndAssign();
 
         loginRegularUser();
@@ -25,7 +25,7 @@ public class ReportScenario extends AbstractScenario {
     }
 
     @Test
-    public void shouldAccessReportAsGlobal() {
+    public void should_access_report_as_global() {
         loginAdmin();
         createReportUser();
         logout();
@@ -39,7 +39,7 @@ public class ReportScenario extends AbstractScenario {
     }
 
     @Test
-    public void shouldShowZeroBookings() throws Exception {
+    public void should_show_zero_bookings() throws Exception {
         preloadDatabase("report_scenario.dbunit.xml");
         updatePassword("report", "a");
 

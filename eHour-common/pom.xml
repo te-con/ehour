@@ -2,7 +2,7 @@
     <parent>
         <groupId>net.rrm.ehour</groupId>
         <artifactId>eHour</artifactId>
-        <version>1.5.0-SNAPSHOT</version>
+        <version>1.4.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>eHour-common</artifactId>
@@ -66,6 +66,5 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
     </dependencies>
 </project>
