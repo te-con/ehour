@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.admin.backup.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.backup.service.backup.BackupTypeSingleTable;
+import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.list.ListView;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ParseStatusPanelTest extends BaseSpringWebAppTester {
 
-    private static final BackupTypeSingleTable USERS = new BackupTypeSingleTable("USERS", 1);
+    private static final BackupEntityType USERS = new BackupEntityType("USERS", 1);
 
     @Test
     public void shouldDisplayErrors() {
