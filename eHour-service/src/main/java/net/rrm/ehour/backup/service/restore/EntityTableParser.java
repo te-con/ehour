@@ -16,9 +16,9 @@ public class EntityTableParser {
     private static final Logger LOG = Logger.getLogger(EntityTableParser.class);
 
     private final XMLEventReader xmlReader;
-    private final DomainObjectParser entityParser;
+    private final EntityParser entityParser;
 
-    public EntityTableParser(XMLEventReader xmlReader, DomainObjectParser entityParser) {
+    public EntityTableParser(XMLEventReader xmlReader, EntityParser entityParser) {
         this.xmlReader = xmlReader;
         this.entityParser = entityParser;
     }

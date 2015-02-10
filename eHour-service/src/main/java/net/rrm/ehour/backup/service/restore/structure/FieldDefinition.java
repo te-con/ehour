@@ -11,7 +11,7 @@ public class FieldDefinition {
     private FieldProcessor processor;
 
     public FieldDefinition(Field field) {
-        this(field, new FieldProcessorSetterImpl());
+        this(field, new FieldProcessorColumnImpl());
     }
 
     public FieldDefinition(Field field, FieldProcessor processor) {
@@ -33,7 +33,17 @@ public class FieldDefinition {
         return field;
     }
 
+    /**
+     * For many-to-one, if it fails to resolve, is this a critical error?
+     * @return
+     */
     public boolean isIgnorable() {
         return false;
     }
+
+    /**
+     * Is this field part of entity element in the backup XML? For many-to-many relations this is not the case
+     * as that is part of the JOIN_TABLES element.
+     */
+    public boolean isPartOfXML() { return true; }
 }

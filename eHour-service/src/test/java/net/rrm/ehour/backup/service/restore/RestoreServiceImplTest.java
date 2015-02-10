@@ -39,7 +39,7 @@ public class RestoreServiceImplTest {
     private ConfigurationParserDao configurationParserDao;
 
     @Mock
-    private DomainObjectParserDao domainObjectParserDao;
+    private EntityParserDao entityParserDao;
 
     private BackupConfig backupConfig;
 
@@ -56,11 +56,11 @@ public class RestoreServiceImplTest {
         backupConfig = new EhourBackupConfig();
 
         configStub = new EhourConfigStub();
-        restoreService = new RestoreServiceImpl(configurationDao, configurationParserDao, domainObjectParserDao, userRoleParserDao, truncater, configStub, backupConfig);
+        restoreService = new RestoreServiceImpl(configurationDao, configurationParserDao, entityParserDao, userRoleParserDao, truncater, configStub, backupConfig);
         restoreService.setConfigurationDao(configurationDao);
         restoreService.setDatabaseTruncater(truncater);
 
-        when(domainObjectParserDao.persist(any(User.class))).thenReturn(10);
+        when(entityParserDao.persist(any(User.class))).thenReturn(10);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class RestoreServiceImplTest {
 
         assertFalse(destFile.exists());
 
-        verify(domainObjectParserDao, times(10)).persist(any(DomainObject.class));
+        verify(entityParserDao, times(10)).persist(any(DomainObject.class));
     }
 
     @Test

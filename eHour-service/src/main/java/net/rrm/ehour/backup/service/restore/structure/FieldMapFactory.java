@@ -1,6 +1,5 @@
 package net.rrm.ehour.backup.service.restore.structure;
 
-import com.google.common.collect.Maps;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -54,12 +53,6 @@ public class FieldMapFactory {
                 fieldDefinition.setProcessor(new FieldProcessorEmbeddableImpl());
             }
 
-            Map<String, FieldDefinition> prefixedMap = Maps.newHashMap();
-
-            for (Map.Entry<String, FieldDefinition> entry : embeddableFieldMap.entrySet()) {
-                prefixedMap.put(prefix + "@" + entry.getKey(), entry.getValue());
-            }
-
             fieldMap.putAll(embeddableFieldMap);
         }
     }
@@ -90,7 +83,7 @@ public class FieldMapFactory {
         JoinTable joinTable = field.getAnnotation(JoinTable.class);
         String columnName = joinTable.name();
 
-        FieldDefinition definition = new FieldDefinition(field, new FieldProcessorAddImpl());
+        FieldDefinition definition = new FieldDefinitionManyToMany(field);
         fieldMap.put(columnName.toLowerCase(), definition);
     }
 }

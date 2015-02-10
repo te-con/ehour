@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 11/28/10 - 1:31 AM
  */
-public interface DomainObjectParserDao {
+public interface EntityParserDao {
     <T extends DomainObject<?, ?>> Serializable persist(T object);
 
     <T extends Serializable> T find(Serializable primaryKey, Class<T> type);

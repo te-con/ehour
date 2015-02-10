@@ -12,7 +12,7 @@ import java.io.Serializable;
  *         Created on: 12/6/10 - 4:05 PM
  */
 @Service("domainObjectParserDao")
-public class DomainObjectParserDaoPersistImpl implements DomainObjectParserDao {
+public class EntityParserDaoPersistImpl implements EntityParserDao {
     @Autowired
     private RestoreDao restoreDao;
 

@@ -11,13 +11,13 @@ import java.util.Map;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: 11/28/10 - 1:43 AM
  */
-public class DomainObjectParserDaoValidatorImpl implements DomainObjectParserDao {
-    private static final Logger LOG = Logger.getLogger(DomainObjectParserDaoValidatorImpl.class);
+public class EntityParserDaoValidatorImpl implements EntityParserDao {
+    private static final Logger LOG = Logger.getLogger(EntityParserDaoValidatorImpl.class);
 
     private int id;
     private Map<Class<?>, Integer> persistCount;
 
-    public DomainObjectParserDaoValidatorImpl() {
+    public EntityParserDaoValidatorImpl() {
         initialize();
     }
 

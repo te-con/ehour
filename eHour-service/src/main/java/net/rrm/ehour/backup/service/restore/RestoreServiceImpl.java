@@ -25,7 +25,7 @@ public class RestoreServiceImpl implements RestoreService {
 
     private ConfigurationParserDao configurationParserDao;
 
-    private DomainObjectParserDao domainObjectParserDao;
+    private EntityParserDao entityParserDao;
 
     private DatabaseTruncater databaseTruncater;
 
@@ -34,10 +34,10 @@ public class RestoreServiceImpl implements RestoreService {
     private EhourConfig ehourConfig;
 
     @Autowired
-    public RestoreServiceImpl(ConfigurationDao configurationDao, ConfigurationParserDao configurationParserDao, DomainObjectParserDao domainObjectParserDao, UserRoleParserDao userRoleParserDao, DatabaseTruncater databaseTruncater, EhourConfig ehourConfig, BackupConfig backupConfig) {
+    public RestoreServiceImpl(ConfigurationDao configurationDao, ConfigurationParserDao configurationParserDao, EntityParserDao entityParserDao, UserRoleParserDao userRoleParserDao, DatabaseTruncater databaseTruncater, EhourConfig ehourConfig, BackupConfig backupConfig) {
         this.configurationDao = configurationDao;
         this.configurationParserDao = configurationParserDao;
-        this.domainObjectParserDao = domainObjectParserDao;
+        this.entityParserDao = entityParserDao;
         this.databaseTruncater = databaseTruncater;
         this.ehourConfig = ehourConfig;
         this.backupConfig = backupConfig;
@@ -57,7 +57,7 @@ public class RestoreServiceImpl implements RestoreService {
                 XmlParser parser = new XmlParserBuilder()
                         .setConfigurationDao(configurationDao)
                         .setConfigurationParserDao(configurationParserDao)
-                        .setDomainObjectParserDao(domainObjectParserDao)
+                        .setEntityParserDao(entityParserDao)
                         .setXmlReader(xmlEventReader)
                         .setSkipValidation(true)
                         .setBackupConfig(backupConfig)
@@ -100,13 +100,13 @@ public class RestoreServiceImpl implements RestoreService {
 
         XMLEventReader eventReader = BackupFileUtil.createXmlReader(xmlData);
 
-        DomainObjectParserDaoValidatorImpl domainObjectParserDaoValidator = new DomainObjectParserDaoValidatorImpl();
+        EntityParserDaoValidatorImpl domainObjectParserDaoValidator = new EntityParserDaoValidatorImpl();
         ConfigurationParserDaoValidatorImpl configurationParserDaoValidator = new ConfigurationParserDaoValidatorImpl();
 
         XmlParser importer = new XmlParserBuilder()
                 .setConfigurationDao(configurationDao)
                 .setConfigurationParserDao(configurationParserDaoValidator)
-                .setDomainObjectParserDao(domainObjectParserDaoValidator)
+                .setEntityParserDao(domainObjectParserDaoValidator)
                 .setBackupConfig(backupConfig)
                 .setXmlReader(eventReader)
                 .build();

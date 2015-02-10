@@ -46,7 +46,6 @@ public class XmlParser {
         StartElement startElement = event.asStartElement();
 
         String startName = startElement.getName().getLocalPart();
-        System.out.println(startName);
 
         ExportElements element = safelyGetExportElements(startName);
 

@@ -10,10 +10,7 @@ import net.rrm.ehour.domain.DomainObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -31,12 +28,12 @@ import java.util.*;
  *         Created on: Nov 16, 2010 - 11:18:59 PM
  */
 // TODO rename to EntityParser
-public class DomainObjectParser {
-    private DomainObjectParserDao parserDao;
+public class EntityParser {
+    private EntityParserDao parserDao;
 
     private XMLEventReader reader;
 
-    private static final Logger LOG = Logger.getLogger(DomainObjectParser.class);
+    private static final Logger LOG = Logger.getLogger(EntityParser.class);
 
     private static final Map<Class<?>, TypeTransformer<?>> transformerMap = new HashMap<>();
     private ParseSession status;
@@ -51,14 +48,14 @@ public class DomainObjectParser {
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
-    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, PrimaryKeyCache keyCache, BackupConfig backupConfig) {
+    public EntityParser(XMLEventReader reader, EntityParserDao parserDao, PrimaryKeyCache keyCache, BackupConfig backupConfig) {
         this.parserDao = parserDao;
         this.reader = reader;
         this.keyCache = keyCache;
         this.backupConfig = backupConfig;
     }
 
-    public <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parse(Class<T> clazz, JoinTables joinTables, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
+    public <PK extends Serializable, T extends DomainObject<PK, ?>> List<T> parse(Class<T> clazz, JoinTables joinTables, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
         Map<String, FieldDefinition> fieldMap = FieldMapFactory.buildFieldMapForDomainObject(clazz);
         this.status = status;
 
@@ -68,7 +65,7 @@ public class DomainObjectParser {
     /**
      * Parse domain object with reader pointing on the table name tag
      */
-    private <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parseDomainObjects(Class<T> clazz, Map<String, FieldDefinition> fieldMap, JoinTables joinTables, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException {
+    private <PK extends Serializable, T extends DomainObject<PK, ?>> List<T> parseDomainObjects(Class<T> clazz, Map<String, FieldDefinition> fieldMap, JoinTables joinTables, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException {
         List<T> domainObjects = new ArrayList<>();
 
         while (reader.hasNext()) {
@@ -117,7 +114,9 @@ public class DomainObjectParser {
             }
         }
 
-        boolean hasCompositeKey = setEmbeddablesInDomainObject(fieldMap, targetObject, embeddables);
+        boolean hasCompositeKey = replaceEmbeddablesInEntities(fieldMap, targetObject, embeddables);
+
+        addManyToManies(fieldMap, targetObject, joinTables);
 
         PK originalKey = targetObject.getPK();
 
@@ -132,8 +131,66 @@ public class DomainObjectParser {
         return targetObject;
     }
 
+    @SuppressWarnings("unchecked")
+    private <T> void addManyToManies(Map<String, FieldDefinition> fieldMap, T targetEntity, JoinTables joinTables) throws IllegalAccessException {
+        for (FieldDefinition fieldDefinition : fieldMap.values()) {
+            if (!fieldDefinition.isPartOfXML()) {
 
-    private <T> boolean setEmbeddablesInDomainObject(Map<String, FieldDefinition> fieldMap, T domainObject, Map<Class<?>, Object> embeddables)
+                // find the original ID of this entity
+                Field idField = findIdField(fieldMap);
+                String id = idField.get(targetEntity).toString();
+
+                // discover the table name
+                Field field = fieldDefinition.getField();
+                JoinTable joinTableAnnotation = field.getAnnotation(JoinTable.class);
+                String tableName = joinTableAnnotation.name().toLowerCase();
+
+                // find the type of the fk entity
+                ManyToMany manyToManyAnnotation = field.getAnnotation(ManyToMany.class);
+                Class fkType = manyToManyAnnotation.targetEntity();
+
+                // discover the type of the fk id
+                JoinColumn[] joinColumns = joinTableAnnotation.inverseJoinColumns();
+                String fkIdDatabaseColumnName = joinColumns[0].name();
+
+                Map<String, FieldDefinition> fkFieldMap = FieldMapFactory.buildFieldMapForDomainObject(fkType);
+                FieldDefinition fkIdFieldDefinition = fkFieldMap.get(fkIdDatabaseColumnName.toLowerCase());
+
+                // iterate over all the foreign tables this entity has a relation with
+                List<String> targetFkIds = joinTables.getTarget(tableName, id);
+
+                for (String fkId : targetFkIds) {
+                    Serializable fkTransformedId;
+                    if (fkIdFieldDefinition.getField().getAnnotationsByType(GeneratedValue.class).length > 0) {
+                        fkTransformedId = keyCache.getKey(fkType, fkId);
+                    } else {
+                        fkTransformedId = fkId;
+                    }
+
+                    Serializable fk = parserDao.find(fkTransformedId, fkType);
+
+                    Collection o = (Collection) field.get(targetEntity);
+                    o.add(fk);
+                }
+            }
+        }
+    }
+
+
+    private Field findIdField(Map<String, FieldDefinition> fieldMap) throws IllegalAccessException {
+        for (FieldDefinition fieldDefinition : fieldMap.values()) {
+            Field field = fieldDefinition.getField();
+
+            // only reset generated value id's as they're re-generated. Composite key's should be left alone
+            if (field.isAnnotationPresent(Id.class)) {
+                return field;
+            }
+        }
+
+        return null;
+    }
+
+    private <T> boolean replaceEmbeddablesInEntities(Map<String, FieldDefinition> fieldMap, T targetEntity, Map<Class<?>, Object> embeddables)
             throws IllegalAccessException {
         boolean hasCompositeKey = false;
 
@@ -142,7 +199,7 @@ public class DomainObjectParser {
             Class<?> fieldType = field.getType();
 
             if (fieldType.isAnnotationPresent(Embeddable.class)) {
-                field.set(domainObject, embeddables.get(fieldType));
+                field.set(targetEntity, embeddables.get(fieldType));
 
                 hasCompositeKey = true;
             }

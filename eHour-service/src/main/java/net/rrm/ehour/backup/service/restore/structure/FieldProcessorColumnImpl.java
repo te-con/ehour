@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-public class FieldProcessorSetterImpl implements FieldProcessor {
+public class FieldProcessorColumnImpl implements FieldProcessor {
     @Override
     public <PK extends Serializable, T extends DomainObject<PK, ?>> void process(Field targetField, T targetObject, Map<Class<?>, Object> embeddables, Object parsedColumnValue) throws IllegalAccessException, InstantiationException {
         // ignore embeddables

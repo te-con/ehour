@@ -11,7 +11,8 @@ public class JoinTables {
     private Map<String, MultiValueMap> joinTables = Maps.newHashMap();
 
     public void put(String joinTableName, String source, String target) {
-        MultiValueMap joinTable = joinTables.get(joinTableName);
+        String joinTableNameLower = joinTableName.toLowerCase();
+        MultiValueMap joinTable = joinTables.get(joinTableNameLower);
 
         if (joinTable == null) {
             joinTable = new MultiValueMap();
@@ -19,13 +20,15 @@ public class JoinTables {
 
         joinTable.put(source, target);
 
-        joinTables.put(joinTableName, joinTable);
+        joinTables.put(joinTableNameLower, joinTable);
     }
 
     @SuppressWarnings("unchecked")
     public List<String> getTarget(String joinTableName, String source) {
-        if (joinTables.containsKey(joinTableName)) {
-            MultiValueMap multiValueMap = joinTables.get(joinTableName);
+        String joinTableNameLower = joinTableName.toLowerCase();
+
+        if (joinTables.containsKey(joinTableNameLower)) {
+            MultiValueMap multiValueMap = joinTables.get(joinTableNameLower);
             return (List<String>) multiValueMap.get(source);
         } else {
             return Lists.newArrayList();

@@ -5,6 +5,7 @@ import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.domain.*;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -27,8 +28,8 @@ import static org.mockito.Mockito.when;
  */
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
-public class DomainObjectParserTest {
-    private DomainObjectParserDaoTestValidator daoValidator;
+public class EntityParserTest {
+    private EntityParserDaoTestValidator daoValidator;
     private PrimaryKeyCache keyCache;
     private ParseSession status;
 
@@ -41,21 +42,21 @@ public class DomainObjectParserTest {
         status = new ParseSession();
     }
 
-    private DomainObjectParser createParser(String xmlData, DomainObject<Integer, ?> returnOnFind, Integer onFind) throws XMLStreamException {
+    private EntityParser createParser(String xmlData, DomainObject<Integer, ?> returnOnFind, Integer onFind) throws XMLStreamException {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
         // skip the startdoc
         eventReader.nextTag();
 
-        daoValidator = (DomainObjectParserDaoTestValidator) (returnOnFind == null ? new DomainObjectParserDaoValidatorImpl() : new DomainObjectParserDaoTestValidator(returnOnFind, onFind));
+        daoValidator = (EntityParserDaoTestValidator) (returnOnFind == null ? new EntityParserDaoValidatorImpl() : new EntityParserDaoTestValidator(returnOnFind, onFind));
 
-        return new DomainObjectParser(eventReader, daoValidator, keyCache, backupConfig);
+        return new EntityParser(eventReader, daoValidator, keyCache, backupConfig);
     }
 
     @Test
     public void shouldParseTwoTimesheetEntries() throws XMLStreamException, InstantiationException, IllegalAccessException {
-        DomainObjectParser parser = createParser("<TIMESHEET_ENTRIES CLASS=\"net.rrm.ehour.domain.TimesheetEntry\">\n<TIMESHEET_ENTRY>\n<ASSIGNMENT_ID>1</ASSIGNMENT_ID>\n<ENTRY_DATE>2007-03-26</ENTRY_DATE>\n<HOURS>8.0</HOURS>\n   <COMMENT>jaja</COMMENT>\n  </TIMESHEET_ENTRY>\n  <TIMESHEET_ENTRY>\n   <ASSIGNMENT_ID>2</ASSIGNMENT_ID>\n   <ENTRY_DATE>2007-03-26</ENTRY_DATE>\n   <HOURS>0.0</HOURS>\n  </TIMESHEET_ENTRY>\n  </TIMESHEET_ENTRIES>\n", ProjectAssignmentObjectMother.createProjectAssignment(1), 1);
+        EntityParser parser = createParser("<TIMESHEET_ENTRIES CLASS=\"net.rrm.ehour.domain.TimesheetEntry\">\n<TIMESHEET_ENTRY>\n<ASSIGNMENT_ID>1</ASSIGNMENT_ID>\n<ENTRY_DATE>2007-03-26</ENTRY_DATE>\n<HOURS>8.0</HOURS>\n   <COMMENT>jaja</COMMENT>\n  </TIMESHEET_ENTRY>\n  <TIMESHEET_ENTRY>\n   <ASSIGNMENT_ID>2</ASSIGNMENT_ID>\n   <ENTRY_DATE>2007-03-26</ENTRY_DATE>\n   <HOURS>0.0</HOURS>\n  </TIMESHEET_ENTRY>\n  </TIMESHEET_ENTRIES>\n", ProjectAssignmentObjectMother.createProjectAssignment(1), 1);
 
         keyCache.putKey(ProjectAssignment.class, 1, 1);
         keyCache.putKey(ProjectAssignment.class, 2, 2);
@@ -75,7 +76,7 @@ public class DomainObjectParserTest {
     public void shouldParseUserAndStoreNewKeyInCacheMap() throws XMLStreamException, InstantiationException, IllegalAccessException {
         UserDepartment department = UserDepartmentObjectMother.createUserDepartment();
 
-        DomainObjectParser parser = createParser("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n     <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n    <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);
+        EntityParser parser = createParser("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n     <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n    <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);
 
         keyCache.putKey(UserDepartment.class, 1, 1);
 
@@ -100,11 +101,11 @@ public class DomainObjectParserTest {
 
     @Test
     public void shouldParseEnum() throws IllegalAccessException, XMLStreamException, InstantiationException {
-        DomainObjectParser resolver = createParser(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", UserObjectMother.createUser(), 2);
+        EntityParser parser = createParser(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", UserObjectMother.createUser(), 2);
 
         when(backupConfig.entityForClass(Audit.class)).thenReturn(mock(BackupEntityType.class));
 
-        List<Audit> result = resolver.parse(Audit.class, new JoinTables(), status);
+        List<Audit> result = parser.parse(Audit.class, new JoinTables(), status);
 
         assertEquals(1, result.size());
 
@@ -115,13 +116,13 @@ public class DomainObjectParserTest {
     public void shouldRetrieveManyToOne() throws IllegalAccessException, XMLStreamException, InstantiationException {
         User user = UserObjectMother.createUser();
 
-        DomainObjectParser resolver = createParser(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", user, 2);
+        EntityParser parser = createParser("<AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", user, 2);
 
         when(backupConfig.entityForClass(Audit.class)).thenReturn(mock(BackupEntityType.class));
 
         keyCache.putKey(User.class, 2, 2);
 
-        List<Audit> result = resolver.parse(Audit.class, new JoinTables(), status);
+        List<Audit> result = parser.parse(Audit.class, new JoinTables(), status);
 
         assertEquals(1, result.size());
 
@@ -130,15 +131,25 @@ public class DomainObjectParserTest {
         assertEquals(user, result.get(0).getUser());
     }
 
-//    @Test
-//    public void shouldImportManyToMany() {
-//        DomainObjectParser parser = createParser("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n     <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n    <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);
-//
-//
-//    }
+    @Test
+    @Ignore
+    public void shouldImportManyToMany() throws XMLStreamException, InstantiationException, IllegalAccessException {
+        UserDepartment department = UserDepartmentObjectMother.createUserDepartment();
 
-    private class DomainObjectParserDaoTestValidator<T extends Serializable> extends DomainObjectParserDaoValidatorImpl {
-        public DomainObjectParserDaoTestValidator(T returnObject, Serializable primaryKey) {
+        EntityParser parser = createParser("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n     <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n    <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);
+
+        JoinTables joinTables = new JoinTables();
+        joinTables.put("USER_TO_DEPARTMENT", "1", "2");
+        joinTables.put("USER_TO_USERROLE", "1", "ADMIN");
+
+        List<User> result = parser.parse(User.class, joinTables, status);
+
+        User user = result.get(0);
+        assertEquals(1, user.getUserRoles().size());
+    }
+
+    private class EntityParserDaoTestValidator<T extends Serializable> extends EntityParserDaoValidatorImpl {
+        public EntityParserDaoTestValidator(T returnObject, Serializable primaryKey) {
             this.primaryKey = primaryKey;
             this.returnObject = returnObject;
         }

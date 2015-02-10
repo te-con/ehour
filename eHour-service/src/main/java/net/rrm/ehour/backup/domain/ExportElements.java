@@ -14,6 +14,5 @@ public enum ExportElements {
     CONFIGURATION,
     CONFIG,
     KEY,
-    USER_TO_USERROLES,
     OTHER
 }

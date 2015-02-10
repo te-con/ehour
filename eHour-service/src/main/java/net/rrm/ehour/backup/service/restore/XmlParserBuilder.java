@@ -15,20 +15,20 @@ public class XmlParserBuilder {
     private XMLEventReader xmlReader;
     private ConfigurationDao configurationDao;
     private ConfigurationParserDao configurationParserDao;
-    private DomainObjectParserDao domainObjectParserDao;
+    private EntityParserDao entityParserDao;
     private boolean skipValidation = false;
     private BackupConfig backupConfig;
 
     public XmlParser build() throws XMLStreamException {
         Assert.notNull(xmlReader);
         Assert.notNull(configurationDao);
-        Assert.notNull(domainObjectParserDao);
+        Assert.notNull(entityParserDao);
         Assert.notNull(backupConfig);
 
         PrimaryKeyCache keyCache = new PrimaryKeyCache();
 
         JoinTableParser joinTableParser = new JoinTableParser(xmlReader, backupConfig);
-        DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache, backupConfig);
+        EntityParser parser = new EntityParser(xmlReader, entityParserDao, keyCache, backupConfig);
 
         EntityTableParser entityTableParser = new EntityTableParser(xmlReader, parser);
 
@@ -58,8 +58,8 @@ public class XmlParserBuilder {
         return this;
     }
 
-    public XmlParserBuilder setDomainObjectParserDao(DomainObjectParserDao domainObjectParserDao) {
-        this.domainObjectParserDao = domainObjectParserDao;
+    public XmlParserBuilder setEntityParserDao(EntityParserDao entityParserDao) {
+        this.entityParserDao = entityParserDao;
         return this;
     }
 
