@@ -1,8 +1,8 @@
 package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.backup.service.backup.BackupEntity;
-import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.backup.BackupConfig;
+import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.domain.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class DomainObjectParserTest {
     private ParseSession status;
 
     @Mock
-    private BackupEntityLocator backupEntityLocator;
+    private BackupConfig backupConfig;
 
     @Before
     public void setUp() {
@@ -50,7 +50,7 @@ public class DomainObjectParserTest {
 
         daoValidator = (DomainObjectParserDaoTestValidator) (returnOnFind == null ? new DomainObjectParserDaoValidatorImpl() : new DomainObjectParserDaoTestValidator(returnOnFind, onFind));
 
-        return new DomainObjectParser(eventReader, daoValidator, keyCache, backupEntityLocator);
+        return new DomainObjectParser(eventReader, daoValidator, keyCache, backupConfig);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class DomainObjectParserTest {
     public void shouldParseEnum() throws IllegalAccessException, XMLStreamException, InstantiationException {
         DomainObjectParser resolver = createParser(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", UserObjectMother.createUser(), 2);
 
-        when(backupEntityLocator.entityForClass(Audit.class)).thenReturn(mock(BackupEntity.class));
+        when(backupConfig.entityForClass(Audit.class)).thenReturn(mock(BackupEntityType.class));
 
         List<Audit> result = resolver.parse(Audit.class, new JoinTables(), status);
 
@@ -117,7 +117,7 @@ public class DomainObjectParserTest {
 
         DomainObjectParser resolver = createParser(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", user, 2);
 
-        when(backupEntityLocator.entityForClass(Audit.class)).thenReturn(mock(BackupEntity.class));
+        when(backupConfig.entityForClass(Audit.class)).thenReturn(mock(BackupEntityType.class));
 
         keyCache.putKey(User.class, 2, 2);
 

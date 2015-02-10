@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.service;
 
-import net.rrm.ehour.backup.service.backup.BackupEntity;
-import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.backup.BackupConfig;
+import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.MailLog;
@@ -20,19 +20,19 @@ import java.util.List;
 public class DatabaseTruncater {
     private RestoreDao restoreDao;
 
-    private BackupEntityLocator backupEntityLocator;
+    private BackupConfig backupConfig;
 
     @Autowired
-    public DatabaseTruncater(RestoreDao restoreDao, BackupEntityLocator backupEntityLocator) {
+    public DatabaseTruncater(RestoreDao restoreDao, BackupConfig backupConfig) {
         this.restoreDao = restoreDao;
-        this.backupEntityLocator = backupEntityLocator;
+        this.backupConfig = backupConfig;
     }
 
     @Transactional
     public void truncateDatabase() {
-        List<BackupEntity> types = backupEntityLocator.reverseOrderedValues();
+        List<BackupEntityType> types = backupConfig.reverseOrderedValues();
 
-        for (BackupEntity type : types) {
+        for (BackupEntityType type : types) {
             if (type.getDomainObjectClass() != null) {
                 restoreDao.delete(type.getDomainObjectClass());
             }

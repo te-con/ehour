@@ -1,8 +1,7 @@
 package net.rrm.ehour.ui.admin.backup.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.backup.service.backup.BackupEntity;
-import net.rrm.ehour.backup.service.backup.BackupEntitySingleTable;
+import net.rrm.ehour.backup.service.backup.BackupTypeSingleTable;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.list.ListView;
@@ -10,7 +9,6 @@ import org.apache.wicket.model.Model;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 /**
  * @author thies (Thies Edeling - thies@te-con.nl)
@@ -18,7 +16,7 @@ import static org.mockito.Mockito.mock;
  */
 public class ParseStatusPanelTest extends BaseSpringWebAppTester {
 
-    private static final BackupEntitySingleTable USERS = new BackupEntitySingleTable("USERS", 1);
+    private static final BackupTypeSingleTable USERS = new BackupTypeSingleTable("USERS", 1);
 
     @Test
     public void shouldDisplayErrors() {

@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
-import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.backup.service.backup.BackupJoinTable;
 import org.apache.log4j.Logger;
 
@@ -14,9 +14,9 @@ public class JoinTableParser {
     private static final Logger LOG = Logger.getLogger(JoinTableParser.class);
 
     private final XMLEventReader xmlReader;
-    private final BackupEntityLocator locator;
+    private final BackupConfig locator;
 
-    public JoinTableParser(XMLEventReader xmlReader, BackupEntityLocator locator) {
+    public JoinTableParser(XMLEventReader xmlReader, BackupConfig locator) {
         this.xmlReader = xmlReader;
         this.locator = locator;
     }

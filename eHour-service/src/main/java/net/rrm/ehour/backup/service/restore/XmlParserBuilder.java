@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
-import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.springframework.util.Assert;
 
@@ -18,22 +18,22 @@ public class XmlParserBuilder {
     private DomainObjectParserDao domainObjectParserDao;
     private UserRoleParserDao userRoleParserDao;
     private boolean skipValidation = false;
-    private BackupEntityLocator backupEntityLocator;
+    private BackupConfig backupConfig;
 
     public XmlParser build() throws XMLStreamException {
         Assert.notNull(xmlReader);
         Assert.notNull(configurationDao);
         Assert.notNull(domainObjectParserDao);
         Assert.notNull(userRoleParserDao);
-        Assert.notNull(backupEntityLocator);
+        Assert.notNull(backupConfig);
 
         PrimaryKeyCache keyCache = new PrimaryKeyCache();
 
-        JoinTableParser joinTableParser = new JoinTableParser(xmlReader, backupEntityLocator);
+        JoinTableParser joinTableParser = new JoinTableParser(xmlReader, backupConfig);
 
-        DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache, backupEntityLocator);
+        DomainObjectParser parser = new DomainObjectParser(xmlReader, domainObjectParserDao, keyCache, backupConfig);
         ConfigurationParser configurationParser = new ConfigurationParser(configurationParserDao);
-        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache, backupEntityLocator.userRoleBackupEntity());
+        UserRoleParser userRoleParser = new UserRoleParser(userRoleParserDao, keyCache, backupConfig.userRoleBackupEntity());
 
         return new XmlParser(configurationDao, parser, configurationParser, joinTableParser, userRoleParser, skipValidation);
     }
@@ -68,8 +68,8 @@ public class XmlParserBuilder {
         return this;
     }
 
-    public XmlParserBuilder setBackupEntityLocator(BackupEntityLocator backupEntityLocator) {
-        this.backupEntityLocator = backupEntityLocator;
+    public XmlParserBuilder setBackupConfig(BackupConfig backupConfig) {
+        this.backupConfig = backupConfig;
         return this;
     }
 }

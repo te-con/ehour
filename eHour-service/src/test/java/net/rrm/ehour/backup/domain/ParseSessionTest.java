@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.domain;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.backup.service.backup.BackupEntity;
+import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +31,7 @@ public class ParseSessionTest {
 
     @Test
     public void shouldNotBeImportableWhenErrorOccured() {
-        session.addError(mock(BackupEntity.class), "fe");
+        session.addError(mock(BackupEntityType.class), "fe");
         TestCase.assertFalse(session.isImportable());
     }
 

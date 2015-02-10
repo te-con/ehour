@@ -2,8 +2,8 @@ package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.domain.ParserUtil;
-import net.rrm.ehour.backup.service.backup.BackupEntity;
-import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.backup.BackupConfig;
+import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.backup.service.restore.structure.FieldDefinition;
 import net.rrm.ehour.backup.service.restore.structure.FieldMapFactory;
 import net.rrm.ehour.domain.DomainObject;
@@ -42,7 +42,7 @@ public class DomainObjectParser {
     private ParseSession status;
 
     private PrimaryKeyCache keyCache;
-    private final BackupEntityLocator entityLocator;
+    private final BackupConfig entityLocator;
 
     static {
         transformerMap.put(Integer.class, new IntegerTransformer());
@@ -51,7 +51,7 @@ public class DomainObjectParser {
         transformerMap.put(Boolean.class, new BooleanTransformer());
     }
 
-    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, PrimaryKeyCache keyCache, BackupEntityLocator entityLocator) {
+    public DomainObjectParser(XMLEventReader reader, DomainObjectParserDao parserDao, PrimaryKeyCache keyCache, BackupConfig entityLocator) {
         this.parserDao = parserDao;
         this.reader = reader;
         this.keyCache = keyCache;
@@ -79,8 +79,8 @@ public class DomainObjectParser {
 
                 domainObjects.add(domainObject);
 
-                BackupEntity backupEntity = entityLocator.entityForClass(clazz);
-                status.addInsertion(backupEntity);
+                BackupEntityType backupEntityType = entityLocator.entityForClass(clazz);
+                status.addInsertion(backupEntityType);
             } else if (event.isEndElement()) {
                 break;
             }

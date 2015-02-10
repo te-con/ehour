@@ -4,27 +4,27 @@ import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.persistence.backup.dao.BackupRowProcessor;
 
 import java.io.Serializable;
-// TODO merge with BackupEntity
-public class BackupEntitySingleTable implements BackupEntity {
+
+public class BackupEntityType implements Comparable<BackupEntityType> {
     private String parentName;
     private Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass;
     private BackupRowProcessor processor;
     private String name;
     private int order;
 
-    public BackupEntitySingleTable(String name, int order) {
+    public BackupEntityType(String name, int order) {
         this(null, name, name + "S", order);
     }
 
-    public BackupEntitySingleTable(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, String name, int order) {
+    public BackupEntityType(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, String name, int order) {
         this(domainObjectClass, name, name + "S", order);
     }
 
-    public BackupEntitySingleTable(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, String name, String parentName, int order) {
+    public BackupEntityType(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, String name, String parentName, int order) {
         this(domainObjectClass, name, parentName, null, order);
     }
 
-    public BackupEntitySingleTable(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, String name, String parentName, BackupRowProcessor processor, int order) {
+    public BackupEntityType(Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass, String name, String parentName, BackupRowProcessor processor, int order) {
         this.domainObjectClass = domainObjectClass;
         this.name = name;
         this.parentName = parentName;
@@ -57,7 +57,7 @@ public class BackupEntitySingleTable implements BackupEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BackupEntity that = (BackupEntity) o;
+        BackupEntityType that = (BackupEntityType) o;
 
         if (domainObjectClass != null ? !domainObjectClass.equals(that.getDomainObjectClass()) : that.getDomainObjectClass() != null)
             return false;
@@ -79,7 +79,8 @@ public class BackupEntitySingleTable implements BackupEntity {
 
 
     @Override
-    public int compareTo(BackupEntity o) {
+    public int compareTo(BackupEntityType o) {
         return o.getOrder() - order;
     }
+
 }

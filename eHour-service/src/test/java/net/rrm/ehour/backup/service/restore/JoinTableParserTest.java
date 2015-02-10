@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
-import net.rrm.ehour.backup.config.EhourBackupEntityLocator;
+import net.rrm.ehour.backup.config.EhourBackupConfig;
 import org.junit.Test;
 
 import javax.xml.stream.XMLEventReader;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 public class JoinTableParserTest {
     @Test
     public void should_parse_join_table() throws IOException, XMLStreamException {
-        EhourBackupEntityLocator locator = new EhourBackupEntityLocator();
+        EhourBackupConfig locator = new EhourBackupConfig();
 
         XMLEventReader reader = BackupFileUtil.createXmlReaderFromFile("src/test/resources/import/join_table.xml");
 

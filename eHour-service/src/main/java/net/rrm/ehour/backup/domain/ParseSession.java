@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.domain;
 
-import net.rrm.ehour.backup.service.backup.BackupEntity;
+import net.rrm.ehour.backup.service.backup.BackupEntityType;
 
 import java.io.File;
 import java.io.Serializable;
@@ -14,8 +14,8 @@ import java.util.Map;
  *         Date: 11/30/10 12:57 AM
  */
 public class ParseSession implements Serializable {
-    private Map<BackupEntity, Integer> insertions = new HashMap<>();
-    private Map<BackupEntity, List<String>> errors = new HashMap<>();
+    private Map<BackupEntityType, Integer> insertions = new HashMap<>();
+    private Map<BackupEntityType, List<String>> errors = new HashMap<>();
 
     private String filename;
     private boolean globalError;
@@ -39,7 +39,7 @@ public class ParseSession implements Serializable {
         return !(imported || hasErrors());
     }
 
-    public void addError(BackupEntity entity, String error) {
+    public void addError(BackupEntityType entity, String error) {
         if (entity == null) {
             return;
         }
@@ -57,7 +57,7 @@ public class ParseSession implements Serializable {
         errors.put(entity, errorsForType);
     }
 
-    public void addInsertion(BackupEntity type) {
+    public void addInsertion(BackupEntityType type) {
         Integer insertionCount;
 
         if (insertions.containsKey(type)) {
@@ -69,11 +69,11 @@ public class ParseSession implements Serializable {
         insertions.put(type, ++insertionCount);
     }
 
-    public Map<BackupEntity, Integer> getInsertions() {
+    public Map<BackupEntityType, Integer> getInsertions() {
         return insertions;
     }
 
-    public Map<BackupEntity, List<String>> getErrors() {
+    public Map<BackupEntityType, List<String>> getErrors() {
         return errors;
     }
 

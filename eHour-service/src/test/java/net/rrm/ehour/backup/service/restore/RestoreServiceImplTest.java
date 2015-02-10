@@ -1,9 +1,9 @@
 package net.rrm.ehour.backup.service.restore;
 
-import net.rrm.ehour.backup.config.EhourBackupEntityLocator;
+import net.rrm.ehour.backup.config.EhourBackupConfig;
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.DatabaseTruncater;
-import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.User;
@@ -40,7 +40,7 @@ public class RestoreServiceImplTest {
     @Mock
     private DomainObjectParserDao domainObjectParserDao;
 
-    private BackupEntityLocator backupEntityLocator;
+    private BackupConfig backupConfig;
 
     private UserRoleParserDaoValidatorImpl userRoleParserDao;
 
@@ -52,10 +52,10 @@ public class RestoreServiceImplTest {
     public void setUp() {
         userRoleParserDao = new UserRoleParserDaoValidatorImpl();
 
-        backupEntityLocator = new EhourBackupEntityLocator();
+        backupConfig = new EhourBackupConfig();
 
         configStub = new EhourConfigStub();
-        restoreService = new RestoreServiceImpl(configurationDao, configurationParserDao, domainObjectParserDao, userRoleParserDao, truncater, configStub, backupEntityLocator);
+        restoreService = new RestoreServiceImpl(configurationDao, configurationParserDao, domainObjectParserDao, userRoleParserDao, truncater, configStub, backupConfig);
         restoreService.setConfigurationDao(configurationDao);
         restoreService.setDatabaseTruncater(truncater);
 

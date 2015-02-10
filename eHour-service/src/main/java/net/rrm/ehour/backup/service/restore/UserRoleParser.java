@@ -2,7 +2,7 @@ package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.domain.ParserUtil;
-import net.rrm.ehour.backup.service.backup.BackupEntity;
+import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.domain.UserRole;
 
@@ -20,12 +20,12 @@ import java.io.Serializable;
 public class UserRoleParser {
     private UserRoleParserDao dao;
     private PrimaryKeyCache keyCache;
-    private final BackupEntity userRoleBackupEntity;
+    private final BackupEntityType userRoleBackupEntityType;
 
-    public UserRoleParser(UserRoleParserDao dao, PrimaryKeyCache keyCache, BackupEntity userRoleBackupEntity) {
+    public UserRoleParser(UserRoleParserDao dao, PrimaryKeyCache keyCache, BackupEntityType userRoleBackupEntityType) {
         this.dao = dao;
         this.keyCache = keyCache;
-        this.userRoleBackupEntity = userRoleBackupEntity;
+        this.userRoleBackupEntityType = userRoleBackupEntityType;
     }
 
     public void parseUserRoles(XMLEventReader reader, ParseSession status) throws XMLStreamException {
@@ -63,9 +63,9 @@ public class UserRoleParser {
             user.addUserRole(userRole);
             dao.persistUser(user);
 
-            status.addInsertion(userRoleBackupEntity);
+            status.addInsertion(userRoleBackupEntityType);
         } else {
-            status.addError(userRoleBackupEntity, "No userID (" + userId + ") or role (" + role + ") found");
+            status.addError(userRoleBackupEntityType, "No userID (" + userId + ") or role (" + role + ") found");
         }
     }
 }

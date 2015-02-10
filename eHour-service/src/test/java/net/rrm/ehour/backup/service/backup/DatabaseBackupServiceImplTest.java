@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.service.backup;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.backup.config.EhourBackupEntityLocator;
+import net.rrm.ehour.backup.config.EhourBackupConfig;
 import net.rrm.ehour.config.ConfigurationItem;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;
@@ -28,14 +28,14 @@ public class DatabaseBackupServiceImplTest {
     @Mock
     private ConfigurationService configurationService;
 
-    private BackupEntityLocator backupEntityLocator;
+    private BackupConfig backupConfig;
 
     private DatabaseBackupServiceImpl service;
 
     @Before
     public void setUp() {
-        backupEntityLocator = new EhourBackupEntityLocator();
-        service = new DatabaseBackupServiceImpl(exportDao, configurationService, backupEntityLocator);
+        backupConfig = new EhourBackupConfig();
+        service = new DatabaseBackupServiceImpl(exportDao, configurationService, backupConfig);
     }
 
     @SuppressWarnings("unchecked")

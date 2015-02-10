@@ -28,13 +28,13 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
 
     private BackupDao backupDao;
     private ConfigurationService configurationService;
-    private BackupEntityLocator backupEntityLocator;
+    private BackupConfig backupConfig;
 
     @Autowired
-    public DatabaseBackupServiceImpl(BackupDao backupDao, ConfigurationService configurationService, BackupEntityLocator backupEntityLocator) {
+    public DatabaseBackupServiceImpl(BackupDao backupDao, ConfigurationService configurationService, BackupConfig backupConfig) {
         this.backupDao = backupDao;
         this.configurationService = configurationService;
-        this.backupEntityLocator = backupEntityLocator;
+        this.backupConfig = backupConfig;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
     }
 
     private void backupJoinTables(XMLStreamWriter writer) throws XMLStreamException {
-        List<BackupJoinTable> joinTables = backupEntityLocator.joinTables();
+        List<BackupJoinTable> joinTables = backupConfig.joinTables();
 
         for (BackupJoinTable joinTable : joinTables) {
             String container = joinTable.getContainer();
@@ -146,12 +146,12 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
     }
 
     private void backupEntities(XMLStreamWriter writer) throws XMLStreamException {
-        for (BackupEntity type : backupEntityLocator.backupEntities()) {
+        for (BackupEntityType type : backupConfig.backupEntities()) {
             backupType(type, writer);
         }
     }
 
-    private void backupType(BackupEntity entity, XMLStreamWriter writer) throws XMLStreamException {
+    private void backupType(BackupEntityType entity, XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartElement(entity.getParentName());
 
         if (entity.getDomainObjectClass() != null) {
