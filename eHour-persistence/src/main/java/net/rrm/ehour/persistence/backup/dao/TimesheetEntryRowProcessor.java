@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class TimesheetEntryRowProcessor implements BackupRowProcessor
 {
-    private static final String UPDATE__DATE = "UPDATE_DATE";
+    private static final String UPDATE_DATE = "UPDATE_DATE";
     private static final String ENTRY_DATE = "ENTRY_DATE";
 
     @Override
@@ -17,8 +17,8 @@ public class TimesheetEntryRowProcessor implements BackupRowProcessor
     {
         for (Map<String, Object> row : rows)
         {
-            if (!row.containsKey(UPDATE__DATE) || row.get(UPDATE__DATE) == null) {
-                row.put(UPDATE__DATE, row.get(ENTRY_DATE));
+            if (!row.containsKey(UPDATE_DATE) || row.get(UPDATE_DATE) == null) {
+                row.put(UPDATE_DATE, row.get(ENTRY_DATE));
             }
         }
 

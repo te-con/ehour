@@ -55,19 +55,19 @@ public class RestoreServiceImpl implements RestoreService {
 
                 session.clearSession();
 
-                XMLEventReader eventReader = BackupFileUtil.createXmlReaderFromFile(session.getFilename());
+                XMLEventReader xmlEventReader = BackupFileUtil.createXmlReaderFromFile(session.getFilename());
 
                 XmlParser parser = new XmlParserBuilder()
                         .setConfigurationDao(configurationDao)
                         .setConfigurationParserDao(configurationParserDao)
                         .setDomainObjectParserDao(domainObjectParserDao)
                         .setUserRoleParserDao(userRoleParserDao)
-                        .setXmlReader(eventReader)
+                        .setXmlReader(xmlEventReader)
                         .setSkipValidation(true)
                         .setBackupEntityLocator(backupEntityLocator)
                         .build();
 
-                parser.parseXml(session, eventReader);
+                parser.parseXml(session, xmlEventReader);
             }
         } catch (Exception e) {
             session.setGlobalError(true);

@@ -2,6 +2,7 @@ package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
 import net.rrm.ehour.backup.service.backup.BackupJoinTable;
+import org.apache.log4j.Logger;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -10,6 +11,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 public class JoinTableParser {
+    private static final Logger LOG = Logger.getLogger(JoinTableParser.class);
+
     private final XMLEventReader xmlReader;
     private final BackupEntityLocator locator;
 
@@ -19,6 +22,8 @@ public class JoinTableParser {
     }
 
     public JoinTables parseJoinTables() throws XMLStreamException {
+        LOG.info("Join tables found, parsing");
+
         JoinTables joinTables = new JoinTables();
 
         while (xmlReader.hasNext()) {

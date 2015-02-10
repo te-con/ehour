@@ -60,7 +60,7 @@ public class DomainObjectParserTest {
         keyCache.putKey(ProjectAssignment.class, 1, 1);
         keyCache.putKey(ProjectAssignment.class, 2, 2);
 
-        List<TimesheetEntry> result = parser.parse(TimesheetEntry.class, status);
+        List<TimesheetEntry> result = parser.parse(TimesheetEntry.class, new JoinTables(), status);
 
         assertEquals(2, result.size());
 
@@ -79,7 +79,7 @@ public class DomainObjectParserTest {
 
         keyCache.putKey(UserDepartment.class, 1, 1);
 
-        List<User> result = parser.parse(User.class, status);
+        List<User> result = parser.parse(User.class, new JoinTables(), status);
 
         assertEquals(2, result.size());
 
@@ -102,9 +102,9 @@ public class DomainObjectParserTest {
     public void shouldParseEnum() throws IllegalAccessException, XMLStreamException, InstantiationException {
         DomainObjectParser resolver = createParser(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", UserObjectMother.createUser(), 2);
 
-        when(backupEntityLocator.forClass(Audit.class)).thenReturn(mock(BackupEntity.class));
+        when(backupEntityLocator.entityForClass(Audit.class)).thenReturn(mock(BackupEntity.class));
 
-        List<Audit> result = resolver.parse(Audit.class, status);
+        List<Audit> result = resolver.parse(Audit.class, new JoinTables(), status);
 
         assertEquals(1, result.size());
 
@@ -117,11 +117,11 @@ public class DomainObjectParserTest {
 
         DomainObjectParser resolver = createParser(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", user, 2);
 
-        when(backupEntityLocator.forClass(Audit.class)).thenReturn(mock(BackupEntity.class));
+        when(backupEntityLocator.entityForClass(Audit.class)).thenReturn(mock(BackupEntity.class));
 
         keyCache.putKey(User.class, 2, 2);
 
-        List<Audit> result = resolver.parse(Audit.class, status);
+        List<Audit> result = resolver.parse(Audit.class, new JoinTables(), status);
 
         assertEquals(1, result.size());
 

@@ -1,0 +1,81 @@
+package net.rrm.ehour.backup.service.restore.structure;
+
+import com.google.common.collect.Maps;
+import net.rrm.ehour.domain.*;
+import org.junit.Test;
+
+import java.util.Date;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+
+public class FieldMapFactoryTest {
+    private Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(User.class);
+
+    @Test
+    public void should_process_many_to_many_column() throws InstantiationException, IllegalAccessException {
+
+        FieldDefinition fieldDef = fieldDefinitionMap.get("user_to_department");
+
+        User user = UserObjectMother.createUser();
+        user.getUserDepartments().clear();
+
+        UserDepartment department = UserDepartmentObjectMother.createUserDepartment();
+
+        Map<Class<?>, Object> embeddables = Maps.newHashMap();
+        fieldDef.process(user, embeddables, department);
+
+        assertEquals(1, user.getUserDepartments().size());
+    }
+
+    @Test
+    public void should_process_one_to_many_column() throws InstantiationException, IllegalAccessException {
+        Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(Project.class);
+
+        FieldDefinition fieldDef = fieldDefinitionMap.get("customer_id");
+
+        Customer customer = CustomerObjectMother.createCustomer();
+
+        Project project = ProjectObjectMother.createProject(1);
+        project.setCustomer(null);
+
+        Map<Class<?>, Object> embeddables = Maps.newHashMap();
+        fieldDef.process(project, embeddables, customer);
+
+        assertEquals(customer, project.getCustomer());
+    }
+
+    @Test
+    public void should_process_column_with_basic_value() throws InstantiationException, IllegalAccessException {
+        Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(Project.class);
+
+        FieldDefinition fieldDef = fieldDefinitionMap.get("project_code");
+
+        Project project = ProjectObjectMother.createProject(1);
+        project.setProjectCode(null);
+
+        Map<Class<?>, Object> embeddables = Maps.newHashMap();
+        fieldDef.process(project, embeddables, "TEC");
+
+        assertEquals("TEC", project.getProjectCode());
+    }
+
+    @Test
+    public void should_process_column_with_embeddable() throws InstantiationException, IllegalAccessException {
+        Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(TimesheetEntry.class);
+
+        FieldDefinition fieldDef = fieldDefinitionMap.get("entryId");
+
+        TimesheetEntry timesheetEntry = TimesheetEntryObjectMother.createTimesheetEntry(1, new Date(), 5f);
+        timesheetEntry.setEntryId(null);
+
+        TimesheetEntryId entryId = new TimesheetEntryId();
+
+        Map<Class<?>, Object> embeddables = Maps.newHashMap();
+        embeddables.put(TimesheetEntryId.class, entryId);
+
+        fieldDef.process(timesheetEntry, embeddables, "1");
+
+        assertEquals(entryId, timesheetEntry.getEntryId());
+    }
+}

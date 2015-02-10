@@ -26,14 +26,16 @@ public class XmlParser {
     private ConfigurationDao configurationDao;
     private DomainObjectParser domainObjectParser;
     private ConfigurationParser configurationParser;
+    private JoinTableParser joinTableParser;
     private UserRoleParser userRoleParser;
 
     private boolean skipValidation;
 
-    public XmlParser(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, UserRoleParser userRoleParser, boolean skipValidation) {
+    public XmlParser(ConfigurationDao configurationDao, DomainObjectParser domainObjectParser, ConfigurationParser configurationParser, JoinTableParser joinTableParser, UserRoleParser userRoleParser, boolean skipValidation) {
         this.configurationDao = configurationDao;
         this.domainObjectParser = domainObjectParser;
         this.configurationParser = configurationParser;
+        this.joinTableParser = joinTableParser;
         this.userRoleParser = userRoleParser;
 
         this.skipValidation = skipValidation;
@@ -62,6 +64,8 @@ public class XmlParser {
 
         LOG.info("Element found in backup file: " + element.name() + " = " + startName);
 
+        JoinTables joinTables = null;
+
         switch (element) {
             case EHOUR:
                 if (!skipValidation) {
@@ -71,11 +75,15 @@ public class XmlParser {
             case CONFIGURATION:
                 configurationParser.parseConfiguration(eventReader);
                 break;
-            case USER_TO_USERROLES:
-                userRoleParser.parseUserRoles(eventReader, status);
+//            case USER_TO_USERROLES:
+//                userRoleParser.parseUserRoles(eventReader, status);
+//                break;
+            case JOIN_TABLES:
+                joinTables = parseJoinTables();
                 break;
-            case OTHER:
-                parseElement(startElement, domainObjectParser, status);
+            case ENTITY_TABLES:
+                // yes order is important, joinTables should have been parsed first - basically first in the XML
+                parseEntity(startElement, domainObjectParser, joinTables, status);
                 break;
             default:
                 break;
@@ -83,19 +91,19 @@ public class XmlParser {
     }
 
     private ExportElements safelyGetExportElements(String name) {
-        ExportElements element;
-
         try {
-            element = ExportElements.valueOf(name);
+            return ExportElements.valueOf(name);
         } catch (IllegalArgumentException iae) {
-            element = ExportElements.OTHER;
+            return ExportElements.OTHER;
         }
+    }
 
-        return element;
+    private JoinTables parseJoinTables() throws XMLStreamException {
+        return joinTableParser.parseJoinTables();
     }
 
     @SuppressWarnings("unchecked")
-    private void parseElement(StartElement element, DomainObjectParser parser, ParseSession status) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException, ImportException {
+    private void parseEntity(StartElement element, DomainObjectParser entityParser, JoinTables joinTables, ParseSession status) throws XMLStreamException, InstantiationException, IllegalAccessException, ClassNotFoundException, ImportException {
         Attribute attribute = element.getAttributeByName(new QName("CLASS"));
 
         if (attribute != null) {
@@ -103,7 +111,7 @@ public class XmlParser {
 
             Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
 
-            parser.parse(doClass, status);
+            entityParser.parse(doClass, joinTables, status);
         } else {
             throw new ImportException("Invalid XML, no attribute found for element: " + element.getName().getLocalPart());
         }

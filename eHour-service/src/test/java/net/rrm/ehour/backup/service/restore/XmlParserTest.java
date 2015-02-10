@@ -41,7 +41,7 @@ public class XmlParserTest {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
-        XmlParser importer = new XmlParser(configurationDao, null, null, null, false);
+        XmlParser importer = new XmlParser(configurationDao, null, null, null, null, false);
         importer.parseXml(null, eventReader);
     }
 
@@ -58,7 +58,7 @@ public class XmlParserTest {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         eventReader = inputFactory.createXMLEventReader(new StringReader(xmlData));
 
-        XmlParser importer = new XmlParser(configurationDao, null, null, null, false);
+        XmlParser importer = new XmlParser(configurationDao, null, null, null, null, false);
         importer.parseXml(null, eventReader);
     }
 }

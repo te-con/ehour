@@ -1,4 +1,4 @@
-package net.rrm.ehour.backup.service.restore;
+package net.rrm.ehour.backup.service.restore.structure;
 
 import java.lang.reflect.Field;
 

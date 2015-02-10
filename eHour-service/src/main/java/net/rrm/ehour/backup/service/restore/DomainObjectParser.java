@@ -4,13 +4,16 @@ import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.domain.ParserUtil;
 import net.rrm.ehour.backup.service.backup.BackupEntity;
 import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
+import net.rrm.ehour.backup.service.restore.structure.FieldDefinition;
+import net.rrm.ehour.backup.service.restore.structure.FieldMapFactory;
 import net.rrm.ehour.domain.DomainObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -27,6 +30,7 @@ import java.util.*;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: Nov 16, 2010 - 11:18:59 PM
  */
+// TODO rename to EntityParser
 public class DomainObjectParser {
     private DomainObjectParserDao parserDao;
 
@@ -54,28 +58,28 @@ public class DomainObjectParser {
         this.entityLocator = entityLocator;
     }
 
-    public <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parse(Class<T> clazz, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
-        Map<String, FieldDefinition> fieldMap = extractFieldMapFromDomainObject(clazz);
+    public <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parse(Class<T> clazz, JoinTables joinTables, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
+        Map<String, FieldDefinition> fieldMap = FieldMapFactory.buildFieldMapForDomainObject(clazz);
         this.status = status;
 
-        return parseDomainObjects(clazz, fieldMap, status);
+        return parseDomainObjects(clazz, fieldMap, joinTables, status);
     }
 
     /**
      * Parse domain object with reader pointing on the table name tag
      */
-    private <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parseDomainObjects(Class<T> clazz, Map<String, FieldDefinition> fieldMap, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException {
+    private <PK extends Serializable, T extends DomainObject<PK, ?>>  List<T> parseDomainObjects(Class<T> clazz, Map<String, FieldDefinition> fieldMap, JoinTables joinTables, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException {
         List<T> domainObjects = new ArrayList<>();
 
         while (reader.hasNext()) {
             XMLEvent event = reader.nextTag();
 
             if (event.isStartElement()) {
-                T domainObject = parseAndPersistDomainObject(clazz, fieldMap);
+                T domainObject = parseAndPersistDomainObject(clazz, fieldMap, joinTables);
 
                 domainObjects.add(domainObject);
 
-                BackupEntity backupEntity = entityLocator.forClass(clazz);
+                BackupEntity backupEntity = entityLocator.entityForClass(clazz);
                 status.addInsertion(backupEntity);
             } else if (event.isEndElement()) {
                 break;
@@ -86,7 +90,7 @@ public class DomainObjectParser {
     }
 
     @SuppressWarnings("unchecked")
-    private <PK extends Serializable, T extends DomainObject<PK, ?>> T parseAndPersistDomainObject(Class<T> clazz, Map<String, FieldDefinition> fieldMap) throws XMLStreamException, IllegalAccessException, InstantiationException {
+    private <PK extends Serializable, T extends DomainObject<PK, ?>> T parseAndPersistDomainObject(Class<T> clazz, Map<String, FieldDefinition> fieldMap, JoinTables joinTables) throws XMLStreamException, IllegalAccessException, InstantiationException {
         T targetObject = clazz.newInstance();
 
         Map<Class<?>, Object> embeddables = new HashMap<>();
@@ -109,14 +113,7 @@ public class DomainObjectParser {
             Object parsedColumnValue = parseColumn(type, columnValue, fieldDefinition.isIgnorable());
 
             if (parsedColumnValue != null) {
-                // check whether the field is part of a composite pk (ie. a different class)
-                if (targetField.getDeclaringClass() != targetObject.getClass()) {
-                    Object embeddable = resolveEmbeddable(embeddables, targetField);
-
-                    targetField.set(embeddable, parsedColumnValue);
-                } else {
-                    targetField.set(targetObject, parsedColumnValue);
-                }
+                fieldDefinition.process(targetObject, embeddables, parsedColumnValue);
             }
         }
 
@@ -133,19 +130,6 @@ public class DomainObjectParser {
         }
 
         return targetObject;
-    }
-
-    private Object resolveEmbeddable(Map<Class<?>, Object> embeddables, Field field)
-            throws InstantiationException, IllegalAccessException {
-        Object embeddable;
-
-        if (!embeddables.containsKey(field.getDeclaringClass())) {
-            embeddable = field.getDeclaringClass().newInstance();
-            embeddables.put(field.getDeclaringClass(), embeddable);
-        } else {
-            embeddable = embeddables.get(field.getDeclaringClass());
-        }
-        return embeddable;
     }
 
     private <T> void resetId(Map<String, FieldDefinition> fieldMap, T domainObject) throws IllegalAccessException {
@@ -189,7 +173,7 @@ public class DomainObjectParser {
             }
 
             if (parsedValue == null && !canBeIgnored) {
-                status.addError(entityLocator.forClass(columnType), "ManyToOne relation not resolved");
+                status.addError(entityLocator.entityForClass(columnType), "ManyToOne relation not resolved");
             }
         } else if (columnType == String.class) {
             parsedValue = value;
@@ -199,7 +183,7 @@ public class DomainObjectParser {
             if (transformerMap.containsKey(columnType)) {
                 parsedValue = transformerMap.get(columnType).transform(value);
             } else {
-                status.addError(entityLocator.forClass(columnType), "unknown type: " + columnType);
+                status.addError(entityLocator.entityForClass(columnType), "unknown type: " + columnType);
                 LOG.error("no transformer for type " + columnType);
             }
         }
@@ -217,87 +201,6 @@ public class DomainObjectParser {
         }
 
         return value;
-    }
-
-    /**
-     * Iterate over the domain object and extract any JPA annotated fields
-     * @param clazz
-     * @param <T>
-     * @return a Map with lowercase annotated field names from domain object and matching
-     */
-    private <T> Map<String, FieldDefinition> extractFieldMapFromDomainObject(Class<T> clazz) {
-        Map<String, FieldDefinition> fieldMap = new HashMap<>();
-
-        Field[] fields = clazz.getDeclaredFields();
-        int seq = 0;
-
-        for (Field field : fields) {
-            field.setAccessible(true);
-
-            if (field.isAnnotationPresent(Column.class)) {
-                parseColumn(fieldMap, field);
-            } else if (field.isAnnotationPresent(JoinColumn.class)) {
-                parseManyToOne(fieldMap, field);
-            } else if (field.isAnnotationPresent(ManyToMany.class)) {
-
-            } else {
-                Class<?> fieldType = field.getType();
-
-                // do we need to go a level deeper with composite primary keys marked as Embeddable?
-                if (fieldType.isAnnotationPresent(Embeddable.class)) {
-                    fieldMap.put(Integer.toString(seq++), new FieldDefinition(field));
-
-                    Map<String, FieldDefinition> embeddableFieldMap = extractFieldMapFromDomainObject(fieldType);
-
-                    fieldMap.putAll(embeddableFieldMap);
-                }
-            }
-        }
-
-        return fieldMap;
-    }
-
-    private void parseColumn(Map<String, FieldDefinition> fieldMap, Field field) {
-        Column column = field.getAnnotation(Column.class);
-        String columnName = column.name();
-
-        fieldMap.put(columnName.toLowerCase(), new FieldDefinition(field));
-    }
-
-    private void parseManyToOne(Map<String, FieldDefinition> fieldMap, Field field) {
-        JoinColumn column = field.getAnnotation(JoinColumn.class);
-        String columnName = column.name();
-
-        FieldDefinition definition;
-        if (field.isAnnotationPresent(NotFound.class)) {
-            NotFound notFoundAnnotation = field.getAnnotation(NotFound.class);
-            definition = notFoundAnnotation.action() == NotFoundAction.IGNORE ? new IgnorableFieldDefinition(field) : new FieldDefinition(field);
-        } else {
-            definition = new FieldDefinition(field);
-        }
-
-        fieldMap.put(columnName.toLowerCase(), definition);
-    }
-
-    private void parseManyToMany(Map<String, FieldDefinition> fieldMap, Field field) {
-//        JoinTable joinTable = field.getAnnotation(JoinTable.class);
-//        String joinTableName = joinTable.name();
-//
-//        BackupEntity backupEntity = entityLocator.forName(joinTableName);
-//
-//
-//
-////        String columnName = column.name();
-//
-//        FieldDefinition definition;
-//        if (field.isAnnotationPresent(NotFound.class)) {
-//            NotFound notFoundAnnotation = field.getAnnotation(NotFound.class);
-//            definition = notFoundAnnotation.action() == NotFoundAction.IGNORE ? new IgnorableFieldDefinition(field) : new FieldDefinition(field);
-//        } else {
-//            definition = new FieldDefinition(field);
-//        }
-//
-//        fieldMap.put(columnName.toLowerCase(), definition);
     }
 
     PrimaryKeyCache getKeyCache() {
