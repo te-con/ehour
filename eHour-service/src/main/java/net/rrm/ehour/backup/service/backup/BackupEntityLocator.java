@@ -5,11 +5,13 @@ import java.util.List;
 public interface BackupEntityLocator {
     List<BackupEntity> backupEntities();
 
+    BackupEntity entityForClass(Class clazz);
+
+    BackupEntity entityForName(String name);
+
     List<BackupJoinTable> joinTables();
 
-    BackupEntity forClass(Class clazz);
-
-    BackupEntity forName(String name);
+    BackupJoinTable joinTableForName(String name);
 
 
     List<BackupEntity> reverseOrderedValues();

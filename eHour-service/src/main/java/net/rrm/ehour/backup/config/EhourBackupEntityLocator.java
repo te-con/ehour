@@ -1,6 +1,7 @@
 package net.rrm.ehour.backup.config;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.rrm.ehour.backup.service.backup.BackupEntity;
 import net.rrm.ehour.backup.service.backup.BackupEntityLocator;
 import net.rrm.ehour.backup.service.backup.BackupEntitySingleTable;
@@ -27,29 +28,26 @@ public class EhourBackupEntityLocator implements BackupEntityLocator {
     private static final BackupJoinTable USER_TO_USERROLE = new BackupJoinTable("USER_TO_USERROLE", "USER_ID", "ROLE");
     private static final BackupJoinTable USER_TO_DEPARTMENT = new BackupJoinTable("USER_TO_DEPARTMENT", "USER_ID", "DEPARTMENT_ID");
 
-
     private static final List<BackupEntity> ENTITIES = Lists.newArrayList(userDepartment, userRole, users,
                                                                             customer, project, projectAssignmentType, projectAssignment,
                                                                             timesheetEntry, timesheetComment, timesheetLock);
 
-    private static final List<BackupJoinTable> JOIN_TABLES = Lists.newArrayList(USER_TO_USERROLE, USER_TO_DEPARTMENT);
-
     private static final List<BackupEntity> REVERSE_ORDER;
 
-    private static final Map<String, BackupEntity> classNameMap;
+    private static final Map<Class<?>, BackupEntity> ENTITY_CLASS_MAP;
+    private static final Map<String, BackupEntity> ENTITY_CLASS_NAME_MAP;
 
-    private static Map<Class<?>, BackupEntity> classMap;
 
     static {
-        classMap = new HashMap<>();
-        classNameMap = new HashMap<>();
+        ENTITY_CLASS_MAP = new HashMap<>();
+        ENTITY_CLASS_NAME_MAP = new HashMap<>();
 
         for (BackupEntity entity : ENTITIES) {
             if (entity.getDomainObjectClass() != null) {
-                classMap.put(entity.getDomainObjectClass(), entity);
+                ENTITY_CLASS_MAP.put(entity.getDomainObjectClass(), entity);
             }
 
-            classNameMap.put(entity.name(), entity);
+            ENTITY_CLASS_NAME_MAP.put(entity.name(), entity);
         }
 
         REVERSE_ORDER = new ArrayList<>(ENTITIES);
@@ -62,19 +60,31 @@ public class EhourBackupEntityLocator implements BackupEntityLocator {
         });
     }
 
+    private static final List<BackupJoinTable> JOIN_TABLES = Lists.newArrayList(USER_TO_USERROLE, USER_TO_DEPARTMENT);
+
+    private static final Map<String, BackupJoinTable> JOIN_TABLE_NAME_MAP;
+
+    static {
+        JOIN_TABLE_NAME_MAP = Maps.newHashMap();
+
+        for (BackupJoinTable joinTable : JOIN_TABLES) {
+            JOIN_TABLE_NAME_MAP.put(joinTable.getTableName(), joinTable);
+        }
+    }
+
     @Override
     public List<BackupEntity> backupEntities() {
         return ENTITIES;
     }
 
     @Override
-    public BackupEntity forClass(Class clazz) {
-        return classMap.get(clazz);
+    public BackupEntity entityForClass(Class clazz) {
+        return ENTITY_CLASS_MAP.get(clazz);
     }
 
     @Override
-    public BackupEntity forName(String name) {
-        return classNameMap.get(name);
+    public BackupEntity entityForName(String name) {
+        return ENTITY_CLASS_NAME_MAP.get(name);
     }
 
     @Override
@@ -85,6 +95,11 @@ public class EhourBackupEntityLocator implements BackupEntityLocator {
     @Override
     public List<BackupJoinTable> joinTables() {
         return JOIN_TABLES;
+    }
+
+    @Override
+    public BackupJoinTable joinTableForName(String name) {
+        return JOIN_TABLE_NAME_MAP.get(name);
     }
 
     // @TODO REMOVE

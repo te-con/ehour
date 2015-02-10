@@ -91,8 +91,14 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
         writer.writeAttribute(ExportElements.DB_VERSION.name(), stub.getVersion());
 
         backupConfiguration(writer);
+
+        writer.writeStartElement(ExportElements.JOIN_TABLES.name());
         backupJoinTables(writer);
-        backupTypes(writer);
+        writer.writeEndElement();
+
+        writer.writeStartElement(ExportElements.ENTITY_TABLES.name());
+        backupEntities(writer);
+        writer.writeEndElement();
 
         writer.writeEndElement();
         writer.writeEndDocument();
@@ -115,7 +121,6 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
 
     private void backupJoinTables(XMLStreamWriter writer) throws XMLStreamException {
         List<BackupJoinTable> joinTables = backupEntityLocator.joinTables();
-
 
         for (BackupJoinTable joinTable : joinTables) {
             String container = joinTable.getContainer();
@@ -140,7 +145,7 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
         }
     }
 
-    private void backupTypes(XMLStreamWriter writer) throws XMLStreamException {
+    private void backupEntities(XMLStreamWriter writer) throws XMLStreamException {
         for (BackupEntity type : backupEntityLocator.backupEntities()) {
             backupType(type, writer);
         }
