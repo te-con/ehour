@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class FieldMapFactoryTest {
-    private Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(User.class);
+    private FieldMap fieldDefinitionMap = FieldMapFactory.buildFieldMapForEntity(User.class);
 
     @Test
     public void should_process_many_to_many_column() throws InstantiationException, IllegalAccessException {
@@ -30,7 +30,7 @@ public class FieldMapFactoryTest {
 
     @Test
     public void should_process_one_to_many_column() throws InstantiationException, IllegalAccessException {
-        Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(Project.class);
+        FieldMap fieldDefinitionMap = FieldMapFactory.buildFieldMapForEntity(Project.class);
 
         FieldDefinition fieldDef = fieldDefinitionMap.get("customer_id");
 
@@ -47,7 +47,7 @@ public class FieldMapFactoryTest {
 
     @Test
     public void should_process_column_with_basic_value() throws InstantiationException, IllegalAccessException {
-        Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(Project.class);
+        FieldMap fieldDefinitionMap = FieldMapFactory.buildFieldMapForEntity(Project.class);
 
         FieldDefinition fieldDef = fieldDefinitionMap.get("project_code");
 
@@ -62,7 +62,7 @@ public class FieldMapFactoryTest {
 
     @Test
     public void should_process_column_with_embeddable() throws InstantiationException, IllegalAccessException {
-        Map<String, FieldDefinition> fieldDefinitionMap = FieldMapFactory.buildFieldMapForDomainObject(TimesheetEntry.class);
+        FieldMap fieldDefinitionMap = FieldMapFactory.buildFieldMapForEntity(TimesheetEntry.class);
 
         FieldDefinition fieldDef = fieldDefinitionMap.get("assignment_id");
 

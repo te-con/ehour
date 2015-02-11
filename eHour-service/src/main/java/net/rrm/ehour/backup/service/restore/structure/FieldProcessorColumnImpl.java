@@ -11,6 +11,7 @@ public class FieldProcessorColumnImpl implements FieldProcessor {
     public <PK extends Serializable, T extends DomainObject<PK, ?>> void process(Field targetField, T targetObject, Map<Class<?>, Object> embeddables, Object parsedColumnValue) throws IllegalAccessException, InstantiationException {
         // ignore embeddables
         if (targetField.getType() == parsedColumnValue.getClass()) {
+            targetField.setAccessible(true);
             targetField.set(targetObject, parsedColumnValue);
         }
     }
