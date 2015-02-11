@@ -9,5 +9,5 @@ public interface DatabaseBackupService {
     /**
      * Export the database to an XML formatted backup fi le
      */
-    String exportDatabase();
+    byte[] exportDatabase();
 }

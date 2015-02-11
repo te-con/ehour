@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.StringWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Map;
@@ -38,21 +39,20 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
     }
 
     @Override
-    public String exportDatabase() {
-        String xmlDocument = null;
-
-        StringWriter stringWriter = new StringWriter();
+    public byte[] exportDatabase() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         XMLStreamWriter writer = null;
 
         try {
-            writer = createXmlWriter(stringWriter);
+            writer = createXmlWriter(outputStream);
 
             exportDatabase(writer);
 
-            xmlDocument = stringWriter.toString();
+            return outputStream.toByteArray();
         } catch (XMLStreamException e) {
             LOGGER.error(e);
+            return null;
         } finally {
 /* @TODO add after load test
             if (writer != null) {
@@ -64,16 +64,13 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
             }
 */
         }
-
-
-        return xmlDocument;
     }
 
-    protected XMLStreamWriter createXmlWriter(StringWriter stringWriter) throws XMLStreamException {
+    protected XMLStreamWriter createXmlWriter(OutputStream outputStream) throws XMLStreamException {
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
 
-        XMLStreamWriter writer;
-        writer = factory.createXMLStreamWriter(stringWriter);
+        XMLStreamWriter writer = factory.createXMLStreamWriter(outputStream, "UTF-8");
+
         PrettyPrintHandler handler = new PrettyPrintHandler(writer);
 
         return (XMLStreamWriter) Proxy.newProxyInstance(
@@ -83,7 +80,7 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
     }
 
     private void exportDatabase(XMLStreamWriter writer) throws XMLStreamException {
-        writer.writeStartDocument();
+        writer.writeStartDocument("UTF-8", "1.0");
 
         EhourConfigStub stub = configurationService.getConfiguration();
 

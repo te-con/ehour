@@ -44,6 +44,7 @@ public class DatabaseBackupServiceImplTest {
         Map<String, Object> map = new HashMap<>();
         map.put("ASSIGNMENT_ID", 1);
         map.put("ENTRY_DATE", new Date());
+        map.put("COMMENT", "\uC3BC and \uC3B6 and <&> für");
 
         List<Map<String, Object>> rows = Lists.newArrayList(map);
         when(exportDao.findAll("TIMESHEET_ENTRY")).thenReturn(rows);
@@ -56,7 +57,8 @@ public class DatabaseBackupServiceImplTest {
         List<Configuration> configurationList = new ArrayList<>(Arrays.asList(new Configuration(ConfigurationItem.AVAILABLE_TRANSLATIONS.getDbField(), "nl")));
         when(configurationService.findAllConfiguration()).thenReturn(configurationList);
 
-        String xml = service.exportDatabase();
+        byte[] xmlBytes = service.exportDatabase();
+        String xml = new String(xmlBytes);
 
         assertThat(xml, containsString("0.9"));
         assertThat(xml, containsString("TIMESHEET_ENTRY"));

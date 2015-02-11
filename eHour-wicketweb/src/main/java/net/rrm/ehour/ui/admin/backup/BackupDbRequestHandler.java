@@ -11,7 +11,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -57,12 +56,7 @@ public class BackupDbRequestHandler implements IRequestHandler {
         if (authorized) {
             WebUtils.springInjection(this);
 
-            String xmlExport = databaseBackupService.exportDatabase();
-
-            try {
-                return xmlExport.getBytes("UTF-8");
-            } catch (UnsupportedEncodingException e) {
-            }
+            return databaseBackupService.exportDatabase();
         }
 
         throw new IllegalArgumentException("You're not authorized");
