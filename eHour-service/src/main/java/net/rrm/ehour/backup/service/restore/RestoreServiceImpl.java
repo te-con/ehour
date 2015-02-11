@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
+import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.DatabaseTruncater;
 import net.rrm.ehour.backup.service.backup.BackupConfig;
@@ -34,7 +35,7 @@ public class RestoreServiceImpl implements RestoreService {
     private EhourConfig ehourConfig;
 
     @Autowired
-    public RestoreServiceImpl(ConfigurationDao configurationDao, ConfigurationParserDao configurationParserDao, EntityParserDao entityParserDao, UserRoleParserDao userRoleParserDao, DatabaseTruncater databaseTruncater, EhourConfig ehourConfig, BackupConfig backupConfig) {
+    public RestoreServiceImpl(ConfigurationDao configurationDao, ConfigurationParserDao configurationParserDao, EntityParserDao entityParserDao, DatabaseTruncater databaseTruncater, EhourConfig ehourConfig, BackupConfig backupConfig) {
         this.configurationDao = configurationDao;
         this.configurationParserDao = configurationParserDao;
         this.entityParserDao = entityParserDao;
@@ -44,8 +45,8 @@ public class RestoreServiceImpl implements RestoreService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ParseSession importDatabase(ParseSession session) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = ImportException.class)
+    public ParseSession importDatabase(ParseSession session) throws ImportException {
         try {
             if (!ehourConfig.isInDemoMode()) {
                 databaseTruncater.truncateDatabase();
@@ -69,6 +70,7 @@ public class RestoreServiceImpl implements RestoreService {
             session.setGlobalError(true);
             session.setGlobalErrorMessage(e.getMessage());
             LOG.error(e.getMessage(), e);
+            throw new ImportException(e.getMessage(), e);
         } finally {
             session.deleteFile();
             session.setImported(true);

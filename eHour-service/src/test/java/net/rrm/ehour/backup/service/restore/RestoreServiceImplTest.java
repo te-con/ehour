@@ -1,6 +1,7 @@
 package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.config.EhourBackupConfig;
+import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.DatabaseTruncater;
 import net.rrm.ehour.backup.service.backup.BackupConfig;
@@ -56,7 +57,7 @@ public class RestoreServiceImplTest {
         backupConfig = new EhourBackupConfig();
 
         configStub = new EhourConfigStub();
-        restoreService = new RestoreServiceImpl(configurationDao, configurationParserDao, entityParserDao, userRoleParserDao, truncater, configStub, backupConfig);
+        restoreService = new RestoreServiceImpl(configurationDao, configurationParserDao, entityParserDao, truncater, configStub, backupConfig);
         restoreService.setConfigurationDao(configurationDao);
         restoreService.setDatabaseTruncater(truncater);
 
@@ -91,7 +92,7 @@ public class RestoreServiceImplTest {
     }
 
     @Test
-    public void shouldImport() throws IOException {
+    public void shouldImport() throws IOException, ImportException {
         Configuration version = new Configuration("version", "0.8.3");
 
         when(configurationDao.findById("version")).thenReturn(version);
@@ -115,7 +116,7 @@ public class RestoreServiceImplTest {
     }
 
     @Test
-    public void shouldNotImportInDemoMode() throws IOException {
+    public void shouldNotImportInDemoMode() throws IOException, ImportException {
         Configuration version = new Configuration("version", "0.8.3");
 
         when(configurationDao.findById("version")).thenReturn(version);

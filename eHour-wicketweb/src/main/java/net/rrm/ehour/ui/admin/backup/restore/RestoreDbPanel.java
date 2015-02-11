@@ -1,5 +1,6 @@
 package net.rrm.ehour.ui.admin.backup.restore;
 
+import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.restore.RestoreService;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
@@ -21,9 +22,12 @@ public class RestoreDbPanel extends AbstractBasePanel<ParseSession>
 
     public RestoreDbPanel(String id, ParseSession session)
     {
-        super(id, new Model<ParseSession>(session));
+        super(id, new Model<>(session));
 
-        restoreService.importDatabase(session);
+        try {
+            restoreService.importDatabase(session);
+        } catch (ImportException e) {
+        }
 
         ParseStatusPanel status = new ParseStatusPanel("status", getPanelModel());
         add(status);

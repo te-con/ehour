@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
+import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
 
 /**
@@ -20,5 +21,5 @@ public interface RestoreService {
      * @param session
      * @throws net.rrm.ehour.backup.domain.ImportException
      */
-    ParseSession importDatabase(ParseSession session);
+    ParseSession importDatabase(ParseSession session) throws ImportException;
 }
