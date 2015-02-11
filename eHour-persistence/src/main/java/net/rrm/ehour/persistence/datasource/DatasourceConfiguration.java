@@ -70,7 +70,7 @@ public class DatasourceConfiguration {
             ds.setPassword(password);
 
             ds.setDriverClass(driver);
-            ds.setInitialPoolSize(5);
+            ds.setInitialPoolSize(10);
             ds.setAcquireIncrement(2);
 
             ds.setIdleConnectionTestPeriod(30);
