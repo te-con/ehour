@@ -49,9 +49,7 @@ public class BackupDbRequestHandler implements IRequestHandler {
             LOG.error("Failed to backup database", e);
             throw new RuntimeException(e);
         }
-
     }
-
 
     private byte[] getData() {
         boolean authorized = checkAuthorization();
