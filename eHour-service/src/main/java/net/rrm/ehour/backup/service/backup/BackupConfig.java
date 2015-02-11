@@ -13,8 +13,5 @@ public interface BackupConfig {
 
     BackupJoinTable joinTableForName(String name);
 
-
     List<BackupEntityType> reverseOrderedValues();
-
-    BackupEntityType userRoleBackupEntity();
 }

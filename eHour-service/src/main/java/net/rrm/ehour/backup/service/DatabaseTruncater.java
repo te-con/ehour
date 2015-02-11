@@ -4,12 +4,15 @@ import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
+import net.rrm.ehour.domain.DomainObject;
 import net.rrm.ehour.domain.MailLog;
 import net.rrm.ehour.persistence.backup.dao.RestoreDao;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -18,6 +21,8 @@ import java.util.List;
  */
 @Service
 public class DatabaseTruncater {
+    private static final Logger LOG = Logger.getLogger(DatabaseTruncater.class);
+
     private RestoreDao restoreDao;
 
     private BackupConfig backupConfig;
@@ -33,8 +38,11 @@ public class DatabaseTruncater {
         List<BackupEntityType> types = backupConfig.reverseOrderedValues();
 
         for (BackupEntityType type : types) {
-            if (type.getDomainObjectClass() != null) {
-                restoreDao.delete(type.getDomainObjectClass());
+            Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass = type.getDomainObjectClass();
+
+            if (domainObjectClass != null) {
+                LOG.debug("Truncating table " + domainObjectClass);
+                restoreDao.delete(domainObjectClass);
             }
         }
 

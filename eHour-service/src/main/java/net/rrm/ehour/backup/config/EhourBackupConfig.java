@@ -52,7 +52,7 @@ public class EhourBackupConfig implements BackupConfig {
         Collections.sort(REVERSE_ORDER, new Comparator<BackupEntityType>() {
             @Override
             public int compare(BackupEntityType o1, BackupEntityType o2) {
-                return o1.getOrder() - o2.getOrder();
+                return o2.getOrder() - o1.getOrder();
             }
 
         });
@@ -98,11 +98,5 @@ public class EhourBackupConfig implements BackupConfig {
     @Override
     public BackupJoinTable joinTableForName(String name) {
         return JOIN_TABLE_NAME_MAP.get(name);
-    }
-
-    // @TODO REMOVE
-    @Override
-    public BackupEntityType userRoleBackupEntity() {
-        return null;
     }
 }
