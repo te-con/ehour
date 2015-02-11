@@ -166,7 +166,7 @@ public class EntityParser {
 
                 for (String fkId : targetFkIds) {
                     Serializable fkTransformedId;
-                    if (fkIdFieldDefinition.getField().getAnnotationsByType(GeneratedValue.class).length > 0) {
+                    if (fkIdFieldDefinition.getField().getAnnotation(GeneratedValue.class) != null) {
                         Class<?> fkIdType = fkIdFieldDefinition.getField().getType();
                         fkTransformedId = keyCache.getKey(fkType, fkIdType == Integer.class ? Integer.parseInt(fkId) : fkId);
                     } else {

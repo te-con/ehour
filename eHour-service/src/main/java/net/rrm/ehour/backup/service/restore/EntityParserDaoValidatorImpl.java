@@ -101,7 +101,7 @@ public class EntityParserDaoValidatorImpl implements EntityParserDao {
 
         Field[] declaredFields = type.getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            if (declaredField.getDeclaredAnnotation(Id.class) != null) {
+            if (declaredField.getAnnotation(Id.class) != null) {
                 idCache.put(type, declaredField);
                 return declaredField;
             }
