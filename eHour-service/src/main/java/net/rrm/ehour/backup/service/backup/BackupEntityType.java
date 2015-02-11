@@ -5,7 +5,7 @@ import net.rrm.ehour.persistence.backup.dao.BackupRowProcessor;
 
 import java.io.Serializable;
 
-public class BackupEntityType implements Comparable<BackupEntityType> {
+public class BackupEntityType implements Comparable<BackupEntityType>, Serializable {
     private String parentName;
     private Class<? extends DomainObject<? extends Serializable, ?>> domainObjectClass;
     private BackupRowProcessor processor;
