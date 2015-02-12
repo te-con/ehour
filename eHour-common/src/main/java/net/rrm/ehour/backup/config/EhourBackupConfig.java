@@ -32,19 +32,14 @@ public class EhourBackupConfig implements BackupConfig {
     private static final List<BackupEntityType> REVERSE_ORDER;
 
     private static final Map<Class<?>, BackupEntityType> ENTITY_CLASS_MAP;
-    private static final Map<String, BackupEntityType> ENTITY_CLASS_NAME_MAP;
-
 
     static {
         ENTITY_CLASS_MAP = new HashMap<>();
-        ENTITY_CLASS_NAME_MAP = new HashMap<>();
 
         for (BackupEntityType entity : ENTITIES) {
             if (entity.getDomainObjectClass() != null) {
                 ENTITY_CLASS_MAP.put(entity.getDomainObjectClass(), entity);
             }
-
-            ENTITY_CLASS_NAME_MAP.put(entity.name(), entity);
         }
 
         REVERSE_ORDER = new ArrayList<>(ENTITIES);
