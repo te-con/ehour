@@ -49,7 +49,7 @@ public class BackupPageTest extends BaseSpringWebAppTester {
 
     @Test
     public void shouldClickBackupLink() {
-        when(exportService.exportDatabase()).thenReturn("this should be xml");
+        when(exportService.exportDatabase()).thenReturn("this should be xml".getBytes());
 
         startPage();
 

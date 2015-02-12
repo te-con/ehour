@@ -39,7 +39,7 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
     }
 
     @Override
-    public byte[] exportDatabase() {
+    public synchronized byte[] exportDatabase() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         XMLStreamWriter writer = null;
@@ -54,7 +54,6 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
             LOGGER.error(e);
             return null;
         } finally {
-/* @TODO add after load test
             if (writer != null) {
                 try {
                     writer.close();
@@ -62,14 +61,13 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
 
                 }
             }
-*/
         }
     }
 
-    protected XMLStreamWriter createXmlWriter(OutputStream outputStream) throws XMLStreamException {
+    protected XMLStreamWriter createXmlWriter(OutputStream stream) throws XMLStreamException {
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
 
-        XMLStreamWriter writer = factory.createXMLStreamWriter(outputStream, "UTF-8");
+        XMLStreamWriter writer = factory.createXMLStreamWriter(stream, "UTF-8");
 
         PrettyPrintHandler handler = new PrettyPrintHandler(writer);
 

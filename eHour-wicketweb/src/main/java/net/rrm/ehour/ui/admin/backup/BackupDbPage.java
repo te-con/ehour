@@ -20,7 +20,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
 public class BackupDbPage extends AbstractAdminPage<Void> {
@@ -28,6 +29,7 @@ public class BackupDbPage extends AbstractAdminPage<Void> {
     private static final String ID_RESTORE_BORDER = "restoreBorder";
 
     private static final long serialVersionUID = 821234996218723175L;
+
     private Form<Void> form;
 
     public BackupDbPage() {
@@ -39,12 +41,10 @@ public class BackupDbPage extends AbstractAdminPage<Void> {
         GreyBlueRoundedBorder backupBorder = new GreyBlueRoundedBorder("backupBorder");
         frame.add(backupBorder);
 
-        backupBorder.add(new Link<Void>("backupLink") {
-            @Override
-            public void onClick() {
-                getRequestCycle().scheduleRequestHandlerAfterCurrent(new BackupDbRequestHandler());
-            }
-        });
+        IModel<Boolean> busyModel = new Model<>(Boolean.FALSE);
+        BackupDownloadBehavior downloadBehavior = new BackupDownloadBehavior(busyModel);
+        SingleDownloadLink link = new SingleDownloadLink("backupLink", busyModel, downloadBehavior);
+        backupBorder.add(link);
 
         GreyBlueRoundedBorder restoreBorder = new GreyBlueRoundedBorder(ID_RESTORE_BORDER);
         frame.add(restoreBorder);
@@ -58,7 +58,7 @@ public class BackupDbPage extends AbstractAdminPage<Void> {
     }
 
     private Form<Void> addUploadForm(String id) {
-        Form<Void> form = new Form<Void>(id);
+        Form<Void> form = new Form<>(id);
         form.setMultiPart(true);
 
         add(form);
