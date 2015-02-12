@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.config;
 
-import net.rrm.ehour.backup.service.backup.BackupEntityType;
+import net.rrm.ehour.backup.common.BackupEntityType;
 import org.junit.Test;
 
 import java.util.List;

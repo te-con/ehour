@@ -1,8 +1,8 @@
 package net.rrm.ehour.backup.service;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.backup.service.backup.BackupConfig;
-import net.rrm.ehour.backup.service.backup.BackupEntityType;
+import net.rrm.ehour.backup.common.BackupConfig;
+import net.rrm.ehour.backup.common.BackupEntityType;
 import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.persistence.backup.dao.RestoreDao;
 import org.junit.Before;

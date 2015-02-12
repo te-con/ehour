@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.service;
 
-import net.rrm.ehour.backup.service.backup.BackupConfig;
-import net.rrm.ehour.backup.service.backup.BackupEntityType;
+import net.rrm.ehour.backup.common.BackupConfig;
+import net.rrm.ehour.backup.common.BackupEntityType;
 import net.rrm.ehour.domain.BinaryConfiguration;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.domain.DomainObject;

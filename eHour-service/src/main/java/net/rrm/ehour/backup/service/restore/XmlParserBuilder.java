@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
-import net.rrm.ehour.backup.service.backup.BackupConfig;
+import net.rrm.ehour.backup.common.BackupConfig;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.springframework.util.Assert;
 

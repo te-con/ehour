@@ -1,4 +1,4 @@
-package net.rrm.ehour.persistence.backup.dao;
+package net.rrm.ehour.backup.common;
 
 import java.io.Serializable;
 import java.util.List;

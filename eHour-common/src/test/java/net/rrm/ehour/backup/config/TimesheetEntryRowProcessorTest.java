@@ -1,4 +1,4 @@
-package net.rrm.ehour.persistence.backup.dao;
+package net.rrm.ehour.backup.config;
 
 import org.junit.Test;
 

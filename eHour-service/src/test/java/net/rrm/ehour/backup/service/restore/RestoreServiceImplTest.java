@@ -1,10 +1,10 @@
 package net.rrm.ehour.backup.service.restore;
 
+import net.rrm.ehour.backup.common.BackupConfig;
 import net.rrm.ehour.backup.config.EhourBackupConfig;
 import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.DatabaseTruncater;
-import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;

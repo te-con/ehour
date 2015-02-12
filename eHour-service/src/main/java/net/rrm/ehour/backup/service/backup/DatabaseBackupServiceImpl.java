@@ -1,5 +1,8 @@
 package net.rrm.ehour.backup.service.backup;
 
+import net.rrm.ehour.backup.common.BackupConfig;
+import net.rrm.ehour.backup.common.BackupEntityType;
+import net.rrm.ehour.backup.common.BackupJoinTable;
 import net.rrm.ehour.backup.domain.ExportElements;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.service.ConfigurationService;

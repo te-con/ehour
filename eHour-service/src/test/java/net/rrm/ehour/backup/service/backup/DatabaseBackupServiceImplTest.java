@@ -1,6 +1,7 @@
 package net.rrm.ehour.backup.service.backup;
 
 import com.google.common.collect.Lists;
+import net.rrm.ehour.backup.common.BackupConfig;
 import net.rrm.ehour.backup.config.EhourBackupConfig;
 import net.rrm.ehour.config.ConfigurationItem;
 import net.rrm.ehour.config.EhourConfigStub;

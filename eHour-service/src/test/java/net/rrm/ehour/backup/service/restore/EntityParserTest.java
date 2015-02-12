@@ -1,9 +1,9 @@
 package net.rrm.ehour.backup.service.restore;
 
+import net.rrm.ehour.backup.common.BackupConfig;
+import net.rrm.ehour.backup.common.BackupEntityType;
 import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.backup.service.backup.BackupConfig;
-import net.rrm.ehour.backup.service.backup.BackupEntityType;
 import net.rrm.ehour.domain.*;
 import org.junit.Before;
 import org.junit.Ignore;

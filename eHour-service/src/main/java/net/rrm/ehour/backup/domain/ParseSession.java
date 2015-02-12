@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.domain;
 
-import net.rrm.ehour.backup.service.backup.BackupEntityType;
+import net.rrm.ehour.backup.common.BackupEntityType;
 
 import java.io.File;
 import java.io.Serializable;

@@ -2,11 +2,10 @@ package net.rrm.ehour.backup.config;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.rrm.ehour.backup.service.backup.BackupConfig;
-import net.rrm.ehour.backup.service.backup.BackupEntityType;
-import net.rrm.ehour.backup.service.backup.BackupJoinTable;
+import net.rrm.ehour.backup.common.BackupConfig;
+import net.rrm.ehour.backup.common.BackupEntityType;
+import net.rrm.ehour.backup.common.BackupJoinTable;
 import net.rrm.ehour.domain.*;
-import net.rrm.ehour.persistence.backup.dao.TimesheetEntryRowProcessor;
 
 import java.util.*;
 
@@ -78,11 +77,6 @@ public class EhourBackupConfig implements BackupConfig {
     @Override
     public BackupEntityType entityForClass(Class clazz) {
         return ENTITY_CLASS_MAP.get(clazz);
-    }
-
-    @Override
-    public BackupEntityType entityForName(String name) {
-        return ENTITY_CLASS_NAME_MAP.get(name);
     }
 
     @Override

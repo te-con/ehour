@@ -1,4 +1,4 @@
-package net.rrm.ehour.backup.service.backup;
+package net.rrm.ehour.backup.common;
 
 public class BackupJoinTable {
     private String tableName;

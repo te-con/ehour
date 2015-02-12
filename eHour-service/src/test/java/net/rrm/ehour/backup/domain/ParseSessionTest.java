@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.domain;
 
 import junit.framework.TestCase;
-import net.rrm.ehour.backup.service.backup.BackupEntityType;
+import net.rrm.ehour.backup.common.BackupEntityType;
 import org.junit.Before;
 import org.junit.Test;
 

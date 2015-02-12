@@ -1,7 +1,6 @@
-package net.rrm.ehour.backup.service.backup;
+package net.rrm.ehour.backup.common;
 
 import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.persistence.backup.dao.BackupRowProcessor;
 
 import java.io.Serializable;
 

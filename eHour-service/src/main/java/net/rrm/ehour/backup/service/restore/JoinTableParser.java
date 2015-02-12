@@ -1,7 +1,7 @@
 package net.rrm.ehour.backup.service.restore;
 
-import net.rrm.ehour.backup.service.backup.BackupConfig;
-import net.rrm.ehour.backup.service.backup.BackupJoinTable;
+import net.rrm.ehour.backup.common.BackupConfig;
+import net.rrm.ehour.backup.common.BackupJoinTable;
 import org.apache.log4j.Logger;
 
 import javax.xml.namespace.QName;
