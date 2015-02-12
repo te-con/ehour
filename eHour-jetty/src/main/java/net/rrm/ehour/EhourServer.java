@@ -17,7 +17,6 @@
 package net.rrm.ehour;
 
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.util.IoUtil;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.xml.XmlConfiguration;
@@ -53,10 +52,7 @@ public class EhourServer {
 
         File jettyXmlFile = EhourHomeUtil.getFileInConfDir(config.getDefaultConfigFileName());
 
-        FileInputStream stream = null;
-
-        try {
-            stream = new FileInputStream(jettyXmlFile);
+        try (FileInputStream stream = new FileInputStream(jettyXmlFile)) {
 
             XmlConfiguration configuration = new XmlConfiguration(stream);
             configuration.configure(server);
@@ -66,8 +62,6 @@ public class EhourServer {
             if (!isInTestMode()) {
                 server.join();
             }
-        } finally {
-            IoUtil.close(stream);
         }
     }
 

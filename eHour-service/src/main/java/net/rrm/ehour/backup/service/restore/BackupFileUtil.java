@@ -1,7 +1,5 @@
 package net.rrm.ehour.backup.service.restore;
 
-import net.rrm.ehour.util.IoUtil;
-
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -23,17 +21,11 @@ public final class BackupFileUtil {
      * @throws IOException
      */
     static String writeToTempFile(String xmlData) throws IOException {
-        FileWriter writer = null;
-        File file;
+        File file = File.createTempFile("import", "xml");
+        file.deleteOnExit();
 
-        try {
-            file = File.createTempFile("import", "xml");
-            file.deleteOnExit();
-
-            writer = new FileWriter(file);
+        try (FileWriter writer = new FileWriter(file)) {
             writer.write(xmlData);
-        } finally {
-            IoUtil.close(writer);
         }
 
         return file.getAbsolutePath();
@@ -66,14 +58,7 @@ public final class BackupFileUtil {
     }
 
     private static String getXmlDataFromFile(String filename) throws IOException {
-        FileReader reader = null;
-        BufferedReader bufferedReader = null;
-
-        try {
-            File file = new File(filename);
-            reader = new FileReader(file);
-            bufferedReader = new BufferedReader(reader);
-
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(filename)))) {
             String line;
             StringBuilder xmlData = new StringBuilder();
 
@@ -82,9 +67,6 @@ public final class BackupFileUtil {
             }
 
             return xmlData.toString();
-        } finally {
-            IoUtil.close(bufferedReader);
-            IoUtil.close(reader);
         }
     }
 }
