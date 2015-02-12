@@ -1,4 +1,4 @@
-package net.rrm.ehour.ui.admin.backup;
+package net.rrm.ehour.ui.admin.backup.backup;
 
 import net.rrm.ehour.backup.service.backup.DatabaseBackupService;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
