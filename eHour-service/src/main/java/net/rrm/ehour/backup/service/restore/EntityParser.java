@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
+import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.domain.ParserUtil;
 import net.rrm.ehour.backup.service.backup.BackupConfig;
@@ -28,7 +29,6 @@ import java.util.*;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: Nov 16, 2010 - 11:18:59 PM
  */
-// TODO rename to EntityParser
 public class EntityParser {
     private EntityParserDao parserDao;
 
@@ -56,7 +56,7 @@ public class EntityParser {
         this.backupConfig = backupConfig;
     }
 
-    public <PK extends Serializable, T extends DomainObject<PK, ?>> List<T> parse(Class<T> clazz, JoinTables joinTables, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException {
+    public <PK extends Serializable, T extends DomainObject<PK, ?>> List<T> parse(Class<T> clazz, JoinTables joinTables, ParseSession status) throws IllegalAccessException, InstantiationException, XMLStreamException, ImportException {
         FieldMap fieldMap = FieldMapFactory.buildFieldMapForEntity(clazz);
         this.status = status;
 
@@ -66,7 +66,7 @@ public class EntityParser {
     /**
      * Parse domain object with reader pointing on the table name tag
      */
-    private <PK extends Serializable, T extends DomainObject<PK, ?>> List<T> parseDomainObjects(Class<T> clazz, FieldMap fieldMap, JoinTables joinTables, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException {
+    private <PK extends Serializable, T extends DomainObject<PK, ?>> List<T> parseDomainObjects(Class<T> clazz, FieldMap fieldMap, JoinTables joinTables, ParseSession status) throws XMLStreamException, IllegalAccessException, InstantiationException, ImportException {
         List<T> domainObjects = new ArrayList<>();
 
         while (reader.hasNext()) {
@@ -88,7 +88,7 @@ public class EntityParser {
     }
 
     @SuppressWarnings("unchecked")
-    private <PK extends Serializable, T extends DomainObject<PK, ?>> T parseAndPersistDomainObject(Class<T> clazz, FieldMap fieldMap, JoinTables joinTables) throws XMLStreamException, IllegalAccessException, InstantiationException {
+    private <PK extends Serializable, T extends DomainObject<PK, ?>> T parseAndPersistDomainObject(Class<T> clazz, FieldMap fieldMap, JoinTables joinTables) throws XMLStreamException, IllegalAccessException, InstantiationException, ImportException {
         T targetObject = clazz.newInstance();
 
         Map<Class<?>, Object> embeddables = new HashMap<>();
@@ -126,13 +126,25 @@ public class EntityParser {
         Serializable primaryKey = parserDao.persist(targetObject);
 
         if (!hasCompositeKey) {
-            Serializable casted = originalKey.getClass().cast(primaryKey);
-
+            Serializable casted = castOrLog(originalKey, primaryKey);
 
             keyCache.putKey(targetObject.getClass(), originalKey, casted);
         }
 
         return targetObject;
+    }
+
+    private <PK extends Serializable> Serializable castOrLog(PK originalKey, Serializable primaryKey) throws ImportException {
+        try {
+            if (primaryKey.getClass().equals(originalKey.getClass())) {
+                return originalKey.getClass().cast(primaryKey);
+            } else {
+                LOG.error("This should only happen while running junit tests.");
+                return null;
+            }
+        } catch (ClassCastException cce) {
+            throw new ImportException("can't cast " + primaryKey.toString() + " to " + originalKey.toString()+ ": " + cce.getMessage(), cce);
+        }
     }
 
     @SuppressWarnings("unchecked")

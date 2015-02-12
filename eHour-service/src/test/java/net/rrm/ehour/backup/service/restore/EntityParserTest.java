@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service.restore;
 
+import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.backup.service.backup.BackupEntityType;
@@ -17,6 +18,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -55,7 +57,7 @@ public class EntityParserTest {
     }
 
     @Test
-    public void shouldParseTwoTimesheetEntries() throws XMLStreamException, InstantiationException, IllegalAccessException {
+    public void shouldParseTwoTimesheetEntries() throws XMLStreamException, InstantiationException, IllegalAccessException, ImportException {
         EntityParser parser = createParser("<TIMESHEET_ENTRIES CLASS=\"net.rrm.ehour.domain.TimesheetEntry\">\n<TIMESHEET_ENTRY>\n<ASSIGNMENT_ID>1</ASSIGNMENT_ID>\n<ENTRY_DATE>2007-03-26</ENTRY_DATE>\n<HOURS>8.0</HOURS>\n   <COMMENT>jaja</COMMENT>\n  </TIMESHEET_ENTRY>\n  <TIMESHEET_ENTRY>\n   <ASSIGNMENT_ID>2</ASSIGNMENT_ID>\n   <ENTRY_DATE>2007-03-26</ENTRY_DATE>\n   <HOURS>0.0</HOURS>\n  </TIMESHEET_ENTRY>\n  </TIMESHEET_ENTRIES>\n", ProjectAssignmentObjectMother.createProjectAssignment(1), 1);
 
         keyCache.putKey(ProjectAssignment.class, 1, 1);
@@ -73,7 +75,7 @@ public class EntityParserTest {
     }
 
     @Test
-    public void shouldParseUserAndStoreNewKeyInCacheMap() throws XMLStreamException, InstantiationException, IllegalAccessException {
+    public void shouldParseUserAndStoreNewKeyInCacheMap() throws XMLStreamException, InstantiationException, IllegalAccessException, ImportException {
         UserDepartment department = UserDepartmentObjectMother.createUserDepartment();
 
         EntityParser parser = createParser("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n     <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n    <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);
@@ -92,15 +94,15 @@ public class EntityParserTest {
         assertEquals("t@t.net", user.getEmail());
         assertTrue(user.isActive());
 
-        assertFalse(parser.getKeyCache().isEmpty());
+        PrimaryKeyCache keyCache = parser.getKeyCache();
+        assertFalse(keyCache.isEmpty());
 
-        Serializable userPk = parser.getKeyCache().getKey(User.class, 3);
-        assertNotNull(userPk);
-        assertEquals("2", userPk);
+        Map<Serializable, Serializable> map = keyCache.keyMap.get(User.class);
+        assertEquals(2, map.entrySet().size());
     }
 
     @Test
-    public void shouldParseEnum() throws IllegalAccessException, XMLStreamException, InstantiationException {
+    public void shouldParseEnum() throws IllegalAccessException, XMLStreamException, InstantiationException, ImportException {
         EntityParser parser = createParser(" <AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", UserObjectMother.createUser(), 2);
 
         when(backupConfig.entityForClass(Audit.class)).thenReturn(mock(BackupEntityType.class));
@@ -113,7 +115,7 @@ public class EntityParserTest {
     }
 
     @Test
-    public void shouldRetrieveManyToOne() throws IllegalAccessException, XMLStreamException, InstantiationException {
+    public void shouldRetrieveManyToOne() throws IllegalAccessException, XMLStreamException, InstantiationException, ImportException {
         User user = UserObjectMother.createUser();
 
         EntityParser parser = createParser("<AUDITS CLASS=\"net.rrm.ehour.domain.Audit\"><AUDIT>\n   <AUDIT_ID>173</AUDIT_ID>\n   <USER_ID>2</USER_ID>\n   <USER_FULLNAME>Edeling, Thies</USER_FULLNAME>\n   <AUDIT_DATE>2010-01-12 16:20:51.0</AUDIT_DATE>\n   <SUCCESS>Y</SUCCESS>\n   <AUDIT_ACTION_TYPE>LOGIN</AUDIT_ACTION_TYPE>\n  </AUDIT></AUDITS>\n", user, 2);
@@ -133,7 +135,7 @@ public class EntityParserTest {
 
     @Test
     @Ignore
-    public void shouldImportManyToMany() throws XMLStreamException, InstantiationException, IllegalAccessException {
+    public void shouldImportManyToMany() throws XMLStreamException, InstantiationException, IllegalAccessException, ImportException {
         UserDepartment department = UserDepartmentObjectMother.createUserDepartment();
 
         EntityParser parser = createParser("<USERLIST>\n  <USERS>\n   <USER_ID>1</USER_ID>\n   <USERNAME>admin</USERNAME>\n   <PASSWORD>1d798ca9dba7df61bf399a02695f9f50034bad66</PASSWORD>\n   <FIRST_NAME>eHour</FIRST_NAME>\n   <LAST_NAME>Admin</LAST_NAME>\n     <EMAIL>t@t.net</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n  </USERS>\n  <USERS>\n   <USER_ID>3</USER_ID>\n   <USERNAME>thies</USERNAME>\n   <PASSWORD>e2e90187007d55ae40678e11e0c9581cb7bb9928</PASSWORD>\n   <FIRST_NAME>Thies</FIRST_NAME>\n   <LAST_NAME>Edeling</LAST_NAME>\n    <EMAIL>thies@te-con.nl</EMAIL>\n   <ACTIVE>Y</ACTIVE>\n   <SALT>6367</SALT>\n  </USERS>\n  </USERLIST>\n", department, 1);

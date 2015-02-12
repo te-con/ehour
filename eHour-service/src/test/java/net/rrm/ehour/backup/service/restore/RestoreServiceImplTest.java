@@ -6,9 +6,7 @@ import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.DatabaseTruncater;
 import net.rrm.ehour.backup.service.backup.BackupConfig;
 import net.rrm.ehour.config.EhourConfigStub;
-import net.rrm.ehour.domain.Configuration;
-import net.rrm.ehour.domain.DomainObject;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -62,6 +60,8 @@ public class RestoreServiceImplTest {
         restoreService.setDatabaseTruncater(truncater);
 
         when(entityParserDao.persist(any(User.class))).thenReturn(10);
+        when(entityParserDao.persist(any(UserRole.class))).thenReturn("ADMIN");
+        when(entityParserDao.persist(any(UserDepartment.class))).thenReturn(2);
     }
 
     @Test
@@ -103,13 +103,11 @@ public class RestoreServiceImplTest {
         FileUtils.copyFile(file, destFile);
 
         ParseSession session = new ParseSession();
-
         session.setFilename(destFile.getAbsolutePath());
 
         ParseSession status = restoreService.importDatabase(session);
 
         assertFalse(status.isImportable());
-
         assertFalse(destFile.exists());
 
         verify(entityParserDao, times(10)).persist(any(DomainObject.class));

@@ -42,12 +42,18 @@ public class EntityTableParser {
         StartElement element = event.asStartElement();
         Attribute attribute = element.getAttributeByName(new QName("CLASS"));
 
+
         if (attribute != null) {
-            String aClass = attribute.getValue();
+            try {
+                String aClass = attribute.getValue();
 
-            Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
+                Class<? extends DomainObject> doClass = (Class<? extends DomainObject>) Class.forName(aClass);
 
-            entityParser.parse(doClass, joinTables, status);
+                entityParser.parse(doClass, joinTables, status);
+            } catch (Exception e) {
+                LOG.warn("element " + attribute.getValue() + " threw " + e.getMessage(), e);
+                throw new ImportException("element " + attribute.getValue() + " threw " + e.getMessage(), e);
+            }
         } else {
             throw new ImportException("Invalid XML, no attribute found for element: " + element.getName().getLocalPart());
         }
