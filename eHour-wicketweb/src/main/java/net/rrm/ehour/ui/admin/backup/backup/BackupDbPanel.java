@@ -18,7 +18,7 @@ public class BackupDbPanel extends AbstractBasePanel<Void> {
     protected void onInitialize() {
         super.onInitialize();
 
-        GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("admin.export.title"));
+        GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("admin.export.backup.title"));
         add(frame);
 
         GreyBlueRoundedBorder backupBorder = new GreyBlueRoundedBorder(ID_BACKUP_BORDER);
