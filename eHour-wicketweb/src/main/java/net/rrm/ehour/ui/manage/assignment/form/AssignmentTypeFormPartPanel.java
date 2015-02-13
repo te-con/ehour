@@ -69,7 +69,8 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
         final PropertyModel<Boolean> showOverrunHoursModel = new PropertyModel<Boolean>(model, "showOverrunHours");
 
         // assignment type
-        final DropDownChoice<ProjectAssignmentType> assignmentTypeChoice = new DropDownChoice<ProjectAssignmentType>("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer());
+        final DropDownChoice<ProjectAssignmentType> assignmentTypeChoice = new DropDownChoice<>(
+                "projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer());
         assignmentTypeChoice.setRequired(true);
         assignmentTypeChoice.setNullValid(false);
         assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));

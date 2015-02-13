@@ -22,7 +22,7 @@
 		WHERE pa.project.active is true AND
 			  pa.project.customer.active is true AND 
 			  pa.user.userId = :userId AND
-			  pa.assignmentType.assignmentTypeId = :type
+			  pa.assignmentType = :type
 		ORDER BY pa.dateStart, pa.project.name
 	</query>	
 

@@ -140,6 +140,6 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
     @Override
     @Transactional(readOnly = true)
     public List<ProjectAssignmentType> getProjectAssignmentTypes() {
-        return projectAssignmentDAO.findProjectAssignmentTypes();
+        return Arrays.asList(ProjectAssignmentType.values());
     }
 }

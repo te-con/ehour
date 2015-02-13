@@ -118,9 +118,6 @@
         <foreign-key foreignTable="users" name="PROJECT_ASSIGNMENT_fk1">
             <reference local="USER_ID" foreign="USER_ID"/>
         </foreign-key>
-        <foreign-key foreignTable="project_assignment_type" name="PROJECT_ASSIGNMENT_fk2">
-            <reference local="ASSIGNMENT_TYPE_ID" foreign="ASSIGNMENT_TYPE_ID"/>
-        </foreign-key>
         <index name="PROJECT_ID">
             <index-column name="PROJECT_ID"/>
         </index>
@@ -130,12 +127,6 @@
         <index name="ASSIGNMENT_TYPE_ID">
             <index-column name="ASSIGNMENT_TYPE_ID"/>
         </index>
-    </table>
-    <table name="project_assignment_type">
-        <column name="ASSIGNMENT_TYPE_ID" primaryKey="true" required="true"
-                type="INTEGER" size="10" autoIncrement="false"/>
-        <column name="ASSIGNMENT_TYPE" primaryKey="false" required="false"
-                type="VARCHAR" size="64" autoIncrement="false"/>
     </table>
     <table name="timesheet_comment">
         <column name="USER_ID" primaryKey="true" required="true" type="INTEGER"

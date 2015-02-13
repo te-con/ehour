@@ -22,8 +22,7 @@ import net.rrm.ehour.ui.common.util.WebUtils;
 /**
  * ProjectAssignment renderer
  */
-
-public class ProjectAssignmentTypeRenderer extends LocalizedDomainObjectResourceRenderer<ProjectAssignmentType> {
+public class ProjectAssignmentTypeRenderer extends LocalizedResourceRenderer<ProjectAssignmentType> {
     private static final long serialVersionUID = -4020935210828625185L;
 
     @Override
