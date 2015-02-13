@@ -201,17 +201,19 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
                     EntrySelectorData.ColumnType columnType = header.getColumnType();
 
                     Label label;
-                    if ((columnType == EntrySelectorData.ColumnType.DATE)) {
+                    if (columnType == EntrySelectorData.ColumnType.DATE) {
                         Date date = (Date) serializable;
 
                         DateModel dateModel;
                         dateModel = new DateModel(date, EhourWebSession.getEhourConfig(), DateModel.DATESTYLE_FULL_SHORT);
                         label = new Label(cells.newChildId(), dateModel);
                         label.setEscapeModelStrings(false);
-                        label.setEscapeModelStrings(false);
-
                     } else {
                         label = new Label(cells.newChildId(), serializable);
+                    }
+
+                    if (columnType == EntrySelectorData.ColumnType.HTML) {
+                        label.setEscapeModelStrings(false);
                     }
 
                     cells.add(label);

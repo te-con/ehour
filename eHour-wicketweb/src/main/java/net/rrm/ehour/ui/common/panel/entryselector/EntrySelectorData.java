@@ -76,6 +76,7 @@ public class EntrySelectorData implements IClusterable {
     public static enum ColumnType {
         TEXT,
         NUMERIC,
-        DATE
+        DATE,
+        HTML
     }
 }
