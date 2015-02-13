@@ -911,7 +911,7 @@ hr {
 }
 
 .adminForm input[type=text], .adminForm input[type=password], .adminForm select, .adminForm textarea {
-    width: 20em;
+    width: 30em;
 }
 
 .adminForm input[type=text].numeric {

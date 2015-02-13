@@ -147,7 +147,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
                                 : assignment.getRole()));
 
                 item.add(new Label("currency", Currency.getInstance(config.getCurrency()).getSymbol(config.getCurrency())));
-                item.add(new Label("rate", new Model<Float>(assignment.getHourlyRate())));
+                item.add(new Label("rate", new Model<>(assignment.getHourlyRate())));
 
             }
         };

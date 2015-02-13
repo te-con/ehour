@@ -20,10 +20,13 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.component.XlsxLink;
 import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
+import net.rrm.ehour.ui.common.model.DateModel;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.excel.IWriteBytes;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.wicket.Container;
+import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
@@ -46,6 +49,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Date;
 
 import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.EntrySelectorRow;
 
@@ -54,6 +58,8 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Entr
  */
 
 public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
+    private static final Logger LOG = Logger.getLogger(EntrySelectorPanel.class);
+
     private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
     private static final String ITEM_LIST_ID = "itemList";
@@ -169,7 +175,8 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
         for (EntrySelectorData.Header header : getPanelModelObject().getColumnHeaders()) {
             Label label = new Label(cells.newChildId(), new ResourceModel(header.getResourceLabel()));
-            if (header.getColumnType() == EntrySelectorData.ColumnType.NUMERIC) {
+            if (header.getColumnType() == EntrySelectorData.ColumnType.NUMERIC ||
+                    header.getColumnType() == EntrySelectorData.ColumnType.DATE) {
                 label.add(AttributeModifier.replace("class", "numeric"));
             }
             cells.add(label);
@@ -190,12 +197,29 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
                 int index = 0;
 
                 for (Serializable serializable : object.getCells()) {
-                    Label label = new Label(cells.newChildId(), serializable);
+                    EntrySelectorData.Header header = getPanelModelObject().getColumnHeaders().get(index);
+                    EntrySelectorData.ColumnType columnType = header.getColumnType();
+
+                    Label label;
+                    if ((columnType == EntrySelectorData.ColumnType.DATE)) {
+                        Date date = (Date) serializable;
+
+                        DateModel dateModel;
+                        dateModel = new DateModel(date, EhourWebSession.getEhourConfig(), DateModel.DATESTYLE_FULL_SHORT);
+                        label = new Label(cells.newChildId(), dateModel);
+                        label.setEscapeModelStrings(false);
+                        label.setEscapeModelStrings(false);
+
+                    } else {
+                        label = new Label(cells.newChildId(), serializable);
+                    }
+
                     cells.add(label);
 
-                    EntrySelectorData.Header header = getPanelModelObject().getColumnHeaders().get(index);
 
-                    if (header.getColumnType() == EntrySelectorData.ColumnType.NUMERIC) {
+                    if (columnType == EntrySelectorData.ColumnType.NUMERIC) {
+                        label.add(AttributeModifier.replace("class", "numeric"));
+                    } else if (columnType == EntrySelectorData.ColumnType.DATE) {
                         label.add(AttributeModifier.replace("class", "numeric"));
                     }
 
@@ -241,13 +265,13 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
     private XlsxLink createExcelLink() {
         return new XlsxLink("toExcel", "out.xlsx", new IWriteBytes() {
-                @Override
-                public void write(OutputStream stream) throws IOException {
-                    EntrySelectorExcelGenerator excelGenerator = new EntrySelectorExcelGenerator();
-                    ExcelWorkbook workbook = excelGenerator.create(getPanelModelObject(), "Export");
-                    workbook.write(stream);
-                }
-            });
+            @Override
+            public void write(OutputStream stream) throws IOException {
+                EntrySelectorExcelGenerator excelGenerator = new EntrySelectorExcelGenerator();
+                ExcelWorkbook workbook = excelGenerator.create(getPanelModelObject(), "Export");
+                workbook.write(stream);
+            }
+        });
     }
 
     private void addHideInactiveFilter(Form<Void> form) {

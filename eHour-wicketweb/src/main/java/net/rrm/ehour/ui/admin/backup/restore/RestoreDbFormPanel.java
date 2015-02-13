@@ -5,6 +5,7 @@ import net.rrm.ehour.ui.admin.backup.BackupAjaxEventType;
 import net.rrm.ehour.ui.common.border.GreyBlueRoundedBorder;
 import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
 import net.rrm.ehour.ui.common.component.PlaceholderPanel;
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.MessageResourceModel;
@@ -12,6 +13,7 @@ import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.basic.Label;
@@ -34,25 +36,21 @@ public class RestoreDbFormPanel extends AbstractAjaxPanel<Void> {
     protected void onInitialize() {
         super.onInitialize();
 
-        GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("admin.export.title"));
-        add(frame);
+        GreyRoundedBorder frame = new GreyRoundedBorder("frame", new ResourceModel("admin.export.restore.title"));
+        addOrReplace(frame);
 
         GreyBlueRoundedBorder restoreBorder = new GreyBlueRoundedBorder(ID_RESTORE_BORDER);
         frame.add(restoreBorder);
-        form = addUploadForm("form");
 
+        form = addUploadForm("form");
         restoreBorder.add(form);
 
         form.add(new PlaceholderPanel(ID_PARSE_STATUS));
-
     }
-
 
     private Form<Void> addUploadForm(String id) {
         Form<Void> form = new Form<>(id);
         form.setMultiPart(true);
-
-        add(form);
 
         final FileUploadField file = new FileUploadField("file");
         form.add(file);
@@ -84,6 +82,13 @@ public class RestoreDbFormPanel extends AbstractAjaxPanel<Void> {
                 }
 
                 replaceStatusPanel(replacementPanel, target);
+            }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
             }
 
             @Override

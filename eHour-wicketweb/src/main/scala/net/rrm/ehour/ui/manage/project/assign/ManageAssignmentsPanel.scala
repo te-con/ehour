@@ -27,8 +27,6 @@ import org.apache.wicket.markup.html.border.Border
 import org.apache.wicket.model.{CompoundPropertyModel, IModel, ResourceModel}
 import org.apache.wicket.request.resource.CssResourceReference
 import org.apache.wicket.spring.injection.annot.SpringBean
-import org.joda.time.LocalDateTime
-import org.joda.time.format.DateTimeFormat
 
 class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IModel[T], panelConfig: ManagementPanelConfig = ManagementPanelConfig(onlyDeactivation = false, borderless = false, wide = false)) extends AbstractAjaxPanel(id, model) {
   val BorderId = "border"
@@ -85,17 +83,16 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
   private def createSelectorData(assignments: List[ProjectAssignment]): EntrySelectorData = {
     val headers = Lists.newArrayList(new EntrySelectorData.Header("admin.project.assignments.user"),
       new EntrySelectorData.Header("admin.project.assignments.role"),
-      new EntrySelectorData.Header("admin.project.assignments.date"),
+      new EntrySelectorData.Header("admin.project.assignments.date.start", ColumnType.DATE),
+      new EntrySelectorData.Header("admin.project.assignments.date.end", ColumnType.DATE),
       new EntrySelectorData.Header("admin.project.assignments.rate", ColumnType.NUMERIC)
     )
 
-    val formatter = DateTimeFormat.forPattern("dd-MM-yyyy")
-
     val rows = for (assignment <- assignments) yield {
-      val start = formatter.print(new LocalDateTime(assignment.getDateStart))
-      val end = formatter.print(new LocalDateTime(assignment.getDateEnd))
+      val start = assignment.getDateStart
+      val end = assignment.getDateEnd
 
-      val cells = Lists.newArrayList(assignment.getUser.getFullName, assignment.getRole, s"$start - $end", assignment.getHourlyRate)
+      val cells = Lists.newArrayList(assignment.getUser.getFullName, assignment.getRole, start, end, assignment.getHourlyRate)
       new EntrySelectorData.EntrySelectorRow(cells, assignment.getPK)
     }
 
