@@ -88,13 +88,15 @@ function Timesheet() {
 
     function filter() {
         var q = $.trim($("#filter").val()).toLowerCase();
-
+        var r = new RegExp(q.replace('*', '.*'));
         var timesheetTable = $(".timesheetTable");
 
         timesheetTable.find(".projectName").each(function (idx, element) {
             var e = $(element).closest('.projectRow');
 
-            if ($(element).text().toLowerCase().indexOf(q) >= 0) {
+            var xs = r.exec($(element).text().toLowerCase());
+
+            if (xs != null) {
                 e.data("visible", true);
                 e.show();
             } else {
