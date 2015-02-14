@@ -76,7 +76,7 @@ class ManageAssignmentsPanel[T <: ProjectAdminBackingBean](id: String, model: IM
       }
     }
 
-    val selector = new AssignmentSelector(ListId, createSelectorData(xs), ch, panelConfig.onlyDeactivation, true)
+    val selector = new AssignmentSelector(ListId, createSelectorData(xs), clickHandler = ch, onlyDeactivate = panelConfig.onlyDeactivation, wide = true)
     selector.setOutputMarkupId(true)
     selector
   }

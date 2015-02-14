@@ -58,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer != null) {
             if (customer.getProjects() != null &&
                     customer.getProjects().size() > 0) {
-                throw new ParentChildConstraintException(customer.getProjects().size() + " projects attached to customer");
+                throw new ParentChildConstraintException(customer.getProjects().size() + " projects attached to client");
             } else {
                 try {
                     customerDAO.delete(customer);
@@ -99,7 +99,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     public Customer persistCustomer(Customer customer) throws ObjectNotUniqueException {
-        LOGGER.info("Persisting customer: " + customer);
+        LOGGER.info("Persisting client: " + customer);
 
         try {
             customerDAO.persist(customer);
