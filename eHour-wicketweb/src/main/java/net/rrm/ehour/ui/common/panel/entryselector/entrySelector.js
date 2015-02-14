@@ -1,12 +1,14 @@
-function EntrySelector(filterInputSelector, targetListSelector) {
+function EntrySelector(baseId, filterInputSelector, targetListSelector) {
 
     var filterInput = filterInputSelector;
     var targetList = targetListSelector;
+    var base = $(baseId);
+
 
     var widths;
 
     this.initFilter = function () {
-        var filter = $(filterInput);
+        var filter = input();
 
         $(filter).unbind('keyup');
 
@@ -18,12 +20,20 @@ function EntrySelector(filterInputSelector, targetListSelector) {
 
         widths = fetchInitialWidth();
         this.refresh();
+    };
+
+    function input() {
+        return base.find(filterInput);
+    }
+
+    function target() {
+        return base.find(targetList);
     }
 
     function filterList() {
-        var q = $.trim($(filterInput).val()).toLowerCase();
+        var q = $.trim(input().val()).toLowerCase();
 
-        $(targetList).find(".filterRow").each(function (idx, element) {
+        target().find(".filterRow").each(function (idx, element) {
             var row = $(element);
             var showRow = false;
 
@@ -43,11 +53,10 @@ function EntrySelector(filterInputSelector, targetListSelector) {
     }
 
     function fetchInitialWidth() {
-        var widths = new Array();
+        var widths = [];
 
-        $(targetList, 'tr:first th').each(function (idx) {
-            var width = $(this).width();
-            widths[idx] = width;
+        target().find('tr:first th').each(function (idx) {
+            widths[idx] = $(this).width();
         });
 
         return widths;
@@ -59,7 +68,7 @@ function EntrySelector(filterInputSelector, targetListSelector) {
     };
 
     function staticTableWidth() {
-        $(targetList, 'tr:first th').each(function (idx) {
+        target().find('tr:first th').each(function (idx) {
             $(this).css({'width': widths[idx] + "px"});
         });
     }

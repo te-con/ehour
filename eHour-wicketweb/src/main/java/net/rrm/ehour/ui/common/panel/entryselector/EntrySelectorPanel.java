@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.EntrySelectorRow;
 
@@ -60,7 +61,7 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Entr
 public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     private static final Logger LOG = Logger.getLogger(EntrySelectorPanel.class);
 
-    private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
+//    private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
     private static final String ITEM_LIST_ID = "itemList";
     private static final String HEADER_ID = "headers";
@@ -70,6 +71,9 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
     private IModel<String> hideInactiveLinkTooltip;
     private boolean showHideInactiveLink = false;
     private WebMarkupContainer listContainer;
+
+    private final String frameDomId;
+    private final String jsObjectId;
 
     public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler) {
         this(id, entrySelectorData, clickHandler, null);
@@ -81,6 +85,10 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
     public EntrySelectorPanel(String id, EntrySelectorData entrySelectorData, ClickHandler clickHandler, IModel<String> hideInactiveLinkTooltip, boolean wide) {
         super(id, new Model<>(entrySelectorData));
+
+        frameDomId = "entrySelectorFrame_" + randomId();
+        jsObjectId = "entrySelector_" + randomId();
+
         this.clickHandler = clickHandler;
         this.wide = wide;
 
@@ -88,6 +96,10 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
             this.hideInactiveLinkTooltip = hideInactiveLinkTooltip;
             showHideInactiveLink = true;
         }
+    }
+
+    private static String randomId() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     @Override
@@ -109,13 +121,17 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
 
     public void reRender(AjaxRequestTarget target) {
         target.add(listContainer);
-        target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
+        target.appendJavaScript(jsRefresh());
+    }
+
+    private String jsRefresh() {
+        return "window." + jsObjectId + ".refresh();";
     }
 
     @Override
     public void renderHead(IHeaderResponse response) {
         response.render(JavaScriptHeaderItem.forReference(JS));
-        response.render(OnDomReadyHeaderItem.forScript("window.entrySelector = new EntrySelector('#listFilter', '.entrySelectorTable');"));
+        response.render(OnDomReadyHeaderItem.forScript("window." + jsObjectId + " = new EntrySelector('#" + frameDomId + "', '#listFilter', '.entrySelectorTable');"));
     }
 
     @Override
@@ -123,6 +139,8 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
         super.onInitialize();
 
         WebMarkupContainer selectorFrame = new WebMarkupContainer("entrySelectorFrame");
+        selectorFrame.setMarkupId(frameDomId);
+        selectorFrame.setOutputMarkupId(true);
 
         if (wide) {
             selectorFrame.add(AttributeModifier.append("style", "width: 97%;"));
@@ -291,7 +309,7 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
                 HideInactiveFilter inactiveFilter = new HideInactiveFilter(hideInactiveSelections);
                 send(getPage(), Broadcast.DEPTH, new InactiveFilterChangedEvent(inactiveFilter, target));
 
-                target.appendJavaScript(WINDOW_ENTRY_SELECTOR_REFRESH);
+                target.appendJavaScript(jsRefresh());
 
                 filterIcon.removeAll();
                 addFilterIconAttributes(filterIcon, getEhourWebSession().getHideInactiveSelections());
