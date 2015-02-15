@@ -22,11 +22,27 @@ import java.util.Date;
 public class QuickQuarter extends QuickPeriod {
     private static final long serialVersionUID = -2058684279683057511L;
 
-    public QuickQuarter(Date periodStart, Date periodEnd, int periodIndex, boolean shortcut) {
+    private QuickQuarter() {
+        super();
+    }
+
+    private QuickQuarter(Date periodStart, Date periodEnd, int periodIndex, QuickType shortcut) {
         super(periodStart, periodEnd, periodIndex, shortcut);
     }
 
+    public static QuickQuarter divider() {
+        return new QuickQuarter();
+    }
+
+    public static QuickQuarter shortcut(Calendar calendarOrig, QuickType quickType) {
+        return instance(calendarOrig, quickType);
+    }
+
     public static QuickQuarter instance(Calendar calendarOrig) {
+        return instance(calendarOrig, QuickType.NONE);
+    }
+
+    private static QuickQuarter instance(Calendar calendarOrig, QuickType quickType) {
         Calendar cal = (Calendar) calendarOrig.clone();
         cal.set(Calendar.DAY_OF_MONTH, 1);
         Date periodStart = cal.getTime();
@@ -37,6 +53,6 @@ public class QuickQuarter extends QuickPeriod {
         cal.add(Calendar.DAY_OF_YEAR, -1);
         Date periodEnd = cal.getTime();
 
-        return new QuickQuarter(periodStart, periodEnd, periodIndex, true);
+        return new QuickQuarter(periodStart, periodEnd, periodIndex, quickType);
     }
 }

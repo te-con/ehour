@@ -62,10 +62,12 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.AppendingStringBuffer;
 
 import java.util.*;
 
 import static net.rrm.ehour.report.criteria.UserSelectedCriteria.ReportType;
+import static net.rrm.ehour.ui.report.panel.criteria.quick.QuickPeriod.QuickType.*;
 
 /**
  * Base report criteria panel which adds the quick date selections
@@ -86,6 +88,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     private static final String PROJECT_FILTER_INPUT_ID = "#projectFilterInput";
     private static final String DEPARTMENT_FILTER_INPUT_ID = "#departmentFilterInput";
     private static final String USER_FILTER_INPUT_ID = "#userFilterInput";
+    private static final int MONTHS_PER_QUARTER = 3;
 
     @SpringBean
     private ReportCriteriaService reportCriteriaService;
@@ -634,7 +637,17 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         currentDate.setFirstDayOfWeek(config.getFirstDayOfWeek());
         currentDate.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+
+        currentDate.add(Calendar.WEEK_OF_YEAR, -1); //previous
+        weeks.add(QuickWeek.shortcut(currentDate, config, QuickPeriod.QuickType.SHORTCUT_PREV));
+        currentDate.add(Calendar.WEEK_OF_YEAR, 1); //current
+        weeks.add(QuickWeek.shortcut(currentDate, config, QuickPeriod.QuickType.SHORTCUT_CURRENT));
+        currentDate.add(Calendar.WEEK_OF_YEAR, 1); //next
+        weeks.add(QuickWeek.shortcut(currentDate, config, QuickPeriod.QuickType.SHORTCUT_NEXT));
+        currentDate.add(Calendar.WEEK_OF_YEAR, -1); //previous
+
         currentDate.add(Calendar.WEEK_OF_YEAR, currentWeek);
+        weeks.add(QuickWeek.divider());
 
         for (; currentWeek < AMOUNT_OF_QUICKWEEKS; currentWeek++) {
             weeks.add(QuickWeek.instance(currentDate, config));
@@ -642,47 +655,79 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             currentDate.add(Calendar.WEEK_OF_YEAR, 1);
         }
 
-        return new DateDropDownChoice<>("quickWeek", weeks, new QuickWeekRenderer(config));
+        return createQuickDateDropDown("quickWeek", weeks, new QuickWeekRenderer());
     }
 
-    /**
-     * Add quick month selection
-     */
     private WebMarkupContainer createQuickMonth() {
         List<QuickMonth> months = new ArrayList<>();
         Calendar currentDate = new GregorianCalendar();
-        int currentMonth = -AMOUNT_OF_QUICKMONTHS;
-
         currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         currentDate.setFirstDayOfWeek(Calendar.SUNDAY);
+
+        currentDate.add(Calendar.MONTH, -1); //previous
+        months.add(QuickMonth.shortcut(currentDate, SHORTCUT_PREV));
+        currentDate.add(Calendar.MONTH, 1); //current
+        months.add(QuickMonth.shortcut(currentDate, SHORTCUT_CURRENT));
+        currentDate.add(Calendar.MONTH, 1); //next
+        months.add(QuickMonth.shortcut(currentDate, SHORTCUT_NEXT));
+
+        months.add(QuickMonth.divider());
+
+        currentDate.add(Calendar.MONTH, -1); //previous
+
+        int currentMonth = -AMOUNT_OF_QUICKMONTHS;
         currentDate.add(Calendar.MONTH, currentMonth);
 
         for (; currentMonth < AMOUNT_OF_QUICKMONTHS; currentMonth++) {
             months.add(QuickMonth.instance(currentDate));
-
             currentDate.add(Calendar.MONTH, 1);
         }
 
-        return new DateDropDownChoice<>("quickMonth", months, new QuickMonthRenderer());
+        return createQuickDateDropDown("quickMonth", months, new QuickMonthRenderer());
     }
-
 
     private WebMarkupContainer createQuickQuarter() {
         List<QuickQuarter> quarters = new ArrayList<>();
         Calendar currentDate = new GregorianCalendar();
         int currentQuarter = -AMOUNT_OF_QUICKQUARTERS;
 
-        int quarter = currentDate.get(Calendar.MONTH) / AMOUNT_OF_QUICKQUARTERS;
-        currentDate.set(Calendar.MONTH, quarter * AMOUNT_OF_QUICKQUARTERS); // abuse rounding off
-        currentDate.add(Calendar.MONTH, currentQuarter * AMOUNT_OF_QUICKQUARTERS);
+        int quarter = currentDate.get(Calendar.MONTH) / MONTHS_PER_QUARTER;
+        currentDate.set(Calendar.MONTH, quarter * MONTHS_PER_QUARTER); // abuse rounding off
+
+        currentDate.set(Calendar.DAY_OF_MONTH, 1);
+        currentDate.add(Calendar.MONTH, -MONTHS_PER_QUARTER);
+        quarters.add(QuickQuarter.shortcut(currentDate, SHORTCUT_PREV));
+        currentDate.add(Calendar.MONTH, MONTHS_PER_QUARTER);
+        quarters.add(QuickQuarter.shortcut(currentDate, SHORTCUT_CURRENT));
+        currentDate.add(Calendar.MONTH, MONTHS_PER_QUARTER);
+        quarters.add(QuickQuarter.shortcut(currentDate, SHORTCUT_NEXT));
+
+        //reset
+        currentDate.add(Calendar.MONTH, -MONTHS_PER_QUARTER);
+        currentDate.add(Calendar.MONTH, currentQuarter * MONTHS_PER_QUARTER);
+
+        quarters.add(QuickQuarter.divider());
 
         for (; currentQuarter < AMOUNT_OF_QUICKQUARTERS; currentQuarter++) {
             quarters.add(QuickQuarter.instance(currentDate));
 
-            currentDate.add(Calendar.MONTH, AMOUNT_OF_QUICKQUARTERS);
+            currentDate.add(Calendar.MONTH, MONTHS_PER_QUARTER);
         }
 
-        return new DateDropDownChoice<>("quickQuarter", quarters, new QuickQuarterRenderer());
+        return createQuickDateDropDown("quickQuarter", quarters, new QuickQuarterRenderer());
+    }
+
+    private <T extends QuickPeriod> DateDropDownChoice<T> createQuickDateDropDown(String id, List<T> options, IChoiceRenderer<T> renderer) {
+        return new DateDropDownChoice<T>(id, options, renderer) {
+            @Override
+            protected void setOptionAttributes(AppendingStringBuffer buffer, T choice, int index, String selected) {
+                super.setOptionAttributes(buffer, choice, index, selected);
+
+                if (choice.isDivider()) {
+                    buffer.append(" disabled");
+                }
+            }
+        };
     }
 
     @Override

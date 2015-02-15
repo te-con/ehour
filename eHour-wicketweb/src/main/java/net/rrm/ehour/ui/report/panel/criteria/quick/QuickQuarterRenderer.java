@@ -21,23 +21,30 @@ import java.util.GregorianCalendar;
 
 public class QuickQuarterRenderer extends QuickRenderer<QuickQuarter> {
     private static final long serialVersionUID = 9074669170575475399L;
-    private static final int MONTH_PER_QUARTER = 3;
-    private int currentQuarter;
-
-    public QuickQuarterRenderer() {
-        currentQuarter = new GregorianCalendar().get(Calendar.MONTH) / MONTH_PER_QUARTER;
-    }
 
     @Override
-    public Object getDisplayValue(QuickQuarter quickQuarter) {
-        int quarter = quickQuarter.getPeriodIndex();
+    protected Object getValue(QuickQuarter q) {
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(q.getPeriodStart());
 
-        return currentQuarter == quarter ? getLocalizer().getString("report.criteria.currentQuarter", null) : getLocalizer().getString("report.criteria.quarter", null) + " " + (quarter + 1);
+        switch (q.getQuickType()) {
+            case SHORTCUT_CURRENT:
+                return getLocalizer().getString("report.criteria.currentQuarter", null);
+            case SHORTCUT_NEXT:
+                return getLocalizer().getString("report.criteria.nextQuarter", null);
+            case SHORTCUT_PREV:
+                return getLocalizer().getString("report.criteria.prevQuarter", null);
+            case NONE:
+            default:
+                int quarter = q.getPeriodIndex();
+                int year = cal.get(Calendar.YEAR);
+
+                return getLocalizer().getString("report.criteria.quarter", null) + " " + (quarter + 1) + ", " + year;
+        }
     }
 
     @Override
     public String getIdValue(QuickQuarter object, int index) {
         return Integer.toString(index);
     }
-
 }

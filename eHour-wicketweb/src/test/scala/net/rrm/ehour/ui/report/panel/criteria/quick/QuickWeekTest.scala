@@ -1,11 +1,12 @@
 package net.rrm.ehour.ui.report.panel.criteria.quick
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-import net.rrm.ehour.config.EhourConfigStub
-import org.scalatest.{Matchers, BeforeAndAfter, FunSuite}
 import java.util.Calendar
+
+import net.rrm.ehour.config.EhourConfigStub
 import org.joda.time.LocalDate
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 
 @RunWith(classOf[JUnitRunner])
 class QuickWeekTest extends FunSuite with BeforeAndAfter with Matchers {
@@ -24,7 +25,7 @@ class QuickWeekTest extends FunSuite with BeforeAndAfter with Matchers {
       startCal.set(2012, Calendar.DECEMBER, 17)
     val endCal = Calendar.getInstance()
       endCal.set(2012, Calendar.DECEMBER, 23)
-    val qw = new QuickWeek(cal, config)
+    val qw = QuickWeek.instance(cal, config)
 
     new LocalDate(qw.getPeriodStart) should equal(new LocalDate(startCal.getTime))
     new LocalDate(qw.getPeriodEnd) should equal(new LocalDate(endCal.getTime))
