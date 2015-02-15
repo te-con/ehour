@@ -23,59 +23,48 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class QuickMonthRenderer extends QuickRenderer<QuickMonth>
-{
-	private static final long serialVersionUID = 1983255096043016545L;
-	private int	currentMonth;
-	
-	/**
-	 * Default constructor
-	 */
-	public QuickMonthRenderer()
-	{
-		currentMonth = new GregorianCalendar().get(Calendar.MONTH);
-	}
+public class QuickMonthRenderer extends QuickRenderer<QuickMonth> {
+    private static final long serialVersionUID = 1983255096043016545L;
+    private int currentMonth;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
-	 */
-	public Object getDisplayValue(QuickMonth quickMonth)
-	{
-		String	value;
-		
-		int month = quickMonth.getPeriodIndex();
-		
-		if ( (currentMonth == 0 && month == 11)
-				|| (currentMonth - 1 == month))
-		{
-			value = getLocalizer().getString("report.criteria.previousMonth", null);
-		}
-		else if (currentMonth == month)
-		{
-			value = getLocalizer().getString("report.criteria.currentMonth", null);
-		}
-		else if ( (currentMonth + 1 == month || (currentMonth == 11 && month == 0)))
-		{
-			value = getLocalizer().getString("report.criteria.nextMonth", null);
-		}
-		else
-		{
-			EhourConfig config = EhourWebSession.getEhourConfig();
-			
-			SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getFormattingLocale());
-			value = format.format(quickMonth.getPeriodStart());
-		}
-		
-		return value;
-	}
+    /**
+     * Default constructor
+     */
+    public QuickMonthRenderer() {
+        currentMonth = new GregorianCalendar().get(Calendar.MONTH);
+    }
 
-	/**
-	 * 
-	 */
-	public String getIdValue(QuickMonth object, int index)
-	{
-		return Integer.toString(index);
-	}
+    /*
+     * (non-Javadoc)
+     * @see org.apache.wicket.markup.html.form.IChoiceRenderer#getDisplayValue(java.lang.Object)
+     */
+    public Object getDisplayValue(QuickMonth quickMonth) {
+        String value;
+
+        int month = quickMonth.getPeriodIndex();
+
+        if ((currentMonth == 0 && month == 11)
+                || (currentMonth - 1 == month)) {
+            value = getLocalizer().getString("report.criteria.previousMonth", null);
+        } else if (currentMonth == month) {
+            value = getLocalizer().getString("report.criteria.currentMonth", null);
+        } else if ((currentMonth + 1 == month || (currentMonth == 11 && month == 0))) {
+            value = getLocalizer().getString("report.criteria.nextMonth", null);
+        } else {
+            EhourConfig config = EhourWebSession.getEhourConfig();
+
+            SimpleDateFormat format = new SimpleDateFormat("MMMMM, yyyy", config.getFormattingLocale());
+            value = format.format(quickMonth.getPeriodStart());
+        }
+
+        return value;
+    }
+
+    /**
+     *
+     */
+    public String getIdValue(QuickMonth object, int index) {
+        return Integer.toString(index);
+    }
 
 }

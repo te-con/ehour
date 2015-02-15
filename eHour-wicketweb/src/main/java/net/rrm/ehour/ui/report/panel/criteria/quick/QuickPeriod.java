@@ -28,6 +28,15 @@ public abstract class QuickPeriod implements Serializable {
 
     private int periodIndex;
 
+    private boolean shortcut;
+
+    public QuickPeriod(Date periodStart, Date periodEnd, int periodIndex, boolean shortcut) {
+        this.periodStart = periodStart;
+        this.periodEnd = periodEnd;
+        this.periodIndex = periodIndex;
+        this.shortcut = shortcut;
+    }
+
     public Date getPeriodStart() {
         return periodStart;
     }
@@ -40,16 +49,8 @@ public abstract class QuickPeriod implements Serializable {
         return periodIndex;
     }
 
-    public void setPeriodStart(Date periodStart) {
-        this.periodStart = periodStart;
-    }
-
-    public void setPeriodEnd(Date periodEnd) {
-        this.periodEnd = periodEnd;
-    }
-
-    public void setPeriodIndex(int periodIndex) {
-        this.periodIndex = periodIndex;
+    public boolean isShortcut() {
+        return shortcut;
     }
 
     @Override

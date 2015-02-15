@@ -637,7 +637,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         currentDate.add(Calendar.WEEK_OF_YEAR, currentWeek);
 
         for (; currentWeek < AMOUNT_OF_QUICKWEEKS; currentWeek++) {
-            weeks.add(new QuickWeek(currentDate, config));
+            weeks.add(QuickWeek.instance(currentDate, config));
 
             currentDate.add(Calendar.WEEK_OF_YEAR, 1);
         }
@@ -658,7 +658,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         currentDate.add(Calendar.MONTH, currentMonth);
 
         for (; currentMonth < AMOUNT_OF_QUICKMONTHS; currentMonth++) {
-            months.add(new QuickMonth(currentDate));
+            months.add(QuickMonth.instance(currentDate));
 
             currentDate.add(Calendar.MONTH, 1);
         }
@@ -677,7 +677,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         currentDate.add(Calendar.MONTH, currentQuarter * AMOUNT_OF_QUICKQUARTERS);
 
         for (; currentQuarter < AMOUNT_OF_QUICKQUARTERS; currentQuarter++) {
-            quarters.add(new QuickQuarter(currentDate));
+            quarters.add(QuickQuarter.instance(currentDate));
 
             currentDate.add(Calendar.MONTH, AMOUNT_OF_QUICKQUARTERS);
         }

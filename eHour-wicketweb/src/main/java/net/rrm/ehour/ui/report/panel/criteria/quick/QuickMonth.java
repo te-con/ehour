@@ -17,25 +17,25 @@
 package net.rrm.ehour.ui.report.panel.criteria.quick;
 
 import java.util.Calendar;
+import java.util.Date;
 
-public class QuickMonth extends QuickPeriod
-{
-	private static final long serialVersionUID = 2826862640605212133L;
+public class QuickMonth extends QuickPeriod {
+    private static final long serialVersionUID = 2826862640605212133L;
 
-	/**
-	 * 
-	 * @param calendarOrig
-	 */
-	public QuickMonth(Calendar calendarOrig)
-	{
-		Calendar cal = (Calendar)calendarOrig.clone();
-		cal.set(Calendar.DAY_OF_MONTH, 1);
-		setPeriodStart(cal.getTime());
-		
-		setPeriodIndex(cal.get(Calendar.MONTH));
-		
-		cal.add(Calendar.MONTH, 1);
-		cal.add(Calendar.DAY_OF_YEAR, -1);
-		setPeriodEnd(cal.getTime());
-	}
+    private QuickMonth(Date periodStart, Date periodEnd, int periodIndex, boolean shortcut) {
+        super(periodStart, periodEnd, periodIndex, shortcut);
+    }
+
+    public static QuickMonth instance(Calendar calendarOrig) {
+        Calendar cal = (Calendar) calendarOrig.clone();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date periodStart = cal.getTime();
+
+        int periodIndex = cal.get(Calendar.MONTH);
+
+        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+        Date periodEnd = cal.getTime();
+        return new QuickMonth(periodStart, periodEnd, periodIndex, true);
+    }
 }
