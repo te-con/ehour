@@ -107,7 +107,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
         setOutputMarkupId(true);
 
-        Form<ReportCriteriaBackingBean> form = new Form<ReportCriteriaBackingBean>("criteriaForm");
+        Form<ReportCriteriaBackingBean> form = new Form<>("criteriaForm");
         form.setOutputMarkupId(true);
         greyBorder.add(form);
 
@@ -133,7 +133,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         List<ReportType> types = determineReportRoleTypes();
 
         if (types.size() > 1) {
-            final DropDownChoice<ReportType> choice = new DropDownChoice<ReportType>(id, new PropertyModel<ReportType>(criteria, "selectedReportType"), types, new IChoiceRenderer<ReportType>() {
+            final DropDownChoice<ReportType> choice = new DropDownChoice<>(id, new PropertyModel<ReportType>(criteria, "selectedReportType"), types, new IChoiceRenderer<ReportType>() {
                 @Override
                 public Object getDisplayValue(ReportType object) {
 
@@ -210,7 +210,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addCustomerSelection(final ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
-        customers = new ListMultipleChoice<Customer>("reportCriteria.userSelectedCriteria.customers",
+        customers = new ListMultipleChoice<>("reportCriteria.userSelectedCriteria.customers",
                 new PropertyModel<Collection<Customer>>(bean, "reportCriteria.userSelectedCriteria.customers"),
                 new PropertyModel<List<Customer>>(bean, "reportCriteria.availableCriteria.customers"),
                 new DomainObjectChoiceRenderer<Customer>());
@@ -270,7 +270,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private DropDownChoice<Sort> createCustomerSort() {
-        DropDownChoice<Sort> customerSort = new DropDownChoice<Sort>("customerSort", new PropertyModel<Sort>(getPanelModelObject(), "reportCriteria.userSelectedCriteria.customerSort"), Arrays.asList(Sort.values()), new SortRenderer());
+        DropDownChoice<Sort> customerSort = new DropDownChoice<>("customerSort", new PropertyModel<Sort>(getPanelModelObject(), "reportCriteria.userSelectedCriteria.customerSort"), Arrays.asList(Sort.values()), new SortRenderer());
         customerSort.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
@@ -288,7 +288,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addProjectSelection(final ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
-        projects = new ListMultipleChoice<Project>("reportCriteria.userSelectedCriteria.projects",
+        projects = new ListMultipleChoice<>("reportCriteria.userSelectedCriteria.projects",
                 new PropertyModel<List<Project>>(bean, "reportCriteria.availableCriteria.projects"),
                 new DomainObjectChoiceRenderer<Project>());
         projects.setMaxRows(MAX_CRITERIA_ROW);
@@ -350,7 +350,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private DropDownChoice<Sort> createProjectSort() {
-        DropDownChoice<Sort> projectSort = new DropDownChoice<Sort>("projectSort", new PropertyModel<Sort>(getPanelModelObject(), "reportCriteria.userSelectedCriteria.projectSort"), Arrays.asList(Sort.values()), new SortRenderer());
+        DropDownChoice<Sort> projectSort = new DropDownChoice<>("projectSort", new PropertyModel<Sort>(getPanelModelObject(), "reportCriteria.userSelectedCriteria.projectSort"), Arrays.asList(Sort.values()), new SortRenderer());
         projectSort.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
@@ -393,7 +393,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addUserSelection(final ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
-        users = new ListMultipleChoice<User>("reportCriteria.userSelectedCriteria.users",
+        users = new ListMultipleChoice<>("reportCriteria.userSelectedCriteria.users",
                 new PropertyModel<List<User>>(getDefaultModel(), "reportCriteria.availableCriteria.users"),
                 new DomainObjectChoiceRenderer<User>());
         users.setMarkupId("userSelect");
@@ -466,7 +466,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private void addUserDepartmentSelection(final ReportCriteriaBackingBean bean, WebMarkupContainer parent) {
-        departments = new ListMultipleChoice<UserDepartment>("reportCriteria.userSelectedCriteria.userDepartments",
+        departments = new ListMultipleChoice<>("reportCriteria.userSelectedCriteria.userDepartments",
                 new PropertyModel<List<UserDepartment>>(getDefaultModel(), "reportCriteria.availableCriteria.userDepartments"),
                 new DomainObjectChoiceRenderer<UserDepartment>());
         departments.setMarkupId("departmentSelect");
@@ -558,7 +558,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
         endDatePicker = createDatePicker("reportCriteria.userSelectedCriteria.reportRange.dateEnd", new PropertyModel<Date>(model, "reportCriteria.userSelectedCriteria.reportRange.dateEnd"));
         form.add(endDatePicker);
 
-        quickSelections = new ArrayList<WebMarkupContainer>();
+        quickSelections = new ArrayList<>();
 
         quickSelections.add(createQuickWeek());
         quickSelections.add(createQuickMonth());
@@ -584,7 +584,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             return placeholder;
         }
 
-        DateDropDownChoice<TimesheetLock> lockedDateDropDown = new DateDropDownChoice<TimesheetLock>(id, new PropertyModel<TimesheetLock>(getPanelModel(), "reportForLock"),
+        DateDropDownChoice<TimesheetLock> lockedDateDropDown = new DateDropDownChoice<>(id, new PropertyModel<TimesheetLock>(getPanelModel(), "reportForLock"),
                 locks,
                 new IChoiceRenderer<TimesheetLock>() {
                     @Override
@@ -626,7 +626,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
     }
 
     private WebMarkupContainer createQuickWeek() {
-        List<QuickWeek> weeks = new ArrayList<QuickWeek>();
+        List<QuickWeek> weeks = new ArrayList<>();
         Calendar currentDate = new GregorianCalendar();
         int currentWeek = -AMOUNT_OF_QUICKWEEKS;
 
@@ -642,14 +642,14 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             currentDate.add(Calendar.WEEK_OF_YEAR, 1);
         }
 
-        return new DateDropDownChoice<QuickWeek>("quickWeek", weeks, new QuickWeekRenderer(config));
+        return new DateDropDownChoice<>("quickWeek", weeks, new QuickWeekRenderer(config));
     }
 
     /**
      * Add quick month selection
      */
     private WebMarkupContainer createQuickMonth() {
-        List<QuickMonth> months = new ArrayList<QuickMonth>();
+        List<QuickMonth> months = new ArrayList<>();
         Calendar currentDate = new GregorianCalendar();
         int currentMonth = -AMOUNT_OF_QUICKMONTHS;
 
@@ -663,12 +663,12 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             currentDate.add(Calendar.MONTH, 1);
         }
 
-        return new DateDropDownChoice<QuickMonth>("quickMonth", months, new QuickMonthRenderer());
+        return new DateDropDownChoice<>("quickMonth", months, new QuickMonthRenderer());
     }
 
 
     private WebMarkupContainer createQuickQuarter() {
-        List<QuickQuarter> quarters = new ArrayList<QuickQuarter>();
+        List<QuickQuarter> quarters = new ArrayList<>();
         Calendar currentDate = new GregorianCalendar();
         int currentQuarter = -AMOUNT_OF_QUICKQUARTERS;
 
@@ -682,7 +682,7 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
             currentDate.add(Calendar.MONTH, AMOUNT_OF_QUICKQUARTERS);
         }
 
-        return new DateDropDownChoice<QuickQuarter>("quickQuarter", quarters, new QuickQuarterRenderer());
+        return new DateDropDownChoice<>("quickQuarter", quarters, new QuickQuarterRenderer());
     }
 
     @Override
