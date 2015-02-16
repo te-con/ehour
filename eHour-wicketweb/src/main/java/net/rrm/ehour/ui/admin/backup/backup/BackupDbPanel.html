@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+
+<body>
+<wicket:panel>
+    <div wicket:id="frame">
+        <div wicket:id="backupBorder">
+            <table class="contentTable" width="95%">
+                <tr>
+                    <td>
+                        <wicket:message key="admin.export.content.export.header"/>
+                        <br/><br />
+                        <wicket:message key="admin.export.content.export.body.1"/>
+                        <br/><br />
+                        <wicket:message key="admin.export.content.export.body.2"/>
+                        <br/><br />
+                        <wicket:message key="admin.export.content.export.body.3"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <br/>
+                        <a class="bluebutton" onclick="this.blur();" wicket:id="backupLink">
+                            <span><wicket:message key="admin.export.button"/></span></a>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</wicket:panel>
+</body>
+</html>

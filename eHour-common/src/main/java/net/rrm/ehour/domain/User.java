@@ -79,13 +79,13 @@ public class User extends DomainObject<Integer, User> {
     @JoinTable(name = "USER_TO_USERROLE",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE"))
-    private Set<UserRole> userRoles = new HashSet<UserRole>();
+    private Set<UserRole> userRoles = new HashSet<>();
 
     @ManyToMany(targetEntity = UserDepartment.class, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "USER_TO_DEPARTMENT",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "DEPARTMENT_ID"))
-    private Set<UserDepartment> userDepartments = new HashSet<UserDepartment>();
+    private Set<UserDepartment> userDepartments = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<ProjectAssignment> projectAssignments;
@@ -120,7 +120,7 @@ public class User extends DomainObject<Integer, User> {
 
     public User addUserRole(UserRole role) {
         if (userRoles == null) {
-            userRoles = new HashSet<UserRole>();
+            userRoles = new HashSet<>();
         }
         userRoles.add(role);
 
@@ -281,7 +281,7 @@ public class User extends DomainObject<Integer, User> {
 
     public void addProjectAssignment(ProjectAssignment projectAssignment) {
         if (projectAssignments == null) {
-            projectAssignments = new HashSet<ProjectAssignment>();
+            projectAssignments = new HashSet<>();
         }
 
         projectAssignments.add(projectAssignment);

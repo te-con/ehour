@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.admin.backup.restore;
 
+import net.rrm.ehour.backup.common.BackupEntityType;
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.list.ListView;
@@ -15,11 +15,14 @@ import static org.junit.Assert.assertEquals;
  *         Created on: 12/5/10 - 12:32 AM
  */
 public class ParseStatusPanelTest extends BaseSpringWebAppTester {
+
+    private static final BackupEntityType USERS = new BackupEntityType("USERS", 1);
+
     @Test
     public void shouldDisplayErrors() {
         ParseSession status = new ParseSession();
-        status.addError(BackupEntityType.USERS, "failed");
-        status.addError(BackupEntityType.USERS, "failed again");
+        status.addError(USERS, "failed");
+        status.addError(USERS, "failed again");
 
         startPanel(status);
 
@@ -33,8 +36,9 @@ public class ParseStatusPanelTest extends BaseSpringWebAppTester {
     @Test
     public void shouldDisplayInsertions() {
         ParseSession status = new ParseSession();
-        status.addInsertion(BackupEntityType.USERS);
-        status.addInsertion(BackupEntityType.USERS);
+
+        status.addInsertion(USERS);
+        status.addInsertion(USERS);
 
         startPanel(status);
 
@@ -47,6 +51,6 @@ public class ParseStatusPanelTest extends BaseSpringWebAppTester {
     }
 
     private void startPanel(final ParseSession status) {
-        tester.startComponentInPage(new ParseStatusPanel("panel", new Model<ParseSession>(status)));
+        tester.startComponentInPage(new ParseStatusPanel("panel", new Model<>(status)));
     }
 }

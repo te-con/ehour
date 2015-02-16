@@ -22,18 +22,19 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 /**
  * Quick renderer
- **/
+ */
 
-public abstract class QuickRenderer<T extends QuickPeriod> implements IChoiceRenderer<T>
-{
-	private static final long serialVersionUID = 5678351108045640999L;
+public abstract class QuickRenderer<T extends QuickPeriod> implements IChoiceRenderer<T> {
+    private static final long serialVersionUID = 5678351108045640999L;
 
-	/**
-	 * Get localizer
-	 * @return
-	 */
-	protected Localizer getLocalizer()
-	{
-		return Application.get().getResourceSettings().getLocalizer();
-	}
+    protected Localizer getLocalizer() {
+        return Application.get().getResourceSettings().getLocalizer();
+    }
+
+    @Override
+    public Object getDisplayValue(T quickType) {
+        return quickType.getQuickType() == QuickPeriod.QuickType.DIVIDER ? "──────────" : getValue(quickType);
+    }
+
+    protected abstract Object getValue(T object);
 }

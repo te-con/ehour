@@ -13,8 +13,14 @@
     <dependencies>
         <dependency>
             <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-standalone</artifactId>
+            <artifactId>eHour-wicketweb</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>net.rrm.ehour</groupId>
+            <artifactId>eHour-jetty</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

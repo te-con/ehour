@@ -37,7 +37,7 @@ public class QuickWeekRendererTest extends BaseSpringWebAppTester {
     public void before() {
         localizer = mock(Localizer.class);
 
-        renderer = new QuickWeekRenderer(new EhourConfigStub()) {
+        renderer = new QuickWeekRenderer() {
             protected Localizer getLocalizer() {
                 return localizer;
             }
@@ -46,7 +46,7 @@ public class QuickWeekRendererTest extends BaseSpringWebAppTester {
 
     @Test
     public void should_display_current_week() {
-        QuickWeek week = new QuickWeek(Calendar.getInstance(), new EhourConfigStub());
+        QuickWeek week = QuickWeek.shortcut(Calendar.getInstance(), new EhourConfigStub(), QuickPeriod.QuickType.SHORTCUT_CURRENT);
 
         when(localizer.getString("report.criteria.currentWeek", null)).thenReturn("");
 
@@ -60,7 +60,7 @@ public class QuickWeekRendererTest extends BaseSpringWebAppTester {
         Calendar c = new GregorianCalendar();
         c.add(Calendar.WEEK_OF_YEAR, -1);
 
-        QuickWeek week = new QuickWeek(c, new EhourConfigStub());
+        QuickWeek week = QuickWeek.shortcut(c, new EhourConfigStub(), QuickPeriod.QuickType.SHORTCUT_PREV);
 
         when(localizer.getString("report.criteria.previousWeek", null)).thenReturn("");
         renderer.getDisplayValue(week);
@@ -74,7 +74,7 @@ public class QuickWeekRendererTest extends BaseSpringWebAppTester {
         Calendar c = new GregorianCalendar();
         c.add(Calendar.WEEK_OF_YEAR, +1);
 
-        QuickWeek week = new QuickWeek(c, new EhourConfigStub());
+        QuickWeek week = QuickWeek.shortcut(c, new EhourConfigStub(), QuickPeriod.QuickType.SHORTCUT_NEXT);
 
         when(localizer.getString("report.criteria.nextWeek", null)).thenReturn("");
         renderer.getDisplayValue(week);

@@ -47,11 +47,13 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
     selector = buildEntrySelector().build()
     greyBorder.add(selector)
 
-    val container: WebMarkupContainer = createContentContainer
+    val container = createContentContainer
     addOrReplace(container)
-    container.add(new Container(ContentId))
+    container.add(createPlaceholderContainer(ContentId))
     container.add(new Container(StatusId))
   }
+
+  protected def createPlaceholderContainer(id: String):WebMarkupContainer = new Container(id)
 
   protected def createContentContainer: WebMarkupContainer = {
     val container = new WebMarkupContainer(ContainerId)
@@ -82,14 +84,20 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
 
   def onProjectSelected(id: Integer, project: Project, target: AjaxRequestTarget) {
     val container = findContentContainer
+    updateContentPanel(project, target, container)
+    updateStatusPanel(project, target, container)
+  }
 
+  def updateContentPanel(project: Project, target: AjaxRequestTarget, container: WebMarkupContainer): Unit = {
     if (getConfig.getPmPrivilege != PmPrivilege.NONE) {
       val projectInfoPanel = new ProjectManagerModifyPanel(ContentId, project)
       projectInfoPanel.setOutputMarkupId(true)
       container.addOrReplace(projectInfoPanel)
       target.add(projectInfoPanel)
     }
+  }
 
+  def updateStatusPanel(project: Project, target: AjaxRequestTarget, container: WebMarkupContainer): Unit = {
     val statusPanel = new ProjectManagerStatusPanel(StatusId, project)
     statusPanel.setOutputMarkupId(true)
     container.addOrReplace(statusPanel)

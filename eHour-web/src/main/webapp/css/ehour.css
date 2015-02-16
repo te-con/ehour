@@ -493,7 +493,13 @@ div.UserReportCriteria {
 
 div.NavHeader {
     position: relative;
-    background: url(../img/headerBackground.gif) top left repeat-x;
+    background: #b1cbe5; /* Old browsers */
+    background: -moz-linear-gradient(left,  #b1cbe5 0%, #a6c0da 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#b1cbe5), color-stop(100%,#a6c0da)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #b1cbe5 0%,#a6c0da 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #b1cbe5 0%,#a6c0da 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #b1cbe5 0%,#a6c0da 100%); /* IE10+ */
+    background: linear-gradient(to right,  #b1cbe5 0%,#a6c0da 100%); /* W3C */
     margin: 0;
     padding: 0;
     height: 52px;
@@ -865,7 +871,7 @@ hr {
 }
 
 .entrySelectorTable .numeric {
-    text-align: right;
+    text-align: right !important;
     padding-right: 2em;
 }
 
@@ -905,7 +911,7 @@ hr {
 }
 
 .adminForm input[type=text], .adminForm input[type=password], .adminForm select, .adminForm textarea {
-    width: 20em;
+    width: 30em;
 }
 
 .adminForm input[type=text].numeric {

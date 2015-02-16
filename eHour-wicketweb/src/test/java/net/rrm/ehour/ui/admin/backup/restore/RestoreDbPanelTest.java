@@ -1,7 +1,8 @@
 package net.rrm.ehour.ui.admin.backup.restore;
 
+import net.rrm.ehour.backup.domain.ImportException;
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.backup.service.RestoreService;
+import net.rrm.ehour.backup.service.restore.RestoreService;
 import net.rrm.ehour.ui.common.BaseSpringWebAppTester;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class RestoreDbPanelTest extends BaseSpringWebAppTester {
     }
 
     @Test
-    public void shouldDisplayAfterImport() {
+    public void shouldDisplayAfterImport() throws ImportException {
         ParseSession session = new ParseSession();
 
         session.setImported(true);

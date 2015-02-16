@@ -7,8 +7,7 @@ import net.rrm.ehour.domain.UserRole;
  * @author thies (thies@te-con.nl)
  *         Date: 11/30/10 12:30 AM
  */
-public class UserRoleParserDaoValidatorImpl implements UserRoleParserDao
-{
+public class UserRoleParserDaoValidatorImpl implements UserRoleParserDao {
     private int findUserCount = 0;
     private int persistCount = 0;
 
@@ -18,25 +17,21 @@ public class UserRoleParserDaoValidatorImpl implements UserRoleParserDao
     }
 
     @Override
-    public User findUser(Integer userId)
-    {
+    public User findUser(Integer userId) {
         findUserCount++;
         return new User(userId);
     }
 
     @Override
-    public void persistUser(User user)
-    {
+    public void persistUser(User user) {
         persistCount++;
     }
 
-    public int getPersistCount()
-    {
+    public int getPersistCount() {
         return persistCount;
     }
 
-    public int getFindUserCount()
-    {
+    public int getFindUserCount() {
         return findUserCount;
     }
 }

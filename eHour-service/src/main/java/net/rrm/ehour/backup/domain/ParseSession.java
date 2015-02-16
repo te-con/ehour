@@ -1,6 +1,6 @@
 package net.rrm.ehour.backup.domain;
 
-import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
+import net.rrm.ehour.backup.common.BackupEntityType;
 
 import java.io.File;
 import java.io.Serializable;
@@ -13,28 +13,24 @@ import java.util.Map;
  * @author thies (thies@te-con.nl)
  *         Date: 11/30/10 12:57 AM
  */
-public class ParseSession implements Serializable
-{
-    private Map<BackupEntityType, Integer> insertions = new HashMap<BackupEntityType, Integer>();
-    private Map<BackupEntityType, List<String>> errors = new HashMap<BackupEntityType, List<String>>();
+public class ParseSession implements Serializable {
+    private Map<BackupEntityType, Integer> insertions = new HashMap<>();
+    private Map<BackupEntityType, List<String>> errors = new HashMap<>();
 
     private String filename;
     private boolean globalError;
     private String globalErrorMessage;
     private boolean imported = false;
 
-    public void deleteFile()
-    {
-        if (filename != null)
-        {
+    public void deleteFile() {
+        if (filename != null) {
             File file = new File(filename);
             file.delete();
             imported = true;
         }
     }
 
-    public void clearSession()
-    {
+    public void clearSession() {
         insertions.clear();
         errors.clear();
     }
@@ -43,91 +39,73 @@ public class ParseSession implements Serializable
         return !(imported || hasErrors());
     }
 
-
-    public void addError(BackupEntityType type, String error)
-    {
-        if (type == null)
-        {
+    public void addError(BackupEntityType entity, String error) {
+        if (entity == null) {
             return;
         }
 
         List<String> errorsForType;
 
-        if (errors.containsKey(type))
-        {
-            errorsForType = errors.get(type);
-        } else
-        {
-            errorsForType = new ArrayList<String>();
+        if (errors.containsKey(entity)) {
+            errorsForType = errors.get(entity);
+        } else {
+            errorsForType = new ArrayList<>();
         }
 
         errorsForType.add(error);
 
-        errors.put(type, errorsForType);
+        errors.put(entity, errorsForType);
     }
 
-    public void addInsertion(BackupEntityType type)
-    {
+    public void addInsertion(BackupEntityType type) {
         Integer insertionCount;
 
-        if (insertions.containsKey(type))
-        {
+        if (insertions.containsKey(type)) {
             insertionCount = insertions.get(type);
-        } else
-        {
+        } else {
             insertionCount = 0;
         }
 
         insertions.put(type, ++insertionCount);
     }
 
-    public Map<BackupEntityType, Integer> getInsertions()
-    {
+    public Map<BackupEntityType, Integer> getInsertions() {
         return insertions;
     }
 
-    public Map<BackupEntityType, List<String>> getErrors()
-    {
+    public Map<BackupEntityType, List<String>> getErrors() {
         return errors;
     }
 
-    public boolean hasErrors()
-    {
+    public boolean hasErrors() {
         return !errors.isEmpty() || globalError;
     }
 
-    public String getFilename()
-    {
+    public String getFilename() {
         return filename;
     }
 
-    public void setFilename(String filename)
-    {
+    public void setFilename(String filename) {
         this.filename = filename;
     }
 
-    public boolean isGlobalError()
-    {
+    public boolean isGlobalError() {
         return globalError;
     }
 
-    public void setGlobalError(boolean globalError)
-    {
+    public void setGlobalError(boolean globalError) {
         this.globalError = globalError;
     }
 
-    public String getGlobalErrorMessage()
-    {
+    public String getGlobalErrorMessage() {
         return globalErrorMessage;
     }
 
-    public void setGlobalErrorMessage(String globalErrorMessage)
-    {
+    public void setGlobalErrorMessage(String globalErrorMessage) {
         this.globalErrorMessage = globalErrorMessage;
     }
 
-    public void setImported(boolean i)
-    {
+    public void setImported(boolean i) {
         this.imported = i;
     }
 }

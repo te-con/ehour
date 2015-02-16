@@ -1,7 +1,7 @@
 package net.rrm.ehour.ui.admin.backup.restore;
 
+import net.rrm.ehour.backup.common.BackupEntityType;
 import net.rrm.ehour.backup.domain.ParseSession;
-import net.rrm.ehour.persistence.backup.dao.BackupEntityType;
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
@@ -55,7 +55,7 @@ public class ParseStatusPanel extends AbstractBasePanel<ParseSession>
 
     private ListView<BackupEntityType> createInsertionsList(String id, final Map<BackupEntityType, Integer> insertions)
     {
-        return new ListView<BackupEntityType>(id, new ArrayList<BackupEntityType>(insertions.keySet()))
+        return new ListView<BackupEntityType>(id, new ArrayList<>(insertions.keySet()))
         {
             @Override
             protected void populateItem(ListItem<BackupEntityType> entryListItem)
@@ -71,7 +71,7 @@ public class ParseStatusPanel extends AbstractBasePanel<ParseSession>
 
     private ListView<BackupEntityType> createErrorsList(String id, final Map<BackupEntityType, List<String>> errors)
     {
-        return new ListView<BackupEntityType>(id, new ArrayList<BackupEntityType>(errors.keySet()))
+        return new ListView<BackupEntityType>(id, new ArrayList<>(errors.keySet()))
         {
             @Override
             protected void populateItem(ListItem<BackupEntityType> entryListItem)

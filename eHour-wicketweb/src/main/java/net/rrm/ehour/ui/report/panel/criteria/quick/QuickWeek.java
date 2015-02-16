@@ -20,27 +20,48 @@ import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.util.DateUtil;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Quick week value object
- **/
+ */
 
-public class QuickWeek extends QuickPeriod
-{
-	private static final long serialVersionUID = -8803620859213666342L;
+public class QuickWeek extends QuickPeriod {
+    private static final long serialVersionUID = -8803620859213666342L;
 
-	public QuickWeek(Calendar calendarOrig, EhourConfig config)
-	{
-		Calendar cal = (Calendar)calendarOrig.clone();
-		DateUtil.dayOfWeekFix(cal);
-		cal.setFirstDayOfWeek(config.getFirstDayOfWeek());
-		cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
-		setPeriodStart(cal.getTime());
-		
-		setPeriodIndex(cal.get(Calendar.WEEK_OF_YEAR));
-		
-		cal.add(Calendar.WEEK_OF_YEAR, 1);
-		cal.add(Calendar.DAY_OF_YEAR, -1);
-		setPeriodEnd(cal.getTime());
-	}
+    public QuickWeek() {
+    }
+
+    private QuickWeek(Date periodStart, Date periodEnd, int periodIndex, QuickType shortcut) {
+        super(periodStart, periodEnd, periodIndex, shortcut);
+    }
+
+    public static QuickWeek divider() {
+        return new QuickWeek();
+    }
+
+    public static QuickWeek instance(Calendar calendarOrig, EhourConfig config) {
+        return instance(calendarOrig, config, QuickType.NONE);
+    }
+
+    public static QuickWeek shortcut(Calendar calendarOrig, EhourConfig config, QuickType quickType) {
+        return instance(calendarOrig, config, quickType);
+    }
+
+    public static QuickWeek instance(Calendar calendarOrig, EhourConfig config, QuickType shortcut) {
+        Calendar cal = (Calendar) calendarOrig.clone();
+        DateUtil.dayOfWeekFix(cal);
+        cal.setFirstDayOfWeek(config.getFirstDayOfWeek());
+        cal.set(Calendar.DAY_OF_WEEK, config.getFirstDayOfWeek());
+        Date periodStart = cal.getTime();
+
+        int periodIndex = cal.get(Calendar.WEEK_OF_YEAR);
+
+        cal.add(Calendar.WEEK_OF_YEAR, 1);
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+
+        Date periodEnd = cal.getTime();
+
+        return new QuickWeek(periodStart, periodEnd, periodIndex, shortcut);
+    }
 }

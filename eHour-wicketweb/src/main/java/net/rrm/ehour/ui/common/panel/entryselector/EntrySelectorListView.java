@@ -1,9 +1,11 @@
 package net.rrm.ehour.ui.common.panel.entryselector;
 
 import net.rrm.ehour.exception.ObjectNotFoundException;
+import net.rrm.ehour.ui.common.decorator.LoadingSpinnerDecorator;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -42,6 +44,13 @@ public abstract class EntrySelectorListView extends ListView<EntrySelectorRow> {
                     clickHandler.onClick(item.getModelObject(), target);
                 } catch (ObjectNotFoundException e) {
                 }
+            }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                attributes.getAjaxCallListeners().add(new LoadingSpinnerDecorator());
             }
         });
 

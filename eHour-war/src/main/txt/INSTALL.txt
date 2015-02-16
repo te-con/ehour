@@ -1,0 +1,5 @@
+Install instructions
+--------------------
+See http://wiki.ehour.nl/display/DOCU/Install+WAR+on+Tomcat for install instructions
+or http://wiki.ehour.nl/display/DOCU/Upgrading+WAR for upgrade instructions.
+

@@ -48,7 +48,7 @@ function DetailedReportChart(cacheKey, id) {
             zoomType: 'x'
         },
         title: {
-            text: 'Hours booked on customers per day'
+            text: 'Hours booked on clients per day'
         },
         plotOptions: {
             series: {

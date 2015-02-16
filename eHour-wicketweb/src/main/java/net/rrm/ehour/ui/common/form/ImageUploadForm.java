@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.common.form;
 
 import net.rrm.ehour.persistence.value.ImageLogo;
-import net.rrm.ehour.util.IoUtil;
 import org.apache.log4j.Logger;
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.Sanselan;
@@ -94,10 +93,8 @@ public abstract class ImageUploadForm extends Form<Void> {
     }
 
     private byte[] getBytes(FileUpload upload) throws IOException {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        InputStream in = new BufferedInputStream(upload.getInputStream());
-
-        try {
+        try (ByteArrayOutputStream bout = new ByteArrayOutputStream();
+             InputStream in = new BufferedInputStream(upload.getInputStream())) {
             int b;
 
             while ((b = in.read()) != -1) {
@@ -105,8 +102,6 @@ public abstract class ImageUploadForm extends Form<Void> {
             }
 
             return bout.toByteArray();
-        } finally {
-            IoUtil.close(in);
         }
     }
-}	
+}

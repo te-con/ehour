@@ -20,13 +20,30 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-public abstract class QuickPeriod implements Serializable {
+public class QuickPeriod implements Serializable {
     private static final long serialVersionUID = -245086949586026553L;
 
     private Date periodStart;
     private Date periodEnd;
 
     private int periodIndex;
+
+    private QuickType quickType;
+
+    public QuickPeriod() {
+        this.quickType = QuickType.DIVIDER;
+    }
+
+    public QuickPeriod(Date periodStart, Date periodEnd, int periodIndex, QuickType quickType) {
+        this.periodStart = periodStart;
+        this.periodEnd = periodEnd;
+        this.periodIndex = periodIndex;
+        this.quickType = quickType;
+    }
+
+    public boolean isDivider() {
+        return quickType == QuickType.DIVIDER;
+    }
 
     public Date getPeriodStart() {
         return periodStart;
@@ -40,16 +57,8 @@ public abstract class QuickPeriod implements Serializable {
         return periodIndex;
     }
 
-    public void setPeriodStart(Date periodStart) {
-        this.periodStart = periodStart;
-    }
-
-    public void setPeriodEnd(Date periodEnd) {
-        this.periodEnd = periodEnd;
-    }
-
-    public void setPeriodIndex(int periodIndex) {
-        this.periodIndex = periodIndex;
+    public QuickType getQuickType() {
+        return quickType;
     }
 
     @Override
@@ -65,5 +74,13 @@ public abstract class QuickPeriod implements Serializable {
     @Override
     public int hashCode() {
         return periodIndex;
+    }
+
+    public enum QuickType {
+        SHORTCUT_PREV,
+        SHORTCUT_CURRENT,
+        SHORTCUT_NEXT,
+        NONE,
+        DIVIDER
     }
 }

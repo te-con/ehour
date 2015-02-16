@@ -9,6 +9,7 @@
         <param-value>
             classpath:context-propertyconfig.xml
             classpath:context-dbconnectivity.xml
+            classpath:context-service-ehourconfig.xml
             classpath:context-service-scanner.xml
             classpath:context-service.xml
             classpath:context-security.xml

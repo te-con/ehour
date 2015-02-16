@@ -31,7 +31,8 @@ public class EntrySelectorExcelGenerator {
 
                 String cellValue = (String)cells.get(columnIndex);
 
-                if (header.getColumnType() == EntrySelectorData.ColumnType.NUMERIC) {
+                EntrySelectorData.ColumnType columnType = header.getColumnType();
+                if (columnType == EntrySelectorData.ColumnType.NUMERIC) {
                     cell.setCellValue(Float.parseFloat(cellValue));
                 } else {
                     cell.setCellValue(cellValue);
