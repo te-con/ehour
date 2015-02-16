@@ -13,7 +13,7 @@ public class CustomerManagementDriver {
     public static final ItCustomer INACTIVE_CUSTOMER = new ItCustomer("CED", "CED");
 
     public static void assertCustomerManagementLoaded() {
-        assertEquals("Customer management", Driver.getTitle());
+        assertEquals("Client management", Driver.getTitle());
     }
 
     public static ItCustomer createActiveCustomer() {
