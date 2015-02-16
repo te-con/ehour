@@ -43,7 +43,7 @@ public class CustomerManagementDriver {
     }
 
     private static void createCustomer(ItCustomer customer, boolean active) {
-        Driver.get(BASE_URL + "/eh/admin/customer");
+        Driver.get(BASE_URL + "/eh/admin/client");
 
         findElement("tabs_panel_border_greySquaredFrame_border__body_customerForm_customer.name").clear();
         findElement("tabs_panel_border_greySquaredFrame_border__body_customerForm_customer.name").sendKeys(customer.name);
