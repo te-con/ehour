@@ -88,7 +88,7 @@ function Timesheet() {
 
     function filter() {
         var q = $.trim($("#filter").val()).toLowerCase();
-        var r = new RegExp(q.replace('*', '.*'));
+        var r = new RegExp(q.replace(/\*/g, '.*').replace(/ /g, '.*'));
         var timesheetTable = $(".timesheetTable");
 
         timesheetTable.find(".projectName").each(function (idx, element) {
