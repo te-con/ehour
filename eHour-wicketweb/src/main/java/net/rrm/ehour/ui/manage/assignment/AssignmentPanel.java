@@ -73,13 +73,13 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void> {
             @Override
             protected Panel getAddPanel(String panelId) {
                 return new AssignmentFormPanel(panelId,
-                        new CompoundPropertyModel<AssignmentAdminBackingBean>(getAddBackingBean()));
+                        new CompoundPropertyModel<>(getAddBackingBean()));
             }
 
             @Override
             protected Panel getEditPanel(String panelId) {
                 return new AssignmentFormPanel(panelId,
-                        new CompoundPropertyModel<AssignmentAdminBackingBean>(getEditBackingBean()));
+                        new CompoundPropertyModel<>(getEditBackingBean()));
             }
 
             @Override

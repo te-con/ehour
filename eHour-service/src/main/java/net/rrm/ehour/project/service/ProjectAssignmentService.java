@@ -27,49 +27,53 @@ import java.util.List;
 
 /**
  * Service for handling project assignments
- **/
+ */
 
-public interface ProjectAssignmentService
-{
-	/**
-	 * Get active projects for user in date range 
-	 * @param userId
-	 * @param dateRange
-	 * @return
-	 */
-	List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange);
-	
-	/**
-	 * Get projects for user
-	 * @param user
-	 * @param hideInactive
-	 * @return
-	 */
-	List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive);
+public interface ProjectAssignmentService {
+    /**
+     * Get active projects for user in date range
+     *
+     * @param userId
+     * @param dateRange
+     * @return
+     */
+    List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange);
 
-	/**
-	 * Get project assignment and mark it as deletable or not
-	 * @param assignmentId
-	 * @return
-	 */
-	ProjectAssignment getProjectAssignment(Integer assignmentId)  throws ObjectNotFoundException;
-	
-	/**
-	 * Get project assignments for project
-	 * @param project
-	 */
-	List<ProjectAssignment> getProjectAssignments(Project project, DateRange dateRange);
-	
-	/**
-	 * Get all project assignments for project
-	 * @param project
-	 * @return
-	 */
-	List<ProjectAssignment> getProjectAssignmentsAndCheckDeletability(Project project);
+    /**
+     * Get projects for user
+     *
+     * @param user
+     * @return
+     */
+    List<ProjectAssignment> getProjectAssignmentsForUser(User user);
 
-	/**
-	 * Get available project assignment types
-	 * @return
-	 */
-	List<ProjectAssignmentType> getProjectAssignmentTypes();
+    /**
+     * Get project assignment and mark it as deletable or not
+     *
+     * @param assignmentId
+     * @return
+     */
+    ProjectAssignment getProjectAssignment(Integer assignmentId) throws ObjectNotFoundException;
+
+    /**
+     * Get project assignments for project
+     *
+     * @param project
+     */
+    List<ProjectAssignment> getProjectAssignments(Project project, DateRange dateRange);
+
+    /**
+     * Get all project assignments for project
+     *
+     * @param project
+     * @return
+     */
+    List<ProjectAssignment> getProjectAssignmentsAndCheckDeletability(Project project);
+
+    /**
+     * Get available project assignment types
+     *
+     * @return
+     */
+    List<ProjectAssignmentType> getProjectAssignmentTypes();
 }
