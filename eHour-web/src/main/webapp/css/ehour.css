@@ -623,6 +623,7 @@ a.bluebutton span {
     padding: 4px 0 6px 10px;
     cursor: pointer;
     letter-spacing: 1.5px;
+    white-space: nowrap;
 }
 
 a.bluebutton:active {
@@ -636,6 +637,7 @@ a.bluebutton:active span {
     padding: 5px 0 5px 10px; /* push text down 1px */
     cursor: pointer;
     letter-spacing: 1.5px;
+    white-space: nowrap;
 }
 
 hr {
