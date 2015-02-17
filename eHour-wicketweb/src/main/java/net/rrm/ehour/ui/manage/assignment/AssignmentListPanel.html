@@ -20,7 +20,6 @@
 			<tr>
 				<th></th>
 				<th><wicket:message key="admin.assignment.projectHeader" /></th>
-				<th><wicket:message key="admin.assignment.customerHeader" /></th>
 				<th><wicket:message key="admin.assignment.startHeader" /></th>
 				<th><wicket:message key="admin.assignment.endHeader" /></th>		
 			</tr>
@@ -28,10 +27,13 @@
 			<span wicket:id="assignments">
 				<tr>
 					<td valign="top" rowspan="2"><a wicket:id="imgLink"><i class="fa fa-pencil-square-o"></i></a></td>
-					<td class="main" style="padding-right: 1em"><a wicket:id="itemLink"><span wicket:id="project"></span></a></td>
-					<td class="main" style="padding-right: 1em" wicket:id="customer"></td>
-					<td class="main" style="padding-right: 1em" wicket:id="dateStart"></td>
-					<td class="main" wicket:id="dateEnd"></td>
+					<td class="main project" style="padding-right: 1em">
+                        <a wicket:id="itemLink"><span wicket:id="project"></span></a>
+                        <br />
+                        <span wicket:id="customer"></span>
+                    </td>
+					<td valign="top" class="main date" style="padding-right: 1em" wicket:id="dateStart"></td>
+					<td valign="top" class="main date" wicket:id="dateEnd"></td>
 				</tr>
 				<tr>
 					<td colspan="4" class="extra">
