@@ -21,7 +21,7 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.sort.ProjectAssignmentComparator;
-import net.rrm.ehour.ui.common.border.GreyRoundedBorder;
+import net.rrm.ehour.ui.common.border.GreyRoundedWideBorder;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.event.PayloadAjaxEvent;
 import net.rrm.ehour.ui.common.model.DateModel;
@@ -67,9 +67,9 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
 
         setOutputMarkupId(true);
 
-        Border greyBorder = new GreyRoundedBorder("border",
+        Border greyBorder = new GreyRoundedWideBorder("border",
                 new StringResourceModel("admin.assignment.assignmentsFor",
-                        this, null, new Object[]{new Model<String>(user.getFullName())})
+                        this, null, new Object[]{new Model<>(user.getFullName())})
         );
         add(greyBorder);
         greyBorder.add(getProjectAssignmentLists(user));
@@ -84,7 +84,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
     }
 
     private AjaxCheckBox getActivateCheckbox() {
-        return new AjaxCheckBox("filterToggle", new Model<Boolean>(getEhourWebSession().getHideInactiveSelections())) {
+        return new AjaxCheckBox("filterToggle", new Model<>(getEhourWebSession().getHideInactiveSelections())) {
             private static final long serialVersionUID = 2585047163449150793L;
 
             @Override
@@ -112,7 +112,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
                 AjaxLink<Void> link = new AjaxLink<Void>("itemLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_EDIT,
+                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<>(AssignmentAjaxEventType.ASSIGNMENT_EDIT,
                                 assignment));
                     }
                 };
@@ -120,7 +120,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
                 AjaxLink<Void> imgLink = new AjaxLink<Void>("imgLink") {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
-                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<ProjectAssignment>(AssignmentAjaxEventType.ASSIGNMENT_EDIT,
+                        EventPublisher.publishAjaxEvent(AssignmentListPanel.this, new PayloadAjaxEvent<>(AssignmentAjaxEventType.ASSIGNMENT_EDIT,
                                 assignment));
                     }
                 };
@@ -172,7 +172,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
             Collections.sort(assignments, new ProjectAssignmentComparator(ProjectAssignmentComparator.ASSIGNMENT_COMPARE_CUSTDATEPRJ));
             setVisible(true);
         } else {
-            assignments = new ArrayList<ProjectAssignment>();
+            assignments = new ArrayList<>();
         }
 
         return assignments;

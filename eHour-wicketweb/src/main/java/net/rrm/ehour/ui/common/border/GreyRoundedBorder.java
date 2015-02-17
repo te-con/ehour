@@ -40,7 +40,7 @@ public class GreyRoundedBorder extends Border {
      * With title
      */
     public GreyRoundedBorder(String id, String title) {
-        this(id, new Model<String>(title));
+        this(id, new Model<>(title));
     }
 
 
