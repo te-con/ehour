@@ -59,6 +59,10 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
+import org.apache.wicket.request.resource.caching.IResourceCachingStrategy;
+import org.apache.wicket.request.resource.caching.IStaticCacheableResource;
+import org.apache.wicket.request.resource.caching.version.IResourceVersion;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -100,6 +104,8 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
 
             getRequestCycleListeners().add(new PageRequestHandlerTracker());
 
+            cacheStrategy();
+
             initialized = true;
         }
 
@@ -112,6 +118,16 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
         if (version != null) { // dont spoil the log during junit tests
             LOGGER.info(String.format("*** %s version %s started!", getAppName(), version));
         }
+    }
+
+    private void cacheStrategy() {
+        IResourceCachingStrategy strategy = new FilenameWithVersionResourceCachingStrategy(new IResourceVersion() {
+            @Override
+            public String getVersion(IStaticCacheableResource resource) {
+                return version;
+            }
+        });
+        this.getResourceSettings().setCachingStrategy(strategy);
     }
 
     protected String getAppName() {
