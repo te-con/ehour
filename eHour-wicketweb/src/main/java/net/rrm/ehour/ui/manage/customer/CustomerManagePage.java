@@ -29,7 +29,6 @@ import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel;
 import net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorPanel.EntrySelectorBuilder;
 import net.rrm.ehour.ui.common.panel.entryselector.InactiveFilterChangedEvent;
-import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.manage.AbstractTabbedManagePage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -89,8 +88,8 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
 
     private EntrySelectorData createSelectorData(List<Customer> customers) {
 
-        List<Header> headers = Lists.newArrayList(new Header("admin.customer.code"),
-                                                  new Header("admin.customer.name"),
+        List<Header> headers = Lists.newArrayList(new Header("admin.customer.name"),
+                                                  new Header("admin.customer.code"),
                                                   new Header("admin.customer.projects", ColumnType.NUMERIC)
         );
 

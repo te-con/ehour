@@ -104,7 +104,7 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
     }
 
     protected EntrySelectorData createSelectorData(List<Project> projects) {
-        List<Header> headers = Lists.newArrayList(new Header("admin.project.code.short"), new Header("admin.project.name"));
+        List<Header> headers = Lists.newArrayList(new Header("admin.project.name"), new Header("admin.project.code.short"));
 
         List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
 
