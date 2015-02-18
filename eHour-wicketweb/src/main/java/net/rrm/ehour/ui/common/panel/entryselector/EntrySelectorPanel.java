@@ -26,7 +26,6 @@ import net.rrm.ehour.ui.common.report.excel.ExcelWorkbook;
 import net.rrm.ehour.ui.common.report.excel.IWriteBytes;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.wicket.Container;
-import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
@@ -59,9 +58,6 @@ import static net.rrm.ehour.ui.common.panel.entryselector.EntrySelectorData.Entr
  */
 
 public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
-    private static final Logger LOG = Logger.getLogger(EntrySelectorPanel.class);
-
-//    private static final String WINDOW_ENTRY_SELECTOR_REFRESH = "window.entrySelector.refresh();";
     private static final JavaScriptResourceReference JS = new JavaScriptResourceReference(EntrySelectorPanel.class, "entrySelector.js");
     private static final String ITEM_LIST_ID = "itemList";
     private static final String HEADER_ID = "headers";
