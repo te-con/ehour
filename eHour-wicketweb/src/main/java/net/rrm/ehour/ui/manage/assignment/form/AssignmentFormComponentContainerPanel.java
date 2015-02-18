@@ -22,21 +22,14 @@ import net.rrm.ehour.ui.common.event.AjaxEvent;
 import net.rrm.ehour.ui.common.event.EventPublisher;
 import net.rrm.ehour.ui.common.panel.AbstractAjaxPanel;
 import net.rrm.ehour.ui.manage.assignment.AssignmentAdminBackingBean;
-import net.rrm.ehour.ui.manage.assignment.AssignmentPersistenceError;
-import net.rrm.ehour.ui.report.panel.criteria.DateDropDownChoice;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 
 import java.util.List;
 
 public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<AssignmentAdminBackingBean> {
-    private Form<AssignmentAdminBackingBean> form;
-    private FeedbackPanel feedback;
 
     public enum DisplayOption {
         SHOW_PROJECT_SELECTION,
@@ -49,16 +42,10 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
     public AssignmentFormComponentContainerPanel(String id, Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
         super(id, model);
 
-        this.form = form;
-
         setUpPanel(form, model, displayOptions);
     }
 
     private void setUpPanel(Form<AssignmentAdminBackingBean> form, final IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {
-        feedback = new FeedbackPanel("feedback");
-        feedback.setOutputMarkupId(true);
-        add(feedback);
-
         // setup the customer & project dropdowns
         add(createProjectSelection("projectSelection", model, displayOptions));
 
@@ -77,17 +64,6 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
             return new AssignmentProjectSelectionPanel(id, model);
         } else {
             return new PlaceholderPanel(id);
-        }
-    }
-
-    @Override
-    public void onEvent(IEvent<?> event) {
-        Object payload = event.getPayload();
-
-        if (payload instanceof AssignmentPersistenceError && form != null) {
-            form.error("Failure");
-            AssignmentPersistenceError persistenceError = (AssignmentPersistenceError) payload;
-            persistenceError.getTarget().add(feedback);
         }
     }
 

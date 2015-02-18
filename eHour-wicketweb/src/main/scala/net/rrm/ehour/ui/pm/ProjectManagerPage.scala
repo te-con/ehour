@@ -35,6 +35,8 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
 
   var selector:EntrySelectorPanel = _
 
+  var statusContainer:WebMarkupContainer = _
+
   @SpringBean
   protected var projectService: ProjectService = _
 
@@ -50,15 +52,13 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
     val container = createContentContainer
     addOrReplace(container)
     container.add(createPlaceholderContainer(ContentId))
-    container.add(new Container(StatusId))
+    statusContainer = new Container(StatusId)
+    container.add(statusContainer)
   }
 
   protected def createPlaceholderContainer(id: String):WebMarkupContainer = new Container(id)
 
-  protected def createContentContainer: WebMarkupContainer = {
-    val container = new WebMarkupContainer(ContainerId)
-    container
-  }
+  protected def createContentContainer: WebMarkupContainer = new WebMarkupContainer(ContainerId)
 
   protected def createEntrySelectorFrame: GreyRoundedBorder = {
     new GreyRoundedBorder("entrySelectorFrame", new ResourceModel("admin.project.title"))
@@ -124,7 +124,7 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
 
   override def ajaxEventReceived(ajaxEvent: AjaxEvent): Boolean = {
     if (ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_UPDATED || ajaxEvent.getEventType == AssignmentAjaxEventType.ASSIGNMENT_DELETED) {
-      ajaxEvent.getTarget.add(get(StatusId))
+      ajaxEvent.getTarget.add(statusContainer)
     }
 
     true

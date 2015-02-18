@@ -26,6 +26,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.validation.validator.RangeValidator;
 
 import java.util.Currency;
@@ -43,12 +44,13 @@ public class AssignmentRateRoleFormPartPanel extends Panel {
         EhourConfig config = EhourWebSession.getEhourConfig();
 
         // add role
-        TextField<String> role = new TextField<String>("projectAssignment.role");
+        TextField<String> role = new TextField<>("projectAssignment.role");
         add(role);
 
         // add hourly rate
-        TextField<Float> hourlyRate = new TextField<Float>("projectAssignment.hourlyRate",
+        TextField<Float> hourlyRate = new TextField<>("projectAssignment.hourlyRate",
                 new PropertyModel<Float>(model, "projectAssignment.hourlyRate"));
+        hourlyRate.setLabel(new ResourceModel("admin.assignment.rate"));
         hourlyRate.setType(Float.class);
         hourlyRate.add(new ValidatingFormComponentAjaxBehavior());
         hourlyRate.add(RangeValidator.minimum(0f));
