@@ -66,8 +66,12 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     }
 
     @Override
-    public void renderHead(IHeaderResponse response) {
+    public final void renderHead(IHeaderResponse response) {
         response.render(CssHeaderItem.forReference(EHOUR_CSS));
+        onRenderHead(response);
+    }
+
+    protected void onRenderHead(IHeaderResponse response) {
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {

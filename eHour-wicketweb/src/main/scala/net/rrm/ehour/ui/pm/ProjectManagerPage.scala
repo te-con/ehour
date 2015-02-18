@@ -130,7 +130,7 @@ class ProjectManagerPage extends AbstractBasePage[String](new ResourceModel("pmR
     true
   }
 
-  override def renderHead(response: IHeaderResponse) {
+  override def onRenderHead(response: IHeaderResponse) {
     response.render(CssHeaderItem.forReference(Css))
   }
 }

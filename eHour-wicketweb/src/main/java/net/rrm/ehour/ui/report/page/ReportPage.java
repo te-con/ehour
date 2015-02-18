@@ -81,7 +81,7 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     }
 
     @Override
-    public void renderHead(IHeaderResponse response) {
+    protected void onRenderHead(IHeaderResponse response) {
         response.render(CssReferenceHeaderItem.forReference(REPORT_CSS));
    }
 

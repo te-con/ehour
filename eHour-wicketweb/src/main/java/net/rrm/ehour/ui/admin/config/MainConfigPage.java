@@ -45,7 +45,7 @@ public class MainConfigPage extends AbstractAdminPage<Void> {
     private void setUpPage() {
         MainConfigBackingBean configBackingBean = new MainConfigBackingBean(getDbConfig());
         add(new SystemInfoPanel("sysinfo"));
-        add(new ConfigTabPanel("configTabs", new CompoundPropertyModel<MainConfigBackingBean>(configBackingBean)));
+        add(new ConfigTabPanel("configTabs", new CompoundPropertyModel<>(configBackingBean)));
     }
 
     private EhourConfigStub getDbConfig() {
@@ -53,7 +53,7 @@ public class MainConfigPage extends AbstractAdminPage<Void> {
     }
 
     @Override
-    public void renderHead(IHeaderResponse response) {
+    protected void onRenderHead(IHeaderResponse response) {
         response.render(CssHeaderItem.forReference(CSS));
     }
 }
