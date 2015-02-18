@@ -1,7 +1,7 @@
 .userList {
-    width: 17.5em !important;
+    width: 95% !important;
     min-width: 17.5em !important;
-    max-width: 17.5em !important;
+    /*max-width: 17.5em !important;*/
     height: 15em !important;
 }
 
@@ -11,4 +11,12 @@
 
 .userList .row:hover, .assignmentList .row:hover {
     cursor: pointer;
+}
+
+.selectedContainer {
+    width: 100%;
+}
+
+.selectPanel {
+    width: 48%;
 }
