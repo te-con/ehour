@@ -32,10 +32,13 @@ public class EntrySelectorExcelGenerator {
                 String cellValue = (String)cells.get(columnIndex);
 
                 EntrySelectorData.ColumnType columnType = header.getColumnType();
-                if (columnType == EntrySelectorData.ColumnType.NUMERIC) {
-                    cell.setCellValue(Float.parseFloat(cellValue));
-                } else {
-                    cell.setCellValue(cellValue);
+
+                if (cellValue != null) {
+                    if (columnType == EntrySelectorData.ColumnType.NUMERIC) {
+                        cell.setCellValue(Float.parseFloat(cellValue));
+                    } else {
+                        cell.setCellValue(cellValue);
+                    }
                 }
             }
         }
