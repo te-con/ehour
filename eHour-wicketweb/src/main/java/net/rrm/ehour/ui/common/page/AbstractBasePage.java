@@ -72,6 +72,7 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     }
 
     protected void onRenderHead(IHeaderResponse response) {
+
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
