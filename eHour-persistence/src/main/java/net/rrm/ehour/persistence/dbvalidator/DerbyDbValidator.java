@@ -85,8 +85,6 @@ public class DerbyDbValidator {
 
                 ddlType = DdlType.ALTER_TABLE;
             }
-
-
         } catch (SQLException e) {
             ddlType = DdlType.CREATE_TABLE;
             LOGGER.info("Could not determine datamodel's version, recreating..");
@@ -155,13 +153,17 @@ public class DerbyDbValidator {
     }
 
     private void insertData(Platform platform, Database model, String filename) throws IOException {
+        Resource resource = new ClassPathResource(filename);
+
+        if (!resource.exists()) {
+            return;
+        }
+
         DatabaseDataIO dataIO = new DatabaseDataIO();
 
         DataReader dataReader = dataIO.getConfiguredDataReader(platform, model);
 
         dataReader.getSink().start();
-
-        Resource resource = new ClassPathResource(filename);
 
         dataIO.writeDataToDatabase(dataReader, new InputStreamReader(resource.getInputStream()));
     }
