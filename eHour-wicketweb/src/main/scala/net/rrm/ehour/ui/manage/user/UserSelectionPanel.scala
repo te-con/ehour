@@ -17,8 +17,11 @@ import org.apache.wicket.event.{Broadcast, IEvent}
 import org.apache.wicket.model.ResourceModel
 import org.apache.wicket.spring.injection.annot.SpringBean
 
-class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUsers: (util.List[User]) => util.List[User]) extends AbstractBasePanel[UserManageBackingBean](id) {
-  def this(id: String, titleResourceKey: Option[String]) = this(id, titleResourceKey, xs => xs)
+class UserSelectionPanel(id: String,
+                        showInactiveToggle: Boolean,
+                         titleResourceKey: Option[String],
+                         filterUsers: (util.List[User]) => util.List[User]) extends AbstractBasePanel[UserManageBackingBean](id) {
+  def this(id: String, titleResourceKey: Option[String]) = this(id, true, titleResourceKey, xs => xs)
 
   val Self = this
 
@@ -48,7 +51,7 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
     entrySelectorPanel = new EntrySelectorPanel("entrySelectorFrame",
                                                 createSelectorData(users(EhourWebSession.getSession.getHideInactiveSelections)),
                                                 clickHandler,
-                                                new ResourceModel("admin.user.hideInactive"))
+                                                if (showInactiveToggle) new ResourceModel("admin.user.hideInactive") else null)
 
     greyBorder.add(entrySelectorPanel)
   }
@@ -63,7 +66,6 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
       val cells = Lists.newArrayList(user.getLastName, user.getFirstName, user.getUsername)
       new EntrySelectorData.EntrySelectorRow(cells, user.getUserId, user.isActive)
     }
-
 
     new EntrySelectorData(headers, rows)
   }
@@ -82,7 +84,7 @@ class UserSelectionPanel(id: String, titleResourceKey: Option[String], filterUse
   }
 
   private def users(hideInactive: Boolean): util.List[User] = {
-    val users: util.List[User] = filterUsers(if (hideInactive) userService.getActiveUsers else userService.getUsers)
+    val users: util.List[User] = filterUsers(if (!showInactiveToggle || hideInactive) userService.getActiveUsers else userService.getUsers)
     Collections.sort(users, new UserComparator(false))
     users
   }

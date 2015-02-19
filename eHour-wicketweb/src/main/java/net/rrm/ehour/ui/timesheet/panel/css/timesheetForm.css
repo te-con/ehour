@@ -226,10 +226,11 @@ td.lockeddaynocomment {
 .timesheetTable input {
     border: 1px solid #cfdbe6;
     margin: 5px 1px 5px 0;
-    font: 1em/1.5em Geneva, Arial, Helvetica, sans-serif;
+    font: 1em/21px Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     background-color: white;
     text-align: center;
+    height: 21px;
 }
 
 .timesheetTable tr.totalRow {
@@ -317,6 +318,10 @@ div.wicket-modal div.w_content_3 {
     font-size: 75%;
 }
 
+.iconLinkOn {
+    color: #e88b1d;
+}
+
 .timesheetSectionHeader {
     background: transparent !important;
     opacity: 0.6;
@@ -399,8 +404,7 @@ div.wicket-modal div.w_content_3 {
 
 .filterContainer {
     float: right;
-    margin-bottom: 1px;
-    font-size: 0.9em;
+    padding-bottom: 5px;
 }
 
 .filter {

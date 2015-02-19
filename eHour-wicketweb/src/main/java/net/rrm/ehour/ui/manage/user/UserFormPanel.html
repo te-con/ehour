@@ -88,8 +88,8 @@
             </tr>
 
             <tr>
-                <td valign="top"><wicket:message key="admin.user.active"/>:</td>
-                <td><input type="checkbox" wicket:id="user.active"/></td>
+                <td valign="top"><label for="active"><wicket:message key="admin.user.active"/></label>:</td>
+                <td><input type="checkbox" id="active" wicket:id="user.active"/></td>
             </tr>
 
             <tr>
@@ -103,9 +103,9 @@
             <wicket:enclosure child="showAssignments">
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.user.add.showAssignments"/>
+                       <label for="showAssignments"><wicket:message key="admin.user.add.showAssignments"/></label>
                     </td>
-                    <td><input type="checkbox" wicket:id="showAssignments"/></td>
+                    <td><input type="checkbox" id="showAssignments" wicket:id="showAssignments"/></td>
                 </tr>
 
 

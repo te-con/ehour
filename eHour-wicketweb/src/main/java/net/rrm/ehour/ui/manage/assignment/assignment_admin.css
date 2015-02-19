@@ -1,0 +1,17 @@
+.assignment_footer {
+    margin-left: 30px;
+    font-size: 90%;
+    opacity: 0.8;
+}
+
+.client {
+    opacity: 0.9;
+}
+
+.contentTable td.project {
+    width: 440px;
+}
+
+.contentTable td.date {
+    width: 60px;
+}

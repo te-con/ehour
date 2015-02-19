@@ -12,8 +12,7 @@
             <table class="contentTable">
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.name"/>
-                        :
+                        <wicket:message key="admin.project.name"/>:
                     </td>
                     <td><input type="text" class="textInputSmall" wicket:id="project.name"/>
                         <span wicket:id="nameValidationError"></span>
@@ -22,8 +21,7 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.code"/>
-                        :
+                        <wicket:message key="admin.project.code"/>:
                     </td>
                     <td><input type="text" class="textInputSmall" wicket:id="project.projectCode"/>
                         <span wicket:id="codeValidationError"></span>
@@ -33,8 +31,7 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.customer"/>
-                        :
+                        <wicket:message key="admin.project.customer"/>:
                     </td>
                     <td><select class="textInputSmall" wicket:id="project.customer"></select>
                         <span wicket:id="customerValidationError"></span>
@@ -50,8 +47,7 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.projectManager"/>
-                        :
+                        <wicket:message key="admin.project.projectManager"/>:
                     </td>
                     <td><select class="textInputSmall" wicket:id="project.projectManager"></select>
                     </td>
@@ -59,8 +55,7 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.description"/>
-                        :
+                        <wicket:message key="admin.project.description"/>:
                     </td>
                     <td><textarea class="textInputSmall" name="comment" wicket:id="project.description" rows="3"
                                   wrap="virtual"></textarea>
@@ -76,8 +71,7 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.contact"/>
-                        :
+                        <wicket:message key="admin.project.contact"/>:
                     </td>
                     <td><input type="text" class="textInputSmall" wicket:id="project.contact"/>
                     </td>
@@ -91,10 +85,9 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.defaultProject"/>
-                        :
+                        <label for="defaultProject"><wicket:message key="admin.project.defaultProject"/></label>:
                     </td>
-                    <td><input type="checkbox" wicket:id="project.defaultProject"/>
+                    <td><input type="checkbox" id="defaultProject" wicket:id="project.defaultProject"/>
                         (
                         <wicket:message key="admin.project.defaultProjectHelp"/>
                         )
@@ -103,18 +96,16 @@
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.billable"/>
-                        :
+                        <label for="billable"><wicket:message key="admin.project.billable"/></label>:
                     </td>
-                    <td><input type="checkbox" wicket:id="project.billable"/></td>
+                    <td><input type="checkbox" id="billable" wicket:id="project.billable"/></td>
                 </tr>
 
                 <tr>
                     <td valign="top">
-                        <wicket:message key="admin.project.active"/>
-                        :
+                        <label for="active"><wicket:message key="admin.project.active"/></label>:
                     </td>
-                    <td><input type="checkbox" wicket:id="project.active"/></td>
+                    <td><input type="checkbox" id="active" wicket:id="project.active"/></td>
                 </tr>
 
                 <wicket:child />

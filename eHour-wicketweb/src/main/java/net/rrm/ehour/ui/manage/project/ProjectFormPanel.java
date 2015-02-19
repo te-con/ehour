@@ -115,7 +115,9 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
         addMisc(form);
         form.add(getProjectManager());
 
-        form.add(new CheckBox("project.billable"));
+        CheckBox billableCheckbox = new CheckBox("project.billable");
+        billableCheckbox.setMarkupId("billable");
+        form.add(billableCheckbox);
     }
 
     private void addGeneralInfo(WebMarkupContainer parent) {
@@ -167,8 +169,13 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
     }
 
     private void addMisc(WebMarkupContainer parent) {
-        parent.add(new CheckBox("project.defaultProject"));
-        parent.add(new CheckBox("project.active"));
+        CheckBox defaultPrjCheckbox = new CheckBox("project.defaultProject");
+        defaultPrjCheckbox.setMarkupId("defaultProject");
+        parent.add(defaultPrjCheckbox);
+
+        CheckBox activeCheckbox = new CheckBox("project.active");
+        activeCheckbox.setMarkupId("active");
+        parent.add(activeCheckbox);
 
         // data save label
         parent.add(new ServerMessageLabel("serverMessage", "formValidationError"));

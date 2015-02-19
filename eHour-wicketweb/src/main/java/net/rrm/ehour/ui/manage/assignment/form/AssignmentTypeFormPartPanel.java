@@ -65,11 +65,11 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
     private void addAssignmentType(IModel<AssignmentAdminBackingBean> model) {
         List<ProjectAssignmentType> assignmentTypes = projectAssignmentService.getProjectAssignmentTypes();
 
-        final PropertyModel<Boolean> showAllottedHoursModel = new PropertyModel<Boolean>(model, "showAllottedHours");
-        final PropertyModel<Boolean> showOverrunHoursModel = new PropertyModel<Boolean>(model, "showOverrunHours");
+        final PropertyModel<Boolean> showAllottedHoursModel = new PropertyModel<>(model, "showAllottedHours");
+        final PropertyModel<Boolean> showOverrunHoursModel = new PropertyModel<>(model, "showOverrunHours");
 
         // assignment type
-        final DropDownChoice<ProjectAssignmentType> assignmentTypeChoice = new DropDownChoice<ProjectAssignmentType>("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer());
+        final DropDownChoice<ProjectAssignmentType> assignmentTypeChoice = new DropDownChoice<>("projectAssignment.assignmentType", assignmentTypes, new ProjectAssignmentTypeRenderer());
         assignmentTypeChoice.setRequired(true);
         assignmentTypeChoice.setNullValid(false);
         assignmentTypeChoice.setLabel(new ResourceModel("admin.assignment.type"));
@@ -78,7 +78,7 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
         add(new AjaxFormComponentFeedbackIndicator("typeValidationError", assignmentTypeChoice));
 
         // allotted hours
-        final TextField<Float> allottedHours = new RequiredTextField<Float>("projectAssignment.allottedHours",
+        final TextField<Float> allottedHours = new RequiredTextField<>("projectAssignment.allottedHours",
                 new PropertyModel<Float>(model, "projectAssignment.allottedHours"));
         allottedHours.setType(float.class);
         allottedHours.add(new ValidatingFormComponentAjaxBehavior());
@@ -92,11 +92,11 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
         allottedRow.setOutputMarkupId(true);
         allottedRow.add(allottedHours);
         allottedRow.add(new AjaxFormComponentFeedbackIndicator("allottedHoursValidationError", allottedHours));
-        allottedRow.add(new DynamicAttributeModifier("style", new Model<String>("display: none;"), showAllottedHoursModel));
+        allottedRow.add(new DynamicAttributeModifier("style", new Model<>("display: none;"), showAllottedHoursModel));
         add(allottedRow);
 
         // overrun hours
-        final TextField<Float> overrunHours = new RequiredTextField<Float>("projectAssignment.allowedOverrun",
+        final TextField<Float> overrunHours = new RequiredTextField<>("projectAssignment.allowedOverrun",
                 new PropertyModel<Float>(model, "projectAssignment.allowedOverrun"));
         overrunHours.setType(float.class);
         overrunHours.add(new ValidatingFormComponentAjaxBehavior());
@@ -110,16 +110,17 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
         overrunRow.setOutputMarkupId(true);
         overrunRow.add(overrunHours);
         overrunRow.add(new AjaxFormComponentFeedbackIndicator("overrunHoursValidationError", overrunHours));
-        overrunRow.add(new DynamicAttributeModifier("style", new Model<String>("display: none;"), showOverrunHoursModel));
+        overrunRow.add(new DynamicAttributeModifier("style", new Model<>("display: none;"), showOverrunHoursModel));
         add(overrunRow);
 
         // notify PM when possible
         CheckBox notifyPm = new CheckBox("projectAssignment.notifyPm");
-        notifyPm.add(new DynamicAttributeModifier("style", new Model<String>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled")));
+        notifyPm.setMarkupId("notifyPm");
+        notifyPm.add(new DynamicAttributeModifier("style", new Model<>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled")));
         notifyPm.setOutputMarkupId(true);
 
         Label notifyDisabled = new Label("notifyDisabled", new ResourceModel("admin.assignment.cantNotify"));
-        notifyDisabled.add(new DynamicAttributeModifier("style", new Model<String>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled"), true));
+        notifyDisabled.add(new DynamicAttributeModifier("style", new Model<>("display: none;"), new PropertyModel<Boolean>(model, "notifyPmEnabled"), true));
         notifyDisabled.setOutputMarkupId(true);
 
         // notify PM row
@@ -127,7 +128,7 @@ public class AssignmentTypeFormPartPanel extends Panel implements AjaxEventListe
         notifyPmRow.setOutputMarkupId(true);
         notifyPmRow.add(notifyPm);
         notifyPmRow.add(notifyDisabled);
-        notifyPmRow.add(new DynamicAttributeModifier("style", new Model<String>("display: none;"), showAllottedHoursModel));
+        notifyPmRow.add(new DynamicAttributeModifier("style", new Model<>("display: none;"), showAllottedHoursModel));
         add(notifyPmRow);
 
         assignmentTypeChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {

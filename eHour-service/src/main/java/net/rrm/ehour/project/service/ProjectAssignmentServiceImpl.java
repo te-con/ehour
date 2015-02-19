@@ -33,7 +33,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Service("projectAssignmentService")
 public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
@@ -52,7 +55,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
     @Transactional(readOnly = true)
     public List<ProjectAssignment> getProjectAssignmentsForUser(Integer userId, DateRange dateRange) {
         List<ProjectAssignment> assignments;
-        List<ProjectAssignment> validAssignments = new ArrayList<ProjectAssignment>();
+        List<ProjectAssignment> validAssignments = new ArrayList<>();
 
         assignments = projectAssignmentDAO.findProjectAssignmentsForUser(userId, dateRange);
 
@@ -67,29 +70,8 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProjectAssignment> getProjectAssignmentsForUser(User user, boolean hideInactive) {
-        List<ProjectAssignment> results;
-        List<ProjectAssignment> filteredResults;
-
-        results = projectAssignmentDAO.findProjectAssignmentsForUser(user);
-
-        if (hideInactive) {
-            Date today = new Date();
-
-            filteredResults = new ArrayList<ProjectAssignment>();
-
-            for (ProjectAssignment projectAssignment : results) {
-                if (projectAssignment.isActive() &&
-                        (projectAssignment.getDateStart() == null || projectAssignment.getDateStart().before(today)) &&
-                        (projectAssignment.getDateEnd() == null || projectAssignment.getDateEnd().after(today))) {
-                    filteredResults.add(projectAssignment);
-                }
-            }
-
-            results = filteredResults;
-        }
-
-        return results;
+    public List<ProjectAssignment> getProjectAssignmentsForUser(User user) {
+        return projectAssignmentDAO.findProjectAssignmentsForUser(user);
     }
 
     @Override

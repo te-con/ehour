@@ -91,5 +91,4 @@ public class ProjectAssignmentServiceImplTest {
         assertTrue(assignments.get(0).isDeletable());
         assertFalse(assignments.get(1).isDeletable());
     }
-
 }

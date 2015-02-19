@@ -117,9 +117,7 @@ class LockManagePage extends AbstractTabbedManagePage[LockAdminBackingBean](new 
 
   protected def getBaseEditPanel(panelId: String): Panel = new LockFormPanel(panelId, new Model(getTabbedPanel.getEditBackingBean))
 
-  override def renderHead(response: IHeaderResponse) {
-    response.render(CssHeaderItem.forReference(Css))
-  }
+  override protected def onRenderHead(response: IHeaderResponse): Unit = response.render(CssHeaderItem.forReference(Css))
 }
 
 

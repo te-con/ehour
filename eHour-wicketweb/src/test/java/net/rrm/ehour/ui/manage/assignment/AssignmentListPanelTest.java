@@ -25,7 +25,7 @@ public class AssignmentListPanelTest extends BaseSpringWebAppTester {
     @Test
     public void should_render() {
         User user = UserObjectMother.createUser();
-        when(assignmentService.getProjectAssignmentsForUser(user, true)).thenReturn(Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1)));
+        when(assignmentService.getProjectAssignmentsForUser(user)).thenReturn(Arrays.asList(ProjectAssignmentObjectMother.createProjectAssignment(1)));
 
         tester.startComponentInPage(new AssignmentListPanel("id", user));
 

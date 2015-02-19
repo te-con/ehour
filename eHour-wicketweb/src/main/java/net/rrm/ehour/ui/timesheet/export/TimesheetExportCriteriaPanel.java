@@ -84,7 +84,9 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
     }
 
     private CheckBox createSignOffCheck(String id) {
-        return new CheckBox(id, new PropertyModel<Boolean>(this.getDefaultModel(), "userSelectedCriteria.customParameters[INCL_SIGN_OFF]"));
+        CheckBox signOffCheck = new CheckBox(id, new PropertyModel<Boolean>(this.getDefaultModel(), "userSelectedCriteria.customParameters[INCL_SIGN_OFF]"));
+        signOffCheck.setMarkupId("signoff");
+        return signOffCheck;
     }
 
     private CheckGroup<Project> createUnbillableProjectGroup(String id, List<Project> allProjects) {

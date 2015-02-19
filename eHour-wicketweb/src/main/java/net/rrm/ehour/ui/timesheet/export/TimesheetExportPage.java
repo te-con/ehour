@@ -94,12 +94,12 @@ public class TimesheetExportPage extends AbstractReportPage<ReportCriteria> impl
             reportCriteria.getUserSelectedCriteria().setProjects(new ArrayList<Project>());
         }
 
-        return new CompoundPropertyModel<ReportCriteria>(reportCriteria);
+        return new CompoundPropertyModel<>(reportCriteria);
     }
 
     @Override
     protected void determineDefaultReportType(UserSelectedCriteria userSelectedCriteria) {
-        userSelectedCriteria.setReportTypeToIndividualUser(getEhourWebSession().getUser());
+        userSelectedCriteria.setReportTypeToIndividualUser(EhourWebSession.getUser());
     }
 
     @Override

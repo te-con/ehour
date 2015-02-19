@@ -69,9 +69,12 @@ public class DatasourceConfiguration {
             ds.setUser(username);
             ds.setPassword(password);
 
+            ds.setNumHelperThreads(10);
+
             ds.setDriverClass(driver);
             ds.setInitialPoolSize(10);
             ds.setAcquireIncrement(2);
+
 
             ds.setIdleConnectionTestPeriod(30);
             ds.setTestConnectionOnCheckout(false);
@@ -80,7 +83,7 @@ public class DatasourceConfiguration {
             ds.setMaxPoolSize(100);
             ds.setMaxStatements(0);
             ds.setMinPoolSize(10);
-            ds.setCheckoutTimeout(100);
+            ds.setCheckoutTimeout(1000);
             return ds;
         }
     }

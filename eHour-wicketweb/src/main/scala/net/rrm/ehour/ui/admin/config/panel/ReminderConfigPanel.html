@@ -27,8 +27,8 @@
             </tr>
 
             <tr>
-                <td valign="top"><wicket:message key="admin.config.reminder.enable"/></td>
-                <td><input type="checkbox" wicket:id="config.reminderEnabled" /></td>
+                <td valign="top"><label for="reminderEnabled"><wicket:message key="admin.config.reminder.enable"/></label>:</td>
+                <td><input type="checkbox" id="reminderEnabled" wicket:id="config.reminderEnabled" /></td>
             </tr>
 
             <tr wicket:id="reminderTimeContainer">
@@ -63,7 +63,7 @@
 
             <tr wicket:id="reminderSubjectContainer">
                 <td valign="top" colspan="2">
-                    <wicket:message key="admin.config.reminder.subject"/><br />
+                    <wicket:message key="admin.config.reminder.subject"/>:<br />
                     <input type="text" style="width: 41em" class="textInputSmall"  wicket:id="config.reminderSubject" /><br />
                     <span wicket:id="subjectValidationError"></span>
                 </td>

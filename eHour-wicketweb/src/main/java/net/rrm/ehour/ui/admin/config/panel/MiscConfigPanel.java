@@ -69,12 +69,14 @@ public class MiscConfigPanel extends AbstractConfigPanel {
 
     private void addMiscComponents(Form<?> form) {
         // show turnover checkbox
-        form.add(new CheckBox("config.showTurnover"));
+        CheckBox showTurnover = new CheckBox("config.showTurnover");
+        showTurnover.setMarkupId("showTurnover");
+        form.add(showTurnover);
 
         final MainConfigBackingBean configBackingBean = (MainConfigBackingBean) getDefaultModelObject();
 
         // working hours
-        TextField<Float> workHours = new TextField<Float>("config.completeDayHours", Float.class);
+        TextField<Float> workHours = new TextField<>("config.completeDayHours", Float.class);
         workHours.setLabel(new ResourceModel("admin.config.workHours"));
         workHours.add(new ValidatingFormComponentAjaxBehavior());
         workHours.add(RangeValidator.minimum(0f));
@@ -84,21 +86,22 @@ public class MiscConfigPanel extends AbstractConfigPanel {
         form.add(workHours);
 
         // weeks start at
-        DropDownChoice<Date> weekStartsAt = new DropDownChoice<Date>("firstWeekStart",
+        DropDownChoice<Date> weekStartsAt;
+        weekStartsAt = new DropDownChoice<>("firstWeekStart",
                 DateUtil.createDateSequence(DateUtil.getDateRangeForWeek(new GregorianCalendar()), new EhourConfigStub()),
                 new WeekDayRenderer(configBackingBean.getLocaleLanguage()));
         form.add(weekStartsAt);
 
         // Timezone
-        DropDownChoice<String> timezone = new DropDownChoice<String>("config.timeZone", Lists.newArrayList(DateTimeZone.getAvailableIDs()));
+        DropDownChoice<String> timezone = new DropDownChoice<>("config.timeZone", Lists.newArrayList(DateTimeZone.getAvailableIDs()));
         form.add(timezone);
 
         // pm access rights
-        form.add(new DropDownChoice<PmPrivilege>("config.pmPrivilege", Arrays.asList(PmPrivilege.values()), new EnumChoiceRenderer<PmPrivilege>()));
+        form.add(new DropDownChoice<>("config.pmPrivilege", Arrays.asList(PmPrivilege.values()), new EnumChoiceRenderer<PmPrivilege>()));
 
         // split admin role
         final Container convertManagersContainer = new Container("convertManagers");
-        DropDownChoice<UserRole> convertManagersTo = new DropDownChoice<UserRole>("convertManagersTo", Lists.newArrayList(UserRole.ADMIN, UserRole.USER), new UserRoleRenderer());
+        DropDownChoice<UserRole> convertManagersTo = new DropDownChoice<>("convertManagersTo", Lists.newArrayList(UserRole.ADMIN, UserRole.USER), new UserRoleRenderer());
         convertManagersContainer.add(convertManagersTo);
         convertManagersContainer.setVisible(false);
         form.add(convertManagersContainer);
@@ -116,6 +119,7 @@ public class MiscConfigPanel extends AbstractConfigPanel {
                 }
             }
         };
+        withManagerCheckbox.setMarkupId("splitAdminRole");
 
         form.add(withManagerCheckbox);
     }

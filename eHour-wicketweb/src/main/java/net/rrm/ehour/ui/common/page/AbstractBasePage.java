@@ -22,10 +22,13 @@ import net.rrm.ehour.ui.common.event.AjaxEventListener;
 import net.rrm.ehour.ui.common.header.HeaderPanel;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.update.LatestVersionLinkPanel;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.resource.CssResourceReference;
 
 /**
  * Base layout of all pages, adds header panel
@@ -35,6 +38,8 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
     private static final long serialVersionUID = 7090746921483608658L;
     public static final String NEW_VERSION_ID = "newVersion";
     private final ResourceModel pageTitle;
+
+    private static final CssResourceReference EHOUR_CSS = new CssResourceReference(AbstractBasePage.class, "ehour.css");
 
     public AbstractBasePage(ResourceModel pageTitle) {
         super();
@@ -58,6 +63,16 @@ public abstract class AbstractBasePage<T> extends WebPage implements AjaxEventLi
         addOrReplace(new HeaderPanel("mainNav"));
         addOrReplace(new Label("pageTitle", pageTitle));
         addOrReplace(new LatestVersionLinkPanel(NEW_VERSION_ID));
+    }
+
+    @Override
+    public final void renderHead(IHeaderResponse response) {
+        response.render(CssHeaderItem.forReference(EHOUR_CSS));
+        onRenderHead(response);
+    }
+
+    protected void onRenderHead(IHeaderResponse response) {
+
     }
 
     public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
