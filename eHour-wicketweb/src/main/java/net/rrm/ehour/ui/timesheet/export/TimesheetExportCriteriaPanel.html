@@ -24,14 +24,14 @@
                             </strong><br/>
 
                             <p style="margin:0 0 5px 0;padding:0">
-                                <input type="checkbox" wicket:id="checkall">
-                                <wicket:message key="printMonth.checkAll" />
+                                <label><input type="checkbox" wicket:id="checkall">
+                                <wicket:message key="printMonth.checkAll" /></label>
                             </p>
 
                             <p style="border-top: solid 1px white;margin:0 0 5px 0;padding:0">
                                 <wicket:container wicket:id="billableProjects">
-                                    <input type="checkbox" wicket:id="check"/>
-                                    <wicket:container wicket:id="project"></wicket:container>
+                                    <label><input type="checkbox" wicket:id="check"/>
+                                    <wicket:container wicket:id="project"></wicket:container></label>
                                     <br/>
                                 </wicket:container>
                             </p>
@@ -47,14 +47,14 @@
                             </strong>
 
                             <p style="margin:0 0 5px 0;padding:0">
-                                <input type="checkbox" wicket:id="checkall">
-                                <wicket:message key="printMonth.checkAll" />
+                                <label><input type="checkbox" wicket:id="checkall">
+                                <wicket:message key="printMonth.checkAll" /></label>
                             </p>
 
                             <p style="border-top: solid 1px white;margin:0 0 5px 0;padding:0">
                                 <wicket:container wicket:id="unbillableProjects">
-                                    <input type="checkbox" wicket:id="check"/>
-                                    <wicket:container wicket:id="project"></wicket:container>
+                                    <label><input type="checkbox" wicket:id="check"/>
+                                    <wicket:container wicket:id="project"></wicket:container></label>
                                     <br/>
                                 </wicket:container>
                             </p>
@@ -72,12 +72,12 @@
             <tr>
                 <td style="border: 0;padding-right: 20px">
                     <nobr>
-                        <wicket:message key="printMonth.inclSignatureSpace"/>
+                        <label for="signoff"><wicket:message key="printMonth.inclSignatureSpace"/></label>
                     </nobr>
                 </td>
 
                 <td style="padding-left: 5px">
-                    <input type="checkbox" wicket:id="signOff"/>
+                    <input type="checkbox" id="signoff" wicket:id="signOff"/>
                 </td>
             </tr>
 
