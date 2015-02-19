@@ -82,6 +82,7 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
 
         // show assignments
         CheckBox showAssignments = new CheckBox("showAssignments");
+        showAssignments.setMarkupId("showAssignments");
         showAssignments.setVisible(!manageUserBackingBean.isEditMode());
         form.add(showAssignments);
 
@@ -105,7 +106,9 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
     }
 
     private void createActiveInput(Form<T> form) {
-        form.add(new CheckBox("user.active"));
+        CheckBox activeCheckbox = new CheckBox("user.active");
+        activeCheckbox.setMarkupId("active");
+        form.add(activeCheckbox);
     }
 
     private void createRoleInput(Form<T> form) {

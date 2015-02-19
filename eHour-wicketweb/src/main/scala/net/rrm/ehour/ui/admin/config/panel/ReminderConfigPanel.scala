@@ -92,6 +92,7 @@ class ReminderConfigPanel(id: String, model: IModel[MainConfigBackingBean]) exte
         target.add(reminderTimeContainer, reminderSubjectContainer, reminderBodyContainer, reminderCcContainer, reminderCcHelpContainer, reminderMinHoursContainer, reminderMinHoursHelpContainer)
       }
     }
+    reminderEnabledCheckbox.setMarkupId("reminderEnabled")
     form.add(reminderEnabledCheckbox)
   }
 

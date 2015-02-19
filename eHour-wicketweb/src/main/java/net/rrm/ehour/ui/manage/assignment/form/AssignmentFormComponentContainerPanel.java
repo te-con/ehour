@@ -56,7 +56,9 @@ public class AssignmentFormComponentContainerPanel extends AbstractAjaxPanel<Ass
         add(new AssignmentTypeFormPartPanel("assignmentType", model, form));
 
         // active
-        add(new CheckBox("projectAssignment.active"));
+        CheckBox active = new CheckBox("projectAssignment.active");
+        active.setMarkupId("activeAssignment");
+        add(active);
     }
 
     private WebMarkupContainer createProjectSelection(String id, IModel<AssignmentAdminBackingBean> model, List<DisplayOption> displayOptions) {

@@ -85,7 +85,9 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
         form.add(textArea);
 
         // active
-        form.add(new CheckBox("customer.active"));
+        CheckBox activeCheckbox = new CheckBox("customer.active");
+        activeCheckbox.setMarkupId("active");
+        form.add(activeCheckbox);
 
         // data save label
         form.add(new ServerMessageLabel("serverMessage", "formValidationError"));
