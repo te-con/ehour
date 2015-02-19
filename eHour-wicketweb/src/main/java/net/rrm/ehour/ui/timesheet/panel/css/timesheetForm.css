@@ -318,6 +318,10 @@ div.wicket-modal div.w_content_3 {
     font-size: 75%;
 }
 
+.iconLinkOn {
+    color: #e88b1d;
+}
+
 .timesheetSectionHeader {
     background: transparent !important;
     opacity: 0.6;
