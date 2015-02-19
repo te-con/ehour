@@ -39,7 +39,7 @@ public class DatasourceConfiguration {
     @Bean
     public DataSource createDatasource() throws IOException, PropertyVetoException, URISyntaxException {
         if (DB_DERBY.equalsIgnoreCase(databaseType)) {
-            return DerbyDataSourceFactory.createDataSource(isInTestMode() ? "memory:ehourDb;create=true" : "derby");
+            return DerbyDataSourceFactory.createDataSource(isInTestMode() ? "memory:ehourDb;create=true" : "ehourDb");
         } else {
             ComboPooledDataSource ds = new ComboPooledDataSource();
 
