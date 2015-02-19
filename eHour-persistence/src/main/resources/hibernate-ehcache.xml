@@ -20,12 +20,6 @@
 		timeToIdleSeconds="600"
 		timeToLiveSeconds="1200"
 	    overflowToDisk="false"
-	/>	
-	
-	<cache name="net.rrm.ehour.domain.ProjectAssignmentType"
-	    maxElementsInMemory="50"
-	    eternal="true"
-	    overflowToDisk="false"
 	/>
 
     <cache name="net.rrm.ehour.domain.Project"

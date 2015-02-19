@@ -54,7 +54,7 @@ public abstract class ExtractDataset
         partialDataSet.addTable("AUDIT");
 
         FlatXmlDataSet.write(partialDataSet,
-                new FileOutputStream("src/test/resources/test-dataset-20081112.xml"));		
+                new FileOutputStream("src/test/resources/test-dataset-20081112.xml"));
 		System.out.println("Dataset written");
 	}
 

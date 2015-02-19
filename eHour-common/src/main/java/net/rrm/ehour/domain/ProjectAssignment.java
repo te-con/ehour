@@ -16,7 +16,6 @@
 
 package net.rrm.ehour.domain;
 
-import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -62,8 +61,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
     @Column(name = "ROLE", length = 255)
     private String role;
 
-    @ManyToOne
-    @JoinColumn(name = "ASSIGNMENT_TYPE_ID")
+    @Column(name = "ASSIGNMENT_TYPE_ID")
     @NotNull
     private ProjectAssignmentType assignmentType;
 
@@ -109,17 +107,16 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         this.hourlyRate = hourlyRate;
     }
 
-
     /**
      * Create a project assignment with default values (date assignment, no start/end date, active)s
      *
-     * @param project
-     * @param user
-     * @return
+     * @param project Project to be assigned to the user
+     * @param user Consultant or employee
+     * @return a new instance of ProjectAssignment
      */
     public static ProjectAssignment createProjectAssignment(Project project, User user) {
         ProjectAssignment assignment = new ProjectAssignment();
-        assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
+        assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_DATE);
         assignment.setProject(project);
         assignment.setUser(user);
         assignment.setActive(true);
@@ -172,7 +169,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         return getProject().getFullName();
     }
 
-
     public Integer getAssignmentId() {
         return this.assignmentId;
     }
@@ -209,7 +205,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         return this.dateStart;
     }
 
-
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
@@ -217,7 +212,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
     public Date getDateEnd() {
         return this.dateEnd;
     }
-
 
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
@@ -231,13 +225,11 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         this.role = description;
     }
 
-
     public String toString() {
         return new ToStringBuilder(this).append("assignmentId", getAssignmentId())
                 .append("active", isActive())
                 .append("project", getProject())
                 .append("user", getUser())
-//										.append("type", getAssignmentType())
                 .append("dateStart", getDateStart())
                 .append("dateEnd", getDateEnd())
                 .toString();
@@ -246,6 +238,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
     /**
      * @see java.lang.Comparable#compareTo(Object)
      */
+    @Override
     public int compareTo(ProjectAssignment object) {
         return new CompareToBuilder()
                 //sort by column order as displayed in ProjectOverviewPanel
@@ -260,7 +253,6 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
                 .append(this.getAssignmentId(), object.getAssignmentId())
                 .toComparison();
     }
-
 
     public boolean isDeletable() {
         return deletable;

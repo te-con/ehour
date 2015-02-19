@@ -18,10 +18,7 @@ package net.rrm.ehour.timesheet.service;
 
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
-import net.rrm.ehour.domain.ProjectAssignment;
-import net.rrm.ehour.domain.TimesheetComment;
-import net.rrm.ehour.domain.TimesheetEntry;
-import net.rrm.ehour.domain.User;
+import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.OverBudgetException;
 import net.rrm.ehour.mail.service.ProjectManagerNotifierService;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetCommentDao;
@@ -29,7 +26,6 @@ import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.util.DomainUtil;
-import net.rrm.ehour.util.EhourConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.Interval;
@@ -232,22 +228,22 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         entry = timesheetDAO.getLatestTimesheetEntryForAssignment(assignment.getAssignmentId());
 
         // over alloted - fixed
-        if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED
-                && status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) {
+        if (assignment.getAssignmentType() == ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FIXED
+                && status.getStatuses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED)) {
             projectManagerNotifierService.mailPMFixedAllottedReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());
         }
         // over overrun - flex
-        else if (assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX
-                && status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) {
+        else if (assignment.getAssignmentType() == ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FLEX
+                && status.getStatuses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN)) {
             projectManagerNotifierService.mailPMFlexOverrunReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());
         }
         // in overrun - flex
-        else if (status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN)
-                && assignment.getAssignmentType().getAssignmentTypeId() == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX) {
+        else if (status.getStatuses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN)
+                && assignment.getAssignmentType() == ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FLEX) {
             projectManagerNotifierService.mailPMFlexAllottedReached(status.getAggregate(),
                     entry.getEntryId().getEntryDate(),
                     assignment.getProject().getProjectManager());

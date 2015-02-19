@@ -14,9 +14,6 @@
     <configuration config_key="demoMode" config_value="false"></configuration>
     <configuration config_key="initialized" config_value="false"></configuration>
     <configuration config_key="auditType" config_value="WRITE"></configuration>
-    <project_assignment_type ASSIGNMENT_TYPE_ID="0" ASSIGNMENT_TYPE="DATE_TYPE"></project_assignment_type>
-    <project_assignment_type ASSIGNMENT_TYPE_ID="2" ASSIGNMENT_TYPE="TIME_ALLOTTED_FIXED"></project_assignment_type>
-    <project_assignment_type ASSIGNMENT_TYPE_ID="3" ASSIGNMENT_TYPE="TIME_ALLOTTED_FLEX"></project_assignment_type>
     <user_department DEPARTMENT_ID="1" NAME="Internal" CODE="INT"></user_department>
     <user_role ROLE="ROLE_ADMIN" NAME="Administrator"></user_role>
     <user_role ROLE="ROLE_CONSULTANT" NAME="Consultant"></user_role>

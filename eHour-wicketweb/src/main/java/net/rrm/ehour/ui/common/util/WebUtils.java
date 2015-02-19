@@ -18,7 +18,6 @@ package net.rrm.ehour.ui.common.util;
 
 import net.rrm.ehour.domain.ProjectAssignmentType;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
-import net.rrm.ehour.util.EhourConstants;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 
@@ -55,14 +54,14 @@ public class WebUtils {
 
     public static String getResourceKeyForProjectAssignmentType(ProjectAssignmentType type) {
         String key;
-        switch (type.getAssignmentTypeId()) {
-            case EhourConstants.ASSIGNMENT_DATE:
+        switch (type) {
+            case ASSIGNMENT_DATE:
                 key = "assignment.dateRange";
                 break;
-            case EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED:
+            case ASSIGNMENT_TIME_ALLOTTED_FIXED:
                 key = "assignment.allottedFixed";
                 break;
-            case EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX:
+            case ASSIGNMENT_TIME_ALLOTTED_FLEX:
                 key = "assignment.allottedFlex";
                 break;
             default:

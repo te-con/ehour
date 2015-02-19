@@ -23,7 +23,6 @@ import net.rrm.ehour.domain.TimesheetEntry;
 import net.rrm.ehour.persistence.report.dao.ReportAggregatedDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.util.EhourConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,10 +54,7 @@ public class ProjectAssignmentStatusServiceTest
 	public final void testGetAssignmentStatusDateIn()
 	{
 		ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-		
-		ProjectAssignmentType type = new ProjectAssignmentType();
-		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
-		assignment.setAssignmentType(type);
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_DATE);
 		
 		Calendar startCal = new GregorianCalendar();
 		startCal.add(Calendar.DAY_OF_YEAR, -5);
@@ -79,18 +75,15 @@ public class ProjectAssignmentStatusServiceTest
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
-		assertEquals(1, status.getStatusses().size());
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(1, status.getStatuses().size());
 	}	
 	
 	@Test
 	public final void testGetAssignmentStatusDateOut()
 	{
 		ProjectAssignment assignment = ProjectAssignmentObjectMother.createProjectAssignment(1);
-
-		ProjectAssignmentType type = new ProjectAssignmentType();
-		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_DATE);
-		assignment.setAssignmentType(type);
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_DATE);
 		
 		Calendar startCal = new GregorianCalendar();
 		startCal.add(Calendar.DAY_OF_YEAR, -5);
@@ -105,15 +98,15 @@ public class ProjectAssignmentStatusServiceTest
 		when(timesheetDAO.getTimesheetEntriesBefore(assignment, start))
 		.thenReturn(new ArrayList<TimesheetEntry>());
 
-		List<TimesheetEntry> entry = new ArrayList<TimesheetEntry>();
+		List<TimesheetEntry> entry = new ArrayList<>();
 		entry.add(new TimesheetEntry());
 		when(timesheetDAO.getTimesheetEntriesAfter(assignment, end))
 			.thenReturn(entry);
 
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE));
-		assertEquals(1, status.getStatusses().size());
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.AFTER_DEADLINE));
+		assertEquals(1, status.getStatuses().size());
 	}	
 	
 	@Test
@@ -121,11 +114,9 @@ public class ProjectAssignmentStatusServiceTest
 	{
 		AssignmentAggregateReportElement pag = new AssignmentAggregateReportElement();
 		pag.setHours((double) 25);
-		
+
 		ProjectAssignment assignment = new ProjectAssignment();
-		ProjectAssignmentType type = new ProjectAssignmentType();
-		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED);
-		assignment.setAssignmentType(type);
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FIXED);
 		assignment.setAllottedHours(250f);
 		
 		when(raDAO.getCumulatedHoursForAssignment(assignment))
@@ -133,9 +124,9 @@ public class ProjectAssignmentStatusServiceTest
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_ALLOTTED));
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
-		assertEquals(2, status.getStatusses().size());
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.IN_ALLOTTED));
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatuses().size());
 	}
 	
 	@Test
@@ -145,9 +136,7 @@ public class ProjectAssignmentStatusServiceTest
 		pag.setHours((double) 260);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
-		ProjectAssignmentType type = new ProjectAssignmentType();
-		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED);
-		assignment.setAssignmentType(type);
+        assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FIXED);
 		assignment.setAllottedHours(250f);
 		
 		when(raDAO.getCumulatedHoursForAssignment(assignment))
@@ -155,9 +144,9 @@ public class ProjectAssignmentStatusServiceTest
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED));
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
-		assertEquals(2, status.getStatusses().size());
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.OVER_ALLOTTED));
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatuses().size());
 	}	
 	
 	@Test
@@ -167,9 +156,7 @@ public class ProjectAssignmentStatusServiceTest
 		pag.setHours((double) 25);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
-		ProjectAssignmentType type = new ProjectAssignmentType();
-		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX);
-		assignment.setAssignmentType(type);
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FLEX);
 		assignment.setAllottedHours(250f);
 		assignment.setAllowedOverrun(200f);
 		
@@ -178,9 +165,9 @@ public class ProjectAssignmentStatusServiceTest
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_ALLOTTED));
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
-		assertEquals(2, status.getStatusses().size());
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.IN_ALLOTTED));
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatuses().size());
 	}
 	
 	@Test
@@ -190,9 +177,7 @@ public class ProjectAssignmentStatusServiceTest
 		pag.setHours((double) 260);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
-		ProjectAssignmentType type = new ProjectAssignmentType();
-		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX);
-		assignment.setAssignmentType(type);
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FLEX);
 		assignment.setAllottedHours(250f);
 		assignment.setAllowedOverrun(200f);
 		
@@ -201,9 +186,9 @@ public class ProjectAssignmentStatusServiceTest
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN));
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
-		assertEquals(2, status.getStatusses().size());
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.IN_OVERRUN));
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatuses().size());
 	}	
 	
 	@Test
@@ -213,9 +198,7 @@ public class ProjectAssignmentStatusServiceTest
 		pag.setHours((double) 560);
 		
 		ProjectAssignment assignment = new ProjectAssignment();
-		ProjectAssignmentType type = new ProjectAssignmentType();
-		type.setAssignmentTypeId(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX);
-		assignment.setAssignmentType(type);
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FLEX);
 		assignment.setAllottedHours(250f);
 		assignment.setAllowedOverrun(200f);
 		
@@ -224,8 +207,8 @@ public class ProjectAssignmentStatusServiceTest
 		
 		ProjectAssignmentStatus status = util.getAssignmentStatus(assignment);
 		
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN));
-		assertTrue(status.getStatusses().contains(ProjectAssignmentStatus.Status.RUNNING));
-		assertEquals(2, status.getStatusses().size());
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.OVER_OVERRUN));
+		assertTrue(status.getStatuses().contains(ProjectAssignmentStatus.Status.RUNNING));
+		assertEquals(2, status.getStatuses().size());
 	}	
 }

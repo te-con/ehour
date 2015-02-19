@@ -16,131 +16,46 @@
 
 package net.rrm.ehour.domain;
 
-import net.rrm.ehour.util.EhourConstants;
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
  * Project Assignment type
  **/
-@Entity
-@Table(name = "PROJECT_ASSIGNMENT_TYPE")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ProjectAssignmentType extends DomainObject<Integer, ProjectAssignmentType>
-{
-	private static final long serialVersionUID = -4306635642163206242L;
+public enum ProjectAssignmentType {
+    ASSIGNMENT_DATE(0),
+    ASSIGNMENT_TIME_ALLOTTED_FIXED(2),
+    ASSIGNMENT_TIME_ALLOTTED_FLEX(3);
 
-    @Id
-    @Column(name = "ASSIGNMENT_TYPE_ID")
-	private	Integer	assignmentTypeId;
+    private final int id;
 
-    @Column(name = "ASSIGNMENT_TYPE", length = 64)
-	private	String	assignmentType;
-	
-	public ProjectAssignmentType()
-	{
-		
-	}
-	
-	public ProjectAssignmentType(Integer assignmentTypeId)
-	{
-		this.assignmentTypeId = assignmentTypeId;
-	}
-	
-	public boolean isDateType()
-	{
-		return assignmentTypeId == EhourConstants.ASSIGNMENT_DATE;
-	}
+    private ProjectAssignmentType(final int id) {
+        this.id = id;
+    }
 
-	public boolean isFixedAllottedType()
-	{
-		return assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public boolean isFlexAllottedType()
-	{
-		return assignmentTypeId == EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX;
-	}
-	
-	public boolean isAllottedType()
-	{
-		return isFixedAllottedType() || isFlexAllottedType();
-	}
+    public boolean isDateType() {
+        return this == ASSIGNMENT_DATE;
+    }
 
-	/**
-	 * @return the assignmentType
-	 */
-	public String getAssignmentType()
-	{
-		return assignmentType;
-	}
-	/**
-	 * @param assignmentType the assignmentType to set
-	 */
-	public void setAssignmentType(String assignmentType)
-	{
-		this.assignmentType = assignmentType;
-	}
-	/**
-	 * @return the assignmentTypeId
-	 */
-	public Integer getAssignmentTypeId()
-	{
-		return assignmentTypeId;
-	}
-	/**
-	 * @param assignmentTypeId the assignmentTypeId to set
-	 */
-	public void setAssignmentTypeId(Integer assignmentTypeId)
-	{
-		this.assignmentTypeId = assignmentTypeId;
-	}
+    public boolean isFixedAllottedType() {
+        return this == ASSIGNMENT_TIME_ALLOTTED_FIXED;
+    }
 
-	@Override
-	public Integer getPK()
-	{
-		return getAssignmentTypeId();
-	}
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(ProjectAssignmentType type)
-	{
-		return new CompareToBuilder()
-				.append(this.getAssignmentType(), type.getAssignmentType())
-				.append(this.getAssignmentTypeId(), type.getAssignmentTypeId()).toComparison();
-	}
+    public boolean isFlexAllottedType() {
+        return this == ASSIGNMENT_TIME_ALLOTTED_FLEX;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.rrm.ehour.domain.DomainObject#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object other)
-	{
-		if ((this == other))
-			return true;
-		
-		if (!(other instanceof ProjectAssignmentType))
-			return false;
-		
-		ProjectAssignmentType castOther = (ProjectAssignmentType) other;
-		
-		return new EqualsBuilder()
-			.append(this.getAssignmentTypeId(), castOther.getAssignmentTypeId())
-			.isEquals();
-	}
-	
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(getAssignmentTypeId()).toHashCode();
-	}	
+    public boolean isAllottedType() {
+        return isFixedAllottedType() || isFlexAllottedType();
+    }
+
+    public static ProjectAssignmentType findById(final int id) {
+        for (ProjectAssignmentType pat : values()) {
+            if (pat.id == id) {
+                return pat;
+            }
+        }
+        throw new IllegalArgumentException("No Project assignment type with id = " + id);
+    }
 }

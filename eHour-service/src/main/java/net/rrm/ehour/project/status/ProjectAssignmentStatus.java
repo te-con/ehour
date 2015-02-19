@@ -28,12 +28,12 @@ import java.util.List;
 /**
  * ProjectAssignment status
  *  
- * A flex assignment has 3 statusses: 
+ * A flex assignment has 3 statuses:
  *  - booked hours before allotted hours mark (IN_ALLOTTED_PHASE)
  * 	- over  the allotted hours mark but before the overrun mark (IN_OVERRUN_PHASE)
  *  - over the overrun mark, no more hours can be booked and mail should be sent (OVER_OVERRUN_PHASE)
  *  
- * A fixed assignment has 2 statusses:
+ * A fixed assignment has 2 statuses:
  *  - booked hours before allotted hours mark (IN_ALLOTTED_PHASE)
  *  - over the alloted hours mark, no more hours can be booked and mail should be sent (OVER_ALLOTTED_PHASE)
  *
@@ -56,7 +56,7 @@ public class ProjectAssignmentStatus implements Serializable
     }
 	
 	private AssignmentAggregateReportElement	aggregate;
-	private List<Status> statusses;
+	private List<Status> statuses;
 	private boolean valid;
 	
 	public ProjectAssignmentStatus()
@@ -88,7 +88,7 @@ public class ProjectAssignmentStatus implements Serializable
 	{
 		boolean isBookable = true;
 		
-		for (Status status : statusses)
+		for (Status status : statuses)
 		{
 			isBookable &= (status == Status.RUNNING || 
 							status == Status.IN_OVERRUN || 
@@ -104,12 +104,12 @@ public class ProjectAssignmentStatus implements Serializable
 	 */
 	public void addStatus(Status status)
 	{
-		if (statusses == null)
+		if (statuses == null)
 		{
-			statusses  = new ArrayList<Status>();
+			statuses = new ArrayList<Status>();
 		}
 		
-		statusses.add(status);
+		statuses.add(status);
 	}
 	
 
@@ -125,7 +125,7 @@ public class ProjectAssignmentStatus implements Serializable
 		ProjectAssignmentStatus pas = (ProjectAssignmentStatus) object;
 		
 		return new EqualsBuilder()
-			.append(this.getStatusses(), pas.getStatusses())
+			.append(this.getStatuses(), pas.getStatuses())
 			.isEquals();
 	}	
 	
@@ -136,7 +136,7 @@ public class ProjectAssignmentStatus implements Serializable
 	{
 		return new HashCodeBuilder(1202909165, -339864927)
 			.appendSuper(super.hashCode())
-			.append(this.getStatusses())
+			.append(this.getStatuses())
 			.toHashCode();
 	}
 	
@@ -146,7 +146,7 @@ public class ProjectAssignmentStatus implements Serializable
 	public String toString()
 	{
 		return new ToStringBuilder(this)
-				.append("statusses", this.getStatusses())
+				.append("statuses", this.getStatuses())
 				.append("aggregate", this.getAggregate())
 				.toString();
 	}
@@ -168,18 +168,18 @@ public class ProjectAssignmentStatus implements Serializable
 	}
 
 	/**
-	 * @return the statusses
+	 * @return the statuses
 	 */
-	public List<Status> getStatusses()
+	public List<Status> getStatuses()
 	{
-		return statusses;
+		return statuses;
 	}
 
 	/**
-	 * @param statusses the statusses to set
+	 * @param statuses the statuses to set
 	 */
-	public void setStatusses(List<Status> statusses)
+	public void setStatuses(List<Status> statuses)
 	{
-		this.statusses = statusses;
+		this.statuses = statuses;
 	}
 }

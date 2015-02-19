@@ -51,9 +51,6 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
     ExponentialBackoffRetryPolicy retry crit.list.asInstanceOf[util.List[ProjectAssignment]]
   }
 
-  override def findProjectAssignmentTypes(): util.List[ProjectAssignmentType] =
-    ExponentialBackoffRetryPolicy retry getSession.createCriteria(classOf[ProjectAssignmentType]).list.asInstanceOf[util.List[ProjectAssignmentType]]
-
   override def findProjectAssignmentsForCustomer(customer: Customer, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "customer")
     val params = List(range.getDateStart, range.getDateEnd, customer)

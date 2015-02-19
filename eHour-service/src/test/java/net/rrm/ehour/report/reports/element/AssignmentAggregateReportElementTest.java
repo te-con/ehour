@@ -18,7 +18,6 @@ package net.rrm.ehour.report.reports.element;
 
 import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectAssignmentType;
-import net.rrm.ehour.util.EhourConstants;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -28,15 +27,11 @@ import static org.junit.Assert.assertEquals;
 
 public class AssignmentAggregateReportElementTest
 {
-
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement#getProgressPercentage()}.
-	 */
 	@Test
 	public void testGetProgressPercentageAllotted()
 	{
 		ProjectAssignment assignment = new ProjectAssignment();
-		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED));
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FIXED);
 		
 		assignment.setAllottedHours(100f);
 		AssignmentAggregateReportElement ele = new AssignmentAggregateReportElement();
@@ -50,7 +45,7 @@ public class AssignmentAggregateReportElementTest
 	public void testGetProgressPercentageDate()
 	{
 		ProjectAssignment assignment = new ProjectAssignment();
-		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_DATE);
 		
 		Calendar startDate = new GregorianCalendar();
 		startDate.add(Calendar.DAY_OF_YEAR, -3);
@@ -66,16 +61,12 @@ public class AssignmentAggregateReportElementTest
 		
 		assertEquals(50, ele.getProgressPercentage().get(), 2f);
 	}
-	
 
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement#getAvailableHours()}.
-	 */
 	@Test
 	public void testGetAvailableHoursFixed()
 	{
 		ProjectAssignment assignment = new ProjectAssignment();
-		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FIXED));
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FIXED);
 		
 		assignment.setAllottedHours(100f);
 		AssignmentAggregateReportElement ele = new AssignmentAggregateReportElement();
@@ -84,16 +75,12 @@ public class AssignmentAggregateReportElementTest
 		
 		assertEquals(4, ele.getAvailableHours().get(), 0f);
 	}
-	
 
-	/**
-	 * Test method for {@link net.rrm.ehour.persistence.persistence.report.reports.element.AssignmentAggregateReportElement#getAvailableHours()}.
-	 */
 	@Test
 	public void testGetAvailableHoursFlex()
 	{
 		ProjectAssignment assignment = new ProjectAssignment();
-		assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX));
+		assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FLEX);
 		
 		assignment.setAllottedHours(100f);
 		assignment.setAllowedOverrun(40f);

@@ -27,7 +27,6 @@ import net.rrm.ehour.project.status.ProjectAssignmentStatus;
 import net.rrm.ehour.project.status.ProjectAssignmentStatus.Status;
 import net.rrm.ehour.project.status.ProjectAssignmentStatusService;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.util.EhourConstants;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Before;
@@ -90,7 +89,7 @@ public class TimesheetPersistanceTest {
         assignment.getProject().setProjectManager(UserObjectMother.createUser());
         assignment.setNotifyPm(true);
 
-        assignment.setAssignmentType(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_TIME_ALLOTTED_FLEX));
+        assignment.setAssignmentType(ProjectAssignmentType.ASSIGNMENT_TIME_ALLOTTED_FLEX);
 
         newEntries = new ArrayList<>();
 
