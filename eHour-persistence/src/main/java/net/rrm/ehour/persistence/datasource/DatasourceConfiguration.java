@@ -75,6 +75,7 @@ public class DatasourceConfiguration {
             ds.setInitialPoolSize(10);
             ds.setAcquireIncrement(2);
 
+
             ds.setIdleConnectionTestPeriod(30);
             ds.setTestConnectionOnCheckout(false);
             ds.setTestConnectionOnCheckin(true);
