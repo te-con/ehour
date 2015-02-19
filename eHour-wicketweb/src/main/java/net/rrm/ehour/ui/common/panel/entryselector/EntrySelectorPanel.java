@@ -157,7 +157,6 @@ public class EntrySelectorPanel extends AbstractBasePanel<EntrySelectorData> {
                     component.add(AttributeModifier.append("style", "width: 100%;"));
                 }
 
-
                 return component;
             }
         };
