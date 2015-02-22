@@ -1054,3 +1054,7 @@ hr {
     float: right;
     margin: 0 15px 5px 0;
 }
+
+.fa-file-excel-o {
+    color: green;
+}
