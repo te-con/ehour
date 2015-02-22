@@ -83,17 +83,17 @@ div.GreyFrame div.ExportIcons {
 }
 
 div.GreyFrameContainer {
-    background: url(/img/grey_frame/corner_left_top.gif) top left no-repeat;
+    background: url(img/grey_frame/corner_left_top.gif) top left no-repeat;
 }
 
 div.GreyFrameContainerSquared {
-    background: url(/img/grey_frame/pixel_grey.gif);
+    background: url(img/grey_frame/pixel_grey.gif);
     font: 1.0em Geneva, Arial, Helvetica, sans-serif;
     color: #3b556d;
 }
 
 div.GreyFrameContainerSquared h3 {
-    background: url(/img/grey_frame/corner_right_top.gif) top right no-repeat;
+    background: url(img/grey_frame/corner_right_top.gif) top right no-repeat;
     line-height: 16px;
     padding: 0;
     margin: 0 0 0 16px;
@@ -102,7 +102,7 @@ div.GreyFrameContainerSquared h3 {
 }
 
 div.GreyFrameContainer h3 {
-    background: url(/img/grey_frame/corner_right_top.gif) top right no-repeat;
+    background: url(img/grey_frame/corner_right_top.gif) top right no-repeat;
     line-height: 16px;
     padding: 0;
     margin: 0 0 0 16px;
@@ -111,7 +111,7 @@ div.GreyFrameContainer h3 {
 }
 
 div.GreyFrameBody {
-    background: url(/img/grey_frame/pixel_grey.gif);
+    background: url(img/grey_frame/pixel_grey.gif);
     margin: 0;
     padding: 0;
     clear: both;
@@ -132,11 +132,11 @@ div.GreyFrameBody .p {
 }
 
 div.GreyFrameFooter {
-    background: url(/img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
+    background: url(img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
 }
 
 div.GreyFrameFooter p {
-    background: url(/img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
+    background: url(img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
     padding: 0;
     display: block;
     margin: 0;
@@ -144,46 +144,46 @@ div.GreyFrameFooter p {
 }
 
 div.GreyBlueFrame {
-    background: #adc6e5 url(/img/bg_blue_grey/gradient_blue.gif) repeat top left;
+    background: #adc6e5 url(img/bg_blue_grey/gradient_blue.gif) repeat top left;
     margin-left: 15px;
     margin-right: 15px;
 }
 
 div.GreyBlueFrameHorizontal {
-    background: #a3bed9 url(/img/bg_blue_grey/gradient_blue_hor.gif) repeat-y top left;
+    background: #a3bed9 url(img/bg_blue_grey/gradient_blue_hor.gif) repeat-y top left;
     margin-left: 20px;
     margin-right: 20px;
 }
 
 div.GreyBlueLeftTop {
-    background: url(/img/bg_blue_grey/left_top.gif) top left no-repeat;
+    background: url(img/bg_blue_grey/left_top.gif) top left no-repeat;
 }
 
 div.GreyBlueRightTop {
-    background: url(/img/bg_blue_grey/right_top.gif) top right no-repeat;
+    background: url(img/bg_blue_grey/right_top.gif) top right no-repeat;
     font: bold 1.0em/ 1.5em Geneva, Arial, Helvetica, sans-serif;
     color: #536e87;
     height: 8px;
 }
 
 div.GreyBlueRightBottom {
-    background: url(/img/bg_blue_grey/right_bottom.gif) bottom right no-repeat;
+    background: url(img/bg_blue_grey/right_bottom.gif) bottom right no-repeat;
     height: 10px;
 }
 
 div.GreyBlueLeftBottom {
-    background: url(/img/bg_blue_grey/left_bottom.gif) bottom left no-repeat;
+    background: url(img/bg_blue_grey/left_bottom.gif) bottom left no-repeat;
     height: 10px;
 }
 
 div.GreyNavFrame {
-    background: url(/img/grey_frame/corner_left_top.gif) top left no-repeat;
+    background: url(img/grey_frame/corner_left_top.gif) top left no-repeat;
     max-height: 500px;
     width: 230px;
 }
 
 div.GreyNavFrame h3 {
-    background: url(/img/grey_frame/corner_right_top.gif) top right no-repeat;
+    background: url(img/grey_frame/corner_right_top.gif) top right no-repeat;
     padding: 0;
     margin: 0;
     font: bold 1.1em/ 1.5 Geneva, Arial, Helvetica, sans-serif;
@@ -193,7 +193,7 @@ div.GreyNavFrame h3 {
 }
 
 div.GreyNavBody {
-    background: url(/img/grey_frame/pixel_grey.gif);
+    background: url(img/grey_frame/pixel_grey.gif);
     margin-top: 0;
     padding: 0;
     max-height: 300px;
@@ -226,11 +226,11 @@ div.GreyNavBody a:active {
 }
 
 div.GreyNavFrameFooter {
-    background: url(/img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
+    background: url(img/grey_frame/corner_left_bottom.gif) bottom left no-repeat;
 }
 
 div.GreyNavFrameFooter p {
-    background: url(/img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
+    background: url(img/grey_frame/corner_right_bottom.gif) bottom right no-repeat;
     padding: 20px;
     display: block;
     margin: -2em 0 0 0;
@@ -568,7 +568,7 @@ div.LoggedInAs a:link, div.LoggedInAs a:visited {
 }
 
 a.button {
-    background: transparent url('/img/grey_button_a.gif') no-repeat scroll top right;
+    background: transparent url('img/grey_button_a.gif') no-repeat scroll top right;
     color: #536e87;
     display: block;
     float: left;
@@ -580,7 +580,7 @@ a.button {
 }
 
 a.button span {
-    background: transparent url('/img/grey_button_span.gif') no-repeat;
+    background: transparent url('img/grey_button_span.gif') no-repeat;
     display: block;
     line-height: 10px;
     padding: 4px 0 6px 10px;
@@ -605,7 +605,7 @@ a.button span:hover {
 }
 
 a.bluebutton {
-    background: transparent url('/img/blue_button_a.gif') no-repeat scroll top right;
+    background: transparent url('img/blue_button_a.gif') no-repeat scroll top right;
     color: #536e87;
     display: block;
     float: left;
@@ -617,7 +617,7 @@ a.bluebutton {
 }
 
 a.bluebutton span {
-    background: transparent url('/img/blue_button_span.gif') no-repeat;
+    background: transparent url('img/blue_button_span.gif') no-repeat;
     display: block;
     line-height: 10px;
     padding: 4px 0 6px 10px;
