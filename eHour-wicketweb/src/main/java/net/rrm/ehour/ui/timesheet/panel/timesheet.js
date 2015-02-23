@@ -1,4 +1,7 @@
 function Timesheet() {
+    var hideZero = false;
+
+
     this.init = function () {
         $(".foldLink").click(function () {
             foldProjectRow(this);
@@ -18,30 +21,12 @@ function Timesheet() {
         var checkbox = $("#hideCheckbox");
         checkbox.click(function () {
             if ($(this).is(':checked')) {
-                $(".projectRow > .total").each(function () {
-                        var item = $(this);
-                        var val = item.html();
-                        var sanitized = val.replace(/\D/g, '');
-
-                        if (parseInt(sanitized) === 0) {
-                            var e = $(item.closest('.projectRow'));
-                            e.hide();
-                            e.data("visible", false);
-                        }
-                    }
-                );
+                hideZero = true;
             } else {
-                $(".projectRow > .total").each(function () {
-                    var item = $(this);
-                    var e = $(item.closest('.projectRow'));
-                    e.show();
-                    e.data("visible", true);
-                });
-
-                filter();
+                hideZero = false;
             }
 
-            hideCustomersWithoutProjects();
+            filter();
         });
     };
 
@@ -71,41 +56,73 @@ function Timesheet() {
     }
 
 
-    function findProjects(element) {
-        var projects = [];
-
-        $(element).nextAll('tr').each(function (i, row) {
-            var r = $(row);
-            if (r.attr('class').indexOf("projectRow") < 0) {
-                return false;
-            } else {
-                projects.push(r);
-            }
-        });
-
-        return projects;
-    }
-
     function filter() {
         var q = $.trim($("#filter").val()).toLowerCase();
+        if (!q) {
+            q = "";
+        }
         var r = new RegExp(q.replace(/\*/g, '.*').replace(/ /g, '.*'));
+
         var timesheetTable = $(".timesheetTable");
 
-        timesheetTable.find(".projectName").each(function (idx, element) {
-            var e = $(element).closest('.projectRow');
+        timesheetTable.find(".customerRow").each(function (idx, element) {
+            var customerRow = $(element);
+            var customerName = $(customerRow.find(".customerNameFilter")).text();
+            var customerHit = r.exec(customerName.toLowerCase());
 
-            var xs = r.exec($(element).text().toLowerCase());
+            var projects = $(findProjects(customerRow));
 
-            if (xs != null) {
-                e.data("visible", true);
-                e.show();
+            if (customerHit) {
+                customerRow.show();
+
+                projects.each(function (id, e) {
+                    var projectRow = $(e);
+
+                    if (hideZero && isProjectRowWithZeroHours(projectRow)) {
+                        projectRow.hide();
+                        projectRow.data("visible", false);
+                    } else {
+                        projectRow.show();
+                        projectRow.data("visible", true);
+                    }
+                });
             } else {
-                e.data("visible", false);
-                e.hide();
+                projects.each(function (id, e) {
+                    var projectRow = $(e);
+
+                    if (hideZero && isProjectRowWithZeroHours(projectRow)) {
+                        projectRow.hide();
+                        projectRow.data("visible", false);
+                    } else {
+                        var name = $(projectRow.find(".projectNameFilter")).text();
+                        var nameHit = r.exec(name.toLowerCase());
+
+                        var code = $(projectRow.find(".projectCodeFilter")).text();
+                        var codeHit = r.exec(code.toLowerCase());
+
+                        if (codeHit || nameHit) {
+                            customerRow.show();
+                            projectRow.show();
+                            projectRow.data("visible", true);
+                        } else {
+                            projectRow.hide();
+                            projectRow.data("visible", false);
+                        }
+                    }
+                });
             }
         });
 
         hideCustomersWithoutProjects();
+    }
+
+    function isProjectRowWithZeroHours(projectRow) {
+        var item = projectRow.find(".total");
+
+        var val = item.html();
+        var sanitized = val.replace(/\D/g, '');
+
+        return parseInt(sanitized) === 0;
     }
 
     function hideCustomersWithoutProjects() {
@@ -126,6 +143,21 @@ function Timesheet() {
                 $(element).hide();
             }
         });
+    }
 
+
+    function findProjects(element) {
+        var projects = [];
+
+        $(element).nextAll('tr').each(function (i, row) {
+            var r = $(row);
+            if (r.attr('class').indexOf("projectRow") < 0) {
+                return false;
+            } else {
+                projects.push(r);
+            }
+        });
+
+        return projects;
     }
 }

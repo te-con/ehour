@@ -104,7 +104,7 @@
                         <wicket:container wicket:id="customers">
                             <tr class="customerRow">
                                 <td class="customerCell" colspan="4">
-                                    <a href="#" class="foldLink"><span style="float:left;" class="fa fa-angle-double-down"></span>&nbsp;<strong><span class="customerName" wicket:id="customer"></span></strong></a>
+                                    <a href="#" class="foldLink"><span style="float:left;" class="fa fa-angle-double-down"></span>&nbsp;<strong><span class="customerName customerNameFilter" wicket:id="customer"></span></strong></a>
                                 </td>
 
                                 <td class="weekday" colspan="2">&nbsp;</td>
@@ -120,9 +120,9 @@
                                 <tr class="projectRow">
                                     <td class="projectCode">
                                         <a wicket:id="bookWholeWeek" wicket:message="title:timesheet.bookall"><i class="fa fa-check-circle bookAll"></i></a>
-                                        <wicket:container wicket:id="projectCode">projectCode</wicket:container>
+                                        <span class="projectCodeFilter"><wicket:container wicket:id="projectCode">projectCode</wicket:container></span>
                                     </td>
-                                    <td class="project"><span class="projectName" wicket:id="project"></span>
+                                    <td class="project"><span class="projectName projectNameFilter" wicket:id="project"></span>
                                         <span wicket:id="role" style="font-size: 0.7em"></span>
                                             <span class="statusMsg" wicket:id="status"></span>
                                     </td>
@@ -140,8 +140,6 @@
                             </wicket:container>
                         </wicket:container>
                     </tbody>
-
-
 				</table>
 			</div>
 		</div>
