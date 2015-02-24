@@ -1,6 +1,5 @@
 package net.rrm.ehour.persistence.datasource;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +11,6 @@ import java.net.URISyntaxException;
 
 @Configuration
 public class DatasourceConfiguration {
-    public static final String DB_DERBY = "derby";
-    public static final String DB_MYSQL = "mysql";
-    public static final String DB_POSTGRESQL = "postgresql";
-
-    private static final Logger LOGGER = Logger.getLogger(DatasourceConfiguration.class);
-
     @Value("${ehour.database}")
     String databaseType;
 
@@ -43,5 +36,17 @@ public class DatasourceConfiguration {
 
     public SupportedDatabases getDatabaseType() {
         return SupportedDatabases.valueOf(databaseType.toUpperCase());
+    }
+
+    @Override
+    public String toString() {
+        return "DatasourceConfiguration{" +
+                "databaseType='" + databaseType + '\'' +
+                ", driver='" + driver + '\'' +
+                ", url='" + url + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", checkoutTimeout=" + checkoutTimeout +
+                '}';
     }
 }
