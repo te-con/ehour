@@ -1,7 +1,7 @@
 package net.rrm.ehour.persistence.dbvalidator;
 
 import net.rrm.ehour.config.PersistenceConfig;
-import net.rrm.ehour.persistence.datasource.DatasourceConfiguration;
+import net.rrm.ehour.persistence.datasource.SupportedDatabases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class DerbyDbValidationListener  {
 
     @PostConstruct
     public void onApplicationEvent() {
-        if (DatasourceConfiguration.DB_DERBY.equalsIgnoreCase(databaseType)) {
+        if (SupportedDatabases.DERBY.name().equalsIgnoreCase(databaseType)) {
             DerbyDbValidator validator = new DerbyDbValidator(PersistenceConfig.DB_VERSION, dataSource);
             validator.checkDatabaseState();
         }
