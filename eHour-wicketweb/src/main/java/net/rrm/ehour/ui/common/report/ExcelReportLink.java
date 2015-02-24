@@ -7,6 +7,8 @@ import org.apache.wicket.markup.html.link.Link;
 // merge with xlsxlink
 public abstract class ExcelReportLink extends Link<Void> {
 
+    private static final String FILE_EXTENSION = "xlsx";
+
     public ExcelReportLink(String id) {
         super(id);
     }
@@ -14,7 +16,8 @@ public abstract class ExcelReportLink extends Link<Void> {
     @Override
     public void onClick() {
         ExcelReport reportBuilder = createReportBuilder();
-        getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(reportBuilder.getFilename(), reportBuilder, ExcelRequestHandler.Format.XLSX));
+        String filename = String.format("%s.%s", reportBuilder.getFilenameWihoutSuffix(), FILE_EXTENSION);
+        getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(filename, reportBuilder, ExcelRequestHandler.Format.XLSX));
     }
 
     protected abstract ExcelReport createReportBuilder();
