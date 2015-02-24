@@ -1,5 +1,6 @@
 package net.rrm.ehour.persistence.datasource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,7 @@ public class DatasourceConfiguration {
     @Value("${ehour.database.checkouttimeout:10000}")
     Integer checkoutTimeout;
 
+
     @Bean
     public DataSource createDatasource() throws IOException, PropertyVetoException, URISyntaxException {
         return getDatabaseType().createDatasource(this);
@@ -44,8 +46,8 @@ public class DatasourceConfiguration {
                 "databaseType='" + databaseType + '\'' +
                 ", driver='" + driver + '\'' +
                 ", url='" + url + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", username='" + (StringUtils.isBlank(username) ? "" : "*****") + '\'' +
+                ", password='" + (StringUtils.isBlank(password) ? "" : "*****") + '\'' +
                 ", checkoutTimeout=" + checkoutTimeout +
                 '}';
     }

@@ -91,6 +91,8 @@ public enum SupportedDatabases {
         ds.setMaxStatements(0);
         ds.setMinPoolSize(10);
         ds.setCheckoutTimeout(config.checkoutTimeout);
+
+        LOGGER.info(config.toString());
         return ds;
     }
 
