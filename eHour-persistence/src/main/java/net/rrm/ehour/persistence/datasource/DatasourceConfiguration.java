@@ -12,6 +12,9 @@ import java.net.URISyntaxException;
 
 @Configuration
 public class DatasourceConfiguration {
+    static final String CP_C3P0 = "c3p0";
+    static final String CP_HIKARI = "hikari";
+
     @Value("${ehour.database}")
     String databaseType;
 
@@ -30,6 +33,8 @@ public class DatasourceConfiguration {
     @Value("${ehour.database.checkouttimeout:10000}")
     Integer checkoutTimeout;
 
+    @Value("${ehour.database.cp:c3p0}")
+    String connectionPool;
 
     @Bean
     public DataSource createDatasource() throws IOException, PropertyVetoException, URISyntaxException {
@@ -49,6 +54,7 @@ public class DatasourceConfiguration {
                 ", username='" + (StringUtils.isBlank(username) ? "" : "*****") + '\'' +
                 ", password='" + (StringUtils.isBlank(password) ? "" : "*****") + '\'' +
                 ", checkoutTimeout=" + checkoutTimeout +
+                ", connectionPool=" + connectionPool +
                 '}';
     }
 }
