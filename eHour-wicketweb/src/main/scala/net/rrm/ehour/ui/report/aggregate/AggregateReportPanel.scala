@@ -21,7 +21,7 @@ abstract class AggregateReportPanel(id: String, reportModel: TreeReportModel, re
 
     val reportModel = getDefaultModel.asInstanceOf[TreeReportModel]
 
-    add(new TreeReportDataPanel(ReportTableId, reportModel, reportConfig, excelReport))
+    addOrReplace(new TreeReportDataPanel(ReportTableId, reportModel, reportConfig, excelReport))
 
     val reportData: ReportData = reportModel.getReportData
     val chartPanel = addCharts(reportData)
