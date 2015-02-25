@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>net.rrm.ehour</groupId>
-    <version>1.4.3-SNAPSHOT</version>
+    <version>1.4.3.demo-SNAPSHOT</version>
     <artifactId>eHour</artifactId>
     <packaging>pom</packaging>
     <name>eHour</name>
@@ -33,7 +33,7 @@
     </modules>
 
     <properties>
-        <ehour.version>1.4.3-SNAPSHOT</ehour.version>
+        <ehour.version>1.4.3.demo-SNAPSHOT</ehour.version>
     </properties>
 
     <repositories>

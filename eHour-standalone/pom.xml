@@ -3,7 +3,7 @@
     <parent>
         <artifactId>eHour</artifactId>
         <groupId>net.rrm.ehour</groupId>
-        <version>1.4.3-SNAPSHOT</version>
+        <version>1.4.3.demo-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>eHour-standalone</artifactId>
