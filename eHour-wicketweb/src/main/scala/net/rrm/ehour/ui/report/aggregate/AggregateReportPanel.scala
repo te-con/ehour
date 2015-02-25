@@ -27,7 +27,7 @@ abstract class AggregateReportPanel(id: String, reportModel: TreeReportModel, re
     val chartPanel = addCharts(reportData)
     chartPanel.setVisible(!reportData.isEmpty)
 
-    add(chartPanel)
+    addOrReplace(chartPanel)
 
     super.onBeforeRender()
   }
