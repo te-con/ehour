@@ -1,6 +1,5 @@
 package net.rrm.ehour.ui.admin.config
 
-import net.rrm.ehour.config.EhourConfig
 import net.rrm.ehour.sysinfo.SystemInfoService
 import net.rrm.ehour.ui.EhourWebApplication
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
@@ -34,6 +33,5 @@ class SystemInfoPanel(id: String) extends AbstractBasePanel(id) {
     add(new Label("db.name", info.databaseName))
     add(new Label("db.driver", info.jdbcDriver))
     add(new Label("db.url", if (inDemoMode) "" else info.databaseUrl))
-
   }
 }

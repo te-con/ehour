@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.rrm.ehour.domain.Customer;
@@ -37,6 +38,7 @@ import net.rrm.ehour.ui.report.panel.criteria.ReportCriteriaAjaxEventType;
 import net.rrm.ehour.ui.report.panel.criteria.ReportTabbedPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
+import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.junit.Before;
@@ -80,13 +82,13 @@ public class ReportPageTest extends BaseSpringWebAppTester implements Serializab
         ReportTabFactory factory = mock(ReportTabFactory.class);
 
         when(factory.createReportTab(any(ReportCriteria.class))).thenReturn(
-                new AbstractTab(new KeyResourceModel("a")) {
+                Optional.<ITab>of(new AbstractTab(new KeyResourceModel("a")) {
 
                     @Override
                     public Panel getPanel(String panelId) {
                         return new EmptyPanel(panelId);
                     }
-                }
+                })
         );
 
         reportTabs.setFactories(Lists.newArrayList(factory));
