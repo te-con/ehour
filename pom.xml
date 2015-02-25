@@ -32,6 +32,7 @@
         <module>cloud</module>
     </modules>
 
+
     <properties>
         <ehour.version>1.4.3.demo-SNAPSHOT</ehour.version>
     </properties>
