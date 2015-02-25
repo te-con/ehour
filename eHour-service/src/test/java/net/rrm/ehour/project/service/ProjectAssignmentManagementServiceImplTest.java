@@ -6,7 +6,7 @@ import net.rrm.ehour.exception.ProjectAlreadyAssignedException;
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
-import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +23,7 @@ import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectAssignmentManagementServiceImplTest {
@@ -38,14 +36,14 @@ public class ProjectAssignmentManagementServiceImplTest {
     private ProjectDao projectDao;
 
     @Mock
-    private UserService userService;
+    private UserDao userDao;
 
     @Mock
     private TimesheetDao timesheetDao;
 
     @Before
     public void setUp() {
-        service = new ProjectAssignmentManagementServiceImpl(userService, projectDao, projectAssignmentDao, timesheetDao);
+        service = new ProjectAssignmentManagementServiceImpl(userDao, projectDao, projectAssignmentDao, timesheetDao);
     }
 
     @Test

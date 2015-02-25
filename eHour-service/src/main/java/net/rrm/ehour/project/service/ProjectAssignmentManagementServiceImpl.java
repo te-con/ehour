@@ -6,8 +6,9 @@ import net.rrm.ehour.domain.*;
 import net.rrm.ehour.persistence.project.dao.ProjectAssignmentDao;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.persistence.timesheet.dao.TimesheetDao;
+import net.rrm.ehour.persistence.user.dao.UserDao;
 import net.rrm.ehour.project.service.ProjectAssignmentValidationException.Issue;
-import net.rrm.ehour.user.service.UserService;
+import net.rrm.ehour.user.service.UserUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ProjectAssignmentManagementServiceImpl implements ProjectAssignmentManagementService {
     private static final Logger LOGGER = Logger.getLogger(ProjectAssignmentServiceImpl.class);
 
-    private final UserService userService;
+    private final UserDao userDAO;
 
     private final ProjectDao projectDao;
 
@@ -28,11 +29,11 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     private final TimesheetDao timesheetDao;
 
     @Autowired
-    public ProjectAssignmentManagementServiceImpl(UserService userService,
+    public ProjectAssignmentManagementServiceImpl(UserDao userDAO,
                                                   ProjectDao projectDao,
                                                   ProjectAssignmentDao projectAssignmentDao,
                                                   TimesheetDao timesheetDao) {
-        this.userService = userService;
+        this.userDAO = userDAO;
         this.projectDao = projectDao;
         this.projectAssignmentDao = projectAssignmentDao;
         this.timesheetDao = timesheetDao;
@@ -41,7 +42,7 @@ public class ProjectAssignmentManagementServiceImpl implements ProjectAssignment
     @Transactional
     @Auditable(actionType = AuditActionType.CREATE)
     public void assignAllUsersToProject(Project project) {
-        List<User> users = userService.getUsers(UserRole.USER);
+        List<User> users = UserUtil.filterUserOnRole(userDAO.findActiveUsers(), UserRole.USER);
 
         for (User user : users) {
             ProjectAssignment assignment = ProjectAssignment.createProjectAssignment(project, user);

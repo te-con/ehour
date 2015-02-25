@@ -313,18 +313,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<User> getUsers(UserRole userRole) {
-
-        List<User> users = userDAO.findActiveUsers();
-        List<User> validUsers = new ArrayList<User>();
-
-        // result of bad many-to-many mapping. should fix once..
-        for (User user : users) {
-            if (user.getUserRoles().contains(userRole)) {
-                validUsers.add(user);
-            }
-        }
-
-        return validUsers;
+        return UserUtil.filterUserOnRole(userDAO.findActiveUsers(), userRole);
     }
 
     @Transactional
