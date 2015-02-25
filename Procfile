@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -cp "heroku/target/demo-dist/demo/lib/*" -DEHOUR_HOME=heroku/target/demo-dist/demo/home -Dehour.database=postgresql -Dehour.database.driver=org.postgresql.Driver -Dehour.database.url=$DATABASE_URL -Dehour.standalone.port=$PORT net.rrm.ehour.EhourServerRunner

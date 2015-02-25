@@ -1,0 +1,58 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly.xsd">
+    <id>dist</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+
+    <fileSets>
+        <!-- conf dir -->
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/home</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
+            <directory>src/main/home</directory>
+            <filtered>false</filtered>
+        </fileSet>
+
+        <!-- Translations -->
+        <fileSet>
+            <useDefaultExcludes/>
+            <outputDirectory>/resources/i18n</outputDirectory>
+            <fileMode>0644</fileMode>
+            <directoryMode>0775</directoryMode>
+            <directory>../eHour-wicketweb/src/dist/i18n</directory>
+            <filtered>false</filtered>
+        </fileSet>
+
+        <!-- create empty log dir -->
+        <!-- this is a trick for creating an empty dir -->
+        <fileSet>
+            <directory>src/main</directory>
+            <outputDirectory>/log</outputDirectory>
+            <directoryMode>0775</directoryMode>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </fileSet>
+
+        <!-- app dir -->
+        <fileSet>
+            <useDefaultExcludes/>
+            <directoryMode>0775</directoryMode>
+            <outputDirectory>/app</outputDirectory>
+            <directory>../eHour-web/src/main/webapp</directory>
+            <filtered>false</filtered>
+        </fileSet>
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <scope>runtime</scope>
+            <outputDirectory>/lib</outputDirectory>
+            <directoryMode>0775</directoryMode>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
+</assembly>

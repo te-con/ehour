@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+	<Call name="addConnector">
+		<Arg>
+			<New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+			</New>
+		</Arg>
+	</Call>
+
+	<Set name="handler">
+		<New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+			<Set name="handlers">
+				<Array type="org.eclipse.jetty.server.Handler">
+					<Item>
+						<New id="Contexts"
+							class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
+							<New class="org.eclipse.jetty.webapp.WebAppContext">
+								<Set name="contextPath">/</Set>
+							</New>
+						</New>
+					</Item>
+					<Item>
+						<New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler" />
+					</Item>
+					<Item>
+						<New id="RequestLog" class="org.eclipse.jetty.server.handler.RequestLogHandler" />
+					</Item>
+				</Array>
+			</Set>
+		</New>
+	</Set>
+
+	<Call name="addBean">
+		<Arg>
+			<New id="DeploymentManager" class="org.eclipse.jetty.deploy.DeploymentManager">
+				<Set name="contexts">
+					<Ref id="Contexts" />
+				</Set>
+
+
+				<Call name="addAppProvider">
+					<Arg>
+						<New class="org.eclipse.jetty.deploy.providers.ContextProvider">
+							<Set name="monitoredDir"><SystemProperty name="EHOUR_HOME"/>/conf/contexts</Set>
+							<Set name="scanInterval">5</Set>
+						</New>
+					</Arg>
+				</Call>
+			</New>
+		</Arg>
+	</Call>
+
+</Configure>
