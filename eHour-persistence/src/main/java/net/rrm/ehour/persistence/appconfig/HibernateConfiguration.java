@@ -74,14 +74,6 @@ public class HibernateConfiguration {
         properties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
         properties.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
 
-        properties.setProperty("c3p0.acquire_increment", "1");
-        properties.setProperty("c3p0.idle_test_period", "100");
-        properties.setProperty("c3p0.max_size", "100");
-        properties.setProperty("c3p0.max_statements", "0");
-        properties.setProperty("c3p0.min_size", "10");
-        properties.setProperty("c3p0.preferredTestQuery", "SELECT 1");
-        properties.setProperty("c3p0.testConnectionOnCheckout", "true");
-
         String validateSchema = (String) configProperties.get("hibernate.hbm2ddl.auto");
         if (!"false".equalsIgnoreCase(validateSchema)) {
             properties.setProperty(AvailableSettings.HBM2DDL_AUTO, validateSchema);
