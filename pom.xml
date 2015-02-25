@@ -29,7 +29,6 @@
         <module>eHour-war</module>
         <module>eHour-selenium</module>
         <module>eHour-jetty</module>
-        <module>cloud</module>
     </modules>
 
 
