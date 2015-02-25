@@ -1,1 +1,0 @@
-web: java $JAVA_OPTS -cp "cloud/target/demo-dist/demo/lib/*" -DEHOUR_HOME=cloud/target/demo-dist/demo/home -Dehour.database=postgresql -Dehour.database.driver=org.postgresql.Driver -Dehour.database.url=$DATABASE_URL -Dehour.standalone.port=$PORT net.rrm.ehour.EhourServerRunner
