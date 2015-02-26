@@ -1,14 +1,19 @@
 package net.rrm.ehour.appconfig;
 
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Ehour System Config represents the config found in ehour.properties, a more low-level config for eHour
  */
 @Service
 public class EhourSystemConfig {
+    private static final Logger logger = Logger.getLogger(EhourSystemConfig.class);
+
     @Value("${ehour.enableBookWholeWeek:true}")
     private boolean bookWholeWeekEnabled = true;
 
@@ -33,6 +38,11 @@ public class EhourSystemConfig {
     public EhourSystemConfig(String eHourHome, String translationsDir) {
         this.eHourHome = eHourHome;
         this.translationsDir = translationsDir;
+    }
+
+    @PostConstruct
+    public void sanitizeConfig() {
+
     }
 
     public boolean isDisableAuth() {

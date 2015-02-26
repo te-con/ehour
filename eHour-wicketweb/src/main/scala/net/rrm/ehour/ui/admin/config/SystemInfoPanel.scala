@@ -3,6 +3,7 @@ package net.rrm.ehour.ui.admin.config
 import net.rrm.ehour.sysinfo.SystemInfoService
 import net.rrm.ehour.ui.EhourWebApplication
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
+import net.rrm.ehour.ui.common.session.EhourWebSession
 import org.apache.wicket.markup.html.basic.Label
 import org.apache.wicket.spring.injection.annot.SpringBean
 
@@ -26,10 +27,11 @@ class SystemInfoPanel(id: String) extends AbstractBasePanel(id) {
 
     add(new Label("server.name", EhourWebApplication.get().getServletContext.getServerInfo))
 
+    val inDemoMode = EhourWebSession.getEhourConfig.isInDemoMode
+
     val info = infoService.info
     add(new Label("db.name", info.databaseName))
     add(new Label("db.driver", info.jdbcDriver))
-    add(new Label("db.url", info.databaseUrl))
-
+    add(new Label("db.url", if (inDemoMode) "" else info.databaseUrl))
   }
 }

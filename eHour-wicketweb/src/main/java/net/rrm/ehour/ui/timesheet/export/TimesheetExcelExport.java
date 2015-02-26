@@ -85,7 +85,7 @@ public class TimesheetExcelExport implements ExcelReport {
     }
 
     @Override
-    public String getFilename() {
-        return "month_report.xls";
+    public String getFilenameWihoutSuffix() {
+        return "month_report";
     }
 }

@@ -38,4 +38,8 @@ public class EhourApplicationDriver {
         Driver.get(BASE_URL + "/eh/logout");
         Driver.manage().deleteAllCookies();
     }
+
+    public static void reloadPage() {
+        Driver.navigate().refresh();
+    }
 }

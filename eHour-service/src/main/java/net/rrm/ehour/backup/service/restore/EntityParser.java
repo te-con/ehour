@@ -176,19 +176,21 @@ public class EntityParser {
                 // iterate over all the foreign tables this entity has a relation with
                 List<String> targetFkIds = joinTables.getTarget(tableName, id);
 
-                for (String fkId : targetFkIds) {
-                    Serializable fkTransformedId;
-                    if (fkIdFieldDefinition.getField().getAnnotation(GeneratedValue.class) != null) {
-                        Class<?> fkIdType = fkIdFieldDefinition.getField().getType();
-                        fkTransformedId = keyCache.getKey(fkType, fkIdType == Integer.class ? Integer.parseInt(fkId) : fkId);
-                    } else {
-                        fkTransformedId = fkId;
+                if (targetFkIds != null) {
+                    for (String fkId : targetFkIds) {
+                        Serializable fkTransformedId;
+                        if (fkIdFieldDefinition.getField().getAnnotation(GeneratedValue.class) != null) {
+                            Class<?> fkIdType = fkIdFieldDefinition.getField().getType();
+                            fkTransformedId = keyCache.getKey(fkType, fkIdType == Integer.class ? Integer.parseInt(fkId) : fkId);
+                        } else {
+                            fkTransformedId = fkId;
+                        }
+
+                        Serializable fk = parserDao.find(fkTransformedId, fkType);
+
+                        Collection o = (Collection) field.get(targetEntity);
+                        o.add(fk);
                     }
-
-                    Serializable fk = parserDao.find(fkTransformedId, fkType);
-
-                    Collection o = (Collection) field.get(targetEntity);
-                    o.add(fk);
                 }
             }
         }

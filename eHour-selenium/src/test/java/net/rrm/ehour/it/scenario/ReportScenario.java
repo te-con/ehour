@@ -25,6 +25,23 @@ public class ReportScenario extends AbstractScenario {
     }
 
     @Test
+    public void should_go_back_to_criteria_screen_after_report() {
+        createUserAndAssign();
+
+        loginRegularUser();
+
+        loadReportSection();
+        assertUserCriteriaLoaded();
+        createReport();
+
+        reloadPage();
+
+        assertUserCriteriaLoaded();
+
+        logout();
+    }
+
+    @Test
     public void should_access_report_as_global() {
         loginAdmin();
         createReportUser();

@@ -26,7 +26,6 @@ import net.rrm.ehour.report.reports.element.FlatReportElement;
 import net.rrm.ehour.ui.admin.config.MainConfigBackingBean;
 import net.rrm.ehour.ui.common.form.ImageUploadForm;
 import net.rrm.ehour.ui.common.report.excel.ExcelRequestHandler;
-import net.rrm.ehour.ui.common.util.Function;
 import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.ui.timesheet.export.TimesheetExcelExport;
 import net.rrm.ehour.ui.timesheet.export.TimesheetExportParameter;
@@ -129,7 +128,7 @@ public class SkinConfigPanel extends AbstractConfigPanel {
 
         final TimesheetExcelExport timesheetExcelExport = new TimesheetExcelExport(criteria);
 
-        getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(timesheetExcelExport.getFilename(), timesheetExcelExport));
+        getRequestCycle().scheduleRequestHandlerAfterCurrent(new ExcelRequestHandler(timesheetExcelExport.getFilenameWihoutSuffix(), timesheetExcelExport));
     }
 
     public static class TimesheetExportDummyDataGenerator {

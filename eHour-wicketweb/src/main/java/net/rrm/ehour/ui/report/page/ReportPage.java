@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.report.page;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
@@ -164,7 +165,11 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
         List<ITab> tabs = Lists.newArrayList();
 
         for (ReportTabFactory tabFactory : tabFactories) {
-            tabs.add(tabFactory.createReportTab(backingBean.getReportCriteria()));
+            Optional<ITab> reportTab = tabFactory.createReportTab(backingBean.getReportCriteria());
+
+            if (reportTab.isPresent()) {
+                tabs.add(reportTab.get());
+            }
         }
 
         addTabs(tabs);

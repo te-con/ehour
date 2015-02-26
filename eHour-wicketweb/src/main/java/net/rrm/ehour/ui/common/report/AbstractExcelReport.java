@@ -149,8 +149,8 @@ public abstract class AbstractExcelReport implements ExcelReport {
     }
 
     @Override
-    public String getFilename() {
-        return getExcelReportName().getObject().toLowerCase().replace(' ', '_') + ".xls";
+    public String getFilenameWihoutSuffix() {
+        return getExcelReportName().getObject().toLowerCase().replace(' ', '_');
     }
 
 

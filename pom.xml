@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>net.rrm.ehour</groupId>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
     <artifactId>eHour</artifactId>
     <packaging>pom</packaging>
     <name>eHour</name>
@@ -31,8 +31,9 @@
         <module>eHour-jetty</module>
     </modules>
 
+
     <properties>
-        <ehour.version>1.4.2</ehour.version>
+        <ehour.version>1.4.3</ehour.version>
     </properties>
 
     <repositories>
@@ -51,4 +52,14 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.newrelic.agent.java</groupId>
+            <artifactId>newrelic-agent</artifactId>
+            <version>3.14.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 </project>

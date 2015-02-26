@@ -2,7 +2,7 @@
     <parent>
         <groupId>net.rrm.ehour</groupId>
         <artifactId>eHour</artifactId>
-        <version>1.4.2</version>
+        <version>1.4.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>eHour-persistence</artifactId>
@@ -159,6 +159,13 @@
         <dependency>
             <groupId>org.jadira.usertype</groupId>
             <artifactId>usertype.core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP-java6</artifactId>
+            <version>2.3.2</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

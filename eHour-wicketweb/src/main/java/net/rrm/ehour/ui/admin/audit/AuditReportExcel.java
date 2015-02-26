@@ -35,8 +35,8 @@ public class AuditReportExcel extends AbstractExcelReport {
     }
 
     @Override
-    public String getFilename() {
-        return "audit_report.xls";
+    public String getFilenameWihoutSuffix() {
+        return "audit_report";
     }
 
     @Override
