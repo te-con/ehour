@@ -19,6 +19,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -51,6 +52,8 @@ public class HibernateConfiguration {
         Properties configProperties = EhourHomeUtil.loadDatabaseProperties(databaseName);
 
         LOGGER.info("Using database type: " + databaseName);
+
+        new LocalSessionFactoryBuilder();
 
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 

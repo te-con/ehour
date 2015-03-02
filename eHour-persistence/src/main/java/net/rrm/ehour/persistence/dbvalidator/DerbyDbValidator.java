@@ -50,13 +50,13 @@ public class DerbyDbValidator {
 
     private static final Logger LOGGER = Logger.getLogger(DerbyDbValidator.class);
 
+    private EmbeddedDataSource dataSource;
     private String requiredDbVersion;
-    private Connection connection;
 
 
-    public DerbyDbValidator(String requiredDbVersion, Connection con) {
+    public DerbyDbValidator(String requiredDbVersion, DataSource dataSource) {
         this.requiredDbVersion = requiredDbVersion;
-        connection = con;
+        this.dataSource = (EmbeddedDataSource) dataSource;
     }
 
     public DdlType checkDatabaseState() {
@@ -71,7 +71,7 @@ public class DerbyDbValidator {
         try {
             dataSource.setCreateDatabase("create");
 
-//            connection = dataSource.getConnection();
+            connection = dataSource.getConnection();
             connection.setAutoCommit(false);
 
             currentVersion = getCurrentVersion(connection);
@@ -97,7 +97,7 @@ public class DerbyDbValidator {
                     connection.close();
                 }
             } catch (SQLException e) {
-                LOGGER.error("Failed to close connection", e);
+//                LOGGER.error("Failed to close connection", e);
             }
         }
 
@@ -117,9 +117,6 @@ public class DerbyDbValidator {
      */
     private void createOrAlterDatamodel(DataSource dataSource, DdlType ddlType) throws DdlUtilsException, IOException {
         Platform platform = PlatformFactory.createNewPlatformInstance(dataSource);
-//        PlatformFactory.createNewPlatformInstance()
-
-        platform.cre
 
         Resource resource = new ClassPathResource(getDdlFilename());
 

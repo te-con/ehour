@@ -8,10 +8,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DerbyConnectionProvider implements ConnectionProvider {
-    private final EmbeddedConnectionPoolDataSource dataSource;
+    // okay this is bad... TODO use Hibernate's service registry
+    public static EmbeddedConnectionPoolDataSource dataSource;
 
     public DerbyConnectionProvider() throws IOException {
-        String databaseName = isInTestMode() ? "memory:ehourDb;create=true;autocommit=false" : "ehourDb";
+        String databaseName = isInTestMode() ? "memory:ehourDb;create=true" : "ehourDb";
         dataSource = new EmbeddedConnectionPoolDataSource();
         dataSource.setDatabaseName(databaseName);
     }
