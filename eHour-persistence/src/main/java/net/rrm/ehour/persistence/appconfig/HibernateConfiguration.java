@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +38,9 @@ public class HibernateConfiguration {
     @Value("${ehour.db.cache:true}")
     private String caching;
 
+    @Autowired
+    private ConnectionProvider connectionProvider;
+
     protected static final PathMatchingResourcePatternResolver RESOLVER = new PathMatchingResourcePatternResolver();
     private static final Logger LOGGER = Logger.getLogger(HibernateConfiguration.class);
 
@@ -64,22 +69,21 @@ public class HibernateConfiguration {
 
         sessionFactoryBean.setPackagesToScan(getPackagesToScan());
 
-        Properties properties = new Properties();
+        Properties hibernateProperties = new Properties();
 
-        properties.setProperty(AvailableSettings.DIALECT, (String) configProperties.get("hibernate.dialect"));
-        properties.setProperty(AvailableSettings.SHOW_SQL, "false");
-        properties.setProperty("use_outer_join", "true");
-        properties.setProperty(AvailableSettings.CACHE_REGION_FACTORY, "org.hibernate.cache.ehcache.EhCacheRegionFactory");
-        properties.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, caching);
-        properties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
-        properties.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
+        hibernateProperties.setProperty(AvailableSettings.DIALECT, (String) configProperties.get("hibernate.dialect"));
+        hibernateProperties.setProperty(AvailableSettings.SHOW_SQL, "false");
+        hibernateProperties.setProperty("use_outer_join", "true");
+        hibernateProperties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
+        hibernateProperties.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, caching);
+        hibernateProperties.setProperty(AvailableSettings.USE_QUERY_CACHE, caching);
 
-        String validateSchema = (String) configProperties.get("hibernate.hbm2ddl.auto");
+        String validateSchema = (String) configProperties.get(AvailableSettings.HBM2DDL_AUTO);
         if (!"false".equalsIgnoreCase(validateSchema)) {
-            properties.setProperty(AvailableSettings.HBM2DDL_AUTO, validateSchema);
+            hibernateProperties.setProperty(AvailableSettings.HBM2DDL_AUTO, validateSchema);
         }
 
-        sessionFactoryBean.setHibernateProperties(properties);
+        sessionFactoryBean.setHibernateProperties(hibernateProperties);
         beforeFinalizingSessionFactoryBean(sessionFactoryBean);
         sessionFactoryBean.afterPropertiesSet();
 

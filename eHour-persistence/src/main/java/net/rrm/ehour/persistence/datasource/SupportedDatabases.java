@@ -31,7 +31,6 @@ public enum SupportedDatabases {
             } else {
                 return createC3p0Datasource(config, "mysql", "com.mysql.jdbc.Driver");
             }
-
         }
     },
     POSTGRESQL {
