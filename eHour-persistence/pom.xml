@@ -104,11 +104,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>net.rrm.ehour</groupId>
             <artifactId>eHour-common</artifactId>
         </dependency>
