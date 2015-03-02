@@ -1,12 +1,13 @@
 package net.rrm.ehour.persistence.appconfig;
 
 import com.google.common.collect.Lists;
-import com.zaxxer.hikari.hibernate.HikariConfigurationUtil;
 import com.zaxxer.hikari.hibernate.HikariConnectionProvider;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
+import net.rrm.ehour.persistence.datasource.Database;
 import net.rrm.ehour.persistence.datasource.DatabaseConfig;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
+import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +42,7 @@ public class HibernateConfiguration {
     public HibernateConfiguration() {
     }
 
-    public HibernateConfiguration(DataSource dataSource, String databaseName,  String caching) {
+    public HibernateConfiguration(DataSource dataSource, String databaseName, String caching) {
         this.databaseName = databaseName;
     }
 
@@ -68,7 +69,6 @@ public class HibernateConfiguration {
         return sessionFactoryBean.getObject();
     }
 
-
     private Properties getHibernateProperties(Properties configProperties) {
         Properties hibernateProperties = new Properties();
 
@@ -76,6 +76,7 @@ public class HibernateConfiguration {
         hibernateProperties.setProperty(AvailableSettings.SHOW_SQL, "false");
         hibernateProperties.setProperty("use_outer_join", "true");
         hibernateProperties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
+        hibernateProperties.put(AvailableSettings.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
         hibernateProperties.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, "true");
         hibernateProperties.setProperty(AvailableSettings.USE_QUERY_CACHE, "true");
 
@@ -86,10 +87,10 @@ public class HibernateConfiguration {
         hibernateProperties.setProperty(AvailableSettings.USER, databaseConfig.username);
         hibernateProperties.setProperty(AvailableSettings.PASS, databaseConfig.password);
         hibernateProperties.setProperty(AvailableSettings.AUTOCOMMIT, "false");
-        hibernateProperties.setProperty(HikariConfigurationUtil.CONFIG_PREFIX + "cachePrepStmts", "true");
-        hibernateProperties.setProperty(HikariConfigurationUtil.CONFIG_PREFIX + "prepStmtCacheSize", "250");
-        hibernateProperties.setProperty(HikariConfigurationUtil.CONFIG_PREFIX + "prepStmtCacheSqlLimit", "2048");
-        hibernateProperties.setProperty(HikariConfigurationUtil.CONFIG_PREFIX + "useServerPrepStmts", "true");
+        hibernateProperties.setProperty("dataSource.cachePrepStmts", "true");
+        hibernateProperties.setProperty("dataSource.prepStmtCacheSize", "250");
+        hibernateProperties.setProperty("dataSource.prepStmtCacheSqlLimit", "2048");
+        hibernateProperties.setProperty("dataSource.useServerPrepStmts", "true");
 
         String validateSchema = (String) configProperties.get(AvailableSettings.HBM2DDL_AUTO);
         if (!"false".equalsIgnoreCase(validateSchema)) {
@@ -101,7 +102,11 @@ public class HibernateConfiguration {
 
 
     protected void addConnectionProvider(Properties hibernateProperties) {
-        hibernateProperties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HikariConnectionProvider.class.getCanonicalName());
+        if (databaseConfig.databaseType == Database.DERBY) {
+            hibernateProperties.setProperty(AvailableSettings.CONNECTION_PROVIDER, DerbyConnectionProvider.class.getCanonicalName());
+        } else {
+            hibernateProperties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HikariConnectionProvider.class.getCanonicalName());
+        }
     }
 
     protected void beforeFinalizingSessionFactoryBean(LocalSessionFactoryBean bean) {
@@ -111,7 +116,6 @@ public class HibernateConfiguration {
     protected String[] getPackagesToScan() {
         return new String[]{"net.rrm.ehour.domain"};
     }
-
 
 
     protected List<Resource> getMappingResources(Properties configProperties) throws IOException {

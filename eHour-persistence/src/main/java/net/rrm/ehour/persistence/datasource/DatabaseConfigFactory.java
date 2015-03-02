@@ -23,6 +23,10 @@ public class DatabaseConfigFactory {
 
     @Bean
     public DatabaseConfig createDatabaseConfig() {
-        return new DatabaseConfig(databaseType, driver, url, username, password);
+        Database database = Database.valueOf(databaseType.toUpperCase());
+
+        // TODO verify configuration
+
+        return new DatabaseConfig(database, driver, url, username, password);
     }
 }

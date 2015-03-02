@@ -1,6 +1,6 @@
 package net.rrm.ehour.persistence.appconfig;
 
-import net.rrm.ehour.persistence.datasource.DerbyDataSourceFactory;
+import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,10 @@ public class HibernateConfigurationTest {
 
     @Before
     public void setUp() throws IOException {
-        dataSource = DerbyDataSourceFactory.createDataSource("memory:db");
+        EmbeddedConnectionPoolDataSource dataSource1 = new EmbeddedConnectionPoolDataSource();
+        dataSource1.setDatabaseName("memory:db");
+
+        dataSource = dataSource1;
     }
 
     @Test

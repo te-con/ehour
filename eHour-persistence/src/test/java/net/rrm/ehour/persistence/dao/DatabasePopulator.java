@@ -14,11 +14,10 @@ import java.sql.Connection;
 import java.util.List;
 
 public abstract class DatabasePopulator {
-    public static void setUpDatabase(DataSource dataSource, List<String> dataSetFileNames, String dbVersion) throws Exception {
+    public static void setUpDatabase(Connection con, List<String> dataSetFileNames, String dbVersion) throws Exception {
         DerbyDbValidator validator = new DerbyDbValidator(dbVersion, dataSource);
         validator.checkDatabaseState();
 
-        Connection con = DataSourceUtils.getConnection(dataSource);
         IDatabaseConnection connection = new DatabaseConnection(con);
 
         for (String dataSetFileName : dataSetFileNames) {

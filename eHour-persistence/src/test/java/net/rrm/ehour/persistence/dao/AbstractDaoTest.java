@@ -2,12 +2,13 @@ package net.rrm.ehour.persistence.dao;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.config.PersistenceConfig;
-import net.rrm.ehour.persistence.datasource.DatasourceConfiguration;
-import org.junit.After;
-import org.junit.AfterClass;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,8 +19,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,7 +29,7 @@ import java.util.List;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class AbstractDaoTest {
     @Autowired
-    private DataSource eHourDataSource;
+    private SessionFactory sessionFactory;
 
     private List<String> datasetFilenames = Lists.newArrayList("dataset-users.xml");
 
@@ -48,7 +48,13 @@ public abstract class AbstractDaoTest {
 
     @Before
     public final void setUpDatabase() throws Exception {
-        DatabasePopulator.setUpDatabase(eHourDataSource, datasetFilenames, getRequiredDbVersion());
+        Session session = sessionFactory.getCurrentSession();
+        SessionImplementor sessionImplementor = (SessionImplementor) session;
+        Connection conn = sessionImplementor.getJdbcConnectionAccess().obtainConnection();
+
+
+        DataSource dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
+        DatabasePopulator.setUpDatabase(dataSource, datasetFilenames, getRequiredDbVersion());
     }
 
     protected String getRequiredDbVersion() {
