@@ -1,17 +1,13 @@
-package net.rrm.ehour.persistence.appconfig;
+package net.rrm.ehour.persistence.hibernate;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
-import net.rrm.ehour.persistence.datasource.Database;
-import net.rrm.ehour.persistence.datasource.DatabaseConfig;
-import net.rrm.ehour.persistence.datasource.HikariConnectionProvider;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;

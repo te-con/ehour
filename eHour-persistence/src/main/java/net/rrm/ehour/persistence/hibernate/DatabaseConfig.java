@@ -1,4 +1,4 @@
-package net.rrm.ehour.persistence.datasource;
+package net.rrm.ehour.persistence.hibernate;
 
 import org.apache.commons.lang.StringUtils;
 
