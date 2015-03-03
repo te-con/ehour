@@ -4,8 +4,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 
-@ContextConfiguration(locations = {"classpath:test-context-props.xml",
-        "classpath:context-dbconnectivity.xml"})
+@ContextConfiguration(locations = {"classpath:test-context-props.xml", "classpath:context-dbconnectivity.xml"})
 public abstract class AbstractAnnotationDaoTest extends AbstractDaoTest {
     public AbstractAnnotationDaoTest() {
     }

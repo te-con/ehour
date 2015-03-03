@@ -1,6 +1,5 @@
 package net.rrm.ehour.persistence.derby;
 
-public interface DerbyDbManager
-{
+public interface DerbyDbManager {
 
 }

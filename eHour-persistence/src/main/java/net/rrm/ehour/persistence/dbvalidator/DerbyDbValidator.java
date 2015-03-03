@@ -72,6 +72,7 @@ public class DerbyDbValidator {
             dataSource.setCreateDatabase("create");
 
             connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
 
             currentVersion = getCurrentVersion(connection);
 
@@ -96,7 +97,7 @@ public class DerbyDbValidator {
                     connection.close();
                 }
             } catch (SQLException e) {
-                LOGGER.error("Failed to close connection", e);
+//                LOGGER.error("Failed to close connection", e);
             }
         }
 

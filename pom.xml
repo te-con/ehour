@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>nl.tecon.ehour</groupId>
-        <version>1.0</version>
+        <version>1.1-SNAPSHOT</version>
         <artifactId>eHour-parent</artifactId>
     </parent>
 
@@ -52,14 +52,4 @@
             </snapshots>
         </repository>
     </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.newrelic.agent.java</groupId>
-            <artifactId>newrelic-agent</artifactId>
-            <version>3.14.0</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
 </project>

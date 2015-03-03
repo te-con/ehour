@@ -19,6 +19,7 @@ public abstract class DatabasePopulator {
         validator.checkDatabaseState();
 
         Connection con = DataSourceUtils.getConnection(dataSource);
+        con.setAutoCommit(false);
         IDatabaseConnection connection = new DatabaseConnection(con);
 
         for (String dataSetFileName : dataSetFileNames) {
