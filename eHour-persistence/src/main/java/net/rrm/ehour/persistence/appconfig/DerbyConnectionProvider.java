@@ -8,13 +8,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DerbyConnectionProvider implements ConnectionProvider {
-    // okay this is bad... TODO use Hibernate's service registry
     public static EmbeddedConnectionPoolDataSource dataSource;
 
     public DerbyConnectionProvider() throws IOException {
         String databaseName = isInTestMode() ? "memory:ehourDb;create=true" : "ehourDb";
         dataSource = new EmbeddedConnectionPoolDataSource();
         dataSource.setDatabaseName(databaseName);
+        System.out.println("creating");
     }
 
     @Override

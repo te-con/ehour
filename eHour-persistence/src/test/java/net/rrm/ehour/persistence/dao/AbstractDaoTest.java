@@ -32,6 +32,9 @@ import java.util.List;
 @TransactionConfiguration(defaultRollback = true)
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class AbstractDaoTest implements ServiceRegistryAwareService {
+    @Autowired
+    private SessionFactory sessionFactory;
+
     private List<String> datasetFilenames = Lists.newArrayList("dataset-users.xml");
 
     public AbstractDaoTest() {
@@ -49,7 +52,8 @@ public abstract class AbstractDaoTest implements ServiceRegistryAwareService {
 
     @Before
     public final void setUpDatabase() throws Exception {
-        DatabasePopulator.setUpDatabase(DerbyConnectionProvider.dataSource, datasetFilenames, getRequiredDbVersion());
+        DataSource dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
+        DatabasePopulator.setUpDatabase(dataSource, datasetFilenames, getRequiredDbVersion());
     }
 
     protected String getRequiredDbVersion() {

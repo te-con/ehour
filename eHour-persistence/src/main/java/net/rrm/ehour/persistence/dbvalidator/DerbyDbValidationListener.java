@@ -4,9 +4,11 @@ import net.rrm.ehour.config.PersistenceConfig;
 import net.rrm.ehour.persistence.appconfig.DerbyConnectionProvider;
 import net.rrm.ehour.persistence.datasource.Database;
 import net.rrm.ehour.persistence.datasource.DatabaseConfig;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextStartedEvent;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -16,10 +18,13 @@ public class DerbyDbValidationListener implements ApplicationListener<ContextSta
     @Autowired
     private DatabaseConfig databaseConfig;
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     public void onApplicationEvent(ContextStartedEvent event) {
         if (databaseConfig.databaseType == Database.DERBY) {
-            DataSource dataSource = DerbyConnectionProvider.dataSource;
+            DataSource dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
             DerbyDbValidator validator = new DerbyDbValidator(PersistenceConfig.DB_VERSION, dataSource);
             validator.checkDatabaseState();
         }

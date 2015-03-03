@@ -6,7 +6,7 @@ import org.joda.time.DateTimeZone;
 import java.util.TimeZone;
 
 public class EhourConfigUtil {
-    static TimeZone getTzAsTimeZone(EhourConfig config) {
+    public static TimeZone getTzAsTimeZone(EhourConfig config) {
         if (StringUtils.isNotBlank(config.getTimeZone())) {
             return DateTimeZone.forID(config.getTimeZone()).toTimeZone();
         } else {

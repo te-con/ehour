@@ -1,10 +1,11 @@
 package net.rrm.ehour.persistence.appconfig;
 
 import com.google.common.collect.Lists;
-import com.zaxxer.hikari.hibernate.HikariConnectionProvider;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
 import net.rrm.ehour.persistence.datasource.Database;
 import net.rrm.ehour.persistence.datasource.DatabaseConfig;
+import net.rrm.ehour.persistence.datasource.HikariConnectionProvider;
+import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
@@ -19,11 +20,9 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -31,38 +30,33 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 public class HibernateConfiguration {
-    @Value("${ehour.database}")
-    private String databaseName;
-
-    @Autowired
-    private DatabaseConfig databaseConfig;
-
     protected static final PathMatchingResourcePatternResolver RESOLVER = new PathMatchingResourcePatternResolver();
+
     private static final Logger LOGGER = Logger.getLogger(HibernateConfiguration.class);
 
-    public HibernateConfiguration() {
-    }
-
-    public HibernateConfiguration(DataSource dataSource, String databaseName, String caching) {
-        this.databaseName = databaseName;
-    }
-
     @Bean(name = "sessionFactory")
-    public SessionFactory getSessionFactory() throws Exception {
-        Properties configProperties = EhourHomeUtil.loadDatabaseProperties(databaseName);
+    @Autowired
+    public SessionFactory getSessionFactory(DatabaseConfig databaseConfig) throws Exception {
+        String databaseName = databaseConfig.databaseType.name().toLowerCase();
 
+        Properties configProperties = EhourHomeUtil.loadDatabaseProperties(databaseName);
         LOGGER.info("Using database type: " + databaseName);
 
-        new LocalSessionFactoryBuilder();
-
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+
+        if (databaseConfig.databaseType == Database.DERBY) {
+            EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
+            dataSource.setDatabaseName("memory:ehourDb;create=true");
+            sessionFactoryBean.setDataSource(dataSource);
+        }
+
 
         List<Resource> mappingResources = getMappingResources(configProperties);
         sessionFactoryBean.setMappingLocations(mappingResources.toArray(new Resource[mappingResources.size()]));
 
         sessionFactoryBean.setPackagesToScan(getPackagesToScan());
 
-        Properties hibernateProperties = getHibernateProperties(configProperties);
+        Properties hibernateProperties = getHibernateProperties(configProperties, databaseConfig);
         sessionFactoryBean.setHibernateProperties(hibernateProperties);
 
         beforeFinalizingSessionFactoryBean(sessionFactoryBean);
@@ -72,18 +66,17 @@ public class HibernateConfiguration {
         return sessionFactoryBean.getObject();
     }
 
-    private Properties getHibernateProperties(Properties configProperties) {
+    private Properties getHibernateProperties(Properties configProperties, DatabaseConfig databaseConfig) {
         Properties hibernateProperties = new Properties();
 
         hibernateProperties.setProperty(AvailableSettings.DIALECT, (String) configProperties.get("hibernate.dialect"));
         hibernateProperties.setProperty(AvailableSettings.SHOW_SQL, "false");
-        hibernateProperties.setProperty("use_outer_join", "true");
         hibernateProperties.setProperty("net.sf.ehcache.configurationResourceName", "hibernate-ehcache.xml");
         hibernateProperties.put(AvailableSettings.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
         hibernateProperties.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, "true");
         hibernateProperties.setProperty(AvailableSettings.USE_QUERY_CACHE, "true");
 
-        addConnectionProvider(hibernateProperties);
+        addConnectionProvider(hibernateProperties, databaseConfig);
 
         hibernateProperties.setProperty(AvailableSettings.URL, databaseConfig.url);
         hibernateProperties.setProperty(AvailableSettings.DRIVER, databaseConfig.driver);
@@ -104,10 +97,8 @@ public class HibernateConfiguration {
     }
 
 
-    protected void addConnectionProvider(Properties hibernateProperties) {
-        if (databaseConfig.databaseType == Database.DERBY) {
-            hibernateProperties.setProperty(AvailableSettings.CONNECTION_PROVIDER, DerbyConnectionProvider.class.getCanonicalName());
-        } else {
+    protected void addConnectionProvider(Properties hibernateProperties, DatabaseConfig databaseConfig) {
+        if (databaseConfig.databaseType != Database.DERBY) {
             hibernateProperties.setProperty(AvailableSettings.CONNECTION_PROVIDER, HikariConnectionProvider.class.getCanonicalName());
         }
     }
@@ -128,9 +119,10 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    public PlatformTransactionManager txManager() {
+    @Autowired
+    public PlatformTransactionManager txManager(DatabaseConfig databaseConfig) {
         try {
-            return new HibernateTransactionManager(getSessionFactory());
+            return new HibernateTransactionManager(getSessionFactory(databaseConfig));
         } catch (Exception e) {
             throw new RuntimeException("Screwed", e);
         }
