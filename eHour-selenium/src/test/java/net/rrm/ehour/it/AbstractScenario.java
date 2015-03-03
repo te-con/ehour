@@ -6,12 +6,14 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import javax.sql.DataSource;
@@ -35,7 +37,8 @@ public abstract class AbstractScenario {
     public void setUp() throws Exception {
         if (!initialized) {
             EhourTestApplication.start();
-            dataSource = SpringContext.getApplicationContext().getBean(DataSource.class);
+            SessionFactory sessionFactory = SpringContext.getApplicationContext().getBean(SessionFactory.class);
+            dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
         }
 
         Driver = new FirefoxDriver();
