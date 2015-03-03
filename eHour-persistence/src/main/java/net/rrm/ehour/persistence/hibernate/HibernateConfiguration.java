@@ -30,6 +30,10 @@ public class HibernateConfiguration {
 
     private static final Logger LOGGER = Logger.getLogger(HibernateConfiguration.class);
 
+    private boolean isInTestMode() {
+        return Boolean.parseBoolean(System.getProperty("EHOUR_TEST", "false"));
+    }
+
     @Bean(name = "sessionFactory")
     @Autowired
     public SessionFactory getSessionFactory(DatabaseConfig databaseConfig) throws Exception {
@@ -41,11 +45,9 @@ public class HibernateConfiguration {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 
         if (databaseConfig.databaseType == Database.DERBY) {
-            EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
-            dataSource.setDatabaseName("memory:ehourDb;create=true");
+            EmbeddedConnectionPoolDataSource dataSource = createDerbyDataSource();
             sessionFactoryBean.setDataSource(dataSource);
         }
-
 
         List<Resource> mappingResources = getMappingResources(configProperties);
         sessionFactoryBean.setMappingLocations(mappingResources.toArray(new Resource[mappingResources.size()]));
@@ -62,6 +64,12 @@ public class HibernateConfiguration {
         return sessionFactoryBean.getObject();
     }
 
+    private EmbeddedConnectionPoolDataSource createDerbyDataSource() {
+        EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
+        dataSource.setDatabaseName(isInTestMode() ? "memory:ehourDb;create=true" : "ehourDb");
+        return dataSource;
+    }
+
     private Properties getHibernateProperties(Properties configProperties, DatabaseConfig databaseConfig) {
         Properties hibernateProperties = new Properties();
 
@@ -74,10 +82,12 @@ public class HibernateConfiguration {
 
         addConnectionProvider(hibernateProperties, databaseConfig);
 
-        hibernateProperties.setProperty(AvailableSettings.URL, databaseConfig.url);
-        hibernateProperties.setProperty(AvailableSettings.DRIVER, databaseConfig.driver);
-        hibernateProperties.setProperty(AvailableSettings.USER, databaseConfig.username);
-        hibernateProperties.setProperty(AvailableSettings.PASS, databaseConfig.password);
+        if (databaseConfig.databaseType != Database.DERBY) {
+            hibernateProperties.setProperty(AvailableSettings.URL, databaseConfig.url);
+            hibernateProperties.setProperty(AvailableSettings.DRIVER, databaseConfig.driver);
+            hibernateProperties.setProperty(AvailableSettings.USER, databaseConfig.username);
+            hibernateProperties.setProperty(AvailableSettings.PASS, databaseConfig.password);
+        }
         hibernateProperties.setProperty(AvailableSettings.AUTOCOMMIT, "false");
         hibernateProperties.setProperty("dataSource.cachePrepStmts", "true");
         hibernateProperties.setProperty("dataSource.prepStmtCacheSize", "250");

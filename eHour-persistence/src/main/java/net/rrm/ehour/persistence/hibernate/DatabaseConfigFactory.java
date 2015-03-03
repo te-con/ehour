@@ -23,37 +23,39 @@ public class DatabaseConfigFactory {
 
         String sanitizedDriver = StringUtils.isBlank(driver) ? database.defaultDriver : driver;
 
-        String sanitizedUrl;
+        String sanitizedUrl = null;
         String sanitizedUsername = null;
         String sanitizedPassword = null;
 
-        if (StringUtils.isBlank(username) && StringUtils.isBlank(password)) {
-            URI dbUri = new URI(url);
+        if (database != Database.DERBY) {
+            if (StringUtils.isBlank(username) && StringUtils.isBlank(password)) {
+                URI dbUri = new URI(url);
 
-            String userInfo = dbUri.getUserInfo();
+                String userInfo = dbUri.getUserInfo();
 
-            if (StringUtils.isNotBlank(userInfo)) {
-                String[] splitted = userInfo.split(":");
+                if (StringUtils.isNotBlank(userInfo)) {
+                    String[] splitted = userInfo.split(":");
 
-                if (splitted.length == 2) {
-                    sanitizedUsername = splitted[0];
-                    sanitizedPassword = splitted[1];
+                    if (splitted.length == 2) {
+                        sanitizedUsername = splitted[0];
+                        sanitizedPassword = splitted[1];
+                    }
                 }
+
+                String dbUrl = String.format("jdbc:%s://%s:%d%s", database.name().toLowerCase(), dbUri.getHost(), dbUri.getPort(), dbUri.getPath());
+
+                LOGGER.info("Only a DB URL was provided, stripped of username and password and using url " + dbUrl);
+
+                sanitizedUrl = dbUrl;
+            } else {
+                sanitizedUrl = url;
+                sanitizedUsername = username;
+                sanitizedPassword = password;
             }
 
-            String dbUrl = String.format("jdbc:%s://%s:%d%s", database.name().toLowerCase(), dbUri.getHost(), dbUri.getPort(), dbUri.getPath());
-
-            LOGGER.info("Only a DB URL was provided, stripped of username and password and using url " + dbUrl);
-
-            sanitizedUrl = dbUrl;
-        } else {
-            sanitizedUrl = url;
-            sanitizedUsername = username;
-            sanitizedPassword = password;
+            verifyUsernamePassword(sanitizedUsername, sanitizedPassword);
+            verifyItem("ehour.database.url", sanitizedUrl);
         }
-
-        verifyUsernamePassword(sanitizedUsername, sanitizedPassword);
-        verifyItem("ehour.database.url", sanitizedUrl);
 
         return new DatabaseConfig(database, sanitizedDriver, sanitizedUrl, sanitizedUsername, sanitizedPassword);
     }
