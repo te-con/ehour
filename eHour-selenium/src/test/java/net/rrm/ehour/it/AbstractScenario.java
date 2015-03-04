@@ -1,6 +1,7 @@
 package net.rrm.ehour.it;
 
 import net.rrm.ehour.persistence.hibernate.SpringContext;
+import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
@@ -10,11 +11,14 @@ import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -85,6 +89,8 @@ public abstract class AbstractScenario {
     @After
     public void quitBrowser() {
         if (Driver != null) {
+            ((EmbeddedDataSource) dataSource).setShutdownDatabase("shutdown");
+
             try {
                 Driver.quit();
             } catch (Exception e) {

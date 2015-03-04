@@ -20,6 +20,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -64,10 +66,25 @@ public class HibernateConfiguration {
         return sessionFactoryBean.getObject();
     }
 
-    private EmbeddedConnectionPoolDataSource createDerbyDataSource() {
+    private EmbeddedConnectionPoolDataSource createDerbyDataSource() throws SQLException {
+        if (isInTestMode()) {
+            createInMemoryDerbyDb();
+
+            EmbeddedConnectionPoolDataSource dataSource2 = new EmbeddedConnectionPoolDataSource();
+            dataSource2.setDatabaseName("memory:ehourDb");
+            return dataSource2;
+        }
+
         EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
-        dataSource.setDatabaseName(isInTestMode() ? "memory:ehourDb;create=true" : "ehourDb");
+        dataSource.setDatabaseName("ehourDb");
         return dataSource;
+    }
+
+    private void createInMemoryDerbyDb() throws SQLException {
+        EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
+        dataSource.setDatabaseName("memory:ehourDb;create=true");
+        Connection connection = dataSource.getConnection();
+        connection.close();
     }
 
     private Properties getHibernateProperties(Properties configProperties, DatabaseConfig databaseConfig) {
