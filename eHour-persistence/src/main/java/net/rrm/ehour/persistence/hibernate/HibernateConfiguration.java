@@ -68,23 +68,14 @@ public class HibernateConfiguration {
 
     private EmbeddedConnectionPoolDataSource createDerbyDataSource() throws SQLException {
         if (isInTestMode()) {
-            createInMemoryDerbyDb();
-
-            EmbeddedConnectionPoolDataSource dataSource2 = new EmbeddedConnectionPoolDataSource();
-            dataSource2.setDatabaseName("memory:ehourDb");
-            return dataSource2;
+            EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
+            dataSource.setDatabaseName("memory:ehourDb;create=true");
+            return dataSource;
+        } else {
+            EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
+            dataSource.setDatabaseName("ehourDb");
+            return dataSource;
         }
-
-        EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
-        dataSource.setDatabaseName("ehourDb");
-        return dataSource;
-    }
-
-    private void createInMemoryDerbyDb() throws SQLException {
-        EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
-        dataSource.setDatabaseName("memory:ehourDb;create=true");
-        Connection connection = dataSource.getConnection();
-        connection.close();
     }
 
     private Properties getHibernateProperties(Properties configProperties, DatabaseConfig databaseConfig) {
