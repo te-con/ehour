@@ -1,0 +1,10 @@
+eHour is an open source webbased time tracking tool for companies and organizations who need accurate information on
+ how much time is spend on projects.
+
+[![Build Status](https://travis-ci.org/te-con/ehour.svg?branch=develop)](https://travis-ci.org/te-con/ehour)
+
+Building eHour
+---------------------------------------
+
+For build instructions, check https://wiki.ehour.nl/display/DOCU/Build+from+source
+
