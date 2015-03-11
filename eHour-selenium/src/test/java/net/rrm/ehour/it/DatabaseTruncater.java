@@ -2,6 +2,7 @@ package net.rrm.ehour.it;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseTruncater {
@@ -22,7 +23,6 @@ public class DatabaseTruncater {
         connection.prepareCall("DELETE FROM USER_TO_USERROLE WHERE user_id > 1").execute();
         connection.prepareCall("DELETE FROM USER_TO_DEPARTMENT WHERE user_id > 1").execute();
         connection.prepareCall("DELETE FROM USERS WHERE user_id > 1").execute();
-
         connection.close();
     }
 }

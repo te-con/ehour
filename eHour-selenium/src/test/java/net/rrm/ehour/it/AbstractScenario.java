@@ -42,6 +42,7 @@ public abstract class AbstractScenario {
         if (!initialized) {
             EhourTestApplication.start();
             SessionFactory sessionFactory = SpringContext.getApplicationContext().getBean(SessionFactory.class);
+
             dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
         }
 
@@ -89,9 +90,8 @@ public abstract class AbstractScenario {
     @After
     public void quitBrowser() {
         if (Driver != null) {
-            ((EmbeddedDataSource) dataSource).setShutdownDatabase("shutdown");
-
             try {
+                DatabaseTruncater.truncate(dataSource);
                 Driver.quit();
             } catch (Exception e) {
                 //
