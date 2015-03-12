@@ -12,7 +12,7 @@ public class DatabaseConfigFactoryTest {
         DatabaseConfigFactory factory = new DatabaseConfigFactory();
         DatabaseConfig config = factory.createDatabaseConfig("mysql",
                 null,
-                "mysql://user:pass@127.0.0.1:3306/ehour?zeroDateTimeBehavior=convertToNull&amp;useOldAliasMetadataBehavior=true",
+                "mysql://user:pass@127.0.0.1:3306/ehour",
                 null, null);
 
         assertEquals("user", config.username);
@@ -20,12 +20,23 @@ public class DatabaseConfigFactoryTest {
         assertEquals("jdbc:mysql://127.0.0.1:3306/ehour", config.url);
     }
 
+    @Test
+    public void should_append_query_parameters() throws URISyntaxException {
+        DatabaseConfigFactory factory = new DatabaseConfigFactory();
+        DatabaseConfig config = factory.createDatabaseConfig("mysql",
+                null,
+                "mysql://user:pass@127.0.0.1:3306/ehour?ssl=true",
+                null, null);
+
+        assertEquals("jdbc:mysql://127.0.0.1:3306/ehour?ssl=true", config.url);
+    }
+
     @Test(expected = ConfigurationException.class)
     public void should_fail_without_credentials() throws URISyntaxException {
         DatabaseConfigFactory factory = new DatabaseConfigFactory();
         factory.createDatabaseConfig("mysql",
                 null,
-                "mysql://27.0.0.1:3306/ehour?zeroDateTimeBehavior=convertToNull&amp;useOldAliasMetadataBehavior=true",
+                "mysql://27.0.0.1:3306/ehour",
                 null, null);
 
         fail("Should have thrown ConfigurationException");
