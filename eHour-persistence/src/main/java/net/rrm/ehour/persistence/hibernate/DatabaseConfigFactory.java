@@ -42,7 +42,8 @@ public class DatabaseConfigFactory {
                     }
                 }
 
-                String dbUrl = String.format("jdbc:%s://%s:%d%s", database.name().toLowerCase(), dbUri.getHost(), dbUri.getPort(), dbUri.getPath());
+                String query = (StringUtils.isNotBlank(dbUri.getQuery()))  ? "?" + dbUri.getQuery() : "";
+                String dbUrl = String.format("jdbc:%s://%s:%d%s%s", database.name().toLowerCase(), dbUri.getHost(), dbUri.getPort(), dbUri.getPath(), query);
 
                 LOGGER.info("Only a DB URL was provided, stripped of username and password and using url " + dbUrl);
 
