@@ -1,6 +1,7 @@
 package net.rrm.ehour.it;
 
 import net.rrm.ehour.persistence.hibernate.SpringContext;
+import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -40,6 +41,8 @@ public abstract class AbstractScenario {
     @Before
     public void setUp() throws Exception {
         if (!initialized) {
+            createInMemoryDb();
+
             EhourTestApplication.start();
             SessionFactory sessionFactory = SpringContext.getApplicationContext().getBean(SessionFactory.class);
 
@@ -61,6 +64,12 @@ public abstract class AbstractScenario {
         clearDatabase();
 
         initialized = true;
+    }
+
+    private void createInMemoryDb() throws SQLException {
+        EmbeddedConnectionPoolDataSource csDataSource = new EmbeddedConnectionPoolDataSource();
+        csDataSource.setDatabaseName("memory:ehourDb;create=true");
+        csDataSource.getPooledConnection().close();
     }
 
     protected void clearDatabase() throws SQLException {

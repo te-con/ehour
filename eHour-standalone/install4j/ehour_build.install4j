@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="5.1.6" transformSequenceNumber="4">
   <directoryPresets config="./icons" />
-  <application name="eHour" distributionSourceDir="" applicationId="2498-7425-0494-0609" mediaDir="../../dist" mediaFilePattern="${compiler:sys.shortName}-${compiler:sys.version}-standalone-${compiler:sys.platform}" compression="9" lzmaCompression="true" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="eHour" publisher="TE-CON B.V." publisherWeb="http://www.te-con.nl/" version="1.4.4" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="false" macSignature="????" installerName="" javaMinVersion="1.7" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
+  <application name="eHour" distributionSourceDir="" applicationId="2498-7425-0494-0609" mediaDir="../../dist" mediaFilePattern="${compiler:sys.shortName}-${compiler:sys.version}-standalone-${compiler:sys.platform}" compression="9" lzmaCompression="true" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="eHour" publisher="TE-CON B.V." publisherWeb="http://www.te-con.nl/" version="1.4.4-SNAPSHOT" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="false" macSignature="????" installerName="" javaMinVersion="1.7" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="./install_en.properties" />
       <additionalLanguages />
