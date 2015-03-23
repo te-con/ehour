@@ -36,9 +36,8 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
 
     @SuppressWarnings("serial")
     @Before
-    public final StrictWicketTester setUp() throws Exception {
+    public final void setUp() throws Exception {
         setUp(null);
-        return tester;
     }
 
     public final void setUp(Roles roles) throws Exception {
@@ -93,7 +92,9 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
 
     public static void startEmptyPanel() {
         try {
-            new BaseSpringWebAppTester().setUp().startComponentInPage(EmptyPanel.class);
+            BaseSpringWebAppTester webAppTester = new BaseSpringWebAppTester();
+            webAppTester.setUp();
+            webAppTester.tester.startComponentInPage(EmptyPanel.class);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
