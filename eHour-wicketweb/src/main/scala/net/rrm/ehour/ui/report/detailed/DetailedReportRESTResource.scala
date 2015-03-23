@@ -28,7 +28,7 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
   @SpringBean
   var reportCacheService: ReportCacheService = _
 
-  implicit def weekStartsAt = DateUtil.fromCalendarToJodaTimeDayInWeek(EhourWebSession.getEhourConfig.getFirstDayOfWeek)
+  implicit def weekStartsAt: Int = DateUtil.fromCalendarToJodaTimeDayInWeek(EhourWebSession.getEhourConfig.getFirstDayOfWeek)
 
   @MethodMapping("/hour/{cacheKey}")
   def getHourlyData(cacheKey: String): DetailedReportResponse = {
@@ -38,11 +38,9 @@ class DetailedReportRESTResource(serializer: IWebSerialDeserial) extends Abstrac
         val reportRange = data.getReportRange
         val unprocessedSeries = DetailedReportChartGenerator.generateHourBasedDetailedChartData(data)
 
-        val model = new StringResourceModel("userReport.report." + aggregateBy.name().toLowerCase, null)
-
         DetailedReportResponse(aggregateBy = aggregateBy,
                                 startDate = reportRange.getDateStart,
-                                aggregateByLabel =  model.getString.toLowerCase,
+                                aggregateByLabel =  aggregateBy.name().toLowerCase,
                                 yAxis = "Hours",
                                 series = toJava(unprocessedSeries.map(JSparseDateSeries(_))),
                                 hasReportRole =  EhourWebSession.getSession.isReporter)
