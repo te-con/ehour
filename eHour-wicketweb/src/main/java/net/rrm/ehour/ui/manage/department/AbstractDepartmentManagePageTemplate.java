@@ -74,8 +74,8 @@ public abstract class AbstractDepartmentManagePageTemplate<T extends AdminBackin
         List<EntrySelectorData.EntrySelectorRow> rows = Lists.newArrayList();
 
         for (UserDepartment department : userDepartments) {
-            List<String> cells = Lists.newArrayList(department.getName(),
-                                                    department.getCode(),
+            List<String> cells = Lists.newArrayList(department.getCode(),
+                                                    department.getName(),
                                                     Integer.toString(department.getUsers() == null ? 0 : department.getUsers().size()));
 
             rows.add(new EntrySelectorData.EntrySelectorRow(cells, department.getDepartmentId()));
