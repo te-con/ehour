@@ -3,7 +3,7 @@ package net.rrm.ehour.ui.chart
 import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.ui.common.session.EhourWebSession
 import net.rrm.ehour.ui.report.aggregate.ChartContext
-import org.apache.wicket.markup.head.{IHeaderResponse, OnLoadHeaderItem}
+import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, IHeaderResponse, OnLoadHeaderItem}
 import org.apache.wicket.markup.html.IHeaderContributor
 import org.apache.wicket.markup.html.panel.Panel
 import org.apache.wicket.model.IModel
@@ -20,6 +20,6 @@ class HighChartContainer(id: String, reportModel: IModel[ReportData], generateCh
     val chart = generateChart(ChartContext(getMarkupId, getDefaultModelObject.asInstanceOf[ReportData], config.getCurrencySymbol, withTurnover = showTurnover))
     val javascript = "new Highcharts.Chart({%s});\n" format chart
 
-    response.render(new OnLoadHeaderItem(javascript))
+    response.render(OnDomReadyHeaderItem.forScript(javascript))
   }
 }
