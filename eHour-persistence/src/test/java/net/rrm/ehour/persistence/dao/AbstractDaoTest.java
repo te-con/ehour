@@ -25,7 +25,7 @@ import java.util.List;
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class})
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @TransactionConfiguration(defaultRollback = true)
-public abstract class AbstractDaoTest implements ServiceRegistryAwareService {
+public abstract class AbstractDaoTest {
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -52,10 +52,5 @@ public abstract class AbstractDaoTest implements ServiceRegistryAwareService {
 
     protected String getRequiredDbVersion() {
         return PersistenceConfig.DB_VERSION;
-    }
-
-    @Override
-    public void injectServices(ServiceRegistryImplementor serviceRegistry) {
-        System.out.println("Fefefe");
     }
 }
