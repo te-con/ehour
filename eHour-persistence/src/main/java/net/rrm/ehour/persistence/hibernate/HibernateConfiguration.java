@@ -70,7 +70,7 @@ public class HibernateConfiguration {
     private EmbeddedConnectionPoolDataSource createDerbyDataSource() throws SQLException {
         if (isInTestMode()) {
             EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
-            dataSource.setDatabaseName("memory:ehourDb");
+            dataSource.setDatabaseName("memory:ehourDb;create=true");
 
             return dataSource;
         } else {
