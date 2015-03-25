@@ -1,4 +1,4 @@
-package net.rrm.ehour.persistence.hibernate;
+package net.rrm.ehour.persistence.database;
 
 public enum Database {
     DERBY(""),

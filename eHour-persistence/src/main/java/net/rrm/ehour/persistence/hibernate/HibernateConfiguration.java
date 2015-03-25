@@ -2,6 +2,8 @@ package net.rrm.ehour.persistence.hibernate;
 
 import com.google.common.collect.Lists;
 import net.rrm.ehour.appconfig.EhourHomeUtil;
+import net.rrm.ehour.persistence.database.Database;
+import net.rrm.ehour.persistence.database.DatabaseConfig;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -20,7 +22,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;

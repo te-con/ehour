@@ -1,5 +1,9 @@
-package net.rrm.ehour.persistence.hibernate;
+package net.rrm.ehour.persistence.database;
 
+import net.rrm.ehour.persistence.database.ConfigurationException;
+import net.rrm.ehour.persistence.database.Database;
+import net.rrm.ehour.persistence.database.DatabaseConfig;
+import net.rrm.ehour.persistence.database.DatabaseConfigFactory;
 import org.junit.Test;
 
 import java.net.URISyntaxException;

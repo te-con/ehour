@@ -1,4 +1,4 @@
-package net.rrm.ehour.persistence.hibernate;
+package net.rrm.ehour.persistence.database;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

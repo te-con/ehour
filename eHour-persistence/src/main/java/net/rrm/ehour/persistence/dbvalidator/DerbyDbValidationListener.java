@@ -1,8 +1,8 @@
 package net.rrm.ehour.persistence.dbvalidator;
 
 import net.rrm.ehour.config.PersistenceConfig;
-import net.rrm.ehour.persistence.hibernate.Database;
-import net.rrm.ehour.persistence.hibernate.DatabaseConfig;
+import net.rrm.ehour.persistence.database.Database;
+import net.rrm.ehour.persistence.database.DatabaseConfig;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.SessionFactoryUtils;
