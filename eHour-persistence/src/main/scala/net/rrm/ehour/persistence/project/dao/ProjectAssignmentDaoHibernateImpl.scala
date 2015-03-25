@@ -37,13 +37,15 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
     findByNamedQuery("ProjectAssignment.findProjectAssignmentsForProjectInRange", keys, params, CacheRegion)
   }
 
-  override def findAllProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment] = findProjectAssignmentsForProject(project, onlyActive = false)
+  override def findAllProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment] = findProjectAssignmentsForProject(project, onlyActive = true)
 
   private def findProjectAssignmentsForProject(project: Project, onlyActive: Boolean): util.List[ProjectAssignment] = {
     val crit = getSession.createCriteria(classOf[ProjectAssignment])
 
     if (onlyActive) {
       crit.add(Restrictions.eq("active", true))
+      crit.createAlias("user", "u")
+      crit.add(Restrictions.eq("u.active", true))
     }
 
     crit.add(Restrictions.eq("project", project))
