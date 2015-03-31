@@ -1,6 +1,7 @@
 package net.rrm.ehour.backup.service.restore;
 
 import net.rrm.ehour.backup.domain.ImportException;
+import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.config.ConfigurationItem;
 import net.rrm.ehour.domain.Configuration;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
@@ -43,7 +44,7 @@ public class XmlParserTest {
 
         ParseContext ctx = new ParseContext(configurationDao, null, null, null, null, false);
         XmlParser importer = new XmlParser(ctx);
-        importer.parseXml(null, eventReader);
+        importer.parseXml(new ParseSession(), eventReader);
     }
 
     @Test(expected = ImportException.class)
@@ -61,6 +62,6 @@ public class XmlParserTest {
 
         ParseContext ctx = new ParseContext(configurationDao, null, null, null, null, false);
         XmlParser importer = new XmlParser(ctx);
-        importer.parseXml(null, eventReader);
+        importer.parseXml(new ParseSession(), eventReader);
     }
 }
