@@ -1,6 +1,7 @@
 package net.rrm.ehour.it;
 
 import net.rrm.ehour.persistence.database.SpringContext;
+import net.rrm.ehour.persistence.hibernate.HibernateCache;
 import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -33,6 +34,7 @@ public abstract class AbstractScenario {
 
     @Rule
     public ScreenshotTestRule screenshotTestRule;
+    private SessionFactory sessionFactory;
 
     @Before
     public void setUp() throws Exception {
@@ -40,7 +42,7 @@ public abstract class AbstractScenario {
             createInMemoryDb();
 
             EhourTestApplication.start();
-            SessionFactory sessionFactory = SpringContext.getApplicationContext().getBean(SessionFactory.class);
+            sessionFactory = SpringContext.getApplicationContext().getBean(SessionFactory.class);
 
             dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
         }
@@ -70,6 +72,7 @@ public abstract class AbstractScenario {
 
     protected void clearDatabase() throws SQLException {
         DatabaseTruncater.truncate(dataSource);
+        HibernateCache.clearHibernateCache(sessionFactory);
     }
 
     protected final void preloadDatabase(String dataSetFileName) throws Exception {
