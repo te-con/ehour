@@ -34,7 +34,7 @@ public abstract class AbstractScenario {
 
     @Rule
     public ScreenshotTestRule screenshotTestRule;
-    private SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
     @Before
     public void setUp() throws Exception {
