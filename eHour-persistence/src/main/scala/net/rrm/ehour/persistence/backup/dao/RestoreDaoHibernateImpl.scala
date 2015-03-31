@@ -5,6 +5,7 @@ import java.io.Serializable
 
 import net.rrm.ehour.domain.{DomainObject, User}
 import net.rrm.ehour.persistence.dao.AbstractAnnotationDaoHibernate4Impl
+import net.rrm.ehour.persistence.hibernate.HibernateCache
 import net.rrm.ehour.persistence.retry.ExponentialBackoffRetryPolicy
 import org.hibernate.Session
 import org.springframework.stereotype.Repository
@@ -36,4 +37,6 @@ class RestoreDaoHibernateImpl extends AbstractAnnotationDaoHibernate4Impl with R
 
     ExponentialBackoffRetryPolicy.retry(getSession.createQuery("DELETE FROM " + obj.getName).executeUpdate)
   }
+
+  override def clearCache { HibernateCache.clearHibernateCache(sessionFactory)}
 }

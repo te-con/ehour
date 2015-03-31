@@ -6,6 +6,7 @@ import net.rrm.ehour.backup.domain.ParseSession;
 import net.rrm.ehour.backup.service.DatabaseTruncater;
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.persistence.config.dao.ConfigurationDao;
+import net.rrm.ehour.persistence.hibernate.HibernateCache;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
@@ -86,24 +87,6 @@ public class RestoreServiceImpl implements RestoreService {
             session.setImported(true);
             session.finish();
         }
-    }
-
-
-    private void validateXml(ParseSession session, String xmlData) throws Exception {
-        XMLEventReader eventReader = BackupFileUtil.createXmlReader(xmlData);
-
-        EntityParserDaoValidatorImpl domainObjectParserDaoValidator = new EntityParserDaoValidatorImpl();
-        ConfigurationParserDaoValidatorImpl configurationParserDaoValidator = new ConfigurationParserDaoValidatorImpl();
-
-        XmlParser importer = new XmlParserBuilder()
-                .setConfigurationDao(configurationDao)
-                .setConfigurationParserDao(configurationParserDaoValidator)
-                .setEntityParserDao(domainObjectParserDaoValidator)
-                .setBackupConfig(backupConfig)
-                .setXmlReader(eventReader)
-                .build();
-
-        importer.parseXml(session, eventReader);
     }
 
     public void setConfigurationDao(ConfigurationDao configurationDao) {
