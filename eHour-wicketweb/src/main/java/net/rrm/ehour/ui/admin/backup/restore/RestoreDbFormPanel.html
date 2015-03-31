@@ -23,8 +23,9 @@
 
                     <tr>
                         <td colspan="2"><br/>
-                            <a class="bluebutton" onclick="this.blur();" wicket:id="ajaxSubmit">
-                                <span><wicket:message key="admin.import.button.validate" /></span></a>
+                            <input type="submit"  wicket:id="submit" />
+                            <!--<a class="bluebutton" onclick="this.blur();">-->
+                                <!--<span><wicket:message key="admin.import.button.validate" /></span></a>-->
                         </td>
 
                     </tr>
@@ -32,7 +33,11 @@
                     <tr>
                         <td colspan="2">
                             <br />
-                            <span wicket:id="parseStatus"></span>
+                            <div wicket:id="bar" style="width: 200px; float: left; margin-left: 30px;"></div>
+                            <br />
+
+                            <span wicket:id="feedback" />
+
                         </td>
                     </tr>
                 </table>

@@ -175,6 +175,12 @@
             <version>${wicket.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>async-task-impl</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.slf4j</groupId>

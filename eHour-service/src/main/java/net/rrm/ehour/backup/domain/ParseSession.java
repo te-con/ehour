@@ -22,17 +22,46 @@ public class ParseSession implements Serializable {
     private String globalErrorMessage;
     private boolean imported = false;
 
+    private double progress;
+    private int eventCount;
+    private int atEvent;
+
+    public ParseSession() {
+    }
+
+    public ParseSession(int eventCount) {
+        this.eventCount = eventCount;
+    }
+
+    public void start() {
+        atEvent = 0;
+        progress = 0;
+        insertions.clear();
+        errors.clear();
+    }
+
+    public void eventProgressed() {
+        atEvent++;
+
+        if (eventCount > 0) {
+            progress = atEvent / eventCount;
+        }
+    }
+
+    public void finish() {
+        progress = 100;
+
+        if (eventCount == 0) {
+            eventCount = atEvent;
+        }
+    }
+
     public void deleteFile() {
         if (filename != null) {
             File file = new File(filename);
             file.delete();
             imported = true;
         }
-    }
-
-    public void clearSession() {
-        insertions.clear();
-        errors.clear();
     }
 
     public boolean isImportable() {
@@ -107,5 +136,13 @@ public class ParseSession implements Serializable {
 
     public void setImported(boolean i) {
         this.imported = i;
+    }
+
+    public double getProgress() {
+        return progress;
+    }
+
+    public int getEventCount() {
+        return eventCount;
     }
 }

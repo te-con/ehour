@@ -25,10 +25,7 @@ public class RestoreDbPanelTest extends BaseSpringWebAppTester {
     @Test
     public void shouldDisplayAfterImport() throws ImportException {
         ParseSession session = new ParseSession();
-
         session.setImported(true);
-
-        when(importService.importDatabase(session)).thenReturn(session);
 
         startPanel(session);
 
