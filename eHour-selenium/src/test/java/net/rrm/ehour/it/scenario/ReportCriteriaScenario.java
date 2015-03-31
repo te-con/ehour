@@ -41,17 +41,22 @@ public class ReportCriteriaScenario extends AbstractScenario {
 
             anotherActiveCustomer = createAnotherActiveCustomer();
             createInActiveProjectFor(anotherActiveCustomer);
-            logout();
 
             initialized = true;
+            logout();
         }
 
         loginReportUser();
     }
 
     @After
-    public void after() {
+    public void logoutAfter() {
         logout();
+    }
+
+    @Override
+    protected boolean isTruncateBetweenTests() {
+        return false;
     }
 
     @Test

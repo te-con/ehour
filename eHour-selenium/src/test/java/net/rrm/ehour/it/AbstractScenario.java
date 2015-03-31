@@ -96,11 +96,16 @@ public abstract class AbstractScenario {
     public void quitBrowser() {
         if (Driver != null) {
             try {
-                DatabaseTruncater.truncate(dataSource);
+                if (isTruncateBetweenTests())
+                    clearDatabase();
                 Driver.quit();
             } catch (Exception e) {
                 //
             }
         }
+    }
+
+    protected boolean isTruncateBetweenTests() {
+        return true;
     }
 }
