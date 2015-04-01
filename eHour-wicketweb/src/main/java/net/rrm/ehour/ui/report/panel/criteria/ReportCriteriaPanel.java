@@ -660,9 +660,9 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
 
     private WebMarkupContainer createQuickMonth() {
         List<QuickMonth> months = new ArrayList<>();
+
         Calendar currentDate = new GregorianCalendar();
-        currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        currentDate.setFirstDayOfWeek(Calendar.SUNDAY);
+        currentDate.set(Calendar.DAY_OF_MONTH, 1);
 
         currentDate.add(Calendar.MONTH, -1); //previous
         months.add(QuickMonth.shortcut(currentDate, SHORTCUT_PREV));
