@@ -74,6 +74,7 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     private UserSelectedCriteria criteria;
     private HoverPagingNavigator pagingNavigator;
     private Container reportFrameContainer;
+    private Fragment reportFragment;
 
     public TreeReportDataPanel(String id,
                                TreeReportModel reportModel,
@@ -118,16 +119,16 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
     }
 
     private Fragment withDataReport(String id, final TreeReportModel reportModel, final ExcelReport excelReport) {
-        Fragment fragment = new Fragment(id, "withDataReport", this);
+        reportFragment = new Fragment(id, "withDataReport", this);
 
-        fragment.add(createExcelLink(excelReport));
+        reportFragment.add(createExcelLink(excelReport));
 
-        fragment.add(createZeroBookingSelector("reportOptionsPlaceholder"));
-        fragment.add(createAdditionalOptions("additionalOptions"));
+        reportFragment.add(createZeroBookingSelector("reportOptionsPlaceholder"));
+        reportFragment.add(createAdditionalOptions("additionalOptions"));
 
-        createReportTableContainer(reportModel, fragment);
+        createReportTableContainer(reportModel, reportFragment);
 
-        return fragment;
+        return reportFragment;
     }
 
     private void createReportTableContainer(TreeReportModel reportModel, MarkupContainer parent) {
@@ -181,10 +182,8 @@ public class TreeReportDataPanel extends AbstractBasePanel<ReportData> {
 
         reportConfig = aggregateByChangedEvent.getReportConfig();
 
-        if (pagingNavigator != null) {
-            createReportTableContainer((TreeReportModel) getPanelModel(), pagingNavigator.getParent());
-            aggregateByChangedEvent.target().add(pagingNavigator.getParent());
-        }
+        createReportTableContainer((TreeReportModel) getPanelModel(), reportFragment);
+        aggregateByChangedEvent.target().add(reportFragment);
     }
 
     private void updateDataTableForZeroBookingSelectionChange(IEvent<?> event) {
