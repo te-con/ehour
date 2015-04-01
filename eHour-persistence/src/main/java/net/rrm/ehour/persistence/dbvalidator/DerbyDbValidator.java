@@ -34,9 +34,9 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Derby database accessor methods
@@ -124,7 +124,7 @@ public class DerbyDbValidator {
         reader.setValidateXml(false);
         reader.setUseInternalDtd(true);
 
-        Database ddlModel = reader.read(new InputStreamReader(resource.getInputStream()));
+        Database ddlModel = reader.read(new InputStreamReader(resource.getInputStream(), "UTF-8"));
 
         if (ddlType == DdlType.CREATE_TABLE) {
             platform.createTables(ddlModel, false, false);
@@ -166,7 +166,7 @@ public class DerbyDbValidator {
 
         dataReader.getSink().start();
 
-        dataIO.writeDataToDatabase(dataReader, new InputStreamReader(resource.getInputStream()));
+        dataIO.writeDataToDatabase(dataReader, new InputStreamReader(resource.getInputStream(), "UTF-8"));
     }
 
     /**
@@ -174,23 +174,14 @@ public class DerbyDbValidator {
      */
     private String getCurrentVersion(Connection connection) throws SQLException {
         String version = null;
-        Statement stmt = null;
-        ResultSet results = null;
 
-        try {
-            stmt = connection.createStatement();
-            results = stmt.executeQuery("SELECT config_value FROM CONFIGURATION WHERE config_key = '" + ConfigurationItem.VERSION.getDbField() + "'");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT config_value FROM CONFIGURATION WHERE config_key = ?")) {
+            statement.setString(1, ConfigurationItem.VERSION.getDbField());
 
-            if (results.next()) {
-                version = results.getString("config_value");
-            }
-        } finally {
-            if (results != null) {
-                results.close();
-            }
-
-            if (stmt != null) {
-                stmt.close();
+            try (ResultSet results = statement.executeQuery()) {
+                if (results.next()) {
+                    version = results.getString("config_value");
+                }
             }
         }
 

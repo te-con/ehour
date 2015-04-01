@@ -105,7 +105,7 @@ public class TimesheetPersistance implements IPersistTimesheet, IDeleteTimesheet
         boolean wholeWeekLocked = TimesheetLockService$.MODULE$.isRangeLocked(weekRange.getDateStart(), weekRange.getDateEnd(), lockedDatesInRange);
 
         if (!wholeWeekLocked &&
-                (comment.getNewComment() == Boolean.FALSE || StringUtils.isNotBlank(comment.getComment()))) {
+                (!comment.getNewComment() || StringUtils.isNotBlank(comment.getComment()))) {
             timesheetCommentDAO.persist(comment);
         }
 

@@ -50,7 +50,7 @@ public class UpdateService {
     }
 
 
-    public Optional<String> getLatestVersionNumber() {
+    public synchronized Optional<String> getLatestVersionNumber() {
         if (isLatestVersionNumberValid()) {
             try {
                 return latestVersionNumber.get();

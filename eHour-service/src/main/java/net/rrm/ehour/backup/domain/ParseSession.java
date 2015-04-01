@@ -44,7 +44,7 @@ public class ParseSession implements Serializable {
         atEvent++;
 
         if (eventCount > 0) {
-            progress = atEvent / eventCount;
+            progress = atEvent / (double) eventCount;
         }
     }
 

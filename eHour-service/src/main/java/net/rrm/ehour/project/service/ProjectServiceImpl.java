@@ -91,7 +91,7 @@ public class ProjectServiceImpl implements ProjectService {
         List<Integer> ids = DomainUtil.getIdsFromDomainObjects(project.getProjectAssignments());
         List<AssignmentAggregateReportElement> aggregates = null;
 
-        if (ids != null && ids.size() > 0) {
+        if (!ids.isEmpty()) {
             aggregates = aggregateReportService.getHoursPerAssignment(ids);
         }
 

@@ -56,7 +56,7 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
             return outputStream.toByteArray();
         } catch (XMLStreamException e) {
             LOGGER.error(e);
-            return null;
+            return new byte[0];
         } finally {
             if (writer != null) {
                 try {

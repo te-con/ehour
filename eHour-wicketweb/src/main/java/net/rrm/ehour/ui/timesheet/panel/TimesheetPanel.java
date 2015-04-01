@@ -238,7 +238,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         timesheetForm.visitChildren(Label.class, new IVisitor<Label, Void>() {
             @Override
             public void component(Label label, IVisit visit) {
-                if (label.getId().equals("status")) {
+                if ("status".equals(label.getId())) {
                     label.setVisible(true);
                     target.add(label);
                 }
@@ -251,14 +251,14 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
      */
     private Label updatePostPersistMessage() {
         // server message
-        IModel<String> model = new StringResourceModel("timesheet.weekSaved",
+        IModel<String> serverMsg = new StringResourceModel("timesheet.weekSaved",
                 TimesheetPanel.this,
                 null,
                 new PropertyModel<Date>(getDefaultModel(), "timesheet.totalBookedHours"),
                 new DateModel(new PropertyModel<Date>(getDefaultModel(), "timesheet.weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
                 new DateModel(new PropertyModel<Date>(getDefaultModel(), "timesheet.weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT));
 
-        return updateServerMessage(model);
+        return updateServerMessage(serverMsg);
 
     }
 

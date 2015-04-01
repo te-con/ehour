@@ -101,7 +101,9 @@ public class AssignmentPanel extends AbstractFormSubmittingPanel<Void> {
         AjaxEventType type = ajaxEvent.getEventType();
 
         if (type == AssignmentAjaxEventType.ASSIGNMENT_EDIT) {
-            if (editAssignment(ajaxEvent)) return false;
+            if (editAssignment(ajaxEvent)) {
+                return false;
+            }
         } else if (type == AssignmentAjaxEventType.ASSIGNMENT_DELETED || type == AssignmentAjaxEventType.ASSIGNMENT_UPDATED) {
             modifyAssignment(ajaxEvent, type);
         }
