@@ -47,7 +47,7 @@ public class AssignmentFormPanel extends AbstractFormSubmittingPanel<AssignmentA
 
         add(greyBorder);
 
-        final Form<AssignmentAdminBackingBean> form = new Form<AssignmentAdminBackingBean>("assignmentForm", model);
+        final Form<AssignmentAdminBackingBean> form = new Form<>("assignmentForm", model);
         greyBorder.add(form);
 
         // add submit form

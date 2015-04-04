@@ -93,7 +93,6 @@ public class AssignmentProjectSelectionPanel extends AbstractBasePanel<Assignmen
         projectValidationErrorIndicator.setOutputMarkupId(true);
         add(projectValidationErrorIndicator);
 
-
         // make project update automatically when customers changed
         customerChoice.add(new AjaxFormComponentUpdatingBehavior("change") {
             @Override
@@ -154,7 +153,9 @@ public class AssignmentProjectSelectionPanel extends AbstractBasePanel<Assignmen
             IModel<Project> projectModel;
             projectModel = new PropertyModel<>(getDefaultModel(), "projectAssignment.project");
 
-            return new GroupableDropDownChoice<>(id, projectModel, projectChoices, renderer);
+            GroupableDropDownChoice<Project> choice = new GroupableDropDownChoice<>(id, projectModel, projectChoices, renderer);
+            choice.add(DynamicAttributeModifier.remove("style"));
+            return choice;
         }
     }
 
