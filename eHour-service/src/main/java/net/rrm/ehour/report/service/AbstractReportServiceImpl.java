@@ -127,13 +127,17 @@ public abstract class AbstractReportServiceImpl<RE extends ProjectStructuredRepo
         List<ProjectAssignment> filteredAssignmentsWithoutBookings = Lists.newArrayList();
 
         for (ProjectAssignment assignmentsWithoutBooking : assignmentsWithoutBookings) {
-            boolean passedUserFilter = userIds == null || userIds.contains(assignmentsWithoutBooking.getUser().getUserId());
-            boolean passedProjectFilter = projectIds == null || projectIds.contains(assignmentsWithoutBooking.getProject().getProjectId());
+            boolean passedUserFilter = isEmpty(userIds) || userIds.contains(assignmentsWithoutBooking.getUser().getUserId());
+            boolean passedProjectFilter = isEmpty(projectIds) || projectIds.contains(assignmentsWithoutBooking.getProject().getProjectId());
 
             if (passedUserFilter && passedProjectFilter) {
                 filteredAssignmentsWithoutBookings.add(assignmentsWithoutBooking);
             }
         }
         return filteredAssignmentsWithoutBookings;
+    }
+
+    private boolean isEmpty(List<?> list) {
+        return list == null || list.isEmpty();
     }
 }
