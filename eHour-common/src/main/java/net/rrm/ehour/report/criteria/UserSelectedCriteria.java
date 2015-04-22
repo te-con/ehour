@@ -108,10 +108,14 @@ public class UserSelectedCriteria implements Serializable {
     }
 
     public void setReportTypeToGlobal() {
+        users.clear();
+
         setSelectedReportType(ReportType.REPORT);
     }
 
     public void setReportTypeToPM(User projectManager) {
+        users.clear();
+
         setSelectedReportType(ReportType.PM);
         setPm(projectManager);
     }
