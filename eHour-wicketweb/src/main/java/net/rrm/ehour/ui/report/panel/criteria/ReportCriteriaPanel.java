@@ -160,16 +160,17 @@ public class ReportCriteriaPanel extends AbstractAjaxPanel<ReportCriteriaBacking
                 @Override
                 protected void onUpdate(AjaxRequestTarget target) {
                     ReportType type = choice.getModelObject();
+                    User user = EhourWebSession.getUser();
                     switch (type) {
                         case REPORT:
                             criteria.setReportTypeToGlobal();
                             break;
                         case PM:
-                            criteria.setReportTypeToPM(EhourWebSession.getUser());
+                            criteria.setReportTypeToPM(user);
                             break;
                         case INDIVIDUAL_USER:
                         default:
-                            criteria.setReportTypeToIndividualUser(EhourWebSession.getUser());
+                            criteria.setReportTypeToIndividualUser(user);
                             break;
                     }
 
