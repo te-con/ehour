@@ -3,7 +3,6 @@ package net.rrm.ehour.ui.report.detailed
 import com.googlecode.wicket.jquery.ui.resource.JQueryUIResourceReference
 import net.rrm.ehour.report.criteria.{AggregateBy, ReportCriteria, UserSelectedCriteria}
 import net.rrm.ehour.report.reports.ReportData
-import net.rrm.ehour.ui.EhourWebApplication
 import net.rrm.ehour.ui.common.panel.AbstractBasePanel
 import net.rrm.ehour.ui.common.renderers.LocalizedResourceRenderer
 import net.rrm.ehour.ui.common.report.{DetailedReportConfig, ReportConfig}
@@ -14,7 +13,7 @@ import net.rrm.ehour.ui.report.panel.{TreeReportDataPanel, UpdateReportDataEvent
 import org.apache.wicket.ajax.AjaxRequestTarget
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior
 import org.apache.wicket.event.{Broadcast, IEvent}
-import org.apache.wicket.markup.head.{IHeaderResponse, OnDomReadyHeaderItem, JavaScriptHeaderItem}
+import org.apache.wicket.markup.head.{IHeaderResponse, JavaScriptHeaderItem}
 import org.apache.wicket.markup.html.WebMarkupContainer
 import org.apache.wicket.markup.html.form.DropDownChoice
 import org.apache.wicket.markup.html.panel.Panel

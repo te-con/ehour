@@ -50,8 +50,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TimesheetPersistanceTest {
-    private TimesheetPersistance persister;
+public class TimesheetPersistenceTest {
+    private TimesheetPersistence persister;
 
     @Mock
     private TimesheetDao timesheetDAO;
@@ -79,7 +79,7 @@ public class TimesheetPersistanceTest {
 
     @Before
     public void setUp() {
-        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
+        persister = new TimesheetPersistence(timesheetDAO, commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
 
         initData();
     }
