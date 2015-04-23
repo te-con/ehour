@@ -18,8 +18,7 @@ package net.rrm.ehour.ui.timesheet.common;
 
 import net.rrm.ehour.ui.common.event.AjaxEventType;
 
-public enum TimesheetAjaxEventType implements AjaxEventType
-{
-	WEEK_NAV,
-	TIMESHEET_SUBMIT
+public enum TimesheetAjaxEventType implements AjaxEventType {
+    WEEK_NAV,
+    TIMESHEET_SUBMIT
 }

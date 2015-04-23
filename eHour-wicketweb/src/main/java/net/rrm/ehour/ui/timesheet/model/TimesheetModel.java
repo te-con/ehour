@@ -36,20 +36,16 @@ import java.util.List;
 /**
  * Model that holds the timesheet
  */
-
 public class TimesheetModel implements PersistableTimesheetModel<TimesheetContainer> {
     private static final long serialVersionUID = 4134613450587087107L;
 
     @SpringBean
-    private transient IPersistTimesheet persistTimesheet;
+    private IPersistTimesheet persistTimesheet;
 
     @SpringBean
-    private transient IOverviewTimesheet overviewTimesheet;
+    private IOverviewTimesheet overviewTimesheet;
 
     private TimesheetContainer timesheetContainer;
-
-    public TimesheetModel() {
-    }
 
     public void init(User user, Calendar forWeek) {
         WebUtils.springInjection(this);
@@ -72,13 +68,16 @@ public class TimesheetModel implements PersistableTimesheetModel<TimesheetContai
     }
 
     @Override
-    public List<ProjectAssignmentStatus> persist() {
-        WebUtils.springInjection(this);
-
-        return persistTimesheet(getObject().getTimesheet());
+    public List<ProjectAssignmentStatus> persist() throws UnknownPersistenceException {
+        if (timesheetContainer != null) {
+            WebUtils.springInjection(this);
+            return persistTimesheet(timesheetContainer.getTimesheet());
+        } else {
+            throw new UnknownPersistenceException("Failed to receive timesheet container");
+        }
     }
 
-    public List<ProjectAssignmentStatus> persistTimesheet(Timesheet timesheet) {
+    private List<ProjectAssignmentStatus> persistTimesheet(Timesheet timesheet) {
         WebUtils.springInjection(this);
 
         return persistTimesheet.persistTimesheetWeek(timesheet.getTimesheetEntries(),
@@ -86,16 +85,26 @@ public class TimesheetModel implements PersistableTimesheetModel<TimesheetContai
                 new DateRange(timesheet.getWeekStart(), timesheet.getWeekEnd()), timesheet.getUser());
     }
 
+    @Override
     public TimesheetContainer getObject() {
         return timesheetContainer;
     }
 
+    @Override
     public void setObject(TimesheetContainer sheet) {
-        this.timesheetContainer = sheet;
+        if (sheet != null) {
+            this.timesheetContainer = sheet;
+        }
     }
 
     public void detach() {
         overviewTimesheet = null;
         persistTimesheet = null;
+    }
+
+    public static class UnknownPersistenceException extends Exception {
+        public UnknownPersistenceException(String message) {
+            super(message);
+        }
     }
 }
