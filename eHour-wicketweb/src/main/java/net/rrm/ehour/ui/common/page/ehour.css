@@ -1070,3 +1070,8 @@ hr {
 .warningBanner .fa {
     color: #efa104;
 }
+
+.footer {
+    font-size: 90% !important;
+    opacity: 0.8;
+}

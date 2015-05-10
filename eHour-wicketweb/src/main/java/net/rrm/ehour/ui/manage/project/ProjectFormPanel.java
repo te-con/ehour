@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.manage.project;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.Project;
 import net.rrm.ehour.domain.User;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.project.service.ProjectService;
@@ -37,9 +38,12 @@ import net.rrm.ehour.ui.common.util.WebGeo;
 import net.rrm.ehour.user.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
@@ -77,10 +81,10 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
 
         editMode = getPanelModelObject().getProject().getPK() != null;
 
-        setUpPage(getPanelModel());
+        setUpPanel(getPanelModel());
     }
 
-    private void setUpPage(IModel<T> model) {
+    private void setUpPanel(IModel<T> model) {
         GreySquaredRoundedBorder greyBorder = new GreySquaredRoundedBorder("border", WebGeo.AUTO);
         add(greyBorder);
 
@@ -115,6 +119,34 @@ public class ProjectFormPanel<T extends ProjectAdminBackingBean> extends Abstrac
         addMisc(form);
         form.add(getProjectManager());
 
+        addBillable(form);
+        form.add(addDeleteInfo("deletableMsg", form.getModel()));
+    }
+
+    protected Fragment addDeleteInfo(String id, IModel<T> model) {
+        Fragment fragment = new Fragment(id, "bookedHours", this);
+
+        Project project = model.getObject().getDomainObject();
+
+        Double bookedHours = project.getBookedHours();
+
+        IModel<String> msgModel;
+
+        if (project.isDeletable()) {
+            msgModel = new ResourceModel("admin.project.canDelete");
+        } else {
+            msgModel = new StringResourceModel("admin.project.cannotDelete", null, bookedHours);
+        }
+
+        fragment.add(new Label("deleteMessage", msgModel));
+
+        fragment.setVisible(project.getProjectId() != null);
+
+        return fragment;
+
+    }
+
+    private void addBillable(Form<T> form) {
         CheckBox billableCheckbox = new CheckBox("project.billable");
         billableCheckbox.setMarkupId("billable");
         form.add(billableCheckbox);
