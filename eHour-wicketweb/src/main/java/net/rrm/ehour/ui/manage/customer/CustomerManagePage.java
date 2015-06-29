@@ -34,7 +34,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.StringValue;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +54,7 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
 
     private static final long serialVersionUID = 3190421612132110664L;
     private final EntrySelectorPanel entrySelectorPanel;
+
 
     @SpringBean
     private CustomerService customerService;
@@ -71,11 +74,10 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
             public void onClick(EntrySelectorData.EntrySelectorRow row, AjaxRequestTarget target) throws ObjectNotFoundException {
                 final Integer customerId = (Integer) row.getId();
 
-                getTabbedPanel().setEditBackingBean(new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId)));
+                getTabbedPanel().setEditBackingBean(createEditBean(customerId));
                 getTabbedPanel().switchTabOnAjaxTarget(target, AddEditTabbedPanel.TABPOS_EDIT);
             }
         };
-
 
         entrySelectorPanel = EntrySelectorBuilder.startAs(CUSTOMER_SELECTOR_ID)
                 .withData(createSelectorData(getCustomers()))
@@ -84,6 +86,28 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
                 .build();
 
         greyBorder.add(entrySelectorPanel);
+    }
+
+    public CustomerManagePage(PageParameters params) {
+        this();
+
+        StringValue id = params.get("id");
+
+        if (!id.isEmpty()) {
+            try {
+                CustomerAdminBackingBean editBean = createEditBean(id.toInt());
+
+                AddEditTabbedPanel<CustomerAdminBackingBean> tabbedPanel = getTabbedPanel();
+                tabbedPanel.forceLoadEditTab(editBean);
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+
+    private CustomerAdminBackingBean createEditBean(Integer customerId) throws ObjectNotFoundException {
+        return new CustomerAdminBackingBean(customerService.getCustomerAndCheckDeletability(customerId));
     }
 
     private EntrySelectorData createSelectorData(List<Customer> customers) {
@@ -110,7 +134,7 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
-        return new CustomerFormPanel(panelId, new CompoundPropertyModel<CustomerAdminBackingBean>(getTabbedPanel().getAddBackingBean()));
+        return new CustomerFormPanel(panelId, new CompoundPropertyModel<>(getTabbedPanel().getAddBackingBean()));
     }
 
     @Override

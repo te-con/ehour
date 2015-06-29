@@ -1071,6 +1071,10 @@ hr {
     color: #efa104;
 }
 
+.warningBanner a {
+    padding: 0 !important;
+}
+
 .footer {
     font-size: 90% !important;
     opacity: 0.8;
