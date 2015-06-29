@@ -278,6 +278,15 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
     }
 
     /**
+     * Whether assignment/project/customer are all active
+     * @return
+     */
+    public boolean isBookable() {
+        return isActive() &&
+                (getProject() == null || getProject().isActive()) &&
+                (getProject() == null || getProject().getCustomer() == null || getProject().getCustomer().isActive());
+    }
+    /**
      * @param active the active to set
      */
     public void setActive(boolean active) {

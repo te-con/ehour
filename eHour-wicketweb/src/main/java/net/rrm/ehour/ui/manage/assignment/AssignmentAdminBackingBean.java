@@ -51,6 +51,7 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
 
     public static AssignmentAdminBackingBean createAssignmentAdminBackingBean(User user) {
         ProjectAssignment projectAssignment = new ProjectAssignment();
+        projectAssignment.setAssignmentType(EhourConstants.ASSIGNMENT_TYPE_DATE);
         projectAssignment.setUser(user);
         projectAssignment.setActive(true);
 
@@ -174,5 +175,9 @@ public class AssignmentAdminBackingBean extends AdminBackingBeanImpl<ProjectAssi
     @Override
     public boolean isDeletable() {
         return projectAssignment != null && projectAssignment.isDeletable();
+    }
+
+    public boolean isBookable() {
+        return (projectAssignment != null && projectAssignment.isBookable()) || projectAssignment == null;
     }
 }

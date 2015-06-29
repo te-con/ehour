@@ -9,11 +9,9 @@
 			  pa.user.userId = :userId
 	</query>	
 
-	<query name="ProjectAssignment.findProjectAssignmentsForUser">
+	<query name="ProjectAssignment.findAllProjectAssignmentsForUser">
 		FROM ProjectAssignment pa
-		WHERE pa.project.active is true AND
-			  pa.project.customer.active is true AND 
-			  pa.user = :user
+		WHERE pa.user = :user
 		ORDER BY pa.dateStart, pa.project.name
 	</query>	
 

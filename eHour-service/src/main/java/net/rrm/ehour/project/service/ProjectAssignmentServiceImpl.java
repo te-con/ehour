@@ -71,7 +71,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
     @Override
     @Transactional(readOnly = true)
     public List<ProjectAssignment> getProjectAssignmentsForUser(User user) {
-        return projectAssignmentDAO.findProjectAssignmentsForUser(user);
+        return projectAssignmentDAO.findAllProjectAssignmentsForUser(user);
     }
 
     @Override

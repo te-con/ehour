@@ -34,8 +34,8 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
     findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUserForProject", keys, params, CacheRegion)
   }
 
-  override def findProjectAssignmentsForUser(user: User): util.List[ProjectAssignment] =
-    findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUser", "user", user, CacheRegion)
+  override def findAllProjectAssignmentsForUser(user: User): util.List[ProjectAssignment] =
+    findByNamedQuery("ProjectAssignment.findAllProjectAssignmentsForUser", "user", user, CacheRegion)
 
   override def findProjectAssignmentsForProject(project: Project, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "project")

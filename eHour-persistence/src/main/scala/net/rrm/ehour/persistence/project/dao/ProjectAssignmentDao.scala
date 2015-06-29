@@ -16,9 +16,9 @@ trait ProjectAssignmentDao extends GenericDao[Integer, ProjectAssignment] {
   def findProjectAssignmentForUser(projectId: Integer, userId: Integer): util.List[ProjectAssignment]
 
   /**
-   * Find (active) projects for user
+   * Find project assignments for user
    */
-  def findProjectAssignmentsForUser(user: User): util.List[ProjectAssignment]
+  def findAllProjectAssignmentsForUser(user: User): util.List[ProjectAssignment]
 
   /**
    * Find (active) projects for user in date range

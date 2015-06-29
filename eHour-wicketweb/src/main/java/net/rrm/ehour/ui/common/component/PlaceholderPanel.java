@@ -20,22 +20,23 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * Panel that output it's markup id
- * 
+ * <p/>
  * Created on Feb 1, 2009, 3:48:32 AM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class PlaceholderPanel extends Panel
-{
-	private static final long serialVersionUID = 1516231242188706097L;
+public class PlaceholderPanel extends Panel {
+    private static final long serialVersionUID = 1516231242188706097L;
 
-	/**
-	 * @param id
-	 */
-	public PlaceholderPanel(String id)
-	{
-		super(id);
-		
-		setOutputMarkupId(true);
-	}
+    public PlaceholderPanel(String id) {
+        super(id);
+
+        setOutputMarkupId(true);
+    }
+
+    public static PlaceholderPanel hidden(String id) {
+        PlaceholderPanel placeholderPanel = new PlaceholderPanel(id);
+        placeholderPanel.setVisible(false);
+        return placeholderPanel;
+    }
 }

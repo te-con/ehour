@@ -33,7 +33,7 @@ public class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDao
 
     @Test
     public void shouldFindProjectAssignmentsForUser() {
-        List<ProjectAssignment> pas = projectAssignmentDAO.findProjectAssignmentsForUser(new User(1));
+        List<ProjectAssignment> pas = projectAssignmentDAO.findAllProjectAssignmentsForUser(new User(1));
 
         assertEquals(7, pas.size());
     }
