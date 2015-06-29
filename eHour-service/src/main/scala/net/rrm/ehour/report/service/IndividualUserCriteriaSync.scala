@@ -17,12 +17,13 @@ class IndividualUserCriteriaSync @Autowired()(userDepartmentDAO: UserDepartmentD
 
     def filterProjects(xs: List[ProjectAssignment]) = if (reportCriteria.getUserSelectedCriteria.isOnlyActiveProjects) xs.filter(p => p.getProject.isActive) else xs
 
+    def filterBillable(xs: List[ProjectAssignment]) = if (reportCriteria.getUserSelectedCriteria.isOnlyBillableProjects) xs.filter(p => p.getProject.isBillable) else xs
+
     val availCriteria = reportCriteria.getAvailableCriteria
     val user = reportCriteria.getUserSelectedCriteria.getUsers.get(0)
     val assignments: List[ProjectAssignment] = toScala(projectAssignmentDAO.findAllProjectAssignmentsForUser(user.getUserId, reportCriteria.getUserSelectedCriteria.getReportRange))
 
-    val filteredAssignments = filterProjects(filterCustomers(assignments))
-
+    val filteredAssignments = filterBillable(filterProjects(filterCustomers(assignments)))
 
     val customers = filteredAssignments.map(_.getProject.getCustomer).toSet
     val projects = filteredAssignments.map(_.getProject).toSet
