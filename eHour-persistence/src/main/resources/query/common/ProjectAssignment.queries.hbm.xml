@@ -26,7 +26,7 @@
 		ORDER BY pa.dateStart, pa.project.name
 	</query>	
 
-	<query name="ProjectAssignment.findProjectAssignmentsForUserInRange">
+	<query name="ProjectAssignment.findActiveProjectAssignmentsForUserInRange">
     <![CDATA[	
 		FROM ProjectAssignment pa
 		WHERE pa.active is true AND 
@@ -37,6 +37,16 @@
 			  (pa.dateEnd IS NULL or pa.dateEnd >= :dateStart)
     		 ]]>
 	</query>
+
+	<query name="ProjectAssignment.findProjectAssignmentsForUserInRange">
+		<![CDATA[
+		FROM ProjectAssignment pa
+		WHERE pa.user.userId = :userId AND
+			  (pa.dateStart IS NULL OR pa.dateStart <= :dateEnd) AND
+			  (pa.dateEnd IS NULL or pa.dateEnd >= :dateStart)
+    		 ]]>
+	</query>
+
 
 	<query name="ProjectAssignment.findProjectAssignmentsForProjectInRange">
     <![CDATA[	

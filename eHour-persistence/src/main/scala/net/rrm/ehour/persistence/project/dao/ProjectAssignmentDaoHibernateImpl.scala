@@ -16,7 +16,13 @@ import org.springframework.stereotype.Repository
 class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, ProjectAssignment](classOf[ProjectAssignment]) with ProjectAssignmentDao {
   private final val CacheRegion = Some("query.ProjectAssignment")
 
-  override def findProjectAssignmentsForUser(userId: Integer, range: DateRange): util.List[ProjectAssignment] = {
+  override def findActiveProjectAssignmentsForUser(userId: Integer, range: DateRange): util.List[ProjectAssignment] = {
+    val keys = List("dateStart", "dateEnd", "userId")
+    val params = List(range.getDateStart, range.getDateEnd, userId)
+    findByNamedQuery("ProjectAssignment.findActiveProjectAssignmentsForUserInRange", keys, params, CacheRegion)
+  }
+
+  override def findAllProjectAssignmentsForUser(userId: Integer, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "userId")
     val params = List(range.getDateStart, range.getDateEnd, userId)
     findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUserInRange", keys, params, CacheRegion)

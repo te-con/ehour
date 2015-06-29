@@ -57,7 +57,7 @@ public class ProjectAssignmentServiceImpl implements ProjectAssignmentService {
         List<ProjectAssignment> assignments;
         List<ProjectAssignment> validAssignments = new ArrayList<>();
 
-        assignments = projectAssignmentDAO.findProjectAssignmentsForUser(userId, dateRange);
+        assignments = projectAssignmentDAO.findActiveProjectAssignmentsForUser(userId, dateRange);
 
         for (ProjectAssignment assignment : assignments) {
             if (projectAssignmentStatusService.getAssignmentStatus(assignment, dateRange).isAssignmentBookable()) {
