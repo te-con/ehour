@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactory;
 import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactoryCollection;
 import net.rrm.ehour.util.DateUtil;
+import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
@@ -70,6 +71,8 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     private static final JavaScriptResourceReference TIMESHEET_JS = new JavaScriptResourceReference(TimesheetPanel.class, "timesheet.js");
     private static final CssResourceReference TIMESHEET_CSS = new CssResourceReference(TimesheetPanel.class, "css/timesheetForm.css");
     public static final String SERVER_MESSAGE_ID = "serverMessage";
+
+    private static final Logger LOGGER = Logger.getLogger(TimesheetPanel.class);
 
     private EhourConfig config;
     private Component serverMsgLabel;
@@ -429,6 +432,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
 
                 EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
             } catch (TimesheetModel.UnknownPersistenceException e) {
+                LOGGER.error("Failed to persist", e);
                 target.add(updateErrorMessage("timesheet.generalPersistenceError"));
             }
         }
