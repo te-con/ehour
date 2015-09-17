@@ -362,9 +362,9 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
 
         ProjectAssignment castOther = (ProjectAssignment) other;
 
-        if (getPK() != null && castOther.getPK() != null) {
+        /*if (getPK() != null && castOther.getPK() != null) {
             return getPK().equals(castOther.getPK());
-        } else {
+        } else*/ {
             return new EqualsBuilder()
                     .append(user, castOther.user)
                     .append(project, castOther.project)
@@ -376,6 +376,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
                     .append(allottedHours, castOther.allottedHours)
                     .append(allowedOverrun, castOther.allowedOverrun)
                     .append(active, castOther.active)
+                    .append(getPK(), castOther.getPK())
                     .isEquals();
         }
     }
@@ -393,6 +394,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
                 .append(allottedHours)
                 .append(allowedOverrun)
                 .append(active)
+                .append(assignmentId)
                 .toHashCode();
     }
 
