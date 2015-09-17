@@ -359,19 +359,25 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         if (!(other instanceof ProjectAssignment)) {
             return false;
         }
+
         ProjectAssignment castOther = (ProjectAssignment) other;
-        return new EqualsBuilder()
-                .append(user, castOther.user)
-                .append(project, castOther.project)
-                .append(hourlyRate, castOther.hourlyRate)
-                .append(dateStart, castOther.dateStart)
-                .append(dateEnd, castOther.dateEnd)
-                .append(role, castOther.role)
-                .append(assignmentType, castOther.assignmentType)
-                .append(allottedHours, castOther.allottedHours)
-                .append(allowedOverrun, castOther.allowedOverrun)
-                .append(active, castOther.active)
-                .isEquals();
+
+        if (getPK() != null && castOther.getPK() != null) {
+            return getPK().equals(castOther.getPK());
+        } else {
+            return new EqualsBuilder()
+                    .append(user, castOther.user)
+                    .append(project, castOther.project)
+                    .append(hourlyRate, castOther.hourlyRate)
+                    .append(dateStart, castOther.dateStart)
+                    .append(dateEnd, castOther.dateEnd)
+                    .append(role, castOther.role)
+                    .append(assignmentType, castOther.assignmentType)
+                    .append(allottedHours, castOther.allottedHours)
+                    .append(allowedOverrun, castOther.allowedOverrun)
+                    .append(active, castOther.active)
+                    .isEquals();
+        }
     }
 
     @Override
@@ -379,7 +385,15 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         return new HashCodeBuilder()
                 .append(user)
                 .append(project)
-                .append(hourlyRate).append(dateStart).append(dateEnd).append(role).append(assignmentType).append(allottedHours).append(allowedOverrun).append(active).toHashCode();
+                .append(hourlyRate)
+                .append(dateStart)
+                .append(dateEnd)
+                .append(role)
+                .append(assignmentType)
+                .append(allottedHours)
+                .append(allowedOverrun)
+                .append(active)
+                .toHashCode();
     }
 
 }
