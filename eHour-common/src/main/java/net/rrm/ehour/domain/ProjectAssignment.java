@@ -279,6 +279,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
 
     /**
      * Whether assignment/project/customer are all active
+     *
      * @return
      */
     public boolean isBookable() {
@@ -286,6 +287,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
                 (getProject() == null || getProject().isActive()) &&
                 (getProject() == null || getProject().getCustomer() == null || getProject().getCustomer().isActive());
     }
+
     /**
      * @param active the active to set
      */
@@ -362,23 +364,19 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
 
         ProjectAssignment castOther = (ProjectAssignment) other;
 
-        /*if (getPK() != null && castOther.getPK() != null) {
-            return getPK().equals(castOther.getPK());
-        } else*/ {
-            return new EqualsBuilder()
-                    .append(user, castOther.user)
-                    .append(project, castOther.project)
-                    .append(hourlyRate, castOther.hourlyRate)
-                    .append(dateStart, castOther.dateStart)
-                    .append(dateEnd, castOther.dateEnd)
-                    .append(role, castOther.role)
-                    .append(assignmentType, castOther.assignmentType)
-                    .append(allottedHours, castOther.allottedHours)
-                    .append(allowedOverrun, castOther.allowedOverrun)
-                    .append(active, castOther.active)
-                    .append(getPK(), castOther.getPK())
-                    .isEquals();
-        }
+        return new EqualsBuilder()
+                .append(user, castOther.user)
+                .append(project, castOther.project)
+                .append(hourlyRate, castOther.hourlyRate)
+                .append(dateStart, castOther.dateStart)
+                .append(dateEnd, castOther.dateEnd)
+                .append(role, castOther.role)
+                .append(assignmentType, castOther.assignmentType)
+                .append(allottedHours, castOther.allottedHours)
+                .append(allowedOverrun, castOther.allowedOverrun)
+                .append(active, castOther.active)
+                .append(getPK(), castOther.getPK())
+                .isEquals();
     }
 
     @Override
