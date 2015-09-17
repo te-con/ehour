@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.timesheet.service;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.audit.annot.NonAuditable;
 import net.rrm.ehour.data.DateRange;
 import net.rrm.ehour.domain.ProjectAssignment;
@@ -161,28 +162,25 @@ public class TimesheetPersistence implements IPersistTimesheet, IDeleteTimesheet
     }
 
     private void persistEntries(ProjectAssignment assignment, List<TimesheetEntry> entries, DateRange weekRange, boolean onlyLessThanExisting, List<Date> lockedDates) throws OverBudgetException {
-        List<TimesheetEntry> previousEntries = timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange);
+        List<TimesheetEntry> previousEntries = Lists.newArrayList(timesheetDAO.getTimesheetEntriesInRange(assignment, weekRange));
 
         for (TimesheetEntry entry : entries) {
             if (!entry.getEntryId().getProjectAssignment().equals(assignment)) {
                 LOGGER.error("Invalid entry in assignment list, skipping: " + entry);
+                previousEntries.remove(entry);
                 continue;
             }
 
             if (lockedDates.contains(entry.getEntryId().getEntryDate())) {
                 LOGGER.error("Date is locked but still trying to update " + entry);
-
                 previousEntries.remove(entry);
                 continue;
             }
 
-            if (entry.isEmptyEntry()) {
-                deleteEntry(getEntry(previousEntries, entry));
-            } else {
+            if (!entry.isEmptyEntry()) {
                 persistEntry(onlyLessThanExisting, entry, getEntry(previousEntries, entry));
+                previousEntries.remove(entry);
             }
-
-            previousEntries.remove(entry);
         }
 
         removeOldEntries(previousEntries);
@@ -190,13 +188,8 @@ public class TimesheetPersistence implements IPersistTimesheet, IDeleteTimesheet
 
     private void removeOldEntries(List<TimesheetEntry> previousEntries) {
         for (TimesheetEntry entry : previousEntries) {
+            LOGGER.info("Removing old entry " + entry.toString());
             timesheetDAO.delete(entry);
-        }
-    }
-
-    private void deleteEntry(TimesheetEntry existingEntry) {
-        if (existingEntry != null) {
-            timesheetDAO.delete(existingEntry);
         }
     }
 

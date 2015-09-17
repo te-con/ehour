@@ -166,7 +166,6 @@ public class TimesheetPersistenceTest {
         verify(timesheetDAO).merge(any(TimesheetEntry.class));
     }
 
-
     @Test
     public void should_not_persist_an_timesheet_that_went_overbudget() {
         DateRange dateRange = new DateRange();
@@ -380,6 +379,20 @@ public class TimesheetPersistenceTest {
 
         verify(timesheetDAO, never()).persist((any(TimesheetEntry.class)));
         verify(commentDao, never()).persist(any(TimesheetComment.class));
+    }
+
+    @Test
+    public void should_delete_entries_that_are_not_resubmitted() throws OverBudgetException {
+        DateRange dateRange = new DateRange();
+
+        withExistingEntries(dateRange);
+        okStatus();
+
+        persister.validateAndPersist(assignment, Lists.newArrayList(newEntries.get(0)), dateRange, Lists.<Date>newArrayList());
+
+        verify(statusService, times(2)).getAssignmentStatus(assignment);
+        verify(timesheetDAO).delete(existingEntries.get(1));
+        verify(timesheetDAO).merge(existingEntries.get(0));
     }
 
     private void okStatus() {
