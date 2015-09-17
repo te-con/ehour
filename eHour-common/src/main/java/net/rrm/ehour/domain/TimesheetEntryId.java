@@ -27,8 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Embeddable
-public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntryId>
-{
+public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntryId> {
     private static final long serialVersionUID = 6439918043325585774L;
 
     @Column(name = "ENTRY_DATE", nullable = false)
@@ -44,8 +43,7 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     /**
      * full constructor
      */
-    public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment)
-    {
+    public TimesheetEntryId(Date entryDate, ProjectAssignment projectAssignment) {
         this.entryDate = entryDate;
         this.projectAssignment = projectAssignment;
     }
@@ -53,37 +51,30 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     /**
      * default constructor
      */
-    public TimesheetEntryId()
-    {
+    public TimesheetEntryId() {
     }
 
-    public Date getEntryDate()
-    {
+    public Date getEntryDate() {
         return this.entryDate;
     }
 
-    public void setEntryDate(Date entryDate)
-    {
+    public void setEntryDate(Date entryDate) {
         this.entryDate = entryDate;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return new ToStringBuilder(this).append("entryDate", getEntryDate())
                 .append("assignment", getProjectAssignment())
                 .toString();
     }
 
     @Override
-    public boolean equals(Object other)
-    {
-        if ((this == other))
-        {
+    public boolean equals(Object other) {
+        if ((this == other)) {
             return true;
         }
-        if (!(other instanceof TimesheetEntryId))
-        {
+        if (!(other instanceof TimesheetEntryId)) {
             return false;
         }
         TimesheetEntryId castOther = (TimesheetEntryId) other;
@@ -92,27 +83,23 @@ public class TimesheetEntryId implements Serializable, Comparable<TimesheetEntry
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return new HashCodeBuilder().append(getEntryDate())
                 .append(getProjectAssignment()).toHashCode();
     }
 
-    public ProjectAssignment getProjectAssignment()
-    {
+    public ProjectAssignment getProjectAssignment() {
         return projectAssignment;
     }
 
-    public void setProjectAssignment(ProjectAssignment projectAssignment)
-    {
+    public void setProjectAssignment(ProjectAssignment projectAssignment) {
         this.projectAssignment = projectAssignment;
     }
 
     /**
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public int compareTo(TimesheetEntryId object)
-    {
+    public int compareTo(TimesheetEntryId object) {
         return new CompareToBuilder()
                 .append(this.getProjectAssignment(), object.getProjectAssignment())
                 .append(this.getEntryDate(), object.getEntryDate())
