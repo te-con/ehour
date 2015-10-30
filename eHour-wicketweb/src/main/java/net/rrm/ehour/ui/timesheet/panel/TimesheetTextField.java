@@ -17,10 +17,8 @@
 package net.rrm.ehour.ui.timesheet.panel;
 
 import net.rrm.ehour.ui.common.component.CommonModifiers;
-import net.rrm.ehour.ui.common.converter.FloatConverter;
 import net.rrm.ehour.ui.common.form.TextFieldWithHistory;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.convert.IConverter;
 
 /**
  * Timesheet textfield which remembers its previous validation state
@@ -37,12 +35,6 @@ public class TimesheetTextField extends TextFieldWithHistory<Float> {
         setPreviousValue(getModelObject() != null ? getModelObject().toString() : "");
 
         add(CommonModifiers.tabIndexModifier(tabIndex));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <C> IConverter<C> getConverter(Class<C> type) {
-        return (IConverter<C>) new FloatConverter("");
     }
 
     @Override

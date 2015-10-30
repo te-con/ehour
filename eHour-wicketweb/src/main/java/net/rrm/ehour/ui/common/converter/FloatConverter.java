@@ -1,39 +1,42 @@
 package net.rrm.ehour.ui.common.converter;
 
 import net.rrm.ehour.config.EhourConfig;
-import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.util.convert.ConversionException;
+import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.util.convert.converter.AbstractDecimalConverter;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
-public class FloatConverter extends AbstractNumberConverter<Float> {
+public class FloatConverter extends AbstractDecimalConverter<Float> {
     private static final long serialVersionUID = 3978602245247446289L;
 
-    public FloatConverter() {
-    }
-
-    public FloatConverter(String defaultStringValue) {
-        super(defaultStringValue);
-    }
-
     @Override
-    protected NumberFormat getStringFormatter(EhourConfig config) {
-        NumberFormat formatter = NumberFormat.getNumberInstance(config.getFormattingLocale());
+    protected NumberFormat newNumberFormat(Locale locale) {
+        EhourConfig config = EhourWebSession.getEhourConfig();
+
+        Locale formattingLocale = config.getFormattingLocale();
+        NumberFormat formatter = NumberFormat.getNumberInstance(formattingLocale);
         formatter.setMaximumFractionDigits(2);
         formatter.setMinimumFractionDigits(2);
-
         return formatter;
     }
 
-    protected Float convertToObject(String value, EhourConfig config) {
-        if (!StringUtils.isBlank(value)) {
-            try {
-                return Float.parseFloat(value.replace(",", "."));
-            } catch (NumberFormatException nfe) {
-                throw new ConversionException(nfe);
-            }
-        } else {
+    @Override
+    public Float convertToObject(final String value, final Locale locale) {
+        final Number number = parse(value, -Float.MAX_VALUE, Float.MAX_VALUE, locale);
+
+        if (number == null) {
             return null;
         }
+
+        return number.floatValue();
+    }
+
+    /**
+     * @see org.apache.wicket.util.convert.converter.AbstractConverter#getTargetType()
+     */
+    @Override
+    protected Class<Float> getTargetType() {
+        return Float.class;
     }
 }
