@@ -78,7 +78,6 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      * Fetch the timesheet overview for a user. This returns an object containing the project assignments for the
      * requested month and a list with all timesheet entries for that month.
      *
-     * @param userId
      * @param requestedMonth only the month and year of the calendar is used
      * @return TimesheetOverviewAction
      * @throws ObjectNotFoundException
@@ -106,8 +105,8 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
      */
     private SortedSet<UserProjectStatus> getProjectStatus(Integer userId, DateRange monthRange) {
         List<Integer> assignmentIds = Lists.newArrayList();
-        SortedSet<UserProjectStatus> userProjectStatus = new TreeSet<UserProjectStatus>();
-        Map<Integer, AssignmentAggregateReportElement> originalAggregates = new HashMap<Integer, AssignmentAggregateReportElement>();
+        SortedSet<UserProjectStatus> userProjectStatus = new TreeSet<>();
+        Map<Integer, AssignmentAggregateReportElement> originalAggregates = new HashMap<>();
 
         List<AssignmentAggregateReportElement> aggregates = aggregateReportService.getHoursPerAssignmentInRange(userId, monthRange);
 
@@ -139,7 +138,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
     /**
      * Get a list with all day numbers in this month that has complete booked days (config defines the completion
      * level).
-     *
+     *2
      * @param userId
      * @param requestedMonth
      * @return List with Integers of complete booked days
@@ -148,7 +147,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
         DateRange monthRange = DateUtil.calendarToMonthRange(requestedMonth);
 
         List<BookedDay> bookedDays = timesheetDAO.getBookedHoursperDayInRange(userId, monthRange);
-        List<LocalDate> fullyBookedDays = new ArrayList<LocalDate>();
+        List<LocalDate> fullyBookedDays = new ArrayList<>();
 
         for (BookedDay bookedDay : bookedDays) {
             if (bookedDay.getHours() != null &&
@@ -175,7 +174,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
         Integer dayKey;
         List<TimesheetEntry> dayEntries;
 
-        calendarMap = new HashMap<Integer, List<TimesheetEntry>>();
+        calendarMap = new HashMap<>();
 
         for (TimesheetEntry entry : timesheetEntries) {
             if (entry == null) {
@@ -190,7 +189,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
             if (calendarMap.containsKey(dayKey)) {
                 dayEntries = calendarMap.get(dayKey);
             } else {
-                dayEntries = new ArrayList<TimesheetEntry>();
+                dayEntries = new ArrayList<>();
             }
 
             dayEntries.add(entry);

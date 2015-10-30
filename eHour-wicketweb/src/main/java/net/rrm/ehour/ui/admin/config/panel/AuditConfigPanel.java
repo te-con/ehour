@@ -44,7 +44,7 @@ public class AuditConfigPanel extends AbstractConfigPanel {
         configForm.add(new DropDownChoice<>("config.auditType", Arrays.asList(AuditType.values()), new IChoiceRenderer<AuditType>() {
             @Override
             public Object getDisplayValue(AuditType object) {
-                return new MessageResourceModel("admin.config.audit." + object.name().toLowerCase(), AuditConfigPanel.this, null).getObject();
+                return new MessageResourceModel("admin.config.audit." + object.name().toLowerCase(), AuditConfigPanel.this).getObject();
             }
 
             @Override
