@@ -23,18 +23,32 @@ public class FloatConverter extends AbstractDecimalConverter<Float> {
 
     @Override
     public Float convertToObject(final String value, final Locale locale) {
-        final Number number = parse(value, -Float.MAX_VALUE, Float.MAX_VALUE, locale);
+        String nonNumericsToPoints = value.replaceAll("[^0-9.]", ".");
+        int lastDotAt = nonNumericsToPoints.lastIndexOf(".");
+
+        if (lastDotAt > -1) {
+            int decimalsBehindPoint = nonNumericsToPoints.length() - nonNumericsToPoints.lastIndexOf(".");
+            String withoutDots = value.replaceAll("[^0-9*]", "");
+
+            int insertAt = (withoutDots.length() - decimalsBehindPoint) + 1;
+            String toParse = new StringBuilder(withoutDots).insert(insertAt, '.').toString();
+            return parse(toParse);
+        } else {
+            return parse (value);
+        }
+    }
+
+    private Float parse(String toParse) {
+        Number number = parse(toParse, -Float.MAX_VALUE, Float.MAX_VALUE, Locale.US);
 
         if (number == null) {
             return null;
-        }
+        } else {
 
-        return number.floatValue();
+            return number.floatValue();
+        }
     }
 
-    /**
-     * @see org.apache.wicket.util.convert.converter.AbstractConverter#getTargetType()
-     */
     @Override
     protected Class<Float> getTargetType() {
         return Float.class;
