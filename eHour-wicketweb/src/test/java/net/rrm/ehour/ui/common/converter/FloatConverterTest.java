@@ -70,4 +70,14 @@ public class FloatConverterTest extends BaseSpringWebAppTester {
 	public void should_convert_with_space_separator() {
 		assertEquals(12000.1f, converter.convertToObject("12 000,1", new Locale("nl-NL")), 0.01f);
 	}
+
+	@Test
+	public void should_ignore_non_numeric_chars() {
+		assertEquals(12000.1f, converter.convertToObject("12 000,1x0", new Locale("nl-NL")), 0.01f);
+	}
+
+	@Test
+	public void should_ignore_double_non_numeric_chars() {
+		assertEquals(12000.1f, converter.convertToObject("12 0xyz00,1<x0", new Locale("nl-NL")), 0.01f);
+	}
 }

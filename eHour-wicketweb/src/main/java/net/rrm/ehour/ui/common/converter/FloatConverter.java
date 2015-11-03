@@ -11,15 +11,6 @@ import java.util.Locale;
 public class FloatConverter extends AbstractDecimalConverter<Float> {
     private static final long serialVersionUID = 3978602245247446289L;
 
-    private NumberFormat formatter;
-
-    public FloatConverter() {
-        formatter = NumberFormat.getNumberInstance(Locale.US);
-        formatter.setMaximumFractionDigits(2);
-        formatter.setMinimumFractionDigits(2);
-
-    }
-
     @Override
     protected NumberFormat newNumberFormat(Locale locale) {
         EhourConfig config = EhourWebSession.getEhourConfig();
@@ -33,7 +24,8 @@ public class FloatConverter extends AbstractDecimalConverter<Float> {
 
     @Override
     public Float convertToObject(final String value, final Locale locale) throws ConversionException {
-        String nonNumericsToPoints = value.replaceAll("[^0-9.]", ".");
+        String nonNumericsToPoints = value.replaceAll("['| ]", "").replaceAll(",", ".").replaceAll("[^0-9|^\\.]", "");
+
         int lastDotAt = nonNumericsToPoints.lastIndexOf(".");
 
         if (lastDotAt > -1) {
