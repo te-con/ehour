@@ -2,6 +2,7 @@ package net.rrm.ehour.ui.common.converter;
 
 import net.rrm.ehour.config.EhourConfig;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
+import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.converter.AbstractDecimalConverter;
 
 import java.text.NumberFormat;
@@ -9,6 +10,15 @@ import java.util.Locale;
 
 public class FloatConverter extends AbstractDecimalConverter<Float> {
     private static final long serialVersionUID = 3978602245247446289L;
+
+    private NumberFormat formatter;
+
+    public FloatConverter() {
+        formatter = NumberFormat.getNumberInstance(Locale.US);
+        formatter.setMaximumFractionDigits(2);
+        formatter.setMinimumFractionDigits(2);
+
+    }
 
     @Override
     protected NumberFormat newNumberFormat(Locale locale) {
@@ -22,7 +32,7 @@ public class FloatConverter extends AbstractDecimalConverter<Float> {
     }
 
     @Override
-    public Float convertToObject(final String value, final Locale locale) {
+    public Float convertToObject(final String value, final Locale locale) throws ConversionException {
         String nonNumericsToPoints = value.replaceAll("[^0-9.]", ".");
         int lastDotAt = nonNumericsToPoints.lastIndexOf(".");
 
@@ -32,7 +42,12 @@ public class FloatConverter extends AbstractDecimalConverter<Float> {
 
             int insertAt = (withoutDots.length() - decimalsBehindPoint) + 1;
             String toParse = new StringBuilder(withoutDots).insert(insertAt, '.').toString();
-            return parse(toParse);
+
+            try {
+                return Float.parseFloat(toParse);
+            } catch (NumberFormatException nfe) {
+                throw new ConversionException(nfe);
+            }
         } else {
             return parse (value);
         }
@@ -44,7 +59,6 @@ public class FloatConverter extends AbstractDecimalConverter<Float> {
         if (number == null) {
             return null;
         } else {
-
             return number.floatValue();
         }
     }
