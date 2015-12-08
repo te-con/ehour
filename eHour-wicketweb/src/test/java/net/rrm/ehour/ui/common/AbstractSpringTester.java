@@ -46,8 +46,7 @@ public abstract class AbstractSpringTester {
 
         mockContext.putBean("ehourSystemConfig", ehourSystemConfig);
 
-        config = new EhourConfigStub();
-        config.setFirstDayOfWeek(Calendar.SUNDAY);
+        config = createConfig();
         mockContext.putBean("EhourConfig", config);
 
         auditService = mock(AuditService.class);
@@ -61,6 +60,12 @@ public abstract class AbstractSpringTester {
         mockContext.putBean("menuDefinition", Lists.newArrayList());
 
         when(updateService.isLatestVersion()).thenReturn(Boolean.TRUE);
+    }
+
+    protected EhourConfigStub createConfig() {
+        EhourConfigStub config = new EhourConfigStub();
+        config.setFirstDayOfWeek(Calendar.SUNDAY);
+        return config;
     }
 
     public final ApplicationContextMock getMockContext() {

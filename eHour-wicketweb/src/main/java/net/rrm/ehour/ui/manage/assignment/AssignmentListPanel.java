@@ -61,6 +61,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
 
     @SpringBean
     private ProjectAssignmentService projectAssignmentService;
+
     private EhourConfig config;
     private ListView<ProjectAssignment> assignmentListView;
     private User user;
@@ -106,7 +107,7 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
 
         if (hideInactive) {
             for (ProjectAssignment projectAssignment : projectAssignments) {
-                if (projectAssignment.isActive()) {
+                if (projectAssignment.isBookable()) {
                     filteredAssignments.add(projectAssignment);
                 }
             }
@@ -135,12 +136,6 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
         };
     }
 
-    /**
-     * Get listview for project assignments
-     *
-     * @param projectAssignments
-     * @return
-     */
     private ListView<ProjectAssignment> getProjectAssignmentLists(final List<ProjectAssignment> projectAssignments) {
         assignmentListView = new ListView<ProjectAssignment>("assignments", projectAssignments) {
             @Override
@@ -212,5 +207,4 @@ public class AssignmentListPanel extends AbstractBasePanel<Void> {
 
         response.render(CssHeaderItem.forReference(new CssResourceReference(AssignmentListPanel.class, "assignment_admin.css")));
     }
-
 }

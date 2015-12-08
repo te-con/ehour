@@ -2,7 +2,7 @@ package net.rrm.ehour.ui.report.detailed
 
 import net.rrm.ehour.ui.report.panel.UpdateReportDataEvent
 import org.apache.wicket.event.IEvent
-import org.apache.wicket.markup.head.{IHeaderResponse, OnLoadHeaderItem}
+import org.apache.wicket.markup.head.{OnDomReadyHeaderItem, IHeaderResponse, OnLoadHeaderItem}
 import org.apache.wicket.markup.html.IHeaderContributor
 import org.apache.wicket.markup.html.panel.Panel
 
@@ -10,9 +10,9 @@ class DetailedReportChartContainer(id: String, cacheKey: String) extends Panel(i
   setOutputMarkupId(true)
 
   override def renderHead(response: IHeaderResponse) {
-    response.render(new OnLoadHeaderItem(s"window.chart = new DetailedReportChart('$cacheKey', 'chart');"))
+    response.render(OnDomReadyHeaderItem.forScript(s"window.chart = new DetailedReportChart('$cacheKey', 'chart');"))
 
-    response.render(new OnLoadHeaderItem("window.chart.init();"))
+    response.render(OnDomReadyHeaderItem.forScript("window.chart.init();"))
   }
 
   override def onEvent(event: IEvent[_]) {

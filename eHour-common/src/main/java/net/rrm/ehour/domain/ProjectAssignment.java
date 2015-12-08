@@ -278,6 +278,17 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
     }
 
     /**
+     * Whether assignment/project/customer are all active
+     *
+     * @return
+     */
+    public boolean isBookable() {
+        return isActive() &&
+                (getProject() == null || getProject().isActive()) &&
+                (getProject() == null || getProject().getCustomer() == null || getProject().getCustomer().isActive());
+    }
+
+    /**
      * @param active the active to set
      */
     public void setActive(boolean active) {
@@ -350,7 +361,9 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         if (!(other instanceof ProjectAssignment)) {
             return false;
         }
+
         ProjectAssignment castOther = (ProjectAssignment) other;
+
         return new EqualsBuilder()
                 .append(user, castOther.user)
                 .append(project, castOther.project)
@@ -362,6 +375,7 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
                 .append(allottedHours, castOther.allottedHours)
                 .append(allowedOverrun, castOther.allowedOverrun)
                 .append(active, castOther.active)
+                .append(getPK(), castOther.getPK())
                 .isEquals();
     }
 
@@ -370,7 +384,16 @@ public class ProjectAssignment extends DomainObject<Integer, ProjectAssignment> 
         return new HashCodeBuilder()
                 .append(user)
                 .append(project)
-                .append(hourlyRate).append(dateStart).append(dateEnd).append(role).append(assignmentType).append(allottedHours).append(allowedOverrun).append(active).toHashCode();
+                .append(hourlyRate)
+                .append(dateStart)
+                .append(dateEnd)
+                .append(role)
+                .append(assignmentType)
+                .append(allottedHours)
+                .append(allowedOverrun)
+                .append(active)
+                .append(assignmentId)
+                .toHashCode();
     }
 
 }

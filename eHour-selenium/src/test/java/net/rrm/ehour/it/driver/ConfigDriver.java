@@ -2,10 +2,10 @@ package net.rrm.ehour.it.driver;
 
 import org.openqa.selenium.WebElement;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.ItUtil.findElement;
+import static org.junit.Assert.assertEquals;
 
 public abstract class ConfigDriver {
     public static void navigateToConfig() {

@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User getUser(Integer userId) throws ObjectNotFoundException {
         User user = userDAO.findById(userId);
-        Set<ProjectAssignment> inactiveAssignments = new HashSet<ProjectAssignment>();
+        Set<ProjectAssignment> inactiveAssignments = new HashSet<>();
 
         if (user != null && user.getProjectAssignments() != null) {
             splitActiveAndInactiveAssignments(user, inactiveAssignments);
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
             user.setDeletable(true);
         } else {
             // bummer, we need to check if the user booked any hours on the assignments
-            List<Integer> assignmentIds = new ArrayList<Integer>();
+            List<Integer> assignmentIds = new ArrayList<>();
 
             assignmentIds.addAll(DomainUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
             assignmentIds.addAll(DomainUtil.getIdsFromDomainObjects(user.getInactiveProjectAssignments()));
@@ -227,7 +227,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // encrypt password
-        user.setSalt((int) (Math.random() * 10000));
+        user.setSalt((int) (Math.random()  * 10000));
         user.setPassword(encryptPassword(password, user.getSalt()));
 
         userDAO.persist(user);

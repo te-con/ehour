@@ -2,7 +2,7 @@
     <parent>
         <groupId>net.rrm.ehour</groupId>
         <artifactId>eHour</artifactId>
-        <version>1.4.3</version>
+        <version>1.4.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>eHour-persistence</artifactId>
@@ -57,15 +57,15 @@
             <artifactId>hibernate-ehcache</artifactId>
         </dependency>
 
+<!--        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-hikaricp</artifactId>
+        </dependency>-->
+
         <dependency>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
             <version>3.3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javassist</groupId>
-            <artifactId>javassist</artifactId>
         </dependency>
 
         <dependency>
@@ -104,11 +104,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>net.rrm.ehour</groupId>
             <artifactId>eHour-common</artifactId>
         </dependency>
@@ -141,12 +136,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mchange</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>0.9.5</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
         </dependency>
@@ -164,8 +153,14 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP-java6</artifactId>
-            <version>2.3.2</version>
+            <version>2.3.3</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

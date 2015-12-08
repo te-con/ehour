@@ -55,7 +55,7 @@ public class DatabaseBackupServiceImplTest {
 
         when(configurationService.getConfiguration()).thenReturn(configuration);
 
-        List<Configuration> configurationList = new ArrayList<>(Arrays.asList(new Configuration(ConfigurationItem.AVAILABLE_TRANSLATIONS.getDbField(), "nl")));
+        List<Configuration> configurationList = Lists.newArrayList(new Configuration(ConfigurationItem.AVAILABLE_TRANSLATIONS.getDbField(), "nl"));
         when(configurationService.findAllConfiguration()).thenReturn(configurationList);
 
         byte[] xmlBytes = service.exportDatabase();
@@ -66,7 +66,5 @@ public class DatabaseBackupServiceImplTest {
         assertThat(xml, containsString("CONFIG"));
 
         assertTrue(xml.startsWith("<?xml version="));
-
-        System.out.println(xml);
     }
 }

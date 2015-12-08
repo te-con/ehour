@@ -1,19 +1,21 @@
 package net.rrm.ehour.it;
 
-import net.rrm.ehour.EhourServer;
-import net.rrm.ehour.persistence.datasource.SpringContext;
+import net.rrm.ehour.persistence.database.SpringContext;
+import net.rrm.ehour.persistence.hibernate.HibernateCache;
+import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import javax.sql.DataSource;
@@ -32,12 +34,17 @@ public abstract class AbstractScenario {
 
     @Rule
     public ScreenshotTestRule screenshotTestRule;
+    private static SessionFactory sessionFactory;
 
     @Before
     public void setUp() throws Exception {
         if (!initialized) {
+            createInMemoryDb();
+
             EhourTestApplication.start();
-            dataSource = SpringContext.getApplicationContext().getBean(DataSource.class);
+            sessionFactory = SpringContext.getApplicationContext().getBean(SessionFactory.class);
+
+            dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
         }
 
         Driver = new FirefoxDriver();
@@ -57,8 +64,15 @@ public abstract class AbstractScenario {
         initialized = true;
     }
 
+    private void createInMemoryDb() throws SQLException {
+        EmbeddedConnectionPoolDataSource csDataSource = new EmbeddedConnectionPoolDataSource();
+        csDataSource.setDatabaseName("memory:ehourDb;create=true");
+        csDataSource.getPooledConnection().close();
+    }
+
     protected void clearDatabase() throws SQLException {
         DatabaseTruncater.truncate(dataSource);
+        HibernateCache.clearHibernateCache(sessionFactory);
     }
 
     protected final void preloadDatabase(String dataSetFileName) throws Exception {
@@ -85,10 +99,16 @@ public abstract class AbstractScenario {
     public void quitBrowser() {
         if (Driver != null) {
             try {
+                if (isTruncateBetweenTests())
+                    clearDatabase();
                 Driver.quit();
             } catch (Exception e) {
                 //
             }
         }
+    }
+
+    protected boolean isTruncateBetweenTests() {
+        return true;
     }
 }

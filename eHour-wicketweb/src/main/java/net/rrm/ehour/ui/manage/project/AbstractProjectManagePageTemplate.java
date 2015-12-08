@@ -111,7 +111,7 @@ public abstract class AbstractProjectManagePageTemplate<T extends ProjectAdminBa
         for (Project project : projects) {
             boolean active = project.isActive();
 
-            List<String> cells = Lists.newArrayList(project.getName(), project.getProjectCode());
+            List<String> cells = Lists.newArrayList(project.getProjectCode(), project.getName());
             rows.add(new EntrySelectorData.EntrySelectorRow(cells, project.getProjectId(), active));
         }
 

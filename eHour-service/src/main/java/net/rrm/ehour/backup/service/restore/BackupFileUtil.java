@@ -14,13 +14,11 @@ public final class BackupFileUtil {
     }
 
     /**
-     * Write XML to temp file
-     *
-     * @param xmlData
-     * @return
-     * @throws IOException
+     * Write bytes[] to temp file and return the absolute filename
      */
-    static String writeToTempFile(String xmlData) throws IOException {
+    public static String writeToTempFile(byte[] bytes) throws IOException {
+        final String xmlData = new String(bytes);
+
         File file = File.createTempFile("import", "xml");
         file.deleteOnExit();
 

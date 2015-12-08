@@ -72,7 +72,7 @@ public class AssignmentProjectSelectionPanel extends AbstractBasePanel<Assignmen
                 if (selectedCustomer != null) {
                     customer = customerService.getCustomer(selectedCustomer.getCustomerId());
 
-                    if (customer == null || customer.getProjects() == null || customer.getProjects().size() == 0) {
+                    if (customer == null || customer.getProjects() == null || customer.getProjects().isEmpty()) {
                         projects = Lists.newArrayList();
                     } else {
                         projects = Lists.newArrayList(customer.getActiveProjects());
@@ -92,7 +92,6 @@ public class AssignmentProjectSelectionPanel extends AbstractBasePanel<Assignmen
         projectValidationErrorIndicator = new AjaxFormComponentFeedbackIndicator("projectValidationError", projectChoice);
         projectValidationErrorIndicator.setOutputMarkupId(true);
         add(projectValidationErrorIndicator);
-
 
         // make project update automatically when customers changed
         customerChoice.add(new AjaxFormComponentUpdatingBehavior("change") {
@@ -135,7 +134,7 @@ public class AssignmentProjectSelectionPanel extends AbstractBasePanel<Assignmen
         List<Customer> customersWithActiveProjects = Lists.newArrayList();
 
         for (Customer customer : customers) {
-            if (customer.getActiveProjects().size() > 0) {
+            if (!customer.getActiveProjects().isEmpty()) {
                 customersWithActiveProjects.add(customer);
             }
         }
@@ -147,18 +146,21 @@ public class AssignmentProjectSelectionPanel extends AbstractBasePanel<Assignmen
 
     private AbstractChoice<?, Project> createProjectChoiceDropDown(String id, IModel<List<Project>> projectChoices, OptGroupRendererMap<Project> renderer) {
         if (getPanelModelObject().isNewAssignment()) {
-            PropertyModel<Collection<Project>> selectedProjects = new PropertyModel<Collection<Project>>(getDefaultModel(), "selectedProjects");
+            PropertyModel<Collection<Project>> selectedProjects = new PropertyModel<>(getDefaultModel(), "selectedProjects");
 
-            return new GroupableListMultipleChoice<Project>(id, selectedProjects, projectChoices, renderer);
+            return new GroupableListMultipleChoice<>(id, selectedProjects, projectChoices, renderer);
         } else {
-            IModel<Project> projectModel = new PropertyModel<Project>(getDefaultModel(), "projectAssignment.project");
+            IModel<Project> projectModel;
+            projectModel = new PropertyModel<>(getDefaultModel(), "projectAssignment.project");
 
-            return new GroupableDropDownChoice<Project>(id, projectModel, projectChoices, renderer);
+            GroupableDropDownChoice<Project> choice = new GroupableDropDownChoice<>(id, projectModel, projectChoices, renderer);
+            choice.add(DynamicAttributeModifier.remove("style"));
+            return choice;
         }
     }
 
     private DropDownChoice<Customer> createCustomerDropdown(List<Customer> customers) {
-        DropDownChoice<Customer> customerChoice = new DropDownChoice<Customer>("customer", customers, new ChoiceRenderer<Customer>("fullName"));
+        DropDownChoice<Customer> customerChoice = new DropDownChoice<>("customer", customers, new ChoiceRenderer<Customer>("fullName"));
         customerChoice.setLabel(new ResourceModel("admin.assignment.customer"));
         customerChoice.setOutputMarkupId(true);
         customerChoice.setNullValid(true);

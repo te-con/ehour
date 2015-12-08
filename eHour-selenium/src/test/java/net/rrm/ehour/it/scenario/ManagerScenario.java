@@ -28,7 +28,7 @@ public class ManagerScenario extends AbstractScenario {
     public void with_just_manager_role_the_user_should_not_have_access_to_system_setup() {
         loginAdmin();
         checkSplitAdminRole();
-        UserManagementDriver.ItUser user = new UserManagementDriver.ItUser("thies", "pass");
+        UserManagementDriver.ItUser user = new UserManagementDriver.ItUser("dummyuser", "pass");
         createUser(user, "Edeling", "Manager");
         logout();
 

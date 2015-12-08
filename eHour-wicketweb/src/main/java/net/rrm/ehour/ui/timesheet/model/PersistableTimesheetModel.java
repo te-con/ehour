@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public interface PersistableTimesheetModel<T extends TimesheetContainer> extends IModel<T> {
-    List<ProjectAssignmentStatus> persist();
+    List<ProjectAssignmentStatus> persist() throws TimesheetModel.UnknownPersistenceException;
 
     void init(User user, Calendar forWeek);
 }

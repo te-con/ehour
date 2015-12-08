@@ -23,10 +23,13 @@ import net.rrm.ehour.ui.timesheet.dto.Timesheet;
 import net.rrm.ehour.ui.timesheet.dto.TimesheetRow;
 import net.rrm.ehour.ui.timesheet.model.PersistableTimesheetModel;
 import net.rrm.ehour.ui.timesheet.model.TimesheetContainer;
+import net.rrm.ehour.ui.timesheet.model.TimesheetModel;
 import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactory;
 import net.rrm.ehour.ui.timesheet.panel.renderer.SectionRenderFactoryCollection;
 import net.rrm.ehour.util.DateUtil;
+import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
@@ -67,9 +70,12 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     private static final JavaScriptResourceReference GUARDFORM_JS = new JavaScriptResourceReference(TimesheetPanel.class, "guardform.js");
     private static final JavaScriptResourceReference TIMESHEET_JS = new JavaScriptResourceReference(TimesheetPanel.class, "timesheet.js");
     private static final CssResourceReference TIMESHEET_CSS = new CssResourceReference(TimesheetPanel.class, "css/timesheetForm.css");
+    public static final String SERVER_MESSAGE_ID = "serverMessage";
+
+    private static final Logger LOGGER = Logger.getLogger(TimesheetPanel.class);
 
     private EhourConfig config;
-    private WebComponent serverMsgLabel;
+    private Component serverMsgLabel;
     private Form<TimesheetContainer> timesheetForm;
 
     @SpringBean
@@ -238,7 +244,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         timesheetForm.visitChildren(Label.class, new IVisitor<Label, Void>() {
             @Override
             public void component(Label label, IVisit visit) {
-                if (label.getId().equals("status")) {
+                if ("status".equals(label.getId())) {
                     label.setVisible(true);
                     target.add(label);
                 }
@@ -251,30 +257,35 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
      */
     private Label updatePostPersistMessage() {
         // server message
-        IModel<String> model = new StringResourceModel("timesheet.weekSaved",
+        IModel<String> serverMsg = new StringResourceModel("timesheet.weekSaved",
                 TimesheetPanel.this,
                 null,
                 new PropertyModel<Date>(getDefaultModel(), "timesheet.totalBookedHours"),
                 new DateModel(new PropertyModel<Date>(getDefaultModel(), "timesheet.weekStart"), config, DateModel.DATESTYLE_FULL_SHORT),
                 new DateModel(new PropertyModel<Date>(getDefaultModel(), "timesheet.weekEnd"), config, DateModel.DATESTYLE_FULL_SHORT));
 
-        return updateServerMessage(model);
-
-    }
-
-    private Label updateErrorMessage() {
-        IModel<String> model = new StringResourceModel("timesheet.errorPersist", TimesheetPanel.this, null);
-
-        return updateServerMessage(model);
-    }
-
-    private Label updateServerMessage(IModel<String> model) {
-        Label label = new Label("serverMessage", model);
+        Label label = new Label(SERVER_MESSAGE_ID, serverMsg);
         label.add(AttributeModifier.replace("style", "timesheetPersisted"));
         label.setOutputMarkupId(true);
         serverMsgLabel.replaceWith(label);
         serverMsgLabel = label;
         return label;
+
+    }
+
+    private WebMarkupContainer updateErrorMessage(String msgModel) {
+        IModel<String> model = new MessageResourceModel(msgModel, TimesheetPanel.this);
+
+        Fragment fragment = new Fragment(SERVER_MESSAGE_ID, "persistenceError", this);
+        fragment.add(new Label("msg", model));
+        fragment.add(AttributeModifier.replace("style", "padding: 5px 10px"));
+        fragment.add(AttributeModifier.replace("class", "warningBanner"));
+
+        fragment.setOutputMarkupId(true);
+
+        serverMsgLabel.replaceWith(fragment);
+        serverMsgLabel = fragment;
+        return fragment;
     }
 
     /**
@@ -326,7 +337,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
     }
 
     @SuppressWarnings("unchecked")
-    private List<ProjectAssignmentStatus> persistTimesheetEntries() {
+    private List<ProjectAssignmentStatus> persistTimesheetEntries() throws TimesheetModel.UnknownPersistenceException {
         return ((PersistableTimesheetModel) getPanelModel()).persist();
     }
 
@@ -359,7 +370,7 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
         blueBorder.add(submitButtonTop);
 
         // server message
-        serverMsgLabel = new WebComponent("serverMessage");
+        serverMsgLabel = new WebComponent(SERVER_MESSAGE_ID);
         serverMsgLabel.setOutputMarkupId(true);
         timesheetForm.add(serverMsgLabel);
 
@@ -408,17 +419,22 @@ public class TimesheetPanel extends AbstractBasePanel<TimesheetContainer> {
 
         @Override
         protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-            List<ProjectAssignmentStatus> failedProjects = persistTimesheetEntries();
+            try {
+                List<ProjectAssignmentStatus> failedProjects = persistTimesheetEntries();
 
-            if (failedProjects.isEmpty()) {
-                target.add(updatePostPersistMessage());
-            } else {
-                target.add(updateErrorMessage());
+                if (failedProjects.isEmpty()) {
+                    target.add(updatePostPersistMessage());
+                } else {
+                    target.add(updateErrorMessage("timesheet.errorPersist"));
+                }
+
+                addFailedProjectMessages(failedProjects, target);
+
+                EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
+            } catch (TimesheetModel.UnknownPersistenceException e) {
+                LOGGER.error("Failed to persist", e);
+                target.add(updateErrorMessage("timesheet.generalPersistenceError"));
             }
-
-            addFailedProjectMessages(failedProjects, target);
-
-            EventPublisher.publishAjaxEvent(this, new AjaxEvent(TimesheetAjaxEventType.TIMESHEET_SUBMIT));
         }
 
         @Override

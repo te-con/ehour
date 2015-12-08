@@ -21,28 +21,35 @@ import javax.sql.DataSource;
 
 import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * Shutdowns the Derby database gracefully when the application goes down
- * 
+ * <p/>
  * Created on Jun 2, 2010, 7:41:56 PM
- * @author Thies Edeling (thies@te-con.nl) 
  *
+ * @author Thies Edeling (thies@te-con.nl)
  */
-public class DerbyDbManagerImpl implements ApplicationListener<ContextClosedEvent>, DerbyDbManager
-{
-	private static final Logger LOGGER = Logger.getLogger(DerbyDbManagerImpl.class);
+@Component
+public class DerbyDbManagerImpl implements ApplicationListener<ContextClosedEvent>, DerbyDbManager {
+    private static final Logger LOGGER = Logger.getLogger(DerbyDbManagerImpl.class);
 
-	@Autowired
-	private DataSource	dataSource;
-	
-	@Override
-	public void onApplicationEvent(ContextClosedEvent event)
-	{
-		LOGGER.info("Application shutting down, shutting down database");
-		((EmbeddedDataSource)dataSource).setShutdownDatabase("shutdown");	
-	}
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Override
+    public void onApplicationEvent(ContextClosedEvent event) {
+        LOGGER.info("Application shutting down, shutting down database");
+
+        DataSource source = SessionFactoryUtils.getDataSource(sessionFactory);
+
+        if (source != null) {
+            ((EmbeddedDataSource) source).setShutdownDatabase("shutdown");
+        }
+    }
 }

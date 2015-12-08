@@ -16,7 +16,13 @@ import org.springframework.stereotype.Repository
 class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[Integer, ProjectAssignment](classOf[ProjectAssignment]) with ProjectAssignmentDao {
   private final val CacheRegion = Some("query.ProjectAssignment")
 
-  override def findProjectAssignmentsForUser(userId: Integer, range: DateRange): util.List[ProjectAssignment] = {
+  override def findActiveProjectAssignmentsForUser(userId: Integer, range: DateRange): util.List[ProjectAssignment] = {
+    val keys = List("dateStart", "dateEnd", "userId")
+    val params = List(range.getDateStart, range.getDateEnd, userId)
+    findByNamedQuery("ProjectAssignment.findActiveProjectAssignmentsForUserInRange", keys, params, CacheRegion)
+  }
+
+  override def findAllProjectAssignmentsForUser(userId: Integer, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "userId")
     val params = List(range.getDateStart, range.getDateEnd, userId)
     findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUserInRange", keys, params, CacheRegion)
@@ -28,8 +34,8 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
     findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUserForProject", keys, params, CacheRegion)
   }
 
-  override def findProjectAssignmentsForUser(user: User): util.List[ProjectAssignment] =
-    findByNamedQuery("ProjectAssignment.findProjectAssignmentsForUser", "user", user, CacheRegion)
+  override def findAllProjectAssignmentsForUser(user: User): util.List[ProjectAssignment] =
+    findByNamedQuery("ProjectAssignment.findAllProjectAssignmentsForUser", "user", user, CacheRegion)
 
   override def findProjectAssignmentsForProject(project: Project, range: DateRange): util.List[ProjectAssignment] = {
     val keys = List("dateStart", "dateEnd", "project")
@@ -37,13 +43,15 @@ class ProjectAssignmentDaoHibernateImpl extends AbstractGenericDaoHibernateImpl[
     findByNamedQuery("ProjectAssignment.findProjectAssignmentsForProjectInRange", keys, params, CacheRegion)
   }
 
-  override def findAllProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment] = findProjectAssignmentsForProject(project, onlyActive = false)
+  override def findAllProjectAssignmentsForProject(project: Project): util.List[ProjectAssignment] = findProjectAssignmentsForProject(project, onlyActive = true)
 
   private def findProjectAssignmentsForProject(project: Project, onlyActive: Boolean): util.List[ProjectAssignment] = {
     val crit = getSession.createCriteria(classOf[ProjectAssignment])
 
     if (onlyActive) {
       crit.add(Restrictions.eq("active", true))
+      crit.createAlias("user", "u")
+      crit.add(Restrictions.eq("u.active", true))
     }
 
     crit.add(Restrictions.eq("project", project))

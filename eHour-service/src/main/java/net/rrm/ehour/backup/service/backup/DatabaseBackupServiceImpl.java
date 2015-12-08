@@ -1,5 +1,6 @@
 package net.rrm.ehour.backup.service.backup;
 
+import com.google.common.collect.Maps;
 import net.rrm.ehour.backup.common.BackupConfig;
 import net.rrm.ehour.backup.common.BackupEntityType;
 import net.rrm.ehour.backup.common.BackupJoinTable;
@@ -55,7 +56,7 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
             return outputStream.toByteArray();
         } catch (XMLStreamException e) {
             LOGGER.error(e);
-            return null;
+            return new byte[0];
         } finally {
             if (writer != null) {
                 try {
@@ -128,13 +129,19 @@ public class DatabaseBackupServiceImpl implements DatabaseBackupService {
             List<Map<String, Object>> rows = backupDao.findAll(tableName);
 
             for (Map<String, Object> row : rows) {
+                Map<String, Object> uppercaseRowMap = Maps.newHashMap();
+
+                for (Entry<String, Object> s : row.entrySet()) {
+                    uppercaseRowMap.put(s.getKey().toUpperCase(), s.getValue());
+                }
+
                 writer.writeStartElement(tableName);
 
-                Object source = row.get(joinTable.getAttributeSource());
-                Object target = row.get(joinTable.getAttributeTarget());
+                Object source = uppercaseRowMap.get(joinTable.getAttributeSource().toUpperCase());
+                Object target = uppercaseRowMap.get(joinTable.getAttributeTarget().toUpperCase());
 
-                writer.writeAttribute(joinTable.getAttributeSource(), source.toString());
-                writer.writeAttribute(joinTable.getAttributeTarget(), target.toString());
+                writer.writeAttribute(joinTable.getAttributeSource().toUpperCase(), source.toString());
+                writer.writeAttribute(joinTable.getAttributeTarget().toUpperCase(), target.toString());
 
                 writer.writeEndElement();
             }

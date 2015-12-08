@@ -1058,3 +1058,24 @@ hr {
 .fa-file-excel-o {
     color: green;
 }
+
+.warningBanner {
+    width: 98%;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 15px;
+    background-color: #f7daa0;
+}
+
+.warningBanner .fa {
+    color: #efa104;
+}
+
+.warningBanner a {
+    padding: 0 !important;
+}
+
+.footer {
+    font-size: 90% !important;
+    opacity: 0.8;
+}

@@ -16,12 +16,11 @@
 
 <wicket:panel>
     <div id="buttons" style="padding: 0 0 5px;display:none">
-        <input type="radio" id="time" checked name="chartType"/><label for="time">Time</label>
-        <input type="radio" id="turnover" name="chartType"/><label for="turnover">Turnover</label>
+        <input type="radio" id="time" checked name="chartType"/><label for="time"><wicket:message key="report.chart.detailed.button.time"/></label>
+        <input type="radio" id="turnover" name="chartType"/><label for="turnover"><wicket:message key="report.chart.detailed.button.turnover" /></label>
     </div>
 
     <div id="chart"></div>
-
 </wicket:panel>
 
 </body>

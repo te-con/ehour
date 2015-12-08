@@ -49,6 +49,8 @@ public class DatabaseTruncater {
         restoreDao.delete(Configuration.class);
         restoreDao.delete(BinaryConfiguration.class);
         restoreDao.delete(MailLog.class);
+
+        restoreDao.clearCache();
     }
 
     public void setRestoreDao(RestoreDao restoreDao) {

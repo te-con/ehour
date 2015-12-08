@@ -26,46 +26,41 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 
-public class AuditReportPage extends AbstractAdminPage<String>
-{
-	
-	public AuditReportPage()
-	{
-		super(new ResourceModel("audit.report.title"), new Model<String>());
-		
-		IModel<ReportCriteria> criteriaModel = getReportCriteriaModel();
-		setDefaultModel(criteriaModel);
-		
-		GreyRoundedBorder greyBorder = new GreyRoundedBorder(AuditConstants.PATH_FRAME, new ResourceModel("audit.report.title"));
-		add(greyBorder);
-		
-		AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(AuditConstants.PATH_CRITERIA, criteriaModel);
-		greyBorder.add(criteriaPanel);
-		
-		AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, criteriaModel);
-		greyBorder.add(dataPanel);
-	}
-	
-	private IModel<ReportCriteria> getReportCriteriaModel()
-	{
-		AuditReportRequest auditReportRequest = new AuditReportRequest();
-		ReportCriteria criteria = new ReportCriteria(auditReportRequest);
-		
-		return new CompoundPropertyModel<ReportCriteria>(criteria);
-	}
+public class AuditReportPage extends AbstractAdminPage<String> {
 
-	@Override
-	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
-	{
-		if (ajaxEvent.getEventType() == AuditReportCriteriaForm.Events.FORM_SUBMIT)
-		{
+    public AuditReportPage() {
+        super(new ResourceModel("audit.report.title"), new Model<String>());
+
+        IModel<ReportCriteria> criteriaModel = getReportCriteriaModel();
+        setDefaultModel(criteriaModel);
+
+        GreyRoundedBorder greyBorder = new GreyRoundedBorder(AuditConstants.PATH_FRAME, new ResourceModel("audit.report.title"));
+        add(greyBorder);
+
+        AuditReportCriteriaPanel criteriaPanel = new AuditReportCriteriaPanel(AuditConstants.PATH_CRITERIA, criteriaModel);
+        greyBorder.add(criteriaPanel);
+
+        AuditReportDataPanel dataPanel = new AuditReportDataPanel(AuditConstants.PATH_DATA, criteriaModel);
+        greyBorder.add(dataPanel);
+    }
+
+    private IModel<ReportCriteria> getReportCriteriaModel() {
+        AuditReportRequest auditReportRequest = new AuditReportRequest();
+        ReportCriteria criteria = new ReportCriteria(auditReportRequest);
+
+        return new CompoundPropertyModel<>(criteria);
+    }
+
+    @Override
+    public Boolean ajaxEventReceived(AjaxEvent ajaxEvent) {
+        if (ajaxEvent.getEventType() == AuditReportCriteriaForm.Events.FORM_SUBMIT) {
             String path = AuditConstants.PATH_FRAME + ":frame_body:" + AuditConstants.PATH_DATA;
 
             ajaxEvent.getTarget().add(get(path));
-			
-			return false;
-		}
-		
-		return true;
-	}
+
+            return false;
+        }
+
+        return true;
+    }
 }

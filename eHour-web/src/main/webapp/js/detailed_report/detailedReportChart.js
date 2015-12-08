@@ -190,5 +190,3 @@ function DetailedReportChart(cacheKey, id) {
         updateChart(options, 'hour');
     }
 }
-
-

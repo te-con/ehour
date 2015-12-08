@@ -9,17 +9,7 @@ import net.rrm.ehour.backup.domain.ParseSession;
  */
 public interface RestoreService {
     /**
-     * Repare import XML database
-     *
-     * @param xmlData
-     */
-    ParseSession prepareImportDatabase(String xmlData);
-
-    /**
      * Import database
-     *
-     * @param session
-     * @throws net.rrm.ehour.backup.domain.ImportException
      */
-    ParseSession importDatabase(ParseSession session) throws ImportException;
+    void importDatabase(ParseSession session) throws ImportException;
 }

@@ -25,7 +25,6 @@ import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ParentChildConstraintException;
 import net.rrm.ehour.persistence.project.dao.ProjectDao;
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
-import net.rrm.ehour.report.reports.util.ReportUtil;
 import net.rrm.ehour.report.service.AggregateReportService;
 import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DomainUtil;
@@ -89,13 +88,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     public void setProjectDeletability(Project project) {
         List<Integer> ids = DomainUtil.getIdsFromDomainObjects(project.getProjectAssignments());
-        List<AssignmentAggregateReportElement> aggregates = null;
 
-        if (ids != null && ids.size() > 0) {
-            aggregates = aggregateReportService.getHoursPerAssignment(ids);
+        double bookedHours = 0;
+
+        if (!ids.isEmpty()) {
+            List<AssignmentAggregateReportElement> aggregates = aggregateReportService.getHoursPerAssignment(ids);
+
+            for (AssignmentAggregateReportElement aggregate : aggregates) {
+                bookedHours += aggregate.getHours().doubleValue();
+            }
         }
 
-        project.setDeletable(ReportUtil.isEmptyAggregateList(aggregates));
+        project.setBookedHours(bookedHours);
     }
 
     @Transactional

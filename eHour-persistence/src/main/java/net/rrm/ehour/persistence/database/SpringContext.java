@@ -1,4 +1,4 @@
-package net.rrm.ehour.persistence.datasource;
+package net.rrm.ehour.persistence.database;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;

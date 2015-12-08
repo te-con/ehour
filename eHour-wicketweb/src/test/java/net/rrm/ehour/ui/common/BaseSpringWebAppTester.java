@@ -19,6 +19,7 @@ package net.rrm.ehour.ui.common;
 import net.rrm.ehour.ui.test.StrictWicketTester;
 import org.apache.wicket.Component;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.resource.loader.IStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.junit.After;
@@ -87,5 +88,15 @@ public class BaseSpringWebAppTester extends AbstractSpringTester {
 
     protected TestEhourWebApplication getWebApp() {
         return webApp;
+    }
+
+    public static void startEmptyPanel() {
+        try {
+            BaseSpringWebAppTester webAppTester = new BaseSpringWebAppTester();
+            webAppTester.setUp();
+            webAppTester.tester.startComponentInPage(EmptyPanel.class);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

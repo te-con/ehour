@@ -4,10 +4,10 @@ import net.rrm.ehour.it.WicketBy;
 import org.joda.time.LocalDate;
 import org.openqa.selenium.WebElement;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.AbstractScenario.BASE_URL;
 import static net.rrm.ehour.it.AbstractScenario.Driver;
 import static net.rrm.ehour.it.driver.ItUtil.*;
+import static org.junit.Assert.assertEquals;
 
 public class TimesheetLockDriver {
     public static void navigateToAdminLocks() {

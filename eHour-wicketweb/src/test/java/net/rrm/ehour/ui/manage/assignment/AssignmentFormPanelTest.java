@@ -2,6 +2,7 @@ package net.rrm.ehour.ui.manage.assignment;
 
 import net.rrm.ehour.customer.service.CustomerService;
 import net.rrm.ehour.domain.Customer;
+import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.ProjectObjectMother;
 import net.rrm.ehour.project.service.ProjectAssignmentService;
 import net.rrm.ehour.project.service.ProjectService;
@@ -58,7 +59,32 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
         verify(projectService, times(4)).getActiveProjects();
     }
 
+    @Test
+    public void should_display_warning_booking_disabled() {
+        backingBean = new AssignmentAdminBackingBean();
+        ProjectAssignment projectAssignment = DummyUIDataGenerator.getProjectAssignment(1);
+        projectAssignment.getProject().setActive(false);
+
+        backingBean.setProjectAssignment(projectAssignment);
+
+        when(assignmentService.getProjectAssignmentTypes())
+                .thenReturn(DummyUIDataGenerator.getProjectAssignmentTypes());
+
+        List<Customer> customers = new ArrayList<Customer>();
+        customers.add(DummyUIDataGenerator.getCustomer(1));
+
+        when(customerService.getActiveCustomers()).thenReturn(customers);
+
+        when(projectService.getActiveProjects()).thenReturn(Arrays.asList(ProjectObjectMother.createProject(1)));
+
+        startPanel();
+
+        tester.assertNoErrorMessage();
+
+        verify(customerService).getActiveCustomers();
+    }
+
     private void startPanel() {
-        tester.startComponentInPage(new AssignmentFormPanel("id", new CompoundPropertyModel<AssignmentAdminBackingBean>(backingBean)));
+        tester.startComponentInPage(new AssignmentFormPanel("id", new CompoundPropertyModel<>(backingBean)));
     }
 }

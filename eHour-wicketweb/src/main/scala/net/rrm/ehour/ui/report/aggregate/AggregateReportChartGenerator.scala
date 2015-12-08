@@ -4,6 +4,7 @@ import net.rrm.ehour.report.reports.ReportData
 import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement
 import nl.tecon.highcharts.HighChart
 import nl.tecon.highcharts.config._
+import org.apache.wicket.model.ResourceModel
 
 import scala.collection.Seq
 import scala.collection.convert.WrapAsScala
@@ -13,15 +14,15 @@ case class ChartContext(renderToId: String, reportData: ReportData, currencySymb
 object AggregateReportChartGenerator {
 
   def generateUserReportChart(chartContext: ChartContext): String =
-    generateReportChart(chartContext, _.getProjectAssignment.getUser.getFullName, "Users in hours")
+    generateReportChart(chartContext, _.getProjectAssignment.getUser.getFullName, "report.chart.label.users")
 
   def generateCustomerReportChart(chartContext: ChartContext): String =
-    generateReportChart(chartContext, _.getProjectAssignment.getProject.getCustomer.getFullName, "Customers in hours")
+    generateReportChart(chartContext, _.getProjectAssignment.getProject.getCustomer.getFullName, "report.chart.label.customers")
 
   def generateProjectReportChart(chartContext: ChartContext): String =
-    generateReportChart(chartContext, _.getProjectAssignment.getFullName, "Projects in hours")
+    generateReportChart(chartContext, _.getProjectAssignment.getFullName, "report.chart.label.projects")
 
-  private def generateReportChart(chartContext: ChartContext, findCategory: (AssignmentAggregateReportElement) => String, chartTitle: String): String = {
+  private def generateReportChart(chartContext: ChartContext, findCategory: (AssignmentAggregateReportElement) => String, baseChartTitleResourceKey: String): String = {
     import nl.tecon.highcharts.config.Conversions.valueToOption
 
     val elements = WrapAsScala.asScalaBuffer(chartContext.reportData.getReportElements).toSeq.asInstanceOf[Seq[AssignmentAggregateReportElement]]
@@ -29,18 +30,18 @@ object AggregateReportChartGenerator {
     val categoryData = extractCategoryData(elements, findCategory)
 
     val categories = categoryData map (_._1)
-    val hourSeries = Series(name = "Hours", data = categoryData map (_._2), yAxis = 0)
+    val hourSeries = Series(name = lookupResource("report.chart.label.hours"), data = categoryData map (_._2), yAxis = 0)
     val legend = Labels(formatter = JavascriptFunction("function() { return this.value.toLocaleString();}"))
 
     // not winning a beauty contest with this..
     val series: Option[List[Series[Float]]] = Some(if (chartContext.withTurnover) {
-      val turnoverSeries = Series(name = "Turnover", data = categoryData map (_._3), yAxis = 1)
+      val turnoverSeries = Series(name = lookupResource("report.chart.label.turnover"), data = categoryData map (_._3), yAxis = 1)
       List(hourSeries, turnoverSeries)
     } else {
       List(hourSeries)
     })
 
-    val hourAxis = Axis(title = Title(text = "Hours"))
+    val hourAxis = Axis(title = Title(text = lookupResource("report.chart.label.hours")))
 
     val yAxis: Option[Seq[Axis]] = Some(if (chartContext.withTurnover) {
       val turnOverAxis = Axis(title = Title(text = chartContext.currencySymbol), labels = legend, opposite = true)
@@ -49,7 +50,9 @@ object AggregateReportChartGenerator {
       Seq(hourAxis)
     })
 
-    val chartTitleText = if (chartContext.withTurnover) chartTitle + " and turnover" else chartTitle
+    val chartTitleResourceKey = baseChartTitleResourceKey + (if (chartContext.withTurnover) ".turnover" else ".hours")
+
+    val chartTitle = lookupResource(chartTitleResourceKey)
 
     val height = (categories.size * 35) + 110
     val chart = Chart(defaultSeriesType = SeriesType.bar, height = if (height < 400) 400 else height)
@@ -58,11 +61,13 @@ object AggregateReportChartGenerator {
       xAxis = Seq(Axis(Some(categories.toArray))),
       yAxis = yAxis,
       series = series,
-      title = Title(text = chartTitleText),
+      title = Title(text = chartTitle),
       tooltip = Tooltip(shared = true, formatter = Some(JavascriptFunction("""function() { var s = '<b>'+ this.x +'</b>'; $.each(this.points.reverse(), function(i, point) { s += '<br/>'+ point.series.name +': ' + point.y.toLocaleString(); }); return s; }"""))),
       plotOptions = PlotOptions(PlotOptionsSeries(shadow = false))
     ).build(chartContext.renderToId)
   }
+
+  private def lookupResource(resourceKey: String) = new ResourceModel(resourceKey).getObject
 
   private def extractCategoryData(elements: Seq[AssignmentAggregateReportElement], findCategory: (AssignmentAggregateReportElement) => String): List[(String, Float, Float)] = {
     val categories = (elements map findCategory).toSet

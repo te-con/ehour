@@ -33,9 +33,9 @@ public class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDao
 
     @Test
     public void shouldFindProjectAssignmentsForUser() {
-        List<ProjectAssignment> pas = projectAssignmentDAO.findProjectAssignmentsForUser(new User(1));
+        List<ProjectAssignment> pas = projectAssignmentDAO.findAllProjectAssignmentsForUser(new User(1));
 
-        assertEquals(7, pas.size());
+        assertEquals(9, pas.size());
     }
 
     @Test
@@ -77,12 +77,21 @@ public class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDao
     }
 
     @Test
-    public void shouldFindProjectAssignmentsForUserInRange() {
+    public void shouldFindActiveProjectAssignmentsForUserInRange() {
         DateRange range = new DateRange(new Date(2006 - 1900, Calendar.OCTOBER, 24), new Date(2007 - 1900, Calendar.JANUARY, 10));
 
-        List<ProjectAssignment> results = projectAssignmentDAO.findProjectAssignmentsForUser(1, range);
+        List<ProjectAssignment> results = projectAssignmentDAO.findActiveProjectAssignmentsForUser(1, range);
 
         assertEquals(5, results.size());
+    }
+
+    @Test
+    public void shouldFindAllProjectAssignmentsForUserInRange() {
+        DateRange range = new DateRange(new Date(2006 - 1900, Calendar.OCTOBER, 24), new Date(2007 - 1900, Calendar.JANUARY, 10));
+
+        List<ProjectAssignment> results = projectAssignmentDAO.findAllProjectAssignmentsForUser(1, range);
+
+        assertEquals(8, results.size());
     }
 
     @Test
@@ -97,9 +106,9 @@ public class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDao
     @Test
     public void shouldFindAllAssignmentsForProject() {
         List<ProjectAssignment> list = projectAssignmentDAO.findAllProjectAssignmentsForProject(new Project(1));
-
-        assertEquals(4, list.size());
+        assertEquals(3, list.size());
     }
+
 
     @Autowired
     private ProjectAssignmentDao projectAssignmentDAO;

@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TimesheetFactoryTest {
     private static final DateRange RANGE = DateUtil.getDateRangeForWeek(new GregorianCalendar(2012, Calendar.OCTOBER, 8));
@@ -91,5 +91,32 @@ public class TimesheetFactoryTest {
 
         assertEquals("a", rows.get(0).getProjectAssignment().getProject().getName());
         assertEquals("b", rows.get(1).getProjectAssignment().getProject().getName());
+    }
+
+    @Test
+    public void should_mark_entry_as_locked_when_project_is_inactive() {
+        // given
+        User user = UserObjectMother.createUser();
+
+        ProjectAssignment assignment01 = ProjectAssignmentObjectMother.createProjectAssignment(user, ProjectObjectMother.createProject(1));
+        assignment01.getProject().setName("a");
+
+        ProjectAssignment assignment02 = ProjectAssignmentObjectMother.createProjectAssignment(user, ProjectObjectMother.createProject(2));
+        assignment02.getProject().setName("b");
+        assignment02.getProject().setActive(false);
+
+        TimesheetEntry entry = new TimesheetEntry(new TimesheetEntryId(new Date(), assignment02), 5f);
+        WeekOverview weekOverview = new WeekOverview(Collections.singletonList(entry), null, Collections.singletonList(assignment01), RANGE, null, Lists.<Date>newArrayList());
+
+        // when
+        Timesheet timesheet = new TimesheetFactory(config, weekOverview).createTimesheet();
+
+        // then
+        SortedMap<Customer,List<TimesheetRow>> customerRows = timesheet.getCustomers();
+        Set<Customer> customers = customerRows.keySet();
+
+        List<TimesheetRow> rows = customerRows.get(customers.iterator().next());
+        assertFalse(rows.get(0).getTimesheetCells()[0].isLocked());
+        assertTrue(rows.get(1).getTimesheetCells()[0].isLocked());
     }
 }

@@ -183,7 +183,8 @@ public class EhourWebSession extends AuthenticatedWebSession {
             return true;
 
         } catch (BadCredentialsException e) {
-            LOGGER.info("Failed to login for user '" + username + "': " + e.getMessage());
+            LOGGER.info("Failed to login for" +
+                    " user '" + username + "': " + e.getMessage());
             setAuthentication(null);
             return false;
 

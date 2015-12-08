@@ -2,7 +2,7 @@
     <parent>
         <groupId>net.rrm.ehour</groupId>
         <artifactId>eHour</artifactId>
-        <version>1.4.3</version>
+        <version>1.4.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -123,7 +123,7 @@
         <dependency>
             <groupId>com.googlecode.wicket-jquery-ui</groupId>
             <artifactId>wicket-jquery-ui</artifactId>
-            <version>6.12.0</version>
+            <version>6.19.1</version>
         </dependency>
 
         <dependency>
@@ -172,6 +172,12 @@
         <dependency>
             <groupId>org.wicketstuff</groupId>
             <artifactId>wicketstuff-restannotations-json</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>async-task-impl</artifactId>
             <version>${wicket.version}</version>
         </dependency>
 

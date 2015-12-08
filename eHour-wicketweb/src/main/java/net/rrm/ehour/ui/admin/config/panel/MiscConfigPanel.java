@@ -18,7 +18,6 @@
 package net.rrm.ehour.ui.admin.config.panel;
 
 import com.google.common.collect.Lists;
-import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.config.EhourConfigStub;
 import net.rrm.ehour.config.PmPrivilege;
 import net.rrm.ehour.domain.UserRole;
@@ -51,9 +50,6 @@ public class MiscConfigPanel extends AbstractConfigPanel {
 
     @SpringBean
     private UserService userService;
-
-    @SpringBean
-    private EhourSystemConfig ehourSystemConfig;
 
     public MiscConfigPanel(String id, IModel<MainConfigBackingBean> model) {
         super(id, model);
@@ -111,7 +107,7 @@ public class MiscConfigPanel extends AbstractConfigPanel {
             protected void onUpdate(AjaxRequestTarget target) {
                 Boolean managersEnabled = this.getModelObject();
 
-                boolean showConvert = !managersEnabled && userService.getUsers(UserRole.MANAGER).size() > 0;
+                boolean showConvert = !managersEnabled && !userService.getUsers(UserRole.MANAGER).isEmpty();
 
                 if (convertManagersContainer.isVisible() != showConvert) {
                     convertManagersContainer.setVisible(showConvert);

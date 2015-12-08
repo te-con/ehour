@@ -7,12 +7,12 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 import static net.rrm.ehour.it.driver.CustomerManagementDriver.*;
 import static net.rrm.ehour.it.driver.EhourApplicationDriver.*;
 import static net.rrm.ehour.it.driver.ProjectDriver.*;
 import static net.rrm.ehour.it.driver.ReportDriver.*;
 import static net.rrm.ehour.it.driver.UserManagementDriver.createReportUser;
+import static org.junit.Assert.assertEquals;
 
 public class ReportCriteriaScenario extends AbstractScenario {
 
@@ -41,17 +41,22 @@ public class ReportCriteriaScenario extends AbstractScenario {
 
             anotherActiveCustomer = createAnotherActiveCustomer();
             createInActiveProjectFor(anotherActiveCustomer);
-            logout();
 
             initialized = true;
+            logout();
         }
 
         loginReportUser();
     }
 
     @After
-    public void after() {
+    public void logoutAfter() {
         logout();
+    }
+
+    @Override
+    protected boolean isTruncateBetweenTests() {
+        return false;
     }
 
     @Test

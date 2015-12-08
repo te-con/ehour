@@ -5,6 +5,7 @@ import java.util.Date
 
 import net.rrm.ehour.report.criteria.AggregateBy
 import net.rrm.ehour.ui.common.session.EhourWebSession
+import org.apache.wicket.model.ResourceModel
 import org.joda.time.{DateTime, DateTimeZone, LocalDate}
 
 case class DetailedReportResponse(pointStart: DateTime,
@@ -26,7 +27,7 @@ object DetailedReportResponse {
 
     DetailedReportResponse(pointStart = calculatedStartDate.toDateTimeAtStartOfDay(DateTimeZone.UTC),
       `type` = aggregateBy.name().charAt(0).toUpper,
-      title = s"Hours booked on customers per $aggregateByLabel",
+      title = new ResourceModel(s"report.chart.detailed.label.$aggregateByLabel").getObject,
       yAxis = "Hours",
       series = series,
       hasReportRole = hasReportRole)

@@ -50,8 +50,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TimesheetPersistanceTest {
-    private TimesheetPersistance persister;
+public class TimesheetPersistenceTest {
+    private TimesheetPersistence persister;
 
     @Mock
     private TimesheetDao timesheetDAO;
@@ -79,7 +79,7 @@ public class TimesheetPersistanceTest {
 
     @Before
     public void setUp() {
-        persister = new TimesheetPersistance(timesheetDAO, commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
+        persister = new TimesheetPersistence(timesheetDAO, commentDao, statusService, projectManagerNotifierService, timesheetLockService, context);
 
         initData();
     }
@@ -165,7 +165,6 @@ public class TimesheetPersistanceTest {
         verify(timesheetDAO).delete(any(TimesheetEntry.class));
         verify(timesheetDAO).merge(any(TimesheetEntry.class));
     }
-
 
     @Test
     public void should_not_persist_an_timesheet_that_went_overbudget() {
@@ -380,6 +379,20 @@ public class TimesheetPersistanceTest {
 
         verify(timesheetDAO, never()).persist((any(TimesheetEntry.class)));
         verify(commentDao, never()).persist(any(TimesheetComment.class));
+    }
+
+    @Test
+    public void should_delete_entries_that_are_not_resubmitted() throws OverBudgetException {
+        DateRange dateRange = new DateRange();
+
+        withExistingEntries(dateRange);
+        okStatus();
+
+        persister.validateAndPersist(assignment, Lists.newArrayList(newEntries.get(0)), dateRange, Lists.<Date>newArrayList());
+
+        verify(statusService, times(2)).getAssignmentStatus(assignment);
+        verify(timesheetDAO).delete(existingEntries.get(1));
+        verify(timesheetDAO).merge(existingEntries.get(0));
     }
 
     private void okStatus() {

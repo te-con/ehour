@@ -13,8 +13,6 @@ public class BackupDbPage extends AbstractAdminPage<Void> {
 
     private static final long serialVersionUID = 821234996218723175L;
 
-    private Form<Void> form;
-
     public BackupDbPage() {
         super(new ResourceModel("admin.export.title"));
 
@@ -23,5 +21,4 @@ public class BackupDbPage extends AbstractAdminPage<Void> {
 
         add(new ContextualHelpPanel("help", "admin.export.help.header", "admin.export.help.body"));
     }
-
 }

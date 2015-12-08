@@ -44,7 +44,7 @@
 		WHERE prj.projectManager = :user AND
 			  prj.active is true AND
 			  prj.customer.active is true
-	</query>	
+	</query>
 
 
 </hibernate-mapping>

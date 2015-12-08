@@ -16,10 +16,10 @@
 
 package net.rrm.ehour.util;
 
+import com.google.common.collect.Lists;
 import net.rrm.ehour.domain.DomainObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,11 +28,11 @@ public class DomainUtil {
      * Get a list of primary keys of out a list of domain objects
      */
     public static <PK extends Serializable> List<PK> getIdsFromDomainObjects(Collection<? extends DomainObject<PK, ?>> domainObjects) {
-        if (domainObjects == null) {
-            return null;
-        }
+        List<PK> pks = Lists.newArrayList();
 
-        List<PK> pks = new ArrayList<PK>();
+        if (domainObjects == null) {
+            return pks;
+        }
 
         for (DomainObject<PK, ?> domainObject : domainObjects) {
             pks.add(domainObject.getPK());
