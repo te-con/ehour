@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>nl.tecon.ehour</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1</version>
         <artifactId>eHour-parent</artifactId>
     </parent>
 
