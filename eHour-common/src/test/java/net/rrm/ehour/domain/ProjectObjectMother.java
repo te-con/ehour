@@ -10,6 +10,9 @@ import java.util.Set;
  * @author thies (www.te-con.nl)
  */
 public class ProjectObjectMother {
+    private ProjectObjectMother() {
+    }
+
     public static Set<Project> createProjects(int projectCount) {
         Set<Project> projects = Sets.newHashSet();
 

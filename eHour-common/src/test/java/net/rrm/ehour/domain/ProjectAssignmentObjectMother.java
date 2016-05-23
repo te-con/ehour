@@ -10,6 +10,9 @@ import net.rrm.ehour.util.EhourConstants;
  */
 public class ProjectAssignmentObjectMother
 {
+	private ProjectAssignmentObjectMother() {
+	}
+
 	public static ProjectAssignment createProjectAssignment(User user, Project project)
 	{
 		ProjectAssignment assignment = new ProjectAssignment(user, project);

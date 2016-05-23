@@ -9,6 +9,9 @@ import java.util.List;
 
 public class DummyUIDataGenerator {
 
+    private DummyUIDataGenerator() {
+    }
+
     public static List<ProjectAssignmentType> getProjectAssignmentTypes() {
         List<ProjectAssignmentType> list = new ArrayList<ProjectAssignmentType>();
 

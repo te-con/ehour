@@ -27,7 +27,10 @@ public class HtmlUtil
 {
 	public static final String HTML_NBSP = "&nbsp;";
 
-    /**
+	private HtmlUtil() {
+	}
+
+	/**
 	 * Get a &ampnbsp;label
 	 */
 	public static Label getNbspLabel(String id)

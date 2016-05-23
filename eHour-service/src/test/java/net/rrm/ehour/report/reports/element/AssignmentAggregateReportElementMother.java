@@ -8,6 +8,9 @@ import net.rrm.ehour.domain.ProjectAssignmentObjectMother;
  * @author thies (www.te-con.nl)
  */
 public class AssignmentAggregateReportElementMother {
+    private AssignmentAggregateReportElementMother() {
+    }
+
     public static AssignmentAggregateReportElement createProjectAssignmentAggregate() {
         return createProjectAssignmentAggregate(1, 1, 1);
     }

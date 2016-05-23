@@ -8,6 +8,9 @@ public class LocaleUtil {
 
     public static final Locale DEFAULT_LOCALE = new Locale("nl", "NL");
 
+    private LocaleUtil() {
+    }
+
     public static Locale currencyForLanguageTag(String tag) {
         if (StringUtils.isBlank(tag)) {
             return DEFAULT_LOCALE;

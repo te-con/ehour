@@ -10,6 +10,9 @@ import static net.rrm.ehour.it.driver.ItUtil.*;
 import static org.junit.Assert.assertEquals;
 
 public class TimesheetLockDriver {
+    private TimesheetLockDriver() {
+    }
+
     public static void navigateToAdminLocks() {
         Driver.get(BASE_URL + "/eh/op/lock");
     }

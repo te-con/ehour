@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DatabaseTruncater {
+    private DatabaseTruncater() {
+    }
+
     public static void truncate(DataSource dataSource) throws SQLException {
          Connection connection = dataSource.getConnection();
 

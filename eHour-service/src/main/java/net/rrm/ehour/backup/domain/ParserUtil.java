@@ -9,6 +9,9 @@ import javax.xml.stream.events.XMLEvent;
  *         Created on: 11/28/10 - 1:06 AM
  */
 public class ParserUtil {
+    private ParserUtil() {
+    }
+
     public static String parseNextEventAsCharacters(XMLEventReader eventReader) throws XMLStreamException {
         // no chars can only mean an end importer
         StringBuilder data = new StringBuilder();

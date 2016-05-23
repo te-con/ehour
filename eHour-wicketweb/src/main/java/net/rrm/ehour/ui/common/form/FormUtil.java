@@ -38,6 +38,9 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class FormUtil {
+    private FormUtil() {
+    }
+
     public static void setSubmitActions(final FormConfig formConfig) {
         final boolean inDemoMode = formConfig.getConfig().isInDemoMode();
 
