@@ -123,7 +123,7 @@ public class TimesheetServiceImpl implements IOverviewTimesheet {
         }
 
         // fetch total hours for flex/fixed assignments
-        if (assignmentIds.size() > 0) {
+        if (!assignmentIds.isEmpty()) {
             List<AssignmentAggregateReportElement> timeAllottedAggregates = aggregateReportService.getHoursPerAssignment(assignmentIds);
 
             for (AssignmentAggregateReportElement aggregate : timeAllottedAggregates) {

@@ -57,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         if (customer != null) {
             if (customer.getProjects() != null &&
-                    customer.getProjects().size() > 0) {
+                    !customer.getProjects().isEmpty()) {
                 throw new ParentChildConstraintException(customer.getProjects().size() + " projects attached to client");
             } else {
                 try {
@@ -79,7 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getCustomerAndCheckDeletability(Integer customerId) {
         Customer customer = customerDAO.findById(customerId);
 
-        boolean canDelete = !(customer.getProjects() != null && customer.getProjects().size() > 0);
+        boolean canDelete = !(customer.getProjects() != null && !customer.getProjects().isEmpty());
         customer.setDeletable(canDelete);
 
         return customer;

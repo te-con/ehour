@@ -149,7 +149,7 @@ public class ProjectServiceImpl implements ProjectService {
         checkProjectDeletability(project);
 
         if (project.getProjectAssignments() != null &&
-                project.getProjectAssignments().size() > 0) {
+                !project.getProjectAssignments().isEmpty()) {
             deleteAnyAssignments(project);
         }
     }

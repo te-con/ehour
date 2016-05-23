@@ -124,7 +124,7 @@ public class TimesheetFactory {
         List<TimesheetRow> timesheetRows = new ArrayList<>();
         Calendar firstDate = DateUtil.getCalendar(config);
 
-        if (timesheetDates.size() > 0) {
+        if (!timesheetDates.isEmpty()) {
             firstDate.setTime(timesheetDates.get(0).date);
         }
 
