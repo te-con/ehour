@@ -131,7 +131,7 @@ public class Timesheet implements Serializable {
      * @return
      */
     public List<TimesheetEntry> getTimesheetEntries() {
-        List<TimesheetEntry> timesheetEntries = new ArrayList<TimesheetEntry>();
+        List<TimesheetEntry> timesheetEntries = new ArrayList<>();
 
         Collection<List<TimesheetRow>> rows = getCustomers().values();
 

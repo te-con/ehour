@@ -48,7 +48,7 @@ public class UserRole extends DomainObject<String, UserRole> implements GrantedA
     public static final UserRole MANAGER = new UserRole(ROLE_MANAGER, "Manager");
     public static final UserRole ADMIN = new UserRole(ROLE_ADMIN, "Administrator");
 
-    public static final Map<String, UserRole> ROLES = new HashMap<String, UserRole>();
+    public static final Map<String, UserRole> ROLES = new HashMap<>();
 
     static {
         ROLES.put(ROLE_USER, USER);

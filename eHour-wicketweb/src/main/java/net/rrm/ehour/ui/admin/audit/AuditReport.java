@@ -68,7 +68,7 @@ public class AuditReport extends AbstractReportModel
 	
 	private List<TreeReportElement> convert(List<Audit> data)
 	{
-		List<TreeReportElement> matrix = new ArrayList<TreeReportElement>();
+		List<TreeReportElement> matrix = new ArrayList<>();
 		
 		for (Audit audit : data)
 		{

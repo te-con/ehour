@@ -36,7 +36,7 @@ public class ProjectAssignmentStatusTest
 	{
 		ProjectAssignmentStatus status = new ProjectAssignmentStatus();
 
-		List<Status> statusses = new ArrayList<Status>();
+		List<Status> statusses = new ArrayList<>();
 		statusses.add(ProjectAssignmentStatus.Status.RUNNING);
 		statusses.add(ProjectAssignmentStatus.Status.IN_ALLOTTED);
 		

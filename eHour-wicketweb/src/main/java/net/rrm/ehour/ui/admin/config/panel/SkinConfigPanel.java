@@ -133,7 +133,7 @@ public class SkinConfigPanel extends AbstractConfigPanel {
 
     public static class TimesheetExportDummyDataGenerator {
         public static List<FlatReportElement> createMonthData(EhourConfig config) {
-            List<FlatReportElement> elements = new ArrayList<FlatReportElement>();
+            List<FlatReportElement> elements = new ArrayList<>();
 
             DateRange range = getDateRangeForCurrentMonth();
 

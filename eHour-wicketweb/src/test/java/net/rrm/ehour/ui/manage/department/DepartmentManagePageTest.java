@@ -38,7 +38,7 @@ public class DepartmentManagePageTest extends BaseSpringWebAppTester
 		userService = mock(UserService.class);
 		getMockContext().putBean("userService", userService);
 
-		List<UserDepartment> depts = new ArrayList<UserDepartment>();
+		List<UserDepartment> depts = new ArrayList<>();
 		depts.add(new UserDepartment(1, "user", "DPT"));
 		
 		when(userService.getUserDepartments()).thenReturn(depts);

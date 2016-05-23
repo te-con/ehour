@@ -105,7 +105,7 @@ public class ProjectAssignmentStatusServiceTest
 		when(timesheetDAO.getTimesheetEntriesBefore(assignment, start))
 		.thenReturn(new ArrayList<TimesheetEntry>());
 
-		List<TimesheetEntry> entry = new ArrayList<TimesheetEntry>();
+		List<TimesheetEntry> entry = new ArrayList<>();
 		entry.add(new TimesheetEntry());
 		when(timesheetDAO.getTimesheetEntriesAfter(assignment, end))
 			.thenReturn(entry);

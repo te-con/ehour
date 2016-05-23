@@ -58,10 +58,10 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
 
         setOutputMarkupId(true);
 
-        final Form<CustomerAdminBackingBean> form = new Form<CustomerAdminBackingBean>("customerForm", model);
+        final Form<CustomerAdminBackingBean> form = new Form<>("customerForm", model);
 
         // name
-        RequiredTextField<String> nameField = new RequiredTextField<String>("customer.name");
+        RequiredTextField<String> nameField = new RequiredTextField<>("customer.name");
         form.add(nameField);
 
 
@@ -71,7 +71,7 @@ public class CustomerFormPanel extends AbstractFormSubmittingPanel<CustomerAdmin
         form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 
         // code
-        final RequiredTextField<String> codeField = new RequiredTextField<String>("customer.code");
+        final RequiredTextField<String> codeField = new RequiredTextField<>("customer.code");
         form.add(codeField);
         codeField.add(StringValidator.lengthBetween(0, 16));
         codeField.setLabel(new ResourceModel("admin.customer.code"));

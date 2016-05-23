@@ -41,10 +41,10 @@ public class DepartmentFormPanel<T extends AdminBackingBean> extends AbstractFor
         setOutputMarkupId(true);
 
         IModel<T> model = getPanelModel();
-        final Form<T> form = new Form<T>("deptForm", model);
+        final Form<T> form = new Form<>("deptForm", model);
 
         // name
-        RequiredTextField<String> nameField = new RequiredTextField<String>("department.name");
+        RequiredTextField<String> nameField = new RequiredTextField<>("department.name");
         form.add(nameField);
         nameField.add(StringValidator.maximumLength(64));
         nameField.setLabel(new ResourceModel("admin.dept.name"));
@@ -52,7 +52,7 @@ public class DepartmentFormPanel<T extends AdminBackingBean> extends AbstractFor
         form.add(new AjaxFormComponentFeedbackIndicator("nameValidationError", nameField));
 
         // code
-        RequiredTextField<String> codeField = new RequiredTextField<String>("department.code");
+        RequiredTextField<String> codeField = new RequiredTextField<>("department.code");
         form.add(codeField);
         codeField.add(StringValidator.maximumLength(16));
         codeField.setLabel(new ResourceModel("admin.dept.code"));

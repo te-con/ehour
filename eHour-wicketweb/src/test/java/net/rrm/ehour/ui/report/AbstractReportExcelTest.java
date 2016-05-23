@@ -26,7 +26,7 @@ public abstract class AbstractReportExcelTest extends BaseSpringWebAppTester {
         aggregateReportService = mock(AggregateReportService.class);
         getMockContext().putBean("aggregateReportService", aggregateReportService);
 
-        criteriaModel = new Model<ReportCriteria>(DetailedReportDataObjectMother.getReportCriteria());
+        criteriaModel = new Model<>(DetailedReportDataObjectMother.getReportCriteria());
 
         when(aggregateReportService.getAggregateReportData(criteriaModel.getObject()))
                 .thenReturn(AggregateReportDataObjectMother.getAssignmentReportData());

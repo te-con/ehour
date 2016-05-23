@@ -46,7 +46,7 @@ public class FormUtil {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 if (!inDemoMode) {
                     AdminBackingBean backingBean = (AdminBackingBean) formConfig.getForm().getDefaultModelObject();
-                    PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(formConfig.getSubmitEventType(), backingBean);
+                    PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<>(formConfig.getSubmitEventType(), backingBean);
 
                     EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), ajaxEvent);
                 }
@@ -79,7 +79,7 @@ public class FormUtil {
             public void onClick(AjaxRequestTarget target) {
                 if (!inDemoMode) {
                     AdminBackingBean backingBean = (AdminBackingBean) formConfig.getForm().getDefaultModelObject();
-                    PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<AdminBackingBean>(formConfig.getDeleteEventType(), backingBean);
+                    PayloadAjaxEvent<AdminBackingBean> ajaxEvent = new PayloadAjaxEvent<>(formConfig.getDeleteEventType(), backingBean);
 
                     EventPublisher.publishAjaxEvent(formConfig.getSubmitTarget(), ajaxEvent);
                 }

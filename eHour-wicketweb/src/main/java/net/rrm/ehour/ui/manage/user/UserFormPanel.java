@@ -70,7 +70,7 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
 
         setOutputMarkupId(true);
 
-        final Form<T> form = new Form<T>(FORM, userModel);
+        final Form<T> form = new Form<>(FORM, userModel);
 
         createUsernameInput(form);
         createNameInput(form);
@@ -112,7 +112,7 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
     }
 
     private void createRoleInput(Form<T> form) {
-        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<UserRole>("user.userRoles", getUserRoles(), new UserRoleRenderer());
+        ListMultipleChoice<UserRole> userRoles = new ListMultipleChoice<>("user.userRoles", getUserRoles(), new UserRoleRenderer());
         userRoles.setMaxRows(4);
         userRoles.setLabel(new ResourceModel("admin.user.roles"));
         userRoles.setRequired(true);
@@ -124,7 +124,7 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
     protected void createDepartmentInput(Form<T> form) {
         Fragment f = new Fragment("dept", "department", this);
 
-        DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<UserDepartment>("user.userDepartment", getUserDepartments(), new ChoiceRenderer<UserDepartment>("name"));
+        DropDownChoice<UserDepartment> userDepartment = new DropDownChoice<>("user.userDepartment", getUserDepartments(), new ChoiceRenderer<UserDepartment>("name"));
         userDepartment.setRequired(true);
         userDepartment.setLabel(new ResourceModel("admin.user.department"));
         userDepartment.add(new ValidatingFormComponentAjaxBehavior());
@@ -142,7 +142,7 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
     }
 
     private void createMailInput(Form<T> form) {
-        TextField<String> emailField = new TextField<String>("user.email");
+        TextField<String> emailField = new TextField<>("user.email");
         emailField.add(EmailAddressValidator.getInstance());
         emailField.add(new ValidatingFormComponentAjaxBehavior());
         form.add(emailField);
@@ -150,10 +150,10 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
     }
 
     private void createNameInput(Form<T> form) {
-        TextField<String> firstNameField = new TextField<String>("user.firstName");
+        TextField<String> firstNameField = new TextField<>("user.firstName");
         form.add(firstNameField);
 
-        TextField<String> lastNameField = new RequiredTextField<String>("user.lastName");
+        TextField<String> lastNameField = new RequiredTextField<>("user.lastName");
         form.add(lastNameField);
         lastNameField.setLabel(new ResourceModel("admin.user.lastName"));
         lastNameField.add(new ValidatingFormComponentAjaxBehavior());
@@ -161,7 +161,7 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
     }
 
     private void createUsernameInput(Form<T> form) {
-        RequiredTextField<String> usernameField = new RequiredTextField<String>("user.username");
+        RequiredTextField<String> usernameField = new RequiredTextField<>("user.username");
         form.add(usernameField);
         usernameField.add(new StringValidator(0, 32));
         usernameField.add(new DuplicateUsernameValidator());

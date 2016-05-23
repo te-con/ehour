@@ -30,7 +30,7 @@ public abstract class ReportNode implements Serializable {
     private static final long serialVersionUID = 8722465589611086312L;
 
     protected Serializable[] columnValues;
-    private List<ReportNode> reportNodes = new ArrayList<ReportNode>();
+    private List<ReportNode> reportNodes = new ArrayList<>();
     private final Serializable id;
     private final boolean empty;
 
@@ -51,7 +51,7 @@ public abstract class ReportNode implements Serializable {
      * Create node matrix flattening the whole tree.
      */
     public List<TreeReportElement> getNodeMatrix(int matrixWidth) {
-        List<TreeReportElement> matrix = new ArrayList<TreeReportElement>();
+        List<TreeReportElement> matrix = new ArrayList<>();
 
         createNodeMatrix(0, new Serializable[matrixWidth], matrix);
 

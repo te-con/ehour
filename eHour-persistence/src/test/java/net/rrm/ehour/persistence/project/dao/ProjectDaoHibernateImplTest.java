@@ -70,7 +70,7 @@ public class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     public void shouldFindProjectForCustomersAll() {
-        ArrayList<Customer> ids = new ArrayList<Customer>(Arrays.asList(new Customer(30), new Customer(10)));
+        ArrayList<Customer> ids = new ArrayList<>(Arrays.asList(new Customer(30), new Customer(10)));
         List<Project> r = projectDAO.findProjectForCustomers(ids, false);
 
         assertEquals(3, r.size());
@@ -78,7 +78,7 @@ public class ProjectDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     public void shouldFindProjectForCustomersOnlyActive() {
-        ArrayList<Customer> ids = new ArrayList<Customer>(Arrays.asList(new Customer(30), new Customer(10)));
+        ArrayList<Customer> ids = new ArrayList<>(Arrays.asList(new Customer(30), new Customer(10)));
         List<Project> r = projectDAO.findProjectForCustomers(ids, true);
 
         assertEquals(2, r.size());

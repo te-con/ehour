@@ -82,9 +82,9 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
             }
         }
 
-        container.add(new Label("grandTotalHours", new Model<Float>(totalHours)));
+        container.add(new Label("grandTotalHours", new Model<>(totalHours)));
 
-        turnOverLabel = new CurrencyLabel("grandTotalTurnover", new Model<Float>(totalTurnover));
+        turnOverLabel = new CurrencyLabel("grandTotalTurnover", new Model<>(totalTurnover));
 
         turnOverLabel.setVisible(config.isShowTurnover());
         turnOverLabel.setEscapeModelStrings(false);
@@ -126,7 +126,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
     @SuppressWarnings("serial")
     private void addTableData(WebMarkupContainer container, Collection<UserProjectStatus> projectStatusSet) {
-        List<UserProjectStatus> statusses = projectStatusSet == null ? new ArrayList<UserProjectStatus>() : new ArrayList<UserProjectStatus>(projectStatusSet);
+        List<UserProjectStatus> statusses = projectStatusSet == null ? new ArrayList<UserProjectStatus>() : new ArrayList<>(projectStatusSet);
 
         // table data should reflect the path to the listView
         ListView<UserProjectStatus> view = new ListView<UserProjectStatus>(ID_TABLE_DATA, statusses) {
@@ -164,7 +164,7 @@ public class ProjectOverviewPanel extends AbstractBasePanel<Void> {
 
                 Number hours = projectStatus.getHours();
 
-                item.add(new Label("monthHours", new Model<Float>(hours != null ? hours.floatValue() : 0f)));
+                item.add(new Label("monthHours", new Model<>(hours != null ? hours.floatValue() : 0f)));
 
                 boolean billable = project.isBillable();
                 Label turnOverLabel = billable ? new CurrencyLabel("turnover", projectStatus.getTurnOver().floatValue()) : new Label("turnover", "--");

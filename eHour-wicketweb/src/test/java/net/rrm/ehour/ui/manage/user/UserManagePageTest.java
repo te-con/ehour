@@ -51,7 +51,7 @@ public class UserManagePageTest extends BaseSpringWebAppTester {
         super.setUp();
         getMockContext().putBean("userService", userService);
 
-        List<User> users = new ArrayList<User>();
+        List<User> users = new ArrayList<>();
         user = new User();
         user.setFirstName("thies");
         user.setUserId(1);

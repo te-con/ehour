@@ -96,8 +96,8 @@ public class TimesheetServiceImplTest {
 
     @Test
     public void should_get_timesheet_overview() throws Exception {
-        List<TimesheetEntry> daoResults = new ArrayList<TimesheetEntry>();
-        List<AssignmentAggregateReportElement> reportResults = new ArrayList<AssignmentAggregateReportElement>();
+        List<TimesheetEntry> daoResults = new ArrayList<>();
+        List<AssignmentAggregateReportElement> reportResults = new ArrayList<>();
         Calendar cal = new GregorianCalendar();
 
         TimesheetEntry entryA, entryB;

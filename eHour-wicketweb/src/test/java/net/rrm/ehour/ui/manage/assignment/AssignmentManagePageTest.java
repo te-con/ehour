@@ -52,7 +52,7 @@ public class AssignmentManagePageTest extends BaseSpringWebAppTester {
         when(assignmentService.getProjectAssignmentTypes()).thenReturn(new ArrayList<ProjectAssignmentType>());
 
         Customer cust = new Customer(22);
-        List<Customer> custs = new ArrayList<Customer>();
+        List<Customer> custs = new ArrayList<>();
         custs.add(cust);
 
         when(customerService.getActiveCustomers()).thenReturn(custs);

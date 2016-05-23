@@ -15,7 +15,7 @@ public class ZeroBookingSelector extends AbstractBasePanel<UserSelectedCriteria>
     private final ReportConfig reportConfig;
 
     public ZeroBookingSelector(String id, ReportConfig reportConfig, UserSelectedCriteria criteria) {
-        super(id, new Model<UserSelectedCriteria>(criteria));
+        super(id, new Model<>(criteria));
 
         this.reportConfig = reportConfig;
     }

@@ -10,7 +10,7 @@ import java.util.List;
 public class DummyUIDataGenerator {
 
     public static List<ProjectAssignmentType> getProjectAssignmentTypes() {
-        List<ProjectAssignmentType> list = new ArrayList<ProjectAssignmentType>();
+        List<ProjectAssignmentType> list = new ArrayList<>();
 
         list.add(new ProjectAssignmentType(EhourConstants.ASSIGNMENT_DATE));
 
@@ -92,7 +92,7 @@ public class DummyUIDataGenerator {
         user.setUserDepartment(new UserDepartment(1));
 
 
-        HashSet<UserRole> userRoles = new HashSet<UserRole>();
+        HashSet<UserRole> userRoles = new HashSet<>();
         userRoles.add(UserRole.ADMIN);
         user.setUserRoles(userRoles);
 

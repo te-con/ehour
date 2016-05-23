@@ -158,7 +158,7 @@ public class MonthOverviewPanel extends Panel {
                 projectCodeLabel.setOutputMarkupId(true);
 
                 item.add(projectCodeLabel);
-                item.add(new Label("hours", new Model<Float>(entry.getHours())));
+                item.add(new Label("hours", new Model<>(entry.getHours())));
             }
         };
 

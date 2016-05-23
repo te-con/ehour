@@ -37,7 +37,7 @@ public class ReportBuilder {
      */
     @SuppressWarnings("unchecked")
     public List<ReportNode> createReport(ReportData reportData, ReportNodeFactory nodeFactory) {
-        List<ReportNode> reportNodes = new ArrayList<ReportNode>();
+        List<ReportNode> reportNodes = new ArrayList<>();
 
         for (ReportElement reportElement : reportData.getReportElements()) {
             if (!processElement(reportElement, nodeFactory, reportNodes)) {

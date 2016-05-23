@@ -76,14 +76,14 @@ public class LocaleConfigPanel extends AbstractConfigPanel {
         configForm.add(dateFormat);
 
         // language selection
-        languageDropDownChoice = new DropDownChoice<Locale>("localeLanguage",
+        languageDropDownChoice = new DropDownChoice<>("localeLanguage",
                 new PropertyModel<Locale>(configBackingBean, "localeLanguage"),
                 new PropertyModel<List<Locale>>(configBackingBean, "availableLanguages"),
                 new LocaleChoiceRenderer(1));
 
 
         // locale selection
-        localeDropDownChoice = new DropDownChoice<Locale>("localeCountry",
+        localeDropDownChoice = new DropDownChoice<>("localeCountry",
                 new PropertyModel<Locale>(configBackingBean, "localeCountry"),
                 new PropertyModel<List<Locale>>(configBackingBean, "availableLocales"),
                 new LocaleChoiceRenderer(0));

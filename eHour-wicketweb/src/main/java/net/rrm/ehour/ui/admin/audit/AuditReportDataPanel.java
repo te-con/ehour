@@ -92,7 +92,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
         final EhourConfig config = EhourWebSession.getEhourConfig();
 
 
-        List<IColumn<Audit, Date>> columns = new ArrayList<IColumn<Audit, Date>>();
+        List<IColumn<Audit, Date>> columns = new ArrayList<>();
         columns.add(new DateColumn(new ResourceModel("audit.report.column.date"), config));
         columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.lastName"), "userFullName"));
         columns.add(new PropertyColumn<Audit, Date>(new ResourceModel("audit.report.column.action"), "action"));
@@ -103,7 +103,7 @@ public class AuditReportDataPanel extends AbstractAjaxPanel<ReportCriteria> impl
         DataTable<Audit, Date> table = new DataTable<Audit, Date>("data", columns, dataProvider, 20) {
             @Override
             protected Item<Audit> newRowItem(String id, int index, IModel<Audit> model) {
-                return new OddEvenItem<Audit>(id, index, model);
+                return new OddEvenItem<>(id, index, model);
             }
         };
 

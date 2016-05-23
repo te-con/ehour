@@ -60,10 +60,10 @@ public class AuditReportCriteriaForm extends Form<ReportCriteria> {
 
         add(submitButton);
 
-        TextField<String> nameField = new TextField<String>(AuditConstants.PATH_FORM_NAME, new PropertyModel<String>(getModel(), "userSelectedCriteria.name"));
+        TextField<String> nameField = new TextField<>(AuditConstants.PATH_FORM_NAME, new PropertyModel<String>(getModel(), "userSelectedCriteria.name"));
         add(nameField);
 
-        TextField<String> actionField = new TextField<String>(AuditConstants.PATH_FORM_ACTION, new PropertyModel<String>(getModel(), "userSelectedCriteria.action"));
+        TextField<String> actionField = new TextField<>(AuditConstants.PATH_FORM_ACTION, new PropertyModel<String>(getModel(), "userSelectedCriteria.action"));
         add(actionField);
     }
 

@@ -90,7 +90,7 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
     }
 
     private CheckGroup<Project> createUnbillableProjectGroup(String id, List<Project> allProjects) {
-        CheckGroup<Project> unbillableGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(unbillableProjects, "projects"));
+        CheckGroup<Project> unbillableGroup = new CheckGroup<>(id, new PropertyModel<Collection<Project>>(unbillableProjects, "projects"));
         unbillableGroup.add(new CheckGroupSelector("checkall"));
 
         List<Project> unbillableProjects = ProjectUtil.filterUnbillable(allProjects);
@@ -103,7 +103,7 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
     }
 
     private CheckGroup<Project> createBillableProjectGroup(String id, List<Project> allProjects) {
-        CheckGroup<Project> billableGroup = new CheckGroup<Project>(id, new PropertyModel<Collection<Project>>(billableProjects, "projects"));
+        CheckGroup<Project> billableGroup = new CheckGroup<>(id, new PropertyModel<Collection<Project>>(billableProjects, "projects"));
         billableGroup.add(new CheckGroupSelector("checkall"));
 
         List<Project> billableProjects = ProjectUtil.filterBillable(allProjects);
@@ -120,7 +120,7 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
         return new ListView<Project>(id, projects) {
             @Override
             protected void populateItem(ListItem<Project> item) {
-                item.add(new Check<Project>("check", item.getModel()));
+                item.add(new Check<>("check", item.getModel()));
                 item.add(new Label("project", new PropertyModel<String>(item.getModel(), "fullNameWithCustomer")));
             }
         };
@@ -149,7 +149,7 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
         }
 
         private ReportCriteria mergeBillablesAndUnbillables() {
-            List<Project> projects = new ArrayList<Project>(TimesheetExportCriteriaPanel.this.billableProjects.getProjects());
+            List<Project> projects = new ArrayList<>(TimesheetExportCriteriaPanel.this.billableProjects.getProjects());
             projects.addAll(TimesheetExportCriteriaPanel.this.unbillableProjects.getProjects());
 
             final ReportCriteria reportCriteria = getModelObject();
@@ -168,7 +168,7 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
     }
 
     private static class Projects implements Serializable {
-        private List<Project> projects = new ArrayList<Project>();
+        private List<Project> projects = new ArrayList<>();
 
         private List<Project> getProjects() {
             return projects;

@@ -52,7 +52,7 @@ public class TranslationDiscovery {
     private List<String> scanTranslations(File dir) {
         File[] files = dir.listFiles();
 
-        List<String> translations = new ArrayList<String>();
+        List<String> translations = new ArrayList<>();
 
         if (files != null) {
             for (File file : files) {
@@ -101,7 +101,7 @@ public class TranslationDiscovery {
     private static Map<String, Locale> createLocaleMap() {
         Locale[] availableLocales = Locale.getAvailableLocales();
 
-        Map<String, Locale> map = new HashMap<String, Locale>();
+        Map<String, Locale> map = new HashMap<>();
 
         for (Locale availableLocale : availableLocales) {
             map.put(availableLocale.getLanguage(), availableLocale);

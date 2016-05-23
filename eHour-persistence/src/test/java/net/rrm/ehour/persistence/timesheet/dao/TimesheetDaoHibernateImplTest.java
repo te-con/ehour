@@ -91,7 +91,7 @@ public class TimesheetDaoHibernateImplTest extends AbstractAnnotationDaoTest {
 
     @Test
     public void shouldDeleteTimesheetEntries() {
-        List<Integer> ids = new ArrayList<Integer>(Arrays.asList(5));
+        List<Integer> ids = new ArrayList<>(Arrays.asList(5));
 
         int deleted = timesheetDAO.deleteTimesheetEntries(ids);
 

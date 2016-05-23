@@ -44,7 +44,7 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
         when(assignmentService.getProjectAssignmentTypes())
                 .thenReturn(DummyUIDataGenerator.getProjectAssignmentTypes());
 
-        List<Customer> customers = new ArrayList<Customer>();
+        List<Customer> customers = new ArrayList<>();
         customers.add(DummyUIDataGenerator.getCustomer(1));
 
         when(customerService.getActiveCustomers()).thenReturn(customers);
@@ -70,7 +70,7 @@ public class AssignmentFormPanelTest extends BaseSpringWebAppTester {
         when(assignmentService.getProjectAssignmentTypes())
                 .thenReturn(DummyUIDataGenerator.getProjectAssignmentTypes());
 
-        List<Customer> customers = new ArrayList<Customer>();
+        List<Customer> customers = new ArrayList<>();
         customers.add(DummyUIDataGenerator.getCustomer(1));
 
         when(customerService.getActiveCustomers()).thenReturn(customers);

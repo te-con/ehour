@@ -67,7 +67,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     public List<AssignmentAggregateReportElement> getHoursPerAssignmentInRange(Integer userId, DateRange dateRange) {
         List<AssignmentAggregateReportElement> assignmentAggregateReportElements;
 
-        List<User> users = new ArrayList<User>();
+        List<User> users = new ArrayList<>();
         users.add(new User(userId));
         assignmentAggregateReportElements = reportAggregatedDAO.getCumulatedHoursPerAssignmentForUsers(users, dateRange);
 
@@ -107,7 +107,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
     }
 
     private List<AssignmentAggregateReportElement> findAggregates(List<User> users, List<Project> projects, DateRange reportRange) {
-        List<AssignmentAggregateReportElement> aggregates = new ArrayList<AssignmentAggregateReportElement>();
+        List<AssignmentAggregateReportElement> aggregates = new ArrayList<>();
 
         if (users.isEmpty() && projects.isEmpty()) {
             aggregates = reportAggregatedDAO.getCumulatedHoursPerAssignment(reportRange);
@@ -144,7 +144,7 @@ public class AggregateReportServiceImpl extends AbstractReportServiceImpl<Assign
         SortedSet<AssignmentAggregateReportElement> aggregates = new TreeSet<AssignmentAggregateReportElement>(reportAggregatedDAO.getCumulatedHoursPerAssignmentForProjects(projects, reportRange));
 
         // filter out just the id's
-        List<Integer> assignmentIds = new ArrayList<Integer>();
+        List<Integer> assignmentIds = new ArrayList<>();
         for (AssignmentAggregateReportElement aggregate : aggregates) {
             assignmentIds.add(aggregate.getProjectAssignment().getAssignmentId());
         }

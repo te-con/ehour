@@ -30,7 +30,7 @@ public class UserObjectMother {
         user.setPassword("abc");
 
         user.addUserDepartment(department);
-        Set<UserRole> userRoles = new HashSet<UserRole>();
+        Set<UserRole> userRoles = new HashSet<>();
         userRoles.add(UserRole.ADMIN);
         user.setUserRoles(userRoles);
 
@@ -48,7 +48,7 @@ public class UserObjectMother {
         user.setPassword("abc");
 
         user.addUserDepartment(department);
-        Set<UserRole> userRoles = new HashSet<UserRole>();
+        Set<UserRole> userRoles = new HashSet<>();
         userRoles.add(UserRole.ADMIN);
         user.setUserRoles(userRoles);
 

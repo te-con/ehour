@@ -69,7 +69,7 @@ public class WeekOverview implements Serializable {
     }
 
     private Map<ProjectAssignment, Map<String, TimesheetEntry>> createAssignmentMap() {
-        Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap = new HashMap<ProjectAssignment, Map<String, TimesheetEntry>>();
+        Map<ProjectAssignment, Map<String, TimesheetEntry>> assignmentMap = new HashMap<>();
 
         for (TimesheetEntry entry : getTimesheetEntries()) {
             ProjectAssignment assignment = entry.getEntryId().getProjectAssignment();

@@ -24,7 +24,7 @@ public class CalendarWeekFactory implements Serializable {
     }
 
     public List<CalendarWeek> createWeeks(Integer firstDayOfWeek, Integer userId, Calendar thisMonth) {
-        List<CalendarWeek> calendarWeeks = new ArrayList<CalendarWeek>();
+        List<CalendarWeek> calendarWeeks = new ArrayList<>();
         thisMonth.setFirstDayOfWeek(firstDayOfWeek);
 
         List<LocalDate> bookedDays = getOverviewTimesheet().getBookedDaysMonthOverview(userId, thisMonth);

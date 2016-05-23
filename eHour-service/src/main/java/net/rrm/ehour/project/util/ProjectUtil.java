@@ -39,7 +39,7 @@ public class ProjectUtil {
     }
 
     private static List<Project> filterBillability(Collection<Project> projects, boolean billable) {
-        List<Project> sortedProjects = new ArrayList<Project>();
+        List<Project> sortedProjects = new ArrayList<>();
 
         for (Project project : projects) {
             if (project.isBillable() == billable) {

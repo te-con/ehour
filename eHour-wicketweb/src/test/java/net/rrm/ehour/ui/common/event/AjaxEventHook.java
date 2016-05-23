@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class AjaxEventHook implements AjaxEventListener
 {
-	public List<AjaxEvent> events = new ArrayList<AjaxEvent>();
+	public List<AjaxEvent> events = new ArrayList<>();
 	
 	public Boolean ajaxEventReceived(AjaxEvent ajaxEvent)
 	{

@@ -55,7 +55,7 @@ public class DevelopmentWebSession extends EhourWebSession {
             user.setUsername("thies");
             user.setPassword("secret");
 
-            Set<UserRole> userRoles = new HashSet<UserRole>();
+            Set<UserRole> userRoles = new HashSet<>();
 
             if (authorizedRoles != null) {
                 for (String authorizedRole : authorizedRoles) {
