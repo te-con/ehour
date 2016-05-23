@@ -22,6 +22,7 @@ import javax.sql.DataSource;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractScenario {
@@ -92,7 +93,9 @@ public abstract class AbstractScenario {
         Connection connection = dataSource.getConnection();
         String sql = String.format("UPDATE USERS SET PASSWORD = '%s', SALT = %d WHERE USERNAME = '%s'", encodedPassword, salt, username);
 
-        connection.createStatement().execute(sql);
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        }
     }
 
     @After
