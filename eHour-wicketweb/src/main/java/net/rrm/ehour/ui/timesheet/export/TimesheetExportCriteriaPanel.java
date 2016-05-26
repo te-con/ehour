@@ -94,7 +94,7 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
         unbillableGroup.add(new CheckGroupSelector("checkall"));
 
         List<Project> unbillableProjects = ProjectUtil.filterUnbillable(allProjects);
-        unbillableGroup.setVisible(unbillableProjects.size() > 0);
+        unbillableGroup.setVisible(!unbillableProjects.isEmpty());
 
         ListView<Project> unbillableProjectsView = getAssignmentCheckboxesView("unbillableProjects", unbillableProjects);
         unbillableGroup.add(unbillableProjectsView);
@@ -107,7 +107,7 @@ public class TimesheetExportCriteriaPanel extends AbstractBasePanel<ReportCriter
         billableGroup.add(new CheckGroupSelector("checkall"));
 
         List<Project> billableProjects = ProjectUtil.filterBillable(allProjects);
-        billableGroup.setVisible(billableProjects.size() > 0);
+        billableGroup.setVisible(!billableProjects.isEmpty());
 
         ListView<Project> billableProjectsView = getAssignmentCheckboxesView("billableProjects", billableProjects);
         billableGroup.add(billableProjectsView);

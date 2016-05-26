@@ -45,7 +45,7 @@ public class AjaxFormComponentFeedbackIndicator extends FormComponentFeedbackInd
             public Serializable getObject() {
                 List<FeedbackMessage> collect = new FeedbackCollector(getPage()).collect(getFeedbackMessageFilter());
 
-                return collect.size() > 0 ? collect.get(0).getMessage() : "";
+                return !collect.isEmpty() ? collect.get(0).getMessage() : "";
             }
         }));
     }

@@ -73,7 +73,7 @@ public class TimesheetPersistence implements IPersistTimesheet, IDeleteTimesheet
     public void deleteAllTimesheetDataForUser(User user) {
         timesheetCommentDAO.deleteCommentsForUser(user.getUserId());
 
-        if (user.getProjectAssignments() != null && user.getProjectAssignments().size() > 0) {
+        if (user.getProjectAssignments() != null && !user.getProjectAssignments().isEmpty()) {
             timesheetDAO.deleteTimesheetEntries(DomainUtil.getIdsFromDomainObjects(user.getProjectAssignments()));
         }
     }

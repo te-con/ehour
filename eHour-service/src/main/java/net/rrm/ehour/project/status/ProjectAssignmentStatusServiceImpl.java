@@ -107,7 +107,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 		{
 			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesBefore(assignment, assignment.getDateStart());
 			
-			if (entries != null && entries.size() > 0)
+			if (entries != null && !entries.isEmpty())
 			{
 				status.addStatus(ProjectAssignmentStatus.Status.BEFORE_START);
 				return;
@@ -118,7 +118,7 @@ public class ProjectAssignmentStatusServiceImpl implements ProjectAssignmentStat
 		{
 			List<TimesheetEntry> entries = timesheetDAO.getTimesheetEntriesAfter(assignment, assignment.getDateEnd());
 			
-			if (entries != null && entries.size() > 0)
+			if (entries != null && !entries.isEmpty())
 			{
 				status.addStatus(ProjectAssignmentStatus.Status.AFTER_DEADLINE);
 				return;

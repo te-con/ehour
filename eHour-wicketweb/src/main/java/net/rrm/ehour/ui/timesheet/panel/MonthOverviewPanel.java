@@ -125,7 +125,7 @@ public class MonthOverviewPanel extends Panel {
             timesheetEntries = timesheetOverview.getTimesheetEntries().get(overviewFor.get(Calendar.DAY_OF_MONTH));
         }
 
-        if (timesheetEntries != null && timesheetEntries.size() > 0) {
+        if (timesheetEntries != null && !timesheetEntries.isEmpty()) {
             fragment = createDayContents(dayId, timesheetEntries);
         } else {
             fragment = new Fragment(dayId, "noProjects", this);

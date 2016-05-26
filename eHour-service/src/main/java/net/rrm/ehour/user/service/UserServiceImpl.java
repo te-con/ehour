@@ -101,8 +101,8 @@ public class UserServiceImpl implements UserService {
     public User getUserAndCheckDeletability(Integer userId) throws ObjectNotFoundException {
         User user = getUser(userId);
 
-        if ((user.getProjectAssignments() == null || user.getProjectAssignments().size() == 0) &&
-                (user.getInactiveProjectAssignments() == null || user.getInactiveProjectAssignments().size() == 0)) {
+        if ((!user.getProjectAssignments().isEmpty()) &&
+                (!user.getInactiveProjectAssignments().isEmpty())) {
             user.setDeletable(true);
         } else {
             // bummer, we need to check if the user booked any hours on the assignments
@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
             throw new ObjectNotFoundException("Department not found");
         }
 
-        userDepartment.setDeletable(userDepartment.getUsers() == null || userDepartment.getUsers().size() == 0);
+        userDepartment.setDeletable(!userDepartment.getUsers().isEmpty());
 
         return userDepartment;
     }

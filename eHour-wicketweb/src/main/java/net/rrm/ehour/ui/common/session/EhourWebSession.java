@@ -234,7 +234,7 @@ public class EhourWebSession extends AuthenticatedWebSession {
                 roles.add(grantedAuthority.getAuthority());
             }
 
-            if (roles.size() == 0) {
+            if (roles.isEmpty()) {
                 LOGGER.warn("User " + auth.getPrincipal() + " logged in but no roles could be found!");
             }
 

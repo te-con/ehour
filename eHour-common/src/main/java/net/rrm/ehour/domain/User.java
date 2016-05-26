@@ -180,7 +180,7 @@ public class User extends DomainObject<Integer, User> {
     }
 
     public UserDepartment getUserDepartment() {
-        return (userDepartments.size() > 0) ? userDepartments.iterator().next() : null;
+        return (!userDepartments.isEmpty()) ? userDepartments.iterator().next() : null;
     }
 
     public void setUserDepartments(Set<UserDepartment> userDepartments) {
