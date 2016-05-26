@@ -12,6 +12,9 @@ import net.rrm.ehour.report.reports.element.AssignmentAggregateReportElement;
  */
 public class ReportUtil
 {
+	private ReportUtil() {
+	}
+
 	/**
 	 * Check if aggregate list is empty
 	 * @param aggregates

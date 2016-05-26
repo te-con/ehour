@@ -6,6 +6,9 @@ import net.rrm.ehour.domain.ProjectAssignment;
 import net.rrm.ehour.domain.User;
 
 public class FlatReportElementBuilder {
+    private FlatReportElementBuilder() {
+    }
+
     public static FlatReportElement buildFlatReportElement(ProjectAssignment assignment) {
         FlatReportElement element = new FlatReportElement();
 

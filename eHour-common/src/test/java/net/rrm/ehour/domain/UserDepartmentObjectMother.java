@@ -8,6 +8,9 @@ import com.google.common.collect.Sets;
  * @author thies (www.te-con.nl)
  */
 public class UserDepartmentObjectMother {
+    private UserDepartmentObjectMother() {
+    }
+
     public static UserDepartment createUserDepartment() {
         return createUserDepartment(1);
     }

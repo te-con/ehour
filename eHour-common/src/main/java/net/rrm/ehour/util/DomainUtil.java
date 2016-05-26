@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class DomainUtil {
+    private DomainUtil() {
+    }
+
     /**
      * Get a list of primary keys of out a list of domain objects
      */

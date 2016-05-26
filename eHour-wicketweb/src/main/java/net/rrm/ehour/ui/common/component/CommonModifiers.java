@@ -23,6 +23,9 @@ import org.apache.wicket.AttributeModifier;
  */
 
 public class CommonModifiers {
+    private CommonModifiers() {
+    }
+
     /**
      * Tabindex modifier
      *

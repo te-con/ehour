@@ -21,6 +21,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class PoiUtil
 {
+	private PoiUtil() {
+	}
+
 	public static int getImageType(String type)
 	{
 		if (type.equalsIgnoreCase("png"))

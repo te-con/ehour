@@ -11,6 +11,9 @@ import java.util.Set;
  * @author thies (www.te-con.nl)
  */
 public class UserObjectMother {
+    private UserObjectMother() {
+    }
+
     public static User createUser() {
         return createUser(new UserDepartment(1));
     }

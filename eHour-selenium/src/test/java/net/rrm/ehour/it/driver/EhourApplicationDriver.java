@@ -10,6 +10,9 @@ import static net.rrm.ehour.it.driver.UserManagementDriver.*;
 import static org.junit.Assert.assertTrue;
 
 public class EhourApplicationDriver {
+    private EhourApplicationDriver() {
+    }
+
     public static void loginAdmin() {
         login(new ItUser("admin", "admin"));
     }

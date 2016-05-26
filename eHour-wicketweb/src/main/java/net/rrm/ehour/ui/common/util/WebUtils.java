@@ -31,6 +31,9 @@ import java.util.Locale;
  */
 
 public class WebUtils {
+    private WebUtils() {
+    }
+
     public static String formatDate(String format, Date date) {
         Locale locale = EhourWebSession.getEhourConfig().getFormattingLocale();
 

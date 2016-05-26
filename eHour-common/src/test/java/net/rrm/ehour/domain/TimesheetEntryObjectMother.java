@@ -8,6 +8,9 @@ import java.util.Date;
  * @author thies (www.te-con.nl)
  */
 public class TimesheetEntryObjectMother {
+    private TimesheetEntryObjectMother() {
+    }
+
     public static TimesheetEntry createTimesheetEntry(int prjId, Date date, float hours) {
         TimesheetEntryId id = new TimesheetEntryId();
         id.setEntryDate(date);
