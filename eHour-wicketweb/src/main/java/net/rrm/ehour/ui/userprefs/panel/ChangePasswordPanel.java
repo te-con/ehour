@@ -60,14 +60,14 @@ public class ChangePasswordPanel extends AbstractFormSubmittingPanel<ChangePassw
 
     @SuppressWarnings({"unchecked"})
     public ChangePasswordPanel(String id, ChangePasswordBackingBean changePasswordBackingBean) throws ObjectNotFoundException {
-        super(id, new Model<ChangePasswordBackingBean>(changePasswordBackingBean));
+        super(id, new Model<>(changePasswordBackingBean));
 
         Border greyBorder = new GreyRoundedBorder(BORDER, new ResourceModel("userprefs.title"));
         add(greyBorder);
 
         setOutputMarkupId(true);
 
-        form = new Form<ChangePasswordBackingBean>(CHANGE_PASSWORD_FORM, (IModel<ChangePasswordBackingBean>) getDefaultModel());
+        form = new Form<>(CHANGE_PASSWORD_FORM, (IModel<ChangePasswordBackingBean>) getDefaultModel());
         form.setOutputMarkupId(true);
 
         // password inputs

@@ -294,7 +294,7 @@ public class DateUtil {
      * @return
      */
     public static List<Date> createDateSequence(DateRange range, EhourConfig config) {
-        List<Date> dateSequence = new ArrayList<Date>();
+        List<Date> dateSequence = new ArrayList<>();
         Calendar calendar;
 
         calendar = DateUtil.getCalendar(config);

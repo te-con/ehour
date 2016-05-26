@@ -106,7 +106,7 @@ public class ProjectAssignmentStatus implements Serializable
 	{
 		if (statusses == null)
 		{
-			statusses  = new ArrayList<Status>();
+			statusses  = new ArrayList<>();
 		}
 		
 		statusses.add(status);

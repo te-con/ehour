@@ -270,7 +270,7 @@ public class CalendarPanel extends SidePanel {
 
             session.setNavCalendar(cal);
 
-            EventPublisher.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<Calendar>(CalendarAjaxEventType.WEEK_CLICK, cal));
+            EventPublisher.publishAjaxEvent(CalendarPanel.this, new PayloadAjaxEvent<>(CalendarAjaxEventType.WEEK_CLICK, cal));
         }
 
         @Override

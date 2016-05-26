@@ -59,7 +59,7 @@ public class CustomerServiceImplTest {
     public void should_delete_customer_with_projects_throw_a_constraint_violation() {
         Customer cust = new Customer();
         Project proj = new Project();
-        Set<Project> projs = new HashSet<Project>();
+        Set<Project> projs = new HashSet<>();
         proj.setProjectId(1);
         cust.setCustomerId(1);
 

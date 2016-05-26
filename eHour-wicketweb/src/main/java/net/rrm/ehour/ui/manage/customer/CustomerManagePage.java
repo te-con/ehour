@@ -139,7 +139,7 @@ public class CustomerManagePage extends AbstractTabbedManagePage<CustomerAdminBa
 
     @Override
     protected Panel getBaseEditPanel(String panelId) {
-        return new CustomerFormPanel(panelId, new CompoundPropertyModel<CustomerAdminBackingBean>(getTabbedPanel().getEditBackingBean()));
+        return new CustomerFormPanel(panelId, new CompoundPropertyModel<>(getTabbedPanel().getEditBackingBean()));
     }
 
     @Override

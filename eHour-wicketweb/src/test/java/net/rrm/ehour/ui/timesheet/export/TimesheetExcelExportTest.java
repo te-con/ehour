@@ -90,7 +90,7 @@ public class TimesheetExcelExportTest extends BaseSpringWebAppTester {
 
     @Test
     public void produceForEmptyMonth() throws IOException {
-        List<FlatReportElement> elements = new ArrayList<FlatReportElement>();
+        List<FlatReportElement> elements = new ArrayList<>();
 
         ReportData data = new ReportData(elements, DateUtil.getDateRangeForMonth(new Date()), new UserSelectedCriteria());
         UserSelectedCriteria userSelectedCriteria = new UserSelectedCriteria();

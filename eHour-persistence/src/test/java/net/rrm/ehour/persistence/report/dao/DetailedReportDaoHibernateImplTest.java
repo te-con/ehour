@@ -42,7 +42,7 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     public void shouldGetHoursPerDayForUsers() {
         DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
                 new Date(2008 - 1900, 1, 3));
-        List<Integer> userIds = new ArrayList<Integer>();
+        List<Integer> userIds = new ArrayList<>();
         userIds.add(1);
         List<FlatReportElement> results = detailedReportDao.getHoursPerDayForUsers(userIds, dateRange);
 
@@ -55,7 +55,7 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     public void shouldGetHoursPerDayForProjects() {
         DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
                 new Date(2008 - 1900, 1, 3));
-        List<Integer> projectIds = new ArrayList<Integer>();
+        List<Integer> projectIds = new ArrayList<>();
         projectIds.add(2);
         List<FlatReportElement> results = detailedReportDao.getHoursPerDayForProjects(projectIds, dateRange);
 
@@ -69,9 +69,9 @@ public class DetailedReportDaoHibernateImplTest extends AbstractAnnotationDaoTes
     public void shouldGetHoursPerDayForProjectsAndUsers() {
         DateRange dateRange = new DateRange(new Date(2006 - 1900, 5 - 1, 1), // deprecated? hmm ;)
                 new Date(2008 - 1900, 1, 3));
-        List<Integer> projectIds = new ArrayList<Integer>();
+        List<Integer> projectIds = new ArrayList<>();
         projectIds.add(2);
-        List<Integer> userIds = new ArrayList<Integer>();
+        List<Integer> userIds = new ArrayList<>();
         userIds.add(1);
 
         List<FlatReportElement> results = detailedReportDao.getHoursPerDayForProjectsAndUsers(projectIds, userIds, dateRange);

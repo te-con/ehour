@@ -100,7 +100,7 @@ public class ExcelExportReportModel extends AbstractReportModel {
 
         ReportData aggregateData = getValidReportData(reportCriteria);
 
-        rowMap = new TreeMap<ProjectAssignment, Map<Date, FlatReportElement>>(getRKComparator());
+        rowMap = new TreeMap<>(getRKComparator());
 
         for (ReportElement element : aggregateData.getReportElements()) {
             FlatReportElement aggregate = (FlatReportElement) element;
@@ -110,7 +110,7 @@ public class ExcelExportReportModel extends AbstractReportModel {
             if (rowMap.containsKey(rowKey)) {
                 rowAggregates = rowMap.get(rowKey);
             } else {
-                rowAggregates = new HashMap<Date, FlatReportElement>();
+                rowAggregates = new HashMap<>();
             }
 
             aggregateDate = getValidAggregateDate(aggregate);

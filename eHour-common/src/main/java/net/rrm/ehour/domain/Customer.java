@@ -166,7 +166,7 @@ public class Customer extends DomainObject<Integer, Customer> {
      * @return
      */
     public Set<Project> getActiveProjects() {
-        Set<Project> activeProjects = new HashSet<Project>();
+        Set<Project> activeProjects = new HashSet<>();
 
         if (getProjects() != null) {
             for (Project project : getProjects()) {
@@ -242,7 +242,7 @@ public class Customer extends DomainObject<Integer, Customer> {
 
     public void addProject(Project project) {
         if (projects == null) {
-            projects = new HashSet<Project>();
+            projects = new HashSet<>();
         }
 
         projects.add(project);

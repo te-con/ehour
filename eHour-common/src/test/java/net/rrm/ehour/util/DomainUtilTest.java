@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 public class DomainUtilTest {
     @Test
     public void testGetPKsFromDomainObjects() {
-        List<Project> projectIds = new ArrayList<Project>();
+        List<Project> projectIds = new ArrayList<>();
 
         projectIds.add(new Project(1));
         projectIds.add(new Project(2));

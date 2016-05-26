@@ -40,8 +40,8 @@ public class UserManagePage extends AbstractUserManagePageTemplate<UserManageBac
 
     @Override
     protected Panel getBaseAddPanel(String panelId) {
-        return new UserFormPanel<UserManageBackingBean>(panelId,
-                new CompoundPropertyModel<UserManageBackingBean>(getTabbedPanel().getAddBackingBean()));
+        return new UserFormPanel<>(panelId,
+                new CompoundPropertyModel<>(getTabbedPanel().getAddBackingBean()));
     }
 
     @Override

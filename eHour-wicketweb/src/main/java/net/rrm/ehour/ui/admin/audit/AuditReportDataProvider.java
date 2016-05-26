@@ -53,7 +53,7 @@ public class AuditReportDataProvider extends SortableDataProvider<Audit, Date> {
 
     @Override
     public IModel<Audit> model(Audit audit) {
-        return new CompoundPropertyModel<Audit>(audit);
+        return new CompoundPropertyModel<>(audit);
     }
 
     public void detach() {

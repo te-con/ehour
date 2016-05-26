@@ -82,7 +82,7 @@ public abstract class AbstractConfigPanel extends AbstractFormSubmittingPanel<Ma
     }
 
     protected Form<?> createForm(String id, IModel<MainConfigBackingBean> model) {
-        return new Form<MainConfigBackingBean>(id, model);
+        return new Form<>(id, model);
     }
 
     /**

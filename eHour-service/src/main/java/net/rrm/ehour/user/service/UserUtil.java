@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class UserUtil {
     public static List<User> filterUserOnRole(List<User> users, UserRole userRole) {
-        List<User> validUsers = new ArrayList<User>();
+        List<User> validUsers = new ArrayList<>();
 
         // result of bad many-to-many mapping. should fix once..
         for (User user : users) {

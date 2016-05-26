@@ -70,7 +70,7 @@ public class UserServiceImplTest {
         User user;
         ProjectAssignment assignmentA, assignmentB;
         Project projectA, projectB;
-        Set<ProjectAssignment> assignments = new HashSet<ProjectAssignment>();
+        Set<ProjectAssignment> assignments = new HashSet<>();
         Calendar calA, calB;
 
 

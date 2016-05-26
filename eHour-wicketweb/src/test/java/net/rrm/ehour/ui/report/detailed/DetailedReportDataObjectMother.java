@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings({"deprecation"})
 public class DetailedReportDataObjectMother {
     public static List<FlatReportElement> getFlatReportElements() {
-        List<FlatReportElement> els = new ArrayList<FlatReportElement>();
+        List<FlatReportElement> els = new ArrayList<>();
 
         {
             FlatReportElement fre = new FlatReportElement();

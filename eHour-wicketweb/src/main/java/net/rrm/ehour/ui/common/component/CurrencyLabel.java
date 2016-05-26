@@ -14,7 +14,7 @@ public class CurrencyLabel extends Label {
     }
 
     public CurrencyLabel(String id, Float value) {
-        super(id, new Model<Float>(value));
+        super(id, new Model<>(value));
     }
 
     @SuppressWarnings("unchecked")

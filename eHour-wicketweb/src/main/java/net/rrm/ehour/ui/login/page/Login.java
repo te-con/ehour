@@ -103,8 +103,8 @@ public class Login extends WebPage {
         private final TextField<String> usernameInput;
 
         public SignInForm(String id, SimpleUser model) {
-            super(id, new CompoundPropertyModel<SimpleUser>(model));
-            usernameInput = new RequiredTextField<String>("username");
+            super(id, new CompoundPropertyModel<>(model));
+            usernameInput = new RequiredTextField<>("username");
             usernameInput.setMarkupId("username");
             usernameInput.setOutputMarkupId(true);
             add(usernameInput);

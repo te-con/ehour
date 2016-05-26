@@ -143,7 +143,7 @@ public class UserSelectedCriteria implements Serializable {
 
     private void setUser(User user) {
         if (users == null) {
-            users = new ArrayList<User>();
+            users = new ArrayList<>();
         }
 
         users.add(user);
@@ -314,7 +314,7 @@ public class UserSelectedCriteria implements Serializable {
     }
 
     public void setCustomer(Customer customer) {
-        customers = new ArrayList<Customer>();
+        customers = new ArrayList<>();
         customers.add(customer);
     }
 

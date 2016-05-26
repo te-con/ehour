@@ -32,7 +32,7 @@ public class ProjectManagerReport implements Serializable {
     private static final long serialVersionUID = 1768574303126675320L;
 
     private Project project;
-    private SortedSet<AssignmentAggregateReportElement> aggregates = new TreeSet<AssignmentAggregateReportElement>();
+    private SortedSet<AssignmentAggregateReportElement> aggregates = new TreeSet<>();
     private DateRange reportRange;
     private Float totalHoursBooked;
     private Float totalHoursAvailable;

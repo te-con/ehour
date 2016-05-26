@@ -38,7 +38,7 @@ public class CalendarWeek implements Serializable {
 
     public CalendarWeek(ElementLocation location) {
         this.location = location;
-        weekDays = new HashMap<Integer, CalendarDay>();
+        weekDays = new HashMap<>();
     }
 
     public void addDayInWeek(int weekDay, CalendarDay calendarDay) {

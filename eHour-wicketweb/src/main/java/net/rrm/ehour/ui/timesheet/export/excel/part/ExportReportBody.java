@@ -146,7 +146,7 @@ public class ExportReportBody extends AbstractExportReportPart {
      * Return a map with the key being the report's date and a list of a report elements for that date as the value
      */
     private Map<Date, List<FlatReportElement>> getElementsAsDateMap(Report report) {
-        Map<Date, List<FlatReportElement>> flatMap = new TreeMap<Date, List<FlatReportElement>>();
+        Map<Date, List<FlatReportElement>> flatMap = new TreeMap<>();
 
         ReportData reportData = report.getReportData();
 
@@ -160,7 +160,7 @@ public class ExportReportBody extends AbstractExportReportPart {
             if (flatMap.containsKey(date)) {
                 dateElements = flatMap.get(date);
             } else {
-                dateElements = new ArrayList<FlatReportElement>();
+                dateElements = new ArrayList<>();
             }
 
             dateElements.add(flat);

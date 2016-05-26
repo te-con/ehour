@@ -55,7 +55,7 @@ public class MailServerConfigPanel extends AbstractBasePanel<MainConfigBackingBe
     protected void onInitialize() {
         super.onInitialize();
 
-        Form<MainConfigBackingBean> form = new Form<MainConfigBackingBean>("smtpForm", getPanelModel());
+        Form<MainConfigBackingBean> form = new Form<>("smtpForm", getPanelModel());
         add(form);
 
         Container disabled = new Container("mailDisabled");
@@ -63,7 +63,7 @@ public class MailServerConfigPanel extends AbstractBasePanel<MainConfigBackingBe
         form.add(disabled);
 
         // reply sender
-        TextField<String> mailFrom = new TextField<String>("config.mailFrom");
+        TextField<String> mailFrom = new TextField<>("config.mailFrom");
         mailFrom.setLabel(new ResourceModel("admin.config.mailFrom"));
         mailFrom.add(EmailAddressValidator.getInstance());
         mailFrom.add(new ValidatingFormComponentAjaxBehavior());
@@ -72,13 +72,13 @@ public class MailServerConfigPanel extends AbstractBasePanel<MainConfigBackingBe
 
         // smtp server, port, username, pass
 
-        TextField<String> mailSmtp = new TextField<String>("config.mailSmtp");
+        TextField<String> mailSmtp = new TextField<>("config.mailSmtp");
         mailSmtp.setLabel(new ResourceModel("admin.config.mailSmtp"));
         mailSmtp.add(new ValidatingFormComponentAjaxBehavior());
         form.add(new AjaxFormComponentFeedbackIndicator("mailSmtpValidationError", mailSmtp));
         form.add(mailSmtp);
 
-        TextField<Integer> smtpPort = new TextField<Integer>("config.smtpPort");
+        TextField<Integer> smtpPort = new TextField<>("config.smtpPort");
         smtpPort.setLabel(new ResourceModel("admin.config.smtpPort"));
         smtpPort.add(new ValidatingFormComponentAjaxBehavior());
         form.add(new AjaxFormComponentFeedbackIndicator("smtpPortValidationError", mailSmtp));
@@ -86,7 +86,7 @@ public class MailServerConfigPanel extends AbstractBasePanel<MainConfigBackingBe
         smtpPort.add(RangeValidator.minimum(0));
         form.add(smtpPort);
 
-        TextField<String> smtpUsername = new TextField<String>("config.smtpUsername");
+        TextField<String> smtpUsername = new TextField<>("config.smtpUsername");
         smtpUsername.setLabel(new ResourceModel("admin.config.smtpUsername"));
         form.add(smtpUsername);
 
