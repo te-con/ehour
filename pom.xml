@@ -38,9 +38,9 @@
 
     <repositories>
         <repository>
-            <id>eHour</id>
+            <id>nexus</id>
             <name>eHour Maven Repository Group</name>
-            <url>http://nexus.te-con.nl/content/groups/public</url>
+            <url>https://nexus.te-con.com/repository/maven-public</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
