@@ -60,12 +60,12 @@
             <artifactId>eHour-common</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-common</artifactId>
-            <scope>test</scope>
-            <classifier>tests</classifier>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.rrm.ehour</groupId>-->
+            <!--<artifactId>eHour-common</artifactId>-->
+            <!--<scope>test</scope>-->
+            <!--<classifier>tests</classifier>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>javax.servlet</groupId>

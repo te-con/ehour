@@ -108,11 +108,11 @@
             <artifactId>eHour-common</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-common</artifactId>
-            <type>test-jar</type>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.rrm.ehour</groupId>-->
+            <!--<artifactId>eHour-common</artifactId>-->
+            <!--<type>test-jar</type>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>cglib</groupId>
