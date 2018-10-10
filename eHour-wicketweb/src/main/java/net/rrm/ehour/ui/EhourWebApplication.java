@@ -27,6 +27,7 @@ import net.rrm.ehour.ui.common.session.DevelopmentWebSession;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.login.page.Login;
 import net.rrm.ehour.ui.login.page.Logout;
+import net.rrm.ehour.ui.login.page.OAuthCallback;
 import net.rrm.ehour.ui.login.page.SessionExpiredPage;
 import net.rrm.ehour.ui.manage.assignment.AssignmentManagePage;
 import net.rrm.ehour.ui.manage.customer.CustomerManagePage;
@@ -65,6 +66,7 @@ import org.apache.wicket.request.resource.caching.IStaticCacheableResource;
 import org.apache.wicket.request.resource.caching.version.IResourceVersion;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.time.Duration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import java.util.Comparator;
@@ -186,6 +188,9 @@ public class EhourWebApplication extends AuthenticatedWebApplication {
     protected void mountPages() {
         mountPage("/login", Login.class);
         mountPage("/logout", Logout.class);
+        if (ehourSystemConfig.isEnableOAuth()){
+            mountPage(ehourSystemConfig.getOauthCallbackURI(), OAuthCallback.class);
+        }
 
         mountPage("/admin", MainConfigPage.class);
         mountPage("/admin/employee", UserManagePage.class);

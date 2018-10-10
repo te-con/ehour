@@ -30,6 +30,33 @@ public class EhourSystemConfig {
     @Value("${ehour.disableAuth:false}")
     private boolean disableAuth = false;
 
+    @Value("${ehour.enableOAuth:false}")
+    private boolean enableOAuth;
+
+    @Value("${ehour.oauth2.callbackURI}")
+    private String oauthCallbackURI;
+
+    @Value("${ehour.oauth2.hostURL}")
+    private String oauthHostURL;
+
+    @Value("${ehour.oauth2.name}")
+    private String oauthName;
+
+    @Value("${ehour.oauth2.userAuthorizationUri}")
+    private String oauthAuthURL;
+
+    @Value("${ehour.oauth2.accessTokenUri}")
+    private String oauthTokenURI;
+
+    @Value("${ehour.oauth2.clientID}")
+    private String oauthClientID;
+
+    @Value("${ehour.oauth2.clientSecret}")
+    private String oauthClientSecuret;
+
+    @Value("${ehour.oauth2.scope}")
+    private String oauthScope;
+
     public EhourSystemConfig() {
     }
 
@@ -65,5 +92,41 @@ public class EhourSystemConfig {
 
     public String getTranslationsDir() {
         return translationsDir;
+    }
+
+    public boolean isEnableOAuth() {
+        return enableOAuth;
+    }
+
+    public String getOauthCallbackURI() {
+        return oauthCallbackURI;
+    }
+
+    public String getOauthHostURL() {
+        return oauthHostURL;
+    }
+
+    public String getOauthName() {
+        return oauthName;
+    }
+
+    public String getOauthAuthURL() {
+        return oauthAuthURL;
+    }
+
+    public String getOauthClientID() {
+        return oauthClientID;
+    }
+
+    public String getOauthClientSecuret() {
+        return oauthClientSecuret;
+    }
+
+    public String getOauthScope() {
+        return oauthScope;
+    }
+
+    public String getOauthTokenURI() {
+        return oauthTokenURI;
     }
 }
