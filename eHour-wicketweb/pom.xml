@@ -78,13 +78,13 @@
             <artifactId>eHour-service</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-service</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-            <classifier>tests</classifier>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.rrm.ehour</groupId>-->
+            <!--<artifactId>eHour-service</artifactId>-->
+            <!--<version>${project.version}</version>-->
+            <!--<scope>test</scope>-->
+            <!--<classifier>tests</classifier>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>nl.tecon.scalahighcharts</groupId>

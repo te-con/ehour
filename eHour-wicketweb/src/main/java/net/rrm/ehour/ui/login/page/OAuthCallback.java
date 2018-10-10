@@ -118,7 +118,6 @@ public class OAuthCallback extends WebPage {
 
         JSONObject jsonResponse = new JSONObject(result);
 
-        System.out.println(result.toString());
         boolean success = jsonResponse.getBoolean("ok");
 
         if (!success) {
