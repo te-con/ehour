@@ -47,20 +47,20 @@ public class User extends DomainObject<Integer, User> {
     private Integer userId;
 
     @NotNull
-    @Column(name = "USERNAME", length = 64)
+    @Column(name = "USERNAME", length = 1024)
     private String username;
 
     @NotNull
-    @Column(name = "PASSWORD", nullable = false, length = 128)
+    @Column(name = "PASSWORD", nullable = false, length = 1024)
     private String password;
 
-    @Column(name = "FIRST_NAME", length = 64)
+    @Column(name = "FIRST_NAME", length = 1024)
     private String firstName;
 
-    @Column(name = "LAST_NAME", nullable = false, length = 64)
+    @Column(name = "LAST_NAME", nullable = false, length = 1024)
     private String lastName;
 
-    @Column(name = "EMAIL", length = 128)
+    @Column(name = "EMAIL", length = 1024)
     private String email;
 
     @Column(name = "ACTIVE")
