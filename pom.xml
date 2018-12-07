@@ -33,7 +33,7 @@
 
 
     <properties>
-        <ehour.version>1.4.4-SNAPSHOT</ehour.version>
+        <ehour.version>1.5-SNAPSHOT</ehour.version>
     </properties>
 
     <repositories>
