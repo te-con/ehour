@@ -57,6 +57,9 @@ public class EhourSystemConfig {
     @Value("${ehour.oauth2.scope}")
     private String oauthScope;
 
+    @Value("${ehour.disableIndividualReport}")
+    private boolean disableIndividualReport = false;
+
     public EhourSystemConfig() {
     }
 
@@ -129,4 +132,9 @@ public class EhourSystemConfig {
     public String getOauthTokenURI() {
         return oauthTokenURI;
     }
+
+    public boolean isDisableIndividualReport() {
+        return disableIndividualReport;
+    }
+
 }

@@ -18,6 +18,7 @@ package net.rrm.ehour.ui.report.page;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.domain.UserRole;
 import net.rrm.ehour.report.criteria.ReportCriteria;
 import net.rrm.ehour.report.criteria.UserSelectedCriteria;
@@ -59,6 +60,10 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
     @SpringBean
     private ReportTabs reportTabs;
 
+    @SpringBean
+    private EhourSystemConfig config;
+
+
     public ReportPage() {
         super(new ResourceModel("report.global.title"));
     }
@@ -93,7 +98,7 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
 
         List<ITab> tabList = new ArrayList<>();
 
-        if (getEhourWebSession().isReporter()) {
+        if (getEhourWebSession().isReporter() || !config.isDisableIndividualReport()) {
 
             tabList.add(new AbstractTab(getReportTitle(reportCriteria.getUserSelectedCriteria())) {
                 private static final long serialVersionUID = 1L;
