@@ -93,15 +93,18 @@ public class ReportPage extends AbstractReportPage<ReportCriteriaBackingBean> {
 
         List<ITab> tabList = new ArrayList<>();
 
-        tabList.add(new AbstractTab(getReportTitle(reportCriteria.getUserSelectedCriteria())) {
-            private static final long serialVersionUID = 1L;
+        if (getEhourWebSession().isReporter()) {
 
-            @SuppressWarnings("unchecked")
-            @Override
-            public Panel getPanel(String panelId) {
-                return new ReportCriteriaPanel(panelId, model);
-            }
-        });
+            tabList.add(new AbstractTab(getReportTitle(reportCriteria.getUserSelectedCriteria())) {
+                private static final long serialVersionUID = 1L;
+
+                @SuppressWarnings("unchecked")
+                @Override
+                public Panel getPanel(String panelId) {
+                    return new ReportCriteriaPanel(panelId, model);
+                }
+            });
+        }
 
         tabPanel = new ReportTabbedPanel("reportContainer", tabList);
         addOrReplace(tabPanel);
