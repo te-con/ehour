@@ -185,7 +185,7 @@ public class UserSelectedCriteria implements Serializable {
      * No customers selected ?
      */
     public boolean isEmptyCustomers() {
-        return customers == null || !customers.isEmpty();
+        return customers == null || customers.isEmpty();
     }
 
     /**
@@ -193,7 +193,7 @@ public class UserSelectedCriteria implements Serializable {
      */
 
     public boolean isEmptyProjects() {
-        return projects == null || !projects.isEmpty();
+        return projects == null || projects.isEmpty();
     }
 
     /**
@@ -201,14 +201,14 @@ public class UserSelectedCriteria implements Serializable {
      */
 
     public boolean isEmptyDepartments() {
-        return userDepartments == null || !userDepartments.isEmpty();
+        return userDepartments == null || userDepartments.isEmpty();
     }
 
     /**
      * No users selected ?
      */
     public boolean isEmptyUsers() {
-        return users == null || !users.isEmpty();
+        return users == null || users.isEmpty();
     }
 
     public boolean isOnlyActiveCustomers() {
