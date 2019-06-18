@@ -25,7 +25,6 @@
         <module>eHour-jetty</module>
     </modules>
 
-
     <properties>
         <ehour.version>1.5-SNAPSHOT</ehour.version>
 
@@ -47,6 +46,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
         <poi.version>3.13</poi.version>
+        <maven-scm-plugin>1.11.2</maven-scm-plugin>
+        <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+        <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
+        <scala-maven-plugin.version>3.4.6</scala-maven-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -671,19 +678,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-plugin</artifactId>
-                <version>1.9.2</version>
+                <version>${maven-scm-plugin}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.scm</groupId>
                         <artifactId>maven-scm-provider-gitexe</artifactId>
-                        <version>1.9.2</version>
+                        <version>${maven-scm-plugin}</version>
                     </dependency>
                 </dependencies>
             </plugin>
 
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.4</version>
+                <version>${maven-source-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -697,10 +704,10 @@
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
                 <executions>
                     <execution>
@@ -714,7 +721,7 @@
 
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
@@ -732,7 +739,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.5</version>
+                    <version>${maven-jar-plugin.version}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -744,13 +751,13 @@
 
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.5.2</version>
+                    <version>${maven-assembly-plugin.version}</version>
                 </plugin>
 
                 <plugin>
                     <groupId>net.alchim31.maven</groupId>
                     <artifactId>scala-maven-plugin</artifactId>
-                    <version>3.2.2</version>
+                    <version>${scala-maven-plugin.version}</version>
                     <executions>
                         <execution>
                             <id>scala-compile-first</id>
@@ -784,15 +791,8 @@
 
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.1</version>
+                    <version>${maven-release-plugin.version}</version>
                 </plugin>
-
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>2.4</version>
-                </plugin>
-
             </plugins>
         </pluginManagement>
 
@@ -809,7 +809,7 @@
                     <plugin>
                         <inherited>true</inherited>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <version>2.4</version>
+                        <version>${maven-compiler-plugin.version}</version>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <configuration>
                             <debug>false</debug>
