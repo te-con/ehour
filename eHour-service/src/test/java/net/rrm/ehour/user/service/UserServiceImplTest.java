@@ -16,6 +16,8 @@
 
 package net.rrm.ehour.user.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import net.rrm.ehour.domain.*;
 import net.rrm.ehour.exception.ObjectNotFoundException;
 import net.rrm.ehour.exception.ObjectNotUniqueException;
@@ -120,10 +122,12 @@ public class UserServiceImplTest {
 
     @Test
     public void testGetUserDepartment() throws ObjectNotFoundException {
-        UserDepartment ud;
+
+        UserDepartment ud = new UserDepartment(1, "bla", "ble");
+        ud.setUsers(new HashSet<User>());
 
         when(userDepartmentDAO.findById(1))
-                .thenReturn(new UserDepartment(1, "bla", "ble"));
+                .thenReturn(ud);
 
         ud = userService.getUserDepartment(1);
 
