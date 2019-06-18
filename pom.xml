@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.rrm.ehour</groupId>
-    <version>1.4.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     <artifactId>eHour</artifactId>
     <packaging>pom</packaging>
     <name>eHour</name>
@@ -27,7 +27,7 @@
 
 
     <properties>
-        <ehour.version>1.4.4-SNAPSHOT</ehour.version>
+        <ehour.version>1.5-SNAPSHOT</ehour.version>
 
         <spring.version>4.2.4.RELEASE</spring.version>
         <wicket.version>6.21.0</wicket.version>
