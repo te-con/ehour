@@ -28,8 +28,8 @@
     <properties>
         <ehour.version>1.5-SNAPSHOT</ehour.version>
 
-        <spring.version>4.2.4.RELEASE</spring.version>
-        <wicket.version>6.21.0</wicket.version>
+        <spring.version>4.3.24.RELEASE</spring.version>
+        <wicket.version>6.30.0</wicket.version>
         <jetty.version>8.1.16.v20140903</jetty.version>
         <derbydb.version>10.12.1.1</derbydb.version>
         <aspectj.version>1.8.4</aspectj.version>
@@ -41,19 +41,21 @@
         <scala.version>${scala.major.version}.${scala.minor.version}</scala.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-security.version>3.2.4.RELEASE</spring-security.version>
+        <spring-security.version>3.2.10.RELEASE</spring-security.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
-        <poi.version>3.13</poi.version>
+        <poi.version>3.16</poi.version>
         <maven-scm-plugin>1.11.2</maven-scm-plugin>
         <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
-        <scala-maven-plugin.version>3.4.6</scala-maven-plugin.version>
+        <scala-maven-plugin.version>4.0.2</scala-maven-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <mockito-core.version>1.10.19</mockito-core.version>
+        <ddlutils.version>1.0</ddlutils.version>
     </properties>
 
     <dependencyManagement>
@@ -86,7 +88,7 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>1.10.19</version>
+                <version>${mockito-core.version}</version>
                 <scope>test</scope>
                 <exclusions>
                     <exclusion>
@@ -156,7 +158,7 @@
             <dependency>
                 <groupId>org.apache.ddlutils</groupId>
                 <artifactId>ddlutils</artifactId>
-                <version>1.0</version>
+                <version>${ddlutils.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-dbcp</groupId>
@@ -349,7 +351,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.11</version>
+                <version>4.12</version>
                 <scope>test</scope>
                 <exclusions>
                     <exclusion>
@@ -506,15 +508,15 @@
             </dependency>
 
             <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.0</version>
+                <groupId>org.apache.commons.io</groupId>
+                <artifactId>commonsIO</artifactId>
+                <version>2.5.0</version>
             </dependency>
 
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>18.0</version>
+                <version>28.0-jre</version>
             </dependency>
 
             <dependency>

@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -20,11 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class})
 @Transactional(propagation = Propagation.REQUIRES_NEW)
-@TransactionConfiguration(defaultRollback = true)
+@Rollback
 public abstract class AbstractDaoTest {
     @Autowired
     private SessionFactory sessionFactory;
@@ -45,7 +47,7 @@ public abstract class AbstractDaoTest {
     }
 
     @Before
-    public final void setUpDatabase() throws Exception {
+    public void setUpDatabase() throws Exception {
         DataSource dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
         DatabasePopulator.setUpDatabase(dataSource, datasetFilenames, getRequiredDbVersion());
     }

@@ -18,7 +18,6 @@ import static org.junit.Assert.*;
  * @author thies (Thies Edeling - thies@te-con.nl)
  *         Created on: Nov 16, 2010 - 2:56:42 PM
  */
-@SuppressWarnings("deprecation")
 public class ProjectAssignmentDaoHibernateImplTest extends AbstractAnnotationDaoTest {
     public ProjectAssignmentDaoHibernateImplTest() {
         super("dataset-projectassignment.xml");
