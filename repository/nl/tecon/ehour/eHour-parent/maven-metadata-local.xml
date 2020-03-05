@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>nl.tecon.ehour</groupId>
+  <artifactId>eHour-parent</artifactId>
+  <versioning>
+    <release>1.2</release>
+    <versions>
+      <version>1.2</version>
+    </versions>
+    <lastUpdated>20200305101217</lastUpdated>
+  </versioning>
+</metadata>
