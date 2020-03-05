@@ -29,6 +29,7 @@ import net.rrm.ehour.security.SecurityRules;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.authorization.AuthUser;
 import net.rrm.ehour.ui.common.util.WebUtils;
+import net.rrm.ehour.user.service.UserService;
 import net.rrm.ehour.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.apache.wicket.Session;
@@ -44,6 +45,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -63,9 +65,13 @@ public class EhourWebSession extends AuthenticatedWebSession {
     @SpringBean
     private AuditService auditService;
 
+    @SpringBean
+    private UserService userService;
+
     private Calendar navCalendar;
     private UserSelectedCriteria userSelectedCriteria;
     private Boolean hideInactiveSelections = true;
+    private boolean isOauth = false;
 
     private Optional<AuthUser> impersonatingAuthUser = Optional.absent();
 
@@ -157,8 +163,16 @@ public class EhourWebSession extends AuthenticatedWebSession {
         String u = username == null ? "" : username;
         String p = password == null ? "" : password;
 
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(u, p);
+        if (isOauth) {
+            // TODO: verify
+            User user = userService.getUser(username);
+            AuthUser authUser = new AuthUser(user);
+            PreAuthenticatedAuthenticationToken auth = new PreAuthenticatedAuthenticationToken(authUser, null, user.getUserRoles());
+            setAuthentication(auth);
+            return true;
+        }
 
+        Authentication authRequest = new UsernamePasswordAuthenticationToken(u, p);
         // Attempt authentication.
         try {
             AuthenticationManager authenticationManager = ((EhourWebApplication) getApplication()).getAuthenticationManager();
@@ -169,7 +183,6 @@ public class EhourWebSession extends AuthenticatedWebSession {
 
             Authentication authResult = authenticationManager.authenticate(authRequest);
             setAuthentication(authResult);
-
             User user = ((AuthUser) authResult.getPrincipal()).getUser();
 
             auditService.doAudit(new Audit()
@@ -368,4 +381,12 @@ public class EhourWebSession extends AuthenticatedWebSession {
     }
 
     private static final long serialVersionUID = 93189812483240412L;
+
+    public boolean isOauth() {
+        return isOauth;
+    }
+
+    public void setOauth(boolean oauth) {
+        isOauth = oauth;
+    }
 }

@@ -9,3 +9,6 @@ atlassian-ide-plugin.xml
 /dist/output.txt
 /dist/updates.xml
 log.txt
+.project
+.settings/
+.classpath

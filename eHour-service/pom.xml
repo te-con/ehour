@@ -59,13 +59,13 @@
             <artifactId>eHour-common</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>net.rrm.ehour</groupId>
-            <artifactId>eHour-common</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-            <classifier>tests</classifier>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.rrm.ehour</groupId>-->
+            <!--<artifactId>eHour-common</artifactId>-->
+            <!--<version>${project.version}</version>-->
+            <!--<scope>test</scope>-->
+            <!--<classifier>tests</classifier>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework</groupId>

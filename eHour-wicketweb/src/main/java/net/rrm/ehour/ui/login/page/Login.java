@@ -16,6 +16,7 @@
 
 package net.rrm.ehour.ui.login.page;
 
+import net.rrm.ehour.appconfig.EhourSystemConfig;
 import net.rrm.ehour.ui.EhourWebApplication;
 import net.rrm.ehour.ui.common.session.EhourWebSession;
 import net.rrm.ehour.ui.common.util.AuthUtil;
@@ -25,16 +26,18 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.StatelessForm;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 import static net.rrm.ehour.ui.common.util.AuthUtil.Homepage;
 
@@ -47,6 +50,9 @@ public class Login extends WebPage {
 
     @SpringBean
     private AuthUtil authUtil;
+
+    @SpringBean
+    private EhourSystemConfig config;
 
     @Override
     protected void onInitialize() {
@@ -74,6 +80,33 @@ public class Login extends WebPage {
         }
 
         add(new Label("version", version));
+
+        if (config.isEnableOAuth()) {
+            // http://sso-dex:5556/dex/auth?
+            //  client_id=example-app&
+            //  redirect_uri=http%3A%2F%2Ftest.knight.com%3A5555%2Fcallback&
+            //  response_type=code&
+            //  scope=openid+profile+email+offline_access&
+            //  state=I+wish+to+wash+my+irish+wristwatch
+            String url = config.getOauthAuthURL();
+            url += "?";
+            try {
+                url += "client_id=" + URLEncoder.encode(config.getOauthClientID(), "UTF-8") + "&" +
+                        "redirect_uri=" + URLEncoder.encode(config.getOauthHostURL() + config.getOauthCallbackURI(), "UTF-8") + "&" +
+                        "response_type=code&" +
+                        "scope=" + URLEncoder.encode(config.getOauthScope(), "UTF-8") + "&" +
+                        "state=ehour";
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+
+            ExternalLink oauthLink = new ExternalLink("loginOAuth", url, "Sign in with "+config.getOauthName());
+            add(oauthLink);
+        } else {
+            ExternalLink oauthLink = new ExternalLink("loginOAuth", "");
+            add(oauthLink);
+            oauthLink.setVisible(false);
+        }
 
         super.onBeforeRender();
     }
@@ -113,6 +146,8 @@ public class Login extends WebPage {
             password.setMarkupId("password");
             password.setOutputMarkupId(true);
             add(password);
+
+            Button signInWith = new Button("SignInWith");
 
             Label demoMode = new Label("demoMode", new ResourceModel("login.demoMode"));
             add(demoMode);

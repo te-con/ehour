@@ -36,20 +36,21 @@
         <ehour.version>1.4.4-SNAPSHOT</ehour.version>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>nexus</id>
-            <name>eHour Maven Repository Group</name>
-            <url>https://nexus.te-con.com/repository/maven-public</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
+    <!-- <repositories> -->
+    <!--     <repository> -->
+    <!--         <id>nexus</id> -->
+    <!--         <name>eHour Maven Repository Group</name> -->
+    <!--         <url>https://nexus.te-con.com/repository/maven-public</url> -->
+    <!--         <layout>default</layout> -->
+    <!--         <releases> -->
+    <!--             <enabled>true</enabled> -->
+    <!--             <updatePolicy>never</updatePolicy> -->
+    <!--         </releases> -->
+    <!--         <snapshots> -->
+    <!--             <enabled>true</enabled> -->
+    <!--             <updatePolicy>always</updatePolicy> -->
+    <!--         </snapshots> -->
+    <!--     </repository> -->
+    <!--  -->
+    <!-- </repositories> -->
 </project>

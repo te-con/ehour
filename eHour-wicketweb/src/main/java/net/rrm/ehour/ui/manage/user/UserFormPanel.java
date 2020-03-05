@@ -163,7 +163,7 @@ public class UserFormPanel<T extends UserManageBackingBean> extends AbstractForm
     private void createUsernameInput(Form<T> form) {
         RequiredTextField<String> usernameField = new RequiredTextField<>("user.username");
         form.add(usernameField);
-        usernameField.add(new StringValidator(0, 32));
+        usernameField.add(new StringValidator(0, 1024));
         usernameField.add(new DuplicateUsernameValidator());
         usernameField.setLabel(new ResourceModel("admin.user.username"));
         usernameField.add(new ValidatingFormComponentAjaxBehavior());
