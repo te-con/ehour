@@ -27,10 +27,10 @@
 
     <properties>
         <ehour.version>1.4.4-SNAPSHOT</ehour.version>
-                <spring.version>4.2.4.RELEASE</spring.version>
-        <wicket.version>6.21.0</wicket.version>
+        <spring.version>4.3.26.RELEASE</spring.version>
+        <wicket.version>6.30.0</wicket.version>
         <jetty.version>8.1.16.v20140903</jetty.version>
-        <derbydb.version>10.12.1.1</derbydb.version>
+        <derbydb.version>10.15.2.0</derbydb.version>
         <aspectj.version>1.8.4</aspectj.version>
         <slf4j.version>1.6.4</slf4j.version>
         <hibernate.version>4.3.11.Final</hibernate.version>
@@ -44,10 +44,10 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
-        <poi.version>3.13</poi.version>
+        <poi.version>3.17</poi.version>
     </properties>
 
-        <dependencyManagement>
+    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.scala-lang</groupId>
