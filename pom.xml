@@ -44,7 +44,7 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
-        <poi.version>3.17</poi.version>
+        <poi.version>3.13</poi.version>
     </properties>
 
     <dependencyManagement>
