@@ -1,5 +1,5 @@
 orbs:
-  maven: circleci/maven@x.y
+  maven: circleci/maven@1.0.1
 version: 2.1
 workflows:
   maven_test:
