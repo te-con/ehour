@@ -3,12 +3,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -185,7 +185,7 @@ public class UserSelectedCriteria implements Serializable {
      * No customers selected ?
      */
     public boolean isEmptyCustomers() {
-        return customers == null || !customers.isEmpty();
+        return customers == null || customers.isEmpty();
     }
 
     /**
@@ -193,7 +193,7 @@ public class UserSelectedCriteria implements Serializable {
      */
 
     public boolean isEmptyProjects() {
-        return projects == null || !projects.isEmpty();
+        return projects == null || projects.isEmpty();
     }
 
     /**
@@ -201,14 +201,14 @@ public class UserSelectedCriteria implements Serializable {
      */
 
     public boolean isEmptyDepartments() {
-        return userDepartments == null || !userDepartments.isEmpty();
+        return userDepartments == null || userDepartments.isEmpty();
     }
 
     /**
      * No users selected ?
      */
     public boolean isEmptyUsers() {
-        return users == null || !users.isEmpty();
+        return users == null || users.isEmpty();
     }
 
     public boolean isOnlyActiveCustomers() {
