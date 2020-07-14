@@ -34,7 +34,7 @@
     <aspectj.version>1.8.4</aspectj.version>
     <slf4j.version>1.6.4</slf4j.version>
     <hibernate.version>4.3.8.Final</hibernate.version>
-    <hibernate.validator.version>4.3.2.Final</hibernate.validator.version>
+    <hibernate.validator.version>5.3.5.Final</hibernate.validator.version>
     <scala.major.version>2.11</scala.major.version>
     <scala.minor.version>4</scala.minor.version>
     <scala.version>${scala.major.version}.${scala.minor.version}</scala.version>
